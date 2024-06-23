@@ -1,25 +1,4 @@
 ﻿Entries:
-- author: deltanedas
-  changes:
-  - message: Making fultons now requires cloth and they are faster to make.
-    type: Tweak
-  id: 6309
-  time: '2024-04-05T15:42:12.0000000+00:00'
-  url: https://github.com/space-wizards/space-station-14/pull/26747
-- author: superjj18
-  changes:
-  - message: Broadcasting works again!
-    type: Fix
-  id: 6310
-  time: '2024-04-05T17:29:22.0000000+00:00'
-  url: https://github.com/space-wizards/space-station-14/pull/26750
-- author: Golinth
-  changes:
-  - message: Fixed mindshield icons being glow in the dark
-    type: Fix
-  id: 6311
-  time: '2024-04-05T20:35:32.0000000+00:00'
-  url: https://github.com/space-wizards/space-station-14/pull/26754
 - author: Blackern5000
   changes:
   - message: Added sap
@@ -3842,3 +3821,24 @@
   id: 6808
   time: '2024-06-22T23:46:19.0000000+00:00'
   url: https://github.com/space-wizards/space-station-14/pull/27465
+- author: Cojoke-dot
+  changes:
+  - message: You can now put hats on Medibots
+    type: Add
+  id: 6809
+  time: '2024-06-23T00:28:20.0000000+00:00'
+  url: https://github.com/space-wizards/space-station-14/pull/28584
+- author: WarMechanic
+  changes:
+  - message: The TEG now powers itself once started.
+    type: Tweak
+  id: 6810
+  time: '2024-06-23T01:46:31.0000000+00:00'
+  url: https://github.com/space-wizards/space-station-14/pull/29072
+- author: eoineoineoin
+  changes:
+  - message: Hand labelers can now apply labels to buttons, switches, and levers
+    type: Tweak
+  id: 6811
+  time: '2024-06-23T14:52:30.0000000+00:00'
+  url: https://github.com/space-wizards/space-station-14/pull/29378
