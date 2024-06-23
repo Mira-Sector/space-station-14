@@ -10,10 +10,10 @@
     sprite: Clothing/OuterClothing/Coats/bomber.rsi
 
 - type: entity
-  parent: [ClothingOuterStorageBase, AllowSuitStorageClothing, ClothingOuterArmorBasic]
+  parent: [ClothingOuterStorageBase, AllowSuitStorageClothing]
   id: ClothingOuterCoatDetective
   name: detective trenchcoat
-  description: An 18th-century multi-purpose trenchcoat. Someone who wears this means serious business.
+  description: A rugged canvas trenchcoat, designed and created by TX Fabrication Corp. Wearing it makes you feel for the plight of the Tibetans.
   components:
   - type: Sprite
     sprite: Clothing/OuterClothing/Coats/detective.rsi
@@ -23,20 +23,13 @@
     contents:
     - id: SmokingPipeFilledTobacco
     - id: FlippoEngravedLighter
-  - type: ExplosionResistance
-    damageCoefficient: 1 #its a coat. it doesnt do shit
-
-- type: entity
-  parent: [ClothingOuterCoatDetectiveLoadout]
-  id: ClothingOuterCoatDetectiveLoadoutGrey
-  name: noir trenchcoat
-  description: Ah, your trusty coat. There's a few tears here and there, giving it a more timely look. Or at least, that's what you told yourself when you found out gettin' it repaired would set you back 200 speos.
-  components:
-  - type: Sprite
-    sprite: Clothing/OuterClothing/Coats/detective_grey.rsi
-  - type: Clothing
-    sprite: Clothing/OuterClothing/Coats/detective_grey.rsi
-
+  - type: Armor #same as regular sec armor
+    modifiers:
+      coefficients:
+        Blunt: 0.70
+        Slash: 0.70
+        Piercing: 0.70
+        Heat: 0.80
 
 - type: entity
   parent: ClothingOuterCoatDetective
@@ -99,6 +92,17 @@
     sprite: Clothing/OuterClothing/Coats/hos_trenchcoat.rsi
   - type: Clothing
     sprite: Clothing/OuterClothing/Coats/hos_trenchcoat.rsi
+
+- type: entity
+  parent: ClothingOuterStorageBase
+  id: ClothingOuterCoatInspector
+  name: inspector's coat
+  description: A strict inspector's coat for being intimidating during inspections.
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Coats/insp_coat.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Coats/insp_coat.rsi
 
 - type: entity
   parent: ClothingOuterStorageToggleableBase
