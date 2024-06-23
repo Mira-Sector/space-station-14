@@ -221,7 +221,6 @@ ghost-role-information-syndicate-kobold-reinforcement-description = Someone need
 ghost-role-information-syndicate-kobold-reinforcement-rules = You are a [color=red][bold]Team Antagonist[/bold][/color] with the agent who summoned you.
 
 ghost-role-information-artifact-name = Sentient Artifact
-ghost-role-information-artifact-description = Enact your eldritch whims. Forcibly activate your nodes for good or for evil.
 
 ghost-role-information-syndie-assaultborg-name = Syndicate Assault Borg
 ghost-role-information-syndie-assaultborg-description = Nuclear operatives needs reinforcements. You, a cold silicon killing machine, will help them. More dakka!
