@@ -27,7 +27,7 @@
     - !type:DepartmentTimeRequirement
       department: Command
       time: 0
-  ChiefEngineer:
+    ChiefEngineer:
     - !type:RoleTimeRequirement
       role: JobAtmosphericTechnician
       time: 0
@@ -39,7 +39,7 @@
       time: 0
     - !type:OverallPlaytimeRequirement
       time: 0
-  ChiefMedicalOfficer:
+    ChiefMedicalOfficer:
     - !type:RoleTimeRequirement
       role: JobChemist
       time: 0
@@ -51,7 +51,7 @@
       time: 0
     - !type:OverallPlaytimeRequirement
       time: 0
-  HeadOfSecurity:
+    HeadOfSecurity:
     - !type:RoleTimeRequirement
       role: JobWarden
       time: 0
@@ -63,7 +63,7 @@
       time: 0
     - !type:OverallPlaytimeRequirement
       time: 0
-  Quartermaster:
+    Quartermaster:
     - !type:RoleTimeRequirement
       role: JobCargoTechnician
       time: 0
@@ -75,88 +75,88 @@
       time: 0
     - !type:OverallPlaytimeRequirement
       time: 0
-  ResearchDirector:
+    ResearchDirector:
     - !type:DepartmentTimeRequirement
       department: Science
       time: 0
     - !type:OverallPlaytimeRequirement
       time: 0
-  Detective:
-  - !type:DepartmentTimeRequirement
-    department: Security
-    time: 0
-  SecurityCadet:
-    - !type:OverallPlaytimeRequirement
-      time: 0
-  SecurityOfficer:
+    Detective:
     - !type:DepartmentTimeRequirement
       department: Security
       time: 0
-  Warden:
+    SecurityCadet:
+    - !type:OverallPlaytimeRequirement
+      time: 0
+    SecurityOfficer:
+    - !type:DepartmentTimeRequirement
+      department: Security
+      time: 0
+    Warden:
     - !type:RoleTimeRequirement
       role: JobSecurityOfficer
       time: 0
-  SalvageSpecialist:
+    SalvageSpecialist:
     - !type:DepartmentTimeRequirement
       department: Cargo
       time: 0
     - !type:OverallPlaytimeRequirement
       time: 0
-  AtmosphericTechnician:
+    AtmosphericTechnician:
     - !type:DepartmentTimeRequirement
       department: Engineering
       time: 0
-  StationEngineer:
+    StationEngineer:
     - !type:DepartmentTimeRequirement
       department: Engineering
       time: 0
-  TechnicalAssistant:
+    TechnicalAssistant:
     - !type:OverallPlaytimeRequirement
       time: 0
-  Chemist:
+    Chemist:
     - !type:DepartmentTimeRequirement
       department: Medical
       time: 0
-  MedicalDoctor:
+    MedicalDoctor:
     - !type:DepartmentTimeRequirement
       department: Medical
       time: 0
-  Paramedic:
+    Paramedic:
     - !type:RoleTimeRequirement
       role: JobMedicalDoctor
       time: 0
     - !type:OverallPlaytimeRequirement
       time: 0
-  Scientist:
+    Scientist:
     - !type:DepartmentTimeRequirement
       department: Science
       time: 0
-  Bartender:
+    Bartender:
     - !type:DepartmentTimeRequirement
       department: Civilian
       time: 0
-  Borg:
+    Borg:
     - !type:OverallPlaytimeRequirement
       time: 0
-  Chef:
+    Chef:
     - !type:DepartmentTimeRequirement
       department: Civilian
       time: 0
-  Mime:
+    Mime:
     - !type:OverallPlaytimeRequirement
       time: 0
-  Nukeops:
-  - !type:OverallPlaytimeRequirement
+    Nukeops:
+    - !type:OverallPlaytimeRequirement
       time: 0
-  NukeopsMedic:
-  - !type:OverallPlaytimeRequirement
+    NukeopsMedic:
+    - !type:OverallPlaytimeRequirement
       time: 0
-  - !type:RoleTimeRequirement
+    - !type:RoleTimeRequirement
       role: JobChemist
       time: 0
-  NukeopsCommander:
-  - !type:OverallPlaytimeRequirement
+    NukeopsCommander:
+    - !type:OverallPlaytimeRequirement
       time: 0
-  - !type:DepartmentTimeRequirement
+    - !type:DepartmentTimeRequirement
       department: Security
       time: 0
