@@ -1,4 +1,4 @@
-<p align="center"> <img alt="Space Station 14" width="880" height="300" src="https://raw.githubusercontent.com/Doctor-Cput/space-station-14/mira/Resources/mira.png" /></p>
+<p align="center"> <img alt="Space Station 14" width="400" height="400" src="https://raw.githubusercontent.com/Doctor-Cpu/space-station-14/mira/mira.png" /></p>
 
 Mira's special repo to publicly host.
 
