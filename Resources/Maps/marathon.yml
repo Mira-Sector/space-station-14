@@ -11089,7 +11089,7 @@ entities:
       pos: -20.5,-5.5
       parent: 30
     - type: Door
-      secondsUntilStateChange: -537.51984
+      secondsUntilStateChange: -597.6591
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -12136,8 +12136,6 @@ entities:
       parent: 30
     - type: Apc
       hasAccess: True
-      lastExternalState: Good
-      lastChargeState: Full
   - uid: 7079
     components:
     - type: MetaData
@@ -12163,8 +12161,6 @@ entities:
       parent: 30
     - type: Apc
       hasAccess: True
-      lastExternalState: Good
-      lastChargeState: Full
   - uid: 7433
     components:
     - type: MetaData
@@ -12183,8 +12179,6 @@ entities:
       parent: 30
     - type: Apc
       hasAccess: True
-      lastExternalState: Good
-      lastChargeState: Full
   - uid: 7610
     components:
     - type: MetaData
@@ -13770,6 +13764,14 @@ entities:
     - type: Transform
       pos: -48.5,39.5
       parent: 30
+- proto: BedsheetBrigmedic
+  entities:
+  - uid: 2246
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -50.5,50.5
+      parent: 30
 - proto: BedsheetCaptain
   entities:
   - uid: 4986
@@ -13836,11 +13838,6 @@ entities:
     components:
     - type: Transform
       pos: -24.5,-7.5
-      parent: 30
-  - uid: 21653
-    components:
-    - type: Transform
-      pos: -50.5,50.5
       parent: 30
 - proto: BedsheetOrange
   entities:
@@ -14242,7 +14239,7 @@ entities:
     - type: Transform
       pos: -60.353844,-63.575558
       parent: 30
-- proto: BookChefGaming
+- proto: BookHowToCookForFortySpaceman
   entities:
   - uid: 9948
     components:
@@ -98466,6 +98463,13 @@ entities:
         - 0
         - 0
         - 0
+- proto: LockerBrigmedicFilled
+  entities:
+  - uid: 11448
+    components:
+    - type: Transform
+      pos: -49.5,53.5
+      parent: 30
 - proto: LockerCaptainFilledHardsuit
   entities:
   - uid: 1440
@@ -99094,29 +99098,6 @@ entities:
       parent: 30
 - proto: LockerMedicalFilled
   entities:
-  - uid: 2246
-    components:
-    - type: Transform
-      pos: -49.5,53.5
-      parent: 30
-    - type: EntityStorage
-      air:
-        volume: 200
-        immutable: False
-        temperature: 293.1496
-        moles:
-        - 3.4430928
-        - 12.952587
-        - 0
-        - 0
-        - 0
-        - 0
-        - 0
-        - 0
-        - 0
-        - 0
-        - 0
-        - 0
   - uid: 7606
     components:
     - type: Transform
@@ -116319,6 +116300,13 @@ entities:
     components:
     - type: Transform
       pos: -24.5,16.5
+      parent: 30
+- proto: SpawnPointBrigmedic
+  entities:
+  - uid: 11449
+    components:
+    - type: Transform
+      pos: -50.5,51.5
       parent: 30
 - proto: SpawnPointCaptain
   entities:
