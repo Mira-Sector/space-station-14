@@ -602,51 +602,70 @@
     icons:
     # TODO figure out a better way of doing this.
     # Probably by adding a bool or icon-category data-field to the icon prototype?
-    - JobIconDetective
-    - JobIconQuarterMaster
-    - JobIconBotanist
-    - JobIconBoxer
-    - JobIconAtmosphericTechnician
-    - JobIconNanotrasen
-    - JobIconPrisoner
-    - JobIconJanitor
-    - JobIconChemist
-    - JobIconStationEngineer
+
+    # 10 in a row
+    # Ordered by who rules over who with service padding out the row
+
+    # Security
+    - JobIconHeadOfSecurity
+    - JobIconSeniorOfficer
     - JobIconSecurityOfficer
-    - JobIconChiefMedicalOfficer
-    - JobIconRoboticist
-    - JobIconChaplain
+    - JobIconSecurityCadet
+    - JobIconWarden
+    - JobIconDetective
     - JobIconLawyer
-    - JobIconUnknown
-    - JobIconLibrarian
-    - JobIconCargoTechnician
-    - JobIconScientist
-    - JobIconResearchAssistant
-    - JobIconGeneticist
-    - JobIconClown
+
+    - JobIconPassenger
     - JobIconCaptain
     - JobIconHeadOfPersonnel
-    - JobIconVirologist
-    - JobIconShaftMiner
-    - JobIconPassenger
-    - JobIconChiefEngineer
-    - JobIconBartender
-    - JobIconHeadOfSecurity
+
+    # Medical
+    - JobIconChiefMedicalOfficer
+    - JobIconSeniorPhysician
     - JobIconMedicalDoctor
-    - JobIconParamedic
-    - JobIconChef
-    - JobIconWarden
-    - JobIconResearchDirector
-    - JobIconMime
-    - JobIconMusician
-    - JobIconReporter
-    - JobIconPsychologist
     - JobIconMedicalIntern
+    - JobIconChemist
+    - JobIconParamedic
+    - JobIconPsychologist
+
+    - JobIconClown
+    - JobIconBotanist
+    - JobIconBartender
+
+    # Engineering
+    - JobIconChiefEngineer
+    - JobIconSeniorEngineer
+    - JobIconStationEngineer
     - JobIconTechnicalAssistant
-    - JobIconServiceWorker
-    - JobIconSecurityCadet
+    - JobIconAtmosphericTechnician
+
+    - JobIconLibrarian
+    - JobIconChaplain
+    - JobIconMime
+    - JobIconChef
     - JobIconZookeeper
+
+    # Science
+    - JobIconResearchDirector
+    - JobIconSeniorResearcher
+    - JobIconScientist
+    - JobIconResearchAssistant
+
+    # Cargo
+    - JobIconQuarterMaster
+    - JobIconCargoTechnician
+    - JobIconShaftMiner
+
+    - JobIconJanitor
+    - JobIconReporter
+    - JobIconServiceWorker
+
+    - JobIconNanotrasen
     - JobIconVisitor
+    - JobIconBoxer
+    - JobIconMusician
+
+
   - type: ActivatableUI
     key: enum.AgentIDCardUiKey.Key
     inHandsOnly: true
