@@ -67,7 +67,7 @@ Entries:
   time: '2024-06-24T19:00:00.0000000+00:00'
 - author: Doctor-Cpu
   changes:
-  - message: bananium emits radiation again
+  - message: Bananium emits radiation again
     type: Add
   id: 12
   time: '2024-06-29T07:50:00.0000000+00:00'
