@@ -1,0 +1,145 @@
+Entries:
+- author: Doctor-Cpu
+  changes:
+  - message: Readded robotics and supermatter loby images
+    type: Add
+  id: 1
+  time: '2024-06-23T01:17:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Firelocks are now pryable by hand when unpowered again
+    type: Add
+  id: 2
+  time: '2024-06-23T01:17:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Deconstructing AME cores now gives the flatpack
+    type: Tweak
+  id: 3
+  time: '2024-06-23T01:17:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Reverted securities resprite
+    type: Tweak
+  id: 4
+  time: '2024-06-23T01:17:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Readded the weapon reflect mechanic
+    type: Add
+  id: 5
+  time: '2024-06-23T16:20:00.0000000+00:00'
+- author: Thurtik
+  changes:
+  - message: Double e-sword can now be purchased in uplink
+    type: Add
+  id: 6
+  time: '2024-06-23T16:20:00.0000000+00:00'
+- author: DuckManZach
+  changes:
+  - message: Pirates can now appear via random event. YAAARG!!!
+    type: Add
+  id: 7
+  time: '2024-06-23T16:29:00.0000000+00:00'
+- author: ps3moira
+  changes:
+  - message: Added new APC sprites
+    type: Add
+  id: 8
+  time: '2024-06-23T16:31:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Disabled role timers
+    type: Tweak
+  id: 9
+  time: '2024-06-23T17:31:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Pulled upstream
+    type: Add
+  id: 10
+  time: '2024-06-24T19:00:00.0000000+00:00'
+- author: Morty, lzk228
+  changes:
+  - message: Speech bubbles now more fancy and better.
+    type: Tweak
+  id: 11
+  time: '2024-06-24T19:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: bananium emits radiation again
+    type: Add
+  id: 12
+  time: '2024-06-29T07:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Low pressure damage has reverted to its previous lethality
+    type: Add
+  id: 13
+  time: '2024-07-01T07:07:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Ushanka once again changes the name
+    type: Tweak
+  id: 15
+  time: '2024-07-01T07:07:00.0000000+00:00'
+- author: Thurtik
+  changes:
+  - message: Reverted all of the recently changed security sprites back to their higher-quality versions.
+    type: Tweak
+  - message: The head of security's cap has had it's sprite when worn slightly adjusted and recieved a new icon.
+    type: Tweak
+  - message: The noir trenchcoat and grey fedora have had their sprites changed to keep them consistent with their brown counterparts.
+    type: Tweak
+  - message: You can now open and close the detective's trenchcoats via the verb menu.
+    type: Tweak
+  - message: The head of security's hat returns as a loadout option.
+    type: Add
+  - message: Added a fancy new badge for detectives wearable in your neck slot (obtainable via the DetDrobe).
+    type: Add
+  id: 16
+  time: '2024-07-01T21:27:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Nukies can now be whatever species they desire
+    type: Tweak
+  id: 17
+  time: '2024-07-04T04:04:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Recent elite hardsuit changes reverted
+    type: Tweak
+  id: 18
+  time: '2024-07-04T04:04:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Revolutions is now more common
+    type: Tweak
+  - message: Survival is now less common
+    type: Tweak
+  id: 19
+  time: '2024-07-05T07:29:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Senior ids now have a unique icon and name in crew monitor
+    type: Add
+  id: 20
+  time: '2024-07-06T13:04:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Agent id has had the icons rearanged
+    type: Tweak
+  id: 21
+  time: '2024-07-06T14:04:00.0000000+00:00'
+- author: Vermidia
+  changes:
+  - message: Mothroaches can now wear anything hamlet can wear
+    type: Add
+  id: 22
+  time: '2024-07-06T14:04:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added a changelog specificly for mira changes
+    type: Add
+  id: 23
+  time: '2024-07-06T16:32:00.0000000+00:00'
