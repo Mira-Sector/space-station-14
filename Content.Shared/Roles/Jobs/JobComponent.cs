@@ -1,4 +1,4 @@
-﻿using Robust.Shared.GameStates;
+using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Roles.Jobs;
@@ -11,4 +11,10 @@ public sealed partial class JobComponent : Component
 {
     [DataField(required: true), AutoNetworkedField]
     public ProtoId<JobPrototype>? Prototype;
+
+    [DataField]
+    public string? JobName;
+
+    [DataField]
+    public string? JobIcon;
 }

@@ -216,8 +216,8 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
 
         if (profile != null)
         {
-            if (prototype != null)
-                SetPdaAndIdCardData(entity.Value, profile.Name, prototype, station);
+            if (job != null)
+                SetPdaAndIdCardData(entity.Value, profile.Name, job, station);
 
             _humanoidSystem.LoadProfile(entity.Value, profile);
             _metaSystem.SetEntityName(entity.Value, profile.Name);
@@ -248,10 +248,13 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
     /// </summary>
     /// <param name="entity">Entity to load out.</param>
     /// <param name="characterName">Character name to use for the ID.</param>
-    /// <param name="jobPrototype">Job prototype to use for the PDA and ID.</param>
+    /// <param name="job">Job to use for the PDA and ID.</param>
     /// <param name="station">The station this player is being spawned on.</param>
-    public void SetPdaAndIdCardData(EntityUid entity, string characterName, JobPrototype jobPrototype, EntityUid? station)
+    public void SetPdaAndIdCardData(EntityUid entity, string characterName, JobComponent job, EntityUid? station)
     {
+        if (!_prototypeManager.TryIndex(job.Prototype, out var jobPrototype))
+            return;
+
         if (!InventorySystem.TryGetSlotEntity(entity, "id", out var idUid))
             return;
 
@@ -263,10 +266,11 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
             return;
 
         _cardSystem.TryChangeFullName(cardId, characterName, card);
-        _cardSystem.TryChangeJobTitle(cardId, jobPrototype.LocalizedName, card);
+        _cardSystem.TryChangeJobTitle(cardId, job.JobName ?? jobPrototype.LocalizedName, card);
 
+        _prototypeManager.TryIndex<StatusIconPrototype>(job.JobIcon ?? string.Empty, out var presetJobIcon);
         if (_prototypeManager.TryIndex(jobPrototype.Icon, out var jobIcon))
-            _cardSystem.TryChangeJobIcon(cardId, jobIcon, card);
+            _cardSystem.TryChangeJobIcon(cardId, presetJobIcon ?? jobIcon, card);
 
         var extendedAccess = false;
         if (station != null)

@@ -5,6 +5,7 @@ using Content.Shared.Inventory;
 using Content.Shared.PDA;
 using Content.Shared.Preferences;
 using Content.Shared.Roles;
+using Content.Shared.Roles.Jobs;
 using Content.Shared.StationRecords;
 using Robust.Shared.Enums;
 using Robust.Shared.Prototypes;
@@ -48,15 +49,18 @@ public sealed class StationRecordsSystem : SharedStationRecordsSystem
         if (!TryComp<StationRecordsComponent>(args.Station, out var stationRecords))
             return;
 
-        CreateGeneralRecord(args.Station, args.Mob, args.Profile, args.JobId, stationRecords);
+        CreateGeneralRecord(args.Station, args.Mob, args.Profile, args.Job, stationRecords);
     }
 
     private void CreateGeneralRecord(EntityUid station, EntityUid player, HumanoidCharacterProfile profile,
-        string? jobId, StationRecordsComponent records)
+        JobComponent? job, StationRecordsComponent records)
     {
+        if (!_prototypeManager.TryIndex<JobPrototype>(job?.Prototype, out var jobPrototype))
+            return;
+
         // TODO make PlayerSpawnCompleteEvent.JobId a ProtoId
-        if (string.IsNullOrEmpty(jobId)
-            || !_prototypeManager.HasIndex<JobPrototype>(jobId))
+        if (string.IsNullOrEmpty(job?.Prototype)
+            || !_prototypeManager.HasIndex<JobPrototype>(jobPrototype))
             return;
 
         if (!_inventory.TryGetSlotEntity(player, "id", out var idUid))
@@ -65,7 +69,7 @@ public sealed class StationRecordsSystem : SharedStationRecordsSystem
         TryComp<FingerprintComponent>(player, out var fingerprintComponent);
         TryComp<DnaComponent>(player, out var dnaComponent);
 
-        CreateGeneralRecord(station, idUid.Value, profile.Name, profile.Age, profile.Species, profile.Gender, jobId, fingerprintComponent?.Fingerprint, dnaComponent?.DNA, profile, records);
+        CreateGeneralRecord(station, idUid.Value, profile.Name, profile.Age, profile.Species, profile.Gender, job, fingerprintComponent?.Fingerprint, dnaComponent?.DNA, profile, records);
     }
 
 
@@ -82,7 +86,7 @@ public sealed class StationRecordsSystem : SharedStationRecordsSystem
     /// <param name="name">Name of the character.</param>
     /// <param name="species">Species of the character.</param>
     /// <param name="gender">Gender of the character.</param>
-    /// <param name="jobId">
+    /// <param name="job">
     ///     The job to initially tie this record to. This must be a valid job loaded in, otherwise
     ///     this call will cause an exception. Ensure that a general record starts out with a job
     ///     that is currently a valid job prototype.
@@ -103,13 +107,14 @@ public sealed class StationRecordsSystem : SharedStationRecordsSystem
         int age,
         string species,
         Gender gender,
-        string jobId,
+        JobComponent job,
         string? mobFingerprint,
         string? dna,
         HumanoidCharacterProfile profile,
         StationRecordsComponent records)
     {
-        if (!_prototypeManager.TryIndex<JobPrototype>(jobId, out var jobPrototype))
+        string? jobId = job.Prototype;
+        if (string.IsNullOrEmpty(jobId) || !_prototypeManager.TryIndex<JobPrototype>(job.Prototype, out var jobPrototype))
             throw new ArgumentException($"Invalid job prototype ID: {jobId}");
 
         // when adding a record that already exists use the old one
@@ -124,8 +129,8 @@ public sealed class StationRecordsSystem : SharedStationRecordsSystem
         {
             Name = name,
             Age = age,
-            JobTitle = jobPrototype.LocalizedName,
-            JobIcon = jobPrototype.Icon,
+            JobTitle = job.JobName ?? jobPrototype.LocalizedName,
+            JobIcon = job.JobIcon ?? jobPrototype.Icon,
             JobPrototype = jobId,
             Species = species,
             Gender = gender,
