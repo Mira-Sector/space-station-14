@@ -387,6 +387,18 @@
   - Trinkets
   - GroupSpeciesBreathToolSecurity
 
+- type: roleLoadout
+  id: JobBrigmedic
+  groups:
+  - GroupTankHarness
+  - BrigmedicHead
+  - BrigmedicJumpsuit
+  - BrigmedicOuterClothing
+  - MedicalGloves
+  - BrigmedicBackpack
+  - Trinkets
+  - GroupSpeciesBreathToolMedical
+
 # Medical
 - type: roleLoadout
   id: JobChiefMedicalOfficer

@@ -1,0 +1,86 @@
+- type: loadoutEffectGroup
+  id: Medic
+  effects:
+  - !type:JobRequirementLoadoutEffect
+    requirement:
+      !type:RoleTimeRequirement
+      role: JobBrigmedic
+      time: 36000
+# Head
+- type: loadout
+  id: BrigmedicHead
+  equipment: BrigmedicHead
+
+- type: startingGear
+  id: BrigmedicHead
+  equipment:
+    head: ClothingHeadHatBeretBrigmedic
+
+# Innerclothing
+- type: loadout
+  id: BrigmedicSuit
+  equipment: BrigmedicSuit
+
+- type: startingGear
+  id: BrigmedicSuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitBrigmedic
+
+- type: loadout
+  id: BrigmedicSkirt
+  equipment: BrigmedicSkirt
+
+- type: startingGear
+  id: BrigmedicSkirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtBrigmedic
+
+- type: loadout
+  id: BrigmedicLife
+  equipment: BrigmedicLife
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: Medic
+
+- type: startingGear
+  id: BrigmedicLife
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtOfLife
+
+# Outerclothing
+- type: loadout
+  id: BrigmedicCoat
+  equipment: BrigmedicCoat
+
+- type: startingGear
+  id: BrigmedicCoat
+  equipment:
+    outerClothing: ClothingOuterCoatAMG
+
+# Backpack
+- type: loadout
+  id: BrigmedicBackpack
+  equipment: BrigmedicBackpack
+
+- type: startingGear
+  id: BrigmedicBackpack
+  equipment:
+    back: ClothingBackpackBrigmedic
+
+- type: loadout
+  id: BrigmedicSatchel
+  equipment: BrigmedicSatchel
+
+- type: startingGear
+  id: BrigmedicSatchel
+  equipment:
+    back: ClothingBackpackSatchelBrigmedic
+
+- type: loadout
+  id: BrigmedicDuffel
+  equipment: BrigmedicDuffel
+
+- type: startingGear
+  id: BrigmedicDuffel
+  equipment:
+    back: ClothingBackpackDuffelBrigmedic

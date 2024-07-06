@@ -143,3 +143,11 @@ Entries:
     type: Add
   id: 23
   time: '2024-07-06T16:32:00.0000000+00:00'
+- author: Doctor-Cpu, Thurtik
+  changes:
+  - message: Brigmed has returned
+    type: Add
+  - message: Brigmed has had their security access revoked.
+    type: Tweaks
+  id: 24
+  time: '2024-07-06T16:32:00.0000000+00:00'
