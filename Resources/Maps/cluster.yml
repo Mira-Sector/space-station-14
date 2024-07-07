@@ -79722,6 +79722,20 @@ entities:
     - type: Transform
       pos: 36.5,13.5
       parent: 1
+- proto: WindoorSecureBrigLocked
+  entities:
+  - uid: 1775
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 22.5,7.5
+      parent: 1
+  - uid: 1776
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 21.5,7.5
+      parent: 1
 - proto: WindoorSecureCargoLocked
   entities:
   - uid: 7243
@@ -79875,18 +79889,6 @@ entities:
       parent: 1
 - proto: WindoorSecureSecurityLocked
   entities:
-  - uid: 1775
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 21.5,7.5
-      parent: 1
-  - uid: 1776
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 22.5,7.5
-      parent: 1
   - uid: 4900
     components:
     - type: Transform
