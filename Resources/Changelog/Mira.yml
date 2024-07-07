@@ -151,3 +151,9 @@ Entries:
     type: Tweak
   id: 24
   time: '2024-07-06T16:32:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Brigmed now has their own survival box
+    type: Add
+  id: 25
+  time: '2024-07-07T14:42:00.0000000+00:00'

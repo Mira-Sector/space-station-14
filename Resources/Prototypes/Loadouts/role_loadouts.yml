@@ -396,8 +396,9 @@
   - BrigmedicOuterClothing
   - MedicalGloves
   - BrigmedicBackpack
+  - SurvivalBrigmedic
   - Trinkets
-  - GroupSpeciesBreathToolMedical
+  - GroupSpeciesBreathToolBrigmedic
 
 # Medical
 - type: roleLoadout

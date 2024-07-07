@@ -1060,6 +1060,16 @@
   - BrigmedicSatchel
   - BrigmedicDuffel
 
+- type: loadoutGroup
+  id: SurvivalBrigmedic
+  name: loadout-group-survival-brigmedic
+  minLimit: 2
+  hidden: true
+  loadouts:
+  - EmergencyNitrogenBrigmedic
+  - EmergencyOxygenBrigmedic
+  - LoadoutSpeciesEVANitrogen
+
 # Medical
 - type: loadoutGroup
   id: ChiefMedicalOfficerHead
@@ -1303,3 +1313,12 @@
   hidden: true
   loadouts:
   - LoadoutSpeciesBreathToolSecurity
+
+- type: loadoutGroup
+  id: GroupSpeciesBreathToolBrigmedic
+  name: loadout-group-breath-tool
+  minLimit: 1
+  maxLimit: 1
+  hidden: true
+  loadouts:
+  - LoadoutSpeciesBreathToolBrigmedic

@@ -29,5 +29,4 @@
     eyes: ClothingEyesHudMedical
     id: BrigmedicPDA
     ears: ClothingHeadsetBrigmedic
-    mask: ClothingMaskBreathMedicalSecurity
     belt: ClothingBeltMedicalFilled
