@@ -163,3 +163,11 @@ Entries:
     type: Add
   id: 26
   time: '2024-07-07T22:42:00.0000000+00:00'
+- author: CaasGit
+  changes:
+  - message: New solar panel sprites
+    type: Add
+  - message: Plasma and Uranium solar panels
+    type: Add
+  id: 27
+  time: '2024-07-07T22:42:00.0000000+00:00'
