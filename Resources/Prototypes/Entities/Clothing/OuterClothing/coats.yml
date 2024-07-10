@@ -10,7 +10,7 @@
     sprite: Clothing/OuterClothing/Coats/bomber.rsi
 
 - type: entity
-  parent: [ClothingOuterStorageFoldableBase, AllowSuitStorageClothing, ClothingOuterArmorBasic]
+  parent: [ClothingOuterStorageFoldableBase, ClothingOuterArmorBasic]
   id: ClothingOuterCoatDetective
   name: detective trenchcoat
   description: A rugged canvas trenchcoat, designed and created by TX Fabrication Corp. Wearing it makes you feel for the plight of the Tibetans.
@@ -76,7 +76,6 @@
 
 - type: entity
   abstract: true
-  parent: AllowSuitStorageClothing
   id: ClothingOuterArmorHoS
   components:
   - type: Armor
@@ -92,7 +91,6 @@
 
 - type: entity
   abstract: true
-  parent: AllowSuitStorageClothing
   id: ClothingOuterArmorWarden
   components:
   - type: Armor
