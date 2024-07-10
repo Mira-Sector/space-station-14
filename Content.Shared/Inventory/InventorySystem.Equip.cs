@@ -11,6 +11,7 @@ using Content.Shared.Item;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Strip.Components;
+using Content.Shared.Tag;
 using Content.Shared.Whitelist;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
@@ -32,6 +33,7 @@ public abstract partial class InventorySystem
     [Dependency] private readonly IGameTiming _gameTiming = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
+    [Dependency] private readonly TagSystem _tagSystem = default!;
 
     [ValidatePrototypeId<ItemSizePrototype>]
     private const string PocketableItemSize = "Small";
@@ -117,7 +119,7 @@ public abstract partial class InventorySystem
         if (!_handsSystem.CanDropHeld(actor, hands.ActiveHand!, checkActionBlocker: false))
             return;
 
-        RaiseLocalEvent(held.Value, new HandDeselectedEvent(actor));
+        RaiseLocalEvent(held.Value, new HandDeselectedEvent(actor), false);
 
         TryEquip(actor, actor, held.Value, ev.Slot, predicted: true, inventory: inventory, force: true, checkDoafter:true);
     }
@@ -242,22 +244,37 @@ public abstract partial class InventorySystem
             return false;
 
         DebugTools.Assert(slotDefinition.Name == slot);
-        if (slotDefinition.DependsOn != null)
+        if (slotDefinition.DependsOn != null && !TryGetSlotEntity(target, slotDefinition.DependsOn, out _, inventory))
+            return false;
+
+        if (TryComp<RequireWhitelistStorageComponent>(itemUid, out var whitelistComp))
         {
-            if (!TryGetSlotEntity(target, slotDefinition.DependsOn, out EntityUid? slotEntity, inventory))
-                return false;
-
-            if (slotDefinition.DependsOnComponents is { } componentRegistry)
+            if (whitelistComp.Whitelist == null)
             {
-                foreach (var (_, entry) in componentRegistry)
-                {
-                    if (!HasComp(slotEntity, entry.Component.GetType()))
-                        return false;
+                return false;
+            }
 
-                    if (TryComp<AllowSuitStorageComponent>(slotEntity, out var comp) &&
-                        _whitelistSystem.IsWhitelistFailOrNull(comp.Whitelist, itemUid))
-                        return false;
+            bool whitelistPassed = false;
+
+            // i dont see why youd to check any other slot
+            foreach (var tagSlot in new[] { "jumpsuit", "outerClothing", "head" })
+            {
+                if (!TryGetSlotEntity(target, tagSlot, out EntityUid? slotEntity, inventory))
+                {
+                    continue;
                 }
+
+                if (_whitelistSystem.IsWhitelistPass(whitelistComp.Whitelist, slotEntity.Value))
+                {
+                    whitelistPassed = true;
+                    break;
+                }
+
+            }
+
+            if (!whitelistPassed)
+            {
+                return false;
             }
         }
 
@@ -311,6 +328,7 @@ public abstract partial class InventorySystem
             reason = itemAttemptEvent.Reason ?? reason;
             return false;
         }
+
         return true;
     }
 
