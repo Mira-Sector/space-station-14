@@ -88,6 +88,8 @@
       path: /Audio/Voice/Reptilian/reptilian_scream.ogg
     Laugh:
       path: /Audio/Animals/lizard_happy.ogg
+    CatMeow:
+      collection: CatMeows
     Honk:
       collection: BikeHorn
     Whistle:
@@ -110,6 +112,8 @@
       path: /Audio/Voice/Reptilian/reptilian_scream.ogg
     Laugh:
       path: /Audio/Animals/lizard_happy.ogg
+    CatMeow:
+      collection: CatMeows
     Honk:
       collection: BikeHorn
     Whistle:
@@ -214,6 +218,10 @@
       path: /Audio/Voice/Vox/shriek1.ogg
     Laugh:
       path: /Audio/Voice/Vox/vox_laugh.ogg
+    Weh:
+      collection: Weh
+    CatMeow:
+      collection: CatMeows
   params:
     variation: 0.125
     # We need vox sounds for the other emotes
@@ -227,6 +235,8 @@
       collection: DionaLaugh
     Honk:
       collection: BikeHorn
+    CatMeow:
+      collection: CatMeows
     Weh:
       collection: Weh
     Gasp:
@@ -249,6 +259,8 @@
       path: /Audio/Voice/Arachnid/arachnid_chitter.ogg
     Click:
       path: /Audio/Voice/Arachnid/arachnid_click.ogg
+    CatMeow:
+      collection: CatMeows
     Weh:
       collection: Weh
     Gasp:
@@ -353,6 +365,8 @@
       path: /Audio/Voice/Moth/moth_chitter.ogg
     Squeak:
       path: /Audio/Voice/Moth/moth_squeak.ogg
+    CatMeow:
+      collection: CatMeows
     Weh:
       collection: Weh
     Gasp:
