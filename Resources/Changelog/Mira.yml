@@ -171,3 +171,11 @@ Entries:
     type: Add
   id: 27
   time: '2024-07-07T22:42:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Suit storage now no longer requires outer clothing
+    type: Tweak
+  - message: Equiping gas tanks now require a hardsuit to be worn
+    type: Tweak
+  id: 28
+  time: '2024-07-12T14:25:00.0000000+00:00'
