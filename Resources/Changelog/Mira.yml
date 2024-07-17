@@ -199,3 +199,9 @@ Entries:
     type: Add
   id: 31
   time: '2024-07-17T02:10:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Slimes can become geras again
+    type: Add
+  id: 32
+  time: '2024-07-17T17:31:00.0000000+00:00'
