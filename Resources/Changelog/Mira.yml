@@ -193,3 +193,9 @@ Entries:
     type: Add
   id: 30
   time: '2024-07-17T01:11:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: godo pin can now be found in loadouts
+    type: Add
+  id: 31
+  time: '2024-07-17T02:10:00.0000000+00:00'

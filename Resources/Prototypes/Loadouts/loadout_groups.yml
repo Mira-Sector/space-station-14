@@ -25,6 +25,7 @@
   - ClothingNeckTransPin
   - ClothingNeckAutismPin
   - ClothingNeckGoldAutismPin
+  - ClothingNeckGodoPin
 
 - type: loadoutGroup
   id: Glasses
