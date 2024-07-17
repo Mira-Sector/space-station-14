@@ -199,3 +199,25 @@ Entries:
     type: Add
   id: 31
   time: '2024-07-17T02:10:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Slimes can become geras again
+    type: Add
+  id: 32
+  time: '2024-07-17T17:31:00.0000000+00:00'
+- author: Vermidia
+  changes:
+  - message: "Polymorphing transfers more things between forms (including but not limited to: identity, bloodstream, and temperature). Various Geras bugs have also been fixed."
+    type: Fix
+  - message: Adjusted slime people and their guidebook slightly.
+    type: Tweak
+  - message: You can now see what's inside a slime person on examine. Geras also now share the inventories of their slime person.
+    type: Add
+  id: 33
+  time: '2024-07-17T17:31:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Geras are now coloured.
+    type: Add
+  id: 34
+  time: '2024-07-17T17:51:00.0000000+00:00'
