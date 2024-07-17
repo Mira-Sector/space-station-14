@@ -185,3 +185,11 @@ Entries:
     type: Add
   id: 29
   time: '2024-07-12T15:21:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Fireaxe can now pry plating
+    type: Add
+  - message: Fireaxe can now be worn on the back
+    type: Add
+  id: 30
+  time: '2024-07-17T01:11:00.0000000+00:00'
