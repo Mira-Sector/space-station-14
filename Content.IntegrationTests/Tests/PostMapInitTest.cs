@@ -57,6 +57,7 @@ namespace Content.IntegrationTests.Tests
             "NukieOutpost",
             "Box",
             "Europa",
+            "Barratry",
             "Saltern",
             "Core",
             "Marathon",
