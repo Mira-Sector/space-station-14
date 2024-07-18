@@ -883,8 +883,11 @@
   - HeadofSecurityJumpskirt
   - HeadofSecurityTurtleneck
   - HeadofSecurityTurtleneckSkirt
+  - HeadofSecurityJumpsuitBlue
   - HeadofSecurityFormalSuit
   - HeadofSecurityFormalSkirt
+  - HeadofSecurityParadeSuit
+  - HeadofSecurityParadeSkirt
 
 - type: loadoutGroup
   id: HeadofSecurityNeck
