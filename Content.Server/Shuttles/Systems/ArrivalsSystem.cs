@@ -17,6 +17,7 @@ using Content.Shared.Administration;
 using Content.Shared.CCVar;
 using Content.Shared.Damage.Components;
 using Content.Shared.DeviceNetwork;
+using Content.Shared.GameTicking;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Movement.Components;
 using Content.Shared.Parallax.Biomes;
@@ -54,6 +55,7 @@ public sealed class ArrivalsSystem : EntitySystem
     [Dependency] private readonly ShuttleSystem _shuttles = default!;
     [Dependency] private readonly StationSpawningSystem _stationSpawning = default!;
     [Dependency] private readonly StationSystem _station = default!;
+    [Dependency] private readonly SharedGameTicker _gameTicker = default!;
 
     private EntityQuery<PendingClockInComponent> _pendingQuery;
     private EntityQuery<ArrivalsBlacklistComponent> _blacklistQuery;
@@ -65,9 +67,9 @@ public sealed class ArrivalsSystem : EntitySystem
     public bool Enabled { get; private set; }
 
     /// <summary>
-    /// Flags if all players must arrive via the Arrivals system, or if they can spawn in other ways.
+    /// If non zero the forces all players to spawn at arrivals for the set duration then cryo is enabled.
     /// </summary>
-    public bool Forced { get; private set; }
+    public int Forced { get; private set; }
 
     /// <summary>
     /// Flags if all players spawning at the departure terminal have godmode until they leave the terminal.
@@ -78,6 +80,11 @@ public sealed class ArrivalsSystem : EntitySystem
     ///     The first arrival is a little early, to save everyone 10s
     /// </summary>
     private const float RoundStartFTLDuration = 10f;
+
+    /// <summary>
+    /// How long at the start of the round every player is forced into arrivals
+    /// </summary>
+    public int ArrivalsCutoff;
 
     private readonly List<ProtoId<BiomeTemplatePrototype>> _arrivalsBiomeOptions = new()
     {
@@ -328,8 +335,10 @@ public sealed class ArrivalsSystem : EntitySystem
             return;
 
         // Only works on latejoin even if enabled.
-        if (!Enabled || !Forced && _ticker.RunLevel != GameRunLevel.InRound)
+        if (!Enabled || Forced == 0 && _ticker.RunLevel != GameRunLevel.InRound)
+        {
             return;
+        }
 
         if (!HasComp<StationArrivalsComponent>(ev.Station))
             return;
@@ -475,6 +484,10 @@ public sealed class ArrivalsSystem : EntitySystem
 
     private void OnRoundStarting(RoundStartingEvent ev)
     {
+        ArrivalsCutoff = _timing.CurTime.Subtract(_gameTicker.RoundStartTimeSpan).Minutes + Forced;
+
+        Log.Debug($"ArrivalsCutoff: {ArrivalsCutoff}");
+
         // Setup arrivals station
         if (!Enabled)
             return;

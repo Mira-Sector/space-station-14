@@ -12,6 +12,7 @@ using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
 using Content.Shared.CCVar;
 using Content.Shared.Clothing;
+using Content.Shared.GameTicking;
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.PDA;
@@ -29,6 +30,7 @@ using Robust.Shared.Map;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
 namespace Content.Server.Station.Systems;
@@ -42,6 +44,7 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
 {
     [Dependency] private readonly IConfigurationManager _configurationManager = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly ActorSystem _actors = default!;
     [Dependency] private readonly ArrivalsSystem _arrivalsSystem = default!;
@@ -52,6 +55,7 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
     [Dependency] private readonly MetaDataSystem _metaSystem = default!;
     [Dependency] private readonly PdaSystem _pdaSystem = default!;
     [Dependency] private readonly SharedAccessSystem _accessSystem = default!;
+    [Dependency] private readonly SharedGameTicker _gameTicker = default!;
 
     private bool _randomizeCharacters;
 
@@ -69,10 +73,17 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
             {
                 SpawnPriorityPreference.Cryosleep, ev =>
                 {
-                    if (_arrivalsSystem.Forced)
+                    var stationTime = _timing.CurTime.Subtract(_gameTicker.RoundStartTimeSpan).Minutes;
+                    Log.Debug($"stationTime: {stationTime}");
+                    Log.Debug($"ArrivalsCutoff: {_arrivalsSystem.ArrivalsCutoff}");
+                    if (_arrivalsSystem.ArrivalsCutoff >= stationTime)
+                    {
                         _arrivalsSystem.HandlePlayerSpawning(ev);
+                    }
                     else
+                    {
                         _containerSpawnPointSystem.HandlePlayerSpawning(ev);
+                    }
                 }
             }
         };
