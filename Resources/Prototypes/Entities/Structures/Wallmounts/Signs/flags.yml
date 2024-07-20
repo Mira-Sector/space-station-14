@@ -35,7 +35,7 @@
   components:
   - type: Sprite
     state: syndie_flag
-    
+
 - type: entity
   parent: BaseFlag
   id: LGBTQFlag
@@ -44,7 +44,7 @@
   components:
   - type: Sprite
     state: lgbtq_flag
-    
+
 - type: entity
   parent: BaseFlag
   id: PirateFlag
@@ -53,3 +53,57 @@
   components:
   - type: Sprite
     state: pirate_flag
+
+- type: entity
+  parent: BaseFlag
+  id: BisexualFlag
+  name: bisexual flag
+  description: "Flag for when 1 wasnt enough"
+  components:
+  - type: Sprite
+    state: bisexual_flag
+
+- type: entity
+  parent: BaseFlag
+  id: IntersexFlag
+  name: intersex flag
+  description: "circle"
+  components:
+  - type: Sprite
+    state: intersex_flag
+
+- type: entity
+  parent: BaseFlag
+  id: LesbianFlag
+  name: lesbian flag
+  description: "i fucking love women"
+  components:
+  - type: Sprite
+    state: lesbian_flag
+
+- type: entity
+  parent: BaseFlag
+  id: NonbinaryFlag
+  name: non-binary flag
+  description: "am i boy or a girl, whats the difference"
+  components:
+  - type: Sprite
+    state: nonbinary_flag
+
+- type: entity
+  parent: BaseFlag
+  id: PansexualFlag
+  name: pansexual flag
+  description: "dont let these near kitchen utensils"
+  components:
+  - type: Sprite
+    state: pansexual_flag
+
+- type: entity
+  parent: BaseFlag
+  id: TransFlag
+  name: trans flag
+  description: "what country is this and why do all the cute people come from there"
+  components:
+  - type: Sprite
+    state: trans_flag
