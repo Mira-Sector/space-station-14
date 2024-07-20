@@ -4,140 +4,147 @@
     Captain:
     - !type:DepartmentTimeRequirement
       department: Engineering
-      time: 0
+      time: 60
     - !type:DepartmentTimeRequirement
       department: Medical
-      time: 0
+      time: 60
     - !type:DepartmentTimeRequirement
       department: Security
-      time: 0
+      time: 60
     - !type:DepartmentTimeRequirement
       department: Command
-      time: 0
+      time: 60
     HeadOfPersonnel:
     - !type:DepartmentTimeRequirement
       department: Engineering
-      time: 0
+      time: 60
     - !type:DepartmentTimeRequirement
       department: Medical
-      time: 0
+      time: 60
     - !type:DepartmentTimeRequirement
       department: Security
-      time: 0
+      time: 60
     - !type:DepartmentTimeRequirement
       department: Command
-      time: 0
+      time: 60
     ChiefEngineer:
     - !type:RoleTimeRequirement
       role: JobAtmosphericTechnician
-      time: 0
+      time: 10
     - !type:RoleTimeRequirement
       role: JobStationEngineer
-      time: 0
+      time: 10
     - !type:DepartmentTimeRequirement
       department: Engineering
-      time: 0
+      time: 10
     - !type:OverallPlaytimeRequirement
-      time: 0
+      time: 60
     ChiefMedicalOfficer:
     - !type:RoleTimeRequirement
       role: JobChemist
-      time: 0
+      time: 10
     - !type:RoleTimeRequirement
       role: JobMedicalDoctor
-      time: 0
+      time: 10
     - !type:DepartmentTimeRequirement
       department: Medical
-      time: 0
+      time: 10
     - !type:OverallPlaytimeRequirement
-      time: 0
+      time: 60
     HeadOfSecurity:
     - !type:RoleTimeRequirement
       role: JobWarden
-      time: 0
+      time: 10
     - !type:RoleTimeRequirement
       role: JobSecurityOfficer
-      time: 0
+      time: 10
     - !type:DepartmentTimeRequirement
       department: Security
-      time: 0
+      time: 10
     - !type:OverallPlaytimeRequirement
-      time: 0
+      time: 60
     Quartermaster:
     - !type:RoleTimeRequirement
       role: JobCargoTechnician
-      time: 0
+      time: 10
     - !type:RoleTimeRequirement
       role: JobSalvageSpecialist
-      time: 0
+      time: 10
     - !type:DepartmentTimeRequirement
       department: Cargo
       time: 0
     - !type:OverallPlaytimeRequirement
-      time: 0
+      time: 60
     ResearchDirector:
     - !type:DepartmentTimeRequirement
       department: Science
-      time: 0
+      time: 10
     - !type:OverallPlaytimeRequirement
-      time: 0
+      time: 60
+  JobBrigmedic:
+    - !type:DepartmentTimeRequirement
+      department: Medical
+      time: 10
+    - !type:DepartmentTimeRequirement
+      department: Security
+      time: 10
     Detective:
     - !type:DepartmentTimeRequirement
       department: Security
-      time: 0
+      time: 10
     SecurityCadet:
     - !type:OverallPlaytimeRequirement
-      time: 0
+      time: 10
     SecurityOfficer:
     - !type:DepartmentTimeRequirement
       department: Security
-      time: 0
+      time: 10
     Warden:
     - !type:RoleTimeRequirement
       role: JobSecurityOfficer
-      time: 0
+      time: 10
     SalvageSpecialist:
     - !type:DepartmentTimeRequirement
       department: Cargo
-      time: 0
+      time: 10
     - !type:OverallPlaytimeRequirement
-      time: 0
+      time: 10
     AtmosphericTechnician:
     - !type:DepartmentTimeRequirement
       department: Engineering
-      time: 0
+      time: 10
     StationEngineer:
     - !type:DepartmentTimeRequirement
       department: Engineering
-      time: 0
+      time: 10
     TechnicalAssistant:
     - !type:OverallPlaytimeRequirement
-      time: 0
+      time: 10
     Chemist:
     - !type:DepartmentTimeRequirement
       department: Medical
-      time: 0
+      time: 10
     MedicalDoctor:
     - !type:DepartmentTimeRequirement
       department: Medical
-      time: 0
+      time: 10
     Paramedic:
     - !type:RoleTimeRequirement
       role: JobMedicalDoctor
-      time: 0
+      time: 10
     - !type:OverallPlaytimeRequirement
-      time: 0
+      time: 10
     Scientist:
     - !type:DepartmentTimeRequirement
       department: Science
-      time: 0
+      time: 10
     Bartender:
     - !type:DepartmentTimeRequirement
       department: Civilian
       time: 0
     Borg:
     - !type:OverallPlaytimeRequirement
-      time: 0
+      time: 10
     Chef:
     - !type:DepartmentTimeRequirement
       department: Civilian
@@ -147,16 +154,16 @@
       time: 0
     Nukeops:
     - !type:OverallPlaytimeRequirement
-      time: 0
+      time: 10
     NukeopsMedic:
     - !type:OverallPlaytimeRequirement
-      time: 0
+      time: 10
     - !type:RoleTimeRequirement
       role: JobChemist
-      time: 0
+      time: 10
     NukeopsCommander:
     - !type:OverallPlaytimeRequirement
-      time: 0
+      time: 10
     - !type:DepartmentTimeRequirement
       department: Security
-      time: 0
+      time: 10
