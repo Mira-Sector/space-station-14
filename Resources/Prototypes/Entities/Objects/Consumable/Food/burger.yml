@@ -354,6 +354,26 @@
     - Meat
 
 - type: entity
+  name: cloth burger
+  parent: FoodBurgerCotton
+  id: FoodBurgerCloth
+  description: Spoil the moffs with this one, highly processed "food".
+  components:
+  - type: Sprite
+    state: cloth
+    solutions:
+      food:
+        maxVol: 25
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 5
+        - ReagentId: Fiber
+          Quantity: 20
+  - type: Tag
+    tags:
+    - ClothMade
+
+- type: entity
   name: corger #not curger
   parent: FoodBurgerBase
   id: FoodBurgerCorgi
@@ -377,6 +397,34 @@
   - type: Tag
     tags:
     - Meat
+
+- type: entity
+  name: cotton burger
+  parent: FoodBurgerBase
+  id: FoodBurgerCotton
+  description: Nanotrasens latest recipe to try gaining the chef more customers.
+  components:
+  - type: FlavorProfile
+    flavors:
+    - bun
+    - fiber
+  - type: Sprite
+    state: cotton
+  - type: Food
+    trash: FoodBreadBun
+    requiresSpecialDigestion: true
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 15
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 5
+        - ReagentId: Fiber
+          Quantity: 10
+  - type: Tag
+    tags:
+    - ClothMade
 
 - type: entity
   name: crab burger
@@ -919,4 +967,4 @@
   - type: Tag
     tags:
     - Meat
-    
+

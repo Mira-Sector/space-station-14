@@ -116,6 +116,15 @@
     FoodMeatChicken: 1
 
 - type: microwaveMealRecipe
+  id: RecipeCottonBurger
+  name: cotton burger recipe
+  result: FoodBurgerCotton
+  time: 10
+  solids:
+    FoodBreadBun: 1
+    MaterialCotton1: 2
+
+- type: microwaveMealRecipe
   id: RecipeClownBurger
   name: clownburger recipe
   result: FoodBurgerClown
@@ -132,6 +141,15 @@
   solids:
     FoodBreadBun: 1
     FoodMeatCorgi: 1
+
+- type: microwaveMealRecipe
+  id: RecipeClothBurger
+  name: cloth burger recipe
+  result: FoodBurgerCloth
+  time: 10
+  solids:
+    FoodBreadBun: 1
+    MaterialCloth1: 2
 
 - type: microwaveMealRecipe
   id: RecipeCrabBurger
