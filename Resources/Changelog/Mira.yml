@@ -227,3 +227,15 @@ Entries:
     type: Add
   id: 35
   time: '2024-07-17T18:38:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Cloth based burgers can now be cooked.
+    type: Add
+  id: 36
+  time: '2024-07-21T16:36:00.0000000+00:00'
+- author: lordofgab
+  changes:
+  - message: made more gay flags
+    type: Add
+  id: 37
+  time: '2024-07-21T21:54:00.0000000+00:00'
