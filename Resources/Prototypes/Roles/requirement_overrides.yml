@@ -81,7 +81,7 @@
       time: 10
     - !type:OverallPlaytimeRequirement
       time: 60
-  JobBrigmedic:
+    JobBrigmedic:
     - !type:DepartmentTimeRequirement
       department: Medical
       time: 10
