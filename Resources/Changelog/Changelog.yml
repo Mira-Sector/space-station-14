@@ -1,18 +1,4 @@
 ﻿Entries:
-- author: Boaz1111
-  changes:
-  - message: Refactored Cluster's medbay, including cryo in the bottom left room
-    type: Tweak
-  id: 6442
-  time: '2024-04-26T08:01:21.0000000+00:00'
-  url: https://github.com/space-wizards/space-station-14/pull/27293
-- author: metalgearsloth
-  changes:
-  - message: Add predicted UI opening for storage and PDAs.
-    type: Add
-  id: 6443
-  time: '2024-04-26T08:16:24.0000000+00:00'
-  url: https://github.com/space-wizards/space-station-14/pull/27214
 - author: DrSmugleaf
   changes:
   - message: Fixed mobs that are able to pry doors not being able to do so by just
@@ -3798,3 +3784,17 @@
   id: 6941
   time: '2024-07-20T03:00:28.0000000+00:00'
   url: https://github.com/space-wizards/space-station-14/pull/30156
+- author: Aidenkrz
+  changes:
+  - message: The mass hallucinations event no longer affects non-humanoids.
+    type: Fix
+  id: 6942
+  time: '2024-07-20T05:53:58.0000000+00:00'
+  url: https://github.com/space-wizards/space-station-14/pull/28748
+- author: buntobaggins
+  changes:
+  - message: Increased light radius on the Spationaut Hardsuit
+    type: Tweak
+  id: 6943
+  time: '2024-07-21T03:29:21.0000000+00:00'
+  url: https://github.com/space-wizards/space-station-14/pull/30049
