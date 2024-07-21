@@ -54,7 +54,6 @@ entities:
     - type: MetaData
     - type: Transform
     - type: Map
-      mapPaused: True
     - type: PhysicsMap
     - type: GridTree
     - type: MovedGrids
@@ -14406,13 +14405,6 @@ entities:
     - type: Transform
       pos: 41.5,-35.5
       parent: 5350
-- proto: BedsheetBrigmedic
-  entities:
-  - uid: 24256
-    components:
-    - type: Transform
-      pos: -15.5,28.5
-      parent: 5350
 - proto: BedsheetCaptain
   entities:
   - uid: 1026
@@ -14483,6 +14475,11 @@ entities:
       canCollide: False
 - proto: BedsheetMedical
   entities:
+  - uid: 9228
+    components:
+    - type: Transform
+      pos: -15.5,28.5
+      parent: 5350
   - uid: 9229
     components:
     - type: Transform
@@ -116210,13 +116207,6 @@ entities:
     - type: Transform
       pos: 35.5,-21.5
       parent: 5350
-- proto: LockerBrigmedicFilled
-  entities:
-  - uid: 9228
-    components:
-    - type: Transform
-      pos: -18.5,30.5
-      parent: 5350
 - proto: LockerCaptainFilled
   entities:
   - uid: 1024
@@ -117186,6 +117176,11 @@ entities:
         - 0
         - 0
         - 0
+  - uid: 24256
+    components:
+    - type: Transform
+      pos: -18.5,30.5
+      parent: 5350
 - proto: LockerParamedicFilled
   entities:
   - uid: 22288
@@ -136616,13 +136611,6 @@ entities:
     components:
     - type: Transform
       pos: 35.5,-22.5
-      parent: 5350
-- proto: SpawnPointBrigmedic
-  entities:
-  - uid: 3116
-    components:
-    - type: Transform
-      pos: -16.5,30.5
       parent: 5350
 - proto: SpawnPointCaptain
   entities:
