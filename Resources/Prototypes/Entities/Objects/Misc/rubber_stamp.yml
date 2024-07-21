@@ -276,6 +276,7 @@
   name: head of greytide's rubber stamp
   parent: RubberStampBase
   id: RubberStampGreytide
+  description: A crude stamp fashioned out of a bar of soap and a screwdriver. Ancient prophecy foretells that the one who controls this stamp, controls the universe.
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-greytide

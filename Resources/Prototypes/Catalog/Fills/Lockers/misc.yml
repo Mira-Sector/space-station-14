@@ -175,7 +175,7 @@
         - id: BookRandomStory
           prob: 0.1
         - id: RubberStampGreytide
-          prob: 0.05
+          prob: 0.025
         # Syndicate loot
         - id: null
           prob: 0.95
@@ -275,7 +275,7 @@
         - id: ModularReceiver
           prob: 0.1
         - id: RubberStampGreytide
-          prob: 0.05
+          prob: 0.025
         # Syndicate loot
         - id: null
           prob: 0.95
