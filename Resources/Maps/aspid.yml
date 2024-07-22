@@ -10799,15 +10799,22 @@ entities:
     - type: Transform
       pos: 12.5,-42.5
       parent: 1
+    - type: Door
+      secondsUntilStateChange: -728.11383
+      state: Opening
     - type: DeviceLinkSource
       linkedPorts:
         7151:
         - DoorStatus: DoorBolt
+      lastSignals:
+        DoorStatus: True
   - uid: 7151
     components:
     - type: Transform
       pos: 12.5,-38.5
       parent: 1
+    - type: DeviceLinkSink
+      invokeCounter: 1
     - type: DeviceLinkSource
       linkedPorts:
         7150:
@@ -12798,13 +12805,8 @@ entities:
     - type: Transform
       pos: 31.405294,56.585308
       parent: 1
-- proto: AtmosDeviceFanTiny
+- proto: AtmosDeviceFanDirectional
   entities:
-  - uid: 609
-    components:
-    - type: Transform
-      pos: 13.5,2.5
-      parent: 1
   - uid: 845
     components:
     - type: Transform
@@ -12814,7 +12816,8 @@ entities:
   - uid: 1996
     components:
     - type: Transform
-      pos: 51.5,-7.5
+      rot: 1.5707963267948966 rad
+      pos: 52.5,-7.5
       parent: 1
   - uid: 2031
     components:
@@ -12825,67 +12828,66 @@ entities:
   - uid: 2036
     components:
     - type: Transform
-      pos: 51.5,-14.5
+      rot: 1.5707963267948966 rad
+      pos: 52.5,-14.5
       parent: 1
   - uid: 2606
     components:
     - type: Transform
-      pos: -47.5,2.5
+      rot: -1.5707963267948966 rad
+      pos: -47.5,4.5
       parent: 1
   - uid: 2609
     components:
     - type: Transform
-      pos: -47.5,4.5
+      rot: -1.5707963267948966 rad
+      pos: -47.5,2.5
       parent: 1
   - uid: 6771
     components:
     - type: Transform
-      pos: 52.5,13.5
+      rot: 3.141592653589793 rad
+      pos: 46.5,18.5
       parent: 1
   - uid: 6772
     components:
     - type: Transform
-      pos: 52.5,15.5
+      rot: 3.141592653589793 rad
+      pos: 48.5,18.5
       parent: 1
   - uid: 6773
     components:
     - type: Transform
-      pos: 48.5,18.5
+      rot: 1.5707963267948966 rad
+      pos: 52.5,15.5
       parent: 1
   - uid: 6774
     components:
     - type: Transform
-      pos: 46.5,18.5
+      rot: 1.5707963267948966 rad
+      pos: 52.5,13.5
       parent: 1
   - uid: 6775
     components:
     - type: Transform
-      pos: 46.5,33.5
+      rot: 1.5707963267948966 rad
+      pos: 52.5,38.5
       parent: 1
   - uid: 6776
     components:
     - type: Transform
-      pos: 48.5,33.5
+      rot: 1.5707963267948966 rad
+      pos: 52.5,36.5
       parent: 1
   - uid: 6777
     components:
     - type: Transform
-      pos: 52.5,36.5
+      pos: 48.5,33.5
       parent: 1
   - uid: 6778
     components:
     - type: Transform
-      pos: 52.5,38.5
-      parent: 1
-  - uid: 7127
-    components:
-    - type: Transform
-      pos: 11.5,0.5
-      parent: 1
-  - uid: 7128
-    components:
-    - type: Transform
-      pos: 11.5,4.5
+      pos: 46.5,33.5
       parent: 1
   - uid: 7420
     components:
@@ -12900,12 +12902,88 @@ entities:
   - uid: 7936
     components:
     - type: Transform
-      pos: -46.5,27.5
+      rot: -1.5707963267948966 rad
+      pos: -46.5,28.5
       parent: 1
   - uid: 7937
     components:
     - type: Transform
-      pos: -46.5,28.5
+      rot: -1.5707963267948966 rad
+      pos: -53.5,38.5
+      parent: 1
+  - uid: 10948
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -53.5,13.5
+      parent: 1
+  - uid: 10999
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -53.5,15.5
+      parent: 1
+  - uid: 11000
+    components:
+    - type: Transform
+      pos: -47.5,-12.5
+      parent: 1
+  - uid: 11003
+    components:
+    - type: Transform
+      pos: -48.5,-12.5
+      parent: 1
+  - uid: 11004
+    components:
+    - type: Transform
+      pos: -49.5,-12.5
+      parent: 1
+  - uid: 11034
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -53.5,-9.5
+      parent: 1
+  - uid: 11035
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -53.5,-8.5
+      parent: 1
+  - uid: 11036
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -53.5,-7.5
+      parent: 1
+  - uid: 11037
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -53.5,36.5
+      parent: 1
+  - uid: 11063
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -46.5,27.5
+      parent: 1
+- proto: AtmosDeviceFanTiny
+  entities:
+  - uid: 609
+    components:
+    - type: Transform
+      pos: 13.5,2.5
+      parent: 1
+  - uid: 7127
+    components:
+    - type: Transform
+      pos: 11.5,0.5
+      parent: 1
+  - uid: 7128
+    components:
+    - type: Transform
+      pos: 11.5,4.5
       parent: 1
   - uid: 8868
     components:
@@ -12931,66 +13009,6 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 3.5,-1.5
       parent: 8756
-  - uid: 17637
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -53.5,36.5
-      parent: 1
-  - uid: 17638
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -53.5,38.5
-      parent: 1
-  - uid: 17639
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -53.5,15.5
-      parent: 1
-  - uid: 17640
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -53.5,13.5
-      parent: 1
-  - uid: 17641
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -53.5,-7.5
-      parent: 1
-  - uid: 17642
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -53.5,-8.5
-      parent: 1
-  - uid: 17643
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -53.5,-9.5
-      parent: 1
-  - uid: 17644
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -49.5,-12.5
-      parent: 1
-  - uid: 17645
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -48.5,-12.5
-      parent: 1
-  - uid: 17646
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -47.5,-12.5
-      parent: 1
 - proto: AtmosFixBlockerMarker
   entities:
   - uid: 2706
@@ -60569,6 +60587,11 @@ entities:
     components:
     - type: Transform
       pos: 12.342606,-1.2967278
+      parent: 1
+  - uid: 11042
+    components:
+    - type: Transform
+      pos: 12.452723,-1.3662796
       parent: 1
   - uid: 17294
     components:
