@@ -151,7 +151,7 @@
     clothingVisuals:
       neck:
       - state: trans-equipped
- 
+
 - type: entity
   parent: ClothingNeckPinBase
   id: ClothingNeckAutismPin
@@ -183,3 +183,19 @@
     clothingVisuals:
       neck:
       - state: goldautism-equipped
+
+- type: entity
+  parent: ClothingNeckPinBase
+  id: ClothingNeckGodoPin
+  name: godo pin
+  description: wizden moment
+  components:
+  - type: Sprite
+    sprite: Clothing/Neck/Misc/pins.rsi
+    layers:
+    - state: godo
+  - type: Clothing
+    sprite: Clothing/Neck/Misc/pins.rsi
+    clothingVisuals:
+      neck:
+      - state: godo-equipped

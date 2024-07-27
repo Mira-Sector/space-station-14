@@ -12,6 +12,7 @@ loadout-group-survival-clown = Clown Survival Box
 loadout-group-survival-medical = Medical Survival Box
 loadout-group-survival-security = Security Survival Box
 loadout-group-survival-syndicate = Github is forcing me to write text that is literally twice-impossible for the player to ever see, send help
+loadout-group-survival-brigmedic = Brigmed Survival Box
 loadout-group-breath-tool = Species-dependent breath tools
 loadout-group-tank-harness = Species-specific survival equipment
 
@@ -161,6 +162,11 @@ loadout-group-detective-jumpsuit = Detective jumpsuit
 loadout-group-detective-outerclothing = Detective outer clothing
 
 loadout-group-security-cadet-jumpsuit = Security cadet jumpsuit
+
+loadout-group-brigmedic-head = Brigmedic head
+loadout-group-brigmedic-jumpsuit = Brigmedic jumpsuit
+loadout-group-brigmedic-outerclothing = Brigmedic outerclothing
+loadout-group-brigmedic-backpack = Brigmedic backpack
 
 # Medical
 loadout-group-medical-gloves = Medical gloves

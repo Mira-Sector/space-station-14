@@ -234,7 +234,19 @@ ghost-role-information-syndicate-kobold-reinforcement-description = Someone need
 ghost-role-information-syndicate-kobold-reinforcement-rules = You are a [color=red][bold]Team Antagonist[/bold][/color] with the agent who summoned you.
 
 ghost-role-information-artifact-name = Sentient Artifact
-ghost-role-information-artifact-description = Enact your eldritch whims. Forcibly activate your nodes for good or for evil.
 
 ghost-role-information-syndie-assaultborg-name = Syndicate Assault Borg
 ghost-role-information-syndie-assaultborg-description = Nuclear operatives needs reinforcements. You, a cold silicon killing machine, will help them. More dakka!
+ghost-role-information-artifact-description =
+      Enact your eldritch whims.
+      Forcibly activate your nodes for good or for evil.
+
+ghost-role-information-pirate-name = Pirate
+ghost-role-information-pirate-description = Cause chaos and loot the station for treasure.
+ghost-role-information-pirate-rules = Normal syndicate antagonist rules apply. Work with your fellow pirate crewmates, and don't harm them.
+
+ghost-role-information-pirate-captain-name = Pirate Captain
+ghost-role-information-pirate-captain-description = Cause chaos and loot the station for treasure. Lead your pirate crew to victory against the station.
+
+ghost-role-information-pirate-firstmate-name = Pirate Firstmate
+ghost-role-information-pirate-firstmate-description = Cause chaos and loot the station for treasure. Assist the Pirate Captain where needed.

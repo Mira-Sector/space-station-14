@@ -36,9 +36,11 @@
     quickEquip: false
     slots:
     - back
+    - suitStorage
   - type: Tool
     qualities:
       - Prying
+      - Plating
   - type: ToolTileCompatible
   - type: Prying
   - type: UseDelay
@@ -66,3 +68,4 @@
     quickEquip: false
     slots:
     - back
+    - suitStorage

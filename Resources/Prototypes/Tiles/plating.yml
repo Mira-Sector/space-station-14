@@ -1,4 +1,4 @@
-﻿- type: tile
+- type: tile
   id: Plating
   name: tiles-plating
   sprite: /Textures/Tiles/plating.png
@@ -8,6 +8,7 @@
     collection: FootstepPlating
   friction: 0.3
   heatCapacity: 10000
+  deconstructTools: [ Plating ]
 
 - type: tile
   id: PlatingDamaged
@@ -24,6 +25,7 @@
     collection: FootstepPlating
   friction: 0.3
   heatCapacity: 10000
+  deconstructTools: [ Plating ]
 
 - type: tile
   id: PlatingBurnt
@@ -35,6 +37,7 @@
     collection: FootstepPlating
   friction: 0.3
   heatCapacity: 10000
+  deconstructTools: [ Plating ]
 
 - type: tile
   id: PlatingAsteroid
@@ -46,6 +49,7 @@
     collection: FootstepPlating
   friction: 0.3
   heatCapacity: 10000
+  deconstructTools: [ Plating ]
 
 - type: tile
   id: PlatingBrass
@@ -57,6 +61,7 @@
     collection: FootstepPlating
   friction: 0.3
   heatCapacity: 10000
+  deconstructTools: [ Plating ]
 
 - type: tile
   id: PlatingSnow
@@ -68,6 +73,7 @@
     collection: FootstepPlating
   friction: 0.15 #a little less then actual snow
   heatCapacity: 10000
+  deconstructTools: [ Plating ]
 
 - type: tile
   id: Lattice

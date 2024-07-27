@@ -349,3 +349,20 @@
         conditions:
         - !type:ReagentThreshold
           min: 50
+
+- type: reagent
+  id: JuiceThatMakesYouNya
+  name: reagent-name-nya
+  group: Toxins
+  desc: reagent-desc-nya
+  physicalDesc: reagent-physical-desc-vibrant
+  flavor: cat
+  color: "#747FF2"
+  metabolisms:
+    Medicine:
+      effects:
+      - !type:Emote
+        emote: CatMeow
+        showInChat: true
+        force: true
+        probability: 0.6

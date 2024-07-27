@@ -12,6 +12,7 @@ using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
 using Content.Shared.CCVar;
 using Content.Shared.Clothing;
+using Content.Shared.GameTicking;
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.PDA;
@@ -29,6 +30,7 @@ using Robust.Shared.Map;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
 namespace Content.Server.Station.Systems;
@@ -42,6 +44,7 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
 {
     [Dependency] private readonly IConfigurationManager _configurationManager = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly ActorSystem _actors = default!;
     [Dependency] private readonly ArrivalsSystem _arrivalsSystem = default!;
@@ -52,6 +55,7 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
     [Dependency] private readonly MetaDataSystem _metaSystem = default!;
     [Dependency] private readonly PdaSystem _pdaSystem = default!;
     [Dependency] private readonly SharedAccessSystem _accessSystem = default!;
+    [Dependency] private readonly SharedGameTicker _gameTicker = default!;
 
     private bool _randomizeCharacters;
 
@@ -69,10 +73,17 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
             {
                 SpawnPriorityPreference.Cryosleep, ev =>
                 {
-                    if (_arrivalsSystem.Forced)
+                    var stationTime = _timing.CurTime.Subtract(_gameTicker.RoundStartTimeSpan).Minutes;
+                    Log.Debug($"stationTime: {stationTime}");
+                    Log.Debug($"ArrivalsCutoff: {_arrivalsSystem.ArrivalsCutoff}");
+                    if (_arrivalsSystem.ArrivalsCutoff >= stationTime)
+                    {
                         _arrivalsSystem.HandlePlayerSpawning(ev);
+                    }
                     else
+                    {
                         _containerSpawnPointSystem.HandlePlayerSpawning(ev);
+                    }
                 }
             }
         };
@@ -216,8 +227,8 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
 
         if (profile != null)
         {
-            if (prototype != null)
-                SetPdaAndIdCardData(entity.Value, profile.Name, prototype, station);
+            if (job != null)
+                SetPdaAndIdCardData(entity.Value, profile.Name, job, station);
 
             _humanoidSystem.LoadProfile(entity.Value, profile);
             _metaSystem.SetEntityName(entity.Value, profile.Name);
@@ -248,10 +259,13 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
     /// </summary>
     /// <param name="entity">Entity to load out.</param>
     /// <param name="characterName">Character name to use for the ID.</param>
-    /// <param name="jobPrototype">Job prototype to use for the PDA and ID.</param>
+    /// <param name="job">Job to use for the PDA and ID.</param>
     /// <param name="station">The station this player is being spawned on.</param>
-    public void SetPdaAndIdCardData(EntityUid entity, string characterName, JobPrototype jobPrototype, EntityUid? station)
+    public void SetPdaAndIdCardData(EntityUid entity, string characterName, JobComponent job, EntityUid? station)
     {
+        if (!_prototypeManager.TryIndex(job.Prototype, out var jobPrototype))
+            return;
+
         if (!InventorySystem.TryGetSlotEntity(entity, "id", out var idUid))
             return;
 
@@ -263,10 +277,11 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
             return;
 
         _cardSystem.TryChangeFullName(cardId, characterName, card);
-        _cardSystem.TryChangeJobTitle(cardId, jobPrototype.LocalizedName, card);
+        _cardSystem.TryChangeJobTitle(cardId, job.JobName ?? jobPrototype.LocalizedName, card);
 
+        _prototypeManager.TryIndex<StatusIconPrototype>(job.JobIcon ?? string.Empty, out var presetJobIcon);
         if (_prototypeManager.TryIndex(jobPrototype.Icon, out var jobIcon))
-            _cardSystem.TryChangeJobIcon(cardId, jobIcon, card);
+            _cardSystem.TryChangeJobIcon(cardId, presetJobIcon ?? jobIcon, card);
 
         var extendedAccess = false;
         if (station != null)

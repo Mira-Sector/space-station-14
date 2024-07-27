@@ -14,7 +14,8 @@ namespace Content.Shared.Maps
     public sealed partial class ContentTileDefinition : IPrototype, IInheritingPrototype, ITileDefinition
     {
         [ValidatePrototypeId<ToolQualityPrototype>]
-        public const string PryingToolQuality = "Prying";
+        public const string PryingToolQualityCrowbar = "Prying";
+        public const string PryingToolQualityPlating = "Plating";
 
         public const string SpaceID = "Space";
 
@@ -48,7 +49,9 @@ namespace Content.Shared.Maps
         /// <remarks>
         /// Legacy AF but nice to have.
         /// </remarks>
-        public bool CanCrowbar => DeconstructTools.Contains(PryingToolQuality);
+        public bool CanCrowbar => DeconstructTools.Contains(PryingToolQualityCrowbar);
+
+        public bool CanPlating => DeconstructTools.Contains(PryingToolQualityPlating);
 
         /// <summary>
         /// These play when the mob has shoes on.

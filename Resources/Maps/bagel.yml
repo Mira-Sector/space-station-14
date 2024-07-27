@@ -15322,6 +15322,13 @@ entities:
     - type: Transform
       pos: 49.5,-23.5
       parent: 60
+- proto: BedsheetBrigmedic
+  entities:
+  - uid: 2092
+    components:
+    - type: Transform
+      pos: -18.5,-7.5
+      parent: 60
 - proto: BedsheetCaptain
   entities:
   - uid: 18506
@@ -15404,11 +15411,6 @@ entities:
     - type: InsideEntityStorage
 - proto: BedsheetMedical
   entities:
-  - uid: 1502
-    components:
-    - type: Transform
-      pos: -18.5,-7.5
-      parent: 60
   - uid: 4491
     components:
     - type: Transform
@@ -106534,6 +106536,13 @@ entities:
     - type: Transform
       pos: 33.5,-35.5
       parent: 60
+- proto: LockerBrigmedicFilled
+  entities:
+  - uid: 1502
+    components:
+    - type: Transform
+      pos: -19.5,-7.5
+      parent: 60
 - proto: LockerCaptainFilled
   entities:
   - uid: 8234
@@ -127201,6 +127210,13 @@ entities:
     components:
     - type: Transform
       pos: 32.5,-36.5
+      parent: 60
+- proto: SpawnPointBrigmedic
+  entities:
+  - uid: 19800
+    components:
+    - type: Transform
+      pos: -18.5,-6.5
       parent: 60
 - proto: SpawnPointCaptain
   entities:
@@ -148973,29 +148989,6 @@ entities:
     components:
     - type: Transform
       pos: -34.5,-10.5
-      parent: 60
-    - type: EntityStorage
-      air:
-        volume: 200
-        immutable: False
-        temperature: 293.1496
-        moles:
-        - 1.6495836
-        - 6.2055764
-        - 0
-        - 0
-        - 0
-        - 0
-        - 0
-        - 0
-        - 0
-        - 0
-        - 0
-        - 0
-  - uid: 2092
-    components:
-    - type: Transform
-      pos: -19.5,-7.5
       parent: 60
     - type: EntityStorage
       air:

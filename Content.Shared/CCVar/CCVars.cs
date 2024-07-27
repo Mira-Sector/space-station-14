@@ -1484,10 +1484,10 @@ namespace Content.Shared.CCVar
             CVarDef.Create("shuttle.arrivals_returns", false, CVar.SERVERONLY);
 
         /// <summary>
-        /// Should all players be forced to spawn at departures, even on roundstart, even if their loadout says they spawn in cryo?
+        /// If non zero the forces all players to spawn at arrivals for the set duration then cryo is enabled.
         /// </summary>
-        public static readonly CVarDef<bool> ForceArrivals =
-            CVarDef.Create("shuttle.force_arrivals", false, CVar.SERVERONLY);
+        public static readonly CVarDef<int> ForceArrivals =
+            CVarDef.Create("shuttle.force_arrivals", 0, CVar.SERVERONLY);
 
         /// <summary>
         /// Should all players who spawn at arrivals have godmode until they leave the map?

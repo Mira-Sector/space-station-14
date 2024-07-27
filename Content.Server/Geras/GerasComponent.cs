@@ -1,4 +1,3 @@
-using Content.Shared.Actions;
 using Content.Shared.Polymorph;
 using Robust.Shared.Prototypes;
 
@@ -15,4 +14,6 @@ public sealed partial class GerasComponent : Component
     [DataField] public EntProtoId GerasAction = "ActionMorphGeras";
 
     [DataField] public EntityUid? GerasActionEntity;
+
+    [DataField] public bool NoAction = false;
 }

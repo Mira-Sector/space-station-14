@@ -81,6 +81,7 @@
   - SecurityOfficer
   - Detective
   - Warden
+  - Brigmedic
 
 - type: department
   id: Science
@@ -101,4 +102,5 @@
   - Reporter
   - Zookeeper
   - Psychologist
+  - Brigmedic
   primary: false
