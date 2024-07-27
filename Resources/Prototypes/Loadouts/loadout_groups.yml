@@ -1327,3 +1327,16 @@
   hidden: true
   loadouts:
   - LoadoutSpeciesBreathToolBrigmedic
+
+- type: loadoutGroup
+  id: BorgChassis
+  name: loadout-group-borg-chassis
+  minLimit: 1
+  maxLimit: 1
+  loadouts:
+  - BorgGeneric
+  - BorgMining
+  - BorgEngineer
+  - BorgJanitor
+  - BorgMedical
+  - BorgService

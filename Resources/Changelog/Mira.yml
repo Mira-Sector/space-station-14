@@ -239,3 +239,9 @@ Entries:
     type: Add
   id: 37
   time: '2024-07-21T21:54:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Cyborgs can now select their round start chassis in their loadouts.
+    type: Add
+  id: 38
+  time: '2024-07-27T15:26:00.0000000+00:00'
