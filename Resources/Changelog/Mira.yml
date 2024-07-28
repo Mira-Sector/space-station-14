@@ -255,5 +255,11 @@ Entries:
   changes:
   - message: Added non command mantle into the winterdrobe
     type: Add
-  id: 39
+  id: 40
   time: '2024-07-28T01:56:00.0000000+00:00'
+- author: n00kii
+  changes:
+  - message: Once again press e as a slime to open your internal inventory
+    type: Add
+  id: 41
+  time: '2024-07-28T02:30:00.0000000+00:00'
