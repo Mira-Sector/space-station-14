@@ -263,3 +263,11 @@ Entries:
     type: Add
   id: 41
   time: '2024-07-28T02:30:00.0000000+00:00'
+- author: luizwritescode
+  changes:
+  - message: ChemMaster4000 now has a specific buffer for pills and bottles
+    type: Add
+  - message: Auto-generated labels for ChemMaster4000 now correctly show the reagent with most amount in the solution
+    type: Fix
+  id: 42
+  time: '2024-07-28T03:00:00.0000000+00:00'
