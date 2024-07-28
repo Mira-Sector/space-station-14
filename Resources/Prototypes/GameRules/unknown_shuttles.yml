@@ -58,5 +58,6 @@
   components:
   - type: StationVariationPassRule
   - type: StationEvent
+    minimumPlayers: 20
   - type: LoadMapRule
     preloadedGrid: PirateShip
