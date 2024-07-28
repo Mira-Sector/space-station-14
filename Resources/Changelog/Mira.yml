@@ -271,3 +271,9 @@ Entries:
     type: Fix
   id: 42
   time: '2024-07-28T03:00:00.0000000+00:00'
+- author: Boaz1111, Doctor-Cpu
+  changes:
+  - message: The HoS now has an energy shotgun instead of the WT550
+    type: Add
+  id: 43
+  time: '2024-07-28T08:00:00.0000000+00:00'
