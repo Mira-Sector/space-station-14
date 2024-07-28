@@ -250,4 +250,10 @@ Entries:
   - message: Added the Head of Greytide stamp. This stamp can be rarely found in maints lockers.
     type: Add
   id: 39
-  time:l'2024-07-2lT01:56:00.0000000+00:00'
+  time: '2024-07-28T01:56:00.0000000+00:00'
+- author: pigeonpeas
+  changes:
+  - message: Added non command mantle into the winterdrobe
+    type: Add
+  id: 39
+  time: '2024-07-28T01:56:00.0000000+00:00'
