@@ -279,7 +279,6 @@
       - id: HoloprojectorSecurity
       - id: BookSecretDocuments
       - id: BookSpaceLaw
-      - id: WeaponEnergyShotgun
 
 - type: entity
   id: LockerHeadOfSecurityFilled
@@ -304,7 +303,6 @@
       - id: HoloprojectorSecurity
       - id: BookSecretDocuments
       - id: BookSpaceLaw
-      - id: WeaponEnergyShotgun
 
 - type: entity
   id: LockerFreezerVaultFilled

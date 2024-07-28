@@ -377,3 +377,8 @@ SignDrones: SignMaterials
 SignShield: null # what was this even for?
 SignHydro2: SignHydro1
 SignHydro3: SignHydro1
+
+# Mira
+# 2024-07-28
+WeaponSubMachineGunWt550: WeaponEnergyShotgun
+MagazinePistolSubMachineGunTopMounted: null
