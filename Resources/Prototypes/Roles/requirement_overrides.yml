@@ -81,7 +81,7 @@
       time: 10
     - !type:OverallPlaytimeRequirement
       time: 60
-    JobBrigmedic:
+    Brigmedic:
     - !type:DepartmentTimeRequirement
       department: Medical
       time: 10
@@ -149,6 +149,9 @@
     - !type:DepartmentTimeRequirement
       department: Civilian
       time: 0
+    Lawyer:
+    - !type:OverallPlaytimeRequirement
+      time: 10
     Mime:
     - !type:OverallPlaytimeRequirement
       time: 0
