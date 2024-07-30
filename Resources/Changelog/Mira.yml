@@ -277,3 +277,9 @@ Entries:
     type: Add
   id: 43
   time: '2024-07-28T08:00:00.0000000+00:00'
+- author: Swept, Doctor-Cpu
+  changes:
+  - message: Ghosts are now animated
+    type: Add
+  id: 44
+  time: '2024-07-30T15:47:00.0000000+00:00'
