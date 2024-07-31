@@ -156,13 +156,6 @@
   - type: StealCondition
     stealGroup: Hypospray
 
-- type: entity
-  parent: BaseCMOStealObjective
-  id: CMOMedChemHudStealObjective
-  components:
-  - type: StealCondition
-    stealGroup: ClothingEyesHudMecChem
-
 ## rd
 
 - type: entity

@@ -283,3 +283,15 @@ Entries:
     type: Add
   id: 44
   time: '2024-07-30T15:47:00.0000000+00:00'
+- author: Thurtik
+  changes:
+  - message: Adds a new "medchem hud" for CMOs, a gadget that combines the function of medhuds and chemical analysis goggles
+    type: Add
+  id: 45
+  time: '2024-07-31T13:00:00.0000000+00:00'
+- author: Thurtik
+  changes:
+  - message: The handheld crew monitor is no longer a steal objective, and now spawns in paramedic lockers, NanoMed vendors and thief communicator kits
+    type: Tweak
+  id: 46
+  time: '2024-07-31T13:00:00.0000000+00:00'
