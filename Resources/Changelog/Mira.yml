@@ -295,3 +295,9 @@ Entries:
     type: Tweak
   id: 46
   time: '2024-07-31T13:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Magic mirror delay has been reverted.
+    type: Tweak
+  id: 47
+  time: '2024-07-31T16:37:00.0000000+00:00'
