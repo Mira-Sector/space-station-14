@@ -9,6 +9,7 @@ using Content.Shared.Gravity;
 using Content.Shared.Hands;
 using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;
+using Content.Shared.Item.ItemToggle;
 using Content.Shared.Item.ItemToggle.Components;
 using Content.Shared.Popups;
 using Content.Shared.Projectiles;
@@ -29,10 +30,11 @@ namespace Content.Shared.Weapons.Reflect;
 /// </summary>
 public sealed class ReflectSystem : EntitySystem
 {
+    [Dependency] private readonly IGameTiming _gameTiming = default!;
     [Dependency] private readonly INetManager _netManager = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
-    [Dependency] private readonly IGameTiming _gameTiming = default!;
+    [Dependency] private readonly ItemToggleSystem _toggle = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
@@ -128,7 +130,7 @@ public sealed class ReflectSystem : EntitySystem
             if (!TryComp<ReflectComponent>(entityUid, out var comp))
                 continue;
 
-            if (!comp.Enabled)
+            if (!_toggle.IsActivated(entityUid))
                 continue;
 
             if (bestReflector != null && bestReflector.Value.Comp.ReflectProb >= comp.ReflectProb)
@@ -147,7 +149,7 @@ public sealed class ReflectSystem : EntitySystem
     {
         if (
             // Is it on?
-            !reflector.Comp.Enabled ||
+            !_toggle.IsActivated(user) ||
             // Is the projectile deflectable?
             !TryComp<ReflectiveComponent>(projectile, out var reflective) ||
             // Does the deflector deflect the type of projecitle?
@@ -204,7 +206,7 @@ public sealed class ReflectSystem : EntitySystem
     {
         if (
             // Is the reflector enabled?
-            !reflector.Comp.Enabled ||
+            !_toggle.IsActivated(user) ||
             // If the user is a mob with stamina, is it capable of deflecting?
             TryComp<StaminaComponent>(user, out var staminaComponent) && staminaComponent.Critical ||
             _standing.IsDown(user))
@@ -272,7 +274,7 @@ public sealed class ReflectSystem : EntitySystem
 
         EnsureComp<ReflectUserComponent>(args.Equipee);
 
-        if (reflector.Comp.Enabled)
+        if (_toggle.IsActivated(reflector.Owner))
             EnableAlert(args.Equipee);
     }
 
@@ -288,7 +290,7 @@ public sealed class ReflectSystem : EntitySystem
 
         EnsureComp<ReflectUserComponent>(args.User);
 
-        if (reflector.Comp.Enabled)
+        if (_toggle.IsActivated(args.User))
             EnableAlert(args.User);
     }
 
@@ -299,13 +301,13 @@ public sealed class ReflectSystem : EntitySystem
 
     private void OnToggleReflect(Entity<ReflectComponent> reflector, ref ItemToggledEvent args)
     {
-        reflector.Comp.Enabled = args.Activated;
+        _toggle.TrySetActive(reflector.Owner, args.Activated);
         Dirty(reflector);
 
         if (args.User == null)
             return;
 
-        if (reflector.Comp.Enabled)
+        if (_toggle.IsActivated(reflector.Owner))
             EnableAlert(args.User.Value);
         else
             DisableAlert(args.User.Value);
@@ -318,7 +320,7 @@ public sealed class ReflectSystem : EntitySystem
     {
         foreach (var ent in _inventorySystem.GetHandOrInventoryEntities(user, SlotFlags.WITHOUT_POCKET))
         {
-            if (!HasComp<ReflectComponent>(ent))
+            if (!HasComp<ReflectComponent>(ent) || !_toggle.IsActivated(ent))
                 continue;
 
             EnsureComp<ReflectUserComponent>(user);

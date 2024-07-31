@@ -82,3 +82,12 @@
   id: DetectiveCoat
   equipment:
     outerClothing: ClothingOuterCoatDetectiveLoadout
+    
+- type: loadout
+  id: DetectiveCoatGrey
+  equipment: DetectiveCoatGrey
+  
+- type: startingGear
+  id: DetectiveCoatGrey
+  equipment:
+    outerClothing: ClothingOuterCoatDetectiveLoadoutGrey

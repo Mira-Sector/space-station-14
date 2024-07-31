@@ -28,7 +28,7 @@
 - type: entity
   parent: ClothingHeadBase
   id: ClothingHeadHatBeretFrench
-  name: French beret
+  name: french beret
   description: A French beret, "vive la France".
   components:
   - type: Sprite
@@ -250,6 +250,10 @@
   - type: ContainerContainer
     containers:
       storagebase: !type:Container
+  - type: PilotedClothing
+    pilotWhitelist:
+      tags:
+        - ChefPilot
   - type: Tag
     tags:
     - ClothMade
@@ -312,8 +316,24 @@
 
 - type: entity
   parent: ClothingHeadBase
+  id: ClothingHeadHatHoscap
+  name: head of security cap
+  description: The robust standard-issue cap of the Head of Security. For showing the officers who's in charge.
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Hats/hoscap.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Hats/hoscap.rsi
+  - type: Tag
+    tags:
+    - ClothMade
+    - HamsterWearable
+    - WhitelistChameleon
+
+- type: entity
+  parent: ClothingHeadBase
   id: ClothingHeadHatHoshat
-  name: head of security's hat
+  name: head of security hat
   description: "There's a new sheriff in station."
   components:
   - type: Sprite
@@ -387,7 +407,8 @@
   - type: HideLayerClothing
     slots:
     - Hair
-    - Snout
+    - HeadTop
+    - HeadSide
 
 - type: entity
   parent: ClothingHeadHatWizardBase
@@ -489,6 +510,8 @@
   - type: Appearance
   - type: AddAccentClothing
     accent: RussianAccent
+  - type: RussianAccent
+  - type: AccentWearerNameClothing
   - type: Foldable
     canFoldInsideContainer: true
   - type: FoldableClothing

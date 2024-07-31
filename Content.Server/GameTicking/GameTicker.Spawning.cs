@@ -1,16 +1,20 @@
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
+using Content.Server.Access.Components;
 using Content.Server.Administration.Managers;
 using Content.Server.GameTicking.Events;
 using Content.Server.Ghost;
 using Content.Server.Spawners.Components;
 using Content.Server.Speech.Components;
 using Content.Server.Station.Components;
+using Content.Shared.Clothing;
 using Content.Shared.Database;
 using Content.Shared.Mind;
+using Content.Shared.PDA;
 using Content.Shared.Players;
 using Content.Shared.Preferences;
+using Content.Shared.Preferences.Loadouts;
 using Content.Shared.Roles;
 using Content.Shared.Roles.Jobs;
 using JetBrains.Annotations;
@@ -27,7 +31,10 @@ namespace Content.Server.GameTicking
     public sealed partial class GameTicker
     {
         [Dependency] private readonly IAdminManager _adminManager = default!;
+        [Dependency] private readonly IComponentFactory _componentFactory = default!;
+        [Dependency] private readonly ActorSystem _actors = default!;
         [Dependency] private readonly SharedJobSystem _jobs = default!;
+        [Dependency] protected readonly ILocalizationManager _localizationManager = default!;
 
         [ValidatePrototypeId<EntityPrototype>]
         public const string ObserverPrototypeName = "MobObserver";
@@ -226,6 +233,29 @@ namespace Content.Server.GameTicking
             var job = new JobComponent {Prototype = jobId};
             _roles.MindAddRole(newMind, job, silent: silent);
             var jobName = _jobs.MindTryGetJobName(newMind);
+            var jobLoadout = LoadoutSystem.GetJobPrototype(jobPrototype.ID);
+
+            if (_prototypeManager.TryIndex(jobLoadout, out RoleLoadoutPrototype? rolePrototype))
+            {
+                character.Loadouts.TryGetValue(jobLoadout, out RoleLoadout? loadout);
+
+                if (loadout == null)
+                {
+                    loadout = new RoleLoadout(jobLoadout);
+                    loadout.SetDefault(character, player, _prototypeManager);
+                }
+
+                if (GetIdFromLoadout(loadout, rolePrototype, character, out var presetId))
+                {
+                    if (presetId != null)
+                    {
+                        _localizationManager.TryGetString(presetId.PresetJobName ?? string.Empty, out var presetName);
+
+                        job.JobName = presetName;
+                        job.JobIcon = presetId.PresetJobIcon;
+                    }
+                }
+            }
 
             _playTimeTrackings.PlayerRolesChanged(player);
 
@@ -294,12 +324,59 @@ namespace Content.Server.GameTicking
             PlayersJoinedRoundNormally++;
             var aev = new PlayerSpawnCompleteEvent(mob,
                 player,
-                jobId,
+                job,
                 lateJoin,
                 PlayersJoinedRoundNormally,
                 station,
                 character);
             RaiseLocalEvent(mob, aev, true);
+        }
+
+        private bool GetIdFromLoadout(RoleLoadout loadout, RoleLoadoutPrototype rolePrototype, HumanoidCharacterProfile character, out PresetIdCardComponent? presetId)
+        {
+            presetId = null;
+
+            foreach (var group in loadout.SelectedLoadouts.OrderBy(x => rolePrototype.Groups.FindIndex(e => e == x.Key)))
+            {
+                foreach (var items in group.Value)
+                {
+                    if (!_prototypeManager.TryIndex(items.Prototype, out var loadoutProto))
+                    {
+                        Log.Warning($"Unable to find loadout prototype for {items.Prototype}");
+                        continue;
+                    }
+                    if (!_prototypeManager.TryIndex(loadoutProto.Equipment, out var startingGear))
+                    {
+                        Log.Warning($"Unable to find starting gear {loadoutProto.Equipment} for loadout {loadoutProto}");
+                        continue;
+                    }
+                    var entProtoId = startingGear.GetGear("id");
+                    if (!_prototypeManager.TryIndex<EntityPrototype>(entProtoId, out var idProto))
+                    {
+                        Log.Warning($"Unable to find prototype for {startingGear} for starting gear {loadoutProto.Equipment} for loadout {loadoutProto}");
+                        continue;
+                    }
+                    if (idProto.TryGetComponent<PdaComponent>(out var pdaComponent, _componentFactory) && pdaComponent.IdCard != null)
+                    {
+                        ProtoId<EntityPrototype> idProtoId = pdaComponent.IdCard;
+                        if (!_prototypeManager.TryIndex<EntityPrototype>(idProtoId, out idProto))
+                        {
+                            Log.Warning($"Unable to find an idCard in {idProto}");
+                            return false;
+                        }
+                    }
+
+                    if (!idProto.TryGetComponent<PresetIdCardComponent>(out var idComponent, _componentFactory))
+                    {
+                        Log.Warning($"Unable to find presetIdCard for {idProto}");
+                        continue;
+                    }
+
+                    presetId = idComponent;
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void Respawn(ICommonSession player)
@@ -492,7 +569,7 @@ namespace Content.Server.GameTicking
     {
         public EntityUid Mob { get; }
         public ICommonSession Player { get; }
-        public string? JobId { get; }
+        public JobComponent? Job { get; }
         public bool LateJoin { get; }
         public EntityUid Station { get; }
         public HumanoidCharacterProfile Profile { get; }
@@ -502,7 +579,7 @@ namespace Content.Server.GameTicking
 
         public PlayerSpawnCompleteEvent(EntityUid mob,
             ICommonSession player,
-            string? jobId,
+            JobComponent? job,
             bool lateJoin,
             int joinOrder,
             EntityUid station,
@@ -510,7 +587,7 @@ namespace Content.Server.GameTicking
         {
             Mob = mob;
             Player = player;
-            JobId = jobId;
+            Job = job;
             LateJoin = lateJoin;
             Station = station;
             Profile = profile;

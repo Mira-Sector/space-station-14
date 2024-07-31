@@ -12,6 +12,7 @@ using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
 using Content.Shared.CCVar;
 using Content.Shared.Clothing;
+using Content.Shared.GameTicking;
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.PDA;
@@ -29,6 +30,7 @@ using Robust.Shared.Map;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
 namespace Content.Server.Station.Systems;
@@ -42,6 +44,7 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
 {
     [Dependency] private readonly IConfigurationManager _configurationManager = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly ActorSystem _actors = default!;
     [Dependency] private readonly ArrivalsSystem _arrivalsSystem = default!;
@@ -52,6 +55,7 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
     [Dependency] private readonly MetaDataSystem _metaSystem = default!;
     [Dependency] private readonly PdaSystem _pdaSystem = default!;
     [Dependency] private readonly SharedAccessSystem _accessSystem = default!;
+    [Dependency] private readonly SharedGameTicker _gameTicker = default!;
 
     private bool _randomizeCharacters;
 
@@ -69,10 +73,17 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
             {
                 SpawnPriorityPreference.Cryosleep, ev =>
                 {
-                    if (_arrivalsSystem.Forced)
+                    var stationTime = _timing.CurTime.Subtract(_gameTicker.RoundStartTimeSpan).Minutes;
+                    Log.Debug($"stationTime: {stationTime}");
+                    Log.Debug($"ArrivalsCutoff: {_arrivalsSystem.ArrivalsCutoff}");
+                    if (_arrivalsSystem.ArrivalsCutoff >= stationTime)
+                    {
                         _arrivalsSystem.HandlePlayerSpawning(ev);
+                    }
                     else
+                    {
                         _containerSpawnPointSystem.HandlePlayerSpawning(ev);
+                    }
                 }
             }
         };
@@ -155,10 +166,7 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
         if (prototype?.JobEntity != null)
         {
             DebugTools.Assert(entity is null);
-            var jobEntity = EntityManager.SpawnEntity(prototype.JobEntity, coordinates);
-            MakeSentientCommand.MakeSentient(jobEntity, EntityManager);
-            DoJobSpecials(job, jobEntity);
-            _identity.QueueIdentityUpdate(jobEntity);
+            var jobEntity = SpawnEntity(prototype.JobEntity, coordinates, job);
             return jobEntity;
         }
 
@@ -181,7 +189,7 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
         if (!_prototypeManager.TryIndex<SpeciesPrototype>(speciesId, out var species))
             throw new ArgumentException($"Invalid species prototype was used: {speciesId}");
 
-        entity ??= Spawn(species.Prototype, coordinates);
+        entity ??= SpawnEntity(species.Prototype, coordinates, job);
 
         if (_randomizeCharacters)
         {
@@ -190,9 +198,9 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
 
         var jobLoadout = LoadoutSystem.GetJobPrototype(prototype?.ID);
 
+        RoleLoadout? loadout = null;
         if (_prototypeManager.TryIndex(jobLoadout, out RoleLoadoutPrototype? roleProto))
         {
-            RoleLoadout? loadout = null;
             profile?.Loadouts.TryGetValue(jobLoadout, out loadout);
 
             // Set to default if not present
@@ -203,6 +211,31 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
             }
 
             EquipRoleLoadout(entity.Value, loadout, roleProto);
+        }
+
+        if (loadout != null && roleProto != null)
+        {
+            foreach (var group in loadout.SelectedLoadouts.OrderBy(x => roleProto.Groups.FindIndex(e => e == x.Key)))
+            {
+                foreach (var items in group.Value)
+                {
+                    if (!_prototypeManager.TryIndex(items.Prototype, out var loadoutProto))
+                    {
+                        continue;
+                    }
+                    if (!_prototypeManager.TryIndex(loadoutProto.Equipment, out var startingEntity))
+                    {
+                        continue;
+                    }
+                    if (startingEntity.Entity != null)
+                    {
+                        var newEntity = SpawnEntity(startingEntity.Entity, coordinates, job);
+                        EntityManager.DeleteEntity(entity); //entity isnt deleted before as the loadout is on this entity
+                        entity = newEntity;
+                        return entity.Value;
+                    }
+                }
+            }
         }
 
         if (prototype?.StartingGear != null)
@@ -216,8 +249,8 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
 
         if (profile != null)
         {
-            if (prototype != null)
-                SetPdaAndIdCardData(entity.Value, profile.Name, prototype, station);
+            if (job != null)
+                SetPdaAndIdCardData(entity.Value, profile.Name, job, station);
 
             _humanoidSystem.LoadProfile(entity.Value, profile);
             _metaSystem.SetEntityName(entity.Value, profile.Name);
@@ -227,9 +260,17 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
             }
         }
 
-        DoJobSpecials(job, entity.Value);
         _identity.QueueIdentityUpdate(entity.Value);
         return entity.Value;
+    }
+
+    private EntityUid SpawnEntity(string prototype, EntityCoordinates coordinates, JobComponent? job)
+    {
+        var entity = EntityManager.SpawnEntity(prototype, coordinates);
+        MakeSentientCommand.MakeSentient(entity, EntityManager);
+        DoJobSpecials(job, entity);
+        _identity.QueueIdentityUpdate(entity);
+        return entity;
     }
 
     private void DoJobSpecials(JobComponent? job, EntityUid entity)
@@ -248,10 +289,13 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
     /// </summary>
     /// <param name="entity">Entity to load out.</param>
     /// <param name="characterName">Character name to use for the ID.</param>
-    /// <param name="jobPrototype">Job prototype to use for the PDA and ID.</param>
+    /// <param name="job">Job to use for the PDA and ID.</param>
     /// <param name="station">The station this player is being spawned on.</param>
-    public void SetPdaAndIdCardData(EntityUid entity, string characterName, JobPrototype jobPrototype, EntityUid? station)
+    public void SetPdaAndIdCardData(EntityUid entity, string characterName, JobComponent job, EntityUid? station)
     {
+        if (!_prototypeManager.TryIndex(job.Prototype, out var jobPrototype))
+            return;
+
         if (!InventorySystem.TryGetSlotEntity(entity, "id", out var idUid))
             return;
 
@@ -263,10 +307,11 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
             return;
 
         _cardSystem.TryChangeFullName(cardId, characterName, card);
-        _cardSystem.TryChangeJobTitle(cardId, jobPrototype.LocalizedName, card);
+        _cardSystem.TryChangeJobTitle(cardId, job.JobName ?? jobPrototype.LocalizedName, card);
 
+        _prototypeManager.TryIndex<StatusIconPrototype>(job.JobIcon ?? string.Empty, out var presetJobIcon);
         if (_prototypeManager.TryIndex(jobPrototype.Icon, out var jobIcon))
-            _cardSystem.TryChangeJobIcon(cardId, jobIcon, card);
+            _cardSystem.TryChangeJobIcon(cardId, presetJobIcon ?? jobIcon, card);
 
         var extendedAccess = false;
         if (station != null)

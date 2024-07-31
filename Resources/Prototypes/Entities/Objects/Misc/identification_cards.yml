@@ -442,6 +442,8 @@
     layers:
     - state: default
     - state: idbrigmedic
+  - type: PresetIdCard
+    job: Brigmedic
 
 - type: entity
   parent: IDCardStandard
@@ -602,51 +604,70 @@
     icons:
     # TODO figure out a better way of doing this.
     # Probably by adding a bool or icon-category data-field to the icon prototype?
-    - JobIconDetective
-    - JobIconQuarterMaster
-    - JobIconBotanist
-    - JobIconBoxer
-    - JobIconAtmosphericTechnician
-    - JobIconNanotrasen
-    - JobIconPrisoner
-    - JobIconJanitor
-    - JobIconChemist
-    - JobIconStationEngineer
+
+    # 10 in a row
+    # Ordered by who rules over who with service padding out the row
+
+    # Security
+    - JobIconHeadOfSecurity
+    - JobIconSeniorOfficer
     - JobIconSecurityOfficer
-    - JobIconChiefMedicalOfficer
-    - JobIconRoboticist
-    - JobIconChaplain
+    - JobIconSecurityCadet
+    - JobIconWarden
+    - JobIconDetective
     - JobIconLawyer
-    - JobIconUnknown
-    - JobIconLibrarian
-    - JobIconCargoTechnician
-    - JobIconScientist
-    - JobIconResearchAssistant
-    - JobIconGeneticist
-    - JobIconClown
+
+    - JobIconPassenger
     - JobIconCaptain
     - JobIconHeadOfPersonnel
-    - JobIconVirologist
-    - JobIconShaftMiner
-    - JobIconPassenger
-    - JobIconChiefEngineer
-    - JobIconBartender
-    - JobIconHeadOfSecurity
+
+    # Medical
+    - JobIconChiefMedicalOfficer
+    - JobIconSeniorPhysician
     - JobIconMedicalDoctor
-    - JobIconParamedic
-    - JobIconChef
-    - JobIconWarden
-    - JobIconResearchDirector
-    - JobIconMime
-    - JobIconMusician
-    - JobIconReporter
-    - JobIconPsychologist
     - JobIconMedicalIntern
+    - JobIconChemist
+    - JobIconParamedic
+    - JobIconPsychologist
+
+    - JobIconClown
+    - JobIconBotanist
+    - JobIconBartender
+
+    # Engineering
+    - JobIconChiefEngineer
+    - JobIconSeniorEngineer
+    - JobIconStationEngineer
     - JobIconTechnicalAssistant
-    - JobIconServiceWorker
-    - JobIconSecurityCadet
+    - JobIconAtmosphericTechnician
+
+    - JobIconLibrarian
+    - JobIconChaplain
+    - JobIconMime
+    - JobIconChef
     - JobIconZookeeper
+
+    # Science
+    - JobIconResearchDirector
+    - JobIconSeniorResearcher
+    - JobIconScientist
+    - JobIconResearchAssistant
+
+    # Cargo
+    - JobIconQuarterMaster
+    - JobIconCargoTechnician
+    - JobIconShaftMiner
+
+    - JobIconJanitor
+    - JobIconReporter
+    - JobIconServiceWorker
+
+    - JobIconNanotrasen
     - JobIconVisitor
+    - JobIconBoxer
+    - JobIconMusician
+
+
   - type: ActivatableUI
     key: enum.AgentIDCardUiKey.Key
     inHandsOnly: true
@@ -810,6 +831,10 @@
     layers:
     - state: default
     - state: idseniorengineer
+  - type: PresetIdCard
+    jobName: job-name-senior-engineer
+    jobIcon: JobIconSeniorEngineer
+
 
 - type: entity
   parent: ResearchIDCard
@@ -820,6 +845,9 @@
     layers:
     - state: default
     - state: idseniorresearcher
+  - type: PresetIdCard
+    jobName: job-name-senior-researcher
+    jobIcon: JobIconSeniorResearcher
 
 - type: entity
   parent: MedicalIDCard
@@ -830,6 +858,9 @@
     layers:
     - state: default
     - state: idseniorphysician
+  - type: PresetIdCard
+    jobName: job-name-senior-physician
+    jobIcon: JobIconSeniorPhysician
 
 - type: entity
   parent: SecurityIDCard
@@ -840,6 +871,9 @@
     layers:
     - state: default
     - state: idseniorofficer
+  - type: PresetIdCard
+    jobName: job-name-senior-officer
+    jobIcon: JobIconSeniorOfficer
 
 - type: entity
   parent: IDCardStandard

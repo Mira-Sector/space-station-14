@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Shared.Players;
 using Content.Shared.Players.PlayTimeTracking;
@@ -136,9 +136,9 @@ public abstract class SharedJobSystem : EntitySystem
     /// </summary>
     public bool MindTryGetJobName([NotNullWhen(true)] EntityUid? mindId, out string name)
     {
-        if (MindTryGetJob(mindId, out _, out var prototype))
+        if (MindTryGetJob(mindId, out var comp, out var prototype))
         {
-            name = prototype.LocalizedName;
+            name = comp.JobName ?? prototype.LocalizedName;
             return true;
         }
 

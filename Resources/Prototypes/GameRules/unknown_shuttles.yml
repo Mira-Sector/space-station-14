@@ -51,3 +51,13 @@
     weight: 2
   - type: LoadMapRule
     preloadedGrid: SyndieEvacPod
+
+- type: entity
+  parent: BaseUnknownShuttleRule
+  id: UnknownShuttlePirateShip
+  components:
+  - type: StationVariationPassRule
+  - type: StationEvent
+    minimumPlayers: 20
+  - type: LoadMapRule
+    preloadedGrid: PirateShip

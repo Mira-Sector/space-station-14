@@ -15,6 +15,7 @@ public sealed class PresetIdCardSystem : EntitySystem
     [Dependency] private readonly IdCardSystem _cardSystem = default!;
     [Dependency] private readonly SharedAccessSystem _accessSystem = default!;
     [Dependency] private readonly StationSystem _stationSystem = default!;
+    [Dependency] protected readonly ILocalizationManager _localizationManager = default!;
 
     public override void Initialize()
     {
@@ -79,10 +80,14 @@ public sealed class PresetIdCardSystem : EntitySystem
 
         _accessSystem.SetAccessToJob(uid, job, extended);
 
-        _cardSystem.TryChangeJobTitle(uid, job.LocalizedName);
+        _localizationManager.TryGetString(id.PresetJobName ?? string.Empty, out var presetName);
+
+        _cardSystem.TryChangeJobTitle(uid, presetName ?? job.LocalizedName);
         _cardSystem.TryChangeJobDepartment(uid, job);
 
+        _prototypeManager.TryIndex<StatusIconPrototype>(id.PresetJobIcon ?? string.Empty, out var presetIcon);
+
         if (_prototypeManager.TryIndex(job.Icon, out var jobIcon))
-            _cardSystem.TryChangeJobIcon(uid, jobIcon);
+            _cardSystem.TryChangeJobIcon(uid, presetIcon ?? jobIcon);
     }
 }

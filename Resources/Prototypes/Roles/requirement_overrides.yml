@@ -1,16 +1,172 @@
 - type: jobRequirementOverride
-  id: Reduced
+  id: Mira
   jobs:
     Captain:
     - !type:DepartmentTimeRequirement
       department: Engineering
-      time: 3600 # 1 hours
+      time: 60
     - !type:DepartmentTimeRequirement
       department: Medical
-      time: 3600 # 1 hours
+      time: 60
     - !type:DepartmentTimeRequirement
       department: Security
-      time: 3600 # 1 hours
+      time: 60
     - !type:DepartmentTimeRequirement
       department: Command
-      time: 3600 # 1 hour
+      time: 60
+    HeadOfPersonnel:
+    - !type:DepartmentTimeRequirement
+      department: Engineering
+      time: 60
+    - !type:DepartmentTimeRequirement
+      department: Medical
+      time: 60
+    - !type:DepartmentTimeRequirement
+      department: Security
+      time: 60
+    - !type:DepartmentTimeRequirement
+      department: Command
+      time: 60
+    ChiefEngineer:
+    - !type:RoleTimeRequirement
+      role: JobAtmosphericTechnician
+      time: 10
+    - !type:RoleTimeRequirement
+      role: JobStationEngineer
+      time: 10
+    - !type:DepartmentTimeRequirement
+      department: Engineering
+      time: 10
+    - !type:OverallPlaytimeRequirement
+      time: 60
+    ChiefMedicalOfficer:
+    - !type:RoleTimeRequirement
+      role: JobChemist
+      time: 10
+    - !type:RoleTimeRequirement
+      role: JobMedicalDoctor
+      time: 10
+    - !type:DepartmentTimeRequirement
+      department: Medical
+      time: 10
+    - !type:OverallPlaytimeRequirement
+      time: 60
+    HeadOfSecurity:
+    - !type:RoleTimeRequirement
+      role: JobWarden
+      time: 10
+    - !type:RoleTimeRequirement
+      role: JobSecurityOfficer
+      time: 10
+    - !type:DepartmentTimeRequirement
+      department: Security
+      time: 10
+    - !type:OverallPlaytimeRequirement
+      time: 60
+    Quartermaster:
+    - !type:RoleTimeRequirement
+      role: JobCargoTechnician
+      time: 10
+    - !type:RoleTimeRequirement
+      role: JobSalvageSpecialist
+      time: 10
+    - !type:DepartmentTimeRequirement
+      department: Cargo
+      time: 0
+    - !type:OverallPlaytimeRequirement
+      time: 60
+    ResearchDirector:
+    - !type:DepartmentTimeRequirement
+      department: Science
+      time: 10
+    - !type:OverallPlaytimeRequirement
+      time: 60
+    Brigmedic:
+    - !type:DepartmentTimeRequirement
+      department: Medical
+      time: 10
+    - !type:DepartmentTimeRequirement
+      department: Security
+      time: 10
+    Detective:
+    - !type:DepartmentTimeRequirement
+      department: Security
+      time: 10
+    SecurityCadet:
+    - !type:OverallPlaytimeRequirement
+      time: 10
+    SecurityOfficer:
+    - !type:DepartmentTimeRequirement
+      department: Security
+      time: 10
+    Warden:
+    - !type:RoleTimeRequirement
+      role: JobSecurityOfficer
+      time: 10
+    SalvageSpecialist:
+    - !type:DepartmentTimeRequirement
+      department: Cargo
+      time: 10
+    - !type:OverallPlaytimeRequirement
+      time: 10
+    AtmosphericTechnician:
+    - !type:DepartmentTimeRequirement
+      department: Engineering
+      time: 10
+    StationEngineer:
+    - !type:DepartmentTimeRequirement
+      department: Engineering
+      time: 10
+    TechnicalAssistant:
+    - !type:OverallPlaytimeRequirement
+      time: 10
+    Chemist:
+    - !type:DepartmentTimeRequirement
+      department: Medical
+      time: 10
+    MedicalDoctor:
+    - !type:DepartmentTimeRequirement
+      department: Medical
+      time: 10
+    Paramedic:
+    - !type:RoleTimeRequirement
+      role: JobMedicalDoctor
+      time: 10
+    - !type:OverallPlaytimeRequirement
+      time: 10
+    Scientist:
+    - !type:DepartmentTimeRequirement
+      department: Science
+      time: 10
+    Bartender:
+    - !type:DepartmentTimeRequirement
+      department: Civilian
+      time: 0
+    Borg:
+    - !type:OverallPlaytimeRequirement
+      time: 10
+    Chef:
+    - !type:DepartmentTimeRequirement
+      department: Civilian
+      time: 0
+    Lawyer:
+    - !type:OverallPlaytimeRequirement
+      time: 10
+    Mime:
+    - !type:OverallPlaytimeRequirement
+      time: 0
+    Nukeops:
+    - !type:OverallPlaytimeRequirement
+      time: 10
+    NukeopsMedic:
+    - !type:OverallPlaytimeRequirement
+      time: 10
+    - !type:RoleTimeRequirement
+      role: JobChemist
+      time: 10
+    NukeopsCommander:
+    - !type:OverallPlaytimeRequirement
+      time: 10
+    - !type:DepartmentTimeRequirement
+      department: Security
+      time: 10
