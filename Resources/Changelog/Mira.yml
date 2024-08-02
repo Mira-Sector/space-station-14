@@ -301,3 +301,17 @@ Entries:
     type: Tweak
   id: 47
   time: '2024-07-31T16:37:00.0000000+00:00'
+- author: Cojoke-dot
+  changes:
+  - message: Smart-Equip now takes the gun or light out of the slot rather than the items inventory.
+    type: Tweak
+  id: 48
+  time: '2024-08-02T01:37:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added keybind to smart equip the suit storage
+    type: Add
+  - message: Added keybind to open the storage of the outerclothing
+    type: Add
+  id: 49
+  time: '2024-08-02T01:37:00.0000000+00:00'
