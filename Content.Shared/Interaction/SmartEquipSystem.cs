@@ -165,13 +165,10 @@ public sealed class SmartEquipSystem : EntitySystem
         }
 
         // case 3 (itemslot item):
-        if (TryComp<ItemSlotsComponent>(slotItem, out var slots))
+        if (TryComp<ItemSlotsComponent>(slotItem, out var slots) && HasComp<SmartEquipItemSlotComponent>(slotItem))
         {
             if (handItem == null)
             {
-                if (!HasComp<SmartEquipItemSlotComponent>(slotItem))
-                    return;
-
                 ItemSlot? toEjectFrom = null;
 
                 foreach (var slot in slots.Slots.Values)
