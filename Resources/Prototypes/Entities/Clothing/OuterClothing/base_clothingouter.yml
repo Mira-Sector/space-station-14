@@ -156,6 +156,10 @@
     size: Huge
   - type: ClothingRequiredStepTriggerImmune
     slots: WITHOUT_POCKET
+  - type: Tag
+    tags:
+    - SuitEVA
+    - WhitelistChameleon
 
 - type: entity
   parent: ClothingOuterBase
