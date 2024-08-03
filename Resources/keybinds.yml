@@ -1,4 +1,4 @@
-﻿version: 1 # Not used right now, whatever.
+version: 1 # Not used right now, whatever.
 binds:
 - function: UIClick
   type: State
@@ -251,6 +251,10 @@ binds:
   type: State
   key: E
   mod1: Shift
+- function: SmartEquipSuitStorage
+  type: State
+  key: C
+  mod1: Shift
 - function: OpenBackpack
   type: State
   key: V
@@ -258,6 +262,10 @@ binds:
   type: State
   key: V
   mod1: Shift
+- function: OpenOuterClothing
+  type: State
+  key: C
+  mod1: Alt
 - function: ShowDebugConsole
   type: State
   key: Tilde

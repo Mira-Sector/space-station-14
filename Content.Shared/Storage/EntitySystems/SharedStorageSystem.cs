@@ -133,6 +133,7 @@ public abstract class SharedStorageSystem : EntitySystem
         CommandBinds.Builder
             .Bind(ContentKeyFunctions.OpenBackpack, InputCmdHandler.FromDelegate(HandleOpenBackpack, handle: false))
             .Bind(ContentKeyFunctions.OpenBelt, InputCmdHandler.FromDelegate(HandleOpenBelt, handle: false))
+            .Bind(ContentKeyFunctions.OpenOuterClothing, InputCmdHandler.FromDelegate(HandleOpenOuterClothing, handle: false))
             .Register<SharedStorageSystem>();
 
         UpdatePrototypeCache();
@@ -1447,6 +1448,11 @@ public abstract class SharedStorageSystem : EntitySystem
     private void HandleOpenBelt(ICommonSession? session)
     {
         HandleToggleSlotUI(session, "belt");
+    }
+
+    private void HandleOpenOuterClothing(ICommonSession? session)
+    {
+        HandleToggleSlotUI(session, "outerClothing");
     }
 
     private void HandleToggleSlotUI(ICommonSession? session, string slot)

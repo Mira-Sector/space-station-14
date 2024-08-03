@@ -149,8 +149,10 @@ ui-options-static-storage-ui = Lock storage window to hotbar
 
 ui-options-function-smart-equip-backpack = Smart-equip to backpack
 ui-options-function-smart-equip-belt = Smart-equip to belt
+ui-options-function-smart-equip-suit-storage = Smart-equip to suit storage
 ui-options-function-open-backpack = Open backpack
 ui-options-function-open-belt = Open belt
+ui-options-function-open-outer-clothing = Open outer clothing
 ui-options-function-throw-item-in-hand = Throw item
 ui-options-function-try-pull-object = Pull object
 ui-options-function-move-pulled-object = Move pulled object
