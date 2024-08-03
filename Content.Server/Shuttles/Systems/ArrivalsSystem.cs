@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Numerics;
 using Content.Server.Administration;
+using Content.Server.Chat.Managers;
 using Content.Server.DeviceNetwork.Components;
 using Content.Server.DeviceNetwork.Systems;
 using Content.Server.GameTicking;
@@ -29,6 +30,7 @@ using Robust.Shared.Collections;
 using Robust.Shared.Configuration;
 using Robust.Shared.Console;
 using Robust.Shared.Map;
+using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
@@ -47,6 +49,7 @@ public sealed class ArrivalsSystem : EntitySystem
     [Dependency] private readonly IMapManager _mapManager = default!;
     [Dependency] private readonly IPrototypeManager _protoManager = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private readonly IChatManager _chat = default!;
     [Dependency] private readonly BiomeSystem _biomes = default!;
     [Dependency] private readonly GameTicker _ticker = default!;
     [Dependency] private readonly MapLoaderSystem _loader = default!;
@@ -56,6 +59,7 @@ public sealed class ArrivalsSystem : EntitySystem
     [Dependency] private readonly StationSpawningSystem _stationSpawning = default!;
     [Dependency] private readonly StationSystem _station = default!;
     [Dependency] private readonly SharedGameTicker _gameTicker = default!;
+    [Dependency] private readonly ActorSystem _actor = default!;
 
     private EntityQuery<PendingClockInComponent> _pendingQuery;
     private EntityQuery<ArrivalsBlacklistComponent> _blacklistQuery;
@@ -300,16 +304,20 @@ public sealed class ArrivalsSystem : EntitySystem
     private void DumpChildren(EntityUid uid, ref FTLStartedEvent args)
     {
         var toDump = new List<Entity<TransformComponent>>();
-        DumpChildren(uid, ref args, toDump);
+        FindDumpChildren(uid, toDump);
         foreach (var (ent, xform) in toDump)
         {
             var rotation = xform.LocalRotation;
             _transform.SetCoordinates(ent, new EntityCoordinates(args.FromMapUid!.Value, Vector2.Transform(xform.LocalPosition, args.FTLFrom)));
             _transform.SetWorldRotation(ent, args.FromRotation + rotation);
+            if (_actor.TryGetSession(ent, out var session))
+            {
+                _chat.DispatchServerMessage(session!, Loc.GetString("latejoin-arrivals-dumped-from-shuttle"));
+            }
         }
     }
 
-    private void DumpChildren(EntityUid uid, ref FTLStartedEvent args, List<Entity<TransformComponent>> toDump)
+    private void FindDumpChildren(EntityUid uid, List<Entity<TransformComponent>> toDump)
     {
         if (_pendingQuery.HasComponent(uid))
             return;
@@ -325,7 +333,7 @@ public sealed class ArrivalsSystem : EntitySystem
         var children = xform.ChildEnumerator;
         while (children.MoveNext(out var child))
         {
-            DumpChildren(child, ref args, toDump);
+            FindDumpChildren(child, toDump);
         }
     }
 
@@ -401,6 +409,10 @@ public sealed class ArrivalsSystem : EntitySystem
         {
             // Move the player to a random late-join spawnpoint.
             _transform.SetCoordinates(player, transform, _random.Pick(possiblePositions));
+            if (_actor.TryGetSession(player, out var session))
+            {
+                _chat.DispatchServerMessage(session!, Loc.GetString("latejoin-arrivals-teleport-to-spawn"));
+            }
             return true;
         }
 
@@ -485,8 +497,6 @@ public sealed class ArrivalsSystem : EntitySystem
     private void OnRoundStarting(RoundStartingEvent ev)
     {
         ArrivalsCutoff = _timing.CurTime.Subtract(_gameTicker.RoundStartTimeSpan).Minutes + Forced;
-
-        Log.Debug($"ArrivalsCutoff: {ArrivalsCutoff}");
 
         // Setup arrivals station
         if (!Enabled)
