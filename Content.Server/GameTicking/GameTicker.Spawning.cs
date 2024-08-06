@@ -345,15 +345,10 @@ namespace Content.Server.GameTicking
                         Log.Warning($"Unable to find loadout prototype for {items.Prototype}");
                         continue;
                     }
-                    if (!_prototypeManager.TryIndex(loadoutProto.Equipment, out var startingGear))
-                    {
-                        Log.Warning($"Unable to find starting gear {loadoutProto.Equipment} for loadout {loadoutProto}");
-                        continue;
-                    }
-                    var entProtoId = startingGear.GetGear("id");
+
+                    var entProtoId = ((IEquipmentLoadout) loadoutProto).GetGear("id");
                     if (!_prototypeManager.TryIndex<EntityPrototype>(entProtoId, out var idProto))
                     {
-                        Log.Warning($"Unable to find prototype for {startingGear} for starting gear {loadoutProto.Equipment} for loadout {loadoutProto}");
                         continue;
                     }
                     if (idProto.TryGetComponent<PdaComponent>(out var pdaComponent, _componentFactory) && pdaComponent.IdCard != null)
