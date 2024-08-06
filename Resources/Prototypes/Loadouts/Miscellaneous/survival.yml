@@ -105,26 +105,18 @@
 # Brigmed
 - type: loadout
   id: EmergencyOxygenBrigmedic
-  equipment: EmergencyOxygenBrigmedic
   effects:
   - !type:GroupLoadoutEffect
     proto: OxygenBreather
-
-- type: startingGear
-  id: EmergencyOxygenBrigmedic
   storage:
     back:
     - BoxSurvivalBrigmedic
 
 - type: loadout
   id: EmergencyNitrogenBrigmedic
-  equipment: EmergencyNitrogenBrigmedic
   effects:
   - !type:GroupLoadoutEffect
     proto: NitrogenBreather
-
-- type: startingGear
-  id: EmergencyNitrogenBrigmedic
   storage:
     back:
     - BoxSurvivalBrigmedicNitrogen
@@ -214,12 +206,8 @@
 
 - type: loadout
   id: LoadoutSpeciesBreathToolBrigmedic
-  equipment: GearSpeciesBreathToolBrigmedic
   effects:
   - !type:GroupLoadoutEffect
     proto: EffectSpeciesVox
-
-- type: startingGear
-  id: GearSpeciesBreathToolBrigmedic
   equipment:
     mask: ClothingMaskBreathMedicalSecurity

@@ -139,10 +139,6 @@
 
 - type: loadout
   id: ClothingNeckGodoPin
-  equipment: ClothingNeckGodoPin
-
-- type: startingGear
-  id: ClothingNeckGodoPin
   storage:
     back:
     - ClothingNeckGodoPin
