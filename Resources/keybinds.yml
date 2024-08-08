@@ -113,6 +113,9 @@ binds:
 - function: FocusWhisperChatWindow
   type: State
   key: Comma
+- function: FocusSpeciesChatWindow
+  type: State
+  key: F2
 - function: FocusRadioWindow
   type: State
   key: SemiColon

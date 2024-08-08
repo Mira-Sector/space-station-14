@@ -24,6 +24,7 @@ using Content.Shared.Interaction;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Players;
 using Content.Shared.Radio;
+using Content.Shared.SpeciesChat;
 using Content.Shared.Speech;
 using Content.Shared.Whitelist;
 using Robust.Server.Player;
@@ -238,9 +239,14 @@ public sealed partial class ChatSystem : SharedChatSystem
         // This message may have a radio prefix, and should then be whispered to the resolved radio channel
         if (checkRadioPrefix)
         {
-            if (TryProccessRadioMessage(source, message, out var modMessage, out var channel))
+            if (TryProccessRadioMessage(source, message, out var modMessage, out var channelRadio))
             {
-                SendEntityWhisper(source, modMessage, range, channel, nameOverride, hideLog, ignoreActionBlocker);
+                SendEntityWhisper(source, modMessage, range, channelRadio, nameOverride, hideLog, ignoreActionBlocker);
+                return;
+            }
+            if (TryProccessSpeciesMessage(source, message, out modMessage, out var channelSpecies))
+            {
+                SendEntitySpecies(source, modMessage, range, channelSpecies, nameOverride, hideLog, ignoreActionBlocker);
                 return;
             }
         }
@@ -426,7 +432,7 @@ public sealed partial class ChatSystem : SharedChatSystem
 
         SendInVoiceRange(ChatChannel.Local, message, wrappedMessage, source, range);
 
-        var ev = new EntitySpokeEvent(source, message, null, null);
+        var ev = new EntitySpokeEvent(source, message, null, null, null);
         RaiseLocalEvent(source, ev, true);
 
         // To avoid logging any messages sent by entities that are not players, like vendors, cloning, etc.
@@ -520,7 +526,7 @@ public sealed partial class ChatSystem : SharedChatSystem
 
         _replay.RecordServerMessage(new ChatMessage(ChatChannel.Whisper, message, wrappedMessage, GetNetEntity(source), null, MessageRangeHideChatForReplay(range)));
 
-        var ev = new EntitySpokeEvent(source, message, channel, obfuscatedMessage);
+        var ev = new EntitySpokeEvent(source, message, channel, null, obfuscatedMessage);
         RaiseLocalEvent(source, ev, true);
         if (!hideLog)
             if (originalMessage == message)
@@ -538,6 +544,95 @@ public sealed partial class ChatSystem : SharedChatSystem
                 else
                     _adminLogger.Add(LogType.Chat, LogImpact.Low,
                     $"Whisper from {ToPrettyString(source):user}, original: {originalMessage}, transformed: {message}.");
+            }
+    }
+
+    private void SendEntitySpecies(
+        EntityUid source,
+        string originalMessage,
+        ChatTransmitRange range,
+        SpeciesChannelPrototype? channel,
+        string? nameOverride,
+        bool hideLog = false,
+        bool ignoreActionBlocker = false
+        )
+    {
+        if (!_actionBlocker.CanSpeak(source) && !ignoreActionBlocker)
+            return;
+
+        var message = TransformSpeech(source, FormattedMessage.RemoveMarkup(originalMessage));
+        if (message.Length == 0)
+            return;
+
+        var obfuscatedMessage = ObfuscateMessageSpecies(message);
+
+        // get the entity's name by visual identity (if no override provided).
+        string nameIdentity = FormattedMessage.EscapeText(nameOverride ?? Identity.Name(source, EntityManager));
+        // get the entity's name by voice (if no override provided).
+        string name;
+        if (nameOverride != null)
+        {
+            name = nameOverride;
+        }
+        else
+        {
+            var nameEv = new TransformSpeakerNameEvent(source, Name(source));
+            RaiseLocalEvent(source, nameEv);
+            name = nameEv.Name;
+        }
+        name = FormattedMessage.EscapeText(name);
+
+        var wrappedMessage = Loc.GetString("chat-manager-entity-whisper-wrap-message",
+            ("entityName", name), ("message", FormattedMessage.EscapeText(message)));
+
+        var wrappedobfuscatedMessage = Loc.GetString("chat-manager-entity-whisper-wrap-message",
+            ("entityName", nameIdentity), ("message", FormattedMessage.EscapeText(obfuscatedMessage)));
+
+        var wrappedUnknownMessage = Loc.GetString("chat-manager-entity-whisper-unknown-wrap-message",
+            ("message", FormattedMessage.EscapeText(obfuscatedMessage)));
+
+
+        foreach (var (session, data) in GetRecipients(source, WhisperMuffledRange))
+        {
+            EntityUid listener;
+
+            if (session.AttachedEntity is not { Valid: true } playerEntity)
+                continue;
+            listener = session.AttachedEntity.Value;
+
+            if (MessageRangeCheck(session, data, range) != MessageRangeCheckResult.Full)
+                continue; // Won't get logged to chat, and ghosts are too far away to see the pop-up, so we just won't send it to them.
+
+            if (data.Range <= WhisperClearRange)
+                _chatManager.ChatMessageToOne(ChatChannel.Whisper, message, wrappedMessage, source, false, session.Channel);
+            //If listener is too far, they only hear fragments of the message
+            else if (_examineSystem.InRangeUnOccluded(source, listener, WhisperMuffledRange))
+                _chatManager.ChatMessageToOne(ChatChannel.Whisper, obfuscatedMessage, wrappedobfuscatedMessage, source, false, session.Channel);
+            //If listener is too far and has no line of sight, they can't identify the whisperer's identity
+            else
+                _chatManager.ChatMessageToOne(ChatChannel.Whisper, obfuscatedMessage, wrappedUnknownMessage, source, false, session.Channel);
+        }
+
+        _replay.RecordServerMessage(new ChatMessage(ChatChannel.Whisper, message, wrappedMessage, GetNetEntity(source), null, MessageRangeHideChatForReplay(range)));
+
+        var ev = new EntitySpokeEvent(source, message, null, channel, obfuscatedMessage);
+        RaiseLocalEvent(source, ev, true);
+        if (!hideLog)
+            if (originalMessage == message)
+            {
+                if (name != Name(source))
+                    _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Species message from {ToPrettyString(source):user} as {name}: {originalMessage}.");
+                else
+                    _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Species message from {ToPrettyString(source):user}: {originalMessage}.");
+            }
+            else
+            {
+                if (name != Name(source))
+                    _adminLogger.Add(LogType.Chat, LogImpact.Low,
+                    $"Species message from {ToPrettyString(source):user} as {name}, original: {originalMessage}, transformed: {message}.");
+                else
+                    _adminLogger.Add(LogType.Chat, LogImpact.Low,
+                    $"Species message from {ToPrettyString(source):user}, original: {originalMessage}, transformed: {message}.");
             }
     }
 
@@ -859,6 +954,12 @@ public sealed partial class ChatSystem : SharedChatSystem
         return modifiedMessage.ToString();
     }
 
+    private string ObfuscateMessageSpecies(string message)
+    {
+        string msg = "what if instead of school we had SKIBIDI SCHOOL!!! the principle would be DaFuq!?Boom! and the teachers would be the skibid camera men!!! they would teach us about skibidi toilet origins and the lore. the bullies would be the skibidi toilets!! and every once in a while the skibidi toilets will invade school sometimes!!! if this was school i would want to go to it EVERY DAY!!!";
+        return msg;
+    }
+
     public string BuildGibberishString(IReadOnlyList<char> charOptions, int length)
     {
         var sb = new StringBuilder();
@@ -934,13 +1035,15 @@ public sealed class EntitySpokeEvent : EntityEventArgs
     ///     If the entity was trying to speak into a radio, this was the channel they were trying to access. If a radio
     ///     message gets sent on this channel, this should be set to null to prevent duplicate messages.
     /// </summary>
-    public RadioChannelPrototype? Channel;
+    public RadioChannelPrototype? RadioChannel;
+    public SpeciesChannelPrototype? SpeciesChannel;
 
-    public EntitySpokeEvent(EntityUid source, string message, RadioChannelPrototype? channel, string? obfuscatedMessage)
+    public EntitySpokeEvent(EntityUid source, string message, RadioChannelPrototype? radioChannel, SpeciesChannelPrototype? speciesChannel, string? obfuscatedMessage)
     {
         Source = source;
         Message = message;
-        Channel = channel;
+        RadioChannel = radioChannel;
+        SpeciesChannel = speciesChannel;
         ObfuscatedMessage = obfuscatedMessage;
     }
 }
@@ -953,7 +1056,8 @@ public enum InGameICChatType : byte
 {
     Speak,
     Emote,
-    Whisper
+    Whisper,
+    Species
 }
 
 /// <summary>

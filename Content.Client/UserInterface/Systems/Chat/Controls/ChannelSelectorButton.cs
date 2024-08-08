@@ -68,9 +68,21 @@ public sealed class ChannelSelectorButton : ChatPopupButton<ChannelSelectorPopup
         };
     }
 
-    public void UpdateChannelSelectButton(ChatSelectChannel channel, Shared.Radio.RadioChannelPrototype? radio)
+    public void UpdateChannelSelectButton(ChatSelectChannel channel, Shared.Radio.RadioChannelPrototype? radio, Shared.SpeciesChat.SpeciesChannelPrototype? species)
     {
-        Text = radio != null ? Loc.GetString(radio.Name) : ChannelSelectorName(channel);
+        if (radio != null)
+        {
+            Text = Loc.GetString(radio.Name);
+        }
+        else if (species != null)
+        {
+            Text = Loc.GetString(species.Name);
+        }
+        else
+        {
+            Text = ChannelSelectorName(channel);
+        }
+
         Modulate = radio?.Color ?? ChannelSelectColor(channel);
     }
 }

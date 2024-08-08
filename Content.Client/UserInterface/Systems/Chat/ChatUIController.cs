@@ -20,6 +20,7 @@ using Content.Shared.Damage.ForceSay;
 using Content.Shared.Decals;
 using Content.Shared.Input;
 using Content.Shared.Radio;
+using Content.Shared.SpeciesChat;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Client.Input;
@@ -75,6 +76,7 @@ public sealed class ChatUIController : UIController
         {SharedChatSystem.ConsolePrefix, ChatSelectChannel.Console},
         {SharedChatSystem.LOOCPrefix, ChatSelectChannel.LOOC},
         {SharedChatSystem.OOCPrefix, ChatSelectChannel.OOC},
+        {SharedChatSystem.SpeciesChannelPrefix, ChatSelectChannel.Species},
         {SharedChatSystem.EmotesPrefix, ChatSelectChannel.Emotes},
         {SharedChatSystem.EmotesAltPrefix, ChatSelectChannel.Emotes},
         {SharedChatSystem.AdminPrefix, ChatSelectChannel.Admin},
@@ -89,6 +91,7 @@ public sealed class ChatUIController : UIController
         {ChatSelectChannel.Console, SharedChatSystem.ConsolePrefix},
         {ChatSelectChannel.LOOC, SharedChatSystem.LOOCPrefix},
         {ChatSelectChannel.OOC, SharedChatSystem.OOCPrefix},
+        {ChatSelectChannel.Species, SharedChatSystem.SpeciesChannelPrefix},
         {ChatSelectChannel.Emotes, SharedChatSystem.EmotesPrefix},
         {ChatSelectChannel.Admin, SharedChatSystem.AdminPrefix},
         {ChatSelectChannel.Radio, SharedChatSystem.RadioCommonPrefix},
@@ -197,6 +200,9 @@ public sealed class ChatUIController : UIController
 
         _input.SetInputCommand(ContentKeyFunctions.FocusWhisperChat,
             InputCmdHandler.FromDelegate(_ => FocusChannel(ChatSelectChannel.Whisper)));
+
+        _input.SetInputCommand(ContentKeyFunctions.FocusSpeciesChat,
+            InputCmdHandler.FromDelegate(_ => FocusChannel(ChatSelectChannel.Species)));
 
         _input.SetInputCommand(ContentKeyFunctions.FocusLOOC,
             InputCmdHandler.FromDelegate(_ => FocusChannel(ChatSelectChannel.LOOC)));
@@ -525,6 +531,7 @@ public sealed class ChatUIController : UIController
             FilterableChannels |= ChatChannel.Whisper;
             FilterableChannels |= ChatChannel.Radio;
             FilterableChannels |= ChatChannel.Emotes;
+            FilterableChannels |= ChatChannel.Species;
             FilterableChannels |= ChatChannel.Notifications;
 
             // Can only send local / radio / emote when attached to a non-ghost entity.
@@ -535,6 +542,7 @@ public sealed class ChatUIController : UIController
                 CanSendChannels |= ChatSelectChannel.Whisper;
                 CanSendChannels |= ChatSelectChannel.Radio;
                 CanSendChannels |= ChatSelectChannel.Emotes;
+                CanSendChannels |= ChatSelectChannel.Species;
             }
         }
 
@@ -683,46 +691,71 @@ public sealed class ChatUIController : UIController
            && _chatSys.TryProccessRadioMessage(uid, text, out _, out radioChannel, quiet: true);
     }
 
-    public void UpdateSelectedChannel(ChatBox box)
+    private bool TryGetSpeciesChannel(string text, out SpeciesChannelPrototype? speciesChannel)
     {
-        var (prefixChannel, _, radioChannel) = SplitInputContents(box.ChatInput.Input.Text.ToLower());
-
-        if (prefixChannel == ChatSelectChannel.None)
-            box.ChatInput.ChannelSelector.UpdateChannelSelectButton(box.SelectedChannel, null);
-        else
-            box.ChatInput.ChannelSelector.UpdateChannelSelectButton(prefixChannel, radioChannel);
+        speciesChannel = null;
+        return _player.LocalEntity is EntityUid { Valid: true } uid
+           && _chatSys != null
+           && _chatSys.TryProccessSpeciesMessage(uid, text, out _, out speciesChannel, quiet: true);
     }
 
-    public (ChatSelectChannel chatChannel, string text, RadioChannelPrototype? radioChannel) SplitInputContents(string text)
+    public void UpdateSelectedChannel(ChatBox box)
+    {
+        var (prefixChannel, _, radioChannel, speciesChannel) = SplitInputContents(box.ChatInput.Input.Text.ToLower());
+
+        switch (prefixChannel)
+        {
+            case ChatSelectChannel.None:
+                box.ChatInput.ChannelSelector.UpdateChannelSelectButton(box.SelectedChannel, null, null);
+                break;
+            case ChatSelectChannel.Radio:
+                box.ChatInput.ChannelSelector.UpdateChannelSelectButton(prefixChannel, radioChannel, null);
+                break;
+            case ChatSelectChannel.Species:
+                box.ChatInput.ChannelSelector.UpdateChannelSelectButton(prefixChannel, null, speciesChannel);
+                break;
+        }
+    }
+
+    public (ChatSelectChannel chatChannel, string text, RadioChannelPrototype? radioChannel, SpeciesChannelPrototype? speciesChannel) SplitInputContents(string text)
     {
         text = text.Trim();
         if (text.Length == 0)
-            return (ChatSelectChannel.None, text, null);
+            return (ChatSelectChannel.None, text, null, null);
 
         // We only cut off prefix only if it is not a radio or local channel, which both map to the same /say command
         // because ????????
 
-        ChatSelectChannel chatChannel;
+        ChatSelectChannel chatChannel = PrefixToChannel.GetValueOrDefault(text[0]);
         if (TryGetRadioChannel(text, out var radioChannel))
+        {
             chatChannel = ChatSelectChannel.Radio;
-        else
-            chatChannel = PrefixToChannel.GetValueOrDefault(text[0]);
+        }
+
+        if (TryGetSpeciesChannel(text, out var speciesChannel))
+        {
+            chatChannel = ChatSelectChannel.Species;
+        }
 
         if ((CanSendChannels & chatChannel) == 0)
-            return (ChatSelectChannel.None, text, null);
+            return (ChatSelectChannel.None, text, null, null);
 
         if (chatChannel == ChatSelectChannel.Radio)
-            return (chatChannel, text, radioChannel);
+            return (chatChannel, text, radioChannel, null);
+
+        if (chatChannel == ChatSelectChannel.Species)
+            return (chatChannel, text, null, speciesChannel);
+
 
         if (chatChannel == ChatSelectChannel.Local)
         {
             if (_ghost?.IsGhost != true)
-                return (chatChannel, text, null);
+                return (chatChannel, text, null, null);
             else
                 chatChannel = ChatSelectChannel.Dead;
         }
 
-        return (chatChannel, text[1..].TrimStart(), null);
+        return (chatChannel, text[1..].TrimStart(), null, null);
     }
 
     public void SendMessage(ChatBox box, ChatSelectChannel channel)
@@ -737,7 +770,7 @@ public sealed class ChatUIController : UIController
         if (string.IsNullOrWhiteSpace(text))
             return;
 
-        (var prefixChannel, text, var _) = SplitInputContents(text);
+        (var prefixChannel, text, var _, var _) = SplitInputContents(text);
 
         // Check if message is longer than the character limit
         if (text.Length > MaxMessageLength)
@@ -754,6 +787,10 @@ public sealed class ChatUIController : UIController
         {
             // radio must have prefix as it goes through the say command.
             text = $";{text}";
+        }
+        else if (channel == ChatSelectChannel.Species)
+        {
+            text = $"#h{text}";
         }
 
         _manager.SendMessage(text, prefixChannel == 0 ? channel : prefixChannel);

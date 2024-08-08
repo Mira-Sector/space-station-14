@@ -47,6 +47,10 @@ namespace Content.Client.Chat.Managers
                     _consoleHost.ExecuteCommand($"me \"{CommandParsing.Escape(str)}\"");
                     break;
 
+                case ChatSelectChannel.Species:
+                    _consoleHost.ExecuteCommand($"species \"{CommandParsing.Escape(str)}\"");
+                    break;
+
                 case ChatSelectChannel.Dead:
                     if (_systems.GetEntitySystemOrNull<GhostSystem>() is {IsGhost: true})
                         goto case ChatSelectChannel.Local;
