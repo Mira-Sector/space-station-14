@@ -24,6 +24,11 @@
   equipment:
     head: ClothingHeadHatCargosoft
 
+- type: loadout
+  id: SeniorCargoHead
+  equipment:
+    head: ClothingHeadHatSeniorCargo
+
 # Jumpsuit
 - type: loadout
   id: CargoTechnicianJumpsuit
