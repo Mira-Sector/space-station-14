@@ -268,8 +268,8 @@
 - type: entity
   id: CrateNPCFriendlyTarantulas
   parent: CrateLivestock
-  name: friendly tarantulas crate
-  description: A crate containing a pair of Domesticated Giant Tarantulas. Awww?.
+  name: domesticated tarantulas crate
+  description: A crate containing a pair of Domesticated™ Giant Tarantulas. Awww?.
   components:
   - type: StorageFill
     contents:
