@@ -209,6 +209,7 @@
   - CargoTechnicianBackpack
   - CargoTechnicianOuterClothing
   - CargoTechnicianShoes
+  - CargoTechnicianPDA
   - Glasses
   - Survival
   - Trinkets
@@ -220,6 +221,7 @@
   - GroupTankHarness
   - SalvageSpecialistBackpack
   - SalvageSpecialistOuterClothing
+  - SalvageSpecialistNeck
   - SalvageSpecialistShoes
   - Glasses
   - Survival

@@ -321,3 +321,9 @@ Entries:
     type: Add
   id: 50
   time: '2024-08-09T18:04:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added senior cargo loadouts
+    type: Add
+  id: 51
+  time: '2024-08-09T18:47:00.0000000+00:00'
