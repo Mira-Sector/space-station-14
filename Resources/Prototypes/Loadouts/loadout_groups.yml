@@ -568,6 +568,8 @@
   loadouts:
   - CargoTechnicianJumpsuit
   - CargoTechnicianJumpskirt
+  - SeniorCargoJumpsuit
+  - SeniorCargoJumpskirt
 
 - type: loadoutGroup
   id: CargoTechnicianBackpack
@@ -590,6 +592,13 @@
   loadouts:
   - BlackShoes
   - CargoWinterBoots
+
+- type: loadoutGroup
+  id: CargoTechnicianPDA
+  name: loadout-group-cargo-technician-id
+  loadouts:
+  - CargoTechnicianPDA
+  - SeniorCargoPDA
 
 - type: loadoutGroup
   id: SalvageSpecialistBackpack

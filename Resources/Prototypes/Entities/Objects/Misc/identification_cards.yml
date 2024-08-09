@@ -876,6 +876,19 @@
     jobIcon: JobIconSeniorOfficer
 
 - type: entity
+  parent: CargoIDCard
+  id: SeniorCargoIDCard
+  name: senior cargo ID card
+  components:
+  - type: Sprite
+    layers:
+    - state: default
+    - state: idseniorcargo
+  - type: PresetIdCard
+    jobName: job-name-senior-cargo
+    jobIcon: JobIconSeniorCargo
+
+- type: entity
   parent: IDCardStandard
   id: UniversalIDCard
   name: universal ID card

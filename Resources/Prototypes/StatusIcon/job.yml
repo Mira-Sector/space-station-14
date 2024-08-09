@@ -371,6 +371,13 @@
 
 - type: statusIcon
   parent: JobIcon
+  id: JobIconSeniorCargo
+  icon:
+    sprite: /Textures/Interface/Misc/job_icons.rsi
+    state: SeniorCargo
+
+- type: statusIcon
+  parent: JobIcon
   id: JobIconVisitor
   icon:
     sprite: /Textures/Interface/Misc/job_icons.rsi

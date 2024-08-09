@@ -648,6 +648,17 @@
 
 - type: entity
   parent: ClothingUniformSkirtBase
+  id: ClothingUniformJumpskirtSeniorCargo
+  name: senior cargo jumpskirt
+  description: A sign of skill and prestige within the cargo department.
+  components:
+  - type: Sprite
+    sprite: Clothing/Uniforms/Jumpskirt/senior_cargo.rsi
+  - type: Clothing
+    sprite: Clothing/Uniforms/Jumpskirt/senior_cargo.rsi
+
+- type: entity
+  parent: ClothingUniformSkirtBase
   id: ClothingUniformJumpskirtSecGrey
   name: grey security jumpskirt
   description: A tactical relic of years past before Nanotrasen decided it was cheaper to dye the suits red instead of washing out the blood.

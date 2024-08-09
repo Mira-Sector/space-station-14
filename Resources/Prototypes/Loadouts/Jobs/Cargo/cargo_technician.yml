@@ -1,3 +1,23 @@
+# Senior Time
+- type: loadoutEffectGroup
+  id: SeniorCargo
+  effects:
+  - !type:JobRequirementLoadoutEffect
+    requirement:
+      !type:RoleTimeRequirement
+      role: JobCargoTechnician
+      time: 0
+  - !type:JobRequirementLoadoutEffect
+    requirement:
+      !type:RoleTimeRequirement
+      role: JobSalvageSpecialist
+      time: 0
+  - !type:JobRequirementLoadoutEffect
+    requirement:
+      !type:DepartmentTimeRequirement
+      department: Cargo
+      time: 0
+
 # Head
 - type: loadout
   id: CargoTechnicianHead
@@ -14,6 +34,22 @@
   id: CargoTechnicianJumpskirt
   equipment:
     jumpsuit: ClothingUniformJumpskirtCargo
+
+- type: loadout
+  id: SeniorCargoJumpsuit
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: SeniorCargo
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitSeniorCargo
+
+- type: loadout
+  id: SeniorCargoJumpskirt
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: SeniorCargo
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtSeniorCargo
 
 # Back
 - type: loadout
@@ -42,3 +78,17 @@
   id: CargoWinterBoots
   equipment:
     shoes: ClothingShoesBootsWinterCargo
+
+# ID
+- type: loadout
+  id: CargoTechnicianPDA
+  equipment:
+    id: CargoPDA
+
+- type: loadout
+  id: SeniorCargoPDA
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: SeniorCargo
+  equipment:
+    id: SeniorCargoPDA
