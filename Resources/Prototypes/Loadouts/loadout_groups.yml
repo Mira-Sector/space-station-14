@@ -600,6 +600,13 @@
   - SalvageSpecialistDuffel
 
 - type: loadoutGroup
+  id: SalvageSpecialistNeck
+  name: loadout-group-salvage-specialist-neck
+  minLimit: 0
+  loadouts:
+  - SalvageSpecialistCloak
+
+- type: loadoutGroup
   id: SalvageSpecialistOuterClothing
   name: loadout-group-salvage-specialist-outerclothing
   minLimit: 0
