@@ -561,6 +561,7 @@
   minLimit: 0
   loadouts:
   - CargoTechnicianHead
+  - SeniorCargoHead
 
 - type: loadoutGroup
   id: CargoTechnicianJumpsuit
@@ -568,6 +569,8 @@
   loadouts:
   - CargoTechnicianJumpsuit
   - CargoTechnicianJumpskirt
+  - SeniorCargoJumpsuit
+  - SeniorCargoJumpskirt
 
 - type: loadoutGroup
   id: CargoTechnicianBackpack
@@ -592,12 +595,26 @@
   - CargoWinterBoots
 
 - type: loadoutGroup
+  id: CargoTechnicianPDA
+  name: loadout-group-cargo-technician-id
+  loadouts:
+  - CargoTechnicianPDA
+  - SeniorCargoPDA
+
+- type: loadoutGroup
   id: SalvageSpecialistBackpack
   name: loadout-group-salvage-specialist-backpack
   loadouts:
   - SalvageSpecialistBackpack
   - SalvageSpecialistSatchel
   - SalvageSpecialistDuffel
+
+- type: loadoutGroup
+  id: SalvageSpecialistNeck
+  name: loadout-group-salvage-specialist-neck
+  minLimit: 0
+  loadouts:
+  - SalvageSpecialistCloak
 
 - type: loadoutGroup
   id: SalvageSpecialistOuterClothing

@@ -1159,6 +1159,17 @@
 
 - type: entity
   parent: ClothingUniformBase
+  id: ClothingUniformJumpsuitSeniorCargo
+  name: senior cargo jumpsuit
+  description: A sign of skill and prestige within the cargo department.
+  components:
+  - type: Sprite
+    sprite: Clothing/Uniforms/Jumpsuit/senior_cargo.rsi
+  - type: Clothing
+    sprite: Clothing/Uniforms/Jumpsuit/senior_cargo.rsi
+
+- type: entity
+  parent: ClothingUniformBase
   id: ClothingUniformJumpsuitWeb
   name: web jumpsuit
   description: Makes it clear that you are one with the webs.
