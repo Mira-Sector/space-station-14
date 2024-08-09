@@ -231,7 +231,7 @@
 - type: cargoProduct
   id: LivestockFriendlyTarantulas
   icon:
-    sprite: Mobs\Animals\spider.rsi
+    sprite: Mobs/Animals/spider.rsi
     state: tarantula
   product: CrateNPCFriendlyTarantulas
   cost: 6000
