@@ -264,3 +264,14 @@
     contents:
       - id: MobMothroach
         amount: 4
+
+- type: entity
+  id: CrateNPCFriendlyTarantulas
+  parent: CrateLivestock
+  name: friendly tarantulas crate
+  description: A crate containing a pair of Domesticated Giant Tarantulas. Awww?.
+  components:
+  - type: StorageFill
+    contents:
+    - id: MobGiantSpider
+      amount: 2
