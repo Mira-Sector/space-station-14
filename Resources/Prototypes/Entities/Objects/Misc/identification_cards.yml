@@ -617,7 +617,7 @@
     - JobIconDetective
     - JobIconLawyer
 
-    - JobIconPassenger
+    - JobIconNanotrasen
     - JobIconCaptain
     - JobIconHeadOfPersonnel
 
@@ -630,7 +630,7 @@
     - JobIconParamedic
     - JobIconPsychologist
 
-    - JobIconClown
+    - JobIconPassenger
     - JobIconBotanist
     - JobIconBartender
 
@@ -643,7 +643,7 @@
 
     - JobIconLibrarian
     - JobIconChaplain
-    - JobIconMime
+    - JobIconClown
     - JobIconChef
     - JobIconZookeeper
 
@@ -653,20 +653,20 @@
     - JobIconScientist
     - JobIconResearchAssistant
 
-    # Cargo
-    - JobIconQuarterMaster
-    - JobIconCargoTechnician
-    - JobIconShaftMiner
-
     - JobIconJanitor
+    - JobIconBoxer
+    - JobIconMusician
+    - JobIconMime
     - JobIconReporter
     - JobIconServiceWorker
 
-    - JobIconNanotrasen
-    - JobIconVisitor
-    - JobIconBoxer
-    - JobIconMusician
+    # Cargo
+    - JobIconQuarterMaster
+    - JobIconSeniorCargo
+    - JobIconCargoTechnician
+    - JobIconShaftMiner
 
+    - JobIconVisitor
 
   - type: ActivatableUI
     key: enum.AgentIDCardUiKey.Key
