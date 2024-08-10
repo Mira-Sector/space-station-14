@@ -15,7 +15,7 @@ VERSION = os.environ['GITHUB_SHA']
 # Forks should change these to publish to their own infrastructure.
 #
 ROBUST_CDN_URL = "https://cdn.mira-sector.xyz/"
-FORK_ID = "Mira"
+FORK_ID = "mira"
 
 def main():
     print("Fetching artifact URL from API...")
