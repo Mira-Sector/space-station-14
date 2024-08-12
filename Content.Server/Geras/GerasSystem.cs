@@ -37,7 +37,6 @@ public sealed class GerasSystem : SharedGerasSystem
 
     private void OnMorphIntoGeras(EntityUid uid, GerasComponent component, MorphIntoGeras args)
     {
-
         var ent = _polymorphSystem.PolymorphEntity(uid, component.GerasPolymorphId);
 
         if (!ent.HasValue)

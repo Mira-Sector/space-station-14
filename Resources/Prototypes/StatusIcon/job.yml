@@ -435,8 +435,9 @@
   icon:
     sprite: /Textures/Interface/Misc/job_icons.rsi
     state: SeniorCargo
+  allowSelection: false
 
-- type: statusIcon
+- type: jobIcon
   parent: JobIcon
   id: JobIconVisitor
   icon:

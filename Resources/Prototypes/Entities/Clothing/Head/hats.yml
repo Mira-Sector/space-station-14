@@ -332,7 +332,6 @@
 
 - type: entity
   parent: [ClothingHeadBase, BaseCommandContraband]
-  id: ClothingHeadHatHoscap
   id: ClothingHeadHatHoshat
   name: head of security hat
   description: "There's a new sheriff in station."
