@@ -177,7 +177,6 @@
         Base: white_adult_slime
       Dead:
         Base: white_adult_slime_dead
-
   - type: Body
     prototype: Geras
     requiredLegs: 1

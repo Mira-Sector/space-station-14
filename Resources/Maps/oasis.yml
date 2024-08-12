@@ -14524,7 +14524,11 @@ entities:
       lastSignals:
         DoorStatus: True
     - type: Door
+<<<<<<< HEAD
       secondsUntilStateChange: -9611.3125
+=======
+      secondsUntilStateChange: -9307.528
+>>>>>>> 691e37c0dbdaa53fa29794fb86a17dd2c1b6f21d
       state: Opening
   - uid: 6934
     components:
@@ -14536,7 +14540,11 @@ entities:
       lastSignals:
         DoorStatus: True
     - type: Door
+<<<<<<< HEAD
       secondsUntilStateChange: -9613.946
+=======
+      secondsUntilStateChange: -9310.162
+>>>>>>> 691e37c0dbdaa53fa29794fb86a17dd2c1b6f21d
       state: Opening
   - uid: 6935
     components:
@@ -14548,7 +14556,11 @@ entities:
       lastSignals:
         DoorStatus: True
     - type: Door
+<<<<<<< HEAD
       secondsUntilStateChange: -9612.796
+=======
+      secondsUntilStateChange: -9309.012
+>>>>>>> 691e37c0dbdaa53fa29794fb86a17dd2c1b6f21d
       state: Opening
   - uid: 6936
     components:
@@ -14559,7 +14571,11 @@ entities:
       lastSignals:
         DoorStatus: True
     - type: Door
+<<<<<<< HEAD
       secondsUntilStateChange: -9612.013
+=======
+      secondsUntilStateChange: -9308.229
+>>>>>>> 691e37c0dbdaa53fa29794fb86a17dd2c1b6f21d
       state: Opening
 - proto: AirlockTheatreLocked
   entities:
@@ -92227,7 +92243,11 @@ entities:
       pos: -13.5,-1.5
       parent: 2
     - type: Door
+<<<<<<< HEAD
       secondsUntilStateChange: -935.2923
+=======
+      secondsUntilStateChange: -631.5082
+>>>>>>> 691e37c0dbdaa53fa29794fb86a17dd2c1b6f21d
       state: Closing
     - type: DeviceNetwork
       deviceLists:
@@ -136255,7 +136275,11 @@ entities:
       pos: 36.5,-35.5
       parent: 2
     - type: Door
+<<<<<<< HEAD
       secondsUntilStateChange: -37767.14
+=======
+      secondsUntilStateChange: -37463.355
+>>>>>>> 691e37c0dbdaa53fa29794fb86a17dd2c1b6f21d
       state: Opening
   - uid: 5211
     components:
@@ -137962,7 +137986,7 @@ entities:
     - type: Transform
       pos: 35.5,35.5
       parent: 2
-- proto: LogicGate
+- proto: LogicGateOr
   entities:
   - uid: 28922
     components:
@@ -157155,7 +157179,7 @@ entities:
   - uid: 28413
     components:
     - type: Transform
-      pos: 13.5,61.5
+      pos: 13.5,46.5
       parent: 2
   - uid: 28414
     components:
@@ -183857,7 +183881,11 @@ entities:
       pos: 24.5,2.5
       parent: 21002
     - type: Door
+<<<<<<< HEAD
       secondsUntilStateChange: -382971.72
+=======
+      secondsUntilStateChange: -382667.94
+>>>>>>> 691e37c0dbdaa53fa29794fb86a17dd2c1b6f21d
       state: Opening
   - uid: 28863
     components:

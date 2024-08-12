@@ -124,7 +124,7 @@
       - Screwdriver
       - Welder
       - Wrench
-      - Crowbar
+      - CrowbarGreen
       - Multitool
       - NetworkConfigurator
       - SprayPainter
@@ -277,6 +277,7 @@
     dynamicRecipes:
       - PowerDrill
       - MiningDrill
+      - MiningDrillDiamond
       - AnomalyScanner
       - AnomalyLocator
       - AnomalyLocatorWide
@@ -648,7 +649,7 @@
 - type: entity
   id: Biofabricator
   parent: BaseLathe
-  name: biofabricator
+  name: biocube fabricator
   description: Produces animal cubes using biomass.
   components:
   - type: Sprite
@@ -657,16 +658,20 @@
     layers:
     - state: icon
       map: ["enum.LatheVisualLayers.IsRunning"]
+      color: "#ffaa99"
     - state: unlit
       shader: unshaded
       map: ["enum.PowerDeviceVisualLayers.Powered"]
+      color: "#ffaaaa"
     - state: inserting
       map: ["enum.MaterialStorageVisualLayers.Inserting"]
+      color: "#ffaaaa"
     - state: panel
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: Machine
     board: BiofabricatorMachineCircuitboard
   - type: MaterialStorage
+    ignoreColor: true
     whitelist:
       tags:
         - Sheet
@@ -1052,7 +1057,6 @@
       - ClothingUniformJumpsuitWarden
       - ClothingUniformJumpskirtWarden
       - ClothingHeadHatParamedicsoft
-      # Winter outfits
       - ClothingOuterWinterCap
       - ClothingOuterWinterCE
       - ClothingOuterWinterCMO
@@ -1068,6 +1072,7 @@
       - ClothingNeckMantleHOS
       - ClothingNeckMantleRD
       - ClothingNeckMantleQM
+      # Winter outfits
       - ClothingNeckMantle
       - ClothingOuterWinterMusician
       - ClothingOuterWinterClown
