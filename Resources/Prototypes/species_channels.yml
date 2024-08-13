@@ -1,7 +1,7 @@
 - type: speciesChannel
   id: Common
   name: chat-species-common
-  code: "c"
+  code: "g"
 
 - type: speciesChannel
   id: Draconic
@@ -26,7 +26,7 @@
 - type: speciesChannel
   id: Monkey
   name: chat-species-monkey
-  code: "m"
+  code: "a"
 
 - type: speciesChannel
   id: Buzzwords

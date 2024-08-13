@@ -8,6 +8,7 @@ public sealed partial class SpeciesChannelPrototype : IPrototype
     /// <summary>
     /// Human-readable name for the channel.
     /// </summary>
+    [DataField]
     public LocId Name { get; private set; } = string.Empty;
 
     [ViewVariables(VVAccess.ReadOnly)]
@@ -16,6 +17,7 @@ public sealed partial class SpeciesChannelPrototype : IPrototype
     /// <summary>
     /// Single-character prefix to determine what channel a message should be sent to.
     /// </summary>
+    [DataField]
     public char Code { get; private set; } = '\0';
 
     [IdDataField, ViewVariables]
