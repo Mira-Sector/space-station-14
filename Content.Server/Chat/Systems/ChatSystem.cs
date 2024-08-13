@@ -57,6 +57,7 @@ public sealed partial class ChatSystem : SharedChatSystem
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly IAdminLogManager _adminLogger = default!;
+    [Dependency] private readonly IEntityManager _entManager = default!;
     [Dependency] private readonly ActionBlockerSystem _actionBlocker = default!;
     [Dependency] private readonly StationSystem _stationSystem = default!;
     [Dependency] private readonly MobStateSystem _mobStateSystem = default!;
@@ -560,11 +561,14 @@ public sealed partial class ChatSystem : SharedChatSystem
         if (!_actionBlocker.CanSpeak(source) && !ignoreActionBlocker)
             return;
 
+        if (channel == null)
+            return;
+
         var message = TransformSpeech(source, FormattedMessage.RemoveMarkup(originalMessage));
         if (message.Length == 0)
             return;
 
-        var obfuscatedMessage = ObfuscateMessageSpecies(message);
+        var obfuscatedMessage = ObfuscateMessageSpecies(message, channel);
 
         // get the entity's name by visual identity (if no override provided).
         string nameIdentity = FormattedMessage.EscapeText(nameOverride ?? Identity.Name(source, EntityManager));
@@ -586,13 +590,9 @@ public sealed partial class ChatSystem : SharedChatSystem
             ("entityName", name), ("message", FormattedMessage.EscapeText(message)));
 
         var wrappedobfuscatedMessage = Loc.GetString("chat-manager-entity-whisper-wrap-message",
-            ("entityName", nameIdentity), ("message", FormattedMessage.EscapeText(obfuscatedMessage)));
+            ("en-tityName", nameIdentity), ("message", FormattedMessage.EscapeText(obfuscatedMessage)));
 
-        var wrappedUnknownMessage = Loc.GetString("chat-manager-entity-whisper-unknown-wrap-message",
-            ("message", FormattedMessage.EscapeText(obfuscatedMessage)));
-
-
-        foreach (var (session, data) in GetRecipients(source, WhisperMuffledRange))
+        foreach (var (session, data) in GetRecipients(source, VoiceRange))
         {
             EntityUid listener;
 
@@ -603,17 +603,15 @@ public sealed partial class ChatSystem : SharedChatSystem
             if (MessageRangeCheck(session, data, range) != MessageRangeCheckResult.Full)
                 continue; // Won't get logged to chat, and ghosts are too far away to see the pop-up, so we just won't send it to them.
 
-            if (data.Range <= WhisperClearRange)
-                _chatManager.ChatMessageToOne(ChatChannel.Whisper, message, wrappedMessage, source, false, session.Channel);
-            //If listener is too far, they only hear fragments of the message
-            else if (_examineSystem.InRangeUnOccluded(source, listener, WhisperMuffledRange))
-                _chatManager.ChatMessageToOne(ChatChannel.Whisper, obfuscatedMessage, wrappedobfuscatedMessage, source, false, session.Channel);
-            //If listener is too far and has no line of sight, they can't identify the whisperer's identity
+            if (_entManager.TryGetComponent<SpeciesLanguageComponent>(listener, out var speciesLanguage)
+                && speciesLanguage.UnderstoodLanguages != null
+                && speciesLanguage.UnderstoodLanguages.Contains(channel.ID))
+                _chatManager.ChatMessageToOne(ChatChannel.Local, message, wrappedMessage, source, false, session.Channel);
             else
-                _chatManager.ChatMessageToOne(ChatChannel.Whisper, obfuscatedMessage, wrappedUnknownMessage, source, false, session.Channel);
+                _chatManager.ChatMessageToOne(ChatChannel.Local, obfuscatedMessage, wrappedobfuscatedMessage, source, false, session.Channel);
         }
 
-        _replay.RecordServerMessage(new ChatMessage(ChatChannel.Whisper, message, wrappedMessage, GetNetEntity(source), null, MessageRangeHideChatForReplay(range)));
+        _replay.RecordServerMessage(new ChatMessage(ChatChannel.Local, message, wrappedMessage, GetNetEntity(source), null, MessageRangeHideChatForReplay(range)));
 
         var ev = new EntitySpokeEvent(source, message, null, channel, obfuscatedMessage);
         RaiseLocalEvent(source, ev, true);
@@ -954,7 +952,7 @@ public sealed partial class ChatSystem : SharedChatSystem
         return modifiedMessage.ToString();
     }
 
-    private string ObfuscateMessageSpecies(string message)
+    private string ObfuscateMessageSpecies(string message, SpeciesChannelPrototype channel)
     {
         string msg = "what if instead of school we had SKIBIDI SCHOOL!!! the principle would be DaFuq!?Boom! and the teachers would be the skibid camera men!!! they would teach us about skibidi toilet origins and the lore. the bullies would be the skibidi toilets!! and every once in a while the skibidi toilets will invade school sometimes!!! if this was school i would want to go to it EVERY DAY!!!";
         return msg;
