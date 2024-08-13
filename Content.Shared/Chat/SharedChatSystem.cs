@@ -28,6 +28,9 @@ public abstract class SharedChatSystem : EntitySystem
     [ValidatePrototypeId<RadioChannelPrototype>]
     public const string CommonChannel = "Common";
 
+    [ValidatePrototypeId<SpeciesChannelPrototype>]
+    public const string CommonSpecies = "Common";
+
     public static string DefaultChannelPrefix = $"{RadioChannelPrefix}{DefaultChannelKey}";
 
     [ValidatePrototypeId<SpeechVerbPrototype>]
@@ -39,26 +42,36 @@ public abstract class SharedChatSystem : EntitySystem
     /// <summary>
     /// Cache of the keycodes for faster lookup.
     /// </summary>
-    private FrozenDictionary<char, RadioChannelPrototype> _radioKeyCodes = default!;
-    private FrozenDictionary<char, SpeciesChannelPrototype> _speciesKeyCodes = default!;
+    FrozenDictionary<char, RadioChannelPrototype> _radioKeyCodes = FrozenDictionary<char, RadioChannelPrototype>.Empty;
+    FrozenDictionary<char, SpeciesChannelPrototype> _speciesKeyCodes = FrozenDictionary<char, SpeciesChannelPrototype>.Empty;
 
     public override void Initialize()
     {
         base.Initialize();
         DebugTools.Assert(_prototypeManager.HasIndex<RadioChannelPrototype>(CommonChannel));
+        DebugTools.Assert(_prototypeManager.HasIndex<SpeciesChannelPrototype>(CommonSpecies));
         SubscribeLocalEvent<PrototypesReloadedEventArgs>(OnPrototypeReload);
         CacheRadios();
+        CacheSpecies();
     }
 
     protected virtual void OnPrototypeReload(PrototypesReloadedEventArgs obj)
     {
         if (obj.WasModified<RadioChannelPrototype>())
             CacheRadios();
+
+        if (obj.WasModified<SpeciesChannelPrototype>())
+            CacheSpecies();
     }
 
     private void CacheRadios()
     {
         _radioKeyCodes = _prototypeManager.EnumeratePrototypes<RadioChannelPrototype>().ToFrozenDictionary(x => x.KeyCode);
+    }
+
+    private void CacheSpecies()
+    {
+        _speciesKeyCodes = _prototypeManager.EnumeratePrototypes<SpeciesChannelPrototype>().ToFrozenDictionary(y => y.Code);
     }
 
     /// <summary>
@@ -192,16 +205,6 @@ public abstract class SharedChatSystem : EntitySystem
         var channelKey = input[1];
         channelKey = char.ToLower(channelKey);
         output = SanitizeMessageCapital(input[2..].TrimStart());
-
-        if (channelKey == DefaultChannelKey)
-        {
-            var ev = new GetDefaultRadioChannelEvent();
-            RaiseLocalEvent(source, ev);
-
-            if (ev.Channel != null)
-                _prototypeManager.TryIndex(ev.Channel, out channel);
-            return true;
-        }
 
         if (!_speciesKeyCodes.TryGetValue(channelKey, out channel) && !quiet)
         {

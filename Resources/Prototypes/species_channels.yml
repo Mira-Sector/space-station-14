@@ -1,34 +1,34 @@
 - type: speciesChannel
   id: Common
   name: chat-species-common
-  keycode: "c"
+  code: "c"
 
 - type: speciesChannel
   id: Draconic
   name: chat-species-draconic
-  keycode: "d"
+  code: "d"
 
 - type: speciesChannel
   id: Moffic
   name: chat-species-moffic
-  keycode: "m"
+  code: "m"
 
 - type: speciesChannel
   id: Calcic
   name: chat-species-calcic
-  keycode: "c"
+  code: "c"
 
 - type: speciesChannel
   id: Slime
   name: chat-species-slime
-  keycode: "s"
+  code: "s"
 
 - type: speciesChannel
   id: Monkey
   name: chat-species-monkey
-  keycode: "m"
+  code: "m"
 
 - type: speciesChannel
   id: Buzzwords
   name: chat-species-buzzwords
-  keycode: "b"
+  code: "b"

@@ -16,8 +16,8 @@ public sealed partial class SpeciesChannelPrototype : IPrototype
     /// <summary>
     /// Single-character prefix to determine what channel a message should be sent to.
     /// </summary>
-    public char KeyCode { get; private set; } = '\0';
+    public char Code { get; private set; } = '\0';
 
-    [IdDataField]
+    [IdDataField, ViewVariables]
     public string ID { get; } = default!;
 }

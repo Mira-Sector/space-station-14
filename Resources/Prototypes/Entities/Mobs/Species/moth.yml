@@ -120,6 +120,10 @@
           32:
             sprite: Mobs/Species/Human/displacement.rsi
             state: jumpsuit-female
+  - type: SpeciesLanguage
+    spokenLanguages:
+    - Common
+    - Moffic
 
 
 - type: entity
