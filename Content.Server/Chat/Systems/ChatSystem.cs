@@ -590,7 +590,7 @@ public sealed partial class ChatSystem : SharedChatSystem
             ("entityName", name), ("message", FormattedMessage.EscapeText(message)));
 
         var wrappedobfuscatedMessage = Loc.GetString("chat-manager-entity-whisper-wrap-message",
-            ("en-tityName", nameIdentity), ("message", FormattedMessage.EscapeText(obfuscatedMessage)));
+            ("entityName", nameIdentity), ("message", FormattedMessage.EscapeText(obfuscatedMessage)));
 
         foreach (var (session, data) in GetRecipients(source, VoiceRange))
         {
@@ -600,24 +600,42 @@ public sealed partial class ChatSystem : SharedChatSystem
                 continue;
             listener = session.AttachedEntity.Value;
 
+
             if (MessageRangeCheck(session, data, range) != MessageRangeCheckResult.Full)
                 continue; // Won't get logged to chat, and ghosts are too far away to see the pop-up, so we just won't send it to them.
 
             bool canUnderstand = false;
+
+            if (listener == source)
+                canUnderstand = true;
+
             if (_entManager.TryGetComponent<SpeciesLanguageComponent>(listener, out var speciesLanguage)
                 && speciesLanguage.UnderstoodLanguages != null
-                && speciesLanguage.UnderstoodLanguages.Contains(channel.ID))
+                && !canUnderstand)
             {
-                canUnderstand = true;
+                foreach (string language in speciesLanguage.SpokenLanguages)
+                {
+                    if (language == channel.ID)
+                    {
+                        canUnderstand = true;
+                        break;
+                    }
+                }
             }
             else if (speciesLanguage != null
                     && speciesLanguage.UnderstoodLanguages == null
                     && speciesLanguage.SpokenLanguages != null
-                    && speciesLanguage.SpokenLanguages.Contains(channel.ID))
+                    && !canUnderstand)
             {
-                canUnderstand = true;
+                foreach (string language in speciesLanguage.SpokenLanguages)
+                {
+                    if (language == channel.ID)
+                    {
+                        canUnderstand = true;
+                        break;
+                    }
+                }
             }
-
 
             if (canUnderstand)
                 _chatManager.ChatMessageToOne(ChatChannel.Local, message, wrappedMessage, source, false, session.Channel);
