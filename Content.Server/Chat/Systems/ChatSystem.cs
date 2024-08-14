@@ -433,7 +433,7 @@ public sealed partial class ChatSystem : SharedChatSystem
 
         SendInVoiceRange(ChatChannel.Local, message, wrappedMessage, source, range);
 
-        var ev = new EntitySpokeEvent(source, message, null, null, null);
+        var ev = new EntitySpokeEvent(source, message, null, null);
         RaiseLocalEvent(source, ev, true);
 
         // To avoid logging any messages sent by entities that are not players, like vendors, cloning, etc.
@@ -527,7 +527,7 @@ public sealed partial class ChatSystem : SharedChatSystem
 
         _replay.RecordServerMessage(new ChatMessage(ChatChannel.Whisper, message, wrappedMessage, GetNetEntity(source), null, MessageRangeHideChatForReplay(range)));
 
-        var ev = new EntitySpokeEvent(source, message, channel, null, obfuscatedMessage);
+        var ev = new EntitySpokeEvent(source, message, channel, obfuscatedMessage);
         RaiseLocalEvent(source, ev, true);
         if (!hideLog)
             if (originalMessage == message)
@@ -645,7 +645,7 @@ public sealed partial class ChatSystem : SharedChatSystem
 
         _replay.RecordServerMessage(new ChatMessage(ChatChannel.Local, message, wrappedMessage, GetNetEntity(source), null, MessageRangeHideChatForReplay(range)));
 
-        var ev = new EntitySpokeEvent(source, message, null, channel, obfuscatedMessage);
+        var ev = new EntitySpokeEvent(source, message, null, obfuscatedMessage);
         RaiseLocalEvent(source, ev, true);
         if (!hideLog)
             if (originalMessage == message)
@@ -1088,15 +1088,13 @@ public sealed class EntitySpokeEvent : EntityEventArgs
     ///     If the entity was trying to speak into a radio, this was the channel they were trying to access. If a radio
     ///     message gets sent on this channel, this should be set to null to prevent duplicate messages.
     /// </summary>
-    public RadioChannelPrototype? RadioChannel;
-    public SpeciesChannelPrototype? SpeciesChannel;
+    public RadioChannelPrototype? Channel;
 
-    public EntitySpokeEvent(EntityUid source, string message, RadioChannelPrototype? radioChannel, SpeciesChannelPrototype? speciesChannel, string? obfuscatedMessage)
+    public EntitySpokeEvent(EntityUid source, string message, RadioChannelPrototype? channel, string? obfuscatedMessage)
     {
         Source = source;
         Message = message;
-        RadioChannel = radioChannel;
-        SpeciesChannel = speciesChannel;
+        Channel = channel;
         ObfuscatedMessage = obfuscatedMessage;
     }
 }
