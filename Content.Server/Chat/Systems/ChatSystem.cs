@@ -645,7 +645,8 @@ public sealed partial class ChatSystem : SharedChatSystem
 
         _replay.RecordServerMessage(new ChatMessage(ChatChannel.Local, message, wrappedMessage, GetNetEntity(source), null, MessageRangeHideChatForReplay(range)));
 
-        var ev = new EntitySpokeEvent(source, message, null, channel, obfuscatedMessage);
+        //TODO: make this only hearable if they understand the language
+        var ev = new EntitySpokeEvent(source, obfuscatedMessage, null, channel, obfuscatedMessage);
         RaiseLocalEvent(source, ev, true);
         if (!hideLog)
             if (originalMessage == message)

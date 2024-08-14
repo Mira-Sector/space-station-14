@@ -208,7 +208,7 @@ public abstract class SharedChatSystem : EntitySystem
 
         if (!_speciesKeyCodes.TryGetValue(channelKey, out channel) && !quiet)
         {
-            var msg = Loc.GetString("chat-manager-no-such-channel", ("key", channelKey));
+            var msg = Loc.GetString("chat-manager-no-such-language", ("key", channelKey));
             _popup.PopupEntity(msg, source, source);
         }
 
