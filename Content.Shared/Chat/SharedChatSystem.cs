@@ -196,7 +196,7 @@ public abstract class SharedChatSystem : EntitySystem
             output = SanitizeMessageCapital(input[1..].TrimStart());
             if (!quiet)
             {
-                var msg = "chat-manager-no-radio-key";
+                var msg = "chat-manager-species-language-learned";
                 _popup.PopupEntity(Loc.GetString(msg), source, source);
             }
             return true;

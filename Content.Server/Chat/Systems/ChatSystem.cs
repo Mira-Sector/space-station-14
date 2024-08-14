@@ -568,7 +568,7 @@ public sealed partial class ChatSystem : SharedChatSystem
         if (message.Length == 0)
             return;
 
-        var obfuscatedMessage = ObfuscateMessageSpecies(message, channel);
+        string obfuscatedMessage = ObfuscateMessageSpecies(message, channel);
 
         // get the entity's name by visual identity (if no override provided).
         string nameIdentity = FormattedMessage.EscapeText(nameOverride ?? Identity.Name(source, EntityManager));
@@ -986,8 +986,31 @@ public sealed partial class ChatSystem : SharedChatSystem
 
     private string ObfuscateMessageSpecies(string message, SpeciesChannelPrototype channel)
     {
-        string msg = "what if instead of school we had SKIBIDI SCHOOL!!! the principle would be DaFuq!?Boom! and the teachers would be the skibid camera men!!! they would teach us about skibidi toilet origins and the lore. the bullies would be the skibidi toilets!! and every once in a while the skibidi toilets will invade school sometimes!!! if this was school i would want to go to it EVERY DAY!!!";
-        return msg;
+        string channelID = channel.ID.ToLower();
+        StringBuilder msg = new StringBuilder();
+
+        //TODO: dynamicly get the length
+        int syllableCount = 20;
+
+        for (int i = 0; i < message.Length; i++)
+        {
+            char character = message[i];
+
+            if (char.IsLetterOrDigit(character))
+            {
+                int randomChar = _random.Next(1, syllableCount);
+                var localisedChar = Loc.GetString($"chat-species-{channelID}-replacement-{randomChar.ToString()}");
+                msg.Append(localisedChar);
+            }
+            else
+            {
+                // keep the punctuation intact
+                msg.Append(character);
+            }
+        }
+
+        return SanitizeMessageCapital(msg.ToString());
+
     }
 
     public string BuildGibberishString(IReadOnlyList<char> charOptions, int length)
