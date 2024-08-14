@@ -115,7 +115,8 @@ binds:
   key: Comma
 - function: FocusSpeciesChatWindow
   type: State
-  key: F2
+  mod1: Shift
+  key: BackSlash
 - function: FocusRadioWindow
   type: State
   key: SemiColon
