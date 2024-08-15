@@ -420,25 +420,26 @@
     tags:
     - Meat
 
-- type: entity
-  name: cloth burger
-  parent: FoodBurgerCotton
-  id: FoodBurgerCloth
-  description: Spoil the moffs with this one, highly processed "food".
-  components:
-  - type: Sprite
-    state: cloth
-    solutions:
-      food:
-        maxVol: 25
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5
-        - ReagentId: Fiber
-          Quantity: 20
-  - type: Tag
-    tags:
-    - ClothMade
+#- type: entity
+  #name: cloth burger
+  #parent: FoodBurgerCotton
+  #id: FoodBurgerCloth
+  #description: Spoil the moffs with this one, highly processed "food".
+  #components:
+    #- type: Sprite
+      #state: cloth
+    #- type: SolutionContainerManager
+      #solutions:
+      #food:
+        #maxVol: 25
+        #reagents:
+        #- ReagentId: Nutriment
+          #Quantity: 5
+        #- ReagentId: Fiber
+          #Quantity: 20
+    #- type: Tag
+      #tags:
+        #- ClothMade
 
 - type: entity
   name: corger #not curger
@@ -465,33 +466,32 @@
     tags:
     - Meat
 
-- type: entity
-  name: cotton burger
-  parent: FoodBurgerBase
-  id: FoodBurgerCotton
-  description: Nanotrasens latest recipe to try gaining the chef more customers.
-  components:
-  - type: FlavorProfile
-    flavors:
-    - bun
-    - fiber
-  - type: Sprite
-    state: cotton
-  - type: Food
-    trash: FoodBreadBun
-    requiresSpecialDigestion: true
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5
-        - ReagentId: Fiber
-          Quantity: 10
-  - type: Tag
-    tags:
-    - ClothMade
+#- type: ENtity
+  #name: cotton burger
+  #Parent: FoodBurgerBase
+  #Id: FoodBurgerCotton
+  #Description: Nanotrasens latest recipe to try gaining the chef more customers.
+  #Components:
+    #- type: FlavorProfile
+      #Flavors:
+        #- Fiber
+    #- type: Sprite
+      #State: cotton
+    #- tyPe: Food
+      #Trash: FoodBreadBun
+      #reQuiresSpecialDigestion: true
+    #- tyPe: SolutionContainerManager
+      #Solutions:
+      #Food:
+        #maxVol: 15
+        #Reagents:
+        #- ReagentId: Nutriment
+          #Quantity: 5
+        #- reagentId: Fiber
+          #Quantity: 10
+    #- type: tag
+      #Tags:
+        #- clothMade
 
 - type: entity
   name: crab burger
