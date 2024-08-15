@@ -51,6 +51,7 @@ tilemap:
   119: FloorWhiteMini
   120: FloorWhiteMono
   121: FloorWhiteOffset
+  1: FloorWhitePavement
   123: FloorWhitePavementVertical
   124: FloorWhitePlastic
   125: FloorWood
@@ -175,7 +176,7 @@ entities:
           version: 6
         2,-1:
           ind: 2,-1
-          tiles: KQAAAAACgQAAAAAAKQAAAAACKQAAAAACgQAAAAAAKQAAAAACKQAAAAACKQAAAAACKQAAAAABKQAAAAABKQAAAAABKQAAAAAAKQAAAAABKQAAAAACKQAAAAAAKQAAAAABKQAAAAABgQAAAAAAKQAAAAADKQAAAAADgQAAAAAAKQAAAAACKQAAAAACKQAAAAADKQAAAAAAKQAAAAABKQAAAAAAKQAAAAABKQAAAAAAKQAAAAABKQAAAAADKQAAAAACgQAAAAAAgQAAAAAAgQAAAAAAKQAAAAAAgQAAAAAAKQAAAAAAKQAAAAACKQAAAAADKQAAAAAAcwAAAAAAcwAAAAAAcwAAAAAAcwAAAAAAcwAAAAAAKQAAAAAAKQAAAAACKQAAAAADKQAAAAADKQAAAAABKQAAAAABKQAAAAAAKQAAAAAAKQAAAAABKQAAAAACKQAAAAABcwAAAAAAcwAAAAAAcwAAAAAAcwAAAAAAcwAAAAAAKQAAAAACKQAAAAACKQAAAAACKQAAAAAAKQAAAAACKQAAAAACKQAAAAABKQAAAAAAKQAAAAABKQAAAAABKQAAAAACcwAAAAAAcwAAAAAAcwAAAAAAcwAAAAAAcwAAAAAAKQAAAAABKQAAAAAAKQAAAAACKQAAAAABKQAAAAADKQAAAAADKQAAAAABKQAAAAABKQAAAAABKQAAAAADKQAAAAADgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAKQAAAAABKQAAAAABKQAAAAABgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAKQAAAAADgQAAAAAAgQAAAAAAgQAAAAAAfQAAAAAAfQAAAAACfQAAAAABgQAAAAAAKQAAAAAAKQAAAAAAKQAAAAACKQAAAAACgQAAAAAAfQAAAAADfQAAAAADfQAAAAADfQAAAAACIQAAAAAAIQAAAAAAgQAAAAAAfQAAAAACfQAAAAADfQAAAAABgQAAAAAAKQAAAAAAKQAAAAAAKQAAAAADKQAAAAADgQAAAAAAfQAAAAADfQAAAAACfQAAAAAAfwAAAAAAIQAAAAACIQAAAAACgQAAAAAAgQAAAAAAfwAAAAACgQAAAAAAgQAAAAAAKQAAAAABKQAAAAACKQAAAAABKQAAAAABfwAAAAADfQAAAAABfQAAAAAAfQAAAAABfwAAAAABfQAAAAADfQAAAAAAfQAAAAACfQAAAAAAfQAAAAAAfQAAAAACgQAAAAAAgQAAAAAAgQAAAAAAKQAAAAADKQAAAAACgQAAAAAAfwAAAAAAfwAAAAADfwAAAAADfwAAAAADfQAAAAAAfQAAAAADfQAAAAADfQAAAAACfQAAAAACfQAAAAAAfwAAAAACfQAAAAABgQAAAAAAKQAAAAABKQAAAAABfwAAAAAAfQAAAAADfQAAAAADfQAAAAAAfwAAAAAAfQAAAAABfQAAAAACfQAAAAAAfQAAAAABfQAAAAABfQAAAAADgQAAAAAAfQAAAAAAgQAAAAAAKQAAAAABKQAAAAADgQAAAAAAfQAAAAAAfQAAAAACfQAAAAABfwAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAKQAAAAACgQAAAAAAKQAAAAAAKQAAAAADgQAAAAAAfQAAAAADfQAAAAACfQAAAAACfQAAAAABgQAAAAAAYAAAAAABYAAAAAACYAAAAAAAYAAAAAADgQAAAAAAYAAAAAACYAAAAAACYAAAAAACYAAAAAACgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAYAAAAAAAKQAAAAADKQAAAAACYAAAAAADgQAAAAAAYAAAAAABYAAAAAAAYAAAAAACYAAAAAABYAAAAAACYAAAAAADYAAAAAADYAAAAAADYAAAAAAAYAAAAAABYAAAAAADYAAAAAABYAAAAAADYAAAAAADYAAAAAAAYAAAAAACYAAAAAADYAAAAAACYAAAAAAD
+          tiles: KQAAAAACgQAAAAAAKQAAAAACKQAAAAACgQAAAAAAKQAAAAACKQAAAAACKQAAAAACKQAAAAABKQAAAAABKQAAAAABKQAAAAAAKQAAAAABKQAAAAACKQAAAAAAKQAAAAABKQAAAAABgQAAAAAAKQAAAAADKQAAAAADgQAAAAAAKQAAAAACKQAAAAACKQAAAAADKQAAAAAAKQAAAAABKQAAAAAAKQAAAAABKQAAAAAAKQAAAAABKQAAAAADKQAAAAACgQAAAAAAgQAAAAAAgQAAAAAAKQAAAAAAgQAAAAAAKQAAAAAAKQAAAAACKQAAAAADKQAAAAAAAQAAAAAAAQAAAAAAAQAAAAAAAQAAAAAAAQAAAAAAKQAAAAAAKQAAAAACKQAAAAADKQAAAAADKQAAAAABKQAAAAABKQAAAAAAKQAAAAAAKQAAAAABKQAAAAACKQAAAAABAQAAAAAAAQAAAAAAAQAAAAAAAQAAAAAAAQAAAAAAKQAAAAACKQAAAAACKQAAAAACKQAAAAAAKQAAAAACKQAAAAACKQAAAAABKQAAAAAAKQAAAAABKQAAAAABKQAAAAACAQAAAAAAAQAAAAAAAQAAAAAAAQAAAAAAAQAAAAAAKQAAAAABKQAAAAAAKQAAAAACKQAAAAABKQAAAAADKQAAAAADKQAAAAABKQAAAAABKQAAAAABKQAAAAADKQAAAAADgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAKQAAAAABKQAAAAABKQAAAAABgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAKQAAAAADgQAAAAAAgQAAAAAAgQAAAAAAfQAAAAAAfQAAAAACfQAAAAABgQAAAAAAKQAAAAAAKQAAAAAAKQAAAAACKQAAAAACgQAAAAAAfQAAAAADfQAAAAADfQAAAAADfQAAAAACIQAAAAAAIQAAAAAAgQAAAAAAfQAAAAACfQAAAAADfQAAAAABgQAAAAAAKQAAAAAAKQAAAAAAKQAAAAADKQAAAAADgQAAAAAAfQAAAAADfQAAAAACfQAAAAAAfwAAAAAAIQAAAAACIQAAAAACgQAAAAAAgQAAAAAAfwAAAAACgQAAAAAAgQAAAAAAKQAAAAABKQAAAAACKQAAAAABKQAAAAABfwAAAAADfQAAAAABfQAAAAAAfQAAAAABfwAAAAABfQAAAAADfQAAAAAAfQAAAAACfQAAAAAAfQAAAAAAfQAAAAACgQAAAAAAgQAAAAAAgQAAAAAAKQAAAAADKQAAAAACgQAAAAAAfwAAAAAAfwAAAAADfwAAAAADfwAAAAADfQAAAAAAfQAAAAADfQAAAAADfQAAAAACfQAAAAACfQAAAAAAfwAAAAACfQAAAAABgQAAAAAAKQAAAAABKQAAAAABfwAAAAAAfQAAAAADfQAAAAADfQAAAAAAfwAAAAAAfQAAAAABfQAAAAACfQAAAAAAfQAAAAABfQAAAAABfQAAAAADgQAAAAAAfQAAAAAAgQAAAAAAKQAAAAABKQAAAAADgQAAAAAAfQAAAAAAfQAAAAACfQAAAAABfwAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAKQAAAAACgQAAAAAAKQAAAAAAKQAAAAADgQAAAAAAfQAAAAADfQAAAAACfQAAAAACfQAAAAABgQAAAAAAYAAAAAABYAAAAAACYAAAAAAAYAAAAAADgQAAAAAAYAAAAAACYAAAAAACYAAAAAACYAAAAAACgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAgQAAAAAAYAAAAAAAKQAAAAADKQAAAAACYAAAAAADgQAAAAAAYAAAAAABYAAAAAAAYAAAAAACYAAAAAABYAAAAAACYAAAAAADYAAAAAADYAAAAAADYAAAAAAAYAAAAAABYAAAAAADYAAAAAABYAAAAAADYAAAAAADYAAAAAAAYAAAAAACYAAAAAADYAAAAAACYAAAAAAD
           version: 6
         2,0:
           ind: 2,0
@@ -514,11 +515,6 @@ entities:
             2339: -7,-51
             2340: -5,-53
         - node:
-            color: '#52B4E996'
-            id: BrickCornerOverlayNE
-          decals:
-            3626: 45,-12
-        - node:
             color: '#C74EBDB2'
             id: BrickCornerOverlayNE
           decals:
@@ -539,11 +535,6 @@ entities:
             id: BrickCornerOverlayNE
           decals:
             2937: -15,-25
-        - node:
-            color: '#52B4E996'
-            id: BrickCornerOverlayNW
-          decals:
-            3637: 41,-12
         - node:
             color: '#C74EBDB2'
             id: BrickCornerOverlayNW
@@ -566,11 +557,6 @@ entities:
           decals:
             2938: -16,-25
         - node:
-            color: '#52B4E996'
-            id: BrickCornerOverlaySE
-          decals:
-            3636: 45,-14
-        - node:
             color: '#C74EBDB2'
             id: BrickCornerOverlaySE
           decals:
@@ -591,11 +577,6 @@ entities:
             id: BrickCornerOverlaySE
           decals:
             2939: -15,-26
-        - node:
-            color: '#52B4E996'
-            id: BrickCornerOverlaySW
-          decals:
-            3635: 41,-14
         - node:
             color: '#C74EBDB2'
             id: BrickCornerOverlaySW
@@ -619,11 +600,6 @@ entities:
           decals:
             2940: -16,-26
         - node:
-            color: '#52B4E996'
-            id: BrickLineOverlayE
-          decals:
-            3633: 45,-13
-        - node:
             color: '#EFB34196'
             id: BrickLineOverlayE
           decals:
@@ -635,13 +611,6 @@ entities:
             2469: 9,51
             2488: 5,50
             2490: 3,50
-        - node:
-            color: '#52B4E996'
-            id: BrickLineOverlayN
-          decals:
-            3630: 42,-12
-            3631: 43,-12
-            3632: 44,-12
         - node:
             color: '#C74EBDB2'
             id: BrickLineOverlayN
@@ -675,13 +644,6 @@ entities:
             2948: -15,-27
             2952: -16,-27
         - node:
-            color: '#52B4E996'
-            id: BrickLineOverlayS
-          decals:
-            3627: 43,-14
-            3628: 42,-14
-            3629: 44,-14
-        - node:
             color: '#C74EBDB2'
             id: BrickLineOverlayS
           decals:
@@ -694,11 +656,6 @@ entities:
             2491: 4,51
             3099: -5,41
             3100: -4,41
-        - node:
-            color: '#52B4E996'
-            id: BrickLineOverlayW
-          decals:
-            3634: 41,-13
         - node:
             color: '#EFB34196'
             id: BrickLineOverlayW
@@ -1269,6 +1226,13 @@ entities:
           decals:
             2385: 28,-37
         - node:
+            color: '#52B4E9E6'
+            id: BrickTileWhiteInnerNe
+          decals:
+            3625: 45,-12
+            3626: 45,-13
+            3627: 45,-14
+        - node:
             color: '#9FED58B3'
             id: BrickTileWhiteInnerNe
           decals:
@@ -1491,6 +1455,13 @@ entities:
           decals:
             732: -1,-39
         - node:
+            color: '#52B4E9E6'
+            id: BrickTileWhiteInnerNw
+          decals:
+            3631: 41,-12
+            3632: 41,-13
+            3633: 41,-14
+        - node:
             color: '#9FED58B3'
             id: BrickTileWhiteInnerNw
           decals:
@@ -1703,6 +1674,13 @@ entities:
           decals:
             416: -18,-29
             2383: 34,-38
+        - node:
+            color: '#52B4E9E6'
+            id: BrickTileWhiteInnerSe
+          decals:
+            3628: 45,-12
+            3629: 45,-13
+            3630: 45,-14
         - node:
             color: '#80C71F80'
             id: BrickTileWhiteInnerSe
@@ -1928,6 +1906,13 @@ entities:
           decals:
             415: -20,-29
             731: -1,-34
+        - node:
+            color: '#52B4E9E6'
+            id: BrickTileWhiteInnerSw
+          decals:
+            3634: 41,-12
+            3635: 41,-13
+            3636: 41,-14
         - node:
             color: '#80C71F80'
             id: BrickTileWhiteInnerSw
@@ -2535,6 +2520,14 @@ entities:
             2377: 29,-42
             2378: 28,-42
             3624: -30,-30
+        - node:
+            color: '#52B4E9E6'
+            id: BrickTileWhiteLineS
+          decals:
+            3637: 41,-14
+            3638: 42,-14
+            3639: 44,-14
+            3640: 45,-14
         - node:
             color: '#765428FF'
             id: BrickTileWhiteLineS
@@ -4583,6 +4576,7 @@ entities:
             3458: 44,-12
             3459: 44,-13
             3460: 43,-13
+            3461: 41,-12
             3462: 41,-14
             3463: 42,-13
             3464: 41,-13
@@ -5668,6 +5662,11 @@ entities:
             3503: -9,-29
             3504: -8,-29
             3505: -7,-29
+        - node:
+            color: '#52B4E9E6'
+            id: WarnLineGreyscaleS
+          decals:
+            3641: 43,-14
         - node:
             color: '#FFFFFFFF'
             id: WarnLineGreyscaleS
@@ -14524,11 +14523,7 @@ entities:
       lastSignals:
         DoorStatus: True
     - type: Door
-<<<<<<< HEAD
-      secondsUntilStateChange: -9611.3125
-=======
-      secondsUntilStateChange: -9307.528
->>>>>>> 691e37c0dbdaa53fa29794fb86a17dd2c1b6f21d
+      secondsUntilStateChange: -9913.792
       state: Opening
   - uid: 6934
     components:
@@ -14540,11 +14535,7 @@ entities:
       lastSignals:
         DoorStatus: True
     - type: Door
-<<<<<<< HEAD
-      secondsUntilStateChange: -9613.946
-=======
-      secondsUntilStateChange: -9310.162
->>>>>>> 691e37c0dbdaa53fa29794fb86a17dd2c1b6f21d
+      secondsUntilStateChange: -9916.426
       state: Opening
   - uid: 6935
     components:
@@ -14556,11 +14547,7 @@ entities:
       lastSignals:
         DoorStatus: True
     - type: Door
-<<<<<<< HEAD
-      secondsUntilStateChange: -9612.796
-=======
-      secondsUntilStateChange: -9309.012
->>>>>>> 691e37c0dbdaa53fa29794fb86a17dd2c1b6f21d
+      secondsUntilStateChange: -9915.275
       state: Opening
   - uid: 6936
     components:
@@ -14571,11 +14558,7 @@ entities:
       lastSignals:
         DoorStatus: True
     - type: Door
-<<<<<<< HEAD
-      secondsUntilStateChange: -9612.013
-=======
-      secondsUntilStateChange: -9308.229
->>>>>>> 691e37c0dbdaa53fa29794fb86a17dd2c1b6f21d
+      secondsUntilStateChange: -9914.492
       state: Opening
 - proto: AirlockTheatreLocked
   entities:
@@ -36653,10 +36636,9 @@ entities:
       parent: 2
 - proto: BedsheetBrigmedic
   entities:
-  - uid: 3851
+  - uid: 24250
     components:
     - type: Transform
-      rot: 1.5707963267948966 rad
       pos: 44.5,-11.5
       parent: 2
 - proto: BedsheetBrown
@@ -37449,6 +37431,11 @@ entities:
     components:
     - type: Transform
       pos: 42.499027,-29.362791
+      parent: 2
+  - uid: 24251
+    components:
+    - type: Transform
+      pos: 45.407974,-11.246007
       parent: 2
 - proto: BoxCandle
   entities:
@@ -89323,6 +89310,11 @@ entities:
     - type: Transform
       pos: -10.527167,-27.383263
       parent: 2
+  - uid: 28964
+    components:
+    - type: Transform
+      pos: 41.543327,-13.367095
+      parent: 2
 - proto: Emitter
   entities:
   - uid: 3921
@@ -92243,11 +92235,7 @@ entities:
       pos: -13.5,-1.5
       parent: 2
     - type: Door
-<<<<<<< HEAD
-      secondsUntilStateChange: -935.2923
-=======
-      secondsUntilStateChange: -631.5082
->>>>>>> 691e37c0dbdaa53fa29794fb86a17dd2c1b6f21d
+      secondsUntilStateChange: -1237.7723
       state: Closing
     - type: DeviceNetwork
       deviceLists:
@@ -136275,11 +136263,7 @@ entities:
       pos: 36.5,-35.5
       parent: 2
     - type: Door
-<<<<<<< HEAD
-      secondsUntilStateChange: -37767.14
-=======
-      secondsUntilStateChange: -37463.355
->>>>>>> 691e37c0dbdaa53fa29794fb86a17dd2c1b6f21d
+      secondsUntilStateChange: -38069.62
       state: Opening
   - uid: 5211
     components:
@@ -137324,10 +137308,10 @@ entities:
       parent: 2
 - proto: LockerBrigmedicFilled
   entities:
-  - uid: 3853
+  - uid: 14233
     components:
     - type: Transform
-      pos: 43.5,-11.5
+      pos: 42.5,-11.5
       parent: 2
 - proto: LockerCaptainFilledNoLaser
   entities:
@@ -138137,14 +138121,6 @@ entities:
     - type: Transform
       pos: 32.59941,-20.510296
       parent: 2
-- proto: MagazinePistolSubMachineGunTopMounted
-  entities:
-  - uid: 14233
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 42.740047,-41.364567
-      parent: 2
 - proto: MagicDiceBag
   entities:
   - uid: 7963
@@ -138531,11 +138507,6 @@ entities:
     components:
     - type: Transform
       pos: -31.5,-36.5
-      parent: 2
-  - uid: 3855
-    components:
-    - type: Transform
-      pos: 42.5,-11.5
       parent: 2
   - uid: 3856
     components:
@@ -138934,7 +138905,7 @@ entities:
       rot: -1.5707963267948966 rad
       pos: -6.5,-27.5
       parent: 2
-  - uid: 3857
+  - uid: 28961
     components:
     - type: Transform
       pos: 41.5,-11.5
@@ -140851,6 +140822,13 @@ entities:
     - type: Transform
       pos: 23.5,0.5
       parent: 21002
+- proto: PottedPlant2
+  entities:
+  - uid: 24253
+    components:
+    - type: Transform
+      pos: 45.470474,-13.746007
+      parent: 2
 - proto: PottedPlant21
   entities:
   - uid: 28296
@@ -157210,7 +157188,7 @@ entities:
       parent: 2
 - proto: SpawnPointBrigmedic
   entities:
-  - uid: 24250
+  - uid: 28965
     components:
     - type: Transform
       pos: 43.5,-12.5
@@ -158043,6 +158021,11 @@ entities:
     - type: Transform
       pos: -15.5,-29.5
       parent: 2
+  - uid: 28962
+    components:
+    - type: Transform
+      pos: 42.5,-13.5
+      parent: 2
 - proto: StationMap
   entities:
   - uid: 18502
@@ -158214,6 +158197,12 @@ entities:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 31.5,-3.5
+      parent: 2
+  - uid: 3854
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 45.5,-12.5
       parent: 2
 - proto: Stool
   entities:
@@ -159888,6 +159877,11 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 31.5,-15.5
       parent: 2
+  - uid: 3855
+    components:
+    - type: Transform
+      pos: 45.5,-11.5
+      parent: 2
   - uid: 3935
     components:
     - type: Transform
@@ -160434,6 +160428,11 @@ entities:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: -19.5,39.5
+      parent: 2
+  - uid: 28963
+    components:
+    - type: Transform
+      pos: 41.5,-13.5
       parent: 2
 - proto: TableCarpet
   entities:
@@ -163421,11 +163420,6 @@ entities:
     - type: Transform
       pos: -26.5,-29.5
       parent: 2
-  - uid: 3844
-    components:
-    - type: Transform
-      pos: 45.5,-11.5
-      parent: 2
 - proto: VendingMachineMediDrobe
   entities:
   - uid: 1521
@@ -163578,6 +163572,11 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: -13.5,-26.5
+      parent: 2
+  - uid: 24252
+    components:
+    - type: Transform
+      pos: 44.5,-10.5
       parent: 2
 - proto: VendingMachineWinter
   entities:
@@ -182052,6 +182051,14 @@ entities:
     - type: Transform
       pos: 48.66992,-38.664413
       parent: 2
+- proto: WeaponEnergyShotgun
+  entities:
+  - uid: 4430
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 42.421173,-41.240723
+      parent: 2
 - proto: WeaponLaserCarbine
   entities:
   - uid: 4191
@@ -182115,14 +182122,6 @@ entities:
     components:
     - type: Transform
       pos: 32.609486,-26.580791
-      parent: 2
-- proto: WeaponSubMachineGunWt550
-  entities:
-  - uid: 4430
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 42.421173,-41.240723
       parent: 2
 - proto: WeaponTurretSyndicateBroken
   entities:
@@ -182334,14 +182333,6 @@ entities:
       rot: 3.141592653589793 rad
       pos: -39.5,2.5
       parent: 2
-- proto: WindoorSecureBrigLocked
-  entities:
-  - uid: 3846
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 43.5,-14.5
-      parent: 2
 - proto: WindoorSecureCargoLocked
   entities:
   - uid: 11541
@@ -182499,6 +182490,12 @@ entities:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: 38.5,-18.5
+      parent: 2
+  - uid: 3857
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 43.5,-14.5
       parent: 2
   - uid: 3858
     components:
@@ -183571,11 +183568,23 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 39.5,-7.5
       parent: 2
+  - uid: 3844
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 41.5,-11.5
+      parent: 2
   - uid: 3845
     components:
     - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 40.5,-12.5
+      rot: -1.5707963267948966 rad
+      pos: 41.5,-12.5
+      parent: 2
+  - uid: 3846
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 41.5,-13.5
       parent: 2
   - uid: 3847
     components:
@@ -183601,17 +183610,23 @@ entities:
       rot: 3.141592653589793 rad
       pos: 45.5,-14.5
       parent: 2
+  - uid: 3851
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 45.5,-13.5
+      parent: 2
   - uid: 3852
     components:
     - type: Transform
       rot: 1.5707963267948966 rad
-      pos: 40.5,-13.5
+      pos: 45.5,-12.5
       parent: 2
-  - uid: 3854
+  - uid: 3853
     components:
     - type: Transform
       rot: 1.5707963267948966 rad
-      pos: 40.5,-11.5
+      pos: 45.5,-11.5
       parent: 2
   - uid: 3892
     components:
@@ -183776,24 +183791,6 @@ entities:
       rot: 3.141592653589793 rad
       pos: 8.5,-3.5
       parent: 21002
-  - uid: 24251
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 46.5,-11.5
-      parent: 2
-  - uid: 24252
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 46.5,-12.5
-      parent: 2
-  - uid: 24253
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 46.5,-13.5
-      parent: 2
   - uid: 25887
     components:
     - type: Transform
@@ -183881,11 +183878,7 @@ entities:
       pos: 24.5,2.5
       parent: 21002
     - type: Door
-<<<<<<< HEAD
-      secondsUntilStateChange: -382971.72
-=======
-      secondsUntilStateChange: -382667.94
->>>>>>> 691e37c0dbdaa53fa29794fb86a17dd2c1b6f21d
+      secondsUntilStateChange: -383274.2
       state: Opening
   - uid: 28863
     components:
