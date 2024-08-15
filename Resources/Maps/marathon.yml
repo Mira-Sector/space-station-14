@@ -10985,7 +10985,7 @@ entities:
       pos: -20.5,-5.5
       parent: 30
     - type: Door
-      secondsUntilStateChange: -21151.791
+      secondsUntilStateChange: -21306.652
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -13632,17 +13632,19 @@ entities:
     - type: Transform
       pos: -27.5,-46.5
       parent: 30
-  - uid: 21654
-    components:
-    - type: Transform
-      pos: -50.5,50.5
-      parent: 30
 - proto: BedsheetBlue
   entities:
   - uid: 1768
     components:
     - type: Transform
       pos: -48.5,39.5
+      parent: 30
+- proto: BedsheetBrigmedic
+  entities:
+  - uid: 2001
+    components:
+    - type: Transform
+      pos: -50.5,50.5
       parent: 30
 - proto: BedsheetCaptain
   entities:
@@ -13702,11 +13704,6 @@ entities:
     components:
     - type: Transform
       pos: -24.5,-7.5
-      parent: 30
-  - uid: 21653
-    components:
-    - type: Transform
-      pos: -50.5,50.5
       parent: 30
 - proto: BedsheetOrange
   entities:
@@ -59266,10 +59263,10 @@ entities:
     components:
     - type: Transform
       parent: 759
-    - type: Physics
-      canCollide: False
     - type: Tag
       tags: []
+    - type: Physics
+      canCollide: False
 - proto: DrinkMilkCarton
   entities:
   - uid: 448
@@ -60016,8 +60013,8 @@ entities:
       pos: -21.5,-39.5
       parent: 30
     - type: FaxMachine
-      destinationAddress: Engineering
       name: Engineering
+      destinationAddress: Engineering
   - uid: 14477
     components:
     - type: Transform
@@ -97296,6 +97293,13 @@ entities:
         - 0
         - 0
         - 0
+- proto: LockerBrigmedicFilled
+  entities:
+  - uid: 2246
+    components:
+    - type: Transform
+      pos: -49.5,53.5
+      parent: 30
 - proto: LockerCaptainFilledHardsuit
   entities:
   - uid: 1440
@@ -97872,29 +97876,6 @@ entities:
       parent: 30
 - proto: LockerMedicalFilled
   entities:
-  - uid: 2246
-    components:
-    - type: Transform
-      pos: -49.5,53.5
-      parent: 30
-    - type: EntityStorage
-      air:
-        volume: 200
-        immutable: False
-        temperature: 293.1496
-        moles:
-        - 3.4430928
-        - 12.952587
-        - 0
-        - 0
-        - 0
-        - 0
-        - 0
-        - 0
-        - 0
-        - 0
-        - 0
-        - 0
   - uid: 7606
     components:
     - type: Transform
@@ -98408,18 +98389,6 @@ entities:
     - type: Transform
       pos: -6.5,-12.5
       parent: 30
-- proto: MagazinePistolSubMachineGunTopMounted
-  entities:
-  - uid: 1999
-    components:
-    - type: Transform
-      pos: -22.54349,53.796127
-      parent: 30
-  - uid: 2001
-    components:
-    - type: Transform
-      pos: -22.54349,53.796127
-      parent: 30
 - proto: MaintenanceFluffSpawner
   entities:
   - uid: 9199
@@ -98673,6 +98642,11 @@ entities:
       parent: 30
 - proto: MedicalBed
   entities:
+  - uid: 1999
+    components:
+    - type: Transform
+      pos: -50.5,50.5
+      parent: 30
   - uid: 7422
     components:
     - type: Transform
@@ -114977,6 +114951,13 @@ entities:
     components:
     - type: Transform
       pos: -24.5,16.5
+      parent: 30
+- proto: SpawnPointBrigmedic
+  entities:
+  - uid: 20701
+    components:
+    - type: Transform
+      pos: -51.5,51.5
       parent: 30
 - proto: SpawnPointCaptain
   entities:
@@ -136686,6 +136667,13 @@ entities:
     - type: Transform
       pos: -38.42729,60.595303
       parent: 30
+- proto: WeaponEnergyShotgun
+  entities:
+  - uid: 2000
+    components:
+    - type: Transform
+      pos: -22.590364,53.546127
+      parent: 30
 - proto: WeaponLaserCarbinePractice
   entities:
   - uid: 22315
@@ -136718,13 +136706,6 @@ entities:
     components:
     - type: Transform
       pos: -41.445473,54.621906
-      parent: 30
-- proto: WeaponSubMachineGunWt550
-  entities:
-  - uid: 2000
-    components:
-    - type: Transform
-      pos: -22.590364,53.546127
       parent: 30
 - proto: WeaponTurretSyndicateBroken
   entities:
@@ -137184,12 +137165,18 @@ entities:
       rot: 1.5707963267948966 rad
       pos: -49.5,51.5
       parent: 30
+    - type: AccessReader
+      access:
+      - - Brig
   - uid: 2231
     components:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: -49.5,52.5
       parent: 30
+    - type: AccessReader
+      access:
+      - - Brig
 - proto: WindoorSecureServiceLocked
   entities:
   - uid: 11458

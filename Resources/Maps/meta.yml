@@ -10635,7 +10635,7 @@ entities:
       pos: -42.5,29.5
       parent: 5350
     - type: Door
-      secondsUntilStateChange: -296.73486
+      secondsUntilStateChange: -346.8406
       state: Opening
     - type: DeviceLinkSink
       invokeCounter: 2
@@ -14633,6 +14633,13 @@ entities:
     - type: Transform
       pos: 41.5,-35.5
       parent: 5350
+- proto: BedsheetBrigmedic
+  entities:
+  - uid: 9229
+    components:
+    - type: Transform
+      pos: -15.5,29.5
+      parent: 5350
 - proto: BedsheetCaptain
   entities:
   - uid: 1026
@@ -14707,11 +14714,6 @@ entities:
     components:
     - type: Transform
       pos: -15.5,28.5
-      parent: 5350
-  - uid: 9229
-    components:
-    - type: Transform
-      pos: -15.5,29.5
       parent: 5350
   - uid: 14473
     components:
@@ -116211,6 +116213,13 @@ entities:
     - type: Transform
       pos: 35.5,-21.5
       parent: 5350
+- proto: LockerBrigmedicFilled
+  entities:
+  - uid: 10439
+    components:
+    - type: Transform
+      pos: -18.5,30.5
+      parent: 5350
 - proto: LockerCaptainFilled
   entities:
   - uid: 1024
@@ -117068,11 +117077,6 @@ entities:
         - 0
         - 0
         - 0
-  - uid: 24256
-    components:
-    - type: Transform
-      pos: -18.5,30.5
-      parent: 5350
 - proto: LockerParamedicFilled
   entities:
   - uid: 22288
@@ -117537,22 +117541,6 @@ entities:
     - type: Transform
       pos: -44.5,-21.5
       parent: 5350
-- proto: MagazinePistolSubMachineGunTopMounted
-  entities:
-  - uid: 10438
-    components:
-    - type: Transform
-      pos: 12.5892,46.75028
-      parent: 5350
-    - type: BallisticAmmoProvider
-      unspawnedCount: 30
-  - uid: 10439
-    components:
-    - type: Transform
-      pos: 12.5892,46.53153
-      parent: 5350
-    - type: BallisticAmmoProvider
-      unspawnedCount: 30
 - proto: MaintenanceFluffSpawner
   entities:
   - uid: 2082
@@ -136468,6 +136456,13 @@ entities:
     components:
     - type: Transform
       pos: 35.5,-22.5
+      parent: 5350
+- proto: SpawnPointBrigmedic
+  entities:
+  - uid: 10438
+    components:
+    - type: Transform
+      pos: -18.5,28.5
       parent: 5350
 - proto: SpawnPointCaptain
   entities:
@@ -161762,6 +161757,13 @@ entities:
     - type: Transform
       pos: 18.538572,39.67288
       parent: 5350
+- proto: WeaponEnergyShotgun
+  entities:
+  - uid: 10437
+    components:
+    - type: Transform
+      pos: 12.542325,46.203403
+      parent: 5350
 - proto: WeaponLaserCarbinePractice
   entities:
   - uid: 26597
@@ -161783,13 +161785,6 @@ entities:
       parent: 5350
     - type: BallisticAmmoProvider
       unspawnedCount: 2
-- proto: WeaponSubMachineGunWt550
-  entities:
-  - uid: 10437
-    components:
-    - type: Transform
-      pos: 12.542325,46.203403
-      parent: 5350
 - proto: WeaponTurretSyndicateBroken
   entities:
   - uid: 26416
