@@ -808,6 +808,7 @@
       - WeaponLaserCannon
       - WeaponLaserCarbine
       - WeaponXrayCannon
+      - ClothingBackpackElectropack
   - type: MaterialStorage
     whitelist:
       tags:
