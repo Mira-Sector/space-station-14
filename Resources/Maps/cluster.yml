@@ -8000,13 +8000,6 @@ entities:
     - type: Transform
       pos: -13.5,-30.5
       parent: 1
-- proto: BedsheetBrigmedic
-  entities:
-  - uid: 10920
-    components:
-    - type: Transform
-      pos: 23.5,6.5
-      parent: 1
 - proto: BedsheetCaptain
   entities:
   - uid: 4099
@@ -55813,13 +55806,6 @@ entities:
     - type: Transform
       pos: -0.5,-1.5
       parent: 1
-- proto: LockerBrigmedicFilled
-  entities:
-  - uid: 1775
-    components:
-    - type: Transform
-      pos: 21.5,5.5
-      parent: 1
 - proto: LockerCaptainFilled
   entities:
   - uid: 4090
@@ -56098,6 +56084,11 @@ entities:
     components:
     - type: Transform
       pos: -23.5,9.5
+      parent: 1
+  - uid: 12608
+    components:
+    - type: Transform
+      pos: 21.5,5.5
       parent: 1
 - proto: LockerMedicineFilled
   entities:
@@ -66916,13 +66907,6 @@ entities:
     components:
     - type: Transform
       pos: 3.5,-3.5
-      parent: 1
-- proto: SpawnPointBrigmedic
-  entities:
-  - uid: 10921
-    components:
-    - type: Transform
-      pos: 22.5,6.5
       parent: 1
 - proto: SpawnPointCaptain
   entities:
@@ -80057,20 +80041,6 @@ entities:
     - type: Transform
       pos: 36.5,13.5
       parent: 1
-- proto: WindoorSecureBrigLocked
-  entities:
-  - uid: 1776
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 21.5,7.5
-      parent: 1
-  - uid: 10919
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 22.5,7.5
-      parent: 1
 - proto: WindoorSecureCargoLocked
   entities:
   - uid: 7243
@@ -80224,6 +80194,18 @@ entities:
       parent: 1
 - proto: WindoorSecureSecurityLocked
   entities:
+  - uid: 1775
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 21.5,7.5
+      parent: 1
+  - uid: 1776
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 22.5,7.5
+      parent: 1
   - uid: 4900
     components:
     - type: Transform
