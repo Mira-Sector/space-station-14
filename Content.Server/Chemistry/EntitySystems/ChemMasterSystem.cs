@@ -180,8 +180,8 @@ namespace Content.Server.Chemistry.EntitySystems
                 }
 
                 amount = FixedPoint2.Min(amount, bufferSolution.GetReagentQuantity(id));
-                bufferSolution.RemoveReagent(id, amount);
-                _solutionContainerSystem.TryAddReagent(containerSoln.Value, id, amount, out var _);
+                _solutionContainerSystem.TryAddReagent(containerSoln.Value, id, amount, out var leftover);
+                bufferSolution.RemoveReagent(id, leftover);
 
             }
             // Input Slot to Output Buffer
