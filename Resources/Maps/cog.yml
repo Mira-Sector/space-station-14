@@ -11700,7 +11700,7 @@ entities:
       pos: -20.5,55.5
       parent: 12
     - type: Door
-      secondsUntilStateChange: -11694.39
+      secondsUntilStateChange: -11772.231
       state: Opening
     - type: DeviceLinkSink
       invokeCounter: 1
@@ -12389,7 +12389,7 @@ entities:
       pos: 39.5,20.5
       parent: 12
     - type: Door
-      secondsUntilStateChange: -6095.3164
+      secondsUntilStateChange: -6173.1587
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -16916,6 +16916,13 @@ entities:
     - type: Transform
       pos: -4.5,58.5
       parent: 12
+- proto: BedsheetBrigmedic
+  entities:
+  - uid: 19203
+    components:
+    - type: Transform
+      pos: -46.5,54.5
+      parent: 12
 - proto: BedsheetCaptain
   entities:
   - uid: 17413
@@ -17021,11 +17028,6 @@ entities:
     components:
     - type: Transform
       pos: 26.5,37.5
-      parent: 12
-  - uid: 19203
-    components:
-    - type: Transform
-      pos: -46.5,54.5
       parent: 12
   - uid: 21668
     components:
@@ -66058,10 +66060,10 @@ entities:
     - type: Transform
       pos: -11.401172,-62.36277
       parent: 12
-  - uid: 19275
+  - uid: 19274
     components:
     - type: Transform
-      pos: -46.605427,56.715046
+      pos: -46.517593,54.52418
       parent: 12
 - proto: ClothingOuterSuitEmergency
   entities:
@@ -122048,11 +122050,6 @@ entities:
     - type: Transform
       pos: 31.639633,37.01299
       parent: 12
-  - uid: 19274
-    components:
-    - type: Transform
-      pos: -46.66661,56.262512
-      parent: 12
 - proto: HandLabeler
   entities:
   - uid: 2312
@@ -123100,6 +123097,13 @@ entities:
     - type: Transform
       pos: 62.5,42.5
       parent: 12
+- proto: LockerBrigmedicFilled
+  entities:
+  - uid: 19273
+    components:
+    - type: Transform
+      pos: -46.5,56.5
+      parent: 12
 - proto: LockerCaptainFilledNoLaser
   entities:
   - uid: 17405
@@ -124032,18 +124036,6 @@ entities:
     - type: Transform
       pos: -77.5,27.5
       parent: 12
-- proto: MagazinePistolSubMachineGunTopMounted
-  entities:
-  - uid: 27841
-    components:
-    - type: Transform
-      pos: -42.45185,36.7307
-      parent: 12
-  - uid: 27842
-    components:
-    - type: Transform
-      pos: -42.535183,36.7932
-      parent: 12
 - proto: MaintenanceFluffSpawner
   entities:
   - uid: 2057
@@ -124504,11 +124496,6 @@ entities:
     components:
     - type: Transform
       pos: -42.396534,21.484627
-      parent: 12
-  - uid: 19273
-    components:
-    - type: Transform
-      pos: -46.421875,56.507122
       parent: 12
   - uid: 20794
     components:
@@ -143261,6 +143248,13 @@ entities:
     - type: Transform
       pos: 15.5,51.5
       parent: 12
+- proto: SpawnPointBrigmedic
+  entities:
+  - uid: 19270
+    components:
+    - type: Transform
+      pos: -47.5,55.5
+      parent: 12
 - proto: SpawnPointCaptain
   entities:
   - uid: 27323
@@ -147788,12 +147782,6 @@ entities:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: -40.5,45.5
-      parent: 12
-  - uid: 19270
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -46.5,56.5
       parent: 12
   - uid: 19271
     components:
@@ -170933,6 +170921,13 @@ entities:
       rot: 3.141592653589793 rad
       pos: 37.48719,-39.18154
       parent: 12
+- proto: WeaponEnergyShotgun
+  entities:
+  - uid: 27840
+    components:
+    - type: Transform
+      pos: -42.5456,32.834866
+      parent: 12
 - proto: WeaponShotgunEnforcer
   entities:
   - uid: 20862
@@ -170951,13 +170946,6 @@ entities:
     components:
     - type: Transform
       pos: -32.50496,68.48238
-      parent: 12
-- proto: WeaponSubMachineGunWt550
-  entities:
-  - uid: 27840
-    components:
-    - type: Transform
-      pos: -42.5456,32.834866
       parent: 12
 - proto: WeaponTurretSyndicateBroken
   entities:

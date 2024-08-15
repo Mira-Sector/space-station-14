@@ -11640,6 +11640,13 @@ entities:
     - type: Transform
       pos: 6.5,-139.5
       parent: 2
+- proto: BedsheetBrigmedic
+  entities:
+  - uid: 11394
+    components:
+    - type: Transform
+      pos: -4.5,-361.5
+      parent: 2
 - proto: BedsheetCaptain
   entities:
   - uid: 698
@@ -11716,11 +11723,6 @@ entities:
     components:
     - type: Transform
       pos: 8.5,-172.5
-      parent: 2
-  - uid: 710
-    components:
-    - type: Transform
-      pos: -4.5,-361.5
       parent: 2
 - proto: BedsheetMime
   entities:
@@ -76306,7 +76308,7 @@ entities:
       pos: 8.5,-176.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -147491.25
+      secondsUntilStateChange: -147546
       state: Closing
   - uid: 11227
     components:
@@ -76976,6 +76978,13 @@ entities:
     - type: Transform
       pos: -6.5,-89.5
       parent: 2
+- proto: LockerBrigmedicFilled
+  entities:
+  - uid: 11395
+    components:
+    - type: Transform
+      pos: -6.5,-360.5
+      parent: 2
 - proto: LockerCaptainFilled
   entities:
   - uid: 11322
@@ -77506,18 +77515,6 @@ entities:
     components:
     - type: Transform
       pos: 31.5,-260.5
-      parent: 2
-- proto: MagazinePistolSubMachineGunTopMounted
-  entities:
-  - uid: 11394
-    components:
-    - type: Transform
-      pos: -3.9900005,-346.49026
-      parent: 2
-  - uid: 11395
-    components:
-    - type: Transform
-      pos: -4.0056252,-346.584
       parent: 2
 - proto: MagicDiceBag
   entities:
@@ -78072,7 +78069,7 @@ entities:
   - uid: 11493
     components:
     - type: Transform
-      pos: -6.360816,-360.66074
+      pos: -4.557153,-361.6263
       parent: 2
 - proto: MedkitBruteFilled
   entities:
@@ -78124,11 +78121,6 @@ entities:
     components:
     - type: Transform
       pos: -7.402346,-271.4695
-      parent: 2
-  - uid: 11503
-    components:
-    - type: Transform
-      pos: -6.627599,-360.45245
       parent: 2
 - proto: MedkitOxygenFilled
   entities:
@@ -89041,6 +89033,13 @@ entities:
     - type: Transform
       pos: -6.5,-84.5
       parent: 2
+- proto: SpawnPointBrigmedic
+  entities:
+  - uid: 710
+    components:
+    - type: Transform
+      pos: -5.5,-360.5
+      parent: 2
 - proto: SpawnPointCaptain
   entities:
   - uid: 13329
@@ -91704,11 +91703,6 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 4.5,-358.5
-      parent: 2
-  - uid: 13779
-    components:
-    - type: Transform
-      pos: -6.5,-360.5
       parent: 2
   - uid: 13780
     components:
@@ -107149,6 +107143,13 @@ entities:
     - type: Transform
       pos: 5.5389,-350.683
       parent: 2
+- proto: WeaponEnergyShotgun
+  entities:
+  - uid: 16464
+    components:
+    - type: Transform
+      pos: -4.3806252,-346.3184
+      parent: 2
 - proto: WeaponLaserCarbinePractice
   entities:
   - uid: 16463
@@ -107165,13 +107166,6 @@ entities:
     - type: Physics
       canCollide: False
     - type: InsideEntityStorage
-- proto: WeaponSubMachineGunWt550
-  entities:
-  - uid: 16464
-    components:
-    - type: Transform
-      pos: -4.3806252,-346.3184
-      parent: 2
 - proto: WeaponTurretSyndicateBroken
   entities:
   - uid: 16465

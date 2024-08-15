@@ -11448,7 +11448,7 @@ entities:
       pos: 24.5,16.5
       parent: 8364
     - type: Door
-      secondsUntilStateChange: -4258.8877
+      secondsUntilStateChange: -4372.8193
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -12945,6 +12945,9 @@ entities:
     - type: Transform
       pos: -8.5,28.5
       parent: 8364
+    - type: AccessReader
+      access:
+      - - Brig
   - uid: 8642
     components:
     - type: MetaData
@@ -12985,6 +12988,9 @@ entities:
     - type: Transform
       pos: -7.5,28.5
       parent: 8364
+    - type: AccessReader
+      access:
+      - - Brig
   - uid: 9382
     components:
     - type: Transform
@@ -15713,6 +15719,13 @@ entities:
     - type: Transform
       pos: -20.5,48.5
       parent: 8364
+- proto: BedsheetBrigmedic
+  entities:
+  - uid: 534
+    components:
+    - type: Transform
+      pos: -6.5,31.5
+      parent: 8364
 - proto: BedsheetCaptain
   entities:
   - uid: 5315
@@ -15777,11 +15790,6 @@ entities:
     components:
     - type: Transform
       pos: 30.5,-27.5
-      parent: 8364
-  - uid: 9485
-    components:
-    - type: Transform
-      pos: -6.5,31.5
       parent: 8364
   - uid: 18601
     components:
@@ -16882,11 +16890,6 @@ entities:
       parent: 8364
 - proto: BoxSyringe
   entities:
-  - uid: 7928
-    components:
-    - type: Transform
-      pos: -6.5023327,30.526033
-      parent: 8364
   - uid: 19263
     components:
     - type: Transform
@@ -84717,19 +84720,19 @@ entities:
       tags: []
     - type: RefillableSolution
       solution: food
+- proto: FoodKebabSkewer
+  entities:
+  - uid: 21797
+    components:
+    - type: Transform
+      pos: 69.38562,-55.371544
+      parent: 8364
 - proto: FoodMealMint
   entities:
   - uid: 15590
     components:
     - type: Transform
       pos: -35.361305,-43.28145
-      parent: 8364
-- proto: FoodMeatRatdoubleKebab
-  entities:
-  - uid: 21797
-    components:
-    - type: Transform
-      pos: 69.38562,-55.371544
       parent: 8364
 - proto: FoodPieBananaCream
   entities:
@@ -120688,6 +120691,13 @@ entities:
     - type: Transform
       pos: 49.5,-0.5
       parent: 8364
+- proto: LockerBrigmedicFilled
+  entities:
+  - uid: 3808
+    components:
+    - type: Transform
+      pos: -6.5,30.5
+      parent: 8364
 - proto: LockerCaptainFilled
   entities:
   - uid: 10526
@@ -122033,22 +122043,6 @@ entities:
     - type: Transform
       pos: -52.5,5.5
       parent: 8364
-- proto: MagazinePistolSubMachineGunTopMounted
-  entities:
-  - uid: 534
-    components:
-    - type: Transform
-      pos: 16.383898,41.80004
-      parent: 8364
-    - type: BallisticAmmoProvider
-      unspawnedCount: 30
-  - uid: 535
-    components:
-    - type: Transform
-      pos: 16.383898,41.80004
-      parent: 8364
-    - type: BallisticAmmoProvider
-      unspawnedCount: 30
 - proto: MailingUnit
   entities:
   - uid: 8179
@@ -141831,6 +141825,13 @@ entities:
     - type: Transform
       pos: 47.5,-4.5
       parent: 8364
+- proto: SpawnPointBrigmedic
+  entities:
+  - uid: 535
+    components:
+    - type: Transform
+      pos: -7.5,31.5
+      parent: 8364
 - proto: SpawnPointCaptain
   entities:
   - uid: 11766
@@ -145980,11 +145981,6 @@ entities:
     components:
     - type: Transform
       pos: -6.5,29.5
-      parent: 8364
-  - uid: 9360
-    components:
-    - type: Transform
-      pos: -6.5,30.5
       parent: 8364
   - uid: 10706
     components:
@@ -168608,19 +168604,19 @@ entities:
     - type: Transform
       pos: 25.540077,32.58242
       parent: 8364
+- proto: WeaponEnergyShotgun
+  entities:
+  - uid: 536
+    components:
+    - type: Transform
+      pos: 16.540148,41.51879
+      parent: 8364
 - proto: WeaponLaserCarbinePractice
   entities:
   - uid: 8772
     components:
     - type: Transform
       pos: 21.462696,34.988297
-      parent: 8364
-- proto: WeaponSubMachineGunWt550
-  entities:
-  - uid: 536
-    components:
-    - type: Transform
-      pos: 16.540148,41.51879
       parent: 8364
 - proto: WeaponTurretSyndicateBroken
   entities:

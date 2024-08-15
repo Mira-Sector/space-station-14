@@ -8000,6 +8000,13 @@ entities:
     - type: Transform
       pos: -13.5,-30.5
       parent: 1
+- proto: BedsheetBrigmedic
+  entities:
+  - uid: 5365
+    components:
+    - type: Transform
+      pos: 23.5,6.5
+      parent: 1
 - proto: BedsheetCaptain
   entities:
   - uid: 4099
@@ -55806,6 +55813,13 @@ entities:
     - type: Transform
       pos: -0.5,-1.5
       parent: 1
+- proto: LockerBrigmedicFilled
+  entities:
+  - uid: 1865
+    components:
+    - type: Transform
+      pos: 21.5,5.5
+      parent: 1
 - proto: LockerCaptainFilled
   entities:
   - uid: 4090
@@ -56085,11 +56099,6 @@ entities:
     - type: Transform
       pos: -23.5,9.5
       parent: 1
-  - uid: 12608
-    components:
-    - type: Transform
-      pos: 21.5,5.5
-      parent: 1
 - proto: LockerMedicineFilled
   entities:
   - uid: 1905
@@ -56300,18 +56309,6 @@ entities:
     components:
     - type: Transform
       pos: 29.556211,16.447828
-      parent: 1
-- proto: MagazinePistolSubMachineGunTopMounted
-  entities:
-  - uid: 1865
-    components:
-    - type: Transform
-      pos: 27.625902,12.337759
-      parent: 1
-  - uid: 5365
-    components:
-    - type: Transform
-      pos: 27.579027,12.494009
       parent: 1
 - proto: MagazineRifle
   entities:
@@ -79823,6 +79820,13 @@ entities:
     - type: Transform
       pos: 16.47756,15.577075
       parent: 1
+- proto: WeaponEnergyShotgun
+  entities:
+  - uid: 1710
+    components:
+    - type: Transform
+      pos: 27.516527,12.712759
+      parent: 1
 - proto: WeaponLaserCarbine
   entities:
   - uid: 5425
@@ -79850,13 +79854,6 @@ entities:
     components:
     - type: Transform
       pos: 36.459354,13.651509
-      parent: 1
-- proto: WeaponSubMachineGunWt550
-  entities:
-  - uid: 1710
-    components:
-    - type: Transform
-      pos: 27.516527,12.712759
       parent: 1
 - proto: WeaponTurretSyndicateBroken
   entities:
@@ -80200,12 +80197,18 @@ entities:
       rot: 3.141592653589793 rad
       pos: 21.5,7.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - Brig
   - uid: 1776
     components:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: 22.5,7.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - Brig
   - uid: 4900
     components:
     - type: Transform
