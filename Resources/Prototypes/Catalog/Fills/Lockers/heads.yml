@@ -205,7 +205,7 @@
     - id: BoxEncryptionKeyMedical
     - id: ClothingBackpackDuffelSurgeryFilled
     - id: ClothingCloakCmo
-    - id: ClothingEyesHudMedical
+    - id: ClothingEyesHudMedChem
     - id: ClothingHandsGlovesNitrile
     - id: ClothingHeadHatBeretCmo
     - id: ClothingHeadsetAltMedical
