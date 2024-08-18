@@ -327,3 +327,9 @@ Entries:
     type: Add
   id: 51
   time: '2024-08-09T18:47:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Drowsiness is now more effective at making you sleepy
+    type: Tweak
+  id: 52
+  time: '2024-08-18T18:37:00.0000000+00:00'
