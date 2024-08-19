@@ -88,7 +88,56 @@
     guides:
     - Security
     - Antagonists
-
+    
+- type: entity
+  name: telescopic baton
+  parent: [BaseItem, BaseCommandContraband]
+  id: Telescopicbaton
+  description: A self-defense weapon designed for the head staff of NanoTrasen's many stations. It's easier to handle and carry but less robust than the standart-issue stun batons.
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Melee/telebaton.rsi
+    layers:
+      - state: telebaton_off
+        map: [ "enum.ToggleVisuals.Layer" ]
+  - type: ItemToggle
+    predictable: false
+    soundActivate:
+      path: /Audio/Weapons/telescopicon.ogg
+      params:
+        variation: 0.250
+    soundDeactivate:
+      path: /Audio/Weapons/telescopicoff.ogg
+      params:
+        variation: 0.250
+  - type: ItemToggleSize
+    activatedSize: Huge
+  - type: ItemToggleMeleeWeapon
+    activatedDamage:
+      types:
+        Blunt: 0
+  - type: MeleeWeapon
+    wideAnimationRotation: -135
+    damage:
+      types:
+        Blunt: 5
+    bluntStaminaDamageFactor: 2.0
+    angle: 60
+    animation: WeaponArcSlash
+  - type: StaminaDamageOnHit
+    damage: 25
+    sound: /Audio/Weapons/egloves.ogg
+  - type: UseDelay
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+     enum.ToggleVisuals.Toggled:
+        enum.ToggleVisuals.Layer:
+          True: {state: telebaton_on}
+          False: {state: telebaton_off}
+  - type: StaticPrice
+    price: 80
+    
 - type: entity
   name: truncheon
   parent: [BaseItem, BaseRestrictedContraband]
