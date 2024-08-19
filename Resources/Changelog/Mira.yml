@@ -333,3 +333,9 @@ Entries:
     type: Tweak
   id: 52
   time: '2024-08-18T18:37:00.0000000+00:00'
+- author: Thurtik
+  changes:
+  - message: All heads (except hos) now spawn with a new 'telescopic baton' - a weaker, retractable baton for self-defense, instead of a flash.
+    type: Add
+  id: 53
+  time: '2024-08-19T23:07:00.0000000+00:00'
