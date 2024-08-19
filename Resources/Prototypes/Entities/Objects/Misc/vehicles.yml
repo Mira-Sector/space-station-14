@@ -1,0 +1,43 @@
+- type: entity
+  id: BaseVehicle
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Vehicle
+    position: Stand
+  - type: Strap
+  - type: InputMover
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Physics
+    bodyType: KinematicController
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.2,-0.4,0.2,0.2"
+        density: 100
+        mask:
+          - MobMask
+        layer:
+          - MobLayer
+        hard: true
+  - type: Pullable
+  - type: StaticPrice
+    price: 2500
+  - type: Tag
+    tags:
+    - DoorBumpOpener
+
+
+- type: entity
+  id: VehicleSecway
+  parent: BaseVehicle
+  name: Secway
+  components:
+  - type: Sprite
+    sprite: Objects/Vehicles/secway.rsi
+    state: vehicle
+    noRot: true
+  - type: Vehicle
+    speed: 2
