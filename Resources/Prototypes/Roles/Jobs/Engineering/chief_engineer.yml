@@ -46,7 +46,6 @@
     eyes: ClothingEyesGlassesMeson
     ears: ClothingHeadsetCE
     belt: ClothingBeltUtilityEngineering
-    pocket1: Telescopicbaton
-  # storage:
-    # back:
-    # - Telescopicbaton
+  storage:
+    back:
+    - Telescopicbaton

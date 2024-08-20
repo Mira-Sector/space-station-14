@@ -32,8 +32,7 @@
     id: WardenPDA
     ears: ClothingHeadsetSecurity
     pocket1: WeaponPistolMk58
-    pocket2: MagazinePistol
   storage:
     back:
     - Flash
-    # - MagazinePistol
+    - MagazinePistol
