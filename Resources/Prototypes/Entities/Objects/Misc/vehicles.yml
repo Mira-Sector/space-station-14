@@ -3,8 +3,8 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: Vehicle
-    position: Stand
   - type: Strap
+    position: Stand
   - type: InputMover
   - type: Clickable
   - type: InteractionOutline

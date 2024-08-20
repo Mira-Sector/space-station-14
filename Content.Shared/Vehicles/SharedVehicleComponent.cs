@@ -6,9 +6,12 @@ namespace Content.Shared.Vehicles;
 public sealed partial class VehicleComponent : Component
 {
     [DataField]
+    public EntityUid? Driver;
+
+    [DataField]
     public float Speed = 1f;
 
     [DataField]
-    public EntityUid? Driver;
+    public int RequiredHands = 1;
 }
 
