@@ -6534,6 +6534,12 @@ entities:
     - type: Transform
       pos: -3.5,20.5
       parent: 1
+    - type: Door
+      secondsUntilStateChange: -167.66693
+      state: Opening
+    - type: DeviceLinkSource
+      lastSignals:
+        DoorStatus: True
 - proto: AirlockHeadOfSecurityLocked
   entities:
   - uid: 3313
@@ -26924,7 +26930,7 @@ entities:
   - uid: 4136
     components:
     - type: Transform
-      pos: -3.2445543,23.545168
+      pos: -2.3945343,23.599216
       parent: 1
 - proto: CircuitImprinter
   entities:
@@ -36378,10 +36384,10 @@ entities:
       parent: 1
 - proto: FoodPoppy
   entities:
-  - uid: 4135
+  - uid: 8934
     components:
     - type: Transform
-      pos: -3.6820545,23.685793
+      pos: -2.5664093,23.755466
       parent: 1
 - proto: FoodTartMime
   entities:
@@ -66905,6 +66911,13 @@ entities:
     - type: Transform
       pos: 3.5,-3.5
       parent: 1
+- proto: SpawnPointBrigmedic
+  entities:
+  - uid: 4121
+    components:
+    - type: Transform
+      pos: 22.5,6.5
+      parent: 1
 - proto: SpawnPointCaptain
   entities:
   - uid: 6046
@@ -69424,11 +69437,6 @@ entities:
     - type: Transform
       pos: -9.5,-12.5
       parent: 1
-  - uid: 4121
-    components:
-    - type: Transform
-      pos: -3.5,23.5
-      parent: 1
   - uid: 4122
     components:
     - type: Transform
@@ -70104,6 +70112,14 @@ entities:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: -15.5,-27.5
+      parent: 1
+- proto: ToiletGoldenDirtyWater
+  entities:
+  - uid: 4135
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: -3.5,23.5
       parent: 1
 - proto: ToolboxArtistic
   entities:
