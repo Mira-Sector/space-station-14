@@ -263,13 +263,13 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
 
     private void EquipLoadout(EntityUid entity, string jobLoadout, RoleLoadout loadout, RoleLoadoutPrototype roleProto, JobPrototype? prototype, HumanoidCharacterProfile? profile)
     {
+        EquipRoleLoadout(entity, loadout, roleProto);
+
         if (prototype?.StartingGear != null)
         {
             var startingGear = _prototypeManager.Index<StartingGearPrototype>(prototype.StartingGear);
             EquipStartingGear(entity, startingGear, raiseEvent: false);
         }
-
-        EquipRoleLoadout(entity, loadout, roleProto);
 
         var gearEquippedEv = new StartingGearEquippedEvent(entity);
         RaiseLocalEvent(entity, ref gearEquippedEv);
