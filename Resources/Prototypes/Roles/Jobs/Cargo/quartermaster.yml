@@ -43,7 +43,8 @@
     id: QuartermasterPDA
     ears: ClothingHeadsetQM
     belt: BoxFolderClipboard
-    pocket1: AppraisalTool
-  storage:
-    back:
-    - Telescopicbaton
+    pocket1: Telescopicbaton
+    pocket2: AppraisalTool
+  # storage:
+    # back:
+    # - Telescopicbaton

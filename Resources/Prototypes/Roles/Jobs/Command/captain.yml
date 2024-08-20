@@ -42,7 +42,8 @@
     gloves: ClothingHandsGlovesCaptain
     id: CaptainPDA
     ears: ClothingHeadsetAltCommand
-  storage:
-    back:
-    - Telescopicbaton
+    pocket1: Telescopicbaton
+  # storage:
+    # back:
+    # - Telescopicbaton
     # - StationCharter

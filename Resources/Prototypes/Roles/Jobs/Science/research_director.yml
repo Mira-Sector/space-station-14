@@ -36,6 +36,7 @@
   equipment:
     id: RnDPDA
     ears: ClothingHeadsetRD
-  storage:
-    back:
-    - Telescopicbaton
+    pocket1: Telescopicbaton
+  # storage:
+    # back:
+    # - Telescopicbaton

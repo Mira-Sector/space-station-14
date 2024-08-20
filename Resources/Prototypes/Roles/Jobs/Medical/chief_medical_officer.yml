@@ -46,6 +46,7 @@
     id: CMOPDA
     ears: ClothingHeadsetCMO
     belt: ClothingBeltMedicalFilled
-  storage:
-    back:
-    - Telescopicbaton
+    pocket1: Telescopicbaton
+  # storage:
+    # back:
+    # - Telescopicbaton
