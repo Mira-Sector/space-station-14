@@ -1,0 +1,25 @@
+- type: entity
+  parent: BaseItem
+  id: BaseKey
+  abstract: true
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Item
+    size: Tiny
+  - type: Tag
+    tags:
+    - VehicleKey
+
+- type: entity
+  parent: BaseKey
+  id: VehicleKeySecway
+  name: secway keys
+  description: The keys to the future.
+  components:
+  - type: Sprite
+    sprite: Objects/Vehicles/secway.rsi
+    state: keys
+  - type: Tag
+    tags:
+    - VehicleKey
+    - SecwayKeys

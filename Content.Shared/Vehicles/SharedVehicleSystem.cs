@@ -9,6 +9,7 @@ using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Systems;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
+using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Vehicles;
@@ -36,6 +37,9 @@ public abstract partial class SharedVehicleSystem : EntitySystem
         SubscribeLocalEvent<VehicleComponent, UnstrappedEvent>(OnUnstrapped);
         SubscribeLocalEvent<VehicleComponent, VirtualItemDeletedEvent>(OnDropped);
 
+        SubscribeLocalEvent<VehicleComponent, EntInsertedIntoContainerMessage>(OnInsert);
+        SubscribeLocalEvent<VehicleComponent, EntRemovedFromContainerMessage>(OnEject);
+
         SubscribeLocalEvent<VehicleComponent, HornActionEvent>(OnHorn);
         SubscribeLocalEvent<VehicleComponent, SirenActionEvent>(OnSiren);
     }
@@ -50,8 +54,28 @@ public abstract partial class SharedVehicleSystem : EntitySystem
         if (component.Driver == null)
             return;
 
-        _buckle.Unbuckle(component.Driver.Value, component.Driver.Value);
+        _buckle.TryUnbuckle(component.Driver.Value, component.Driver.Value);
         Dismount(component.Driver.Value, uid);
+    }
+
+    private void OnInsert(EntityUid uid, VehicleComponent component, ref EntInsertedIntoContainerMessage args)
+    {
+        component.EngineRunning = true;
+
+        if (component.Driver == null)
+            return;
+
+        Mount(component.Driver.Value, component.Owner);
+    }
+
+    private void OnEject(EntityUid uid, VehicleComponent component, ref EntRemovedFromContainerMessage args)
+    {
+        component.EngineRunning = false;
+
+        if (component.Driver == null)
+            return;
+
+        Dismount(component.Driver.Value, component.Owner);
     }
 
     private void OnHorn(EntityUid uid, VehicleComponent component, InstantActionEvent args)
@@ -114,11 +138,7 @@ public abstract partial class SharedVehicleSystem : EntitySystem
             }
         }
 
-        if (ent.Comp.HornSound != null)
-            _actions.AddAction(driver, ref ent.Comp.HornAction, HornActionId, ent);
-
-        if (ent.Comp.SirenSound != null)
-            _actions.AddAction(driver, ref ent.Comp.SirenAction, SirenActionId, ent);
+        AddHorns(driver, ent);
     }
 
     private void OnStrapped(Entity<VehicleComponent> ent, ref StrappedEvent args)
@@ -132,19 +152,11 @@ public abstract partial class SharedVehicleSystem : EntitySystem
             return;
 
         ent.Comp.Driver = driver;
-        if (TryComp<AccessComponent>(ent.Owner, out var accessComp))
-        {
-            var accessSources = _access.FindPotentialAccessItems(driver);
-            var access = _access.FindAccessTags(driver, accessSources);
 
-            foreach (var tag in access)
-            {
-                accessComp.Tags.Add(tag);
-            }
-        }
+        if (!ent.Comp.EngineRunning)
+            return;
 
-        _appearance.SetData(ent.Owner, VehicleState.Animated, true);
-        _mover.SetRelay(driver, ent.Owner);
+        Mount(driver, ent.Owner);
     }
 
     private void OnUnstrapped(Entity<VehicleComponent> ent, ref UnstrappedEvent args)
@@ -160,10 +172,39 @@ public abstract partial class SharedVehicleSystem : EntitySystem
         if (comp.Driver != args.User)
             return;
 
-        _buckle.Unbuckle(args.User, args.User);
+        _buckle.TryUnbuckle(args.User, args.User);
 
         if (!Dismount(args.User, comp.Owner))
             return;
+    }
+
+    private void AddHorns(EntityUid driver, EntityUid vehicle)
+    {
+        if (!TryComp<VehicleComponent>(vehicle, out var vehicleComp))
+            return;
+
+        if (vehicleComp.HornSound != null)
+            _actions.AddAction(driver, ref vehicleComp.HornAction, HornActionId, vehicle);
+
+        if (vehicleComp.SirenSound != null)
+            _actions.AddAction(driver, ref vehicleComp.SirenAction, SirenActionId, vehicle);
+    }
+
+    private void Mount(EntityUid driver, EntityUid vehicle)
+    {
+        if (TryComp<AccessComponent>(vehicle, out var accessComp))
+        {
+            var accessSources = _access.FindPotentialAccessItems(driver);
+            var access = _access.FindAccessTags(driver, accessSources);
+
+            foreach (var tag in access)
+            {
+                accessComp.Tags.Add(tag);
+            }
+        }
+
+        _appearance.SetData(vehicle, VehicleState.Animated, true);
+        _mover.SetRelay(driver, vehicle);
     }
 
     private bool Dismount(EntityUid driver, EntityUid vehicle)

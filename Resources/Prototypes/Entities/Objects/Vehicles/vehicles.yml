@@ -1,5 +1,6 @@
 - type: entity
   id: BaseVehicle
+  abstract: true
   categories: [ HideSpawnMenu ]
   components:
   - type: Vehicle
@@ -50,17 +51,29 @@
     friction: 10 # wheels dont stop instantly
     baseSprintSpeed: 7
     baseWalkSpeed: 4.5 # default walking speed
+  - type: ItemSlots
+    slots:
+      key_slot:
+        name: vehicle-slot-component-slot-name-keys
+        whitelist:
+          requireAll: true
+          tags:
+          - VehicleKey
+        insertSound:
+          path: /Audio/Effects/Vehicle/vehiclestartup.ogg
+          params:
+            volume: -3
   - type: StaticPrice
     price: 2500
   - type: Tag
     tags:
     - DoorBumpOpener
 
-
 - type: entity
   id: VehicleSecway
   parent: BaseVehicle
-  name: Secway
+  name: secway
+  description: The future of transportation. Popularized by St. James, the patron saint of security officers and internet forum moderators.
   components:
   - type: Sprite
     sprite: Objects/Vehicles/secway.rsi
@@ -75,4 +88,16 @@
       collection: PoliceSiren
       params:
         variation: 0.125
-
+  - type: ItemSlots
+    slots:
+      key_slot:
+        name: vehicle-slot-component-slot-name-keys
+        whitelist:
+          requireAll: true
+          tags:
+          - VehicleKey
+          - SecwayKeys
+        insertSound:
+          path: /Audio/Effects/Vehicle/vehiclestartup.ogg
+          params:
+            volume: -3

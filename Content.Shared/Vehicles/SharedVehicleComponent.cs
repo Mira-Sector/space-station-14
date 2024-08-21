@@ -28,6 +28,12 @@ public sealed partial class VehicleComponent : Component
     public int RequiredHands = 1;
 
     /// <summary>
+    /// Will the vehicle move when a driver buckles
+    /// </summary>
+    [DataField]
+    public bool EngineRunning = false;
+
+    /// <summary>
     /// What sound to play when the driver presses the horn action (plays once)
     /// </summary>
     [DataField]
