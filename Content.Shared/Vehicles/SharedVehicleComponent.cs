@@ -16,6 +16,9 @@ public sealed partial class VehicleComponent : Component
     [ViewVariables]
     public EntityUid? SirenAction;
 
+    [ViewVariables]
+    public bool FirstRun = true;
+
     public bool SirenEnabled = false;
 
     public EntityUid? SirenStream;
@@ -46,7 +49,8 @@ public sealed partial class VehicleComponent : Component
     public SoundSpecifier? SirenSound;
 }
 [Serializable, NetSerializable]
-public enum VehicleState
+public enum VehicleState : byte
 {
-    Animated
+    Animated,
+    DrawOver
 }

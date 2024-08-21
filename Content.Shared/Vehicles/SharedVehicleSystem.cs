@@ -46,7 +46,8 @@ public abstract partial class SharedVehicleSystem : EntitySystem
 
     private void OnInit(EntityUid uid, VehicleComponent component, ComponentInit args)
     {
-        _appearance.SetData(uid, VehicleState.Animated, false);
+        _appearance.SetData(uid, VehicleState.Animated, component.EngineRunning);
+        _appearance.SetData(uid, VehicleState.DrawOver, false);
     }
 
     private void OnRemove(EntityUid uid, VehicleComponent component, ComponentRemove args)
@@ -61,6 +62,7 @@ public abstract partial class SharedVehicleSystem : EntitySystem
     private void OnInsert(EntityUid uid, VehicleComponent component, ref EntInsertedIntoContainerMessage args)
     {
         component.EngineRunning = true;
+        _appearance.SetData(component.Owner, VehicleState.Animated, true);
 
         if (component.Driver == null)
             return;
@@ -71,6 +73,7 @@ public abstract partial class SharedVehicleSystem : EntitySystem
     private void OnEject(EntityUid uid, VehicleComponent component, ref EntRemovedFromContainerMessage args)
     {
         component.EngineRunning = false;
+        _appearance.SetData(component.Owner, VehicleState.Animated, false);
 
         if (component.Driver == null)
             return;
@@ -152,9 +155,20 @@ public abstract partial class SharedVehicleSystem : EntitySystem
             return;
 
         ent.Comp.Driver = driver;
+        _appearance.SetData(ent.Owner, VehicleState.DrawOver, true);
 
         if (!ent.Comp.EngineRunning)
             return;
+
+        // TODO: remove this dogshit hack
+        // on first run engine running gets set to true ONLY in this method
+        if (ent.Comp.FirstRun)
+        {
+            ent.Comp.FirstRun = false;
+            ent.Comp.EngineRunning = false;
+        _appearance.SetData(ent.Owner, VehicleState.Animated, false);
+            return;
+        }
 
         Mount(driver, ent.Owner);
     }
@@ -174,8 +188,7 @@ public abstract partial class SharedVehicleSystem : EntitySystem
 
         _buckle.TryUnbuckle(args.User, args.User);
 
-        if (!Dismount(args.User, comp.Owner))
-            return;
+        Dismount(args.User, comp.Owner);
     }
 
     private void AddHorns(EntityUid driver, EntityUid vehicle)
@@ -203,21 +216,20 @@ public abstract partial class SharedVehicleSystem : EntitySystem
             }
         }
 
-        _appearance.SetData(vehicle, VehicleState.Animated, true);
         _mover.SetRelay(driver, vehicle);
     }
 
-    private bool Dismount(EntityUid driver, EntityUid vehicle)
+    private void Dismount(EntityUid driver, EntityUid vehicle)
     {
         if (!TryComp<VehicleComponent>(vehicle, out var vehicleComp))
-            return false;
+            return;
 
         if (vehicleComp.Driver != driver)
-            return false;
+            return;
 
         RemComp<RelayInputMoverComponent>(driver);
 
-        _appearance.SetData(vehicle, VehicleState.Animated, false);
+        _appearance.SetData(vehicle, VehicleState.DrawOver, false);
         vehicleComp.Driver = null;
 
         if (vehicleComp.HornAction != null)
@@ -230,8 +242,6 @@ public abstract partial class SharedVehicleSystem : EntitySystem
 
         if (TryComp<AccessComponent>(vehicle, out var accessComp))
             accessComp.Tags.Clear();
-
-        return true;
     }
 }
 

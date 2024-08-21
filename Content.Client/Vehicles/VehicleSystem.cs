@@ -22,10 +22,13 @@ public sealed class VehicleSystem : SharedVehicleSystem
         if (!_appearance.TryGetData<bool>(uid, VehicleState.Animated, out bool animated))
             return;
 
+        if (!_appearance.TryGetData<bool>(uid, VehicleState.DrawOver, out bool depth))
+            return;
+
         if (!TryComp<SpriteComponent>(uid, out var spriteComp))
             return;
 
-        if (animated)
+        if (depth)
         {
             spriteComp.DrawDepth = (int)Content.Shared.DrawDepth.DrawDepth.OverMobs;
         }
