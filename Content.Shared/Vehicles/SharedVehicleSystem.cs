@@ -1,3 +1,5 @@
+using Content.Shared.Access.Components;
+using Content.Shared.Access.Systems;
 using Content.Shared.Actions;
 using Content.Shared.Buckle;
 using Content.Shared.Buckle.Components;
@@ -13,6 +15,7 @@ namespace Content.Shared.Vehicles;
 
 public abstract partial class SharedVehicleSystem : EntitySystem
 {
+    [Dependency] private readonly AccessReaderSystem _access = default!;
     [Dependency] private readonly SharedActionsSystem _actions = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
@@ -118,6 +121,16 @@ public abstract partial class SharedVehicleSystem : EntitySystem
             return;
 
         ent.Comp.Driver = driver;
+        if (TryComp<AccessComponent>(ent.Owner, out var accessComp))
+        {
+            var accessSources = _access.FindPotentialAccessItems(driver);
+            var access = _access.FindAccessTags(driver, accessSources);
+
+            foreach (var tag in access)
+            {
+                accessComp.Tags.Add(tag);
+            }
+        }
 
         _appearance.SetData(ent.Owner, VehicleState.Animated, true);
         _mover.SetRelay(driver, ent.Owner);
@@ -162,6 +175,9 @@ public abstract partial class SharedVehicleSystem : EntitySystem
             _actions.RemoveAction(driver, vehicleComp.SirenAction);
 
         _virtualItem.DeleteInHandsMatching(driver, vehicle);
+
+        if (TryComp<AccessComponent>(vehicle, out var accessComp))
+            accessComp.Tags.Clear();
 
         return true;
     }

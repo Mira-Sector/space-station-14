@@ -9,6 +9,7 @@
   - type: InputMover
   - type: Clickable
   - type: InteractionOutline
+  - type: Access
   - type: Physics
     bodyType: Dynamic
   - type: Fixtures
@@ -16,7 +17,7 @@
       fix1:
         shape:
           !type:PhysShapeCircle
-          radius: 0.2
+          radius: 0.45
         density: 100
         mask:
           - MobMask
