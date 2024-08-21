@@ -19,6 +19,7 @@ public sealed class VehicleSystem : SharedVehicleSystem
         base.Initialize();
         SubscribeLocalEvent<VehicleComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<VehicleComponent, ComponentRemove>(OnRemove);
+        SubscribeLocalEvent<VehicleComponent, StrapAttemptEvent>(OnStrapAttempt);
         SubscribeLocalEvent<VehicleComponent, StrappedEvent>(OnStrapped);
         SubscribeLocalEvent<VehicleComponent, UnstrappedEvent>(OnUnstrapped);
         SubscribeLocalEvent<VehicleComponent, VirtualItemDeletedEvent>(OnDropped);
@@ -31,55 +32,82 @@ public sealed class VehicleSystem : SharedVehicleSystem
 
     private void OnRemove(EntityUid uid, VehicleComponent component, ComponentRemove args)
     {
+        if (component.Driver == null)
+            return;
 
+        _buckle.Unbuckle(component.Driver.Value, component.Driver.Value);
+        Dismount(component.Driver.Value, uid);
     }
 
-    private void OnStrapped(Entity<VehicleComponent> ent, ref StrappedEvent args)
+    private void OnStrapAttempt(Entity<VehicleComponent> ent, ref StrapAttemptEvent args)
     {
-        if (!TryComp(args.Buckle.Owner, out MobMoverComponent? mover))
-            return;
+        var driver = args.Buckle.Owner; // i dont want to re write this shit 100 fucking times
 
         if (ent.Comp.Driver != null)
             return;
-
-        _mover.SetRelay(args.Buckle.Owner, ent.Owner);
-
-        ent.Comp.Driver = args.Buckle.Owner;
 
         if (ent.Comp.RequiredHands == 0)
             return;
 
         for (int hands = 0; hands < ent.Comp.RequiredHands; hands++)
         {
-            _virtualItem.TrySpawnVirtualItemInHand(ent.Owner, args.Buckle.Owner, true);
+            if (!_virtualItem.TrySpawnVirtualItemInHand(ent.Owner, driver, false))
+            {
+                args.Cancelled = true;
+                _virtualItem.DeleteInHandsMatching(driver, ent.Owner);
+                return;
+            }
         }
+    }
+
+    private void OnStrapped(Entity<VehicleComponent> ent, ref StrappedEvent args)
+    {
+        var driver = args.Buckle.Owner;
+
+        if (!TryComp(driver, out MobMoverComponent? mover))
+            return;
+
+        if (ent.Comp.Driver != null)
+            return;
+
+        ent.Comp.Driver = driver;
+
+        _mover.SetRelay(driver, ent.Owner);
+
     }
 
     private void OnUnstrapped(Entity<VehicleComponent> ent, ref UnstrappedEvent args)
     {
+        if (ent.Comp.Driver != args.Buckle.Owner)
+            return;
+
         Dismount(args.Buckle.Owner, ent);
     }
 
     private void OnDropped(EntityUid uid, VehicleComponent comp, VirtualItemDeletedEvent args)
     {
-        if (!Dismount(args.User, comp))
+        if (comp.Driver != args.User)
             return;
 
-        _buckle.TryUnbuckle(args.User, args.User);
+        _buckle.Unbuckle(args.User, args.User);
+
+        if (!Dismount(args.User, comp.Owner))
+            return;
     }
 
-    private bool Dismount(EntityUid driver, VehicleComponent vehicle)
+    private bool Dismount(EntityUid driver, EntityUid vehicle)
     {
-        if (vehicle.Driver != driver)
+        if (!TryComp<VehicleComponent>(vehicle, out var vehicleComp))
             return false;
 
-        if (!RemComp<RelayInputMoverComponent>(driver))
+        if (vehicleComp.Driver != driver)
             return false;
 
-        if (vehicle.RequiredHands != 0)
-            _virtualItem.DeleteInHandsMatching(driver, vehicle.Owner);
+        RemComp<RelayInputMoverComponent>(driver);
 
-        vehicle.Driver = null;
+        vehicleComp.Driver = null;
+
+        _virtualItem.DeleteInHandsMatching(driver, vehicle);
 
         return true;
     }
