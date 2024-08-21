@@ -40,7 +40,7 @@ public sealed partial class VehicleComponent : Component
     /// What sound to play when the driver presses the horn action (plays once)
     /// </summary>
     [DataField]
-    public SoundSpecifier? HornSound = new SoundCollectionSpecifier("BikeHorn");
+    public SoundSpecifier? HornSound;
 
     /// <summary>
     /// What sound to play when the driver presses the siren action (loops)

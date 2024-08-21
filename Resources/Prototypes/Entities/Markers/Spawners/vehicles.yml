@@ -11,3 +11,17 @@
   - type: ConditionalSpawner
     prototypes:
       - VehicleSecway
+
+- type: entity
+  name: ATV Spawner
+  id: SpawnVehicleATV
+  parent: MarkerBase
+  components:
+  - type: Sprite
+    layers:
+      - state: green
+      - sprite: Objects/Vehicles/atv.rsi
+        state: keys
+  - type: ConditionalSpawner
+    prototypes:
+      - VehicleATV

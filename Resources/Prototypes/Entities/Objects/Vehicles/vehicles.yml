@@ -108,3 +108,32 @@
           path: /Audio/Effects/Vehicle/vehiclestartup.ogg
           params:
             volume: -3
+
+- type: entity
+  id: VehicleATV
+  parent: BaseVehicle
+  name: ATV
+  description: All-Tile Vehicle.
+  components:
+  - type: Sprite
+    sprite: Objects/Vehicles/atv.rsi
+    state: vehicle
+    noRot: true
+  - type: Vehicle
+    hornSound:
+      collection: BikeHorn
+      params:
+        variation: 0.125
+  - type: ItemSlots
+    slots:
+      key_slot:
+        name: vehicle-slot-component-slot-name-keys
+        whitelist:
+          requireAll: true
+          tags:
+          - VehicleKey
+          - ATVKeys
+        insertSound:
+          path: /Audio/Effects/Vehicle/vehiclestartup.ogg
+          params:
+            volume: -3
