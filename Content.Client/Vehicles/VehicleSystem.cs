@@ -1,5 +1,3 @@
-using Content.Shared.Buckle.Components;
-using Content.Shared.DrawDepth;
 using Content.Shared.Vehicles;
 using Robust.Client.GameObjects;
 
@@ -7,26 +5,34 @@ namespace Content.Server.Vehicles;
 
 public sealed class VehicleSystem : SharedVehicleSystem
 {
+    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private readonly SpriteSystem _sprites = default!;
+
     public override void Initialize()
     {
         base.Initialize();
-        SubscribeLocalEvent<VehicleComponent, StrappedEvent>(OnStrapped);
-        SubscribeLocalEvent<VehicleComponent, UnstrappedEvent>(OnUnstrapped);
+        SubscribeLocalEvent<VehicleComponent, AppearanceChangeEvent>(OnAppearanceChange);
     }
 
-    private void OnStrapped(Entity<VehicleComponent> ent, ref StrappedEvent args)
+    private void OnAppearanceChange(EntityUid uid, VehicleComponent comp, ref AppearanceChangeEvent args)
     {
-        if (!TryComp<SpriteComponent>(ent.Owner, out var spriteComp))
+        if (args.Sprite == null)
             return;
 
-        spriteComp.DrawDepth = (int)Content.Shared.DrawDepth.DrawDepth.OverMobs;
-    }
-
-    private void OnUnstrapped(Entity<VehicleComponent> ent, ref UnstrappedEvent args)
-    {
-        if (!TryComp<SpriteComponent>(ent.Owner, out var spriteComp))
+        if (!_appearance.TryGetData<bool>(uid, VehicleState.Animated, out bool animated))
             return;
 
-        spriteComp.DrawDepth = (int)Content.Shared.DrawDepth.DrawDepth.Objects;
+        if (!TryComp<SpriteComponent>(uid, out var spriteComp))
+            return;
+
+        if (animated)
+        {
+            spriteComp.DrawDepth = (int)Content.Shared.DrawDepth.DrawDepth.OverMobs;
+        }
+        else
+        {
+            spriteComp.DrawDepth = (int)Content.Shared.DrawDepth.DrawDepth.Objects;
+        }
+        spriteComp.LayerSetAutoAnimated(0, animated);
     }
 }

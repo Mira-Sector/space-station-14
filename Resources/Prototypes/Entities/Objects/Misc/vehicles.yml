@@ -5,6 +5,7 @@
   - type: Vehicle
   - type: Strap
     position: Stand
+  - type: Appearance
   - type: InputMover
   - type: Clickable
   - type: InteractionOutline

@@ -9,6 +9,7 @@ namespace Content.Shared.Vehicles;
 
 public abstract partial class SharedVehicleSystem : EntitySystem
 {
+    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedBuckleSystem _buckle = default!;
     [Dependency] private readonly SharedMoverController _mover = default!;
     [Dependency] private readonly SharedVirtualItemSystem _virtualItem = default!;
@@ -26,7 +27,7 @@ public abstract partial class SharedVehicleSystem : EntitySystem
 
     private void OnInit(EntityUid uid, VehicleComponent component, ComponentInit args)
     {
-
+        _appearance.SetData(uid, VehicleState.Animated, false);
     }
 
     private void OnRemove(EntityUid uid, VehicleComponent component, ComponentRemove args)
@@ -71,6 +72,7 @@ public abstract partial class SharedVehicleSystem : EntitySystem
 
         ent.Comp.Driver = driver;
 
+        _appearance.SetData(ent.Owner, VehicleState.Animated, true);
         _mover.SetRelay(driver, ent.Owner);
     }
 
@@ -103,6 +105,7 @@ public abstract partial class SharedVehicleSystem : EntitySystem
 
         RemComp<RelayInputMoverComponent>(driver);
 
+        _appearance.SetData(vehicle, VehicleState.Animated, false);
         vehicleComp.Driver = null;
 
         _virtualItem.DeleteInHandsMatching(driver, vehicle);

@@ -1,4 +1,5 @@
 using Robust.Shared.GameStates;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared.Vehicles;
 
@@ -14,4 +15,8 @@ public sealed partial class VehicleComponent : Component
     [DataField]
     public int RequiredHands = 1;
 }
-
+[Serializable, NetSerializable]
+public enum VehicleState
+{
+    Animated
+}
