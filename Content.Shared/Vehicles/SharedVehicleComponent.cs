@@ -6,7 +6,7 @@ namespace Content.Shared.Vehicles;
 [RegisterComponent, NetworkedComponent]
 public sealed partial class VehicleComponent : Component
 {
-    [DataField]
+    [ViewVariables]
     public EntityUid? Driver;
 
     [DataField]
