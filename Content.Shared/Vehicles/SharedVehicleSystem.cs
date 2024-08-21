@@ -56,14 +56,24 @@ public abstract partial class SharedVehicleSystem : EntitySystem
 
     private void OnHorn(EntityUid uid, VehicleComponent component, InstantActionEvent args)
     {
+        if (args.Handled == true)
+            return;
+
         if (component.Driver != args.Performer)
             return;
 
+        if (component.SirenSound == null)
+            return;
+
         _audio.PlayPvs(component.HornSound, component.Owner);
+        args.Handled = true;
     }
 
     private void OnSiren(EntityUid uid, VehicleComponent component, InstantActionEvent args)
     {
+        if (args.Handled == true)
+            return;
+
         if (component.Driver != args.Performer)
             return;
 
@@ -80,6 +90,7 @@ public abstract partial class SharedVehicleSystem : EntitySystem
         }
 
         component.SirenEnabled = !component.SirenEnabled;
+        args.Handled = true;
     }
 
 
