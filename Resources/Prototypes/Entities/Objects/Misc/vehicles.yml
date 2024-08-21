@@ -44,6 +44,11 @@
       - !type:PlaySoundBehavior
         sound:
           collection: MetalBreak
+  - type: MovementSpeedModifier
+    acceleration: 10
+    friction: 10 # wheels dont stop instantly
+    baseSprintSpeed: 7
+    baseWalkSpeed: 4.5 # default walking speed
   - type: StaticPrice
     price: 2500
   - type: Tag
@@ -60,5 +65,3 @@
     sprite: Objects/Vehicles/secway.rsi
     state: vehicle
     noRot: true
-  - type: Vehicle
-    speed: 2

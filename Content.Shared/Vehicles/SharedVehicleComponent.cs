@@ -10,9 +10,6 @@ public sealed partial class VehicleComponent : Component
     public EntityUid? Driver;
 
     [DataField]
-    public float Speed = 1f;
-
-    [DataField]
     public int RequiredHands = 1;
 }
 [Serializable, NetSerializable]
