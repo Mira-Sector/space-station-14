@@ -1,6 +1,7 @@
 using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
 using Content.Shared.Actions;
+using Content.Shared.Audio;
 using Content.Shared.Buckle;
 using Content.Shared.Buckle.Components;
 using Content.Shared.Hands;
@@ -18,6 +19,7 @@ public abstract partial class SharedVehicleSystem : EntitySystem
 {
     [Dependency] private readonly AccessReaderSystem _access = default!;
     [Dependency] private readonly SharedActionsSystem _actions = default!;
+    [Dependency] private readonly SharedAmbientSoundSystem _ambientSound = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedBuckleSystem _buckle = default!;
@@ -48,6 +50,7 @@ public abstract partial class SharedVehicleSystem : EntitySystem
     {
         _appearance.SetData(uid, VehicleState.Animated, component.EngineRunning);
         _appearance.SetData(uid, VehicleState.DrawOver, false);
+        _ambientSound.SetAmbience(component.Owner, component.EngineRunning);
     }
 
     private void OnRemove(EntityUid uid, VehicleComponent component, ComponentRemove args)
@@ -64,6 +67,8 @@ public abstract partial class SharedVehicleSystem : EntitySystem
         component.EngineRunning = true;
         _appearance.SetData(component.Owner, VehicleState.Animated, true);
 
+        _ambientSound.SetAmbience(component.Owner, true);
+
         if (component.Driver == null)
             return;
 
@@ -74,6 +79,8 @@ public abstract partial class SharedVehicleSystem : EntitySystem
     {
         component.EngineRunning = false;
         _appearance.SetData(component.Owner, VehicleState.Animated, false);
+
+        _ambientSound.SetAmbience(component.Owner, false);
 
         if (component.Driver == null)
             return;
@@ -166,7 +173,8 @@ public abstract partial class SharedVehicleSystem : EntitySystem
         {
             ent.Comp.FirstRun = false;
             ent.Comp.EngineRunning = false;
-        _appearance.SetData(ent.Owner, VehicleState.Animated, false);
+            _appearance.SetData(ent.Owner, VehicleState.Animated, false);
+            _ambientSound.SetAmbience(ent.Owner, false);
             return;
         }
 
