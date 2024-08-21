@@ -65,3 +65,13 @@
     sprite: Objects/Vehicles/secway.rsi
     state: vehicle
     noRot: true
+  - type: Vehicle
+    hornSound:
+      collection: DeskBell
+      params:
+        variation: 0.125
+    sirenSound:
+      collection: PoliceSiren
+      params:
+        variation: 0.125
+
