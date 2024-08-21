@@ -1,10 +1,12 @@
 - type: entity
   id: BaseVehicle
   abstract: true
+  save: false
   categories: [ HideSpawnMenu ]
   components:
   - type: Vehicle
   - type: Strap
+    maxBuckleDistance: 1
     position: Stand
   - type: Appearance
   - type: InputMover
