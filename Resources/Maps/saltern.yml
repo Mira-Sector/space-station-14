@@ -58070,6 +58070,14 @@ entities:
     - type: Transform
       pos: -0.5,8.5
       parent: 31
+- proto: SpawnVehicleSecway
+  entities:
+  - uid: 10123
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -5.5,16.5
+      parent: 31
 - proto: SpawnVendingMachineRestockFoodDrink
   entities:
   - uid: 10695
@@ -60831,6 +60839,14 @@ entities:
     components:
     - type: Transform
       pos: 19.5,-4.5
+      parent: 31
+- proto: VehicleKeySecway
+  entities:
+  - uid: 10124
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: -4.631422,13.935763
       parent: 31
 - proto: VendingBarDrobe
   entities:
