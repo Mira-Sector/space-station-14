@@ -1291,6 +1291,9 @@
   id: Vegetable
 
 - type: Tag
+  id: VehicleKey
+
+- type: Tag
   id: VimPilot
 
 - type: Tag
