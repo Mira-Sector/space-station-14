@@ -127836,6 +127836,30 @@ entities:
     - type: Transform
       pos: -26.5,-9.5
       parent: 60
+- proto: SpawnVehicleJanicart
+  entities:
+  - uid: 24517
+    components:
+    - type: Transform
+      pos: -4.5,-26.5
+      parent: 60
+- proto: SpawnVehicleSecway
+  entities:
+  - uid: 16678
+    components:
+    - type: Transform
+      pos: -22.5,-16.5
+      parent: 60
+  - uid: 24512
+    components:
+    - type: Transform
+      pos: -23.5,-16.5
+      parent: 60
+  - uid: 24513
+    components:
+    - type: Transform
+      pos: -24.5,-16.5
+      parent: 60
 - proto: SpawnVendingMachineRestockFoodDrink
   entities:
   - uid: 19888
@@ -133744,6 +133768,30 @@ entities:
     components:
     - type: Transform
       pos: 50.5,-25.5
+      parent: 60
+- proto: VehicleKeyJanicart
+  entities:
+  - uid: 24518
+    components:
+    - type: Transform
+      pos: -11.288822,-28.14013
+      parent: 60
+- proto: VehicleKeySecway
+  entities:
+  - uid: 24514
+    components:
+    - type: Transform
+      pos: -23.31068,-9.233576
+      parent: 60
+  - uid: 24515
+    components:
+    - type: Transform
+      pos: -23.326305,-9.452326
+      parent: 60
+  - uid: 24516
+    components:
+    - type: Transform
+      pos: -23.326305,-9.671076
       parent: 60
 - proto: VendingBarDrobe
   entities:

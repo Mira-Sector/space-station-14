@@ -11448,7 +11448,7 @@ entities:
       pos: 24.5,16.5
       parent: 8364
     - type: Door
-      secondsUntilStateChange: -4372.8193
+      secondsUntilStateChange: -4599.1494
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -142315,6 +142315,42 @@ entities:
     - type: Transform
       pos: -0.5,30.5
       parent: 8364
+- proto: SpawnVehicleATV
+  entities:
+  - uid: 15106
+    components:
+    - type: Transform
+      pos: -33.5,-18.5
+      parent: 8364
+- proto: SpawnVehicleJanicart
+  entities:
+  - uid: 9485
+    components:
+    - type: Transform
+      pos: 7.5,-34.5
+      parent: 8364
+- proto: SpawnVehicleSecway
+  entities:
+  - uid: 3809
+    components:
+    - type: Transform
+      pos: 19.5,32.5
+      parent: 8364
+  - uid: 3810
+    components:
+    - type: Transform
+      pos: 18.5,32.5
+      parent: 8364
+  - uid: 3811
+    components:
+    - type: Transform
+      pos: 19.5,34.5
+      parent: 8364
+  - uid: 3812
+    components:
+    - type: Transform
+      pos: 19.5,35.5
+      parent: 8364
 - proto: SpawnVendingMachineRestockFoodDrink
   entities:
   - uid: 11918
@@ -148372,6 +148408,42 @@ entities:
     components:
     - type: Transform
       pos: 45.5,-52.5
+      parent: 8364
+- proto: VehicleKeyATV
+  entities:
+  - uid: 15126
+    components:
+    - type: Transform
+      pos: -30.573238,-18.385479
+      parent: 8364
+- proto: VehicleKeyJanicart
+  entities:
+  - uid: 15105
+    components:
+    - type: Transform
+      pos: 2.5914202,-35.421654
+      parent: 8364
+- proto: VehicleKeySecway
+  entities:
+  - uid: 3813
+    components:
+    - type: Transform
+      pos: 16.499008,34.07908
+      parent: 8364
+  - uid: 4163
+    components:
+    - type: Transform
+      pos: 16.452133,33.20408
+      parent: 8364
+  - uid: 7928
+    components:
+    - type: Transform
+      pos: 16.467758,32.938454
+      parent: 8364
+  - uid: 9360
+    components:
+    - type: Transform
+      pos: 16.467758,32.563454
       parent: 8364
 - proto: VendingBarDrobe
   entities:

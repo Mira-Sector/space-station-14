@@ -25,3 +25,17 @@
   - type: ConditionalSpawner
     prototypes:
       - VehicleATV
+      
+- type: entity
+  name: Janicart Spawner
+  id: SpawnVehicleJanicart
+  parent: MarkerBase
+  components:
+  - type: Sprite
+    layers:
+      - state: green
+      - sprite: Objects/Vehicles/janicart.rsi
+        state: keys
+  - type: ConditionalSpawner
+    prototypes:
+      - VehicleJanicart
