@@ -108,7 +108,7 @@
           path: /Audio/Effects/Vehicle/vehiclestartup.ogg
           params:
             volume: -3
-            
+
 - type: entity
   id: VehicleSyndicateSegway
   parent: VehicleSecway
@@ -161,7 +161,7 @@
           path: /Audio/Effects/Vehicle/vehiclestartup.ogg
           params:
             volume: -3
-            
+
 - type: entity
   id: VehicleJanicart
   parent: BaseVehicle
@@ -193,6 +193,8 @@
   - type: UnpoweredFlashlight
   - type: PointLight
     enabled: false
+    mask: /Textures/Effects/LightMasks/cone.png
+    autoRot: true
     radius: 3.5
     softness: 2
-    mask: /Textures/Effects/Lightmasks/cone.png
+    netsync: false
