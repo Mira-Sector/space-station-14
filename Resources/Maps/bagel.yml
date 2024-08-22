@@ -133258,15 +133258,17 @@ entities:
       rot: 1.5707963267948966 rad
       pos: -66.5,-1.5
       parent: 60
-  - uid: 5021
-    components:
-    - type: Transform
-      pos: -3.5,-9.5
-      parent: 60
   - uid: 7843
     components:
     - type: Transform
       pos: 58.5,-44.5
+      parent: 60
+- proto: ToiletGoldenDirtyWater
+  entities:
+  - uid: 5021
+    components:
+    - type: Transform
+      pos: -3.5,-9.5
       parent: 60
 - proto: ToolboxArtistic
   entities:

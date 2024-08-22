@@ -11700,7 +11700,7 @@ entities:
       pos: -20.5,55.5
       parent: 12
     - type: Door
-      secondsUntilStateChange: -11992.409
+      secondsUntilStateChange: -12035.983
       state: Opening
     - type: DeviceLinkSink
       invokeCounter: 1
@@ -12389,7 +12389,7 @@ entities:
       pos: 39.5,20.5
       parent: 12
     - type: Door
-      secondsUntilStateChange: -6393.3364
+      secondsUntilStateChange: -6436.9106
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -150398,6 +150398,13 @@ entities:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 7.5,-31.5
+      parent: 12
+- proto: ToiletGoldenDirtyWater
+  entities:
+  - uid: 27899
+    components:
+    - type: Transform
+      pos: -30.5,11.5
       parent: 12
 - proto: ToolboxArtisticFilled
   entities:

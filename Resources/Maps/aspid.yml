@@ -10800,7 +10800,7 @@ entities:
       pos: 12.5,-42.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -856.4544
+      secondsUntilStateChange: -909.5576
       state: Opening
     - type: DeviceLinkSource
       linkedPorts:
@@ -105687,7 +105687,7 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 16.5,-39.5
       parent: 1
-- proto: ToiletEmpty
+- proto: ToiletGoldenDirtyWater
   entities:
   - uid: 6813
     components:

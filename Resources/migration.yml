@@ -184,7 +184,7 @@ SpawnVehicleWheelchairFolded: null
 VehicleWheelchair: null
 VehicleWheelchairFolded: null
 VehicleSecwayStealObjective: null
-VehicleKeyJanicart: null
+#VehicleKeyJanicart: null
 #VehicleKeySecway: null
 #VehicleKeyATV: null
 VehicleKeySkeleton: null
@@ -198,15 +198,15 @@ VehicleUnicycle: null
 VehicleUnicycleFolded: null
 ActionVehicleHorn: null
 #CrateFunATV: null
-CrateFunSyndicateSegway: null
+#CrateFunSyndicateSegway: null
 MobTaxiBot: null
 # MobSupplyBot: null
 SpawnVehicleMotobike: null
 #SpawnVehicleATV: null
 #SpawnVehicleSecway: null
-SpawnVehicleJanicart: null
-VehicleJanicart: null
-VehicleJanicartDestroyed: null
+#SpawnVehicleJanicart: null
+#VehicleJanicart: null
+#VehicleJanicartDestroyed: null
 
 # 2024-02-01
 YellowOxygenTank: OxygenTank
