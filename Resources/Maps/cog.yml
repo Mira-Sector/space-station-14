@@ -11700,7 +11700,7 @@ entities:
       pos: -20.5,55.5
       parent: 12
     - type: Door
-      secondsUntilStateChange: -11772.231
+      secondsUntilStateChange: -12035.983
       state: Opening
     - type: DeviceLinkSink
       invokeCounter: 1
@@ -12389,7 +12389,7 @@ entities:
       pos: 39.5,20.5
       parent: 12
     - type: Door
-      secondsUntilStateChange: -6173.1587
+      secondsUntilStateChange: -6436.9106
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -130517,11 +130517,6 @@ entities:
       rot: -1.5707963267948966 rad
       pos: -45.5,44.5
       parent: 12
-  - uid: 20836
-    components:
-    - type: Transform
-      pos: -39.5,36.5
-      parent: 12
   - uid: 20837
     components:
     - type: Transform
@@ -143746,6 +143741,42 @@ entities:
     - type: Transform
       pos: -46.5,51.5
       parent: 12
+- proto: SpawnVehicleATV
+  entities:
+  - uid: 27897
+    components:
+    - type: Transform
+      pos: 48.5,-17.5
+      parent: 12
+- proto: SpawnVehicleJanicart
+  entities:
+  - uid: 27895
+    components:
+    - type: Transform
+      pos: 46.5,19.5
+      parent: 12
+- proto: SpawnVehicleSecway
+  entities:
+  - uid: 19275
+    components:
+    - type: Transform
+      pos: -32.5,35.5
+      parent: 12
+  - uid: 20836
+    components:
+    - type: Transform
+      pos: -32.5,36.5
+      parent: 12
+  - uid: 27841
+    components:
+    - type: Transform
+      pos: -39.5,35.5
+      parent: 12
+  - uid: 27842
+    components:
+    - type: Transform
+      pos: -39.5,36.5
+      parent: 12
 - proto: SpawnVendingMachineRestockFoodDrink
   entities:
   - uid: 2323
@@ -150368,6 +150399,13 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 7.5,-31.5
       parent: 12
+- proto: ToiletGoldenDirtyWater
+  entities:
+  - uid: 27899
+    components:
+    - type: Transform
+      pos: -30.5,11.5
+      parent: 12
 - proto: ToolboxArtisticFilled
   entities:
   - uid: 9368
@@ -151771,6 +151809,42 @@ entities:
     components:
     - type: Transform
       pos: -5.9218473,-56.165512
+      parent: 12
+- proto: VehicleKeyATV
+  entities:
+  - uid: 27898
+    components:
+    - type: Transform
+      pos: 46.570305,-16.33611
+      parent: 12
+- proto: VehicleKeyJanicart
+  entities:
+  - uid: 27896
+    components:
+    - type: Transform
+      pos: 47.433273,16.375128
+      parent: 12
+- proto: VehicleKeySecway
+  entities:
+  - uid: 27891
+    components:
+    - type: Transform
+      pos: -35.18218,36.439575
+      parent: 12
+  - uid: 27892
+    components:
+    - type: Transform
+      pos: -35.197803,38.61145
+      parent: 12
+  - uid: 27893
+    components:
+    - type: Transform
+      pos: -36.36968,42.6427
+      parent: 12
+  - uid: 27894
+    components:
+    - type: Transform
+      pos: -36.71343,42.377075
       parent: 12
 - proto: VendingBarDrobe
   entities:

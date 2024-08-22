@@ -339,3 +339,13 @@ Entries:
     type: Add
   id: 53
   time: '2024-08-19T23:07:00.0000000+00:00'
+- author: Thurtik
+  changes:
+  - message: Secways are now mapped on all maps.
+    type: Tweak
+  - message: The janicart is back!
+    type: Add
+  - message: The syndicate segway is back for purchase!
+    type: Add
+  id: 54
+  time: '2024-08-22T16:07:00.0000000+00:00'

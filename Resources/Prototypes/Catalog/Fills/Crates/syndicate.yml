@@ -30,3 +30,15 @@
   components:
     - type: SurplusBundle
       totalPrice: 125
+      
+- type: entity
+  id: CrateSyndicateSyndicateSegway
+  suffix: Filled
+  parent: CrateSyndicate
+  name: Syndicate segway crate
+  description: A crate containing a two-wheeler that will help you escape from the security officers. Or not.
+  components:
+  - type: StorageFill
+    contents:
+      - id: VehicleSyndicateSegway
+      - id: VehicleKeySyndicateSegway
