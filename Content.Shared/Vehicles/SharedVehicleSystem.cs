@@ -64,6 +64,14 @@ public abstract partial class SharedVehicleSystem : EntitySystem
 
     private void OnInsert(EntityUid uid, VehicleComponent component, ref EntInsertedIntoContainerMessage args)
     {
+        if (component.HornAction != null &&
+            args.Container.Contains(component.HornAction.Value))
+            return;
+
+        if (component.SirenAction != null &&
+            args.Container.Contains(component.SirenAction.Value))
+            return;
+
         component.EngineRunning = true;
         _appearance.SetData(component.Owner, VehicleState.Animated, true);
 
@@ -166,17 +174,6 @@ public abstract partial class SharedVehicleSystem : EntitySystem
 
         if (!ent.Comp.EngineRunning)
             return;
-
-        // TODO: remove this dogshit hack
-        // on first run engine running gets set to true ONLY in this method
-        if (ent.Comp.FirstRun)
-        {
-            ent.Comp.FirstRun = false;
-            ent.Comp.EngineRunning = false;
-            _appearance.SetData(ent.Owner, VehicleState.Animated, false);
-            _ambientSound.SetAmbience(ent.Owner, false);
-            return;
-        }
 
         Mount(driver, ent.Owner);
     }
