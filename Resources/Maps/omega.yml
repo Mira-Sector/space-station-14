@@ -66519,6 +66519,20 @@ entities:
     - type: Transform
       pos: -34.5,15.5
       parent: 4812
+- proto: SpawnVehicleJanicart
+  entities:
+  - uid: 12466
+    components:
+    - type: Transform
+      pos: -22.5,-6.5
+      parent: 4812
+- proto: SpawnVehicleSecway
+  entities:
+  - uid: 11618
+    components:
+    - type: Transform
+      pos: -31.5,19.5
+      parent: 4812
 - proto: Spoon
   entities:
   - uid: 1774
@@ -69487,12 +69501,6 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 10.5,29.5
       parent: 4812
-  - uid: 2489
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -15.5,27.5
-      parent: 4812
   - uid: 3452
     components:
     - type: Transform
@@ -69516,6 +69524,14 @@ entities:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: -19.5,28.5
+      parent: 4812
+- proto: ToiletGoldenDirtyWater
+  entities:
+  - uid: 2489
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: -15.5,27.5
       parent: 4812
 - proto: TomatoSeeds
   entities:
@@ -69802,6 +69818,20 @@ entities:
     components:
     - type: Transform
       pos: -38.5,-33.5
+      parent: 4812
+- proto: VehicleKeyJanicart
+  entities:
+  - uid: 12583
+    components:
+    - type: Transform
+      pos: -23.23814,-7.106486
+      parent: 4812
+- proto: VehicleKeySecway
+  entities:
+  - uid: 12322
+    components:
+    - type: Transform
+      pos: -31.530905,20.598429
       parent: 4812
 - proto: VendingBarDrobe
   entities:

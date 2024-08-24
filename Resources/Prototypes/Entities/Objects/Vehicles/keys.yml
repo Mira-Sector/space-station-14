@@ -23,6 +23,20 @@
     tags:
     - VehicleKey
     - SecwayKeys
+    
+- type: entity
+  parent: BaseKey
+  id: VehicleKeySyndicateSegway
+  name: syndicate segway keys
+  description: Patterned after the iconic EMAG design.
+  components:
+  - type: Sprite
+    sprite: Objects/Vehicles/syndicatesegway.rsi
+    state: keys
+  - type: Tag
+    tags:
+    - VehicleKey
+    - SyndicateSegwayKeys
 
 - type: entity
   parent: BaseKey
@@ -37,3 +51,17 @@
     tags:
     - VehicleKey
     - ATVKeys
+    
+- type: entity
+  parent: BaseKey
+  id: VehicleKeyJanicart
+  name: janicart keys
+  description: Interesting design.
+  components:
+  - type: Sprite
+    sprite: Objects/Vehicles/janicart.rsi
+    state: keys
+  - type: Tag
+    tags:
+    - VehicleKey
+    - JanicartKeys

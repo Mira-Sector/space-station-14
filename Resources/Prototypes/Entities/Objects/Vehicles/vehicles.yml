@@ -111,6 +111,30 @@
             volume: -3
 
 - type: entity
+  id: VehicleSyndicateSegway
+  parent: VehicleSecway
+  name: syndicate segway
+  description: Be an enemy of the corporation, in style.
+  components:
+  - type: Sprite
+    sprite: Objects/Vehicles/syndicatesegway.rsi
+    state: vehicle
+    noRot: true
+  - type: ItemSlots
+    slots:
+      key_slot:
+        name: vehicle-slot-component-slot-name-keys
+        whitelist:
+          requireAll: true
+          tags:
+          - VehicleKey
+          - SyndicateSegwayKeys
+          insertSound:
+            path: /Audio/Effects/Vehicle/vehiclestartup.ogg
+            params:
+              volume: -3
+
+- type: entity
   id: VehicleATV
   parent: BaseVehicle
   name: ATV
@@ -139,6 +163,40 @@
           path: /Audio/Effects/Vehicle/vehiclestartup.ogg
           params:
             volume: -3
+
+- type: entity
+  id: VehicleJanicart
+  parent: BaseVehicle
+  name: janicart
+  description: The janitor's trusty steed.
+  components:
+  - type: Sprite
+    sprite: Objects/Vehicles/janicart.rsi
+    state: vehicle
+    noRot: true
+  - type: Vehicle
+    renderOver: North, NorthEast, East, SouthEast, South, SouthWest, West, NorthWest
+  - type: ItemSlots
+    slots:
+      key_slot:
+        name: vehicle-slot-component-slot-name-keys
+        whitelist:
+          requireAll: true
+          tags:
+          - VehicleKey
+          - JanicartKeys
+        insertSound:
+          path: /Audio/Effects/Vehicle/vehiclestartup.ogg
+          params:
+            volume: -3
+  - type: UnpoweredFlashlight
+  - type: PointLight
+    enabled: false
+    mask: /Textures/Effects/LightMasks/cone.png
+    autoRot: true
+    radius: 3.5
+    softness: 2
+    netsync: false
 
 - type: entity
   id: VehicleWheelchair

@@ -6534,6 +6534,12 @@ entities:
     - type: Transform
       pos: -3.5,20.5
       parent: 1
+    - type: Door
+      secondsUntilStateChange: -279.2883
+      state: Opening
+    - type: DeviceLinkSource
+      lastSignals:
+        DoorStatus: True
 - proto: AirlockHeadOfSecurityLocked
   entities:
   - uid: 3313
@@ -26924,7 +26930,7 @@ entities:
   - uid: 4136
     components:
     - type: Transform
-      pos: -3.2445543,23.545168
+      pos: -2.3945343,23.599216
       parent: 1
 - proto: CircuitImprinter
   entities:
@@ -29371,11 +29377,6 @@ entities:
       parent: 1
 - proto: DeployableBarrier
   entities:
-  - uid: 760
-    components:
-    - type: Transform
-      pos: 22.5,10.5
-      parent: 1
   - uid: 761
     components:
     - type: Transform
@@ -29385,11 +29386,6 @@ entities:
     components:
     - type: Transform
       pos: 23.5,12.5
-      parent: 1
-  - uid: 1842
-    components:
-    - type: Transform
-      pos: 23.5,10.5
       parent: 1
 - proto: DeskBell
   entities:
@@ -36378,10 +36374,10 @@ entities:
       parent: 1
 - proto: FoodPoppy
   entities:
-  - uid: 4135
+  - uid: 8934
     components:
     - type: Transform
-      pos: -3.6820545,23.685793
+      pos: -2.5664093,23.755466
       parent: 1
 - proto: FoodTartMime
   entities:
@@ -58028,13 +58024,13 @@ entities:
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
-      pos: 25.429817,10.545956
+      pos: 27.041607,10.814939
       parent: 1
   - uid: 5355
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
-      pos: 25.773567,10.670956
+      pos: 27.072857,10.580564
       parent: 1
   - uid: 5386
     components:
@@ -66905,6 +66901,13 @@ entities:
     - type: Transform
       pos: 3.5,-3.5
       parent: 1
+- proto: SpawnPointBrigmedic
+  entities:
+  - uid: 4121
+    components:
+    - type: Transform
+      pos: 22.5,6.5
+      parent: 1
 - proto: SpawnPointCaptain
   entities:
   - uid: 6046
@@ -67193,6 +67196,18 @@ entities:
     components:
     - type: Transform
       pos: 28.5,17.5
+      parent: 1
+- proto: SpawnVehicleSecway
+  entities:
+  - uid: 760
+    components:
+    - type: Transform
+      pos: 22.5,10.5
+      parent: 1
+  - uid: 1842
+    components:
+    - type: Transform
+      pos: 23.5,10.5
       parent: 1
 - proto: SpawnVendingMachineRestockDrink
   entities:
@@ -69424,11 +69439,6 @@ entities:
     - type: Transform
       pos: -9.5,-12.5
       parent: 1
-  - uid: 4121
-    components:
-    - type: Transform
-      pos: -3.5,23.5
-      parent: 1
   - uid: 4122
     components:
     - type: Transform
@@ -70105,6 +70115,14 @@ entities:
       rot: 3.141592653589793 rad
       pos: -15.5,-27.5
       parent: 1
+- proto: ToiletGoldenDirtyWater
+  entities:
+  - uid: 4135
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: -3.5,23.5
+      parent: 1
 - proto: ToolboxArtistic
   entities:
   - uid: 8226
@@ -70429,6 +70447,18 @@ entities:
     components:
     - type: Transform
       pos: -14.498325,-10.477551
+      parent: 1
+- proto: VehicleKeySecway
+  entities:
+  - uid: 9050
+    components:
+    - type: Transform
+      pos: 25.682232,10.736814
+      parent: 1
+  - uid: 9051
+    components:
+    - type: Transform
+      pos: 25.400982,10.518064
       parent: 1
 - proto: VendingBarDrobe
   entities:

@@ -10800,7 +10800,7 @@ entities:
       pos: 12.5,-42.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -728.11383
+      secondsUntilStateChange: -909.5576
       state: Opening
     - type: DeviceLinkSource
       linkedPorts:
@@ -11338,6 +11338,8 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 37.5,3.5
       parent: 1
+    - type: Door
+      changeAirtight: False
     - type: Docking
       dockJointId: docking21483
       dockedWith: 8865
@@ -11351,6 +11353,8 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 37.5,1.5
       parent: 1
+    - type: Door
+      changeAirtight: False
     - type: Docking
       dockJointId: docking21482
       dockedWith: 8864
@@ -11376,6 +11380,8 @@ entities:
       rot: -1.5707963267948966 rad
       pos: -4.5,-1.5
       parent: 8756
+    - type: Door
+      changeAirtight: False
     - type: Docking
       dockJointId: docking21482
       dockedWith: 2047
@@ -11389,6 +11395,8 @@ entities:
       rot: -1.5707963267948966 rad
       pos: -4.5,0.5
       parent: 8756
+    - type: Door
+      changeAirtight: False
     - type: Docking
       dockJointId: docking21483
       dockedWith: 2030
@@ -85421,10 +85429,10 @@ entities:
       parent: 1
 - proto: Holoprojector
   entities:
-  - uid: 6663
+  - uid: 12334
     components:
     - type: Transform
-      pos: 16.524984,-4.1055784
+      pos: 16.54115,-3.805302
       parent: 1
 - proto: HospitalCurtains
   entities:
@@ -87505,18 +87513,6 @@ entities:
     components:
     - type: Transform
       pos: -16.5,64.5
-      parent: 1
-- proto: MagazinePistolSubMachineGunTopMounted
-  entities:
-  - uid: 6824
-    components:
-    - type: Transform
-      pos: -16.587696,59.206833
-      parent: 1
-  - uid: 6825
-    components:
-    - type: Transform
-      pos: -16.388914,59.03654
       parent: 1
 - proto: MaintenanceFluffSpawner
   entities:
@@ -101723,6 +101719,30 @@ entities:
     - type: Transform
       pos: -12.5,49.5
       parent: 1
+- proto: SpawnVehicleJanicart
+  entities:
+  - uid: 11830
+    components:
+    - type: Transform
+      pos: 22.5,-5.5
+      parent: 1
+- proto: SpawnVehicleSecway
+  entities:
+  - uid: 6824
+    components:
+    - type: Transform
+      pos: -19.5,51.5
+      parent: 1
+  - uid: 6825
+    components:
+    - type: Transform
+      pos: -19.5,50.5
+      parent: 1
+  - uid: 11368
+    components:
+    - type: Transform
+      pos: -19.5,49.5
+      parent: 1
 - proto: SpawnVendingMachineRestockFoodDrink
   entities:
   - uid: 9322
@@ -105667,7 +105687,7 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 16.5,-39.5
       parent: 1
-- proto: ToiletEmpty
+- proto: ToiletGoldenDirtyWater
   entities:
   - uid: 6813
     components:
@@ -106076,6 +106096,30 @@ entities:
     components:
     - type: Transform
       pos: -13.5745945,28.466234
+      parent: 1
+- proto: VehicleKeyJanicart
+  entities:
+  - uid: 6663
+    components:
+    - type: Transform
+      pos: 16.588024,-4.2584267
+      parent: 1
+- proto: VehicleKeySecway
+  entities:
+  - uid: 11827
+    components:
+    - type: Transform
+      pos: -14.2406435,50.524403
+      parent: 1
+  - uid: 11828
+    components:
+    - type: Transform
+      pos: -14.2718935,50.368153
+      parent: 1
+  - uid: 11829
+    components:
+    - type: Transform
+      pos: -14.3031435,50.211903
       parent: 1
 - proto: VendingBarDrobe
   entities:
@@ -117933,6 +117977,13 @@ entities:
     - type: Transform
       pos: 23.450686,10.918031
       parent: 1
+- proto: WeaponEnergyShotgun
+  entities:
+  - uid: 6823
+    components:
+    - type: Transform
+      pos: -16.502504,59.51904
+      parent: 1
 - proto: WeaponLaserCarbine
   entities:
   - uid: 1841
@@ -117958,13 +118009,6 @@ entities:
     components:
     - type: Transform
       pos: 15.523123,-26.506323
-      parent: 1
-- proto: WeaponSubMachineGunWt550
-  entities:
-  - uid: 6823
-    components:
-    - type: Transform
-      pos: -16.502504,59.51904
       parent: 1
 - proto: WeaponWaterBlaster
   entities:

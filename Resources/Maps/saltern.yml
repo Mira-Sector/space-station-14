@@ -32332,8 +32332,8 @@ entities:
       pos: 14.5,-4.5
       parent: 31
     - type: FaxMachine
-      destinationAddress: Medical
       name: Medical
+      destinationAddress: Medical
   - uid: 1264
     components:
     - type: Transform
@@ -32347,8 +32347,8 @@ entities:
       pos: -17.5,-25.5
       parent: 31
     - type: FaxMachine
-      destinationAddress: Science
       name: Science
+      destinationAddress: Science
   - uid: 8323
     components:
     - type: Transform
@@ -32362,8 +32362,8 @@ entities:
       pos: 13.5,12.5
       parent: 31
     - type: FaxMachine
-      destinationAddress: Cargo
       name: Cargo
+      destinationAddress: Cargo
   - uid: 9687
     components:
     - type: Transform
@@ -32377,8 +32377,8 @@ entities:
       pos: 1.5,32.5
       parent: 31
     - type: FaxMachine
-      destinationAddress: bridge
       name: bridge
+      destinationAddress: bridge
 - proto: FaxMachineCaptain
   entities:
   - uid: 9686
@@ -49035,7 +49035,7 @@ entities:
     - type: Transform
       pos: 54.5,-1.5
       parent: 31
-- proto: LogicGate
+- proto: LogicGateOr
   entities:
   - uid: 11306
     components:
@@ -49139,18 +49139,6 @@ entities:
     components:
     - type: Transform
       pos: -14.250454,20.691399
-      parent: 31
-- proto: MagazinePistolSubMachineGunTopMounted
-  entities:
-  - uid: 10123
-    components:
-    - type: Transform
-      pos: -8.471462,20.3102
-      parent: 31
-  - uid: 10124
-    components:
-    - type: Transform
-      pos: -8.471462,20.4352
       parent: 31
 - proto: MaintenanceFluffSpawner
   entities:
@@ -58082,6 +58070,14 @@ entities:
     - type: Transform
       pos: -0.5,8.5
       parent: 31
+- proto: SpawnVehicleSecway
+  entities:
+  - uid: 10123
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -5.5,16.5
+      parent: 31
 - proto: SpawnVendingMachineRestockFoodDrink
   entities:
   - uid: 10695
@@ -60655,7 +60651,7 @@ entities:
       rot: -1.5707963267948966 rad
       pos: -29.5,2.5
       parent: 31
-- proto: ToiletEmpty
+- proto: ToiletGoldenDirtyWater
   entities:
   - uid: 793
     components:
@@ -60843,6 +60839,14 @@ entities:
     components:
     - type: Transform
       pos: 19.5,-4.5
+      parent: 31
+- proto: VehicleKeySecway
+  entities:
+  - uid: 10124
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: -4.631422,13.935763
       parent: 31
 - proto: VendingBarDrobe
   entities:
@@ -69649,6 +69653,13 @@ entities:
     - type: Transform
       pos: -14.594447,16.787762
       parent: 31
+- proto: WeaponEnergyShotgun
+  entities:
+  - uid: 1423
+    components:
+    - type: Transform
+      pos: -8.457573,20.768534
+      parent: 31
 - proto: WeaponPistolMk58
   entities:
   - uid: 4096
@@ -69672,13 +69683,6 @@ entities:
     components:
     - type: Transform
       pos: -13.373716,18.332554
-      parent: 31
-- proto: WeaponSubMachineGunWt550
-  entities:
-  - uid: 1423
-    components:
-    - type: Transform
-      pos: -8.457573,20.768534
       parent: 31
 - proto: WeaponWaterBlaster
   entities:

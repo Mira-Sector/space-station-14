@@ -76308,7 +76308,7 @@ entities:
       pos: 8.5,-176.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -147546
+      secondsUntilStateChange: -147692.1
       state: Closing
   - uid: 11227
     components:
@@ -79137,15 +79137,15 @@ entities:
     - type: Transform
       pos: 3.2787921,-72.53624
       parent: 2
-  - uid: 11665
-    components:
-    - type: Transform
-      pos: -3.6779807,-3.613141
-      parent: 2
   - uid: 11666
     components:
     - type: Transform
       pos: 14.486045,-60.418846
+      parent: 2
+  - uid: 13779
+    components:
+    - type: Transform
+      pos: -3.425662,-3.4124765
       parent: 2
 - proto: PlushieRGBee
   entities:
@@ -89438,6 +89438,32 @@ entities:
     - type: Transform
       pos: 0.5,-364.5
       parent: 2
+- proto: SpawnVehicleATV
+  entities:
+  - uid: 17418
+    components:
+    - type: Transform
+      pos: 4.5,-270.5
+      parent: 2
+- proto: SpawnVehicleJanicart
+  entities:
+  - uid: 11503
+    components:
+    - type: Transform
+      pos: -5.5,-54.5
+      parent: 2
+- proto: SpawnVehicleSecway
+  entities:
+  - uid: 17420
+    components:
+    - type: Transform
+      pos: -1.5,-335.5
+      parent: 2
+  - uid: 17421
+    components:
+    - type: Transform
+      pos: -1.5,-336.5
+      parent: 2
 - proto: SpawnVendingMachineRestockDrink
   entities:
   - uid: 13394
@@ -92410,6 +92436,14 @@ entities:
       rot: -1.5707963267948966 rad
       pos: -6.5,-152.5
       parent: 2
+- proto: ToiletGoldenDirtyWater
+  entities:
+  - uid: 11665
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: -3.5,-3.5
+      parent: 2
 - proto: ToolboxArtisticFilled
   entities:
   - uid: 13866
@@ -93023,6 +93057,32 @@ entities:
     components:
     - type: Transform
       pos: -6.010586,-317.41095
+      parent: 2
+- proto: VehicleKeyATV
+  entities:
+  - uid: 17419
+    components:
+    - type: Transform
+      pos: 4.7246785,-272.96667
+      parent: 2
+- proto: VehicleKeyJanicart
+  entities:
+  - uid: 17417
+    components:
+    - type: Transform
+      pos: -5.425211,-54.518867
+      parent: 2
+- proto: VehicleKeySecway
+  entities:
+  - uid: 17422
+    components:
+    - type: Transform
+      pos: 2.6177914,-336.14316
+      parent: 2
+  - uid: 17423
+    components:
+    - type: Transform
+      pos: 2.6646664,-336.53378
       parent: 2
 - proto: VendingBarDrobe
   entities:

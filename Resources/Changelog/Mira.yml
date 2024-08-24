@@ -327,3 +327,25 @@ Entries:
     type: Add
   id: 51
   time: '2024-08-09T18:47:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Drowsiness is now more effective at making you sleepy
+    type: Tweak
+  id: 52
+  time: '2024-08-18T18:37:00.0000000+00:00'
+- author: Thurtik
+  changes:
+  - message: All heads (except hos) now spawn with a new 'telescopic baton' - a weaker, retractable baton for self-defense, instead of a flash.
+    type: Add
+  id: 53
+  time: '2024-08-19T23:07:00.0000000+00:00'
+- author: Thurtik
+  changes:
+  - message: Secways are now mapped on all maps.
+    type: Tweak
+  - message: The janicart is back!
+    type: Add
+  - message: The syndicate segway is back for purchase!
+    type: Add
+  id: 54
+  time: '2024-08-22T16:07:00.0000000+00:00'
