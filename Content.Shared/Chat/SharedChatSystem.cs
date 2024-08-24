@@ -194,11 +194,6 @@ public abstract class SharedChatSystem : EntitySystem
         if (input.Length < 2 || char.IsWhiteSpace(input[1]))
         {
             output = SanitizeMessageCapital(input[1..].TrimStart());
-            if (!quiet)
-            {
-                var msg = "chat-manager-species-language-learned";
-                _popup.PopupEntity(Loc.GetString(msg), source, source);
-            }
             return true;
         }
 

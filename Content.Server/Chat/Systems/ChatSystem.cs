@@ -23,6 +23,7 @@ using Content.Shared.IdentityManagement;
 using Content.Shared.Interaction;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Players;
+using Content.Shared.Popups;
 using Content.Shared.Radio;
 using Content.Shared.SpeciesChat;
 using Content.Shared.Speech;
@@ -62,6 +63,7 @@ public sealed partial class ChatSystem : SharedChatSystem
     [Dependency] private readonly StationSystem _stationSystem = default!;
     [Dependency] private readonly MobStateSystem _mobStateSystem = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly ReplacementAccentSystem _wordreplacement = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
     [Dependency] private readonly ExamineSystemShared _examineSystem = default!;
@@ -564,15 +566,37 @@ public sealed partial class ChatSystem : SharedChatSystem
         if (channel == null)
             return;
 
+        if (!TryComp<SpeciesLanguageComponent>(source, out var sourceSpeciesComp))
+            return;
+
+        if (sourceSpeciesComp.SpokenLanguages == null)
+            return;
+
+        bool canSend = false;
+
+        foreach (var spoken in sourceSpeciesComp.SpokenLanguages)
+        {
+            if (spoken == channel.ID)
+            {
+                canSend = true;
+                break;
+            }
+        }
+
+        if (!canSend)
+        {
+            _popup.PopupEntity(Loc.GetString("chat-manager-species-learned"), source, source);
+            return;
+        }
+
         var message = TransformSpeech(source, FormattedMessage.RemoveMarkup(originalMessage));
         if (message.Length == 0)
             return;
 
         string obfuscatedMessage = ObfuscateMessageSpecies(message, channel);
 
-        // get the entity's name by visual identity (if no override provided).
-        string nameIdentity = FormattedMessage.EscapeText(nameOverride ?? Identity.Name(source, EntityManager));
-        // get the entity's name by voice (if no override provided).
+        var speech = GetSpeechVerb(source, message);
+        // get the entity's apparent name (if no override provided).
         string name;
         if (nameOverride != null)
         {
@@ -583,14 +607,24 @@ public sealed partial class ChatSystem : SharedChatSystem
             var nameEv = new TransformSpeakerNameEvent(source, Name(source));
             RaiseLocalEvent(source, nameEv);
             name = nameEv.Name;
+            // Check for a speech verb override
+            if (nameEv.SpeechVerb != null && _prototypeManager.TryIndex<SpeechVerbPrototype>(nameEv.SpeechVerb, out var proto))
+                speech = proto;
         }
-        name = FormattedMessage.EscapeText(name);
 
-        var wrappedMessage = Loc.GetString("chat-manager-entity-whisper-wrap-message",
-            ("entityName", name), ("message", FormattedMessage.EscapeText(message)));
+        var wrappedMessage = Loc.GetString("chat-manager-entity-say-wrap-message",
+            ("entityName", name),
+            ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
+            ("fontType", speech.FontId),
+            ("fontSize", speech.FontSize),
+            ("message", FormattedMessage.EscapeText(message)));
 
-        var wrappedobfuscatedMessage = Loc.GetString("chat-manager-entity-whisper-wrap-message",
-            ("entityName", nameIdentity), ("message", FormattedMessage.EscapeText(obfuscatedMessage)));
+        var wrappedobfuscatedMessage = Loc.GetString("chat-manager-entity-say-wrap-message",
+            ("entityName", name),
+            ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
+            ("fontType", speech.FontId),
+            ("fontSize", speech.FontSize),
+            ("message", FormattedMessage.EscapeText(obfuscatedMessage)));
 
         foreach (var (session, data) in GetRecipients(source, VoiceRange))
         {
@@ -636,6 +670,7 @@ public sealed partial class ChatSystem : SharedChatSystem
                     }
                 }
             }
+            Log.Debug(canUnderstand.ToString());
 
             if (canUnderstand)
                 _chatManager.ChatMessageToOne(ChatChannel.Local, message, wrappedMessage, source, false, session.Channel);

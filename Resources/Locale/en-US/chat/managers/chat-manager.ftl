@@ -15,8 +15,9 @@ chat-manager-admin-ooc-chat-disabled-message = Admin OOC chat has been disabled.
 chat-manager-max-message-length-exceeded-message = Your message exceeded {$limit} character limit
 chat-manager-no-headset-on-message = You don't have a headset on!
 chat-manager-no-radio-key = No radio key specified!
-chat-manager-species-language-learned = You havent learned this language!
+chat-manager-species-learned = You havent learned this language!
 chat-manager-no-such-channel = There is no channel with key '{$key}'!
+chat-manager-no-such-language = This language does not exist!
 chat-manager-whisper-headset-on-message = You can't whisper on the radio!
 
 chat-manager-server-wrap-message = [bold]{$message}[/bold]
