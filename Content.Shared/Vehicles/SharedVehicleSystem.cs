@@ -50,7 +50,6 @@ public abstract partial class SharedVehicleSystem : EntitySystem
     {
         _appearance.SetData(uid, VehicleState.Animated, component.EngineRunning);
         _appearance.SetData(uid, VehicleState.DrawOver, false);
-        _ambientSound.SetAmbience(component.Owner, component.EngineRunning);
     }
 
     private void OnRemove(EntityUid uid, VehicleComponent component, ComponentRemove args)
@@ -60,16 +59,12 @@ public abstract partial class SharedVehicleSystem : EntitySystem
 
         _buckle.TryUnbuckle(component.Driver.Value, component.Driver.Value);
         Dismount(component.Driver.Value, uid);
+        _appearance.SetData(uid, VehicleState.DrawOver, false);
     }
 
     private void OnInsert(EntityUid uid, VehicleComponent component, ref EntInsertedIntoContainerMessage args)
     {
-        if (component.HornAction != null &&
-            args.Container.Contains(component.HornAction.Value))
-            return;
-
-        if (component.SirenAction != null &&
-            args.Container.Contains(component.SirenAction.Value))
+        if (HasComp<InstantActionComponent>(args.Entity))
             return;
 
         component.EngineRunning = true;
@@ -104,7 +99,7 @@ public abstract partial class SharedVehicleSystem : EntitySystem
         if (component.Driver != args.Performer)
             return;
 
-        if (component.SirenSound == null)
+        if (component.HornSound == null)
             return;
 
         _audio.PlayPvs(component.HornSound, component.Owner);
@@ -141,18 +136,21 @@ public abstract partial class SharedVehicleSystem : EntitySystem
         var driver = args.Buckle.Owner; // i dont want to re write this shit 100 fucking times
 
         if (ent.Comp.Driver != null)
-            return;
-
-        if (ent.Comp.RequiredHands == 0)
-            return;
-
-        for (int hands = 0; hands < ent.Comp.RequiredHands; hands++)
         {
-            if (!_virtualItem.TrySpawnVirtualItemInHand(ent.Owner, driver, false))
+            args.Cancelled = true;
+            return;
+        }
+
+        if (ent.Comp.RequiredHands != 0)
+        {
+            for (int hands = 0; hands < ent.Comp.RequiredHands; hands++)
             {
-                args.Cancelled = true;
-                _virtualItem.DeleteInHandsMatching(driver, ent.Owner);
-                return;
+                if (!_virtualItem.TrySpawnVirtualItemInHand(ent.Owner, driver, false))
+                {
+                    args.Cancelled = true;
+                    _virtualItem.DeleteInHandsMatching(driver, ent.Owner);
+                    return;
+                }
             }
         }
 
@@ -184,6 +182,7 @@ public abstract partial class SharedVehicleSystem : EntitySystem
             return;
 
         Dismount(args.Buckle.Owner, ent);
+        _appearance.SetData(ent.Owner, VehicleState.DrawOver, false);
     }
 
     private void OnDropped(EntityUid uid, VehicleComponent comp, VirtualItemDeletedEvent args)
@@ -194,6 +193,7 @@ public abstract partial class SharedVehicleSystem : EntitySystem
         _buckle.TryUnbuckle(args.User, args.User);
 
         Dismount(args.User, comp.Owner);
+        _appearance.SetData(comp.Owner, VehicleState.DrawOver, false);
     }
 
     private void AddHorns(EntityUid driver, EntityUid vehicle)
@@ -234,7 +234,6 @@ public abstract partial class SharedVehicleSystem : EntitySystem
 
         RemComp<RelayInputMoverComponent>(driver);
 
-        _appearance.SetData(vehicle, VehicleState.DrawOver, false);
         vehicleComp.Driver = null;
 
         if (vehicleComp.HornAction != null)
