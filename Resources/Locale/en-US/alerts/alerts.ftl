@@ -110,3 +110,6 @@ alerts-revenant-corporeal-desc = You have manifested physically. People around y
 
 alerts-deflecting-name = Deflecting
 alerts-deflecting-desc = You have a chance to deflect incoming projectiles. Standing still or moving slowly will increase this chance.
+
+alerts-crawling-name = Crawling
+alerts-crawling-desc = You're crawling.
