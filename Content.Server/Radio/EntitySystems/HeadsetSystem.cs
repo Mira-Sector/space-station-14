@@ -48,12 +48,12 @@ public sealed class HeadsetSystem : SharedHeadsetSystem
 
     private void OnSpeak(EntityUid uid, WearingHeadsetComponent component, EntitySpokeEvent args)
     {
-        if (args.Channel != null
+        if (args.RadioChannel != null
             && TryComp(component.Headset, out EncryptionKeyHolderComponent? keys)
-            && keys.Channels.Contains(args.Channel.ID))
+            && keys.Channels.Contains(args.RadioChannel.ID))
         {
-            _radio.SendRadioMessage(uid, args.Message, args.Channel, component.Headset);
-            args.Channel = null; // prevent duplicate messages from other listeners.
+            _radio.SendRadioMessage(uid, args.Message, args.RadioChannel, component.Headset);
+            args.RadioChannel = null; // prevent duplicate messages from other listeners.
         }
     }
 

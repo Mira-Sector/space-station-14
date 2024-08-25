@@ -112,6 +112,10 @@
         visible: false
   - type: Inventory
     templateId: arachnid
+  - type: SpeciesLanguage
+    spokenLanguages:
+    - Common
+    - Buzzwords
 
 
 - type: entity
