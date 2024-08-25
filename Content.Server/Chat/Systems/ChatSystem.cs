@@ -612,14 +612,18 @@ public sealed partial class ChatSystem : SharedChatSystem
                 speech = proto;
         }
 
-        var wrappedMessage = Loc.GetString("chat-manager-entity-say-wrap-message",
+        var wrappedMessage = Loc.GetString("chat-manager-entity-say-species-wrap-message",
+            ("color", Color.Coral),
+            ("channel", channel.LocalizedName),
             ("entityName", name),
             ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
             ("fontType", speech.FontId),
             ("fontSize", speech.FontSize),
             ("message", FormattedMessage.EscapeText(message)));
 
-        var wrappedobfuscatedMessage = Loc.GetString("chat-manager-entity-say-wrap-message",
+        var wrappedobfuscatedMessage = Loc.GetString("chat-manager-entity-say-species-wrap-message",
+            ("color", Color.Coral),
+            ("channel", channel.LocalizedName),
             ("entityName", name),
             ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
             ("fontType", speech.FontId),
@@ -670,7 +674,6 @@ public sealed partial class ChatSystem : SharedChatSystem
                     }
                 }
             }
-            Log.Debug(canUnderstand.ToString());
 
             if (canUnderstand)
                 _chatManager.ChatMessageToOne(ChatChannel.Local, message, wrappedMessage, source, false, session.Channel);

@@ -888,6 +888,10 @@ public sealed class ChatUIController : UIController
                 AddSpeechBubble(msg, SpeechBubble.SpeechType.Whisper);
                 break;
 
+            case ChatChannel.Species:
+                AddSpeechBubble(msg, SpeechBubble.SpeechType.Say);
+                break;
+
             case ChatChannel.Dead:
                 if (_ghost is not {IsGhost: true})
                     break;
