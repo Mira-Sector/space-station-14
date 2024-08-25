@@ -23,7 +23,9 @@ using Content.Shared.IdentityManagement;
 using Content.Shared.Interaction;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Players;
+using Content.Shared.Popups;
 using Content.Shared.Radio;
+using Content.Shared.SpeciesChat;
 using Content.Shared.Speech;
 using Content.Shared.Whitelist;
 using Robust.Server.Player;
@@ -56,10 +58,12 @@ public sealed partial class ChatSystem : SharedChatSystem
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly IAdminLogManager _adminLogger = default!;
+    [Dependency] private readonly IEntityManager _entManager = default!;
     [Dependency] private readonly ActionBlockerSystem _actionBlocker = default!;
     [Dependency] private readonly StationSystem _stationSystem = default!;
     [Dependency] private readonly MobStateSystem _mobStateSystem = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly ReplacementAccentSystem _wordreplacement = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
     [Dependency] private readonly ExamineSystemShared _examineSystem = default!;
@@ -238,9 +242,14 @@ public sealed partial class ChatSystem : SharedChatSystem
         // This message may have a radio prefix, and should then be whispered to the resolved radio channel
         if (checkRadioPrefix)
         {
-            if (TryProccessRadioMessage(source, message, out var modMessage, out var channel))
+            if (TryProccessRadioMessage(source, message, out var modMessage, out var channelRadio))
             {
-                SendEntityWhisper(source, modMessage, range, channel, nameOverride, hideLog, ignoreActionBlocker);
+                SendEntityWhisper(source, modMessage, range, channelRadio, nameOverride, hideLog, ignoreActionBlocker);
+                return;
+            }
+            if (TryProccessSpeciesMessage(source, message, out modMessage, out var channelSpecies))
+            {
+                SendEntitySpecies(source, modMessage, range, channelSpecies, nameOverride, hideLog, ignoreActionBlocker);
                 return;
             }
         }
@@ -456,7 +465,7 @@ public sealed partial class ChatSystem : SharedChatSystem
 
         SendInVoiceRange(ChatChannel.Local, message, wrappedMessage, source, range);
 
-        var ev = new EntitySpokeEvent(source, message, null, null);
+        var ev = new EntitySpokeEvent(source, message, null, null, null);
         RaiseLocalEvent(source, ev, true);
 
         // To avoid logging any messages sent by entities that are not players, like vendors, cloning, etc.
@@ -550,7 +559,7 @@ public sealed partial class ChatSystem : SharedChatSystem
 
         _replay.RecordServerMessage(new ChatMessage(ChatChannel.Whisper, message, wrappedMessage, GetNetEntity(source), null, MessageRangeHideChatForReplay(range)));
 
-        var ev = new EntitySpokeEvent(source, message, channel, obfuscatedMessage);
+        var ev = new EntitySpokeEvent(source, message, channel, null, obfuscatedMessage);
         RaiseLocalEvent(source, ev, true);
         if (!hideLog)
             if (originalMessage == message)
@@ -568,6 +577,161 @@ public sealed partial class ChatSystem : SharedChatSystem
                 else
                     _adminLogger.Add(LogType.Chat, LogImpact.Low,
                     $"Whisper from {ToPrettyString(source):user}, original: {originalMessage}, transformed: {message}.");
+            }
+    }
+
+    private void SendEntitySpecies(
+        EntityUid source,
+        string originalMessage,
+        ChatTransmitRange range,
+        SpeciesChannelPrototype? channel,
+        string? nameOverride,
+        bool hideLog = false,
+        bool ignoreActionBlocker = false
+        )
+    {
+        if (!_actionBlocker.CanSpeak(source) && !ignoreActionBlocker)
+            return;
+
+        if (channel == null)
+            return;
+
+        if (!TryComp<SpeciesLanguageComponent>(source, out var sourceSpeciesComp))
+            return;
+
+        if (sourceSpeciesComp.SpokenLanguages == null)
+            return;
+
+        bool canSend = false;
+
+        foreach (var spoken in sourceSpeciesComp.SpokenLanguages)
+        {
+            if (spoken == channel.ID)
+            {
+                canSend = true;
+                break;
+            }
+        }
+
+        if (!canSend)
+        {
+            _popup.PopupEntity(Loc.GetString("chat-manager-species-learned"), source, source);
+            return;
+        }
+
+        var message = TransformSpeech(source, FormattedMessage.RemoveMarkup(originalMessage));
+        if (message.Length == 0)
+            return;
+
+        string obfuscatedMessage = ObfuscateMessageSpecies(message, channel);
+
+        var speech = GetSpeechVerb(source, message);
+        // get the entity's apparent name (if no override provided).
+        string name;
+        if (nameOverride != null)
+        {
+            name = nameOverride;
+        }
+        else
+        {
+            var nameEv = new TransformSpeakerNameEvent(source, Name(source));
+            RaiseLocalEvent(source, nameEv);
+            name = nameEv.Name;
+            // Check for a speech verb override
+            if (nameEv.SpeechVerb != null && _prototypeManager.TryIndex<SpeechVerbPrototype>(nameEv.SpeechVerb, out var proto))
+                speech = proto;
+        }
+
+        var wrappedMessage = Loc.GetString("chat-manager-entity-say-species-wrap-message",
+            ("color", Color.Coral),
+            ("channel", channel.LocalizedName),
+            ("entityName", name),
+            ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
+            ("fontType", speech.FontId),
+            ("fontSize", speech.FontSize),
+            ("message", FormattedMessage.EscapeText(message)));
+
+        var wrappedobfuscatedMessage = Loc.GetString("chat-manager-entity-say-species-wrap-message",
+            ("color", Color.Coral),
+            ("channel", channel.LocalizedName),
+            ("entityName", name),
+            ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
+            ("fontType", speech.FontId),
+            ("fontSize", speech.FontSize),
+            ("message", FormattedMessage.EscapeText(obfuscatedMessage)));
+
+        foreach (var (session, data) in GetRecipients(source, VoiceRange))
+        {
+            EntityUid listener;
+
+            if (session.AttachedEntity is not { Valid: true } playerEntity)
+                continue;
+            listener = session.AttachedEntity.Value;
+
+
+            if (MessageRangeCheck(session, data, range) != MessageRangeCheckResult.Full)
+                continue; // Won't get logged to chat, and ghosts are too far away to see the pop-up, so we just won't send it to them.
+
+            bool canUnderstand = false;
+
+            if (listener == source)
+                canUnderstand = true;
+
+            if (_entManager.TryGetComponent<SpeciesLanguageComponent>(listener, out var speciesLanguage)
+                && speciesLanguage.UnderstoodLanguages != null
+                && !canUnderstand)
+            {
+                foreach (string language in speciesLanguage.SpokenLanguages)
+                {
+                    if (language == channel.ID)
+                    {
+                        canUnderstand = true;
+                        break;
+                    }
+                }
+            }
+            else if (speciesLanguage != null
+                    && speciesLanguage.UnderstoodLanguages == null
+                    && speciesLanguage.SpokenLanguages != null
+                    && !canUnderstand)
+            {
+                foreach (string language in speciesLanguage.SpokenLanguages)
+                {
+                    if (language == channel.ID)
+                    {
+                        canUnderstand = true;
+                        break;
+                    }
+                }
+            }
+
+            if (canUnderstand)
+                _chatManager.ChatMessageToOne(ChatChannel.Local, message, wrappedMessage, source, false, session.Channel);
+            else
+                _chatManager.ChatMessageToOne(ChatChannel.Local, obfuscatedMessage, wrappedobfuscatedMessage, source, false, session.Channel);
+        }
+
+        _replay.RecordServerMessage(new ChatMessage(ChatChannel.Local, message, wrappedMessage, GetNetEntity(source), null, MessageRangeHideChatForReplay(range)));
+
+        //TODO: make this only hearable if they understand the language
+        var ev = new EntitySpokeEvent(source, obfuscatedMessage, null, channel, obfuscatedMessage);
+        RaiseLocalEvent(source, ev, true);
+        if (!hideLog)
+            if (originalMessage == message)
+            {
+                if (name != Name(source))
+                    _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Species message from {ToPrettyString(source):user} as {name}: {originalMessage}.");
+                else
+                    _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Species message from {ToPrettyString(source):user}: {originalMessage}.");
+            }
+            else
+            {
+                if (name != Name(source))
+                    _adminLogger.Add(LogType.Chat, LogImpact.Low,
+                    $"Species message from {ToPrettyString(source):user} as {name}, original: {originalMessage}, transformed: {message}.");
+                else
+                    _adminLogger.Add(LogType.Chat, LogImpact.Low,
+                    $"Species message from {ToPrettyString(source):user}, original: {originalMessage}, transformed: {message}.");
             }
     }
 
@@ -889,6 +1053,35 @@ public sealed partial class ChatSystem : SharedChatSystem
         return modifiedMessage.ToString();
     }
 
+    private string ObfuscateMessageSpecies(string message, SpeciesChannelPrototype channel)
+    {
+        string channelID = channel.ID.ToLower();
+        StringBuilder msg = new StringBuilder();
+
+        //TODO: dynamicly get the length
+        int syllableCount = 20;
+
+        for (int i = 0; i < message.Length; i++)
+        {
+            char character = message[i];
+
+            if (char.IsLetterOrDigit(character))
+            {
+                int randomChar = _random.Next(1, syllableCount);
+                var localisedChar = Loc.GetString($"chat-species-{channelID}-replacement-{randomChar.ToString()}");
+                msg.Append(localisedChar);
+            }
+            else
+            {
+                // keep the punctuation intact
+                msg.Append(character);
+            }
+        }
+
+        return SanitizeMessageCapital(msg.ToString());
+
+    }
+
     public string BuildGibberishString(IReadOnlyList<char> charOptions, int length)
     {
         var sb = new StringBuilder();
@@ -964,13 +1157,15 @@ public sealed class EntitySpokeEvent : EntityEventArgs
     ///     If the entity was trying to speak into a radio, this was the channel they were trying to access. If a radio
     ///     message gets sent on this channel, this should be set to null to prevent duplicate messages.
     /// </summary>
-    public RadioChannelPrototype? Channel;
+    public RadioChannelPrototype? RadioChannel;
+    public SpeciesChannelPrototype? SpeciesChannel;
 
-    public EntitySpokeEvent(EntityUid source, string message, RadioChannelPrototype? channel, string? obfuscatedMessage)
+    public EntitySpokeEvent(EntityUid source, string message, RadioChannelPrototype? radioChannel, SpeciesChannelPrototype? speciesChannel, string? obfuscatedMessage)
     {
         Source = source;
         Message = message;
-        Channel = channel;
+        RadioChannel = radioChannel;
+        SpeciesChannel = speciesChannel;
         ObfuscatedMessage = obfuscatedMessage;
     }
 }
@@ -983,7 +1178,8 @@ public enum InGameICChatType : byte
 {
     Speak,
     Emote,
-    Whisper
+    Whisper,
+    Species
 }
 
 /// <summary>

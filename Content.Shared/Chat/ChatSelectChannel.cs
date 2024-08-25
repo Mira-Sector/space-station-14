@@ -1,4 +1,4 @@
-﻿namespace Content.Shared.Chat
+namespace Content.Shared.Chat
 {
     /// <summary>
     ///     Chat channels that the player can select in the chat box.
@@ -20,6 +20,11 @@
         ///     Chat heard by players right next to each other
         /// </summary>
         Whisper = ChatChannel.Whisper,
+        ///
+        /// <summary>
+        ///     Chat heard by players with speak the same langueage
+        /// </summary>
+        Species = ChatChannel.Species,
 
         /// <summary>
         ///     Radio messages
