@@ -115,7 +115,7 @@
     sprite: Objects/Weapons/Melee/telebaton.rsi
     heldPrefix: telebaton
   - type: ItemToggleSize
-    activatedSize: 
+    activatedSize: Huge
   - type: DisarmMalus
     malus: 0.225
   - type: ItemToggleMeleeWeapon
