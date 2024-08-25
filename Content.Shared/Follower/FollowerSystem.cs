@@ -10,6 +10,7 @@ using Content.Shared.Polymorph;
 using Content.Shared.Tag;
 using Content.Shared.Verbs;
 using Robust.Shared.Containers;
+using Robust.Shared.GameStates;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Events;
 using Robust.Shared.Network;
@@ -39,10 +40,26 @@ public sealed class FollowerSystem : EntitySystem
         SubscribeLocalEvent<FollowerComponent, PullStartedMessage>(OnPullStarted);
         SubscribeLocalEvent<FollowerComponent, EntityTerminatingEvent>(OnFollowerTerminating);
 
+        SubscribeLocalEvent<FollowedComponent, ComponentGetStateAttemptEvent>(OnFollowedAttempt);
         SubscribeLocalEvent<FollowerComponent, GotEquippedHandEvent>(OnGotEquippedHand);
         SubscribeLocalEvent<FollowedComponent, EntityTerminatingEvent>(OnFollowedTerminating);
         SubscribeLocalEvent<FollowedComponent, PolymorphedEvent>(OnPolymorph);
         SubscribeLocalEvent<BeforeSaveEvent>(OnBeforeSave);
+    }
+
+    private void OnFollowedAttempt(Entity<FollowedComponent> ent, ref ComponentGetStateAttemptEvent args)
+    {
+        if (args.Cancelled)
+            return;
+
+        // Clientside VV stay losing
+        var playerEnt = args.Player?.AttachedEntity;
+
+        if (playerEnt == null ||
+            !ent.Comp.Following.Contains(playerEnt.Value) && !HasComp<GhostComponent>(playerEnt.Value))
+        {
+            args.Cancelled = true;
+        }
     }
 
     private void OnBeforeSave(BeforeSaveEvent ev)

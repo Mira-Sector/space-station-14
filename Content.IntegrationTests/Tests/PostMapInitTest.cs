@@ -55,7 +55,6 @@ namespace Content.IntegrationTests.Tests
             "Origin",
             "CentComm",
             "Box",
-            "Europa",
             "Barratry",
             "Saltern",
             "Core",
@@ -64,7 +63,8 @@ namespace Content.IntegrationTests.Tests
             "Atlas",
             "Reach",
             "Train",
-            "Oasis"
+            "Oasis",
+            "Cog"
         };
 
         /// <summary>

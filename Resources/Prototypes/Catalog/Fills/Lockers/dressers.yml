@@ -70,8 +70,7 @@
       - id: ClothingHeadHatBeretHoS
       - id: ClothingHeadHatHoscap
       - id: ClothingNeckCloakHos
-      - id: ClothingUniformJumpskirtHoSAlt
-      - id: ClothingUniformJumpsuitHoSAlt
+      - id: ClothingHeadHatHoshat
       - id: ClothingUniformJumpskirtHosFormal
       - id: ClothingUniformJumpsuitHosFormal
       - id: ClothingOuterWinterHoS
@@ -105,6 +104,7 @@
       - id: ClothingHandsGlovesColorPurple
       - id: ClothingEyesGlasses
       - id: ClothingOuterWinterRD
+      - id: ClothingOuterCoatRD
 
 - type: entity
   id: DresserWardenFilled

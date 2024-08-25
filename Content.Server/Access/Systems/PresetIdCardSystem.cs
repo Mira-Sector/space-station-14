@@ -85,7 +85,7 @@ public sealed class PresetIdCardSystem : EntitySystem
         _cardSystem.TryChangeJobTitle(uid, presetName ?? job.LocalizedName);
         _cardSystem.TryChangeJobDepartment(uid, job);
 
-        _prototypeManager.TryIndex<StatusIconPrototype>(id.PresetJobIcon ?? string.Empty, out var presetIcon);
+        _prototypeManager.TryIndex<JobIconPrototype>(id.PresetJobIcon ?? string.Empty, out var presetIcon);
 
         if (_prototypeManager.TryIndex(job.Icon, out var jobIcon))
             _cardSystem.TryChangeJobIcon(uid, presetIcon ?? jobIcon);

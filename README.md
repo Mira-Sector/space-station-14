@@ -6,10 +6,6 @@ Space Station 14 is a remake of SS13 that runs on [Robust Toolbox](https://githu
 
 This is the primary repo for Space Station 14. To prevent people forking RobustToolbox, a "content" pack is loaded by the client and server. This content pack contains everything needed to play the game on one specific server.
 
-## Links
-
-[Website](https://spacestation14.io/) | [Discord](https://discord.ss14.io/) | [Forum](https://forum.spacestation14.io/) | [Steam](https://store.steampowered.com/app/1255460/Space_Station_14/) | [Standalone Download](https://spacestation14.io/about/nightlies/)
-
 ## Documentation/Wiki
 
 Our [docs site](https://docs.spacestation14.io/) has documentation on SS14s content, engine, game design and more. We also have lots of resources for new contributors to the project.
@@ -28,7 +24,9 @@ Feel free to send either a pull request or let me know and ill 9/10 merge it.
 
 ## License
 
-All code for the content repository is licensed under [MIT](https://github.com/space-wizards/space-station-14/blob/master/LICENSE.TXT).
+All Mira specific code in this repository is licensed under [AGPL V3](https://github.com/Mira-Sector/space-station-14/blob/master/LICENSE-AGPLV3.txt)
+
+This repositry is based apon code under the [MIT](https://github.com/Mira-Sector/space-station-14/blob/master/LICENSE-MIT.txt) available [here.](https://github.com/space-wizards/space-station-14)
 
 Most assets are licensed under [CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) unless stated otherwise. Assets have their license and the copyright in the metadata file. [Example](https://github.com/space-wizards/space-station-14/blob/master/Resources/Textures/Objects/Tools/crowbar.rsi/meta.json).
 
