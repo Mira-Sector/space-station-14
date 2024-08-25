@@ -71,19 +71,9 @@ public sealed class ChannelSelectorButton : ChatPopupButton<ChannelSelectorPopup
 
     public void UpdateChannelSelectButton(ChatSelectChannel channel, Shared.Radio.RadioChannelPrototype? radio, Shared.SpeciesChat.SpeciesChannelPrototype? species)
     {
-        if (radio != null)
-        {
-            Text = Loc.GetString(radio.Name);
-        }
-        else if (species != null)
-        {
-            Text = Loc.GetString(species.Name);
-        }
-        else
-        {
-            Text = ChannelSelectorName(channel);
-        }
-
+        Text = radio != null ? Loc.GetString(radio.Name)
+            : species != null ? Loc.GetString(species.Name)
+            : ChannelSelectorName(channel);
         Modulate = radio?.Color ?? ChannelSelectColor(channel);
     }
 }
