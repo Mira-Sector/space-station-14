@@ -73,6 +73,10 @@
           32:
             sprite: Mobs/Species/Human/displacement.rsi
             state: jumpsuit-female
+  - type: SpeciesLanguage
+    spokenLanguages:
+    - Common
+    - Draconic
 
 
 - type: entity
