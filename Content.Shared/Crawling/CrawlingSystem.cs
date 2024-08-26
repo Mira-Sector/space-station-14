@@ -1,3 +1,4 @@
+using Content.Shared.Buckle.Components;
 using Content.Shared.DoAfter;
 using Content.Shared.Explosion;
 using Content.Shared.Input;
@@ -24,6 +25,7 @@ public sealed partial class CrawlingSystem : EntitySystem
         SubscribeLocalEvent<CrawlerComponent, StandAttemptEvent>(OnStandUp);
         SubscribeLocalEvent<CrawlerComponent, DownAttemptEvent>(OnFall);
         SubscribeLocalEvent<CrawlerComponent, StunnedEvent>(OnStunned);
+        SubscribeLocalEvent<CrawlerComponent, BuckledEvent>(OnBuckled);
         SubscribeLocalEvent<CrawlerComponent, GetExplosionResistanceEvent>(OnGetExplosionResistance);
         SubscribeLocalEvent<CrawlerComponent, CrawlingAlertEvent>(OnCrawlingAlertEvent);
         SubscribeLocalEvent<CrawlerComponent, CrawlingKeybindEvent>(ToggleCrawling);
@@ -44,15 +46,22 @@ public sealed partial class CrawlingSystem : EntitySystem
         var ev = new CrawlingKeybindEvent();
         RaiseLocalEvent(session.AttachedEntity.Value, ev);
     }
+
     private void ToggleCrawling(EntityUid uid, CrawlerComponent component, CrawlingKeybindEvent args)
     {
+        if (args.Cancelled)
+            return;
+        SetCrawling(uid, component, !_standing.IsDown(uid));
+    }
+    public void SetCrawling(EntityUid uid, CrawlerComponent component, bool state)
+    {
         ///checks players standing state, downing player if they are standding and starts doafter with standing up if they are downed
-        switch (_standing.IsDown(uid))
+        switch (state)
         {
-            case false:
+            case true:
                 _standing.Down(uid, dropHeldItems: false);
                 break;
-            case true:
+            case false:
                 _doAfter.TryStartDoAfter(new DoAfterArgs(EntityManager, uid, component.StandUpTime, new CrawlStandupDoAfterEvent(),
                 uid, used: uid)
                 {
@@ -94,6 +103,11 @@ public sealed partial class CrawlingSystem : EntitySystem
             AddComp<CrawlingComponent>(uid);
         _alerts.ShowAlert(uid, component.CtawlingAlert);
     }
+    private void OnBuckled(EntityUid uid, CrawlerComponent component, ref BuckledEvent args)
+    {
+        RemCompDeferred<CrawlingComponent>(uid);
+        _alerts.ClearAlert(uid, component.CtawlingAlert);
+    }
     private void OnGetExplosionResistance(EntityUid uid, CrawlerComponent component, ref GetExplosionResistanceEvent args)
     {
         // fall on explosion damage and lower explosion damage of crawling
@@ -127,4 +141,5 @@ public sealed partial class CrawlingAlertEvent : BaseAlertEvent;
 [Serializable, NetSerializable]
 public sealed partial class CrawlingKeybindEvent
 {
+    public bool Cancelled;
 }
