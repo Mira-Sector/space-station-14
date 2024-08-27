@@ -357,3 +357,9 @@ Entries:
     type: Add
   id: 55
   time: '2024-08-24T06:12:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Every species can speak in their native tounge. Channel works like the radio so hash followed by the language.
+    type: Add
+  id: 56
+  time: '2024-08-25T21:42:00.0000000+00:00'
