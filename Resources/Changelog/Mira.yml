@@ -363,3 +363,15 @@ Entries:
     type: Add
   id: 56
   time: '2024-08-25T21:42:00.0000000+00:00'
+- author: Ratty
+  changes:
+  - message: Nanotrasen held a crawling workshop, now all crew members know how to crawl!
+    type: Add
+  id: 57
+  time: '2024-08-27T06:18:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Wheelchair bound can now crawl rather than sit on the floor
+    type: Tweak
+  id: 58
+  time: '2024-08-27T06:18:00.0000000+00:00'
