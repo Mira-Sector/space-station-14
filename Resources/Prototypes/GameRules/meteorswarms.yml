@@ -10,7 +10,7 @@
 - type: weightedRandomEntity
   id: DefaultConfig
   weights:
-    GameRuleSpaceDustMinor: 44
+    # GameRuleSpaceDustMinor: 44
     GameRuleSpaceDustMajor: 22
     GameRuleMeteorSwarmSmall: 18
     GameRuleMeteorSwarmMedium: 10
@@ -39,22 +39,22 @@
   - type: GameRule
   - type: MeteorSwarm
 
-- type: entity
-  parent: GameRuleMeteorSwarm
-  id: GameRuleSpaceDustMinor
-  components:
-  - type: MeteorSwarm
-    announcement: null
-    announcementSound: null
-    nonDirectional: true
-    meteors:
-      MeteorSpaceDust: 1
-    waves:
-      min: 2
-      max: 3
-    meteorsPerWave:
-      min: 3
-      max: 5
+# - type: entity
+  # parent: GameRuleMeteorSwarm
+  # id: GameRuleSpaceDustMinor
+  # components:
+  # - type: MeteorSwarm
+    # announcement: null
+    # announcementSound: null
+    # nonDirectional: true
+    # meteors:
+      # MeteorSpaceDust: 1
+    # waves:
+      # min: 2
+      # max: 3
+    # meteorsPerWave:
+      # min: 3
+      # max: 5
 
 - type: entity
   parent: GameRuleMeteorSwarm
