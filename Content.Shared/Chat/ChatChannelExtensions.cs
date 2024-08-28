@@ -1,4 +1,4 @@
-﻿namespace Content.Shared.Chat;
+namespace Content.Shared.Chat;
 
 public static class ChatChannelExtensions
 {
@@ -15,6 +15,7 @@ public static class ChatChannelExtensions
             ChatChannel.AdminAlert => Color.Red,
             ChatChannel.AdminChat => Color.HotPink,
             ChatChannel.Whisper => Color.DarkGray,
+            ChatChannel.Species => Color.Coral,
             _ => Color.LightGray
         };
     }

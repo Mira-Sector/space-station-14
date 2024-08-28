@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Taken from tgstation, tweaked by Thurtik",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "telebaton-icon"
+        },
+        {
+            "name": "telebaton-inhand-left",
+            "directions": 4
+        },
+        {
+            "name": "telebaton-inhand-right",
+            "directions": 4
+        },
+        {
+            "name": "telebaton-on"
+        },
+        {
+            "name": "inhand-left-shield",
+            "directions": 4
+        },
+        {
+            "name": "inhand-right-shield",
+            "directions": 4
+        }
+    ]
+}

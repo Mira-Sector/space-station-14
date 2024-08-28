@@ -1428,6 +1428,16 @@
     Telecrystal: 2
   categories:
   - UplinkPointless
+  
+- type: listing
+  id: UplinkSyndicateSegway
+  name: uplink-syndicate-segway-crate-name
+  description: uplink-syndicate-segway-crate-desc
+  productEntity: CrateSyndicateSyndicateSegway
+  cost:
+    Telecrystal: 5
+  categories:
+  - UplinkPointless
 
 - type: listing
   id: UplinkCatEars

@@ -1,6 +1,6 @@
 - type: entity
   name: stun baton
-  parent: BaseItem
+  parent: [BaseItem, BaseRestrictedContraband]
   id: Stunbaton
   description: A stun baton for incapacitating people with. Actively harming with this is considered bad tone.
   components:
@@ -88,10 +88,72 @@
     guides:
     - Security
     - Antagonists
-
+    
+- type: entity
+  name: telescopic baton
+  parent: [BaseItem, BaseCommandContraband]
+  id: Telescopicbaton
+  description: A self-defense weapon designed for the head staff of NanoTrasen's many stations. It's easier to handle and carry but less robust than the standart-issue stun batons.
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Melee/telebaton.rsi
+    layers:
+    - state: telebaton-icon
+      map: [ "enum.ToggleVisuals.Layer" ]
+  - type: ItemToggle
+    predictable: false
+    soundActivate:
+      path: /Audio/Weapons/telescopicon.ogg
+      params:
+        variation: 0.250
+    soundDeactivate:
+      path: /Audio/Weapons/telescopicoff.ogg
+      params:
+        variation: 0.250
+  - type: Item
+    size: Small
+    sprite: Objects/Weapons/Melee/telebaton.rsi
+    heldPrefix: telebaton
+  - type: ItemToggleSize
+    activatedSize: Huge
+  - type: DisarmMalus
+    malus: 0.225
+  - type: ItemToggleMeleeWeapon
+    activatedDamage:
+      types:
+        Blunt: 0
+  - type: MeleeWeapon
+    wideAnimationRotation: -135
+    damage:
+      types:
+        Blunt: 5
+    bluntStaminaDamageFactor: 2.0
+    angle: 60
+    animation: WeaponArcSlash
+  - type: StaminaDamageOnHit
+    damage: 25
+    sound: /Audio/Weapons/egloves.ogg
+  - type: UseDelay
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+     enum.ToggleVisuals.Toggled:
+        enum.ToggleVisuals.Layer:
+          True: {state: telebaton-on}
+          False: {state: telebaton-icon}
+  - type: ToggleableLightVisuals
+    spriteLayer: shield
+    inhandVisuals:
+      left:
+        - state: inhand-left-shield
+      right:
+        - state: inhand-right-shield
+  - type: StaticPrice
+    price: 80
+    
 - type: entity
   name: truncheon
-  parent: BaseItem
+  parent: [BaseItem, BaseRestrictedContraband]
   id: Truncheon
   description: A rigid, steel-studded baton, meant to harm.
   components:
@@ -128,7 +190,7 @@
 
 - type: entity
   name: flash
-  parent: BaseItem
+  parent: [BaseItem, BaseSecurityScienceCommandContraband]
   id: Flash
   description: An ultrabright flashbulb with a trigger, which causes the victim to be dazed and lose their eyesight for a moment. Useless when burnt out.
   components:
@@ -184,7 +246,7 @@
 
 - type: entity
   name: portable flasher
-  parent: BaseMachine
+  parent: [BaseMachine, BaseRestrictedContraband]
   id: PortableFlasher
   description: An ultrabright flashbulb with a proximity trigger, useful for making an area security-only.
   components:

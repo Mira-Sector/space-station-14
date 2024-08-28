@@ -8,7 +8,7 @@ public sealed partial class RadioChannelPrototype : IPrototype
     /// <summary>
     /// Human-readable name for the channel.
     /// </summary>
-    [DataField("name")]
+    [DataField]
     public LocId Name { get; private set; } = string.Empty;
 
     [ViewVariables(VVAccess.ReadOnly)]

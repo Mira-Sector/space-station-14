@@ -639,7 +639,7 @@
 - type: entity
   parent: BasePDA
   id: CentcomPDA
-  name: CentCom PDA
+  name: CentComm PDA
   description: Light green sign of walking bureaucracy.
   components:
   - type: Pda
@@ -1027,6 +1027,22 @@
     accentVColor: "#DFDFDF"
   - type: Icon
     state: pda-seniorofficer
+
+- type: entity
+  parent: BasePDA
+  id: SeniorCargoPDA
+  name: senior cargo PDA
+  description: Covered in dirt and welding fuel.
+  components:
+  - type: Pda
+    id: SeniorCargoIDCard
+    state: pda-seniorcargo
+  - type: PdaBorderColor
+    borderColor: "#e39751"
+    accentHColor: "#8900c9"
+    accentVColor: "#a23e3e"
+  - type: Icon
+    state: pda-seniorcargo
 
 - type: entity
   parent: SyndiPDA

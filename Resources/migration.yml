@@ -130,7 +130,6 @@ DrinkGoldschlagerGlass: DrinkGildlagerGlass
 
 # 2024-01-07
 ClosetBase: ClosetSteelBase
-MonkeyCubeBox: VariantCubeBox
 
 # 2024-01-08
 SalvagePartsT4Spawner: SalvageLootSpawner
@@ -180,34 +179,34 @@ SpyCrewMonitorEmpty: null
 SyndiCrewMonitor: null
 SyndiCrewMonitorEmpty: null
 
-SpawnVehicleWheelchair: null
-SpawnVehicleWheelchairFolded: null
-VehicleWheelchair: null
-VehicleWheelchairFolded: null
+#SpawnVehicleWheelchair: null
+#SpawnVehicleWheelchairFolded: null
+#VehicleWheelchair: null
+#VehicleWheelchairFolded: null
 VehicleSecwayStealObjective: null
-VehicleKeyJanicart: null
-VehicleKeySecway: null
-VehicleKeyATV: null
+#VehicleKeyJanicart: null
+#VehicleKeySecway: null
+#VehicleKeyATV: null
 VehicleKeySkeleton: null
 VehicleKeySyndicateSegway: null
 VehicleKeySkeletonMotorcycle: null
-VehicleSecway: null
-VehicleATV: null
+#VehicleSecway: null
+#VehicleATV: null
 VehicleSyndicateSegway: null
 VehicleSkeletonMotorcycle: null
 VehicleUnicycle: null
 VehicleUnicycleFolded: null
 ActionVehicleHorn: null
-CrateFunATV: null
-CrateFunSyndicateSegway: null
+#CrateFunATV: null
+#CrateFunSyndicateSegway: null
 MobTaxiBot: null
 # MobSupplyBot: null
 SpawnVehicleMotobike: null
-SpawnVehicleATV: null
-SpawnVehicleSecway: null
-SpawnVehicleJanicart: null
-VehicleJanicart: null
-VehicleJanicartDestroyed: null
+#SpawnVehicleATV: null
+#SpawnVehicleSecway: null
+#SpawnVehicleJanicart: null
+#VehicleJanicart: null
+#VehicleJanicartDestroyed: null
 
 # 2024-02-01
 YellowOxygenTank: OxygenTank
@@ -355,7 +354,6 @@ ClothingOuterCoatInspector: ClothingOuterCoatJensen
 # 2024-06-23
 FloorTileItemReinforced: PartRodMetal1
 
-
 #2024-06-25
 BookChefGaming: BookHowToCookForFortySpaceman
 
@@ -380,6 +378,23 @@ SignHydro3: SignHydro1
 
 # 2024-07-27
 LogicGate: LogicGateOr
+
+# 2024-08-11
+FoodTacoBeef: FoodTacoShell
+FoodTacoChicken: FoodTacoShell
+FoodTacoFish: FoodTacoShell
+FoodTacoBeefSupreme: FoodTacoShell
+FoodTacoChickenSupreme: FoodTacoShell
+FoodTacoRat: FoodTacoShell
+
+FoodMeatHumanKebab: FoodKebabSkewer
+FoodMeatLizardtailKebab: FoodKebabSkewer
+FoodMeatRatKebab: FoodKebabSkewer
+FoodMeatRatdoubleKebab: FoodKebabSkewer
+FoodMeatSnakeKebab: FoodKebabSkewer
+FoodMeatHawaiianKebab: FoodKebabSkewer
+FoodMeatKebab: FoodKebabSkewer
+FoodMeatFiestaKebab: FoodKebabSkewer
 
 # Mira
 # 2024-07-28

@@ -15,7 +15,9 @@ chat-manager-admin-ooc-chat-disabled-message = Admin OOC chat has been disabled.
 chat-manager-max-message-length-exceeded-message = Your message exceeded {$limit} character limit
 chat-manager-no-headset-on-message = You don't have a headset on!
 chat-manager-no-radio-key = No radio key specified!
+chat-manager-species-learned = You havent learned this language!
 chat-manager-no-such-channel = There is no channel with key '{$key}'!
+chat-manager-no-such-language = This language does not exist!
 chat-manager-whisper-headset-on-message = You can't whisper on the radio!
 
 chat-manager-server-wrap-message = [bold]{$message}[/bold]
@@ -24,14 +26,15 @@ chat-manager-sender-announcement-wrap-message = [font size=14][bold]{$sender} An
                                                 {$message}[/bold][/font]
 chat-manager-entity-say-wrap-message = [BubbleHeader][bold][Name]{$entityName}[/Name][/bold][/BubbleHeader] {$verb}, [font={$fontType} size={$fontSize}]"[BubbleContent]{$message}[/BubbleContent]"[/font]
 chat-manager-entity-say-bold-wrap-message = [BubbleHeader][bold][Name]{$entityName}[/Name][/bold][/BubbleHeader] {$verb}, [font={$fontType} size={$fontSize}]"[BubbleContent][bold]{$message}[/bold][/BubbleContent]"[/font]
+chat-manager-entity-say-species-wrap-message = [BubbleHeader][color={$color}]\[{$channel}\] [bold]{$entityName}[/bold][/color][/BubbleHeader] {$verb}, [font={$fontType} size={$fontSize}]"[BubbleContent]{$message}[/BubbleContent]"[/font]
 
 chat-manager-entity-whisper-wrap-message = [font size=11][italic][BubbleHeader][Name]{$entityName}[/Name][/BubbleHeader] whispers,"[BubbleContent]{$message}[/BubbleContent]"[/italic][/font]
 chat-manager-entity-whisper-unknown-wrap-message = [font size=11][italic][BubbleHeader]Someone[/BubbleHeader] whispers, "[BubbleContent]{$message}[/BubbleContent]"[/italic][/font]
 
 # THE() is not used here because the entity and its name can technically be disconnected if a nameOverride is passed...
 chat-manager-entity-me-wrap-message = [italic]{ PROPER($entity) ->
-    *[false] the {$entityName} {$message}[/italic]
-     [true] {$entityName} {$message}[/italic]
+    *[false] The {$entityName} {$message}[/italic]
+     [true] {CAPITALIZE($entityName)} {$message}[/italic]
     }
 
 chat-manager-entity-looc-wrap-message = LOOC: [bold]{$entityName}:[/bold] {$message}

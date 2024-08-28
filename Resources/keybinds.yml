@@ -113,6 +113,10 @@ binds:
 - function: FocusWhisperChatWindow
   type: State
   key: Comma
+- function: FocusSpeciesChatWindow
+  type: State
+  mod1: Shift
+  key: BackSlash
 - function: FocusRadioWindow
   type: State
   key: SemiColon
@@ -186,7 +190,7 @@ binds:
   mod1: Alt
 - function: OpenCharacterMenu
   type: State
-  key: C
+  key: U
 - function: OpenEmotesMenu
   type: State
   key: Y
@@ -277,6 +281,16 @@ binds:
   type: State
   key: MouseMiddle
   canFocus: true
+- function: RotateObjectClockwise
+  type: State
+  key: R
+- function: RotateObjectCounterclockwise
+  type: State
+  key: R
+  mod1: Shift
+- function: FlipObject
+  type: State
+  key: F
 - function: TextCursorLeft
   type: State
   key: Left
@@ -578,3 +592,6 @@ binds:
   type: State
   key: MouseRight
   canFocus: true
+- function: ToggleCrawling
+  type: State
+  key: C

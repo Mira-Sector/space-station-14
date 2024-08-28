@@ -224,6 +224,9 @@
       "name": "idseniorofficer"
     },
     {
+      "name": "idseniorcargo"
+    },
+    {
       "name": "gold-inhand-left",
       "directions": 4
     },

@@ -18,7 +18,7 @@
     - state: icon_flipped
       map: ["foldedLayer"]
       visible: false
-      
+
 - type: entity
   parent: ClothingHeadHeadHatBaseFlippable
   id: ClothingHeadHeadHatBaseFlipped
@@ -85,6 +85,33 @@
 
 - type: entity
   parent: ClothingHeadHeadHatBaseFlippable
+  id: ClothingHeadHatSeniorCargo
+  name: senior cargo cap
+  description: "It's a baseball hat painted in the Senior Cargo's colours."
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Soft/senior_cargo.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Soft/senior_cargo.rsi
+  - type: Tag
+    tags:
+    - ClothMade
+    - HamsterWearable
+    - WhitelistChameleon
+
+- type: entity
+  parent: [ClothingHeadHeadHatBaseFlipped, ClothingHeadHatCargosoft]
+  id: ClothingHeadHatSeniorCargoFlipped
+  name: senior cargo cap
+  components:
+  - type: Tag
+    tags:
+    - ClothMade
+    - HamsterWearable
+    - WhitelistChameleon
+
+- type: entity
+  parent: ClothingHeadHeadHatBaseFlippable
   id: ClothingHeadHatQMsoft
   name: quartermaster's cap
   description: "It's a baseball hat painted in the Quartermaster's colors."
@@ -98,7 +125,7 @@
   parent: [ClothingHeadHeadHatBaseFlipped, ClothingHeadHatQMsoft]
   id: ClothingHeadHatQMsoftFlipped
   name: quartermaster's cap
-    
+
 - type: entity
   parent: ClothingHeadHeadHatBaseFlippable
   id: ClothingHeadHatCorpsoft
@@ -285,7 +312,7 @@
   parent: [ClothingHeadHeadHatBaseFlipped, ClothingHeadHatBizarreSoft]
   id: ClothingHeadHatBizarreSoftFlipped
   name: troublemaker's cap
-    
+
 - type: entity
   parent: ClothingHeadHeadHatBaseFlippable
   id: ClothingHeadHatParamedicsoft

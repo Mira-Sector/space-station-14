@@ -878,8 +878,8 @@ entities:
             6934: 65,19
             6935: 65,21
             6947: 26,19
-            6973: -29,-5
-            6974: -36,-5
+            6959: -29,-5
+            6960: -36,-5
         - node:
             cleanable: True
             color: '#FFFFFFFF'
@@ -1390,9 +1390,9 @@ entities:
             6533: 7,-48
             6534: 8,-48
             6535: 9,-48
-            6985: -32,-3
-            6986: -31,-3
-            6987: -33,-3
+            6971: -32,-3
+            6972: -31,-3
+            6973: -33,-3
         - node:
             color: '#FFFFFFFF'
             id: BrickTileDarkLineS
@@ -1492,12 +1492,12 @@ entities:
             6531: 8,-49
             6532: 9,-49
             6956: -29,-1
-            6971: -35,-1
-            6972: -30,-1
-            6988: -34,-5
-            6989: -32,-5
-            6990: -33,-5
-            6991: -31,-5
+            6957: -35,-1
+            6958: -30,-1
+            6974: -34,-5
+            6975: -32,-5
+            6976: -33,-5
+            6977: -31,-5
         - node:
             cleanable: True
             color: '#FFFFFFFF'
@@ -5551,9 +5551,9 @@ entities:
             6905: 58,-24
             6936: 78,-7
             6944: 52,-23
-            7010: -34,-5
-            7011: -32,-3
-            7012: -34,-2
+            6996: -34,-5
+            6997: -32,-3
+            6998: -34,-2
         - node:
             cleanable: True
             angle: 1.5707963267948966 rad
@@ -6452,24 +6452,24 @@ entities:
             6953: 3,-22
             6954: 16,23
             6955: 16,25
-            6975: -36,3
-            6976: -33,3
-            6977: -35,-1
-            6978: -36,-5
-            6979: -29,-5
-            6980: -34,3
-            6981: -34,2
-            6982: -34,1
-            6983: -30,1
-            6984: -38,2
-            6992: -33,-4
-            6993: -34,-4
-            6994: -32,-3
-            6995: -31,-3
-            6996: -34,-3
-            6997: -34,-2
-            6998: -31,-5
-            6999: -32,-5
+            6961: -36,3
+            6962: -33,3
+            6963: -35,-1
+            6964: -36,-5
+            6965: -29,-5
+            6966: -34,3
+            6967: -34,2
+            6968: -34,1
+            6969: -30,1
+            6970: -38,2
+            6978: -33,-4
+            6979: -34,-4
+            6980: -32,-3
+            6981: -31,-3
+            6982: -34,-3
+            6983: -34,-2
+            6984: -31,-5
+            6985: -32,-5
         - node:
             cleanable: True
             angle: 1.5707963267948966 rad
@@ -6528,12 +6528,12 @@ entities:
             6915: 58,-23
             6916: 57,-24
             6946: 54,-23
-            7000: -33,-5
-            7001: -34,-3
-            7002: -32,-3
-            7003: -33,-4
-            7004: -32,-4
-            7005: -34,-5
+            6986: -33,-5
+            6987: -34,-3
+            6988: -32,-3
+            6989: -33,-4
+            6990: -32,-4
+            6991: -34,-5
         - node:
             cleanable: True
             angle: 1.5707963267948966 rad
@@ -6590,10 +6590,10 @@ entities:
             6880: -12,-39
             6917: 52,-21
             6918: 57,-22
-            7006: -31,-5
-            7007: -33,-3
-            7008: -34,-3
-            7009: -34,-4
+            6992: -31,-5
+            6993: -33,-3
+            6994: -34,-3
+            6995: -34,-4
         - node:
             cleanable: True
             angle: 1.5707963267948966 rad
@@ -62011,11 +62011,6 @@ entities:
     - type: Transform
       pos: -15.5,-26.5
       parent: 2
-  - uid: 21457
-    components:
-    - type: Transform
-      pos: -33.5,-28.5
-      parent: 2
 - proto: DefaultStationBeaconKitchen
   entities:
   - uid: 20848
@@ -62142,6 +62137,13 @@ entities:
       parent: 2
     - type: WarpPoint
       location: Arcade
+  - uid: 21457
+    components:
+    - type: Transform
+      pos: -33.5,-29.5
+      parent: 2
+    - type: NavMapBeacon
+      text: Boxing Ring
 - proto: DefaultStationBeaconSingularity
   entities:
   - uid: 17163
@@ -69163,120 +69165,120 @@ entities:
       pos: -4.5,-26.5
       parent: 2
     - type: FaxMachine
-      destinationAddress: Engineering
       name: Engineering
+      destinationAddress: Engineering
   - uid: 998
     components:
     - type: Transform
       pos: 17.5,-20.5
       parent: 2
     - type: FaxMachine
-      destinationAddress: Atmospherics
       name: Atmospherics
+      destinationAddress: Atmospherics
   - uid: 4498
     components:
     - type: Transform
       pos: -50.5,-15.5
       parent: 2
     - type: FaxMachine
-      destinationAddress: Lawyer
       name: Lawyer
+      destinationAddress: Lawyer
   - uid: 4655
     components:
     - type: Transform
       pos: -54.5,-29.5
       parent: 2
     - type: FaxMachine
-      destinationAddress: Reporter
       name: Reporter
+      destinationAddress: Reporter
   - uid: 5155
     components:
     - type: Transform
       pos: -9.5,29.5
       parent: 2
     - type: FaxMachine
-      destinationAddress: Security
       name: Security
+      destinationAddress: Security
   - uid: 5422
     components:
     - type: Transform
       pos: -26.5,-36.5
       parent: 2
     - type: FaxMachine
-      destinationAddress: Chapel
       name: Chapel
+      destinationAddress: Chapel
   - uid: 5568
     components:
     - type: Transform
       pos: 28.5,11.5
       parent: 2
     - type: FaxMachine
-      destinationAddress: Cargo
       name: Cargo
+      destinationAddress: Cargo
   - uid: 5699
     components:
     - type: Transform
       pos: 33.5,15.5
       parent: 2
     - type: FaxMachine
-      destinationAddress: Quartermaster
       name: Quartermaster
+      destinationAddress: Quartermaster
   - uid: 7155
     components:
     - type: Transform
       pos: 57.5,-11.5
       parent: 2
     - type: FaxMachine
-      destinationAddress: Science
       name: Science
+      destinationAddress: Science
   - uid: 7442
     components:
     - type: Transform
       pos: 70.5,-20.5
       parent: 2
     - type: FaxMachine
-      destinationAddress: Research Director
       name: Research Director
+      destinationAddress: Research Director
   - uid: 8346
     components:
     - type: Transform
       pos: -17.5,-17.5
       parent: 2
     - type: FaxMachine
-      destinationAddress: Library
       name: Library
+      destinationAddress: Library
   - uid: 9182
     components:
     - type: Transform
       pos: -25.5,25.5
       parent: 2
     - type: FaxMachine
-      destinationAddress: Detective
       name: Detective
+      destinationAddress: Detective
   - uid: 16527
     components:
     - type: Transform
       pos: 44.5,-32.5
       parent: 2
     - type: FaxMachine
-      destinationAddress: Bridge
       name: Bridge
+      destinationAddress: Bridge
   - uid: 20485
     components:
     - type: Transform
       pos: 50.5,-5.5
       parent: 2
     - type: FaxMachine
-      destinationAddress: Medical
       name: Medical
+      destinationAddress: Medical
   - uid: 20494
     components:
     - type: Transform
       pos: 41.5,-23.5
       parent: 2
     - type: FaxMachine
-      destinationAddress: Head of Personel
       name: Head of Personel
+      destinationAddress: Head of Personel
 - proto: FaxMachineCaptain
   entities:
   - uid: 4581
@@ -69285,8 +69287,8 @@ entities:
       pos: 41.5,-29.5
       parent: 2
     - type: FaxMachine
-      destinationAddress: Captain
       name: Captain
+      destinationAddress: Captain
 - proto: filingCabinetDrawerRandom
   entities:
   - uid: 1000
@@ -101989,18 +101991,6 @@ entities:
     - type: Transform
       pos: 12.045464,-40.476917
       parent: 2
-- proto: MagazinePistolSubMachineGunTopMounted
-  entities:
-  - uid: 5077
-    components:
-    - type: Transform
-      pos: -11.460239,32.64794
-      parent: 2
-  - uid: 5078
-    components:
-    - type: Transform
-      pos: -11.460239,32.538567
-      parent: 2
 - proto: MailingUnit
   entities:
   - uid: 963
@@ -118570,6 +118560,37 @@ entities:
     - type: Transform
       pos: 2.5,24.5
       parent: 2
+- proto: SpawnVehicleATV
+  entities:
+  - uid: 21966
+    components:
+    - type: Transform
+      pos: 24.5,8.5
+      parent: 2
+  - uid: 21968
+    components:
+    - type: Transform
+      pos: 67.5,2.5
+      parent: 2
+- proto: SpawnVehicleJanicart
+  entities:
+  - uid: 21970
+    components:
+    - type: Transform
+      pos: -19.5,-25.5
+      parent: 2
+- proto: SpawnVehicleSecway
+  entities:
+  - uid: 5077
+    components:
+    - type: Transform
+      pos: -2.5,34.5
+      parent: 2
+  - uid: 5078
+    components:
+    - type: Transform
+      pos: -2.5,33.5
+      parent: 2
 - proto: Spear
   entities:
   - uid: 20997
@@ -124129,6 +124150,14 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 17.5,25.5
       parent: 2
+- proto: ToiletGoldenDirtyWater
+  entities:
+  - uid: 21972
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 57.5,-32.5
+      parent: 2
 - proto: ToolboxArtisticFilled
   entities:
   - uid: 5117
@@ -124479,6 +124508,37 @@ entities:
     components:
     - type: Transform
       pos: 59.52491,19.181688
+      parent: 2
+- proto: VehicleKeyATV
+  entities:
+  - uid: 21967
+    components:
+    - type: Transform
+      pos: 25.228151,8.520596
+      parent: 2
+  - uid: 21969
+    components:
+    - type: Transform
+      pos: 69.49127,-3.428823
+      parent: 2
+- proto: VehicleKeyJanicart
+  entities:
+  - uid: 21971
+    components:
+    - type: Transform
+      pos: -13.491398,-25.496103
+      parent: 2
+- proto: VehicleKeySecway
+  entities:
+  - uid: 21964
+    components:
+    - type: Transform
+      pos: -8.293135,31.718864
+      parent: 2
+  - uid: 21965
+    components:
+    - type: Transform
+      pos: -8.355635,31.39074
       parent: 2
 - proto: VendingBarDrobe
   entities:
@@ -143041,6 +143101,13 @@ entities:
     - type: Transform
       pos: -8.829058,31.720768
       parent: 2
+- proto: WeaponEnergyShotgun
+  entities:
+  - uid: 5081
+    components:
+    - type: Transform
+      pos: -11.600864,32.694817
+      parent: 2
 - proto: WeaponLaserCarbine
   entities:
   - uid: 5093
@@ -143074,13 +143141,6 @@ entities:
     components:
     - type: Transform
       pos: 2.553135,33.488186
-      parent: 2
-- proto: WeaponSubMachineGunWt550
-  entities:
-  - uid: 5081
-    components:
-    - type: Transform
-      pos: -11.600864,32.694817
       parent: 2
 - proto: WeaponTurretSyndicateBroken
   entities:

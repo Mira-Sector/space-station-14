@@ -315,3 +315,51 @@ Entries:
     type: Add
   id: 49
   time: '2024-08-02T01:37:00.0000000+00:00'
+- author: Wudanty
+  changes:
+  - message: Added crate with Neutral AI tarantulas as a cargo order.
+    type: Add
+  id: 50
+  time: '2024-08-09T18:04:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added senior cargo loadouts
+    type: Add
+  id: 51
+  time: '2024-08-09T18:47:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Drowsiness is now more effective at making you sleepy
+    type: Tweak
+  id: 52
+  time: '2024-08-18T18:37:00.0000000+00:00'
+- author: Thurtik
+  changes:
+  - message: All heads (except hos) now spawn with a new 'telescopic baton' - a weaker, retractable baton for self-defense, instead of a flash.
+    type: Add
+  id: 53
+  time: '2024-08-19T23:07:00.0000000+00:00'
+- author: Thurtik
+  changes:
+  - message: Secways are now mapped on all maps.
+    type: Tweak
+  - message: The janicart is back!
+    type: Add
+  - message: The syndicate segway is back for purchase!
+    type: Add
+  id: 54
+  time: '2024-08-22T16:07:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Wheelchairs are now available in medfab
+    type: Add
+  - message: Readded the wheelchair bound trait
+    type: Add
+  id: 55
+  time: '2024-08-24T06:12:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Every species can speak in their native tounge. Channel works like the radio so hash followed by the language.
+    type: Add
+  id: 56
+  time: '2024-08-25T21:42:00.0000000+00:00'
