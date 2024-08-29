@@ -1,4 +1,19 @@
 - type: soundCollection
+  id: AnnouncementDefaultWelcome
+  files:
+  - /Audio/Announcements/Default/welcome.ogg
+
+- type: soundCollection
+  id: AnnouncementInternWelcome
+  files:
+  - /Audio/Announcements/Intern/welcome/1.ogg
+  - /Audio/Announcements/Intern/welcome/2.ogg
+  - /Audio/Announcements/Intern/welcome/3.ogg
+  - /Audio/Announcements/Intern/welcome/4.ogg
+  - /Audio/Announcements/Intern/welcome/5.ogg
+  - /Audio/Announcements/Intern/welcome/6.ogg
+
+- type: soundCollection
   id: RoundEnd
   files:
   - /Audio/Announcements/RoundEnd/apc_destroyed.ogg

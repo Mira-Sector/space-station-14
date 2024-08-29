@@ -1,4 +1,4 @@
-﻿using Content.Server.Shuttles.Systems;
+using Content.Server.Shuttles.Systems;
 using Content.Server.Station.Systems;
 using Robust.Shared.Serialization.TypeSerializers.Implementations;
 using Robust.Shared.Utility;
@@ -23,4 +23,10 @@ public sealed partial class StationDataComponent : Component
     /// </summary>
     [DataField("grids")]
     public HashSet<EntityUid> Grids = new();
+
+    [DataField]
+    public string Announcer = String.Empty;
+
+    [DataField]
+    public List<string> AvailableAnnouncers = new() { "Default","Intern" };
 }

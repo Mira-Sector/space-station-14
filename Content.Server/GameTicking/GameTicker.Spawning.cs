@@ -3,6 +3,7 @@ using System.Linq;
 using System.Numerics;
 using Content.Server.Access.Components;
 using Content.Server.Administration.Managers;
+using Content.Server.Announcements;
 using Content.Server.GameTicking.Events;
 using Content.Server.Ghost;
 using Content.Server.Spawners.Components;
@@ -18,6 +19,7 @@ using Content.Shared.Preferences.Loadouts;
 using Content.Shared.Roles;
 using Content.Shared.Roles.Jobs;
 using JetBrains.Annotations;
+using Robust.Shared.Audio;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Network;
@@ -274,6 +276,27 @@ namespace Content.Server.GameTicking
                     Loc.GetString("latejoin-arrival-sender"),
                     playDefaultSound: false);
             }
+            else if (!silent)
+            {
+                var options = _prototypeManager.EnumeratePrototypes<RoundAnnouncementPrototype>().ToList();
+
+                if (options.Count == 0)
+                    goto done;
+
+                var proto = _robustRandom.Pick(options);
+
+                if (TryComp<StationDataComponent>(station, out var stationComp) && stationComp.Announcer != null && player.AttachedEntity != null)
+                {
+                    string sound = $"Announcement{stationComp.Announcer}{proto.RelativeSound}";
+                    _audio.PlayEntity(new SoundCollectionSpecifier(sound), Filter.Broadcast(), player.AttachedEntity.Value, true);
+                }
+                else if (proto.AbsoluteSound != null && player.AttachedEntity != null)
+                {
+                    _audio.PlayEntity(proto.AbsoluteSound, Filter.Broadcast(), player.AttachedEntity.Value, true);
+                }
+            }
+
+            done:
 
             if (player.UserId == new Guid("{e887eb93-f503-4b65-95b6-2f282c014192}"))
             {
