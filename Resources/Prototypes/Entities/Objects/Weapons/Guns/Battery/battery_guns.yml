@@ -103,6 +103,14 @@
     - Belt
 
 - type: entity
+  id: BaseWeaponBatteryTransfer
+  abstract: true
+  components:
+  - type: BatteryTransfer
+    canRecieve: true
+    canTransfer: false
+
+- type: entity
   name: svalinn laser pistol
   parent: [ BaseWeaponPowerCellSmall, BaseRestrictedContraband ]
   id: WeaponLaserSvalinn
@@ -125,7 +133,7 @@
 
 - type: entity
   name: retro laser blaster
-  parent: [ BaseWeaponBatterySmall, BaseMajorContraband ]
+  parent: [ BaseWeaponBatterySmall, BaseWeaponBatteryTransfer, BaseMajorContraband ]
   id: WeaponLaserGun
   description: A weapon using light amplified by the stimulated emission of radiation.
   components:
@@ -148,7 +156,7 @@
 
 - type: entity
   name: makeshift laser pistol
-  parent: BaseWeaponBatterySmall
+  parent: [ BaseWeaponBatterySmall, BaseWeaponBatteryTransfer ]
   id: WeaponMakeshiftLaser
   description: Better pray it won't burn your hands off.
   components:
@@ -200,7 +208,7 @@
 
 - type: entity
   name: practice laser rifle
-  parent: [BaseWeaponBattery, BaseGunWieldable]
+  parent: [BaseWeaponBattery, BaseWeaponBatteryTransfer, BaseGunWieldable]
   id: WeaponLaserCarbinePractice
   description: This modified laser rifle fires nearly harmless beams in the 40-watt range, for target practice.
   components:
@@ -238,7 +246,7 @@
 
 - type: entity
   name: pulse pistol
-  parent: BaseWeaponBatterySmall
+  parent: [ BaseWeaponBatterySmall, BaseWeaponBatteryTransfer ]
   id: WeaponPulsePistol
   description: A state of the art energy pistol favoured as a sidearm by the NT operatives.
   components:
@@ -267,7 +275,7 @@
 
 - type: entity
   name: pulse carbine
-  parent: [BaseWeaponBattery, BaseGunWieldable]
+  parent: [BaseWeaponBattery, BaseWeaponBatteryTransfer, BaseGunWieldable]
   id: WeaponPulseCarbine
   description: A high tech energy carbine favoured by the NT-ERT operatives.
   components:
@@ -298,7 +306,7 @@
 
 - type: entity
   name: pulse rifle
-  parent: [BaseWeaponBattery, BaseGunWieldable]
+  parent: [BaseWeaponBattery, BaseWeaponBatteryTransfer, BaseGunWieldable]
   id: WeaponPulseRifle
   description: A weapon that is almost as infamous as its users.
   components:
@@ -325,7 +333,7 @@
 
 - type: entity
   name: laser cannon
-  parent: [BaseWeaponBattery, BaseGunWieldable, BaseRestrictedContraband]
+  parent: [BaseWeaponBattery, BaseWeaponBatteryTransfer, BaseGunWieldable, BaseRestrictedContraband]
   id: WeaponLaserCannon
   description: A heavy duty, high powered laser weapon.
   components:
@@ -380,7 +388,7 @@
 
 - type: entity
   name: x-ray cannon
-  parent: [BaseWeaponBattery, BaseGunWieldable]
+  parent: [BaseWeaponBattery, BaseWeaponBatteryTransfer, BaseGunWieldable]
   id: WeaponXrayCannon
   description: An experimental weapon that uses concentrated x-ray energy against its target.
   components:
@@ -408,7 +416,7 @@
 
 - type: entity
   name: practice disabler
-  parent: BaseWeaponBatterySmall
+  parent: [ BaseWeaponBatterySmall, BaseWeaponBatteryTransfer ]
   id: WeaponDisablerPractice
   description: A self-defense weapon that exhausts organic targets, weakening them until they collapse. This one has been undertuned for cadets making it mostly harmless.
   components:
@@ -474,7 +482,7 @@
 
 - type: entity
   name: disabler SMG
-  parent: [ BaseWeaponBattery, BaseRestrictedContraband ]
+  parent: [ BaseWeaponBattery, BaseWeaponBatteryTransfer, BaseRestrictedContraband ]
   id: WeaponDisablerSMG
   description: Advanced weapon that exhausts organic targets, weakening them until they collapse.
   components:
@@ -512,7 +520,7 @@
 
 - type: entity
   name: taser
-  parent: [ BaseWeaponBatterySmall, BaseRestrictedContraband ]
+  parent: [ BaseWeaponBatterySmall, BaseWeaponBatteryTransfer, BaseRestrictedContraband ]
   id: WeaponTaser
   description: A low-capacity, energy-based stun gun used by security teams to subdue targets at range.
   components:
@@ -623,7 +631,7 @@
 
 - type: entity
   name: C.H.I.M.P. handcannon
-  parent: [BaseWeaponBatterySmall, BaseScienceContraband]
+  parent: [BaseWeaponBatterySmall, BaseWeaponBatteryTransfer, BaseScienceContraband]
   id: WeaponPistolCHIMP
   description: Just because it's a little C.H.I.M.P. doesn't mean it can't punch like an A.P.E.
   components:
@@ -688,7 +696,7 @@
 
 - type: entity
   name: eye of a behonker
-  parent: BaseWeaponBatterySmall
+  parent: [ BaseWeaponBatterySmall, BaseWeaponBatteryTransfer ]
   id: WeaponBehonkerLaser
   description: The eye of a behonker, it fires a laser when squeezed.
   components:
@@ -717,7 +725,7 @@
 
 - type: entity
   name: energy shotgun
-  parent: [BaseWeaponBattery, BaseGunWieldable]
+  parent: [BaseWeaponBattery, BaseWeaponBatteryTransfer, BaseGunWieldable]
   id: WeaponEnergyShotgun
   description: An one of a kind prototype energy weapon using various shotgun configurations. The possibility for both lethal, and non-lethal shots makes this a versatile weapon.
   components:
