@@ -4,7 +4,6 @@
   id: MeteorSwarmDustEventsTable
   table: !type:AllSelector # we need to pass a list of rules, since rules have further restrictions to consider via StationEventComp
     children:
-    - id: GameRuleSpaceDustMinor
     - id: GameRuleSpaceDustMajor
 
 - type: entityTable
@@ -99,27 +98,6 @@
     earliestStart: 12
     minimumPlayers: 25
   - type: MeteorSwarm
-
-- type: entity
-  parent: GameRuleMeteorSwarm
-  id: GameRuleSpaceDustMinor
-  components:
-  - type: StationEvent
-    weight: 44
-    earliestStart: 2
-    minimumPlayers: 0
-  - type: MeteorSwarm
-    announcement: null
-    announcementSound: null
-    nonDirectional: true
-    meteors:
-      MeteorSpaceDust: 1
-    waves:
-      min: 2
-      max: 3
-    meteorsPerWave:
-      min: 3
-      max: 5
 
 - type: entity
   parent: GameRuleMeteorSwarm

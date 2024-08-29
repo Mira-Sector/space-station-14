@@ -7,6 +7,7 @@ namespace Content.Server.Power.Components
     /// </summary>
     [RegisterComponent]
     [Virtual]
+    [Access(typeof(BatterySystem))]
     public partial class BatteryComponent : Component
     {
         public string SolutionName = "battery";

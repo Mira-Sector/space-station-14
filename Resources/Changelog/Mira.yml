@@ -375,3 +375,19 @@ Entries:
     type: Tweak
   id: 58
   time: '2024-08-27T06:18:00.0000000+00:00'
+- author: Thurtik
+  changes:
+  - message: The experimental research hardsuit now uses (not so) new sprites!
+    type: Add
+  - message: The experimental research hardsuit now takes up only 3x3 storage space.
+    type: Tweak
+  - message: Fixed the experimental research hardsuit not allowing storing gas tanks in suit storage slot.
+    type: Fix
+  id: 59
+  time: '2024-08-28T14:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Laser weapons can now be recharged my clicking a battery onto them
+    type: Add
+  id: 60
+  time: '2024-08-29T08:08:00.0000000+00:00'
