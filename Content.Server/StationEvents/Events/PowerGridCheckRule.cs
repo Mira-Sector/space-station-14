@@ -65,7 +65,8 @@ namespace Content.Server.StationEvents.Events
                     var station = StationSystem.GetOwningStation(player.AttachedEntity);
 
                     if (TryComp<StationDataComponent>(station, out var stationComp) &&
-                        player.AttachedEntity != null)
+                        player.AttachedEntity != null &&
+                        stationComp.Announcer != null)
                     {
                         string sound = $"Announcement{stationComp.Announcer}PowerOn";
                         Audio.PlayEntity(new SoundCollectionSpecifier(sound), Filter.Broadcast(), player.AttachedEntity.Value, true);

@@ -24,6 +24,21 @@
   - /Audio/Announcements/Default/power_on.ogg
 
 - type: soundCollection
+  id: AnnouncementDefaultShuttleCalled
+  files:
+  - /Audio/Announcements/Default/shuttlecalled.ogg
+
+- type: soundCollection
+  id: AnnouncementDefaultShuttleDock
+  files:
+  - /Audio/Announcements/Default/shuttle_dock.ogg
+
+- type: soundCollection
+  id: AnnouncementDefaultShuttleRecalled
+  files:
+  - /Audio/Announcements/Default/shuttlerecalled.ogg
+
+- type: soundCollection
   id: AnnouncementDefaultWelcome
   files:
   - /Audio/Announcements/Default/welcome.ogg
@@ -79,6 +94,20 @@
   files:
   - /Audio/Announcements/Intern/power_on.ogg
 
+- type: soundCollection
+  id: AnnouncementInternShuttleCalled
+  files:
+  - /Audio/Announcements/Intern/shuttlecalled.ogg
+
+- type: soundCollection
+  id: AnnouncementInternShuttleDock
+  files:
+  - /Audio/Announcements/Intern/shuttledock.ogg
+
+- type: soundCollection
+  id: AnnouncementInternShuttleRecalled
+  files:
+  - /Audio/Announcements/Intern/shuttlerecalled.ogg
 
 - type: soundCollection
   id: AnnouncementInternWelcome

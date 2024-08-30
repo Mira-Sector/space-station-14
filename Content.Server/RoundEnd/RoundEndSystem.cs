@@ -16,6 +16,7 @@ using Content.Server.Station.Systems;
 using Content.Shared.Database;
 using Content.Shared.DeviceNetwork;
 using Content.Shared.GameTicking;
+using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Configuration;
 using Robust.Shared.Player;
@@ -188,7 +189,21 @@ namespace Content.Server.RoundEnd
                 null,
                 Color.Gold);
 
-            _audio.PlayGlobal("/Audio/Announcements/shuttlecalled.ogg", Filter.Broadcast(), true);
+            foreach (var player in Filter.Broadcast().Recipients)
+            {
+                var station = _stationSystem.GetOwningStation(player.AttachedEntity);
+                if (TryComp<StationDataComponent>(station, out var stationComp) &&
+                    player.AttachedEntity != null &&
+                    stationComp != null)
+                {
+                    string sound = $"Announcement{stationComp.Announcer}ShuttleCalled";
+                    _audio.PlayEntity(new SoundCollectionSpecifier(sound), Filter.Broadcast(), player.AttachedEntity.Value, true);
+                }
+                else if (player.AttachedEntity != null)
+                {
+                    _audio.PlayEntity("/Audio/Announcements/Default/shuttlecalled.ogg", Filter.Broadcast(), player.AttachedEntity.Value,  true);
+                }
+            }
 
             LastCountdownStart = _gameTiming.CurTime;
             ExpectedCountdownEnd = _gameTiming.CurTime + countdownTime;
@@ -235,6 +250,22 @@ namespace Content.Server.RoundEnd
 
             _chatSystem.DispatchGlobalAnnouncement(Loc.GetString("round-end-system-shuttle-recalled-announcement"),
                 Loc.GetString("Station"), false, colorOverride: Color.Gold);
+
+            foreach (var player in Filter.Broadcast().Recipients)
+            {
+                var station = _stationSystem.GetOwningStation(player.AttachedEntity);
+                if (TryComp<StationDataComponent>(station, out var stationComp) &&
+                    player.AttachedEntity != null &&
+                    stationComp != null)
+                {
+                    string sound = $"Announcement{stationComp.Announcer}ShuttleRecalled";
+                    _audio.PlayEntity(new SoundCollectionSpecifier(sound), Filter.Broadcast(), player.AttachedEntity.Value, true);
+                }
+                else if (player.AttachedEntity != null)
+                {
+                    _audio.PlayEntity("/Audio/Announcements/Default/shuttlerecalled.ogg", Filter.Broadcast(), player.AttachedEntity.Value,  true);
+                }
+            }
 
             _audio.PlayGlobal("/Audio/Announcements/shuttlerecalled.ogg", Filter.Broadcast(), true);
 

@@ -56,7 +56,8 @@ public abstract class StationEventSystem<T> : GameRuleSystem<T> where T : ICompo
 
             if (stationEvent.AnnouncementStart != null &&
                 TryComp<StationDataComponent>(station, out var stationComp) &&
-                player.AttachedEntity != null)
+                player.AttachedEntity != null &&
+                stationComp.Announcer != null)
             {
                 string sound = $"Announcement{stationComp.Announcer}{stationEvent.AnnouncementStart}";
                 Audio.PlayEntity(new SoundCollectionSpecifier(sound), allPlayersInGame, player.AttachedEntity.Value, true);
@@ -110,7 +111,9 @@ public abstract class StationEventSystem<T> : GameRuleSystem<T> where T : ICompo
 
             if (stationEvent.AnnouncementEnd != null &&
                 TryComp<StationDataComponent>(station, out var stationComp) &&
-                player.AttachedEntity != null)
+                player.AttachedEntity != null &&
+                stationComp.Announcer != null)
+
             {
                 string sound = $"Announcement{stationComp.Announcer}{stationEvent.AnnouncementEnd}";
                 Audio.PlayEntity(new SoundCollectionSpecifier(sound), allPlayersInGame, player.AttachedEntity.Value, true);
