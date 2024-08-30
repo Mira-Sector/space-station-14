@@ -267,8 +267,6 @@ namespace Content.Server.RoundEnd
                 }
             }
 
-            _audio.PlayGlobal("/Audio/Announcements/shuttlerecalled.ogg", Filter.Broadcast(), true);
-
             LastCountdownStart = null;
             ExpectedCountdownEnd = null;
             ActivateCooldown();
