@@ -1,4 +1,125 @@
 - type: soundCollection
+  id: AnnouncementDefaultAnnounce
+  files:
+  - /Audio/Announcements/Default/announce.ogg
+
+- type: soundCollection
+  id: AnnouncementDefaultAttention
+  files:
+  - /Audio/Announcements/Default/attention.ogg
+
+- type: soundCollection
+  id: AnnouncementDefaultIntercept
+  files:
+  - /Audio/Announcements/Default/intercept.ogg
+
+- type: soundCollection
+  id: AnnouncementDefaultPowerOff
+  files:
+  - /Audio/Announcements/Default/power_off.ogg
+
+- type: soundCollection
+  id: AnnouncementDefaultPowerOn
+  files:
+  - /Audio/Announcements/Default/power_on.ogg
+
+- type: soundCollection
+  id: AnnouncementDefaultShuttleCalled
+  files:
+  - /Audio/Announcements/Default/shuttlecalled.ogg
+
+- type: soundCollection
+  id: AnnouncementDefaultShuttleDock
+  files:
+  - /Audio/Announcements/Default/shuttle_dock.ogg
+
+- type: soundCollection
+  id: AnnouncementDefaultShuttleRecalled
+  files:
+  - /Audio/Announcements/Default/shuttlerecalled.ogg
+
+- type: soundCollection
+  id: AnnouncementDefaultWelcome
+  files:
+  - /Audio/Announcements/Default/welcome.ogg
+
+- type: soundCollection
+  id: AnnouncementInternAnnounce
+  files:
+  - /Audio/Announcements/Intern/announce/1.ogg
+  - /Audio/Announcements/Intern/announce/2.ogg
+  - /Audio/Announcements/Intern/announce/3.ogg
+  - /Audio/Announcements/Intern/announce/4.ogg
+  - /Audio/Announcements/Intern/announce/5.ogg
+  - /Audio/Announcements/Intern/announce/6.ogg
+  - /Audio/Announcements/Intern/announce/7.ogg
+  - /Audio/Announcements/Intern/announce/8.ogg
+  - /Audio/Announcements/Intern/announce/9.ogg
+  - /Audio/Announcements/Intern/announce/10.ogg
+  - /Audio/Announcements/Intern/announce/11.ogg
+  - /Audio/Announcements/Intern/announce/12.ogg
+  - /Audio/Announcements/Intern/announce/13.ogg
+  - /Audio/Announcements/Intern/announce/14.ogg
+
+- type: soundCollection
+  id: AnnouncementInternAttention
+  files:
+  - /Audio/Announcements/Intern/announce/1.ogg
+  - /Audio/Announcements/Intern/announce/2.ogg
+  - /Audio/Announcements/Intern/announce/3.ogg
+  - /Audio/Announcements/Intern/announce/4.ogg
+  - /Audio/Announcements/Intern/announce/5.ogg
+  - /Audio/Announcements/Intern/announce/6.ogg
+  - /Audio/Announcements/Intern/announce/7.ogg
+  - /Audio/Announcements/Intern/announce/8.ogg
+  - /Audio/Announcements/Intern/announce/9.ogg
+  - /Audio/Announcements/Intern/announce/10.ogg
+  - /Audio/Announcements/Intern/announce/11.ogg
+  - /Audio/Announcements/Intern/announce/12.ogg
+  - /Audio/Announcements/Intern/announce/13.ogg
+  - /Audio/Announcements/Intern/announce/14.ogg
+
+- type: soundCollection
+  id: AnnouncementInternIntercept
+  files:
+  - /Audio/Announcements/Intern/intercept.ogg
+
+- type: soundCollection
+  id: AnnouncementInternPowerOff
+  files:
+  - /Audio/Announcements/Intern/power_off.ogg
+
+- type: soundCollection
+  id: AnnouncementInternPowerOn
+  files:
+  - /Audio/Announcements/Intern/power_on.ogg
+
+- type: soundCollection
+  id: AnnouncementInternShuttleCalled
+  files:
+  - /Audio/Announcements/Intern/shuttlecalled.ogg
+
+- type: soundCollection
+  id: AnnouncementInternShuttleDock
+  files:
+  - /Audio/Announcements/Intern/shuttledock.ogg
+
+- type: soundCollection
+  id: AnnouncementInternShuttleRecalled
+  files:
+  - /Audio/Announcements/Intern/shuttlerecalled.ogg
+
+- type: soundCollection
+  id: AnnouncementInternWelcome
+  files:
+  - /Audio/Announcements/Intern/welcome/1.ogg
+  - /Audio/Announcements/Intern/welcome/2.ogg
+  - /Audio/Announcements/Intern/welcome/3.ogg
+  - /Audio/Announcements/Intern/welcome/4.ogg
+  - /Audio/Announcements/Intern/welcome/5.ogg
+  - /Audio/Announcements/Intern/welcome/6.ogg
+
+- type: soundCollection
   id: RoundEnd
   files:
   - /Audio/Announcements/RoundEnd/apc_destroyed.ogg

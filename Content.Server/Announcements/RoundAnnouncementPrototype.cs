@@ -12,7 +12,16 @@ public sealed partial class RoundAnnouncementPrototype : IPrototype
     [IdDataField]
     public string ID { get; private set; } = default!;
 
-    [DataField("sound")] public SoundSpecifier? Sound;
-
     [DataField("message")] public string? Message;
+
+    /// <summary>
+    ///     Absolute path for the announcement sound
+    /// </summary>
+    [DataField] public SoundSpecifier? AbsoluteSound;
+
+    /// <summary>
+    ///     Absolute path for the announcement sound
+    /// </summary>
+    [DataField] public string? RelativeSound;
+
 }

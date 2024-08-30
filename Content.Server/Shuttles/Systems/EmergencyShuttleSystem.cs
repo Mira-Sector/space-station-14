@@ -7,6 +7,7 @@ using Content.Server.Chat.Systems;
 using Content.Server.Communications;
 using Content.Server.DeviceNetwork.Components;
 using Content.Server.DeviceNetwork.Systems;
+using Content.Server.GameTicking;
 using Content.Server.GameTicking.Events;
 using Content.Server.Pinpointer;
 using Content.Server.Popups;
@@ -29,6 +30,7 @@ using Content.Shared.Tag;
 using Content.Shared.Tiles;
 using Robust.Server.GameObjects;
 using Robust.Server.Maps;
+using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Configuration;
 using Robust.Shared.Map;
@@ -58,6 +60,7 @@ public sealed partial class EmergencyShuttleSystem : EntitySystem
     [Dependency] private readonly DeviceNetworkSystem _deviceNetworkSystem = default!;
     [Dependency] private readonly DockingSystem _dock = default!;
     [Dependency] private readonly EntityManager _entityManager = default!;
+    [Dependency] private readonly GameTicker _gameTicker = default!;
     [Dependency] private readonly IdCardSystem _idSystem = default!;
     [Dependency] private readonly NavMapSystem _navMap = default!;
     [Dependency] private readonly MapLoaderSystem _map = default!;
@@ -311,8 +314,26 @@ public sealed partial class EmergencyShuttleSystem : EntitySystem
             }
 
             _logger.Add(LogType.EmergencyShuttle, LogImpact.High, $"Emergency shuttle {ToPrettyString(stationUid)} docked with stations");
+
+            TryComp<StationDataComponent>(stationUid, out var stationComp);
             // TODO: Need filter extensions or something don't blame me.
-            _audio.PlayGlobal("/Audio/Announcements/shuttle_dock.ogg", Filter.Broadcast(), true);
+
+            Filter allPlayersInGame = Filter.Empty().AddWhere(_gameTicker.UserHasJoinedGame);
+
+            foreach (var player in allPlayersInGame.Recipients)
+            {
+                if (player.AttachedEntity != null &&
+                    stationComp != null &&
+                    stationComp.Announcer != null)
+                {
+                    string sound = $"Announcement{stationComp.Announcer}Dock";
+                    _audio.PlayEntity(new SoundCollectionSpecifier(sound), allPlayersInGame, player.AttachedEntity.Value, true);
+                }
+                else if (player.AttachedEntity != null)
+                {
+                    _audio.PlayEntity("/Audio/Announcements/Default/shuttle_dock.ogg", Filter.Broadcast(), player.AttachedEntity.Value, true);
+                }
+            }
         }
         else
         {
