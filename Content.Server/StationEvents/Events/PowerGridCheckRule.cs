@@ -1,6 +1,7 @@
 using System.Threading;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
+using Content.Server.Station.Components;
 using Content.Server.StationEvents.Components;
 using Content.Shared.GameTicking.Components;
 using Content.Shared.Station.Components;
@@ -59,7 +60,21 @@ namespace Content.Server.StationEvents.Events
             component.AnnounceCancelToken = new CancellationTokenSource();
             Timer.Spawn(3000, () =>
             {
-                Audio.PlayGlobal("/Audio/Announcements/power_on.ogg", Filter.Broadcast(), true, AudioParams.Default.WithVolume(-4f));
+                foreach (var player in Filter.Broadcast().Recipients)
+                {
+                    var station = StationSystem.GetOwningStation(player.AttachedEntity);
+
+                    if (TryComp<StationDataComponent>(station, out var stationComp) &&
+                        player.AttachedEntity != null)
+                    {
+                        string sound = $"Announcement{stationComp.Announcer}PowerOn";
+                        Audio.PlayEntity(new SoundCollectionSpecifier(sound), Filter.Broadcast(), player.AttachedEntity.Value, true);
+                    }
+                    else if (player.AttachedEntity != null)
+                    {
+                        Audio.PlayEntity("/Audio/Announcements/Default/power_on.ogg", Filter.Broadcast(), player.AttachedEntity.Value,  true);
+                    }
+                }
             }, component.AnnounceCancelToken.Token);
             component.Unpowered.Clear();
         }

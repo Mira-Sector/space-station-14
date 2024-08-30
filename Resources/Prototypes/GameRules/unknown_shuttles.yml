@@ -32,6 +32,7 @@
     startAnnouncement: station-event-unknown-shuttle-incoming
     startAudio:
       path: /Audio/Announcements/attention.ogg
+    announcementStart: Attention
     weight: 5
     reoccurrenceDelay: 30
     duration: 1
