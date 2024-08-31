@@ -5,6 +5,7 @@
   table: !type:AllSelector # we need to pass a list of rules, since rules have further restrictions to consider via StationEventComp
     children:
     - id: GameRuleSpaceDustMajor
+      prob: 0.2
 
 - type: entityTable
   id: MeteorSwarmSmallChanceEventsTable
@@ -105,7 +106,7 @@
   components:
   - type: StationEvent
     weight: 22
-    minimumPlayers: 0
+    minimumPlayers: 10
   - type: MeteorSwarm
     announcement: station-event-space-dust-start-announcement
     announcementSound: /Audio/Announcements/Default/attention.ogg
