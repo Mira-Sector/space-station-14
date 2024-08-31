@@ -60,11 +60,11 @@ public abstract class StationEventSystem<T> : GameRuleSystem<T> where T : ICompo
                 stationComp.Announcer != null)
             {
                 string sound = $"Announcement{stationComp.Announcer}{stationEvent.AnnouncementStart}";
-                Audio.PlayEntity(new SoundCollectionSpecifier(sound), allPlayersInGame, player.AttachedEntity.Value, true);
+                Audio.PlayEntity(new SoundCollectionSpecifier(sound), Filter.SinglePlayer(player), player.AttachedEntity.Value, true);
             }
             else if (player.AttachedEntity != null)
             {
-                Audio.PlayEntity(stationEvent.StartAudio, allPlayersInGame,player.AttachedEntity.Value, true);
+                Audio.PlayEntity(stationEvent.StartAudio, Filter.SinglePlayer(player) ,player.AttachedEntity.Value, true);
             }
         }
     }
@@ -116,11 +116,11 @@ public abstract class StationEventSystem<T> : GameRuleSystem<T> where T : ICompo
 
             {
                 string sound = $"Announcement{stationComp.Announcer}{stationEvent.AnnouncementEnd}";
-                Audio.PlayEntity(new SoundCollectionSpecifier(sound), allPlayersInGame, player.AttachedEntity.Value, true);
+                Audio.PlayEntity(new SoundCollectionSpecifier(sound), Filter.SinglePlayer(player), player.AttachedEntity.Value, true);
             }
             else if (player.AttachedEntity != null)
             {
-                Audio.PlayEntity(stationEvent.EndAudio, allPlayersInGame,player.AttachedEntity.Value, true);
+                Audio.PlayEntity(stationEvent.EndAudio, Filter.SinglePlayer(player) ,player.AttachedEntity.Value, true);
             }
         }
     }

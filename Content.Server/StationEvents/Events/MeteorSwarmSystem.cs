@@ -7,6 +7,7 @@ using Content.Server.StationEvents.Components;
 using Content.Shared.GameTicking.Components;
 using Content.Shared.Random.Helpers;
 using Robust.Server.Audio;
+using Robust.Shared.Audio;
 using Robust.Shared.Map;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
@@ -34,7 +35,22 @@ public sealed class MeteorSwarmSystem : GameRuleSystem<MeteorSwarmComponent>
         if (component.Announcement is { } locId)
             _chat.DispatchFilteredAnnouncement(allPlayersInGame, Loc.GetString(locId), playSound: false, colorOverride: Color.Gold);
 
-        _audio.PlayGlobal(component.AnnouncementSound, allPlayersInGame, true);
+        foreach (var player in allPlayersInGame.Recipients)
+        {
+
+            var station = _station.GetOwningStation(player.AttachedEntity);
+
+            if (TryComp<StationDataComponent>(station, out var stationComp) &&
+                player.AttachedEntity != null)
+            {
+                string sound = $"Announcement{stationComp.Announcer}{component.AnnouncementRelative}";
+                _audio.PlayEntity(new SoundCollectionSpecifier(sound), Filter.SinglePlayer(player), player.AttachedEntity.Value, true);
+            }
+            else if (player.AttachedEntity != null)
+            {
+                _audio.PlayEntity(component.AnnouncementSound, Filter.SinglePlayer(player), player.AttachedEntity.Value, true);
+            }
+        }
     }
 
     protected override void ActiveTick(EntityUid uid, MeteorSwarmComponent component, GameRuleComponent gameRule, float frameTime)

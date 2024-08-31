@@ -193,15 +193,14 @@ namespace Content.Server.RoundEnd
             {
                 var station = _stationSystem.GetOwningStation(player.AttachedEntity);
                 if (TryComp<StationDataComponent>(station, out var stationComp) &&
-                    player.AttachedEntity != null &&
-                    stationComp != null)
+                    player.AttachedEntity != null)
                 {
                     string sound = $"Announcement{stationComp.Announcer}ShuttleCalled";
-                    _audio.PlayEntity(new SoundCollectionSpecifier(sound), Filter.Broadcast(), player.AttachedEntity.Value, true);
+                    _audio.PlayEntity(new SoundCollectionSpecifier(sound), Filter.SinglePlayer(player), player.AttachedEntity.Value, true);
                 }
                 else if (player.AttachedEntity != null)
                 {
-                    _audio.PlayEntity("/Audio/Announcements/Default/shuttlecalled.ogg", Filter.Broadcast(), player.AttachedEntity.Value,  true);
+                    _audio.PlayEntity("/Audio/Announcements/Default/shuttlecalled.ogg", Filter.SinglePlayer(player), player.AttachedEntity.Value,  true);
                 }
             }
 
@@ -255,15 +254,14 @@ namespace Content.Server.RoundEnd
             {
                 var station = _stationSystem.GetOwningStation(player.AttachedEntity);
                 if (TryComp<StationDataComponent>(station, out var stationComp) &&
-                    player.AttachedEntity != null &&
-                    stationComp != null)
+                    player.AttachedEntity != null)
                 {
                     string sound = $"Announcement{stationComp.Announcer}ShuttleRecalled";
-                    _audio.PlayEntity(new SoundCollectionSpecifier(sound), Filter.Broadcast(), player.AttachedEntity.Value, true);
+                    _audio.PlayEntity(new SoundCollectionSpecifier(sound), Filter.SinglePlayer(player), player.AttachedEntity.Value, true);
                 }
                 else if (player.AttachedEntity != null)
                 {
-                    _audio.PlayEntity("/Audio/Announcements/Default/shuttlerecalled.ogg", Filter.Broadcast(), player.AttachedEntity.Value,  true);
+                    _audio.PlayEntity("/Audio/Announcements/Default/shuttlerecalled.ogg", Filter.SinglePlayer(player), player.AttachedEntity.Value,  true);
                 }
             }
 

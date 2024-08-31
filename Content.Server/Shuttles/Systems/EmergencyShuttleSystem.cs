@@ -326,12 +326,12 @@ public sealed partial class EmergencyShuttleSystem : EntitySystem
                     stationComp != null &&
                     stationComp.Announcer != null)
                 {
-                    string sound = $"Announcement{stationComp.Announcer}Dock";
-                    _audio.PlayEntity(new SoundCollectionSpecifier(sound), allPlayersInGame, player.AttachedEntity.Value, true);
+                    string sound = $"Announcement{stationComp.Announcer}ShuttleDock";
+                    _audio.PlayEntity(new SoundCollectionSpecifier(sound), Filter.SinglePlayer(player), player.AttachedEntity.Value, true);
                 }
                 else if (player.AttachedEntity != null)
                 {
-                    _audio.PlayEntity("/Audio/Announcements/Default/shuttle_dock.ogg", Filter.Broadcast(), player.AttachedEntity.Value, true);
+                    _audio.PlayEntity("/Audio/Announcements/Default/shuttle_dock.ogg", Filter.SinglePlayer(player), player.AttachedEntity.Value, true);
                 }
             }
         }
