@@ -1,4 +1,4 @@
-﻿using Content.Server.StationEvents.Events;
+using Content.Server.StationEvents.Events;
 using Content.Shared.Destructible.Thresholds;
 using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
@@ -33,13 +33,16 @@ public sealed partial class MeteorSwarmComponent : Component
     public LocId? Announcement = "station-event-meteor-swarm-start-announcement";
 
     [DataField]
-    public SoundSpecifier? AnnouncementSound = new SoundPathSpecifier("/Audio/Announcements/meteors.ogg")
+    public SoundSpecifier? AnnouncementSound = new SoundPathSpecifier("/Audio/Announcements/Default/meteors.ogg")
     {
         Params = new()
         {
             Volume = -4
         }
     };
+
+    [DataField]
+    public string AnnouncementRelative = "Meteors";
 
     /// <summary>
     /// Each meteor entity prototype and their corresponding weight in being picked.
