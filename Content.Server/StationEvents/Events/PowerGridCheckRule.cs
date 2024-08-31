@@ -69,11 +69,11 @@ namespace Content.Server.StationEvents.Events
                         stationComp.Announcer != null)
                     {
                         string sound = $"Announcement{stationComp.Announcer}PowerOn";
-                        Audio.PlayEntity(new SoundCollectionSpecifier(sound), Filter.Broadcast(), player.AttachedEntity.Value, true);
+                        Audio.PlayEntity(new SoundCollectionSpecifier(sound), Filter.SinglePlayer(player), player.AttachedEntity.Value, true);
                     }
                     else if (player.AttachedEntity != null)
                     {
-                        Audio.PlayEntity("/Audio/Announcements/Default/power_on.ogg", Filter.Broadcast(), player.AttachedEntity.Value,  true);
+                        Audio.PlayEntity("/Audio/Announcements/Default/power_on.ogg", Filter.SinglePlayer(player), player.AttachedEntity.Value,  true);
                     }
                 }
             }, component.AnnounceCancelToken.Token);

@@ -288,11 +288,11 @@ namespace Content.Server.GameTicking
                 if (TryComp<StationDataComponent>(station, out var stationComp) && stationComp.Announcer != null && player.AttachedEntity != null)
                 {
                     string sound = $"Announcement{stationComp.Announcer}{proto.RelativeSound}";
-                    _audio.PlayEntity(new SoundCollectionSpecifier(sound), Filter.Broadcast(), player.AttachedEntity.Value, true);
+                    _audio.PlayEntity(new SoundCollectionSpecifier(sound), Filter.SinglePlayer(player), player.AttachedEntity.Value, true);
                 }
                 else if (proto.AbsoluteSound != null && player.AttachedEntity != null)
                 {
-                    _audio.PlayEntity(proto.AbsoluteSound, Filter.Broadcast(), player.AttachedEntity.Value, true);
+                    _audio.PlayEntity(proto.AbsoluteSound, Filter.SinglePlayer(player), player.AttachedEntity.Value, true);
                 }
             }
 
