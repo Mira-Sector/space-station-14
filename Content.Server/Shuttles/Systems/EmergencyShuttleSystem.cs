@@ -326,7 +326,7 @@ public sealed partial class EmergencyShuttleSystem : EntitySystem
                     stationComp != null &&
                     stationComp.Announcer != null)
                 {
-                    string sound = $"Announcement{stationComp.Announcer}Dock";
+                    string sound = $"Announcement{stationComp.Announcer}ShuttleDock";
                     _audio.PlayEntity(new SoundCollectionSpecifier(sound), Filter.SinglePlayer(player), player.AttachedEntity.Value, true);
                 }
                 else if (player.AttachedEntity != null)
