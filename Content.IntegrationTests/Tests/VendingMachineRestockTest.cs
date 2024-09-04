@@ -153,7 +153,7 @@ namespace Content.IntegrationTests.Tests
                 // purchaseable entity with a StorageFill.
                 foreach (var proto in prototypeManager.EnumeratePrototypes<CargoProductPrototype>())
                 {
-                    if (restockStores.ContainsKey(proto.Product))
+                    if (proto.Product != null && restockStores.ContainsKey(proto.Product))
                     {
                         foreach (var entry in restockStores[proto.Product])
                             restocks.Remove(entry);

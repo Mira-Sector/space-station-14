@@ -132,8 +132,10 @@ namespace Content.Server.Cargo.Systems
                 return;
             }
 
+            bool hasProductId = _protoMan.HasIndex<EntityPrototype>(order.ProductId ?? String.Empty);
+
             // Invalid order
-            if (!_protoMan.HasIndex<EntityPrototype>(order.ProductId))
+            if (!hasProductId && order.Shuttle == null)
             {
                 ConsolePopup(args.Actor, Loc.GetString("cargo-console-invalid-product"));
                 PlayDenySound(uid, component);
@@ -144,7 +146,7 @@ namespace Content.Server.Cargo.Systems
             var capacity = orderDatabase.Capacity;
 
             // Too many orders, avoid them getting spammed in the UI.
-            if (amount >= capacity)
+            if (amount >= capacity && hasProductId)
             {
                 ConsolePopup(args.Actor, Loc.GetString("cargo-console-too-many"));
                 PlayDenySound(uid, component);
@@ -352,7 +354,7 @@ namespace Content.Server.Cargo.Systems
 
         private static CargoOrderData GetOrderData(CargoConsoleAddOrderMessage args, CargoProductPrototype cargoProduct, int id)
         {
-            return new CargoOrderData(id, cargoProduct.Product, cargoProduct.Name, cargoProduct.Cost, args.Amount, args.Requester, args.Reason);
+            return new CargoOrderData(id, cargoProduct.Product ?? String.Empty, cargoProduct.Name, cargoProduct.Cost, args.Amount, args.Requester, args.Reason, cargoProduct.Shuttle);
         }
 
         public static int GetOutstandingOrderCount(StationCargoOrderDatabaseComponent component)

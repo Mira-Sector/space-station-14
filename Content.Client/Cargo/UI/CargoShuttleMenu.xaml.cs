@@ -34,7 +34,7 @@ namespace Content.Client.Cargo.UI
 
             foreach (var order in orders)
             {
-                 var product = protoManager.Index<EntityPrototype>(order.ProductId);
+                 var product = protoManager.Index<EntityPrototype>(order.ProductId ?? String.Empty);
                  var productName = product.Name;
 
                  var row = new CargoOrderRow

@@ -18,6 +18,16 @@
   category: cargoproduct-category-name-shuttle
   group: market
 
+- type: cargoProduct
+  id: ShuttleCargo
+  icon:
+    sprite: Clothing/Head/Soft/cargosoft.rsi
+    state: icon
+  shuttle: /Maps/Shuttles/cargo.yml
+  cost: 50000
+  category: cargoproduct-category-name-shuttle
+  group: market
+
 # - type: cargoProduct
   # id: ShuttlePowerKit
   # icon:

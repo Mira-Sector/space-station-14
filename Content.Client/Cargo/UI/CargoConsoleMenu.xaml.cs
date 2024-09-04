@@ -147,15 +147,23 @@ namespace Content.Client.Cargo.UI
             Orders.DisposeAllChildren();
             Requests.DisposeAllChildren();
 
+            var error = _spriteSystem.Frame0(_protoManager.Index<EntityPrototype>("Error"));
+
             foreach (var order in orders)
             {
-                var product = _protoManager.Index<EntityPrototype>(order.ProductId);
-                var productName = product.Name;
+
+                var productName = String.Empty;
+                var texture = error;
+                if (_protoManager.TryIndex<EntityPrototype>(order.ProductId ?? String.Empty, out var product))
+                {
+                    productName = product.Name;
+                    texture = _spriteSystem.Frame0(product);
+                }
 
                 var row = new CargoOrderRow
                 {
                     Order = order,
-                    Icon = { Texture = _spriteSystem.Frame0(product) },
+                    Icon = { Texture = texture },
                     ProductName =
                     {
                         Text = Loc.GetString(
