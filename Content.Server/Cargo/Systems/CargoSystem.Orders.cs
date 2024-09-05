@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Content.Server.Cargo.Components;
 using Content.Server.Labels.Components;
+using Content.Server.Shuttles.Systems;
 using Content.Server.Station.Components;
 using Content.Shared.Cargo;
 using Content.Shared.Cargo.BUI;
@@ -10,6 +11,7 @@ using Content.Shared.Cargo.Prototypes;
 using Content.Shared.Database;
 using Content.Shared.Interaction;
 using Content.Shared.Paper;
+using Robust.Server.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
@@ -19,6 +21,10 @@ namespace Content.Server.Cargo.Systems
     public sealed partial class CargoSystem
     {
         [Dependency] private readonly SharedTransformSystem _transformSystem = default!;
+        [Dependency] private readonly SharedMapSystem _mapSystem = default!;
+        [Dependency] private readonly MapLoaderSystem _mapLoader = default!;
+        [Dependency] private readonly ShuttleSystem _shuttleSystem = default!;
+        [Dependency] private readonly IMapManager _mapManager = default!;
 
         /// <summary>
         /// How much time to wait (in seconds) before increasing bank accounts balance.
@@ -29,6 +35,10 @@ namespace Content.Server.Cargo.Systems
         /// Keeps track of how much time has elapsed since last balance increase.
         /// </summary>
         private float _timer;
+
+        private EntityUid? PausedMap;
+
+        private MapId PausedMapId;
 
         private void InitializeConsole()
         {
@@ -498,6 +508,19 @@ namespace Content.Server.Cargo.Systems
         /// </summary>
         private bool FulfillOrder(CargoOrderData order, EntityCoordinates spawn, string? paperProto)
         {
+            bool completed = false;
+
+            if (order.ProductId != String.Empty)
+                completed = completed || FulfillProduct(order, spawn, paperProto);
+
+            if (order.Shuttle != null)
+                completed = completed || FulfillShuttle(order, spawn);
+
+            return completed;
+        }
+
+        private bool FulfillProduct(CargoOrderData order, EntityCoordinates spawn, string? paperProto)
+        {
             // Create the item itself
             var item = Spawn(order.ProductId, spawn);
 
@@ -529,7 +552,37 @@ namespace Content.Server.Cargo.Systems
             }
 
             return true;
+        }
 
+        private bool FulfillShuttle(CargoOrderData order, EntityCoordinates coords)
+        {
+            if (order.Shuttle == null)
+                return false;
+
+            var path = order.Shuttle.ToString();
+
+            if (path == null)
+                return false;
+
+            EnsurePausedMap();
+
+            var shuttle = _mapLoader.LoadGrid(PausedMapId, path);
+
+            var map = _transformSystem.GetMapId(coords);
+
+            _shuttleSystem.TryAddFTLDestination(map, false, out _);
+
+            return true;
+        }
+
+        private void EnsurePausedMap()
+        {
+            if (PausedMap != null && Exists(PausedMap))
+                return;
+
+            _mapSystem.CreateMap(out PausedMapId);
+            _mapManager.SetMapPaused(PausedMapId, true);
+            _mapSystem.TryGetMap(PausedMapId, out PausedMap);
         }
 
         private void DeductFunds(StationBankAccountComponent component, int amount)
