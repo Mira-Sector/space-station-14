@@ -53,3 +53,7 @@
 - type: lobbyBackground
   id: ReclaimerNuke
   background: /Textures/LobbyScreens/reclaimer-nuke.webp
+
+- type: lobbyBackground
+  id: MiraSector
+  background: /Textures/LobbyScreens/mira-sector.webp
