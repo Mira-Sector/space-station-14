@@ -8,6 +8,7 @@ using Robust.Client.GameObjects;
 using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Utility;
 using static Robust.Client.UserInterface.Controls.BaseButton;
 
 namespace Content.Client.Cargo.UI
@@ -147,15 +148,31 @@ namespace Content.Client.Cargo.UI
             Orders.DisposeAllChildren();
             Requests.DisposeAllChildren();
 
+            var error = _spriteSystem.Frame0(_protoManager.Index<EntityPrototype>("Error"));
+
             foreach (var order in orders)
             {
-                var product = _protoManager.Index<EntityPrototype>(order.ProductId);
-                var productName = product.Name;
+
+                var productName = String.Empty;
+                var texture = error;
+                if (_protoManager.TryIndex<EntityPrototype>(order.ProductId ?? String.Empty, out var product))
+                {
+                    productName = product.Name;
+                    texture = _spriteSystem.Frame0(product);
+                }
+                else
+                {
+                    if (order.IconOverride != SpriteSpecifier.Invalid)
+                        texture = _spriteSystem.Frame0(order.IconOverride);
+
+                    if (order.ProductName != null)
+                        productName = order.ProductName;
+                }
 
                 var row = new CargoOrderRow
                 {
                     Order = order,
-                    Icon = { Texture = _spriteSystem.Frame0(product) },
+                    Icon = { Texture = texture },
                     ProductName =
                     {
                         Text = Loc.GetString(

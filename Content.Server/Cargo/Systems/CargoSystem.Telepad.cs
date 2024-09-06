@@ -89,7 +89,7 @@ public sealed partial class CargoSystem
 
             var xform = Transform(uid);
             var currentOrder = comp.CurrentOrders.First();
-            if (FulfillOrder(currentOrder, xform.Coordinates, comp.PrinterOutput))
+            if (FulfillOrder(currentOrder, xform.Coordinates, _station.GetOwningStation(uid), comp.PrinterOutput))
             {
                 _audio.PlayPvs(_audio.GetSound(comp.TeleportSound), uid, AudioParams.Default.WithVolume(-8f));
 

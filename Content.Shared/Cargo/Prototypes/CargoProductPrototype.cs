@@ -75,7 +75,13 @@ namespace Content.Shared.Cargo.Prototypes
         ///     The entity prototype ID of the product.
         /// </summary>
         [DataField]
-        public EntProtoId Product { get; private set; } = string.Empty;
+        public EntProtoId? Product;
+
+        /// <summary>
+        ///     The path to the shuttle that will get ftl
+        /// </summary>
+        [DataField]
+        public ResPath? Shuttle;
 
         /// <summary>
         ///     The point cost of the product.
