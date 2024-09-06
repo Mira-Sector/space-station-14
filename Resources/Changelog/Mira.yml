@@ -391,3 +391,15 @@ Entries:
     type: Add
   id: 60
   time: '2024-08-29T08:08:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Shuttles can be ordered from cargo
+    type: Add
+  id: 61
+  time: '2024-09-06T07:36:00.0000000+00:00'
+- author: Mathrew
+  changes:
+  - message: More shuttles can be ordered
+    type: Add
+  id: 62
+  time: '2024-09-06T07:38:00.0000000+00:00'
