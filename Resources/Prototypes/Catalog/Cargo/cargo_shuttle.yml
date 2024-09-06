@@ -20,6 +20,8 @@
 
 - type: cargoProduct
   id: ShuttleCargo
+  name: Cargo Shuttle
+  description: A spare shuttle to help transport the pizzas off the trade station.
   icon:
     sprite: Clothing/Head/Soft/cargosoft.rsi
     state: icon

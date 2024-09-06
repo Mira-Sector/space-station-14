@@ -30,6 +30,9 @@ namespace Content.Shared.Cargo
         [DataField]
         public ResPath? Shuttle { get; private set; }
 
+        [DataField]
+        public SpriteSpecifier IconOverride { get; private set; } = SpriteSpecifier.Invalid;
+
         /// <summary>
         /// Prototype Name
         /// </summary>
@@ -59,7 +62,7 @@ namespace Content.Shared.Cargo
         [DataField]
         public string? Approver;
 
-        public CargoOrderData(int orderId, string productId, string productName, int price, int amount, string requester, string reason, ResPath? shuttle = null)
+        public CargoOrderData(int orderId, string productId, string productName, int price, int amount, string requester, string reason, ResPath? shuttle = null, SpriteSpecifier? iconOverride = null)
         {
             OrderId = orderId;
             ProductId = productId;
@@ -69,6 +72,7 @@ namespace Content.Shared.Cargo
             Requester = requester;
             Reason = reason;
             Shuttle = shuttle;
+            IconOverride = iconOverride ?? SpriteSpecifier.Invalid;
         }
 
         public void SetApproverData(string? fullName, string? jobTitle)

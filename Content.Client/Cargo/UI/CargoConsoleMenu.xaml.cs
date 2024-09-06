@@ -8,6 +8,7 @@ using Robust.Client.GameObjects;
 using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Utility;
 using static Robust.Client.UserInterface.Controls.BaseButton;
 
 namespace Content.Client.Cargo.UI
@@ -158,6 +159,14 @@ namespace Content.Client.Cargo.UI
                 {
                     productName = product.Name;
                     texture = _spriteSystem.Frame0(product);
+                }
+                else
+                {
+                    if (order.IconOverride != SpriteSpecifier.Invalid)
+                        texture = _spriteSystem.Frame0(order.IconOverride);
+
+                    if (order.ProductName != null)
+                        productName = order.ProductName;
                 }
 
                 var row = new CargoOrderRow

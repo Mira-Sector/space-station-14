@@ -373,7 +373,11 @@ namespace Content.Server.Cargo.Systems
 
         private static CargoOrderData GetOrderData(CargoConsoleAddOrderMessage args, CargoProductPrototype cargoProduct, int id)
         {
-            return new CargoOrderData(id, cargoProduct.Product ?? String.Empty, cargoProduct.Name, cargoProduct.Cost, args.Amount, args.Requester, args.Reason, cargoProduct.Shuttle);
+            SpriteSpecifier icon = SpriteSpecifier.Invalid;
+            if (cargoProduct.Shuttle != null)
+                icon = cargoProduct.Icon;
+
+            return new CargoOrderData(id, cargoProduct.Product ?? String.Empty, cargoProduct.Name, cargoProduct.Cost, args.Amount, args.Requester, args.Reason, cargoProduct.Shuttle, icon);
         }
 
         public static int GetOutstandingOrderCount(StationCargoOrderDatabaseComponent component)
