@@ -1,8 +1,10 @@
 using System.Diagnostics.CodeAnalysis;
 using Content.Server.Cargo.Components;
 using Content.Server.Labels.Components;
+using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Systems;
 using Content.Server.Station.Components;
+using Content.Server.Station.Systems;
 using Content.Shared.Cargo;
 using Content.Shared.Cargo.BUI;
 using Content.Shared.Cargo.Components;
@@ -18,12 +20,19 @@ using Robust.Shared.Utility;
 
 namespace Content.Server.Cargo.Systems
 {
+    sealed class Shuttle
+    {
+        public EntityUid ShuttleUid { get; set; }
+        public TimeSpan ShuttleTime { get; set; }
+        public EntityUid StationUid { get; set; }
+    }
     public sealed partial class CargoSystem
     {
         [Dependency] private readonly SharedTransformSystem _transformSystem = default!;
         [Dependency] private readonly SharedMapSystem _mapSystem = default!;
         [Dependency] private readonly MapLoaderSystem _mapLoader = default!;
         [Dependency] private readonly ShuttleSystem _shuttleSystem = default!;
+        [Dependency] private readonly StationSystem _stationSystem = default!;
         [Dependency] private readonly IMapManager _mapManager = default!;
 
         /// <summary>
@@ -36,9 +45,9 @@ namespace Content.Server.Cargo.Systems
         /// </summary>
         private float _timer;
 
-        private EntityUid? PausedMap;
+        private List<Shuttle> Shuttles = new();
 
-        private MapId PausedMapId;
+        private const int FTLDelay = 5;
 
         private void InitializeConsole()
         {
@@ -243,7 +252,7 @@ namespace Content.Server.Cargo.Systems
                     {
                         var coordinates = new EntityCoordinates(trade, pad.Transform.LocalPosition);
 
-                        if (FulfillOrder(order, coordinates, orderDatabase.PrinterOutput))
+                        if (FulfillOrder(order, coordinates, trade, orderDatabase.PrinterOutput))
                         {
                             tradeDestination = trade;
                             order.NumDispatched++;
@@ -495,26 +504,26 @@ namespace Content.Server.Cargo.Systems
         /// <summary>
         /// Tries to fulfill the next outstanding order.
         /// </summary>
-        private bool FulfillNextOrder(StationCargoOrderDatabaseComponent orderDB, EntityCoordinates spawn, string? paperProto)
+        private bool FulfillNextOrder(StationCargoOrderDatabaseComponent orderDB, EntityCoordinates spawn, EntityUid station, string? paperProto)
         {
             if (!PopFrontOrder(orderDB, out var order))
                 return false;
 
-            return FulfillOrder(order, spawn, paperProto);
+            return FulfillOrder(order, spawn, station, paperProto);
         }
 
         /// <summary>
         /// Fulfills the specified cargo order and spawns paper attached to it.
         /// </summary>
-        private bool FulfillOrder(CargoOrderData order, EntityCoordinates spawn, string? paperProto)
+        private bool FulfillOrder(CargoOrderData order, EntityCoordinates spawn, EntityUid? station, string? paperProto)
         {
             bool completed = false;
 
             if (order.ProductId != String.Empty)
                 completed = completed || FulfillProduct(order, spawn, paperProto);
 
-            if (order.Shuttle != null)
-                completed = completed || FulfillShuttle(order, spawn);
+            if (order.Shuttle != null && station != null)
+                completed = completed || FulfillShuttle(order, spawn, station.Value);
 
             return completed;
         }
@@ -546,15 +555,14 @@ namespace Content.Server.Cargo.Systems
 
                 // attempt to attach the label to the item
                 if (TryComp<PaperLabelComponent>(item, out var label))
-                {
-                    _slots.TryInsert(item, label.LabelSlot, printed, null);
+                { _slots.TryInsert(item, label.LabelSlot, printed, null);
                 }
             }
 
             return true;
         }
 
-        private bool FulfillShuttle(CargoOrderData order, EntityCoordinates coords)
+        private bool FulfillShuttle(CargoOrderData order, EntityCoordinates coords, EntityUid station)
         {
             if (order.Shuttle == null)
                 return false;
@@ -564,25 +572,66 @@ namespace Content.Server.Cargo.Systems
             if (path == null)
                 return false;
 
-            EnsurePausedMap();
+            _mapSystem.CreateMap(out var pausedMap);
+            _mapManager.SetMapPaused(pausedMap, true);
 
-            var shuttle = _mapLoader.LoadGrid(PausedMapId, path);
+            if (!_mapLoader.TryLoad(pausedMap, path, out var loadedShuttles)
+                || loadedShuttles.Count != 1)
+            {
+                _mapManager.DeleteMap(pausedMap);
+                return false;
+            }
 
-            var map = _transformSystem.GetMapId(coords);
+            var delay = _timing.CurTime + TimeSpan.FromSeconds(FTLDelay);
 
-            _shuttleSystem.TryAddFTLDestination(map, false, out _);
+            Shuttles.Add(new Shuttle
+                {
+                    ShuttleUid = loadedShuttles[0],
+                    ShuttleTime = delay,
+                    StationUid = station
+                });
 
             return true;
-        }
+            }
 
-        private void EnsurePausedMap()
+        private void UpdateOrderedShuttles()
         {
-            if (PausedMap != null && Exists(PausedMap))
-                return;
+            List<Shuttle> shuttlesToRemove = new();
 
-            _mapSystem.CreateMap(out PausedMapId);
-            _mapManager.SetMapPaused(PausedMapId, true);
-            _mapSystem.TryGetMap(PausedMapId, out PausedMap);
+            foreach (var i in Shuttles)
+            {
+                if (_timing.CurTime < i.ShuttleTime)
+                    continue;
+
+                var shuttle = i.ShuttleUid;
+                var station = i.StationUid;
+
+                MapId shuttleMap;
+
+                if (EntityManager.TryGetComponent<TransformComponent>(shuttle, out var shuttlexForm))
+                {
+                    shuttleMap = shuttlexForm.MapID;
+                }
+                else
+                {
+                    shuttleMap = _transformSystem.GetMapId(_transformSystem.ToCoordinates(shuttle, _transformSystem.GetMapCoordinates(shuttle)));
+                }
+
+                if (!_shuttleSystem.TryFTLProximity(shuttle, station))
+                {
+                    EntityManager.DeleteEntity(shuttle);
+                }
+
+                _mapManager.DeleteMap(shuttleMap);
+                shuttlesToRemove.Add(i);
+            }
+
+            foreach (var x in shuttlesToRemove)
+            {
+                Shuttles.Remove(x);
+            }
+
+            shuttlesToRemove.Clear();
         }
 
         private void DeductFunds(StationBankAccountComponent component, int amount)
