@@ -75,6 +75,11 @@ namespace Content.Shared.Cargo
             IconOverride = iconOverride ?? SpriteSpecifier.Invalid;
         }
 
+        public void SetApproverData(string? approver)
+        {
+            Approver = approver;
+        }
+
         public void SetApproverData(string? fullName, string? jobTitle)
         {
             var sb = new StringBuilder();

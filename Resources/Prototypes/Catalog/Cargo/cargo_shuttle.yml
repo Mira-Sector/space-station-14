@@ -73,7 +73,7 @@
   icon:
     sprite: Objects/Weapons/Melee/pickaxe.rsi
     state: pickaxe
-  shuttle: /Maps/Shuttles/savlage_shuttle.yml
+  shuttle: /Maps/Shuttles/salvage_shuttle.yml
   cost: 15000
   category: cargoproduct-category-name-shuttle
   group: market
