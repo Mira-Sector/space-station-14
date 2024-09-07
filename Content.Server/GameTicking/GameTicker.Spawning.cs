@@ -360,14 +360,13 @@ namespace Content.Server.GameTicking
                     {
                         continue;
                     }
-                    if (idProto.TryGetComponent<PdaComponent>(out var pdaComponent, _componentFactory) && pdaComponent.IdCard != null)
+
+                    if (!idProto.TryGetComponent<PdaComponent>(out var pdaComponent, _componentFactory)
+                        || pdaComponent.IdCard == null
+                        || !_prototypeManager.TryIndex<EntityPrototype>(pdaComponent.IdCard, out idProto))
                     {
-                        ProtoId<EntityPrototype> idProtoId = pdaComponent.IdCard;
-                        if (!_prototypeManager.TryIndex<EntityPrototype>(idProtoId, out idProto))
-                        {
-                            Log.Warning($"Unable to find an idCard in {idProto}");
-                            return false;
-                        }
+                        Log.Warning($"Unable to find an idCard in {idProto}");
+                        return false;
                     }
 
                     if (!idProto.TryGetComponent<PresetIdCardComponent>(out var idComponent, _componentFactory))
