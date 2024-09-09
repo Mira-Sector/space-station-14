@@ -1,4 +1,6 @@
 using Content.Shared.Buckle.Components;
+using Content.Shared.Damage.Components;
+using Content.Shared.Damage.Systems;
 using Content.Shared.DoAfter;
 using Content.Shared.Explosion;
 using Content.Shared.Input;
@@ -17,6 +19,8 @@ public sealed partial class CrawlingSystem : EntitySystem
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
     [Dependency] private readonly MovementSpeedModifierSystem _movementSpeedModifier = default!;
     [Dependency] private readonly AlertsSystem _alerts = default!;
+    [Dependency] private readonly StaminaSystem _stamina = default!;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -39,6 +43,17 @@ public sealed partial class CrawlingSystem : EntitySystem
             .Register<CrawlingSystem>();
     }
 
+    private bool IsSoftStunned(EntityUid uid)
+    {
+        if (!TryComp<StaminaComponent>(uid, out var stamComp))
+            return false;
+
+        if (stamComp.SoftStaminaDamage >= stamComp.CritThreshold)
+            return true;
+
+        return false;
+    }
+
     private void ToggleCrawlingKeybind(ICommonSession? session)
     {
         if (session?.AttachedEntity == null)
@@ -51,17 +66,28 @@ public sealed partial class CrawlingSystem : EntitySystem
     {
         if (args.Cancelled)
             return;
+
+        if (IsSoftStunned(uid) && _standing.IsDown(uid))
+        {
+            args.Cancelled = true;
+            return;
+        }
+
         SetCrawling(uid, component, !_standing.IsDown(uid));
     }
+
     public void SetCrawling(EntityUid uid, CrawlerComponent component, bool state)
     {
-        ///checks players standing state, downing player if they are standding and starts doafter with standing up if they are downed
+        //checks players standing state, downing player if they are standing and starts doafter with standing up if they are downed
         switch (state)
         {
             case true:
                 _standing.Down(uid, dropHeldItems: false);
                 break;
             case false:
+                if (IsSoftStunned(uid))
+                    return;
+
                 _doAfter.TryStartDoAfter(new DoAfterArgs(EntityManager, uid, component.StandUpTime, new CrawlStandupDoAfterEvent(),
                 uid, used: uid)
                 {
