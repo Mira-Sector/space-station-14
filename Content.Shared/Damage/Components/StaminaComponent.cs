@@ -11,6 +11,13 @@ namespace Content.Shared.Damage.Components;
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState(true), AutoGenerateComponentPause]
 public sealed partial class StaminaComponent : Component
 {
+
+    /// <summary>
+    /// Have we reached peak soft stamina damage and been forced to crawl?
+    /// </summary>
+    [ViewVariables(VVAccess.ReadWrite), DataField, AutoNetworkedField]
+    public bool Crawling;
+
     /// <summary>
     /// Have we reached peak stamina damage and been paralyzed?
     /// </summary>
@@ -30,16 +37,22 @@ public sealed partial class StaminaComponent : Component
     public float Cooldown = 3f;
 
     /// <summary>
-    /// How much stamina damage this entity has taken.
+    /// How much soft (makes them crawl) stamina damage this entity has taken.
     /// </summary>
     [ViewVariables(VVAccess.ReadWrite), DataField, AutoNetworkedField]
-    public float StaminaDamage;
+    public float SoftStaminaDamage;
+
+    /// <summary>
+    /// How much hard (makes them static on the floor) stamina damage this entity has taken.
+    /// </summary>
+    [ViewVariables(VVAccess.ReadWrite), DataField, AutoNetworkedField]
+    public float HardStaminaDamage;
 
     /// <summary>
     /// How much stamina damage is required to entire stam crit.
     /// </summary>
     [ViewVariables(VVAccess.ReadWrite), DataField, AutoNetworkedField]
-    public float CritThreshold = 100f;
+    public float CritThreshold = 50f;
 
     /// <summary>
     /// How long will this mob be stunned for?

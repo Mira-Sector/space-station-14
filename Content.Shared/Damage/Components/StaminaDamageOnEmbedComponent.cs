@@ -14,4 +14,7 @@ public sealed partial class StaminaDamageOnEmbedComponent : Component
 {
     [ViewVariables(VVAccess.ReadWrite), DataField, AutoNetworkedField]
     public float Damage = 10f;
+
+    [DataField]
+    public bool Soft = true;
 }
