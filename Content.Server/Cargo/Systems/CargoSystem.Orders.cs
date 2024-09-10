@@ -1,24 +1,41 @@
 using System.Diagnostics.CodeAnalysis;
 using Content.Server.Cargo.Components;
 using Content.Server.Labels.Components;
+using Content.Server.Shuttles.Components;
+using Content.Server.Shuttles.Systems;
 using Content.Server.Station.Components;
+using Content.Server.Station.Systems;
 using Content.Shared.Cargo;
 using Content.Shared.Cargo.BUI;
 using Content.Shared.Cargo.Components;
 using Content.Shared.Cargo.Events;
 using Content.Shared.Cargo.Prototypes;
 using Content.Shared.Database;
+using Content.Shared.Emag.Components;
+using Content.Shared.IdentityManagement;
 using Content.Shared.Interaction;
 using Content.Shared.Paper;
+using Robust.Server.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 
 namespace Content.Server.Cargo.Systems
 {
+    sealed class Shuttle
+    {
+        public EntityUid ShuttleUid { get; set; }
+        public TimeSpan ShuttleTime { get; set; }
+        public EntityUid StationUid { get; set; }
+    }
     public sealed partial class CargoSystem
     {
         [Dependency] private readonly SharedTransformSystem _transformSystem = default!;
+        [Dependency] private readonly SharedMapSystem _mapSystem = default!;
+        [Dependency] private readonly MapLoaderSystem _mapLoader = default!;
+        [Dependency] private readonly ShuttleSystem _shuttleSystem = default!;
+        [Dependency] private readonly StationSystem _stationSystem = default!;
+        [Dependency] private readonly IMapManager _mapManager = default!;
 
         /// <summary>
         /// How much time to wait (in seconds) before increasing bank accounts balance.
@@ -29,6 +46,10 @@ namespace Content.Server.Cargo.Systems
         /// Keeps track of how much time has elapsed since last balance increase.
         /// </summary>
         private float _timer;
+
+        private List<Shuttle> Shuttles = new();
+
+        private const int FTLDelay = 5;
 
         private void InitializeConsole()
         {
@@ -132,8 +153,10 @@ namespace Content.Server.Cargo.Systems
                 return;
             }
 
+            bool hasProductId = _protoMan.HasIndex<EntityPrototype>(order.ProductId ?? String.Empty);
+
             // Invalid order
-            if (!_protoMan.HasIndex<EntityPrototype>(order.ProductId))
+            if (!hasProductId && order.Shuttle == null)
             {
                 ConsolePopup(args.Actor, Loc.GetString("cargo-console-invalid-product"));
                 PlayDenySound(uid, component);
@@ -144,7 +167,7 @@ namespace Content.Server.Cargo.Systems
             var capacity = orderDatabase.Capacity;
 
             // Too many orders, avoid them getting spammed in the UI.
-            if (amount >= capacity)
+            if (amount >= capacity && hasProductId)
             {
                 ConsolePopup(args.Actor, Loc.GetString("cargo-console-too-many"));
                 PlayDenySound(uid, component);
@@ -175,10 +198,6 @@ namespace Content.Server.Cargo.Systems
             RaiseLocalEvent(ref ev);
             ev.FulfillmentEntity ??= station.Value;
 
-            _idCardSystem.TryFindIdCard(player, out var idCard);
-            // ReSharper disable once ConditionalAccessQualifierIsNonNullableAccordingToAPIContract
-            order.SetApproverData(idCard.Comp?.FullName, idCard.Comp?.JobTitle);
-
             if (!ev.Handled)
             {
                 ev.FulfillmentEntity = TryFulfillOrder((station.Value, stationData), order, orderDatabase);
@@ -194,12 +213,20 @@ namespace Content.Server.Cargo.Systems
             order.Approved = true;
             _audio.PlayPvs(component.ConfirmSound, uid);
 
-            var message = Loc.GetString("cargo-console-unlock-approved-order-broadcast",
-                ("productName", Loc.GetString(order.ProductName)),
-                ("orderAmount", order.OrderQuantity),
-                ("approver", order.Approver ?? string.Empty),
-                ("cost", cost));
-            _radio.SendRadioMessage(uid, message, component.AnnouncementChannel, uid, escapeMarkup: false);
+            if (!HasComp<EmaggedComponent>(uid))
+            {
+                var tryGetIdentityShortInfoEvent = new TryGetIdentityShortInfoEvent(uid, player);
+                RaiseLocalEvent(tryGetIdentityShortInfoEvent);
+                order.SetApproverData(tryGetIdentityShortInfoEvent.Title);
+
+                var message = Loc.GetString("cargo-console-unlock-approved-order-broadcast",
+                    ("productName", Loc.GetString(order.ProductName)),
+                    ("orderAmount", order.OrderQuantity),
+                    ("approver", order.Approver ?? string.Empty),
+                    ("cost", cost));
+                _radio.SendRadioMessage(uid, message, component.AnnouncementChannel, uid, escapeMarkup: false);
+            }
+
             ConsolePopup(args.Actor, Loc.GetString("cargo-console-trade-station", ("destination", MetaData(ev.FulfillmentEntity.Value).EntityName)));
 
             // Log order approval
@@ -231,7 +258,7 @@ namespace Content.Server.Cargo.Systems
                     {
                         var coordinates = new EntityCoordinates(trade, pad.Transform.LocalPosition);
 
-                        if (FulfillOrder(order, coordinates, orderDatabase.PrinterOutput))
+                        if (FulfillOrder(order, coordinates, trade, orderDatabase.PrinterOutput))
                         {
                             tradeDestination = trade;
                             order.NumDispatched++;
@@ -352,7 +379,11 @@ namespace Content.Server.Cargo.Systems
 
         private static CargoOrderData GetOrderData(CargoConsoleAddOrderMessage args, CargoProductPrototype cargoProduct, int id)
         {
-            return new CargoOrderData(id, cargoProduct.Product, cargoProduct.Name, cargoProduct.Cost, args.Amount, args.Requester, args.Reason);
+            SpriteSpecifier icon = SpriteSpecifier.Invalid;
+            if (cargoProduct.Shuttle != null)
+                icon = cargoProduct.Icon;
+
+            return new CargoOrderData(id, cargoProduct.Product ?? String.Empty, cargoProduct.Name, cargoProduct.Cost, args.Amount, args.Requester, args.Reason, cargoProduct.Shuttle, icon);
         }
 
         public static int GetOutstandingOrderCount(StationCargoOrderDatabaseComponent component)
@@ -483,18 +514,31 @@ namespace Content.Server.Cargo.Systems
         /// <summary>
         /// Tries to fulfill the next outstanding order.
         /// </summary>
-        private bool FulfillNextOrder(StationCargoOrderDatabaseComponent orderDB, EntityCoordinates spawn, string? paperProto)
+        private bool FulfillNextOrder(StationCargoOrderDatabaseComponent orderDB, EntityCoordinates spawn, EntityUid station, string? paperProto)
         {
             if (!PopFrontOrder(orderDB, out var order))
                 return false;
 
-            return FulfillOrder(order, spawn, paperProto);
+            return FulfillOrder(order, spawn, station, paperProto);
         }
 
         /// <summary>
         /// Fulfills the specified cargo order and spawns paper attached to it.
         /// </summary>
-        private bool FulfillOrder(CargoOrderData order, EntityCoordinates spawn, string? paperProto)
+        private bool FulfillOrder(CargoOrderData order, EntityCoordinates spawn, EntityUid? station, string? paperProto)
+        {
+            bool completed = false;
+
+            if (order.ProductId != String.Empty)
+                completed = completed || FulfillProduct(order, spawn, paperProto);
+
+            if (order.Shuttle != null && station != null)
+                completed = completed || FulfillShuttle(order, spawn, station.Value);
+
+            return completed;
+        }
+
+        private bool FulfillProduct(CargoOrderData order, EntityCoordinates spawn, string? paperProto)
         {
             // Create the item itself
             var item = Spawn(order.ProductId, spawn);
@@ -521,13 +565,83 @@ namespace Content.Server.Cargo.Systems
 
                 // attempt to attach the label to the item
                 if (TryComp<PaperLabelComponent>(item, out var label))
-                {
-                    _slots.TryInsert(item, label.LabelSlot, printed, null);
+                { _slots.TryInsert(item, label.LabelSlot, printed, null);
                 }
             }
 
             return true;
+        }
 
+        private bool FulfillShuttle(CargoOrderData order, EntityCoordinates coords, EntityUid station)
+        {
+            if (order.Shuttle == null)
+                return false;
+
+            var path = order.Shuttle.ToString();
+
+            if (path == null)
+                return false;
+
+            _mapSystem.CreateMap(out var pausedMap);
+            _mapManager.SetMapPaused(pausedMap, true);
+
+            if (!_mapLoader.TryLoad(pausedMap, path, out var loadedShuttles)
+                || loadedShuttles.Count != 1)
+            {
+                _mapManager.DeleteMap(pausedMap);
+                return false;
+            }
+
+            var delay = _timing.CurTime + TimeSpan.FromSeconds(FTLDelay);
+
+            Shuttles.Add(new Shuttle
+                {
+                    ShuttleUid = loadedShuttles[0],
+                    ShuttleTime = delay,
+                    StationUid = station
+                });
+
+            return true;
+            }
+
+        private void UpdateOrderedShuttles()
+        {
+            List<Shuttle> shuttlesToRemove = new();
+
+            foreach (var i in Shuttles)
+            {
+                if (_timing.CurTime < i.ShuttleTime)
+                    continue;
+
+                var shuttle = i.ShuttleUid;
+                var station = i.StationUid;
+
+                MapId shuttleMap;
+
+                if (EntityManager.TryGetComponent<TransformComponent>(shuttle, out var shuttlexForm))
+                {
+                    shuttleMap = shuttlexForm.MapID;
+                }
+                else
+                {
+                    shuttleMap = _transformSystem.GetMapId(_transformSystem.ToCoordinates(shuttle, _transformSystem.GetMapCoordinates(shuttle)));
+                }
+
+                if (!_shuttleSystem.TryFTLProximity(shuttle, station))
+                {
+                    EntityManager.DeleteEntity(shuttle);
+                }
+
+                _mapManager.DeleteMap(shuttleMap);
+                shuttlesToRemove.Add(i);
+            }
+
+            foreach (var x in shuttlesToRemove)
+            {
+                Shuttles.Remove(x);
+            }
+
+            shuttlesToRemove.Clear();
         }
 
         private void DeductFunds(StationBankAccountComponent component, int amount)

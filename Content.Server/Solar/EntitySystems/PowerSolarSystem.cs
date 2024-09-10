@@ -149,7 +149,7 @@ namespace Content.Server.Solar.EntitySystems
             //
             // as for when it goes negative, it only does that when (abs(theta) > pi)
             // and that's expected behavior.
-            var coverage = (float)Math.Max(0, Math.Cos(panelRelativeToSun));
+            float coverage = (float)Math.Max(0, Math.Cos(panelRelativeToSun));
 
             if (coverage > 0)
             {
@@ -169,7 +169,7 @@ namespace Content.Server.Solar.EntitySystems
             UpdateSupply(panel, panel);
         }
 
-        private void UpdateSupply(
+        public void UpdateSupply(
             EntityUid uid,
             SolarPanelComponent? solar = null,
             PowerSupplierComponent? supplier = null)

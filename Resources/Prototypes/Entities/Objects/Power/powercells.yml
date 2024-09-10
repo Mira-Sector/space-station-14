@@ -8,6 +8,9 @@
   - type: Battery
     pricePerJoule: 0.15
   - type: PowerCell
+  - type: BatteryTransfer
+    canRecieve: true
+    canTransfer: true
   - type: Explosive
     explosionType: Default
     maxIntensity: 200

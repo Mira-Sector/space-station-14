@@ -67,11 +67,6 @@ public sealed partial class CargoSystem
 
     private void OnPalletUIOpen(EntityUid uid, CargoPalletConsoleComponent component, BoundUIOpenedEvent args)
     {
-        var player = args.Actor;
-
-        if (player == null)
-            return;
-
         UpdatePalletConsoleInterface(uid);
     }
 
@@ -85,11 +80,6 @@ public sealed partial class CargoSystem
 
     private void OnPalletAppraise(EntityUid uid, CargoPalletConsoleComponent component, CargoPalletAppraiseMessage args)
     {
-        var player = args.Actor;
-
-        if (player == null)
-            return;
-
         UpdatePalletConsoleInterface(uid);
     }
 
@@ -153,7 +143,7 @@ public sealed partial class CargoSystem
                     // We won't be able to fit the whole order on, so make one
                     // which represents the space we do have left:
                     var reducedOrder = new CargoOrderData(order.OrderId,
-                            order.ProductId, order.ProductName, order.Price, spaceRemaining, order.Requester, order.Reason);
+                            order.ProductId ?? String.Empty, order.ProductName, order.Price, spaceRemaining, order.Requester, order.Reason, order.Shuttle, order.IconOverride);
                     orders.Add(reducedOrder);
                 }
                 else
@@ -313,11 +303,6 @@ public sealed partial class CargoSystem
 
     private void OnPalletSale(EntityUid uid, CargoPalletConsoleComponent component, CargoPalletSellMessage args)
     {
-        var player = args.Actor;
-
-        if (player == null)
-            return;
-
         var xform = Transform(uid);
 
         if (xform.GridUid is not EntityUid gridUid)

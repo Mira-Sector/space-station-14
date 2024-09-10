@@ -1,4 +1,5 @@
 using Robust.Shared.Serialization;
+using Robust.Shared.Utility;
 using System.Text;
 namespace Content.Shared.Cargo
 {
@@ -21,7 +22,16 @@ namespace Content.Shared.Cargo
         /// Prototype Id for the item to be created
         /// </summary>
         [DataField]
-        public string ProductId { get; private set; }
+        public string? ProductId { get; private set; }
+
+        /// <summary>
+        /// Prototype Id for the item to be created
+        /// </summary>
+        [DataField]
+        public ResPath? Shuttle { get; private set; }
+
+        [DataField]
+        public SpriteSpecifier IconOverride { get; private set; } = SpriteSpecifier.Invalid;
 
         /// <summary>
         /// Prototype Name
@@ -52,7 +62,7 @@ namespace Content.Shared.Cargo
         [DataField]
         public string? Approver;
 
-        public CargoOrderData(int orderId, string productId, string productName, int price, int amount, string requester, string reason)
+        public CargoOrderData(int orderId, string productId, string productName, int price, int amount, string requester, string reason, ResPath? shuttle = null, SpriteSpecifier? iconOverride = null)
         {
             OrderId = orderId;
             ProductId = productId;
@@ -61,6 +71,13 @@ namespace Content.Shared.Cargo
             OrderQuantity = amount;
             Requester = requester;
             Reason = reason;
+            Shuttle = shuttle;
+            IconOverride = iconOverride ?? SpriteSpecifier.Invalid;
+        }
+
+        public void SetApproverData(string? approver)
+        {
+            Approver = approver;
         }
 
         public void SetApproverData(string? fullName, string? jobTitle)

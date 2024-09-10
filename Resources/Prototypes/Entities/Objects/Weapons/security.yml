@@ -98,8 +98,8 @@
   - type: Sprite
     sprite: Objects/Weapons/Melee/telebaton.rsi
     layers:
-      - state: telebaton_off
-        map: [ "enum.ToggleVisuals.Layer" ]
+    - state: telebaton-icon
+      map: [ "enum.ToggleVisuals.Layer" ]
   - type: ItemToggle
     predictable: false
     soundActivate:
@@ -110,8 +110,14 @@
       path: /Audio/Weapons/telescopicoff.ogg
       params:
         variation: 0.250
+  - type: Item
+    size: Small
+    sprite: Objects/Weapons/Melee/telebaton.rsi
+    heldPrefix: telebaton
   - type: ItemToggleSize
     activatedSize: Huge
+  - type: DisarmMalus
+    malus: 0.225
   - type: ItemToggleMeleeWeapon
     activatedDamage:
       types:
@@ -133,8 +139,15 @@
     visuals:
      enum.ToggleVisuals.Toggled:
         enum.ToggleVisuals.Layer:
-          True: {state: telebaton_on}
-          False: {state: telebaton_off}
+          True: {state: telebaton-on}
+          False: {state: telebaton-icon}
+  - type: ToggleableLightVisuals
+    spriteLayer: shield
+    inhandVisuals:
+      left:
+        - state: inhand-left-shield
+      right:
+        - state: inhand-right-shield
   - type: StaticPrice
     price: 80
     

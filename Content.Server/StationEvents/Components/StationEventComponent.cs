@@ -30,11 +30,35 @@ public sealed partial class StationEventComponent : Component
     [DataField]
     public Color EndAnnouncementColor = Color.Gold;
 
+    /// <summary>
+    ///     Absolute path for the starting announcement sound
+    /// </summary>
     [DataField]
     public SoundSpecifier? StartAudio;
 
+    /// <summary>
+    ///     Absolute path for the ending announcement sound
+    /// </summary>
     [DataField]
     public SoundSpecifier? EndAudio;
+
+    /// <summary>
+    ///     If the station has a custom announcer where to look for the sounds
+    /// </summary>
+    [DataField]
+    public string AnnouncementPath = "/Audio/Announcements/";
+
+    /// <summary>
+    ///     Relative path for the starting announcement
+    /// </summary>
+    [DataField]
+    public string? AnnouncementStart;
+
+    /// <summary>
+    ///     Relative path for the ending announcement
+    /// </summary>
+    [DataField]
+    public string? AnnouncementEnd;
 
     /// <summary>
     ///     In minutes, when is the first round time this event can start

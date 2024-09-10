@@ -34,6 +34,7 @@ public sealed class StationSystem : EntitySystem
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly MetaDataSystem _metaData = default!;
     [Dependency] private readonly MapSystem _map = default!;
+    [Dependency] private readonly IRobustRandom _random = default!;
 
     private ISawmill _sawmill = default!;
 
@@ -89,6 +90,7 @@ public sealed class StationSystem : EntitySystem
         RaiseLocalEvent(new StationInitializedEvent(uid));
         _sawmill.Info($"Set up station {metaData.EntityName} ({uid}).");
 
+        component.Announcer = _random.Pick(component.AvailableAnnouncers);
     }
 
     private void OnStationDeleted(EntityUid uid, StationDataComponent component, ComponentShutdown args)

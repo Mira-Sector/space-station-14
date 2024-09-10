@@ -44,7 +44,7 @@
     materialComposition:
       Steel: 185
   - type: StaticPrice
-    price: 20
+    price: 30
   - type: RequireWhitelistStorage
     whitelist:
       tags:
@@ -52,7 +52,6 @@
       - SuitEVA
     slots:
     - outerClothing
-
 
 - type: entity
   abstract: true

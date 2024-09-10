@@ -2,10 +2,12 @@ using Content.Server.Administration.Logs;
 using Content.Server.Chat.Systems;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Rules;
+using Content.Server.Station.Components;
 using Content.Server.Station.Systems;
 using Content.Server.StationEvents.Components;
 using Content.Shared.Database;
 using Content.Shared.GameTicking.Components;
+using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
@@ -48,7 +50,23 @@ public abstract class StationEventSystem<T> : GameRuleSystem<T> where T : ICompo
         if (stationEvent.StartAnnouncement != null)
             ChatSystem.DispatchFilteredAnnouncement(allPlayersInGame, Loc.GetString(stationEvent.StartAnnouncement), playSound: false, colorOverride: stationEvent.StartAnnouncementColor);
 
-        Audio.PlayGlobal(stationEvent.StartAudio, allPlayersInGame, true);
+        foreach (var player in allPlayersInGame.Recipients)
+        {
+            var station = StationSystem.GetOwningStation(player.AttachedEntity);
+
+            if (stationEvent.AnnouncementStart != null &&
+                TryComp<StationDataComponent>(station, out var stationComp) &&
+                player.AttachedEntity != null &&
+                stationComp.Announcer != null)
+            {
+                string sound = $"Announcement{stationComp.Announcer}{stationEvent.AnnouncementStart}";
+                Audio.PlayEntity(new SoundCollectionSpecifier(sound), Filter.SinglePlayer(player), player.AttachedEntity.Value, true);
+            }
+            else if (player.AttachedEntity != null)
+            {
+                Audio.PlayEntity(stationEvent.StartAudio, Filter.SinglePlayer(player) ,player.AttachedEntity.Value, true);
+            }
+        }
     }
 
     /// <inheritdoc/>
@@ -87,7 +105,24 @@ public abstract class StationEventSystem<T> : GameRuleSystem<T> where T : ICompo
         if (stationEvent.EndAnnouncement != null)
             ChatSystem.DispatchFilteredAnnouncement(allPlayersInGame, Loc.GetString(stationEvent.EndAnnouncement), playSound: false, colorOverride: stationEvent.EndAnnouncementColor);
 
-        Audio.PlayGlobal(stationEvent.EndAudio, allPlayersInGame, true);
+        foreach (var player in allPlayersInGame.Recipients)
+        {
+            var station = StationSystem.GetOwningStation(player.AttachedEntity);
+
+            if (stationEvent.AnnouncementEnd != null &&
+                TryComp<StationDataComponent>(station, out var stationComp) &&
+                player.AttachedEntity != null &&
+                stationComp.Announcer != null)
+
+            {
+                string sound = $"Announcement{stationComp.Announcer}{stationEvent.AnnouncementEnd}";
+                Audio.PlayEntity(new SoundCollectionSpecifier(sound), Filter.SinglePlayer(player), player.AttachedEntity.Value, true);
+            }
+            else if (player.AttachedEntity != null)
+            {
+                Audio.PlayEntity(stationEvent.EndAudio, Filter.SinglePlayer(player) ,player.AttachedEntity.Value, true);
+            }
+        }
     }
 
     /// <summary>

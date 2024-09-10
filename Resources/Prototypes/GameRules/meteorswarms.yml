@@ -4,8 +4,8 @@
   id: MeteorSwarmDustEventsTable
   table: !type:AllSelector # we need to pass a list of rules, since rules have further restrictions to consider via StationEventComp
     children:
-    - id: GameRuleSpaceDustMinor
     - id: GameRuleSpaceDustMajor
+      prob: 0.2
 
 - type: entityTable
   id: MeteorSwarmSmallChanceEventsTable
@@ -38,16 +38,16 @@
 - type: weightedRandomEntity
   id: MeteorSpawnAsteroidWallTable
   weights:
-    AsteroidRock: 10
-    AsteroidRockCoal: 5
-    AsteroidRockQuartz: 5
-    AsteroidRockTin: 5
-    AsteroidRockSilver: 2
-    AsteroidRockGold: 2
-    AsteroidRockPlasma: 2
-    AsteroidRockDiamond: 2
-    AsteroidRockUranium: 0.5
-    AsteroidRockBananium: 0.5
+    MeteorRock: 10
+    MeteorRockCoal: 5
+    MeteorRockQuartz: 5
+    MeteorRockTin: 5
+    MeteorRockSilver: 2
+    MeteorRockGold: 2
+    MeteorRockPlasma: 2
+    MeteorRockDiamond: 2
+    MeteorRockUranium: 0.5
+    MeteorRockBananium: 0.5
 
 # Event Schedulers
 
@@ -70,7 +70,7 @@
   components:
   - type: GameRule
   - type: BasicStationEventScheduler
-    minimumTimeUntilFirstEvent: 300 # 5 min 
+    minimumTimeUntilFirstEvent: 300 # 5 min
     minMaxEventTiming:
       min: 750 # 12.5 min
       max: 930 # 17.5 min
@@ -102,35 +102,15 @@
 
 - type: entity
   parent: GameRuleMeteorSwarm
-  id: GameRuleSpaceDustMinor
-  components:
-  - type: StationEvent
-    weight: 44
-    earliestStart: 2
-    minimumPlayers: 0
-  - type: MeteorSwarm
-    announcement: null
-    announcementSound: null
-    nonDirectional: true
-    meteors:
-      MeteorSpaceDust: 1
-    waves:
-      min: 2
-      max: 3
-    meteorsPerWave:
-      min: 3
-      max: 5
-
-- type: entity
-  parent: GameRuleMeteorSwarm
   id: GameRuleSpaceDustMajor
   components:
   - type: StationEvent
     weight: 22
-    minimumPlayers: 0
+    minimumPlayers: 10
   - type: MeteorSwarm
     announcement: station-event-space-dust-start-announcement
-    announcementSound: /Audio/Announcements/attention.ogg
+    announcementSound: /Audio/Announcements/Default/attention.ogg
+    announcementStart: Attention
     nonDirectional: true
     meteors:
       MeteorSpaceDust: 1
@@ -185,7 +165,8 @@
     weight: 0.05
   - type: MeteorSwarm
     announcement: station-event-meteor-urist-start-announcement
-    announcementSound: /Audio/Announcements/attention.ogg
+    announcementSound: /Audio/Announcements/Default/attention.ogg
+    announcementStart: Attention
     meteors:
       MeteorUrist: 1
     waves:
@@ -202,7 +183,8 @@
   - type: StationEvent
     startAnnouncement: station-event-immovable-rod-start-announcement
     startAudio:
-      path: /Audio/Announcements/attention.ogg
+      path: /Audio/Announcements/Default/attention.ogg
+    announcementStart: Attention
     weight: 3.5
     reoccurrenceDelay: 1
     duration: 1
