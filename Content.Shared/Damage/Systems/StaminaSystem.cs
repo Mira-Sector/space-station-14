@@ -437,7 +437,7 @@ public sealed partial class StaminaSystem : EntitySystem
         }
     }
 
-    private void EnterStamCrit(EntityUid uid, StaminaComponent? component = null, bool soft = true)
+    public void EnterStamCrit(EntityUid uid, StaminaComponent? component = null, bool soft = true)
     {
         if (!Resolve(uid, ref component) ||
             component.State == StunnedState.Critical)
@@ -462,15 +462,11 @@ public sealed partial class StaminaSystem : EntitySystem
 
                 component.State = StunnedState.Crawling;
                 component.StaminaDamage = 0f;
+                _stunSystem.TryKnockdown(uid, component.StunTime / 2, true);
                 break;
             }
             case false:
             {
-                if (TryComp<CrawlerComponent>(uid, out var crawlerComp) && HasComp<CrawlingComponent>(uid))
-                {
-                    _crawling.SetCrawling(uid, crawlerComp, false);
-                }
-
                 component.State = StunnedState.Critical;
                 _stunSystem.TryParalyze(uid, component.StunTime, true);
                 break;
@@ -484,7 +480,7 @@ public sealed partial class StaminaSystem : EntitySystem
         _adminLogger.Add(LogType.Stamina, LogImpact.Medium, $"{ToPrettyString(uid):user} entered stamina crit");
     }
 
-    private void ExitStamCrit(EntityUid uid, StaminaComponent? component = null, bool soft = true)
+    public void ExitStamCrit(EntityUid uid, StaminaComponent? component = null, bool soft = true)
     {
         if (!Resolve(uid, ref component) ||
             component.State == StunnedState.None)

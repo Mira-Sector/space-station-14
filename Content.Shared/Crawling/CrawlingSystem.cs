@@ -85,9 +85,6 @@ public sealed partial class CrawlingSystem : EntitySystem
                 _standing.Down(uid, dropHeldItems: false);
                 break;
             case false:
-                if (IsSoftStunned(uid))
-                    return;
-
                 _doAfter.TryStartDoAfter(new DoAfterArgs(EntityManager, uid, component.StandUpTime, new CrawlStandupDoAfterEvent(),
                 uid, used: uid)
                 {
