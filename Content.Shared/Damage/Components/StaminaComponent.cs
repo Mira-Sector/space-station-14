@@ -13,16 +13,10 @@ public sealed partial class StaminaComponent : Component
 {
 
     /// <summary>
-    /// Have we reached peak soft stamina damage and been forced to crawl?
+    /// Have we reached peak stamina damage and been paralyzed or crawling?
     /// </summary>
     [ViewVariables(VVAccess.ReadWrite), DataField, AutoNetworkedField]
-    public bool Crawling;
-
-    /// <summary>
-    /// Have we reached peak stamina damage and been paralyzed?
-    /// </summary>
-    [ViewVariables(VVAccess.ReadWrite), DataField, AutoNetworkedField]
-    public bool Critical;
+    public StunnedState State;
 
     /// <summary>
     /// How much stamina reduces per second.
@@ -69,4 +63,11 @@ public sealed partial class StaminaComponent : Component
 
     [DataField]
     public ProtoId<AlertPrototype> StaminaAlert = "Stamina";
+}
+
+public enum StunnedState
+{
+    None,
+    Crawling,
+    Critical
 }
