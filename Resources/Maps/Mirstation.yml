@@ -7439,8 +7439,8 @@ entities:
           localAnchorB: 3,-0.5
           localAnchorA: -35.5,-10
           referenceAngle: 1.5707964
-          damping: 584.1473
-          stiffness: 5243.294
+          damping: 584.16125
+          stiffness: 5243.419
   - uid: 11600
     components:
     - type: MetaData
@@ -9049,6 +9049,16 @@ entities:
       parent: 6
 - proto: AirlockBrigGlassLocked
   entities:
+  - uid: 2370
+    components:
+    - type: Transform
+      pos: -23.5,0.5
+      parent: 6
+  - uid: 2377
+    components:
+    - type: Transform
+      pos: -23.5,1.5
+      parent: 6
   - uid: 8697
     components:
     - type: Transform
@@ -9093,20 +9103,10 @@ entities:
         - DoorStatus: DoorBolt
         2368:
         - DoorStatus: DoorBolt
-  - uid: 2370
-    components:
-    - type: Transform
-      pos: -23.5,0.5
-      parent: 6
   - uid: 2373
     components:
     - type: Transform
       pos: -20.5,7.5
-      parent: 6
-  - uid: 2377
-    components:
-    - type: Transform
-      pos: -23.5,1.5
       parent: 6
   - uid: 2450
     components:
@@ -9375,7 +9375,7 @@ entities:
       pos: 41.5,7.5
       parent: 6
     - type: Door
-      secondsUntilStateChange: -85156.26
+      secondsUntilStateChange: -85235.72
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -9701,7 +9701,7 @@ entities:
       pos: 12.5,-33.5
       parent: 6
     - type: Door
-      secondsUntilStateChange: -11780.621
+      secondsUntilStateChange: -11860.083
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -9874,7 +9874,7 @@ entities:
       pos: -14.5,-5.5
       parent: 6
     - type: Door
-      secondsUntilStateChange: -152680.16
+      secondsUntilStateChange: -152759.62
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -10111,7 +10111,7 @@ entities:
       pos: -14.5,-17.5
       parent: 6
     - type: Door
-      secondsUntilStateChange: -2215.2314
+      secondsUntilStateChange: -2294.6929
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -32983,7 +32983,7 @@ entities:
       pos: -23.5,14.5
       parent: 6
     - type: Door
-      secondsUntilStateChange: -100966.62
+      secondsUntilStateChange: -101046.08
       state: Opening
 - proto: CyborgEndoskeleton
   entities:
@@ -67367,8 +67367,7 @@ entities:
   - uid: 10511
     components:
     - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 37.5,9.5
+      pos: 39.5,7.5
       parent: 6
     - type: SurveillanceCamera
       setupAvailableNetworks:
