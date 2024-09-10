@@ -117,16 +117,9 @@ public sealed partial class StaminaSystem : EntitySystem
 
     private void OnRejuvenate(EntityUid uid, StaminaComponent component, RejuvenateEvent args)
     {
-        if (component.State == StunnedState.Critical &&
-            component.StaminaDamage >= component.CritThreshold)
+        if (component.StaminaDamage >= component.CritThreshold)
         {
-            ExitStamCrit(uid, component, false);
-        }
-
-        if (component.State == StunnedState.Crawling &&
-            component.StaminaDamage>= component.CritThreshold)
-        {
-            ExitStamCrit(uid, component, true);
+            ExitStamCrit(uid, component);
         }
 
         component.StaminaDamage = 0;
@@ -324,7 +317,7 @@ public sealed partial class StaminaSystem : EntitySystem
         else if (component.StaminaDamage < component.CritThreshold && component.State != StunnedState.None
         && !softModified) //wont end up putting user into crit as first hit after crawling will always pass ending immedietly
         {
-            ExitStamCrit(uid, component, soft);
+            ExitStamCrit(uid, component);
         }
 
         EnsureComp<ActiveStaminaComponent>(uid);
@@ -394,7 +387,9 @@ public sealed partial class StaminaSystem : EntitySystem
                 continue;
             }
 
-            bool soft = comp.State != StunnedState.None && comp.StaminaDamage < comp.CritThreshold;
+            var decay = comp.Decay * -1;
+
+            bool soft = comp.State != StunnedState.None && (comp.StaminaDamage + decay) < comp.CritThreshold;
 
             comp.NextUpdate += TimeSpan.FromSeconds(1f);
 
@@ -412,7 +407,7 @@ public sealed partial class StaminaSystem : EntitySystem
                 continue;
             }
 
-            TakeStaminaDamage(uid, comp.Decay * -1, comp, soft: soft);
+            TakeStaminaDamage(uid, decay, comp, soft: soft);
 
             Dirty(uid, comp);
         }
@@ -427,7 +422,7 @@ public sealed partial class StaminaSystem : EntitySystem
 
             if (i.State == StunnedState.Critical)
             {
-                ExitStamCrit(uid, comp, false);
+                ExitStamCrit(uid, comp);
             }
             else if (i.State == StunnedState.Crawling)
             {
@@ -468,7 +463,6 @@ public sealed partial class StaminaSystem : EntitySystem
             case false:
             {
                 component.State = StunnedState.Critical;
-
                 _statusEffect.TryRemoveStatusEffect(uid, "KnockedDown");
                 _stunSystem.TryParalyze(uid, component.StunTime, true);
                 break;
@@ -482,7 +476,7 @@ public sealed partial class StaminaSystem : EntitySystem
         _adminLogger.Add(LogType.Stamina, LogImpact.Medium, $"{ToPrettyString(uid):user} entered stamina crit");
     }
 
-    public void ExitStamCrit(EntityUid uid, StaminaComponent? component = null, bool soft = true)
+    public void ExitStamCrit(EntityUid uid, StaminaComponent? component = null)
     {
         if (!Resolve(uid, ref component) ||
             component.State == StunnedState.None)
@@ -490,39 +484,16 @@ public sealed partial class StaminaSystem : EntitySystem
             return;
         }
 
-        switch (soft)
-        {
-            case true:
-            {
-                component.State = StunnedState.None;
-                component.StaminaDamage = component.CritThreshold;
-                component.StaminaDamage = 0f;
-                RemComp<ActiveStaminaComponent>(uid);
+        component.State = StunnedState.None;
+        component.StaminaDamage = 0f;
+        RemComp<ActiveStaminaComponent>(uid);
 
-                if (TryComp<CrawlerComponent>(uid, out var crawlerComp) && HasComp<CrawlingComponent>(uid))
-                {
-                    _crawling.SetCrawling(uid, crawlerComp, false);
-                }
-                break;
-            }
-            case false:
-            {
-                if (HasComp<CrawlerComponent>(uid))
-                {
-                    component.State = StunnedState.Crawling;
-                    component.StaminaDamage = component.CritThreshold - 1;
-                    EnterStamCrit(uid, component, true);
-                }
-                else
-                {
-                    component.State = StunnedState.None;
-                    component.StaminaDamage = 0f;
-                }
-                break;
-            }
+        if (TryComp<CrawlerComponent>(uid, out var crawlerComp) && HasComp<CrawlingComponent>(uid))
+        {
+            _crawling.SetCrawling(uid, crawlerComp, false);
         }
 
-        component.NextUpdate = _timing.CurTime;
+        component.NextUpdate = _timing.CurTime + TimeSpan.FromMilliseconds(1);
         SetStaminaAlert(uid, component);
         Dirty(uid, component);
         _adminLogger.Add(LogType.Stamina, LogImpact.Low, $"{ToPrettyString(uid):user} recovered from stamina crit");
