@@ -12,6 +12,7 @@ using Content.Shared.Popups;
 using Content.Shared.Projectiles;
 using Content.Shared.Rejuvenate;
 using Content.Shared.Rounding;
+using Content.Shared.StatusEffect;
 using Content.Shared.Stunnable;
 using Content.Shared.Throwing;
 using Content.Shared.Weapons.Melee.Events;
@@ -42,6 +43,7 @@ public sealed partial class StaminaSystem : EntitySystem
     [Dependency] private readonly MetaDataSystem _metadata = default!;
     [Dependency] private readonly SharedColorFlashEffectSystem _color = default!;
     [Dependency] private readonly SharedStunSystem _stunSystem = default!;
+    [Dependency] private readonly StatusEffectsSystem _statusEffect = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
 
     /// <summary>
@@ -101,7 +103,7 @@ public sealed partial class StaminaSystem : EntitySystem
     }
 
     [PublicAPI]
-    public float GetStaminaDamage(EntityUid uid, StaminaComponent? component = null, bool soft = true)
+    public float GetStaminaDamage(EntityUid uid, StaminaComponent? component = null)
     {
         if (!Resolve(uid, ref component))
             return 0f;
@@ -459,12 +461,15 @@ public sealed partial class StaminaSystem : EntitySystem
 
                 component.State = StunnedState.Crawling;
                 component.StaminaDamage = 0f;
-                _stunSystem.TryKnockdown(uid, component.StunTime / 2, true);
+
+                _stunSystem.TryKnockdown(uid, component.StunTime * 2, true);
                 break;
             }
             case false:
             {
                 component.State = StunnedState.Critical;
+
+                _statusEffect.TryRemoveStatusEffect(uid, "KnockedDown");
                 _stunSystem.TryParalyze(uid, component.StunTime, true);
                 break;
             }
@@ -502,9 +507,17 @@ public sealed partial class StaminaSystem : EntitySystem
             }
             case false:
             {
-                component.State = StunnedState.Crawling;
-                component.StaminaDamage = component.CritThreshold - 1;
-                EnterStamCrit(uid, component, true);
+                if (HasComp<CrawlerComponent>(uid))
+                {
+                    component.State = StunnedState.Crawling;
+                    component.StaminaDamage = component.CritThreshold - 1;
+                    EnterStamCrit(uid, component, true);
+                }
+                else
+                {
+                    component.State = StunnedState.None;
+                    component.StaminaDamage = 0f;
+                }
                 break;
             }
         }
@@ -513,6 +526,21 @@ public sealed partial class StaminaSystem : EntitySystem
         SetStaminaAlert(uid, component);
         Dirty(uid, component);
         _adminLogger.Add(LogType.Stamina, LogImpact.Low, $"{ToPrettyString(uid):user} recovered from stamina crit");
+    }
+
+    //TODO: make this accurate
+    private TimeSpan CrawlTime(EntityUid uid, StaminaComponent stamComp, CrawlerComponent crawlComp, TimeSpan? existingTime = null)
+    {
+        TimeSpan time;
+
+        if (existingTime == null)
+            time = TimeSpan.Zero;
+        else
+            time = existingTime.Value;
+
+        time += TimeSpan.FromSeconds(stamComp.StaminaDamage * stamComp.Decay) + crawlComp.StandUpTime;
+
+        return time;
     }
 }
 

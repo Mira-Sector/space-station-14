@@ -128,17 +128,9 @@ public abstract class SharedStunSystem : EntitySystem
 
     private void OnKnockShutdown(EntityUid uid, KnockedDownComponent component, ComponentShutdown args)
     {
-        bool? soft = null;
-        StaminaComponent? staminaComponent = null;
+        (bool? soft, _) = IsSoftStunned(uid);
 
-        if (HasComp<ActiveStaminaComponent>(uid))
-            (soft, staminaComponent) = IsSoftStunned(uid);
-
-        if (soft != null)
-        {
-            _stamina.ExitStamCrit(uid, staminaComponent, soft.Value);
-        }
-        else
+        if (soft == null)
         {
             _standingState.Stand(uid);
         }
