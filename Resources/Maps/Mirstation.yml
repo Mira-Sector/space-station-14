@@ -9331,7 +9331,7 @@ entities:
       pos: 41.5,7.5
       parent: 6
     - type: Door
-      secondsUntilStateChange: -81118.78
+      secondsUntilStateChange: -79555.2
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -9657,7 +9657,7 @@ entities:
       pos: 12.5,-33.5
       parent: 6
     - type: Door
-      secondsUntilStateChange: -7743.1484
+      secondsUntilStateChange: -6179.5674
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -9830,7 +9830,7 @@ entities:
       pos: -14.5,-5.5
       parent: 6
     - type: Door
-      secondsUntilStateChange: -148642.69
+      secondsUntilStateChange: -147079.11
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -31896,16 +31896,11 @@ entities:
       parent: 6
 - proto: ComputerAlert
   entities:
-  - uid: 2266
+  - uid: 2616
     components:
     - type: Transform
-      pos: 38.5,5.5
-      parent: 6
-  - uid: 2605
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -4.5,-4.5
+      rot: 1.5707963267948966 rad
+      pos: -5.5,-0.5
       parent: 6
   - uid: 8520
     components:
@@ -32068,17 +32063,16 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 42.5,8.5
       parent: 6
+  - uid: 1549
+    components:
+    - type: Transform
+      pos: 38.5,5.5
+      parent: 6
   - uid: 2596
     components:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: -6.5,-4.5
-      parent: 6
-  - uid: 2616
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 37.5,3.5
       parent: 6
   - uid: 2652
     components:
@@ -32099,6 +32093,12 @@ entities:
       parent: 6
 - proto: ComputerRadar
   entities:
+  - uid: 2605
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: -4.5,-4.5
+      parent: 6
   - uid: 11659
     components:
     - type: Transform
@@ -32159,6 +32159,14 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 32.5,-12.5
+      parent: 6
+- proto: ComputerShuttleSalvage
+  entities:
+  - uid: 2266
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 29.5,-18.5
       parent: 6
 - proto: ComputerSolarControl
   entities:
@@ -32687,7 +32695,7 @@ entities:
       pos: -23.5,14.5
       parent: 6
     - type: Door
-      secondsUntilStateChange: -96929.14
+      secondsUntilStateChange: -95365.56
       state: Opening
 - proto: CyborgEndoskeleton
   entities:
@@ -58578,6 +58586,13 @@ entities:
     - type: Transform
       pos: -31.5,-6.5
       parent: 6
+- proto: MaterialReclaimer
+  entities:
+  - uid: 11065
+    components:
+    - type: Transform
+      pos: 2.5,37.5
+      parent: 6
 - proto: MaterialWoodPlank
   entities:
   - uid: 1360
@@ -59351,13 +59366,6 @@ entities:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 1.5,38.5
-      parent: 6
-- proto: PlayerStationAi
-  entities:
-  - uid: 8522
-    components:
-    - type: Transform
-      pos: -13.5,-50.5
       parent: 6
 - proto: PlushieMoth
   entities:
@@ -61006,12 +61014,6 @@ entities:
       rot: 3.141592653589793 rad
       pos: -0.5,-4.5
       parent: 11600
-  - uid: 11728
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: -4.5,-29.5
-      parent: 6
 - proto: PoweredLightPostSmall
   entities:
   - uid: 7985
@@ -66238,21 +66240,6 @@ entities:
     - type: Transform
       pos: 32.5,5.5
       parent: 6
-- proto: StationAiUploadComputer
-  entities:
-  - uid: 1549
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -5.5,-0.5
-      parent: 6
-- proto: StationAnchor
-  entities:
-  - uid: 11065
-    components:
-    - type: Transform
-      pos: -5.5,-29.5
-      parent: 6
 - proto: StationMap
   entities:
   - uid: 10724
@@ -68932,6 +68919,13 @@ entities:
     - type: Physics
       canCollide: False
     - type: InsideEntityStorage
+- proto: ToyAi
+  entities:
+  - uid: 8522
+    components:
+    - type: Transform
+      pos: -13.48372,-50.378883
+      parent: 6
 - proto: ToyFigurineNukieCommander
   entities:
   - uid: 11077
