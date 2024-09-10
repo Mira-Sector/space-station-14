@@ -1,7 +1,7 @@
 - type: gameMap
   id: Mirstation
-  mapName: 'Mir station'
-  mapPath: /Maps/Mirstation.yml
+  mapName: 'mir'
+  mapPath: /Maps/mir.yml
   minPlayers: 5
   maxPlayers: 20
   stations:
