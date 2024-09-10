@@ -1,5 +1,7 @@
 using Content.Shared.ActionBlocker;
 using Content.Shared.Administration.Logs;
+using Content.Shared.Crawling;
+using Content.Shared.Damage.Components;
 using Content.Shared.Interaction;
 using Content.Shared.Interaction.Events;
 using Content.Shared.Inventory.Events;
@@ -13,9 +15,11 @@ using Content.Shared.Movement.Events;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Standing;
 using Content.Shared.StatusEffect;
+using Content.Shared.Stunnable;
 using Content.Shared.Throwing;
 using Content.Shared.Whitelist;
 using Robust.Shared.Audio.Systems;
+using Content.Shared.Damage.Systems;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Physics.Systems;
@@ -29,6 +33,7 @@ public abstract class SharedStunSystem : EntitySystem
     [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
     [Dependency] private readonly MovementSpeedModifierSystem _movementSpeedModifier = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private readonly StaminaSystem _stamina = default!;
     [Dependency] private readonly EntityWhitelistSystem _entityWhitelist = default!;
     [Dependency] private readonly StandingStateSystem _standingState = default!;
     [Dependency] private readonly StatusEffectsSystem _statusEffect = default!;
@@ -136,12 +141,50 @@ public abstract class SharedStunSystem : EntitySystem
 
     private void OnKnockInit(EntityUid uid, KnockedDownComponent component, ComponentInit args)
     {
-        _standingState.Down(uid);
+        bool? soft = null;
+        StaminaComponent? staminaComponent = null;
+
+        if (HasComp<ActiveStaminaComponent>(uid))
+            (soft, staminaComponent) = IsSoftStunned(uid);
+
+        if (soft != null)
+        {
+            _stamina.EnterStamCrit(uid, staminaComponent, soft.Value);
+        }
+        else
+        {
+            _standingState.Down(uid);
+        }
     }
 
     private void OnKnockShutdown(EntityUid uid, KnockedDownComponent component, ComponentShutdown args)
     {
-        _standingState.Stand(uid);
+        (bool? soft, _) = IsSoftStunned(uid);
+
+        if (soft == null)
+        {
+            _standingState.Stand(uid);
+        }
+    }
+
+    private (bool?, StaminaComponent?) IsSoftStunned(EntityUid uid)
+    {
+        if (HasComp<CrawlerComponent>(uid) &&
+            TryComp<StaminaComponent>(uid, out var staminaComponent))
+        {
+            switch (staminaComponent.State)
+            {
+                case StunnedState.Crawling:
+                    return (true, staminaComponent);
+                case StunnedState.Critical:
+                    return (false, staminaComponent);
+                default:
+                case StunnedState.None:
+                    return (null, staminaComponent);
+            }
+        }
+
+        return (null, null);
     }
 
     private void OnStandAttempt(EntityUid uid, KnockedDownComponent component, StandAttemptEvent args)
