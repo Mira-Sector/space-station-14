@@ -48,7 +48,7 @@ public sealed partial class CrawlingSystem : EntitySystem
         if (!TryComp<StaminaComponent>(uid, out var stamComp))
             return false;
 
-        if (stamComp.SoftStaminaDamage >= stamComp.CritThreshold)
+        if (stamComp.State != StunnedState.None)
             return true;
 
         return false;

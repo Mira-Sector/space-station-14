@@ -1,6 +1,7 @@
 using Content.Shared.ActionBlocker;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Crawling;
+using Content.Shared.Damage.Components;
 using Content.Shared.Interaction;
 using Content.Shared.Interaction.Events;
 using Content.Shared.Inventory.Events;
@@ -107,13 +108,13 @@ public abstract class SharedStunSystem : EntitySystem
 
     private void OnKnockInit(EntityUid uid, KnockedDownComponent component, ComponentInit args)
     {
-        if (!HasComp<CrawlerComponent>(uid))
+        if (!HasComp<CrawlerComponent>(uid) && HasComp<ActiveStaminaComponent>(uid))
             _standingState.Down(uid);
     }
 
     private void OnKnockShutdown(EntityUid uid, KnockedDownComponent component, ComponentShutdown args)
     {
-        if (!HasComp<CrawlerComponent>(uid))
+        if (!HasComp<CrawlerComponent>(uid) && HasComp<ActiveStaminaComponent>(uid))
             _standingState.Stand(uid);
     }
 

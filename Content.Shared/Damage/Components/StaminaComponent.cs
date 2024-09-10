@@ -31,16 +31,10 @@ public sealed partial class StaminaComponent : Component
     public float Cooldown = 3f;
 
     /// <summary>
-    /// How much soft (makes them crawl) stamina damage this entity has taken.
+    /// How much stamina damage this entity has taken.
     /// </summary>
     [ViewVariables(VVAccess.ReadWrite), DataField, AutoNetworkedField]
-    public float SoftStaminaDamage;
-
-    /// <summary>
-    /// How much hard (makes them static on the floor) stamina damage this entity has taken.
-    /// </summary>
-    [ViewVariables(VVAccess.ReadWrite), DataField, AutoNetworkedField]
-    public float HardStaminaDamage;
+    public float StaminaDamage;
 
     /// <summary>
     /// How much stamina damage is required to entire stam crit.

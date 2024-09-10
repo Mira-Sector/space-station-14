@@ -25,6 +25,13 @@ using Robust.Shared.Timing;
 
 namespace Content.Shared.Damage.Systems;
 
+sealed class StaminaRecievers
+{
+    public EntityUid Uid { get; set; }
+    public StaminaComponent? Component { get; set; }
+    public StunnedState State { get; set; }
+}
+
 public sealed partial class StaminaSystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _timing = default!;
@@ -64,13 +71,12 @@ public sealed partial class StaminaSystem : EntitySystem
 
     private void OnStamHandleState(EntityUid uid, StaminaComponent component, ref AfterAutoHandleStateEvent args)
     {
-        if (component.State == StunnedState.Critical
-            || component.HardStaminaDamage > component.CritThreshold)
+        if (component.State == StunnedState.Critical && component.StaminaDamage > component.CritThreshold)
         {
             EnterStamCrit(uid, component, false);
         }
         else if (component.State == StunnedState.Crawling
-            || component.SoftStaminaDamage > component.CritThreshold)
+            && component.StaminaDamage > component.CritThreshold)
         {
             EnterStamCrit(uid, component, true);
         }
@@ -79,7 +85,7 @@ public sealed partial class StaminaSystem : EntitySystem
             ExitStamCrit(uid, component, true);
         }
 
-        if (component.SoftStaminaDamage > 0f || component.HardStaminaDamage > 0f)
+        if (component.StaminaDamage > 0f)
             EnsureComp<ActiveStaminaComponent>(uid);
     }
 
@@ -103,18 +109,7 @@ public sealed partial class StaminaSystem : EntitySystem
         if (!Resolve(uid, ref component))
             return 0f;
 
-        float stamina;
-
-        switch (soft)
-        {
-            case true:
-                stamina = component.SoftStaminaDamage;
-                break;
-
-            case false:
-                stamina = component.HardStaminaDamage;
-                break;
-        }
+        float stamina = component.StaminaDamage;
 
         var curTime = _timing.CurTime;
         var pauseTime = _metadata.GetPauseTime(uid);
@@ -123,20 +118,19 @@ public sealed partial class StaminaSystem : EntitySystem
 
     private void OnRejuvenate(EntityUid uid, StaminaComponent component, RejuvenateEvent args)
     {
-        if (component.State == StunnedState.Critical ||
-            component.HardStaminaDamage >= component.CritThreshold)
+        if (component.State == StunnedState.Critical &&
+            component.StaminaDamage >= component.CritThreshold)
         {
             ExitStamCrit(uid, component, false);
         }
 
-        if (component.State == StunnedState.Crawling ||
-            component.SoftStaminaDamage>= component.CritThreshold)
+        if (component.State == StunnedState.Crawling &&
+            component.StaminaDamage>= component.CritThreshold)
         {
             ExitStamCrit(uid, component, true);
         }
 
-        component.SoftStaminaDamage = 0;
-        component.HardStaminaDamage = 0;
+        component.StaminaDamage = 0;
         RemComp<ActiveStaminaComponent>(uid);
         SetStaminaAlert(uid, component);
         Dirty(uid, component);
@@ -244,12 +238,7 @@ public sealed partial class StaminaSystem : EntitySystem
         if (!Resolve(uid, ref component, false) || component.Deleted)
             return;
 
-        float severity;
-
-        if (component.State != StunnedState.None)
-            severity = component.CritThreshold - component.HardStaminaDamage;
-        else
-            severity = component.CritThreshold - component.SoftStaminaDamage;
+        float severity = component.CritThreshold - component.StaminaDamage;
 
         double level = ContentHelpers.RoundToLevels(severity, component.CritThreshold, 7);
 
@@ -267,12 +256,12 @@ public sealed partial class StaminaSystem : EntitySystem
         if (!Resolve(uid, ref component, false))
             return true;
 
-        if (component.HardStaminaDamage + value > component.CritThreshold ||
+        if (component.StaminaDamage + value > component.CritThreshold &&
             component.State == StunnedState.Critical)
             return false;
 
         // start dealing hard stam now
-        if (component.SoftStaminaDamage + value > component.CritThreshold ||
+        if (component.StaminaDamage + value > component.CritThreshold &&
             component.State == StunnedState.Crawling)
             soft = false;
 
@@ -307,21 +296,7 @@ public sealed partial class StaminaSystem : EntitySystem
             softModified = true;
         }
 
-        float currentDamage;
-
-        switch (soft)
-        {
-            case true:
-                component.SoftStaminaDamage = MathF.Max(0f, component.SoftStaminaDamage + value);
-                currentDamage = component.SoftStaminaDamage;
-                break;
-
-            case false:
-                component.HardStaminaDamage = MathF.Max(0f, component.HardStaminaDamage + value);
-                currentDamage = component.HardStaminaDamage;
-                component.SoftStaminaDamage = component.CritThreshold;
-                break;
-        }
+        component.StaminaDamage = MathF.Max(0f, component.StaminaDamage + value);
 
         // Reset the decay cooldown upon taking damage.
         if (isPositive)
@@ -335,7 +310,7 @@ public sealed partial class StaminaSystem : EntitySystem
         var slowdownThreshold = component.CritThreshold / 2f;
 
         // If we go above n% then apply slowdown
-        if (currentDamage < slowdownThreshold &&
+        if (component.StaminaDamage < slowdownThreshold &&
             component.State == StunnedState.None)
         {
             _stunSystem.TrySlowdown(uid, TimeSpan.FromSeconds(3), true, 0.8f, 0.8f);
@@ -343,11 +318,11 @@ public sealed partial class StaminaSystem : EntitySystem
 
         SetStaminaAlert(uid, component);
 
-        if (currentDamage > component.CritThreshold && component.State != StunnedState.Critical)
+        if (component.StaminaDamage > component.CritThreshold && component.State != StunnedState.Critical)
         {
             EnterStamCrit(uid, component, soft);
         }
-        else if (currentDamage < component.CritThreshold && component.State != StunnedState.None
+        else if (component.StaminaDamage < component.CritThreshold && component.State != StunnedState.None
         && !softModified) //wont end up putting user into crit as first hit after crawling will always pass ending immedietly
         {
             ExitStamCrit(uid, component, soft);
@@ -389,11 +364,13 @@ public sealed partial class StaminaSystem : EntitySystem
         var query = EntityQueryEnumerator<ActiveStaminaComponent>();
         var curTime = _timing.CurTime;
 
+        List<StaminaRecievers> toRemove = new();
+
         while (query.MoveNext(out var uid, out _))
         {
             // Just in case we have active but not stamina we'll check and account for it.
             if (!stamQuery.TryGetComponent(uid, out var comp) ||
-                (comp.State == StunnedState.None && comp.SoftStaminaDamage <= 0))
+                (comp.State == StunnedState.None && comp.StaminaDamage <= 0))
             {
                 RemComp<ActiveStaminaComponent>(uid);
                 continue;
@@ -406,23 +383,57 @@ public sealed partial class StaminaSystem : EntitySystem
                 continue;
 
             // We were in crit so come out of it and continue.
-            if (comp.State == StunnedState.Critical && comp.HardStaminaDamage <= comp.CritThreshold)
+            if (comp.State == StunnedState.Critical && comp.StaminaDamage <= comp.CritThreshold)
             {
-                ExitStamCrit(uid, comp, false);
+                toRemove.Add(new StaminaRecievers
+                {
+                    Uid = uid,
+                    Component = comp,
+                    State = StunnedState.Critical
+                });
+
                 continue;
             }
 
-            bool soft = comp.SoftStaminaDamage < comp.CritThreshold;
-
-            if (soft)
-            {
-                ExitStamCrit(uid, comp, true);
-                continue;
-            }
+            bool soft = comp.State != StunnedState.None && comp.StaminaDamage < comp.CritThreshold;
 
             comp.NextUpdate += TimeSpan.FromSeconds(1f);
+
+            // cant modify in the for loop
+            if (soft)
+            {
+                toRemove.Add(new StaminaRecievers
+                {
+                    Uid = uid,
+                    Component = comp,
+                    State = StunnedState.Crawling
+                });
+
+                Dirty(uid, comp);
+                continue;
+            }
+
             TakeStaminaDamage(uid, comp.Decay * -1, comp, soft: soft);
+
             Dirty(uid, comp);
+        }
+
+        foreach (var i in toRemove)
+        {
+            var uid = i.Uid;
+            var comp = i.Component;
+
+            if (comp == null)
+                continue;
+
+            if (i.State == StunnedState.Critical)
+            {
+                ExitStamCrit(uid, comp, false);
+            }
+            else if (i.State == StunnedState.Crawling)
+            {
+                TakeStaminaDamage(uid, comp.Decay * -1, comp, soft: true);
+            }
         }
     }
 
@@ -450,7 +461,7 @@ public sealed partial class StaminaSystem : EntitySystem
                 }
 
                 component.State = StunnedState.Crawling;
-                component.HardStaminaDamage = 0f;
+                component.StaminaDamage = 0f;
                 break;
             }
             case false:
@@ -461,7 +472,6 @@ public sealed partial class StaminaSystem : EntitySystem
                 }
 
                 component.State = StunnedState.Critical;
-                component.HardStaminaDamage = component.CritThreshold;
                 _stunSystem.TryParalyze(uid, component.StunTime, true);
                 break;
             }
@@ -487,8 +497,8 @@ public sealed partial class StaminaSystem : EntitySystem
             case true:
             {
                 component.State = StunnedState.None;
-                component.HardStaminaDamage = 0f;
-                component.SoftStaminaDamage = component.CritThreshold;
+                component.StaminaDamage = component.CritThreshold;
+                component.StaminaDamage = 0f;
                 RemComp<ActiveStaminaComponent>(uid);
 
                 if (TryComp<CrawlerComponent>(uid, out var crawlerComp) && HasComp<CrawlingComponent>(uid))
@@ -500,11 +510,10 @@ public sealed partial class StaminaSystem : EntitySystem
             case false:
             {
                 component.State = StunnedState.Crawling;
-                component.SoftStaminaDamage = component.CritThreshold;
+                component.StaminaDamage = component.CritThreshold - 1;
                 EnterStamCrit(uid, component, true);
                 break;
             }
-
         }
 
         component.NextUpdate = _timing.CurTime;
