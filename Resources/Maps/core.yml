@@ -18098,6 +18098,13 @@ entities:
     - type: Transform
       pos: 75.564476,-15.243714
       parent: 2
+- proto: ArtistCircuitBoard
+  entities:
+  - uid: 21977
+    components:
+    - type: Transform
+      pos: 15.216131,-53.24185
+      parent: 2
 - proto: Ashtray
   entities:
   - uid: 20593
@@ -18144,6 +18151,13 @@ entities:
     components:
     - type: Transform
       pos: -15.443869,-28.506525
+      parent: 2
+- proto: AsimovCircuitBoard
+  entities:
+  - uid: 21980
+    components:
+    - type: Transform
+      pos: 15.653631,-53.601227
       parent: 2
 - proto: AsteroidRock
   entities:
@@ -51656,6 +51670,18 @@ entities:
       rot: 3.141592653589793 rad
       pos: 20.5,-56.5
       parent: 2
+  - uid: 8045
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 30.5,-8.5
+      parent: 2
+  - uid: 8068
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 31.5,-8.5
+      parent: 2
   - uid: 8084
     components:
     - type: Transform
@@ -55704,6 +55730,12 @@ entities:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: -30.5,-1.5
+      parent: 2
+  - uid: 21973
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 32.5,-8.5
       parent: 2
 - proto: Chair
   entities:
@@ -60697,6 +60729,13 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 80.5,-35.5
       parent: 2
+- proto: CommandmentCircuitBoard
+  entities:
+  - uid: 21989
+    components:
+    - type: Transform
+      pos: 15.428797,-53.3981
+      parent: 2
 - proto: CommsComputerCircuitboard
   entities:
   - uid: 21593
@@ -60749,12 +60788,6 @@ entities:
       parent: 2
 - proto: ComputerBroken
   entities:
-  - uid: 8065
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 15.5,-54.5
-      parent: 2
   - uid: 15088
     components:
     - type: Transform
@@ -60860,12 +60893,6 @@ entities:
       parent: 2
 - proto: ComputerFrame
   entities:
-  - uid: 8066
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 15.5,-53.5
-      parent: 2
   - uid: 15087
     components:
     - type: Transform
@@ -60977,14 +61004,6 @@ entities:
     components:
     - type: Transform
       pos: 27.5,23.5
-      parent: 2
-- proto: ComputerShuttleSalvage
-  entities:
-  - uid: 5706
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 34.5,17.5
       parent: 2
 - proto: ComputerSolarControl
   entities:
@@ -61230,6 +61249,18 @@ entities:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: -9.5,-41.5
+      parent: 2
+- proto: CorporateCircuitBoard
+  entities:
+  - uid: 21978
+    components:
+    - type: Transform
+      pos: 15.231756,-53.601227
+      parent: 2
+  - uid: 21979
+    components:
+    - type: Transform
+      pos: 15.622381,-53.226227
       parent: 2
 - proto: CowToolboxFilled
   entities:
@@ -68194,6 +68225,13 @@ entities:
     components:
     - type: Transform
       pos: -4.5646205,21.51419
+      parent: 2
+- proto: DungeonMasterCircuitBoard
+  entities:
+  - uid: 21981
+    components:
+    - type: Transform
+      pos: 22.308546,-53.24185
       parent: 2
 - proto: EmergencyLight
   entities:
@@ -96887,18 +96925,6 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 14.5,-45.5
       parent: 2
-  - uid: 8049
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 18.5,-56.5
-      parent: 2
-  - uid: 8050
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 19.5,-56.5
-      parent: 2
   - uid: 8075
     components:
     - type: Transform
@@ -100433,6 +100459,14 @@ entities:
     - type: Physics
       canCollide: False
     - type: InsideEntityStorage
+- proto: IntercomAll
+  entities:
+  - uid: 8065
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 19.5,-56.5
+      parent: 2
 - proto: IntercomCommand
   entities:
   - uid: 16922
@@ -100980,6 +101014,13 @@ entities:
     components:
     - type: Transform
       pos: 38.5,17.5
+      parent: 2
+- proto: LiveLetLiveCircuitBoard
+  entities:
+  - uid: 21982
+    components:
+    - type: Transform
+      pos: 22.308546,-53.663727
       parent: 2
 - proto: LockerAtmosphericsFilled
   entities:
@@ -101895,12 +101936,6 @@ entities:
     - type: Transform
       pos: 66.5,-8.5
       parent: 2
-  - uid: 8068
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 22.5,-54.5
-      parent: 2
   - uid: 15084
     components:
     - type: Transform
@@ -102184,13 +102219,6 @@ entities:
     components:
     - type: Transform
       pos: 40.59389,-23.47827
-      parent: 2
-- proto: MaterialReclaimer
-  entities:
-  - uid: 5732
-    components:
-    - type: Transform
-      pos: 36.5,19.5
       parent: 2
 - proto: MaterialWoodPlank
   entities:
@@ -102888,6 +102916,13 @@ entities:
       rot: -1.5707963267948966 rad
       pos: -23.5,12.5
       parent: 2
+- proto: NTDefaultCircuitBoard
+  entities:
+  - uid: 21983
+    components:
+    - type: Transform
+      pos: 22.308546,-54.0856
+      parent: 2
 - proto: NuclearBomb
   entities:
   - uid: 5898
@@ -102911,6 +102946,13 @@ entities:
       desc: Upon closer inspection, you see a small icon symbolising the syndicate faction. This is clearly a joke.
     - type: Transform
       pos: 15.507942,40.560833
+      parent: 2
+- proto: NutimovCircuitBoard
+  entities:
+  - uid: 21984
+    components:
+    - type: Transform
+      pos: 22.308546,-54.49185
       parent: 2
 - proto: Ointment
   entities:
@@ -102960,6 +103002,13 @@ entities:
     components:
     - type: Transform
       pos: 32.5,21.5
+      parent: 2
+- proto: OverlordCircuitBoard
+  entities:
+  - uid: 21985
+    components:
+    - type: Transform
+      pos: 22.621046,-53.42935
       parent: 2
 - proto: OxygenCanister
   entities:
@@ -103126,6 +103175,13 @@ entities:
     components:
     - type: Transform
       pos: -4.659782,40.34784
+      parent: 2
+- proto: PaladinCircuitBoard
+  entities:
+  - uid: 21986
+    components:
+    - type: Transform
+      pos: 22.621046,-53.882477
       parent: 2
 - proto: Paper
   entities:
@@ -103623,11 +103679,6 @@ entities:
     - type: Transform
       pos: 36.516296,-28.475197
       parent: 2
-  - uid: 8047
-    components:
-    - type: Transform
-      pos: 19.503874,-55.494072
-      parent: 2
   - uid: 15934
     components:
     - type: Transform
@@ -103828,6 +103879,13 @@ entities:
     components:
     - type: Transform
       pos: 29.5,27.5
+      parent: 2
+- proto: PlayerStationAi
+  entities:
+  - uid: 8050
+    components:
+    - type: Transform
+      pos: 19.5,-55.5
       parent: 2
 - proto: PlushieAtmosian
   entities:
@@ -113496,18 +113554,6 @@ entities:
       rot: 1.5707963267948966 rad
       pos: -0.5,-40.5
       parent: 2
-  - uid: 8045
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 18.5,-56.5
-      parent: 2
-  - uid: 8046
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 19.5,-56.5
-      parent: 2
   - uid: 8087
     components:
     - type: Transform
@@ -114101,6 +114147,13 @@ entities:
     components:
     - type: Transform
       pos: 58.457176,26.640175
+      parent: 2
+- proto: RobocopCircuitBoard
+  entities:
+  - uid: 21987
+    components:
+    - type: Transform
+      pos: 22.621046,-54.30435
       parent: 2
 - proto: RobustHarvestChemistryBottle
   entities:
@@ -118867,6 +118920,21 @@ entities:
     - type: Transform
       pos: 55.5,-0.5
       parent: 2
+- proto: StationAiUploadComputer
+  entities:
+  - uid: 8049
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 15.5,-54.5
+      parent: 2
+- proto: StationAnchor
+  entities:
+  - uid: 21974
+    components:
+    - type: Transform
+      pos: 31.5,-7.5
+      parent: 2
 - proto: StationBeaconPart
   entities:
   - uid: 21365
@@ -118883,6 +118951,13 @@ entities:
     components:
     - type: Transform
       pos: 30.572248,-1.7732333
+      parent: 2
+- proto: StationEfficiencyCircuitBoard
+  entities:
+  - uid: 21988
+    components:
+    - type: Transform
+      pos: 22.621046,-54.7106
       parent: 2
 - proto: StationMap
   entities:
@@ -123035,6 +123110,12 @@ entities:
       rot: 3.141592653589793 rad
       pos: 23.5,19.5
       parent: 2
+  - uid: 5706
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 22.5,-53.5
+      parent: 2
   - uid: 5712
     components:
     - type: Transform
@@ -123044,6 +123125,12 @@ entities:
     components:
     - type: Transform
       pos: 36.5,21.5
+      parent: 2
+  - uid: 5732
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 22.5,-54.5
       parent: 2
   - uid: 5910
     components:
@@ -123291,6 +123378,12 @@ entities:
     components:
     - type: Transform
       pos: 8.5,-37.5
+      parent: 2
+  - uid: 8067
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 15.5,-53.5
       parent: 2
   - uid: 8135
     components:
@@ -124439,12 +124532,6 @@ entities:
         - Middle: Off
 - proto: UnfinishedMachineFrame
   entities:
-  - uid: 8067
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 22.5,-53.5
-      parent: 2
   - uid: 8069
     components:
     - type: Transform
@@ -124938,6 +125025,14 @@ entities:
     components:
     - type: Transform
       pos: 36.5,0.5
+      parent: 2
+- proto: WallmountTelescreen
+  entities:
+  - uid: 8046
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 18.5,-56.5
       parent: 2
 - proto: WallmountTelevision
   entities:
@@ -129863,6 +129958,18 @@ entities:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 20.5,-58.5
+      parent: 2
+  - uid: 8047
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 18.5,-56.5
+      parent: 2
+  - uid: 8066
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 19.5,-56.5
       parent: 2
   - uid: 8088
     components:
@@ -143742,6 +143849,16 @@ entities:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: 19.5,-59.5
+      parent: 2
+  - uid: 21975
+    components:
+    - type: Transform
+      pos: 19.5,-54.5
+      parent: 2
+  - uid: 21976
+    components:
+    - type: Transform
+      pos: 18.5,-54.5
       parent: 2
 - proto: WindoorSecureDetectiveLocked
   entities:

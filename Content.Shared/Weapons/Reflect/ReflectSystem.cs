@@ -157,7 +157,7 @@ public sealed class ReflectSystem : EntitySystem
             // Is the projectile correctly set up with physics?
             !TryComp<PhysicsComponent>(projectile, out var physics) ||
             // If the user of the reflector is a mob with stamina, is it capable of deflecting?
-            TryComp<StaminaComponent>(user, out var staminaComponent) && staminaComponent.Critical ||
+            TryComp<StaminaComponent>(user, out var staminaComponent) && staminaComponent.State == StunnedState.Critical ||
             _standing.IsDown(reflector)
         )
             return false;
@@ -208,7 +208,7 @@ public sealed class ReflectSystem : EntitySystem
             // Is the reflector enabled?
             !_toggle.IsActivated(user) ||
             // If the user is a mob with stamina, is it capable of deflecting?
-            TryComp<StaminaComponent>(user, out var staminaComponent) && staminaComponent.Critical ||
+            TryComp<StaminaComponent>(user, out var staminaComponent) && staminaComponent.State == StunnedState.Critical ||
             _standing.IsDown(user))
         {
             newDirection = null;

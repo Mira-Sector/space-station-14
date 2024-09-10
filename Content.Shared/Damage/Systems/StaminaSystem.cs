@@ -5,12 +5,14 @@ using Content.Shared.CombatMode;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Events;
 using Content.Shared.Database;
+using Content.Shared.Crawling;
 using Content.Shared.Effects;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Popups;
 using Content.Shared.Projectiles;
 using Content.Shared.Rejuvenate;
 using Content.Shared.Rounding;
+using Content.Shared.StatusEffect;
 using Content.Shared.Stunnable;
 using Content.Shared.Throwing;
 using Content.Shared.Weapons.Melee.Events;
@@ -24,15 +26,24 @@ using Robust.Shared.Timing;
 
 namespace Content.Shared.Damage.Systems;
 
+sealed class StaminaRecievers
+{
+    public EntityUid Uid { get; set; }
+    public StaminaComponent? Component { get; set; }
+    public StunnedState State { get; set; }
+}
+
 public sealed partial class StaminaSystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
     [Dependency] private readonly AlertsSystem _alerts = default!;
+    [Dependency] private readonly CrawlingSystem _crawling = default!;
     [Dependency] private readonly MetaDataSystem _metadata = default!;
     [Dependency] private readonly SharedColorFlashEffectSystem _color = default!;
     [Dependency] private readonly SharedStunSystem _stunSystem = default!;
+    [Dependency] private readonly StatusEffectsSystem _statusEffect = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
 
     /// <summary>
@@ -62,15 +73,19 @@ public sealed partial class StaminaSystem : EntitySystem
 
     private void OnStamHandleState(EntityUid uid, StaminaComponent component, ref AfterAutoHandleStateEvent args)
     {
-        if (component.Critical)
-            EnterStamCrit(uid, component);
-        else
+        if (component.State == StunnedState.Critical
+            && component.StaminaDamage > component.CritThreshold)
         {
-            if (component.StaminaDamage > 0f)
-                EnsureComp<ActiveStaminaComponent>(uid);
-
-            ExitStamCrit(uid, component);
+            EnterStamCrit(uid, component, false);
         }
+        else if (component.State == StunnedState.Crawling
+            && component.StaminaDamage > component.CritThreshold)
+        {
+            EnterStamCrit(uid, component, true);
+        }
+
+        if (component.StaminaDamage > 0f)
+            EnsureComp<ActiveStaminaComponent>(uid);
     }
 
     private void OnShutdown(EntityUid uid, StaminaComponent component, ComponentShutdown args)
@@ -93,9 +108,11 @@ public sealed partial class StaminaSystem : EntitySystem
         if (!Resolve(uid, ref component))
             return 0f;
 
+        float stamina = component.StaminaDamage;
+
         var curTime = _timing.CurTime;
         var pauseTime = _metadata.GetPauseTime(uid);
-        return MathF.Max(0f, component.StaminaDamage - MathF.Max(0f, (float) (curTime - (component.NextUpdate + pauseTime)).TotalSeconds * component.Decay));
+        return MathF.Max(0f, stamina - MathF.Max(0f, (float) (curTime - (component.NextUpdate + pauseTime)).TotalSeconds * component.Decay));
     }
 
     private void OnRejuvenate(EntityUid uid, StaminaComponent component, RejuvenateEvent args)
@@ -116,14 +133,17 @@ public sealed partial class StaminaSystem : EntitySystem
         if (args.Handled)
             return;
 
-        if (component.Critical)
+        if (component.State != StunnedState.None)
+        {
+            args.Handled = true;
             return;
+        }
 
         var damage = args.PushProbability * component.CritThreshold;
-        TakeStaminaDamage(uid, damage, component, source: args.Source);
+        TakeStaminaDamage(uid, damage, component, source: args.Source, soft: true);
 
         args.PopupPrefix = "disarm-action-shove-";
-        args.IsStunned = component.Critical;
+        args.IsStunned = component.State == StunnedState.Crawling;
 
         args.Handled = true;
     }
@@ -168,7 +188,7 @@ public sealed partial class StaminaSystem : EntitySystem
 
         foreach (var (ent, comp) in toHit)
         {
-            TakeStaminaDamage(ent, damage / toHit.Count, comp, source: args.User, with: args.Weapon, sound: component.Sound);
+            TakeStaminaDamage(ent, damage / toHit.Count, comp, source: args.User, args.Weapon, component.Soft, sound: component.Sound);
         }
     }
 
@@ -182,7 +202,7 @@ public sealed partial class StaminaSystem : EntitySystem
         if (!TryComp<StaminaComponent>(args.Embedded, out var stamina))
             return;
 
-        TakeStaminaDamage(args.Embedded, component.Damage, stamina, source: uid);
+        TakeStaminaDamage(args.Embedded, component.Damage, stamina, uid, soft: component.Soft);
     }
 
     private void OnThrowHit(EntityUid uid, StaminaDamageOnCollideComponent component, ThrowDoHitEvent args)
@@ -202,7 +222,7 @@ public sealed partial class StaminaSystem : EntitySystem
         if (ev.Cancelled)
             return;
 
-        TakeStaminaDamage(target, component.Damage, source: uid, sound: component.Sound);
+        TakeStaminaDamage(target, component.Damage, source: uid, soft: component.Soft, sound: component.Sound);
     }
 
     private void SetStaminaAlert(EntityUid uid, StaminaComponent? component = null)
@@ -210,30 +230,39 @@ public sealed partial class StaminaSystem : EntitySystem
         if (!Resolve(uid, ref component, false) || component.Deleted)
             return;
 
-        var severity = ContentHelpers.RoundToLevels(MathF.Max(0f, component.CritThreshold - component.StaminaDamage), component.CritThreshold, 7);
-        _alerts.ShowAlert(uid, component.StaminaAlert, (short) severity);
+        float severity = component.CritThreshold - component.StaminaDamage;
+
+        double level = ContentHelpers.RoundToLevels(severity, component.CritThreshold, 7);
+
+        level = Math.Round(level);
+
+        _alerts.ShowAlert(uid, component.StaminaAlert, (short) level);
     }
 
     /// <summary>
     /// Tries to take stamina damage without raising the entity over the crit threshold.
     /// </summary>
-    public bool TryTakeStamina(EntityUid uid, float value, StaminaComponent? component = null, EntityUid? source = null, EntityUid? with = null)
+    public bool TryTakeStamina(EntityUid uid, float value, StaminaComponent? component = null, EntityUid? source = null, EntityUid? with = null, bool soft = true)
     {
         // Something that has no Stamina component automatically passes stamina checks
         if (!Resolve(uid, ref component, false))
             return true;
 
-        var oldStam = component.StaminaDamage;
-
-        if (oldStam + value > component.CritThreshold || component.Critical)
+        if (component.StaminaDamage + value > component.CritThreshold &&
+            component.State == StunnedState.Critical)
             return false;
 
-        TakeStaminaDamage(uid, value, component, source, with, visual: false);
+        // start dealing hard stam now
+        if (component.StaminaDamage + value > component.CritThreshold &&
+            component.State == StunnedState.Crawling)
+            soft = false;
+
+        TakeStaminaDamage(uid, value, component, source, with, visual: false, soft);
         return true;
     }
 
     public void TakeStaminaDamage(EntityUid uid, float value, StaminaComponent? component = null,
-        EntityUid? source = null, EntityUid? with = null, bool visual = true, SoundSpecifier? sound = null)
+        EntityUid? source = null, EntityUid? with = null, bool visual = true, bool soft = true, SoundSpecifier? sound = null)
     {
         if (!Resolve(uid, ref component, false))
             return;
@@ -243,15 +272,26 @@ public sealed partial class StaminaSystem : EntitySystem
         if (ev.Cancelled)
             return;
 
-        // Have we already reached the point of max stamina damage?
-        if (component.Critical)
+        bool isPositive = value > 0;
+
+        // we want to still allow subtracting stamina so they recover
+        if (component.State == StunnedState.Critical && isPositive)
             return;
 
-        var oldDamage = component.StaminaDamage;
+        bool softModified = false;
+
+        // if softstam is reached deal hard stun instead
+        // we still want to deal hard stun even when they are crit
+        if (soft && component.State != StunnedState.None && isPositive)
+        {
+            soft = false;
+            softModified = true;
+        }
+
         component.StaminaDamage = MathF.Max(0f, component.StaminaDamage + value);
 
         // Reset the decay cooldown upon taking damage.
-        if (oldDamage < component.StaminaDamage)
+        if (isPositive)
         {
             var nextUpdate = _timing.CurTime + TimeSpan.FromSeconds(component.Cooldown);
 
@@ -262,27 +302,22 @@ public sealed partial class StaminaSystem : EntitySystem
         var slowdownThreshold = component.CritThreshold / 2f;
 
         // If we go above n% then apply slowdown
-        if (oldDamage < slowdownThreshold &&
-            component.StaminaDamage > slowdownThreshold)
+        if (component.StaminaDamage < slowdownThreshold &&
+            component.State == StunnedState.None)
         {
             _stunSystem.TrySlowdown(uid, TimeSpan.FromSeconds(3), true, 0.8f, 0.8f);
         }
 
         SetStaminaAlert(uid, component);
 
-        if (!component.Critical)
+        if (component.StaminaDamage > component.CritThreshold && component.State != StunnedState.Critical)
         {
-            if (component.StaminaDamage >= component.CritThreshold)
-            {
-                EnterStamCrit(uid, component);
-            }
+            EnterStamCrit(uid, component, soft);
         }
-        else
+        else if (component.StaminaDamage < component.CritThreshold && component.State != StunnedState.None
+        && !softModified) //wont end up putting user into crit as first hit after crawling will always pass ending immedietly
         {
-            if (component.StaminaDamage < component.CritThreshold)
-            {
-                ExitStamCrit(uid, component);
-            }
+            ExitStamCrit(uid, component);
         }
 
         EnsureComp<ActiveStaminaComponent>(uid);
@@ -321,11 +356,13 @@ public sealed partial class StaminaSystem : EntitySystem
         var query = EntityQueryEnumerator<ActiveStaminaComponent>();
         var curTime = _timing.CurTime;
 
+        List<StaminaRecievers> toRemove = new();
+
         while (query.MoveNext(out var uid, out _))
         {
             // Just in case we have active but not stamina we'll check and account for it.
             if (!stamQuery.TryGetComponent(uid, out var comp) ||
-                comp.StaminaDamage <= 0f && !comp.Critical)
+                (comp.State == StunnedState.None && comp.StaminaDamage <= 0))
             {
                 RemComp<ActiveStaminaComponent>(uid);
                 continue;
@@ -338,22 +375,66 @@ public sealed partial class StaminaSystem : EntitySystem
                 continue;
 
             // We were in crit so come out of it and continue.
-            if (comp.Critical)
+            if (comp.State == StunnedState.Critical && comp.StaminaDamage <= comp.CritThreshold)
             {
-                ExitStamCrit(uid, comp);
+                toRemove.Add(new StaminaRecievers
+                {
+                    Uid = uid,
+                    Component = comp,
+                    State = StunnedState.Critical
+                });
+
                 continue;
             }
 
+            var decay = comp.Decay * -1;
+
+            bool soft = comp.State != StunnedState.None && (comp.StaminaDamage + decay) < comp.CritThreshold;
+
             comp.NextUpdate += TimeSpan.FromSeconds(1f);
-            TakeStaminaDamage(uid, -comp.Decay, comp);
+
+            // cant modify in the for loop
+            if (soft)
+            {
+                toRemove.Add(new StaminaRecievers
+                {
+                    Uid = uid,
+                    Component = comp,
+                    State = StunnedState.Crawling
+                });
+
+                Dirty(uid, comp);
+                continue;
+            }
+
+            TakeStaminaDamage(uid, decay, comp, soft: soft);
+
             Dirty(uid, comp);
+        }
+
+        foreach (var i in toRemove)
+        {
+            var uid = i.Uid;
+            var comp = i.Component;
+
+            if (comp == null)
+                continue;
+
+            if (i.State == StunnedState.Critical)
+            {
+                ExitStamCrit(uid, comp);
+            }
+            else if (i.State == StunnedState.Crawling)
+            {
+                TakeStaminaDamage(uid, comp.Decay * -1, comp, soft: true);
+            }
         }
     }
 
-    private void EnterStamCrit(EntityUid uid, StaminaComponent? component = null)
+    public void EnterStamCrit(EntityUid uid, StaminaComponent? component = null, bool soft = true)
     {
         if (!Resolve(uid, ref component) ||
-            component.Critical)
+            component.State == StunnedState.Critical)
         {
             return;
         }
@@ -361,10 +442,32 @@ public sealed partial class StaminaSystem : EntitySystem
         // To make the difference between a stun and a stamcrit clear
         // TODO: Mask?
 
-        component.Critical = true;
-        component.StaminaDamage = component.CritThreshold;
+        switch (soft)
+        {
+            case true:
+            {
+                if (!TryComp<CrawlerComponent>(uid, out var crawlerComp))
+                    goto case false;
 
-        _stunSystem.TryParalyze(uid, component.StunTime, true);
+                if (!HasComp<CrawlingComponent>(uid))
+                {
+                    _crawling.SetCrawling(uid, crawlerComp, true);
+                }
+
+                component.State = StunnedState.Crawling;
+                component.StaminaDamage = 0f;
+
+                _stunSystem.TryKnockdown(uid, component.StunTime * 2, true);
+                break;
+            }
+            case false:
+            {
+                component.State = StunnedState.Critical;
+                _statusEffect.TryRemoveStatusEffect(uid, "KnockedDown");
+                _stunSystem.TryParalyze(uid, component.StunTime, true);
+                break;
+            }
+        }
 
         // Give them buffer before being able to be re-stunned
         component.NextUpdate = _timing.CurTime + component.StunTime + StamCritBufferTime;
@@ -373,21 +476,42 @@ public sealed partial class StaminaSystem : EntitySystem
         _adminLogger.Add(LogType.Stamina, LogImpact.Medium, $"{ToPrettyString(uid):user} entered stamina crit");
     }
 
-    private void ExitStamCrit(EntityUid uid, StaminaComponent? component = null)
+    public void ExitStamCrit(EntityUid uid, StaminaComponent? component = null)
     {
         if (!Resolve(uid, ref component) ||
-            !component.Critical)
+            component.State == StunnedState.None)
         {
             return;
         }
 
-        component.Critical = false;
+        component.State = StunnedState.None;
         component.StaminaDamage = 0f;
-        component.NextUpdate = _timing.CurTime;
-        SetStaminaAlert(uid, component);
         RemComp<ActiveStaminaComponent>(uid);
+
+        if (TryComp<CrawlerComponent>(uid, out var crawlerComp) && HasComp<CrawlingComponent>(uid))
+        {
+            _crawling.SetCrawling(uid, crawlerComp, false);
+        }
+
+        component.NextUpdate = _timing.CurTime + TimeSpan.FromMilliseconds(1);
+        SetStaminaAlert(uid, component);
         Dirty(uid, component);
         _adminLogger.Add(LogType.Stamina, LogImpact.Low, $"{ToPrettyString(uid):user} recovered from stamina crit");
+    }
+
+    //TODO: make this accurate
+    private TimeSpan CrawlTime(EntityUid uid, StaminaComponent stamComp, CrawlerComponent crawlComp, TimeSpan? existingTime = null)
+    {
+        TimeSpan time;
+
+        if (existingTime == null)
+            time = TimeSpan.Zero;
+        else
+            time = existingTime.Value;
+
+        time += TimeSpan.FromSeconds(stamComp.StaminaDamage * stamComp.Decay) + crawlComp.StandUpTime;
+
+        return time;
     }
 }
 

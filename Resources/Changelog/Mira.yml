@@ -403,3 +403,17 @@ Entries:
     type: Add
   id: 62
   time: '2024-09-06T07:38:00.0000000+00:00'
+- author: qwerltaz
+  changes:
+  - message: Made singularities look a lot more like the real black holes
+    type: Tweak
+  id: 63
+  time: '2024-09-07T23:14:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Stunning now make you crawl
+    type: Tweak
+  - message: Stunning a crawling person makes them stun crit
+    type: Add
+  id: 64
+  time: '2024-09-10T16:54:00.0000000+00:00'

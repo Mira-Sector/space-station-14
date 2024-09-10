@@ -748,15 +748,15 @@
       path: /Audio/Weapons/Guns/Gunshots/laser_cannon.ogg
   - type: ProjectileBatteryAmmoProvider
     proto: BulletLaserSpread
-    fireCost: 150
+    fireCost: 100
   - type: BatteryWeaponFireModes
     fireModes:
     - proto: BulletLaserSpread
-      fireCost: 150
-    - proto: BulletLaserHeavySpread
-      fireCost: 150
+      fireCost: 100
+    - proto: BulletLaserSpreadNarrow
+      fireCost: 100
     - proto: BulletDisablerSmgSpread
-      fireCost: 150
+      fireCost: 100
   - type: Item
     size: Large
     shape:
