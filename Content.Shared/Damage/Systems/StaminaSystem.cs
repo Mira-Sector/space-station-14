@@ -71,7 +71,8 @@ public sealed partial class StaminaSystem : EntitySystem
 
     private void OnStamHandleState(EntityUid uid, StaminaComponent component, ref AfterAutoHandleStateEvent args)
     {
-        if (component.State == StunnedState.Critical && component.StaminaDamage > component.CritThreshold)
+        if (component.State == StunnedState.Critical
+            && component.StaminaDamage > component.CritThreshold)
         {
             EnterStamCrit(uid, component, false);
         }
@@ -79,10 +80,6 @@ public sealed partial class StaminaSystem : EntitySystem
             && component.StaminaDamage > component.CritThreshold)
         {
             EnterStamCrit(uid, component, true);
-        }
-        else
-        {
-            ExitStamCrit(uid, component, true);
         }
 
         if (component.StaminaDamage > 0f)

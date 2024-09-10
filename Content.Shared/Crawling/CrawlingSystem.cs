@@ -28,7 +28,6 @@ public sealed partial class CrawlingSystem : EntitySystem
         SubscribeLocalEvent<CrawlerComponent, CrawlStandupDoAfterEvent>(OnDoAfter);
         SubscribeLocalEvent<CrawlerComponent, StandAttemptEvent>(OnStandUp);
         SubscribeLocalEvent<CrawlerComponent, DownAttemptEvent>(OnFall);
-        SubscribeLocalEvent<CrawlerComponent, StunnedEvent>(OnStunned);
         SubscribeLocalEvent<CrawlerComponent, BuckledEvent>(OnBuckled);
         SubscribeLocalEvent<CrawlerComponent, GetExplosionResistanceEvent>(OnGetExplosionResistance);
         SubscribeLocalEvent<CrawlerComponent, CrawlingAlertEvent>(OnCrawlingAlertEvent);
@@ -82,15 +81,27 @@ public sealed partial class CrawlingSystem : EntitySystem
         switch (state)
         {
             case true:
+            {
                 _standing.Down(uid, dropHeldItems: false);
                 break;
+            }
             case false:
+            {
+                if (HasComp<ActiveStaminaComponent>(uid) &&
+                    TryComp<StaminaComponent>(uid, out var staminaComponent) &&
+                    staminaComponent.State != StunnedState.None &&
+                    staminaComponent.StaminaDamage > staminaComponent.CritThreshold)
+                {
+                    break;
+                }
+
                 _doAfter.TryStartDoAfter(new DoAfterArgs(EntityManager, uid, component.StandUpTime, new CrawlStandupDoAfterEvent(),
                 uid, used: uid)
                 {
                     BreakOnDamage = true
                 });
                 break;
+            }
         }
     }
     private void OnCrawlingAlertEvent(EntityUid uid, CrawlerComponent component, CrawlingAlertEvent args)
@@ -119,12 +130,6 @@ public sealed partial class CrawlingSystem : EntitySystem
         if (!HasComp<CrawlingComponent>(uid))
             AddComp<CrawlingComponent>(uid);
         //TODO: add hiding under table
-    }
-    private void OnStunned(EntityUid uid, CrawlerComponent component, StunnedEvent args)
-    {
-        if (!HasComp<CrawlingComponent>(uid))
-            AddComp<CrawlingComponent>(uid);
-        _alerts.ShowAlert(uid, component.CtawlingAlert);
     }
     private void OnBuckled(EntityUid uid, CrawlerComponent component, ref BuckledEvent args)
     {
