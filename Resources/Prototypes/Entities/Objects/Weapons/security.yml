@@ -133,7 +133,14 @@
   - type: StaminaDamageOnHit
     damage: 25
     sound: /Audio/Weapons/egloves.ogg
+  - type: ItemTogglePointLight
   - type: UseDelay
+  - type: PointLight
+    enabled: false
+    radius: 0
+    energy: 0
+    color: white
+    netsync: false
   - type: Appearance
   - type: GenericVisualizer
     visuals:
