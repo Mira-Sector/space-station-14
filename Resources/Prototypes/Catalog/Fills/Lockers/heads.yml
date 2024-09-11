@@ -267,6 +267,7 @@
     - id: ProtolatheMachineCircuitboard
     - id: ResearchComputerCircuitboard
     - id: RubberStampRd
+    - id: EncryptionKeyBinary
 
 # Hardsuit table, used for suit storage as well
 - type: entityTable
