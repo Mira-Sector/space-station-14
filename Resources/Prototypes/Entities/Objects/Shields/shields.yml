@@ -502,6 +502,7 @@
         malus: 0.6
     - type: ItemToggleSize
       activatedSize: Huge
+    - type: ItemTogglePointLight
     - type: Sprite
       sprite: Objects/Weapons/Melee/teleriot_shield.rsi
       layers:
@@ -515,6 +516,12 @@
       heldPrefix: teleriot
     - type: UseDelay
       delay: 0.5
+    - type: PointLight
+      enabled: false
+      radius: 0
+      energy: 0
+      color: white
+      netsync: false
     - type: ToggleableLightVisuals
       spriteLayer: shield
       inhandVisuals:
