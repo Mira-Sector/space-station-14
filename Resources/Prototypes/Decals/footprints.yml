@@ -1,0 +1,27 @@
+- type: decal
+  id: BootLeft
+  tags: ["footprint"]
+  sprite:
+    sprite: Decals/footprints.rsi
+    state: boot-l
+
+- type: decal
+  id: BootRight
+  tags: ["footprint"]
+  sprite:
+    sprite: Decals/footprints.rsi
+    state: boot-r
+
+- type: decal
+  id: FootLeft
+  tags: ["footprint"]
+  sprite:
+    sprite: Decals/footprints.rsi
+    state: foot-l
+
+- type: decal
+  id: FootRight
+  tags: ["footprint"]
+  sprite:
+    sprite: Decals/footprints.rsi
+    state: foot-r
