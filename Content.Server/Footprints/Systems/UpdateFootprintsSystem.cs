@@ -5,9 +5,8 @@ using Robust.Shared.Random;
 
 namespace Content.Server.Footprint.Systems;
 
-public sealed class UpdateFootprintystem : EntitySystem
+public sealed partial class FootprintSystem : EntitySystem
 {
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
 
@@ -32,10 +31,12 @@ public sealed class UpdateFootprintystem : EntitySystem
 
     private void OnStep(EntityUid uid, GivesFootprintsComponent component, ref EndCollideEvent args)
     {
-        if (!TryComp<LeavesFootprintsComponent>(args.OtherEntity, out var footprintComp))
+
+        if (!CanLeaveFootprints(args.OtherEntity, out var messMaker) ||
+        !TryComp<LeavesFootprintsComponent>(messMaker, out var footprintComp))
             return;
 
-        var playerFootprintComp = EnsureComp<CanLeaveFootprintsComponent>(args.OtherEntity);
+        var playerFootprintComp = EnsureComp<CanLeaveFootprintsComponent>(messMaker);
 
         var color = playerFootprintComp.Color;
 
