@@ -290,7 +290,6 @@
   - type: Hands
   - type: ComplexInteraction
   - type: ContainerContainer
-  - type: LeavesFootprints
   - type: Icon
     sprite: Mobs/Species/Human/parts.rsi
     state: full
