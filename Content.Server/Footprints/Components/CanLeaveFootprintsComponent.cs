@@ -18,5 +18,5 @@ public sealed partial class CanLeaveFootprintsComponent : Component
     public uint FootstepsLeft = 1;
 
     [ViewVariables]
-    public Color Color;
+    public Color Color = Color.White;
 }
