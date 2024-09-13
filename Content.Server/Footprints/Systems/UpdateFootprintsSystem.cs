@@ -1,5 +1,6 @@
+using Content.Shared.StepTrigger.Systems;
 using Content.Server.Footprints.Components;
-using Robust.Shared.Physics.Events;
+
 
 namespace Content.Server.Footprint.Systems;
 
@@ -10,20 +11,26 @@ public sealed class UpdateFootprintystem : EntitySystem
     /// <inheritdoc/>
     public override void Initialize()
     {
-        SubscribeLocalEvent<GivesFootprintsComponent, EndCollideEvent>(OnStep);
+        SubscribeLocalEvent<GivesFootprintsComponent, StepTriggerAttemptEvent>(OnStepAttempt);
+        SubscribeLocalEvent<GivesFootprintsComponent, StepTriggeredOffEvent>(OnStep);
     }
 
-    private void OnStep(EntityUid uid, GivesFootprintsComponent component, ref EndCollideEvent args)
+    private void OnStep(EntityUid uid, GivesFootprintsComponent component, ref StepTriggeredOffEvent args)
     {
-        if (!TryComp<LeavesFootprintsComponent>(args.OtherEntity, out var footprintComp))
+        if (!TryComp<LeavesFootprintsComponent>(args.Tripper, out var footprintComp))
             return;
 
         Color color = Color.White;
 
-        var playerFootprintComp = EnsureComp<CanLeaveFootprintsComponent>(args.OtherEntity);
+        var playerFootprintComp = EnsureComp<CanLeaveFootprintsComponent>(args.Tripper);
 
-        playerFootprintComp.LastFootstep = _transform.GetMapCoordinates(args.OtherEntity);
+        playerFootprintComp.LastFootstep = _transform.GetMapCoordinates(args.Tripper);
         playerFootprintComp.FootstepsLeft = footprintComp.MaxFootsteps;
         playerFootprintComp.Color = color;
+    }
+
+    private static void OnStepAttempt(EntityUid uid, GivesFootprintsComponent component, ref StepTriggerAttemptEvent args)
+    {
+        args.Continue = true;
     }
 }
