@@ -170,9 +170,6 @@
     noMovementLayers:
       movement:
         state: chicken-0
-  - type: LeavesFootprints
-    footprintDecal: ClawLeft
-    footprintDecalAlternative: ClawRight
   - type: Fixtures
     fixtures:
       fix1:
@@ -332,9 +329,6 @@
         - SmallMobMask
         layer:
         - SmallMobLayer
-  - type: LeavesFootprints
-    footprintDecal: 6LegsLeft
-    footprintDecalAlternative: 6LegsRight
   - type: MobState
   - type: MobThresholds
     thresholds:
@@ -637,9 +631,6 @@
         Base: duck-0
       Dead:
         Base: dead-0
-  - type: LeavesFootprints
-    footprintDecal: ClawLeft
-    footprintDecalAlternative: ClawRight
   - type: Butcherable
     spawned:
     - id: FoodMeatDuck
@@ -796,9 +787,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: LeavesFootprints
-    footprintDecal: 4LegsLeft
-    footprintDecalAlternative: 4LegsRight
   - type: DamageStateVisuals
     states:
       Alive:
@@ -877,9 +865,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: LeavesFootprints
-    footprintDecal: 6LegsLeft
-    footprintDecalAlternative: 6LegsRight
   - type: Speech
     speechVerb: Arachnid
     speechSounds: Arachnid
@@ -950,9 +935,6 @@
       - Goat
     offspring:
     - id: MobGoat
-  - type: LeavesFootprints
-    footprintDecal: 4LegsLeft
-    footprintDecalAlternative: 4LegsRight
   - type: ReproductivePartner
   - type: Appearance
   - type: DamageStateVisuals
@@ -1035,9 +1017,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: LeavesFootprints
-    footprintDecal: ClawLeft
-    footprintDecalAlternative: ClawRight
   - type: DamageStateVisuals
     states:
       Alive:
@@ -1085,9 +1064,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: LeavesFootprints
-    footprintDecal: FootLeft
-    footprintDecalAlternative: FootRight
   - type: DamageStateVisuals
     states:
       Alive:
@@ -1148,9 +1124,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: LeavesFootprints
-    footprintDecal: FootLeft
-    footprintDecalAlternative: FootRight
   - type: Physics
   - type: Inventory
     speciesId: kangaroo
@@ -1248,9 +1221,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: LeavesFootprints
-    footprintDecal: FootLeft
-    footprintDecalAlternative: FootRight
   - type: Stripping
   - type: Sprite
     drawdepth: Mobs
@@ -1521,9 +1491,6 @@
     - id: FoodMeat
       amount: 2
   - type: AlwaysRevolutionaryConvertible
-  - type: LeavesFootprints
-    footprintDecal: ClawLeft
-    footprintDecalAlternative: ClawRight
   - type: GhostTakeoverAvailable
   - type: SentienceTarget
     flavorKind: station-event-random-sentience-flavor-kobold
@@ -1625,9 +1592,6 @@
     noMovementLayers:
       movement:
         state: mouse-0
-  - type: LeavesFootprints
-    footprintDecal: 4LegsLeft
-    footprintDecalAlternative: 4LegsRight
   - type: Item
     size: Tiny
     heldPrefix: 0
@@ -1914,9 +1878,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: LeavesFootprints
-    footprintDecal: 4LegsLeft
-    footprintDecalAlternative: 4LegsRight
   - type: DamageStateVisuals
     states:
       Alive:
@@ -2127,9 +2088,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: LeavesFootprints
-    footprintDecal: ClawLeft
-    footprintDecalAlternative: ClawRight
   - type: DamageStateVisuals
     states:
       Alive:
@@ -2303,9 +2261,6 @@
     noMovementLayers:
       movement:
         state: tarantula
-  - type: LeavesFootprints
-    footprintDecal: 8LegsLeft
-    footprintDecalAlternative: 8LegsRight
   - type: Physics
   - type: Fixtures
     fixtures:
@@ -2509,9 +2464,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: LeavesFootprints
-    footprintDecal: 4LegsLeft
-    footprintDecalAlternative: 4LegsRight
   - type: Inventory
     speciesId: possum
     templateId: pet
@@ -2581,9 +2533,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: LeavesFootprints
-    footprintDecal: 4LegsLeft
-    footprintDecalAlternative: 4LegsRight
   - type: Inventory
     speciesId: possum #close enough
     templateId: pet
@@ -2642,9 +2591,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: LeavesFootprints
-    footprintDecal: 4LegsLeft
-    footprintDecalAlternative: 4LegsRight
   - type: Inventory
     speciesId: fox
     templateId: pet
@@ -2716,9 +2662,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: LeavesFootprints
-    footprintDecal: 4LegsLeft
-    footprintDecalAlternative: 4LegsRight
   - type: Inventory
     speciesId: dog
     templateId: pet
@@ -2861,9 +2804,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: LeavesFootprints
-    footprintDecal: 4LegsLeft
-    footprintDecalAlternative: 4LegsRight
   - type: Inventory
     speciesId: cat
     templateId: pet
@@ -3083,9 +3023,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: LeavesFootprints
-    footprintDecal: 4LegsLeft
-    footprintDecalAlternative: 4LegsRight
   - type: Inventory
     speciesId: sloth
     templateId: pet
@@ -3137,9 +3074,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: LeavesFootprints
-    footprintDecal: 4LegsLeft
-    footprintDecalAlternative: 4LegsRight
   - type: Inventory
     speciesId: fox #close enough
     templateId: pet
@@ -3199,9 +3133,6 @@
     noMovementLayers:
       movement:
         state: hamster-0
-  - type: LeavesFootprints
-    footprintDecal: 4LegsLeft
-    footprintDecalAlternative: 4LegsRight
   - type: Item
     size: Tiny
   - type: Physics
@@ -3337,9 +3268,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: LeavesFootprints
-    footprintDecal: 4LegsLeft
-    footprintDecalAlternative: 4LegsRight
   - type: Inventory
     speciesId: pig
     templateId: pet
@@ -3407,9 +3335,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: LeavesFootprints
-    footprintDecal: 6LegsLeft
-    footprintDecalAlternative: 6LegsRight
   - type: Inventory
     speciesId: cat
     templateId: pet
