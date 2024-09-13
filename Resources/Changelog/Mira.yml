@@ -417,3 +417,21 @@ Entries:
     type: Add
   id: 64
   time: '2024-09-10T16:54:00.0000000+00:00'
+- author: Thurtik
+  changes:
+  - message: Combat boots now share all benefits with jackboots and have been added to loadouts as a cosmetic option
+    type: Add
+  - message: Solid plasma crates ordered at cargo now contain 3 stacks again
+    type: Tweak
+  - message: RD closets now contain a binary translator encryption key again
+    type: Add
+  - message: Fixed inhand sprite toggling for telescopic shields and batons
+    type: Fix
+  id: 65
+  time: '2024-09-11T22:24:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: You now leave footprints behind you
+    type: Add
+  id: 66
+  time: '2024-09-12T13:55:00.0000000+00:00'
