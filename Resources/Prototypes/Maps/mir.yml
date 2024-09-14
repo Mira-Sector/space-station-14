@@ -1,11 +1,9 @@
 - type: gameMap
-<<<<<<< HEAD
   id: Mirstation
   mapName: 'mir'
 =======
   id: Mir
   mapName: 'Mir'
->>>>>>> c91b544d37cebd696e4f16cf60a0296af9f619b0
   mapPath: /Maps/mir.yml
   minPlayers: 5
   maxPlayers: 20
