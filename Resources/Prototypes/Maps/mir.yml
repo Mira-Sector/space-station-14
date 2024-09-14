@@ -1,5 +1,5 @@
 - type: gameMap
-  id: Mirstation
+  id: Mir
   mapName: 'Mir'
   mapPath: /Maps/mir.yml
   minPlayers: 5
