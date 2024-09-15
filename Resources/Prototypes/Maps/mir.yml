@@ -1,6 +1,6 @@
 - type: gameMap
-  id: Mir
-  mapName: 'Mir'
+  id: mir
+  mapName: 'mir'
   mapPath: /Maps/mir.yml
   minPlayers: 5
   maxPlayers: 20
@@ -9,12 +9,12 @@
       stationProto: StandardNanotrasenStation
       components:
         - type: StationNameSetup
-          mapNameTemplate: '{0} Mir {1}'
+          mapNameTemplate: '{0} Mirstation {1}'
           nameGenerator:
             !type:NanotrasenNameGenerator
             prefixCreator: '14'
         - type: StationEmergencyShuttle
-          emergencyShuttlePath: /Maps/Shuttles/emergency_cluster.yml
+          emergencyShuttlePath: /Maps/Shuttles/emergency_mir.yml
         - type: StationJobs
           overflowJobs:
           - Passenger
