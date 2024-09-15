@@ -7851,7 +7851,7 @@ entities:
     - type: GasTileOverlay
     - type: RadiationGridResistance
     - type: BecomesStation
-      id: Mirstation
+      id: mir
     - type: Joint
       joints:
         docking91104: !type:WeldJoint
@@ -10059,7 +10059,7 @@ entities:
       pos: 5.5,-9.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -33267.79
+      secondsUntilStateChange: -33311.18
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -10134,7 +10134,7 @@ entities:
       pos: 41.5,7.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -129332.945
+      secondsUntilStateChange: -129376.336
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -10331,7 +10331,7 @@ entities:
       pos: 33.5,23.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -39334.336
+      secondsUntilStateChange: -39377.727
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -10468,7 +10468,7 @@ entities:
       pos: 12.5,-33.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -55957.312
+      secondsUntilStateChange: -56000.703
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -10627,7 +10627,7 @@ entities:
       pos: -14.5,-5.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -196856.84
+      secondsUntilStateChange: -196900.23
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -10753,7 +10753,7 @@ entities:
       pos: 12.5,-21.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -35465.74
+      secondsUntilStateChange: -35509.13
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -10797,7 +10797,7 @@ entities:
       pos: -1.5,2.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -33156.836
+      secondsUntilStateChange: -33200.227
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -10876,7 +10876,7 @@ entities:
       pos: -14.5,-17.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -46391.92
+      secondsUntilStateChange: -46435.312
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -34563,7 +34563,7 @@ entities:
       pos: -23.5,14.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -145143.3
+      secondsUntilStateChange: -145186.69
       state: Opening
 - proto: CyborgEndoskeleton
   entities:
@@ -83475,7 +83475,7 @@ entities:
       lastSignals:
         DoorStatus: True
     - type: Door
-      secondsUntilStateChange: -39510.703
+      secondsUntilStateChange: -39554.094
       state: Opening
 - proto: WindoorSecureCargoLocked
   entities:
