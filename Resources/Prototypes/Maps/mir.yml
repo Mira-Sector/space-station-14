@@ -1,6 +1,6 @@
 - type: gameMap
-  id: mir
-  mapName: 'mir'
+  id: Mir
+  mapName: 'Mir'
   mapPath: /Maps/mir.yml
   minPlayers: 5
   maxPlayers: 20
@@ -9,7 +9,7 @@
       stationProto: StandardNanotrasenStation
       components:
         - type: StationNameSetup
-          mapNameTemplate: '{0} Mirstation {1}'
+          mapNameTemplate: '{0} Mir {1}'
           nameGenerator:
             !type:NanotrasenNameGenerator
             prefixCreator: '14'
