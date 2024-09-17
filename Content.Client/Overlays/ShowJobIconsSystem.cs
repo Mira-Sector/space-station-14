@@ -30,12 +30,17 @@ public sealed class ShowJobIconsSystem : EquipmentHudSystem<ShowJobIconsComponen
 
         var iconId = JobIconForNoId;
 
-        if (_accessReader.FindAccessItemsInventory(uid, out var items))
+        // Check the entity itself
+        if (TryComp<IdCardComponent>(uid, out var id))
+        {
+            iconId = id.JobIcon;
+        }
+        else if (_accessReader.FindAccessItemsInventory(uid, out var items))
         {
             foreach (var item in items)
             {
                 // ID Card
-                if (TryComp<IdCardComponent>(item, out var id))
+                if (TryComp<IdCardComponent>(item, out id))
                 {
                     iconId = id.JobIcon;
                     break;

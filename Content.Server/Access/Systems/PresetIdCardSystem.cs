@@ -2,6 +2,7 @@ using Content.Server.Access.Components;
 using Content.Server.GameTicking;
 using Content.Server.Station.Components;
 using Content.Server.Station.Systems;
+using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
 using Content.Shared.Roles;
 using Content.Shared.StatusIcon;
@@ -78,16 +79,18 @@ public sealed class PresetIdCardSystem : EntitySystem
             return;
         }
 
-        _accessSystem.SetAccessToJob(uid, job, extended);
-
-        _localizationManager.TryGetString(id.PresetJobName ?? string.Empty, out var presetName);
-
-        _cardSystem.TryChangeJobTitle(uid, presetName ?? job.LocalizedName);
-        _cardSystem.TryChangeJobDepartment(uid, job);
-
         _prototypeManager.TryIndex<JobIconPrototype>(id.PresetJobIcon ?? string.Empty, out var presetIcon);
 
         if (_prototypeManager.TryIndex(job.Icon, out var jobIcon))
             _cardSystem.TryChangeJobIcon(uid, presetIcon ?? jobIcon);
+
+        if (TryComp<IdCardComponent>(uid, out var idComp) && idComp.AccessOverride)
+        {
+            _accessSystem.SetAccessToJob(uid, job, extended);
+
+            _localizationManager.TryGetString(id.PresetJobName ?? string.Empty, out var presetName);
+            _cardSystem.TryChangeJobTitle(uid, presetName ?? job.LocalizedName);
+            _cardSystem.TryChangeJobDepartment(uid, job);
+        }
     }
 }

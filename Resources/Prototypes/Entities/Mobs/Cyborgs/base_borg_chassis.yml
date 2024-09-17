@@ -284,6 +284,12 @@
     access: [["Command"], ["Research"]]
   - type: ShowJobIcons
   - type: ShowMindShieldIcons
+  - type: StatusIcon
+  - type: IdCard
+    accessOverride: false
+    updateName: false
+  - type: PresetIdCard
+    job: Borg
 
 - type: entity
   id: BaseBorgChassisSyndicate

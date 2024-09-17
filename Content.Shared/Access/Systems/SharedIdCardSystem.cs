@@ -109,6 +109,9 @@ public abstract class SharedIdCardSystem : EntitySystem
         if (!Resolve(uid, ref id))
             return false;
 
+        if (!id.UpdateName)
+            return false;
+
         if (!string.IsNullOrWhiteSpace(jobTitle))
         {
             jobTitle = jobTitle.Trim();
@@ -188,6 +191,9 @@ public abstract class SharedIdCardSystem : EntitySystem
         if (!Resolve(uid, ref id))
             return false;
 
+        if (!id.UpdateName)
+            return false;
+
         if (!string.IsNullOrWhiteSpace(fullName))
         {
             fullName = fullName.Trim();
@@ -223,6 +229,9 @@ public abstract class SharedIdCardSystem : EntitySystem
     private void UpdateEntityName(EntityUid uid, IdCardComponent? id = null)
     {
         if (!Resolve(uid, ref id))
+            return;
+
+        if (!id.UpdateName)
             return;
 
         var jobSuffix = string.IsNullOrWhiteSpace(id.JobTitle) ? string.Empty : $" ({id.JobTitle})";
