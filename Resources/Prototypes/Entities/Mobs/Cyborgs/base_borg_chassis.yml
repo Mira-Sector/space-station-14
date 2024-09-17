@@ -282,6 +282,23 @@
     - AllAccess
   - type: AccessReader
     access: [["Command"], ["Research"]]
+  - type: UserInterface
+    interfaces:
+      enum.SiliconLawsUiKey.Key:
+        type: SiliconLawBoundUserInterface
+      enum.BorgUiKey.Key:
+        type: BorgBoundUserInterface
+      enum.GeneralStationRecordConsoleKey.Key:
+        type: GeneralStationRecordConsoleBoundUserInterface
+      enum.StrippingUiKey.Key:
+        type: StrippableBoundUserInterface
+  - type: ActivatableUI
+    key: enum.BorgUiKey.Key
+  - type: IntrinsicUI
+    uis:
+      enum.GeneralStationRecordConsoleKey.Key:
+        toggleAction: ActionAGhostShowStationRecords
+  - type: GeneralStationRecordConsole
   - type: ShowJobIcons
   - type: ShowMindShieldIcons
   - type: StatusIcon
