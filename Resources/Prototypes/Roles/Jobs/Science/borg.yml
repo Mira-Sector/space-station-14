@@ -23,4 +23,4 @@
       time: 216000 # 60 hrs
   canBeAntag: false
   icon: JobIconBorg
-  supervisors: job-supervisors-rd
+  supervisors: job-supervisors-ai
