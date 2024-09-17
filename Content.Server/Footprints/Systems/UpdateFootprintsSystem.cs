@@ -57,24 +57,8 @@ public sealed partial class FootprintSystem : EntitySystem
         _solutionContainer.TryAddSolution(playerFootprintComp.Solution, split);
         playerFootprintComp.Solution.Comp.Solution.CanReact = false;
 
-
-        Color color;
-        if (playerFootprintComp.Color != null)
-        {
-            var solutionColor = puddleSolutionComp.Solution.GetColor(_prototypeManager);
-
-            var fraction = playerFootprintComp.Solution.Comp.Solution.Volume / footprintComp.MaxFootsteps;
-
-            color = Color.InterpolateBetween(playerFootprintComp.Color.Value, solutionColor, (float) fraction);
-        }
-        else
-        {
-            color = Color.White;
-        }
-
         playerFootprintComp.LastFootstep = _transform.GetMapCoordinates(args.OtherEntity);
         playerFootprintComp.FootstepsLeft = (uint) Math.Floor((float) playerFootprintComp.Solution.Comp.Solution.Volume);
-        playerFootprintComp.Color = color;
         playerFootprintComp.Container = component.Container;
     }
 

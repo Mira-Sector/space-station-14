@@ -2,6 +2,7 @@ using Content.Server.Fluids.EntitySystems;
 using Content.Server.Footprints.Components;
 using Content.Shared.Clothing.Components;
 using Content.Shared.Chemistry.EntitySystems;
+using Content.Shared.Fluids;
 using Content.Shared.Inventory;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
@@ -92,6 +93,9 @@ public sealed partial class FootprintSystem : EntitySystem
             _puddle.TryAddSolution(footprintEnt, footprintSolution, false, false);
         }
 
+        _appearance.TryGetData<Color>(footprintEnt, PuddleVisuals.SolutionColor, out var color);
+        color = color.WithAlpha(currentFootprintComp.Alpha);
+        _appearance.SetData(footprintEnt, PuddleVisuals.SolutionColor, color);
 
         currentFootprintComp.FootstepsLeft -= 1;
 
@@ -102,6 +106,7 @@ public sealed partial class FootprintSystem : EntitySystem
         }
 
         currentFootprintComp.LastFootstep = pos;
+        currentFootprintComp.Alpha = (float) currentFootprintComp.FootstepsLeft / footprintComp.MaxFootsteps;
     }
 
     private bool CanLeaveFootprints(EntityUid uid, out EntityUid messMaker)

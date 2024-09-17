@@ -32,5 +32,5 @@ public sealed partial class CanLeaveFootprintsComponent : Component
     public string? Container;
 
     [ViewVariables]
-    public Color? Color = null;
+    public float Alpha = 1f;
 }
