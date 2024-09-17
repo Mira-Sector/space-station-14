@@ -105,23 +105,10 @@
       color: "#FFFFFF80"
 
 - type: entity
-  name: puddle
-  id: Puddle
-  description: A puddle of liquid.
-  placement:
-    mode: SnapgridCenter
+  id: BaseLiquid
+  abstract: true
   components:
   - type: Clickable
-  - type: Slippery
-  - type: Transform
-    noRot: true
-    anchored: true
-  - type: Sprite
-    layers:
-    - sprite: Fluids/puddle.rsi
-      state: splat0
-    drawdepth: FloorObjects
-    color: "#FFFFFF80"
   - type: Physics
     bodyType: Static
   - type: Fixtures
@@ -140,27 +127,15 @@
         layer:
         - SlipLayer
         hard: false
-  - type: IconSmooth
-    key: puddles
-    base: splat
-    mode: CardinalFlags
-  - type: SolutionContainerManager
-    solutions:
-      puddle:
-        maxVol: 1000
-  - type: Puddle
   - type: MixableSolution
     solution: puddle
-  - type: Appearance
-  - type: ActiveEdgeSpreader
-  - type: EdgeSpreader
-    id: Puddle
-  - type: StepTrigger
+  - type: Puddle
   - type: Drink
     delay: 3
     transferAmount: 1
     solution: puddle
     examinable: false
+  - type: Appearance
   - type: ExaminableSolution
     solution: puddle
   - type: DrawableSolution
@@ -170,3 +145,36 @@
   - type: Tag
     tags:
     - DNASolutionScannable
+
+- type: entity
+  name: puddle
+  id: Puddle
+  parent: BaseLiquid
+  description: A puddle of liquid.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Slippery
+  - type: Transform
+    noRot: true
+    anchored: true
+  - type: Sprite
+    layers:
+    - sprite: Fluids/puddle.rsi
+      state: splat0
+    drawdepth: FloorObjects
+    color: "#FFFFFF80"
+  - type: IconSmooth
+    key: puddles
+    base: splat
+    mode: CardinalFlags
+  - type: SolutionContainerManager
+    solutions:
+      puddle:
+        maxVol: 1000
+  - type: ActiveEdgeSpreader
+  - type: EdgeSpreader
+    id: Puddle
+  - type: StepTrigger
+  - type: GivesFootprints
+    container: puddle

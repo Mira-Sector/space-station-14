@@ -1,4 +1,4 @@
-﻿- type: entity
+- type: entity
   parent: BaseMobSpeciesOrganic
   id: BaseMobVox
   abstract: true
@@ -130,6 +130,12 @@
           32:
             sprite: Mobs/Species/Vox/displacement.rsi
             state: shoes
+  - type: LeavesFootprints
+    footprintPrototype: FootprintClawLeft
+    footprintPrototypeAlternative: FootprintClawRight
+  - type: SpeciesLanguage
+    spokenLanguages:
+    - Common
 
 - type: entity
   parent: BaseSpeciesDummy

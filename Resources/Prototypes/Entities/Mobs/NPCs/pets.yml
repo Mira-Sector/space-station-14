@@ -212,6 +212,9 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
   - type: Inventory
     speciesId: cat
     templateId: pet
@@ -269,6 +272,9 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
   - type: Inventory
     speciesId: puppy
     templateId: pet
@@ -362,6 +368,9 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
   - type: Inventory
     speciesId: dog
     templateId: pet

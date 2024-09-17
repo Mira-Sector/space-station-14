@@ -1,0 +1,143 @@
+- type: entity
+  id: BaseFootprint
+  parent: BaseLiquid
+  abstract: true
+  name: footprint
+  description: Looks like someone has been here before you.
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      puddle:
+        maxVol: 1
+
+- type: entity
+  id: FootprintBootLeft
+  parent: BaseFootprint
+  components:
+  - type: Sprite
+    layers:
+    - sprite: Fluids/footprints.rsi
+      state: boot-l
+    drawdepth: FloorObjects
+    color: "#FFFFFF80"
+
+- type: entity
+  id: FootprintBootRight
+  parent: BaseFootprint
+  components:
+  - type: Sprite
+    layers:
+    - sprite: Fluids/footprints.rsi
+      state: boot-r
+    drawdepth: FloorObjects
+    color: "#FFFFFF80"
+
+- type: entity
+  id: FootprintFootLeft
+  parent: BaseFootprint
+  components:
+  - type: Sprite
+    layers:
+    - sprite: Fluids/footprints.rsi
+      state: foot-l
+    drawdepth: FloorObjects
+    color: "#FFFFFF80"
+
+- type: entity
+  id: FootprintFootRight
+  parent: BaseFootprint
+  components:
+  - type: Sprite
+    layers:
+    - sprite: Fluids/footprints.rsi
+      state: foot-r
+    drawdepth: FloorObjects
+    color: "#FFFFFF80"
+
+- type: entity
+  id: Footprint4LegsLeft
+  parent: BaseFootprint
+  components:
+  - type: Sprite
+    layers:
+    - sprite: Fluids/footprints.rsi
+      state: 4legs-l
+    drawdepth: FloorObjects
+    color: "#FFFFFF80"
+
+- type: entity
+  id: Footprint4LegsRight
+  parent: BaseFootprint
+  components:
+  - type: Sprite
+    layers:
+    - sprite: Fluids/footprints.rsi
+      state: 4legs-r
+    drawdepth: FloorObjects
+    color: "#FFFFFF80"
+
+- type: entity
+  id: Footprint6LegsLeft
+  parent: BaseFootprint
+  components:
+  - type: Sprite
+    layers:
+    - sprite: Fluids/footprints.rsi
+      state: 6legs-l
+    drawdepth: FloorObjects
+    color: "#FFFFFF80"
+
+- type: entity
+  id: Footprint6LegsRight
+  parent: BaseFootprint
+  components:
+  - type: Sprite
+    layers:
+    - sprite: Fluids/footprints.rsi
+      state: 6legs-r
+    drawdepth: FloorObjects
+    color: "#FFFFFF80"
+
+- type: entity
+  id: Footprint8LegsLeft
+  parent: BaseFootprint
+  components:
+  - type: Sprite
+    layers:
+    - sprite: Fluids/footprints.rsi
+      state: 8legs-l
+    drawdepth: FloorObjects
+    color: "#FFFFFF80"
+
+- type: entity
+  id: Footprint8LegsRight
+  parent: BaseFootprint
+  components:
+  - type: Sprite
+    layers:
+    - sprite: Fluids/footprints.rsi
+      state: 8legs-r
+    drawdepth: FloorObjects
+    color: "#FFFFFF80"
+
+- type: entity
+  id: FootprintClawLeft
+  parent: BaseFootprint
+  components:
+  - type: Sprite
+    layers:
+    - sprite: Fluids/footprints.rsi
+      state: claw-l
+    drawdepth: FloorObjects
+    color: "#FFFFFF80"
+
+- type: entity
+  id: FootprintClawRight
+  parent: BaseFootprint
+  components:
+  - type: Sprite
+    layers:
+    - sprite: Fluids/footprints.rsi
+      state: claw-r
+    drawdepth: FloorObjects
+    color: "#FFFFFF80"

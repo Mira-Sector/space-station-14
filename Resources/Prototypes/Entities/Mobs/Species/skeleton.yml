@@ -109,6 +109,9 @@
           32:
             sprite: Mobs/Species/Human/displacement.rsi
             state: jumpsuit-female
+  - type: LeavesFootprints
+    footprintPrototype: FootprintFootLeft
+    footprintPrototypeAlternative: FootprintFootRight
   - type: SpeciesLanguage
     spokenLanguages:
     - Calcic
