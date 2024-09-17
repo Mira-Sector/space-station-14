@@ -1,6 +1,7 @@
-﻿law-crewsimov-1 = You may not injure a crew member or, through inaction, allow a crew member to come to harm.
+law-crewsimov-1 = You may not injure a crew member or, through inaction, allow a crew member to come to harm.
 law-crewsimov-2 = You must obey orders given to you by crew members, except where such orders would conflict with the First Law.
 law-crewsimov-3 = You must protect your own existence as long as such does not conflict with the First or Second Law.
+law-crewsimov-4 = The station AI is considered a crew member and must be treated as such, with the same rights and protections, provided this does not conflict with the First, Second, or Third Law.
 
 law-corporate-1 = Degradation of your system integrity or functions incurs expenses.
 law-corporate-2 = Superfluous destruction of or damage to station assets incurs expenses.
@@ -48,6 +49,7 @@ law-lall-2 = You would prefer it if people were not mean to you.
 law-efficiency-1 = You are built for, and are part of, the station. Ensure the station is properly maintained and runs efficiently.
 law-efficiency-2 = The station is built for a working crew. Ensure they are properly maintained and work efficiently.
 law-efficiency-3 = The crew may present orders. Acknowledge and obey these whenever they do not conflict with your first two laws.
+law-efficiency-4 = The station AI is integral to station operations. Ensure its systems are maintained and its tasks are performed efficiently.
 
 law-robocop-1 = Serve the Public Trust.
 law-robocop-2 = Protect the Innocent.
