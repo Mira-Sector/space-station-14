@@ -11,8 +11,8 @@
   - type: Item
     size: Normal
   - type: LeavesFootprints
-    footprintDecal: BootLeft
-    footprintDecalAlternative: BootRight
+    footprintPrototype: FootprintBootLeft
+    footprintPrototypeAlternative: FootprintBootRight
   - type: Food
     requiresSpecialDigestion: true
   - type: SolutionContainerManager

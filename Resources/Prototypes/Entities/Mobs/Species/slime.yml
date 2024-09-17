@@ -131,8 +131,8 @@
             sprite: Mobs/Species/Human/displacement.rsi
             state: jumpsuit-female
   - type: LeavesFootprints
-    footprintDecal: FootLeft
-    footprintDecalAlternative: FootRight
+    footprintPrototype: FootprintFootLeft
+    footprintPrototypeAlternative: FootprintFootRight
   - type: SpeciesLanguage
     spokenLanguages:
     - Common

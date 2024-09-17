@@ -1,11 +1,10 @@
-using Content.Server.Decals;
+using Content.Server.Fluids.EntitySystems;
 using Content.Server.Footprints.Components;
 using Content.Shared.Clothing.Components;
-using Content.Shared.Decals;
+using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Inventory;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
-using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
 using System.Numerics;
 
@@ -15,18 +14,15 @@ namespace Content.Server.Footprint.Systems;
 public sealed partial class FootprintSystem : EntitySystem
 {
 
+    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!;
-    [Dependency] private readonly DecalSystem _decals = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly SharedMapSystem _map = default!;
+    [Dependency] private readonly PuddleSystem _puddle = default!;
+    [Dependency] private readonly SharedSolutionContainerSystem _solutionContainer = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly IMapManager _mapManager = default!;
-
-    const float MaxAlpha = 0.5f;
-    const float MinAlpha = 0.2f;
-
-    const float DeltaAlpha = MaxAlpha - MinAlpha;
 
     const string ShoeSlot = "shoes";
 
@@ -37,20 +33,24 @@ public sealed partial class FootprintSystem : EntitySystem
         while (query.MoveNext(out var uid, out var currentFootprintComp, out var transform))
         {
             if (!CanLeaveFootprints(uid, out var messMaker) ||
-                !TryComp<LeavesFootprintsComponent>(messMaker, out var footprintComp))
+                !TryComp<LeavesFootprintsComponent>(messMaker, out var footprintComp) ||
+                currentFootprintComp.Solution.Comp.Solution.Volume <= 0)
                 continue;
 
-            var posUid = messMaker;
-            var angle = transform.LocalRotation;
+            EntityUid posUid;
 
             if (HasComp<ClothingComponent>(messMaker) &&
                 _container.TryGetContainingContainer((messMaker, null, null), out var container) &&
                 TryComp<TransformComponent>(container.Owner, out var xform))
             {
                 posUid = container.Owner;
-                angle = xform.LocalRotation;
+            }
+            else
+            {
+                posUid = messMaker;
             }
 
+            var angle = _transform.GetWorldRotation(posUid);
             var newPos = _transform.GetMapCoordinates(posUid);
             var oldPos = currentFootprintComp.LastFootstep;
 
@@ -74,33 +74,24 @@ public sealed partial class FootprintSystem : EntitySystem
 
     private void DoFootprint(EntityUid uid, CanLeaveFootprintsComponent currentFootprintComp, LeavesFootprintsComponent footprintComp, MapCoordinates pos, Angle angle)
     {
-        var decal = footprintComp.FootprintDecal;
+        var footprint = footprintComp.FootprintPrototype;
 
         if (currentFootprintComp.UseAlternative != null)
         {
             if (currentFootprintComp.UseAlternative.Value)
-                decal = footprintComp.FootprintDecalAlternative;
+                footprint = footprintComp.FootprintPrototypeAlternative;
 
             currentFootprintComp.UseAlternative ^= true;
         }
 
-        if (!_prototypeManager.TryIndex<DecalPrototype>(decal, out var footprintDecal))
+        var footprintEnt = EntityManager.Spawn(footprint, pos, rotation: angle);
+
+        if (currentFootprintComp.Container != null)
         {
-            RemComp<CanLeaveFootprintsComponent>(uid);
-            return;
+            var footprintSolution = _solutionContainer.SplitSolution(currentFootprintComp.Solution, 1);
+            _puddle.TryAddSolution(footprintEnt, footprintSolution, false, false);
         }
 
-        if (!_mapManager.TryFindGridAt(pos, out var gridUid, out var grid))
-            return;
-
-        var color = currentFootprintComp.Color;
-
-        float onePiece = DeltaAlpha / (footprintComp.MaxFootsteps); //IS REAL!!
-        color = color.WithAlpha(MinAlpha + (onePiece * currentFootprintComp.FootstepsLeft));
-
-        var coords = new EntityCoordinates(gridUid, _map.WorldToLocal(gridUid, grid, pos.Position));
-
-        _decals.TryAddDecal(footprintDecal.ID, coords, out _, color, angle, cleanable: true);
 
         currentFootprintComp.FootstepsLeft -= 1;
 
@@ -111,7 +102,6 @@ public sealed partial class FootprintSystem : EntitySystem
         }
 
         currentFootprintComp.LastFootstep = pos;
-        currentFootprintComp.Color = color;
     }
 
     private bool CanLeaveFootprints(EntityUid uid, out EntityUid messMaker)

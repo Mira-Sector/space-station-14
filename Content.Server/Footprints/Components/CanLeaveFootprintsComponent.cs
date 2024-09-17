@@ -1,3 +1,4 @@
+using Content.Shared.Chemistry.Components;
 using Robust.Shared.Map;
 
 namespace Content.Server.Footprints.Components;
@@ -25,5 +26,11 @@ public sealed partial class CanLeaveFootprintsComponent : Component
     public bool? UseAlternative;
 
     [ViewVariables]
-    public Color Color = Color.White;
+    public Entity<SolutionComponent> Solution;
+
+    [ViewVariables]
+    public string? Container;
+
+    [ViewVariables]
+    public Color? Color = null;
 }

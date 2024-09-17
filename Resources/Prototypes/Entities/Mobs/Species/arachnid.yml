@@ -113,8 +113,8 @@
         state: "creampie_arachnid"
         visible: false
   - type: LeavesFootprints
-    footprintDecal: FootLeft
-    footprintDecalAlternative: FootRight
+    footprintPrototype: FootprintFootLeft
+    footprintPrototypeAlternative: FootprintFootRight
   - type: Inventory
     templateId: arachnid
   - type: SpeciesLanguage

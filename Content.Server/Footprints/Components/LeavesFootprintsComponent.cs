@@ -16,14 +16,14 @@ public sealed partial class LeavesFootprintsComponent : Component
     public float Distance = 0.8f;
 
     /// <summary>
-    /// What decal to leave behind when the entity moves.
+    /// What entity to leave behind when the entity moves.
     /// </summary>
     [DataField]
-    public string FootprintDecal = "FootLeft";
+    public string FootprintPrototype = "FootprintFootLeft";
 
     /// <summary>
-    /// If set with will alternate between this decal and the regular decal
+    /// If set with will alternate between this entity and the regular entity
     /// </summary>
     [DataField]
-    public string FootprintDecalAlternative = "FootRight";
+    public string FootprintPrototypeAlternative = "FootprintFootRight";
 }

@@ -131,8 +131,8 @@
             sprite: Mobs/Species/Vox/displacement.rsi
             state: shoes
   - type: LeavesFootprints
-    footprintDecal: ClawLeft
-    footprintDecalAlternative: ClawRight
+    footprintPrototype: FootprintClawLeft
+    footprintPrototypeAlternative: FootprintClawRight
   - type: SpeciesLanguage
     spokenLanguages:
     - Common

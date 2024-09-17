@@ -213,8 +213,8 @@
         layer:
         - MobLayer
   - type: LeavesFootprints
-    footprintDecal: 4LegsLeft
-    footprintDecalAlternative: 4LegsRight
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
   - type: Inventory
     speciesId: cat
     templateId: pet
@@ -273,8 +273,8 @@
         layer:
         - MobLayer
   - type: LeavesFootprints
-    footprintDecal: 4LegsLeft
-    footprintDecalAlternative: 4LegsRight
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
   - type: Inventory
     speciesId: puppy
     templateId: pet
@@ -369,8 +369,8 @@
         layer:
         - MobLayer
   - type: LeavesFootprints
-    footprintDecal: 4LegsLeft
-    footprintDecalAlternative: 4LegsRight
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
   - type: Inventory
     speciesId: dog
     templateId: pet
