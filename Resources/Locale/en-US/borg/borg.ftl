@@ -13,6 +13,7 @@ borg-module-whitelist-deny = This module doesn't fit in this type of cyborg...
 borg-construction-guide-string = The cyborg limbs and torso must be attached to the endoskeleton.
 
 borg-ui-menu-title = Cyborg Interface
+borg-ui-reset = Reset Laws
 borg-ui-charge-label = Charge: {$charge}%
 borg-ui-no-brain = No brain present
 borg-ui-remove-battery = Remove
