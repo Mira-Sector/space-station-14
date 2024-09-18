@@ -4,6 +4,7 @@ using Content.Shared.Clothing.Components;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Fluids;
 using Content.Shared.Inventory;
+using Content.Shared.Gravity;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
@@ -18,6 +19,7 @@ public sealed partial class FootprintSystem : EntitySystem
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
+    [Dependency] private readonly SharedGravitySystem _gravity = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly SharedMapSystem _map = default!;
     [Dependency] private readonly PuddleSystem _puddle = default!;
@@ -52,6 +54,9 @@ public sealed partial class FootprintSystem : EntitySystem
             {
                 posUid = messMaker;
             }
+
+            if (_gravity.IsWeightless(posUid))
+                continue;
 
             var angle = _transform.GetWorldRotation(posUid);
             var newPos = _transform.GetMapCoordinates(posUid);
@@ -101,7 +106,8 @@ public sealed partial class FootprintSystem : EntitySystem
 
         currentFootprintComp.FootstepsLeft -= 1;
 
-        if (currentFootprintComp.FootstepsLeft <= 0)
+        if (currentFootprintComp.FootstepsLeft <= 0 ||
+            currentFootprintComp.FootstepsLeft > footprintComp.MaxFootsteps) // underflow :godo:
         {
             RemComp<CanLeaveFootprintsComponent>(uid);
             return;
