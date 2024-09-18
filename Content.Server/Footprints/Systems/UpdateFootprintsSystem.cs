@@ -13,7 +13,8 @@ public sealed partial class FootprintSystem : EntitySystem
     /// <inheritdoc/>
     public override void Initialize()
     {
-        SubscribeLocalEvent<GivesFootprintsComponent, EndCollideEvent>(OnStep);
+        SubscribeLocalEvent<GivesFootprintsComponent, StartCollideEvent>(OnStartStep);
+        SubscribeLocalEvent<GivesFootprintsComponent, EndCollideEvent>(OnEndStep);
         SubscribeLocalEvent<CanLeaveFootprintsComponent, ComponentInit>(FootprintRandom);
     }
 
@@ -29,10 +30,10 @@ public sealed partial class FootprintSystem : EntitySystem
             component.UseAlternative = _random.Prob(0.5f);
     }
 
-    private void OnStep(EntityUid uid, GivesFootprintsComponent component , ref EndCollideEvent args)
+    private void OnStartStep(EntityUid uid, GivesFootprintsComponent component , ref StartCollideEvent args)
     {
         if (component.Container == null ||
-        !CanLeaveFootprints(args.OtherEntity, out var messMaker) ||
+        !CanLeaveFootprints(args.OtherEntity, out var messMaker, uid) ||
         !TryComp<LeavesFootprintsComponent>(messMaker, out var footprintComp) ||
         !TryComp<SolutionContainerManagerComponent>(uid, out var solutionManComp) ||
         solutionManComp.Containers.Count <=0)
@@ -44,7 +45,9 @@ public sealed partial class FootprintSystem : EntitySystem
 
         var playerFootprintComp = EnsureComp<CanLeaveFootprintsComponent>(messMaker);
 
-        if (!_solutionContainer.EnsureSolutionEntity(messMaker, component.Container, out var newSolution, footprintComp.MaxFootsteps) ||
+        var footprintTotalUnits = footprintComp.MaxFootsteps * UnitsPerFootstep;
+
+        if (!_solutionContainer.EnsureSolutionEntity(messMaker, component.Container, out var newSolution, footprintTotalUnits) ||
         newSolution == null)
         {
             RemComp<CanLeaveFootprintsComponent>(messMaker);
@@ -53,13 +56,19 @@ public sealed partial class FootprintSystem : EntitySystem
 
         playerFootprintComp.Solution = newSolution.Value;
 
-        var split = _solutionContainer.SplitSolution(puddleSolution.Value, footprintComp.MaxFootsteps);
+        var split = _solutionContainer.SplitSolution(puddleSolution.Value, footprintTotalUnits);
         _solutionContainer.TryAddSolution(playerFootprintComp.Solution, split);
         playerFootprintComp.Solution.Comp.Solution.CanReact = false;
 
         playerFootprintComp.LastFootstep = _transform.GetMapCoordinates(args.OtherEntity);
-        playerFootprintComp.FootstepsLeft = (uint) Math.Floor((float) playerFootprintComp.Solution.Comp.Solution.Volume);
+        playerFootprintComp.FootstepsLeft = (uint) Math.Floor(((float) playerFootprintComp.Solution.Comp.Solution.Volume / UnitsPerFootstep));
         playerFootprintComp.Container = component.Container;
+        playerFootprintComp.LastPuddle = uid;
+    }
+
+    private void OnEndStep(EntityUid uid, GivesFootprintsComponent component , ref EndCollideEvent args)
+    {
+
     }
 
     private bool GetSolution(EntityUid uid, SolutionContainerManagerComponent solutionManComp, string container, out Entity<SolutionComponent>? targetSolutionComp)
