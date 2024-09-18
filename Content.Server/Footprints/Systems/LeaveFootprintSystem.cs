@@ -27,6 +27,8 @@ public sealed partial class FootprintSystem : EntitySystem
 
     const string ShoeSlot = "shoes";
 
+    const float UnitsPerFootstep = 0.1f;
+
     public override void Update(float frametime)
     {
         var query = EntityQueryEnumerator<CanLeaveFootprintsComponent, TransformComponent>();
@@ -89,7 +91,7 @@ public sealed partial class FootprintSystem : EntitySystem
 
         if (currentFootprintComp.Container != null)
         {
-            var footprintSolution = _solutionContainer.SplitSolution(currentFootprintComp.Solution, 1);
+            var footprintSolution = _solutionContainer.SplitSolution(currentFootprintComp.Solution, UnitsPerFootstep);
             _puddle.TryAddSolution(footprintEnt, footprintSolution, false, false);
         }
 
@@ -109,16 +111,16 @@ public sealed partial class FootprintSystem : EntitySystem
         currentFootprintComp.Alpha = (float) currentFootprintComp.FootstepsLeft / footprintComp.MaxFootsteps;
     }
 
-    private bool CanLeaveFootprints(EntityUid uid, out EntityUid messMaker)
+    private bool CanLeaveFootprints(EntityUid uid, out EntityUid messMaker, EntityUid? puddle = null)
     {
         messMaker = EntityUid.Invalid;
 
         if (_inventory.TryGetSlotEntity(uid, ShoeSlot, out var shoe) &&
-            EntityManager.HasComponent<LeavesFootprintsComponent>(shoe)) // check if their shoes have it too
+            HasComp<LeavesFootprintsComponent>(shoe)) // check if their shoes have it too
         {
             messMaker = shoe.Value;
         }
-        else if (EntityManager.HasComponent<LeavesFootprintsComponent>(uid))
+        else if (HasComp<LeavesFootprintsComponent>(uid))
         {
             if (shoe != null)
                 RemComp<CanLeaveFootprintsComponent>(shoe.Value);
@@ -137,6 +139,10 @@ public sealed partial class FootprintSystem : EntitySystem
             CleanupFootprintComp(uid, shoe);
             return false;
         }
+
+        if (TryComp<CanLeaveFootprintsComponent>(messMaker, out var footprintComp) &&
+            footprintComp.LastPuddle == puddle)
+            return false;
 
         return true;
     }

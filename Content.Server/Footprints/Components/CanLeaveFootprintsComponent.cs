@@ -13,6 +13,13 @@ public sealed partial class CanLeaveFootprintsComponent : Component
     public MapCoordinates LastFootstep;
 
     /// <summary>
+    /// The last puddle the player was in.
+    /// Used to check if we need to recalculate the taking of liquid
+    /// </summary>
+    [ViewVariables]
+    public EntityUid LastPuddle;
+
+    /// <summary>
     /// How many footprints left to leave behind the entity.
     /// </summary>
     [ViewVariables]
