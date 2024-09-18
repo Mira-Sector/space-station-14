@@ -1,5 +1,6 @@
 using Content.Server.Objectives.Components;
 using Content.Server.Shuttles.Systems;
+using Content.Server.Roles;
 using Content.Shared.CCVar;
 using Content.Shared.Mind;
 using Content.Shared.Objectives.Components;
@@ -30,6 +31,8 @@ public sealed class KillPersonConditionSystem : EntitySystem
         SubscribeLocalEvent<PickRandomPersonComponent, ObjectiveAssignedEvent>(OnPersonAssigned);
 
         SubscribeLocalEvent<PickRandomHeadComponent, ObjectiveAssignedEvent>(OnHeadAssigned);
+
+        SubscribeLocalEvent<PickObsessionComponent, ObjectiveAssignedEvent>(OnObsessionAssigned);
     }
 
     private void OnGetProgress(EntityUid uid, KillPersonConditionComponent comp, ref ObjectiveGetProgressEvent args)
@@ -97,6 +100,24 @@ public sealed class KillPersonConditionSystem : EntitySystem
             allHeads = allHumans; // fallback to non-head target
 
         _target.SetTarget(uid, _random.Pick(allHeads), target);
+    }
+
+    private void OnObsessionAssigned(EntityUid uid, PickObsessionComponent comp, ref ObjectiveAssignedEvent args)
+    {
+        if (!TryComp<TargetObjectiveComponent>(uid, out var target))
+        {
+            args.Cancelled = true;
+            return;
+        }
+
+        if (target.Target != null)
+            return;
+
+        if (!TryComp<ObsessedRoleComponent>(args.MindId, out var roleComp) ||
+            roleComp.Obsession == null)
+            return;
+
+        _target.SetTarget(uid, roleComp.Obsession.Value, target);
     }
 
     private float GetProgress(EntityUid target, bool requireDead)

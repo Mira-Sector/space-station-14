@@ -33,6 +33,9 @@ public sealed partial class AdminVerbSystem
     [ValidatePrototypeId<EntityPrototype>]
     private const string DefaultThiefRule = "Thief";
 
+    [ValidatePrototypeId<EntityPrototype>]
+    private const string DefaultObsessedRule = "Obsessed";
+
     [ValidatePrototypeId<StartingGearPrototype>]
     private const string PirateGearId = "PirateGear";
 
@@ -151,5 +154,19 @@ public sealed partial class AdminVerbSystem
             Message = Loc.GetString("admin-verb-make-thief"),
         };
         args.Verbs.Add(thief);
+
+        Verb obsessed = new()
+        {
+            Text = Loc.GetString("admin-verb-text-make-obsessed"),
+            Category = VerbCategory.Antag,
+            Icon = new SpriteSpecifier.Rsi(new ResPath("/Textures/Objects/Storage/boxes.rsi"), "heart"),
+            Act = () =>
+            {
+                _antag.ForceMakeAntag<ObsessedRuleComponent>(targetPlayer, DefaultObsessedRule);
+            },
+            Impact = LogImpact.High,
+            Message = Loc.GetString("admin-verb-make-obsessed"),
+        };
+        args.Verbs.Add(obsessed);
     }
 }

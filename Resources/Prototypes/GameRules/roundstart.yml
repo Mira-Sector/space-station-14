@@ -21,7 +21,9 @@
   - type: SubGamemodes
     rules:
     - id: Thief
-      prob: 0.5
+      prob: 0.25
+    - id: Obsessed
+      prob: 0.25
 
 - type: entity
   id: DeathMatch31
@@ -277,7 +279,7 @@
         tableId: CalmPestEventsTable
       - !type:NestedSelector
         tableId: SpicyPestEventsTable
-        
+
 
 - type: entityTable
   id: SpaceTrafficControlTable
