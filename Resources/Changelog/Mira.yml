@@ -445,3 +445,11 @@ Entries:
     type: Add
   id: 67
   time: '2024-09-18T00:51:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Footsteps dont soak up an entire puddle
+    type: Fix
+  - message: Footsteps shouldnt appear under no gravity
+    type: Fix
+  id: 68
+  time: '2024-09-18T23:35:00.0000000+00:00'

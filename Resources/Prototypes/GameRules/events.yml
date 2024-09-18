@@ -514,8 +514,12 @@
   id: IonStorm
   components:
   - type: StationEvent
-    weight: 8
-    reoccurrenceDelay: 20
+    weight: 5
+    reoccurrenceDelay: 30
+    startAnnouncement: station-event-ion-storm-start-announcement
+    startAudio:
+      path: /Audio/Announcements/Default/ion_storm.ogg
+    announcementStart: IonStorm
     duration: 1
   - type: IonStormRule
 
