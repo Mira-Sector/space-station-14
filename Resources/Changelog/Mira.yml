@@ -453,3 +453,9 @@ Entries:
     type: Fix
   id: 68
   time: '2024-09-18T23:35:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Ion storms are now announced
+    type: Add
+  id: 69 # nice
+  time: '2024-09-18T23:55:00.0000000+00:00'
