@@ -1,4 +1,4 @@
-﻿<controls:FancyWindow xmlns="https://spacestation14.io"
+<controls:FancyWindow xmlns="https://spacestation14.io"
                       xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
                       xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
                       xmlns:customControls="clr-namespace:Content.Client.Administration.UI.CustomControls"
@@ -37,6 +37,10 @@
         </BoxContainer>
         <customControls:VSeparator/>
         <BoxContainer Orientation="Vertical" VerticalExpand="True" HorizontalExpand="True" Margin="15 10 15 15">
+            <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                <Button Name="ResetLawsButton" Text="{Loc 'borg-ui-reset'}" HorizontalExpand="True" StyleClasses="OpenLeft"/>
+            </BoxContainer>
+            <customControls:HSeparator Margin="0 10 0 10"/>
             <Label Text="{Loc 'borg-ui-modules-label'}" Margin="0 0 0 5"/>
             <PanelContainer VerticalExpand="True">
                 <PanelContainer.PanelOverride>
