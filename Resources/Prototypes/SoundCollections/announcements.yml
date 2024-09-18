@@ -14,6 +14,11 @@
   - /Audio/Announcements/Default/intercept.ogg
 
 - type: soundCollection
+  id: AnnouncementDefaultIonStorm
+  files:
+  - /Audio/Announcements/Default/ion_storm.ogg
+
+- type: soundCollection
   id: AnnouncementDefaultMeteors
   files:
   - /Audio/Announcements/Default/meteors.ogg
@@ -88,6 +93,11 @@
   id: AnnouncementInternIntercept
   files:
   - /Audio/Announcements/Intern/intercept.ogg
+
+- type: soundCollection
+  id: AnnouncementInternIonStorm
+  files:
+  - /Audio/Announcements/Intern/ionstorm.ogg
 
 - type: soundCollection
   id: AnnouncementInternMeteors
