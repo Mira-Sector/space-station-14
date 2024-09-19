@@ -1,4 +1,5 @@
 using Content.Server.GameTicking.Rules.Components;
+using Content.Server.Obsessed;
 using Content.Server.Roles;
 using Content.Shared.Mind;
 using Robust.Shared.Random;
@@ -17,11 +18,26 @@ public sealed class ObsessedRuleSystem : GameRuleSystem<ObsessedRuleComponent>
     }
     private void OnInit(EntityUid uid, ObsessedRoleComponent component, ComponentInit args)
     {
-        var allHumans = _mind.GetAliveHumansExcept(uid);
+        PickObsession(uid);
+    }
 
-        if (allHumans.Count == 0)
+    public void PickObsession(EntityUid mind, ObsessedRoleComponent? component = null)
+    {
+        if (!Resolve(mind, ref component))
             return;
 
-        component.Obsession = _random.Pick(allHumans);
+        if (component.Obsession != null)
+            return;
+
+        var obsessionMind = _random.Pick(_mind.GetAliveHumansExcept(mind));
+        component.Obsession = obsessionMind;
+
+        if (!TryComp<MindComponent>(obsessionMind, out var mindComp) ||
+            mindComp == null ||
+            mindComp.CurrentEntity == null)
+            return;
+
+        EnsureComp<ObsessionComponent>(obsessionMind);
+        EnsureComp<ObsessionComponent>(mindComp.CurrentEntity.Value);
     }
 }

@@ -1,3 +1,4 @@
+using Content.Server.GameTicking.Rules;
 using Content.Server.Objectives.Components;
 using Content.Server.Shuttles.Systems;
 using Content.Server.Roles;
@@ -20,6 +21,7 @@ public sealed class KillPersonConditionSystem : EntitySystem
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly SharedJobSystem _job = default!;
     [Dependency] private readonly SharedMindSystem _mind = default!;
+    [Dependency] private readonly ObsessedRuleSystem _obsession = default!;
     [Dependency] private readonly TargetObjectiveSystem _target = default!;
 
     public override void Initialize()
@@ -112,6 +114,8 @@ public sealed class KillPersonConditionSystem : EntitySystem
 
         if (target.Target != null)
             return;
+
+        _obsession.PickObsession(args.MindId);
 
         if (!TryComp<ObsessedRoleComponent>(args.MindId, out var roleComp) ||
             roleComp.Obsession == null)

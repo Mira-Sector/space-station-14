@@ -36,6 +36,7 @@
   id: Obsessed
   parent: BaseGameRule
   components:
+  - type: ObsessedRule
   - type: AntagSelection
     definitions:
     - prefRoles: [ Obsessed ]
