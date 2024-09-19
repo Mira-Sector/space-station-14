@@ -31,3 +31,28 @@
         prototype: Thief
       briefing:
         sound: "/Audio/Misc/thief_greeting.ogg"
+
+- type: entity
+  id: Obsessed
+  parent: BaseGameRule
+  components:
+  - type: ObsessedRule
+  - type: AntagSelection
+    definitions:
+    - prefRoles: [ Obsessed ]
+      max: 1
+      playerRatio: 10
+      lateJoinAdditional: true
+      multiAntagSetting: NotExclusive
+      briefing:
+        text: obsessed-role-greeting
+        color: LightSalmon
+      mindComponents:
+      - type: ObsessedRole
+        prototype: Obsessed
+  - type: AntagObjectives
+    objectives:
+    - KillObsessionObjective
+    - HugObsessionObjective
+    - KillDepartmentObsessionObjective
+    - SpendTimeObsessionObjective
