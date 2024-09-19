@@ -38,3 +38,16 @@
     description: objective-obsessed-hug-description
     min: 5
     max: 15
+
+- type: entity
+  parent: [BaseObsessedObjective, BaseKillObjective]
+  id: KillDepartmentObsessionObjective
+  components:
+  - type: Objective
+    difficulty: 1
+  - type: TargetObjective
+  - type: PickObsessionDepartment
+    title: objective-obsessed-kill-department-title
+    description: objective-obsessed-kill-department-description
+  - type: KillPersonCondition
+    requireDead: true

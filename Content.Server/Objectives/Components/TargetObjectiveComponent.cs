@@ -9,8 +9,8 @@ public sealed partial class TargetObjectiveComponent : Component
     /// Locale id for the objective title.
     /// It is passed "targetName" and "job" arguments.
     /// </summary>
-    [DataField(required: true), ViewVariables(VVAccess.ReadWrite)]
-    public string Title = string.Empty;
+    [DataField, ViewVariables(VVAccess.ReadWrite)]
+    public string? Title;
 
     /// <summary>
     /// Mind entity id of the target.
@@ -18,4 +18,7 @@ public sealed partial class TargetObjectiveComponent : Component
     /// </summary>
     [DataField, ViewVariables(VVAccess.ReadWrite)]
     public EntityUid? Target;
+
+    [DataField, ViewVariables(VVAccess.ReadWrite)]
+    public List<EntityUid>? Targets;
 }
