@@ -1,0 +1,68 @@
+- type: entity
+  abstract: true
+  parent: BaseObjective
+  id: BaseObsessedObjective
+  components:
+  - type: Objective
+    issuer: objective-issuer-obsessed
+  - type: RoleRequirement
+    roles:
+      components:
+      - ObsessedRole
+
+- type: entity
+  parent: [BaseObsessedObjective, BaseKillObjective]
+  id: KillObsessionObjective
+  name: Kill your obsession
+  description: Do it however you like, you are finished with them now.
+  components:
+  - type: Objective
+    difficulty: 0
+  - type: TargetObjective
+    title: objective-condition-kill-head-title
+  - type: PickObsession
+  - type: KillPersonCondition
+    requireDead: true
+
+- type: entity
+  parent: BaseObsessedObjective
+  id: HugObsessionObjective
+  components:
+  - type: Objective
+    difficulty: 1
+    icon:
+      sprite: Objects/Storage/boxes.rsi
+      state: heart
+  - type: HugObsessionCondition
+    title: objective-obsessed-hug-title
+    description: objective-obsessed-hug-description
+    min: 5
+    max: 15
+
+- type: entity
+  parent: [BaseObsessedObjective, BaseKillObjective]
+  id: KillDepartmentObsessionObjective
+  components:
+  - type: Objective
+    difficulty: 1
+  - type: TargetObjective
+  - type: PickObsessionDepartment
+    title: objective-obsessed-kill-department-title
+    description: objective-obsessed-kill-department-description
+  - type: KillPersonCondition
+    requireDead: true
+
+- type: entity
+  parent: BaseObsessedObjective
+  id: SpendTimeObsessionObjective
+  components:
+  - type: Objective
+    difficulty: 1
+    icon:
+      sprite: Clothing/Eyes/Glasses/jamjar.rsi
+      state: icon
+  - type: InRangeObsession
+    min: 5
+    max: 10
+    title: objective-obsessed-spend-time-title
+    description: objective-obsessed-spend-time-description

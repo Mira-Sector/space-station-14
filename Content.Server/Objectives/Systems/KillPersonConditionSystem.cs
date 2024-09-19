@@ -1,10 +1,14 @@
+using Content.Server.GameTicking.Rules;
 using Content.Server.Objectives.Components;
 using Content.Server.Shuttles.Systems;
+using Content.Server.Roles;
 using Content.Shared.CCVar;
 using Content.Shared.Mind;
 using Content.Shared.Objectives.Components;
+using Content.Shared.Roles;
 using Content.Shared.Roles.Jobs;
 using Robust.Shared.Configuration;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 
 namespace Content.Server.Objectives.Systems;
@@ -18,7 +22,10 @@ public sealed class KillPersonConditionSystem : EntitySystem
     [Dependency] private readonly IConfigurationManager _config = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly SharedJobSystem _job = default!;
+    [Dependency] private readonly MetaDataSystem _metaData = default!;
     [Dependency] private readonly SharedMindSystem _mind = default!;
+    [Dependency] private readonly ObsessedRuleSystem _obsession = default!;
+    [Dependency] private readonly IPrototypeManager _prototypeMan = default!;
     [Dependency] private readonly TargetObjectiveSystem _target = default!;
 
     public override void Initialize()
@@ -30,14 +37,45 @@ public sealed class KillPersonConditionSystem : EntitySystem
         SubscribeLocalEvent<PickRandomPersonComponent, ObjectiveAssignedEvent>(OnPersonAssigned);
 
         SubscribeLocalEvent<PickRandomHeadComponent, ObjectiveAssignedEvent>(OnHeadAssigned);
+
+        SubscribeLocalEvent<PickObsessionComponent, ObjectiveAssignedEvent>(OnObsessionAssigned);
+        SubscribeLocalEvent<PickObsessionDepartmentComponent, ObjectiveAssignedEvent>(OnObsessionDepartmentAssigned);
+        SubscribeLocalEvent<PickObsessionDepartmentComponent, ObjectiveAfterAssignEvent>(OnAfterObsessionDepartmentAssigned);
     }
 
     private void OnGetProgress(EntityUid uid, KillPersonConditionComponent comp, ref ObjectiveGetProgressEvent args)
     {
-        if (!_target.GetTarget(uid, out var target))
+        if (_target.GetTarget(uid, out var target) &&
+            target != null)
+        {
+            args.Progress = GetProgress(target.Value, comp.RequireDead);
             return;
+        }
 
-        args.Progress = GetProgress(target.Value, comp.RequireDead);
+        if (!_target.GetTargets(uid, out var targets) ||
+            targets == null)
+        {
+            return;
+        }
+
+        float currentProgress = 0f;
+        foreach (var currentTarget in targets)
+        {
+            var progress = GetProgress(currentTarget, comp.RequireDead);
+
+            if (progress <= 1f)
+            {
+                currentProgress = progress;
+                break;
+            }
+
+            if (progress > currentProgress)
+            {
+                currentProgress = progress;
+            }
+        }
+
+        args.Progress = currentProgress;
     }
 
     private void OnPersonAssigned(EntityUid uid, PickRandomPersonComponent comp, ref ObjectiveAssignedEvent args)
@@ -97,6 +135,118 @@ public sealed class KillPersonConditionSystem : EntitySystem
             allHeads = allHumans; // fallback to non-head target
 
         _target.SetTarget(uid, _random.Pick(allHeads), target);
+    }
+
+    private void OnObsessionAssigned(EntityUid uid, PickObsessionComponent comp, ref ObjectiveAssignedEvent args)
+    {
+        if (!TryComp<TargetObjectiveComponent>(uid, out var target))
+        {
+            args.Cancelled = true;
+            return;
+        }
+
+        if (target.Target != null)
+            return;
+
+        _obsession.PickObsession(args.MindId);
+
+        if (!TryComp<ObsessedRoleComponent>(args.MindId, out var roleComp) ||
+            roleComp.Obsession == null)
+            return;
+
+        _target.SetTarget(uid, roleComp.Obsession.Value, target);
+    }
+
+    private void OnObsessionDepartmentAssigned(EntityUid uid, PickObsessionDepartmentComponent comp, ref ObjectiveAssignedEvent args)
+    {
+        if (!TryComp<TargetObjectiveComponent>(uid, out var target))
+        {
+            args.Cancelled = true;
+            return;
+        }
+
+        if (target.Targets != null)
+            return;
+
+        _obsession.PickObsession(args.MindId);
+
+        if (!TryComp<ObsessedRoleComponent>(args.MindId, out var roleComp) ||
+            roleComp.Obsession == null)
+        {
+            args.Cancelled = true;
+            return;
+        }
+
+        if (!TryComp<JobComponent>(roleComp.Obsession, out var obsessionJobComp) ||
+            obsessionJobComp == null ||
+            obsessionJobComp.Prototype == null)
+        {
+            args.Cancelled = true;
+            return;
+        }
+
+        // get the obsessions department
+        DepartmentPrototype? obsessionDepartment = null;
+        foreach (var department in _prototypeMan.EnumeratePrototypes<DepartmentPrototype>())
+        {
+            if (department.Roles.Contains(obsessionJobComp.Prototype.Value))
+            {
+                obsessionDepartment = department;
+                break;
+            }
+        }
+
+        if (obsessionDepartment == null)
+        {
+            args.Cancelled = true;
+            return;
+        }
+
+
+        var allHumans = _mind.GetAliveHumansExcept(roleComp.Obsession.Value);
+        allHumans.Remove(uid); //dont want the player to have a suicide mission
+
+        // get everyone in the obsessions department
+        List<EntityUid> targets = new();
+        foreach (var human in allHumans)
+        {
+            if (!TryComp<JobComponent>(human, out var jobComp))
+                continue;
+
+            if (jobComp.Prototype == null)
+                continue;
+
+            if (obsessionDepartment.Roles.Contains(jobComp.Prototype.Value))
+                targets.Add(human);
+        }
+
+        if (targets.Count <= 0)
+        {
+            args.Cancelled = true;
+            return;
+        }
+
+        _target.SetTargets(uid, targets, target);
+    }
+
+    private void OnAfterObsessionDepartmentAssigned(EntityUid uid, PickObsessionDepartmentComponent comp, ref ObjectiveAfterAssignEvent args)
+    {
+        if (!TryComp<ObsessedRoleComponent>(args.MindId, out var roleComp) ||
+            roleComp == null)
+            return;
+
+        var targetName = "Unknown";
+        if (TryComp<MindComponent>(roleComp.Obsession, out var mind) && mind.CharacterName != null)
+        {
+            targetName = mind.CharacterName;
+        }
+
+        var title = Loc.GetString(comp.Title, ("targetName", targetName));
+
+        _metaData.SetEntityName(uid, title, args.Meta);
+
+        if (comp.Description != null)
+            _metaData.SetEntityDescription(uid, Loc.GetString(comp.Description), args.Meta);
     }
 
     private float GetProgress(EntityUid target, bool requireDead)
