@@ -247,6 +247,7 @@
     - Slime
     - Monkey
     - Buzzwords
+    - Binary
 
 - type: entity
   abstract: true
