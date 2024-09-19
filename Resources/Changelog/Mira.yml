@@ -459,3 +459,9 @@ Entries:
     type: Add
   id: 69 # nice
   time: '2024-09-18T23:55:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added a law reset button in cyborgs ui
+    type: Add
+  id: 70
+  time: '2024-09-19T10:00:00.0000000+00:00'
