@@ -51,3 +51,18 @@
     description: objective-obsessed-kill-department-description
   - type: KillPersonCondition
     requireDead: true
+
+- type: entity
+  parent: BaseObsessedObjective
+  id: SpendTimeObsessionObjective
+  components:
+  - type: Objective
+    difficulty: 1
+    icon:
+      sprite: Clothing/Eyes/Glasses/jamjar.rsi
+      state: icon
+  - type: InRangeObsession
+    min: 5
+    max: 10
+    title: objective-obsessed-spend-time-title
+    description: objective-obsessed-spend-time-description

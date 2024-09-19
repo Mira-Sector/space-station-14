@@ -3,3 +3,6 @@ objective-obsessed-hug-description = You just can't seem to keep your hands off 
 
 objective-obsessed-kill-department-title = Kill someone in {$targetName}'s department.
 objective-obsessed-kill-department-description = REPLACE ME
+
+objective-obsessed-spend-time-title = Spend {$time} minutes near {$targetName}.
+objective-obsessed-spend-time-description = Your eyes keep getting drawn to your obsession.
