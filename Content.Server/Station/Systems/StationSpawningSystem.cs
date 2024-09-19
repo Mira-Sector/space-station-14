@@ -352,7 +352,7 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
         }
 
         if (pdaComponent != null)
-            _pdaSystem.SetOwner(idUid.Value, pdaComponent, characterName);
+            _pdaSystem.SetOwner(idUid.Value, pdaComponent, entity, characterName);
     }
 
 

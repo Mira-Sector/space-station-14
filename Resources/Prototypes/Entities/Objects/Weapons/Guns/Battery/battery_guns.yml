@@ -275,7 +275,7 @@
 
 - type: entity
   name: pulse carbine
-  parent: [BaseWeaponBattery, BaseWeaponBatteryTransfer, BaseGunWieldable]
+  parent: [BaseWeaponBattery, BaseWeaponBatteryTransfer, BaseGunWieldable, BaseCentcommContraband]
   id: WeaponPulseCarbine
   description: A high tech energy carbine favoured by the NT-ERT operatives.
   components:

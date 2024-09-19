@@ -1,6 +1,7 @@
 using Content.Server.GameTicking;
 using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Roles;
 using Content.Shared.Traits;
 using Content.Shared.Whitelist;
 using Robust.Shared.Prototypes;
@@ -24,6 +25,15 @@ public sealed class TraitSystem : EntitySystem
     // When the player is spawned in, add all trait components selected during character creation
     private void OnPlayerSpawnComplete(PlayerSpawnCompleteEvent args)
     {
+        // Check if player's job allows to apply traits
+        if (args.Job == null ||
+            !_prototypeManager.TryIndex<JobPrototype>(args.Job.Prototype, out var jobProto) ||
+            jobProto == null ||
+            !jobProto.ApplyTraits)
+        {
+            return;
+        }
+
         foreach (var traitId in args.Profile.TraitPreferences)
         {
             if (!_prototypeManager.TryIndex<TraitPrototype>(traitId, out var traitPrototype))

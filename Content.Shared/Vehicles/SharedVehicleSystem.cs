@@ -123,7 +123,10 @@ public abstract partial class SharedVehicleSystem : EntitySystem
         }
         else
         {
-            component.SirenStream = _audio.PlayPvs(component.SirenSound, component.Owner, AudioParams.Default.WithLoop(true).WithMaxDistance(5)).Value.Entity;
+            var audio = _audio.PlayPvs(component.SirenSound, component.Owner, AudioParams.Default.WithLoop(true).WithMaxDistance(5));
+
+            if (audio != null)
+                component.SirenStream = audio.Value.Entity;
         }
 
         component.SirenEnabled = !component.SirenEnabled;
