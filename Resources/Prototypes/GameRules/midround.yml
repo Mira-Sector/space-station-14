@@ -44,9 +44,6 @@
       playerRatio: 10
       lateJoinAdditional: true
       multiAntagSetting: NotExclusive
-      blacklist:
-        components:
-        - AntagImmune
       briefing:
         text: obsessed-role-greeting
         color: LightSalmon
@@ -55,4 +52,7 @@
         prototype: Obsessed
   - type: AntagObjectives
     objectives:
-    - ObsessedObjectiveGroupKill
+    - KillObsessionObjective
+    - HugObsessionObjective
+    - KillDepartmentObsessionObjective
+    - SpendTimeObsessionObjective
