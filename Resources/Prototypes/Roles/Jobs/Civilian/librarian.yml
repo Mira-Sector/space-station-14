@@ -9,6 +9,18 @@
   access:
   - Service
   - Maintenance
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: SpeciesLanguage
+      spokenLanguages:
+        - Common
+        - Draconic
+        - Moffic
+        - Calcic
+        - Slime
+        - Monkey
+        - Buzzwords
 
 - type: startingGear
   id: LibrarianGear
