@@ -464,4 +464,16 @@ Entries:
   - message: Added a law reset button in cyborgs ui
     type: Add
   id: 70
-  time: '2024-09-19T10:00:00.0000000+00:00'
+  time: '2024-09-19T01:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Cyborgs can now speak all crew languages
+    type: Add
+  - message: Binary language which cyborgs and pai can speak
+    type: Add
+  - message: Librarian can now speak all languages
+    type: Add
+  - message: Geras can speak slime once again
+    type: Fix
+  id: 71
+  time: '2024-09-19T01:55:00.0000000+00:00'
