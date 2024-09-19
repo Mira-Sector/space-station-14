@@ -477,3 +477,9 @@ Entries:
     type: Fix
   id: 71
   time: '2024-09-19T01:55:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added the obsessed antagonist
+    type: Add
+  id: 72
+  time: '2024-09-19T15:00:00.0000000+00:00'
