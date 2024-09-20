@@ -489,3 +489,9 @@ Entries:
     type: Add
   id: 73
   time: '2024-09-20T05:40:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Footprins now show their age using the forensic scanner
+    type: Add
+  id: 74
+  time: '2024-09-20T05:40:00.0000000+00:00'
