@@ -3,6 +3,9 @@ using Robust.Shared.Serialization;
 
 namespace Content.Shared.Forensics;
 
+[ByRefEvent]
+public readonly record struct ForensicScannerBeforeDoAfterEvent;
+
 [Serializable, NetSerializable]
 public sealed partial class ForensicScannerDoAfterEvent : SimpleDoAfterEvent
 {

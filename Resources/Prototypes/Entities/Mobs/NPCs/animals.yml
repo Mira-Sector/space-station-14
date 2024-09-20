@@ -177,6 +177,16 @@
   - type: LeavesFootprints
     footprintPrototype: FootprintClawLeft
     footprintPrototypeAlternative: FootprintClawRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-claw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-claw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-claw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-claw-ancient
+      ageThrestholdMin: 20
   - type: Fixtures
     fixtures:
       fix1:
@@ -339,6 +349,16 @@
   - type: LeavesFootprints
     footprintPrototype: Footprint6LegsLeft
     footprintPrototypeAlternative: Footprint6LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
+      ageThrestholdMin: 20
   - type: MobState
   - type: MobThresholds
     thresholds:
@@ -648,6 +668,16 @@
   - type: LeavesFootprints
     footprintPrototype: FootprintClawLeft
     footprintPrototypeAlternative: FootprintClawRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-claw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-claw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-claw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-claw-ancient
+      ageThrestholdMin: 20
   - type: Butcherable
     spawned:
     - id: FoodMeatDuck
@@ -813,6 +843,16 @@
   - type: LeavesFootprints
     footprintPrototype: Footprint4LegsLeft
     footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
+      ageThrestholdMin: 20
   - type: DamageStateVisuals
     states:
       Alive:
@@ -896,6 +936,16 @@
   - type: LeavesFootprints
     footprintPrototype: Footprint6LegsLeft
     footprintPrototypeAlternative: Footprint6LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
+      ageThrestholdMin: 20
   - type: Speech
     speechVerb: Arachnid
     speechSounds: Arachnid
@@ -971,6 +1021,16 @@
   - type: LeavesFootprints
     footprintPrototype: Footprint4LegsLeft
     footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
+      ageThrestholdMin: 20
   - type: ReproductivePartner
   - type: Appearance
   - type: DamageStateVisuals
@@ -1056,6 +1116,16 @@
   - type: LeavesFootprints
     footprintPrototype: FootprintClawLeft
     footprintPrototypeAlternative: FootprintClawRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-claw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-claw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-claw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-claw-ancient
+      ageThrestholdMin: 20
   - type: DamageStateVisuals
     states:
       Alive:
@@ -1108,6 +1178,15 @@
   - type: LeavesFootprints
     footprintPrototype: FootprintFootLeft
     footprintPrototypeAlternative: FootprintFootRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-foot-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-foot-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-foot-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-foot-ancient
   - type: DamageStateVisuals
     states:
       Alive:
@@ -1171,6 +1250,15 @@
   - type: LeavesFootprints
     footprintPrototype: FootprintFootLeft
     footprintPrototypeAlternative: FootprintFootRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-foot-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-foot-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-foot-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-foot-ancient
   - type: Physics
   - type: Inventory
     speciesId: kangaroo
@@ -1271,6 +1359,15 @@
   - type: LeavesFootprints
     footprintPrototype: FootprintFootLeft
     footprintPrototypeAlternative: FootprintFootRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-foot-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-foot-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-foot-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-foot-ancient
   - type: Stripping
   - type: Sprite
     drawdepth: Mobs
@@ -1545,6 +1642,15 @@
   - type: LeavesFootprints
     footprintPrototype: FootprintClawLeft
     footprintPrototypeAlternative: FootprintClawRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-claw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-claw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-claw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-claw-ancient
   - type: GhostTakeoverAvailable
   - type: SentienceTarget
     flavorKind: station-event-random-sentience-flavor-kobold
@@ -1649,6 +1755,15 @@
   - type: LeavesFootprints
     footprintPrototype: Footprint4LegsLeft
     footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Item
     size: Tiny
     heldPrefix: 0
@@ -1938,6 +2053,15 @@
   - type: LeavesFootprints
     footprintPrototype: Footprint4LegsLeft
     footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: DamageStateVisuals
     states:
       Alive:
@@ -2159,6 +2283,15 @@
   - type: LeavesFootprints
     footprintPrototype: FootprintClawLeft
     footprintPrototypeAlternative: FootprintClawRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-claw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-claw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-claw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-claw-ancient
   - type: DamageStateVisuals
     states:
       Alive:
@@ -2339,6 +2472,15 @@
   - type: LeavesFootprints
     footprintPrototype: Footprint8LegsLeft
     footprintPrototypeAlternative: Footprint8LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Physics
   - type: Fixtures
     fixtures:
@@ -2549,6 +2691,15 @@
   - type: LeavesFootprints
     footprintPrototype: Footprint4LegsLeft
     footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Inventory
     speciesId: possum
     templateId: pet
@@ -2625,6 +2776,15 @@
   - type: LeavesFootprints
     footprintPrototype: Footprint4LegsLeft
     footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Inventory
     speciesId: possum #close enough
     templateId: pet
@@ -2688,6 +2848,15 @@
   - type: LeavesFootprints
     footprintPrototype: Footprint4LegsLeft
     footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Inventory
     speciesId: fox
     templateId: pet
@@ -2764,6 +2933,15 @@
   - type: LeavesFootprints
     footprintPrototype: Footprint4LegsLeft
     footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Inventory
     speciesId: dog
     templateId: pet
@@ -2913,6 +3091,15 @@
   - type: LeavesFootprints
     footprintPrototype: Footprint4LegsLeft
     footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Inventory
     speciesId: cat
     templateId: pet
@@ -3145,6 +3332,15 @@
   - type: LeavesFootprints
     footprintPrototype: Footprint4LegsLeft
     footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Inventory
     speciesId: sloth
     templateId: pet
@@ -3201,6 +3397,15 @@
   - type: LeavesFootprints
     footprintPrototype: Footprint4LegsLeft
     footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Inventory
     speciesId: fox #close enough
     templateId: pet
@@ -3265,6 +3470,15 @@
   - type: LeavesFootprints
     footprintPrototype: Footprint4LegsLeft
     footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Item
     size: Tiny
   - type: Physics
@@ -3403,6 +3617,15 @@
   - type: LeavesFootprints
     footprintPrototype: Footprint4LegsLeft
     footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Inventory
     speciesId: pig
     templateId: pet
@@ -3475,6 +3698,15 @@
   - type: LeavesFootprints
     footprintPrototype: Footprint6LegsLeft
     footprintPrototypeAlternative: Footprint6LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Inventory
     speciesId: cat
     templateId: pet

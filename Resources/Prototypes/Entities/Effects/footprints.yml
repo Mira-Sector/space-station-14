@@ -5,6 +5,9 @@
   name: footprint
   description: Looks like someone has been here before you.
   components:
+  - type: Forensics
+  - type: Residue
+  - type: Footprint
   - type: SolutionContainerManager
     solutions:
       puddle:

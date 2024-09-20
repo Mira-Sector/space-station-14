@@ -1,8 +1,11 @@
 using Content.Server.Footprints.Components;
+using Content.Server.Forensics;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Components.SolutionManager;
+using Content.Shared.Forensics;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Random;
+using System.Linq;
 
 namespace Content.Server.Footprint.Systems;
 
@@ -13,8 +16,9 @@ public sealed partial class FootprintSystem : EntitySystem
     /// <inheritdoc/>
     public override void Initialize()
     {
+        SubscribeLocalEvent<FootprintComponent, ForensicScannerBeforeDoAfterEvent>(OnForensicScanner);
+
         SubscribeLocalEvent<GivesFootprintsComponent, StartCollideEvent>(OnStartStep);
-        SubscribeLocalEvent<GivesFootprintsComponent, EndCollideEvent>(OnEndStep);
         SubscribeLocalEvent<CanLeaveFootprintsComponent, ComponentInit>(FootprintRandom);
     }
 
@@ -66,9 +70,29 @@ public sealed partial class FootprintSystem : EntitySystem
         playerFootprintComp.LastPuddle = uid;
     }
 
-    private void OnEndStep(EntityUid uid, GivesFootprintsComponent component , ref EndCollideEvent args)
+    private void OnForensicScanner(EntityUid uid, FootprintComponent component, ForensicScannerBeforeDoAfterEvent args)
     {
+        if (!TryComp<ResidueComponent>(uid, out var residueComponent))
+            return;
 
+        if (!TryComp<ForensicsComponent>(uid, out var forensicsComponent))
+            return;
+
+        //sorts the list by the age minimums
+        //this we can assume first one that passes in the foreach is the biggest possible match
+        var residueAge = residueComponent.ResidueAge.OrderByDescending(x => x.AgeThrestholdMin).ToList();
+
+        foreach (var i in residueAge)
+        {
+            var requiredTime = TimeSpan.FromMinutes(i.AgeThrestholdMin) + component.CreationTime;
+
+            if (requiredTime > _timing.CurTime)
+                continue;
+
+            forensicsComponent.Residues.Clear(); // cant get residues from any other way so just nuke it
+            forensicsComponent.Residues.Add(Loc.GetString(i.AgeLocId));
+            return;
+        }
     }
 
     private bool GetSolution(EntityUid uid, SolutionContainerManagerComponent solutionManComp, string container, out Entity<SolutionComponent>? targetSolutionComp)
