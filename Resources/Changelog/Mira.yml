@@ -483,3 +483,9 @@ Entries:
     type: Add
   id: 72
   time: '2024-09-19T15:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Spacepens can now be found in emergency boxes again replacing the flare
+    type: Add
+  id: 73
+  time: '2024-09-20T05:40:00.0000000+00:00'
