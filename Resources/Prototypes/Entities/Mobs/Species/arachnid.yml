@@ -116,6 +116,16 @@
   - type: LeavesFootprints
     footprintPrototype: FootprintFootLeft
     footprintPrototypeAlternative: FootprintFootRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-foot-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-foot-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-claw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-claw-ancient
+      ageThrestholdMin: 20
   - type: Inventory
     templateId: arachnid
   - type: SpeciesLanguage

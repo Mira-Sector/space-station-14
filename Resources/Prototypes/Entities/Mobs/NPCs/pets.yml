@@ -238,6 +238,16 @@
   - type: LeavesFootprints
     footprintPrototype: Footprint4LegsLeft
     footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
+      ageThrestholdMin: 20
   - type: Inventory
     speciesId: cat
     templateId: pet
@@ -298,6 +308,16 @@
   - type: LeavesFootprints
     footprintPrototype: Footprint4LegsLeft
     footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
+      ageThrestholdMin: 20
   - type: Inventory
     speciesId: puppy
     templateId: pet
@@ -394,6 +414,16 @@
   - type: LeavesFootprints
     footprintPrototype: Footprint4LegsLeft
     footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
+      ageThrestholdMin: 20
   - type: Inventory
     speciesId: dog
     templateId: pet

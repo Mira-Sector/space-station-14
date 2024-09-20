@@ -12,4 +12,17 @@ public sealed partial class ResidueComponent : Component
 
     [DataField]
     public string? ResidueColor;
+
+    [DataField]
+    public List<ResidueAge> ResidueAge = new();
+}
+
+[DataDefinition]
+public partial struct ResidueAge
+{
+    [DataField]
+    public LocId AgeLocId {get; set;}
+
+    [DataField]
+    public uint AgeThrestholdMin {get; set;}
 }

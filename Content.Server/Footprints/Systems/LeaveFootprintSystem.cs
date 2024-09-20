@@ -1,3 +1,4 @@
+using Content.Server.Forensics;
 using Content.Server.Fluids.EntitySystems;
 using Content.Server.Footprints.Components;
 using Content.Shared.Clothing.Components;
@@ -9,6 +10,7 @@ using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using System.Numerics;
+using Robust.Shared.Timing;
 
 namespace Content.Server.Footprint.Systems;
 
@@ -20,12 +22,14 @@ public sealed partial class FootprintSystem : EntitySystem
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
     [Dependency] private readonly SharedGravitySystem _gravity = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly SharedMapSystem _map = default!;
     [Dependency] private readonly PuddleSystem _puddle = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solutionContainer = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly IMapManager _mapManager = default!;
+
 
     const string ShoeSlot = "shoes";
 
@@ -104,6 +108,12 @@ public sealed partial class FootprintSystem : EntitySystem
         color = color.WithAlpha(currentFootprintComp.Alpha);
         _appearance.SetData(footprintEnt, PuddleVisuals.SolutionColor, color);
 
+        if (TryComp<FootprintComponent>(footprintEnt, out var footprintEntComp))
+        {
+            UpdateForensics(footprintEnt, uid);
+            footprintEntComp.CreationTime = _timing.CurTime;
+        }
+
         currentFootprintComp.FootstepsLeft -= 1;
 
         if (currentFootprintComp.FootstepsLeft <= 0 ||
@@ -115,6 +125,18 @@ public sealed partial class FootprintSystem : EntitySystem
 
         currentFootprintComp.LastFootstep = pos;
         currentFootprintComp.Alpha = (float) currentFootprintComp.FootstepsLeft / footprintComp.MaxFootsteps;
+    }
+
+    private void UpdateForensics(EntityUid footprint, EntityUid messmaker)
+    {
+        if (!TryComp<ResidueComponent>(messmaker, out var messmakerResidueComp) ||
+            messmakerResidueComp.ResidueAge == null)
+            return;
+
+        var footprintResidueComp = EnsureComp<ResidueComponent>(footprint);
+
+        footprintResidueComp.ResidueAdjective = messmakerResidueComp.ResidueAdjective;
+        footprintResidueComp.ResidueAge = messmakerResidueComp.ResidueAge;
     }
 
     private bool CanLeaveFootprints(EntityUid uid, out EntityUid messMaker, EntityUid? puddle = null)

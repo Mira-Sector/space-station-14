@@ -13,6 +13,16 @@
   - type: LeavesFootprints
     footprintPrototype: FootprintBootLeft
     footprintPrototypeAlternative: FootprintBootRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-base-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-base-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-base-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-base-ancient
+      ageThrestholdMin: 20
   - type: Food
     requiresSpecialDigestion: true
   - type: SolutionContainerManager
