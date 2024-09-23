@@ -95,6 +95,16 @@
         - MobMask
         layer:
         - MobLayer
+      pipe:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.01
+        density: 100
+        mask:
+        - PipeCrawling
+        layer:
+        - PipeCrawling
+        hard: false
   - type: FloorOcclusion
   - type: RangedDamageSound
     soundGroups:

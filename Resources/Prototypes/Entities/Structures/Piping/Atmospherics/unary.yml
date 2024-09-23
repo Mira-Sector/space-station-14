@@ -18,7 +18,21 @@
           !type:PipeNode
           nodeGroupID: Pipe
           pipeDirection: South
-    - type: CollideOnAnchor
+    - type: Physics
+      bodyType: Static
+    - type: Fixtures
+      fixtures:
+        fix1:
+          shape:
+            !type:PhysShapeAabb
+            bounds: "-0.1,-0.5,0.1,0.0"
+          density: 60
+          mask:
+          - PipeCrawling
+          layer:
+          - PipeCrawling
+    - type: PipeCrawlingPipe
+    - type: PipeCrawlingEnterPoint
 
 - type: entity
   parent: [GasUnaryBase, AirSensorBase]
