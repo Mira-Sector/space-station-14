@@ -1,4 +1,5 @@
 using Content.Shared.Atmos.Piping.Crawling.Components;
+using Content.Shared.Interaction;
 using Content.Shared.Verbs;
 
 namespace Content.Shared.Atmos.Piping.Crawling.Systems;
@@ -14,7 +15,8 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
         SubscribeLocalEvent<PipeCrawlingEnterPointComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<PipeCrawlingEnterPointComponent, AnchorStateChangedEvent>(OnAnchored);
 
-        SubscribeLocalEvent<PipeCrawlingEnterPointComponent, GetVerbsEvent<ActivationVerb>>(OnPipeEnterVerb);
+        SubscribeLocalEvent<PipeCrawlingEnterPointComponent, GetVerbsEvent<ActivationVerb>>(OnVerb);
+        SubscribeLocalEvent<PipeCrawlingEnterPointComponent, ActivateInWorldEvent>(OnInteract);
     }
 
     private void OnInit(EntityUid uid, PipeCrawlingEnterPointComponent component, ref ComponentInit args)
@@ -33,7 +35,7 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
         component.Exitable = Comp<TransformComponent>(uid).Anchored & component.CanExit;
     }
 
-    private void OnPipeEnterVerb(EntityUid uid, PipeCrawlingEnterPointComponent component, GetVerbsEvent<ActivationVerb> args)
+    private void OnVerb(EntityUid uid, PipeCrawlingEnterPointComponent component, GetVerbsEvent<ActivationVerb> args)
     {
         if (!args.CanAccess || !args.CanInteract)
             return;
@@ -41,29 +43,74 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
         if (!TryComp<PipeCrawlingPipeComponent>(uid, out var pipeComp))
             return;
 
-        if (component.Enterable && !pipeComp.ContainedEntities.Contains(args.User))
+        switch (pipeComp.ContainedEntities.Contains(args.User))
         {
-            args.Verbs.Add(new ActivationVerb()
+            case true:
             {
-                Text = Loc.GetString("mech-verb-enter"),
-                Act = () =>
+                if (!component.Exitable)
+                    return;
+
+                args.Verbs.Add(new ActivationVerb()
                 {
-                    PipeEnter(args.User, uid);
-                }
-            });
+                    Text = Loc.GetString("connecting-exit"),
+                    Act = () =>
+                    {
+                        PipeExit(args.User, uid);
+                    }
+                });
+
+                break;
+            }
+
+            case false:
+            {
+                if (!component.Enterable)
+                    return;
+
+                args.Verbs.Add(new ActivationVerb()
+                {
+                    Text = Loc.GetString("mech-verb-enter"),
+                    Act = () =>
+                    {
+                        PipeEnter(args.User, uid);
+                    }
+                });
+
+                break;
+            }
+        }
+    }
+
+    private void OnInteract(EntityUid uid, PipeCrawlingEnterPointComponent component, ActivateInWorldEvent args)
+    {
+        if (args.Handled)
+            return;
+
+        if (!TryComp<PipeCrawlingPipeComponent>(uid, out var pipeComp))
+            return;
+
+        switch (pipeComp.ContainedEntities.Contains(args.User))
+        {
+            case true:
+            {
+                if (!component.Exitable)
+                    return;
+
+                PipeExit(args.User, uid);
+                break;
+            }
+
+            case false:
+            {
+                if (!component.Enterable)
+                    return;
+
+                PipeEnter(args.User, uid);
+                break;
+            }
         }
 
-        if (component.Exitable && pipeComp.ContainedEntities.Contains(args.User))
-        {
-            args.Verbs.Add(new ActivationVerb()
-            {
-                Text = Loc.GetString("connecting-exit"),
-                Act = () =>
-                {
-                    PipeExit(args.User, uid);
-                }
-            });
-        }
+        args.Handled = true;
     }
 
     private void PipeEnter(EntityUid user, EntityUid pipe)
