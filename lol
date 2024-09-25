@@ -1,0 +1,3 @@
+Attempting to cancel the build...
+
+The build failed. Fix the build errors and run again.

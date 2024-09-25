@@ -16,14 +16,7 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<PipeCrawlingPipeComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<PipeCrawlingPipeComponent, AnchorStateChangedEvent>(OnAnchored);
-    }
-
-    private void OnInit(EntityUid uid, PipeCrawlingPipeComponent component, ref ComponentInit args)
-    {
-        UpdateState(uid, component, updateOthers: component.FirstTimeInitialized);
-        component.FirstTimeInitialized = true;
     }
 
     private void OnAnchored(EntityUid uid, PipeCrawlingPipeComponent component, ref AnchorStateChangedEvent args)
@@ -31,12 +24,12 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
         UpdateState(uid, component);
     }
 
-    public void UpdateState(EntityUid uid, PipeCrawlingPipeComponent? component = null, PipeDirection? currentPipeDir = null, bool updateOthers = true)
+    public void UpdateState(EntityUid uid, PipeCrawlingPipeComponent? component = null, PipeDirection? currentPipeDir = null, EntityUid? updater = null)
     {
         if (!Resolve(uid, ref component, false))
             return;
 
-        if (!TryComp<TransformComponent>(uid, out var xform) || !xform.Anchored)
+        if (!TryComp<TransformComponent>(uid, out var xform))
             return;
 
         if (!TryComp<NodeContainerComponent>(uid, out var nodeComp))
@@ -55,7 +48,7 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
             }
         }
 
-        if (currentPipeDir == null || currentPipeDir == PipeDirection.None)
+        if (currentPipeDir == PipeDirection.None)
             return;
 
         var gridUid = xform.GridUid;
@@ -84,7 +77,7 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
 
             foreach (var pipe in _map.GetAnchoredEntities(gridUid.Value, grid, pos))
             {
-                if (component.ConnectedPipes.ContainsKey(dir))
+                if (connectedPipes.ContainsKey(dir))
                     break; // we can only have one match per direction. no pipe stacking :(
 
                 if (pipe == uid)
@@ -107,7 +100,6 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
             }
         }
 
-
         if (connectedPipes.Count <=0)
             return;
 
@@ -115,16 +107,20 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
         {
             component.ConnectedPipes = connectedPipes;
 
-            if (updateOthers)
+            if (updater != null)
+                component.UpdatedBy.Add(updater.Value);
+
+            Dirty(uid, component);
+
+
+            foreach ((var dir, var pipe) in connectedPipes)
             {
-                foreach ((var dir, var pipe) in connectedPipes)
-                {
-                    // update the connected pipes
-                    UpdateState(pipe, null, connectedPipesDir[dir]);
-                }
+                if (component.UpdatedBy.Contains(pipe))
+                    continue;
+
+                // update the connected pipes
+                UpdateState(pipe, null, connectedPipesDir[dir], uid);
             }
         }
-
-        Dirty(uid, component);
     }
 }
