@@ -14,8 +14,6 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
 
-    const CollisionGroup PipeCollision = CollisionGroup.PipeCrawling;
-    const string PipeCollisionName = "pipe";
     const float PipeCollisionRadius = 0.2f;
 
     public override void Initialize()
@@ -45,9 +43,6 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
 
         foreach ((var fixtureId, var fixture) in playerFixturesComp.Fixtures)
         {
-            if (fixtureId == PipeCollisionName)
-                continue;
-
             if (enabled)
             {
                 component.OriginalCollision.Add(fixtureId, fixture.Hard);
@@ -58,11 +53,6 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
                 _physics.SetHard(uid, fixture, component.OriginalCollision[fixtureId]);
             }
         }
-
-        if (playerFixturesComp.Fixtures.ContainsKey(PipeCollisionName))
-            _physics.SetHard(uid, playerFixturesComp.Fixtures[PipeCollisionName], enabled);
-        else
-            Log.Warning($"{ToPrettyString(uid)} does not have a {PipeCollisionName} fixture!");
 
         var trayComp = EnsureComp<TrayScannerComponent>(uid);
         trayComp.EnabledEntity = true;
