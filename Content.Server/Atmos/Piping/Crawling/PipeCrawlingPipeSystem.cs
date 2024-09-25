@@ -22,7 +22,8 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
 
     private void OnInit(EntityUid uid, PipeCrawlingPipeComponent component, ref ComponentInit args)
     {
-        UpdateState(uid, component);
+        UpdateState(uid, component, updateOthers: component.FirstTimeInitialized);
+        component.FirstTimeInitialized = true;
     }
 
     private void OnAnchored(EntityUid uid, PipeCrawlingPipeComponent component, ref AnchorStateChangedEvent args)
@@ -30,9 +31,9 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
         UpdateState(uid, component);
     }
 
-    public void UpdateState(EntityUid uid, PipeCrawlingPipeComponent? component = null, Direction sourceDir = Direction.Invalid)
+    public void UpdateState(EntityUid uid, PipeCrawlingPipeComponent? component = null, PipeDirection? currentPipeDir = null, bool updateOthers = true)
     {
-        if (!Resolve(uid, ref component))
+        if (!Resolve(uid, ref component, false))
             return;
 
         if (!TryComp<TransformComponent>(uid, out var xform) || !xform.Anchored)
@@ -42,14 +43,16 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
             return;
 
         // get the current pipes directions to itterate over
-        PipeDirection? currentPipeDir = null;
-        foreach (var node in nodeComp.Nodes.Values)
+        if (currentPipeDir == null)
         {
-            if (node is not PipeNode pipe)
-                continue;
+            currentPipeDir = PipeDirection.None;
+            foreach (var node in nodeComp.Nodes.Values)
+            {
+                if (node is not PipeNode pipe)
+                    continue;
 
-            currentPipeDir = pipe.CurrentPipeDirection;
-            break;
+                currentPipeDir |= pipe.CurrentPipeDirection;
+            }
         }
 
         if (currentPipeDir == null || currentPipeDir == PipeDirection.None)
@@ -63,6 +66,7 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
         var pipeCoords = _map.TileIndicesFor(gridUid!.Value, grid, xform.Coordinates);
 
         Dictionary<Direction, EntityUid> connectedPipes = new();
+        Dictionary<Direction, PipeDirection> connectedPipesDir = new();
         foreach (PipeDirection pipeDir in Enum.GetValues(typeof(PipeDirection)))
         {
             //check if the flag isnt a bitwise flag
@@ -72,16 +76,11 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
             pipeDir != PipeDirection.West)
                 continue;
 
-            if (pipeDir.ToDirection() == sourceDir)
-                continue;
-
             if (!currentPipeDir.Value.HasFlag(pipeDir))
                 continue;
 
             var dir = pipeDir.ToDirection();
             var pos = pipeCoords + dir.ToIntVec();
-
-            bool foundPipe = false;
 
             foreach (var pipe in _map.GetAnchoredEntities(gridUid.Value, grid, pos))
             {
@@ -98,15 +97,12 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
 
                 foreach (var node in currentNodeComp.Nodes.Values)
                 {
-                    if (node is not PipeNode pipeNode)
-                        continue;
-
-                    if (!pipeNode.CurrentPipeDirection.HasDirection(mainPipeDir))
-                        continue;
-
-                    connectedPipes.Add(dir, pipe);
-                    foundPipe = true;
-                    break;
+                    if (node is PipeNode pipeNode &&
+                        (pipeNode.CurrentPipeDirection == mainPipeDir || (pipeNode.CurrentPipeDirection & mainPipeDir) == mainPipeDir))
+                    {
+                        connectedPipes.Add(dir, pipe);
+                        connectedPipesDir.Add(dir, pipeNode.CurrentPipeDirection);
+                    }
                 }
             }
         }
@@ -119,10 +115,13 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
         {
             component.ConnectedPipes = connectedPipes;
 
-            foreach ((var dir, var pipe) in connectedPipes)
+            if (updateOthers)
             {
-                // update the connected pipes
-                UpdateState(pipe, null, dir);
+                foreach ((var dir, var pipe) in connectedPipes)
+                {
+                    // update the connected pipes
+                    UpdateState(pipe, null, connectedPipesDir[dir]);
+                }
             }
         }
 

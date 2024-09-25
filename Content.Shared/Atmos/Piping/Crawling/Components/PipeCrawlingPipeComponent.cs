@@ -7,6 +7,9 @@ namespace Content.Shared.Atmos.Piping.Crawling.Components;
 public sealed partial class PipeCrawlingPipeComponent : Component
 {
     [ViewVariables]
+    public bool FirstTimeInitialized = false;
+
+    [ViewVariables]
     public List<EntityUid> ContainedEntities = new();
 
     [ViewVariables]
