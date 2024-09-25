@@ -31,7 +31,6 @@
           - PipeCrawling
           layer:
           - PipeCrawling
-    - type: PipeCrawlingPipe
     - type: PipeCrawlingEnterPoint
 
 - type: entity

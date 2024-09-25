@@ -22,24 +22,24 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
 
     private void OnInit(EntityUid uid, PipeCrawlingPipeComponent component, ref ComponentInit args)
     {
-        component.Enabled = UpdateState(uid, component);
+        UpdateState(uid, component);
     }
 
     private void OnAnchored(EntityUid uid, PipeCrawlingPipeComponent component, ref AnchorStateChangedEvent args)
     {
-        component.Enabled = UpdateState(uid, component);
+        UpdateState(uid, component);
     }
 
-    public bool UpdateState(EntityUid uid, PipeCrawlingPipeComponent? component = null, Direction sourceDir = Direction.Invalid)
+    public void UpdateState(EntityUid uid, PipeCrawlingPipeComponent? component = null, Direction sourceDir = Direction.Invalid)
     {
         if (!Resolve(uid, ref component))
-            return false;
+            return;
 
         if (!TryComp<TransformComponent>(uid, out var xform) || !xform.Anchored)
-            return false;
+            return;
 
         if (!TryComp<NodeContainerComponent>(uid, out var nodeComp))
-            return false;
+            return;
 
         // get the current pipes directions to itterate over
         PipeDirection? currentPipeDir = null;
@@ -53,12 +53,12 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
         }
 
         if (currentPipeDir == null || currentPipeDir == PipeDirection.None)
-            return false;
+            return;
 
         var gridUid = xform.GridUid;
 
         if (!TryComp<MapGridComponent>(gridUid, out var grid))
-            return false;
+            return;
 
         var pipeCoords = _map.TileIndicesFor(gridUid!.Value, grid, xform.Coordinates);
 
@@ -109,14 +109,11 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
                     break;
                 }
             }
-
-            if (!foundPipe)
-                component.OpenPipeDir |= dir.AsFlag();
         }
 
 
         if (connectedPipes.Count <=0)
-            return false;
+            return;
 
         if (component.ConnectedPipes != connectedPipes)
         {
@@ -130,6 +127,5 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
         }
 
         Dirty(uid, component);
-        return true;
     }
 }
