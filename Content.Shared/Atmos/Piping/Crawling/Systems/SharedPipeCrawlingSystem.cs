@@ -1,7 +1,4 @@
 using Content.Shared.Atmos.Piping.Crawling.Components;
-using Content.Shared.Movement.Events;
-using Content.Shared.Movement.Systems;
-using Content.Shared.Physics;
 using Content.Shared.SubFloor;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Systems;
@@ -23,7 +20,7 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
         SubscribeLocalEvent<PipeCrawlingComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<PipeCrawlingComponent, ComponentRemove>(OnRemoved);
 
-        SubscribeLocalEvent<PipeCrawlingComponent, MoveInputEvent>(OnMove);
+        SubscribeLocalEvent<PipeCrawlingComponent, MoveEvent>(OnMove);
     }
 
     private void OnInit(EntityUid uid, PipeCrawlingComponent component, ref ComponentInit args)
@@ -59,24 +56,12 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
         trayComp.Enabled = true;
     }
 
-    private void OnMove(EntityUid uid, PipeCrawlingComponent component, ref MoveInputEvent args)
+    private void OnMove(EntityUid uid, PipeCrawlingComponent component, ref MoveEvent args)
     {
-        var buttons = SharedMoverController.GetNormalizedMovement(args.Entity.Comp.HeldMoveButtons);
-
-        if (buttons == MoveButtons.None)
-            return;
-
-        // dont allow diagonal movement
-        if ((buttons & (buttons - 1)) != 0)
-        {
-            ResetPosition(uid, component);
-            return;
-        }
-
         if (!TryComp<PipeCrawlingPipeComponent>(component.CurrentPipe, out var pipeComp))
             return;
 
-        var direction = _xform.GetWorldRotation(uid).GetDir();
+        var direction = Transform(uid).LocalRotation.GetDir();
         (var oldPos, var oldDirection) = component.LastPos;
 
         // are we changing directions
@@ -84,7 +69,7 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
         if (direction != oldDirection && direction.GetOpposite() != oldDirection)
         {
             // does the pipe has a connection to annother pipe in that direction
-            if (!HasDir(pipeComp, direction))
+            if (!pipeComp.ConnectedPipes.ContainsKey(direction))
             {
                 ResetPosition(uid, component);
                 return;
@@ -96,7 +81,8 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
         }
 
         // are we near the center and can we continue
-        if (!HasDir(pipeComp, direction) && AroundCenter(uid, component.CurrentPipe, component))
+        if (!pipeComp.ConnectedPipes.ContainsKey(direction) &&
+            AroundCenter(uid, component.CurrentPipe, component))
         {
             ResetPosition(uid, component);
             return;
@@ -108,25 +94,15 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
         if (currentPos == null || pipePos == null)
             return;
 
-        var nextPipePos = pipePos.Value.Position + direction.ToVec();
-
         // have we moved onto the next pipe
-        if (nextPipePos.Length() <= currentPos.Value.Position.Length())
+        if (pipeComp.ConnectedPipes.ContainsKey(direction) &&
+            AroundCenter(uid, pipeComp.ConnectedPipes[direction], component))
         {
-            // is there a connected pipe
-            if (pipeComp.ConnectedPipes.ContainsKey(direction))
-            {
-                component.CurrentPipe = pipeComp.ConnectedPipes[direction];
-            }
+            component.CurrentPipe = pipeComp.ConnectedPipes[direction];
         }
 
         component.LastPos = (currentPos.Value, direction);
         Dirty(uid, component);
-    }
-
-    private bool HasDir(PipeCrawlingPipeComponent component, Direction direction)
-    {
-        return component.ConnectedPipes.ContainsKey(direction);
     }
 
     private bool AroundCenter(EntityUid player, EntityUid pipe, PipeCrawlingComponent component)
