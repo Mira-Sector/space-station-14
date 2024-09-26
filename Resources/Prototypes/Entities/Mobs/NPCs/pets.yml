@@ -882,3 +882,23 @@
 #  - type: AlwaysRevolutionaryConvertible
   - type: StealTarget
     stealGroup: AnimalTropico
+
+- type: entity
+  name: Coco
+  parent: MobGorilla
+  id: MobCargorillaCoco
+  description: Obsessed with bananas and gambling.
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: Mobs/Pets/cargorilla.rsi
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      state: crawling
+  - type: Tag
+    tags:
+    - CannotSuicide
+  - type: Grammar
+    attributes:
+      proper: true
+      gender: female
