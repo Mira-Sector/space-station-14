@@ -73,6 +73,9 @@
           Searching: { state: pai-searching-overlay }
           On: { state: pai-on-overlay }
   - type: StationMap
+  - type: SpeciesLanguage
+    spokenLanguages:
+    - Binary
 
 - type: entity
   parent: [ PersonalAI, BaseSyndicateContraband]

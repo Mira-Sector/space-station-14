@@ -32,6 +32,8 @@
     states:
       Alive:
         Base: bat
+      Critical:
+        Base: dead
       Dead:
         Base: dead
   - type: Butcherable
@@ -101,6 +103,8 @@
     states:
       Alive:
         Base: 0
+      Critical:
+        Base: dead
       Dead:
         Base: dead
   - type: Item
@@ -170,6 +174,19 @@
     noMovementLayers:
       movement:
         state: chicken-0
+  - type: LeavesFootprints
+    footprintPrototype: FootprintClawLeft
+    footprintPrototypeAlternative: FootprintClawRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-claw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-claw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-claw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-claw-ancient
+      ageThrestholdMin: 20
   - type: Fixtures
     fixtures:
       fix1:
@@ -329,6 +346,19 @@
         - SmallMobMask
         layer:
         - SmallMobLayer
+  - type: LeavesFootprints
+    footprintPrototype: Footprint6LegsLeft
+    footprintPrototypeAlternative: Footprint6LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
+      ageThrestholdMin: 20
   - type: MobState
   - type: MobThresholds
     thresholds:
@@ -341,6 +371,8 @@
     states:
       Alive:
         Base: cockroach
+      Critical:
+        Base: cockroach_dead
       Dead:
         Base: cockroach_dead
   - type: Bloodstream
@@ -629,8 +661,23 @@
     states:
       Alive:
         Base: duck-0
+      Critical:
+        Base: dead-0
       Dead:
         Base: dead-0
+  - type: LeavesFootprints
+    footprintPrototype: FootprintClawLeft
+    footprintPrototypeAlternative: FootprintClawRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-claw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-claw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-claw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-claw-ancient
+      ageThrestholdMin: 20
   - type: Butcherable
     spawned:
     - id: FoodMeatDuck
@@ -669,6 +716,8 @@
     states:
       Alive:
         Base: duck-1
+      Critical:
+        Base: dead-1
       Dead:
         Base: dead-1
 
@@ -686,6 +735,8 @@
     states:
       Alive:
         Base: duck-2
+      Critical:
+        Base: dead-2
       Dead:
         Base: dead-2
 
@@ -745,6 +796,8 @@
     states:
       Alive:
         Base: butterfly
+      Critical:
+        Base: dead
       Dead:
         Base: dead
   - type: Bloodstream
@@ -787,10 +840,25 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
+      ageThrestholdMin: 20
   - type: DamageStateVisuals
     states:
       Alive:
         Base: cow
+      Critical:
+        Base: dead
       Dead:
         Base: dead
   - type: SolutionContainerManager
@@ -865,6 +933,19 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: Footprint6LegsLeft
+    footprintPrototypeAlternative: Footprint6LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
+      ageThrestholdMin: 20
   - type: Speech
     speechVerb: Arachnid
     speechSounds: Arachnid
@@ -873,6 +954,8 @@
     states:
       Alive:
         Base: crab
+      Critical:
+        Base: dead
       Dead:
         Base: dead
   - type: Butcherable
@@ -935,6 +1018,19 @@
       - Goat
     offspring:
     - id: MobGoat
+  - type: LeavesFootprints
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
+      ageThrestholdMin: 20
   - type: ReproductivePartner
   - type: Appearance
   - type: DamageStateVisuals
@@ -1017,10 +1113,25 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: FootprintClawLeft
+    footprintPrototypeAlternative: FootprintClawRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-claw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-claw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-claw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-claw-ancient
+      ageThrestholdMin: 20
   - type: DamageStateVisuals
     states:
       Alive:
         Base: goose
+      Critical:
+        Base: dead
       Dead:
         Base: dead
   - type: Butcherable
@@ -1064,6 +1175,18 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: FootprintFootLeft
+    footprintPrototypeAlternative: FootprintFootRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-foot-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-foot-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-foot-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-foot-ancient
   - type: DamageStateVisuals
     states:
       Alive:
@@ -1124,6 +1247,18 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: FootprintFootLeft
+    footprintPrototypeAlternative: FootprintFootRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-foot-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-foot-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-foot-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-foot-ancient
   - type: Physics
   - type: Inventory
     speciesId: kangaroo
@@ -1221,6 +1356,18 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: FootprintFootLeft
+    footprintPrototypeAlternative: FootprintFootRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-foot-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-foot-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-foot-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-foot-ancient
   - type: Stripping
   - type: Sprite
     drawdepth: Mobs
@@ -1298,6 +1445,7 @@
     tags:
     - VimPilot
     - DoorBumpOpener
+    - AnomalyHost
   - type: Reactive
     groups:
       Flammable: [ Touch ]
@@ -1491,6 +1639,18 @@
     - id: FoodMeat
       amount: 2
   - type: AlwaysRevolutionaryConvertible
+  - type: LeavesFootprints
+    footprintPrototype: FootprintClawLeft
+    footprintPrototypeAlternative: FootprintClawRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-claw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-claw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-claw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-claw-ancient
   - type: GhostTakeoverAvailable
   - type: SentienceTarget
     flavorKind: station-event-random-sentience-flavor-kobold
@@ -1592,6 +1752,18 @@
     noMovementLayers:
       movement:
         state: mouse-0
+  - type: LeavesFootprints
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Item
     size: Tiny
     heldPrefix: 0
@@ -1878,10 +2050,24 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: DamageStateVisuals
     states:
       Alive:
         Base: lizard
+      Critical:
+        Base: dead
       Dead:
         Base: dead
   - type: Butcherable
@@ -1939,6 +2125,8 @@
     states:
       Alive:
         Base: slug
+      Critical:
+        Base: dead
       Dead:
         Base: dead
   - type: Butcherable
@@ -1991,6 +2179,8 @@
     states:
       Alive:
         Base: frog
+      Critical:
+        Base: dead
       Dead:
         Base: dead
   - type: Butcherable
@@ -2041,6 +2231,8 @@
     states:
       Alive:
         Base: parrot
+      Critical:
+        Base: dead
       Dead:
         Base: dead
   - type: Butcherable
@@ -2088,10 +2280,24 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: FootprintClawLeft
+    footprintPrototypeAlternative: FootprintClawRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-claw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-claw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-claw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-claw-ancient
   - type: DamageStateVisuals
     states:
       Alive:
         Base: penguin
+      Critical:
+        Base: penguin_dead
       Dead:
         Base: penguin_dead
   - type: Butcherable
@@ -2161,6 +2367,8 @@
     states:
       Alive:
         Base: penguin
+      Critical:
+        Base: dead
       Dead:
         Base: dead
   - type: MeleeWeapon
@@ -2261,6 +2469,18 @@
     noMovementLayers:
       movement:
         state: tarantula
+  - type: LeavesFootprints
+    footprintPrototype: Footprint8LegsLeft
+    footprintPrototypeAlternative: Footprint8LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Physics
   - type: Fixtures
     fixtures:
@@ -2277,6 +2497,8 @@
     states:
       Alive:
         Base: tarantula
+      Critical:
+        Base: tarantula_dead
       Dead:
         Base: tarantula_dead
   - type: Butcherable
@@ -2402,6 +2624,8 @@
       states:
         Alive:
           Base: clown
+        Critical:
+          Base: dead
         Dead:
           Base: dead
     - type: MobThresholds
@@ -2464,6 +2688,18 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Inventory
     speciesId: possum
     templateId: pet
@@ -2471,6 +2707,8 @@
     states:
       Alive:
         Base: possum
+      Critical:
+        Base: possum_dead
       Dead:
         Base: possum_dead
   - type: Butcherable
@@ -2506,6 +2744,8 @@
     states:
       Alive:
         Base: possum_old
+      Critical:
+        Base: possum_dead_old
       Dead:
         Base: possum_dead_old
 
@@ -2533,6 +2773,18 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Inventory
     speciesId: possum #close enough
     templateId: pet
@@ -2540,6 +2792,8 @@
     states:
       Alive:
         Base: raccoon
+      Critical:
+        Base: raccoon_dead
       Dead:
         Base: raccoon_dead
   - type: Butcherable
@@ -2591,6 +2845,18 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Inventory
     speciesId: fox
     templateId: pet
@@ -2598,6 +2864,8 @@
     states:
       Alive:
         Base: fox
+      Critical:
+        Base: fox_dead
       Dead:
         Base: fox_dead
   - type: Butcherable
@@ -2662,6 +2930,18 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Inventory
     speciesId: dog
     templateId: pet
@@ -2669,6 +2949,8 @@
     states:
       Alive:
         Base: corgi
+      Critical:
+        Base: corgi_dead
       Dead:
         Base: corgi_dead
   - type: Butcherable
@@ -2710,6 +2992,8 @@
     states:
       Alive:
         Base: narsian
+      Critical:
+        Base: narsian_dead
       Dead:
         Base: narsian_dead
   - type: MeleeWeapon
@@ -2804,6 +3088,18 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Inventory
     speciesId: cat
     templateId: pet
@@ -2811,6 +3107,8 @@
     states:
       Alive:
         Base: cat
+      Critical:
+        Base: cat_dead
       Dead:
         Base: cat_dead
   - type: Speech
@@ -2861,6 +3159,8 @@
     states:
       Alive:
         Base: cat2
+      Critical:
+        Base: cat2_dead
       Dead:
         Base: cat2_dead
 
@@ -2878,6 +3178,8 @@
     states:
       Alive:
         Base: syndicat
+      Critical:
+        Base: syndicat_dead
       Dead:
         Base: syndicat_dead
   - type: GhostRole
@@ -2923,6 +3225,8 @@
     states:
       Alive:
         Base: spacecat
+      Critical:
+        Base: spacecat_dead
       Dead:
         Base: spacecat_dead
   - type: Temperature
@@ -2933,7 +3237,7 @@
       - DoorBumpOpener
   - type: MovementAlwaysTouching
   - type: PressureImmunity
-  - type: StepTriggerImmune
+  - type: ProtectedFromStepTriggers
   - type: Insulated
   - type: InteractionPopup
     successChance: 0.7
@@ -2960,6 +3264,8 @@
     states:
       Alive:
         Base: caracal_flop
+      Critical:
+        Base: caracal_dead
       Dead:
         Base: caracal_dead
 
@@ -3023,6 +3329,18 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Inventory
     speciesId: sloth
     templateId: pet
@@ -3030,6 +3348,8 @@
     states:
       Alive:
         Base: sloth
+      Critical:
+        Base: sloth_dead
       Dead:
         Base: sloth_dead
   - type: Butcherable
@@ -3074,6 +3394,18 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Inventory
     speciesId: fox #close enough
     templateId: pet
@@ -3081,6 +3413,8 @@
     states:
       Alive:
         Base: ferret
+      Critical:
+        Base: ferret_dead
       Dead:
         Base: ferret_dead
   - type: Butcherable
@@ -3133,6 +3467,18 @@
     noMovementLayers:
       movement:
         state: hamster-0
+  - type: LeavesFootprints
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Item
     size: Tiny
   - type: Physics
@@ -3268,6 +3614,18 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Inventory
     speciesId: pig
     templateId: pet
@@ -3287,6 +3645,8 @@
     states:
       Alive:
         Base: pig
+      Critical:
+        Base: dead
       Dead:
         Base: dead
   - type: Butcherable
@@ -3335,6 +3695,18 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: Footprint6LegsLeft
+    footprintPrototypeAlternative: Footprint6LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
   - type: Inventory
     speciesId: cat
     templateId: pet

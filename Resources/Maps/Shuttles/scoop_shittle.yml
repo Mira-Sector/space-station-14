@@ -15,7 +15,7 @@ entities:
     - type: MetaData
       name: grid
     - type: Transform
-      pos: 14.998202,0.19897676
+      pos: 0.76965487,0.43496227
       parent: invalid
     - type: MapGrid
       chunks:
@@ -61,25 +61,20 @@ entities:
         chunkSize: 4
     - type: GasTileOverlay
     - type: RadiationGridResistance
-- proto: AirlockExternalGlassShuttleLocked
+- proto: AirlockShuttle
   entities:
   - uid: 110
     components:
     - type: Transform
-      rot: 3.141592653589793 rad
+      rot: -1.5707963267948966 rad
       pos: -1.5,-0.5
       parent: 1
   - uid: 111
     components:
     - type: Transform
+      rot: 1.5707963267948966 rad
       pos: 4.5,-0.5
       parent: 1
-    - type: Door
-      secondsUntilStateChange: -6030.0728
-      state: Opening
-    - type: DeviceLinkSource
-      lastSignals:
-        DoorStatus: True
 - proto: APCHighCapacity
   entities:
   - uid: 10
@@ -507,7 +502,7 @@ entities:
       pos: 2.5,1.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -3658.7825
+      secondsUntilStateChange: -4152.6494
       state: Opening
   - uid: 29
     components:
@@ -515,7 +510,7 @@ entities:
       pos: 0.5,1.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -3658.1323
+      secondsUntilStateChange: -4151.999
       state: Opening
 - proto: CurtainsWhite
   entities:
@@ -525,7 +520,7 @@ entities:
       pos: 1.5,1.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -3658.5156
+      secondsUntilStateChange: -4152.3823
       state: Opening
 - proto: GeneratorBasic15kW
   entities:

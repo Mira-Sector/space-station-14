@@ -233,11 +233,21 @@
     guides:
     - Cyborgs
     - Robotics
-  - type: StepTriggerImmune
+  - type: ProtectedFromStepTriggers
   - type: DamageOnInteractProtection
     damageProtection:
       flatReductions:
         Heat: 10 # capable of touching light bulbs and stoves without feeling pain!
+  - type: SpeciesLanguage
+    spokenLanguages:
+    - Common
+    - Draconic
+    - Moffic
+    - Calcic
+    - Slime
+    - Monkey
+    - Buzzwords
+    - Binary
 
 - type: entity
   abstract: true
@@ -282,8 +292,31 @@
     - AllAccess
   - type: AccessReader
     access: [["Command"], ["Research"]]
+  - type: UserInterface
+    interfaces:
+      enum.SiliconLawsUiKey.Key:
+        type: SiliconLawBoundUserInterface
+      enum.BorgUiKey.Key:
+        type: BorgBoundUserInterface
+      enum.GeneralStationRecordConsoleKey.Key:
+        type: GeneralStationRecordConsoleBoundUserInterface
+      enum.StrippingUiKey.Key:
+        type: StrippableBoundUserInterface
+  - type: ActivatableUI
+    key: enum.BorgUiKey.Key
+  - type: IntrinsicUI
+    uis:
+      enum.GeneralStationRecordConsoleKey.Key:
+        toggleAction: ActionAGhostShowStationRecords
+  - type: GeneralStationRecordConsole
   - type: ShowJobIcons
   - type: ShowMindShieldIcons
+  - type: StatusIcon
+  - type: IdCard
+    accessOverride: false
+    updateName: false
+  - type: PresetIdCard
+    job: Borg
 
 - type: entity
   id: BaseBorgChassisSyndicate

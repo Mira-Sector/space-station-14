@@ -105,13 +105,50 @@
       color: "#FFFFFF80"
 
 - type: entity
+  id: BaseLiquid
+  abstract: true
+  components:
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      slipFixture:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.4,-0.4,0.4,0.4"
+        mask:
+        - ItemMask
+        layer:
+        - SlipLayer
+        hard: false
+  - type: MixableSolution
+    solution: puddle
+  - type: Puddle
+  - type: Drink
+    delay: 3
+    transferAmount: 1
+    solution: puddle
+    examinable: false
+  - type: Appearance
+  - type: ExaminableSolution
+    solution: puddle
+  - type: DrawableSolution
+    solution: puddle
+  - type: BadDrink
+  - type: IgnoresFingerprints
+  - type: Tag
+    tags:
+    - DNASolutionScannable
+
+- type: entity
   name: puddle
   id: Puddle
+  parent: BaseLiquid
   description: A puddle of liquid.
   placement:
     mode: SnapgridCenter
   components:
-  - type: Clickable
   - type: Slippery
   - type: Transform
     noRot: true
@@ -122,24 +159,6 @@
       state: splat0
     drawdepth: FloorObjects
     color: "#FFFFFF80"
-  - type: Physics
-    bodyType: Static
-  - type: Fixtures
-    fixtures:
-      # Context / examine fixture
-      fix1:
-        shape:
-          !type:PhysShapeCircle
-          radius: 0.25
-      slipFixture:
-        shape:
-          !type:PhysShapeAabb
-          bounds: "-0.4,-0.4,0.4,0.4"
-        mask:
-        - ItemMask
-        layer:
-        - SlipLayer
-        hard: false
   - type: IconSmooth
     key: puddles
     base: splat
@@ -148,25 +167,9 @@
     solutions:
       puddle:
         maxVol: 1000
-  - type: Puddle
-  - type: MixableSolution
-    solution: puddle
-  - type: Appearance
   - type: ActiveEdgeSpreader
   - type: EdgeSpreader
     id: Puddle
   - type: StepTrigger
-  - type: Drink
-    delay: 3
-    transferAmount: 1
-    solution: puddle
-    examinable: false
-  - type: ExaminableSolution
-    solution: puddle
-  - type: DrawableSolution
-    solution: puddle
-  - type: BadDrink
-  - type: IgnoresFingerprints
-  - type: Tag
-    tags:
-    - DNASolutionScannable
+  - type: GivesFootprints
+    container: puddle

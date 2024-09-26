@@ -12,6 +12,7 @@
   icon: JobIconStationAi
   supervisors: job-supervisors-rd
   jobEntity: StationAiBrain
+  applyTraits: false
 
 - type: job
   id: Borg
@@ -23,4 +24,5 @@
       time: 216000 # 60 hrs
   canBeAntag: false
   icon: JobIconBorg
-  supervisors: job-supervisors-rd
+  supervisors: job-supervisors-ai
+  applyTraits: false

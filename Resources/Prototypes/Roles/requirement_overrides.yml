@@ -2,171 +2,196 @@
   id: Mira
   jobs:
     Captain:
+    - !type:RoleTimeRequirement
+      role: JobChiefEngineer
+      time: 10800 #5 hours
+    - !type:RoleTimeRequirement
+      role: JobChiefMedicalOfficer
+      time: 10800 #5 hours
+    - !type:RoleTimeRequirement
+      role: JobHeadOfSecurity
+      time: 10800 #5 hours
+    - !type:RoleTimeRequirement
+      role: JobQuartermaster
+      time: 10800 #5 hours
+    - !type:RoleTimeRequirement
+      role: JobResearchDirector
+      time: 10800 #5 hours
+    - !type:RoleTimeRequirement
+      role: JobQuartermaster
+      time: 10800 #5 hours
+    - !type:RoleTimeRequirement
+      role: JobHeadOfPersonnel
+      time: 10800 #5 hours
     - !type:DepartmentTimeRequirement
-      department: Engineering
-      time: 60
-    - !type:DepartmentTimeRequirement
-      department: Medical
-      time: 60
-    - !type:DepartmentTimeRequirement
-      department: Security
-      time: 60
-    - !type:DepartmentTimeRequirement
-      department: Command
-      time: 60
+      department: Civilian
+      time: 10800 #5 hours
+
     HeadOfPersonnel:
     - !type:DepartmentTimeRequirement
       department: Engineering
-      time: 60
+      time: 36000 #10 hours
     - !type:DepartmentTimeRequirement
       department: Medical
-      time: 60
+      time: 36000 #10 hours
     - !type:DepartmentTimeRequirement
       department: Security
-      time: 60
+      time: 36000 #10 hours
     - !type:DepartmentTimeRequirement
       department: Command
-      time: 60
+      time: 36000 #10 hours
+    - !type:DepartmentTimeRequirement
+      department: Science
+      time: 36000 #10 hours
+    - !type:DepartmentTimeRequirement
+      department: Civilian
+      time: 36000 #10 hours
+    - !type:DepartmentTimeRequirement
+      department: Cargo
+      time: 36000 #10 hours
+
     ChiefEngineer:
     - !type:RoleTimeRequirement
       role: JobAtmosphericTechnician
-      time: 10
+      time: 10800 #3 hours
     - !type:RoleTimeRequirement
       role: JobStationEngineer
-      time: 10
+      time: 10800 #3 hours
     - !type:DepartmentTimeRequirement
       department: Engineering
-      time: 10
+      time: 36000 #10 hours
     - !type:OverallPlaytimeRequirement
-      time: 60
+      time: 90000 #20 hours
+
     ChiefMedicalOfficer:
     - !type:RoleTimeRequirement
       role: JobChemist
-      time: 10
+      time: 10800 #3 hours
     - !type:RoleTimeRequirement
       role: JobMedicalDoctor
-      time: 10
+      time: 10800 #3 hours
     - !type:DepartmentTimeRequirement
       department: Medical
-      time: 10
+      time: 36000 #10 hours
     - !type:OverallPlaytimeRequirement
-      time: 60
+      time: 90000 #20 hours
+
     HeadOfSecurity:
     - !type:RoleTimeRequirement
       role: JobWarden
-      time: 10
+      time: 10800 #3 hours
     - !type:RoleTimeRequirement
       role: JobSecurityOfficer
-      time: 10
+      time: 36000 #10 hours
     - !type:DepartmentTimeRequirement
       department: Security
-      time: 10
+      time: 90000 #20 hours
     - !type:OverallPlaytimeRequirement
-      time: 60
+      time: 108000 #30 hours
+
     Quartermaster:
     - !type:RoleTimeRequirement
       role: JobCargoTechnician
-      time: 10
+      time: 10800 #3 hours
     - !type:RoleTimeRequirement
       role: JobSalvageSpecialist
-      time: 10
+      time: 10800 #3 hours
     - !type:DepartmentTimeRequirement
       department: Cargo
-      time: 0
+      time: 36000 #10 hours
     - !type:OverallPlaytimeRequirement
-      time: 60
+      time: 90000 #20 hours
+
     ResearchDirector:
     - !type:DepartmentTimeRequirement
       department: Science
-      time: 10
+      time: 36000 #10 hours
     - !type:OverallPlaytimeRequirement
-      time: 60
+      time: 90000 #20 hours
+
     Brigmedic:
     - !type:DepartmentTimeRequirement
       department: Medical
-      time: 10
+      time: 10800 #3 hours
     - !type:DepartmentTimeRequirement
       department: Security
-      time: 10
+      time: 10800 #3 hours
+
     Detective:
-    - !type:DepartmentTimeRequirement
-      department: Security
-      time: 10
-    SecurityCadet:
-    - !type:OverallPlaytimeRequirement
-      time: 10
+    - !type:RoleTimeRequirement
+      role: JobSecurityOfficer
+      time: 10800 #3 hours
+
     SecurityOfficer:
     - !type:DepartmentTimeRequirement
       department: Security
-      time: 10
+      time: 108000 #5 hours
+
     Warden:
     - !type:RoleTimeRequirement
       role: JobSecurityOfficer
-      time: 10
+      time: 108000 #5 hours
+
     SalvageSpecialist:
     - !type:DepartmentTimeRequirement
       department: Cargo
-      time: 10
-    - !type:OverallPlaytimeRequirement
-      time: 10
+      time: 10800 #3 hours
+
     AtmosphericTechnician:
-    - !type:DepartmentTimeRequirement
-      department: Engineering
-      time: 10
+    - !type:RoleTimeRequirement
+      role: JobStationEngineer
+      time: 10800 #3 hours
+
     StationEngineer:
     - !type:DepartmentTimeRequirement
       department: Engineering
-      time: 10
+      time: 10800 #3 hours
+
     TechnicalAssistant:
     - !type:OverallPlaytimeRequirement
-      time: 10
+      time: 3600 #1 hour
+
     Chemist:
-    - !type:DepartmentTimeRequirement
-      department: Medical
-      time: 10
+    - !type:RoleTimeRequirement
+      role: JobMedicalDoctor
+      time: 10800 #3 hours
+
     MedicalDoctor:
     - !type:DepartmentTimeRequirement
       department: Medical
-      time: 10
+      time: 3600 #1 hour
+
     Paramedic:
     - !type:RoleTimeRequirement
       role: JobMedicalDoctor
-      time: 10
+      time: 3600 #1 hour
     - !type:OverallPlaytimeRequirement
-      time: 10
+      time: 108000 #5 hours
+
     Scientist:
     - !type:DepartmentTimeRequirement
       department: Science
-      time: 10
+      time: 3600 #1 hour
+
     Bartender:
     - !type:DepartmentTimeRequirement
       department: Civilian
       time: 0
+
     Borg:
     - !type:OverallPlaytimeRequirement
-      time: 10
+      time: 10800 # 3 hours
+
     Chef:
     - !type:DepartmentTimeRequirement
       department: Civilian
       time: 0
+
     Lawyer:
-    - !type:OverallPlaytimeRequirement
-      time: 10
+    - !type:DepartmentTimeRequirement
+      department: Security
+      time: 108000 #5 hours
+
     Mime:
     - !type:OverallPlaytimeRequirement
       time: 0
-    Nukeops:
-    - !type:OverallPlaytimeRequirement
-      time: 10
-    NukeopsMedic:
-    - !type:OverallPlaytimeRequirement
-      time: 10
-    - !type:RoleTimeRequirement
-      role: JobChemist
-      time: 10
-    NukeopsCommander:
-    - !type:OverallPlaytimeRequirement
-      time: 10
-    - !type:DepartmentTimeRequirement
-      department: Security
-      time: 10

@@ -435,3 +435,75 @@ Entries:
     type: Add
   id: 66
   time: '2024-09-12T13:55:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Cyborgs now have job icons
+    type: Add
+  - message: Ai are now part of crew
+    type: Tweak
+  - message: Cyborgs can now view the station records
+    type: Add
+  id: 67
+  time: '2024-09-18T00:51:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Footsteps dont soak up an entire puddle
+    type: Fix
+  - message: Footsteps shouldnt appear under no gravity
+    type: Fix
+  id: 68
+  time: '2024-09-18T23:35:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Ion storms are now announced
+    type: Add
+  id: 69 # nice
+  time: '2024-09-18T23:55:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added a law reset button in cyborgs ui
+    type: Add
+  id: 70
+  time: '2024-09-19T01:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Cyborgs can now speak all crew languages
+    type: Add
+  - message: Binary language which cyborgs and pai can speak
+    type: Add
+  - message: Librarian can now speak all languages
+    type: Add
+  - message: Geras can speak slime once again
+    type: Fix
+  id: 71
+  time: '2024-09-19T01:55:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added the obsessed antagonist
+    type: Add
+  id: 72
+  time: '2024-09-19T15:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Spacepens can now be found in emergency boxes again replacing the flare
+    type: Add
+  id: 73
+  time: '2024-09-20T05:40:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Footprins now show their age using the forensic scanner
+    type: Add
+  id: 74
+  time: '2024-09-20T05:40:00.0000000+00:00'
+- author: Dutch-VanDerLinde
+  changes:
+  - message: Added underwear and undershirt markings!
+    type: Add
+  id: 75
+  time: '2024-09-26T05:06:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Coco the cargorilla has finished her training
+    type: Add
+  id: 75
+  time: '2024-09-26T05:09:20.0000000+00:00'

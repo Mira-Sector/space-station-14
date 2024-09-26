@@ -105,6 +105,9 @@ namespace Content.Server.Forensics
         /// </remarks>
         private void StartScan(EntityUid uid, ForensicScannerComponent component, EntityUid user, EntityUid target)
         {
+            var ev = new ForensicScannerBeforeDoAfterEvent();
+            RaiseLocalEvent(target, ref ev);
+
             _doAfterSystem.TryStartDoAfter(new DoAfterArgs(EntityManager, user, component.ScanDelay, new ForensicScannerDoAfterEvent(), uid, target: target, used: uid)
             {
                 BreakOnMove = true,

@@ -49,6 +49,20 @@
       - MobCorgiIanPup
 
 - type: entity
+  name: Dev Mouse Spawner
+  id: SpawnMobCorgiMouse
+  suffix: Admeme
+  parent: MarkerBase
+  components:
+  - type: Sprite
+    layers:
+      - state: green
+      - state: ai
+  - type: ConditionalSpawner
+    prototypes:
+      - MobCorgiMouse
+
+- type: entity
   name: Possum Morty Spawner
   id: SpawnMobPossumMorty
   parent: MarkerBase
@@ -73,6 +87,7 @@
   - type: ConditionalSpawner
     prototypes:
       - MobRaccoonMorticia
+      - MobCargorillaCoco
 
 - type: entity
   name: Fox Renault Spawner

@@ -1,4 +1,4 @@
-﻿roles-antag-syndicate-agent-name = Syndicate agent
+roles-antag-syndicate-agent-name = Syndicate agent
 roles-antag-syndicate-agent-objective = Complete your objectives without being caught.
 
 roles-antag-syndicate-agent-sleeper-name = Syndicate sleeper agent
@@ -39,3 +39,6 @@ roles-antag-dragon-objective = Create a carp army to take over this quadrant.
 
 roles-antag-pirate-name = Pirate
 roles-antag-pirate-objective = Loot the station of all its valuables.
+
+roles-antag-obsessed-name = Obsessed
+roles-antag-obsessed-objective = You are obsessed with someone on the station.

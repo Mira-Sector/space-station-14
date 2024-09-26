@@ -32,3 +32,8 @@
   id: Buzzwords
   name: chat-species-buzzwords
   code: "b"
+
+- type: speciesChannel
+  id: Binary
+  name: chat-species-binary
+  code: "x"

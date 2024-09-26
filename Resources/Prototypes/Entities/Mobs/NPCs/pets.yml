@@ -86,6 +86,29 @@
       gender: female
 
 - type: entity
+  name: real mouse
+  parent: MobCorgiIan
+  id: MobCorgiMouse
+  description: It's 100% a real hungry mouse.
+  components:
+  - type: Sprite
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      state: real_mouse
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: real_mouse
+      Critical:
+        Base: real_mouse_dead
+      Dead:
+        Base: real_mouse_dead
+  - type: Grammar
+    attributes:
+      proper: true
+      gender: female
+
+- type: entity
   name: Puppy Ian
   parent: MobCorgiPuppy
   id: MobCorgiIanPup
@@ -212,6 +235,19 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
+      ageThrestholdMin: 20
   - type: Inventory
     speciesId: cat
     templateId: pet
@@ -269,6 +305,19 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
+      ageThrestholdMin: 20
   - type: Inventory
     speciesId: puppy
     templateId: pet
@@ -362,6 +411,19 @@
         - MobMask
         layer:
         - MobLayer
+  - type: LeavesFootprints
+    footprintPrototype: Footprint4LegsLeft
+    footprintPrototypeAlternative: Footprint4LegsRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-paw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-paw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-paw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-paw-ancient
+      ageThrestholdMin: 20
   - type: Inventory
     speciesId: dog
     templateId: pet
@@ -786,6 +848,7 @@
     - CannotSuicide
     - DoorBumpOpener
     - VimPilot
+    - AnomalyHost
   - type: Loadout
     prototypes: [ MobMonkeyGear ]
   - type: Grammar
@@ -819,3 +882,23 @@
 #  - type: AlwaysRevolutionaryConvertible
   - type: StealTarget
     stealGroup: AnimalTropico
+
+- type: entity
+  name: Coco
+  parent: MobGorilla
+  id: MobCargorillaCoco
+  description: Obsessed with bananas and gambling.
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: Mobs/Pets/cargorilla.rsi
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      state: crawling
+  - type: Tag
+    tags:
+    - CannotSuicide
+  - type: Grammar
+    attributes:
+      proper: true
+      gender: female

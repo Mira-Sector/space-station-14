@@ -27,6 +27,19 @@
           32:
             sprite: Mobs/Species/Human/displacement.rsi
             state: jumpsuit-female
+  - type: LeavesFootprints
+    footprintPrototype: FootprintFootLeft
+    footprintPrototypeAlternative: FootprintFootRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-foot-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-claw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-claw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-claw-ancient
+      ageThrestholdMin: 20
   - type: SpeciesLanguage
     spokenLanguages:
     - Common
