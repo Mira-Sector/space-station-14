@@ -24,6 +24,7 @@ using Content.Shared.Mobs.Components;
 using Content.Shared.Movement.Components;
 using Content.Shared.Parallax.Biomes;
 using Content.Shared.Preferences;
+using Content.Shared.Roles;
 using Content.Shared.Salvage;
 using Content.Shared.Shuttles.Components;
 using Content.Shared.Tiles;
@@ -127,6 +128,7 @@ public sealed class ArrivalsSystem : EntitySystem
 
         _cfgManager.OnValueChanged(CCVars.ArrivalsShuttles, SetArrivals);
         _cfgManager.OnValueChanged(CCVars.GodmodeArrivals, b => ArrivalsGodmode = b);
+        _cfgManager.OnValueChanged(CCVars.ForceArrivals, x => Forced = x);
 
         // Command so admins can set these for funsies
         _console.RegisterCommand("arrivals", ArrivalsCommand, ArrivalsCompletion);
@@ -350,11 +352,19 @@ public sealed class ArrivalsSystem : EntitySystem
         // We use arrivals as the default spawn so don't check for job prio.
 
         // Only works on latejoin even if enabled.
-        if (!Enabled || Forced == 0 && _ticker.RunLevel != GameRunLevel.InRound)
+        if ((!Enabled || Forced == 0) && _ticker.RunLevel != GameRunLevel.InRound)
         {
-        if (!Enabled || _ticker.RunLevel != GameRunLevel.InRound)
             return;
         }
+
+        if (ev.Job != null && ev.Job.Prototype != null &&
+        _protoManager.TryIndex<JobPrototype>(ev.Job.Prototype, out var jobProto) &&
+        jobProto != null &&
+        jobProto.JobEntity != null)
+        {
+            return;
+        }
+
 
         if (!HasComp<StationArrivalsComponent>(ev.Station))
             return;
