@@ -49,25 +49,11 @@ public sealed partial class VehicleComponent : Component
     /// If they should be rendered ontop of the vehicle if true or behind
     /// </summary>
     [DataField]
-    public VehicleRenderOver RenderOver = VehicleRenderOver.None;
+    public DirectionFlag RenderOver = DirectionFlag.None;
 }
 [Serializable, NetSerializable]
 public enum VehicleState : byte
 {
     Animated,
     DrawOver
-}
-
-[Serializable, NetSerializable, Flags]
-public enum VehicleRenderOver
-{
-    None = 0,
-    North = 1,
-    NorthEast = 2,
-    East = 4,
-    SouthEast = 8,
-    South = 16,
-    SouthWest = 32,
-    West = 64,
-    NorthWest = 128,
 }
