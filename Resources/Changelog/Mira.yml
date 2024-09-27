@@ -516,6 +516,12 @@ Entries:
 - author: Callmore
   changes:
   - message: Prefered item quick store locations can be created again.
-    type: Add
+    type: Fix
   id: 77
   time: '2024-09-27T09:45:20.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Hexadecimal radio channel for all silicons including cyborgs
+    type: Add
+  id: 78
+  time: '2024-09-27T10:20:20.0000000+00:00'
