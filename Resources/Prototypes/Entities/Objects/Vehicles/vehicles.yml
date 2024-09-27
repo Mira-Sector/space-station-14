@@ -226,6 +226,15 @@
     friction: 10
     baseSprintSpeed: 3.5
     baseWalkSpeed: 2.5
+  - type: VehicleSignaller
+  - type: DeviceLinkSource
+    ports:
+      - Pressed
+  - type: DeviceNetwork
+    deviceNetId: Wireless
+    receiveFrequencyId: BasicDevice
+  - type: WirelessNetworkConnection
+    range: 5
   - type: StaticPrice
     price: 125
 

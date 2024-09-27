@@ -102,7 +102,7 @@ public abstract partial class SharedVehicleSystem : EntitySystem
         if (component.HornSound == null)
             return;
 
-        _audio.PlayPvs(component.HornSound, component.Owner);
+        _audio.PlayPredicted(component.HornSound, component.Owner, component.Driver);
         args.Handled = true;
     }
 
