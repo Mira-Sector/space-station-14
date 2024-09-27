@@ -81,10 +81,10 @@
   - type: IntrinsicRadioReceiver
   - type: IntrinsicRadioTransmitter
     channels:
-    - Binary
+    - Hexadecimal
   - type: ActiveRadio
     channels:
-    - Binary
+    - Hexadecimal
     - Common
   - type: DoAfter
   - type: Electrified
@@ -105,6 +105,9 @@
     price: 100
   - type: Appearance
   - type: WiresVisuals
+  - type: SpeciesLanguage
+    spokenLanguages:
+    - Binary
 
 - type: entity
   parent: VendingMachine

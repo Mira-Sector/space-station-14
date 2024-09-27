@@ -78,12 +78,14 @@
     channels:
     - Supply
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: ActiveRadio
     channels:
     - Supply
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: AccessReader
@@ -131,12 +133,14 @@
     channels:
     - Engineering
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: ActiveRadio
     channels:
     - Engineering
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: AccessReader
@@ -192,12 +196,14 @@
     channels:
     - Service
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: ActiveRadio
     channels:
     - Service
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: AccessReader
@@ -253,12 +259,14 @@
     channels:
     - Medical
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: ActiveRadio
     channels:
     - Medical
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: AccessReader
@@ -310,12 +318,14 @@
     channels:
     - Service
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: ActiveRadio
     channels:
     - Service
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: AccessReader
