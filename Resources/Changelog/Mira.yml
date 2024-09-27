@@ -513,3 +513,9 @@ Entries:
     type: Add
   id: 76
   time: '2024-09-27T08:55:20.0000000+00:00'
+- author: Callmore
+  changes:
+  - message: Prefered item quick store locations can be created again.
+    type: Add
+  id: 77
+  time: '2024-09-27T09:45:20.0000000+00:00'
