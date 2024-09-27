@@ -11,6 +11,8 @@ using Content.Shared.Movement.Systems;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
+using Robust.Shared.Physics;
+using Robust.Shared.Physics.Systems;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Vehicles;
@@ -24,6 +26,7 @@ public abstract partial class SharedVehicleSystem : EntitySystem
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedBuckleSystem _buckle = default!;
     [Dependency] private readonly SharedMoverController _mover = default!;
+    [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedVirtualItemSystem _virtualItem = default!;
 
     public static readonly EntProtoId HornActionId = "ActionHorn";
@@ -158,6 +161,14 @@ public abstract partial class SharedVehicleSystem : EntitySystem
         }
 
         AddHorns(driver, ent);
+
+        if (!TryComp<FixturesComponent>(ent.Owner, out var fixtureComp))
+            return;
+
+        foreach ((_, var fixture) in fixtureComp.Fixtures)
+        {
+            _physics.SetHard(ent.Owner, fixture, false);
+        }
     }
 
     private void OnStrapped(Entity<VehicleComponent> ent, ref StrappedEvent args)
@@ -249,6 +260,14 @@ public abstract partial class SharedVehicleSystem : EntitySystem
 
         if (TryComp<AccessComponent>(vehicle, out var accessComp))
             accessComp.Tags.Clear();
+
+        if (!TryComp<FixturesComponent>(vehicle, out var fixtureComp))
+            return;
+
+        foreach ((_, var fixture) in fixtureComp.Fixtures)
+        {
+            _physics.SetHard(vehicle, fixture, true);
+        }
     }
 }
 
