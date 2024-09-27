@@ -48,15 +48,13 @@ public sealed class VehicleSystem : SharedVehicleSystem
 
         spriteComp.DrawDepth = (int)Content.Shared.DrawDepth.DrawDepth.Objects;
 
-        if (comp.RenderOver == VehicleRenderOver.None)
+        if (comp.RenderOver == DirectionFlag.None)
             return;
 
         var eye = _eye.CurrentEye;
-        Direction vehicleDir = (Transform(uid).LocalRotation + eye.Rotation).GetCardinalDir();
+        var vehicleDir = (Transform(uid).LocalRotation + eye.Rotation).GetCardinalDir();
 
-        VehicleRenderOver renderOver = (VehicleRenderOver)(1 << (int)vehicleDir);
-
-        if ((comp.RenderOver & renderOver) == renderOver)
+        if (comp.RenderOver.HasFlag(vehicleDir.AsFlag()))
         {
             spriteComp.DrawDepth = (int)Content.Shared.DrawDepth.DrawDepth.OverMobs;
         }
