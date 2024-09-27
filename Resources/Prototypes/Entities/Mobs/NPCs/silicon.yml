@@ -32,8 +32,12 @@
     factions:
     - SimpleNeutral
   - type: IntrinsicRadioReceiver
+  - type: IntrinsicRadioTransmitter
+    channels:
+    - Binary
   - type: ActiveRadio
     channels:
+    - Binary
     - Common
   - type: HealthExaminable
     examinableTypes:
@@ -392,5 +396,6 @@
     - Bot
   - type: ActiveRadio
     channels:
+    - Binary
     - Common
     - Supply
