@@ -32,8 +32,12 @@
     factions:
     - SimpleNeutral
   - type: IntrinsicRadioReceiver
+  - type: IntrinsicRadioTransmitter
+    channels:
+    - Hexadecimal
   - type: ActiveRadio
     channels:
+    - Hexadecimal
     - Common
   - type: HealthExaminable
     examinableTypes:
@@ -107,6 +111,9 @@
   - type: ProtectedFromStepTriggers
   - type: NoSlip
   - type: Insulated
+  - type: SpeciesLanguage
+    spokenLanguages:
+    - Binary
 
 - type: entity
   parent: MobSiliconBase
@@ -392,5 +399,6 @@
     - Bot
   - type: ActiveRadio
     channels:
+    - Hexadecimal
     - Common
     - Supply

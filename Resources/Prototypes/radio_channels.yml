@@ -88,6 +88,15 @@
   longRange: true
 
 - type: radioChannel
+  id: Hexadecimal
+  name: chat-radio-hexadecimal
+  keycode: 'x'
+  frequency: 1212
+  color: "#009d9c"
+  # long range since otherwise it'd defeat the point of a handheld radio independent of telecomms
+  longRange: true
+
+- type: radioChannel
   id: Freelance
   name: chat-radio-freelance
   keycode: 'f'

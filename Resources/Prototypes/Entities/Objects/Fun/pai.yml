@@ -44,8 +44,12 @@
     stopSearchVerbPopup: pai-system-stopped-searching
   - type: Examiner
   - type: IntrinsicRadioReceiver
+  - type: IntrinsicRadioTransmitter
+    channels:
+    - Hexadecimal
   - type: ActiveRadio
     channels:
+    - Hexadecimal
     - Common
   - type: DoAfter
   - type: Actions

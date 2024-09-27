@@ -79,8 +79,12 @@
     speechVerb: Robotic
     speechSounds: Vending
   - type: IntrinsicRadioReceiver
+  - type: IntrinsicRadioTransmitter
+    channels:
+    - Hexadecimal
   - type: ActiveRadio
     channels:
+    - Hexadecimal
     - Common
   - type: DoAfter
   - type: Electrified
@@ -101,6 +105,9 @@
     price: 100
   - type: Appearance
   - type: WiresVisuals
+  - type: SpeciesLanguage
+    spokenLanguages:
+    - Binary
 
 - type: entity
   parent: VendingMachine
