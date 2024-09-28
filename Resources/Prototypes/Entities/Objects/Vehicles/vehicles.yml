@@ -30,10 +30,7 @@
           radius: 0.45
         density: 100
         mask:
-          - Impassable
-          - LowImpassable
-        layer:
-          - LowImpassable
+          - MachineMask
         hard: true
   - type: Pullable
   - type: Damageable

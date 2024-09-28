@@ -224,6 +224,8 @@ public abstract partial class SharedVehicleSystem : EntitySystem
             {
                 accessComp.Tags.Add(tag);
             }
+
+            Dirty(vehicle, accessComp);
         }
 
         _mover.SetRelay(driver, vehicle);
@@ -250,7 +252,10 @@ public abstract partial class SharedVehicleSystem : EntitySystem
         _virtualItem.DeleteInHandsMatching(driver, vehicle);
 
         if (TryComp<AccessComponent>(vehicle, out var accessComp))
+        {
             accessComp.Tags.Clear();
+            Dirty(vehicle, accessComp);
+        }
     }
 }
 
