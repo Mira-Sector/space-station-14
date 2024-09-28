@@ -9,6 +9,7 @@
   - type: Strap
     maxBuckleDistance: 1
     position: Stand
+    ejectOnDown: true
   - type: Appearance
   - type: AmbientSound
     sound: "/Audio/Effects/Vehicle/vehicleengineidle.ogg"
