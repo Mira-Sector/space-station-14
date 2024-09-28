@@ -90,6 +90,12 @@ public sealed partial class StrapComponent : Component
     /// </summary>
     [DataField]
     public bool BuckleOnInteractHand = true;
+
+    /// <summary>
+    /// If the user is downed do we eject them from the strap
+    /// </summary>
+    [DataField]
+    public bool EjectOnDown = false;
 }
 
 public enum StrapPosition
