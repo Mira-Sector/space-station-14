@@ -30,9 +30,10 @@
           radius: 0.45
         density: 100
         mask:
-          - MobMask
+          - Impassable
+          - LowImpassable
         layer:
-          - MobLayer
+          - LowImpassable
         hard: true
   - type: Pullable
   - type: Damageable
