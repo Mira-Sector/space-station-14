@@ -158,23 +158,29 @@ public abstract partial class SharedBuckleSystem
             args.Cancelled = true;
     }
 
-    private void OnBuckleDownAttempt(EntityUid uid, BuckleComponent component, DownAttemptEvent args)
+    private bool EjectOnDown(BuckleComponent component)
     {
         if (component.Buckled)
         {
             TryComp<StrapComponent>(component.BuckledTo, out var strapComp);
 
             if (strapComp == null || !strapComp.EjectOnDown)
-                args.Cancel();
+                return false;
         }
+
+        return true;
+    }
+
+    private void OnBuckleDownAttempt(EntityUid uid, BuckleComponent component, DownAttemptEvent args)
+    {
+        if (!EjectOnDown(component))
+            args.Cancel();
     }
 
     private void OnBuckleDown(EntityUid uid, BuckleComponent component, ref DownedEvent args)
     {
-        if (component.Buckled)
-        {
+        if (EjectOnDown(component))
             Unbuckle((uid, component), uid);
-        }
     }
 
     private void OnBuckleStandAttempt(EntityUid uid, BuckleComponent component, StandAttemptEvent args)
