@@ -531,3 +531,11 @@ Entries:
     type: Fix
   id: 79
   time: '2024-09-27T17:30:20.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: When driving a vehicle you now fall off when crit
+    type: Add
+  - message: Fixed mispredict with vehicles access
+    type: Fix
+  id: 80
+  time: '2024-09-28T14:50:20.0000000+00:00'
