@@ -1,4 +1,5 @@
 using Content.Shared.Actions;
+using Content.Shared.Buckle.Components;
 using Content.Shared.Fluids.Components;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
@@ -21,6 +22,9 @@ public abstract class SharedAbsorbentSystem : EntitySystem
 
         SubscribeLocalEvent<AbsorbentToggleComponent, MapInitEvent>(OnAbsorbentToggleInit);
         SubscribeLocalEvent<AbsorbentToggleComponent, AbsorbentActionEvent>(OnAbsorbentToggleAction);
+
+        SubscribeLocalEvent<AbsorbentToggleComponent, StrappedEvent>(OnStrapped);
+        SubscribeLocalEvent<AbsorbentToggleComponent, UnstrappedEvent>(OnUnstrapped);
     }
 
     private void OnAbsorbentHandleState(EntityUid uid, AbsorbentComponent component, ref ComponentHandleState args)
@@ -43,10 +47,12 @@ public abstract class SharedAbsorbentSystem : EntitySystem
         args.State = new AbsorbentComponentState(component.Progress);
     }
 
-    private void OnAbsorbentToggleInit(EntityUid uid, AbsorbentToggleComponent component, MapInitEvent args)
+    private void OnAbsorbentToggleInit(EntityUid uid, AbsorbentToggleComponent component, ref MapInitEvent args)
     {
-        if (component.AbsorbentAction == null)
-            _actions.AddAction(uid, ref component.AbsorbentAction, component.ToggleActionId, uid);
+        if (component.AbsorbentAction != null)
+            return;
+
+        _actions.AddAction(uid, ref component.AbsorbentAction, component.ToggleActionId, uid);
 
         Dirty(uid, component);
     }
@@ -60,6 +66,18 @@ public abstract class SharedAbsorbentSystem : EntitySystem
         Dirty(uid, component);
 
         args.Handled = true;
+    }
+
+    private void OnStrapped(EntityUid uid, AbsorbentToggleComponent component, ref StrappedEvent args)
+    {
+        _actions.AddAction(args.Buckle, ref component.AbsorbentAction, component.ToggleActionId, uid);
+        Dirty(uid, component);
+    }
+
+    private void OnUnstrapped(EntityUid uid, AbsorbentToggleComponent component, ref UnstrappedEvent args)
+    {
+        _actions.RemoveAction(args.Buckle, component.AbsorbentAction);
+        Dirty(uid, component);
     }
 
     [Serializable, NetSerializable]
