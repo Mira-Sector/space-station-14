@@ -1,6 +1,8 @@
-using System.Linq;
+using Content.Shared.Actions;
+using Content.Shared.Fluids.Components;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
+using System.Linq;
 
 namespace Content.Shared.Fluids;
 
@@ -9,11 +11,16 @@ namespace Content.Shared.Fluids;
 /// </summary>
 public abstract class SharedAbsorbentSystem : EntitySystem
 {
+    [Dependency] private readonly SharedActionsSystem _actions = default!;
+
     public override void Initialize()
     {
         base.Initialize();
         SubscribeLocalEvent<AbsorbentComponent, ComponentGetState>(OnAbsorbentGetState);
         SubscribeLocalEvent<AbsorbentComponent, ComponentHandleState>(OnAbsorbentHandleState);
+
+        SubscribeLocalEvent<AbsorbentToggleComponent, MapInitEvent>(OnAbsorbentToggleInit);
+        SubscribeLocalEvent<AbsorbentToggleComponent, AbsorbentActionEvent>(OnAbsorbentToggleAction);
     }
 
     private void OnAbsorbentHandleState(EntityUid uid, AbsorbentComponent component, ref ComponentHandleState args)
@@ -34,6 +41,25 @@ public abstract class SharedAbsorbentSystem : EntitySystem
     private void OnAbsorbentGetState(EntityUid uid, AbsorbentComponent component, ref ComponentGetState args)
     {
         args.State = new AbsorbentComponentState(component.Progress);
+    }
+
+    private void OnAbsorbentToggleInit(EntityUid uid, AbsorbentToggleComponent component, MapInitEvent args)
+    {
+        if (component.AbsorbentAction == null)
+            _actions.AddAction(uid, ref component.AbsorbentAction, component.ToggleActionId, uid);
+
+        Dirty(uid, component);
+    }
+
+    private void OnAbsorbentToggleAction(EntityUid uid, AbsorbentToggleComponent component, InstantActionEvent args)
+    {
+        if (args.Handled == true)
+            return;
+
+        component.Enabled ^= true;
+        Dirty(uid, component);
+
+        args.Handled = true;
     }
 
     [Serializable, NetSerializable]
