@@ -29,7 +29,15 @@ public sealed class ObsessedRuleSystem : GameRuleSystem<ObsessedRuleComponent>
         if (component.Obsession != null)
             return;
 
-        var obsessionMind = _random.Pick(_mind.GetAliveHumansExcept(mind));
+        var minds = _mind.GetAliveHumansExcept(mind);
+
+        if (minds.Count <= 0)
+        {
+            RemComp<ObsessedRoleComponent>(mind);
+            return;
+        }
+
+        var obsessionMind = _random.Pick(minds);
         component.Obsession = obsessionMind;
 
         if (!TryComp<MindComponent>(obsessionMind, out var mindComp) ||
