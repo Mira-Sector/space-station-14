@@ -196,6 +196,25 @@
     radius: 3.5
     softness: 2
     netsync: false
+  - type: Absorbent
+  - type: AbsorbentToggle
+  - type: Spillable
+    solution: absorbed
+  - type: DrawableSolution
+    solution: absorbed
+  - type: RefillableSolution
+    solution: absorbed
+  - type: DrainableSolution
+    solution: absorbed
+  - type: ExaminableSolution
+    solution: absorbed
+  - type: SolutionContainerManager
+    solutions:
+      absorbed:
+        maxVol: 750
+        reagents:
+        - ReagentId: Water
+          Quantity: 750
 
 - type: entity
   id: VehicleWheelchair

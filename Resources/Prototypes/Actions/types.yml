@@ -362,3 +362,13 @@
     useDelay: 1
     icon: { sprite: Objects/Fun/bikehorn.rsi, state: icon }
     event: !type:SirenActionEvent
+
+- type: entity
+  id: ActionAbsorbent
+  name: Toggle Sweeper Brushes
+  description: Cleans the floor below you.
+  components:
+  - type: InstantAction
+    useDelay: 1
+    icon: { sprite: Objects/Specific/Janitorial/advmop.rsi, state: advmop }
+    event: !type:AbsorbentActionEvent

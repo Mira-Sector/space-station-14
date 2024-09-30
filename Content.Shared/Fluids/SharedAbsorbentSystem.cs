@@ -1,6 +1,9 @@
-using System.Linq;
+using Content.Shared.Actions;
+using Content.Shared.Buckle.Components;
+using Content.Shared.Fluids.Components;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
+using System.Linq;
 
 namespace Content.Shared.Fluids;
 
@@ -9,11 +12,19 @@ namespace Content.Shared.Fluids;
 /// </summary>
 public abstract class SharedAbsorbentSystem : EntitySystem
 {
+    [Dependency] private readonly SharedActionsSystem _actions = default!;
+
     public override void Initialize()
     {
         base.Initialize();
         SubscribeLocalEvent<AbsorbentComponent, ComponentGetState>(OnAbsorbentGetState);
         SubscribeLocalEvent<AbsorbentComponent, ComponentHandleState>(OnAbsorbentHandleState);
+
+        SubscribeLocalEvent<AbsorbentToggleComponent, MapInitEvent>(OnAbsorbentToggleInit);
+        SubscribeLocalEvent<AbsorbentToggleComponent, AbsorbentActionEvent>(OnAbsorbentToggleAction);
+
+        SubscribeLocalEvent<AbsorbentToggleComponent, StrappedEvent>(OnStrapped);
+        SubscribeLocalEvent<AbsorbentToggleComponent, UnstrappedEvent>(OnUnstrapped);
     }
 
     private void OnAbsorbentHandleState(EntityUid uid, AbsorbentComponent component, ref ComponentHandleState args)
@@ -34,6 +45,39 @@ public abstract class SharedAbsorbentSystem : EntitySystem
     private void OnAbsorbentGetState(EntityUid uid, AbsorbentComponent component, ref ComponentGetState args)
     {
         args.State = new AbsorbentComponentState(component.Progress);
+    }
+
+    private void OnAbsorbentToggleInit(EntityUid uid, AbsorbentToggleComponent component, ref MapInitEvent args)
+    {
+        if (component.AbsorbentAction != null)
+            return;
+
+        _actions.AddAction(uid, ref component.AbsorbentAction, component.ToggleActionId, uid);
+
+        Dirty(uid, component);
+    }
+
+    private void OnAbsorbentToggleAction(EntityUid uid, AbsorbentToggleComponent component, InstantActionEvent args)
+    {
+        if (args.Handled == true)
+            return;
+
+        component.Enabled ^= true;
+        Dirty(uid, component);
+
+        args.Handled = true;
+    }
+
+    private void OnStrapped(EntityUid uid, AbsorbentToggleComponent component, ref StrappedEvent args)
+    {
+        _actions.AddAction(args.Buckle, ref component.AbsorbentAction, component.ToggleActionId, uid);
+        Dirty(uid, component);
+    }
+
+    private void OnUnstrapped(EntityUid uid, AbsorbentToggleComponent component, ref UnstrappedEvent args)
+    {
+        _actions.RemoveAction(args.Buckle, component.AbsorbentAction);
+        Dirty(uid, component);
     }
 
     [Serializable, NetSerializable]
