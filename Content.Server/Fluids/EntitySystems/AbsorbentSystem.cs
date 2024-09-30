@@ -7,6 +7,7 @@ using Content.Shared.FixedPoint;
 using Content.Shared.Fluids;
 using Content.Shared.Fluids.Components;
 using Content.Shared.Interaction;
+using Content.Shared.Slippery;
 using Content.Shared.Timing;
 using Content.Shared.Weapons.Melee;
 using Robust.Server.Audio;
@@ -28,8 +29,10 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
     [Dependency] private readonly SharedMeleeWeaponSystem _melee = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
+    [Dependency] private readonly SlipperySystem _slipperySystem = default!;
     [Dependency] private readonly UseDelaySystem _useDelay = default!;
     [Dependency] private readonly MapSystem _mapSystem = default!;
+
 
     public override void Initialize()
     {
@@ -339,6 +342,12 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
         if (!TryComp<AbsorbentComponent>(uid, out var absorbentComp))
         {
             component.Enabled = false;
+            return;
+        }
+
+        if (TryComp<SlipperyComponent>(uid, out var slipperyComp))
+        {
+            _slipperySystem.TrySlip(uid, slipperyComp, args.OtherEntity);
             return;
         }
 

@@ -215,6 +215,8 @@
     interactFailureString: petting-failure-janitor-cyborg
     interactSuccessSound:
       path: /Audio/Ambience/Objects/periodic_beep.ogg
+  - type: Slippery
+    superSlippery: true
   - type: Absorbent
   - type: AbsorbentToggle
   - type: Spillable
