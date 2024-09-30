@@ -6,6 +6,8 @@ using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.FixedPoint;
 using Content.Shared.Fluids;
 using Content.Shared.Fluids.Components;
+using Content.Shared.Gravity;
+using Content.Shared.Movement.Components;
 using Content.Shared.Interaction;
 using Content.Shared.Slippery;
 using Content.Shared.Timing;
@@ -24,6 +26,7 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
 {
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly AudioSystem _audio = default!;
+    [Dependency] private readonly SharedGravitySystem _gravity = default!;
     [Dependency] private readonly PopupSystem _popups = default!;
     [Dependency] private readonly PuddleSystem _puddleSystem = default!;
     [Dependency] private readonly SharedMeleeWeaponSystem _melee = default!;
@@ -32,7 +35,6 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
     [Dependency] private readonly SlipperySystem _slipperySystem = default!;
     [Dependency] private readonly UseDelaySystem _useDelay = default!;
     [Dependency] private readonly MapSystem _mapSystem = default!;
-
 
     public override void Initialize()
     {
@@ -345,12 +347,19 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
             return;
         }
 
-        if (TryComp<SlipperyComponent>(uid, out var slipperyComp))
+        if (_gravity.IsWeightless(uid))
         {
-            _slipperySystem.TrySlip(uid, slipperyComp, args.OtherEntity);
             return;
         }
 
-        Mop(uid, args.OtherEntity, uid, absorbentComp, false);
+        if (HasComp<PuddleComponent>(args.OtherEntity))
+        {
+            Mop(uid, args.OtherEntity, uid, absorbentComp, false);
+        }
+        else if (TryComp<SlipperyComponent>(uid, out var slipperyComp) && HasComp<InputMoverComponent>(args.OtherEntity))
+        {
+            _slipperySystem.TrySlip(uid, slipperyComp, args.OtherEntity);
+        }
+
     }
 }
