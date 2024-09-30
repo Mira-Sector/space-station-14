@@ -1,17 +1,21 @@
 using Content.Shared.Atmos.Piping.Crawling.Components;
+using Content.Shared.Movement.Components;
 using Content.Shared.SubFloor;
 using Robust.Shared.Physics;
+using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
+using Robust.Shared.Timing;
 using System.Numerics;
 
 namespace Content.Shared.Atmos.Piping.Crawling.Systems;
 
 public sealed class SharedPipeCrawlingSystem : EntitySystem
 {
+    [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
 
-    const float PipeCollisionRadius = 0.2f;
+    Vector2 Offset = new Vector2(0.5f, 0.5f);
 
     public override void Initialize()
     {
@@ -61,73 +65,37 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
         if (!TryComp<PipeCrawlingPipeComponent>(component.CurrentPipe, out var pipeComp))
             return;
 
-        var direction = Transform(uid).LocalRotation.GetDir();
-        (var oldPos, var oldDirection) = component.LastPos;
+        if (!TryComp<MovementSpeedModifierComponent>(uid, out var speedComp))
+            return;
 
-        // are we changing directions
-        // dont check going backwards or the same direction
-        if (direction != oldDirection && direction.GetOpposite() != oldDirection)
-        {
-            // does the pipe has a connection to annother pipe in that direction
-            if (!pipeComp.ConnectedPipes.ContainsKey(direction))
-            {
-                ResetPosition(uid, component);
-                return;
-            }
+        if (TryComp<PhysicsComponent>(uid, out var physics))
+            _physics.ResetDynamics(uid, physics);
 
-            // are we around the pipes center to allow turning
-            if (AroundCenter(uid, component.CurrentPipe, component))
-                return;
-        }
-
-        // are we near the center and can we continue
-        if (!pipeComp.ConnectedPipes.ContainsKey(direction) &&
-            AroundCenter(uid, component.CurrentPipe, component))
+        if (component.NextMoveAttempt > _timing.CurTime)
         {
             ResetPosition(uid, component);
             return;
         }
 
-        _xform.TryGetMapOrGridCoordinates(uid, out var currentPos);
-        _xform.TryGetMapOrGridCoordinates(component.CurrentPipe, out var pipePos);
+        component.NextMoveAttempt = _timing.CurTime + TimeSpan.FromSeconds((1f / speedComp.BaseSprintSpeed) * 2f);
 
-        if (currentPos == null || pipePos == null)
-            return;
+        var direction = Transform(uid).LocalRotation.GetDir();
 
-        // have we moved onto the next pipe
-        if (pipeComp.ConnectedPipes.ContainsKey(direction) &&
-            AroundCenter(uid, pipeComp.ConnectedPipes[direction], component))
+        // does the pipe has a connection to annother pipe in that direction
+        if (!pipeComp.ConnectedPipes.ContainsKey(direction))
         {
-            component.CurrentPipe = pipeComp.ConnectedPipes[direction];
+            ResetPosition(uid, component);
+            return;
         }
 
-        component.LastPos = (currentPos.Value, direction);
+        component.CurrentPipe = pipeComp.ConnectedPipes[direction];
+        ResetPosition(uid, component);
         Dirty(uid, component);
-    }
-
-    private bool AroundCenter(EntityUid player, EntityUid pipe, PipeCrawlingComponent component)
-    {
-        _xform.TryGetMapOrGridCoordinates(pipe, out var pipePos);
-        _xform.TryGetMapOrGridCoordinates(player, out var intendedPos);
-
-        if (pipePos == null || intendedPos == null)
-            return false;
-
-        (var lastPos, _) = component.LastPos;
-
-        var distance = Vector2.DistanceSquared(lastPos.Position, intendedPos.Value.Position);
-
-        return distance <= PipeCollisionRadius * PipeCollisionRadius;
     }
 
     private void ResetPosition(EntityUid uid, PipeCrawlingComponent component)
     {
-        (var lastPos, _) = component.LastPos;
-        _xform.TryGetMapOrGridCoordinates(component.CurrentPipe, out var pipePos);
-
-        if (pipePos == null)
-            return;
-
-        _xform.SetCoordinates(uid, pipePos.Value);
+        _xform.TryGetGridTilePosition(component.CurrentPipe, out var pipePos);
+        _xform.SetLocalPositionNoLerp(uid, Vector2.Add(pipePos, Offset));
     }
 }

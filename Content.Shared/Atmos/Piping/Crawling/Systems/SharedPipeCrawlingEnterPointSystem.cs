@@ -127,7 +127,7 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
         pipeComp.ContainedEntities.Add(user);
         var pipeCrawlComp = EnsureComp<PipeCrawlingComponent>(user);
         pipeCrawlComp.CurrentPipe = pipe;
-        pipeCrawlComp.LastPos = (pipePos.Value, pipeRot);
+        pipeCrawlComp.NextMoveAttempt = TimeSpan.Zero;
 
         _xform.SetCoordinates(user, pipePos.Value);
         Dirty(user, pipeCrawlComp);
