@@ -539,3 +539,9 @@ Entries:
     type: Fix
   id: 80
   time: '2024-09-28T14:50:20.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Janitor cyborgs and the janicarts can now clean puddles below them
+    type: Fix
+  id: 81
+  time: '2024-09-30T15:15:20.0000000+00:00'
