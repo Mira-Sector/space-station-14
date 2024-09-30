@@ -542,6 +542,12 @@ Entries:
 - author: Doctor-Cpu
   changes:
   - message: Janitor cyborgs and the janicarts can now clean puddles below them
-    type: Fix
+    type: Add
   id: 81
   time: '2024-09-30T15:15:20.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Obsessed now show up in round end screen
+    type: Fix
+  id: 82
+  time: '2024-09-30T17:25:20.0000000+00:00'
