@@ -8,4 +8,7 @@ public sealed partial class DamageOnStepComponent : Component
 
     [DataField]
     public DamageSpecifier Damage = new();
+
+    [DataField]
+    public float RequiredMass = 50f;
 }

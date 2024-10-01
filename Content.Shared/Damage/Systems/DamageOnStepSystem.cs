@@ -1,4 +1,5 @@
 using Content.Shared.Damage.Components;
+using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Events;
 
 namespace Content.Shared.Damage.Systems;
@@ -16,6 +17,13 @@ public sealed class DamageOnStepSystem : EntitySystem
     {
         if (!component.Enabled)
             return;
+
+        if (!TryComp<PhysicsComponent>(args.OtherEntity, out var physicsComp))
+            return;
+
+        if (physicsComp.Mass < component.RequiredMass)
+            return;
+
         _damageableSystem.TryChangeDamage(uid, component.Damage);
     }
 }
