@@ -551,3 +551,9 @@ Entries:
     type: Fix
   id: 82
   time: '2024-09-30T17:25:20.0000000+00:00'
+- author: EggExe
+  changes:
+  - message: Cockroaches can now be squished stepping on them
+    type: Add
+  id: 83
+  time: '2024-10-01T23:00:00.0000000+00:00'
