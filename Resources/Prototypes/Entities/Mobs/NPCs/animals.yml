@@ -423,6 +423,11 @@
     damage:
       types:
         Piercing: 0
+  - type: DamageOnStep
+    damage:
+      types:
+        Blunt: 10
+
 
 - type: entity
   name: glockroach
