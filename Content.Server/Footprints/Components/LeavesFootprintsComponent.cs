@@ -7,7 +7,7 @@ public sealed partial class LeavesFootprintsComponent : Component
     /// How many footsteps to leave behind the player once they step on something which gives it
     /// </summary>
     [DataField]
-    public uint MaxFootsteps = 12;
+    public uint MaxFootsteps = 8;
 
     /// <summary>
     /// How far should the player have to walk until we leave a footprint
