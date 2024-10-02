@@ -78,12 +78,14 @@
     channels:
     - Supply
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: ActiveRadio
     channels:
     - Supply
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: AccessReader
@@ -131,12 +133,14 @@
     channels:
     - Engineering
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: ActiveRadio
     channels:
     - Engineering
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: AccessReader
@@ -192,12 +196,14 @@
     channels:
     - Service
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: ActiveRadio
     channels:
     - Service
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: AccessReader
@@ -209,6 +215,27 @@
     interactFailureString: petting-failure-janitor-cyborg
     interactSuccessSound:
       path: /Audio/Ambience/Objects/periodic_beep.ogg
+  - type: Slippery
+    superSlippery: true
+  - type: Absorbent
+  - type: AbsorbentToggle
+  - type: Spillable
+    solution: absorbed
+  - type: DrawableSolution
+    solution: absorbed
+  - type: RefillableSolution
+    solution: absorbed
+  - type: DrainableSolution
+    solution: absorbed
+  - type: ExaminableSolution
+    solution: absorbed
+  - type: SolutionContainerManager
+    solutions:
+      absorbed:
+        maxVol: 750
+        reagents:
+        - ReagentId: Water
+          Quantity: 750
 
 - type: entity
   id: BorgChassisMedical
@@ -253,12 +280,14 @@
     channels:
     - Medical
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: ActiveRadio
     channels:
     - Medical
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: AccessReader
@@ -310,12 +339,14 @@
     channels:
     - Service
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: ActiveRadio
     channels:
     - Service
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: AccessReader

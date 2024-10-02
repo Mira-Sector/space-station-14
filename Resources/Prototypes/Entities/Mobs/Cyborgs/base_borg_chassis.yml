@@ -90,11 +90,13 @@
   - type: IntrinsicRadioTransmitter
     channels:
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: ActiveRadio
     channels:
     - Binary
+    - Hexadecimal
     - Common
     - Science
   - type: ZombieImmune
@@ -337,6 +339,7 @@
   - type: IntrinsicRadioTransmitter
     channels:
     - Binary
+    - Hexadecimal
     - Syndicate
   - type: ActiveRadio
     channels:

@@ -6,6 +6,7 @@ using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Fluids;
 using Content.Shared.Inventory;
 using Content.Shared.Gravity;
+using Content.Shared.Slippery;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
@@ -146,6 +147,12 @@ public sealed partial class FootprintSystem : EntitySystem
         if (_inventory.TryGetSlotEntity(uid, ShoeSlot, out var shoe) &&
             HasComp<LeavesFootprintsComponent>(shoe)) // check if their shoes have it too
         {
+            if (HasComp<NoSlipComponent>(shoe))
+            {
+                CleanupFootprintComp(uid, shoe);
+                return false;
+            }
+
             messMaker = shoe.Value;
         }
         else if (HasComp<LeavesFootprintsComponent>(uid))
@@ -177,9 +184,10 @@ public sealed partial class FootprintSystem : EntitySystem
 
     private void CleanupFootprintComp(EntityUid player, EntityUid? shoe)
     {
-        RemComp<CanLeaveFootprintsComponent>(player);
 
         if (shoe != null)
             RemComp<CanLeaveFootprintsComponent>(shoe.Value);
+        else
+            RemComp<CanLeaveFootprintsComponent>(player);
     }
 }

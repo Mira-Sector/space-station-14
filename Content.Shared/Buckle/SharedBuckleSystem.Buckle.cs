@@ -49,6 +49,7 @@ public abstract partial class SharedBuckleSystem
 
         SubscribeLocalEvent<BuckleComponent, PreventCollideEvent>(OnBucklePreventCollide);
         SubscribeLocalEvent<BuckleComponent, DownAttemptEvent>(OnBuckleDownAttempt);
+        SubscribeLocalEvent<BuckleComponent, DownedEvent>(OnBuckleDown);
         SubscribeLocalEvent<BuckleComponent, StandAttemptEvent>(OnBuckleStandAttempt);
         SubscribeLocalEvent<BuckleComponent, ThrowPushbackAttemptEvent>(OnBuckleThrowPushbackAttempt);
         SubscribeLocalEvent<BuckleComponent, UpdateCanMoveEvent>(OnBuckleUpdateCanMove);
@@ -58,13 +59,6 @@ public abstract partial class SharedBuckleSystem
         {
             BuckleDoafterEarly((uid, comp), ev.Event, ev);
         });
-
-        SubscribeLocalEvent<BuckleComponent, ComponentGetState>(OnGetState);
-    }
-
-    private void OnGetState(Entity<BuckleComponent> ent, ref ComponentGetState args)
-    {
-        args.State = new BuckleState(GetNetEntity(ent.Comp.BuckledTo), ent.Comp.DontCollide, ent.Comp.BuckleTime);
     }
 
     private void OnBuckleComponentShutdown(Entity<BuckleComponent> ent, ref ComponentShutdown args)
@@ -164,10 +158,29 @@ public abstract partial class SharedBuckleSystem
             args.Cancelled = true;
     }
 
-    private void OnBuckleDownAttempt(EntityUid uid, BuckleComponent component, DownAttemptEvent args)
+    private bool EjectOnDown(BuckleComponent component)
     {
         if (component.Buckled)
+        {
+            TryComp<StrapComponent>(component.BuckledTo, out var strapComp);
+
+            if (strapComp == null || !strapComp.EjectOnDown)
+                return false;
+        }
+
+        return true;
+    }
+
+    private void OnBuckleDownAttempt(EntityUid uid, BuckleComponent component, DownAttemptEvent args)
+    {
+        if (!EjectOnDown(component))
             args.Cancel();
+    }
+
+    private void OnBuckleDown(EntityUid uid, BuckleComponent component, ref DownedEvent args)
+    {
+        if (EjectOnDown(component))
+            Unbuckle((uid, component), uid);
     }
 
     private void OnBuckleStandAttempt(EntityUid uid, BuckleComponent component, StandAttemptEvent args)
@@ -196,11 +209,15 @@ public abstract partial class SharedBuckleSystem
     protected void SetBuckledTo(Entity<BuckleComponent> buckle, Entity<StrapComponent?>? strap)
     {
         if (TryComp(buckle.Comp.BuckledTo, out StrapComponent? old))
+        {
             old.BuckledEntities.Remove(buckle);
+            Dirty(buckle.Comp.BuckledTo.Value, old);
+        }
 
         if (strap is {} strapEnt && Resolve(strapEnt.Owner, ref strapEnt.Comp))
         {
             strapEnt.Comp.BuckledEntities.Add(buckle);
+            Dirty(strapEnt);
             _alerts.ShowAlert(buckle, strapEnt.Comp.BuckledAlertType);
         }
         else
@@ -268,7 +285,7 @@ public abstract partial class SharedBuckleSystem
             return false;
         }
 
-        if (buckleComp.Buckled)
+        if (buckleComp.Buckled && !TryUnbuckle(buckleUid, user, buckleComp))
         {
             if (popup)
             {
@@ -463,13 +480,17 @@ public abstract partial class SharedBuckleSystem
 
         if (buckleXform.ParentUid == strap.Owner && !Terminating(buckleXform.ParentUid))
         {
-            _container.AttachParentToContainerOrGrid((buckle, buckleXform));
+            _transform.PlaceNextTo((buckle, buckleXform), (strap.Owner, oldBuckledXform));
+            buckleXform.ActivelyLerping = false;
 
             var oldBuckledToWorldRot = _transform.GetWorldRotation(strap);
-            _transform.SetWorldRotation(buckleXform, oldBuckledToWorldRot);
+            _transform.SetWorldRotationNoLerp((buckle, buckleXform), oldBuckledToWorldRot);
 
-            if (strap.Comp.UnbuckleOffset != Vector2.Zero)
-                buckleXform.Coordinates = oldBuckledXform.Coordinates.Offset(strap.Comp.UnbuckleOffset);
+            // TODO: This is doing 4 moveevents this is why I left the warning in, if you're going to remove it make it only do 1 moveevent.
+            if (strap.Comp.BuckleOffset != Vector2.Zero)
+            {
+                buckleXform.Coordinates = oldBuckledXform.Coordinates.Offset(strap.Comp.BuckleOffset);
+            }
         }
 
         _rotationVisuals.ResetHorizontalAngle(buckle.Owner);

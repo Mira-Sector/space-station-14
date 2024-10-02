@@ -10,6 +10,7 @@
   - MinorAntagonists
   - SpaceNinja
   - Thieves
+  - Obsessed
 
 - type: guideEntry
   id: Traitors
@@ -45,3 +46,8 @@
   id: Thieves
   name: guide-entry-thieves
   text: "/ServerInfo/Guidebook/Antagonist/Thieves.xml"
+
+- type: guideEntry
+  id: Obsessed
+  name: guide-entry-obsessed
+  text: "/ServerInfo/Guidebook/Antagonist/Obsessed.xml"

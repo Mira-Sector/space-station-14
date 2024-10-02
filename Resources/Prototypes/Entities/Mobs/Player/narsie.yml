@@ -72,6 +72,7 @@
   - type: ActiveRadio
     channels:
     - Binary
+    - Hexadecimal
     - Common
     - Command
     - CentCom
