@@ -557,3 +557,11 @@ Entries:
     type: Add
   id: 83
   time: '2024-10-01T23:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Lowered the ammount of footprints produced by one puddle
+    type: Tweak
+  - message: No slips do not leave footprints
+    type: Tweak
+  id: 84
+  time: '2024-10-02T16:00:00.0000000+00:00'
