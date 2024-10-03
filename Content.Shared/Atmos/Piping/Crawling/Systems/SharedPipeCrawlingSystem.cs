@@ -1,5 +1,6 @@
 using Content.Shared.Atmos.Piping.Crawling.Components;
 using Content.Shared.Movement.Components;
+using Content.Shared.Movement.Events;
 using Content.Shared.SubFloor;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
@@ -24,17 +25,27 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
         SubscribeLocalEvent<PipeCrawlingComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<PipeCrawlingComponent, ComponentRemove>(OnRemoved);
 
-        SubscribeLocalEvent<PipeCrawlingComponent, MoveEvent>(OnMove);
+        SubscribeLocalEvent<PipeCrawlingComponent, MoveInputEvent>(OnMove);
     }
 
     private void OnInit(EntityUid uid, PipeCrawlingComponent component, ref ComponentInit args)
     {
         SetState(uid, component, true);
+
+        if (!TryComp<InputMoverComponent>(uid, out var inputComp))
+            return;
+
+        inputComp.CanMove = false;
     }
 
     private void OnRemoved(EntityUid uid, PipeCrawlingComponent component, ref ComponentRemove args)
     {
         SetState(uid, component, false);
+
+        if (!TryComp<InputMoverComponent>(uid, out var inputComp))
+            return;
+
+        inputComp.CanMove = true;
     }
 
     private void SetState(EntityUid uid, PipeCrawlingComponent component, bool enabled)
@@ -60,7 +71,7 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
         trayComp.Enabled = true;
     }
 
-    private void OnMove(EntityUid uid, PipeCrawlingComponent component, ref MoveEvent args)
+    private void OnMove(EntityUid uid, PipeCrawlingComponent component, ref MoveInputEvent args)
     {
         if (!TryComp<PipeCrawlingPipeComponent>(component.CurrentPipe, out var pipeComp))
             return;
@@ -77,7 +88,7 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
             return;
         }
 
-        component.NextMoveAttempt = _timing.CurTime + TimeSpan.FromSeconds((1f / speedComp.BaseSprintSpeed) * 2f);
+        component.NextMoveAttempt = _timing.CurTime + TimeSpan.FromSeconds(1f / speedComp.BaseSprintSpeed);
 
         var direction = Transform(uid).LocalRotation.GetDir();
 
