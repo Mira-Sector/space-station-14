@@ -5,7 +5,7 @@
   minPlayers: 5
   maxPlayers: 20
   stations:
-    Mirstation:
+    Mir:
       stationProto: StandardNanotrasenStation
       components:
         - type: StationNameSetup
