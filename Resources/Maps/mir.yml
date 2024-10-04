@@ -91,7 +91,7 @@ entities:
   - uid: 2
     components:
     - type: MetaData
-      name: Security Shuttle
+      name: "Security Shuttle"
     - type: Transform
       parent: 1
     - type: BecomesStation
