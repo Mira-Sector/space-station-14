@@ -37,6 +37,9 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
 
     private void OnVerb(EntityUid uid, PipeCrawlingEnterPointComponent component, GetVerbsEvent<ActivationVerb> args)
     {
+        if (!HasComp<CanEnterPipeCrawlingComponent>(args.User))
+            return;
+
         if (!args.CanAccess || !args.CanInteract)
             return;
 

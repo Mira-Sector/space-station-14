@@ -415,6 +415,7 @@
   - type: NonSpreaderZombie
   - type: SentienceTarget
     flavorKind: station-event-random-sentience-flavor-organic
+  - type: CanEnterPipeCrawling
 
 - type: entity
   name: glockroach
@@ -1902,6 +1903,7 @@
       Taco: RatTaco
       Burger: RatBurger
       Skewer: RatSkewer
+  - type: CanEnterPipeCrawling
 
 - type: entity
   parent: MobMouse
@@ -2580,6 +2582,7 @@
       groups:
         Brute: -0.07
         Burn: -0.07
+  - type: CanEnterPipeCrawling
 
 - type: entity
   name: tarantula
