@@ -14,6 +14,7 @@ namespace Content.Shared.Atmos.Piping.Crawling.Systems;
 public sealed class SharedPipeCrawlingSystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly SharedMoverController _movement = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
 
@@ -45,6 +46,9 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
             if (!TryComp<MovementSpeedModifierComponent>(uid, out var speedComp))
                 continue;
 
+            if (!TryComp<InputMoverComponent>(uid, out var inputComp))
+                continue;
+
             if (TryComp<PhysicsComponent>(uid, out var physics))
                 _physics.ResetDynamics(uid, physics);
 
@@ -54,9 +58,10 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
                 continue;
             }
 
-            component.NextMoveAttempt = _timing.CurTime + TimeSpan.FromSeconds(1f / speedComp.BaseSprintSpeed);
+            (_, var sprintingVec) = _movement.GetVelocityInput(inputComp);
+            var direction = sprintingVec.GetDir();
 
-            var direction = Transform(uid).LocalRotation.GetDir();
+            component.NextMoveAttempt = _timing.CurTime + TimeSpan.FromSeconds(1f / speedComp.BaseSprintSpeed);
 
             // does the pipe has a connection to annother pipe in that direction
             if (!pipeComp.ConnectedPipes.ContainsKey(direction))
