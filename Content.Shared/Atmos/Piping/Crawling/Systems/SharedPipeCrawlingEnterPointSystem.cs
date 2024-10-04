@@ -121,6 +121,9 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
         if (!TryComp<PipeCrawlingPipeComponent>(pipe, out var pipeComp))
             return;
 
+        if (pipeComp.ContainedEntities.Contains(user))
+            return;
+
         _xform.TryGetMapOrGridCoordinates(pipe, out var pipePos);
         var pipeRot = _xform.GetWorldRotation(pipe).GetDir();
 
@@ -139,6 +142,9 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
     private void PipeExit(EntityUid user, EntityUid pipe)
     {
         if (!TryComp<PipeCrawlingPipeComponent>(pipe, out var pipeComp))
+            return;
+
+        if (!pipeComp.ContainedEntities.Contains(user))
             return;
 
         pipeComp.ContainedEntities.Remove(user);

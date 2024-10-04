@@ -7,6 +7,7 @@ namespace Content.Shared.Atmos.Piping.Crawling.Components;
 public sealed partial class PipeCrawlingPipeComponent : Component
 {
     [ViewVariables]
+    [AutoNetworkedField]
     public List<EntityUid> ContainedEntities = new();
 
     [ViewVariables]

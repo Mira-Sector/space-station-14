@@ -71,10 +71,23 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
                 continue;
             }
 
-            component.CurrentPipe = pipeComp.ConnectedPipes[direction];
+            var newPipe = pipeComp.ConnectedPipes[direction];
+
+            if (TryComp<PipeCrawlingPipeComponent>(component.CurrentPipe, out var currentPipeComp))
+            {
+                currentPipeComp.ContainedEntities.Remove(uid);
+                Dirty(component.CurrentPipe, currentPipeComp);
+            }
+
+            if (TryComp<PipeCrawlingPipeComponent>(newPipe, out var newPipeComp))
+            {
+                newPipeComp.ContainedEntities.Add(uid);
+                Dirty(newPipe, newPipeComp);
+            }
+
+            component.CurrentPipe = newPipe;
             ResetPosition(uid, component, direction);
             Dirty(uid, component);
-
         }
     }
 

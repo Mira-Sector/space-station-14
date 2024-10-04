@@ -22,6 +22,15 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
     private void OnAnchored(EntityUid uid, PipeCrawlingPipeComponent component, ref AnchorStateChangedEvent args)
     {
         UpdateState(uid, component);
+
+        if (Transform(uid).Anchored)
+            return;
+
+        foreach (var player in component.ContainedEntities)
+        {
+            RemComp<PipeCrawlingComponent>(player);
+        }
+
     }
 
     public void UpdateState(EntityUid uid, PipeCrawlingPipeComponent? component = null, PipeDirection? currentPipeDir = null, EntityUid? updater = null)
