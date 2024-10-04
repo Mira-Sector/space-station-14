@@ -14,6 +14,7 @@ namespace Content.Shared.Atmos.Piping.Crawling.Systems;
 public sealed class SharedPipeCrawlingSystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedMoverController _movement = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
@@ -82,6 +83,11 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
         _xform.TryGetGridTilePosition(component.CurrentPipe, out var pipePos);
         _xform.SetLocalPositionNoLerp(uid, Vector2.Add(pipePos, Offset));
         _xform.SetLocalRotationNoLerp(uid, direction.ToAngle());
+
+        if (!TryComp<AppearanceComponent>(uid, out var appearanceComp))
+            return;
+
+        _appearance.SetData(uid, SubFloorVisuals.Covered, true, appearanceComp);
     }
 
     private void OnInit(EntityUid uid, PipeCrawlingComponent component, ref ComponentInit args)
@@ -112,9 +118,21 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
             }
         }
 
-        var trayComp = EnsureComp<TrayScannerComponent>(uid);
-        trayComp.EnabledEntity = true;
-        trayComp.Enabled = true;
+        if (enabled)
+        {
+            var trayComp = EnsureComp<TrayScannerComponent>(uid);
+            trayComp.EnabledEntity = true;
+            trayComp.Enabled = true;
+        }
+        else if (HasComp<TrayScannerComponent>(uid))
+        {
+            RemComp<TrayScannerComponent>(uid);
+        }
+
+        var subfloorComp = EnsureComp<SubFloorHideComponent>(uid);
+
+        var appearanceComp = EnsureComp<AppearanceComponent>(uid);
+        _appearance.SetData(uid, SubFloorVisuals.Covered, enabled, appearanceComp);
 
         if (!TryComp<InputMoverComponent>(uid, out var inputComp))
             return;
