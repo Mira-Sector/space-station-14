@@ -13,4 +13,7 @@ public sealed partial class PipeCrawlingComponent : Component
 
     [ViewVariables]
     public TimeSpan NextMoveAttempt;
+
+    [ViewVariables]
+    public bool IsMoving = false;
 }

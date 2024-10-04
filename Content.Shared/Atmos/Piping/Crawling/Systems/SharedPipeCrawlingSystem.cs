@@ -1,6 +1,7 @@
 using Content.Shared.Atmos.Piping.Crawling.Components;
 using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Events;
+using Content.Shared.Movement.Systems;
 using Content.Shared.SubFloor;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
@@ -26,6 +27,54 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
         SubscribeLocalEvent<PipeCrawlingComponent, ComponentRemove>(OnRemoved);
 
         SubscribeLocalEvent<PipeCrawlingComponent, MoveInputEvent>(OnMove);
+    }
+
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+
+        var query = EntityQueryEnumerator<PipeCrawlingComponent>();
+        while (query.MoveNext(out var uid, out var component))
+        {
+            if (!component.IsMoving)
+                continue;
+
+            if (!TryComp<PipeCrawlingPipeComponent>(component.CurrentPipe, out var pipeComp))
+                continue;
+
+            if (!TryComp<MovementSpeedModifierComponent>(uid, out var speedComp))
+                continue;
+
+            if (TryComp<PhysicsComponent>(uid, out var physics))
+                _physics.ResetDynamics(uid, physics);
+
+            if (component.NextMoveAttempt > _timing.CurTime)
+            {
+                ResetPosition(uid, component);
+                continue;
+            }
+
+            component.NextMoveAttempt = _timing.CurTime + TimeSpan.FromSeconds(1f / speedComp.BaseSprintSpeed);
+
+            var direction = Transform(uid).LocalRotation.GetDir();
+
+            // does the pipe has a connection to annother pipe in that direction
+            if (!pipeComp.ConnectedPipes.ContainsKey(direction))
+            {
+                ResetPosition(uid, component);
+                continue;
+            }
+
+            component.CurrentPipe = pipeComp.ConnectedPipes[direction];
+            ResetPosition(uid, component);
+            Dirty(uid, component);
+        }
+    }
+
+    private void ResetPosition(EntityUid uid, PipeCrawlingComponent component)
+    {
+        _xform.TryGetGridTilePosition(component.CurrentPipe, out var pipePos);
+        _xform.SetLocalPositionNoLerp(uid, Vector2.Add(pipePos, Offset));
     }
 
     private void OnInit(EntityUid uid, PipeCrawlingComponent component, ref ComponentInit args)
@@ -73,40 +122,6 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
 
     private void OnMove(EntityUid uid, PipeCrawlingComponent component, ref MoveInputEvent args)
     {
-        if (!TryComp<PipeCrawlingPipeComponent>(component.CurrentPipe, out var pipeComp))
-            return;
-
-        if (!TryComp<MovementSpeedModifierComponent>(uid, out var speedComp))
-            return;
-
-        if (TryComp<PhysicsComponent>(uid, out var physics))
-            _physics.ResetDynamics(uid, physics);
-
-        if (component.NextMoveAttempt > _timing.CurTime)
-        {
-            ResetPosition(uid, component);
-            return;
-        }
-
-        component.NextMoveAttempt = _timing.CurTime + TimeSpan.FromSeconds(1f / speedComp.BaseSprintSpeed);
-
-        var direction = Transform(uid).LocalRotation.GetDir();
-
-        // does the pipe has a connection to annother pipe in that direction
-        if (!pipeComp.ConnectedPipes.ContainsKey(direction))
-        {
-            ResetPosition(uid, component);
-            return;
-        }
-
-        component.CurrentPipe = pipeComp.ConnectedPipes[direction];
-        ResetPosition(uid, component);
-        Dirty(uid, component);
-    }
-
-    private void ResetPosition(EntityUid uid, PipeCrawlingComponent component)
-    {
-        _xform.TryGetGridTilePosition(component.CurrentPipe, out var pipePos);
-        _xform.SetLocalPositionNoLerp(uid, Vector2.Add(pipePos, Offset));
+        component.IsMoving = (args.Entity.Comp.HeldMoveButtons & (MoveButtons.Down | MoveButtons.Left | MoveButtons.Up | MoveButtons.Right)) != 0x0;
     }
 }
