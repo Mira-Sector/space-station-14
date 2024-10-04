@@ -73,6 +73,7 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
             component.CurrentPipe = pipeComp.ConnectedPipes[direction];
             ResetPosition(uid, component, direction);
             Dirty(uid, component);
+
         }
     }
 
@@ -86,21 +87,11 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
     private void OnInit(EntityUid uid, PipeCrawlingComponent component, ref ComponentInit args)
     {
         SetState(uid, component, true);
-
-        if (!TryComp<InputMoverComponent>(uid, out var inputComp))
-            return;
-
-        inputComp.CanMove = false;
     }
 
     private void OnRemoved(EntityUid uid, PipeCrawlingComponent component, ref ComponentRemove args)
     {
         SetState(uid, component, false);
-
-        if (!TryComp<InputMoverComponent>(uid, out var inputComp))
-            return;
-
-        inputComp.CanMove = true;
     }
 
     private void SetState(EntityUid uid, PipeCrawlingComponent component, bool enabled)
@@ -124,6 +115,11 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
         var trayComp = EnsureComp<TrayScannerComponent>(uid);
         trayComp.EnabledEntity = true;
         trayComp.Enabled = true;
+
+        if (!TryComp<InputMoverComponent>(uid, out var inputComp))
+            return;
+
+        inputComp.CanMove = !enabled;
     }
 
     private void OnMove(EntityUid uid, PipeCrawlingComponent component, ref MoveInputEvent args)
