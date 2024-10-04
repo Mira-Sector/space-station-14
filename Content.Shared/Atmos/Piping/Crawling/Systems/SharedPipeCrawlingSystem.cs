@@ -52,34 +52,35 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
             if (TryComp<PhysicsComponent>(uid, out var physics))
                 _physics.ResetDynamics(uid, physics);
 
-            if (component.NextMoveAttempt > _timing.CurTime)
-            {
-                ResetPosition(uid, component);
-                continue;
-            }
-
             (_, var sprintingVec) = _movement.GetVelocityInput(inputComp);
             var direction = sprintingVec.GetDir();
+
+            if (component.NextMoveAttempt > _timing.CurTime)
+            {
+                ResetPosition(uid, component, direction);
+                continue;
+            }
 
             component.NextMoveAttempt = _timing.CurTime + TimeSpan.FromSeconds(1f / speedComp.BaseSprintSpeed);
 
             // does the pipe has a connection to annother pipe in that direction
             if (!pipeComp.ConnectedPipes.ContainsKey(direction))
             {
-                ResetPosition(uid, component);
+                ResetPosition(uid, component, direction);
                 continue;
             }
 
             component.CurrentPipe = pipeComp.ConnectedPipes[direction];
-            ResetPosition(uid, component);
+            ResetPosition(uid, component, direction);
             Dirty(uid, component);
         }
     }
 
-    private void ResetPosition(EntityUid uid, PipeCrawlingComponent component)
+    private void ResetPosition(EntityUid uid, PipeCrawlingComponent component, Direction direction)
     {
         _xform.TryGetGridTilePosition(component.CurrentPipe, out var pipePos);
         _xform.SetLocalPositionNoLerp(uid, Vector2.Add(pipePos, Offset));
+        _xform.SetLocalRotationNoLerp(uid, direction.ToAngle());
     }
 
     private void OnInit(EntityUid uid, PipeCrawlingComponent component, ref ComponentInit args)
