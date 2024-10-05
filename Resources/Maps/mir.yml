@@ -7851,7 +7851,7 @@ entities:
     - type: GasTileOverlay
     - type: RadiationGridResistance
     - type: BecomesStation
-      id: Mirstation
+      id: Mir
     - type: Joint
       joints:
         docking91104: !type:WeldJoint
