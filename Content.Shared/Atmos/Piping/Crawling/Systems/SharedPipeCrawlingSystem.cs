@@ -1,4 +1,5 @@
 using Content.Shared.Atmos.Piping.Crawling.Components;
+using Content.Shared.Mobs.Systems;
 using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Events;
 using Content.Shared.Movement.Systems;
@@ -18,6 +19,7 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
     [Dependency] private readonly SharedMoverController _movement = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
+    [Dependency] private readonly MobStateSystem _mobState = default!;
 
     Vector2 Offset = new Vector2(0.5f, 0.5f);
 
@@ -53,6 +55,7 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
             if (TryComp<PhysicsComponent>(uid, out var physics))
                 _physics.ResetDynamics(uid, physics);
 
+
             (_, var sprintingVec) = _movement.GetVelocityInput(inputComp);
             var direction = sprintingVec.GetDir();
 
@@ -63,6 +66,9 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
             }
 
             component.NextMoveAttempt = _timing.CurTime + TimeSpan.FromSeconds(1f / speedComp.BaseSprintSpeed);
+
+            if (_mobState.IsIncapacitated(uid))
+                continue;
 
             // does the pipe has a connection to annother pipe in that direction
             if (!pipeComp.ConnectedPipes.ContainsKey(direction))
