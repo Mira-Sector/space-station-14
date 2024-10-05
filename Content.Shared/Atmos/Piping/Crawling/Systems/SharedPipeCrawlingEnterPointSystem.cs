@@ -1,5 +1,6 @@
 using Content.Shared.Atmos.Piping.Crawling.Components;
 using Content.Shared.Interaction;
+using Content.Shared.Tools.Systems;
 using Content.Shared.Verbs;
 
 namespace Content.Shared.Atmos.Piping.Crawling.Systems;
@@ -7,6 +8,7 @@ namespace Content.Shared.Atmos.Piping.Crawling.Systems;
 public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
 {
     [Dependency] private readonly SharedTransformSystem _xform = default!;
+    [Dependency] private readonly WeldableSystem _weldable = default!;
 
     public override void Initialize()
     {
@@ -14,6 +16,7 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
 
         SubscribeLocalEvent<PipeCrawlingEnterPointComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<PipeCrawlingEnterPointComponent, AnchorStateChangedEvent>(OnAnchored);
+        SubscribeLocalEvent<PipeCrawlingEnterPointComponent, WeldableChangedEvent>(OnWelded);
 
         SubscribeLocalEvent<PipeCrawlingEnterPointComponent, GetVerbsEvent<ActivationVerb>>(OnVerb);
         SubscribeLocalEvent<PipeCrawlingEnterPointComponent, ActivateInWorldEvent>(OnInteract);
@@ -29,10 +32,15 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
         UpdateState(uid, component);
     }
 
+    private void OnWelded(EntityUid uid, PipeCrawlingEnterPointComponent component, ref WeldableChangedEvent args)
+    {
+        UpdateState(uid, component);
+    }
+
     private void UpdateState(EntityUid uid, PipeCrawlingEnterPointComponent component)
     {
-        component.Enterable = Comp<TransformComponent>(uid).Anchored & component.CanEnter;
-        component.Exitable = Comp<TransformComponent>(uid).Anchored & component.CanExit;
+        component.Enterable = Comp<TransformComponent>(uid).Anchored & !_weldable.IsWelded(uid) & component.CanEnter;
+        component.Exitable = Comp<TransformComponent>(uid).Anchored & !_weldable.IsWelded(uid) &  component.CanExit;
     }
 
     private void OnVerb(EntityUid uid, PipeCrawlingEnterPointComponent component, GetVerbsEvent<ActivationVerb> args)
