@@ -19,7 +19,6 @@
           nodeGroupID: Pipe
           pipeDirection: South
     - type: CollideOnAnchor
-    - type: PipeCrawlingEnterPoint
 
 - type: entity
   parent: [GasUnaryBase, AirSensorBase]

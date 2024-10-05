@@ -16,12 +16,6 @@ public sealed partial class TrayScannerComponent : Component
     /// </summary>
     [ViewVariables(VVAccess.ReadWrite), DataField("range")]
     public float Range = 4f;
-
-    /// <summary>
-    ///     If we should reveal it for the entity itself.
-    /// </summary>
-    [ViewVariables]
-    public bool EnabledEntity = false;
 }
 
 [Serializable, NetSerializable]
