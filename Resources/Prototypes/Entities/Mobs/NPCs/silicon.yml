@@ -34,10 +34,10 @@
   - type: IntrinsicRadioReceiver
   - type: IntrinsicRadioTransmitter
     channels:
-    - Binary
+    - Hexadecimal
   - type: ActiveRadio
     channels:
-    - Binary
+    - Hexadecimal
     - Common
   - type: HealthExaminable
     examinableTypes:
@@ -111,6 +111,9 @@
   - type: ProtectedFromStepTriggers
   - type: NoSlip
   - type: Insulated
+  - type: SpeciesLanguage
+    spokenLanguages:
+    - Binary
 
 - type: entity
   parent: MobSiliconBase
@@ -396,6 +399,6 @@
     - Bot
   - type: ActiveRadio
     channels:
-    - Binary
+    - Hexadecimal
     - Common
     - Supply

@@ -46,10 +46,10 @@
   - type: IntrinsicRadioReceiver
   - type: IntrinsicRadioTransmitter
     channels:
-    - Binary
+    - Hexadecimal
   - type: ActiveRadio
     channels:
-    - Binary
+    - Hexadecimal
     - Common
   - type: DoAfter
   - type: Actions

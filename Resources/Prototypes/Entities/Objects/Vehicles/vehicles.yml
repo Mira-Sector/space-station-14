@@ -9,6 +9,7 @@
   - type: Strap
     maxBuckleDistance: 1
     position: Stand
+    ejectOnDown: true
   - type: Appearance
   - type: AmbientSound
     sound: "/Audio/Effects/Vehicle/vehicleengineidle.ogg"
@@ -29,9 +30,7 @@
           radius: 0.45
         density: 100
         mask:
-          - MobMask
-        layer:
-          - MobLayer
+          - MachineMask
         hard: true
   - type: Pullable
   - type: Damageable
@@ -197,6 +196,25 @@
     radius: 3.5
     softness: 2
     netsync: false
+  - type: Absorbent
+  - type: AbsorbentToggle
+  - type: Spillable
+    solution: absorbed
+  - type: DrawableSolution
+    solution: absorbed
+  - type: RefillableSolution
+    solution: absorbed
+  - type: DrainableSolution
+    solution: absorbed
+  - type: ExaminableSolution
+    solution: absorbed
+  - type: SolutionContainerManager
+    solutions:
+      absorbed:
+        maxVol: 750
+        reagents:
+        - ReagentId: Water
+          Quantity: 750
 
 - type: entity
   id: VehicleWheelchair
@@ -226,6 +244,15 @@
     friction: 10
     baseSprintSpeed: 3.5
     baseWalkSpeed: 2.5
+  - type: VehicleSignaller
+  - type: DeviceLinkSource
+    ports:
+      - Pressed
+  - type: DeviceNetwork
+    deviceNetId: Wireless
+    receiveFrequencyId: BasicDevice
+  - type: WirelessNetworkConnection
+    range: 5
   - type: StaticPrice
     price: 125
 

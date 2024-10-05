@@ -75,9 +75,9 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
                 SpawnPriorityPreference.Cryosleep, ev =>
                 {
                     var stationTime = _timing.CurTime.Subtract(_gameTicker.RoundStartTimeSpan).Minutes;
-                    Log.Debug($"stationTime: {stationTime}");
-                    Log.Debug($"ArrivalsCutoff: {_arrivalsSystem.ArrivalsCutoff}");
-                    if (_arrivalsSystem.ArrivalsCutoff >= stationTime)
+                    var cutoff = _arrivalsSystem.ArrivalsCutoff;
+
+                    if (cutoff >= stationTime)
                     {
                         _arrivalsSystem.HandlePlayerSpawning(ev);
                     }

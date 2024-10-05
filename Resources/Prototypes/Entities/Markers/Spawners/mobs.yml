@@ -87,6 +87,7 @@
   - type: ConditionalSpawner
     prototypes:
       - MobRaccoonMorticia
+      - MobCargorillaCoco
 
 - type: entity
   name: Fox Renault Spawner

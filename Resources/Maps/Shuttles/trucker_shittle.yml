@@ -13,7 +13,6 @@ entities:
     - type: MetaData
       name: grid
     - type: Transform
-      pos: -21.429955,-1.1827394
       parent: invalid
     - type: MapGrid
       chunks:
@@ -482,33 +481,47 @@ entities:
   - uid: 122
     components:
     - type: Transform
-      pos: -9.5,0.5
+      pos: -9.337137,0.4977311
       parent: 1
+    - type: Pullable
+      prevFixedRotation: True
   - uid: 123
     components:
     - type: Transform
-      pos: -9.5,1.5
+      pos: -9.338692,1.4977317
       parent: 1
+    - type: Physics
+      sleepTime: 0.16666651
+    - type: Pullable
+      prevFixedRotation: True
   - uid: 124
     components:
     - type: Transform
-      pos: -9.5,2.5
+      pos: -9.337137,2.4977307
       parent: 1
+    - type: Pullable
+      prevFixedRotation: True
   - uid: 125
     components:
     - type: Transform
-      pos: -7.5,2.5
+      pos: -7.337137,2.4977307
       parent: 1
+    - type: Pullable
+      prevFixedRotation: True
   - uid: 126
     components:
     - type: Transform
-      pos: -7.5,1.5
+      pos: -7.337137,1.497731
       parent: 1
+    - type: Pullable
+      prevFixedRotation: True
   - uid: 127
     components:
     - type: Transform
-      pos: -7.5,0.5
+      pos: -7.3352413,0.49773097
       parent: 1
+    - type: Pullable
+      prevFixedRotation: True
 - proto: FaxMachineBase
   entities:
   - uid: 47

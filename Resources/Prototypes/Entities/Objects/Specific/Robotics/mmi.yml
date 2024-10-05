@@ -22,9 +22,11 @@
   - type: IntrinsicRadioTransmitter
     channels:
     - Binary
+    - Hexadecimal
   - type: ActiveRadio
     channels:
     - Binary
+    - Hexadecimal
     - Common
   - type: NameIdentifier
     group: MMI
@@ -97,9 +99,11 @@
     - type: IntrinsicRadioTransmitter
       channels:
       - Binary
+      - Hexadecimal
     - type: ActiveRadio
       channels:
       - Binary
+      - Hexadecimal
       - Common
     - type: NameIdentifier
       group: PositronicBrain

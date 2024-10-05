@@ -38,6 +38,7 @@
   components:
   - type: ObsessedRule
   - type: AntagSelection
+    agentName: obsessed-round-end-agent-name
     definitions:
     - prefRoles: [ Obsessed ]
       max: 1

@@ -495,3 +495,85 @@ Entries:
     type: Add
   id: 74
   time: '2024-09-20T05:40:00.0000000+00:00'
+- author: Dutch-VanDerLinde
+  changes:
+  - message: Added underwear and undershirt markings!
+    type: Add
+  id: 75
+  time: '2024-09-26T05:06:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Coco the cargorilla has finished her training
+    type: Add
+  id: 75
+  time: '2024-09-26T05:09:20.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Wheelchair bell now emits a signal to connect things up with
+    type: Add
+  id: 76
+  time: '2024-09-27T08:55:20.0000000+00:00'
+- author: Callmore
+  changes:
+  - message: Prefered item quick store locations can be created again.
+    type: Fix
+  id: 77
+  time: '2024-09-27T09:45:20.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Hexadecimal radio channel for all silicons including cyborgs
+    type: Add
+  id: 78
+  time: '2024-09-27T10:20:20.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Fixed AI spawning at arrivals
+    type: Fix
+  id: 79
+  time: '2024-09-27T17:30:20.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: When driving a vehicle you now fall off when crit
+    type: Add
+  - message: Fixed mispredict with vehicles access
+    type: Fix
+  id: 80
+  time: '2024-09-28T14:50:20.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Janitor cyborgs and the janicarts can now clean puddles below them
+    type: Add
+  id: 81
+  time: '2024-09-30T15:15:20.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Obsessed now show up in round end screen
+    type: Fix
+  id: 82
+  time: '2024-09-30T17:25:20.0000000+00:00'
+- author: EggExe
+  changes:
+  - message: Cockroaches can now be squished stepping on them
+    type: Add
+  id: 83
+  time: '2024-10-01T23:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Lowered the ammount of footprints produced by one puddle
+    type: Tweak
+  - message: No slips do not leave footprints
+    type: Tweak
+  id: 84
+  time: '2024-10-02T16:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Removed kessler syndrome
+    type: Remove
+  id: 85
+  time: '2024-10-03T20:10:00.0000000+00:00'
+- author: aspiffyfellow
+  changes:
+  - message: Mir is now in the map rotation
+    type: Add
+  id: 86
+  time: '2024-10-04T21:40:00.0000000+00:00'
