@@ -54,11 +54,16 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
         if (!TryComp<PipeCrawlingPipeComponent>(uid, out var pipeComp))
             return;
 
+        var inPipe = HasComp<PipeCrawlingComponent>(args.User);
+
         switch (pipeComp.ContainedEntities.Contains(args.User))
         {
             case true:
             {
                 if (!component.Exitable)
+                    return;
+
+                if (!inPipe)
                     return;
 
                 args.Verbs.Add(new ActivationVerb()
@@ -76,6 +81,9 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
             case false:
             {
                 if (!component.Enterable)
+                    return;
+
+                if (inPipe)
                     return;
 
                 args.Verbs.Add(new ActivationVerb()
