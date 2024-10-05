@@ -13223,33 +13223,6 @@ entities:
     - type: Transform
       pos: -2.5,-10.5
       parent: 2
-- proto: BaseAdvancedPen
-  entities:
-  - uid: 557
-    components:
-    - type: Transform
-      pos: -18.57687,-7.62842
-      parent: 2
-  - uid: 558
-    components:
-    - type: Transform
-      pos: -18.436245,-4.9409204
-      parent: 2
-  - uid: 559
-    components:
-    - type: Transform
-      pos: -20.639086,-8.359965
-      parent: 2
-  - uid: 560
-    components:
-    - type: Transform
-      pos: -32.352837,-1.4884906
-      parent: 2
-  - uid: 561
-    components:
-    - type: Transform
-      pos: -52.609367,5.2584434
-      parent: 2
 - proto: BaseComputer
   entities:
   - uid: 12234
