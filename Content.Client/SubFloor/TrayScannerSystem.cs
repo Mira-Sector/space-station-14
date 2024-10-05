@@ -49,6 +49,12 @@ public sealed class TrayScannerSystem : SharedTrayScannerSystem
         // API is extremely skrungly. If this ever shows up on dottrace ping me and laugh.
         var canSee = false;
 
+        if (scannerQuery.TryGetComponent(player, out var playerScanner) && playerScanner.Enabled && playerScanner.EnabledEntity)
+        {
+            canSee = true;
+            range = MathF.Max(range, playerScanner.Range);
+        }
+
         // TODO: Common iterator for both systems.
         if (_inventory.TryGetContainerSlotEnumerator(player.Value, out var enumerator))
         {
