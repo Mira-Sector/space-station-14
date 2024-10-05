@@ -112,6 +112,7 @@
   - type: SpeciesLanguage
     understoodLanguages:
     - Slime
+  - type: CanEnterPipeCrawling
 
 - type: entity
   name: basic slime
