@@ -1,3 +1,4 @@
+using Content.Server.Atmos.EntitySystems;
 using Content.Server.Body.Systems;
 using Content.Server.NodeContainer.EntitySystems;
 using Content.Server.NodeContainer.Nodes;
@@ -18,6 +19,9 @@ public sealed class PipeCrawlingSystem : EntitySystem
 
         SubscribeLocalEvent<PipeCrawlingComponent, InhaleLocationEvent>(OnInhale);
         SubscribeLocalEvent<PipeCrawlingComponent, ExhaleLocationEvent>(OnExhale);
+
+        SubscribeLocalEvent<PipeCrawlingComponent, AtmosExposedGetAirEvent>(OnExposed);
+
     }
 
     private void OnInhale(EntityUid uid, PipeCrawlingComponent component, ref InhaleLocationEvent args)
@@ -40,5 +44,14 @@ public sealed class PipeCrawlingSystem : EntitySystem
             return;
 
         args.Gas = outlet.Air;
+    }
+
+    private void OnExposed(EntityUid uid, PipeCrawlingComponent component, ref AtmosExposedGetAirEvent args)
+    {
+        if (!_nodeContainer.TryGetNode(component.CurrentPipe, NodeName, out PipeNode? outlet))
+            return;
+
+        args.Gas = outlet.Air;
+        args.Handled = true;
     }
 }
