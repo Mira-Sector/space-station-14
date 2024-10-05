@@ -97,6 +97,12 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
         if (args.Handled)
             return;
 
+        if (!HasComp<CanEnterPipeCrawlingComponent>(args.User))
+        {
+            args.Handled = true;
+            return;
+        }
+
         if (!TryComp<PipeCrawlingPipeComponent>(uid, out var pipeComp))
             return;
 
