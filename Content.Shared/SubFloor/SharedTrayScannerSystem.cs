@@ -22,6 +22,13 @@ public abstract class SharedTrayScannerSystem : EntitySystem
         SubscribeLocalEvent<TrayScannerComponent, ComponentGetState>(OnTrayScannerGetState);
         SubscribeLocalEvent<TrayScannerComponent, ComponentHandleState>(OnTrayScannerHandleState);
         SubscribeLocalEvent<TrayScannerComponent, ActivateInWorldEvent>(OnTrayScannerActivate);
+        SubscribeLocalEvent<TrayScannerComponent, ComponentInit>(OnTrayScannerInit);
+    }
+
+    private void OnTrayScannerInit(EntityUid uid, TrayScannerComponent scanner, ref ComponentInit args)
+    {
+        if (scanner.EnabledEntity)
+            SetScannerEnabled(uid, scanner.Enabled, scanner);
     }
 
     private void OnTrayScannerActivate(EntityUid uid, TrayScannerComponent scanner, ActivateInWorldEvent args)
