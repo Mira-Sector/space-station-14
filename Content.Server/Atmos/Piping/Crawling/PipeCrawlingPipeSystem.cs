@@ -2,6 +2,7 @@ using Content.Server.NodeContainer;
 using Content.Server.NodeContainer.Nodes;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Piping.Crawling.Components;
+using Robust.Shared.Containers;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map.Components;
 
@@ -10,7 +11,10 @@ namespace Content.Server.Atmos.Piping.Crawling.Systems;
 public sealed class PipeCrawlingPipeSystem : EntitySystem
 {
     [Dependency] private readonly MapSystem _map = default!;
+    [Dependency] private readonly SharedContainerSystem _containers = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
+
+    const string PipeContainer = "pipe";
 
     public override void Initialize()
     {
@@ -26,11 +30,15 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
         if (Transform(uid).Anchored)
             return;
 
-        foreach (var player in component.ContainedEntities)
+        if (!_containers.TryGetContainer(uid, PipeContainer, out var pipeContainer))
+            return;
+
+        foreach (var player in pipeContainer.ContainedEntities)
         {
             RemComp<PipeCrawlingComponent>(player);
         }
 
+        _containers.CleanContainer(pipeContainer);
     }
 
     public void UpdateState(EntityUid uid, PipeCrawlingPipeComponent? component = null, PipeDirection? currentPipeDir = null, EntityUid? updater = null)
