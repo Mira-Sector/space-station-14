@@ -3,6 +3,7 @@ using Content.Server.NodeContainer.Nodes;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Piping.Crawling.Components;
 using Robust.Shared.Containers;
+using Content.Shared.Destructible;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map.Components;
 
@@ -21,6 +22,8 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<PipeCrawlingPipeComponent, AnchorStateChangedEvent>(OnAnchored);
+        SubscribeLocalEvent<PipeCrawlingPipeComponent, DestructionEventArgs>(OnDestruction);
+        SubscribeLocalEvent<PipeCrawlingPipeComponent, BreakageEventArgs>(OnBreakage);
     }
 
     private void OnAnchored(EntityUid uid, PipeCrawlingPipeComponent component, ref AnchorStateChangedEvent args)
@@ -30,15 +33,38 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
         if (Transform(uid).Anchored)
             return;
 
+        RemoveContainedEntities(uid);
+    }
+
+    private void OnDestruction(EntityUid uid, PipeCrawlingPipeComponent component, DestructionEventArgs args)
+    {
+        RemoveContainedEntities(uid);
+    }
+
+    private void OnBreakage(EntityUid uid, PipeCrawlingPipeComponent component, BreakageEventArgs args)
+    {
+        RemoveContainedEntities(uid);
+    }
+
+    private void RemoveContainedEntities(EntityUid uid)
+    {
         if (!_containers.TryGetContainer(uid, PipeContainer, out var pipeContainer))
             return;
+
+        List<EntityUid> toRemove = new();
 
         foreach (var player in pipeContainer.ContainedEntities)
         {
             RemComp<PipeCrawlingComponent>(player);
+            toRemove.Add(player);
         }
 
-        _containers.CleanContainer(pipeContainer);
+        var pipeCoords = Transform(uid).Coordinates;
+
+        foreach (var removing in toRemove)
+        {
+            _containers.Remove(removing, pipeContainer, destination: pipeCoords);
+        }
     }
 
     public void UpdateState(EntityUid uid, PipeCrawlingPipeComponent? component = null, PipeDirection? currentPipeDir = null, EntityUid? updater = null)
