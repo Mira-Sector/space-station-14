@@ -423,11 +423,11 @@
     damage:
       types:
         Piercing: 0
+  - type: CanEnterPipeCrawling
   - type: DamageOnStep
     damage:
       types:
         Blunt: 10
-
 
 - type: entity
   name: glockroach
@@ -1915,6 +1915,7 @@
       Taco: RatTaco
       Burger: RatBurger
       Skewer: RatSkewer
+  - type: CanEnterPipeCrawling
 
 - type: entity
   parent: MobMouse
@@ -2593,6 +2594,7 @@
       groups:
         Brute: -0.07
         Burn: -0.07
+  - type: CanEnterPipeCrawling
 
 - type: entity
   name: tarantula
@@ -3686,7 +3688,7 @@
   - type: HTN
     rootTask:
       task: RuminantCompound
-      
+
 - type: entity
   name: diona nymph
   parent: [SimpleMobBase, StripableInventoryBase]
