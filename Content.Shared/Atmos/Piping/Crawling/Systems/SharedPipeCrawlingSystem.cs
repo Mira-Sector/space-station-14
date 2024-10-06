@@ -4,6 +4,7 @@ using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Events;
 using Content.Shared.Movement.Systems;
 using Content.Shared.SubFloor;
+using Robust.Shared.Containers;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
@@ -15,12 +16,13 @@ namespace Content.Shared.Atmos.Piping.Crawling.Systems;
 public sealed class SharedPipeCrawlingSystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private readonly SharedContainerSystem _containers = default!;
     [Dependency] private readonly SharedMoverController _movement = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!;
 
+    const string PipeContainer = "pipe";
     Vector2 Offset = new Vector2(0.5f, 0.5f);
 
     public override void Initialize()
@@ -55,13 +57,11 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
             if (TryComp<PhysicsComponent>(uid, out var physics))
                 _physics.ResetDynamics(uid, physics);
 
-
             (_, var sprintingVec) = _movement.GetVelocityInput(inputComp);
             var direction = sprintingVec.GetDir();
 
             if (component.NextMoveAttempt > _timing.CurTime)
             {
-                ResetPosition(uid, component, direction);
                 continue;
             }
 
@@ -79,20 +79,20 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
 
             var newPipe = pipeComp.ConnectedPipes[direction];
 
-            if (TryComp<PipeCrawlingPipeComponent>(component.CurrentPipe, out var currentPipeComp))
+            if (_containers.TryGetContainer(component.CurrentPipe, PipeContainer, out var currentPipeContainer) &&
+                TryComp<PipeCrawlingPipeComponent>(component.CurrentPipe, out var currentPipeComp))
             {
-                currentPipeComp.ContainedEntities.Remove(uid);
-                Dirty(component.CurrentPipe, currentPipeComp);
+                var newPipeCoords = Transform(newPipe).Coordinates;
+                _containers.Remove(uid, currentPipeContainer, destination: newPipeCoords, localRotation: direction.ToAngle());
             }
 
-            if (TryComp<PipeCrawlingPipeComponent>(newPipe, out var newPipeComp))
+            if (_containers.TryGetContainer(newPipe, PipeContainer, out var newPipeContainer) &&
+            TryComp<PipeCrawlingPipeComponent>(newPipe, out var newPipeComp))
             {
-                newPipeComp.ContainedEntities.Add(uid);
-                Dirty(newPipe, newPipeComp);
+                _containers.Insert(uid, newPipeContainer);
             }
 
             component.CurrentPipe = newPipe;
-            ResetPosition(uid, component, direction);
             Dirty(uid, component);
         }
     }
@@ -102,11 +102,6 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
         _xform.TryGetGridTilePosition(component.CurrentPipe, out var pipePos);
         _xform.SetLocalPositionNoLerp(uid, Vector2.Add(pipePos, Offset));
         _xform.SetLocalRotationNoLerp(uid, direction.ToAngle());
-
-        if (!TryComp<AppearanceComponent>(uid, out var appearanceComp))
-            return;
-
-        _appearance.SetData(uid, SubFloorVisuals.Covered, true, appearanceComp);
     }
 
     private void OnInit(EntityUid uid, PipeCrawlingComponent component, ref ComponentInit args)
@@ -147,11 +142,6 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
         {
             RemComp<TrayScannerComponent>(uid);
         }
-
-        var subfloorComp = EnsureComp<SubFloorHideComponent>(uid);
-
-        var appearanceComp = EnsureComp<AppearanceComponent>(uid);
-        _appearance.SetData(uid, SubFloorVisuals.Covered, enabled, appearanceComp);
 
         if (!TryComp<InputMoverComponent>(uid, out var inputComp))
             return;
