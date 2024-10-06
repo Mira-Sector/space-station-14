@@ -73,7 +73,6 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
             // does the pipe has a connection to annother pipe in that direction
             if (!pipeComp.ConnectedPipes.ContainsKey(direction))
             {
-                ResetPosition(uid, component, direction);
                 continue;
             }
 
@@ -95,13 +94,6 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
             component.CurrentPipe = newPipe;
             Dirty(uid, component);
         }
-    }
-
-    private void ResetPosition(EntityUid uid, PipeCrawlingComponent component, Direction direction)
-    {
-        _xform.TryGetGridTilePosition(component.CurrentPipe, out var pipePos);
-        _xform.SetLocalPositionNoLerp(uid, Vector2.Add(pipePos, Offset));
-        _xform.SetLocalRotationNoLerp(uid, direction.ToAngle());
     }
 
     private void OnInit(EntityUid uid, PipeCrawlingComponent component, ref ComponentInit args)
