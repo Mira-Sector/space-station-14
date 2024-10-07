@@ -169,6 +169,9 @@
   id: BorgModuleCargo
 
 - type: Tag
+  id: BorgModuleDrone
+
+- type: Tag
   id: BorgModuleEngineering
 
 - type: Tag

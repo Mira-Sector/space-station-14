@@ -217,7 +217,7 @@ FoodDonutBlumpkin: FoodDonutBluePumpkin
 FoodDonutJellyBlumpkin: FoodDonutJellyBluePumpkin
 
 # 2024-02-19
-Drone: null
+#Drone: null
 SpawnMobDrone: null
 Onestar: null # I dont think this is even mapped, but just in case
 

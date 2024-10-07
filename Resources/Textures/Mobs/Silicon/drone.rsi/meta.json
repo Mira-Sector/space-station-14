@@ -34,12 +34,7 @@
       ]
     },
     {
-      "name": "shell",
-      "delays": [
-        [
-          1
-        ]
-      ]
+      "name": "shell"
     },
     {
       "name": "l_hand",

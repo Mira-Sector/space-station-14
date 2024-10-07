@@ -1,4 +1,4 @@
-﻿using Content.Shared.Alert;
+using Content.Shared.Alert;
 using Content.Shared.Whitelist;
 using Robust.Shared.Containers;
 using Robust.Shared.GameStates;
@@ -67,10 +67,10 @@ public sealed partial class BorgChassisComponent : Component
 
     #region Visuals
     [DataField("hasMindState")]
-    public string HasMindState = string.Empty;
+    public string? HasMindState;
 
     [DataField("noMindState")]
-    public string NoMindState = string.Empty;
+    public string? NoMindState;
     #endregion
 
     [DataField]

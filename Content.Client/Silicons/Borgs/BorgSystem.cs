@@ -1,4 +1,4 @@
-﻿using Content.Shared.Mobs;
+using Content.Shared.Mobs;
 using Content.Shared.Silicons.Borgs;
 using Content.Shared.Silicons.Borgs.Components;
 using Robust.Client.GameObjects;
@@ -50,6 +50,9 @@ public sealed class BorgSystem : SharedBorgSystem
         SpriteComponent? sprite = null)
     {
         if (!Resolve(uid, ref component, ref appearance, ref sprite))
+            return;
+
+        if (component.HasMindState == null || component.NoMindState == null)
             return;
 
         if (_appearance.TryGetData<MobState>(uid, MobStateVisuals.State, out var state, appearance))
