@@ -352,6 +352,8 @@
       - FauxTileAstroSnow
       - OreBagOfHolding
       - DeviceQuantumSpinInverter
+      - RCD
+      - RCDAmmo
   - type: EmagLatheRecipes
     emagDynamicRecipes:
       - BoxBeanbag
