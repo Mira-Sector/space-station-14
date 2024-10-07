@@ -1,0 +1,52 @@
+- type: entity
+  parent: BaseSilicon
+  id: BaseDrone
+  name: drone
+  abstract: true
+  components:
+  - type: Clothing
+    slots:
+    - HEAD
+  - type: Item
+    size: Ginormous
+  - type: SiliconLawProvider
+    laws: Drone
+  - type: IntrinsicRadioReceiver
+  - type: IntrinsicRadioTransmitter
+    channels:
+    - Hexadecimal
+  - type: ActiveRadio
+    channels:
+    - Hexadecimal
+  - type: SpeciesLanguage
+    spokenLanguages:
+    - Binary
+  - type: CanEnterPipeCrawling
+
+- type: entity
+  parent: BaseDrone
+  id: Drone
+  components:
+  - type: Sprite
+    sprite: Mobs/Silicon/drone.rsi
+    state: drone
+  - type: BorgChassis
+    maxModules: 1
+    moduleWhitelist:
+      tags:
+      - BorgModuleDrone
+
+- type: entity
+  parent: Drone
+  id: DroneTools
+  suffix: Battery, Tools
+  components:
+  - type: ContainerFill
+    containers:
+      borg_brain:
+        - PositronicBrain
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellMedium
