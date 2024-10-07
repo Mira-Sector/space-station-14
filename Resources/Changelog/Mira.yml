@@ -583,3 +583,11 @@ Entries:
     type: Add
   id: 87
   time: '2024-10-05T02:32:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: RCDs are no longer round start
+    type: Remove
+  - message: RCDs are now unlocked under the advanced tools research
+    type: Tweak
+  id: 88
+  time: '2024-10-05T02:32:00.0000000+00:00'
