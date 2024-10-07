@@ -169,6 +169,8 @@
     - JawsOfLife
     - BorgModuleAdvancedTool
     - BorgModuleRCD
+    - RCD
+    - RCDAmmo
 
 - type: technology
   id: MassExcavation

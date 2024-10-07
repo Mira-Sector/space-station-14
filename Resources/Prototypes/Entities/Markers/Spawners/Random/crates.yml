@@ -78,14 +78,12 @@
         - CrateEngineeringTeslaGenerator
         - CrateEngineeringTeslaGroundingRod
         - CrateEngineeringParticleAccelerator
-        - CrateRCD
         - CrateEngineeringGear
       rareChance: 0.2
       prototypes:
         - CrateEngineering
         - CrateElectrical
         - CrateEngineeringElectricalSupplies
-        - CrateRCDAmmo
         - CrateEngineeringCableLV
         - CrateEngineeringCableMV
         - CrateEngineeringCableHV

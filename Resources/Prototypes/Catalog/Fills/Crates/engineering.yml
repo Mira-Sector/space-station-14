@@ -175,27 +175,6 @@
         amount: 2
 
 - type: entity
-  id: CrateRCDAmmo
-  parent: CrateEngineering
-  name: compressed matter crate
-  description: Contains three compressed matter cartridges.
-  components:
-  - type: StorageFill
-    contents:
-    - id: RCDAmmo
-      amount: 3
-
-- type: entity
-  id: CrateRCD
-  parent: CrateEngineeringSecure
-  name: RCD crate
-  description: A crate containing a single rapid construction device.
-  components:
-  - type: StorageFill
-    contents:
-    - id: RCD
-
-- type: entity
   id: CrateParticleDecelerators
   parent: CrateEngineeringSecure
   name: particle decelerators crate

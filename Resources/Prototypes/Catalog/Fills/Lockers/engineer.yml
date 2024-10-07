@@ -94,8 +94,6 @@
       - id: GasAnalyzer
       - id: MedkitOxygenFilled
       - id: HolofanProjector
-      - id: RCD
-      - id: RCDAmmo
 
 - type: entity
   id: LockerAtmosphericsFilled
@@ -110,8 +108,6 @@
       - id: GasAnalyzer
       - id: MedkitOxygenFilled
       - id: HolofanProjector
-      - id: RCD
-      - id: RCDAmmo
 
 - type: entity
   id: LockerEngineerFilledHardsuit
@@ -124,8 +120,6 @@
       - id: ClothingHandsGlovesColorYellow
       - id: ClothingMaskGas
       - id: ClothingShoesBootsMag
-      - id: RCD
-      - id: RCDAmmo
 
 - type: entity
   id: LockerEngineerFilled
@@ -137,8 +131,6 @@
       - id: ClothingHandsGlovesColorYellow
       - id: ClothingMaskGas
       - id: trayScanner
-      - id: RCD
-      - id: RCDAmmo
 
 - type: entity
   id: ClosetRadiationSuitFilled
