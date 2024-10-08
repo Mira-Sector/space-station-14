@@ -11,7 +11,11 @@
     size: Ginormous
   - type: SiliconLawProvider
     laws: Drone
-  - type: IntrinsicRadioReceiver
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: FenceRattle
+      params:
+        volume: -10
   - type: IntrinsicRadioTransmitter
     channels:
     - Hexadecimal
