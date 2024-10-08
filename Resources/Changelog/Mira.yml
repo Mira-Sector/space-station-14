@@ -590,4 +590,12 @@ Entries:
   - message: RCDs are now unlocked under the advanced tools research
     type: Tweak
   id: 88
-  time: '2024-10-05T02:32:00.0000000+00:00'
+  time: '2024-10-08T00:10:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Atmos sell prices have been reverted to their previous price
+    type: Tweak
+  - message: Frezon production is back to its previous mixture
+    type: Tweak
+  id: 89
+  time: '2024-10-08T01:15:00.0000000+00:00'
