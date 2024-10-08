@@ -70,10 +70,13 @@ public abstract class SharedDevourSystem : EntitySystem
             return;
         }
 
-        _popupSystem.PopupClient(Loc.GetString("devour-action-popup-message-structure"), uid, uid);
+        if (component.Blacklist == null)
+        {
+            _popupSystem.PopupClient(Loc.GetString("devour-action-popup-message-structure"), uid, uid);
 
-        if (component.SoundStructureDevour != null)
-            _audioSystem.PlayPredicted(component.SoundStructureDevour, uid, uid, component.SoundStructureDevour.Params);
+            if (component.SoundStructureDevour != null)
+                _audioSystem.PlayPredicted(component.SoundStructureDevour, uid, uid, component.SoundStructureDevour.Params);
+        }
 
 
         float time;

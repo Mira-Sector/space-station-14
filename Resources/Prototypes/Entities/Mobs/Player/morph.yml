@@ -1,7 +1,7 @@
 - type: entity
   name: Morph
   id: Morph
-  parent: [ SimpleMobBase, MobCombat ]
+  parent: [ SimpleSpaceMobBase, MobCombat ]
   components:
   - type: Sprite
     drawdepth: Mobs
