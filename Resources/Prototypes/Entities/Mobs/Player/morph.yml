@@ -117,6 +117,7 @@
       1: Critical
       200: Dead
   - type: ChameleonDisguise
+  - type: InventorySlots
 
 - type: entity
   id: ActionDisguise

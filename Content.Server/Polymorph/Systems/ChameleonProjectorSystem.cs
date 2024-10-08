@@ -1,11 +1,13 @@
 using Content.Server.Polymorph.Components;
 using Content.Shared.Actions;
+using Content.Shared.Clothing.Components;
 using Content.Shared.Construction.Components;
 using Content.Shared.Chat.TypingIndicator;
 using Content.Shared.Hands;
 using Content.Shared.HealthExaminable;
 using Content.Shared.Movement.Components;
 using Content.Shared.Humanoid;
+using Content.Shared.Inventory;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
@@ -23,6 +25,7 @@ namespace Content.Server.Polymorph.Systems;
 
 public sealed class ChameleonProjectorSystem : SharedChameleonProjectorSystem
 {
+    [Dependency] private readonly InventorySystem _inventory = default!;
     [Dependency] private readonly MetaDataSystem _meta = default!;
     [Dependency] private readonly MobThresholdSystem _mobThreshold = default!;
     [Dependency] private readonly PolymorphSystem _polymorph = default!;
@@ -87,6 +90,33 @@ public sealed class ChameleonProjectorSystem : SharedChameleonProjectorSystem
             _tag.AddTag((disguise, tagComp), FootstepTag);
         }
 
+        if (TryComp<InventoryComponent>(entity, out var entInvComp))
+        {
+            CopyComp<InventoryComponent>((disguise, comp));
+            var coords = Transform(disguise).Coordinates;
+
+            foreach (var entSlot in entInvComp.Slots)
+            {
+                _inventory.TryGetSlotContainer(entity, entSlot.Name, out var entContainer, out _);
+
+                if (entContainer== null || entContainer.ContainedEntity == null)
+                    continue;
+
+                if (!TryComp<ClothingComponent>(entContainer.ContainedEntity, out var clothingComp) || clothingComp.RsiPath == null || clothingComp.InSlot == null)
+                    continue;
+
+                var metaData = MetaData(entContainer.ContainedEntity.Value);
+
+                if (metaData.EntityPrototype == null)
+                    continue;
+
+                var clothing = EntityManager.SpawnEntity(metaData.EntityPrototype.ID, coords);
+
+                if (!_inventory.TryEquip(disguise, clothing, entSlot.Name, true, true))
+                    EntityManager.DeleteEntity(clothing);
+            }
+        }
+
         var mass = CompOrNull<PhysicsComponent>(entity)?.Mass ?? 0f;
 
         // let the disguise die when its taken enough damage, which then transfers to the player
@@ -104,8 +134,11 @@ public sealed class ChameleonProjectorSystem : SharedChameleonProjectorSystem
         }
 
         // add actions for controlling transform aspects
-        _actions.AddAction(disguise, proj.NoRotAction);
-        _actions.AddAction(disguise, proj.AnchorAction);
+        if (HasComp<AnchorableComponent>(entity))
+        {
+            _actions.AddAction(disguise, proj.NoRotAction);
+            _actions.AddAction(disguise, proj.AnchorAction);
+        }
     }
 
     private void OnToggleNoRot(Entity<ChameleonDisguiseComponent> ent, ref DisguiseToggleNoRotEvent args)
