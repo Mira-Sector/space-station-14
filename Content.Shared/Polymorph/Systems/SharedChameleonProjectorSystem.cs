@@ -18,6 +18,7 @@ public abstract class SharedChameleonProjectorSystem : EntitySystem
 {
     [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private readonly ISerializationManager _serMan = default!;
+    [Dependency] private readonly SharedActionsSystem _actions = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
 
@@ -25,7 +26,17 @@ public abstract class SharedChameleonProjectorSystem : EntitySystem
     {
         base.Initialize();
 
+        SubscribeLocalEvent<ChameleonProjectorComponent, MapInitEvent>(OnInit);
         SubscribeLocalEvent<ChameleonProjectorComponent, AfterInteractEvent>(OnInteract);
+        SubscribeLocalEvent<ChameleonProjectorComponent, DisguiseActionEvent>(OnAction);
+    }
+
+    private void OnInit(EntityUid uid, ChameleonProjectorComponent component, MapInitEvent args)
+    {
+        if (!component.Action)
+            return;
+
+        _actions.AddAction(uid, ref component.DisguiseActionEntity, component.DisguiseAction);
     }
 
     private void OnInteract(Entity<ChameleonProjectorComponent> ent, ref AfterInteractEvent args)
@@ -33,9 +44,21 @@ public abstract class SharedChameleonProjectorSystem : EntitySystem
         if (!args.CanReach || args.Target is not {} target)
             return;
 
-        var user = args.User;
         args.Handled = true;
+        DoDisguise(ent, args.User, target);
+    }
 
+    private void OnAction(EntityUid uid, ChameleonProjectorComponent component, DisguiseActionEvent args)
+    {
+        if (args.Handled)
+            return;
+
+        args.Handled = true;
+        DoDisguise((uid, component), uid, args.Target);
+    }
+
+    private void DoDisguise(Entity<ChameleonProjectorComponent> ent, EntityUid user, EntityUid target)
+    {
         if (IsInvalid(ent.Comp, target))
         {
             _popup.PopupClient(Loc.GetString(ent.Comp.InvalidPopup), target, user);
@@ -111,5 +134,9 @@ public sealed partial class DisguiseToggleNoRotEvent : InstantActionEvent
 /// Action event for toggling transform Anchored on a disguise.
 /// </summary>
 public sealed partial class DisguiseToggleAnchoredEvent : InstantActionEvent
+{
+}
+
+public sealed partial class DisguiseActionEvent : EntityTargetActionEvent
 {
 }

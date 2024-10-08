@@ -43,7 +43,7 @@ public abstract class SharedDevourSystem : EntitySystem
     /// </summary>
     protected void OnDevourAction(EntityUid uid, DevourerComponent component, DevourActionEvent args)
     {
-        if (args.Handled || _whitelistSystem.IsWhitelistFailOrNull(component.Whitelist, args.Target))
+        if (args.Handled || !_whitelistSystem.IsWhitelistPassOrNull(component.Whitelist, args.Target) || !_whitelistSystem.IsBlacklistFailOrNull(component.Blacklist, args.Target))
             return;
 
         args.Handled = true;
@@ -70,12 +70,23 @@ public abstract class SharedDevourSystem : EntitySystem
             return;
         }
 
-        _popupSystem.PopupClient(Loc.GetString("devour-action-popup-message-structure"), uid, uid);
+        if (component.Blacklist == null)
+        {
+            _popupSystem.PopupClient(Loc.GetString("devour-action-popup-message-structure"), uid, uid);
 
-        if (component.SoundStructureDevour != null)
-            _audioSystem.PlayPredicted(component.SoundStructureDevour, uid, uid, component.SoundStructureDevour.Params);
+            if (component.SoundStructureDevour != null)
+                _audioSystem.PlayPredicted(component.SoundStructureDevour, uid, uid, component.SoundStructureDevour.Params);
+        }
 
-        _doAfterSystem.TryStartDoAfter(new DoAfterArgs(EntityManager, uid, component.StructureDevourTime, new DevourDoAfterEvent(), uid, target: target, used: uid)
+
+        float time;
+
+        if (component.Blacklist == null)
+            time = component.StructureDevourTime;
+        else
+            time = component.DevourTime;
+
+        _doAfterSystem.TryStartDoAfter(new DoAfterArgs(EntityManager, uid, time, new DevourDoAfterEvent(), uid, target: target, used: uid)
         {
             BreakOnMove = true,
         });

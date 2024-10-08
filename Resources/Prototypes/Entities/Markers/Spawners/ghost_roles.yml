@@ -170,3 +170,22 @@
     - state: green
     - sprite: Objects/Weapons/Melee/energykatana.rsi
       state: icon
+
+- type: entity
+  categories: [ HideSpawnMenu, Spawner ]
+  parent: BaseAntagSpawner
+  id: SpawnPointGhostMorph
+  components:
+  - type: GhostRole
+    name: ghost-role-information-morph-name
+    description: ghost-role-information-morph-description
+    rules: ghost-role-information-antagonist-rules
+    raffle:
+      settings: default
+  - type: Sprite
+    layers:
+    - state: green
+    - sprite: Mobs/Aliens/morph.rsi
+      state: morph
+  - type: GhostRoleMobSpawner
+    prototype: MobMorph

@@ -1,26 +1,40 @@
 using Content.Server.Polymorph.Components;
 using Content.Shared.Actions;
+using Content.Shared.Clothing.Components;
 using Content.Shared.Construction.Components;
+using Content.Shared.Chat.TypingIndicator;
 using Content.Shared.Hands;
+using Content.Shared.HealthExaminable;
+using Content.Shared.Movement.Components;
+using Content.Shared.Humanoid;
+using Content.Shared.Inventory;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Polymorph;
 using Content.Shared.Polymorph.Components;
 using Content.Shared.Polymorph.Systems;
+using Content.Shared.Speech;
+using Content.Shared.Speech.Components;
 using Content.Shared.StatusIcon.Components;
+using Content.Shared.Tag;
+using Robust.Shared.GameObjects.Components.Localization;
 using Robust.Shared.Physics.Components;
 
 namespace Content.Server.Polymorph.Systems;
 
 public sealed class ChameleonProjectorSystem : SharedChameleonProjectorSystem
 {
+    [Dependency] private readonly InventorySystem _inventory = default!;
     [Dependency] private readonly MetaDataSystem _meta = default!;
     [Dependency] private readonly MobThresholdSystem _mobThreshold = default!;
     [Dependency] private readonly PolymorphSystem _polymorph = default!;
+    [Dependency] private readonly TagSystem _tag = default!;
     [Dependency] private readonly SharedActionsSystem _actions = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
+
+    const string FootstepTag = "FootstepSound";
 
     public override void Initialize()
     {
@@ -56,9 +70,52 @@ public sealed class ChameleonProjectorSystem : SharedChameleonProjectorSystem
         Dirty(disguise, comp);
 
         // no sechud trolling
-        RemComp<StatusIconComponent>(disguise);
+        if (!proj.Action)
+            RemComp<StatusIconComponent>(disguise);
 
         _appearance.CopyData(entity, disguise);
+
+        // mimic humans
+        CopyComp<HumanoidAppearanceComponent>((disguise, comp));
+        CopyComp<HealthExaminableComponent>((disguise, comp));
+        CopyComp<VocalComponent>((disguise, comp));
+        CopyComp<TypingIndicatorComponent>((disguise, comp));
+        CopyComp<FootstepModifierComponent>((disguise, comp));
+        CopyComp<SpeechComponent>((disguise, comp));
+        CopyComp<GrammarComponent>((disguise, comp));
+
+        if (_tag.HasTag(entity, FootstepTag))
+        {
+            var tagComp = EnsureComp<TagComponent>(disguise);
+            _tag.AddTag((disguise, tagComp), FootstepTag);
+        }
+
+        if (TryComp<InventoryComponent>(entity, out var entInvComp))
+        {
+            CopyComp<InventoryComponent>((disguise, comp));
+            var coords = Transform(disguise).Coordinates;
+
+            foreach (var entSlot in entInvComp.Slots)
+            {
+                _inventory.TryGetSlotContainer(entity, entSlot.Name, out var entContainer, out _);
+
+                if (entContainer== null || entContainer.ContainedEntity == null)
+                    continue;
+
+                if (!TryComp<ClothingComponent>(entContainer.ContainedEntity, out var clothingComp) || clothingComp.RsiPath == null || clothingComp.InSlot == null)
+                    continue;
+
+                var metaData = MetaData(entContainer.ContainedEntity.Value);
+
+                if (metaData.EntityPrototype == null)
+                    continue;
+
+                var clothing = EntityManager.SpawnEntity(metaData.EntityPrototype.ID, coords);
+
+                if (!_inventory.TryEquip(disguise, clothing, entSlot.Name, true, true))
+                    EntityManager.DeleteEntity(clothing);
+            }
+        }
 
         var mass = CompOrNull<PhysicsComponent>(entity)?.Mass ?? 0f;
 
@@ -77,8 +134,11 @@ public sealed class ChameleonProjectorSystem : SharedChameleonProjectorSystem
         }
 
         // add actions for controlling transform aspects
-        _actions.AddAction(disguise, proj.NoRotAction);
-        _actions.AddAction(disguise, proj.AnchorAction);
+        if (HasComp<AnchorableComponent>(entity))
+        {
+            _actions.AddAction(disguise, proj.NoRotAction);
+            _actions.AddAction(disguise, proj.AnchorAction);
+        }
     }
 
     private void OnToggleNoRot(Entity<ChameleonDisguiseComponent> ent, ref DisguiseToggleNoRotEvent args)

@@ -2,6 +2,7 @@ using Content.Shared.Polymorph;
 using Content.Shared.Polymorph.Systems;
 using Content.Shared.Whitelist;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 
 namespace Content.Shared.Polymorph.Components;
 
@@ -15,7 +16,7 @@ public sealed partial class ChameleonProjectorComponent : Component
     /// <summary>
     /// If non-null, whitelist for valid entities to disguise as.
     /// </summary>
-    [DataField(required: true)]
+    [DataField]
     public EntityWhitelist? Whitelist;
 
     /// <summary>
@@ -65,4 +66,16 @@ public sealed partial class ChameleonProjectorComponent : Component
     /// </summary>
     [DataField]
     public LocId SuccessPopup = "chameleon-projector-success";
+
+    /// <summary>
+    /// If this disguises when used as an item or is an action.
+    /// </summary>
+    [DataField]
+    public bool Action = false;
+
+    [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<EntityPrototype>))]
+    public string? DisguiseAction = "ActionDisguise";
+
+    [DataField]
+    public EntityUid? DisguiseActionEntity;
 }
