@@ -619,3 +619,13 @@ Entries:
     type: Add
   id: 92
   time: '2024-10-05T02:40:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added the morph midround antag
+    type: Add
+  - message: Added a delay to entering pipe crawling
+    type: Tweak
+  - message: You move faster when vent crawling
+    type: Tweak
+  id: 93
+  time: '2024-10-05T12:30:00.0000000+00:00'
