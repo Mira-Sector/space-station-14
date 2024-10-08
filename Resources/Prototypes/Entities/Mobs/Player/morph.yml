@@ -23,20 +23,52 @@
   - type: MobThresholds
     thresholds:
       0: Alive
-      150: Dead
+      200: Dead
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatDragon
+      amount: 1
+  - type: StatusEffects # no stuns or slowdown
+    allowed:
+    - Electrocution
+    - ForcedSleep
+    - Pacified
+    - RadiationProtection
+    - Drowsiness
+    - Adrenaline
+  - type: FlashImmunity
   - type: FootstepModifier
     footstepSoundCollection:
       path: /Audio/Effects/Footsteps/slime1.ogg
       params:
         volume: 3
+  - type: Devourer
+    foodPreference: Humanoid
+    shouldStoreDevoured: true
+    chemical: Ichor
+    blacklist:
+      components:
+      - Door
+      - EntityStorage
+      tags:
+      - Wall
+      - Structure
+    healRate: 10.0
   - type: Tag
     tags:
     - FootstepSound
+    - CannotSuicide
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2
+    baseSprintSpeed: 4
   - type: Bloodstream
     bloodReagent: Slime
   - type: Body
     prototype: Slimes
     requiredLegs: 1
+  - type: ZombieImmune
+  - type: Puller
+    needsHands: false
   - type: MeleeWeapon
     altDisarm: false
     soundHit:
