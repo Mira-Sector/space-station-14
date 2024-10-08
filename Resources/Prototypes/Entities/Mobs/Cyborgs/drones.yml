@@ -4,9 +4,6 @@
   name: drone
   abstract: true
   components:
-  - type: Clothing
-    slots:
-    - HEAD
   - type: Item
     size: Ginormous
   - type: SiliconLawProvider
@@ -34,6 +31,10 @@
   - type: Sprite
     sprite: Mobs/Silicon/drone.rsi
     state: drone
+  - type: Clothing
+    slots:
+    - HEAD
+    sprite: Mobs/Silicon/drone_64x.rsi
   - type: BorgChassis
     maxModules: 1
     moduleWhitelist:
