@@ -207,6 +207,41 @@
 
 - type: entity
   parent: GasBinaryBase
+  id: GasTrap
+  name: trap pipe
+  description: A pipe with a blocker stopping anything apart from gas escaping.
+  placement:
+    mode: SnapgridCenter
+  components:
+    - type: Sprite
+      sprite: Structures/Piping/Atmospherics/trap.rsi
+      layers:
+        - sprite: Structures/Piping/Atmospherics/pipe.rsi
+          state: pipeStraight
+          map: [ "enum.PipeVisualLayers.Pipe" ]
+        - state: trap
+          map: [ "enum.SubfloorLayers.FirstLayer" ]
+    - type: Appearance
+    - type: PipeColorVisuals
+    - type: PipeCrawlingPipeBlock
+    - type: NodeContainer
+      nodes:
+        inlet:
+          !type:PipeNode
+          nodeGroupID: Pipe
+          pipeDirection: North
+          volume: 100
+        outlet:
+          !type:PipeNode
+          nodeGroupID: Pipe
+          pipeDirection: South
+          volume: 100
+    - type: Construction
+      graph: GasBinary
+      node: valve
+
+- type: entity
+  parent: GasBinaryBase
   id: SignalControlledValve
   name: signal valve
   description: A pipe with a valve that can be controlled with signals.

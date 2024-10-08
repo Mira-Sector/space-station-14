@@ -4,7 +4,7 @@ using Content.Server.NodeContainer.EntitySystems;
 using Content.Server.NodeContainer.Nodes;
 using Content.Shared.Atmos.Piping.Crawling.Components;
 
-namespace Content.Server.Atmos.Piping.Crawling.Systems;
+namespace Content.Server.Atmos.Piping.Crawling;
 
 public sealed class PipeCrawlingSystem : EntitySystem
 {

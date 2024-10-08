@@ -7,7 +7,7 @@ using Content.Shared.Destructible;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map.Components;
 
-namespace Content.Server.Atmos.Piping.Crawling.Systems;
+namespace Content.Server.Atmos.Piping.Crawling;
 
 public sealed class PipeCrawlingPipeSystem : EntitySystem
 {
@@ -72,6 +72,9 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
         if (!Resolve(uid, ref component, false))
             return;
 
+        if (HasComp<PipeCrawlingPipeBlockComponent>(uid))
+            return;
+
         if (!TryComp<TransformComponent>(uid, out var xform))
             return;
 
@@ -124,6 +127,9 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
                     break; // we can only have one match per direction. no pipe stacking :(
 
                 if (pipe == uid)
+                    continue;
+
+                if (HasComp<PipeCrawlingPipeBlockComponent>(pipe))
                     continue;
 
                 if (!TryComp<NodeContainerComponent>(pipe, out var currentNodeComp))
