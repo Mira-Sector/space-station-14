@@ -51,7 +51,8 @@ public sealed class MedibotSystem : EntitySystem
 
     private void OnInteract(Entity<MedibotComponent> medibot, ref UserActivateInWorldEvent args)
     {
-        if (!CheckInjectable(medibot!, args.Target, true)) return;
+        if (!CheckInjectable(medibot!, args.Target, true))
+            return;
 
         _doAfter.TryStartDoAfter(new DoAfterArgs(EntityManager, args.User, 2f, new MedibotInjectDoAfterEvent(), args.User, args.Target)
         {
@@ -62,7 +63,8 @@ public sealed class MedibotSystem : EntitySystem
 
     private void OnInject(EntityUid uid, MedibotComponent comp, ref MedibotInjectDoAfterEvent args)
     {
-        if (args.Cancelled) return;
+        if (args.Cancelled)
+            return;
 
         if (args.Target is { } target)
             TryInject(uid, target);
@@ -84,7 +86,8 @@ public sealed class MedibotSystem : EntitySystem
     /// </summary>
     public bool CheckInjectable(Entity<MedibotComponent?> medibot, EntityUid target, bool manual = false)
     {
-        if (!Resolve(medibot, ref medibot.Comp, false)) return false;
+        if (!Resolve(medibot, ref medibot.Comp, false))
+            return false;
 
         if (HasComp<NPCRecentlyInjectedComponent>(target))
         {
@@ -92,9 +95,14 @@ public sealed class MedibotSystem : EntitySystem
             return false;
         }
 
-        if (!TryComp<MobStateComponent>(target, out var mobState)) return false;
-        if (!TryComp<DamageableComponent>(target, out var damageable)) return false;
-        if (!_solutionContainer.TryGetInjectableSolution(target, out _, out _)) return false;
+        if (!TryComp<MobStateComponent>(target, out var mobState))
+            return false;
+
+        if (!TryComp<DamageableComponent>(target, out var damageable))
+            return false;
+
+        if (!_solutionContainer.TryGetInjectableSolution(target, out _, out _))
+            return false;
 
         if (mobState.CurrentState != MobState.Alive && mobState.CurrentState != MobState.Critical)
         {
@@ -109,7 +117,8 @@ public sealed class MedibotSystem : EntitySystem
             return false;
         }
 
-        if (!TryGetTreatment(medibot.Comp, mobState.CurrentState, out var treatment) || !treatment.IsValid(total) && !manual) return false;
+        if (!TryGetTreatment(medibot.Comp, mobState.CurrentState, out var treatment) || !treatment.IsValid(total) && !manual)
+            return false;
 
         return true;
     }
@@ -119,13 +128,20 @@ public sealed class MedibotSystem : EntitySystem
     /// </summary>
     public bool TryInject(Entity<MedibotComponent?> medibot, EntityUid target)
     {
-        if (!Resolve(medibot, ref medibot.Comp, false)) return false;
+        if (!Resolve(medibot, ref medibot.Comp, false))
+            return false;
 
-        if (!_interaction.InRangeUnobstructed(medibot.Owner, target)) return false;
+        if (!_interaction.InRangeUnobstructed(medibot.Owner, target))
+            return false;
 
-        if (!TryComp<MobStateComponent>(target, out var mobState)) return false;
-        if (!TryGetTreatment(medibot.Comp, mobState.CurrentState, out var treatment)) return false;
-        if (!_solutionContainer.TryGetInjectableSolution(target, out var injectable, out _)) return false;
+        if (!TryComp<MobStateComponent>(target, out var mobState))
+            return false;
+
+        if (!TryGetTreatment(medibot.Comp, mobState.CurrentState, out var treatment))
+            return false;
+
+        if (!_solutionContainer.TryGetInjectableSolution(target, out var injectable, out _))
+            return false;
 
         EnsureComp<NPCRecentlyInjectedComponent>(target);
         _solutionContainer.TryAddReagent(injectable.Value, treatment.Reagent, treatment.Quantity, out _);
