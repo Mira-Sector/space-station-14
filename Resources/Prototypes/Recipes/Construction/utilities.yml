@@ -608,6 +608,27 @@
     - !type:NoUnstackableInTile
 
 - type: construction
+  id: GasTrap
+  name: trap pipe
+  description: A pipe with a blocker stopping anything apart from gas escaping.
+  graph: GasBinary
+  startNode: start
+  targetNode: trap
+  category: construction-category-utilities
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+  icon:
+    sprite: Structures/Piping/Atmospherics/trap.rsi
+    state: trap
+  layers:
+  - sprite: Structures/Piping/Atmospherics/pipe.rsi
+    state: pipeStraight
+  - sprite: Structures/Piping/Atmospherics/trap.rsi
+    state: trap
+  conditions:
+    - !type:NoUnstackableInTile
+
+- type: construction
   id: SignalControlledValve
   name: signal valve
   description: Valve controlled by signal inputs.
