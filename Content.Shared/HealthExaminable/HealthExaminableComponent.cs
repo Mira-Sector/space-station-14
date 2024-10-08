@@ -1,16 +1,17 @@
-﻿using Content.Shared.Damage.Prototypes;
+using Content.Shared.Damage.Prototypes;
 using Content.Shared.FixedPoint;
+using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared.HealthExaminable;
 
-[RegisterComponent, Access(typeof(HealthExaminableSystem))]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState, Access(typeof(HealthExaminableSystem))]
 public sealed partial class HealthExaminableComponent : Component
 {
     public List<FixedPoint2> Thresholds = new()
         { FixedPoint2.New(10), FixedPoint2.New(25), FixedPoint2.New(50), FixedPoint2.New(75) };
 
-    [DataField(required: true)]
+    [DataField(required: true), AutoNetworkedField]
     public HashSet<ProtoId<DamageTypePrototype>> ExaminableTypes = default!;
 
     /// <summary>

@@ -1,14 +1,22 @@
 using Content.Server.Polymorph.Components;
 using Content.Shared.Actions;
 using Content.Shared.Construction.Components;
+using Content.Shared.Chat.TypingIndicator;
 using Content.Shared.Hands;
+using Content.Shared.HealthExaminable;
+using Content.Shared.Movement.Components;
+using Content.Shared.Humanoid;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Polymorph;
 using Content.Shared.Polymorph.Components;
 using Content.Shared.Polymorph.Systems;
+using Content.Shared.Speech;
+using Content.Shared.Speech.Components;
 using Content.Shared.StatusIcon.Components;
+using Content.Shared.Tag;
+using Robust.Shared.GameObjects.Components.Localization;
 using Robust.Shared.Physics.Components;
 
 namespace Content.Server.Polymorph.Systems;
@@ -18,9 +26,12 @@ public sealed class ChameleonProjectorSystem : SharedChameleonProjectorSystem
     [Dependency] private readonly MetaDataSystem _meta = default!;
     [Dependency] private readonly MobThresholdSystem _mobThreshold = default!;
     [Dependency] private readonly PolymorphSystem _polymorph = default!;
+    [Dependency] private readonly TagSystem _tag = default!;
     [Dependency] private readonly SharedActionsSystem _actions = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
+
+    const string FootstepTag = "FootstepSound";
 
     public override void Initialize()
     {
@@ -60,6 +71,21 @@ public sealed class ChameleonProjectorSystem : SharedChameleonProjectorSystem
             RemComp<StatusIconComponent>(disguise);
 
         _appearance.CopyData(entity, disguise);
+
+        // mimic humans
+        CopyComp<HumanoidAppearanceComponent>((disguise, comp));
+        CopyComp<HealthExaminableComponent>((disguise, comp));
+        CopyComp<VocalComponent>((disguise, comp));
+        CopyComp<TypingIndicatorComponent>((disguise, comp));
+        CopyComp<FootstepModifierComponent>((disguise, comp));
+        CopyComp<SpeechComponent>((disguise, comp));
+        CopyComp<GrammarComponent>((disguise, comp));
+
+        if (_tag.HasTag(entity, FootstepTag))
+        {
+            var tagComp = EnsureComp<TagComponent>(disguise);
+            _tag.AddTag((disguise, tagComp), FootstepTag);
+        }
 
         var mass = CompOrNull<PhysicsComponent>(entity)?.Mass ?? 0f;
 
