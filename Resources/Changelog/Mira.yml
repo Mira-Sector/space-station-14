@@ -599,3 +599,23 @@ Entries:
     type: Tweak
   id: 89
   time: '2024-10-08T01:15:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Readded medibot and cleanbot sentience
+    type: Add
+  id: 90
+  time: '2024-10-05T02:40:00.0000000+00:00'
+- author: yuitop
+  changes:
+  - message: Sentient medibot can now inject
+    type: Add
+  id: 91
+  time: '2024-10-05T02:40:00.0000000+00:00'
+- author: lzk228
+  changes:
+  - message: Bots now can examine, use zoom and see their alerts (health & stamina).
+    type: Tweak
+  - message: Added borgs emotes to bots.
+    type: Add
+  id: 92
+  time: '2024-10-05T02:40:00.0000000+00:00'
