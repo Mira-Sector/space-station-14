@@ -629,3 +629,9 @@ Entries:
     type: Tweak
   id: 93
   time: '2024-10-05T12:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added the trap pipe to stop crawling any further
+    type: Add
+  id: 94
+  time: '2024-10-05T21:20:00.0000000+00:00'
