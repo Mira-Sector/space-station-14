@@ -56,7 +56,8 @@ public sealed class ChameleonProjectorSystem : SharedChameleonProjectorSystem
         Dirty(disguise, comp);
 
         // no sechud trolling
-        RemComp<StatusIconComponent>(disguise);
+        if (!proj.Action)
+            RemComp<StatusIconComponent>(disguise);
 
         _appearance.CopyData(entity, disguise);
 
