@@ -25,6 +25,8 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
     const string PipeContainer = "pipe";
     Vector2 Offset = new Vector2(0.5f, 0.5f);
 
+    const float CrawlSpeedMultiplier = 0.8f;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -43,6 +45,9 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
         while (query.MoveNext(out var uid, out var component))
         {
             if (!component.IsMoving)
+                continue;
+
+            if (!TryComp<CanEnterPipeCrawlingComponent>(uid, out var pipeCrawlerComp))
                 continue;
 
             if (!TryComp<PipeCrawlingPipeComponent>(component.CurrentPipe, out var pipeComp))
@@ -65,7 +70,7 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
                 continue;
             }
 
-            component.NextMoveAttempt = _timing.CurTime + TimeSpan.FromSeconds(1f / speedComp.BaseSprintSpeed);
+            component.NextMoveAttempt = _timing.CurTime + TimeSpan.FromSeconds(pipeCrawlerComp.PipeMoveSpeed ?? (1f / speedComp.BaseSprintSpeed) * CrawlSpeedMultiplier);
 
             if (_mobState.IsIncapacitated(uid))
                 continue;

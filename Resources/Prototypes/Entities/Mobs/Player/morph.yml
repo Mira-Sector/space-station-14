@@ -1,0 +1,57 @@
+- type: entity
+  name: Morph
+  id: Morph
+  parent: [ SimpleMobBase, MobCombat ]
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: Mobs/Aliens/morph.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: morph
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.30
+        density: 80
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      150: Dead
+  - type: FootstepModifier
+    footstepSoundCollection:
+      path: /Audio/Effects/Footsteps/slime1.ogg
+      params:
+        volume: 3
+  - type: Tag
+    tags:
+    - FootstepSound
+  - type: Bloodstream
+    bloodReagent: Slime
+  - type: Body
+    prototype: Slimes
+    requiredLegs: 1
+  - type: MeleeWeapon
+    altDisarm: false
+    soundHit:
+        path: /Audio/Weapons/punch3.ogg
+    angle: 0
+    animation: WeaponArcPunch
+    damage:
+      types:
+        Blunt: 20
+        Structural: 5
+  - type: Speech
+    speechVerb: Slime
+    speechSounds: Slime
+  - type: TypingIndicator
+    proto: slime
+  - type: CanEnterPipeCrawling
+    enterPipeDoAfterTime: 2
+    pipeMoveSpeed: 0.15

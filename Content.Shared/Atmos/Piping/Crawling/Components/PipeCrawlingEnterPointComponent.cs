@@ -1,3 +1,5 @@
+using Content.Shared.DoAfter;
+using Robust.Shared.Serialization;
 using Robust.Shared.GameStates;
 
 namespace Content.Shared.Atmos.Piping.Crawling.Components;
@@ -16,4 +18,9 @@ public sealed partial class PipeCrawlingEnterPointComponent : Component
 
     [ViewVariables]
     public bool Exitable = false;
+}
+
+[Serializable, NetSerializable]
+public sealed partial class PipeEnterDoAfterEvent : SimpleDoAfterEvent
+{
 }

@@ -1,4 +1,5 @@
 using Content.Shared.Atmos.Piping.Crawling.Components;
+using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
 using Content.Shared.Tools.Systems;
 using Content.Shared.Verbs;
@@ -9,6 +10,7 @@ namespace Content.Shared.Atmos.Piping.Crawling.Systems;
 public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
 {
     [Dependency] private readonly SharedContainerSystem _containers = default!;
+    [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
     [Dependency] private readonly WeldableSystem _weldable = default!;
 
@@ -24,6 +26,8 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
 
         SubscribeLocalEvent<PipeCrawlingEnterPointComponent, GetVerbsEvent<ActivationVerb>>(OnVerb);
         SubscribeLocalEvent<PipeCrawlingEnterPointComponent, ActivateInWorldEvent>(OnInteract);
+
+        SubscribeLocalEvent<PipeCrawlingEnterPointComponent, PipeEnterDoAfterEvent>(OnDoAfter);
     }
 
     private void OnInit(EntityUid uid, PipeCrawlingEnterPointComponent component, ref ComponentInit args)
@@ -49,7 +53,8 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
 
     private void OnVerb(EntityUid uid, PipeCrawlingEnterPointComponent component, GetVerbsEvent<ActivationVerb> args)
     {
-        if (!HasComp<CanEnterPipeCrawlingComponent>(args.User))
+
+        if (!TryComp<CanEnterPipeCrawlingComponent>(args.User, out var canEnterPipeComp))
             return;
 
         if (!args.CanAccess || !args.CanInteract)
@@ -95,7 +100,7 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
                 verb.Text = Loc.GetString("mech-verb-enter");
                 verb.Act = () =>
                 {
-                    PipeEnter(args.User, uid, pipeContainer);
+                    PipeEnter(args.User, uid, canEnterPipeComp);
                 };
 
                 break;
@@ -110,7 +115,7 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
         if (args.Handled)
             return;
 
-        if (!HasComp<CanEnterPipeCrawlingComponent>(args.User))
+        if (!TryComp<CanEnterPipeCrawlingComponent>(args.User, out var canEnterPipeComp))
         {
             args.Handled = true;
             return;
@@ -146,7 +151,7 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
                 if (pipeCrawling)
                     break;
 
-                PipeEnter(args.User, uid, pipeContainer);
+                PipeEnter(args.User, uid, canEnterPipeComp);
                 break;
             }
         }
@@ -167,9 +172,18 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
         return false;
     }
 
-    private void PipeEnter(EntityUid user, EntityUid pipe, BaseContainer pipeContainer)
+    private void PipeEnter(EntityUid user, EntityUid pipe, CanEnterPipeCrawlingComponent canPipeCrawlComp)
     {
-        if (!TryComp<PipeCrawlingPipeComponent>(pipe, out var pipeComp))
+        _doAfter.TryStartDoAfter(new DoAfterArgs(EntityManager, user, canPipeCrawlComp.EnterPipeDoAfterTime , new PipeEnterDoAfterEvent(), pipe, pipe)
+        {
+            BreakOnMove = true,
+            AttemptFrequency = AttemptFrequency.EveryTick
+        });
+    }
+
+    private void OnDoAfter(EntityUid pipe, PipeCrawlingEnterPointComponent component, PipeEnterDoAfterEvent args)
+    {
+        if (!_containers.TryGetContainer(pipe, PipeContainer, out var pipeContainer))
             return;
 
         _xform.TryGetMapOrGridCoordinates(pipe, out var pipePos);
@@ -178,13 +192,13 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
         if (pipePos == null)
             return;
 
-        _containers.Insert(user, pipeContainer);
-        var pipeCrawlComp = EnsureComp<PipeCrawlingComponent>(user);
+        _containers.Insert(args.User, pipeContainer);
+        var pipeCrawlComp = EnsureComp<PipeCrawlingComponent>(args.User);
         pipeCrawlComp.CurrentPipe = pipe;
         pipeCrawlComp.NextMoveAttempt = TimeSpan.Zero;
 
-        _xform.SetCoordinates(user, pipePos.Value);
-        Dirty(user, pipeCrawlComp);
+        _xform.SetCoordinates(args.User, pipePos.Value);
+        Dirty(args.User, pipeCrawlComp);
     }
 
     private void PipeExit(EntityUid user, EntityUid pipe, BaseContainer pipeContainer)
