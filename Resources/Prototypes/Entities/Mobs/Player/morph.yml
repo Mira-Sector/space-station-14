@@ -1,6 +1,8 @@
 - type: entity
   name: Morph
-  id: Morph
+  id: MobMorph
+  description: What the hell is this?
+  suffix: ""
   parent: [ SimpleSpaceMobBase, MobCombat ]
   components:
   - type: Sprite
@@ -20,14 +22,30 @@
         - MobMask
         layer:
         - MobLayer
+  - type: GhostRole
+    allowMovement: true
+    allowSpeech: true
+    makeSentient: true
+    name: ghost-role-information-morph-name
+    description: ghost-role-information-morph-description
+    rules: ghost-role-information-antagonist-rules
+    raffle:
+      settings: default
+  - type: GhostTakeoverAvailable
   - type: MobThresholds
     thresholds:
       0: Alive
       200: Dead
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: morph
+      Dead:
+        Base: morph_dead
   - type: Butcherable
     spawned:
-    - id: FoodMeatDragon
-      amount: 1
+    - id: FoodMeatSlime
+      amount: 5
   - type: StatusEffects # no stuns or slowdown
     allowed:
     - Electrocution
@@ -96,6 +114,9 @@
       - Pda # PDAs currently make you invisible /!\
     polymorph:
       entity: MorphDisguise
+  - type: GuideHelp
+    guides:
+    - MinorAntagonists
 
 - type: entity
   categories: [ HideSpawnMenu ]

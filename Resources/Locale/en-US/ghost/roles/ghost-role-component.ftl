@@ -303,3 +303,6 @@ ghost-role-information-artifact-description = Enact your eldritch whims. Forcibl
 
 ghost-role-information-tomatokiller-name = Tomato killer
 ghost-role-information-tomatokiller-description = This little tomato will serve the botanist for the rest of his life... that is, a couple of minutes
+
+ghost-role-information-morph-name = Morph
+ghost-role-information-morph-description = Pipe crawl your way to taking over the whole station. One whole maint tider at a time.
