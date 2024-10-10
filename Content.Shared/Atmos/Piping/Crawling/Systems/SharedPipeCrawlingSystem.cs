@@ -116,19 +116,6 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
         if (!TryComp<FixturesComponent>(uid, out var playerFixturesComp))
             return;
 
-        foreach ((var fixtureId, var fixture) in playerFixturesComp.Fixtures)
-        {
-            if (enabled)
-            {
-                component.OriginalCollision.Add(fixtureId, fixture.Hard);
-                _physics.SetHard(uid, fixture, !enabled);
-            }
-            else if (component.OriginalCollision.ContainsKey(fixtureId))
-            {
-                _physics.SetHard(uid, fixture, component.OriginalCollision[fixtureId]);
-            }
-        }
-
         if (enabled)
         {
             var trayComp = EnsureComp<TrayScannerComponent>(uid);
