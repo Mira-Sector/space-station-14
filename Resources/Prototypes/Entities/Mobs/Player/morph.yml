@@ -1,5 +1,5 @@
 - type: entity
-  name: Morph
+  name: morph
   id: MobMorph
   description: What the hell is this?
   suffix: ""
@@ -71,7 +71,14 @@
       tags:
       - Wall
       - Structure
-    healRate: 10.0
+    healRate: 60.0
+  - type: Metabolizer
+    solutionOnBody: false
+    updateInterval: 0.25
+    metabolizerTypes: [ Dragon ]
+    groups:
+    - id: Medicine
+    - id: Poison
   - type: Tag
     tags:
     - FootstepSound
@@ -109,9 +116,12 @@
     action: true
     blacklist:
       components:
-      - ChameleonDisguise # no becoming kleiner
+      - MorphDisguise
       - InsideEntityStorage # no clark kent going in phone booth and becoming superman
       - Pda # PDAs currently make you invisible /!\
+      tags:
+      - Wall
+      - Structure
     polymorph:
       entity: MorphDisguise
   - type: GuideHelp
@@ -122,7 +132,7 @@
   categories: [ HideSpawnMenu ]
   parent: BaseMob
   id: MorphDisguise
-  name: Morph
+  name: morph
   components:
   - type: Sprite
     drawdepth: Mobs
