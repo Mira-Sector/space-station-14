@@ -119,6 +119,9 @@
       - ChameleonDisguise # no becoming kleiner
       - InsideEntityStorage # no clark kent going in phone booth and becoming superman
       - Pda # PDAs currently make you invisible /!\
+      tags:
+      - Wall
+      - Structure
     polymorph:
       entity: MorphDisguise
   - type: GuideHelp
