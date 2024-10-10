@@ -106,9 +106,6 @@ public sealed class ChameleonProjectorSystem : SharedChameleonProjectorSystem
             if (!TryComp<InventoryComponent>(disguise, out var disguiseInvComp))
                 return;
 
-            if (disguiseInvComp == null)
-                return;
-
             Array.Copy(entInvComp.Slots, disguiseInvComp.Slots, entInvComp.Slots.Length);
 
             var coords = Transform(disguise).Coordinates;
