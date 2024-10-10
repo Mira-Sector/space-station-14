@@ -78,6 +78,7 @@ public sealed class ChameleonProjectorSystem : SharedChameleonProjectorSystem
         // mimic humans
         CopyComp<HumanoidAppearanceComponent>((disguise, comp));
         CopyComp<HealthExaminableComponent>((disguise, comp));
+        CopyComp<VocalComponent>((disguise, comp));
         CopyComp<TypingIndicatorComponent>((disguise, comp));
         CopyComp<FootstepModifierComponent>((disguise, comp));
         CopyComp<SpeechComponent>((disguise, comp));
@@ -89,25 +90,9 @@ public sealed class ChameleonProjectorSystem : SharedChameleonProjectorSystem
             _tag.AddTag((disguise, tagComp), FootstepTag);
         }
 
-        // manually set the emotes
-        if (TryComp<VocalComponent>(entity, out var entVocalComp))
-        {
-            CopyComp<VocalComponent>((disguise, comp));
-            if (!TryComp<VocalComponent>(disguise, out var disguiseVocalComp))
-                return;
-
-            disguiseVocalComp.EmoteSounds = entVocalComp.EmoteSounds;
-        }
-
-        // show the humans clothes
         if (TryComp<InventoryComponent>(entity, out var entInvComp))
         {
             CopyComp<InventoryComponent>((disguise, comp));
-            if (!TryComp<InventoryComponent>(disguise, out var disguiseInvComp))
-                return;
-
-            Array.Copy(entInvComp.Slots, disguiseInvComp.Slots, entInvComp.Slots.Length);
-
             var coords = Transform(disguise).Coordinates;
 
             foreach (var entSlot in entInvComp.Slots)
