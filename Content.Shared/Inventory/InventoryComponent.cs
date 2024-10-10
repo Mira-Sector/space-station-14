@@ -5,7 +5,7 @@ using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototy
 
 namespace Content.Shared.Inventory;
 
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+[RegisterComponent, NetworkedComponent]
 [Access(typeof(InventorySystem))]
 public sealed partial class InventoryComponent : Component
 {
@@ -14,7 +14,7 @@ public sealed partial class InventoryComponent : Component
 
     [DataField("speciesId")] public string? SpeciesId { get; set; }
 
-    [ViewVariables, AutoNetworkedField]
+    [ViewVariables]
     public SlotDefinition[] Slots = Array.Empty<SlotDefinition>();
 
     [ViewVariables]
