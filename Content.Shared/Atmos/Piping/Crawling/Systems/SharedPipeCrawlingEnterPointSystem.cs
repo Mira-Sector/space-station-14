@@ -11,6 +11,7 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
 {
     [Dependency] private readonly SharedContainerSystem _containers = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private readonly SharedTransformSystem _xform = default!;
     [Dependency] private readonly WeldableSystem _weldable = default!;
 
     const string PipeContainer = "pipe";
@@ -185,11 +186,18 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
         if (!_containers.TryGetContainer(pipe, PipeContainer, out var pipeContainer))
             return;
 
+        _xform.TryGetMapOrGridCoordinates(pipe, out var pipePos);
+        var pipeRot = _xform.GetWorldRotation(pipe).GetDir();
+
+        if (pipePos == null)
+            return;
+
         _containers.Insert(args.User, pipeContainer);
         var pipeCrawlComp = EnsureComp<PipeCrawlingComponent>(args.User);
         pipeCrawlComp.CurrentPipe = pipe;
         pipeCrawlComp.NextMoveAttempt = TimeSpan.Zero;
 
+        _xform.SetCoordinates(args.User, pipePos.Value);
         Dirty(args.User, pipeCrawlComp);
     }
 

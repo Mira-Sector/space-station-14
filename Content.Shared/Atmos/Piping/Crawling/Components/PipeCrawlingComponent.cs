@@ -9,6 +9,9 @@ public sealed partial class PipeCrawlingComponent : Component
     public EntityUid CurrentPipe;
 
     [ViewVariables]
+    public Dictionary<string, bool> OriginalCollision = new();
+
+    [ViewVariables]
     public TimeSpan NextMoveAttempt;
 
     [ViewVariables]
