@@ -604,13 +604,13 @@ Entries:
   - message: Readded medibot and cleanbot sentience
     type: Add
   id: 90
-  time: '2024-10-05T02:40:00.0000000+00:00'
+  time: '2024-10-08T02:40:00.0000000+00:00'
 - author: yuitop
   changes:
   - message: Sentient medibot can now inject
     type: Add
   id: 91
-  time: '2024-10-05T02:40:00.0000000+00:00'
+  time: '2024-10-08T02:40:00.0000000+00:00'
 - author: lzk228
   changes:
   - message: Bots now can examine, use zoom and see their alerts (health & stamina).
@@ -618,7 +618,7 @@ Entries:
   - message: Added borgs emotes to bots.
     type: Add
   id: 92
-  time: '2024-10-05T02:40:00.0000000+00:00'
+  time: '2024-10-08T02:40:00.0000000+00:00'
 - author: Doctor-Cpu
   changes:
   - message: Added the morph midround antag
@@ -628,10 +628,16 @@ Entries:
   - message: You move faster when vent crawling
     type: Tweak
   id: 93
-  time: '2024-10-05T12:30:00.0000000+00:00'
+  time: '2024-10-08T12:30:00.0000000+00:00'
 - author: Doctor-Cpu
   changes:
   - message: Added the trap pipe to stop crawling any further
     type: Add
   id: 94
-  time: '2024-10-05T21:20:00.0000000+00:00'
+  time: '2024-10-08T21:20:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Morph now heal more on devouring bodies
+    type: Tweak
+  id: 95
+  time: '2024-10-10T21:20:00.0000000+00:00'
