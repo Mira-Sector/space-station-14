@@ -116,7 +116,7 @@
     action: true
     blacklist:
       components:
-      - ChameleonDisguise # no becoming kleiner
+      - MorphDisguise
       - InsideEntityStorage # no clark kent going in phone booth and becoming superman
       - Pda # PDAs currently make you invisible /!\
       tags:
