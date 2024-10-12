@@ -73,18 +73,17 @@ public sealed class PlayTimeTrackingSystem : EntitySystem
         if (_afk.IsAfk(player))
             return;
 
-        if (_adminManager.IsAdmin(player))
-        {
+        var isAdmin = _adminManager.IsAdmin(player);
+        var isAlive = IsPlayerAlive(player);
+
+        if (isAdmin)
             trackers.Add(PlayTimeTrackingShared.TrackerAdmin);
+
+        if (isAdmin || isAlive)
             trackers.Add(PlayTimeTrackingShared.TrackerOverall);
-            return;
-        }
 
-        if (!IsPlayerAlive(player))
-            return;
-
-        trackers.Add(PlayTimeTrackingShared.TrackerOverall);
-        trackers.UnionWith(GetTimedRoles(player));
+        if (isAlive)
+            trackers.UnionWith(GetTimedRoles(player));
     }
 
     private bool IsPlayerAlive(ICommonSession session)
