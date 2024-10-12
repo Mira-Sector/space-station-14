@@ -28,6 +28,12 @@
         amount: 2
         doAfter: 1
 
+    - to: trap
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 1
+
     - to: signalvalve
       steps:
       - material: Steel
