@@ -647,3 +647,9 @@ Entries:
     type: Tweak
   id: 96
   time: '2024-10-13T07:50:00.0000000+00:00'
+- author: aspiffyfellow
+  changes:
+  - message: Mir security has been redone
+    type: Tweak
+  id: 97
+  time: '2024-10-13T08:20:00.0000000+00:00'
