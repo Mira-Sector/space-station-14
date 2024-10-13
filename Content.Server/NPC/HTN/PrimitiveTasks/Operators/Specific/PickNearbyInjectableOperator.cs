@@ -65,7 +65,7 @@ public sealed partial class PickNearbyInjectableOperator : HTNOperator
                 !recentlyInjected.HasComponent(entity))
             {
                 // no treating dead bodies
-                if (!_medibot.TryGetTreatment(medibot, state.CurrentState, out var treatment))
+                if (!_medibot.TryGetTreatment(medibot, state, out var treatment))
                     continue;
 
                 // Only go towards a target if the bot can actually help them or if the medibot is emagged
