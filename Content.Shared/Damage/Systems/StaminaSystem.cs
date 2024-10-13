@@ -8,6 +8,7 @@ using Content.Shared.Database;
 using Content.Shared.Crawling;
 using Content.Shared.Effects;
 using Content.Shared.IdentityManagement;
+using Content.Shared.Mobs.Components;
 using Content.Shared.Popups;
 using Content.Shared.Projectiles;
 using Content.Shared.Rejuvenate;
@@ -283,6 +284,12 @@ public sealed partial class StaminaSystem : EntitySystem
         // if softstam is reached deal hard stun instead
         // we still want to deal hard stun even when they are crit
         if (soft && component.State != StunnedState.None && isPositive)
+        {
+            soft = false;
+            softModified = true;
+        }
+
+        if (isPositive && TryComp<MobStateComponent>(uid, out var mobState) && mobState.CurrentState != Mobs.MobState.Alive)
         {
             soft = false;
             softModified = true;
