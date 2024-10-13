@@ -214,6 +214,7 @@
     - DoorBumpOpener
     - AnomalyHost
   - type: Crawler
+  - type: CanRemoveCrawling
 
 - type: entity
   save: false
