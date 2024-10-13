@@ -26,6 +26,7 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
 {
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly AudioSystem _audio = default!;
+    [Dependency] private readonly EntityLookupSystem _entityLookup = default!;
     [Dependency] private readonly SharedGravitySystem _gravity = default!;
     [Dependency] private readonly PopupSystem _popups = default!;
     [Dependency] private readonly PuddleSystem _puddleSystem = default!;
@@ -104,19 +105,31 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
 
     private void OnAfterInteract(EntityUid uid, AbsorbentComponent component, AfterInteractEvent args)
     {
-        if (!args.CanReach || args.Handled || args.Target == null)
+        if (!args.CanReach || args.Handled)
             return;
 
-        Mop(args.User, args.Target.Value, args.Used, component);
+        if (args.Target != null)
+        {
+            Mop(args.User, args.Target.Value, args.Used, component);
+            return;
+        }
+
+        var entities = _entityLookup.GetEntitiesInRange(args.ClickLocation, component.Range, LookupFlags.Uncontained);
+
+        foreach (var ent in entities)
+        {
+            Mop(args.User, ent, args.Used, component, false, true, false);
+        }
+
         args.Handled = true;
     }
 
-    public void Mop(EntityUid user, EntityUid target, EntityUid used, AbsorbentComponent component, bool popups = true)
+    public void Mop(EntityUid user, EntityUid target, EntityUid used, AbsorbentComponent component, bool popups = true, bool ignoreDelay = false, bool transferRefillable = true)
     {
         if (!_solutionContainerSystem.TryGetSolution(used, AbsorbentComponent.SolutionName, out var absorberSoln))
             return;
 
-        if (TryComp<UseDelayComponent>(used, out var useDelay)
+        if (TryComp<UseDelayComponent>(used, out var useDelay) && !ignoreDelay
             && _useDelay.IsDelayed((used, useDelay)))
             return;
 
@@ -124,7 +137,7 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
         if (!TryPuddleInteract(user, used, target, component, useDelay, absorberSoln.Value, popups))
         {
             // If it's refillable try to transfer
-            if (!TryRefillableInteract(user, used, target, component, useDelay, absorberSoln.Value))
+            if (transferRefillable && !TryRefillableInteract(user, used, target, component, useDelay, absorberSoln.Value))
                 return;
         }
     }
@@ -354,7 +367,7 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
 
         if (HasComp<PuddleComponent>(args.OtherEntity))
         {
-            Mop(uid, args.OtherEntity, uid, absorbentComp, false);
+            Mop(uid, args.OtherEntity, uid, absorbentComp, popups: false, transferRefillable: false);
         }
         else if (TryComp<SlipperyComponent>(uid, out var slipperyComp) && HasComp<InputMoverComponent>(args.OtherEntity))
         {
