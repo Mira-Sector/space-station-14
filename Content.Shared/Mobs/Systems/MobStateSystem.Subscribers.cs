@@ -112,10 +112,8 @@ public partial class MobStateSystem
                 break;
             case MobState.Critical:
             case MobState.SoftCritical:
-                _standing.Down(target);
-                _appearance.SetData(target, MobStateVisuals.State, MobState.Critical);
-                break;
             case MobState.HardCritical:
+                _standing.Down(target);
                 _appearance.SetData(target, MobStateVisuals.State, MobState.Critical);
                 break;
             case MobState.Dead:
@@ -155,6 +153,9 @@ public partial class MobStateSystem
             RemCompDeferred<AllowNextCritSpeechComponent>(uid);
             return;
         }
+
+        if (component.CurrentState == MobState.SoftCritical)
+            args.OnlyWhisper = true;
 
         CheckAct(uid, component, args);
     }
