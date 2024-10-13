@@ -21,6 +21,9 @@ public sealed partial class AbsorbentComponent : Component
     [DataField("pickupAmount")]
     public FixedPoint2 PickupAmount = FixedPoint2.New(100);
 
+    [DataField]
+    public float Range = 1.2f;
+
     [DataField("pickupSound")]
     public SoundSpecifier PickupSound = new SoundPathSpecifier("/Audio/Effects/Fluids/watersplash.ogg")
     {

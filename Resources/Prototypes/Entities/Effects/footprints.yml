@@ -8,6 +8,17 @@
   - type: Forensics
   - type: Residue
   - type: Footprint
+  - type: Fixtures
+    fixtures:
+      slipFixture:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.3,-0.3,0.3,0.3"
+        mask:
+        - ItemMask
+        layer:
+        - SlipLayer
+        hard: false
   - type: SolutionContainerManager
     solutions:
       puddle:
