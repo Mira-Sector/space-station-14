@@ -1,4 +1,4 @@
-﻿namespace Content.Shared.Speech
+namespace Content.Shared.Speech
 {
     public sealed class SpeakAttemptEvent : CancellableEntityEventArgs
     {
@@ -8,5 +8,6 @@
         }
 
         public EntityUid Uid { get; }
+        public bool OnlyWhisper = false;
     }
 }
