@@ -641,3 +641,9 @@ Entries:
     type: Tweak
   id: 95
   time: '2024-10-10T21:20:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Mops can mop up adjacent objects
+    type: Tweak
+  id: 96
+  time: '2024-10-13T07:50:00.0000000+00:00'
