@@ -197,6 +197,9 @@ public sealed partial class CrawlingSystem : EntitySystem
 
     private void OnCrawlInteract(EntityUid uid, CrawlingComponent component, ref InteractHandEvent args)
     {
+        if (args.Handled)
+            return;
+
         if (!HasComp<CanRemoveCrawlingComponent>(args.User))
             return;
 

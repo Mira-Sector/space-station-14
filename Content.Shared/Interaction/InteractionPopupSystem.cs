@@ -1,4 +1,5 @@
 using Content.Shared.Bed.Sleep;
+using Content.Shared.Crawling;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Interaction.Components;
 using Content.Shared.Interaction.Events;
@@ -61,6 +62,9 @@ public sealed class InteractionPopupSystem : EntitySystem
         // HUH? What does this comment even mean?
 
         if (HasComp<SleepingComponent>(uid))
+            return;
+
+        if (HasComp<CrawlingComponent>(uid) && HasComp<CanRemoveCrawlingComponent>(user))
             return;
 
         if (TryComp<MobStateComponent>(uid, out var state)
