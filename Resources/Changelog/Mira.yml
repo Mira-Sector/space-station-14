@@ -653,3 +653,9 @@ Entries:
     type: Tweak
   id: 97
   time: '2024-10-13T08:20:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: There is now a 3rd stage of death, softcritical, allowing you to crawl and whisper.
+    type: Tweak
+  id: 98
+  time: '2024-10-13T16:55:00.0000000+00:00'
