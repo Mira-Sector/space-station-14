@@ -76,9 +76,14 @@ public sealed class MedibotSystem : EntitySystem
     /// <remarks>
     /// This only exists because allowing other execute would allow modifying the dictionary, and Read access does not cover TryGetValue.
     /// </remarks>
-    public bool TryGetTreatment(MedibotComponent comp, MobState state, [NotNullWhen(true)] out MedibotTreatment? treatment)
+    public bool TryGetTreatment(MedibotComponent comp, MobStateComponent state, [NotNullWhen(true)] out MedibotTreatment? treatment)
     {
-        return comp.Treatments.TryGetValue(state, out treatment);
+        var mobstate = state.CurrentState;
+
+        if (mobstate == MobState.SoftCritical || mobstate == MobState.HardCritical)
+            mobstate = MobState.Critical;
+
+        return comp.Treatments.TryGetValue(mobstate, out treatment);
     }
 
     /// <summary>
@@ -104,8 +109,7 @@ public sealed class MedibotSystem : EntitySystem
         if (!_solutionContainer.TryGetInjectableSolution(target, out _, out _))
             return false;
 
-        if (mobState.CurrentState != MobState.Alive &&
-            (mobState.CurrentState != MobState.Critical || mobState.CurrentState != MobState.SoftCritical || mobState.CurrentState != MobState.HardCritical))
+        if (mobState.CurrentState == MobState.Dead)
         {
             _popup.PopupClient(Loc.GetString("medibot-target-dead"), medibot, medibot);
             return false;
@@ -118,7 +122,7 @@ public sealed class MedibotSystem : EntitySystem
             return false;
         }
 
-        if (!TryGetTreatment(medibot.Comp, mobState.CurrentState, out var treatment) || !treatment.IsValid(total) && !manual)
+        if (!TryGetTreatment(medibot.Comp, mobState, out var treatment) || !treatment.IsValid(total) && !manual)
             return false;
 
         return true;
@@ -138,7 +142,7 @@ public sealed class MedibotSystem : EntitySystem
         if (!TryComp<MobStateComponent>(target, out var mobState))
             return false;
 
-        if (!TryGetTreatment(medibot.Comp, mobState.CurrentState, out var treatment))
+        if (!TryGetTreatment(medibot.Comp, mobState, out var treatment))
             return false;
 
         if (!_solutionContainer.TryGetInjectableSolution(target, out var injectable, out _))
