@@ -7,13 +7,16 @@ using Content.Shared.DoAfter;
 using Content.Shared.Explosion;
 using Content.Shared.Input;
 using Content.Shared.Interaction;
+using Content.Shared.Mobs.Components;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Standing;
+using Content.Shared.Stunnable;
 using Robust.Shared.Input.Binding;
 using Robust.Shared.Player;
 using Robust.Shared.Serialization;
 
 namespace Content.Shared.Crawling;
+
 public sealed partial class CrawlingSystem : EntitySystem
 {
     [Dependency] private readonly AlertsSystem _alerts = default!;
@@ -79,16 +82,25 @@ public sealed partial class CrawlingSystem : EntitySystem
         SetCrawling(uid, component, !_standing.IsDown(uid));
     }
 
-    public void SetCrawling(EntityUid uid, CrawlerComponent component, bool state, EntityUid? user = null)
+    public bool SetCrawling(EntityUid uid, CrawlerComponent component, bool state, EntityUid? user = null)
     {
         if (state)
         {
             // prevent others shoving them into crit
             // force crawling is handled with disarm intent
             if (user == null)
+            {
                 _standing.Down(uid, dropHeldItems: false);
+                return true;
+            }
 
-            return;
+            return false;
+        }
+
+        if (TryComp<MobStateComponent>(uid, out var stateComp) &&
+            stateComp.CurrentState != Mobs.MobState.Alive)
+        {
+            return false;
         }
 
         bool userIsNull = user == null;
@@ -106,16 +118,17 @@ public sealed partial class CrawlingSystem : EntitySystem
                 if (staminaComponent.State != StunnedState.None && // prevent getting up when full stunned not just crawling
                     staminaComponent.StaminaDamage > staminaComponent.CritThreshold)
                 {
-                    return;
+                    return false;
                 }
             }
             else
             {
-                // get them up from crawling
                 if (staminaComponent.State != StunnedState.Crawling)
-                {
-                    return;
-                }
+                    return false;
+
+                RemComp<KnockedDownComponent>(uid);
+                _stamina.ExitStamCrit(uid, staminaComponent, user, true);
+                return true;
             }
         }
 
@@ -126,6 +139,8 @@ public sealed partial class CrawlingSystem : EntitySystem
             NeedHand = !userIsNull,
             BreakOnDamage = true
         });
+
+        return true;
     }
 
     private void OnCrawlingAlertEvent(EntityUid uid, CrawlerComponent component, CrawlingAlertEvent args)
@@ -206,8 +221,7 @@ public sealed partial class CrawlingSystem : EntitySystem
         if (!TryComp<CrawlerComponent>(uid, out var crawlerComp))
             return;
 
-        args.Handled = true;
-        SetCrawling(uid, crawlerComp, false, args.User);
+        args.Handled = SetCrawling(uid, crawlerComp, false, args.User);
     }
 }
 

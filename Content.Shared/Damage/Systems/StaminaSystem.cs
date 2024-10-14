@@ -483,7 +483,7 @@ public sealed partial class StaminaSystem : EntitySystem
         _adminLogger.Add(LogType.Stamina, LogImpact.Medium, $"{ToPrettyString(uid):user} entered stamina crit");
     }
 
-    public void ExitStamCrit(EntityUid uid, StaminaComponent? component = null)
+    public void ExitStamCrit(EntityUid uid, StaminaComponent? component = null, EntityUid? user = null, bool instant = false)
     {
         if (!Resolve(uid, ref component) ||
             component.State == StunnedState.None)
@@ -497,11 +497,14 @@ public sealed partial class StaminaSystem : EntitySystem
 
         if (TryComp<CrawlerComponent>(uid, out var crawlerComp) && HasComp<CrawlingComponent>(uid))
         {
-            _crawling.SetCrawling(uid, crawlerComp, false);
+            _crawling.SetCrawling(uid, crawlerComp, false, user);
         }
 
-        component.NextUpdate = _timing.CurTime + TimeSpan.FromMilliseconds(1);
-        SetStaminaAlert(uid, component);
+        var time = TimeSpan.Zero;
+        if (!instant)
+            time = _timing.CurTime + TimeSpan.FromMilliseconds(1);
+
+        component.NextUpdate = time;
         Dirty(uid, component);
         _adminLogger.Add(LogType.Stamina, LogImpact.Low, $"{ToPrettyString(uid):user} recovered from stamina crit");
     }
