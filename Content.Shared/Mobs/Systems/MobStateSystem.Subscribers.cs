@@ -1,6 +1,7 @@
-﻿using Content.Shared.Bed.Sleep;
+using Content.Shared.Bed.Sleep;
 using Content.Shared.Buckle.Components;
 using Content.Shared.CombatMode.Pacification;
+using Content.Shared.Crawling;
 using Content.Shared.Damage.ForceSay;
 using Content.Shared.Emoting;
 using Content.Shared.Hands;
@@ -22,6 +23,8 @@ namespace Content.Shared.Mobs.Systems;
 
 public partial class MobStateSystem
 {
+    [Dependency] private readonly CrawlingSystem _crawlingSystem = default!;
+
     //General purpose event subscriptions. If you can avoid it register these events inside their own systems
     private void SubscribeEvents()
     {
@@ -62,6 +65,8 @@ public partial class MobStateSystem
         {
             case MobState.Dead:
             case MobState.Critical:
+            case MobState.SoftCritical:
+            case MobState.HardCritical:
                 args.Cancelled = true;
                 break;
         }
@@ -75,11 +80,13 @@ public partial class MobStateSystem
                 //unused
                 break;
             case MobState.Critical:
+            case MobState.SoftCritical:
                 _standing.Stand(target);
+                break;
+            case MobState.HardCritical:
                 break;
             case MobState.Dead:
                 RemComp<CollisionWakeComponent>(target);
-                _standing.Stand(target);
                 break;
             case MobState.Invalid:
                 //unused
@@ -104,6 +111,8 @@ public partial class MobStateSystem
                 _appearance.SetData(target, MobStateVisuals.State, MobState.Alive);
                 break;
             case MobState.Critical:
+            case MobState.SoftCritical:
+            case MobState.HardCritical:
                 _standing.Down(target);
                 _appearance.SetData(target, MobStateVisuals.State, MobState.Critical);
                 break;
@@ -145,6 +154,9 @@ public partial class MobStateSystem
             return;
         }
 
+        if (component.CurrentState == MobState.SoftCritical)
+            args.OnlyWhisper = true;
+
         CheckAct(uid, component, args);
     }
 
@@ -154,6 +166,7 @@ public partial class MobStateSystem
         {
             case MobState.Dead:
             case MobState.Critical:
+            case MobState.HardCritical:
                 args.Cancel();
                 break;
         }

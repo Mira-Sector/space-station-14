@@ -124,12 +124,27 @@ public sealed class MobThresholdSystem : EntitySystem
         if (!Resolve(target, ref thresholdComponent))
             return false;
 
-        foreach (var pair in thresholdComponent.Thresholds)
+        if (mobState == MobState.Critical && !thresholdComponent.Thresholds.ContainsValue(mobState) &&
+            thresholdComponent.Thresholds.ContainsValue(MobState.SoftCritical) && thresholdComponent.Thresholds.ContainsValue(MobState.HardCritical))
         {
-            if (pair.Value == mobState)
+            foreach (var pair in thresholdComponent.Thresholds)
             {
-                threshold = pair.Key;
-                return true;
+                if (pair.Value == MobState.SoftCritical)
+                {
+                    threshold = pair.Key;
+                    return true;
+                }
+            }
+        }
+        else
+        {
+            foreach (var pair in thresholdComponent.Thresholds)
+            {
+                if (pair.Value == mobState)
+                {
+                    threshold = pair.Key;
+                    return true;
+                }
             }
         }
 

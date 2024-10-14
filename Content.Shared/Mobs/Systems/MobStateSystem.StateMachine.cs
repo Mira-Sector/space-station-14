@@ -1,4 +1,4 @@
-﻿using Content.Shared.Database;
+using Content.Shared.Database;
 using Content.Shared.Mobs.Components;
 
 namespace Content.Shared.Mobs.Systems;
@@ -100,8 +100,32 @@ public partial class MobStateSystem
     {
         var oldState = component.CurrentState;
         //make sure we are allowed to enter the new state
-        if (oldState == newState || !component.AllowedStates.Contains(newState))
+
+        if (oldState == newState)
             return;
+
+        if (!component.AllowedStates.Contains(newState))
+        {
+            if (newState != MobState.Critical)
+                return;
+
+            if (!component.AllowedStates.Contains(MobState.SoftCritical) || !component.AllowedStates.Contains(MobState.HardCritical))
+                return;
+
+            switch (oldState)
+            {
+                case MobState.Alive:
+                {
+                    newState = MobState.SoftCritical;
+                    break;
+                }
+                case MobState.Dead:
+                {
+                    newState = MobState.HardCritical;
+                    break;
+                }
+            }
+        }
 
         OnExitState(target, component, oldState);
         component.CurrentState = newState;
