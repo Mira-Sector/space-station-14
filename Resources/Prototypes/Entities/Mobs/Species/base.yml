@@ -177,6 +177,15 @@
     interactSuccessString: hugging-success-generic
     interactSuccessSound: /Audio/Effects/thudswoosh.ogg
     messagePerceivedByOthers: hugging-success-generic-others
+    messagePerceivedByTarget: hugging-success-generic-target
+  - type: AlternativeInteractionPopup
+    verbTitle: poking-verb
+    successChance: 1
+    interactSuccessSound:
+      collection: WeakHit
+    soundPerceivedByOthers: false
+    interactSuccessString: poking-success-generic
+    messagePerceivedByTarget: poking-success-target
   - type: CanHostGuardian
   - type: NpcFactionMember
     factions:

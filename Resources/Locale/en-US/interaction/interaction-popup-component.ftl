@@ -60,7 +60,7 @@ petting-success-honkbot = You pet {THE($target)} on {POSS-ADJ($target)} slippery
 petting-success-mimebot = You pet {THE($target)} on {POSS-ADJ($target)} cold metal head.
 petting-success-cleanbot = You pet {THE($target)} on {POSS-ADJ($target)} damp metal head.
 petting-success-medibot = You pet {THE($target)} on {POSS-ADJ($target)} sterile metal head.
-petting-success-firebot = You pet {THE($target)} on {POSS-ADJ($target)} warm metal head. 
+petting-success-firebot = You pet {THE($target)} on {POSS-ADJ($target)} warm metal head.
 petting-success-generic-cyborg = You pet {THE($target)} on {POSS-ADJ($target)} metal head.
 petting-success-salvage-cyborg = You pet {THE($target)} on {POSS-ADJ($target)} dirty metal head.
 petting-success-engineer-cyborg = You pet {THE($target)} on {POSS-ADJ($target)} reflective metal head.
@@ -92,6 +92,12 @@ fence-rattle-success = *rattle*
 hugging-success-generic = You hug {THE($target)}.
 hugging-success-generic-others = { CAPITALIZE(THE($user)) } hugs {THE($target)}.
 hugging-success-generic-target = { CAPITALIZE(THE($user)) } hugs you.
+
+## Poking players
+
+poking-success-generic = You poke {THE($target)}.
+poking-success-target = { CAPITALIZE(THE($user)) } pokes you.
+poking-verb = Poke
 
 ## Other
 

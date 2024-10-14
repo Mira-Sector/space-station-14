@@ -4,7 +4,7 @@ using Robust.Shared.Prototypes;
 namespace Content.Shared.Interaction.Components;
 
 [RegisterComponent, Access(typeof(InteractionPopupSystem))]
-public sealed partial class InteractionPopupComponent : Component
+public sealed partial class AlternativeInteractionPopupComponent : Component
 {
     /// <summary>
     /// Time delay between interactions to avoid spam.
@@ -80,9 +80,6 @@ public sealed partial class InteractionPopupComponent : Component
     [ViewVariables(VVAccess.ReadWrite)]
     public TimeSpan LastInteractTime;
 
-    /// <summary>
-    /// If set to true, activate interactions will also trigger the component.
-    /// </summary>
-    [DataField]
-    public bool OnActivate;
+    [DataField(required: true)]
+    public string VerbTitle = String.Empty;
 }
