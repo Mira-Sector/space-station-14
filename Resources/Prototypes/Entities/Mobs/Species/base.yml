@@ -211,7 +211,7 @@
     thresholds:
       0: Alive
       100: SoftCritical
-      150: HardCritical
+      130: HardCritical
       200: Dead
   - type: MobState
     allowedStates:
@@ -219,6 +219,16 @@
       - SoftCritical
       - HardCritical
       - Dead
+  - type: MobStateActions
+    actions:
+      SoftCritical:
+      - ActionCritSuccumb
+      - ActionCritFakeDeath
+      - ActionCritLastWords
+      HardCritical:
+      - ActionCritSuccumb
+      - ActionCritFakeDeath
+      - ActionCritLastWords
   - type: Tag
     tags:
     - CanPilot
