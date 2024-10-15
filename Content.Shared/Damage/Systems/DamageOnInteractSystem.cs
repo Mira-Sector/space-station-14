@@ -1,4 +1,6 @@
 using Content.Shared.Administration.Logs;
+using Content.Shared.DoAfter;
+using Content.Shared.Mobs.Components;
 using Content.Shared.Damage.Components;
 using Content.Shared.Database;
 using Content.Shared.Interaction;
@@ -15,6 +17,7 @@ public sealed class DamageOnInteractSystem : EntitySystem
     [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
     [Dependency] private readonly DamageableSystem _damageableSystem = default!;
     [Dependency] private readonly SharedAudioSystem _audioSystem = default!;
+    [Dependency] private readonly SharedDoAfterSystem _doAfterSystem = default!;
     [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
     [Dependency] private readonly InventorySystem _inventorySystem = default!;
 
@@ -23,6 +26,7 @@ public sealed class DamageOnInteractSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<DamageOnInteractComponent, InteractHandEvent>(OnHandInteract);
+        SubscribeLocalEvent<DamageOnInteractComponent, DamageOnInteractDoAfterEvent>(OnDoAfter);
     }
 
     /// <summary>
@@ -38,17 +42,72 @@ public sealed class DamageOnInteractSystem : EntitySystem
         if (!entity.Comp.IsDamageActive)
             return;
 
+        var damageReciever = GetDamageReciever(entity, args.User);
+
+        if (entity.Comp.RequiredStates != null)
+        {
+            if (!TryComp<MobStateComponent>(damageReciever, out var mobstateComp) ||
+                !entity.Comp.RequiredStates.Contains(mobstateComp.CurrentState))
+            {
+                return;
+            }
+        }
+
+        if (!entity.Comp.UseDoAfter)
+        {
+            args.Handled = DealDamage(entity, damageReciever, args.Target);
+            return;
+        }
+
+        if (entity.Comp.PopupText != null)
+            _popupSystem.PopupClient(Loc.GetString(entity.Comp.PopupText), args.User, args.User);
+
+        _doAfterSystem.TryStartDoAfter(new DoAfterArgs(EntityManager, args.User, entity.Comp.DoAfterTime, new DamageOnInteractDoAfterEvent(), entity.Owner, target: args.Target, used: entity.Owner)
+        {
+            BreakOnMove = true,
+            BreakOnHandChange = true,
+            NeedHand = true
+        });
+    }
+
+    private void OnDoAfter(Entity<DamageOnInteractComponent> entity, ref DamageOnInteractDoAfterEvent args)
+    {
+        if (args.Cancelled)
+            return;
+
+        if (args.Target == null)
+            return;
+
+        var damageReciever = GetDamageReciever(entity, args.User);
+
+        var dealtDamage = DealDamage(entity, damageReciever, args.Target.Value);
+        args.Handled = dealtDamage;
+        args.Repeat = dealtDamage && entity.Comp.DoAfterRepeatable;
+    }
+
+    private EntityUid GetDamageReciever(Entity<DamageOnInteractComponent> entity, EntityUid initialUid)
+    {
+        var damageReciever = initialUid;
+
+        if (!entity.Comp.DamageUser)
+            damageReciever = entity.Owner;
+
+        return damageReciever;
+    }
+
+    private bool DealDamage(Entity<DamageOnInteractComponent> entity, EntityUid user, EntityUid target)
+    {
         var totalDamage = entity.Comp.Damage;
 
         if (!entity.Comp.IgnoreResistances)
         {
             // try to get damage on interact protection from either the inventory slots of the entity
-            _inventorySystem.TryGetInventoryEntity<DamageOnInteractProtectionComponent>(args.User, out var protectiveEntity);
+            _inventorySystem.TryGetInventoryEntity<DamageOnInteractProtectionComponent>(user, out var protectiveEntity);
 
             // or checking the entity for  the comp itself if the inventory didn't work
-            if (protectiveEntity.Comp == null && TryComp<DamageOnInteractProtectionComponent>(args.User, out var protectiveComp))
+            if (protectiveEntity.Comp == null && TryComp<DamageOnInteractProtectionComponent>(user, out var protectiveComp))
             {
-                protectiveEntity = (args.User, protectiveComp);
+                protectiveEntity = (user, protectiveComp);
             }
 
             // if protectiveComp isn't null after all that, it means the user has protection,
@@ -59,17 +118,27 @@ public sealed class DamageOnInteractSystem : EntitySystem
             }
         }
 
-        totalDamage = _damageableSystem.TryChangeDamage(args.User, totalDamage,  origin: args.Target);
+        totalDamage = _damageableSystem.TryChangeDamage(user, totalDamage, true, origin: target);
+
+        var positiveDamage = false;
 
         if (totalDamage != null && totalDamage.AnyPositive())
         {
-            args.Handled = true;
-            _adminLogger.Add(LogType.Damaged, $"{ToPrettyString(args.User):user} injured their hand by interacting with {ToPrettyString(args.Target):target} and received {totalDamage.GetTotal():damage} damage");
-            _audioSystem.PlayPredicted(entity.Comp.InteractSound, args.Target, args.User);
-
-            if (entity.Comp.PopupText != null)
-                _popupSystem.PopupClient(Loc.GetString(entity.Comp.PopupText), args.User, args.User);
+            _adminLogger.Add(LogType.Damaged, $"{ToPrettyString(user):user} injured their hand by interacting with {ToPrettyString(target):target} and received {totalDamage.GetTotal():damage} damage");
+            positiveDamage = true;
         }
+
+        if (entity.Comp.IgnoreDamage || positiveDamage)
+        {
+            _audioSystem.PlayPredicted(entity.Comp.InteractSound, target, user);
+
+            if (!entity.Comp.UseDoAfter && entity.Comp.PopupText != null)
+                _popupSystem.PopupClient(Loc.GetString(entity.Comp.PopupText), user, user);
+
+            return true;
+        }
+
+        return false;
     }
 
     public void SetIsDamageActiveTo(Entity<DamageOnInteractComponent> entity, bool mode)

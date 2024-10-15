@@ -177,6 +177,15 @@
     interactSuccessString: hugging-success-generic
     interactSuccessSound: /Audio/Effects/thudswoosh.ogg
     messagePerceivedByOthers: hugging-success-generic-others
+    messagePerceivedByTarget: hugging-success-generic-target
+  - type: AlternativeInteractionPopup
+    verbTitle: poking-verb
+    successChance: 1
+    interactSuccessSound:
+      collection: WeakHit
+    soundPerceivedByOthers: false
+    interactSuccessString: poking-success-generic
+    messagePerceivedByTarget: poking-success-target
   - type: CanHostGuardian
   - type: NpcFactionMember
     factions:
@@ -229,6 +238,21 @@
       - ActionCritSuccumb
       - ActionCritFakeDeath
       - ActionCritLastWords
+  - type: DamageOnInteract
+    damageUser: false
+    damage:
+      types:
+        Asphyxiation: -0.8 # not enough where you can counter it
+    ignoreResistances: true
+    popupText: cpr-start
+    ignoreDamage: true
+    interactSound:
+      path: /Audio/Effects/heartbeat.ogg
+    requiredStates:
+    - SoftCritical
+    - HardCritical
+    time: 2.5
+    doAfterRepeatable: true
   - type: Tag
     tags:
     - CanPilot
@@ -236,6 +260,7 @@
     - DoorBumpOpener
     - AnomalyHost
   - type: Crawler
+  - type: CanRemoveCrawling
 
 - type: entity
   save: false

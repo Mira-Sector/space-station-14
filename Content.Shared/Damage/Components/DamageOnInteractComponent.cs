@@ -1,5 +1,8 @@
+using Content.Shared.DoAfter;
+using Content.Shared.Mobs;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared.Damage.Components;
 
@@ -19,6 +22,9 @@ public sealed partial class DamageOnInteractComponent : Component
     [DataField(required: true), AutoNetworkedField]
     public DamageSpecifier Damage = default!;
 
+    [DataField]
+    public bool DamageUser = true;
+
     /// <summary>
     /// Whether the damage should be resisted by a person's armor values
     /// and the <see cref="DamageOnInteractProtectionComponent"/>
@@ -26,11 +32,29 @@ public sealed partial class DamageOnInteractComponent : Component
     [DataField]
     public bool IgnoreResistances;
 
+    [DataField]
+    public bool IgnoreDamage = false;
+
     /// <summary>
     /// What kind of localized text should pop up when they interact with the entity
     /// </summary>
     [DataField]
     public LocId? PopupText;
+
+    [DataField]
+    public List<MobState>? RequiredStates;
+
+    [DataField("time")]
+    public float? _time;
+
+    [ViewVariables]
+    public bool UseDoAfter => _time != null;
+
+    [ViewVariables]
+    public TimeSpan DoAfterTime => TimeSpan.FromSeconds(_time ?? 0);
+
+    [DataField]
+    public bool DoAfterRepeatable = false;
 
     /// <summary>
     /// The sound that should be made when interacting with the entity
@@ -44,4 +68,9 @@ public sealed partial class DamageOnInteractComponent : Component
     /// </summary>
     [DataField, AutoNetworkedField]
     public bool IsDamageActive = true;
+}
+
+[Serializable, NetSerializable]
+public sealed partial class DamageOnInteractDoAfterEvent : SimpleDoAfterEvent
+{
 }

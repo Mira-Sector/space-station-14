@@ -1,14 +1,17 @@
 using Content.Shared.Bed.Sleep;
+using Content.Shared.Crawling;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Interaction.Components;
 using Content.Shared.Interaction.Events;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Popups;
+using Content.Shared.Verbs;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Network;
 using Robust.Shared.Player;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
 
@@ -29,6 +32,8 @@ public sealed class InteractionPopupSystem : EntitySystem
         base.Initialize();
         SubscribeLocalEvent<InteractionPopupComponent, InteractHandEvent>(OnInteractHand);
         SubscribeLocalEvent<InteractionPopupComponent, ActivateInWorldEvent>(OnActivateInWorld);
+
+        SubscribeLocalEvent<AlternativeInteractionPopupComponent, GetVerbsEvent<AlternativeVerb>>(OnAlternativeActivate);
     }
 
     private void OnActivateInWorld(EntityUid uid, InteractionPopupComponent component, ActivateInWorldEvent args)
@@ -39,22 +44,42 @@ public sealed class InteractionPopupSystem : EntitySystem
         if (!component.OnActivate)
             return;
 
-        SharedInteract(uid, component, args, args.Target, args.User);
+        SharedInteract(uid, args.Target, args.User, false, args);
+    }
+
+    private void OnAlternativeActivate(EntityUid uid, AlternativeInteractionPopupComponent component, GetVerbsEvent<AlternativeVerb> args)
+    {
+        if (!args.CanAccess || !args.CanComplexInteract)
+            return;
+
+        var verb = new AlternativeVerb
+        {
+            Text = Loc.GetString(component.VerbTitle),
+            Act = () =>
+            {
+                SharedInteract(uid, args.Target, args.User, true);
+            }
+        };
+        args.Verbs.Add(verb);
     }
 
     private void OnInteractHand(EntityUid uid, InteractionPopupComponent component, InteractHandEvent args)
     {
-        SharedInteract(uid, component, args, args.Target, args.User);
+        SharedInteract(uid, args.Target, args.User, false, args);
     }
 
     private void SharedInteract(
         EntityUid uid,
-        InteractionPopupComponent component,
-        HandledEntityEventArgs args,
         EntityUid target,
-        EntityUid user)
+        EntityUid user,
+        bool isAlternative,
+        HandledEntityEventArgs? args = null)
+
     {
-        if (args.Handled || user == target)
+        if (user == target)
+            return;
+
+        if (args != null && args.Handled)
             return;
 
         //Handling does nothing and this thing annoyingly plays way too often.
@@ -63,20 +88,74 @@ public sealed class InteractionPopupSystem : EntitySystem
         if (HasComp<SleepingComponent>(uid))
             return;
 
+        if (HasComp<CrawlingComponent>(uid) && HasComp<CanRemoveCrawlingComponent>(user))
+            return;
+
         if (TryComp<MobStateComponent>(uid, out var state)
             && !_mobStateSystem.IsAlive(uid, state))
         {
             return;
         }
 
-        args.Handled = true;
+        TimeSpan interactDelay;
+        string? interactSuccessString;
+        string? interactFailureString;
+        SoundSpecifier? interactSuccessSound;
+        SoundSpecifier? interactFailureSound;
+        EntProtoId? interactSuccessSpawn;
+        EntProtoId? interactFailureSpawn;
+        float successChance;
+        string? messagePerceivedByTarget;
+        string? messagePerceivedByOthers;
+        bool soundPerceivedByOthers;
+        TimeSpan lastInteractTime;
+
+        if (isAlternative)
+        {
+            if (!TryComp<AlternativeInteractionPopupComponent>(uid, out var altinteractComp))
+                return;
+
+            interactDelay = altinteractComp.InteractDelay;
+            interactSuccessString = altinteractComp.InteractSuccessString;
+            interactFailureString = altinteractComp.InteractFailureString;
+            interactSuccessSound = altinteractComp.InteractSuccessSound;
+            interactFailureSound = altinteractComp.InteractFailureSound;
+            interactSuccessSpawn = altinteractComp.InteractSuccessSpawn;
+            interactFailureSpawn = altinteractComp.InteractFailureSpawn;
+            successChance = altinteractComp.SuccessChance;
+            messagePerceivedByTarget = altinteractComp.MessagePerceivedByTarget;
+            messagePerceivedByOthers = altinteractComp.MessagePerceivedByOthers;
+            soundPerceivedByOthers = altinteractComp.SoundPerceivedByOthers;
+            lastInteractTime = altinteractComp.LastInteractTime;
+        }
+        else
+        {
+            if (!TryComp<InteractionPopupComponent>(uid, out var interactComp))
+                return;
+
+            interactDelay = interactComp.InteractDelay;
+            interactSuccessString = interactComp.InteractSuccessString;
+            interactFailureString = interactComp.InteractFailureString;
+            interactSuccessSound = interactComp.InteractSuccessSound;
+            interactFailureSound = interactComp.InteractFailureSound;
+            interactSuccessSpawn = interactComp.InteractSuccessSpawn;
+            interactFailureSpawn = interactComp.InteractFailureSpawn;
+            successChance = interactComp.SuccessChance;
+            messagePerceivedByTarget = interactComp.MessagePerceivedByTarget;
+            messagePerceivedByOthers = interactComp.MessagePerceivedByOthers;
+            soundPerceivedByOthers = interactComp.SoundPerceivedByOthers;
+            lastInteractTime = interactComp.LastInteractTime;
+        }
+
+        if (args != null)
+            args.Handled = true;
 
         var curTime = _gameTiming.CurTime;
 
-        if (curTime < component.LastInteractTime + component.InteractDelay)
+        if (curTime < lastInteractTime + interactDelay)
             return;
 
-        component.LastInteractTime = curTime;
+        lastInteractTime = curTime;
 
         // TODO: Should be an attempt event
         // TODO: Need to handle pausing with an accumulator.
@@ -84,54 +163,67 @@ public sealed class InteractionPopupSystem : EntitySystem
         var msg = ""; // Stores the text to be shown in the popup message
         SoundSpecifier? sfx = null; // Stores the filepath of the sound to be played
 
-        var predict = component.SuccessChance is 0 or 1
-                      && component.InteractSuccessSpawn == null
-                      && component.InteractFailureSpawn == null;
+        var predict = successChance is 0 or 1
+                      && interactSuccessSpawn == null
+                      && interactFailureSpawn == null;
 
         if (_netMan.IsClient && !predict)
             return;
 
-        if (_random.Prob(component.SuccessChance))
+        if (_random.Prob(successChance))
         {
-            if (component.InteractSuccessString != null)
-                msg = Loc.GetString(component.InteractSuccessString, ("target", Identity.Entity(uid, EntityManager))); // Success message (localized).
+            if (interactSuccessString != null)
+                msg = Loc.GetString(interactSuccessString, ("target", Identity.Entity(uid, EntityManager))); // Success message (localized).
 
-            if (component.InteractSuccessSound != null)
-                sfx = component.InteractSuccessSound;
+            if (interactSuccessSound != null)
+                sfx = interactSuccessSound;
 
-            if (component.InteractSuccessSpawn != null)
-                Spawn(component.InteractSuccessSpawn, _transform.GetMapCoordinates(uid));
+            if (interactSuccessSpawn != null)
+                Spawn(interactSuccessSpawn, _transform.GetMapCoordinates(uid));
 
             var ev = new InteractionSuccessEvent(user);
             RaiseLocalEvent(target, ref ev);
         }
         else
         {
-            if (component.InteractFailureString != null)
-                msg = Loc.GetString(component.InteractFailureString, ("target", Identity.Entity(uid, EntityManager))); // Failure message (localized).
+            if (interactFailureString != null)
+                msg = Loc.GetString(interactFailureString, ("target", Identity.Entity(uid, EntityManager))); // Failure message (localized).
 
-            if (component.InteractFailureSound != null)
-                sfx = component.InteractFailureSound;
+            if (interactFailureSound != null)
+                sfx = interactFailureSound;
 
-            if (component.InteractFailureSpawn != null)
-                Spawn(component.InteractFailureSpawn, _transform.GetMapCoordinates(uid));
+            if (interactFailureSpawn != null)
+                Spawn(interactFailureSpawn, _transform.GetMapCoordinates(uid));
 
             var ev = new InteractionFailureEvent(user);
             RaiseLocalEvent(target, ref ev);
         }
 
-        if (!string.IsNullOrEmpty(component.MessagePerceivedByOthers))
+        if (!string.IsNullOrEmpty(messagePerceivedByTarget))
         {
-            var msgOthers = Loc.GetString(component.MessagePerceivedByOthers,
+            var msgTarget = Loc.GetString(messagePerceivedByTarget,
                 ("user", Identity.Entity(user, EntityManager)), ("target", Identity.Entity(uid, EntityManager)));
-            _popupSystem.PopupEntity(msgOthers, uid, Filter.PvsExcept(user, entityManager: EntityManager), true);
+            _popupSystem.PopupEntity(msgTarget, uid, uid);
+        }
+
+        if (!string.IsNullOrEmpty(messagePerceivedByOthers))
+        {
+            var msgOthers = Loc.GetString(messagePerceivedByOthers,
+                ("user", Identity.Entity(user, EntityManager)), ("target", Identity.Entity(uid, EntityManager)));
+
+            var filter = Filter.PvsExcept(user, entityManager: EntityManager);
+
+            if (!string.IsNullOrEmpty(messagePerceivedByTarget))
+                filter.RemovePlayerByAttachedEntity(uid);
+
+            _popupSystem.PopupEntity(msgOthers, uid, filter, true);
         }
 
         if (!predict)
         {
             _popupSystem.PopupEntity(msg, uid, user);
 
-            if (component.SoundPerceivedByOthers)
+            if (soundPerceivedByOthers)
                 _audio.PlayPvs(sfx, target);
             else
                 _audio.PlayEntity(sfx, Filter.Entities(user, target), target, false);
@@ -143,7 +235,7 @@ public sealed class InteractionPopupSystem : EntitySystem
         if (sfx == null)
             return;
 
-        if (component.SoundPerceivedByOthers)
+        if (soundPerceivedByOthers)
         {
             _audio.PlayPredicted(sfx, target, user);
             return;
