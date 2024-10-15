@@ -659,3 +659,15 @@ Entries:
     type: Tweak
   id: 98
   time: '2024-10-13T16:55:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Clicking on someone crawling now helps them get up
+    type: Add
+  - message: Clicking on someone in soft stun removes all stamina
+    type: Tweak
+  - message: Add poking which is only visible to whoever you poked
+    type: Add
+  - message: Clicking on someone in crit performs CPR reducing their airloss damage
+    type: Add
+  id: 99
+  time: '2024-10-15T09:15:00.0000000+00:00'
