@@ -157,6 +157,21 @@ public sealed class InteractionPopupSystem : EntitySystem
 
         lastInteractTime = curTime;
 
+        if (isAlternative)
+        {
+            if (!TryComp<AlternativeInteractionPopupComponent>(uid, out var altinteractComp))
+                return;
+
+            altinteractComp.LastInteractTime = lastInteractTime;
+        }
+        else
+        {
+            if (!TryComp<InteractionPopupComponent>(uid, out var interactComp))
+                return;
+
+            interactComp.LastInteractTime = lastInteractTime;
+        }
+
         // TODO: Should be an attempt event
         // TODO: Need to handle pausing with an accumulator.
 
