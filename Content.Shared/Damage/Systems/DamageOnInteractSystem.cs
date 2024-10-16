@@ -44,14 +44,8 @@ public sealed class DamageOnInteractSystem : EntitySystem
 
         var damageReciever = GetDamageReciever(entity, args.User);
 
-        if (entity.Comp.RequiredStates != null)
-        {
-            if (!TryComp<MobStateComponent>(damageReciever, out var mobstateComp) ||
-                !entity.Comp.RequiredStates.Contains(mobstateComp.CurrentState))
-            {
-                return;
-            }
-        }
+        if (!CheckMobState(damageReciever, entity.Comp))
+            return;
 
         if (!entity.Comp.UseDoAfter)
         {
@@ -80,6 +74,14 @@ public sealed class DamageOnInteractSystem : EntitySystem
 
         var damageReciever = GetDamageReciever(entity, args.User);
 
+        // players state can change while its repeating
+        if (entity.Comp.DoAfterRepeatable && !CheckMobState(damageReciever, entity.Comp))
+        {
+            args.Repeat = false;
+            args.Handled = true;
+            return;
+        }
+
         var dealtDamage = DealDamage(entity, damageReciever, args.Target.Value);
         args.Handled = dealtDamage;
         args.Repeat = dealtDamage && entity.Comp.DoAfterRepeatable;
@@ -94,6 +96,21 @@ public sealed class DamageOnInteractSystem : EntitySystem
 
         return damageReciever;
     }
+
+    private bool CheckMobState(EntityUid uid, DamageOnInteractComponent component)
+    {
+        if (component.RequiredStates == null)
+            return true;
+
+        if (!TryComp<MobStateComponent>(uid, out var mobstateComp) ||
+            !component.RequiredStates.Contains(mobstateComp.CurrentState))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
 
     private bool DealDamage(Entity<DamageOnInteractComponent> entity, EntityUid user, EntityUid target)
     {
