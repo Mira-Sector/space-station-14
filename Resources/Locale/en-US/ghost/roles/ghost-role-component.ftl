@@ -306,3 +306,6 @@ ghost-role-information-tomatokiller-description = This little tomato will serve 
 
 ghost-role-information-morph-name = Morph
 ghost-role-information-morph-description = Pipe crawl your way to taking over the whole station. One whole maint tider at a time.
+
+ghost-role-information-bombroach-name = bombroach
+ghost-role-information-bombroach-description = placeholder
