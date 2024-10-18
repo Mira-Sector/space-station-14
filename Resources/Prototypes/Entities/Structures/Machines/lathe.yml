@@ -200,11 +200,9 @@
       - WetFloorSign
       - ClothingHeadHatCone
       - FreezerElectronics
-      - Flare
   - type: EmagLatheRecipes
     emagStaticRecipes:
       - BoxLethalshot
-      - BoxShotgunFlare
       - BoxShotgunSlug
       - CombatKnife
       - MagazineBoxLightRifle
@@ -736,7 +734,6 @@
     runningState: icon
     staticRecipes:
       - BoxLethalshot
-      - BoxShotgunFlare
       - BoxShotgunPractice
       - BoxShotgunSlug
       - ClothingEyesHudSecurity
@@ -859,7 +856,6 @@
       runningState: icon
       staticRecipes:
         - BoxLethalshot
-        - BoxShotgunFlare
         - BoxShotgunSlug
         - BoxShellTranquilizer
         - MagazineBoxLightRifle
