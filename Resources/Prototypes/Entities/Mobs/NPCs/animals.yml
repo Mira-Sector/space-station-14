@@ -633,6 +633,21 @@
     understoodLanguages:
     - Moffic
 
+- type: entity
+  name: Bombroach
+  parent: [ MobMothroach, MobSyndicateBaseExplosive ]
+  id: MobMothroachSyndicate
+  components:
+  - type: GhostRole
+    prob: 1
+    name: ghost-role-information-bombroach-name
+    allowMovement: true
+    description: ghost-role-information-bombroach-description
+    rules: ghost-role-information-SyndiCat-rules
+    raffle:
+      settings: default
+
+
 # Note that the mallard duck is actually a male drake mallard, with the brown duck being the female variant of the same species, however ss14 lacks sex specific textures
 # The white duck is more akin to a pekin or call duck.
 
@@ -3186,9 +3201,34 @@
         Base: cat2_dead
 
 - type: entity
+  id: MobSyndicateBaseExplosive
+  abstract: true
+  components:
+  - type: GhostTakeoverAvailable
+  - type: AutoImplant
+    implants:
+    - MicroBombImplant
+  - type: ExplosionResistance
+    damageCoefficient: 0.2
+  - type: NpcFactionMember
+    factions:
+    - Syndicate
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    animation: WeaponArcBite
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    damage:
+      types:
+        Slash: 6
+        Piercing: 6
+        Structural: 15
+
+- type: entity
   name: syndicat
   id: MobCatSyndy
-  parent: MobCatSpace
+  parent: [ MobCatSpace, MobSyndicateBaseExplosive ]
   description: Explosive kitten.
   components:
   - type: Sprite
@@ -3211,26 +3251,6 @@
     rules: ghost-role-information-SyndiCat-rules
     raffle:
       settings: default
-  - type: GhostTakeoverAvailable
-  - type: AutoImplant
-    implants:
-    - MicroBombImplant
-  - type: ExplosionResistance
-    damageCoefficient: 0.2
-  - type: NpcFactionMember
-    factions:
-    - Syndicate
-  - type: MeleeWeapon
-    altDisarm: false
-    angle: 0
-    animation: WeaponArcBite
-    soundHit:
-      path: /Audio/Effects/bite.ogg
-    damage:
-      types:
-        Slash: 6
-        Piercing: 6
-        Structural: 15
 
 - type: entity
   name: space cat

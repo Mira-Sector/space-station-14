@@ -65,7 +65,7 @@
     Telecrystal: 8
   categories:
   - UplinkWeaponry
-  
+
 - type: listing
   id: UplinkEswordDouble
   name: uplink-esword-double-name
@@ -81,7 +81,7 @@
       blacklist:
         tags:
           - NukeOpsUplink
-  
+
 - type: listing
   id: UplinkEnergyDagger
   name: uplink-edagger-name
@@ -1254,6 +1254,20 @@
     - UplinkAllies
 
 - type: listing
+  id: UplinkMobMothroachMicrobomb
+  name: uplink-mobmothroach-microbomb-name
+  description: uplink-mobmothroach-microbomb-desc
+  icon: { sprite: Objects/Devices/communication.rsi, state: old-radio-bombroach }
+  productEntity: ReinforcementRadioSyndicateBombroach
+  discountCategory: usualDiscounts
+  discountDownTo:
+    Telecrystal: 3
+  cost:
+    Telecrystal: 6
+  categories:
+    - UplinkAllies
+
+- type: listing
   id: UplinkSyndicatePersonalAI
   name: uplink-syndicate-pai-name
   description: uplink-syndicate-pai-desc
@@ -1720,7 +1734,7 @@
     Telecrystal: 2
   categories:
   - UplinkPointless
-  
+
 - type: listing
   id: UplinkSyndicateSegway
   name: uplink-syndicate-segway-crate-name

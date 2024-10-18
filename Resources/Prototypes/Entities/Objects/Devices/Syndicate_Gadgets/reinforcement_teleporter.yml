@@ -105,3 +105,20 @@
         settings: default
     - type: GhostRoleMobSpawner
       prototype: PlayerBorgSyndicateAssaultBattery
+
+- type: entity
+  parent: ReinforcementRadio
+  id: ReinforcementRadioSyndicateBombroach
+  name: bombroach reinforcement radio
+  description: Calls in a faithfully trained roach with a microbomb to assist you.
+  components:
+  - type: GhostRole
+    name: ghost-role-information-bombroach-name
+    description: ghost-role-information-bombroach-description
+    rules: ghost-role-information-rules-default-familiar
+    raffle:
+      settings: default
+  - type: GhostRoleMobSpawner
+    prototype: MobMothroachSyndicate
+  - type: EmitSoundOnUse
+    sound: /Audio/Voice/Moth/moth_chitters.ogg
