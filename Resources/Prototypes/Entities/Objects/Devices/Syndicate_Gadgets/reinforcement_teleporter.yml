@@ -121,4 +121,4 @@
   - type: GhostRoleMobSpawner
     prototype: MobMothroachSyndicate
   - type: EmitSoundOnUse
-    sound: /Audio/Voice/Moth/moth_chitters.ogg
+    sound: /Audio/Voice/Moth/moth_chitter.ogg

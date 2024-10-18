@@ -634,7 +634,7 @@
     - Moffic
 
 - type: entity
-  name: Bombroach
+  name: bombroach
   parent: [ MobMothroach, MobSyndicateBaseExplosive ]
   id: MobMothroachSyndicate
   components:
@@ -646,6 +646,27 @@
     rules: ghost-role-information-SyndiCat-rules
     raffle:
       settings: default
+  - type: Sprite
+    drawdepth: SmallMobs
+    sprite: Mobs/Animals/bombroach.rsi
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base", "movement"]
+      state: bombroach
+  - type: SpriteMovement
+    movementLayers:
+      movement:
+        state: bombroach-moving
+    noMovementLayers:
+      movement:
+        state: bombroach
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: bombroach
+      Critical:
+        Base: bombroach_dead
+      Dead:
+        Base: bombroach_dead
 
 
 # Note that the mallard duck is actually a male drake mallard, with the brown duck being the female variant of the same species, however ss14 lacks sex specific textures
