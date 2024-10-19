@@ -76,6 +76,13 @@
   - type: SpeciesLanguage
     spokenLanguages:
     - Binary
+    - Common
+    - Draconic
+    - Moffic
+    - Calcic
+    - Slime
+    - Monkey
+    - Buzzwords
 
 - type: entity
   parent: [ PersonalAI, BaseSyndicateContraband]
