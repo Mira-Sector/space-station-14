@@ -43,6 +43,7 @@
         - TrayScanner
         - GasAnalyzer
         - HandLabeler
+        - AnomalyScanner
   - type: ItemMapper
     mapLayers:
       drill:

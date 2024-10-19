@@ -671,3 +671,9 @@ Entries:
     type: Add
   id: 99
   time: '2024-10-15T09:15:00.0000000+00:00'
+- author: Wudanty
+  changes:
+  - message: Added anomaly scanner to utility belt's whitelist'
+    type: Add
+  id: 100
+  time: '2024-10-19T16:00:00.0000000+00:00'
