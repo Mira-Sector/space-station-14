@@ -42,7 +42,7 @@ namespace Content.Server.Destructible.Thresholds
         /// </summary>
         [ViewVariables] public IReadOnlyList<IThresholdBehavior> Behaviors => _behaviors;
 
-        public bool Reached(DamageableComponent damageable, DestructibleSystem system)
+        public bool Reached(DamageableComponent damageable, DestructibleSystem system, DamageChangedEvent args)
         {
             if (Trigger == null)
             {
@@ -56,11 +56,11 @@ namespace Content.Server.Destructible.Thresholds
 
             if (OldTriggered)
             {
-                OldTriggered = Trigger.Reached(damageable, system);
+                OldTriggered = Trigger.Reached(damageable, system, args);
                 return false;
             }
 
-            if (!Trigger.Reached(damageable, system))
+            if (!Trigger.Reached(damageable, system, args))
             {
                 return false;
             }

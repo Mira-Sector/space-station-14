@@ -57,7 +57,7 @@ namespace Content.Server.Destructible
         {
             foreach (var threshold in component.Thresholds)
             {
-                if (threshold.Reached(args.Damageable, this))
+                if (threshold.Reached(args.Damageable, this, args))
                 {
                     RaiseLocalEvent(uid, new DamageThresholdReached(component, threshold), true);
 

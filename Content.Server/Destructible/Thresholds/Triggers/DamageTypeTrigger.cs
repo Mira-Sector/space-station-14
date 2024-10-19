@@ -18,10 +18,18 @@ namespace Content.Server.Destructible.Thresholds.Triggers
         [DataField("damage", required: true)]
         public int Damage { get; set; } = default!;
 
-        public bool Reached(DamageableComponent damageable, DestructibleSystem system)
+        [DataField]
+        public bool Repeatable = false;
+
+        public bool Reached(DamageableComponent damageable, DestructibleSystem system, DamageChangedEvent args)
         {
-            return damageable.Damage.DamageDict.TryGetValue(DamageType, out var damageReceived) &&
-                   damageReceived >= Damage;
+            if (!Repeatable)
+                return damageable.Damage.DamageDict.TryGetValue(DamageType, out var damageReceived) && damageReceived >= Damage;
+
+            if (args.DamageDelta == null || !args.DamageDelta.DamageDict.TryGetValue(DamageType, out var value))
+                return false;
+
+            return value >= Damage;
         }
     }
 }
