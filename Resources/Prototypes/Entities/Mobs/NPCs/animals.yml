@@ -635,6 +635,7 @@
 
 - type: entity
   name: bombroach
+  description: A happy little fella wanting a hug... But who would stick a brick of C4 on them.
   parent: [ MobMothroach, MobSyndicateBaseExplosive ]
   id: MobMothroachSyndicate
   components:
