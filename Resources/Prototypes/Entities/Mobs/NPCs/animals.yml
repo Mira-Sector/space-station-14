@@ -633,6 +633,43 @@
     understoodLanguages:
     - Moffic
 
+- type: entity
+  name: bombroach
+  description: A happy little fella wanting a hug... But who would stick a brick of C4 on them.
+  parent: [ MobMothroach, MobSyndicateBaseExplosive ]
+  id: MobMothroachSyndicate
+  components:
+  - type: GhostRole
+    prob: 1
+    name: ghost-role-information-bombroach-name
+    allowMovement: true
+    description: ghost-role-information-bombroach-description
+    rules: ghost-role-information-SyndiCat-rules
+    raffle:
+      settings: default
+  - type: Sprite
+    drawdepth: SmallMobs
+    sprite: Mobs/Animals/bombroach.rsi
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base", "movement"]
+      state: bombroach
+  - type: SpriteMovement
+    movementLayers:
+      movement:
+        state: bombroach-moving
+    noMovementLayers:
+      movement:
+        state: bombroach
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: bombroach
+      Critical:
+        Base: bombroach_dead
+      Dead:
+        Base: bombroach_dead
+
+
 # Note that the mallard duck is actually a male drake mallard, with the brown duck being the female variant of the same species, however ss14 lacks sex specific textures
 # The white duck is more akin to a pekin or call duck.
 
@@ -3186,9 +3223,23 @@
         Base: cat2_dead
 
 - type: entity
+  id: MobSyndicateBaseExplosive
+  abstract: true
+  components:
+  - type: GhostTakeoverAvailable
+  - type: AutoImplant
+    implants:
+    - MicroBombImplant
+  - type: ExplosionResistance
+    damageCoefficient: 0.2
+  - type: NpcFactionMember
+    factions:
+    - Syndicate
+
+- type: entity
   name: syndicat
   id: MobCatSyndy
-  parent: MobCatSpace
+  parent: [ MobCatSpace, MobSyndicateBaseExplosive ]
   description: Explosive kitten.
   components:
   - type: Sprite
@@ -3211,15 +3262,6 @@
     rules: ghost-role-information-SyndiCat-rules
     raffle:
       settings: default
-  - type: GhostTakeoverAvailable
-  - type: AutoImplant
-    implants:
-    - MicroBombImplant
-  - type: ExplosionResistance
-    damageCoefficient: 0.2
-  - type: NpcFactionMember
-    factions:
-    - Syndicate
   - type: MeleeWeapon
     altDisarm: false
     angle: 0

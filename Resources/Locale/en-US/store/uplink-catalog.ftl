@@ -385,6 +385,9 @@ uplink-slipocalypse-clustersoap-desc = Scatters arounds small pieces of syndicat
 uplink-mobcat-microbomb-name = SyndiCat Teleporter
 uplink-mobcat-microbomb-desc = Call in a handy cat equipped with a microbomb implant. Explodes when seriously injured. Can bite painfully.
 
+uplink-mobmothroach-microbomb-name = Bombroach Teleporter
+uplink-mobmothroach-microbomb-desc = Call in a handy friendly roach with a not so friendly ammount of explosives. hugs anyone?
+
 uplink-chameleon-projector-name = Chameleon Projector
 uplink-chameleon-projector-desc = Disappear in plain sight by creating a hologram of an item around you. Do not use this to play the game "Object Search".
 
