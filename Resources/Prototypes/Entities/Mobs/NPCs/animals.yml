@@ -3235,17 +3235,6 @@
   - type: NpcFactionMember
     factions:
     - Syndicate
-  - type: MeleeWeapon
-    altDisarm: false
-    angle: 0
-    animation: WeaponArcBite
-    soundHit:
-      path: /Audio/Effects/bite.ogg
-    damage:
-      types:
-        Slash: 6
-        Piercing: 6
-        Structural: 15
 
 - type: entity
   name: syndicat
@@ -3273,6 +3262,17 @@
     rules: ghost-role-information-SyndiCat-rules
     raffle:
       settings: default
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    animation: WeaponArcBite
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    damage:
+      types:
+        Slash: 6
+        Piercing: 6
+        Structural: 15
 
 - type: entity
   name: space cat

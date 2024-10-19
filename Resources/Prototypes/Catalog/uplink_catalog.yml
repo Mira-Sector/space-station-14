@@ -1257,7 +1257,7 @@
   id: UplinkMobMothroachMicrobomb
   name: uplink-mobmothroach-microbomb-name
   description: uplink-mobmothroach-microbomb-desc
-  icon: { sprite: Objects/Devices/communication.rsi, state: old-radio-bomb-roach }
+  icon: { sprite: Objects/Devices/communication.rsi, state: old-radio-bombroach }
   productEntity: ReinforcementRadioSyndicateBombroach
   discountCategory: usualDiscounts
   discountDownTo:
