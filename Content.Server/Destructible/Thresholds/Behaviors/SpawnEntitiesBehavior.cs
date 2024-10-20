@@ -4,6 +4,7 @@ using Content.Server.Stack;
 using Content.Shared.Destructible.Thresholds;
 using Content.Shared.Prototypes;
 using Content.Shared.Stacks;
+using Content.Shared.Destructible;
 using Robust.Server.GameObjects;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
@@ -60,6 +61,7 @@ namespace Content.Server.Destructible.Thresholds.Behaviors
                             : system.EntityManager.SpawnEntity(entityId, position.Offset(getRandomVector()));
                         system.StackSystem.SetCount(spawned, count);
 
+                        system.SetSpawnedBy(spawned, owner);
                         TransferForensics(spawned, system, owner);
                     }
                     else
@@ -70,6 +72,7 @@ namespace Content.Server.Destructible.Thresholds.Behaviors
                                 ? system.EntityManager.SpawnNextToOrDrop(entityId, owner)
                                 : system.EntityManager.SpawnEntity(entityId, position.Offset(getRandomVector()));
 
+                            system.SetSpawnedBy(spawned, owner);
                             TransferForensics(spawned, system, owner);
                         }
                     }

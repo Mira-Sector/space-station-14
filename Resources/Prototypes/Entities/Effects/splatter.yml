@@ -21,6 +21,8 @@
           smear-3: ""
           smear-4: ""
           smear-5: ""
+  - type: Appearance
+  - type: ColorOnBloodstream
   - type: RandomTimedDespawn
     min: 0.1
     max: 0.5
