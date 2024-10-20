@@ -1,0 +1,31 @@
+- type: entity
+  id: EffectSplatter
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Transform
+    anchored: True
+  - type: Sprite
+    snapCardinals: true
+    noRot: true
+    drawdepth: Effects
+    sprite: /Textures/Fluids/smear.rsi
+    layers:
+    - state: smear-0
+      map: [ "enum.DamageStateVisualLayers.Base" ]
+  - type: RandomSprite
+    available:
+      - enum.DamageStateVisualLayers.Base:
+          smear-0: ""
+          smear-1: ""
+          smear-2: ""
+          smear-3: ""
+          smear-4: ""
+          smear-5: ""
+  - type: Appearance
+  - type: ColorOnBloodstream
+  - type: RandomTimedDespawn
+    min: 0.1
+    max: 0.3
+  - type: Tag
+    tags:
+    - HideContextMenu

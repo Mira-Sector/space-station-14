@@ -71,6 +71,7 @@
         !type:DamageTypeTrigger
         damageType: Heat
         damage: 1500
+        triggerMultiple: true
       behaviors:
       - !type:SpawnEntitiesBehavior
         spawnInContainer: true
@@ -82,6 +83,18 @@
       - !type:PlaySoundBehavior
         sound:
           collection: MeatLaserImpact
+    - trigger:
+        !type:DamageGroupTrigger
+        damageGroup: Brute
+        damage: 10
+        repeatable: true
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        offset: 0.2
+        spawn:
+          EffectSplatter:
+            min: 1
+            max: 1
   - type: RadiationReceiver
   - type: Stamina
   - type: MobState

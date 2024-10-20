@@ -1,4 +1,4 @@
-﻿namespace Content.Shared.Destructible;
+namespace Content.Shared.Destructible;
 
 public abstract class SharedDestructibleSystem : EntitySystem
 {
@@ -21,6 +21,12 @@ public abstract class SharedDestructibleSystem : EntitySystem
         var eventArgs = new BreakageEventArgs();
         RaiseLocalEvent(owner, eventArgs);
     }
+
+    public void SetSpawnedBy(EntityUid spawned, EntityUid owner)
+    {
+        var ev = new DestructableSpawnedEvent(owner);
+        RaiseLocalEvent(spawned, ev);
+    }
 }
 
 /// <summary>
@@ -37,4 +43,14 @@ public sealed class DestructionEventArgs : EntityEventArgs
 public sealed class BreakageEventArgs : EntityEventArgs
 {
 
+}
+
+public sealed class DestructableSpawnedEvent : EntityEventArgs
+{
+    public EntityUid Owner { get; set; }
+
+    public DestructableSpawnedEvent(EntityUid owner)
+    {
+        Owner = owner;
+    }
 }
