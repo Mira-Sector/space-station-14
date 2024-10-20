@@ -10,6 +10,8 @@ namespace Content.Server.Destructible.Thresholds
         [DataField("behaviors")]
         private List<IThresholdBehavior> _behaviors = new();
 
+        [ViewVariables] public bool TriggerMultiple { get; private set; }
+
         /// <summary>
         ///     Whether or not this threshold was triggered in the previous call to
         ///     <see cref="Reached"/>.
@@ -54,7 +56,7 @@ namespace Content.Server.Destructible.Thresholds
                 return false;
             }
 
-            if (OldTriggered)
+            if (TriggerMultiple && OldTriggered)
             {
                 OldTriggered = Trigger.Reached(damageable, system, args);
                 return false;
