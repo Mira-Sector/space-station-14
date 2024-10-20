@@ -82,103 +82,204 @@ entities:
     - type: GasTileOverlay
 - proto: APCBasic
   entities:
-  - uid: 8
+  - uid: 2
     components:
     - type: Transform
       pos: 0.5,-0.5
       parent: 1
 - proto: CableApcExtension
   entities:
-  - uid: 13
+  - uid: 3
     components:
     - type: Transform
       pos: 0.5,-0.5
       parent: 1
+  - uid: 19
+    components:
+    - type: Transform
+      pos: -0.5,-0.5
+      parent: 1
+  - uid: 20
+    components:
+    - type: Transform
+      pos: 0.5,-0.5
+      parent: 1
+  - uid: 21
+    components:
+    - type: Transform
+      pos: 1.5,-0.5
+      parent: 1
+  - uid: 22
+    components:
+    - type: Transform
+      pos: 1.5,-0.5
+      parent: 1
+  - uid: 23
+    components:
+    - type: Transform
+      pos: 1.5,0.5
+      parent: 1
+  - uid: 24
+    components:
+    - type: Transform
+      pos: 1.5,1.5
+      parent: 1
+  - uid: 25
+    components:
+    - type: Transform
+      pos: 1.5,1.5
+      parent: 1
+  - uid: 26
+    components:
+    - type: Transform
+      pos: 0.5,1.5
+      parent: 1
+  - uid: 27
+    components:
+    - type: Transform
+      pos: -0.5,1.5
+      parent: 1
+  - uid: 28
+    components:
+    - type: Transform
+      pos: -0.5,-0.5
+      parent: 1
+  - uid: 29
+    components:
+    - type: Transform
+      pos: -0.5,0.5
+      parent: 1
+  - uid: 30
+    components:
+    - type: Transform
+      pos: -0.5,1.5
+      parent: 1
 - proto: CableHV
   entities:
-  - uid: 12
+  - uid: 4
+    components:
+    - type: Transform
+      pos: 0.5,-0.5
+      parent: 1
+  - uid: 18
     components:
     - type: Transform
       pos: 0.5,-0.5
       parent: 1
 - proto: CableMV
   entities:
-  - uid: 14
+  - uid: 5
+    components:
+    - type: Transform
+      pos: 0.5,-0.5
+      parent: 1
+  - uid: 31
     components:
     - type: Transform
       pos: 0.5,-0.5
       parent: 1
 - proto: ChairPilotSeat
   entities:
-  - uid: 15
+  - uid: 6
     components:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: 0.5,0.5
       parent: 1
-- proto: ComputerShuttle
+- proto: CigaretteBread
   entities:
-  - uid: 2
+  - uid: 33
+    components:
+    - type: Transform
+      pos: 0.33446157,0.15035087
+      parent: 1
+- proto: ComputerBroken
+  entities:
+  - uid: 17
     components:
     - type: Transform
       pos: 0.5,1.5
       parent: 1
+- proto: CrowbarGreen
+  entities:
+  - uid: 32
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 0.5350789,1.335536
+      parent: 1
 - proto: GeneratorWallmountAPU
   entities:
-  - uid: 9
+  - uid: 8
     components:
     - type: Transform
       pos: 0.5,-0.5
       parent: 1
-  - uid: 10
+  - uid: 9
     components:
     - type: Transform
       pos: 0.5,-0.5
       parent: 1
 - proto: Gyroscope
   entities:
-  - uid: 7
+  - uid: 10
     components:
     - type: Transform
       pos: 0.5,-0.5
       parent: 1
 - proto: PoweredSmallLight
   entities:
-  - uid: 16
+  - uid: 11
     components:
     - type: Transform
       pos: 0.5,1.5
       parent: 1
+- proto: ShuttleConsoleCircuitboard
+  entities:
+  - uid: 7
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 0.92088133,0.548499
+      parent: 1
 - proto: SubstationWallBasic
   entities:
-  - uid: 11
+  - uid: 12
     components:
     - type: Transform
       pos: 0.5,-0.5
       parent: 1
 - proto: Thruster
   entities:
-  - uid: 3
+  - uid: 13
     components:
     - type: Transform
       pos: -0.5,1.5
       parent: 1
-  - uid: 4
+    - type: Thruster
+      enabled: False
+  - uid: 14
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 1.5,1.5
       parent: 1
-  - uid: 5
+    - type: Thruster
+      enabled: False
+  - uid: 15
     components:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: 1.5,-0.5
       parent: 1
-  - uid: 6
+    - type: Thruster
+      enabled: False
+  - uid: 16
     components:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: -0.5,-0.5
       parent: 1
+    - type: Thruster
+      enabled: False
 ...
