@@ -689,3 +689,9 @@ Entries:
     type: Tweak
   id: 102
   time: '2024-10-20T15:10:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added visual effects when shooting at any living being
+    type: Add
+  id: 103
+  time: '2024-10-20T23:50:00.0000000+00:00'
