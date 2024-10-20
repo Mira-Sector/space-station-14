@@ -90,6 +90,7 @@
         repeatable: true
       behaviors:
       - !type:SpawnEntitiesBehavior
+        offset: 0.2
         spawn:
           EffectSplatter:
             min: 1
