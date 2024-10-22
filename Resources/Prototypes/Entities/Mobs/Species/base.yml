@@ -56,12 +56,12 @@
   - type: DamageVisuals
     thresholds: [ 10, 20, 30, 50, 70, 100 ]
     targetLayers:
-    - "enum.HumanoidVisualLayers.Chest"
-    - "enum.HumanoidVisualLayers.Head"
-    - "enum.HumanoidVisualLayers.LArm"
-    - "enum.HumanoidVisualLayers.LLeg"
-    - "enum.HumanoidVisualLayers.RArm"
-    - "enum.HumanoidVisualLayers.RLeg"
+      !type:BodyPart { type: Head, side: None }: Head
+      !type:BodyPart { type: Torso, side: None }: Chest
+      !type:BodyPart { type: Arm, side: Left }: LArm
+      !type:BodyPart { type: Arm, side: Right }: RArm
+      !type:BodyPart { type: Leg, side: Left }: LLeg
+      !type:BodyPart { type: Leg, side: Right }: RLeg
     damageOverlayGroups:
       Brute:
         sprite: Mobs/Effects/brute_damage.rsi

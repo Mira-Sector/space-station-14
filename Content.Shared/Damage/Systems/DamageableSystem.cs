@@ -187,8 +187,11 @@ namespace Content.Shared.Damage
 
                 foreach ((var currentPart, var partComp) in parts)
                 {
+                    if (partComp.PartType != damageSelectorComp.SelectedPart.Type)
+                        continue;
+
                     // wrong arm buddy
-                    if (partComp.Symmetry != damageSelectorComp.Side)
+                    if (partComp.Symmetry != damageSelectorComp.SelectedPart.Side)
                         continue;
 
                     partUid = currentPart;

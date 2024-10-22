@@ -6,8 +6,5 @@ namespace Content.Shared.Damage.Components;
 public sealed partial class DamagePartSelectorComponent : Component
 {
     [ViewVariables]
-    public BodyPartType SelectedPart = BodyPartType.Torso;
-
-    [ViewVariables]
-    public BodyPartSymmetry Side = BodyPartSymmetry.None;
+    public BodyPart SelectedPart = new BodyPart(BodyPartType.Torso, BodyPartSymmetry.None);
 }
