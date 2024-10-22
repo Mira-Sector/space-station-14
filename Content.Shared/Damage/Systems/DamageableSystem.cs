@@ -48,10 +48,13 @@ namespace Content.Shared.Damage
         /// </summary>
         private void DamageableInit(EntityUid uid, DamageableComponent component, ComponentInit _)
         {
+            // for the general body
+            // tracks the overall health of the mob
+            InitDamageTypes(component);
+
             if (!TryComp<BodyComponent>(uid, out var bodyComp) ||
                 !_prototypeManager.TryIndex(bodyComp.Prototype, out var bodyProto))
             {
-                InitDamageTypes(component);
                 return;
             }
 
@@ -170,8 +173,11 @@ namespace Content.Shared.Damage
             if (before.Cancelled)
                 return null;
 
+
+            var wholeBodyDamage = TryApplyDamage(uid.Value, damage, ignoreResistances, interruptsDoAfters, damageable, origin);
+
             if (!TryComp<BodyComponent>(uid, out var bodyComp))
-                return TryApplyDamage(uid.Value, damage, ignoreResistances, interruptsDoAfters, damageable, origin);
+                return wholeBodyDamage;
 
             var parts = _body.GetBodyChildren(uid, bodyComp);
 
@@ -199,13 +205,15 @@ namespace Content.Shared.Damage
             }
 
             // apply damage equally accross the body
+            DamageSpecifier damagePerPart =  damage / parts.Count();
+
             DamageSpecifier totalDamage = new DamageSpecifier();
             foreach ((var currentPart, var partComp) in parts)
             {
                 if (!TryComp<DamageableComponent>(currentPart, out var partDamageableComp))
                     continue;
 
-                var newDamage = TryApplyDamage(currentPart, damage, ignoreResistances, interruptsDoAfters, partDamageableComp, origin);
+                var newDamage = TryApplyDamage(currentPart, damagePerPart, ignoreResistances, interruptsDoAfters, partDamageableComp, origin);
 
                 if (newDamage == null)
                     continue;
