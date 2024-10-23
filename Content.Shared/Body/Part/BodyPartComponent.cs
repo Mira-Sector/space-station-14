@@ -1,4 +1,4 @@
-﻿using Content.Shared.Body.Components;
+using Content.Shared.Body.Components;
 using Content.Shared.Body.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.GameStates;
@@ -42,6 +42,12 @@ public sealed partial class BodyPartComponent : Component
     /// </summary>
     [DataField, AutoNetworkedField]
     public Dictionary<string, OrganSlot> Organs = new();
+
+    /// <summary>
+    /// Percentage of how how much this contributes to the overall bodies total damage
+    /// </summary>
+    [DataField]
+    public float OverallDamageScale = 1f;
 
     /// <summary>
     /// These are only for VV/Debug do not use these for gameplay/systems

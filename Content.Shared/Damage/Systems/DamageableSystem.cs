@@ -174,10 +174,9 @@ namespace Content.Shared.Damage
                 return null;
 
 
-            var wholeBodyDamage = TryApplyDamage(uid.Value, damage, ignoreResistances, interruptsDoAfters, damageable, origin);
 
             if (!TryComp<BodyComponent>(uid, out var bodyComp))
-                return wholeBodyDamage;
+                return TryApplyDamage(uid.Value, damage, ignoreResistances, interruptsDoAfters, damageable, origin);
 
             var parts = _body.GetBodyChildren(uid, bodyComp);
 

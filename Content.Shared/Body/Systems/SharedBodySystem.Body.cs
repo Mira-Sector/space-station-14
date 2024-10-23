@@ -29,6 +29,7 @@ public partial class SharedBodySystem
      */
 
     [Dependency] private readonly AlertsSystem _alerts = default!;
+    [Dependency] private readonly DamageableSystem _damageable = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
     [Dependency] private readonly GibbingSystem _gibbingSystem = default!;
     [Dependency] private readonly SharedAudioSystem _audioSystem = default!;
@@ -47,6 +48,8 @@ public partial class SharedBodySystem
         SubscribeLocalEvent<BodyComponent, MapInitEvent>(OnBodyMapInit);
         SubscribeLocalEvent<BodyComponent, CanDragEvent>(OnBodyCanDrag);
         SubscribeLocalEvent<BodyComponent, DamageChangedEvent>(OnDamaged);
+
+        SubscribeLocalEvent<BodyPartComponent, DamageChangedEvent>(OnPartDamaged);
     }
 
     private void OnBodyInserted(Entity<BodyComponent> ent, ref EntInsertedIntoContainerMessage args)
@@ -141,6 +144,23 @@ public partial class SharedBodySystem
     private void OnDamaged(EntityUid uid, BodyComponent component, DamageChangedEvent args)
     {
         _alerts.ShowAlert(uid, component.Alert);
+    }
+
+    private void OnPartDamaged(EntityUid uid, BodyPartComponent component, DamageChangedEvent args)
+    {
+        if (component.Body == null)
+            return;
+
+        if (args.DamageDelta == null)
+            return;
+
+        if (!TryComp<DamageableComponent>(component.Body, out var bodyDamageComp))
+            return;
+
+        var damage = args.DamageDelta * component.OverallDamageScale;
+        damage += bodyDamageComp.Damage;
+
+        _damageable.SetDamage(component.Body.Value, bodyDamageComp, damage);
     }
 
     /// <summary>
