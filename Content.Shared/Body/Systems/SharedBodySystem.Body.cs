@@ -1,9 +1,11 @@
 using System.Linq;
 using System.Numerics;
+using Content.Shared.Alert;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Organ;
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Prototypes;
+using Content.Shared.Damage;
 using Content.Shared.DragDrop;
 using Content.Shared.Gibbing.Components;
 using Content.Shared.Gibbing.Events;
@@ -26,6 +28,7 @@ public partial class SharedBodySystem
      * - Each "connection" is a body part (e.g. arm, hand, etc.) and each part can also contain organs.
      */
 
+    [Dependency] private readonly AlertsSystem _alerts = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
     [Dependency] private readonly GibbingSystem _gibbingSystem = default!;
     [Dependency] private readonly SharedAudioSystem _audioSystem = default!;
@@ -40,8 +43,10 @@ public partial class SharedBodySystem
         SubscribeLocalEvent<BodyComponent, EntRemovedFromContainerMessage>(OnBodyRemoved);
 
         SubscribeLocalEvent<BodyComponent, ComponentInit>(OnBodyInit);
+        SubscribeLocalEvent<BodyComponent, ComponentRemove>(OnBodyRemove);
         SubscribeLocalEvent<BodyComponent, MapInitEvent>(OnBodyMapInit);
         SubscribeLocalEvent<BodyComponent, CanDragEvent>(OnBodyCanDrag);
+        SubscribeLocalEvent<BodyComponent, DamageChangedEvent>(OnDamaged);
     }
 
     private void OnBodyInserted(Entity<BodyComponent> ent, ref EntInsertedIntoContainerMessage args)
@@ -92,6 +97,12 @@ public partial class SharedBodySystem
     {
         // Setup the initial container.
         ent.Comp.RootContainer = Containers.EnsureContainer<ContainerSlot>(ent, BodyRootContainerId);
+        _alerts.ShowAlert(ent.Owner, ent.Comp.Alert);
+    }
+
+    private void OnBodyRemove(Entity<BodyComponent> ent, ref ComponentRemove args)
+    {
+        _alerts.ClearAlert(ent.Owner, ent.Comp.Alert);
     }
 
     private void OnBodyMapInit(Entity<BodyComponent> ent, ref MapInitEvent args)
@@ -125,6 +136,11 @@ public partial class SharedBodySystem
     private void OnBodyCanDrag(Entity<BodyComponent> ent, ref CanDragEvent args)
     {
         args.Handled = true;
+    }
+
+    private void OnDamaged(EntityUid uid, BodyComponent component, DamageChangedEvent args)
+    {
+        _alerts.ShowAlert(uid, component.Alert);
     }
 
     /// <summary>

@@ -17,3 +17,15 @@ public sealed partial class BodyPart
         Side = side;
     }
 }
+
+[Serializable, NetSerializable]
+public enum BodyPartLayer : byte
+{
+    None,
+    Head,
+    Torso,
+    LArm,
+    RArm,
+    LLeg,
+    RLeg
+}
