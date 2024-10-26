@@ -1,0 +1,22 @@
+- type: entity
+  id: AlertLimbDamageSpriteView
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: /Textures/Interface/Alerts/limb_damage.rsi
+    layers:
+    - map: [ "enum.BodyPartLayer.Head" ]
+    - map: [ "enum.BodyPartLayer.Torso" ]
+    - map: [ "enum.BodyPartLayer.LArm" ]
+    - map: [ "enum.BodyPartLayer.RArm" ]
+    - map: [ "enum.BodyPartLayer.LLeg" ]
+    - map: [ "enum.BodyPartLayer.RLeg" ]
+
+- type: alert
+  id: LimbHealth
+  icons:
+  - sprite: /Textures/Interface/Alerts/limb_damage.rsi
+    state: chest0
+  alertViewEntity: AlertLimbDamageSpriteView
+  name: alerts-limbs-name
+  description: alerts-limbs-desc
