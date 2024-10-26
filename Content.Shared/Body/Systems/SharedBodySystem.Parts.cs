@@ -791,4 +791,31 @@ public partial class SharedBodySystem
     }
 
     #endregion
+
+    public BodyPartLayer BodyPartToLayer(BodyPartType type, BodyPartSymmetry side)
+    {
+        return BodyPartToLayer(new BodyPart(type, side));
+    }
+
+    public BodyPartLayer BodyPartToLayer(BodyPart bodyPart)
+    {
+        return bodyPart.Type switch
+        {
+            BodyPartType.Head => BodyPartLayer.Head,
+            BodyPartType.Torso => BodyPartLayer.Torso,
+            BodyPartType.Arm => bodyPart.Side switch
+            {
+                BodyPartSymmetry.Left => BodyPartLayer.LArm,
+                BodyPartSymmetry.Right => BodyPartLayer.RArm,
+                _ => BodyPartLayer.None
+            },
+            BodyPartType.Leg => bodyPart.Side switch
+            {
+                BodyPartSymmetry.Left => BodyPartLayer.LLeg,
+                BodyPartSymmetry.Right => BodyPartLayer.RLeg,
+                _ => BodyPartLayer.None
+            },
+            _ => BodyPartLayer.None
+        };
+    }
 }

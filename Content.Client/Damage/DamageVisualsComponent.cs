@@ -1,4 +1,6 @@
+using Content.Shared.Body.Part;
 using Content.Shared.FixedPoint;
+using Content.Shared.Humanoid;
 
 namespace Content.Client.Damage;
 
@@ -45,7 +47,7 @@ public sealed partial class DamageVisualsComponent : Component
     ///     Setting the layer as disabled will make it
     ///     completely invisible.
     /// </remarks>
-    [DataField("targetLayers")] public List<Enum>? TargetLayers;
+    [DataField("targetLayers")] public Dictionary<BodyPart, HumanoidVisualLayers>? TargetLayers;
 
     /// <summary>
     ///     The actual sprites for every damage group
@@ -115,7 +117,7 @@ public sealed partial class DamageVisualsComponent : Component
     /// </summary>
     [DataField("damageOverlay")] public  DamageVisualizerSprite? DamageOverlay;
 
-    public readonly List<Enum> TargetLayerMapKeys = new();
+    public readonly Dictionary<BodyPart, Enum> TargetLayerMapKeys = new();
     public bool Disabled = false;
     public bool Valid = true;
     public FixedPoint2 LastDamageThreshold = FixedPoint2.Zero;

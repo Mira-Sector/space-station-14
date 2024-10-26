@@ -1,14 +1,17 @@
 using System.Linq;
 using System.Numerics;
+using Content.Shared.Alert;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Organ;
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Prototypes;
+using Content.Shared.Damage;
 using Content.Shared.DragDrop;
 using Content.Shared.Gibbing.Components;
 using Content.Shared.Gibbing.Events;
 using Content.Shared.Gibbing.Systems;
 using Content.Shared.Inventory;
+using Content.Shared.Rejuvenate;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
@@ -26,8 +29,11 @@ public partial class SharedBodySystem
      * - Each "connection" is a body part (e.g. arm, hand, etc.) and each part can also contain organs.
      */
 
+    [Dependency] private readonly AlertsSystem _alerts = default!;
+    [Dependency] private readonly DamageableSystem _damageable = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
     [Dependency] private readonly GibbingSystem _gibbingSystem = default!;
+    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedAudioSystem _audioSystem = default!;
 
     private const float GibletLaunchImpulse = 8;
@@ -40,8 +46,13 @@ public partial class SharedBodySystem
         SubscribeLocalEvent<BodyComponent, EntRemovedFromContainerMessage>(OnBodyRemoved);
 
         SubscribeLocalEvent<BodyComponent, ComponentInit>(OnBodyInit);
+        SubscribeLocalEvent<BodyComponent, ComponentRemove>(OnBodyRemove);
         SubscribeLocalEvent<BodyComponent, MapInitEvent>(OnBodyMapInit);
         SubscribeLocalEvent<BodyComponent, CanDragEvent>(OnBodyCanDrag);
+        SubscribeLocalEvent<BodyComponent, DamageChangedEvent>(OnDamaged);
+        SubscribeLocalEvent<BodyComponent, RejuvenateEvent>(OnRejuvenate);
+
+        SubscribeLocalEvent<BodyPartComponent, DamageChangedEvent>(OnPartDamaged);
     }
 
     private void OnBodyInserted(Entity<BodyComponent> ent, ref EntInsertedIntoContainerMessage args)
@@ -92,6 +103,12 @@ public partial class SharedBodySystem
     {
         // Setup the initial container.
         ent.Comp.RootContainer = Containers.EnsureContainer<ContainerSlot>(ent, BodyRootContainerId);
+        _alerts.ShowAlert(ent.Owner, ent.Comp.Alert);
+    }
+
+    private void OnBodyRemove(Entity<BodyComponent> ent, ref ComponentRemove args)
+    {
+        _alerts.ClearAlert(ent.Owner, ent.Comp.Alert);
     }
 
     private void OnBodyMapInit(Entity<BodyComponent> ent, ref MapInitEvent args)
@@ -125,6 +142,51 @@ public partial class SharedBodySystem
     private void OnBodyCanDrag(Entity<BodyComponent> ent, ref CanDragEvent args)
     {
         args.Handled = true;
+    }
+
+    private void OnDamaged(EntityUid uid, BodyComponent component, DamageChangedEvent args)
+    {
+        _alerts.ShowAlert(uid, component.Alert);
+    }
+
+    private void OnRejuvenate(EntityUid uid, BodyComponent component, RejuvenateEvent args)
+    {
+        var parts = GetBodyChildren(uid, component);
+
+        foreach ((var partUid, var _) in parts)
+        {
+            if (!TryComp<DamageableComponent>(partUid, out var partDamageComp))
+                continue;
+
+            var damage = new DamageSpecifier();
+            _damageable.SetDamage(partUid, partDamageComp, damage, true);
+        }
+
+        if (!TryComp<DamageableComponent>(uid, out var damageComp) || !TryComp<AppearanceComponent>(uid, out var appearance))
+            return;
+
+        var data = new DamageVisualizerGroupData(damageComp.DamagePerGroup.Keys.ToList());
+        _appearance.SetData(uid, DamageVisualizerKeys.DamageUpdateGroups, data, appearance);
+    }
+
+    private void OnPartDamaged(EntityUid uid, BodyPartComponent component, DamageChangedEvent args)
+    {
+        if (args.Origin == uid)
+            return;
+
+        if (component.Body == null)
+            return;
+
+        if (args.DamageDelta == null)
+            return;
+
+        if (!TryComp<DamageableComponent>(component.Body, out var bodyDamageComp))
+            return;
+
+        var damage = args.DamageDelta * component.OverallDamageScale;
+        damage += bodyDamageComp.Damage;
+
+        _damageable.SetDamage(component.Body.Value, bodyDamageComp, damage, true);
     }
 
     /// <summary>

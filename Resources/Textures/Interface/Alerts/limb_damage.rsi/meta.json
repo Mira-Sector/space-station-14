@@ -1,0 +1,227 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "https://github.com/tgstation/tgstation/blob/b748c455df05c13e3f4d8cc7945cd133658a2992/icons/hud/screen_gen.dmi",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "Head7"
+    },
+    {
+      "name": "Torso7"
+    },
+    {
+      "name": "RArm7"
+    },
+    {
+      "name": "LArm7"
+    },
+    {
+      "name": "LLeg7"
+    },
+    {
+      "name": "RLeg7"
+    },
+    {
+      "name": "Head1"
+    },
+    {
+      "name": "Torso1"
+    },
+    {
+      "name": "RArm1"
+    },
+    {
+      "name": "LArm1"
+    },
+    {
+      "name": "RLeg1"
+    },
+    {
+      "name": "LLeg1"
+    },
+    {
+      "name": "Head2"
+    },
+    {
+      "name": "Torso2"
+    },
+    {
+      "name": "LArm2"
+    },
+    {
+      "name": "RArm2"
+    },
+    {
+      "name": "LLeg2"
+    },
+    {
+      "name": "RLeg2"
+    },
+    {
+      "name": "Head3"
+    },
+    {
+      "name": "Torso3"
+    },
+    {
+      "name": "LArm3"
+    },
+    {
+      "name": "RArm3"
+    },
+    {
+      "name": "LLeg3"
+    },
+    {
+      "name": "RLeg3"
+    },
+    {
+      "name": "Head4"
+    },
+    {
+      "name": "Torso4"
+    },
+    {
+      "name": "LArm4"
+    },
+    {
+      "name": "RArm4"
+    },
+    {
+      "name": "LLeg4"
+    },
+    {
+      "name": "RLeg4"
+    },
+    {
+      "name": "Head5"
+    },
+    {
+      "name": "Torso5"
+    },
+    {
+      "name": "LArm5"
+    },
+    {
+      "name": "RArm5"
+    },
+    {
+      "name": "LLeg5"
+    },
+    {
+      "name": "RLeg5"
+    },
+    {
+      "name": "Head6",
+      "delays": [
+        [
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "name": "Torso6",
+      "delays": [
+        [
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "name": "LArm6",
+      "delays": [
+        [
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "name": "RArm6",
+      "delays": [
+        [
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "name": "LLeg6",
+      "delays": [
+        [
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "name": "RLeg6",
+      "delays": [
+        [
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "name": "HeadRemoved",
+      "delays": [
+        [
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "name": "TorsoRemoved",
+      "delays": [
+        [
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "name": "LArmRemoved",
+      "delays": [
+        [
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "name": "RArmRemoved",
+      "delays": [
+        [
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "name": "LLegRemoved",
+      "delays": [
+        [
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "name": "RLegRemoved",
+      "delays": [
+        [
+          0.5,
+          0.5
+        ]
+      ]
+    }
+  ]
+}

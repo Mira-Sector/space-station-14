@@ -116,3 +116,6 @@ alerts-deflecting-desc = You have a chance to deflect incoming projectiles. Stan
 
 alerts-crawling-name = Crawling
 alerts-crawling-desc = You're crawling.
+
+alerts-limbs-name = Limb Damage
+alerts-limbs-desc = Where your booboos are on your body.
