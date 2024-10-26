@@ -165,6 +165,14 @@
     damage:
       types:
         Blunt: 5
+  - type: DamagePartSelector
+    selectableParts:
+      !type:BodyPart { type: Head, side: None }: { sprite: Interface/Actions/zone_sel.rsi , state: head }
+      !type:BodyPart { type: Torso, side: None }: { sprite: Interface/Actions/zone_sel.rsi , state: torso }
+      !type:BodyPart { type: Arm, side: Left }: { sprite: Interface/Actions/zone_sel.rsi , state: larm }
+      !type:BodyPart { type: Arm, side: Right }: { sprite: Interface/Actions/zone_sel.rsi , state: rarm }
+      !type:BodyPart { type: Leg, side: Left }: { sprite: Interface/Actions/zone_sel.rsi , state: lleg }
+      !type:BodyPart { type: Leg, side: Right }: { sprite: Interface/Actions/zone_sel.rsi , state: rleg }
   - type: SleepEmitSound
   - type: SSDIndicator
   - type: StandingState
@@ -198,6 +206,8 @@
         type: HumanoidMarkingModifierBoundUserInterface
       enum.StrippingUiKey.Key:
         type: StrippableBoundUserInterface
+      enum.DamageSelectorUiKey.Key:
+        type: DamageSelectorBoundUserInterface
   - type: Puller
   - type: Speech
     speechSounds: Alto

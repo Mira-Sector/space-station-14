@@ -1,7 +1,7 @@
 using System.Linq;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Systems;
-using Content.Shared.Damage.Components;
+using Content.Shared.Damage.DamageSelector;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.FixedPoint;
 using Content.Shared.Inventory;

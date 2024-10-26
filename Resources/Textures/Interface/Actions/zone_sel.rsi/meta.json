@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Taken from https://github.com/tgstation/tgstation/commit/3c20ecc5ae7580f731930b881bd1b1dfa46b5824",
+    "states": [
+        {
+            "name": "head"
+        },
+        {
+            "name": "torso"
+        },
+        {
+            "name": "larm"
+        },
+        {
+            "name": "rarm"
+        },
+        {
+            "name": "lleg"
+        },
+        {
+            "name": "rleg"
+        }
+    ]
+}

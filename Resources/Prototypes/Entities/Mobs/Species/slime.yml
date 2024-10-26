@@ -32,6 +32,8 @@
         type: HumanoidMarkingModifierBoundUserInterface
       enum.StrippingUiKey.Key:
         type: StrippableBoundUserInterface
+      enum.DamageSelectorUiKey.Key:
+        type: DamageSelectorBoundUserInterface
   # to prevent bag open/honk spam
   - type: UseDelay
     delay: 0.5
