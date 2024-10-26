@@ -695,3 +695,11 @@ Entries:
     type: Add
   id: 103
   time: '2024-10-20T23:50:00.0000000+00:00'
+- author: aspiffyfellow
+  changes:
+  - message: T-ray and gas analyser now spawn in the pockets of engineering and atmos at roundstart.
+    type: Tweak
+  - message: Engineering, atmos and CE now spawn with insuls equipped.
+    type: Tweak
+  id: 104
+  time: '2024-10-26T03:20:00.0000000+00:00'
