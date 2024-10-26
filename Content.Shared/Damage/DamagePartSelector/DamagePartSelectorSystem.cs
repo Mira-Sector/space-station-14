@@ -16,21 +16,23 @@ public sealed class DamagePartSelectorSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<DamagePartSelectorComponent, ComponentInit>(OnInit);
+        SubscribeLocalEvent<DamagePartSelectorComponent, MapInitEvent >(OnInit);
         SubscribeLocalEvent<DamagePartSelectorComponent, ComponentRemove>(OnRemoved);
 
         SubscribeLocalEvent<DamagePartSelectorComponent, DamageSelectorActionEvent>(OnAction);
         SubscribeLocalEvent<DamagePartSelectorComponent, DamageSelectorSystemMessage>(OnMessage);
     }
 
-    private void OnInit(EntityUid uid, DamagePartSelectorComponent component, ComponentInit args)
+    private void OnInit(EntityUid uid, DamagePartSelectorComponent component, MapInitEvent args)
     {
         _actions.AddAction(uid, ref component.Action, ActionId, uid);
+        Dirty(uid, component);
     }
 
     private void OnRemoved(EntityUid uid, DamagePartSelectorComponent component, ComponentRemove args)
     {
         _actions.RemoveAction(component.Action);
+        Dirty(uid, component);
     }
 
     private void OnAction(EntityUid uid, DamagePartSelectorComponent component, InstantActionEvent args)
