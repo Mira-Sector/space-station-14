@@ -114,14 +114,14 @@ namespace Content.Shared.Damage
         ///     Useful for some unfriendly folk. Also ensures that cached values are updated and that a damage changed
         ///     event is raised.
         /// </remarks>
-        public void SetDamage(EntityUid uid, DamageableComponent damageable, DamageSpecifier damage, bool update = false)
+        public void SetDamage(EntityUid uid, DamageableComponent damageable, DamageSpecifier damage, bool update = false, EntityUid? origin = null)
         {
             DamageSpecifier? delta = null;
             if (update)
                 delta = damage - damageable.Damage;
 
             damageable.Damage = damage;
-            DamageChanged(uid, damageable, delta);
+            DamageChanged(uid, damageable, delta, origin: origin);
         }
 
         /// <summary>

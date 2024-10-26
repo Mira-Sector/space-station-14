@@ -11,6 +11,7 @@ using Content.Shared.Gibbing.Components;
 using Content.Shared.Gibbing.Events;
 using Content.Shared.Gibbing.Systems;
 using Content.Shared.Inventory;
+using Content.Shared.Rejuvenate;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
@@ -32,6 +33,7 @@ public partial class SharedBodySystem
     [Dependency] private readonly DamageableSystem _damageable = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
     [Dependency] private readonly GibbingSystem _gibbingSystem = default!;
+    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedAudioSystem _audioSystem = default!;
 
     private const float GibletLaunchImpulse = 8;
@@ -48,6 +50,7 @@ public partial class SharedBodySystem
         SubscribeLocalEvent<BodyComponent, MapInitEvent>(OnBodyMapInit);
         SubscribeLocalEvent<BodyComponent, CanDragEvent>(OnBodyCanDrag);
         SubscribeLocalEvent<BodyComponent, DamageChangedEvent>(OnDamaged);
+        SubscribeLocalEvent<BodyComponent, RejuvenateEvent>(OnRejuvenate);
 
         SubscribeLocalEvent<BodyPartComponent, DamageChangedEvent>(OnPartDamaged);
     }
@@ -146,8 +149,31 @@ public partial class SharedBodySystem
         _alerts.ShowAlert(uid, component.Alert);
     }
 
+    private void OnRejuvenate(EntityUid uid, BodyComponent component, RejuvenateEvent args)
+    {
+        var parts = GetBodyChildren(uid, component);
+
+        foreach ((var partUid, var _) in parts)
+        {
+            if (!TryComp<DamageableComponent>(partUid, out var partDamageComp))
+                continue;
+
+            var damage = new DamageSpecifier();
+            _damageable.SetDamage(partUid, partDamageComp, damage, true);
+        }
+
+        if (!TryComp<DamageableComponent>(uid, out var damageComp) || !TryComp<AppearanceComponent>(uid, out var appearance))
+            return;
+
+        var data = new DamageVisualizerGroupData(damageComp.DamagePerGroup.Keys.ToList());
+        _appearance.SetData(uid, DamageVisualizerKeys.DamageUpdateGroups, data, appearance);
+    }
+
     private void OnPartDamaged(EntityUid uid, BodyPartComponent component, DamageChangedEvent args)
     {
+        if (args.Origin == uid)
+            return;
+
         if (component.Body == null)
             return;
 
