@@ -125,9 +125,7 @@
     size: Normal
   - type: Armor
     modifiers:
-      coefficients:
-        Blunt: 0.95
-        Slash: 0.95
+      Torso: { coefficients: { Blunt: 0.95, Slash: 0.95 } }
   - type: PhysicalComposition
     materialComposition:
       Plastic: 50

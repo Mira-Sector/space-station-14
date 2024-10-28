@@ -123,9 +123,9 @@
     fiberMaterial: fibers-durathread
     fiberColor: fibers-black
   - type: Armor
+    basePart: Arm
     modifiers:
-      coefficients:
-        Slash: 0.95
+      Arm: { coefficients: { Slash: 0.95 } }
   - type: FingerprintMask
 
 #### Medical

@@ -1,6 +1,7 @@
-﻿using Content.Shared.Damage;
+using Content.Shared.Damage;
 using Robust.Shared.GameStates;
 using Robust.Shared.Utility;
+using Content.Shared.Body.Part;
 
 namespace Content.Shared.Armor;
 
@@ -14,7 +15,13 @@ public sealed partial class ArmorComponent : Component
     /// The damage reduction
     /// </summary>
     [DataField(required: true)]
-    public DamageModifierSet Modifiers = default!;
+    public Dictionary<BodyPartType, DamageModifierSet> Modifiers = default!;
+
+    /// <summary>
+    /// If the damagereciever has no body component which damage modifier to use
+    /// </summary>
+    [DataField]
+    public BodyPartType BasePart = BodyPartType.Torso;
 
     /// <summary>
     /// A multiplier applied to the calculated point value

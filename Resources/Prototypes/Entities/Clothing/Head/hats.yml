@@ -805,9 +805,9 @@
   - type: Clothing
     sprite: Clothing/Head/Hats/melon.rsi
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.95
+      Head: { coefficients: { Blunt: 0.95 } }
 
 - type: entity
   parent: ClothingHeadBase
@@ -820,9 +820,9 @@
   - type: Clothing
     sprite: Clothing/Head/Hats/holyhatmelon.rsi
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Caustic: 0.95
+      Head: { coefficients: { Caustic: 0.95 } }
 
 - type: entity
   parent: [ClothingHeadBase, BaseSyndicateContraband]
