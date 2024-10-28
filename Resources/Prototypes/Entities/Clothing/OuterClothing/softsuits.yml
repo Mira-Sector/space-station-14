@@ -114,10 +114,9 @@
     coolingCoefficient: 0.1
   - type: Armor
     modifiers:
-      coefficients:
-        Heat: 0.90
-        Radiation: 0.75
-        Caustic: 0.5
+      Torso: { coefficients: { Heat: 0.90, Radiation: 0.75, Caustic: 0.5 } }
+      Arm: { coefficients: { Heat: 0.90, Radiation: 0.75, Caustic: 0.5 } }
+      Leg: { coefficients: { Heat: 0.90, Radiation: 0.75, Caustic: 0.5 } }
   - type: GroupExamine
   - type: StealTarget
     stealGroup: ClothingOuterHardsuitVoidParamed

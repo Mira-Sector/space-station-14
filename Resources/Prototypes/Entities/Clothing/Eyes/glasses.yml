@@ -188,7 +188,7 @@
   parent: [ClothingEyesBase, BaseCommandContraband]
   id: ClothingEyesGlassesCommand
   name: administration glasses
-  description: Upgraded sunglasses that provide flash immunity and show ID card status. 
+  description: Upgraded sunglasses that provide flash immunity and show ID card status.
   components:
   - type: Sprite
     sprite: Clothing/Eyes/Glasses/commandglasses.rsi
@@ -233,9 +233,9 @@
   - type: Clothing
     sprite: Clothing/Eyes/Glasses/thermal.rsi
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Heat: 0.95
+      Head: { coefficients: { Heat: 0.95 } }
   - type: GroupExamine
   - type: IdentityBlocker
     coverage: EYES

@@ -1,5 +1,6 @@
 using System.Linq;
 using Content.Shared.Body.Components;
+using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
 using Content.Shared.Damage.DamageSelector;
 using Content.Shared.Damage.Prototypes;
@@ -182,11 +183,12 @@ namespace Content.Shared.Damage
             if (!TryComp<BodyComponent>(uid, out var bodyComp))
                 return TryApplyDamage(uid.Value, damage, ignoreResistances, interruptsDoAfters, damageable, origin);
 
-            var parts = _body.GetBodyChildren(uid, bodyComp);
+            var parts = _body.GetBodyChildren(uid, bodyComp).ToDictionary();
 
             if (TryComp<DamagePartSelectorComponent>(origin, out var damageSelectorComp))
             {
                 EntityUid? partUid = null;
+                BodyPartType? partType = null;
 
                 foreach ((var currentPart, var partComp) in parts)
                 {
@@ -198,6 +200,7 @@ namespace Content.Shared.Damage
                         continue;
 
                     partUid = currentPart;
+                    partType = partComp.PartType;
                     break;
                 }
 
@@ -207,7 +210,7 @@ namespace Content.Shared.Damage
                 if (!TryComp<DamageableComponent>(partUid, out var partDamageableComp))
                     return null;
 
-                return TryApplyDamage(partUid.Value, damage, ignoreResistances, interruptsDoAfters, partDamageableComp, origin);
+                return TryApplyDamage(partUid.Value, damage, ignoreResistances, interruptsDoAfters, partDamageableComp, origin, partType, uid);
             }
 
             // apply damage equally accross the body
@@ -219,7 +222,7 @@ namespace Content.Shared.Damage
                 if (!TryComp<DamageableComponent>(currentPart, out var partDamageableComp))
                     continue;
 
-                var newDamage = TryApplyDamage(currentPart, damagePerPart, ignoreResistances, interruptsDoAfters, partDamageableComp, origin);
+                var newDamage = TryApplyDamage(currentPart, damagePerPart, ignoreResistances, interruptsDoAfters, partDamageableComp, origin, partComp.PartType, uid);
 
                 if (newDamage == null)
                     continue;
@@ -231,7 +234,7 @@ namespace Content.Shared.Damage
         }
 
         private DamageSpecifier? TryApplyDamage(EntityUid uid, DamageSpecifier damage, bool ignoreResistances,
-            bool interruptsDoAfters, DamageableComponent damageable, EntityUid? origin)
+            bool interruptsDoAfters, DamageableComponent damageable, EntityUid? origin, BodyPartType? part = null, EntityUid? body = null)
         {
             // Apply resistances
             if (!ignoreResistances)
@@ -244,8 +247,9 @@ namespace Content.Shared.Damage
                     damage = DamageSpecifier.ApplyModifierSet(damage, modifierSet);
                 }
 
-                var ev = new DamageModifyEvent(damage, origin);
-                RaiseLocalEvent(uid, ev);
+                var eventUid = body ?? uid;
+                var ev = new DamageModifyEvent(damage, origin, part);
+                RaiseLocalEvent(eventUid, ev);
                 damage = ev.Damage;
 
                 if (damage.Empty)
@@ -393,12 +397,14 @@ namespace Content.Shared.Damage
         public readonly DamageSpecifier OriginalDamage;
         public DamageSpecifier Damage;
         public EntityUid? Origin;
+        public BodyPartType? BodyPart;
 
-        public DamageModifyEvent(DamageSpecifier damage, EntityUid? origin = null)
+        public DamageModifyEvent(DamageSpecifier damage, EntityUid? origin = null, BodyPartType? part = null)
         {
             OriginalDamage = damage;
             Damage = damage;
             Origin = origin;
+            BodyPart = part;
         }
     }
 

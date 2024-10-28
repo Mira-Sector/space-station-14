@@ -151,12 +151,9 @@
     highPressureMultiplier: 0.08
     lowPressureMultiplier: 1000
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.9
-        Slash: 0.9
-        Piercing: 0.9
-        Heat: 0.9
+      Head: { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.9 } }
 
 #Security Hardsuit
 - type: entity
@@ -175,12 +172,9 @@
     highPressureMultiplier: 0.525
     lowPressureMultiplier: 1000
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.9
-        Slash: 0.9
-        Piercing: 0.9
-        Heat: 0.9
+      Head: { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.9 } }
 
 #Brigmedic Hardsuit
 - type: entity
@@ -196,14 +190,9 @@
   - type: PointLight
     color: "#00FFFF"
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.95
-        Slash: 0.95
-        Piercing: 0.95
-        Heat: 0.95
-        Radiation: 0.90
-        Caustic: 0.90
+      Head: { coefficients: { Blunt: 0.95, Slash: 0.95, Piercing: 0.95, Heat: 0.95, Radiation: 0.90, Caustic: 0.90 } }
   - type: PressureProtection
     highPressureMultiplier: 0.6
     lowPressureMultiplier: 1000
@@ -225,12 +214,9 @@
     highPressureMultiplier: 0.525
     lowPressureMultiplier: 1000
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.9
-        Slash: 0.9
-        Piercing: 0.9
-        Heat: 0.9
+      Head: { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.9 } }
 
 #Captain's Hardsuit
 - type: entity
@@ -317,12 +303,9 @@
     highPressureMultiplier: 0.45
     lowPressureMultiplier: 1000
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.9
-        Slash: 0.9
-        Piercing: 0.9
-        Heat: 0.9
+      Head: { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.9 } }
 
 #Luxury Mining Hardsuit
 - type: entity
@@ -360,12 +343,9 @@
     highPressureMultiplier: 0.08
     lowPressureMultiplier: 1000
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.9
-        Slash: 0.9
-        Piercing: 0.9
-        Heat: 0.9
+      Head: { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.9 } }
 
 #Blood-red Medic Hardsuit
 - type: entity
@@ -384,12 +364,9 @@
     highPressureMultiplier: 0.08
     lowPressureMultiplier: 1000
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.9
-        Slash: 0.9
-        Piercing: 0.9
-        Heat: 0.9
+      Head: { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.9 } }
 
 #Syndicate Elite Hardsuit
 - type: entity
@@ -413,12 +390,9 @@
   - type: FireProtection
     reduction: 0.2
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.9
-        Slash: 0.9
-        Piercing: 0.9
-        Heat: 0.9
+      Head: { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.9 } }
 
 #Syndicate Commander Hardsuit
 - type: entity
@@ -437,12 +411,9 @@
     highPressureMultiplier: 0.08
     lowPressureMultiplier: 1000
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.9
-        Slash: 0.9
-        Piercing: 0.9
-        Heat: 0.9
+      Head: { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.9 } }
 
 #Cybersun Juggernaut Hardsuit
 - type: entity
@@ -459,12 +430,9 @@
     highPressureMultiplier: 0.3
     lowPressureMultiplier: 1000
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.9
-        Slash: 0.9
-        Piercing: 0.9
-        Heat: 0.9
+      Head: { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.9 } }
 
 #Wizard Hardsuit
 - type: entity
@@ -483,12 +451,9 @@
     highPressureMultiplier: 0.27
     lowPressureMultiplier: 1000
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.9
-        Slash: 0.9
-        Piercing: 0.9
-        Heat: 0.9
+      Head: { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.9 } }
 
 #Organic Space Suit
 - type: entity
@@ -552,12 +517,9 @@
   - type: PointLight
     color: "#addbff"
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.9
-        Slash: 0.9
-        Piercing: 0.9
-        Heat: 0.9
+      Head: { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.9 } }
 
 #ERT Chaplain Hardsuit
 - type: entity
@@ -587,12 +549,9 @@
   - type: PointLight
     color: "#f4ffad"
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.9
-        Slash: 0.9
-        Piercing: 0.9
-        Heat: 0.9
+      Head: { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.9 } }
 
 #ERT Medical Hardsuit
 - type: entity
@@ -622,12 +581,9 @@
   - type: PointLight
     color: "#ffadc6"
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.9
-        Slash: 0.9
-        Piercing: 0.9
-        Heat: 0.9
+      Head: { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.9 } }
 
 #ERT Janitor Hardsuit
 - type: entity
@@ -675,12 +631,9 @@
     heatingCoefficient: 0.005
     coolingCoefficient: 0.005
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.9
-        Slash: 0.9
-        Piercing: 0.9
-        Heat: 0.9
+      Head: { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.9 } }
 
 #Deathsquad Hardsuit
 - type: entity
@@ -700,14 +653,9 @@
   - type: FireProtection
     reduction: 0.2
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.80
-        Slash: 0.80
-        Piercing: 0.80
-        Heat: 0.80
-        Radiation: 0.80
-        Caustic: 0.95
+      Head: { coefficients: { Blunt: 0.80, Slash: 0.80, Piercing: 0.80, Heat: 0.80, Radiation: 0.80, Caustic: 0.95 } }
 
 #MISC. HARDSUITS
 #Clown Hardsuit

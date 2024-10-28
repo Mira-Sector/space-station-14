@@ -7,12 +7,9 @@
   abstract: true
   components:
   - type: Armor #Values seem to let the user survive one extra hit if attacked consistently.
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.9
-        Slash: 0.9
-        Piercing: 0.9
-        Heat: 0.9
+      Head: { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.9 } }
   - type: Tag
     tags:
     - WhitelistChameleon
@@ -61,14 +58,9 @@
   - type: Clothing
     sprite: Clothing/Head/Helmets/swat.rsi
   - type: Armor #This is intentionally not spaceproof, when the time comes to port the values from SS13 this should be buffed from what it was.
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.80
-        Slash: 0.80
-        Piercing: 0.80
-        Heat: 0.80
-        Radiation: 0.80
-        Caustic: 0.95
+      Head: { coefficients: { Blunt: 0.80, Slash: 0.80, Piercing: 0.80, Heat: 0.80, Radiation: 0.80, Caustic: 0.95 } }
   - type: ExplosionResistance
     damageCoefficient: 0.75
 
@@ -98,11 +90,9 @@
     sprite: Clothing/Head/Helmets/light_riot.rsi
   - type: IngestionBlocker
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.8
-        Slash: 0.8
-        Piercing: 0.95
+      Head: { coefficients: { Blunt: 0.8, Slash: 0.8, Piercing: 0.95 } }
 
 #Bombsuit Helmet
 - type: entity
@@ -119,11 +109,9 @@
   - type: ExplosionResistance
     damageCoefficient: 0.9
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.95
-        Slash: 0.95
-        Piercing: 0.95
+      Head: { coefficients: { Blunt: 0.95, Slash: 0.95, Piercing: 0.95 } }
   - type: HideLayerClothing
     slots:
     - Hair
@@ -157,12 +145,9 @@
     sprite: Clothing/Head/Helmets/cult.rsi
   - type: IngestionBlocker
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.9
-        Slash: 0.8
-        Piercing: 0.9
-        Heat: 0.9
+      Head: { coefficients: { Blunt: 0.9, Slash: 0.8, Piercing: 0.9, Heat: 0.9 } }
 
 #Space Ninja Helmet
 - type: entity
@@ -303,12 +288,9 @@
   - type: Clothing
     sprite: Clothing/Head/Helmets/linghelmet.rsi
   - type: Armor #admeme item so it should be fine being overpowered while helmets are still intentionally kneecapped.
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.5
-        Slash: 0.5
-        Piercing: 0.5
-        Heat: 0.9
+      Head: { coefficients: { Blunt: 0.5, Slash: 0.5, Piercing: 0.5, Heat: 0.9 } }
 
 #ERT HELMETS
 #ERT Leader Helmet
@@ -382,12 +364,9 @@
   - type: Clothing
     sprite: Clothing/Head/Helmets/syndie-raid.rsi
   - type: Armor
-    modifiers: #There's gotta be SOME reason to use this over other helmets.
-      coefficients:
-        Blunt: 0.85
-        Slash: 0.85
-        Piercing: 0.85
-        Heat: 0.85
+    basePart: Head
+    modifiers:
+      Head: { coefficients: { Blunt: 0.85, Slash: 0.85, Piercing: 0.85, Heat: 0.85 } }
 
 #Bone Helmet
 - type: entity

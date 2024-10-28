@@ -13,11 +13,9 @@
     sprintModifier: 0.8
   - type: Armor
     modifiers:
-      coefficients:
-        Blunt: 0.9
-        Slash: 0.9
-        Piercing: 0.9
-        Heat: 0.75
+      Torso: { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.75 } }
+      Arm: { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.75 } }
+      Leg: { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.75 } }
   - type: ExplosionResistance
     damageCoefficient: 0.15
   - type: GroupExamine
@@ -59,10 +57,9 @@
     reduction: 0.65 # doesnt have a full seal so not as good
   - type: Armor
     modifiers:
-      coefficients:
-        Slash: 0.9
-        Heat: 0.8
-        Cold: 0.8
+      Torso: { coefficients: { Slash: 0.9, Heat: 0.8, Cold: 0.8 } }
+      Arm: { coefficients: { Slash: 0.9, Heat: 0.8, Cold: 0.8 } }
+      Leg: { coefficients: { Slash: 0.9, Heat: 0.8, Cold: 0.8 } }
   - type: ClothingSpeedModifier
     walkModifier: 0.8
     sprintModifier: 0.7
@@ -91,10 +88,9 @@
     reduction: 0.8 # atmos firesuit offers best protection, hardsuits are a little vulnerable
   - type: Armor
     modifiers:
-      coefficients:
-        Slash: 0.9
-        Heat: 0.8
-        Cold: 0.8
+      Torso: { coefficients: { Slash: 0.9, Heat: 0.8, Cold: 0.8 } }
+      Arm: { coefficients: { Slash: 0.9, Heat: 0.8, Cold: 0.8 } }
+      Leg: { coefficients: { Slash: 0.9, Heat: 0.8, Cold: 0.8 } }
   - type: ClothingSpeedModifier
     walkModifier: 0.8
     sprintModifier: 0.8
@@ -113,9 +109,9 @@
     sprite: Clothing/OuterClothing/Suits/rad.rsi
   - type: Armor
     modifiers:
-      coefficients:
-        Heat: 0.90
-        Radiation: 0.01
+      Torso: { coefficients: { Heat: 0.90, Radiation: 0.01 } }
+      Arm: { coefficients: { Heat: 0.90, Radiation: 0.01 } }
+      Leg: { coefficients: { Heat: 0.90, Radiation: 0.01 } }
   - type: Clothing
     sprite: Clothing/OuterClothing/Suits/rad.rsi
   - type: GroupExamine
@@ -147,11 +143,9 @@
     coolingCoefficient: 0.01
   - type: Armor
     modifiers:
-      coefficients:
-        Blunt: 0.8
-        Slash: 0.8
-        Piercing: 0.8
-        Heat: 0.8
+      Torso: { coefficients: { Blunt: 0.8, Slash: 0.8, Piercing: 0.8, Heat: 0.8 } }
+      Arm: { coefficients: { Blunt: 0.8, Slash: 0.8, Piercing: 0.8, Heat: 0.8 } }
+      Leg: { coefficients: { Blunt: 0.8, Slash: 0.8, Piercing: 0.8, Heat: 0.8 } }
   # phase cloak
   - type: ToggleClothing
     action: ActionTogglePhaseCloak

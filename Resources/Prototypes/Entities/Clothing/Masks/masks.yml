@@ -33,12 +33,9 @@
   - type: Clothing
     sprite: Clothing/Mask/gassecurity.rsi
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.95
-        Slash: 0.95
-        Piercing: 0.95
-        Heat: 0.95
+      Head: { coefficients: { Blunt: 0.95, Slash: 0.95, Piercing: 0.95, Heat: 0.95 } }
 
 - type: entity
   parent: [ClothingMaskGas, BaseSyndicateContraband]
@@ -53,12 +50,9 @@
   - type: FlashImmunity
   - type: EyeProtection
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.95
-        Slash: 0.95
-        Piercing: 0.95
-        Heat: 0.95
+      Head: { coefficients: { Blunt: 0.95, Slash: 0.95, Piercing: 0.95, Heat: 0.95 } }
 
 - type: entity
   parent: ClothingMaskGas
@@ -71,9 +65,9 @@
   - type: Clothing
     sprite: Clothing/Mask/gasatmos.rsi
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Heat: 0.80
+      Head: { coefficients: { Heat: 0.80 } }
 
 - type: entity
   parent: [ClothingMaskGasAtmos, BaseCommandContraband]
@@ -112,12 +106,9 @@
   - type: Clothing
     sprite: Clothing/Mask/gasexplorer.rsi
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.90
-        Slash: 0.90
-        Piercing: 0.95
-        Heat: 0.95
+      Head: { coefficients: { Blunt: 0.90, Slash: 0.90, Piercing: 0.95, Heat: 0.95 } }
 
 - type: entity
   parent: ClothingMaskPullableBase
@@ -151,12 +142,9 @@
   - type: Clothing
     sprite: Clothing/Mask/medicalsecurity.rsi
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.95
-        Slash: 0.95
-        Piercing: 0.95
-        Heat: 0.95
+      Head: { coefficients: { Blunt: 0.95, Slash: 0.95, Piercing: 0.95, Heat: 0.95 } }
 
 - type: entity
   parent: ClothingMaskPullableBase
@@ -241,12 +229,9 @@
   - type: Clothing
     sprite: Clothing/Mask/clown_security.rsi
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.95
-        Slash: 0.95
-        Piercing: 0.95
-        Heat: 0.95
+      Head: { coefficients: { Blunt: 0.95, Slash: 0.95, Piercing: 0.95, Heat: 0.95 } }
 
 - type: entity
   parent: ClothingMaskBase
@@ -377,12 +362,9 @@
     - Snout
     hideOnToggle: true
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.90
-        Slash: 0.90
-        Piercing: 0.95
-        Heat: 0.95
+      Head: { coefficients: { Blunt: 0.90, Slash: 0.90, Piercing: 0.95, Heat: 0.95 } }
 
 - type: entity
   parent: [ ClothingMaskGas, BaseRestrictedContraband ]
@@ -395,12 +377,9 @@
   - type: Clothing
     sprite: Clothing/Mask/merc.rsi
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.90
-        Slash: 0.90
-        Piercing: 0.95
-        Heat: 0.95
+      Head: { coefficients: { Blunt: 0.90, Slash: 0.90, Piercing: 0.95, Heat: 0.95 } }
 
 - type: entity
   parent: [ ClothingMaskGas, BaseCentcommContraband ]
@@ -423,12 +402,9 @@
   - type: FlashImmunity
   - type: EyeProtection
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.95
-        Slash: 0.95
-        Piercing: 0.95
-        Heat: 0.95
+      Head: { coefficients: { Blunt: 0.95, Slash: 0.95, Piercing: 0.95, Heat: 0.95 } }
 
 - type: entity
   parent: ClothingMaskGasERT
@@ -441,12 +417,9 @@
   - type: Clothing
     sprite: Clothing/Mask/squadron.rsi
   - type: Armor
+    basePart: Head
     modifiers:
-      coefficients:
-        Blunt: 0.80
-        Slash: 0.80
-        Piercing: 0.90
-        Heat: 0.90
+      Head: { coefficients: { Blunt: 0.80, Slash: 0.80, Piercing: 0.90, Heat: 0.90, } }
 
 - type: entity
   parent: ClothingMaskBase
