@@ -711,3 +711,9 @@ Entries:
     type: Add
   id: 105
   time: '2024-10-26T17:15:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Armor only protects certain limbs
+    type: Tweak
+  id: 106
+  time: '2024-10-28T20:35:00.0000000+00:00'
