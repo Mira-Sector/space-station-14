@@ -7324,13 +7324,6 @@ entities:
     - type: Transform
       pos: -36.5,13.5
       parent: 4812
-  - uid: 8176
-    components:
-    - type: MetaData
-      name: Main Hall North West APC
-    - type: Transform
-      pos: -19.5,21.5
-      parent: 4812
   - uid: 8896
     components:
     - type: MetaData
@@ -7395,6 +7388,14 @@ entities:
       name: Solar South East APC
     - type: Transform
       pos: 30.5,-37.5
+      parent: 4812
+  - uid: 12600
+    components:
+    - type: MetaData
+      name: HoS Office APC
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: -19.5,21.5
       parent: 4812
 - proto: AppleSeeds
   entities:
@@ -41224,14 +41225,6 @@ entities:
       parent: 4812
     - type: AtmosPipeColor
       color: '#0335FCFF'
-  - uid: 1984
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -8.5,21.5
-      parent: 4812
-    - type: AtmosPipeColor
-      color: '#0335FCFF'
   - uid: 1987
     components:
     - type: Transform
@@ -41293,14 +41286,6 @@ entities:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: -8.5,32.5
-      parent: 4812
-    - type: AtmosPipeColor
-      color: '#0335FCFF'
-  - uid: 1996
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 3.5,21.5
       parent: 4812
     - type: AtmosPipeColor
       color: '#0335FCFF'
@@ -41560,14 +41545,6 @@ entities:
       parent: 4812
     - type: AtmosPipeColor
       color: '#FF1212FF'
-  - uid: 2040
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -7.5,21.5
-      parent: 4812
-    - type: AtmosPipeColor
-      color: '#FF1212FF'
   - uid: 2041
     components:
     - type: Transform
@@ -41581,14 +41558,6 @@ entities:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: 2.5,20.5
-      parent: 4812
-    - type: AtmosPipeColor
-      color: '#FF1212FF'
-  - uid: 2043
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 2.5,21.5
       parent: 4812
     - type: AtmosPipeColor
       color: '#FF1212FF'
@@ -42101,14 +42070,6 @@ entities:
       parent: 4812
     - type: AtmosPipeColor
       color: '#0335FCFF'
-  - uid: 2982
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 15.5,28.5
-      parent: 4812
-    - type: AtmosPipeColor
-      color: '#0335FCFF'
   - uid: 2984
     components:
     - type: Transform
@@ -42200,13 +42161,6 @@ entities:
     components:
     - type: Transform
       pos: 16.5,27.5
-      parent: 4812
-    - type: AtmosPipeColor
-      color: '#FF1212FF'
-  - uid: 3000
-    components:
-    - type: Transform
-      pos: 16.5,28.5
       parent: 4812
     - type: AtmosPipeColor
       color: '#FF1212FF'
@@ -44792,14 +44746,6 @@ entities:
       parent: 4812
     - type: AtmosPipeColor
       color: '#0335FCFF'
-  - uid: 5720
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 23.5,-20.5
-      parent: 4812
-    - type: AtmosPipeColor
-      color: '#0335FCFF'
   - uid: 5721
     components:
     - type: Transform
@@ -44869,14 +44815,6 @@ entities:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 26.5,-22.5
-      parent: 4812
-    - type: AtmosPipeColor
-      color: '#FF1212FF'
-  - uid: 5733
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 27.5,-21.5
       parent: 4812
     - type: AtmosPipeColor
       color: '#FF1212FF'
@@ -45306,13 +45244,6 @@ entities:
       parent: 4812
     - type: AtmosPipeColor
       color: '#0335FCFF'
-  - uid: 6548
-    components:
-    - type: Transform
-      pos: -26.5,-24.5
-      parent: 4812
-    - type: AtmosPipeColor
-      color: '#FF1212FF'
   - uid: 6550
     components:
     - type: Transform
@@ -45341,13 +45272,6 @@ entities:
       parent: 4812
     - type: AtmosPipeColor
       color: '#FF1212FF'
-  - uid: 6631
-    components:
-    - type: Transform
-      pos: -24.5,-24.5
-      parent: 4812
-    - type: AtmosPipeColor
-      color: '#0335FCFF'
   - uid: 6632
     components:
     - type: Transform
@@ -45950,14 +45874,6 @@ entities:
       parent: 4812
     - type: AtmosPipeColor
       color: '#FF1212FF'
-  - uid: 7808
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: -24.5,13.5
-      parent: 4812
-    - type: AtmosPipeColor
-      color: '#FF1212FF'
   - uid: 7809
     components:
     - type: Transform
@@ -45990,14 +45906,6 @@ entities:
       parent: 4812
     - type: AtmosPipeColor
       color: '#FF1212FF'
-  - uid: 7813
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: -24.5,14.5
-      parent: 4812
-    - type: AtmosPipeColor
-      color: '#0335FCFF'
   - uid: 7814
     components:
     - type: Transform
@@ -46478,13 +46386,6 @@ entities:
       parent: 4812
     - type: AtmosPipeColor
       color: '#FF1212FF'
-  - uid: 8226
-    components:
-    - type: Transform
-      pos: -22.5,21.5
-      parent: 4812
-    - type: AtmosPipeColor
-      color: '#FF1212FF'
   - uid: 8228
     components:
     - type: Transform
@@ -46513,13 +46414,6 @@ entities:
       parent: 4812
     - type: AtmosPipeColor
       color: '#FF1212FF'
-  - uid: 8232
-    components:
-    - type: Transform
-      pos: -23.5,21.5
-      parent: 4812
-    - type: AtmosPipeColor
-      color: '#0335FCFF'
   - uid: 8233
     components:
     - type: Transform
@@ -48039,20 +47933,6 @@ entities:
       parent: 4812
     - type: AtmosPipeColor
       color: '#0335FCFF'
-  - uid: 12020
-    components:
-    - type: Transform
-      pos: -49.5,-10.5
-      parent: 4812
-    - type: AtmosPipeColor
-      color: '#0335FCFF'
-  - uid: 12021
-    components:
-    - type: Transform
-      pos: -48.5,-10.5
-      parent: 4812
-    - type: AtmosPipeColor
-      color: '#FF1212FF'
   - uid: 12022
     components:
     - type: Transform
@@ -50012,6 +49892,95 @@ entities:
     components:
     - type: Transform
       pos: -41.5,11.5
+      parent: 4812
+- proto: GasTrap
+  entities:
+  - uid: 1996
+    components:
+    - type: Transform
+      pos: 2.5,21.5
+      parent: 4812
+  - uid: 2040
+    components:
+    - type: Transform
+      pos: -8.5,21.5
+      parent: 4812
+  - uid: 2043
+    components:
+    - type: Transform
+      pos: 3.5,21.5
+      parent: 4812
+  - uid: 2982
+    components:
+    - type: Transform
+      pos: -7.5,21.5
+      parent: 4812
+  - uid: 3000
+    components:
+    - type: Transform
+      pos: 16.5,28.5
+      parent: 4812
+  - uid: 5720
+    components:
+    - type: Transform
+      pos: 15.5,28.5
+      parent: 4812
+  - uid: 5733
+    components:
+    - type: Transform
+      pos: 27.5,-21.5
+      parent: 4812
+  - uid: 6548
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 23.5,-20.5
+      parent: 4812
+  - uid: 6631
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: -24.5,-24.5
+      parent: 4812
+  - uid: 7808
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: -26.5,-24.5
+      parent: 4812
+  - uid: 7813
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -24.5,14.5
+      parent: 4812
+  - uid: 8176
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -24.5,13.5
+      parent: 4812
+  - uid: 8226
+    components:
+    - type: Transform
+      pos: -23.5,21.5
+      parent: 4812
+  - uid: 8232
+    components:
+    - type: Transform
+      pos: -22.5,21.5
+      parent: 4812
+  - uid: 12020
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: -48.5,-10.5
+      parent: 4812
+  - uid: 12021
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: -49.5,-10.5
       parent: 4812
 - proto: GasValve
   entities:
@@ -57270,13 +57239,6 @@ entities:
     - type: Transform
       pos: -53.373444,-16.451925
       parent: 4812
-- proto: OverlordCircuitBoard
-  entities:
-  - uid: 12600
-    components:
-    - type: Transform
-      pos: 13.264853,52.816887
-      parent: 4812
 - proto: OxygenCanister
   entities:
   - uid: 733
@@ -58739,6 +58701,18 @@ entities:
     components:
     - type: Transform
       pos: 24.5,-18.5
+      parent: 4812
+- proto: PowerCellHigh
+  entities:
+  - uid: 12607
+    components:
+    - type: Transform
+      pos: -20.027344,22.705761
+      parent: 4812
+  - uid: 12608
+    components:
+    - type: Transform
+      pos: -20.027344,22.424511
       parent: 4812
 - proto: PowerCellRecharger
   entities:
@@ -78981,6 +78955,13 @@ entities:
     components:
     - type: Transform
       pos: -33.40336,20.459352
+      parent: 4812
+- proto: WeaponEnergyShotgun
+  entities:
+  - uid: 1984
+    components:
+    - type: Transform
+      pos: -21.042969,22.580761
       parent: 4812
 - proto: WeaponLaserCarbine
   entities:
