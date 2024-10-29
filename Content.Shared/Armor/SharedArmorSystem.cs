@@ -32,7 +32,7 @@ public abstract class SharedArmorSystem : EntitySystem
         if (part == null)
             return;
 
-        args.Args.Damage = DamageSpecifier.ApplyModifierSet(args.Args.Damage, component.Modifiers[part.Value]);
+        args.Args.Damage = DamageSpecifier.ApplyModifierSet(args.Args.Damage, component.Modifiers[part]);
     }
 
     private void OnBorgDamageModify(EntityUid uid, ArmorComponent component,
@@ -43,18 +43,21 @@ public abstract class SharedArmorSystem : EntitySystem
         if (part == null)
             return;
 
-        args.Args.Damage = DamageSpecifier.ApplyModifierSet(args.Args.Damage, component.Modifiers[part.Value]);
+        args.Args.Damage = DamageSpecifier.ApplyModifierSet(args.Args.Damage, component.Modifiers[part]);
     }
 
-    private BodyPartType? GetModifier(ArmorComponent component, BodyPartType? part)
+    private List<BodyPartType>? GetModifier(ArmorComponent component, BodyPartType? part)
     {
         if (part == null)
-            return component.BasePart;
+            part = component.BasePart;
 
-        if (!component.Modifiers.ContainsKey(part.Value))
-            return null;
+        foreach (var key in component.Modifiers.Keys)
+        {
+            if (key.Contains(part.Value))
+                return key;
+        }
 
-        return part.Value;
+        return null;
     }
 
     private void OnArmorVerbExamine(EntityUid uid, ArmorComponent component, GetVerbsEvent<ExamineVerb> args)
@@ -72,15 +75,24 @@ public abstract class SharedArmorSystem : EntitySystem
             Loc.GetString("armor-examinable-verb-message"));
     }
 
-    private FormattedMessage GetArmorExamine(Dictionary<BodyPartType, DamageModifierSet> armorModifiers)
+    private FormattedMessage GetArmorExamine(Dictionary<List<BodyPartType>, DamageModifierSet> armorModifiers)
     {
         var msg = new FormattedMessage();
         msg.AddMarkupOrThrow(Loc.GetString("armor-examine"));
 
-        foreach (var (part, modifier) in armorModifiers)
+        foreach (var (parts, modifier) in armorModifiers)
         {
             msg.PushNewline();
-            msg.AddMarkupOrThrow(Loc.GetString("armor-part-" + part.ToString().ToLower()));
+
+            for (var i = 1; i <= parts.Count; i++)
+            {
+                msg.AddMarkupOrThrow(Loc.GetString("armor-part-" + parts[i - 1].ToString().ToLower()));
+
+                if (i < parts.Count)
+                    msg.AddMarkupOrThrow(", ");
+                else
+                    msg.AddMarkupOrThrow(":");
+            }
 
             foreach (var coefficientArmor in modifier.Coefficients)
             {

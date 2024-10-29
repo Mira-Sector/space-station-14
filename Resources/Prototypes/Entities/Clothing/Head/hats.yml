@@ -807,7 +807,7 @@
   - type: Armor
     basePart: Head
     modifiers:
-      Head: { coefficients: { Blunt: 0.95 } }
+      [ Head ] : { coefficients: { Blunt: 0.95 } }
 
 - type: entity
   parent: ClothingHeadBase
@@ -822,7 +822,7 @@
   - type: Armor
     basePart: Head
     modifiers:
-      Head: { coefficients: { Caustic: 0.95 } }
+      [ Head ] : { coefficients: { Caustic: 0.95 } }
 
 - type: entity
   parent: [ClothingHeadBase, BaseSyndicateContraband]

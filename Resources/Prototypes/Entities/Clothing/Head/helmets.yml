@@ -9,7 +9,7 @@
   - type: Armor #Values seem to let the user survive one extra hit if attacked consistently.
     basePart: Head
     modifiers:
-      Head: { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.9 } }
+      [ Head ] : { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.9 } }
   - type: Tag
     tags:
     - WhitelistChameleon
@@ -60,7 +60,7 @@
   - type: Armor #This is intentionally not spaceproof, when the time comes to port the values from SS13 this should be buffed from what it was.
     basePart: Head
     modifiers:
-      Head: { coefficients: { Blunt: 0.80, Slash: 0.80, Piercing: 0.80, Heat: 0.80, Radiation: 0.80, Caustic: 0.95 } }
+      [ Head ] : { coefficients: { Blunt: 0.80, Slash: 0.80, Piercing: 0.80, Heat: 0.80, Radiation: 0.80, Caustic: 0.95 } }
   - type: ExplosionResistance
     damageCoefficient: 0.75
 
@@ -92,7 +92,7 @@
   - type: Armor
     basePart: Head
     modifiers:
-      Head: { coefficients: { Blunt: 0.8, Slash: 0.8, Piercing: 0.95 } }
+      [ Head ] : { coefficients: { Blunt: 0.8, Slash: 0.8, Piercing: 0.95 } }
 
 #Bombsuit Helmet
 - type: entity
@@ -111,7 +111,7 @@
   - type: Armor
     basePart: Head
     modifiers:
-      Head: { coefficients: { Blunt: 0.95, Slash: 0.95, Piercing: 0.95 } }
+      [ Head ] : { coefficients: { Blunt: 0.95, Slash: 0.95, Piercing: 0.95 } }
   - type: HideLayerClothing
     slots:
     - Hair
@@ -147,7 +147,7 @@
   - type: Armor
     basePart: Head
     modifiers:
-      Head: { coefficients: { Blunt: 0.9, Slash: 0.8, Piercing: 0.9, Heat: 0.9 } }
+      [ Head ] : { coefficients: { Blunt: 0.9, Slash: 0.8, Piercing: 0.9, Heat: 0.9 } }
 
 #Space Ninja Helmet
 - type: entity
@@ -290,7 +290,7 @@
   - type: Armor #admeme item so it should be fine being overpowered while helmets are still intentionally kneecapped.
     basePart: Head
     modifiers:
-      Head: { coefficients: { Blunt: 0.5, Slash: 0.5, Piercing: 0.5, Heat: 0.9 } }
+      [ Head ] : { coefficients: { Blunt: 0.5, Slash: 0.5, Piercing: 0.5, Heat: 0.9 } }
 
 #ERT HELMETS
 #ERT Leader Helmet
@@ -366,7 +366,7 @@
   - type: Armor
     basePart: Head
     modifiers:
-      Head: { coefficients: { Blunt: 0.85, Slash: 0.85, Piercing: 0.85, Heat: 0.85 } }
+      [ Head ] : { coefficients: { Blunt: 0.85, Slash: 0.85, Piercing: 0.85, Heat: 0.85 } }
 
 #Bone Helmet
 - type: entity

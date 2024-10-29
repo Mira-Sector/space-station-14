@@ -235,7 +235,7 @@
   - type: Armor
     basePart: Head
     modifiers:
-      Head: { coefficients: { Heat: 0.95 } }
+      [ Head ] : { coefficients: { Heat: 0.95 } }
   - type: GroupExamine
   - type: IdentityBlocker
     coverage: EYES

@@ -11,7 +11,7 @@
     sprite: Clothing/OuterClothing/Vests/webvest.rsi
   - type: Armor
     modifiers:
-      Torso: { coefficients: { Blunt: 0.6, Slash: 0.6, Piercing: 0.3, Heat: 0.9 } }
+      [ Torso ] : { coefficients: { Blunt: 0.6, Slash: 0.6, Piercing: 0.3, Heat: 0.9 } }
   - type: ExplosionResistance
     damageCoefficient: 0.9
 
@@ -28,7 +28,7 @@
     sprite: Clothing/OuterClothing/Vests/mercwebvest.rsi
   - type: Armor
     modifiers:
-      Torso: { coefficients: { Blunt: 0.7, Slash: 0.7, Piercing: 0.5, Heat: 0.9 } }
+      [ Torso ] : { coefficients: { Blunt: 0.7, Slash: 0.7, Piercing: 0.5, Heat: 0.9 } }
   - type: ExplosionResistance
     damageCoefficient: 0.9
 
