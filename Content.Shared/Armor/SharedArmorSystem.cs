@@ -117,6 +117,8 @@ public abstract class SharedArmorSystem : EntitySystem
             }
         }
 
+        msg.PushNewline();
+
         return msg;
     }
 }
