@@ -19,7 +19,7 @@ armor-damage-type-poison = Poison
 armor-damage-type-shock = Shock
 armor-damage-type-structural = Structural
 
-armor-part-head = Head:
-armor-part-torso = Torso:
-armor-part-arm = Arms:
-armor-part-leg = Legs:
+armor-part-head = Head
+armor-part-torso = Torso
+armor-part-arm = Arms
+armor-part-leg = Legs

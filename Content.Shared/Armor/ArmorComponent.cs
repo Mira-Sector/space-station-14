@@ -15,7 +15,7 @@ public sealed partial class ArmorComponent : Component
     /// The damage reduction
     /// </summary>
     [DataField(required: true)]
-    public Dictionary<BodyPartType, DamageModifierSet> Modifiers = default!;
+    public Dictionary<List<BodyPartType>, DamageModifierSet> Modifiers = default!;
 
     /// <summary>
     /// If the damagereciever has no body component which damage modifier to use
