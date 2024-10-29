@@ -32,6 +32,16 @@ public sealed class ProjectileSystem : SharedProjectileSystem
             return;
 
         var target = args.OtherEntity;
+
+        if (component.Shooter != null)
+        {
+            var shooterEv = new ProjectileShooterHitAttemptEvent(target, false);
+            RaiseLocalEvent(component.Shooter.Value, ref shooterEv);
+
+            if (shooterEv.Cancelled)
+                return;
+        }
+
         // it's here so this check is only done once before possible hit
         var attemptEv = new ProjectileReflectAttemptEvent(uid, component, false);
         RaiseLocalEvent(target, ref attemptEv);

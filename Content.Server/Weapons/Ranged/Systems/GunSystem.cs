@@ -197,6 +197,15 @@ public sealed partial class GunSystem : SharedGunSystem
                                         continue;
                                     }
 
+                                    if (user != null)
+                                    {
+                                        var evShooter = new HitScanShooterHitAttemptEvent(collide.HitEntity, gunUid, hitscan.Reflective, dir);
+                                        RaiseLocalEvent(user.Value, ref evShooter);
+
+                                        if (evShooter.Cancelled)
+                                            continue;
+                                    }
+
                                     result = collide;
                                     break;
                                 }
