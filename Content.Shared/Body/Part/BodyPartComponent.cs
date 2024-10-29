@@ -49,6 +49,9 @@ public sealed partial class BodyPartComponent : Component
     [DataField]
     public float OverallDamageScale = 1f;
 
+    [DataField]
+    public float MissProb = 0f;
+
     /// <summary>
     /// These are only for VV/Debug do not use these for gameplay/systems
     /// </summary>

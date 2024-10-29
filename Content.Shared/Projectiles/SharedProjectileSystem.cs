@@ -179,3 +179,9 @@ public record struct ProjectileReflectAttemptEvent(EntityUid ProjUid, Projectile
 /// </summary>
 [ByRefEvent]
 public record struct ProjectileHitEvent(DamageSpecifier Damage, EntityUid Target, EntityUid? Shooter = null);
+
+/// <summary>
+/// Raised when the shooter is about to hit a target
+/// </summary>
+[ByRefEvent]
+public record struct ProjectileShooterHitAttemptEvent(EntityUid Target, bool Cancelled);
