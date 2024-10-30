@@ -1,4 +1,5 @@
 using Content.Shared.Alert;
+using Content.Shared.Buckle;
 using Content.Shared.Buckle.Components;
 using Content.Shared.CombatMode;
 using Content.Shared.Damage.Components;
@@ -20,6 +21,7 @@ namespace Content.Shared.Crawling;
 public sealed partial class CrawlingSystem : EntitySystem
 {
     [Dependency] private readonly AlertsSystem _alerts = default!;
+    [Dependency] private readonly SharedBuckleSystem _buckle = default!;
     [Dependency] private readonly MovementSpeedModifierSystem _movementSpeedModifier = default!;
     [Dependency] private readonly SharedCombatModeSystem _combatMode = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
@@ -79,22 +81,36 @@ public sealed partial class CrawlingSystem : EntitySystem
             return;
         }
 
+        if (TryComp<BuckleComponent>(uid, out var buckleComp) && buckleComp.Buckled)
+        {
+            args.Cancelled = true;
+            return;
+        }
+
         SetCrawling(uid, component, !_standing.IsDown(uid));
     }
 
-    public bool SetCrawling(EntityUid uid, CrawlerComponent component, bool state, EntityUid? user = null)
+    public bool SetCrawling(EntityUid uid, CrawlerComponent component, bool state, EntityUid? user = null, bool force = false)
     {
+        var buckled = TryComp<BuckleComponent>(uid, out var buckleComp) && buckleComp.Buckled;
+
         if (state)
         {
             // prevent others shoving them into crit
             // force crawling is handled with disarm intent
-            if (user == null)
+            if (user != null)
+                return false;
+
+            if (buckled)
             {
-                _standing.Down(uid, dropHeldItems: false);
-                return true;
+                if (force)
+                    _buckle.Unbuckle((uid, buckleComp), uid);
+                else
+                    return false;
             }
 
-            return false;
+            _standing.Down(uid, dropHeldItems: false);
+            return true;
         }
 
         if (TryComp<MobStateComponent>(uid, out var stateComp) &&
@@ -108,6 +124,14 @@ public sealed partial class CrawlingSystem : EntitySystem
         if (user == null)
         {
             user = uid;
+        }
+
+        if (buckled)
+        {
+            if (force)
+                _buckle.Unbuckle((uid, buckleComp), uid);
+            else
+                return false;
         }
 
         if (HasComp<ActiveStaminaComponent>(uid) &&

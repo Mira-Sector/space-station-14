@@ -458,7 +458,7 @@ public sealed partial class StaminaSystem : EntitySystem
 
                 if (!HasComp<CrawlingComponent>(uid))
                 {
-                    _crawling.SetCrawling(uid, crawlerComp, true);
+                    _crawling.SetCrawling(uid, crawlerComp, true, force: true);
                 }
 
                 component.State = StunnedState.Crawling;
@@ -497,7 +497,7 @@ public sealed partial class StaminaSystem : EntitySystem
 
         if (TryComp<CrawlerComponent>(uid, out var crawlerComp) && HasComp<CrawlingComponent>(uid))
         {
-            _crawling.SetCrawling(uid, crawlerComp, false, user);
+            _crawling.SetCrawling(uid, crawlerComp, false, user, true);
         }
 
         var time = TimeSpan.Zero;
