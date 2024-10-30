@@ -186,6 +186,9 @@ public sealed partial class CrawlingSystem : EntitySystem
         if (args.Cancelled)
             return;
 
+        if (TryComp<MobStateComponent>(uid, out var mobStateComp) && mobStateComp.CurrentState != Mobs.MobState.Alive)
+            args.Cancel();
+
         RemCompDeferred<CrawlingComponent>(uid);
         _alerts.ClearAlert(uid, component.CtawlingAlert);
     }
