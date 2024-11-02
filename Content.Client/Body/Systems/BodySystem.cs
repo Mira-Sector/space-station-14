@@ -56,7 +56,7 @@ public sealed class BodySystem : SharedBodySystem
             if (layer == BodyPartLayer.None)
                 continue;
 
-            uint offset;
+            float offset;
 
             if (damageableComp.TotalDamage >= deadThreshold)
             {
@@ -64,13 +64,17 @@ public sealed class BodySystem : SharedBodySystem
             }
             else
             {
-                var percentage = (float) (damageableComp.TotalDamage / SegmentCount);
-                offset = (uint) Math.Round(percentage);
+                // 1 indexed
+                // we programming in lua or some shit??
+                var percentage = (float) (damageableComp.TotalDamage / deadThreshold);
+                offset = (SegmentCount * percentage) + 1;
 
                 if (offset < 1)
                     offset = 1;
-                else if (offset > SegmentCount - 1)
-                    offset = SegmentCount - 1;
+                else if (offset > SegmentCount - 1 && offset < SegmentCount)
+                    offset = SegmentCount - 1; // reserve highest for dead only
+                else
+                    offset = (uint) Math.Ceiling(offset);
             }
 
             var state = $"{layer.ToString()}{offset}";
