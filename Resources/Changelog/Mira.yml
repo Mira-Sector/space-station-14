@@ -723,3 +723,9 @@ Entries:
     type: Tweak
   id: 107
   time: '2024-10-29T22:45:00.0000000+00:00'
+- author: aspiffyfellow
+  changes:
+  - message: New evac shuttle for mir
+    type: Tweak
+  id: 108
+  time: '2024-11-02T01:15:00.0000000+00:00'
