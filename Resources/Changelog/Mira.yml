@@ -739,3 +739,9 @@ Entries:
     type: Fix
   id: 109
   time: '2024-11-02T06:10:00.0000000+00:00'
+- author: aspiffyfellow
+  changes:
+  - message: added wall to cargo
+    type: Tweak
+  id: 110
+  time: '2024-11-02T17:50:00.0000000+00:00'
