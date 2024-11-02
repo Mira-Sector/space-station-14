@@ -158,15 +158,8 @@ public partial class SharedBodySystem
             if (!TryComp<DamageableComponent>(partUid, out var partDamageComp))
                 continue;
 
-            var damage = new DamageSpecifier();
-            _damageable.SetDamage(partUid, partDamageComp, damage, true);
+            _damageable.SetAllDamage(partUid, partDamageComp, 0);
         }
-
-        if (!TryComp<DamageableComponent>(uid, out var damageComp) || !TryComp<AppearanceComponent>(uid, out var appearance))
-            return;
-
-        var data = new DamageVisualizerGroupData(damageComp.DamagePerGroup.Keys.ToList());
-        _appearance.SetData(uid, DamageVisualizerKeys.DamageUpdateGroups, data, appearance);
     }
 
     private void OnPartDamaged(EntityUid uid, BodyPartComponent component, DamageChangedEvent args)
