@@ -160,7 +160,7 @@ namespace Content.Shared.Damage
         ///     null if the user had no applicable components that can take damage.
         /// </returns>
         public DamageSpecifier? TryChangeDamage(EntityUid? uid, DamageSpecifier damage, bool ignoreResistances = false,
-            bool interruptsDoAfters = true, DamageableComponent? damageable = null, EntityUid? origin = null)
+            bool interruptsDoAfters = true, DamageableComponent? damageable = null, EntityUid? origin = null, bool ignorePartScale = false)
         {
             if (!uid.HasValue || !_damageableQuery.Resolve(uid.Value, ref damageable, false))
             {
@@ -222,7 +222,14 @@ namespace Content.Shared.Damage
                 if (!TryComp<DamageableComponent>(currentPart, out var partDamageableComp))
                     continue;
 
-                var newDamage = TryApplyDamage(currentPart, damagePerPart, ignoreResistances, interruptsDoAfters, partDamageableComp, origin, partComp.PartType, uid);
+                DamageSpecifier partDamage;
+
+                if (ignorePartScale)
+                    partDamage = damagePerPart / partComp.OverallDamageScale;
+                else
+                    partDamage = damagePerPart;
+
+                var newDamage = TryApplyDamage(currentPart, partDamage, ignoreResistances, interruptsDoAfters, partDamageableComp, origin, partComp.PartType, uid);
 
                 if (newDamage == null)
                     continue;

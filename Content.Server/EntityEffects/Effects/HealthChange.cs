@@ -1,3 +1,4 @@
+using Content.Shared.Body.Components;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.EntityEffects;
@@ -124,7 +125,8 @@ namespace Content.Server.EntityEffects.Effects
                 args.TargetEntity,
                 Damage * scale,
                 IgnoreResistances,
-                interruptsDoAfters: false);
+                interruptsDoAfters: false,
+                ignorePartScale: true);
         }
     }
 }
