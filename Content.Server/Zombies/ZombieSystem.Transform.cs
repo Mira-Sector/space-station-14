@@ -14,6 +14,8 @@ using Content.Server.NPC.Systems;
 using Content.Server.Roles;
 using Content.Server.Speech.Components;
 using Content.Server.Temperature.Components;
+using Content.Shared.Body.Components;
+using Content.Shared.Body.Systems;
 using Content.Shared.CombatMode;
 using Content.Shared.CombatMode.Pacification;
 using Content.Shared.Damage;
@@ -47,6 +49,7 @@ namespace Content.Server.Zombies;
 /// </remarks>
 public sealed partial class ZombieSystem
 {
+    [Dependency] private readonly SharedBodySystem _body = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
     [Dependency] private readonly ServerInventorySystem _inventory = default!;
     [Dependency] private readonly NpcFactionSystem _faction = default!;
@@ -215,6 +218,12 @@ public sealed partial class ZombieSystem
         if (TryComp<DamageableComponent>(target, out var damageablecomp))
             _damageable.SetAllDamage(target, damageablecomp, 0);
         _mobState.ChangeMobState(target, MobState.Alive);
+
+        if (TryComp<BodyComponent>(target, out var bodyComp))
+        {
+            zombiecomp.BeforeZombifiedPartScales = _body.GetPartsScale(target, bodyComp);
+            _body.SetPartsScale(target, zombiecomp.PartScales, bodyComp);
+        }
 
         _faction.ClearFactions(target, dirty: false);
         _faction.AddFaction(target, "Zombie");

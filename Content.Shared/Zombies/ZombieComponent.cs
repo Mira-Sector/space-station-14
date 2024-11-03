@@ -1,4 +1,5 @@
 using Content.Shared.Antag;
+using Content.Shared.Body.Part;
 using Content.Shared.Chat.Prototypes;
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Damage;
@@ -150,4 +151,18 @@ public sealed partial class ZombieComponent : Component
     /// </summary>
     [DataField("newBloodReagent", customTypeSerializer: typeof(PrototypeIdSerializer<ReagentPrototype>))]
     public string NewBloodReagent = "ZombieBlood";
+
+    [DataField]
+    public Dictionary<BodyPart, float> PartScales = new()
+    {
+        { new BodyPart (BodyPartType.Head, BodyPartSymmetry.None), 2.5f },
+        { new BodyPart (BodyPartType.Torso, BodyPartSymmetry.None), 0f },
+        { new BodyPart (BodyPartType.Arm, BodyPartSymmetry.Left), 0f },
+        { new BodyPart (BodyPartType.Arm, BodyPartSymmetry.Right), 0f },
+        { new BodyPart (BodyPartType.Leg, BodyPartSymmetry.Left), 0f },
+        { new BodyPart (BodyPartType.Leg, BodyPartSymmetry.Right), 0f }
+    };
+
+    [DataField]
+    public Dictionary<BodyPart, float> BeforeZombifiedPartScales = new();
 }
