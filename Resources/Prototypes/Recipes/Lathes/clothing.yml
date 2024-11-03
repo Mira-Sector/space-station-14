@@ -1031,3 +1031,8 @@
   parent: BaseCarpetRecipe
   id: CarpetWhite
   result: FloorCarpetItemWhite
+
+- type: latheRecipe
+  parent: BaseCarpetRecipe
+  id: Mat
+  result: MatFolded

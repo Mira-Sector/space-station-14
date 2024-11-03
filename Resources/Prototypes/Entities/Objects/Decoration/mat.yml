@@ -1,0 +1,55 @@
+- type: entity
+  id: Mat
+  name: floor mat
+  description: Welcome to 9/5.
+  parent: BaseDeployFoldable
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: Objects/Decoration/mat.rsi
+    layers:
+    - state: mat
+      map: ["unfoldedLayer"]
+    - state: roll
+      map: ["foldedLayer"]
+      visible: false
+  - type: Item
+    size: Normal
+  - type: RemoveFootprints
+  - type: Physics
+    bodyType: Dynamic
+    fixedRotation: false
+  - type: CollisionWake
+    enabled: false
+  - type: StepTrigger
+    requiredTriggeredSpeed: 0
+  - type: Appearance
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Fixtures
+    fixtures:
+      mat:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.4,-0.4,0.4,0.4"
+        layer:
+        - SlipLayer
+        hard: false
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.4,-0.4,0.4,0.4"
+        density: 1
+        mask:
+        - ItemMask
+
+- type: entity
+  parent: Mat
+  id: MatFolded
+  suffix: Folded
+  components:
+  - type: Foldable
+    folded: true
+  - type: RemoveFootprints
+    enabled: false

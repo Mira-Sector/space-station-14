@@ -1136,6 +1136,7 @@
       - CarpetPurple
       - CarpetCyan
       - CarpetWhite
+      - Mat
   - type: EmagLatheRecipes
     emagStaticRecipes:
       - ClothingHeadHatCentcomcap

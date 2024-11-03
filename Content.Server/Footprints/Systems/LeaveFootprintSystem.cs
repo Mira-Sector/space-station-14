@@ -10,11 +10,11 @@ using Content.Shared.Slippery;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
-using System.Numerics;
 using Robust.Shared.Timing;
+using System.Numerics;
+using System.Runtime;
 
 namespace Content.Server.Footprint.Systems;
-
 
 public sealed partial class FootprintSystem : EntitySystem
 {
@@ -140,40 +140,12 @@ public sealed partial class FootprintSystem : EntitySystem
         footprintResidueComp.ResidueAge = messmakerResidueComp.ResidueAge;
     }
 
-    private bool CanLeaveFootprints(EntityUid uid, out EntityUid messMaker, EntityUid? puddle = null)
+    public bool CanLeaveFootprints(EntityUid uid, out EntityUid messMaker, EntityUid? puddle = null)
     {
-        messMaker = EntityUid.Invalid;
+        messMaker = GetMessMaker(uid);
 
-        if (_inventory.TryGetSlotEntity(uid, ShoeSlot, out var shoe) &&
-            HasComp<LeavesFootprintsComponent>(shoe)) // check if their shoes have it too
-        {
-            if (HasComp<NoSlipComponent>(shoe))
-            {
-                CleanupFootprintComp(uid, shoe);
-                return false;
-            }
-
-            messMaker = shoe.Value;
-        }
-        else if (HasComp<LeavesFootprintsComponent>(uid))
-        {
-            if (shoe != null)
-                RemComp<CanLeaveFootprintsComponent>(shoe.Value);
-
-            messMaker = uid;
-        }
-        else
-        {
-            CleanupFootprintComp(uid, shoe);
+        if (messMaker == EntityUid.Invalid)
             return false;
-        }
-
-        if (messMaker == EntityUid.Invalid ||
-            !HasComp<LeavesFootprintsComponent>(messMaker))
-        {
-            CleanupFootprintComp(uid, shoe);
-            return false;
-        }
 
         if (TryComp<CanLeaveFootprintsComponent>(messMaker, out var footprintComp) &&
             footprintComp.LastPuddle == puddle)
@@ -182,12 +154,34 @@ public sealed partial class FootprintSystem : EntitySystem
         return true;
     }
 
-    private void CleanupFootprintComp(EntityUid player, EntityUid? shoe)
+    public EntityUid GetMessMaker(EntityUid uid)
     {
+        if (_inventory.TryGetSlotEntity(uid, ShoeSlot, out var shoe) &&
+            HasComp<LeavesFootprintsComponent>(shoe)) // check if their shoes have it too
+        {
+            if (HasComp<NoSlipComponent>(shoe))
+            {
+                RemComp<CanLeaveFootprintsComponent>(shoe.Value);
+                return EntityUid.Invalid;
+            }
 
-        if (shoe != null)
-            RemComp<CanLeaveFootprintsComponent>(shoe.Value);
+            return shoe.Value;
+        }
+        else if (HasComp<LeavesFootprintsComponent>(uid))
+        {
+            if (shoe != null)
+                RemComp<CanLeaveFootprintsComponent>(shoe.Value);
+
+            return uid;
+        }
         else
-            RemComp<CanLeaveFootprintsComponent>(player);
+        {
+            RemComp<CanLeaveFootprintsComponent>(uid);
+
+            if (shoe != null)
+                RemComp<CanLeaveFootprintsComponent>(shoe.Value);
+
+            return EntityUid.Invalid;
+        }
     }
 }
