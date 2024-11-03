@@ -41290,6 +41290,38 @@ entities:
     - type: Transform
       pos: -8.5,19.5
       parent: 30
+- proto: Mat
+  entities:
+  - uid: 8767
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 2.5,-1.5
+      parent: 30
+  - uid: 8770
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 14.5,7.5
+      parent: 30
+  - uid: 8775
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 32.5,2.5
+      parent: 30
+  - uid: 8789
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -31.5,2.5
+      parent: 30
+  - uid: 8851
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: -26.5,14.5
+      parent: 30
 - proto: MaterialCloth
   entities:
   - uid: 6201
