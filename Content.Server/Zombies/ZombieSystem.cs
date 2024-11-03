@@ -6,6 +6,7 @@ using Content.Server.Chat.Systems;
 using Content.Server.Emoting.Systems;
 using Content.Server.Speech.EntitySystems;
 using Content.Shared.Bed.Sleep;
+using Content.Shared.Body.Components;
 using Content.Shared.Cloning;
 using Content.Shared.Damage;
 using Content.Shared.Humanoid;
@@ -250,7 +251,7 @@ namespace Content.Server.Zombies
                 }
                 else if (mobState.CurrentState == MobState.Alive) //heals when zombies bite live entities
                 {
-                    _damageable.TryChangeDamage(uid, component.HealingOnBite, true, false);
+                    _damageable.TryChangeDamage(uid, component.HealingOnBite, true, false, ignorePartScale: true);
                 }
             }
         }
@@ -281,6 +282,9 @@ namespace Content.Server.Zombies
             }
             _humanoidAppearance.SetSkinColor(target, zombiecomp.BeforeZombifiedSkinColor, false);
             _bloodstream.ChangeBloodReagent(target, zombiecomp.BeforeZombifiedBloodReagent);
+
+            if (TryComp<BodyComponent>(target, out var bodyComp))
+                _body.SetPartsScale(target, zombiecomp.BeforeZombifiedPartScales, bodyComp);
 
             _nameMod.RefreshNameModifiers(target);
             return true;
