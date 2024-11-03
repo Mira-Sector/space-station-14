@@ -751,3 +751,17 @@ Entries:
     type: Add
   id: 111
   time: '2024-11-03T07:10:00.0000000+00:00'
+- author: aspiffyfellow
+  changes:
+  - message: Tweaked the radiation output of the minturised singulo on mir evac shutle
+    type: Tweak
+  id: 112
+  time: '2024-11-03T07:18:08.0000000+00:00'
+- author: aspiffyfellow
+  changes:
+  - message: Fixed minor issues with the map mir (e.g, lights in the wrong place, missing decals)
+    type: Fix
+    id: 113
+    time: '2024-11-03T07:18:08.0000000+00:00'
+
+
