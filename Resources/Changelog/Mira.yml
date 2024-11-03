@@ -753,7 +753,7 @@ Entries:
   time: '2024-11-03T07:10:00.0000000+00:00'
 - author: aspiffyfellow
   changes:
-  - message: Tweaked the radiation output of the minturised singulo on mir evac shutle
+  - message: Tweaked the radiation output of the miniaturized singulo on mir evac shutle
     type: Tweak
   id: 112
   time: '2024-11-03T07:18:08.0000000+00:00'
