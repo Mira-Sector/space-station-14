@@ -763,5 +763,11 @@ Entries:
     type: Fix
     id: 113
     time: '2024-11-03T07:18:08.0000000+00:00'
+- author: aspiffyfellow
+  changes:
+  - message: Replaced swabs in the NutriMax with a box of swabs and added a bin bag to the vendor to put the swabs after your done.
+    type: Tweak
+    id: 114
+    time: '2024-11-04T07:20:25.0000000+00:00'
 
 
