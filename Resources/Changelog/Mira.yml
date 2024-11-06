@@ -778,7 +778,7 @@ Entries:
 - author: aspiffyfellow
   changes:
     - message: Increased capacity of APCs on the mir evac shuttle to help with docking.
-      type: Tweak
+      type: Fix
       id: 116
       time: '2024-11-06T07:20:08.0000000+00:00'
 
