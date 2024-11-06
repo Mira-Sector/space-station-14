@@ -9733,7 +9733,7 @@ entities:
       pos: -25.5,6.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -33864.293
+      secondsUntilStateChange: -33889.95
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -10115,7 +10115,7 @@ entities:
       pos: 41.5,7.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -199030.77
+      secondsUntilStateChange: -199056.42
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -10411,7 +10411,7 @@ entities:
       pos: 12.5,-33.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -125655.08
+      secondsUntilStateChange: -125680.734
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -10658,7 +10658,7 @@ entities:
       pos: 12.5,-21.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -105163.51
+      secondsUntilStateChange: -105189.164
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -10783,7 +10783,7 @@ entities:
       pos: -14.5,-17.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -116089.695
+      secondsUntilStateChange: -116115.35
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -63260,6 +63260,18 @@ entities:
     - type: Transform
       pos: 8.987754,-12.322161
       parent: 2
+- proto: Intellicard
+  entities:
+  - uid: 13006
+    components:
+    - type: Transform
+      pos: -10.761871,-52.357235
+      parent: 2
+  - uid: 13007
+    components:
+    - type: Transform
+      pos: -10.558746,-52.62286
+      parent: 2
 - proto: IntercomCommand
   entities:
   - uid: 8431
@@ -65319,7 +65331,7 @@ entities:
   - uid: 8669
     components:
     - type: Transform
-      pos: -10.52425,-52.407738
+      pos: -8.574371,-52.638485
       parent: 2
 - proto: PhoneInstrument
   entities:
