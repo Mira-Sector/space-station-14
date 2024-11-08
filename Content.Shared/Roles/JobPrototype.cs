@@ -30,7 +30,7 @@ namespace Content.Shared.Roles
         ///     The name of this job as displayed to players.
         /// </summary>
         [DataField("name")]
-        public string Name { get; private set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
         [ViewVariables(VVAccess.ReadOnly)]
         public string LocalizedName => Loc.GetString(Name);
@@ -120,7 +120,7 @@ namespace Content.Shared.Roles
         public string? JobEntity = null;
 
         [DataField]
-        public ProtoId<JobIconPrototype> Icon { get; private set; } = "JobIconUnknown";
+        public ProtoId<JobIconPrototype> Icon { get; set; } = "JobIconUnknown";
 
         [DataField("special", serverOnly: true)]
         public JobSpecial[] Special { get; private set; } = Array.Empty<JobSpecial>();

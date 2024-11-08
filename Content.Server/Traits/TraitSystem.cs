@@ -26,10 +26,7 @@ public sealed class TraitSystem : EntitySystem
     private void OnPlayerSpawnComplete(PlayerSpawnCompleteEvent args)
     {
         // Check if player's job allows to apply traits
-        if (args.Job == null ||
-            !_prototypeManager.TryIndex<JobPrototype>(args.Job.Prototype, out var jobProto) ||
-            jobProto == null ||
-            !jobProto.ApplyTraits)
+        if (!args.Job.ApplyTraits)
         {
             return;
         }

@@ -205,7 +205,7 @@ public sealed class SiliconLawSystem : SharedSiliconLawSystem
         if (_roles.MindHasRole<SubvertedSiliconRoleComponent>(mindId))
             return;
 
-        _roles.MindAddRole(mindId, new SubvertedSiliconRoleComponent { PrototypeId = component.AntagonistRole });
+        EnsureComp<SubvertedSiliconRoleComponent>(mindId);
     }
 
     public SiliconLawset GetLaws(EntityUid uid, SiliconLawBoundComponent? component = null)

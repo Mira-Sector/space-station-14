@@ -82,16 +82,8 @@ public sealed class StationRecordsSystem : SharedStationRecordsSystem
     }
 
     private void CreateGeneralRecord(EntityUid station, EntityUid player, HumanoidCharacterProfile profile,
-        JobComponent? job, StationRecordsComponent records)
+        JobPrototype job, StationRecordsComponent records)
     {
-        if (!_prototypeManager.TryIndex<JobPrototype>(job?.Prototype, out var jobPrototype))
-            return;
-
-        // TODO make PlayerSpawnCompleteEvent.JobId a ProtoId
-        if (string.IsNullOrEmpty(job?.Prototype)
-            || !_prototypeManager.HasIndex<JobPrototype>(jobPrototype))
-            return;
-
         if (!_inventory.TryGetSlotEntity(player, "id", out var idUid))
             return;
 
@@ -136,16 +128,12 @@ public sealed class StationRecordsSystem : SharedStationRecordsSystem
         int age,
         string species,
         Gender gender,
-        JobComponent job,
+        JobPrototype job,
         string? mobFingerprint,
         string? dna,
         HumanoidCharacterProfile profile,
         StationRecordsComponent records)
     {
-        string? jobId = job.Prototype;
-        if (string.IsNullOrEmpty(jobId) || !_prototypeManager.TryIndex<JobPrototype>(job.Prototype, out var jobPrototype))
-            throw new ArgumentException($"Invalid job prototype ID: {jobId}");
-
         // when adding a record that already exists use the old one
         // this happens when respawning as the same character
         if (GetRecordByName(station, name, records) is {} id)
@@ -158,12 +146,12 @@ public sealed class StationRecordsSystem : SharedStationRecordsSystem
         {
             Name = name,
             Age = age,
-            JobTitle = job.JobName ?? jobPrototype.LocalizedName,
-            JobIcon = job.JobIcon ?? jobPrototype.Icon,
-            JobPrototype = jobId,
+            JobTitle = job.Name,
+            JobIcon = job.Icon,
+            JobPrototype = job.ID,
             Species = species,
             Gender = gender,
-            DisplayPriority = jobPrototype.RealDisplayWeight,
+            DisplayPriority = job.RealDisplayWeight,
             Fingerprint = mobFingerprint,
             DNA = dna
         };

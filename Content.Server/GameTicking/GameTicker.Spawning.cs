@@ -249,10 +249,16 @@ namespace Content.Server.GameTicking
                 {
                     if (presetId != null)
                     {
-                        _localizationManager.TryGetString(presetId.PresetJobName ?? string.Empty, out var presetName);
+                        if (presetId.PresetJobName != null)
+                        {
+                            _localizationManager.TryGetString(presetId.PresetJobName, out var presetName);
 
-                        job.JobName = presetName;
-                        job.JobIcon = presetId.PresetJobIcon;
+                            if (presetName != null)
+                                jobPrototype.Name = presetName;
+                        }
+
+                        if (presetId.PresetJobIcon != null)
+                            jobPrototype.Icon = presetId.PresetJobIcon;
                     }
                 }
             }
@@ -348,7 +354,7 @@ namespace Content.Server.GameTicking
             PlayersJoinedRoundNormally++;
             var aev = new PlayerSpawnCompleteEvent(mob,
                 player,
-                job,
+                jobPrototype,
                 lateJoin,
                 silent,
                 PlayersJoinedRoundNormally,
@@ -588,7 +594,7 @@ namespace Content.Server.GameTicking
     {
         public EntityUid Mob { get; }
         public ICommonSession Player { get; }
-        public JobComponent? Job { get; }
+        public JobPrototype Job { get; }
         public bool LateJoin { get; }
         public bool Silent { get; }
         public EntityUid Station { get; }
@@ -599,7 +605,7 @@ namespace Content.Server.GameTicking
 
         public PlayerSpawnCompleteEvent(EntityUid mob,
             ICommonSession player,
-            JobComponent? job,
+            JobPrototype job,
             bool lateJoin,
             bool silent,
             int joinOrder,

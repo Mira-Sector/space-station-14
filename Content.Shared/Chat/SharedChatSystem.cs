@@ -121,7 +121,7 @@ public abstract class SharedChatSystem : EntitySystem
         if (!(input.StartsWith(RadioChannelPrefix) || input.StartsWith(RadioChannelAltPrefix)))
             return;
 
-        if (!_keyCodes.TryGetValue(char.ToLower(input[1]), out _))
+        if (!_radioKeyCodes.TryGetValue(char.ToLower(input[1]), out _) || !_speciesKeyCodes.TryGetValue(char.ToLower(input[1]), out _))
             return;
 
         prefix = input[..2];
