@@ -357,8 +357,8 @@ public sealed class ArrivalsSystem : EntitySystem
             return;
         }
 
-        if (ev.Job != null && ev.Job.Prototype != null &&
-        _protoManager.TryIndex<JobPrototype>(ev.Job.Prototype, out var jobProto) &&
+        if (ev.Job != null &&
+        _protoManager.TryIndex<JobPrototype>(ev.Job, out var jobProto) &&
         jobProto != null &&
         jobProto.JobEntity != null)
         {

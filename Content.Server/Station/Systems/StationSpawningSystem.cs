@@ -180,7 +180,7 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
         if (prototype?.JobEntity != null)
         {
             DebugTools.Assert(entity is null);
-            var jobEntity = SpawnEntity(prototype.JobEntity, coordinates, job);
+            var jobEntity = SpawnEntity(prototype.JobEntity, coordinates, prototype);
 
             // Make sure custom names get handled, what is gameticker control flow whoopy.
             if (loadout != null)
@@ -206,7 +206,7 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
 
                     if (loadoutProto.Entity != null)
                     {
-                        var newEntity = SpawnEntity(loadoutProto.Entity, coordinates, job);
+                        var newEntity = SpawnEntity(loadoutProto.Entity, coordinates, prototype);
                         EquipLoadout(newEntity, jobLoadout, loadout, roleProto, prototype, profile);
                         EntityManager.DeleteEntity(entity);
                         return newEntity;
@@ -234,7 +234,7 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
         if (!_prototypeManager.TryIndex<SpeciesPrototype>(speciesId, out var species))
             throw new ArgumentException($"Invalid species prototype was used: {speciesId}");
 
-        entity ??= SpawnEntity(species.Prototype, coordinates, job);
+        entity ??= SpawnEntity(species.Prototype, coordinates, prototype);
 
         if (_randomizeCharacters)
         {
@@ -256,7 +256,7 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
         if (profile != null)
         {
             if (job != null)
-                SetPdaAndIdCardData(entity.Value, profile.Name, job, station);
+                SetPdaAndIdCardData(entity.Value, profile.Name, prototype, station);
 
             _humanoidSystem.LoadProfile(entity.Value, profile);
             _metaSystem.SetEntityName(entity.Value, profile.Name);
@@ -270,11 +270,14 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
         return entity.Value;
     }
 
-    private EntityUid SpawnEntity(string prototype, EntityCoordinates coordinates, JobPrototype job)
+    private EntityUid SpawnEntity(string prototype, EntityCoordinates coordinates, JobPrototype? job)
     {
         var entity = EntityManager.SpawnEntity(prototype, coordinates);
         MakeSentientCommand.MakeSentient(entity, EntityManager);
+
+        if (job != null)
         DoJobSpecials(job, entity);
+
         _identity.QueueIdentityUpdate(entity);
         return entity;
     }
@@ -309,8 +312,11 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
     /// <param name="characterName">Character name to use for the ID.</param>
     /// <param name="job">Job to use for the PDA and ID.</param>
     /// <param name="station">The station this player is being spawned on.</param>
-    public void SetPdaAndIdCardData(EntityUid entity, string characterName, JobPrototype job, EntityUid? station)
+    public void SetPdaAndIdCardData(EntityUid entity, string characterName, JobPrototype? job, EntityUid? station)
     {
+        if (job == null)
+            return;
+
         if (!InventorySystem.TryGetSlotEntity(entity, "id", out var idUid))
             return;
 

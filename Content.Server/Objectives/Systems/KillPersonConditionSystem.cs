@@ -177,9 +177,8 @@ public sealed class KillPersonConditionSystem : EntitySystem
             return;
         }
 
-        if (!TryComp<JobComponent>(roleComp.Obsession, out var obsessionJobComp) ||
-            obsessionJobComp == null ||
-            obsessionJobComp.Prototype == null)
+        if (!_job.MindTryGetJob(roleComp.Obsession, out var obsessionJobComp) ||
+            obsessionJobComp == null)
         {
             args.Cancelled = true;
             return;
@@ -189,7 +188,7 @@ public sealed class KillPersonConditionSystem : EntitySystem
         DepartmentPrototype? obsessionDepartment = null;
         foreach (var department in _prototypeMan.EnumeratePrototypes<DepartmentPrototype>())
         {
-            if (department.Roles.Contains(obsessionJobComp.Prototype.Value))
+            if (department.Roles.Contains(obsessionJobComp.ID))
             {
                 obsessionDepartment = department;
                 break;
@@ -210,13 +209,10 @@ public sealed class KillPersonConditionSystem : EntitySystem
         List<EntityUid> targets = new();
         foreach (var human in allHumans)
         {
-            if (!TryComp<JobComponent>(human, out var jobComp))
+            if (!_job.MindTryGetJob(human, out var jobComp))
                 continue;
 
-            if (jobComp.Prototype == null)
-                continue;
-
-            if (obsessionDepartment.Roles.Contains(jobComp.Prototype.Value))
+            if (obsessionDepartment.Roles.Contains(jobComp))
                 targets.Add(human);
         }
 

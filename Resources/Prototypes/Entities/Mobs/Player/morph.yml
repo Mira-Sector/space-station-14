@@ -117,13 +117,11 @@
     blacklist:
       components:
       - MorphDisguise
-      - InsideEntityStorage # no clark kent going in phone booth and becoming superman
       - Pda # PDAs currently make you invisible /!\
       tags:
       - Wall
       - Structure
-    polymorph:
-      entity: MorphDisguise
+    disguiseProto: MorphDisguise
   - type: GuideHelp
     guides:
     - MinorAntagonists
@@ -141,12 +139,10 @@
   # so it can take damage
   # projector system sets health to be proportional to mass
   - type: Damageable
-  - type: MobState
-  - type: MobThresholds
-    thresholds:
-      0: Alive
-      1: Critical
-      200: Dead
+  - type: Transform
+    noRot: true # players rotation and anchor is used instead
+  - type: InteractionOutline
+  - type: Clickable
   - type: ChameleonDisguise
   - type: InventorySlots
 
