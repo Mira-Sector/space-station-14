@@ -1247,12 +1247,6 @@ entities:
       rot: 3.141592653589793 rad
       pos: -2.5,-10.5
       parent: 1
-  - uid: 43
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 4.5,-6.5
-      parent: 1
   - uid: 44
     components:
     - type: Transform
@@ -1265,23 +1259,31 @@ entities:
       rot: 3.141592653589793 rad
       pos: -1.5,0.5
       parent: 1
+- proto: APCHighCapacity
+  entities:
+  - uid: 43
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 4.5,-6.5
+      parent: 1
   - uid: 46
     components:
     - type: Transform
       pos: 2.5,6.5
-      parent: 1
-- proto: APCHighCapacity
-  entities:
-  - uid: 47
-    components:
-    - type: Transform
-      pos: 1.5,10.5
       parent: 1
   - uid: 48
     components:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: -2.5,6.5
+      parent: 1
+- proto: APCHyperCapacity
+  entities:
+  - uid: 47
+    components:
+    - type: Transform
+      pos: 1.5,10.5
       parent: 1
   - uid: 49
     components:
@@ -4263,31 +4265,6 @@ entities:
       rot: 3.141592653589793 rad
       pos: 0.5,-10.5
       parent: 1
-- proto: PlasmaWindowDirectional
-  entities:
-  - uid: 530
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 0.5,-12.5
-      parent: 1
-  - uid: 531
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 0.5,-12.5
-      parent: 1
-  - uid: 532
-    components:
-    - type: Transform
-      pos: 0.5,-12.5
-      parent: 1
-  - uid: 533
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 0.5,-12.5
-      parent: 1
 - proto: PowerCellRecharger
   entities:
   - uid: 534
@@ -4904,6 +4881,7 @@ entities:
       pos: -0.5,-10.5
       parent: 1
     - type: Battery
+      startingCharge: 10000000
       maxCharge: 10000000
 - proto: SodaDispenser
   entities:
@@ -5714,6 +5692,29 @@ entities:
       parent: 1
 - proto: WindowReinforcedDirectional
   entities:
+  - uid: 530
+    components:
+    - type: Transform
+      pos: 0.5,-12.5
+      parent: 1
+  - uid: 531
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 0.5,-12.5
+      parent: 1
+  - uid: 532
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 0.5,-12.5
+      parent: 1
+  - uid: 533
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 0.5,-12.5
+      parent: 1
   - uid: 767
     components:
     - type: Transform

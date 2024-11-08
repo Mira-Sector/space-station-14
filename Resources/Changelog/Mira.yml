@@ -769,5 +769,17 @@ Entries:
     type: Tweak
     id: 114
     time: '2024-11-04T07:20:25.0000000+00:00'
+- author: aspiffyfellow
+  changes:
+  - message: Increased the capacity of some APCs on the map mir.
+    type: Tweak
+    id: 115
+    time: '2024-11-04T07:20:08.0000000+00:00'
+- author: aspiffyfellow
+  changes:
+    - message: Increased capacity of APCs on the mir evac shuttle to help with docking.
+      type: Fix
+      id: 116
+      time: '2024-11-06T07:20:08.0000000+00:00'
 
 
