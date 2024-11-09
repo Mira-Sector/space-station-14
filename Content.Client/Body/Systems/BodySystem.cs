@@ -67,14 +67,14 @@ public sealed class BodySystem : SharedBodySystem
                 // 1 indexed
                 // we programming in lua or some shit??
                 var percentage = (float) (damageableComp.TotalDamage / deadThreshold);
-                offset = (SegmentCount * percentage) + 1;
+                offset = (SegmentCount * percentage);
 
-                if (offset < 1)
+                if (offset < 0)
                     offset = 1;
                 else if (offset > SegmentCount - 1 && offset < SegmentCount)
                     offset = SegmentCount - 1; // reserve highest for dead only
                 else
-                    offset = (uint) Math.Ceiling(offset);
+                    offset = (uint) Math.Ceiling(offset) + 1;
             }
 
             var state = $"{layer.ToString()}{offset}";
