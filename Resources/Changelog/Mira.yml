@@ -781,5 +781,11 @@ Entries:
       type: Fix
       id: 116
       time: '2024-11-06T07:20:08.0000000+00:00'
-
-
+- author: Doctor-Cpu
+  changes:
+  - message: Damage can no longer go negative.
+    type: Fix
+  - message: Cyborgs can now take damage again.
+    type: Fix
+  id: 117
+  time: '2024-11-11T17:20:00.0000000+00:00'
