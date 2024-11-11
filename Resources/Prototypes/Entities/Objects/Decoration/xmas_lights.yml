@@ -1,0 +1,30 @@
+- type: entity
+  id: XmasLights
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: Objects/Decoration/xmas_lights.rsi
+    layers:
+    - state: unpowered
+      map: [ "enum.LightColorCycleLayers.Base" ]
+  - type: Transform
+    anchored: true
+  - type: Appearance
+  - type: ApcPowerReceiver
+    powerLoad: 1
+  - type: ExtensionCableReceiver
+  - type: Physics
+    bodyType: Static
+  - type: PointLight
+    enabled: false
+    radius: 2
+    energy: 3
+  - type: LightColorCycle
+    requirePower: true
+    states:
+    - !type:LightColorState { state: purple, color: '#76428a' }
+    - !type:LightColorState { state: red, color: '#ac3232' }
+    - !type:LightColorState { state: green, color: '#6abe30' }
+    - !type:LightColorState { state: blue, color: '#5b6ee1' }
+    - !type:LightColorState { state: yellow, color: '#d9a066' }
