@@ -789,3 +789,11 @@ Entries:
     type: Fix
   id: 117
   time: '2024-11-11T17:20:00.0000000+00:00'
+- author: aspiffyfellow
+  changes:
+  - message: Added festive hats to the loadout menu.
+    type: Tweak
+  - message: Added welding masks to loadout menu for engineering.
+    type: Tweak
+  id: 118
+  time: '2024-11-11T19:55:00.0000000+00:00'
