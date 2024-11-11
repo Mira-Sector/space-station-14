@@ -81,7 +81,13 @@
   loadouts:
   - CaptainHead
   - CaptainCap
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: CaptainJumpsuit
@@ -122,7 +128,13 @@
   minLimit: 0
   loadouts:
   - HoPHead
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: HoPJumpsuit
@@ -162,7 +174,13 @@
   name: loadout-group-passenger-head
   minLimit: 0
   loadouts:
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: PassengerJumpsuit
@@ -223,7 +241,13 @@
   loadouts:
   - BartenderHead
   - BartenderBowler
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: BartenderJumpsuit
@@ -248,7 +272,13 @@
   minLimit: 0
   loadouts:
   - ChefHead
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: ChefMask
@@ -278,7 +308,13 @@
   name: loadout-group-librarian-head
   minLimit: 0
   loadouts:
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: LibrarianJumpsuit
@@ -294,7 +330,13 @@
   name: loadout-group-lawyer-head
   minLimit: 0
   loadouts:
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: LawyerJumpsuit
@@ -328,7 +370,13 @@
   - ChaplainPlagueHat
   - ChaplainWitchHat
   - ChaplainWitchHatAlt
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: ChaplainMask
@@ -369,7 +417,13 @@
   minLimit: 0
   loadouts:
   - JanitorHead
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: JanitorJumpsuit
@@ -408,7 +462,13 @@
   loadouts:
   - BotanistHead
   - BotanistBandana
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: BotanistJumpsuit
@@ -441,7 +501,13 @@
   loadouts:
   - JesterHat
   - JesterAltHat
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: ClownJumpsuit
@@ -493,7 +559,13 @@
   - MimeHead
   - MimeFrenchBeret
   - MimeCap
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: MimeMask
@@ -547,7 +619,13 @@
   name: loadout-group-musician-head
   minLimit: 0
   loadouts:
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: MusicianJumpsuit
@@ -603,7 +681,13 @@
   name: loadout-group-service-worker-head
   minLimit: 0
   loadouts:
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: ZooKeeperHead
@@ -611,7 +695,14 @@
   minLimit: 0
   loadouts:
   - ZooKeeperHead
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
+
 
 - type: loadoutGroup
   id: ZooKeeperJumpSuit
@@ -635,7 +726,13 @@
   loadouts:
   - QuartermasterHead
   - QuartermasterBeret
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: QuartermasterJumpsuit
@@ -676,7 +773,13 @@
   loadouts:
   - CargoTechnicianHead
   - SeniorCargoHead
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: CargoTechnicianJumpsuit
@@ -721,7 +824,13 @@
   name: loadout-group-salvage-specialist-head
   minLimit: 0
   loadouts:
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: SalvageSpecialistBackpack
@@ -760,7 +869,13 @@
   loadouts:
   - ChiefEngineerHead
   - ChiefEngineerBeret
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: ChiefEngineerJumpsuit
@@ -798,7 +913,13 @@
   name: loadout-group-technical-assistant-head
   minLimit: 0
   loadouts:
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: TechnicalAssistantJumpsuit
@@ -815,7 +936,13 @@
   - StationEngineerHardhatOrange
   - StationEngineerHardhatRed
   - SeniorEngineerBeret
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: StationEngineerJumpsuit
@@ -861,7 +988,13 @@
   id: AtmosphericTechnicianHead
   name: loadout-group-atmospheric-technician-head
   loadouts:
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: AtmosphericTechnicianJumpsuit
@@ -910,7 +1043,13 @@
   minLimit: 0
   loadouts:
   - ResearchDirectorBeret
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: ResearchDirectorNeck
@@ -950,7 +1089,13 @@
   - RoboticistCap
   - SkullBandana
   - ScientificBeret
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: ScientistNeck
@@ -1019,7 +1164,13 @@
   name: loadout-group-research-assistant-head
   minLimit: 0
   loadouts:
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: ResearchAssistantJumpsuit
@@ -1037,7 +1188,13 @@
   - HeadofSecurityHead
   - HeadofSecurityBeret
   - HeadofSecurityHat
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: HeadofSecurityJumpsuit
@@ -1067,6 +1224,7 @@
   loadouts:
   - HeadofSecurityCoat
   - HeadofSecurityWinterCoat
+  - SantaSuit
 
 - type: loadoutGroup
   id: WardenHead
@@ -1075,6 +1233,13 @@
   loadouts:
   - WardenHead
   - WardenBeret
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: WardenJumpsuit
@@ -1089,6 +1254,7 @@
   loadouts:
   - WardenCoat
   - WardenArmoredWinterCoat
+  - SantaSuit
 
 - type: loadoutGroup
   id: SecurityHead
@@ -1099,7 +1265,13 @@
   - SecurityBeret
   - SecurityHat
   - TrooperHat
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: SecurityJumpsuit
@@ -1135,6 +1307,7 @@
   - ArmorVest
   - ArmorVestSlim
   - SecurityOfficerWintercoat
+  - SantaSuit
 
 - type: loadoutGroup
   id: SecurityShoes
@@ -1158,7 +1331,13 @@
   loadouts:
   - DetectiveFedora
   - DetectiveFedoraGrey
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: DetectiveNeck
@@ -1190,7 +1369,13 @@
   name: loadout-group-security-cadet-head
   minLimit: 0
   loadouts:
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: SecurityCadetJumpsuit
@@ -1222,7 +1407,13 @@
   minLimit: 0
   loadouts:
   - BrigmedicHead
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: BrigmedicJumpsuit
@@ -1238,6 +1429,7 @@
   minLimit: 0
   loadouts:
   - BrigmedicCoat
+  - SantaSuit
 
 
 - type: loadoutGroup
@@ -1266,7 +1458,13 @@
   loadouts:
   - ChiefMedicalOfficerBeret
   - CMOMedicalHeadMirror
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: ChiefMedicalOfficerJumpsuit
@@ -1312,7 +1510,13 @@
   - GreenSurgeryCap
   - PurpleSurgeryCap
   - NurseHat
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: MedicalDoctorJumpsuit
@@ -1377,7 +1581,13 @@
   name: loadout-group-medical-intern-head
   minLimit: 0
   loadouts:
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: MedicalInternJumpsuit
@@ -1391,7 +1601,13 @@
   name: loadout-group-chemist-head
   minLimit: 0
   loadouts:
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: ChemistJumpsuit
@@ -1423,7 +1639,13 @@
   minLimit: 0
   loadouts:
   - ParamedicHead
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: ParamedicJumpsuit
@@ -1463,7 +1685,13 @@
   name: loadout-group-reporter-head
   minLimit: 0
   loadouts:
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: ReporterJumpsuit
@@ -1477,7 +1705,13 @@
   name: loadout-group-psychologist-head
   minLimit: 0
   loadouts:
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: PsychologistJumpsuit
@@ -1491,7 +1725,13 @@
   name: loadout-group-boxer-head
   minLimit: 0
   loadouts:
-  - Santahat
+  - SantaHat
+  - XmasCrown
+  - PartyHatCup
+  - PartyHatYellow
+  - PartyHatBlue
+  - PartyHatGreen
+  - PartyHatRed
 
 - type: loadoutGroup
   id: BoxerJumpsuit
