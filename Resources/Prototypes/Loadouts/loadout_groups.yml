@@ -913,6 +913,7 @@
   name: loadout-group-technical-assistant-head
   minLimit: 0
   loadouts:
+  - WeldingMask
   - SantaHat
   - XmasCrown
   - PartyHatCup
@@ -936,6 +937,7 @@
   - StationEngineerHardhatOrange
   - StationEngineerHardhatRed
   - SeniorEngineerBeret
+  - WeldingMask
   - SantaHat
   - XmasCrown
   - PartyHatCup
