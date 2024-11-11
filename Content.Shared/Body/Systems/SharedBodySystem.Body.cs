@@ -179,6 +179,8 @@ public partial class SharedBodySystem
         var damage = args.DamageDelta * component.OverallDamageScale;
         damage += bodyDamageComp.Damage;
 
+        damage.ClampMin(FixedPoint.FixedPoint2.Zero);
+
         _damageable.SetDamage(component.Body.Value, bodyDamageComp, damage, true);
     }
 
