@@ -314,7 +314,6 @@
         toggleAction: ActionAGhostShowStationRecords
   - type: GeneralStationRecordConsole
   - type: ShowJobIcons
-  - type: ShowMindShieldIcons
   - type: StatusIcon
   - type: IdCard
     accessOverride: false

@@ -112,18 +112,18 @@
   - type: CanEnterPipeCrawling
     enterPipeDoAfterTime: 2
     pipeMoveSpeed: 0.15
-  - type: ChameleonProjector
-    action: true
-    blacklist:
-      components:
-      - MorphDisguise
-      - InsideEntityStorage # no clark kent going in phone booth and becoming superman
-      - Pda # PDAs currently make you invisible /!\
-      tags:
-      - Wall
-      - Structure
-    polymorph:
-      entity: MorphDisguise
+#  - type: ChameleonProjector
+#    action: true
+#    blacklist:
+#      components:
+#      - MorphDisguise
+#      - InsideEntityStorage # no clark kent going in phone booth and becoming superman
+#      - Pda # PDAs currently make you invisible /!\
+#      tags:
+#      - Wall
+#      - Structure
+#    polymorph:
+#      entity: MorphDisguise
   - type: GuideHelp
     guides:
     - MinorAntagonists
