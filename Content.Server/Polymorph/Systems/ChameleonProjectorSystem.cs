@@ -106,11 +106,11 @@ public sealed class ChameleonProjectorSystem : SharedChameleonProjectorSystem
             if (!TryComp<InventoryComponent>(disguise, out var disguiseInvComp))
                 return;
 
-            Array.Copy(entInvComp.Slots, disguiseInvComp.Slots, entInvComp.Slots.Length);
+            //Array.Copy(entInvComp.Slots, disguiseInvComp.Slots, entInvComp.Slots.Length);
 
             var coords = Transform(disguise).Coordinates;
 
-            foreach (var entSlot in entInvComp.Slots)
+            foreach (var entSlot in disguiseInvComp.Slots)
             {
                 _inventory.TryGetSlotContainer(entity, entSlot.Name, out var entContainer, out _);
 
