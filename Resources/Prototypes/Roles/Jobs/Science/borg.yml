@@ -25,4 +25,5 @@
   canBeAntag: false
   icon: JobIconBorg
   supervisors: job-supervisors-ai
+  jobEntity: PlayerBorgBattery
   applyTraits: false
