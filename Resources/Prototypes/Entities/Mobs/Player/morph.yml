@@ -104,6 +104,8 @@
       types:
         Blunt: 20
         Structural: 5
+      bluntStaminaDamageFactor: 0
+      autoAttack: true
   - type: Speech
     speechVerb: Slime
     speechSounds: Slime
@@ -112,18 +114,17 @@
   - type: CanEnterPipeCrawling
     enterPipeDoAfterTime: 2
     pipeMoveSpeed: 0.15
-#  - type: ChameleonProjector
-#    action: true
-#    blacklist:
-#      components:
-#      - MorphDisguise
-#      - InsideEntityStorage # no clark kent going in phone booth and becoming superman
-#      - Pda # PDAs currently make you invisible /!\
-#      tags:
-#      - Wall
-#      - Structure
-#    polymorph:
-#      entity: MorphDisguise
+  - type: ChameleonProjector
+    action: true
+    blacklist:
+      components:
+      - MorphDisguise
+      - InsideEntityStorage
+      - Pda # PDAs currently make you invisible /!\
+      tags:
+      - Wall
+      - Structure
+    disguiseProto: MorphDisguise
   - type: GuideHelp
     guides:
     - MinorAntagonists
@@ -138,16 +139,9 @@
     drawdepth: Mobs
     sprite: Mobs/Aliens/morph.rsi
     state: morph
-  # so it can take damage
-  # projector system sets health to be proportional to mass
+  - type: InteractionOutline
+  - type: Clickable
   - type: Damageable
-  - type: MobState
-  - type: MobThresholds
-    thresholds:
-      0: Alive
-      1: Critical
-      200: Dead
-  - type: ChameleonDisguise
   - type: InventorySlots
 
 - type: entity
@@ -160,3 +154,12 @@
     iconOn: { sprite : Interface/Actions/morph.rsi, state: icon-on }
     event: !type:DisguiseActionEvent
     priority: 2
+
+- type: entity
+  id: RevealDisguise
+  name: "[color=red]Reveal[/color]"
+  description: Show your true self
+  components:
+  - type: InstantAction
+    itemIconStyle: BigAction
+    event: !type:RevealActionEvent

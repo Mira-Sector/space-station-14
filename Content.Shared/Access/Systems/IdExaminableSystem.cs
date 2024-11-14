@@ -21,7 +21,7 @@ public sealed class IdExaminableSystem : EntitySystem
     private void OnGetExamineVerbs(EntityUid uid, IdExaminableComponent component, GetVerbsEvent<ExamineVerb> args)
     {
         var detailsRange = _examineSystem.IsInDetailsRange(args.User, uid);
-        var info = GetMessage(uid);
+        var info = GetMessage(uid, component);
 
         var verb = new ExamineVerb()
         {
@@ -41,13 +41,16 @@ public sealed class IdExaminableSystem : EntitySystem
         args.Verbs.Add(verb);
     }
 
-    public string GetMessage(EntityUid uid)
+    public string GetMessage(EntityUid uid, IdExaminableComponent component)
     {
-        return GetInfo(uid) ?? Loc.GetString("id-examinable-component-verb-no-id");
+        return GetInfo(uid, component) ?? Loc.GetString("id-examinable-component-verb-no-id");
     }
 
-    public string? GetInfo(EntityUid uid)
+    public string? GetInfo(EntityUid uid, IdExaminableComponent component)
     {
+        if (component.IdOverride != null)
+            return component.IdOverride;
+
         if (_inventorySystem.TryGetSlotEntity(uid, "id", out var idUid))
         {
             // PDA

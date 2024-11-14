@@ -46,6 +46,17 @@ public sealed partial class ChameleonProjectorComponent : Component
     [DataField]
     public EntityUid? AnchorActionEntity;
 
+    [DataField]
+    public bool Action = false;
+    [DataField]
+    public EntProtoId DisguiseAction = "ActionDisguise";
+    [DataField]
+    public EntityUid? DisguiseActionEntity;
+    [DataField]
+    public EntProtoId RevealAction = "RevealDisguise";
+    [DataField]
+    public EntityUid? RevealActionEntity;
+
     /// <summary>
     /// Minimum health to give the disguise.
     /// </summary>
@@ -64,3 +75,6 @@ public sealed partial class ChameleonProjectorComponent : Component
     [DataField]
     public EntityUid? Disguised;
 }
+
+[ByRefEvent]
+public readonly record struct ChameleonProjectorDisguisedEvent(EntityUid Disguise, EntityUid Source);

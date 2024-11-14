@@ -1,4 +1,7 @@
+using Content.Shared.Speech.Components;
 using Content.Shared.Polymorph.Systems;
+using Robust.Shared.Audio;
+using Robust.Shared.GameObjects.Components.Localization;
 using Robust.Shared.GameStates;
 
 namespace Content.Shared.Polymorph.Components;
@@ -22,4 +25,15 @@ public sealed partial class ChameleonDisguisedComponent : Component
     /// </summary>
     [DataField]
     public bool WasVisible;
+
+    public string? Name;
+    public bool HasFootstepTag = false;
+    public VocalComponent? VocalComp;
+    public SoundSpecifier? FootstepSoundCollection;
+    public GrammarComponent? GrammarComp;
+
+    public uint FootprintMaxFootsteps;
+    public float? FootprintDistance;
+    public string? FootprintPrototype;
+    public string? FootprintPrototypeAlternative;
 }
