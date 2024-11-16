@@ -795,3 +795,11 @@ Entries:
     type: Fix
   id: 118
   time: '2024-11-11T20:16:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Vox has a right hand
+    type: Fix
+  - message: More mobs have the damage part selector
+    type: Fix
+  id: 119
+  time: '2024-11-16T20:45:00.0000000+00:00'
