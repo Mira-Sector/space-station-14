@@ -22,7 +22,7 @@
   parent: [PartVox, BaseTorso]
   components:
     - type: Sprite
-      state: "torso"
+      state: "torso_m"
 
 - type: entity
   id: HeadVox
@@ -30,7 +30,7 @@
   parent: [PartVox, BaseHead]
   components:
     - type: Sprite
-      state: "head"
+      state: "head_m"
 
 - type: entity
   id: LeftArmVox
