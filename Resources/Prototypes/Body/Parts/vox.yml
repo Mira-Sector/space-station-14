@@ -59,7 +59,7 @@
 - type: entity
   id: RightHandVox
   name: "right vox hand"
-  parent: [PartVox, BaseLeftHand]
+  parent: [PartVox, BaseRightHand]
   components:
     - type: Sprite
       state: "r_hand"
