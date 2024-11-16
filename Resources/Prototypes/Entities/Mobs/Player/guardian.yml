@@ -76,6 +76,14 @@
       allowedStates:
         - Alive
     - type: CombatMode
+    - type: DamagePartSelector
+      selectableParts:
+        !type:BodyPart { type: Head, side: None }: { sprite: Interface/Actions/zone_sel.rsi, state: head }
+        !type:BodyPart { type: Arm, side: Left }: { sprite: Interface/Actions/zone_sel.rsi, state: larm }
+        !type:BodyPart { type: Leg, side: Left }: { sprite: Interface/Actions/zone_sel.rsi, state: lleg }
+        !type:BodyPart { type: Torso, side: None }: { sprite: Interface/Actions/zone_sel.rsi, state: torso }
+        !type:BodyPart { type: Leg, side: Right }: { sprite: Interface/Actions/zone_sel.rsi, state: rleg }
+        !type:BodyPart { type: Arm, side: Right }: { sprite: Interface/Actions/zone_sel.rsi, state: rarm }
     - type: Internals
     - type: Examiner
     - type: Speech
@@ -100,6 +108,8 @@
       interfaces:
         enum.MeleeSpeechUiKey.Key:
           type: MeleeSpeechBoundUserInterface
+      enum.DamageSelectorUiKey.Key:
+        type: DamageSelectorBoundUserInterface
     - type: Actions
     - type: Guardian
     - type: InteractionPopup
