@@ -2,7 +2,7 @@ namespace Content.Shared.Wounds;
 
 [Serializable]
 [ImplicitDataDefinitionForInheritors]
-public abstract partial class ConstructionGraphStep
+public abstract partial class WoundGraphStep
 {
     [DataField(serverOnly: true)]
     private IWoundAction[] _completed = Array.Empty<IWoundAction>();

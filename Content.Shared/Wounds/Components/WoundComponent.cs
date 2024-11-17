@@ -4,7 +4,7 @@ using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototy
 
 namespace Content.Shared.Wounds.Components;
 
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+[RegisterComponent, NetworkedComponent]
 public sealed partial class WoundComponent : Component
 {
     [DataField(required: true, customTypeSerializer:typeof(PrototypeIdSerializer<WoundPrototype>))]
@@ -18,6 +18,9 @@ public sealed partial class WoundComponent : Component
 
     [DataField]
     public int StepIndex { get; set; } = 0;
+
+    [DataField]
+    public string? TargetNode { get; set; } = null;
 
     [ViewVariables]
     public int? TargetEdgeIndex { get; set; } = null;

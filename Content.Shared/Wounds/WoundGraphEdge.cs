@@ -5,7 +5,7 @@ namespace Content.Shared.Wounds;
 public sealed partial class WoundGraphEdge
 {
     [DataField("steps")]
-    private ConstructionGraphStep[] _steps = Array.Empty<ConstructionGraphStep>();
+    private WoundGraphStep[] _steps = Array.Empty<WoundGraphStep>();
 
     [DataField("completed", serverOnly: true)]
     private IWoundAction[] _completed = Array.Empty<IWoundAction>();
@@ -17,5 +17,5 @@ public sealed partial class WoundGraphEdge
     public IReadOnlyList<IWoundAction> Completed => _completed;
 
     [ViewVariables]
-    public IReadOnlyList<ConstructionGraphStep> Steps => _steps;
+    public IReadOnlyList<WoundGraphStep> Steps => _steps;
 }

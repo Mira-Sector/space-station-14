@@ -26,6 +26,9 @@
   components:
   - type: BodyPart
     partType: Torso
+  - type: WoundReciever
+    selectableWounds:
+    - Fracture
   - type: Damageable
     damageContainer: Biological
 
