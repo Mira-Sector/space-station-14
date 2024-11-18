@@ -809,3 +809,9 @@ Entries:
     type: Remove
   id: 120
   time: '2024-11-16T20:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Anti materiel can now penitrate
+    type: Add
+  id: 121
+  time: '2024-11-18T02:10:00.0000000+00:00'
