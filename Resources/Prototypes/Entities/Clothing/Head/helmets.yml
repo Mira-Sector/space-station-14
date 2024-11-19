@@ -431,6 +431,7 @@
     delay: 1.0
   - type: ToggleClothing
     action: ActionToggleJusticeHelm
+    mustEquip: false
   - type: ItemTogglePointLight
   - type: ToggleableLightVisuals
     clothingVisuals:
