@@ -815,3 +815,9 @@ Entries:
     type: Add
   id: 121
   time: '2024-11-18T02:10:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Slimes can have a seperate hair colour
+    type: Add
+  id: 122
+  time: '2024-11-19T11:50:00.0000000+00:00'
