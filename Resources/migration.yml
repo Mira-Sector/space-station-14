@@ -476,6 +476,9 @@ RightLegBorgJanitor: RightLegBorg
 HeadBorgJanitor: LightHeadBorg
 TorsoBorgJanitor: TorsoBorg
 
+# 2024-11-19
+CrateCrewMonitoringBoards: CrateCrewMonitoring
+
 # Mira
 # 2024-07-28
 WeaponSubMachineGunWt550: WeaponEnergyShotgun
