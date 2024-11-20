@@ -23,6 +23,9 @@
   - type: Sprite
     sprite: Objects/Specific/Medical/Surgery/cautery.rsi
     state: cautery
+  - type: Tool
+    qualities:
+    - Cautery
   - type: Item
     sprite: Objects/Specific/Medical/Surgery/cautery.rsi
     storedRotation: 90
@@ -44,6 +47,9 @@
   - type: Sprite
     sprite: Objects/Specific/Medical/Surgery/drill.rsi
     state: drill
+  - type: Tool
+    qualities:
+    - Screwing
   - type: Item
     sprite: Objects/Specific/Medical/Surgery/drill.rsi
     shape:
@@ -71,6 +77,9 @@
   - type: Utensil
     types:
       - Knife
+  - type: Tool
+    qualities:
+    - Scalpel
   - type: Sprite
     sprite: Objects/Specific/Medical/Surgery/scalpel.rsi
     state: scalpel
@@ -135,6 +144,9 @@
   - type: Sprite
     sprite: Objects/Specific/Medical/Surgery/scissors.rsi
     state: retractor
+  - type: Tool
+    qualities:
+    - Retractor
   - type: Item
     sprite: Objects/Specific/Medical/Surgery/scissors.rsi
     storedRotation: 90
@@ -147,6 +159,9 @@
   components:
   - type: Sprite
     state: hemostat
+  - type: Tool
+    qualities:
+    - Hemostat
   - type: Item
     heldPrefix: hemostat
     storedRotation: 90

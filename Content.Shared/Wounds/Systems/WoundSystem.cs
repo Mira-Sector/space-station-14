@@ -3,19 +3,28 @@ using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
 using Content.Shared.Damage;
 using Content.Shared.Damage.DamageSelector;
+using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
+using Content.Shared.Nutrition.Components;
+using Content.Shared.Tools.Systems;
 using Content.Shared.Wounds.Components;
 using Content.Shared.Wounds.Prototypes;
+using Content.Shared.Wounds.Steps;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using System.Linq;
 
 namespace Content.Shared.Wounds.Systems;
 
 public sealed partial class WoundSystem : EntitySystem
 {
     [Dependency] private readonly SharedBodySystem _body = default!;
+    [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
     [Dependency] private readonly IPrototypeManager _protoManager = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private readonly SharedToolSystem _tool = default!;
+
+    private readonly Queue<EntityUid> _woundUpdateQueue = new();
 
     public override void Initialize()
     {
@@ -25,6 +34,50 @@ public sealed partial class WoundSystem : EntitySystem
 
         SubscribeLocalEvent<WoundBodyComponent, DamageModifyEvent>(OnDamage);
         SubscribeLocalEvent<WoundBodyComponent, InteractUsingEvent>(OnAfterInteract);
+    }
+
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+
+        while (_woundUpdateQueue.TryDequeue(out var limb))
+        {
+            // Ensure the entity exists and has a Construction component.
+            if (!TryComp<WoundComponent>(limb, out var wound))
+                continue;
+
+#if EXCEPTION_TOLERANCE
+            try
+            {
+#endif
+            // Handle all queued interactions!
+            while (wound.InteractionQueue.TryDequeue(out var dequed))
+            {
+                var (body, interaction) = dequed;
+                if (wound.Deleted)
+                {
+                    Log.Error($"Wound component was deleted while still processing interactions." +
+                                $"Entity {ToPrettyString(limb)}, graph: {wound.Graph}, " +
+                                $"Body: {ToPrettyString(body)}, " +
+                                $"Remaining Queue: {string.Join(", ", wound.InteractionQueue.Select(x => x.GetType().Name))}");
+                    break;
+                }
+
+                // We set validation to false because we actually want to perform the interaction here.
+                HandleEvent(body, limb, interaction, false, wound);
+                Dirty(limb, wound);
+            }
+
+#if EXCEPTION_TOLERANCE
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Caught exception while processing construction queue. Entity {ToPrettyString(uid)}, graph: {construction.Graph}");
+                _runtimeLog.LogException(e, $"{nameof(ConstructionSystem)}.{nameof(UpdateInteractions)}");
+                Del(uid);
+            }
+#endif
+        }
     }
 
     private void OnWoundInit(EntityUid uid, WoundComponent component, ComponentInit args)
@@ -94,9 +147,6 @@ public sealed partial class WoundSystem : EntitySystem
         if (!TryComp<DamagePartSelectorComponent>(args.User, out var selectorComp))
             return;
 
-        EntityUid? limb = null;
-        WoundComponent? wound = null;
-
         // find the wounded part if it exists
         foreach (var part in component.Limbs)
         {
@@ -109,36 +159,32 @@ public sealed partial class WoundSystem : EntitySystem
             if (partComp.Symmetry != selectorComp.SelectedPart.Side)
                 continue;
 
-            if (!TryComp<WoundComponent>(part, out var partWoundComp))
+            if (!TryComp<WoundComponent>(part, out var wound))
                 continue;
 
-            limb = part;
-            wound = partWoundComp;
+            if (!HandleEvent(uid, part, args, true, wound))
+                return;
+
+            wound.InteractionQueue.Enqueue((uid, args));
+            _woundUpdateQueue.Enqueue(part);
+            Dirty(part, wound);
+
+            args.Handled = true;
             break;
         }
-
-        if (wound == null || limb == null)
-            return;
-
-        if (!HandleEvent(uid, limb.Value, true, wound))
-            return;
-
-        wound.InteractionQueue.Enqueue(args);
-
-        args.Handled = true;
     }
 
-    private bool HandleEvent(EntityUid uid, EntityUid limb, bool validation, WoundComponent? wound = null)
+    private bool HandleEvent(EntityUid uid, EntityUid limb, object ev, bool validation, WoundComponent? wound = null)
     {
-        if (!Resolve(uid, ref wound))
+        if (!Resolve(limb, ref wound))
             return false;
 
-        if (GetCurrentNode(uid, wound) is not {} node)
+        if (GetCurrentNode(limb, wound) is not {} node)
             return false;
 
-        if (GetCurrentEdge(uid, wound) is {} edge)
+        if (GetCurrentEdge(limb, wound) is {} edge)
         {
-            var result = HandleEdge(uid, limb, edge, validation, wound);
+            var result = HandleEdge(uid, limb, ev, edge, validation, wound);
 
             if (!validation && result == false && wound.StepIndex == 0)
                 wound.EdgeIndex = null;
@@ -146,12 +192,12 @@ public sealed partial class WoundSystem : EntitySystem
             return result;
         }
 
-        return HandleNode(uid, limb, node, validation, wound);
+        return HandleNode(uid, limb, ev, node, validation, wound);
     }
 
-    private bool HandleNode(EntityUid uid, EntityUid limb, WoundGraphNode node, bool validation, WoundComponent? wound = null)
+    private bool HandleNode(EntityUid uid, EntityUid limb, object ev, WoundGraphNode node, bool validation, WoundComponent? wound = null)
     {
-        if (!Resolve(uid, ref wound))
+        if (!Resolve(limb, ref wound))
             return false;
 
         // Let's make extra sure this is zero...
@@ -162,7 +208,7 @@ public sealed partial class WoundSystem : EntitySystem
         for (var i = 0; i < node.Edges.Count; i++)
         {
             var edge = node.Edges[i];
-            if (HandleEdge(uid, limb, edge, validation, wound) is var result and not false)
+            if (HandleEdge(uid, limb, ev, edge, validation, wound) is var result and not false)
             {
                 // Only a True result may modify the state.
                 // In the case of DoAfter, it's only allowed to modify the waiting flag and the current edge index.
@@ -176,16 +222,16 @@ public sealed partial class WoundSystem : EntitySystem
 
                 // If we're still in the same node, that means we entered the edge and it's still not done.
                 wound.EdgeIndex = i;
-                UpdatePathfinding(uid, wound);
+                UpdatePathfinding(limb, wound);
                 return result;
             }
         }
         return false;
     }
 
-    private bool HandleEdge(EntityUid uid, EntityUid limb, WoundGraphEdge edge, bool validation, WoundComponent? wound = null)
+    private bool HandleEdge(EntityUid uid, EntityUid limb, object ev, WoundGraphEdge edge, bool validation, WoundComponent? wound = null)
     {
-        if (!Resolve(uid, ref wound))
+        if (!Resolve(limb, ref wound))
             return false;
 
         var step = GetStepFromEdge(edge, wound.StepIndex);
@@ -195,7 +241,7 @@ public sealed partial class WoundSystem : EntitySystem
             return false;
         }
 
-        var handle = HandleStep(uid, limb, step, validation, out var user, wound);
+        var handle = HandleStep(uid, limb, ev, step, validation, out var user, wound);
         if (handle != true)
             return handle;
 
@@ -218,19 +264,19 @@ public sealed partial class WoundSystem : EntitySystem
         return true;
     }
 
-    private bool HandleStep(EntityUid uid, EntityUid limb, WoundGraphStep step, bool validation, out EntityUid? user, WoundComponent? wound = null)
+    private bool HandleStep(EntityUid uid, EntityUid limb, object ev, WoundGraphStep step, bool validation, out EntityUid? user, WoundComponent? wound = null)
     {
         user = null;
 
-        if (!Resolve(uid, ref wound))
+        if (!Resolve(limb, ref wound))
             return false;
 
-        var handle = HandleInteraction(uid, step, validation, out user, wound);
+        var handle = HandleInteraction(uid, limb, ev, step, validation, out user, wound);
         if (handle != true)
             return handle;
 
         PerformActions(uid, limb, user, step.Completed);
-        UpdatePathfinding(uid, wound);
+        UpdatePathfinding(limb, wound);
 
         return true;
     }
@@ -249,14 +295,39 @@ public sealed partial class WoundSystem : EntitySystem
         }
     }
 
-    private bool HandleInteraction(EntityUid uid, WoundGraphStep step, bool validation, out EntityUid? user, WoundComponent? wound = null)
+    private bool HandleInteraction(EntityUid uid, EntityUid limb, object ev, WoundGraphStep step, bool validation, out EntityUid? user, WoundComponent? wound = null)
     {
         user = null;
-        if (!Resolve(uid, ref wound))
+
+        if (!Resolve(limb, ref wound))
             return false;
 
         switch (step)
         {
+            case ToolWoundGraphStep toolStep:
+            {
+                if (ev is not InteractUsingEvent interactUsing)
+                    break;
+
+                user = interactUsing.User;
+
+                // If we're validating whether this event handles the step...
+                if (validation)
+                    return _tool.HasQuality(interactUsing.Used, toolStep.Tool);
+
+                var result  = _tool.UseTool(
+                    interactUsing.Used,
+                    interactUsing.User,
+                    uid,
+                    TimeSpan.FromSeconds(toolStep.DoAfter),
+                    new [] { toolStep.Tool },
+                    new WoundInteractionDoAfterEvent(),
+                    out var doAfter,
+                    toolStep.Fuel);
+
+                return result && doAfter != null;
+            }
+
         }
 
         return false;
@@ -455,10 +526,10 @@ public sealed partial class WoundSystem : EntitySystem
 
     public bool ChangeNode(EntityUid uid, EntityUid limb, EntityUid? userUid, string id, bool performActions = true, WoundComponent? wound = null)
     {
-        if (!Resolve(uid, ref wound))
+        if (!Resolve(limb, ref wound))
             return false;
 
-        if (GetCurrentGraph(uid, wound) is not {} graph ||  GetNodeFromGraph(graph, id) is not {} node)
+        if (GetCurrentGraph(limb, wound) is not {} graph || GetNodeFromGraph(graph, id) is not {} node)
             return false;
 
         var oldNode = wound.Node;
@@ -472,7 +543,7 @@ public sealed partial class WoundSystem : EntitySystem
         if (!Exists(uid))
             return false;
 
-        UpdatePathfinding(uid, wound);
+        UpdatePathfinding(limb, wound);
         return true;
     }
 }

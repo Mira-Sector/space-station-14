@@ -1,8 +1,0 @@
-- type: wound
-  id: Fracture
-  start: start
-  graph:
-    - node: start
-      edges:
-        - to: open
-    - node: open

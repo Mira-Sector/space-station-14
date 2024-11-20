@@ -29,5 +29,5 @@ public sealed partial class WoundComponent : Component
     public Queue<string>? NodePathfinding { get; set; } = null;
 
     [ViewVariables]
-    public readonly Queue<object> InteractionQueue = new();
+    public readonly Queue<(EntityUid, object)> InteractionQueue = new();
 }

@@ -1,0 +1,53 @@
+- type: surgery
+  id: Fracture
+  start: start
+  graph:
+    - node: start
+      edges:
+        - to: open
+          steps:
+            - tool: Scalpel
+              doAfter: 1
+    - node: open
+
+- type: surgery
+  id: OrganManipulation
+  start: start
+  graph:
+    - node: start
+      edges:
+        - to: incision
+          steps:
+            - tool: Scalpel
+              doAfter: 1
+    - node: incision
+      edges:
+        - to: retractor
+          steps:
+            - tool: Retractor
+              doAfter: 1
+    - node: clamp
+      edges:
+        - to: incision2
+          steps:
+            - tool: Scalpel
+              doAfter: 1
+    - node: incision2
+      edges:
+        - to: removal
+          steps:
+            - tool: Hemostat
+              doAfter: 1
+    - node: removal
+      edges:
+        - to: insertion
+          steps:
+            - tool: Prying
+              doAfter: 1
+    - node: insertion
+      edges:
+        - to: seal
+          steps:
+            - tool: Cautery
+              doAfter: 1
+    - node: seal
