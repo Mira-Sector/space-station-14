@@ -201,9 +201,8 @@ public sealed class KillPersonConditionSystem : EntitySystem
             return;
         }
 
-
-        var allHumans = _mind.GetAliveHumansExcept(roleComp.Obsession.Value);
-        allHumans.Remove(uid); //dont want the player to have a suicide mission
+        var allHumans = _mind.GetAliveHumans(roleComp.Obsession.Value);
+        allHumans.Remove((uid, args.Mind)); //dont want the player to have a suicide mission
 
         // get everyone in the obsessions department
         List<EntityUid> targets = new();

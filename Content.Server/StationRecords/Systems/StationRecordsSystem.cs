@@ -2,8 +2,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Content.Server.Access.Systems;
 using Content.Server.Forensics;
-using Content.Server.GameTicking;
 using Content.Shared.Access.Components;
+using Content.Shared.GameTicking;
 using Content.Shared.Inventory;
 using Content.Shared.PDA;
 using Content.Shared.Preferences;
@@ -54,7 +54,10 @@ public sealed class StationRecordsSystem : SharedStationRecordsSystem
         if (!TryComp<StationRecordsComponent>(args.Station, out var stationRecords))
             return;
 
-        CreateGeneralRecord(args.Station, args.Mob, args.Profile, args.Job, stationRecords);
+        if (args.JobId == null || !_prototypeManager.TryIndex<JobPrototype>(args.JobId, out var job))
+            return;
+
+        CreateGeneralRecord(args.Station, args.Mob, args.Profile, job, stationRecords);
     }
 
     private void OnRename(ref EntityRenamedEvent ev)
