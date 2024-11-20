@@ -1,27 +1,21 @@
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Part;
-using Content.Shared.Body.Systems;
-using Content.Shared.Damage;
 using Content.Shared.Damage.DamageSelector;
 using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
-using Content.Shared.Surgery.Components;
 using Content.Shared.Surgery.Prototypes;
 using Content.Shared.Surgery.Steps;
 using Content.Shared.Tools.Systems;
 using Content.Shared.Wounds.Components;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Random;
 using System.Linq;
 
 namespace Content.Shared.Surgery.Systems;
 
 public sealed partial class SurgerySystem : EntitySystem
 {
-    [Dependency] private readonly SharedBodySystem _body = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
     [Dependency] private readonly IPrototypeManager _protoManager = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly SharedToolSystem _tool = default!;
 
     private readonly Queue<EntityUid> _woundUpdateQueue = new();
@@ -30,9 +24,6 @@ public sealed partial class SurgerySystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<WoundComponent, ComponentInit>(OnWoundInit);
-
-        SubscribeLocalEvent<WoundBodyComponent, DamageModifyEvent>(OnDamage);
         SubscribeLocalEvent<WoundBodyComponent, InteractUsingEvent>(OnAfterInteract);
     }
 
@@ -77,62 +68,6 @@ public sealed partial class SurgerySystem : EntitySystem
                 Del(uid);
             }
 #endif
-        }
-    }
-
-    private void OnWoundInit(EntityUid uid, WoundComponent component, ComponentInit args)
-    {
-    }
-
-    private void OnDamage(EntityUid uid, WoundBodyComponent component, DamageModifyEvent args)
-    {
-        if (!args.Damage.AnyPositive())
-            return;
-
-        if (!TryComp<BodyComponent>(uid, out var bodyComp))
-            return;
-
-        if (!TryComp<DamagePartSelectorComponent>(args.Origin, out var selectorComp))
-            return;
-
-        var parts = _body.GetBodyChildren(uid, bodyComp);
-
-        foreach (var (partUid, partComp) in parts)
-        {
-            if (partComp.PartType != selectorComp.SelectedPart.Type)
-                continue;
-
-            if (partComp.Symmetry != selectorComp.SelectedPart.Side)
-                continue;
-
-            if (!TryComp<WoundRecieverComponent>(partUid, out var woundRecieverComp))
-                continue;
-
-            // only one wound per limb
-            if (HasComp<WoundComponent>(partUid))
-                return;
-
-            // TODO: select based on damage and other factors
-            var woundId = _random.Pick(woundRecieverComp.SelectableWounds);
-
-            if (!_protoManager.TryIndex(woundId, out WoundPrototype? wound))
-            {
-                Log.Debug($"{woundId} is not a valid wound prototype.");
-                return;
-            }
-
-            if (string.IsNullOrEmpty(wound.Start))
-                return;
-
-            var woundComp = EnsureComp<WoundComponent>(partUid);
-            component.Limbs.Add(partUid);
-            Dirty(uid, component);
-
-            woundComp.Graph = woundId;
-            woundComp.Node = wound.Start;
-            Dirty(partUid, woundComp);
-
-            return;
         }
     }
 
@@ -281,7 +216,7 @@ public sealed partial class SurgerySystem : EntitySystem
         return true;
     }
 
-    public void PerformActions(EntityUid bodyUid, EntityUid limbUid, EntityUid? userUid, IEnumerable<IWoundAction> actions, BodyComponent? bodyComp = null)
+    public void PerformActions(EntityUid bodyUid, EntityUid limbUid, EntityUid? userUid, IEnumerable<ISurgeryAction> actions, BodyComponent? bodyComp = null)
     {
         if (!Resolve(bodyUid, ref bodyComp))
             return;
@@ -509,17 +444,17 @@ public sealed partial class SurgerySystem : EntitySystem
         return (edge, step);
     }
 
-    public SurgeryGraphNode? GetNodeFromGraph(WoundPrototype graph, string id)
+    public SurgeryGraphNode? GetNodeFromGraph(SurgeryPrototype graph, string id)
     {
         return graph.Nodes.TryGetValue(id, out var node) ? node : null;
     }
 
-    public SurgeryGraphEdge? GetEdgeFromNode(WoundGraphNode node, int index)
+    public SurgeryGraphEdge? GetEdgeFromNode(SurgeryGraphNode node, int index)
     {
         return node.Edges.Count > index ? node.Edges[index] : null;
     }
 
-    public SurgeryGraphStep? GetStepFromEdge(WoundGraphEdge edge, int index)
+    public SurgeryGraphStep? GetStepFromEdge(SurgeryGraphEdge edge, int index)
     {
         return edge.Steps.Count > index ? edge.Steps[index] : null;
     }
