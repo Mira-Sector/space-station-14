@@ -1,27 +1,27 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace Content.Shared.Wounds;
+namespace Content.Shared.Surgery;
 
 [Serializable]
 [DataDefinition]
-public sealed partial class WoundGraphNode
+public sealed partial class SurgeryGraphNode
 {
     [DataField("node", required: true)]
     public string Name { get; private set; } = default!;
 
     [DataField("actions", serverOnly: true)]
-    public IWoundAction[] _actions = Array.Empty<IWoundAction>();
+    public ISurgeryAction[] _actions = Array.Empty<ISurgeryAction>();
 
     [DataField("edges")]
-    private WoundGraphEdge[] _edges = Array.Empty<WoundGraphEdge>();
+    private SurgeryGraphEdge[] _edges = Array.Empty<SurgeryGraphEdge>();
 
     [ViewVariables]
-    public IReadOnlyList<WoundGraphEdge> Edges => _edges;
+    public IReadOnlyList<SurgeryGraphEdge> Edges => _edges;
 
     [ViewVariables]
-    public IReadOnlyList<IWoundAction> Actions => _actions;
+    public IReadOnlyList<ISurgeryAction> Actions => _actions;
 
-    public WoundGraphEdge? GetEdge(string target)
+    public SurgeryGraphEdge? GetEdge(string target)
     {
         foreach (var edge in _edges)
         {
@@ -44,7 +44,7 @@ public sealed partial class WoundGraphNode
         return null;
     }
 
-    public bool TryGetEdge(string target, [NotNullWhen(true)] out WoundGraphEdge? edge)
+    public bool TryGetEdge(string target, [NotNullWhen(true)] out SurgeryGraphEdge? edge)
     {
         return (edge = GetEdge(target)) != null;
     }

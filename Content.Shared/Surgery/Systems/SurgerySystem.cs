@@ -5,18 +5,18 @@ using Content.Shared.Damage;
 using Content.Shared.Damage.DamageSelector;
 using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
-using Content.Shared.Nutrition.Components;
+using Content.Shared.Surgery.Components;
+using Content.Shared.Surgery.Prototypes;
+using Content.Shared.Surgery.Steps;
 using Content.Shared.Tools.Systems;
 using Content.Shared.Wounds.Components;
-using Content.Shared.Wounds.Prototypes;
-using Content.Shared.Wounds.Steps;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using System.Linq;
 
-namespace Content.Shared.Wounds.Systems;
+namespace Content.Shared.Surgery.Systems;
 
-public sealed partial class WoundSystem : EntitySystem
+public sealed partial class SurgerySystem : EntitySystem
 {
     [Dependency] private readonly SharedBodySystem _body = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
@@ -195,7 +195,7 @@ public sealed partial class WoundSystem : EntitySystem
         return HandleNode(uid, limb, ev, node, validation, wound);
     }
 
-    private bool HandleNode(EntityUid uid, EntityUid limb, object ev, WoundGraphNode node, bool validation, WoundComponent? wound = null)
+    private bool HandleNode(EntityUid uid, EntityUid limb, object ev, SurgeryGraphNode node, bool validation, WoundComponent? wound = null)
     {
         if (!Resolve(limb, ref wound))
             return false;
@@ -229,7 +229,7 @@ public sealed partial class WoundSystem : EntitySystem
         return false;
     }
 
-    private bool HandleEdge(EntityUid uid, EntityUid limb, object ev, WoundGraphEdge edge, bool validation, WoundComponent? wound = null)
+    private bool HandleEdge(EntityUid uid, EntityUid limb, object ev, SurgeryGraphEdge edge, bool validation, WoundComponent? wound = null)
     {
         if (!Resolve(limb, ref wound))
             return false;
@@ -264,7 +264,7 @@ public sealed partial class WoundSystem : EntitySystem
         return true;
     }
 
-    private bool HandleStep(EntityUid uid, EntityUid limb, object ev, WoundGraphStep step, bool validation, out EntityUid? user, WoundComponent? wound = null)
+    private bool HandleStep(EntityUid uid, EntityUid limb, object ev, SurgeryGraphStep step, bool validation, out EntityUid? user, WoundComponent? wound = null)
     {
         user = null;
 
@@ -295,7 +295,7 @@ public sealed partial class WoundSystem : EntitySystem
         }
     }
 
-    private bool HandleInteraction(EntityUid uid, EntityUid limb, object ev, WoundGraphStep step, bool validation, out EntityUid? user, WoundComponent? wound = null)
+    private bool HandleInteraction(EntityUid uid, EntityUid limb, object ev, SurgeryGraphStep step, bool validation, out EntityUid? user, WoundComponent? wound = null)
     {
         user = null;
 
@@ -304,7 +304,7 @@ public sealed partial class WoundSystem : EntitySystem
 
         switch (step)
         {
-            case ToolWoundGraphStep toolStep:
+            case ToolSurgeryGraphStep toolStep:
             {
                 if (ev is not InteractUsingEvent interactUsing)
                     break;
@@ -321,7 +321,7 @@ public sealed partial class WoundSystem : EntitySystem
                     uid,
                     TimeSpan.FromSeconds(toolStep.DoAfter),
                     new [] { toolStep.Tool },
-                    new WoundInteractionDoAfterEvent(),
+                    new SurgeryInteractionDoAfterEvent(),
                     out var doAfter,
                     toolStep.Fuel);
 
@@ -348,8 +348,8 @@ public sealed partial class WoundSystem : EntitySystem
         return UpdatePathfinding(uid, graph, node, targetNode, GetCurrentEdge(uid, wound), wound);
     }
 
-    private bool UpdatePathfinding(EntityUid uid, WoundPrototype graph,
-        WoundGraphNode currentNode, WoundGraphNode targetNode, WoundGraphEdge? currentEdge,
+    private bool UpdatePathfinding(EntityUid uid, SurgeryPrototype graph,
+        SurgeryGraphNode currentNode, SurgeryGraphNode targetNode, SurgeryGraphEdge? currentEdge,
         WoundComponent? wound = null)
     {
         if (!Resolve(uid, ref wound))
@@ -413,15 +413,15 @@ public sealed partial class WoundSystem : EntitySystem
         wound.NodePathfinding = null;
     }
 
-    public WoundPrototype? GetCurrentGraph(EntityUid uid, WoundComponent? wound = null)
+    public SurgeryPrototype? GetCurrentGraph(EntityUid uid, WoundComponent? wound = null)
     {
         if (!Resolve(uid, ref wound, false))
             return null;
 
-        return _protoManager.TryIndex(wound.Graph, out WoundPrototype? graph) ? graph : null;
+        return _protoManager.TryIndex(wound.Graph, out SurgeryPrototype? graph) ? graph : null;
     }
 
-    public WoundGraphNode? GetCurrentNode(EntityUid uid, WoundComponent? wound = null)
+    public SurgeryGraphNode? GetCurrentNode(EntityUid uid, WoundComponent? wound = null)
     {
         if (!Resolve(uid, ref wound, false))
             return null;
@@ -432,7 +432,7 @@ public sealed partial class WoundSystem : EntitySystem
         return GetCurrentGraph(uid, wound) is not {} graph ? null : GetNodeFromGraph(graph, nodeIdentifier);
     }
 
-    public WoundGraphEdge? GetCurrentEdge(EntityUid uid, WoundComponent? wound = null)
+    public SurgeryGraphEdge? GetCurrentEdge(EntityUid uid, WoundComponent? wound = null)
     {
         if (!Resolve(uid, ref wound, false))
             return null;
@@ -443,7 +443,7 @@ public sealed partial class WoundSystem : EntitySystem
         return GetCurrentNode(uid, wound) is not {} node ? null : GetEdgeFromNode(node, edgeIndex);
     }
 
-    public (WoundGraphNode?, WoundGraphEdge?) GetCurrentNodeAndEdge(EntityUid uid, WoundComponent? wound = null)
+    public (SurgeryGraphNode?, SurgeryGraphEdge?) GetCurrentNodeAndEdge(EntityUid uid, WoundComponent? wound = null)
     {
         if (!Resolve(uid, ref wound, false))
             return (null, null);
@@ -457,7 +457,7 @@ public sealed partial class WoundSystem : EntitySystem
         return (node, GetEdgeFromNode(node, edgeIndex));
     }
 
-    public WoundGraphStep? GetCurrentStep(EntityUid uid, WoundComponent? wound = null)
+    public SurgeryGraphStep? GetCurrentStep(EntityUid uid, WoundComponent? wound = null)
     {
         if (!Resolve(uid, ref wound, false))
             return null;
@@ -468,7 +468,7 @@ public sealed partial class WoundSystem : EntitySystem
         return GetStepFromEdge(edge, wound.StepIndex);
     }
 
-    public WoundGraphNode? GetTargetNode(EntityUid uid, WoundComponent? wound)
+    public SurgeryGraphNode? GetTargetNode(EntityUid uid, WoundComponent? wound)
     {
         if (!Resolve(uid, ref wound))
             return null;
@@ -482,7 +482,7 @@ public sealed partial class WoundSystem : EntitySystem
         return GetNodeFromGraph(graph, targetNodeId);
     }
 
-    public WoundGraphEdge? GetTargetEdge(EntityUid uid, WoundComponent? wound)
+    public SurgeryGraphEdge? GetTargetEdge(EntityUid uid, WoundComponent? wound)
     {
         if (!Resolve(uid, ref wound))
             return null;
@@ -496,7 +496,7 @@ public sealed partial class WoundSystem : EntitySystem
         return GetEdgeFromNode(node, targetEdgeIndex);
     }
 
-    public (WoundGraphEdge? edge, WoundGraphStep? step) GetCurrentEdgeAndStep(EntityUid uid, WoundComponent? wound = null)
+    public (SurgeryGraphEdge? edge, SurgeryGraphStep? step) GetCurrentEdgeAndStep(EntityUid uid, WoundComponent? wound = null)
     {
         if (!Resolve(uid, ref wound, false))
             return default;
@@ -509,17 +509,17 @@ public sealed partial class WoundSystem : EntitySystem
         return (edge, step);
     }
 
-    public WoundGraphNode? GetNodeFromGraph(WoundPrototype graph, string id)
+    public SurgeryGraphNode? GetNodeFromGraph(WoundPrototype graph, string id)
     {
         return graph.Nodes.TryGetValue(id, out var node) ? node : null;
     }
 
-    public WoundGraphEdge? GetEdgeFromNode(WoundGraphNode node, int index)
+    public SurgeryGraphEdge? GetEdgeFromNode(WoundGraphNode node, int index)
     {
         return node.Edges.Count > index ? node.Edges[index] : null;
     }
 
-    public WoundGraphStep? GetStepFromEdge(WoundGraphEdge edge, int index)
+    public SurgeryGraphStep? GetStepFromEdge(WoundGraphEdge edge, int index)
     {
         return edge.Steps.Count > index ? edge.Steps[index] : null;
     }

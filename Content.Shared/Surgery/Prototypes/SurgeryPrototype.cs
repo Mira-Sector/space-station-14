@@ -3,26 +3,26 @@ using Robust.Shared.Serialization;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
-namespace Content.Shared.Wounds.Prototypes;
+namespace Content.Shared.Surgery.Prototypes;
 
 [Prototype]
-public sealed partial class WoundPrototype : IPrototype, ISerializationHooks
+public sealed partial class SurgeryPrototype : IPrototype, ISerializationHooks
 {
     [IdDataField]
     public string ID { get; } = default!;
 
     [DataField("graph", required: true)]
-    public List<WoundGraphNode> _graph = new();
+    public List<SurgeryGraphNode> _graph = new();
 
     [DataField]
     public string? Start { get; private set; }
 
     [ViewVariables]
-    public IReadOnlyDictionary<string, WoundGraphNode> Nodes => _nodes;
+    public IReadOnlyDictionary<string, SurgeryGraphNode> Nodes => _nodes;
 
-    private readonly Dictionary<string, WoundGraphNode> _nodes = new();
-    private readonly Dictionary<(string, string), WoundGraphNode[]?> _paths = new();
-    private readonly Dictionary<string, Dictionary<WoundGraphNode, WoundGraphNode?>> _pathfinding = new();
+    private readonly Dictionary<string, SurgeryGraphNode> _nodes = new();
+    private readonly Dictionary<(string, string), SurgeryGraphNode[]?> _paths = new();
+    private readonly Dictionary<string, Dictionary<SurgeryGraphNode, SurgeryGraphNode?>> _pathfinding = new();
 
     void ISerializationHooks.AfterDeserialization()
     {
@@ -32,23 +32,23 @@ public sealed partial class WoundPrototype : IPrototype, ISerializationHooks
         {
             if (string.IsNullOrEmpty(graphNode.Name))
             {
-                throw new InvalidDataException($"{ID} name not set in wound graph!");
+                throw new InvalidDataException($"{ID} name not set in surgery graph!");
             }
 
             _nodes[graphNode.Name] = graphNode;
         }
 
         if (string.IsNullOrEmpty(Start) || !_nodes.ContainsKey(Start))
-            throw new InvalidDataException($"Starting wound node {ID} is null, empty or invalid!");
+            throw new InvalidDataException($"Starting surgery node {ID} is null, empty or invalid!");
     }
 
-    public WoundGraphEdge? Edge(string startNode, string nextNode)
+    public SurgeryGraphEdge? Edge(string startNode, string nextNode)
     {
         var start = _nodes[startNode];
         return start.GetEdge(nextNode);
     }
 
-    public bool TryPath(string startNode, string finishNode, [NotNullWhen(true)] out WoundGraphNode[]? path)
+    public bool TryPath(string startNode, string finishNode, [NotNullWhen(true)] out SurgeryGraphNode[]? path)
     {
         return (path = Path(startNode, finishNode)) != null;
     }
@@ -68,14 +68,14 @@ public sealed partial class WoundPrototype : IPrototype, ISerializationHooks
         return nodes;
     }
 
-    public WoundGraphNode[]? Path(string startNode, string finishNode)
+    public SurgeryGraphNode[]? Path(string startNode, string finishNode)
     {
         var tuple = (startNode, finishNode);
 
         if (_paths.ContainsKey(tuple))
             return _paths[tuple];
 
-        Dictionary<WoundGraphNode, WoundGraphNode?> pathfindingForStart;
+        Dictionary<SurgeryGraphNode, SurgeryGraphNode?> pathfindingForStart;
         if (_pathfinding.ContainsKey(startNode))
         {
             pathfindingForStart = _pathfinding[startNode];
@@ -89,7 +89,7 @@ public sealed partial class WoundPrototype : IPrototype, ISerializationHooks
         var start = _nodes[startNode];
         var finish = _nodes[finishNode];
         var current = finish;
-        var path = new List<WoundGraphNode>();
+        var path = new List<SurgeryGraphNode>();
 
         while (current != start)
         {
@@ -108,11 +108,11 @@ public sealed partial class WoundPrototype : IPrototype, ISerializationHooks
         return _paths[tuple] = path.ToArray();
     }
 
-    private Dictionary<WoundGraphNode, WoundGraphNode?> PathsForStart(string start)
+    private Dictionary<SurgeryGraphNode, SurgeryGraphNode?> PathsForStart(string start)
     {
         var startNode = _nodes[start];
-        var frontier = new Queue<WoundGraphNode>();
-        var cameFrom = new Dictionary<WoundGraphNode, WoundGraphNode?>();
+        var frontier = new Queue<SurgeryGraphNode>();
+        var cameFrom = new Dictionary<SurgeryGraphNode, SurgeryGraphNode?>();
 
         frontier.Enqueue(startNode);
         cameFrom[startNode] = null;
