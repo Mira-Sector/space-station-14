@@ -4,6 +4,9 @@ using Content.Client.Animations;
 using Content.Shared.Hands;
 using Content.Shared.Storage;
 using Content.Shared.Storage.EntitySystems;
+using Robust.Client.Animations;
+using Robust.Client.GameObjects;
+using Robust.Shared.Animations;
 using Robust.Shared.Collections;
 using Robust.Shared.Map;
 using Robust.Shared.Timing;
@@ -14,6 +17,7 @@ public sealed class StorageSystem : SharedStorageSystem
 {
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly EntityPickupAnimationSystem _entityPickupAnimation = default!;
+    [Dependency] private readonly AnimationPlayerSystem _anim = default!;
 
     private readonly List<Entity<StorageComponent>> _openStorages = new();
     public int OpenStorageAmount => _openStorages.Count;
@@ -21,11 +25,17 @@ public sealed class StorageSystem : SharedStorageSystem
     public event Action<Entity<StorageComponent>>? StorageUpdated;
     public event Action<Entity<StorageComponent>?>? StorageOrderChanged;
 
+    private readonly string AnimationKey = "storage_interact";
+
     public override void Initialize()
     {
         base.Initialize();
 
         SubscribeLocalEvent<StorageComponent, ComponentShutdown>(OnShutdown);
+
+        SubscribeLocalEvent<StorageComponent, StorageInteractAttemptEvent>(OnInteract);
+        SubscribeLocalEvent<StorageComponent, AnimationCompletedEvent>(OnAnimationComplete);
+
         SubscribeNetworkEvent<PickupAnimationEvent>(HandlePickupAnimation);
         SubscribeAllEvent<AnimateInsertingEntitiesEvent>(HandleAnimatingInsertingEntities);
     }
@@ -123,6 +133,56 @@ public sealed class StorageSystem : SharedStorageSystem
         CloseStorageWindow((ent, ent.Comp));
     }
 
+    private void OnInteract(EntityUid uid, StorageComponent component, ref StorageInteractAttemptEvent args)
+    {
+        if (args.Cancelled || !component.CanAnimate)
+            return;
+
+        if (!TryComp<SpriteComponent>(uid, out var spriteComp))
+            return;
+
+        var player = EnsureComp<AnimationPlayerComponent>(uid);
+
+        if (_anim.HasRunningAnimation(player, AnimationKey))
+            return;
+
+        component.OriginalScale = spriteComp.Scale;
+
+        var animation = new Animation()
+        {
+            Length = TimeSpan.FromSeconds(0.5),
+            AnimationTracks =
+            {
+                new AnimationTrackComponentProperty()
+                {
+                    ComponentType = typeof(SpriteComponent),
+                    Property = nameof(SpriteComponent.Scale),
+                    InterpolationMode = AnimationInterpolationMode.Cubic,
+                    KeyFrames =
+                    {
+                        new AnimationTrackProperty.KeyFrame(component.OriginalScale, 0.0f),
+                        new AnimationTrackProperty.KeyFrame(component.OriginalScale * 0.75f, 0.05f),
+                        new AnimationTrackProperty.KeyFrame(component.OriginalScale * 1.1f, 0.25f),
+                        new AnimationTrackProperty.KeyFrame(component.OriginalScale, 0.45f),
+                    }
+                }
+            }
+        };
+
+        _anim.Play((uid, player), animation, AnimationKey);
+    }
+
+    private void OnAnimationComplete(EntityUid uid, StorageComponent component, AnimationCompletedEvent args)
+    {
+        if (args.Key != AnimationKey)
+            return;
+
+        if (!TryComp<SpriteComponent>(uid, out var spriteComp))
+            return;
+
+        spriteComp.Scale = component.OriginalScale;
+    }
+
     /// <inheritdoc />
     public override void PlayPickupAnimation(EntityUid uid, EntityCoordinates initialCoordinates, EntityCoordinates finalCoordinates,
         Angle initialRotation, EntityUid? user = null)
@@ -142,7 +202,7 @@ public sealed class StorageSystem : SharedStorageSystem
     {
         if (!_timing.IsFirstTimePredicted)
             return;
-        
+
         if (TransformSystem.InRange(finalCoords, initialCoords, 0.1f) ||
             !Exists(initialCoords.EntityId) || !Exists(finalCoords.EntityId))
         {
