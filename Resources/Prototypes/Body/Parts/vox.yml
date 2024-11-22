@@ -15,6 +15,9 @@
         Quantity: 3
       - ReagentId: Blood
         Quantity: 10
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Vox
 
 - type: entity
   id: TorsoVox

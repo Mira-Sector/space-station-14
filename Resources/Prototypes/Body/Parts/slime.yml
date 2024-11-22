@@ -4,6 +4,10 @@
   parent: [BaseItem, BasePart]
   name: "slime body part"
   abstract: true
+  components:
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Slime
 
 - type: entity
   id: TorsoSlime
@@ -22,7 +26,7 @@
     - type: Sprite
       sprite: Mobs/Species/Slime/parts.rsi
       state: "head_m"
-  
+
 - type: entity
   id: LeftArmSlime
   name: "left slime arm"

@@ -13,6 +13,9 @@
         Quantity: 3
       - ReagentId: Blood
         Quantity: 10
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Scale
 
 - type: entity
   id: TorsoReptilian

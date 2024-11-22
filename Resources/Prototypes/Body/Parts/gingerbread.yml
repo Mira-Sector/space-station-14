@@ -11,6 +11,9 @@
         Quantity: 3
       - ReagentId: Sugar
         Quantity: 10
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Gingerbread
 
 - type: entity
   id: TorsoGingerbread
