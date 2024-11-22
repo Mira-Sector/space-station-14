@@ -6,6 +6,9 @@
   components:
   - type: Sprite
     sprite: Mobs/Species/Diona/parts.rsi
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Diona
 
 - type: entity
   id: TorsoDiona
