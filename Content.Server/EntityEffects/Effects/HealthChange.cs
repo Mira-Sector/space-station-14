@@ -37,6 +37,10 @@ namespace Content.Server.EntityEffects.Effects
         [JsonPropertyName("ignoreResistances")]
         public bool IgnoreResistances = true;
 
+        [DataField]
+        [JsonPropertyName("targetIsOrigin")]
+        public bool TargetIsOrigin = false;
+
         protected override string ReagentEffectGuidebookText(IPrototypeManager prototype, IEntitySystemManager entSys)
         {
             var damages = new List<string>();
@@ -126,6 +130,7 @@ namespace Content.Server.EntityEffects.Effects
                 Damage * scale,
                 IgnoreResistances,
                 interruptsDoAfters: false,
+                origin: TargetIsOrigin ? args.TargetEntity : null,
                 ignorePartScale: true);
         }
     }
