@@ -16,9 +16,6 @@
   - type: Tag
     tags:
       - Trash
-  - type: Damageable
-    damageContainer: Biological
-    damageModifierSet: Skeleton
 
 - type: entity
   id: TorsoSkeleton
@@ -33,6 +30,9 @@
       state: "torso_m"
     - type: BodyPart
       partType: Torso
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Skeleton
 
 - type: entity
   id: HeadSkeleton
@@ -48,6 +48,9 @@
       state: "skull_icon"
     - type: BodyPart
       partType: Head
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Skeleton
     - type: Input
       context: "human"
     - type: Speech
@@ -87,6 +90,9 @@
     - type: BodyPart
       partType: Arm
       symmetry: Left
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Skeleton
 
 - type: entity
   id: RightArmSkeleton
@@ -102,6 +108,9 @@
     - type: BodyPart
       partType: Arm
       symmetry: Right
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Skeleton
 
 - type: entity
   id: LeftHandSkeleton
@@ -148,6 +157,9 @@
       partType: Leg
       symmetry: Left
     - type: MovementBodyPart
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Skeleton
 
 - type: entity
   id: RightLegSkeleton
@@ -164,6 +176,9 @@
       partType: Leg
       symmetry: Right
     - type: MovementBodyPart
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Skeleton
 
 - type: entity
   id: LeftFootSkeleton
