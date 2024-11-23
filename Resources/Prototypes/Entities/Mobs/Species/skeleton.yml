@@ -82,6 +82,7 @@
       effects: # TODO: when magic is around - make a milk transformation to a skeleton monster
       - !type:HealthChange
         scaleByQuantity: true
+        targetIsOrigin: true
         damage:
           groups:
             Burn: -2 # healing obviously up to discussion
