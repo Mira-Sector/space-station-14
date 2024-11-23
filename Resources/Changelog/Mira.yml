@@ -827,3 +827,9 @@ Entries:
     type: Add
   id: 123
   time: '2024-11-21T16:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Skeletons can now heal with milk again
+    type: Fix
+  id: 124
+  time: '2024-11-23T14:25:00.0000000+00:00'
