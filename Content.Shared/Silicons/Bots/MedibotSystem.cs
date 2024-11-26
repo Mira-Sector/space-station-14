@@ -1,8 +1,10 @@
+using Content.Shared.Body.Systems;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Damage;
 using Content.Shared.DoAfter;
 using Content.Shared.Emag.Components;
 using Content.Shared.Emag.Systems;
+using Content.Shared.FixedPoint;
 using Content.Shared.Interaction;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
@@ -20,6 +22,7 @@ namespace Content.Shared.Silicons.Bots;
 public sealed class MedibotSystem : EntitySystem
 {
     [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private readonly SharedBodySystem _body = default!;
     [Dependency] private SharedInteractionSystem _interaction = default!;
     [Dependency] private SharedSolutionContainerSystem _solutionContainer = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
@@ -103,8 +106,22 @@ public sealed class MedibotSystem : EntitySystem
         if (!TryComp<MobStateComponent>(target, out var mobState))
             return false;
 
-        if (!TryComp<DamageableComponent>(target, out var damageable))
+        FixedPoint2 totalDamage;
+
+        var bodyDamage = _body.GetBodyDamage(target);
+
+        if (bodyDamage != null)
+        {
+            totalDamage = bodyDamage.GetTotal();
+        }
+        else if (TryComp<DamageableComponent>(target, out var damageable))
+        {
+            totalDamage = damageable.TotalDamage;
+        }
+        else
+        {
             return false;
+        }
 
         if (!_solutionContainer.TryGetInjectableSolution(target, out _, out _))
             return false;
@@ -115,7 +132,7 @@ public sealed class MedibotSystem : EntitySystem
             return false;
         }
 
-        var total = damageable.TotalDamage;
+        var total = totalDamage;
         if (total == 0 && !HasComp<EmaggedComponent>(medibot))
         {
             _popup.PopupClient(Loc.GetString("medibot-target-healthy"), medibot, medibot);
