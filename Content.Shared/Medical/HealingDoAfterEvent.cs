@@ -6,10 +6,4 @@ namespace Content.Shared.Medical;
 [Serializable, NetSerializable]
 public sealed partial class HealingDoAfterEvent : SimpleDoAfterEvent
 {
-    public EntityUid? Limb;
-
-    public HealingDoAfterEvent(EntityUid? limb)
-    {
-        Limb = limb;
-    }
 }

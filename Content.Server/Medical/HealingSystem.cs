@@ -47,27 +47,12 @@ public sealed class HealingSystem : EntitySystem
         base.Initialize();
         SubscribeLocalEvent<HealingComponent, UseInHandEvent>(OnHealingUse);
         SubscribeLocalEvent<HealingComponent, AfterInteractEvent>(OnHealingAfterInteract);
-        SubscribeLocalEvent<DamageableComponent, HealingDoAfterEvent>(OnDamageableDoAfter);
-        SubscribeLocalEvent<BodyComponent, HealingDoAfterEvent>(OnBodyDoAfter);
+        SubscribeLocalEvent<DamageableComponent, HealingDoAfterEvent>(OnDoAfter);
     }
 
-    private void OnDamageableDoAfter(Entity<DamageableComponent> entity, ref HealingDoAfterEvent args)
+    private void OnDoAfter(Entity<DamageableComponent> entity, ref HealingDoAfterEvent args)
     {
-        OnDoAfter(entity.Owner, entity.Owner, entity.Comp.Damage, entity.Comp.DamageContainerID, ref args);
-    }
-
-    private void OnBodyDoAfter(Entity<BodyComponent> entity, ref HealingDoAfterEvent args)
-    {
-        if (args.Limb == null)
-            return;
-
-        var bodyDamage = _body.GetBodyDamage(entity);
-        var bodyDamageContainer = _body.GetMostFrequentDamageContainer(entity);
-
-        if (bodyDamage == null || bodyDamageContainer == null)
-            return;
-
-        OnDoAfter(entity.Owner, args.Limb, bodyDamage, bodyDamageContainer, ref args);
+        OnDoAfter(args.Target ?? entity.Owner, entity.Owner, entity.Comp.Damage, entity.Comp.DamageContainerID, ref args);
     }
 
     private void OnDoAfter(EntityUid uid, EntityUid? limb, DamageSpecifier damage, string? damageContainer, ref HealingDoAfterEvent args)
@@ -268,7 +253,7 @@ public sealed class HealingSystem : EntitySystem
             : component.Delay * GetScaledHealingPenalty(user, component);
 
         var doAfterEventArgs =
-            new DoAfterArgs(EntityManager, user, delay, new HealingDoAfterEvent(limb), target, target: target, used: uid)
+            new DoAfterArgs(EntityManager, user, delay, new HealingDoAfterEvent(), limb ?? target, target: target, used: uid)
             {
                 // Didn't break on damage as they may be trying to prevent it and
                 // not being able to heal your own ticking damage would be frustrating.
