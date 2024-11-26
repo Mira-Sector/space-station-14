@@ -6,6 +6,7 @@ using Content.Shared.Body.Organ;
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Prototypes;
 using Content.Shared.Damage;
+using Content.Shared.Damage.Prototypes;
 using Content.Shared.DragDrop;
 using Content.Shared.Gibbing.Components;
 using Content.Shared.Gibbing.Events;
@@ -16,6 +17,7 @@ using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 
 namespace Content.Shared.Body.Systems;
@@ -338,6 +340,87 @@ public partial class SharedBodySystem
         {
             yield return slot;
         }
+    }
+
+    public DamageSpecifier? GetBodyDamage(
+        EntityUid bodyId,
+        BodyComponent? body = null)
+    {
+        if (!Resolve(bodyId, ref body))
+        {
+            return null;
+        }
+
+        DamageSpecifier totalDamage = new();
+
+        foreach (var (part, _) in GetBodyChildren(bodyId, body))
+        {
+            if (!TryComp<DamageableComponent>(part, out var partDamageComp))
+                continue;
+
+            totalDamage += partDamageComp.Damage;
+        }
+
+        return totalDamage;
+    }
+
+    public Dictionary<EntityUid, DamageableComponent> GetBodyDamageable(
+        EntityUid? bodyId,
+        BodyComponent? body = null)
+    {
+        Dictionary<EntityUid, DamageableComponent> damageableComps = new ();
+
+        if (bodyId == null || !Resolve(bodyId.Value, ref body))
+            return damageableComps;
+
+        foreach (var (part, _) in GetBodyChildren(bodyId, body))
+        {
+            if (!TryComp<DamageableComponent>(part, out var partDamageComp))
+                continue;
+
+            damageableComps.Add(part, partDamageComp);
+        }
+
+        return damageableComps;
+    }
+
+    public ProtoId<DamageContainerPrototype>? GetMostFrequentDamageContainer(
+        EntityUid bodyId,
+        BodyComponent? body = null)
+    {
+        if (!Resolve(bodyId, ref body))
+        {
+            return null;
+        }
+
+        List<ProtoId<DamageContainerPrototype>?> damageContainers = new ();
+
+        foreach (var (part, _) in GetBodyChildren(bodyId, body))
+        {
+            if (!TryComp<DamageableComponent>(part, out var partDamageComp))
+                continue;
+
+            damageContainers.Add(partDamageComp.DamageContainerID);
+        }
+
+        return GetMostFrequentDamageContainer(damageContainers);
+    }
+
+    public ProtoId<DamageContainerPrototype>? GetMostFrequentDamageContainer(IEnumerable<ProtoId<DamageContainerPrototype>?> data)
+    {
+        if (data == null || !data.Any())
+        {
+            throw new ArgumentException($"{data} is null or empty.");
+        }
+
+        var mostFrequent = data
+            .GroupBy(item => item)
+            .OrderByDescending(group => group.Count())
+            .FirstOrDefault();
+
+        return mostFrequent != null
+            ? mostFrequent.Key
+            : throw new InvalidOperationException($"Unexpected error during processing {data}.");
     }
 
     public virtual HashSet<EntityUid> GibBody(
