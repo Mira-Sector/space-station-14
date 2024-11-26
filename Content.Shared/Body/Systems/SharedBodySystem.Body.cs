@@ -54,7 +54,8 @@ public partial class SharedBodySystem
         SubscribeLocalEvent<BodyComponent, DamageChangedEvent>(OnDamaged);
         SubscribeLocalEvent<BodyComponent, RejuvenateEvent>(OnRejuvenate);
 
-        SubscribeLocalEvent<BodyPartComponent, DamageChangedEvent>(OnPartDamaged);
+        SubscribeLocalEvent<BodyPartComponent, DamageModifyEvent>(RelayToBody);
+        SubscribeLocalEvent<BodyPartComponent, DamageChangedEvent>(RelayToBody);
     }
 
     private void OnBodyInserted(Entity<BodyComponent> ent, ref EntInsertedIntoContainerMessage args)
@@ -164,26 +165,24 @@ public partial class SharedBodySystem
         }
     }
 
-    private void OnPartDamaged(EntityUid uid, BodyPartComponent component, DamageChangedEvent args)
+    protected void RelayToBody<T>(EntityUid uid, BodyPartComponent component, T args) where T : class
     {
-        if (args.Origin == uid)
-            return;
-
         if (component.Body == null)
             return;
 
-        if (args.DamageDelta == null)
+        var ev = new LimbBodyRelayedEvent<T>(args, uid);
+
+        RaiseLocalEvent(component.Body.Value, ref ev);
+    }
+
+    protected void RelayRefToBody<T>(EntityUid uid, BodyPartComponent component, ref T args) where T : class
+    {
+        if (component.Body == null)
             return;
 
-        if (!TryComp<DamageableComponent>(component.Body, out var bodyDamageComp))
-            return;
+        var ev = new LimbBodyRelayedEvent<T>(args, uid);
 
-        var damage = args.DamageDelta * component.OverallDamageScale;
-        damage += bodyDamageComp.Damage;
-
-        damage.ClampMin(FixedPoint.FixedPoint2.Zero);
-
-        _damageable.SetDamage(component.Body.Value, bodyDamageComp, damage, true);
+        RaiseLocalEvent(component.Body.Value, ref ev);
     }
 
     /// <summary>
