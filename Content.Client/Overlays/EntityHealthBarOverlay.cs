@@ -1,6 +1,8 @@
 using System.Numerics;
 using Content.Client.StatusIcon;
 using Content.Client.UserInterface.Systems;
+using Content.Shared.Body.Components;
+using Content.Shared.Body.Systems;
 using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
 using Content.Shared.Mobs;
@@ -24,6 +26,7 @@ public sealed class EntityHealthBarOverlay : Overlay
     private readonly IEntityManager _entManager;
     private readonly IPrototypeManager _prototype;
 
+    private readonly SharedBodySystem _bodySystem;
     private readonly SharedTransformSystem _transform;
     private readonly MobStateSystem _mobStateSystem;
     private readonly MobThresholdSystem _mobThresholdSystem;
@@ -39,6 +42,7 @@ public sealed class EntityHealthBarOverlay : Overlay
     {
         _entManager = entManager;
         _prototype = prototype;
+        _bodySystem = _entManager.System<SharedBodySystem>();
         _transform = _entManager.System<SharedTransformSystem>();
         _mobStateSystem = _entManager.System<MobStateSystem>();
         _mobThresholdSystem = _entManager.System<MobThresholdSystem>();
@@ -57,11 +61,10 @@ public sealed class EntityHealthBarOverlay : Overlay
         var rotationMatrix = Matrix3Helpers.CreateRotation(-rotation);
         _prototype.TryIndex(StatusIcon, out var statusIcon);
 
-        var query = _entManager.AllEntityQueryEnumerator<MobThresholdsComponent, MobStateComponent, DamageableComponent, SpriteComponent>();
+        var query = _entManager.AllEntityQueryEnumerator<MobThresholdsComponent, MobStateComponent, SpriteComponent>();
         while (query.MoveNext(out var uid,
             out var mobThresholdsComponent,
             out var mobStateComponent,
-            out var damageableComponent,
             out var spriteComponent))
         {
             if (statusIcon != null && !_statusIconSystem.IsVisible((uid, _entManager.GetComponent<MetaDataComponent>(uid)), statusIcon))
@@ -72,7 +75,36 @@ public sealed class EntityHealthBarOverlay : Overlay
                 xform.MapID != args.MapId)
                 continue;
 
-            if (damageableComponent.DamageContainerID == null || !DamageContainers.Contains(damageableComponent.DamageContainerID))
+            var parts = _bodySystem.GetBodyDamageable(uid);
+
+            string? damageContainer;
+            DamageSpecifier damage = new ();
+            FixedPoint2? healthBarThreshold = FixedPoint2.Zero;
+
+            if (parts != null)
+            {
+                damageContainer = _bodySystem.GetMostFrequentDamageContainer(uid);
+
+                foreach (var (partUid, partDamageable) in parts)
+                {
+                    damage += partDamageable.Damage;
+
+                    if (partDamageable.HealthBarThreshold > healthBarThreshold)
+                        healthBarThreshold = partDamageable.HealthBarThreshold;
+                }
+            }
+            else if (_entManager.TryGetComponent<DamageableComponent>(uid, out var damageableComponent))
+            {
+                damageContainer = damageableComponent.DamageContainerID;
+                damage = damageableComponent.Damage;
+                healthBarThreshold = damageableComponent.HealthBarThreshold;
+            }
+            else
+            {
+                continue;
+            }
+
+            if (damageContainer == null || !DamageContainers.Contains(damageContainer))
                 continue;
 
             // we use the status icon component bounds if specified otherwise use sprite
@@ -83,7 +115,7 @@ public sealed class EntityHealthBarOverlay : Overlay
                 continue;
 
             // we are all progressing towards death every day
-            if (CalcProgress(uid, mobStateComponent, damageableComponent, mobThresholdsComponent) is not { } deathProgress)
+            if (CalcProgress(uid, mobStateComponent, damage, mobThresholdsComponent, healthBarThreshold) is not { } deathProgress)
                 continue;
 
             var worldPosition = _transform.GetWorldPosition(xform);
@@ -125,18 +157,18 @@ public sealed class EntityHealthBarOverlay : Overlay
     /// <summary>
     /// Returns a ratio between 0 and 1, and whether the entity is in crit.
     /// </summary>
-    private (float ratio, bool inCrit)? CalcProgress(EntityUid uid, MobStateComponent component, DamageableComponent dmg, MobThresholdsComponent thresholds)
+    private (float ratio, bool inCrit)? CalcProgress(EntityUid uid, MobStateComponent component, DamageSpecifier dmg, MobThresholdsComponent thresholds, FixedPoint2? healthBarThreshold)
     {
         if (_mobStateSystem.IsAlive(uid, component))
         {
-            if (dmg.HealthBarThreshold != null && dmg.TotalDamage < dmg.HealthBarThreshold)
+            if (healthBarThreshold != null && dmg.GetTotal() < healthBarThreshold)
                 return null;
 
             if (!_mobThresholdSystem.TryGetThresholdForState(uid, MobState.Critical, out var threshold, thresholds) &&
                 !_mobThresholdSystem.TryGetThresholdForState(uid, MobState.Dead, out threshold, thresholds))
                 return (1, false);
 
-            var ratio = 1 - ((FixedPoint2) (dmg.TotalDamage / threshold)).Float();
+            var ratio = 1 - ((FixedPoint2) (dmg.GetTotal() / threshold)).Float();
             return (ratio, false);
         }
 
@@ -148,7 +180,7 @@ public sealed class EntityHealthBarOverlay : Overlay
                 return (1, true);
             }
 
-            var ratio = 1 - ((dmg.TotalDamage - critThreshold) / (deadThreshold - critThreshold)).Value.Float();
+            var ratio = 1 - ((dmg.GetTotal() - critThreshold) / (deadThreshold - critThreshold)).Value.Float();
 
             return (ratio, true);
         }
