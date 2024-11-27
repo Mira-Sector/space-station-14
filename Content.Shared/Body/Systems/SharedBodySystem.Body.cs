@@ -51,7 +51,6 @@ public partial class SharedBodySystem
         SubscribeLocalEvent<BodyComponent, ComponentRemove>(OnBodyRemove);
         SubscribeLocalEvent<BodyComponent, MapInitEvent>(OnBodyMapInit);
         SubscribeLocalEvent<BodyComponent, CanDragEvent>(OnBodyCanDrag);
-        SubscribeLocalEvent<BodyComponent, DamageChangedEvent>(OnDamaged);
         SubscribeLocalEvent<BodyComponent, RejuvenateEvent>(OnRejuvenate);
 
         SubscribeLocalEvent<BodyPartComponent, DamageModifyEvent>(RelayToBody);
@@ -145,11 +144,6 @@ public partial class SharedBodySystem
     private void OnBodyCanDrag(Entity<BodyComponent> ent, ref CanDragEvent args)
     {
         args.Handled = true;
-    }
-
-    private void OnDamaged(EntityUid uid, BodyComponent component, DamageChangedEvent args)
-    {
-        _alerts.ShowAlert(uid, component.Alert);
     }
 
     private void OnRejuvenate(EntityUid uid, BodyComponent component, RejuvenateEvent args)
