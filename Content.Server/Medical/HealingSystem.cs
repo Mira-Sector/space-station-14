@@ -194,17 +194,22 @@ public sealed class HealingSystem : EntitySystem
 
     private bool TryHeal(EntityUid uid, EntityUid user, EntityUid target, HealingComponent component)
     {
+        var bodyDamage = _body.GetBodyDamage(target);
         var bodyDamageContainer = _body.GetMostFrequentDamageContainer(target);
 
-        if (bodyDamageContainer != null)
+        DamageSpecifier damage = new();
+
+        if (bodyDamage != null && bodyDamageContainer != null)
         {
             if (component.DamageContainers is not null &&
                 !component.DamageContainers.Contains(bodyDamageContainer))
             {
                 return false;
             }
+
+            damage = bodyDamage;
         }
-        if (TryComp<DamageableComponent>(target, out var targetDamage))
+        else if (TryComp<DamageableComponent>(target, out var targetDamage))
         {
             if (component.DamageContainers is not null &&
                 targetDamage.DamageContainerID is not null &&
@@ -212,6 +217,8 @@ public sealed class HealingSystem : EntitySystem
             {
                 return false;
             }
+
+            damage = targetDamage.Damage;
         }
         else
         {
@@ -225,7 +232,7 @@ public sealed class HealingSystem : EntitySystem
             return false;
 
         var anythingToDo =
-            CheckPartAiming(user, target, targetDamage.Damage, component, out var limb) ||
+            CheckPartAiming(user, target, damage, component, out var limb) ||
             (component.ModifyBloodLevel > 0 // Special case if healing item can restore lost blood...
                 && TryComp<BloodstreamComponent>(target, out var bloodstream)
                 && _solutionContainerSystem.ResolveSolution(target, bloodstream.BloodSolutionName, ref bloodstream.BloodSolution, out var bloodSolution)
