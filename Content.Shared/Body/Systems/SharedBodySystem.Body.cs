@@ -352,12 +352,12 @@ public partial class SharedBodySystem
 
         DamageSpecifier totalDamage = new();
 
-        foreach (var (part, _) in GetBodyChildren(bodyId, body))
+        foreach (var (partUid, partComp) in GetBodyChildren(bodyId, body))
         {
-            if (!TryComp<DamageableComponent>(part, out var partDamageComp))
+            if (!TryComp<DamageableComponent>(partUid, out var partDamageComp))
                 continue;
 
-            totalDamage += partDamageComp.Damage;
+            totalDamage += partDamageComp.Damage * partComp.OverallDamageScale;
         }
 
         return totalDamage;

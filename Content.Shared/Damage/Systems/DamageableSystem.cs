@@ -214,35 +214,32 @@ namespace Content.Shared.Damage
                 return damageDict;
             }
 
+            if (origin != null)
+            {
+                bool a;
+            }
+
             var parts = _body.GetBodyDamageable(uid.Value, body);
 
-            // apply damage equally accross the body
-            DamageSpecifier damagePerPart =  damage / parts.Count();
+            TryComp<DamagePartSelectorComponent>(origin, out var damageSelectorComp);
 
             foreach (var (part, damageable) in parts)
             {
                 if (!TryComp<BodyPartComponent>(part, out var partComp))
                     continue;
 
-                DamageSpecifier partDamage = new ();
-
-                if (ignorePartScale)
-                    partDamage = damagePerPart / partComp.OverallDamageScale;
-                else
-                    partDamage = damagePerPart;
-
                 DamageSpecifier? newDamage = new ();
 
-                if (TryComp<DamagePartSelectorComponent>(origin, out var damageSelectorComp))
+                if (damageSelectorComp != null)
                 {
                     if (damageSelectorComp.SelectedPart.Type != partComp.PartType || damageSelectorComp.SelectedPart.Side != partComp.Symmetry)
                         continue;
 
-                    newDamage = ChangeDamage(part, partDamage, damageable, ignoreResistances, interruptsDoAfters, origin, partComp.PartType, uid.Value);
+                    newDamage = ChangeDamage(part, damage, damageable, ignoreResistances, interruptsDoAfters, origin, partComp.PartType, uid.Value);
                 }
                 else
                 {
-                    newDamage = ChangeDamage(part, partDamage, damageable, ignoreResistances, interruptsDoAfters, origin, partComp.PartType, uid.Value);
+                    newDamage = ChangeDamage(part, damage, damageable, ignoreResistances, interruptsDoAfters, origin, partComp.PartType, uid.Value);
                 }
 
                 if (newDamage == null)
