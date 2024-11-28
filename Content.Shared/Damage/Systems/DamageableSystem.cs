@@ -135,16 +135,16 @@ namespace Content.Shared.Damage
         ///     The damage changed event is used by other systems, such as damage thresholds.
         /// </remarks>
         public void DamageChanged(EntityUid uid, DamageableComponent component, DamageSpecifier? damageDelta = null,
-            bool interruptsDoAfters = true, EntityUid? origin = null)
+            bool interruptsDoAfters = true, EntityUid? origin = null, EntityUid? body = null)
         {
             component.Damage.GetDamagePerGroup(_prototypeManager, component.DamagePerGroup);
             component.TotalDamage = component.Damage.GetTotal();
             Dirty(uid, component);
 
-            if (_appearanceQuery.TryGetComponent(uid, out var appearance) && damageDelta != null)
+            if (_appearanceQuery.TryGetComponent(body ?? uid, out var appearance) && damageDelta != null)
             {
                 var data = new DamageVisualizerGroupData(component.DamagePerGroup.Keys.ToList());
-                _appearance.SetData(uid, DamageVisualizerKeys.DamageUpdateGroups, data, appearance);
+                _appearance.SetData(body ?? uid, DamageVisualizerKeys.DamageUpdateGroups, data, appearance);
             }
             RaiseLocalEvent(uid, new DamageChangedEvent(component, damageDelta, interruptsDoAfters, origin));
         }
@@ -313,7 +313,7 @@ namespace Content.Shared.Damage
             }
 
             if (delta.DamageDict.Count > 0)
-                DamageChanged(uid, damageable, delta, interruptsDoAfters, origin);
+                DamageChanged(uid, damageable, delta, interruptsDoAfters, origin, body);
 
             return delta;
         }
@@ -403,8 +403,13 @@ namespace Content.Shared.Damage
 
             if (!delta.Empty)
             {
+                EntityUid? body = null;
+
+                if (TryComp<BodyPartComponent>(uid, out var partComp) && partComp.Body != null)
+                    body = partComp.Body.Value;
+
                 component.Damage = newDamage;
-                DamageChanged(uid, component, delta);
+                DamageChanged(uid, component, delta, body: body);
             }
         }
     }

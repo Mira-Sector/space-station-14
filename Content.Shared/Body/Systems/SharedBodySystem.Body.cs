@@ -2,6 +2,7 @@ using System.Linq;
 using System.Numerics;
 using Content.Shared.Alert;
 using Content.Shared.Body.Components;
+using Content.Shared.Body.Events;
 using Content.Shared.Body.Organ;
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Prototypes;
@@ -53,6 +54,7 @@ public partial class SharedBodySystem
         SubscribeLocalEvent<BodyComponent, CanDragEvent>(OnBodyCanDrag);
         SubscribeLocalEvent<BodyComponent, RejuvenateEvent>(OnRejuvenate);
 
+        SubscribeLocalEvent<BodyPartComponent, ComponentStartup>(OnPartStartup);
         SubscribeLocalEvent<BodyPartComponent, DamageModifyEvent>(RelayToBody);
         SubscribeLocalEvent<BodyPartComponent, DamageChangedEvent>(RelayToBody);
     }
@@ -113,15 +115,15 @@ public partial class SharedBodySystem
         _alerts.ClearAlert(ent.Owner, ent.Comp.Alert);
     }
 
-    private void OnBodyMapInit(Entity<BodyComponent> ent, ref MapInitEvent args)
+    private void OnBodyMapInit(EntityUid uid, BodyComponent component, MapInitEvent args)
     {
-        if (ent.Comp.Prototype is null)
+        if (component.Prototype is null)
             return;
 
         // One-time setup
         // Obviously can't run in Init to avoid double-spawns on save / load.
-        var prototype = Prototypes.Index(ent.Comp.Prototype.Value);
-        MapInitBody(ent, prototype);
+        var prototype = Prototypes.Index(component.Prototype.Value);
+        MapInitBody(uid, prototype);
     }
 
     private void MapInitBody(EntityUid bodyEntity, BodyPrototype prototype)
@@ -148,15 +150,27 @@ public partial class SharedBodySystem
 
     private void OnRejuvenate(EntityUid uid, BodyComponent component, RejuvenateEvent args)
     {
-        var parts = GetBodyChildren(uid, component);
+        var parts = GetBodyDamageable(uid, component);
 
-        foreach ((var partUid, var _) in parts)
+        foreach ((var partUid, var partDamageable) in parts)
         {
-            if (!TryComp<DamageableComponent>(partUid, out var partDamageComp))
-                continue;
-
-            _damageable.SetAllDamage(partUid, partDamageComp, 0);
+            _damageable.SetAllDamage(partUid, partDamageable, 0);
         }
+    }
+
+    private void OnPartStartup(EntityUid uid, BodyPartComponent component, ComponentStartup args)
+    {
+        if (component.Body is not {} body)
+            return;
+
+        if (!TryComp<BodyComponent>(body, out var bodyComp))
+            return;
+
+        if (bodyComp.RootContainer.ContainedEntity != uid)
+            return;
+
+        var ev = new BodySetupEvent(bodyComp);
+        RaiseLocalEvent(body, ev);
     }
 
     protected void RelayToBody<T>(EntityUid uid, BodyPartComponent component, T args) where T : class
@@ -283,13 +297,17 @@ public partial class SharedBodySystem
         BodyComponent? body = null,
         BodyPartComponent? rootPart = null)
     {
-        if (id is null
-            || !Resolve(id.Value, ref body, logMissing: false)
-            || body.RootContainer.ContainedEntity is null
-            || !Resolve(body.RootContainer.ContainedEntity.Value, ref rootPart))
-        {
+        if (id is null)
             yield break;
-        }
+
+        if (!Resolve(id.Value, ref body, logMissing: false))
+            yield break;
+
+        if (body.RootContainer.ContainedEntity is null)
+            yield break;
+
+        if (!Resolve(body.RootContainer.ContainedEntity.Value, ref rootPart))
+            yield break;
 
         foreach (var child in GetBodyPartChildren(body.RootContainer.ContainedEntity.Value, rootPart))
         {
@@ -339,7 +357,7 @@ public partial class SharedBodySystem
         EntityUid bodyId,
         BodyComponent? body = null)
     {
-        if (!Resolve(bodyId, ref body))
+        if (!Resolve(bodyId, ref body, false))
         {
             return null;
         }
@@ -363,7 +381,7 @@ public partial class SharedBodySystem
     {
         Dictionary<EntityUid, DamageableComponent> damageableComps = new ();
 
-        if (bodyId == null || !Resolve(bodyId.Value, ref body))
+        if (bodyId == null || !Resolve(bodyId.Value, ref body, false))
             return damageableComps;
 
         foreach (var (part, _) in GetBodyChildren(bodyId, body))
@@ -381,7 +399,7 @@ public partial class SharedBodySystem
         EntityUid bodyId,
         BodyComponent? body = null)
     {
-        if (!Resolve(bodyId, ref body))
+        if (!Resolve(bodyId, ref body, false))
         {
             return null;
         }
