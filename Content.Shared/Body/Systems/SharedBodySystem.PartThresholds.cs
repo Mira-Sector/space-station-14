@@ -2,6 +2,7 @@ using Content.Shared.Body.Components;
 using Content.Shared.Body.Part;
 using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
+using System.Linq;
 
 namespace Content.Shared.Body.Systems;
 
@@ -36,15 +37,16 @@ public partial class SharedBodySystem
 
     internal void CheckThresholds(EntityUid limb, EntityUid body, BodyPartThresholdsComponent thresholds, DamageableComponent damage)
     {
-        foreach (var (limbThreshold, limbState) in thresholds.Thresholds)
+        foreach (var (limbThreshold, limbState) in thresholds.Thresholds.Reverse())
         {
-            if (limbThreshold < damage.TotalDamage)
+            if (damage.TotalDamage < limbThreshold)
                 continue;
 
             if (limbState == thresholds.CurrentState)
                 return;
 
             DoThreshold(limb, body, thresholds, limbState);
+            break;
         }
     }
 

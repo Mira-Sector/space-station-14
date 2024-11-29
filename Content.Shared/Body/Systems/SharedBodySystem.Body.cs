@@ -154,7 +154,7 @@ public partial class SharedBodySystem
 
         foreach ((var partUid, var partDamageable) in parts)
         {
-            _damageable.SetAllDamage(partUid, partDamageable, 0);
+            RaiseLocalEvent(partUid, new RejuvenateEvent());
         }
     }
 
