@@ -162,7 +162,7 @@ namespace Content.Shared.Damage
         ///     null if the user had no applicable components that can take damage.
         /// </returns>
         public DamageSpecifier? TryChangeDamage(EntityUid? uid, DamageSpecifier damage, bool ignoreResistances = false,
-            bool interruptsDoAfters = true, DamageableComponent? damageable = null, BodyComponent? bodyComp = null, EntityUid? origin = null, bool ignorePartScale = false)
+            bool interruptsDoAfters = true, DamageableComponent? damageable = null, BodyComponent? bodyComp = null, EntityUid? origin = null)
         {
             if (!uid.HasValue)
             {
@@ -190,7 +190,7 @@ namespace Content.Shared.Damage
                 return null;
             }
 
-            var damageDict = TryChangeDamageBody(uid, damage, ignoreResistances, interruptsDoAfters, bodyComp, origin, ignorePartScale);
+            var damageDict = TryChangeDamageBody(uid, damage, ignoreResistances, interruptsDoAfters, bodyComp, origin);
 
             if (damageDict == null)
                 return null;
@@ -206,7 +206,7 @@ namespace Content.Shared.Damage
         }
 
         public Dictionary<EntityUid, DamageSpecifier>? TryChangeDamageBody(EntityUid? uid, DamageSpecifier damage, bool ignoreResistances = false,
-            bool interruptsDoAfters = true, BodyComponent? body = null, EntityUid? origin = null, bool ignorePartScale = false)
+            bool interruptsDoAfters = true, BodyComponent? body = null, EntityUid? origin = null)
         {
             if (!uid.HasValue || !_bodyQuery.Resolve(uid.Value, ref body, false))
             {
