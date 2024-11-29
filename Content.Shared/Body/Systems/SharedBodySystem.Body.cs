@@ -13,6 +13,7 @@ using Content.Shared.Gibbing.Components;
 using Content.Shared.Gibbing.Events;
 using Content.Shared.Gibbing.Systems;
 using Content.Shared.Inventory;
+using Content.Shared.Radiation.Events;
 using Content.Shared.Rejuvenate;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
@@ -53,6 +54,7 @@ public partial class SharedBodySystem
         SubscribeLocalEvent<BodyComponent, MapInitEvent>(OnBodyMapInit);
         SubscribeLocalEvent<BodyComponent, CanDragEvent>(OnBodyCanDrag);
         SubscribeLocalEvent<BodyComponent, RejuvenateEvent>(OnRejuvenate);
+        SubscribeLocalEvent<BodyComponent, OnIrradiatedEvent>(OnIrradiatedEvent);
 
         SubscribeLocalEvent<BodyPartComponent, ComponentStartup>(OnPartStartup);
         SubscribeLocalEvent<BodyPartComponent, DamageModifyEvent>(RelayToBody);
@@ -156,6 +158,12 @@ public partial class SharedBodySystem
         {
             RaiseLocalEvent(partUid, new RejuvenateEvent());
         }
+    }
+    private void OnIrradiatedEvent(EntityUid uid, BodyComponent component, OnIrradiatedEvent args)
+    {
+        var parts = GetBodyDamageable(uid, component);
+        foreach (var (part, damageable) in parts)
+            _damageable.Irradiate(part, damageable, args.RadsPerSecond/ parts.Count());
     }
 
     private void OnPartStartup(EntityUid uid, BodyPartComponent component, ComponentStartup args)

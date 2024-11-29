@@ -22,6 +22,7 @@ public abstract class SharedArmorSystem : EntitySystem
 
         SubscribeLocalEvent<ArmorComponent, InventoryRelayedEvent<DamageModifyEvent>>(OnDamageModify);
         SubscribeLocalEvent<ArmorComponent, BorgModuleRelayedEvent<DamageModifyEvent>>(OnBorgDamageModify);
+        SubscribeLocalEvent<ArmorComponent, LimbBodyRelayedEvent<DamageModifyEvent>>(OnBodyDamageModify);
         SubscribeLocalEvent<ArmorComponent, GetVerbsEvent<ExamineVerb>>(OnArmorVerbExamine);
     }
 
@@ -37,6 +38,16 @@ public abstract class SharedArmorSystem : EntitySystem
 
     private void OnBorgDamageModify(EntityUid uid, ArmorComponent component,
         ref BorgModuleRelayedEvent<DamageModifyEvent> args)
+    {
+        var part = GetModifier(component, args.Args.BodyPart);
+
+        if (part == null)
+            return;
+
+        args.Args.Damage = DamageSpecifier.ApplyModifierSet(args.Args.Damage, component.Modifiers[part]);
+    }
+
+    private void OnBodyDamageModify(EntityUid uid, ArmorComponent component, LimbBodyRelayedEvent<DamageModifyEvent> args)
     {
         var part = GetModifier(component, args.Args.BodyPart);
 

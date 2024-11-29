@@ -162,7 +162,7 @@ namespace Content.Shared.Damage
         ///     null if the user had no applicable components that can take damage.
         /// </returns>
         public DamageSpecifier? TryChangeDamage(EntityUid? uid, DamageSpecifier damage, bool ignoreResistances = false,
-            bool interruptsDoAfters = true, DamageableComponent? damageable = null, BodyComponent? bodyComp = null, EntityUid? origin = null)
+            bool interruptsDoAfters = true, DamageableComponent? damageable = null, BodyComponent? bodyComp = null, EntityUid? origin = null, bool splitLimbDamage = true)
         {
             if (!uid.HasValue)
             {
@@ -190,7 +190,7 @@ namespace Content.Shared.Damage
                 return null;
             }
 
-            var damageDict = TryChangeDamageBody(uid, damage, ignoreResistances, interruptsDoAfters, bodyComp, origin);
+            var damageDict = TryChangeDamageBody(uid, damage, ignoreResistances, interruptsDoAfters, bodyComp, origin, splitLimbDamage);
 
             if (damageDict == null)
                 return null;
@@ -206,7 +206,7 @@ namespace Content.Shared.Damage
         }
 
         public Dictionary<EntityUid, DamageSpecifier>? TryChangeDamageBody(EntityUid? uid, DamageSpecifier damage, bool ignoreResistances = false,
-            bool interruptsDoAfters = true, BodyComponent? body = null, EntityUid? origin = null)
+            bool interruptsDoAfters = true, BodyComponent? body = null, EntityUid? origin = null, bool splitLimbDamage = true)
         {
             if (!uid.HasValue || !_bodyQuery.Resolve(uid.Value, ref body, false))
             {
@@ -221,6 +221,8 @@ namespace Content.Shared.Damage
             }
 
             var parts = _body.GetBodyDamageable(uid.Value, body);
+
+            var damagePerPart = damage / parts.Count();
 
             TryComp<DamagePartSelectorComponent>(origin, out var damageSelectorComp);
 
@@ -240,7 +242,12 @@ namespace Content.Shared.Damage
                 }
                 else
                 {
-                    newDamage = ChangeDamage(part, damage, damageable, ignoreResistances, interruptsDoAfters, origin, partComp.PartType, uid.Value);
+                    var limbDamage = damage;
+
+                    if (splitLimbDamage)
+                        limbDamage = damagePerPart;
+
+                    newDamage = ChangeDamage(part, limbDamage, damageable, ignoreResistances, interruptsDoAfters, origin, partComp.PartType, uid.Value);
                 }
 
                 if (newDamage == null)
@@ -365,10 +372,14 @@ namespace Content.Shared.Damage
             }
         }
 
+
         private void OnIrradiated(EntityUid uid, DamageableComponent component, OnIrradiatedEvent args)
         {
-            var damageValue = FixedPoint2.New(args.TotalRads);
+            Irradiate(uid, component, args.TotalRads);
+        }
 
+        public void Irradiate(EntityUid uid, DamageableComponent component, FixedPoint2 damageValue)
+        {
             // Radiation should really just be a damage group instead of a list of types.
             DamageSpecifier damage = new();
             foreach (var typeId in component.RadiationDamageTypeIDs)

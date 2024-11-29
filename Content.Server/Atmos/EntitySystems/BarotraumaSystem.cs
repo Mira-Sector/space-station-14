@@ -3,6 +3,7 @@ using Content.Server.Administration.Logs;
 using Content.Server.Atmos.Components;
 using Content.Shared.Alert;
 using Content.Shared.Atmos;
+using Content.Shared.Body.Systems;
 using Content.Shared.Damage;
 using Content.Shared.Database;
 using Content.Shared.FixedPoint;
@@ -17,6 +18,7 @@ namespace Content.Server.Atmos.EntitySystems
         [Dependency] private readonly AtmosphereSystem _atmosphereSystem = default!;
         [Dependency] private readonly DamageableSystem _damageableSystem = default!;
         [Dependency] private readonly AlertsSystem _alertsSystem = default!;
+        [Dependency] private readonly SharedBodySystem _bodySystem = default!;
         [Dependency] private readonly IAdminLogManager _adminLogger= default!;
         [Dependency] private readonly InventorySystem _inventorySystem = default!;
 
@@ -206,15 +208,33 @@ namespace Content.Server.Atmos.EntitySystems
 
             _timer -= UpdateTimer;
 
-            var enumerator = EntityQueryEnumerator<BarotraumaComponent, DamageableComponent>();
-            while (enumerator.MoveNext(out var uid, out var barotrauma, out var damageable))
+            var enumerator = EntityQueryEnumerator<BarotraumaComponent>();
+            while (enumerator.MoveNext(out var uid, out var barotrauma))
             {
+                var bodyDamage = _bodySystem.GetBodyDamage(uid);
+
+                DamageSpecifier damage = new();
+
+                if (bodyDamage != null)
+                {
+                    damage = bodyDamage;
+                }
+                else if (TryComp<DamageableComponent>(uid, out var damageable))
+                {
+                    damage = damageable.Damage;
+                }
+                else
+                {
+                    continue;
+                }
+
                 var totalDamage = FixedPoint2.Zero;
                 foreach (var (barotraumaDamageType, _) in barotrauma.Damage.DamageDict)
                 {
-                    if (!damageable.Damage.DamageDict.TryGetValue(barotraumaDamageType, out var damage))
+                    if (!damage.DamageDict.ContainsKey(barotraumaDamageType))
                         continue;
-                    totalDamage += damage;
+
+                    totalDamage += damage.DamageDict[barotraumaDamageType];
                 }
                 if (totalDamage >= barotrauma.MaxDamage)
                     continue;
