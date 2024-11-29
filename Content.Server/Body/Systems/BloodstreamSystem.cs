@@ -4,6 +4,7 @@ using Content.Server.Fluids.EntitySystems;
 using Content.Server.Forensics;
 using Content.Server.Popups;
 using Content.Shared.Alert;
+using Content.Shared.Body.Part;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Chemistry.Reaction;
@@ -49,6 +50,7 @@ public sealed class BloodstreamSystem : EntitySystem
         SubscribeLocalEvent<BloodstreamComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<BloodstreamComponent, EntityUnpausedEvent>(OnUnpaused);
         SubscribeLocalEvent<BloodstreamComponent, DamageChangedEvent>(OnDamageChanged);
+        SubscribeLocalEvent<BloodstreamComponent, LimbBodyRelayedEvent<DamageChangedEvent>>(OnBodyDamageChanged);
         SubscribeLocalEvent<BloodstreamComponent, HealthBeingExaminedEvent>(OnHealthBeingExamined);
         SubscribeLocalEvent<BloodstreamComponent, BeingGibbedEvent>(OnBeingGibbed);
         SubscribeLocalEvent<BloodstreamComponent, ApplyMetabolicMultiplierEvent>(OnApplyMetabolicMultiplier);
@@ -164,7 +166,7 @@ public sealed class BloodstreamSystem : EntitySystem
                 _damageableSystem.TryChangeDamage(
                     uid,
                     bloodstream.BloodlossHealDamage * bloodPercentage,
-                    ignoreResistances: true, interruptsDoAfters: false, ignorePartScale: true);
+                    ignoreResistances: true, interruptsDoAfters: false);
 
                 // Remove the drunk effect when healthy. Should only remove the amount of drunk and stutter added by low blood level
                 _drunkSystem.TryRemoveDrunkenessTime(uid, bloodstream.StatusTime.TotalSeconds);
@@ -206,18 +208,33 @@ public sealed class BloodstreamSystem : EntitySystem
         bloodSolution.AddReagent(new ReagentId(entity.Comp.BloodReagent, GetEntityBloodData(entity.Owner)), entity.Comp.BloodMaxVolume - bloodSolution.Volume);
     }
 
-    private void OnDamageChanged(Entity<BloodstreamComponent> ent, ref DamageChangedEvent args)
+    private void OnBodyDamageChanged(Entity<BloodstreamComponent> ent, ref LimbBodyRelayedEvent<DamageChangedEvent> args)
     {
-        if (args.DamageDelta is null || !args.DamageIncreased)
+        if (args.Args.DamageDelta is null || !args.Args. DamageIncreased)
         {
             return;
         }
 
+        DoDamageChangedEvent(ent, args.Args.DamageDelta);
+    }
+
+    private void OnDamageChanged(Entity<BloodstreamComponent> ent, ref DamageChangedEvent args)
+    {
+        if (args.DamageDelta is null || !args. DamageIncreased)
+        {
+            return;
+        }
+
+        DoDamageChangedEvent(ent, args.DamageDelta);
+    }
+
+    private void DoDamageChangedEvent(Entity<BloodstreamComponent> ent, DamageSpecifier damage)
+    {
         // TODO probably cache this or something. humans get hurt a lot
         if (!_prototypeManager.TryIndex<DamageModifierSetPrototype>(ent.Comp.DamageBleedModifiers, out var modifiers))
             return;
 
-        var bloodloss = DamageSpecifier.ApplyModifierSet(args.DamageDelta, modifiers);
+        var bloodloss = DamageSpecifier.ApplyModifierSet(damage, modifiers);
 
         if (bloodloss.Empty)
             return;

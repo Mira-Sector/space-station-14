@@ -54,11 +54,9 @@
 # Used for mobs that have health and can take damage.
 - type: entity
   save: false
-  id: MobDamageable
+  id: MobDamageableBody
   abstract: true
   components:
-  - type: Damageable
-    damageContainer: Biological
   - type: Destructible
     thresholds:
     - trigger:
@@ -129,6 +127,15 @@
   - type: LightningTarget
     priority: 2
     lightningExplode: false
+
+- type: entity
+  save: false
+  id: MobDamageable
+  parent: MobDamageableBody
+  abstract: true
+  components:
+  - type: Damageable
+    damageContainer: Biological
 
 # Used for mobs that can enter combat mode and can attack.
 - type: entity
