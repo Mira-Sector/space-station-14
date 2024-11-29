@@ -437,22 +437,27 @@ public sealed class MobThresholdSystem : EntitySystem
 
     private void OnDamaged(EntityUid target, MobThresholdsComponent thresholds, DamageChangedEvent args)
     {
-        OnDamageEvent(target, thresholds, args);
+        OnDamageEvent(target, thresholds, args.Damageable.Damage, args.Origin);
     }
 
     private void OnBodyDamaged(EntityUid target, MobThresholdsComponent thresholds, LimbBodyRelayedEvent<DamageChangedEvent> args)
     {
-        OnDamageEvent(target, thresholds, args.Args);
+        var bodyDamage = _body.GetBodyDamage(target);
+
+        if (bodyDamage == null)
+            return;
+
+        OnDamageEvent(target, thresholds, bodyDamage, args.Args.Origin);
     }
 
-    private void OnDamageEvent(EntityUid target, MobThresholdsComponent thresholds, DamageChangedEvent args)
+    private void OnDamageEvent(EntityUid target, MobThresholdsComponent thresholds, DamageSpecifier damage, EntityUid? origin = null)
     {
         if (!TryComp<MobStateComponent>(target, out var mobState))
             return;
-        CheckThresholds(target, mobState, thresholds, args.Damageable.TotalDamage, args.Origin);
-        var ev = new MobThresholdChecked(target, mobState, thresholds, args.Damageable.Damage);
+        CheckThresholds(target, mobState, thresholds, damage.GetTotal(), origin);
+        var ev = new MobThresholdChecked(target, mobState, thresholds, damage);
         RaiseLocalEvent(target, ref ev, true);
-        UpdateAlerts(target, mobState.CurrentState, thresholds, args.Damageable.Damage);
+        UpdateAlerts(target, mobState.CurrentState, thresholds, damage);
     }
 
     private void MobThresholdStartup(EntityUid target, MobThresholdsComponent thresholds, ComponentStartup args)

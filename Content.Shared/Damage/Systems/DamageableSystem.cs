@@ -162,7 +162,7 @@ namespace Content.Shared.Damage
         ///     null if the user had no applicable components that can take damage.
         /// </returns>
         public DamageSpecifier? TryChangeDamage(EntityUid? uid, DamageSpecifier damage, bool ignoreResistances = false,
-            bool interruptsDoAfters = true, DamageableComponent? damageable = null, BodyComponent? body = null, EntityUid? origin = null, bool ignorePartScale = false)
+            bool interruptsDoAfters = true, DamageableComponent? damageable = null, BodyComponent? bodyComp = null, EntityUid? origin = null, bool ignorePartScale = false)
         {
             if (!uid.HasValue)
             {
@@ -176,10 +176,16 @@ namespace Content.Shared.Damage
 
             if (_damageableQuery.Resolve(uid.Value, ref damageable, false))
             {
-                return ChangeDamage(uid.Value, damage, damageable, ignoreResistances, interruptsDoAfters, origin);
+                EntityUid? bodyUid = null;
+
+                if (TryComp<BodyPartComponent>(uid, out var bodyPartComp))
+                {
+                    bodyUid = bodyPartComp.Body;
+                }
+                return ChangeDamage(uid.Value, damage, damageable, ignoreResistances, interruptsDoAfters, origin, body: bodyUid);
             }
 
-            if (!TryComp<BodyComponent>(uid, out var bodyComp))
+            if (!_bodyQuery.Resolve(uid.Value, ref bodyComp))
             {
                 return null;
             }
@@ -212,11 +218,6 @@ namespace Content.Shared.Damage
             if (damage.Empty)
             {
                 return damageDict;
-            }
-
-            if (origin != null)
-            {
-                bool a;
             }
 
             var parts = _body.GetBodyDamageable(uid.Value, body);
