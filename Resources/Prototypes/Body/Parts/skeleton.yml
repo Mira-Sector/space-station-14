@@ -37,7 +37,7 @@
       thresholds:
         0: Healthy
         15: Damaged
-        25: Dead
+        100: Dead
 
 - type: entity
   id: HeadSkeleton
@@ -60,7 +60,7 @@
       thresholds:
         0: Healthy
         10: Damaged
-        35: Dead
+        75: Dead
     - type: Input
       context: "human"
     - type: Speech
@@ -107,7 +107,7 @@
       thresholds:
         0: Healthy
         5: Damaged
-        25: Dead
+        50: Dead
 
 - type: entity
   id: RightArmSkeleton
@@ -130,7 +130,7 @@
       thresholds:
         0: Healthy
         5: Damaged
-        25: Dead
+        50: Dead
 
 - type: entity
   id: LeftHandSkeleton
@@ -184,7 +184,7 @@
       thresholds:
         0: Healthy
         5: Damaged
-        25: Dead
+        65: Dead
 
 - type: entity
   id: RightLegSkeleton
@@ -208,7 +208,7 @@
       thresholds:
         0: Healthy
         5: Damaged
-        25: Dead
+        65: Dead
 
 - type: entity
   id: LeftFootSkeleton

@@ -62,7 +62,7 @@
     thresholds:
       0: Healthy
       5: Damaged
-      25: Dead
+      65: Dead
   - type: MovementBodyPart
 
 - type: entity
@@ -95,7 +95,7 @@
     thresholds:
       0: Healthy
       15: Damaged
-      25: Dead
+      100: Dead
   - type: Extractable
     juiceSolution:
       reagents:

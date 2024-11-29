@@ -32,7 +32,7 @@
     thresholds:
       0: Healthy
       15: Damaged
-      25: Dead
+      100: Dead
 
 - type: entity
   id: BaseHead
@@ -49,7 +49,7 @@
     thresholds:
       0: Healthy
       10: Damaged
-      35: Dead
+      75: Dead
   - type: Input
     context: "ghost"
   - type: Damageable
@@ -73,7 +73,7 @@
     thresholds:
       0: Healthy
       5: Damaged
-      25: Dead
+      50: Dead
   - type: Damageable
     damageContainer: Biological
 
@@ -92,7 +92,7 @@
     thresholds:
       0: Healthy
       5: Damaged
-      25: Dead
+      50: Dead
   - type: Damageable
     damageContainer: Biological
 
@@ -132,7 +132,7 @@
     thresholds:
       0: Healthy
       5: Damaged
-      25: Dead
+      65: Dead
   - type: Damageable
     damageContainer: Biological
 
@@ -152,7 +152,7 @@
     thresholds:
       0: Healthy
       5: Damaged
-      25: Dead
+      65: Dead
   - type: Damageable
     damageContainer: Biological
 

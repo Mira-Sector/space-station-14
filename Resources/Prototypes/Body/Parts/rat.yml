@@ -14,7 +14,7 @@
     thresholds:
       0: Healthy
       15: Damaged
-      25: Dead
+      200: Dead
   - type: Tag
     tags:
       - Trash

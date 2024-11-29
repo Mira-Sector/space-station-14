@@ -19,7 +19,7 @@ public partial class SharedBodySystem
         if (args.Cancelled)
             return;
 
-        args.Cancelled = component.CurrentState == WoundState.Dead;
+        args.Cancelled = args.Damage.AnyPositive() && component.CurrentState == WoundState.Dead;
     }
 
     private void OnDamaged(EntityUid uid, BodyPartThresholdsComponent component, DamageChangedEvent args)
