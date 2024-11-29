@@ -609,8 +609,10 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
 
         foreach (var entity in entities)
         {
-            if (entity == user ||
-                !damageQuery.HasComponent(entity))
+            if (entity == user)
+                continue;
+
+            if (!damageQuery.HasComponent(entity) && _body.GetBodyDamageable(entity).Count() <= 0)
                 continue;
 
             targets.Add(entity);
