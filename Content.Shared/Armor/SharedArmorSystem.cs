@@ -22,7 +22,6 @@ public abstract class SharedArmorSystem : EntitySystem
 
         SubscribeLocalEvent<ArmorComponent, InventoryRelayedEvent<DamageModifyEvent>>(OnDamageModify);
         SubscribeLocalEvent<ArmorComponent, BorgModuleRelayedEvent<DamageModifyEvent>>(OnBorgDamageModify);
-        SubscribeLocalEvent<ArmorComponent, LimbBodyRelayedEvent<DamageModifyEvent>>(OnBodyDamageModify);
         SubscribeLocalEvent<ArmorComponent, GetVerbsEvent<ExamineVerb>>(OnArmorVerbExamine);
     }
 

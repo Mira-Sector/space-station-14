@@ -375,14 +375,14 @@ namespace Content.Shared.Damage
 
         private void OnIrradiated(EntityUid uid, DamageableComponent component, OnIrradiatedEvent args)
         {
-            Irradiate(uid, component, args.TotalRads);
+            Irradiate(uid, args.TotalRads, component.RadiationDamageTypeIDs);
         }
 
-        public void Irradiate(EntityUid uid, DamageableComponent component, FixedPoint2 damageValue)
+        public void Irradiate(EntityUid uid, FixedPoint2 damageValue, List<ProtoId<DamageTypePrototype>> radiationIDs)
         {
             // Radiation should really just be a damage group instead of a list of types.
             DamageSpecifier damage = new();
-            foreach (var typeId in component.RadiationDamageTypeIDs)
+            foreach (var typeId in radiationIDs)
             {
                 damage.DamageDict.Add(typeId, damageValue);
             }

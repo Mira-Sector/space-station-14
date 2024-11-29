@@ -162,8 +162,11 @@ public partial class SharedBodySystem
     private void OnIrradiatedEvent(EntityUid uid, BodyComponent component, OnIrradiatedEvent args)
     {
         var parts = GetBodyDamageable(uid, component);
+
         foreach (var (part, damageable) in parts)
-            _damageable.Irradiate(part, damageable, args.RadsPerSecond/ parts.Count());
+        {
+            _damageable.Irradiate(part, args.RadsPerSecond/ parts.Count(), damageable.RadiationDamageTypeIDs);
+        }
     }
 
     private void OnPartStartup(EntityUid uid, BodyPartComponent component, ComponentStartup args)
