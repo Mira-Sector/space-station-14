@@ -9,7 +9,16 @@ public partial class SharedBodySystem
 {
     private void InitializePartThresholds()
     {
+        SubscribeLocalEvent<BodyPartThresholdsComponent, BeforeDamageChangedEvent>(OnBeforeDamaged);
         SubscribeLocalEvent<BodyPartThresholdsComponent, DamageChangedEvent>(OnDamaged);
+    }
+
+    private void OnBeforeDamaged(EntityUid uid, BodyPartThresholdsComponent component, ref BeforeDamageChangedEvent args)
+    {
+        if (args.Cancelled)
+            return;
+
+        args.Cancelled = component.CurrentState == WoundState.Dead;
     }
 
     private void OnDamaged(EntityUid uid, BodyPartThresholdsComponent component, DamageChangedEvent args)
@@ -23,6 +32,7 @@ public partial class SharedBodySystem
         CheckThresholds(uid, body, component, args.Damageable);
         _alerts.ShowAlert(body, bodyComp.Alert);
     }
+
 
     internal void CheckThresholds(EntityUid limb, EntityUid body, BodyPartThresholdsComponent thresholds, DamageableComponent damage)
     {
