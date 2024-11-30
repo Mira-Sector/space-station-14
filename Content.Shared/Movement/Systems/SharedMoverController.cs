@@ -58,6 +58,7 @@ public abstract partial class SharedMoverController : VirtualController
     protected EntityQuery<CanMoveInAirComponent> CanMoveInAirQuery;
     protected EntityQuery<NoRotateOnMoveComponent> NoRotateQuery;
     protected EntityQuery<FootstepModifierComponent> FootstepModifierQuery;
+    protected EntityQuery<FootstepForceNonBarefootComponent> FootstepNonBarefootModifierQuery;
     protected EntityQuery<MapGridComponent> MapGridQuery;
 
     /// <summary>
@@ -87,6 +88,7 @@ public abstract partial class SharedMoverController : VirtualController
         NoRotateQuery = GetEntityQuery<NoRotateOnMoveComponent>();
         CanMoveInAirQuery = GetEntityQuery<CanMoveInAirComponent>();
         FootstepModifierQuery = GetEntityQuery<FootstepModifierComponent>();
+        FootstepNonBarefootModifierQuery = GetEntityQuery<FootstepForceNonBarefootComponent>();
         MapGridQuery = GetEntityQuery<MapGridComponent>();
 
         InitializeInput();
@@ -449,7 +451,9 @@ public abstract partial class SharedMoverController : VirtualController
             return true;
         }
 
-        return TryGetFootstepSound(uid, xform, shoes != null, out sound, tileDef: tileDef);
+        var hasShoes = shoes != null || FootstepNonBarefootModifierQuery.HasComp(uid);
+
+        return TryGetFootstepSound(uid, xform, hasShoes, out sound, tileDef: tileDef);
     }
 
     private bool TryGetFootstepSound(

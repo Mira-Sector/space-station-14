@@ -1,6 +1,10 @@
-﻿using Content.Shared.Access.Systems;
+using Robust.Shared.GameStates;
 
 namespace Content.Shared.Access.Components;
 
-[RegisterComponent, Access(typeof(IdExaminableSystem))]
-public sealed partial class IdExaminableComponent : Component;
+[RegisterComponent, NetworkedComponent]
+public sealed partial class IdExaminableComponent : Component
+{
+    [DataField]
+    public string? IdOverride;
+}

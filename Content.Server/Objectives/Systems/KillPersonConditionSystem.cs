@@ -1,5 +1,6 @@
 using Content.Server.GameTicking.Rules;
 using Content.Server.Objectives.Components;
+using Content.Server.Revolutionary.Components;
 using Content.Server.Shuttles.Systems;
 using Content.Server.Roles;
 using Content.Shared.CCVar;
@@ -124,11 +125,10 @@ public sealed class KillPersonConditionSystem : EntitySystem
         }
 
         var allHeads = new List<EntityUid>();
-        foreach (var mind in allHumans)
+        foreach (var person in allHumans)
         {
-            // RequireAdminNotify used as a cheap way to check for command department
-            if (_job.MindTryGetJob(mind, out _, out var prototype) && prototype.RequireAdminNotify)
-                allHeads.Add(mind);
+            if (TryComp<MindComponent>(person, out var mind) && mind.OwnedEntity is { } ent && HasComp<CommandStaffComponent>(ent))
+                allHeads.Add(person);
         }
 
         if (allHeads.Count == 0)
@@ -177,9 +177,8 @@ public sealed class KillPersonConditionSystem : EntitySystem
             return;
         }
 
-        if (!TryComp<JobComponent>(roleComp.Obsession, out var obsessionJobComp) ||
-            obsessionJobComp == null ||
-            obsessionJobComp.Prototype == null)
+
+        if (!_job.MindTryGetJob(args.MindId, out var obsessionJob))
         {
             args.Cancelled = true;
             return;
@@ -189,7 +188,7 @@ public sealed class KillPersonConditionSystem : EntitySystem
         DepartmentPrototype? obsessionDepartment = null;
         foreach (var department in _prototypeMan.EnumeratePrototypes<DepartmentPrototype>())
         {
-            if (department.Roles.Contains(obsessionJobComp.Prototype.Value))
+            if (department.Roles.Contains(obsessionJob))
             {
                 obsessionDepartment = department;
                 break;
@@ -210,13 +209,10 @@ public sealed class KillPersonConditionSystem : EntitySystem
         List<EntityUid> targets = new();
         foreach (var human in allHumans)
         {
-            if (!TryComp<JobComponent>(human, out var jobComp))
+            if (!_job.MindTryGetJob(human, out var job))
                 continue;
 
-            if (jobComp.Prototype == null)
-                continue;
-
-            if (obsessionDepartment.Roles.Contains(jobComp.Prototype.Value))
+            if (obsessionDepartment.Roles.Contains(job))
                 targets.Add(human);
         }
 

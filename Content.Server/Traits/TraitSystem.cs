@@ -27,7 +27,7 @@ public sealed class TraitSystem : EntitySystem
     {
         // Check if player's job allows to apply traits
         if (args.Job == null ||
-            !_prototypeManager.TryIndex<JobPrototype>(args.Job.Prototype, out var jobProto) ||
+            !_prototypeManager.TryIndex<JobPrototype>(args.Job, out var jobProto) ||
             jobProto == null ||
             !jobProto.ApplyTraits)
         {
