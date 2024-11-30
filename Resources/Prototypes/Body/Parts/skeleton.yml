@@ -33,11 +33,6 @@
     - type: Damageable
       damageContainer: Biological
       damageModifierSet: Skeleton
-    - type: BodyPartThresholds
-      thresholds:
-        0: Healthy
-        15: Damaged
-        100: Dead
 
 - type: entity
   id: HeadSkeleton
@@ -56,11 +51,6 @@
     - type: Damageable
       damageContainer: Biological
       damageModifierSet: Skeleton
-    - type: BodyPartThresholds
-      thresholds:
-        0: Healthy
-        10: Damaged
-        75: Dead
     - type: Input
       context: "human"
     - type: Speech
@@ -103,11 +93,6 @@
     - type: Damageable
       damageContainer: Biological
       damageModifierSet: Skeleton
-    - type: BodyPartThresholds
-      thresholds:
-        0: Healthy
-        5: Damaged
-        50: Dead
 
 - type: entity
   id: RightArmSkeleton
@@ -126,11 +111,6 @@
     - type: Damageable
       damageContainer: Biological
       damageModifierSet: Skeleton
-    - type: BodyPartThresholds
-      thresholds:
-        0: Healthy
-        5: Damaged
-        50: Dead
 
 - type: entity
   id: LeftHandSkeleton
@@ -180,11 +160,6 @@
     - type: Damageable
       damageContainer: Biological
       damageModifierSet: Skeleton
-    - type: BodyPartThresholds
-      thresholds:
-        0: Healthy
-        5: Damaged
-        65: Dead
 
 - type: entity
   id: RightLegSkeleton
@@ -204,11 +179,6 @@
     - type: Damageable
       damageContainer: Biological
       damageModifierSet: Skeleton
-    - type: BodyPartThresholds
-      thresholds:
-        0: Healthy
-        5: Damaged
-        65: Dead
 
 - type: entity
   id: LeftFootSkeleton

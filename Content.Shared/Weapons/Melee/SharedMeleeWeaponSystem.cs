@@ -3,7 +3,6 @@ using System.Linq;
 using System.Numerics;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Administration.Logs;
-using Content.Shared.Body.Systems;
 using Content.Shared.CombatMode;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Systems;
@@ -43,7 +42,6 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
     [Dependency] protected readonly SharedPopupSystem        PopupSystem     = default!;
     [Dependency] protected readonly IGameTiming              Timing          = default!;
     [Dependency] protected readonly SharedTransformSystem    TransformSystem = default!;
-    [Dependency] private   readonly SharedBodySystem        _body            = default!;
     [Dependency] private   readonly InventorySystem         _inventory       = default!;
     [Dependency] private   readonly MeleeSoundSystem        _meleeSound      = default!;
     [Dependency] private   readonly SharedPhysicsSystem     _physics         = default!;
@@ -456,11 +454,9 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
         var target = GetEntity(ev.Target);
         var resistanceBypass = GetResistanceBypass(meleeUid, user, component);
 
-        var parts = _body.GetBodyDamageable(target);
-
         // For consistency with wide attacks stuff needs damageable.
         if (Deleted(target) ||
-            (!HasComp<DamageableComponent>(target) && parts.Count() <= 0) ||
+            !HasComp<DamageableComponent>(target) ||
             !TryComp(target, out TransformComponent? targetXform) ||
             // Not in LOS.
             !InRange(user, target.Value, component.Range, session))
@@ -609,10 +605,8 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
 
         foreach (var entity in entities)
         {
-            if (entity == user)
-                continue;
-
-            if (!damageQuery.HasComponent(entity) && _body.GetBodyDamageable(entity).Count() <= 0)
+            if (entity == user ||
+                !damageQuery.HasComponent(entity))
                 continue;
 
             targets.Add(entity);

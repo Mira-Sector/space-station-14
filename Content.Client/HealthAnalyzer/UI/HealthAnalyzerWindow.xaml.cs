@@ -4,7 +4,6 @@ using Content.Client.Message;
 using Content.Shared.Atmos;
 using Content.Client.UserInterface.Controls;
 using Content.Shared.Alert;
-using Content.Shared.Body.Systems;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.FixedPoint;
@@ -36,7 +35,6 @@ namespace Content.Client.HealthAnalyzer.UI
         private readonly SpriteSystem _spriteSystem;
         private readonly IPrototypeManager _prototypes;
         private readonly IResourceCache _cache;
-        private readonly SharedBodySystem _bodySystem;
 
         public HealthAnalyzerWindow()
         {
@@ -47,34 +45,14 @@ namespace Content.Client.HealthAnalyzer.UI
             _spriteSystem = _entityManager.System<SpriteSystem>();
             _prototypes = dependencies.Resolve<IPrototypeManager>();
             _cache = dependencies.Resolve<IResourceCache>();
-            _bodySystem = _entityManager.System<SharedBodySystem>();
         }
 
         public void Populate(HealthAnalyzerScannedUserMessage msg)
         {
             var target = _entityManager.GetEntity(msg.TargetEntity);
 
-            DamageSpecifier damage = new();
-
-            if (target != null)
-            {
-                var bodyDamage = _bodySystem.GetBodyDamage(target.Value);
-
-                if (bodyDamage != null)
-                {
-                    damage = bodyDamage;
-                }
-                else if (_entityManager.TryGetComponent<DamageableComponent>(target, out var damageable))
-                {
-                    damage = damageable.Damage;
-                }
-                else
-                {
-                    target = null;
-                }
-            }
-
-            if (target == null)
+            if (target == null
+                || !_entityManager.TryGetComponent<DamageableComponent>(target, out var damageable))
             {
                 NoPatientDataText.Visible = true;
                 return;
@@ -128,7 +106,7 @@ namespace Content.Client.HealthAnalyzer.UI
 
             // Total Damage
 
-            DamageLabel.Text = damage.GetTotal().ToString();
+            DamageLabel.Text = damageable.TotalDamage.ToString();
 
             // Alerts
 
@@ -148,10 +126,10 @@ namespace Content.Client.HealthAnalyzer.UI
             // Damage Groups
 
             var damageSortedGroups =
-                damage.GetDamagePerGroup(_prototypes).OrderByDescending(damage => damage.Value)
+                damageable.DamagePerGroup.OrderByDescending(damage => damage.Value)
                     .ToDictionary(x => x.Key, x => x.Value);
 
-            IReadOnlyDictionary<string, FixedPoint2> damagePerType = damage.DamageDict;
+            IReadOnlyDictionary<string, FixedPoint2> damagePerType = damageable.Damage.DamageDict;
 
             DrawDiagnosticGroups(damageSortedGroups, damagePerType);
         }

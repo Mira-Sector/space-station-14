@@ -230,6 +230,8 @@
           map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
           color: "#8adaff"
           shader: unshaded
+    - type: Body
+      prototype: Primate
     - type: Tag
       tags:
         - CannotSuicide

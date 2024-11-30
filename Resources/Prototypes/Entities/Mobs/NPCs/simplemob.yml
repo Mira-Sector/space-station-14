@@ -2,10 +2,10 @@
   save: false
   parent:
   - BaseMob
-  - MobDamageableBody
+  - MobDamageable
   - MobPolymorphable
   - MobAtmosExposed
-  id: BaseSimpleMobBody
+  id: BaseSimpleMob
   suffix: AI
   abstract: true
   components:
@@ -37,18 +37,9 @@
     - DoorBumpOpener
 
 - type: entity
-  save: false
-  parent:
-  - BaseSimpleMobBody
-  - MobDamageable
-  id: BaseSimpleMob
-  suffix: AI
-  abstract: true
-
-- type: entity
   abstract: true
   parent:
-  - BaseSimpleMobBody
+  - BaseSimpleMob
   - MobCombat
   - MobBloodstream
   - MobFlammable

@@ -12,11 +12,11 @@ namespace Content.Server.Destructible.Thresholds.Triggers
         [DataField("triggers")]
         public List<IThresholdTrigger> Triggers { get; private set; } = new();
 
-        public bool Reached(DestructibleSystem system, DamageSpecifier totalDamage, bool isPositive, DamageSpecifier? deltaDamage, EntityUid? origin = null)
+        public bool Reached(DamageableComponent damageable, DestructibleSystem system, DamageChangedEvent args)
         {
             foreach (var trigger in Triggers)
             {
-                if (!trigger.Reached(system, totalDamage, isPositive, deltaDamage, origin))
+                if (trigger.Reached(damageable, system, args))
                 {
                     return true;
                 }

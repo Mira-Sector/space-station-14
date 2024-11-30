@@ -58,11 +58,6 @@
     - state: r_leg
   - type: BodyPart
     partType: Leg
-  - type: BodyPartThresholds
-    thresholds:
-      0: Healthy
-      5: Damaged
-      65: Dead
   - type: MovementBodyPart
 
 - type: entity
@@ -91,11 +86,6 @@
     partType: Torso
   - type: Damageable
     damageContainer: Biological
-  - type: BodyPartThresholds
-    thresholds:
-      0: Healthy
-      15: Damaged
-      100: Dead
   - type: Extractable
     juiceSolution:
       reagents:

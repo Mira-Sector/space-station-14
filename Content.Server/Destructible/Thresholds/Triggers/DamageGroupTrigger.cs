@@ -24,14 +24,14 @@ namespace Content.Server.Destructible.Thresholds.Triggers
         [DataField]
         public bool Repeatable = false;
 
-        public bool Reached(DestructibleSystem system, DamageSpecifier totalDamage, bool isPositive, DamageSpecifier? deltaDamage, EntityUid? origin = null)
+        public bool Reached(DamageableComponent damageable, DestructibleSystem system, DamageChangedEvent args)
         {
             if (!Repeatable)
-                return totalDamage.DamageDict[DamageGroup] >= Damage;
+                return damageable.DamagePerGroup[DamageGroup] >= Damage;
 
-            if (deltaDamage == null ||
+            if (args.DamageDelta == null ||
                 !system.PrototypeManager.TryIndex<DamageGroupPrototype>(DamageGroup, out var damageGroupPrototype) ||
-                !deltaDamage.TryGetDamageInGroup(damageGroupPrototype, out var value))
+                !args.DamageDelta.TryGetDamageInGroup(damageGroupPrototype, out var value))
                 return false;
 
             return value >= Damage;

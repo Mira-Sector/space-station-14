@@ -9,7 +9,6 @@ using Content.Server.Destructible.Thresholds.Triggers;
 using Content.Server.Explosion.EntitySystems;
 using Content.Server.Fluids.EntitySystems;
 using Content.Server.Stack;
-using Content.Shared.Body.Part;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Damage;
 using Content.Shared.Database;
@@ -48,38 +47,17 @@ namespace Content.Server.Destructible
         public override void Initialize()
         {
             base.Initialize();
-            SubscribeLocalEvent<DestructibleComponent, DamageChangedEvent>(OnDamaged);
-            SubscribeLocalEvent<DestructibleComponent, LimbBodyRelayedEvent<DamageChangedEvent>>(OnBodyDamaged);
-        }
-
-        public void OnDamaged(EntityUid uid, DestructibleComponent component, DamageChangedEvent args)
-        {
-            Execute(uid, component, args.Damageable.Damage, args.DamageIncreased, args.DamageDelta, args.Origin);
-        }
-
-        public void OnBodyDamaged(EntityUid uid, DestructibleComponent component, LimbBodyRelayedEvent<DamageChangedEvent> args)
-        {
-            var totalDamage = BodySystem.GetBodyDamage(uid);
-
-            if (totalDamage == null)
-                return;
-
-            // if multiple get hit this event will be raised multiple times so we can only check the limb that got damaged
-            var isPositive = args.Args.DamageIncreased;
-            var deltaDamage = args.Args.DamageDelta;
-            var origin = args.Args.Origin;
-
-            Execute(uid, component, totalDamage, isPositive, deltaDamage, origin);
+            SubscribeLocalEvent<DestructibleComponent, DamageChangedEvent>(Execute);
         }
 
         /// <summary>
         ///     Check if any thresholds were reached. if they were, execute them.
         /// </summary>
-        public void Execute(EntityUid uid, DestructibleComponent component, DamageSpecifier totalDamage, bool isPositive, DamageSpecifier? deltaDamage, EntityUid? origin = null)
+        public void Execute(EntityUid uid, DestructibleComponent component, DamageChangedEvent args)
         {
             foreach (var threshold in component.Thresholds)
             {
-                if (threshold.Reached(this, totalDamage, isPositive, deltaDamage, origin))
+                if (threshold.Reached(args.Damageable, this, args))
                 {
                     RaiseLocalEvent(uid, new DamageThresholdReached(component, threshold), true);
 
@@ -93,10 +71,10 @@ namespace Content.Server.Destructible
                         return b.GetType().Name;
                     }));
 
-                    if (origin != null)
+                    if (args.Origin != null)
                     {
                         _adminLogger.Add(LogType.Damaged, LogImpact.Medium,
-                            $"{ToPrettyString(origin.Value):actor} caused {ToPrettyString(uid):subject} to trigger [{triggeredBehaviors}]");
+                            $"{ToPrettyString(args.Origin.Value):actor} caused {ToPrettyString(uid):subject} to trigger [{triggeredBehaviors}]");
                     }
                     else
                     {
@@ -104,7 +82,7 @@ namespace Content.Server.Destructible
                             $"Unknown damage source caused {ToPrettyString(uid):subject} to trigger [{triggeredBehaviors}]");
                     }
 
-                    threshold.Execute(uid, this, EntityManager, origin);
+                    threshold.Execute(uid, this, EntityManager, args.Origin);
                 }
 
                 // if destruction behavior (or some other deletion effect) occurred, don't run other triggers.
