@@ -2,6 +2,7 @@
   id: BaseMobAsteroid
   parent:
   - BaseMob
+  - MobDamageable
   - MobAtmosExposed
   - MobCombat
   abstract: true

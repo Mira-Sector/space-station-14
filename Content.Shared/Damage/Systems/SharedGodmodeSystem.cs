@@ -1,5 +1,3 @@
-using Content.Shared.Body.Components;
-using Content.Shared.Body.Systems;
 using Content.Shared.Damage.Components;
 using Content.Shared.Rejuvenate;
 using Content.Shared.Slippery;
@@ -9,7 +7,6 @@ namespace Content.Shared.Damage.Systems;
 
 public abstract class SharedGodmodeSystem : EntitySystem
 {
-    [Dependency] private readonly SharedBodySystem _body = default!;
     [Dependency] private readonly DamageableSystem _damageable = default!;
 
     public override void Initialize()
@@ -46,16 +43,6 @@ public abstract class SharedGodmodeSystem : EntitySystem
     {
         godmode ??= EnsureComp<GodmodeComponent>(uid);
 
-        if (TryComp<BodyComponent>(uid, out var body))
-        {
-            foreach (var (part, _) in _body.GetBodyChildren(uid, body))
-            {
-                EnableGodmode(part);
-            }
-
-            return;
-        }
-
         if (TryComp<DamageableComponent>(uid, out var damageable))
         {
             godmode.OldDamage = new DamageSpecifier(damageable.Damage);
@@ -69,14 +56,6 @@ public abstract class SharedGodmodeSystem : EntitySystem
     {
         if (!Resolve(uid, ref godmode, false))
             return;
-
-        if (TryComp<BodyComponent>(uid, out var body))
-        {
-            foreach (var (part, _) in _body.GetBodyChildren(uid, body))
-            {
-                DisableGodmode(part);
-            }
-        }
 
         if (TryComp<DamageableComponent>(uid, out var damageable) && godmode.OldDamage != null)
         {

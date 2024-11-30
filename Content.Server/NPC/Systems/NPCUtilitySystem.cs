@@ -7,11 +7,9 @@ using Content.Server.NPC.Queries.Queries;
 using Content.Server.Nutrition.Components;
 using Content.Server.Nutrition.EntitySystems;
 using Content.Server.Storage.Components;
-using Content.Shared.Body.Systems;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Damage;
 using Content.Shared.Examine;
-using Content.Shared.FixedPoint;
 using Content.Shared.Fluids.Components;
 using Content.Shared.Hands.Components;
 using Content.Shared.Inventory;
@@ -40,7 +38,6 @@ namespace Content.Server.NPC.Systems;
 public sealed class NPCUtilitySystem : EntitySystem
 {
     [Dependency] private readonly IPrototypeManager _proto = default!;
-    [Dependency] private readonly SharedBodySystem _body = default!;
     [Dependency] private readonly ContainerSystem _container = default!;
     [Dependency] private readonly DrinkSystem _drink = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
@@ -303,29 +300,12 @@ public sealed class NPCUtilitySystem : EntitySystem
             }
             case TargetHealthCon con:
             {
-                FixedPoint2 totalDamage;
-
-                var bodyDamage = _body.GetBodyDamage(targetUid);
-
-                if (bodyDamage != null)
-                {
-                    totalDamage = bodyDamage.GetTotal();
-                }
-                else if (TryComp(targetUid, out DamageableComponent? damageable))
-                {
-                    totalDamage = damageable.TotalDamage;
-                }
-                else
-                {
+                if (!TryComp(targetUid, out DamageableComponent? damage))
                     return 0f;
-                }
-
-                if (con.TargetState != MobState.Invalid && _thresholdSystem.TryGetPercentageForState(targetUid, con.TargetState, totalDamage, out var percentage))
+                if (con.TargetState != MobState.Invalid && _thresholdSystem.TryGetPercentageForState(targetUid, con.TargetState, damage.TotalDamage, out var percentage))
                     return Math.Clamp((float)(1 - percentage), 0f, 1f);
-
-                if (_thresholdSystem.TryGetIncapPercentage(targetUid, totalDamage, out var incapPercentage))
+                if (_thresholdSystem.TryGetIncapPercentage(targetUid, damage.TotalDamage, out var incapPercentage))
                     return Math.Clamp((float)(1 - incapPercentage), 0f, 1f);
-
                 return 0f;
             }
             case TargetInLOSCon:

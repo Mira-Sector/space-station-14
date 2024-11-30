@@ -2,7 +2,7 @@
   save: false
   parent:
   - BaseMob
-  - MobDamageableBody
+  - MobDamageable
   - MobPolymorphable
   - MobCombat
   - StripableInventoryBase
