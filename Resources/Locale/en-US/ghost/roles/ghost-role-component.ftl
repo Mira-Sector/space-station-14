@@ -309,3 +309,8 @@ ghost-role-information-morph-description = Pipe crawl your way to taking over th
 
 ghost-role-information-bombroach-name = Bombroach
 ghost-role-information-bombroach-description = Use any means nessasary to get to the highest ranking official, with the aim to give them a good old explosive hug.
+
+ghost-role-information-gingerbread-name = Gingerbread Man
+ghost-role-information-gingerbread-description = A being of pure holiday spirit.
+                                     Spread molassesy goodness and to all good cheer.
+
