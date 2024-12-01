@@ -185,7 +185,7 @@ namespace Content.Shared.Damage
                 return ChangeDamage(uid.Value, damage, damageable, ignoreResistances, interruptsDoAfters, origin, body: bodyUid);
             }
 
-            if (!_bodyQuery.Resolve(uid.Value, ref bodyComp))
+            if (!_bodyQuery.Resolve(uid.Value, ref bodyComp, false))
             {
                 return null;
             }

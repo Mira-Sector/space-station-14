@@ -58,6 +58,9 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
     private void BodyStartup(EntityUid entity, DamageVisualsComponent comp, BodySetupEvent args)
     {
         InitializeVisualizer(entity, comp);
+
+        if (!comp.Valid)
+            RemCompDeferred<DamageVisualsComponent>(entity);
     }
 
     private void VerifyVisualizerSetup(EntityUid entity, DamageVisualsComponent damageVisComp)
@@ -366,7 +369,10 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
     {
         // how is this still here?
         if (!damageVisComp.Valid)
+        {
+            RemCompDeferred<DamageVisualsComponent>(uid);
             return;
+        }
 
         // If this was passed into the component, we update
         // the data to ensure that the current disabled
