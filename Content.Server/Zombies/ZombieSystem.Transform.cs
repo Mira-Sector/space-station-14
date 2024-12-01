@@ -223,6 +223,14 @@ public sealed partial class ZombieSystem
         {
             zombiecomp.BeforeZombifiedPartScales = _body.GetPartsScale(target, bodyComp);
             _body.SetPartsScale(target, zombiecomp.PartScales, bodyComp);
+
+            foreach (var (part, _) in _body.GetBodyChildren(target, bodyComp))
+            {
+                if (!TryComp<DamageableComponent>(part, out var partDamageableComp))
+                    continue;
+
+                _damageable.SetAllDamage(part, partDamageableComp, 0);
+            }
         }
 
         _faction.ClearFactions(target, dirty: false);

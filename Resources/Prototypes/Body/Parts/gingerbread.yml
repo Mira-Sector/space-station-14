@@ -27,6 +27,9 @@
         Quantity: 10
       - ReagentId: Sugar
         Quantity: 20
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Gingerbread
 
 - type: entity
   id: HeadGingerbread
@@ -43,6 +46,9 @@
         Quantity: 5
       - ReagentId: Sugar
         Quantity: 10
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Gingerbread
 
 - type: entity
   id: LeftArmGingerbread
@@ -52,6 +58,9 @@
   - type: Sprite
     sprite: Mobs/Species/Gingerbread/parts.rsi
     state: "l_arm"
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Gingerbread
 
 - type: entity
   id: RightArmGingerbread
@@ -61,6 +70,9 @@
   - type: Sprite
     sprite: Mobs/Species/Gingerbread/parts.rsi
     state: "r_arm"
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Gingerbread
 
 - type: entity
   id: LeftHandGingerbread
@@ -88,6 +100,9 @@
   - type: Sprite
     sprite: Mobs/Species/Gingerbread/parts.rsi
     state: "l_leg"
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Gingerbread
 
 - type: entity
   id: RightLegGingerbread
@@ -97,6 +112,9 @@
   - type: Sprite
     sprite: Mobs/Species/Gingerbread/parts.rsi
     state: "r_leg"
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Gingerbread
 
 - type: entity
   id: LeftFootGingerbread

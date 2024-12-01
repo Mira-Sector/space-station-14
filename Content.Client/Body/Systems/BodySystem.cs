@@ -4,14 +4,12 @@ using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
 using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
-using Content.Shared.Mobs;
-using Content.Shared.Mobs.Components;
 
 namespace Content.Client.Body.Systems;
 
 public sealed class BodySystem : SharedBodySystem
 {
-    private const MobState DeadState = MobState.Dead;
+    private const WoundState DeadState = WoundState.Dead;
     private const int SegmentCount = 7;
 
     public override void Initialize()
@@ -26,29 +24,15 @@ public sealed class BodySystem : SharedBodySystem
         if (args.Alert.ID != component.Alert)
             return;
 
-        if (!TryComp<MobThresholdsComponent>(uid, out var thresholdsComp))
-            return;
-
-        FixedPoint2? deadThreshold = null;
-
-        foreach ((var threshold, var state) in thresholdsComp.Thresholds)
-        {
-            if (state != DeadState)
-                continue;
-
-            deadThreshold = threshold;
-            break;
-        }
-
-        if (deadThreshold == null)
-            return;
-
         var sprite = args.SpriteViewEnt.Comp;
         var parts = GetBodyChildren(uid, component);
 
         foreach ((var currentPart, var currentPartComp) in parts)
         {
             if (!TryComp<DamageableComponent>(currentPart, out var damageableComp))
+                continue;
+
+            if (!TryComp<BodyPartThresholdsComponent>(currentPart, out var thresholdsComp) || !TryGetLimbStateThreshold(currentPart, DeadState, out var deadThreshold, thresholdsComp))
                 continue;
 
             var layer = BodyPartToLayer(currentPartComp.PartType, currentPartComp.Symmetry);
@@ -67,14 +51,14 @@ public sealed class BodySystem : SharedBodySystem
                 // 1 indexed
                 // we programming in lua or some shit??
                 var percentage = (float) (damageableComp.TotalDamage / deadThreshold);
-                offset = (SegmentCount * percentage) + 1;
+                offset = (SegmentCount * percentage);
 
-                if (offset < 1)
+                if (offset < 0)
                     offset = 1;
                 else if (offset > SegmentCount - 1 && offset < SegmentCount)
                     offset = SegmentCount - 1; // reserve highest for dead only
                 else
-                    offset = (uint) Math.Ceiling(offset);
+                    offset = (uint) Math.Ceiling(offset) + 1;
             }
 
             var state = $"{layer.ToString()}{offset}";

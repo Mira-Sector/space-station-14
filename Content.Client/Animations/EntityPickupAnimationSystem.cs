@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using Robust.Client.Animations;
 using Robust.Client.GameObjects;
 using Robust.Shared.Animations;
@@ -81,6 +81,18 @@ public sealed class EntityPickupAnimationSystem : EntitySystem
                         new KeyFrame(final, 0.125f)
                     }
                 },
+
+                new AnimationTrackComponentProperty()
+                {
+                    ComponentType = typeof(SpriteComponent),
+                    Property = nameof(SpriteComponent.Scale),
+                    InterpolationMode = AnimationInterpolationMode.Cubic,
+                    KeyFrames =
+                    {
+                        new AnimationTrackProperty.KeyFrame(sprite0.Scale, 0.0f),
+                        new AnimationTrackProperty.KeyFrame(sprite0.Scale / 2f, 0.125f)
+                    }
+                }
             }
         }, "fancy_pickup_anim");
     }

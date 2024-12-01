@@ -1,5 +1,6 @@
 using System.Linq;
 using Content.Shared.Body.Components;
+using Content.Shared.Body.Events;
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
 using Content.Shared.Damage;
@@ -36,10 +37,11 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
     {
         base.Initialize();
 
-        SubscribeLocalEvent<DamageVisualsComponent, ComponentInit>(InitializeEntity);
+        SubscribeLocalEvent<DamageVisualsComponent, ComponentStartup>(InitializeEntity);
+        SubscribeLocalEvent<DamageVisualsComponent, BodySetupEvent>(BodyStartup);
     }
 
-    private void InitializeEntity(EntityUid entity, DamageVisualsComponent comp, ComponentInit args)
+    private void InitializeEntity(EntityUid entity, DamageVisualsComponent comp, ComponentStartup args)
     {
         VerifyVisualizerSetup(entity, comp);
 
@@ -49,7 +51,16 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
             return;
         }
 
+        if (!HasComp<BodyComponent>(entity))
+            InitializeVisualizer(entity, comp);
+    }
+
+    private void BodyStartup(EntityUid entity, DamageVisualsComponent comp, BodySetupEvent args)
+    {
         InitializeVisualizer(entity, comp);
+
+        if (!comp.Valid)
+            RemCompDeferred<DamageVisualsComponent>(entity);
     }
 
     private void VerifyVisualizerSetup(EntityUid entity, DamageVisualsComponent damageVisComp)
@@ -137,9 +148,25 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
     private void InitializeVisualizer(EntityUid entity, DamageVisualsComponent damageVisComp)
     {
         if (!TryComp(entity, out SpriteComponent? spriteComponent)
-            || !TryComp<DamageableComponent>(entity, out var damageComponent)
             || !HasComp<AppearanceComponent>(entity))
             return;
+
+        string? damageContainerID = null;
+
+        var bodyDamageable = _body.GetBodyDamageable(entity);
+
+        if (bodyDamageable.Count() > 0)
+        {
+            damageContainerID = _body.GetMostFrequentDamageContainer(entity);
+        }
+        else if (TryComp<DamageableComponent>(entity, out var damageComponent))
+        {
+            damageContainerID = damageComponent.DamageContainerID;
+        }
+        else
+        {
+            return;
+        }
 
         damageVisComp.Thresholds.Add(FixedPoint2.Zero);
         damageVisComp.Thresholds.Sort();
@@ -153,8 +180,8 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
 
         // If the damage container on our entity's DamageableComponent
         // is not null, we can try to check through its groups.
-        if (damageComponent.DamageContainerID != null
-            && _prototypeManager.TryIndex<DamageContainerPrototype>(damageComponent.DamageContainerID, out var damageContainer))
+        if (damageContainerID != null
+            && _prototypeManager.TryIndex<DamageContainerPrototype>(damageContainerID, out var damageContainer))
         {
             // Are we using damage overlay sprites by group?
             // Check if the container matches the supported groups,
@@ -342,7 +369,10 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
     {
         // how is this still here?
         if (!damageVisComp.Valid)
+        {
+            RemCompDeferred<DamageVisualsComponent>(uid);
             return;
+        }
 
         // If this was passed into the component, we update
         // the data to ensure that the current disabled
@@ -370,16 +400,16 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
             return;
         }
 
-        var parts = _body.GetBodyChildren(uid, bodyComp);
+        var bodyDamageable = _body.GetBodyDamageable(uid, bodyComp);
 
-        foreach ((var currentPart, var currentPartComp) in parts)
+        foreach (var (partUid, partDamageable) in bodyDamageable)
         {
-            if (!TryComp<DamageableComponent>(currentPart, out var partDamageableComp))
+            if (!TryComp<BodyPartComponent>(partUid, out var partComp))
                 continue;
 
-            var bodyPart = new BodyPart(currentPartComp.PartType, currentPartComp.Symmetry);
+            var bodyPart = new BodyPart(partComp.PartType, partComp.Symmetry);
 
-            HandleDamage(uid, args.Component, damageVisComp, spriteComponent, partDamageableComp, bodyPart);
+            HandleDamage(uid, args.Component, damageVisComp, spriteComponent, partDamageable, bodyPart);
         }
 
     }
@@ -401,7 +431,7 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
         if (!AppearanceSystem.TryGetData<DamageVisualizerGroupData>(uid, DamageVisualizerKeys.DamageUpdateGroups,
                 out var data, component))
         {
-            data = new DamageVisualizerGroupData(Comp<DamageableComponent>(uid).DamagePerGroup.Keys.ToList());
+            data = new DamageVisualizerGroupData(damageComponent.DamagePerGroup.Keys.ToList());
         }
 
         UpdateDamageVisuals(data.GroupList, damageComponent, spriteComponent, damageVisComp, bodyPart);

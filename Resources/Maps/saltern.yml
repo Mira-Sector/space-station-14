@@ -6623,11 +6623,6 @@ entities:
     - type: Transform
       pos: 1.5,24.5
       parent: 31
-  - uid: 229
-    components:
-    - type: Transform
-      pos: 3.5,22.5
-      parent: 31
 - proto: AirlockCaptainLocked
   entities:
   - uid: 731
@@ -6702,6 +6697,11 @@ entities:
       parent: 31
 - proto: AirlockCommandGlassLocked
   entities:
+  - uid: 229
+    components:
+    - type: Transform
+      pos: 3.5,22.5
+      parent: 31
   - uid: 8832
     components:
     - type: Transform
@@ -31733,11 +31733,16 @@ entities:
       parent: 31
 - proto: ComputerAlert
   entities:
-  - uid: 8800
+  - uid: 534
     components:
     - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 7.5,31.5
+      rot: 1.5707963267948966 rad
+      pos: -2.5,29.5
+      parent: 31
+  - uid: 8803
+    components:
+    - type: Transform
+      pos: 40.5,4.5
       parent: 31
 - proto: ComputerAnalysisConsole
   entities:
@@ -31769,17 +31774,17 @@ entities:
       parent: 31
 - proto: ComputerCargoOrders
   entities:
+  - uid: 870
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 7.5,31.5
+      parent: 31
   - uid: 3602
     components:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 26.5,8.5
-      parent: 31
-  - uid: 4186
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -0.5,31.5
       parent: 31
   - uid: 4309
     components:
@@ -31815,7 +31820,7 @@ entities:
     - type: Transform
       pos: 23.5,-9.5
       parent: 31
-  - uid: 2448
+  - uid: 2447
     components:
     - type: Transform
       pos: 0.5,32.5
@@ -31834,7 +31839,7 @@ entities:
       rot: -1.5707963267948966 rad
       pos: -0.5,7.5
       parent: 31
-  - uid: 8803
+  - uid: 8800
     components:
     - type: Transform
       pos: 8.5,30.5
@@ -31846,16 +31851,16 @@ entities:
     - type: Transform
       pos: 7.5,21.5
       parent: 31
-  - uid: 870
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 4.5,31.5
-      parent: 31
   - uid: 1113
     components:
     - type: Transform
       pos: -3.5,-19.5
+      parent: 31
+  - uid: 1264
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 4.5,31.5
       parent: 31
   - uid: 2065
     components:
@@ -31879,14 +31884,6 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 37.5,0.5
       parent: 31
-- proto: ComputerMassMedia
-  entities:
-  - uid: 8809
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 2.5,31.5
-      parent: 31
 - proto: ComputerPowerMonitoring
   entities:
   - uid: 4306
@@ -31894,7 +31891,7 @@ entities:
     - type: Transform
       pos: 42.5,4.5
       parent: 31
-  - uid: 5314
+  - uid: 5878
     components:
     - type: Transform
       pos: -1.5,30.5
@@ -31907,7 +31904,7 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 32.5,22.5
       parent: 31
-  - uid: 2447
+  - uid: 2448
     components:
     - type: Transform
       pos: 6.5,32.5
@@ -31923,6 +31920,12 @@ entities:
     components:
     - type: Transform
       pos: -4.5,-19.5
+      parent: 31
+  - uid: 5314
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: -0.5,31.5
       parent: 31
 - proto: ComputerRoboticsControl
   entities:
@@ -31970,12 +31973,6 @@ entities:
     - type: Transform
       pos: -3.5,14.5
       parent: 31
-  - uid: 9752
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -2.5,29.5
-      parent: 31
   - uid: 11431
     components:
     - type: Transform
@@ -31984,17 +31981,19 @@ entities:
       parent: 31
 - proto: ComputerSurveillanceCameraMonitor
   entities:
-  - uid: 534
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 9.5,29.5
-      parent: 31
   - uid: 2218
     components:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 48.5,-4.5
+      parent: 31
+- proto: ComputerSurveillanceWirelessCameraMonitor
+  entities:
+  - uid: 4186
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 9.5,29.5
       parent: 31
 - proto: ComputerTechnologyDiskTerminal
   entities:
@@ -35991,13 +35990,6 @@ entities:
     - type: FaxMachine
       name: Medical
       destinationAddress: Medical
-  - uid: 1264
-    components:
-    - type: Transform
-      pos: 40.5,4.5
-      parent: 31
-    - type: FaxMachine
-      name: Engineering
   - uid: 2045
     components:
     - type: Transform
@@ -36013,6 +36005,13 @@ entities:
       parent: 31
     - type: FaxMachine
       name: Library
+  - uid: 8900
+    components:
+    - type: Transform
+      pos: 32.5,6.5
+      parent: 31
+    - type: FaxMachine
+      name: Engineering
   - uid: 8994
     components:
     - type: Transform
@@ -36034,8 +36033,8 @@ entities:
       pos: 1.5,32.5
       parent: 31
     - type: FaxMachine
-      name: bridge
-      destinationAddress: bridge
+      name: Bridge
+      destinationAddress: Bridge
 - proto: FaxMachineCaptain
   entities:
   - uid: 9686
@@ -59976,17 +59975,17 @@ entities:
       parent: 31
 - proto: ShelfChemistryChemistrySecure
   entities:
-  - uid: 5878
+  - uid: 8809
     components:
     - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 8.5,-11.5
-      parent: 31
-  - uid: 12184
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
+      rot: 1.5707963267948966 rad
       pos: 8.5,-7.5
+      parent: 31
+  - uid: 8887
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 8.5,-11.5
       parent: 31
 - proto: ShelfKitchen
   entities:
@@ -62566,28 +62565,28 @@ entities:
   - uid: 2361
     components:
     - type: MetaData
-      name: bar substation
+      name: Bar substation
     - type: Transform
       pos: 0.5,-8.5
       parent: 31
   - uid: 3587
     components:
     - type: MetaData
-      name: engineering substation
+      name: Engineering substation
     - type: Transform
       pos: 42.5,1.5
       parent: 31
   - uid: 3588
     components:
     - type: MetaData
-      name: cargo substation
+      name: Cargo substation
     - type: Transform
       pos: 27.5,13.5
       parent: 31
   - uid: 3856
     components:
     - type: MetaData
-      name: bridge substation
+      name: Bridge substation
     - type: Transform
       pos: 12.5,21.5
       parent: 31
@@ -62643,14 +62642,14 @@ entities:
   - uid: 11206
     components:
     - type: MetaData
-      name: library substation
+      name: Library substation
     - type: Transform
       pos: 16.5,-27.5
       parent: 31
   - uid: 11246
     components:
     - type: MetaData
-      name: evac substation
+      name: Evac substation
     - type: Transform
       pos: -31.5,7.5
       parent: 31
@@ -63922,10 +63921,10 @@ entities:
     - type: Transform
       pos: 31.5,6.5
       parent: 31
-  - uid: 8900
+  - uid: 8902
     components:
     - type: Transform
-      pos: 40.5,4.5
+      pos: 32.5,6.5
       parent: 31
   - uid: 9003
     components:
@@ -76222,18 +76221,6 @@ entities:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: 42.5,-29.5
-      parent: 31
-  - uid: 8887
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 32.5,5.5
-      parent: 31
-  - uid: 8902
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 32.5,6.5
       parent: 31
   - uid: 8942
     components:
