@@ -161,12 +161,17 @@ public partial class SharedBodySystem
     }
     private void OnIrradiatedEvent(EntityUid uid, BodyComponent component, OnIrradiatedEvent args)
     {
-        var parts = GetBodyDamageable(uid, component);
+        var damageable = GetBodyDamageable(uid, component).Values;
 
-        foreach (var (part, damageable) in parts)
-        {
-            _damageable.Irradiate(part, args.RadsPerSecond/ parts.Count(), damageable.RadiationDamageTypeIDs);
-        }
+        var mostFrequent = damageable
+            .GroupBy(item => item.RadiationDamageTypeIDs)
+            .OrderByDescending(group => group.Count())
+            .FirstOrDefault();
+
+        if (mostFrequent == null || !mostFrequent.TryFirstOrDefault(out var radiation))
+            return;
+
+        _damageable.Irradiate(uid, args.RadsPerSecond, radiation.RadiationDamageTypeIDs);
     }
 
     private void OnPartStartup(EntityUid uid, BodyPartComponent component, ComponentStartup args)
