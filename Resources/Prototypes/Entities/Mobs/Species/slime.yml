@@ -50,9 +50,6 @@
       Male: MaleSlime
       Female: FemaleSlime
       Unsexed: MaleSlime
-  - type: Damageable
-    damageContainer: Biological
-    damageModifierSet: Slime
   - type: MeleeWeapon
     soundHit:
       collection: Punch

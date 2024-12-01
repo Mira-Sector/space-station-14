@@ -37,9 +37,6 @@
       Male: MaleReptilian
       Female: FemaleReptilian
       Unsexed: MaleReptilian
-  - type: Damageable
-    damageContainer: Biological
-    damageModifierSet: Scale
   - type: MeleeWeapon
     soundHit:
       collection: AlienClaw
