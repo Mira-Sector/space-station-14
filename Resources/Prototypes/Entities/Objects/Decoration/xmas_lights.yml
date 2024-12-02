@@ -23,8 +23,8 @@
   - type: LightColorCycle
     requirePower: true
     states:
-    - !type:LightColorState { state: purple, color: '#76428a' }
-    - !type:LightColorState { state: red, color: '#ac3232' }
-    - !type:LightColorState { state: green, color: '#6abe30' }
-    - !type:LightColorState { state: blue, color: '#5b6ee1' }
-    - !type:LightColorState { state: yellow, color: '#d9a066' }
+    - !type:LightColorState { state: purple, color: '#a5878d' }
+    - !type:LightColorState { state: red, color: '#c1724c' }
+    - !type:LightColorState { state: green, color: '#92bc20' }
+    - !type:LightColorState { state: blue, color: '#898fb3' }
+    - !type:LightColorState { state: yellow, color: '#dfcc5d' }
