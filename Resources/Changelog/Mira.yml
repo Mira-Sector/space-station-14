@@ -833,3 +833,15 @@ Entries:
     type: Fix
   id: 124
   time: '2024-11-23T14:25:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Limbs can no longer be damaged when they are "dead" after enough damage
+    type: Fix
+  id: 125
+  time: '2024-11-29T17:25:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: More maps can roll on low pop
+    type: Tweak
+  id: 126
+  time: '2024-12-02T04:00:00.0000000+00:00'

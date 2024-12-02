@@ -21,12 +21,12 @@ namespace Content.Server.Destructible.Thresholds.Triggers
         [DataField]
         public bool Repeatable = false;
 
-        public bool Reached(DamageableComponent damageable, DestructibleSystem system, DamageChangedEvent args)
+        public bool Reached(DestructibleSystem system, DamageSpecifier totalDamage, bool isPositive, DamageSpecifier? deltaDamage, EntityUid? origin = null)
         {
             if (!Repeatable)
-                return damageable.Damage.DamageDict.TryGetValue(DamageType, out var damageReceived) && damageReceived >= Damage;
+                return totalDamage.DamageDict.TryGetValue(DamageType, out var damageReceived) && damageReceived >= Damage;
 
-            if (args.DamageDelta == null || !args.DamageDelta.DamageDict.TryGetValue(DamageType, out var value))
+            if (deltaDamage == null || !deltaDamage.DamageDict.TryGetValue(DamageType, out var value))
                 return false;
 
             return value >= Damage;
