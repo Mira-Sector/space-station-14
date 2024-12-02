@@ -16,6 +16,14 @@
     soundHit:
       collection: MetalThud
   - type: CombatMode
+  - type: DamagePartSelector
+    selectableParts:
+      !type:BodyPart { type: Head, side: None }: { sprite: Interface/Actions/zone_sel.rsi, state: head }
+      !type:BodyPart { type: Arm, side: Left }: { sprite: Interface/Actions/zone_sel.rsi, state: larm }
+      !type:BodyPart { type: Leg, side: Left }: { sprite: Interface/Actions/zone_sel.rsi, state: lleg }
+      !type:BodyPart { type: Torso, side: None }: { sprite: Interface/Actions/zone_sel.rsi, state: torso }
+      !type:BodyPart { type: Leg, side: Right }: { sprite: Interface/Actions/zone_sel.rsi, state: rleg }
+      !type:BodyPart { type: Arm, side: Right }: { sprite: Interface/Actions/zone_sel.rsi, state: rarm }
   - type: NoSlip
   - type: StaticPrice
     price: 1250
@@ -69,6 +77,8 @@
         type: BorgBoundUserInterface
       enum.StrippingUiKey.Key:
         type: StrippableBoundUserInterface
+      enum.DamageSelectorUiKey.Key:
+        type: DamageSelectorBoundUserInterface
   - type: ActivatableUI
     key: enum.BorgUiKey.Key
   - type: SiliconLawBound
@@ -306,6 +316,8 @@
         type: GeneralStationRecordConsoleBoundUserInterface
       enum.StrippingUiKey.Key:
         type: StrippableBoundUserInterface
+      enum.DamageSelectorUiKey.Key:
+        type: DamageSelectorBoundUserInterface
   - type: ActivatableUI
     key: enum.BorgUiKey.Key
   - type: IntrinsicUI

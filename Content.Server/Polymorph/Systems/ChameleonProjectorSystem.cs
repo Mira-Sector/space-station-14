@@ -1,19 +1,24 @@
 using Content.Server.Polymorph.Components;
 using Content.Shared.Actions;
+using Content.Shared.Armor;
 using Content.Shared.Clothing.Components;
 using Content.Shared.Construction.Components;
 using Content.Shared.Chat.TypingIndicator;
+using Content.Shared.Explosion.Components;
+using Content.Server.Footprints.Components;
 using Content.Shared.Hands;
 using Content.Shared.HealthExaminable;
 using Content.Shared.Movement.Components;
 using Content.Shared.Humanoid;
 using Content.Shared.Inventory;
+using Content.Shared.Light.Components;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Polymorph;
 using Content.Shared.Polymorph.Components;
 using Content.Shared.Polymorph.Systems;
+using Content.Shared.Radiation.Components;
 using Content.Shared.Speech;
 using Content.Shared.Speech.Components;
 using Content.Shared.StatusIcon.Components;
@@ -89,6 +94,15 @@ public sealed class ChameleonProjectorSystem : SharedChameleonProjectorSystem
             _tag.AddTag((disguise, tagComp), FootstepTag);
         }
 
+        if (TryComp<LeavesFootprintsComponent>(entity, out var entFootprintComp))
+        {
+            var disguiseFootprintComp = EnsureComp<LeavesFootprintsComponent>(disguise);
+            disguiseFootprintComp.MaxFootsteps = entFootprintComp.MaxFootsteps;
+            disguiseFootprintComp.Distance = entFootprintComp.Distance;
+            disguiseFootprintComp.FootprintPrototype = entFootprintComp.FootprintPrototype;
+            disguiseFootprintComp.FootprintPrototypeAlternative = entFootprintComp.FootprintPrototypeAlternative;
+        }
+
         // manually set the emotes
         if (TryComp<VocalComponent>(entity, out var entVocalComp))
         {
@@ -106,11 +120,9 @@ public sealed class ChameleonProjectorSystem : SharedChameleonProjectorSystem
             if (!TryComp<InventoryComponent>(disguise, out var disguiseInvComp))
                 return;
 
-            Array.Copy(entInvComp.Slots, disguiseInvComp.Slots, entInvComp.Slots.Length);
-
             var coords = Transform(disguise).Coordinates;
 
-            foreach (var entSlot in entInvComp.Slots)
+            foreach (var entSlot in disguiseInvComp.Slots)
             {
                 _inventory.TryGetSlotContainer(entity, entSlot.Name, out var entContainer, out _);
 
@@ -128,7 +140,15 @@ public sealed class ChameleonProjectorSystem : SharedChameleonProjectorSystem
                 var clothing = EntityManager.SpawnEntity(metaData.EntityPrototype.ID, coords);
 
                 if (!_inventory.TryEquip(disguise, clothing, entSlot.Name, true, true))
+                {
                     EntityManager.DeleteEntity(clothing);
+                    continue;
+                }
+
+                RemComp<ArmorComponent>(clothing);
+                RemComp<GeigerComponent>(clothing);
+                RemComp<ExplosionResistanceComponent>(clothing);
+                RemComp<ActionsContainerComponent>(clothing);
             }
         }
 
@@ -142,7 +162,6 @@ public sealed class ChameleonProjectorSystem : SharedChameleonProjectorSystem
             // so that when reverting damage scales 1:1 and not round removing
             var playerMax = _mobThreshold.GetThresholdForState(user, MobState.Dead).Float();
             var max = playerMax == 0f ? proj.MaxHealth : Math.Max(proj.MaxHealth, playerMax);
-
             var health = Math.Clamp(mass, proj.MinHealth, proj.MaxHealth);
             _mobThreshold.SetMobStateThreshold(disguise, health, MobState.Critical, thresholds);
             _mobThreshold.SetMobStateThreshold(disguise, max, MobState.Dead, thresholds);

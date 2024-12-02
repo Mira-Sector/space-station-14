@@ -29,6 +29,9 @@
         Quantity: 10
       - ReagentId: Blood
         Quantity: 20
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Scale
 
 - type: entity
   id: HeadReptilian
@@ -45,6 +48,9 @@
         Quantity: 5
       - ReagentId: Blood
         Quantity: 10
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Scale
 
 - type: entity
   id: LeftArmReptilian
@@ -54,6 +60,9 @@
   - type: Sprite
     sprite: Mobs/Species/Reptilian/parts.rsi
     state: "l_arm"
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Scale
 
 - type: entity
   id: RightArmReptilian
@@ -63,6 +72,9 @@
   - type: Sprite
     sprite: Mobs/Species/Reptilian/parts.rsi
     state: "r_arm"
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Scale
 
 - type: entity
   id: LeftHandReptilian
@@ -90,6 +102,9 @@
   - type: Sprite
     sprite: Mobs/Species/Reptilian/parts.rsi
     state: "l_leg"
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Scale
 
 - type: entity
   id: RightLegReptilian
@@ -99,6 +114,9 @@
   - type: Sprite
     sprite: Mobs/Species/Reptilian/parts.rsi
     state: "r_leg"
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Scale
 
 - type: entity
   id: LeftFootReptilian

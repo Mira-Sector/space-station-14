@@ -14,6 +14,9 @@
   components:
   - type: Sprite
     state: "torso_m"
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Diona
 
 - type: entity
   id: HeadDiona
@@ -22,6 +25,9 @@
   components:
   - type: Sprite
     state: "head_m"
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Diona
 
 - type: entity
   id: LeftArmDiona
@@ -30,6 +36,9 @@
   components:
   - type: Sprite
     state: "l_arm"
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Diona
 
 - type: entity
   id: RightArmDiona
@@ -38,6 +47,9 @@
   components:
   - type: Sprite
     state: "r_arm"
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Diona
 
 - type: entity
   id: LeftHandDiona
@@ -62,6 +74,9 @@
   components:
   - type: Sprite
     state: "l_leg"
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Diona
 
 - type: entity
   id: RightLegDiona
@@ -70,6 +85,9 @@
   components:
   - type: Sprite
     state: "r_leg"
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Diona
 
 - type: entity
   id: LeftFootDiona
