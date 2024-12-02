@@ -187,6 +187,7 @@ public partial class SharedBodySystem
 
         var ev = new BodySetupEvent(bodyComp);
         RaiseLocalEvent(body, ev);
+        Log.Info($"bodysetup: {uid}");
     }
 
     protected void RelayToBody<T>(EntityUid uid, BodyPartComponent component, T args) where T : class

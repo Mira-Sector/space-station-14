@@ -57,10 +57,14 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
 
     private void BodyStartup(EntityUid entity, DamageVisualsComponent comp, BodySetupEvent args)
     {
+        Log.Info($"damagevisuals startup: {entity}");
         InitializeVisualizer(entity, comp);
 
         if (!comp.Valid)
+        {
             RemCompDeferred<DamageVisualsComponent>(entity);
+            Log.Info($"damagevisuals invalid: {entity}");
+        }
     }
 
     private void VerifyVisualizerSetup(EntityUid entity, DamageVisualsComponent damageVisComp)
