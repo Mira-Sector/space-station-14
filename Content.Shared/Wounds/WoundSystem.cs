@@ -18,15 +18,15 @@ public sealed partial class WoundSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<WoundRecieverComponent, DamageModifyEvent>(OnDamage);
+        SubscribeLocalEvent<WoundRecieverComponent, LimbStateChangedEvent>(OnStateChanged);
     }
 
-    private void OnDamage(EntityUid uid, WoundRecieverComponent component, DamageModifyEvent args)
+    private void OnStateChanged(EntityUid uid, WoundRecieverComponent component, LimbStateChangedEvent args)
     {
-        if (!args.Damage.AnyPositive())
+        // only one wound per limb
+        if (args.OldState != WoundState.Healthy && args.NewState != WoundState.Damaged)
             return;
 
-        // only one wound per limb
         if (HasComp<WoundComponent>(uid))
             return;
 
@@ -41,11 +41,8 @@ public sealed partial class WoundSystem : EntitySystem
 
         EntityManager.AddComponents(uid, wound.Components, wound.RemoveExisting);
 
-        if (!TryComp<BodyPartComponent>(uid, out var partComp) || partComp.Body == null)
-            return;
-
-        var woundBody = EnsureComp<WoundBodyComponent>(partComp.Body.Value);
+        var woundBody = EnsureComp<WoundBodyComponent>(args.Body);
         woundBody.Limbs.Add(uid);
-        Dirty(partComp.Body.Value, woundBody);
+        Dirty(args.Body, woundBody);
     }
 }

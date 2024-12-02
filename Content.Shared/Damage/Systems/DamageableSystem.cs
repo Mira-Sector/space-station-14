@@ -288,11 +288,9 @@ namespace Content.Shared.Damage
                     damage = DamageSpecifier.ApplyModifierSet(damage, modifierSet);
                 }
 
+                var eventUid = body ?? uid;
                 var ev = new DamageModifyEvent(damage, origin, part);
-                RaiseLocalEvent(uid, ev);
-
-                if (body != null)
-                    RaiseLocalEvent(body.Value, ev);
+                RaiseLocalEvent(eventUid, ev);
 
                 damage = ev.Damage;
 
