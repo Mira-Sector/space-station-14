@@ -28,6 +28,11 @@
     partType: Torso
   - type: Damageable
     damageContainer: Biological
+  - type: BodyPartThresholds
+    thresholds:
+      0: Healthy
+      15: Damaged
+      100: Dead
 
 - type: entity
   id: BaseHead
@@ -40,6 +45,11 @@
     vital: true
     overallDamageScale: 1.3
     missProb: 0.6
+  - type: BodyPartThresholds
+    thresholds:
+      0: Healthy
+      10: Damaged
+      75: Dead
   - type: Input
     context: "ghost"
   - type: Damageable
@@ -59,6 +69,11 @@
     symmetry: Left
     overallDamageScale: 0.8
     missProb: 0.5
+  - type: BodyPartThresholds
+    thresholds:
+      0: Healthy
+      5: Damaged
+      50: Dead
   - type: Damageable
     damageContainer: Biological
 
@@ -73,6 +88,11 @@
     symmetry: Right
     overallDamageScale: 0.8
     missProb: 0.5
+  - type: BodyPartThresholds
+    thresholds:
+      0: Healthy
+      5: Damaged
+      50: Dead
   - type: Damageable
     damageContainer: Biological
 
@@ -106,8 +126,13 @@
     partType: Leg
     symmetry: Left
     missProb: 0.4
-  - type: MovementBodyPart
     overallDamageScale: 0.8
+  - type: MovementBodyPart
+  - type: BodyPartThresholds
+    thresholds:
+      0: Healthy
+      5: Damaged
+      65: Dead
   - type: Damageable
     damageContainer: Biological
 
@@ -121,8 +146,13 @@
     partType: Leg
     symmetry: Right
     missProb: 0.4
-  - type: MovementBodyPart
     overallDamageScale: 0.8
+  - type: MovementBodyPart
+  - type: BodyPartThresholds
+    thresholds:
+      0: Healthy
+      5: Damaged
+      65: Dead
   - type: Damageable
     damageContainer: Biological
 

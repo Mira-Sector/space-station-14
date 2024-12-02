@@ -294,7 +294,7 @@ public sealed class RespiratorSystem : EntitySystem
             }
         }
 
-        _damageableSys.TryChangeDamage(ent, ent.Comp.Damage, interruptsDoAfters: false, ignorePartScale: true);
+        _damageableSys.TryChangeDamage(ent, ent.Comp.Damage, interruptsDoAfters: false);
     }
 
     private void StopSuffocation(Entity<RespiratorComponent> ent)

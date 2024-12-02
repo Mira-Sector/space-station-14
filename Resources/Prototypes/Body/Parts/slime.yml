@@ -13,6 +13,9 @@
     - type: Sprite
       sprite: Mobs/Species/Slime/parts.rsi
       state: "torso_m"
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Slime
 
 - type: entity
   id: HeadSlime
@@ -22,7 +25,10 @@
     - type: Sprite
       sprite: Mobs/Species/Slime/parts.rsi
       state: "head_m"
-  
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Slime
+
 - type: entity
   id: LeftArmSlime
   name: "left slime arm"
@@ -31,6 +37,9 @@
     - type: Sprite
       sprite: Mobs/Species/Slime/parts.rsi
       state: "l_arm"
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Slime
 
 - type: entity
   id: RightArmSlime
@@ -40,6 +49,9 @@
     - type: Sprite
       sprite: Mobs/Species/Slime/parts.rsi
       state: "r_arm"
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Slime
 
 - type: entity
   id: LeftHandSlime
@@ -67,6 +79,9 @@
     - type: Sprite
       sprite: Mobs/Species/Slime/parts.rsi
       state: "l_leg"
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Slime
 
 - type: entity
   id: RightLegSlime
@@ -76,6 +91,9 @@
     - type: Sprite
       sprite: Mobs/Species/Slime/parts.rsi
       state: "r_leg"
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Slime
 
 - type: entity
   id: LeftFootSlime
@@ -106,6 +124,9 @@
   - type: MovementBodyPart
     walkSpeed: 2
     sprintSpeed: 4
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Slime
 
 - type: entity
   id: LegsGeras
@@ -116,3 +137,6 @@
   - type: MovementBodyPart
     walkSpeed: 3
     sprintSpeed: 5 # +.5 from normal movement speed
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Slime

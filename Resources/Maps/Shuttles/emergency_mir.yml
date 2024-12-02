@@ -4871,8 +4871,8 @@ entities:
     - type: RadiationSource
       intensity: 2.4
     - type: GravityWell
-      baseRadialAcceleration: 3
-      maxRange: 3
+      baseRadialAcceleration: 0.8
+      maxRange: 2
 - proto: SMESBasic
   entities:
   - uid: 629
@@ -4881,8 +4881,8 @@ entities:
       pos: -0.5,-10.5
       parent: 1
     - type: Battery
-      startingCharge: 10000000
-      maxCharge: 10000000
+      startingCharge: 20000000
+      maxCharge: 20000000
 - proto: SodaDispenser
   entities:
   - uid: 630

@@ -1,5 +1,7 @@
 using Content.Server.Ghost;
 using Content.Shared.Administration.Logs;
+using Content.Shared.Body.Components;
+using Content.Shared.Body.Systems;
 using Content.Shared.Chat;
 using Content.Shared.Damage;
 using Content.Shared.Database;
@@ -22,6 +24,7 @@ public sealed class SuicideSystem : EntitySystem
     [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
     [Dependency] private readonly TagSystem _tagSystem = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!;
+    [Dependency] private readonly SharedBodySystem _body = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly GhostSystem _ghostSystem = default!;
     [Dependency] private readonly SharedSuicideSystem _suicide = default!;
@@ -141,6 +144,19 @@ public sealed class SuicideSystem : EntitySystem
         }
     }
 
+    private void OnBodySuicide(Entity<BodyComponent> victim, ref SuicideEvent args)
+    {
+        if (args.Handled)
+            return;
+
+        DoSuicideMessage(victim.Owner);
+
+        foreach (var (partUid, partDamageable)  in _body.GetBodyDamageable(victim))
+        {
+            DoSuicide(partUid, victim.Owner, partDamageable, ref args);
+        }
+    }
+
     /// <summary>
     /// Default suicide behavior for any kind of entity that can take damage
     /// </summary>
@@ -149,21 +165,31 @@ public sealed class SuicideSystem : EntitySystem
         if (args.Handled)
             return;
 
+        DoSuicideMessage(victim.Owner);
+        DoSuicide(victim.Owner, victim.Owner, victim.Comp, ref args);
+    }
+
+    private void DoSuicideMessage(EntityUid victim)
+    {
         var othersMessage = Loc.GetString("suicide-command-default-text-others", ("name", victim));
         _popup.PopupEntity(othersMessage, victim, Filter.PvsExcept(victim), true);
 
         var selfMessage = Loc.GetString("suicide-command-default-text-self");
         _popup.PopupEntity(selfMessage, victim, victim);
+    }
 
+
+    private void DoSuicide(EntityUid damageUid, EntityUid victim, DamageableComponent component, ref SuicideEvent args)
+    {
         if (args.DamageSpecifier != null)
         {
-            _suicide.ApplyLethalDamage(victim, args.DamageSpecifier);
+            _suicide.ApplyLethalDamage((damageUid, component), args.DamageSpecifier);
             args.Handled = true;
             return;
         }
 
         args.DamageType ??= "Bloodloss";
-        _suicide.ApplyLethalDamage(victim, args.DamageType);
+        _suicide.ApplyLethalDamage((damageUid, component), args.DamageType);
         args.Handled = true;
     }
 }

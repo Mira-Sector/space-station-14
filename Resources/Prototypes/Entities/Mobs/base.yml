@@ -54,11 +54,9 @@
 # Used for mobs that have health and can take damage.
 - type: entity
   save: false
-  id: MobDamageable
+  id: MobDamageableBody
   abstract: true
   components:
-  - type: Damageable
-    damageContainer: Biological
   - type: Destructible
     thresholds:
     - trigger:
@@ -130,6 +128,15 @@
     priority: 2
     lightningExplode: false
 
+- type: entity
+  save: false
+  id: MobDamageable
+  parent: MobDamageableBody
+  abstract: true
+  components:
+  - type: Damageable
+    damageContainer: Biological
+
 # Used for mobs that can enter combat mode and can attack.
 - type: entity
   save: false
@@ -137,6 +144,18 @@
   abstract: true
   components:
   - type: CombatMode
+  - type: DamagePartSelector
+    selectableParts:
+      !type:BodyPart { type: Head, side: None }: { sprite: Interface/Actions/zone_sel.rsi, state: head }
+      !type:BodyPart { type: Arm, side: Left }: { sprite: Interface/Actions/zone_sel.rsi, state: larm }
+      !type:BodyPart { type: Leg, side: Left }: { sprite: Interface/Actions/zone_sel.rsi, state: lleg }
+      !type:BodyPart { type: Torso, side: None }: { sprite: Interface/Actions/zone_sel.rsi, state: torso }
+      !type:BodyPart { type: Leg, side: Right }: { sprite: Interface/Actions/zone_sel.rsi, state: rleg }
+      !type:BodyPart { type: Arm, side: Right }: { sprite: Interface/Actions/zone_sel.rsi, state: rarm }
+  - type: UserInterface
+    interfaces:
+      enum.DamageSelectorUiKey.Key:
+        type: DamageSelectorBoundUserInterface
   - type: MeleeWeapon
     hidden: true
     soundHit:

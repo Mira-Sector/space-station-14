@@ -5,8 +5,6 @@
   name: "skeleton body part"
   abstract: true
   components:
-  - type: Damageable
-    damageContainer: Biological
   - type: BodyPart
   - type: ContainerContainer
     containers:
@@ -32,6 +30,14 @@
       state: "torso_m"
     - type: BodyPart
       partType: Torso
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Skeleton
+    - type: BodyPartThresholds
+      thresholds:
+        0: Healthy
+        15: Damaged
+        100: Dead
 
 - type: entity
   id: HeadSkeleton
@@ -47,6 +53,14 @@
       state: "skull_icon"
     - type: BodyPart
       partType: Head
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Skeleton
+    - type: BodyPartThresholds
+      thresholds:
+        0: Healthy
+        10: Damaged
+        75: Dead
     - type: Input
       context: "human"
     - type: Speech
@@ -86,6 +100,14 @@
     - type: BodyPart
       partType: Arm
       symmetry: Left
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Skeleton
+    - type: BodyPartThresholds
+      thresholds:
+        0: Healthy
+        5: Damaged
+        50: Dead
 
 - type: entity
   id: RightArmSkeleton
@@ -101,6 +123,14 @@
     - type: BodyPart
       partType: Arm
       symmetry: Right
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Skeleton
+    - type: BodyPartThresholds
+      thresholds:
+        0: Healthy
+        5: Damaged
+        50: Dead
 
 - type: entity
   id: LeftHandSkeleton
@@ -147,6 +177,14 @@
       partType: Leg
       symmetry: Left
     - type: MovementBodyPart
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Skeleton
+    - type: BodyPartThresholds
+      thresholds:
+        0: Healthy
+        5: Damaged
+        65: Dead
 
 - type: entity
   id: RightLegSkeleton
@@ -163,6 +201,14 @@
       partType: Leg
       symmetry: Right
     - type: MovementBodyPart
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Skeleton
+    - type: BodyPartThresholds
+      thresholds:
+        0: Healthy
+        5: Damaged
+        65: Dead
 
 - type: entity
   id: LeftFootSkeleton

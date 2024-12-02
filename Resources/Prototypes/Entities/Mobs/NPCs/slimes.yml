@@ -184,7 +184,6 @@
   - type: SpeciesLanguage
     spokenLanguages:
     - Slime
-
   - type: Body
     prototype: Geras
     requiredLegs: 1
@@ -219,6 +218,8 @@
     interfaces:
       enum.StorageUiKey.Key:
         type: StorageBoundUserInterface
+      enum.DamageSelectorUiKey.Key:
+        type: DamageSelectorBoundUserInterface
   - type: PersistantSlimeStorage
 
 - type: entity
