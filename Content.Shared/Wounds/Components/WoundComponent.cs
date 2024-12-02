@@ -1,4 +1,4 @@
-using Content.Shared.Wounds.Prototypes;
+using Content.Shared.Surgery.Prototypes;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 
@@ -7,7 +7,7 @@ namespace Content.Shared.Wounds.Components;
 [RegisterComponent, NetworkedComponent]
 public sealed partial class WoundComponent : Component
 {
-    [DataField(required: true, customTypeSerializer:typeof(PrototypeIdSerializer<WoundPrototype>))]
+    [DataField(required: true, customTypeSerializer:typeof(PrototypeIdSerializer<SurgeryPrototype>))]
     public string Graph { get; set; } = string.Empty;
 
     [DataField(required: true)]

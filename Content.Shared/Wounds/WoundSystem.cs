@@ -1,7 +1,6 @@
-using Content.Shared.Body.Components;
+using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
 using Content.Shared.Damage;
-using Content.Shared.Damage.DamageSelector;
 using Content.Shared.Wounds.Components;
 using Content.Shared.Wounds.Prototypes;
 using Robust.Shared.Prototypes;
@@ -19,49 +18,34 @@ public sealed partial class WoundSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<WoundBodyComponent, DamageModifyEvent>(OnDamage);
+        SubscribeLocalEvent<WoundRecieverComponent, DamageModifyEvent>(OnDamage);
     }
 
-    private void OnDamage(EntityUid uid, WoundBodyComponent component, DamageModifyEvent args)
+    private void OnDamage(EntityUid uid, WoundRecieverComponent component, DamageModifyEvent args)
     {
         if (!args.Damage.AnyPositive())
             return;
 
-        if (!TryComp<BodyComponent>(uid, out var bodyComp))
+        // only one wound per limb
+        if (HasComp<WoundComponent>(uid))
             return;
 
-        if (!TryComp<DamagePartSelectorComponent>(args.Origin, out var selectorComp))
-            return;
+        // TODO: select based on damage and other factors
+        var woundId = _random.Pick(component.SelectableWounds);
 
-        var parts = _body.GetBodyChildren(uid, bodyComp);
-
-        foreach (var (partUid, partComp) in parts)
+        if (!_protoManager.TryIndex(woundId, out WoundPrototype? wound))
         {
-            if (partComp.PartType != selectorComp.SelectedPart.Type)
-                continue;
-
-            if (partComp.Symmetry != selectorComp.SelectedPart.Side)
-                continue;
-
-            if (!TryComp<WoundRecieverComponent>(partUid, out var woundRecieverComp))
-                continue;
-
-            // only one wound per limb
-            if (HasComp<WoundComponent>(partUid))
-                return;
-
-            // TODO: select based on damage and other factors
-            var woundId = _random.Pick(woundRecieverComp.SelectableWounds);
-
-            if (!_protoManager.TryIndex(woundId, out WoundPrototype? wound))
-            {
-                Log.Debug($"{woundId} is not a valid wound prototype.");
-                return;
-            }
-
-            EntityManager.AddComponents(uid, wound.Components, wound.RemoveExisting);
-
+            Log.Debug($"{woundId} is not a valid wound prototype.");
             return;
         }
+
+        EntityManager.AddComponents(uid, wound.Components, wound.RemoveExisting);
+
+        if (!TryComp<BodyPartComponent>(uid, out var partComp) || partComp.Body == null)
+            return;
+
+        var woundBody = EnsureComp<WoundBodyComponent>(partComp.Body.Value);
+        woundBody.Limbs.Add(uid);
+        Dirty(partComp.Body.Value, woundBody);
     }
 }
