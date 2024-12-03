@@ -4,28 +4,28 @@
     Captain:
     - !type:RoleTimeRequirement
       role: JobChiefEngineer
-      time: 10800 #5 hours
+      time: 18000 #5 hours
     - !type:RoleTimeRequirement
       role: JobChiefMedicalOfficer
-      time: 10800 #5 hours
+      time: 18000 #5 hours
     - !type:RoleTimeRequirement
       role: JobHeadOfSecurity
-      time: 10800 #5 hours
+      time: 18000 #5 hours
     - !type:RoleTimeRequirement
       role: JobQuartermaster
-      time: 10800 #5 hours
+      time: 18000 #5 hours
     - !type:RoleTimeRequirement
       role: JobResearchDirector
-      time: 10800 #5 hours
+      time: 18000 #5 hours
     - !type:RoleTimeRequirement
       role: JobQuartermaster
-      time: 10800 #5 hours
+      time: 18000 #5 hours
     - !type:RoleTimeRequirement
       role: JobHeadOfPersonnel
-      time: 10800 #5 hours
+      time: 18000 #5 hours
     - !type:DepartmentTimeRequirement
       department: Civilian
-      time: 10800 #5 hours
+      time: 18000 #5 hours
 
     HeadOfPersonnel:
     - !type:DepartmentTimeRequirement
@@ -74,7 +74,7 @@
       department: Medical
       time: 36000 #10 hours
     - !type:OverallPlaytimeRequirement
-      time: 90000 #20 hours
+      time: 72000 #20 hours
 
     HeadOfSecurity:
     - !type:RoleTimeRequirement
@@ -87,7 +87,7 @@
       department: Security
       time: 90000 #20 hours
     - !type:OverallPlaytimeRequirement
-      time: 108000 #30 hours
+      time: 90000 #25 hours
 
     Quartermaster:
     - !type:RoleTimeRequirement
@@ -125,12 +125,12 @@
     SecurityOfficer:
     - !type:DepartmentTimeRequirement
       department: Security
-      time: 108000 #5 hours
+      time: 18000 #5 hours
 
     Warden:
     - !type:RoleTimeRequirement
       role: JobSecurityOfficer
-      time: 108000 #5 hours
+      time: 18000 #5 hours
 
     SalvageSpecialist:
     - !type:DepartmentTimeRequirement
@@ -150,6 +150,10 @@
     TechnicalAssistant:
     - !type:OverallPlaytimeRequirement
       time: 3600 #1 hour
+    - !type:DepartmentTimeRequirement
+      department: Engineering
+      time: 54000 #15 hrs
+      inverted: true
 
     Chemist:
     - !type:RoleTimeRequirement
@@ -190,7 +194,7 @@
     Lawyer:
     - !type:DepartmentTimeRequirement
       department: Security
-      time: 108000 #5 hours
+      time: 18000 #5 hours
 
     Mime:
     - !type:OverallPlaytimeRequirement
