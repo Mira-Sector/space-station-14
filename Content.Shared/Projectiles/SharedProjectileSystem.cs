@@ -6,6 +6,7 @@ using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Interaction;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Throwing;
+using Content.Shared.Whitelist;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Network;
@@ -28,6 +29,7 @@ public abstract partial class SharedProjectileSystem : EntitySystem
     [Dependency] private readonly SharedHandsSystem _hands = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
+    [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
 
     public override void Initialize()
     {
@@ -94,11 +96,17 @@ public abstract partial class SharedProjectileSystem : EntitySystem
         if (!component.EmbedOnThrow)
             return;
 
+        if (_whitelist.IsWhitelistFailOrNull(component.Whitelist, args.Target))
+            return;
+
         Embed(uid, args.Target, null, component);
     }
 
     private void OnEmbedProjectileHit(EntityUid uid, EmbeddableProjectileComponent component, ref ProjectileHitEvent args)
     {
+        if (_whitelist.IsWhitelistFailOrNull(component.Whitelist, args.Target))
+            return;
+
         Embed(uid, args.Target, args.Shooter, component);
 
         // Raise a specific event for projectiles.
