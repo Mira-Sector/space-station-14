@@ -1,25 +1,30 @@
 using Content.Shared.Surgery.Prototypes;
+using Content.Shared.Surgery.Systems;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 
-namespace Content.Shared.Wounds.Components;
+namespace Content.Shared.Surgery.Components;
 
 [RegisterComponent, NetworkedComponent]
-public sealed partial class WoundComponent : Component
+[Access(typeof(SurgerySystem)]
+public sealed partial class SurgeryReceiverComponent : Component
 {
-    [DataField(required: true, customTypeSerializer:typeof(PrototypeIdSerializer<SurgeryPrototype>))]
-    public string Graph { get; set; } = string.Empty;
+    [DataField(customTypeSerializer:typeof(List<PrototypeIdSerializer<SurgeryPrototype>>))]
+    public List<string> AvailableSurgeries { get; set; } = new();
 
-    [DataField(required: true)]
-    public string Node { get; set; } = default!;
+    [ViewVariables]
+    public SurgeryGraph Graph { get; set; } = default!;
 
-    [DataField]
+    [ViewVariables]
+    public string? Node { get; set; } = default!;
+
+    [ViewVariables]
     public int? EdgeIndex { get; set; } = null;
 
-    [DataField]
+    [ViewVariables]
     public int StepIndex { get; set; } = 0;
 
-    [DataField]
+    [ViewVariables]
     public string? TargetNode { get; set; } = null;
 
     [ViewVariables]

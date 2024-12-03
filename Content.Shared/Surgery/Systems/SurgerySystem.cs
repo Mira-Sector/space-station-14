@@ -3,6 +3,7 @@ using Content.Shared.Body.Part;
 using Content.Shared.Damage.DamageSelector;
 using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
+using Content.Shared.Surgery.Components;
 using Content.Shared.Surgery.Prototypes;
 using Content.Shared.Surgery.Steps;
 using Content.Shared.Tools.Systems;
@@ -18,11 +19,13 @@ public sealed partial class SurgerySystem : EntitySystem
     [Dependency] private readonly IPrototypeManager _protoManager = default!;
     [Dependency] private readonly SharedToolSystem _tool = default!;
 
-    private readonly Queue<EntityUid> _woundUpdateQueue = new();
+    private readonly Queue<EntityUid> _surgeryUpdateQueue = new();
 
     public override void Initialize()
     {
         base.Initialize();
+
+        GraphInit();
 
         SubscribeLocalEvent<WoundBodyComponent, InteractUsingEvent>(OnAfterInteract);
     }
@@ -31,10 +34,10 @@ public sealed partial class SurgerySystem : EntitySystem
     {
         base.Update(frameTime);
 
-        while (_woundUpdateQueue.TryDequeue(out var limb))
+        while (_surgeryUpdateQueue.TryDequeue(out var limb))
         {
             // Ensure the entity exists and has a Construction component.
-            if (!TryComp<WoundComponent>(limb, out var wound))
+            if (!TryComp<SurgeryReceiverComponent>(limb, out var surgery))
                 continue;
 
 #if EXCEPTION_TOLERANCE
@@ -42,21 +45,21 @@ public sealed partial class SurgerySystem : EntitySystem
             {
 #endif
             // Handle all queued interactions!
-            while (wound.InteractionQueue.TryDequeue(out var dequed))
+            while (surgery.InteractionQueue.TryDequeue(out var dequed))
             {
                 var (body, interaction) = dequed;
-                if (wound.Deleted)
+                if (surgery.Deleted)
                 {
-                    Log.Error($"Wound component was deleted while still processing interactions." +
-                                $"Entity {ToPrettyString(limb)}, graph: {wound.Graph}, " +
+                    Log.Error($"surgery component was deleted while still processing interactions." +
+                                $"Entity {ToPrettyString(limb)}, graph: {surgery.Graph}, " +
                                 $"Body: {ToPrettyString(body)}, " +
-                                $"Remaining Queue: {string.Join(", ", wound.InteractionQueue.Select(x => x.GetType().Name))}");
+                                $"Remaining Queue: {string.Join(", ", surgery.InteractionQueue.Select(x => x.GetType().Name))}");
                     break;
                 }
 
                 // We set validation to false because we actually want to perform the interaction here.
-                HandleEvent(body, limb, interaction, false, wound);
-                Dirty(limb, wound);
+                HandleEvent(body, limb, interaction, false, surgery);
+                Dirty(limb, surgery);
             }
 
 #if EXCEPTION_TOLERANCE
@@ -94,56 +97,56 @@ public sealed partial class SurgerySystem : EntitySystem
             if (partComp.Symmetry != selectorComp.SelectedPart.Side)
                 continue;
 
-            if (!TryComp<WoundComponent>(part, out var wound))
+            if (!TryComp<SurgeryReceiverComponent>(part, out var surgery))
                 continue;
 
-            if (!HandleEvent(uid, part, args, true, wound))
+            if (!HandleEvent(uid, part, args, true, surgery))
                 return;
 
-            wound.InteractionQueue.Enqueue((uid, args));
-            _woundUpdateQueue.Enqueue(part);
-            Dirty(part, wound);
+            surgery.InteractionQueue.Enqueue((uid, args));
+            _surgeryUpdateQueue.Enqueue(part);
+            Dirty(part, surgery);
 
             args.Handled = true;
             break;
         }
     }
 
-    private bool HandleEvent(EntityUid uid, EntityUid limb, object ev, bool validation, WoundComponent? wound = null)
+    private bool HandleEvent(EntityUid uid, EntityUid limb, object ev, bool validation, SurgeryReceiverComponent? surgery = null)
     {
-        if (!Resolve(limb, ref wound))
+        if (!Resolve(limb, ref surgery))
             return false;
 
-        if (GetCurrentNode(limb, wound) is not {} node)
+        if (GetCurrentNode(limb, surgery) is not {} node)
             return false;
 
-        if (GetCurrentEdge(limb, wound) is {} edge)
+        if (GetCurrentEdge(limb, surgery) is {} edge)
         {
-            var result = HandleEdge(uid, limb, ev, edge, validation, wound);
+            var result = HandleEdge(uid, limb, ev, edge, validation, surgery);
 
-            if (!validation && result == false && wound.StepIndex == 0)
-                wound.EdgeIndex = null;
+            if (!validation && result == false && surgery.StepIndex == 0)
+                surgery.EdgeIndex = null;
 
             return result;
         }
 
-        return HandleNode(uid, limb, ev, node, validation, wound);
+        return HandleNode(uid, limb, ev, node, validation, surgery);
     }
 
-    private bool HandleNode(EntityUid uid, EntityUid limb, object ev, SurgeryGraphNode node, bool validation, WoundComponent? wound = null)
+    private bool HandleNode(EntityUid uid, EntityUid limb, object ev, SurgeryGraphNode node, bool validation, SurgeryReceiverComponent? surgery = null)
     {
-        if (!Resolve(limb, ref wound))
+        if (!Resolve(limb, ref surgery))
             return false;
 
         // Let's make extra sure this is zero...
-        wound.StepIndex = 0;
+        surgery.StepIndex = 0;
 
         // When we handle a node, we're essentially testing the current event interaction against all of this node's
         // edges' first steps. If any of them accepts the interaction, we stop iterating and enter that edge.
         for (var i = 0; i < node.Edges.Count; i++)
         {
             var edge = node.Edges[i];
-            if (HandleEdge(uid, limb, ev, edge, validation, wound) is var result and not false)
+            if (HandleEdge(uid, limb, ev, edge, validation, surgery) is var result and not false)
             {
                 // Only a True result may modify the state.
                 // In the case of DoAfter, it's only allowed to modify the waiting flag and the current edge index.
@@ -152,66 +155,66 @@ public sealed partial class SurgerySystem : EntitySystem
                     return result;
 
                 // If we're not on the same edge as we were before, that means handling that edge changed the node.
-                if (wound.Node != node.Name)
+                if (surgery.Node != node.Name)
                     return result;
 
                 // If we're still in the same node, that means we entered the edge and it's still not done.
-                wound.EdgeIndex = i;
-                UpdatePathfinding(limb, wound);
+                surgery.EdgeIndex = i;
+                UpdatePathfinding(limb, surgery);
                 return result;
             }
         }
         return false;
     }
 
-    private bool HandleEdge(EntityUid uid, EntityUid limb, object ev, SurgeryGraphEdge edge, bool validation, WoundComponent? wound = null)
+    private bool HandleEdge(EntityUid uid, EntityUid limb, object ev, SurgeryGraphEdge edge, bool validation, SurgeryReceiverComponent? surgery = null)
     {
-        if (!Resolve(limb, ref wound))
+        if (!Resolve(limb, ref surgery))
             return false;
 
-        var step = GetStepFromEdge(edge, wound.StepIndex);
+        var step = GetStepFromEdge(edge, surgery.StepIndex);
         if (step == null)
         {
             Log.Warning($"Called {nameof(HandleEdge)} on entity {ToPrettyString(uid)} but the current state is not valid for that!");
             return false;
         }
 
-        var handle = HandleStep(uid, limb, ev, step, validation, out var user, wound);
+        var handle = HandleStep(uid, limb, ev, step, validation, out var user, surgery);
         if (handle != true)
             return handle;
 
-        wound.StepIndex++;
+        surgery.StepIndex++;
 
-        if (wound.StepIndex >= edge.Steps.Count)
+        if (surgery.StepIndex >= edge.Steps.Count)
         {
             // Edge finished!
             PerformActions(uid, limb, user, edge.Completed);
-            if (wound.Deleted)
+            if (surgery.Deleted)
                 return true;
 
-            wound.TargetEdgeIndex = null;
-            wound.EdgeIndex = null;
-            wound.StepIndex = 0;
+            surgery.TargetEdgeIndex = null;
+            surgery.EdgeIndex = null;
+            surgery.StepIndex = 0;
 
-            ChangeNode(uid, limb, user, edge.Target, true, wound);
+            ChangeNode(uid, limb, user, edge.Target, true, surgery);
         }
 
         return true;
     }
 
-    private bool HandleStep(EntityUid uid, EntityUid limb, object ev, SurgeryGraphStep step, bool validation, out EntityUid? user, WoundComponent? wound = null)
+    private bool HandleStep(EntityUid uid, EntityUid limb, object ev, SurgeryGraphStep step, bool validation, out EntityUid? user, SurgeryReceiverComponent? surgery = null)
     {
         user = null;
 
-        if (!Resolve(limb, ref wound))
+        if (!Resolve(limb, ref surgery))
             return false;
 
-        var handle = HandleInteraction(uid, limb, ev, step, validation, out user, wound);
+        var handle = HandleInteraction(uid, limb, ev, step, validation, out user, surgery);
         if (handle != true)
             return handle;
 
         PerformActions(uid, limb, user, step.Completed);
-        UpdatePathfinding(limb, wound);
+        UpdatePathfinding(limb, surgery);
 
         return true;
     }
@@ -230,11 +233,11 @@ public sealed partial class SurgerySystem : EntitySystem
         }
     }
 
-    private bool HandleInteraction(EntityUid uid, EntityUid limb, object ev, SurgeryGraphStep step, bool validation, out EntityUid? user, WoundComponent? wound = null)
+    private bool HandleInteraction(EntityUid uid, EntityUid limb, object ev, SurgeryGraphStep step, bool validation, out EntityUid? user, SurgeryReceiverComponent? surgery = null)
     {
         user = null;
 
-        if (!Resolve(limb, ref wound))
+        if (!Resolve(limb, ref surgery))
             return false;
 
         switch (step)
@@ -267,185 +270,176 @@ public sealed partial class SurgerySystem : EntitySystem
 
         return false;
     }
-    public bool UpdatePathfinding(EntityUid uid, WoundComponent? wound = null)
+    public bool UpdatePathfinding(EntityUid uid, SurgeryReceiverComponent? surgery = null)
     {
-        if (!Resolve(uid, ref wound))
+        if (!Resolve(uid, ref surgery))
             return false;
 
-        if (wound.TargetNode is not {} targetNodeId)
+        if (surgery.TargetNode is not {} targetNodeId)
             return false;
 
-        if (GetCurrentGraph(uid, wound) is not {} graph
-            || GetNodeFromGraph(graph, wound.Node) is not {} node
-            || GetNodeFromGraph(graph, targetNodeId) is not {} targetNode)
+        if (GetNodeFromGraph(surgery.Graph, surgery.Node) is not {} node
+            || GetNodeFromGraph(surgery.Graph, targetNodeId) is not {} targetNode)
             return false;
 
-        return UpdatePathfinding(uid, graph, node, targetNode, GetCurrentEdge(uid, wound), wound);
+        return UpdatePathfinding(uid, surgery.Graph, node, targetNode, GetCurrentEdge(uid, surgery), surgery);
     }
 
-    private bool UpdatePathfinding(EntityUid uid, SurgeryPrototype graph,
+    private bool UpdatePathfinding(EntityUid uid, SurgeryGraph graph,
         SurgeryGraphNode currentNode, SurgeryGraphNode targetNode, SurgeryGraphEdge? currentEdge,
-        WoundComponent? wound = null)
+        SurgeryReceiverComponent? surgery = null)
     {
-        if (!Resolve(uid, ref wound))
+        if (!Resolve(uid, ref surgery))
             return false;
 
-        wound.TargetNode = targetNode.Name;
+        surgery.TargetNode = targetNode.Name;
 
         // Check if we reached the target node.
         if (currentNode == targetNode)
         {
-            ClearPathfinding(uid, wound);
+            ClearPathfinding(uid, surgery);
             return true;
         }
 
         // If we don't have a path, generate it.
-        if (wound.NodePathfinding == null)
+        if (surgery.NodePathfinding == null)
         {
             var path = graph.PathId(currentNode.Name, targetNode.Name);
             if (path == null || path.Length == 0)
             {
                 // No path.
-                ClearPathfinding(uid, wound);
+                ClearPathfinding(uid, surgery);
                 return false;
             }
 
-            wound.NodePathfinding = new Queue<string>(path);
+            surgery.NodePathfinding = new Queue<string>(path);
         }
         // If the next pathfinding node is the one we're at, dequeue it.
-        if (wound.NodePathfinding.Peek() == currentNode.Name)
+        if (surgery.NodePathfinding.Peek() == currentNode.Name)
         {
-            wound.NodePathfinding.Dequeue();
+            surgery.NodePathfinding.Dequeue();
         }
-        if (currentEdge != null && wound.TargetEdgeIndex is {} targetEdgeIndex)
+        if (currentEdge != null && surgery.TargetEdgeIndex is {} targetEdgeIndex)
         {
             if (currentNode.Edges.Count >= targetEdgeIndex)
             {
                 // Target edge is incorrect.
-                wound.TargetEdgeIndex = null;
+                surgery.TargetEdgeIndex = null;
             }
             else if (currentNode.Edges[targetEdgeIndex] != currentEdge)
             {
                 // We went the wrong way, clean up!
-                ClearPathfinding(uid, wound);
+                ClearPathfinding(uid, surgery);
                 return false;
             }
         }
-        if (wound.EdgeIndex == null
-            && wound.TargetEdgeIndex == null
-            && wound.NodePathfinding != null)
-            wound.TargetEdgeIndex = (currentNode.GetEdgeIndex(wound.NodePathfinding.Peek()));
+        if (surgery.EdgeIndex == null
+            && surgery.TargetEdgeIndex == null
+            && surgery.NodePathfinding != null)
+            surgery.TargetEdgeIndex = (currentNode.GetEdgeIndex(surgery.NodePathfinding.Peek()));
         return true;
     }
 
-    public void ClearPathfinding(EntityUid uid, WoundComponent? wound = null)
+    public void ClearPathfinding(EntityUid uid, SurgeryReceiverComponent? surgery = null)
     {
-        if (!Resolve(uid, ref wound))
+        if (!Resolve(uid, ref surgery))
             return;
 
-        wound.TargetNode = null;
-        wound.TargetEdgeIndex = null;
-        wound.NodePathfinding = null;
+        surgery.TargetNode = null;
+        surgery.TargetEdgeIndex = null;
+        surgery.NodePathfinding = null;
     }
 
-    public SurgeryPrototype? GetCurrentGraph(EntityUid uid, WoundComponent? wound = null)
+    public SurgeryGraphNode? GetCurrentNode(EntityUid uid, SurgeryReceiverComponent? surgery = null)
     {
-        if (!Resolve(uid, ref wound, false))
+        if (!Resolve(uid, ref surgery, false))
             return null;
 
-        return _protoManager.TryIndex(wound.Graph, out SurgeryPrototype? graph) ? graph : null;
+        if (surgery.Node is not {} nodeIdentifier)
+            return null;
+
+        return GetNodeFromGraph(surgery.Graph, nodeIdentifier);
     }
 
-    public SurgeryGraphNode? GetCurrentNode(EntityUid uid, WoundComponent? wound = null)
+    public SurgeryGraphEdge? GetCurrentEdge(EntityUid uid, SurgeryReceiverComponent? surgery = null)
     {
-        if (!Resolve(uid, ref wound, false))
+        if (!Resolve(uid, ref surgery, false))
             return null;
 
-        if (wound.Node is not {} nodeIdentifier)
+        if (surgery.EdgeIndex is not {} edgeIndex)
             return null;
 
-        return GetCurrentGraph(uid, wound) is not {} graph ? null : GetNodeFromGraph(graph, nodeIdentifier);
+        return GetCurrentNode(uid, surgery) is not {} node ? null : GetEdgeFromNode(node, edgeIndex);
     }
 
-    public SurgeryGraphEdge? GetCurrentEdge(EntityUid uid, WoundComponent? wound = null)
+    public (SurgeryGraphNode?, SurgeryGraphEdge?) GetCurrentNodeAndEdge(EntityUid uid, SurgeryReceiverComponent? surgery = null)
     {
-        if (!Resolve(uid, ref wound, false))
-            return null;
-
-        if (wound.EdgeIndex is not {} edgeIndex)
-            return null;
-
-        return GetCurrentNode(uid, wound) is not {} node ? null : GetEdgeFromNode(node, edgeIndex);
-    }
-
-    public (SurgeryGraphNode?, SurgeryGraphEdge?) GetCurrentNodeAndEdge(EntityUid uid, WoundComponent? wound = null)
-    {
-        if (!Resolve(uid, ref wound, false))
+        if (!Resolve(uid, ref surgery, false))
             return (null, null);
 
-        if (GetCurrentNode(uid, wound) is not { } node)
+        if (GetCurrentNode(uid, surgery) is not { } node)
             return (null, null);
 
-        if (wound.EdgeIndex is not {} edgeIndex)
+        if (surgery.EdgeIndex is not {} edgeIndex)
             return (node, null);
 
         return (node, GetEdgeFromNode(node, edgeIndex));
     }
 
-    public SurgeryGraphStep? GetCurrentStep(EntityUid uid, WoundComponent? wound = null)
+    public SurgeryGraphStep? GetCurrentStep(EntityUid uid, SurgeryReceiverComponent? surgery = null)
     {
-        if (!Resolve(uid, ref wound, false))
+        if (!Resolve(uid, ref surgery, false))
             return null;
 
-        if (GetCurrentEdge(uid, wound) is not {} edge)
+        if (GetCurrentEdge(uid, surgery) is not {} edge)
             return null;
 
-        return GetStepFromEdge(edge, wound.StepIndex);
+        return GetStepFromEdge(edge, surgery.StepIndex);
     }
 
-    public SurgeryGraphNode? GetTargetNode(EntityUid uid, WoundComponent? wound)
+    public SurgeryGraphNode? GetTargetNode(EntityUid uid, SurgeryReceiverComponent? surgery)
     {
-        if (!Resolve(uid, ref wound))
+        if (!Resolve(uid, ref surgery))
             return null;
 
-        if (wound.TargetNode is not {} targetNodeId)
+        if (surgery.TargetNode is not {} targetNodeId)
             return null;
 
-        if (GetCurrentGraph(uid, wound) is not {} graph)
-            return null;
-
-        return GetNodeFromGraph(graph, targetNodeId);
+        return GetNodeFromGraph(surgery.Graph, targetNodeId);
     }
 
-    public SurgeryGraphEdge? GetTargetEdge(EntityUid uid, WoundComponent? wound)
+    public SurgeryGraphEdge? GetTargetEdge(EntityUid uid, SurgeryReceiverComponent? surgery)
     {
-        if (!Resolve(uid, ref wound))
+        if (!Resolve(uid, ref surgery))
             return null;
 
-        if (wound.TargetEdgeIndex is not {} targetEdgeIndex)
+        if (surgery.TargetEdgeIndex is not {} targetEdgeIndex)
             return null;
 
-        if (GetCurrentNode(uid, wound) is not {} node)
+        if (GetCurrentNode(uid, surgery) is not {} node)
             return null;
 
         return GetEdgeFromNode(node, targetEdgeIndex);
     }
 
-    public (SurgeryGraphEdge? edge, SurgeryGraphStep? step) GetCurrentEdgeAndStep(EntityUid uid, WoundComponent? wound = null)
+    public (SurgeryGraphEdge? edge, SurgeryGraphStep? step) GetCurrentEdgeAndStep(EntityUid uid, SurgeryReceiverComponent? surgery = null)
     {
-        if (!Resolve(uid, ref wound, false))
+        if (!Resolve(uid, ref surgery, false))
             return default;
 
-        var edge = GetCurrentEdge(uid, wound);
+        var edge = GetCurrentEdge(uid, surgery);
         if (edge == null)
             return default;
 
-        var step = GetStepFromEdge(edge, wound.StepIndex);
+        var step = GetStepFromEdge(edge, surgery.StepIndex);
         return (edge, step);
     }
 
-    public SurgeryGraphNode? GetNodeFromGraph(SurgeryPrototype graph, string id)
+    public SurgeryGraphNode? GetNodeFromGraph(SurgeryGraph graph, string? id)
     {
+        if (id == null)
+            return null;
+
         return graph.Nodes.TryGetValue(id, out var node) ? node : null;
     }
 
@@ -459,16 +453,16 @@ public sealed partial class SurgerySystem : EntitySystem
         return edge.Steps.Count > index ? edge.Steps[index] : null;
     }
 
-    public bool ChangeNode(EntityUid uid, EntityUid limb, EntityUid? userUid, string id, bool performActions = true, WoundComponent? wound = null)
+    public bool ChangeNode(EntityUid uid, EntityUid limb, EntityUid? userUid, string id, bool performActions = true, SurgeryReceiverComponent? surgery = null)
     {
-        if (!Resolve(limb, ref wound))
+        if (!Resolve(limb, ref surgery))
             return false;
 
-        if (GetCurrentGraph(limb, wound) is not {} graph || GetNodeFromGraph(graph, id) is not {} node)
+        if (GetNodeFromGraph(surgery.Graph, id) is not {} node)
             return false;
 
-        var oldNode = wound.Node;
-        wound.Node = id;
+        var oldNode = surgery.Node;
+        surgery.Node = id;
 
         // ChangeEntity will handle the pathfinding update.
         if(performActions)
@@ -478,7 +472,7 @@ public sealed partial class SurgerySystem : EntitySystem
         if (!Exists(uid))
             return false;
 
-        UpdatePathfinding(limb, wound);
+        UpdatePathfinding(limb, surgery);
         return true;
     }
 }
