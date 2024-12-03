@@ -38,7 +38,7 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
         base.Initialize();
 
         SubscribeLocalEvent<DamageVisualsComponent, ComponentStartup>(InitializeEntity);
-        SubscribeLocalEvent<DamageVisualsComponent, BodySetupEvent>(BodyStartup);
+        SubscribeLocalEvent<DamageVisualsComponent, BodyChangedEvent>(BodyChanged);
     }
 
     private void InitializeEntity(EntityUid entity, DamageVisualsComponent comp, ComponentStartup args)
@@ -55,7 +55,7 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
             InitializeVisualizer(entity, comp);
     }
 
-    private void BodyStartup(EntityUid entity, DamageVisualsComponent comp, BodySetupEvent args)
+    private void BodyChanged(EntityUid entity, DamageVisualsComponent comp, BodyChangedEvent args)
     {
         InitializeVisualizer(entity, comp);
 

@@ -2,8 +2,9 @@
   id: Atlas
   mapName: Atlas
   mapPath: /Maps/atlas.yml
-  minPlayers: 5
+  minPlayers: 0
   maxPlayers: 20
+  fallback: true
   stations:
     Atlas:
       stationProto: StandardNanotrasenStation

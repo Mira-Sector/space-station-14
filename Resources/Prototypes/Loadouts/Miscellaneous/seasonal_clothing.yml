@@ -1,0 +1,42 @@
+#Head
+- type: loadout
+  id: SantaHat
+  equipment:
+    head: ClothingHeadHatSantahat
+
+- type: loadout
+  id: XmasCrown
+  equipment:
+    head: ClothingHeadHatXmasCrown
+
+- type: loadout
+  id: PartyHatCup
+  equipment:
+    head: ClothingHeadHatPartyWaterCup
+
+- type: loadout
+  id: PartyHatYellow
+  equipment:
+    head: ClothingHeadHatPartyYellow
+
+- type: loadout
+  id: PartyHatBlue
+  equipment:
+    head: ClothingHeadHatPartyBlue
+
+- type: loadout
+  id: PartyHatGreen
+  equipment:
+    head: ClothingHeadHatPartyGreen
+
+- type: loadout
+  id: PartyHatRed
+  equipment:
+    head: ClothingHeadHatPartyRed
+
+#Outer
+
+- type: loadout
+  id: SantaSuit
+  equipment:
+    outerClothing: ClothingOuterSanta
