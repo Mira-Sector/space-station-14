@@ -168,8 +168,11 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
             return;
         }
 
-        damageVisComp.Thresholds.Add(FixedPoint2.Zero);
-        damageVisComp.Thresholds.Sort();
+        if (!damageVisComp.Thresholds.Contains(FixedPoint2.Zero))
+        {
+            damageVisComp.Thresholds.Add(FixedPoint2.Zero);
+            damageVisComp.Thresholds.Sort();
+        }
 
         if (damageVisComp.Thresholds[0] != 0)
         {
@@ -177,6 +180,8 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
             damageVisComp.Valid = false;
             return;
         }
+
+        damageVisComp.LastThresholdPerGroup.Clear();
 
         // If the damage container on our entity's DamageableComponent
         // is not null, we can try to check through its groups.
@@ -252,6 +257,8 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
         // on the entity.
         if (damageVisComp.TargetLayers is { Count: > 0 })
         {
+            damageVisComp.TargetLayerMapKeys.Clear();
+
             // This should ensure that the layers we're targeting
             // are valid for the visualizer's use.
             //
@@ -306,7 +313,15 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
                             $"{layer}{group}",
                             index);
                     }
-                    damageVisComp.DisabledLayers.Add(layer, false);
+
+                    if (damageVisComp.DisabledLayers.ContainsKey(layer))
+                    {
+                        damageVisComp.DisabledLayers[layer] = false;
+                    }
+                    else
+                    {
+                        damageVisComp.DisabledLayers.Add(layer, false);
+                    }
                 }
                 // If we're not targeting groups, and we're still
                 // using an overlay, we instead just add a general
@@ -319,7 +334,15 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
                         $"{layer}_{damageVisComp.Thresholds[1]}",
                         $"{layer}trackDamage",
                         index);
-                    damageVisComp.DisabledLayers.Add(layer, false);
+
+                    if (damageVisComp.DisabledLayers.ContainsKey(layer))
+                    {
+                        damageVisComp.DisabledLayers[layer] = false;
+                    }
+                    else
+                    {
+                        damageVisComp.DisabledLayers.Add(layer, false);
+                    }
                 }
             }
         }
