@@ -106,3 +106,29 @@
         whitelist:
           components:
           - GasTank
+
+- type: entity
+  id: RadiationCollectorFullTankActive
+  suffix: Filled tank Active
+  parent: RadiationCollector
+  components:
+  - type: Sprite
+    sprite: Structures/Power/Generation/Singularity/collector.rsi
+    snapCardinals: true
+    layers:
+      - state: ca_on
+        map: ["enum.RadiationCollectorVisualLayers.Main"]
+  - type: RadiationCollector
+    enabled: true
+    chargeModifier: 7500
+    radiationReactiveGases:
+      - reactantPrototype: Plasma
+        powerGenerationEfficiency: 1
+        reactantBreakdownRate: 0.0001
+  - type: ItemSlots
+    slots:
+      gas_tank:
+        startingItem: PlasmaTankFilled
+        whitelist:
+          components:
+          - GasTank- type: entity
