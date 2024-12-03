@@ -34,7 +34,7 @@ public sealed partial class SurgerySystem : EntitySystem
         while (_woundUpdateQueue.TryDequeue(out var limb))
         {
             // Ensure the entity exists and has a Construction component.
-            if (!TryComp<WoundRecieverComponent>(limb, out var wound))
+            if (!TryComp<WoundComponent>(limb, out var wound))
                 continue;
 
 #if EXCEPTION_TOLERANCE
@@ -94,7 +94,7 @@ public sealed partial class SurgerySystem : EntitySystem
             if (partComp.Symmetry != selectorComp.SelectedPart.Side)
                 continue;
 
-            if (!TryComp<WoundRecieverComponent>(part, out var wound))
+            if (!TryComp<WoundComponent>(part, out var wound))
                 continue;
 
             if (!HandleEvent(uid, part, args, true, wound))
@@ -109,7 +109,7 @@ public sealed partial class SurgerySystem : EntitySystem
         }
     }
 
-    private bool HandleEvent(EntityUid uid, EntityUid limb, object ev, bool validation, WoundRecieverComponent? wound = null)
+    private bool HandleEvent(EntityUid uid, EntityUid limb, object ev, bool validation, WoundComponent? wound = null)
     {
         if (!Resolve(limb, ref wound))
             return false;
@@ -130,7 +130,7 @@ public sealed partial class SurgerySystem : EntitySystem
         return HandleNode(uid, limb, ev, node, validation, wound);
     }
 
-    private bool HandleNode(EntityUid uid, EntityUid limb, object ev, SurgeryGraphNode node, bool validation, WoundRecieverComponent? wound = null)
+    private bool HandleNode(EntityUid uid, EntityUid limb, object ev, SurgeryGraphNode node, bool validation, WoundComponent? wound = null)
     {
         if (!Resolve(limb, ref wound))
             return false;
@@ -164,7 +164,7 @@ public sealed partial class SurgerySystem : EntitySystem
         return false;
     }
 
-    private bool HandleEdge(EntityUid uid, EntityUid limb, object ev, SurgeryGraphEdge edge, bool validation, WoundRecieverComponent? wound = null)
+    private bool HandleEdge(EntityUid uid, EntityUid limb, object ev, SurgeryGraphEdge edge, bool validation, WoundComponent? wound = null)
     {
         if (!Resolve(limb, ref wound))
             return false;
@@ -199,7 +199,7 @@ public sealed partial class SurgerySystem : EntitySystem
         return true;
     }
 
-    private bool HandleStep(EntityUid uid, EntityUid limb, object ev, SurgeryGraphStep step, bool validation, out EntityUid? user, WoundRecieverComponent? wound = null)
+    private bool HandleStep(EntityUid uid, EntityUid limb, object ev, SurgeryGraphStep step, bool validation, out EntityUid? user, WoundComponent? wound = null)
     {
         user = null;
 
@@ -230,7 +230,7 @@ public sealed partial class SurgerySystem : EntitySystem
         }
     }
 
-    private bool HandleInteraction(EntityUid uid, EntityUid limb, object ev, SurgeryGraphStep step, bool validation, out EntityUid? user, WoundRecieverComponent? wound = null)
+    private bool HandleInteraction(EntityUid uid, EntityUid limb, object ev, SurgeryGraphStep step, bool validation, out EntityUid? user, WoundComponent? wound = null)
     {
         user = null;
 
@@ -267,7 +267,7 @@ public sealed partial class SurgerySystem : EntitySystem
 
         return false;
     }
-    public bool UpdatePathfinding(EntityUid uid, WoundRecieverComponent? wound = null)
+    public bool UpdatePathfinding(EntityUid uid, WoundComponent? wound = null)
     {
         if (!Resolve(uid, ref wound))
             return false;
@@ -285,7 +285,7 @@ public sealed partial class SurgerySystem : EntitySystem
 
     private bool UpdatePathfinding(EntityUid uid, SurgeryPrototype graph,
         SurgeryGraphNode currentNode, SurgeryGraphNode targetNode, SurgeryGraphEdge? currentEdge,
-        WoundRecieverComponent? wound = null)
+        WoundComponent? wound = null)
     {
         if (!Resolve(uid, ref wound))
             return false;
@@ -338,7 +338,7 @@ public sealed partial class SurgerySystem : EntitySystem
         return true;
     }
 
-    public void ClearPathfinding(EntityUid uid, WoundRecieverComponent? wound = null)
+    public void ClearPathfinding(EntityUid uid, WoundComponent? wound = null)
     {
         if (!Resolve(uid, ref wound))
             return;
@@ -348,7 +348,7 @@ public sealed partial class SurgerySystem : EntitySystem
         wound.NodePathfinding = null;
     }
 
-    public SurgeryPrototype? GetCurrentGraph(EntityUid uid, WoundRecieverComponent? wound = null)
+    public SurgeryPrototype? GetCurrentGraph(EntityUid uid, WoundComponent? wound = null)
     {
         if (!Resolve(uid, ref wound, false))
             return null;
@@ -356,7 +356,7 @@ public sealed partial class SurgerySystem : EntitySystem
         return _protoManager.TryIndex(wound.Graph, out SurgeryPrototype? graph) ? graph : null;
     }
 
-    public SurgeryGraphNode? GetCurrentNode(EntityUid uid, WoundRecieverComponent? wound = null)
+    public SurgeryGraphNode? GetCurrentNode(EntityUid uid, WoundComponent? wound = null)
     {
         if (!Resolve(uid, ref wound, false))
             return null;
@@ -367,7 +367,7 @@ public sealed partial class SurgerySystem : EntitySystem
         return GetCurrentGraph(uid, wound) is not {} graph ? null : GetNodeFromGraph(graph, nodeIdentifier);
     }
 
-    public SurgeryGraphEdge? GetCurrentEdge(EntityUid uid, WoundRecieverComponent? wound = null)
+    public SurgeryGraphEdge? GetCurrentEdge(EntityUid uid, WoundComponent? wound = null)
     {
         if (!Resolve(uid, ref wound, false))
             return null;
@@ -378,7 +378,7 @@ public sealed partial class SurgerySystem : EntitySystem
         return GetCurrentNode(uid, wound) is not {} node ? null : GetEdgeFromNode(node, edgeIndex);
     }
 
-    public (SurgeryGraphNode?, SurgeryGraphEdge?) GetCurrentNodeAndEdge(EntityUid uid, WoundRecieverComponent? wound = null)
+    public (SurgeryGraphNode?, SurgeryGraphEdge?) GetCurrentNodeAndEdge(EntityUid uid, WoundComponent? wound = null)
     {
         if (!Resolve(uid, ref wound, false))
             return (null, null);
@@ -392,7 +392,7 @@ public sealed partial class SurgerySystem : EntitySystem
         return (node, GetEdgeFromNode(node, edgeIndex));
     }
 
-    public SurgeryGraphStep? GetCurrentStep(EntityUid uid, WoundRecieverComponent? wound = null)
+    public SurgeryGraphStep? GetCurrentStep(EntityUid uid, WoundComponent? wound = null)
     {
         if (!Resolve(uid, ref wound, false))
             return null;
@@ -403,7 +403,7 @@ public sealed partial class SurgerySystem : EntitySystem
         return GetStepFromEdge(edge, wound.StepIndex);
     }
 
-    public SurgeryGraphNode? GetTargetNode(EntityUid uid, WoundRecieverComponent? wound)
+    public SurgeryGraphNode? GetTargetNode(EntityUid uid, WoundComponent? wound)
     {
         if (!Resolve(uid, ref wound))
             return null;
@@ -417,7 +417,7 @@ public sealed partial class SurgerySystem : EntitySystem
         return GetNodeFromGraph(graph, targetNodeId);
     }
 
-    public SurgeryGraphEdge? GetTargetEdge(EntityUid uid, WoundRecieverComponent? wound)
+    public SurgeryGraphEdge? GetTargetEdge(EntityUid uid, WoundComponent? wound)
     {
         if (!Resolve(uid, ref wound))
             return null;
@@ -431,7 +431,7 @@ public sealed partial class SurgerySystem : EntitySystem
         return GetEdgeFromNode(node, targetEdgeIndex);
     }
 
-    public (SurgeryGraphEdge? edge, SurgeryGraphStep? step) GetCurrentEdgeAndStep(EntityUid uid, WoundRecieverComponent? wound = null)
+    public (SurgeryGraphEdge? edge, SurgeryGraphStep? step) GetCurrentEdgeAndStep(EntityUid uid, WoundComponent? wound = null)
     {
         if (!Resolve(uid, ref wound, false))
             return default;
@@ -459,7 +459,7 @@ public sealed partial class SurgerySystem : EntitySystem
         return edge.Steps.Count > index ? edge.Steps[index] : null;
     }
 
-    public bool ChangeNode(EntityUid uid, EntityUid limb, EntityUid? userUid, string id, bool performActions = true, WoundRecieverComponent? wound = null)
+    public bool ChangeNode(EntityUid uid, EntityUid limb, EntityUid? userUid, string id, bool performActions = true, WoundComponent? wound = null)
     {
         if (!Resolve(limb, ref wound))
             return false;

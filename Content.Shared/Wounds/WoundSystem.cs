@@ -1,5 +1,6 @@
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
+using Content.Shared.Damage;
 using Content.Shared.Wounds.Components;
 using Content.Shared.Wounds.Prototypes;
 using Robust.Shared.Prototypes;
@@ -26,7 +27,7 @@ public sealed partial class WoundSystem : EntitySystem
         if (args.OldState != WoundState.Healthy && args.NewState != WoundState.Damaged)
             return;
 
-        if (component.CurrentWound != null)
+        if (HasComp<WoundComponent>(uid))
             return;
 
         // TODO: select based on damage and other factors
@@ -39,7 +40,6 @@ public sealed partial class WoundSystem : EntitySystem
         }
 
         EntityManager.AddComponents(uid, wound.Components, wound.RemoveExisting);
-        component.CurrentWound = wound;
 
         var woundBody = EnsureComp<WoundBodyComponent>(args.Body);
         woundBody.Limbs.Add(uid);
