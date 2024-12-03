@@ -81,8 +81,12 @@ public partial class SharedBodySystem
             AddOrgan((insertedUid, organ), ent, ent);
         }
 
-        var ev = new BodyChangedEvent(ent.Comp);
-        RaiseLocalEvent(ent, ev);
+        // so random stuff doesnt trigger it if the body didnt change
+        if (part != null || organ != null)
+        {
+            var ev = new BodyChangedEvent(ent.Comp);
+            RaiseLocalEvent(ent, ev);
+        }
     }
 
     private void OnBodyRemoved(Entity<BodyComponent> ent, ref EntRemovedFromContainerMessage args)
@@ -106,8 +110,12 @@ public partial class SharedBodySystem
         if (TryComp(removedUid, out OrganComponent? organ))
             RemoveOrgan((removedUid, organ), ent);
 
-        var ev = new BodyChangedEvent(ent.Comp);
-        RaiseLocalEvent(ent, ev);
+        // so random stuff doesnt trigger it if the body didnt change
+        if (part != null || organ != null)
+        {
+            var ev = new BodyChangedEvent(ent.Comp);
+            RaiseLocalEvent(ent, ev);
+        }
     }
 
     private void OnBodyInit(Entity<BodyComponent> ent, ref ComponentInit args)
