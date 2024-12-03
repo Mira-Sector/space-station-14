@@ -1,3 +1,4 @@
+using Content.Shared.Body.Systems;
 using Content.Shared.Clothing;
 using Content.Shared.Damage.Components;
 using Content.Shared.Examine;
@@ -9,6 +10,7 @@ namespace Content.Shared.Damage
 {
     public sealed class SlowOnDamageSystem : EntitySystem
     {
+        [Dependency] private readonly SharedBodySystem _bodySystem = default!;
         [Dependency] private readonly MovementSpeedModifierSystem _movementSpeedModifierSystem = default!;
 
         public override void Initialize()
@@ -30,15 +32,29 @@ namespace Content.Shared.Damage
 
         private void OnRefreshMovespeed(EntityUid uid, SlowOnDamageComponent component, RefreshMovementSpeedModifiersEvent args)
         {
-            if (!EntityManager.TryGetComponent<DamageableComponent>(uid, out var damage))
-                return;
+            FixedPoint2 totalDamage;
 
-            if (damage.TotalDamage == FixedPoint2.Zero)
+            var bodyDamage = _bodySystem.GetBodyDamage(uid);
+
+            if (bodyDamage != null)
+            {
+                totalDamage = bodyDamage.GetTotal();
+            }
+            else if (TryComp<DamageableComponent>(uid, out var damage))
+            {
+                totalDamage = damage.TotalDamage;
+            }
+            else
+            {
+                return;
+            }
+
+            if (totalDamage == FixedPoint2.Zero)
                 return;
 
             // Get closest threshold
             FixedPoint2 closest = FixedPoint2.Zero;
-            var total = damage.TotalDamage;
+            var total = totalDamage;
             foreach (var thres in component.SpeedModifierThresholds)
             {
                 if (total >= thres.Key && thres.Key > closest)

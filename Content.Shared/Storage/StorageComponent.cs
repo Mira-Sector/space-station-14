@@ -7,6 +7,7 @@ using Robust.Shared.GameStates;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
+using System.Numerics;
 
 namespace Content.Shared.Storage
 {
@@ -130,6 +131,13 @@ namespace Content.Shared.Storage
         /// </summary>
         [DataField]
         public bool HideStackVisualsWhenClosed = true;
+
+        [DataField]
+        public bool Animations = true;
+
+        public bool CanAnimate = false;
+
+        public Vector2 OriginalScale;
 
         [Serializable, NetSerializable]
         public enum StorageUiKey : byte

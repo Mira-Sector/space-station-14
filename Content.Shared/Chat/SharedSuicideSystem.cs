@@ -1,6 +1,8 @@
+using Content.Shared.Body.Part;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Mobs.Components;
+using Content.Shared.FixedPoint;
 using Robust.Shared.Prototypes;
 using System.Linq;
 
@@ -46,13 +48,25 @@ public sealed class SharedSuicideSystem : EntitySystem
     /// </summary>
     public void ApplyLethalDamage(Entity<DamageableComponent> target, ProtoId<DamageTypePrototype>? damageType)
     {
-        if (!TryComp<MobThresholdsComponent>(target, out var mobThresholds))
-            return;
-
         // Mob thresholds are sorted from alive -> crit -> dead,
         // grabbing the last key will give us how much damage is needed to kill a target from zero
         // The exact lethal damage amount is adjusted based on their current damage taken
-        var lethalAmountOfDamage = mobThresholds.Thresholds.Keys.Last() - target.Comp.TotalDamage;
+        FixedPoint2 lethalThreshold;
+
+        if (TryComp<BodyPartThresholdsComponent>(target, out var limbThresholds))
+        {
+            lethalThreshold = limbThresholds.Thresholds.Keys.Last();
+        }
+        else if (TryComp<MobThresholdsComponent>(target, out var mobThresholds))
+        {
+            lethalThreshold = mobThresholds.Thresholds.Keys.Last();
+        }
+        else
+        {
+            return;
+        }
+
+        var lethalAmountOfDamage = lethalThreshold - target.Comp.TotalDamage;
 
         // We don't want structural damage for the same reasons listed above
         if (!_prototypeManager.TryIndex(damageType, out var damagePrototype) || damagePrototype.ID == "Structural")

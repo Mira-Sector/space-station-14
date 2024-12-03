@@ -795,3 +795,53 @@ Entries:
     type: Fix
   id: 118
   time: '2024-11-11T20:16:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Vox has a right hand
+    type: Fix
+  - message: More mobs have the damage part selector
+    type: Fix
+  id: 119
+  time: '2024-11-16T20:45:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Reach has been de-rotated
+    type: Remove
+  id: 120
+  time: '2024-11-16T20:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Anti materiel can now penitrate
+    type: Add
+  id: 121
+  time: '2024-11-18T02:10:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Slimes can have a seperate hair colour
+    type: Add
+  id: 122
+  time: '2024-11-19T11:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added animations for using tools and opening backpacks or belts
+    type: Add
+  id: 123
+  time: '2024-11-21T16:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Skeletons can now heal with milk again
+    type: Fix
+  id: 124
+  time: '2024-11-23T14:25:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Limbs can no longer be damaged when they are "dead" after enough damage
+    type: Fix
+  id: 125
+  time: '2024-11-29T17:25:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: More maps can roll on low pop
+    type: Tweak
+  id: 126
+  time: '2024-12-02T04:00:00.0000000+00:00'

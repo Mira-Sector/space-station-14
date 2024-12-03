@@ -51,6 +51,8 @@ public sealed class ProjectileSystem : SharedProjectileSystem
             return;
         }
 
+        component.DamagedEntity = true;
+
         var ev = new ProjectileHitEvent(component.Damage, target, component.Shooter);
         RaiseLocalEvent(uid, ref ev);
 
@@ -76,8 +78,6 @@ public sealed class ProjectileSystem : SharedProjectileSystem
             _guns.PlayImpactSound(target, modifiedDamage, component.SoundHit, component.ForceSound);
             _sharedCameraRecoil.KickCamera(target, direction);
         }
-
-        component.DamagedEntity = true;
 
         if (component.DeleteOnCollide)
             QueueDel(uid);

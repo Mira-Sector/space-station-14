@@ -20,15 +20,18 @@ public sealed partial class ToolComponent : Component
 
     [DataField]
     public SoundSpecifier? UseSound;
+
+    public bool HasAnimation = false;
 }
 
 /// <summary>
 /// Attempt event called *before* any do afters to see if the tool usage should succeed or not.
 /// Raised on both the tool and then target.
 /// </summary>
-public sealed class ToolUseAttemptEvent(EntityUid user, float fuel) : CancellableEntityEventArgs
+public sealed class ToolUseAttemptEvent(EntityUid user, EntityUid? target, float fuel) : CancellableEntityEventArgs
 {
     public EntityUid User { get; } = user;
+    public EntityUid? Target { get; } = target;
     public float Fuel = fuel;
 }
 

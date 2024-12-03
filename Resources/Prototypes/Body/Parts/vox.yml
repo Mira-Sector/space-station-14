@@ -22,7 +22,10 @@
   parent: [PartVox, BaseTorso]
   components:
     - type: Sprite
-      state: "torso"
+      state: "torso_m"
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Vox
 
 - type: entity
   id: HeadVox
@@ -30,7 +33,10 @@
   parent: [PartVox, BaseHead]
   components:
     - type: Sprite
-      state: "head"
+      state: "head_m"
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Vox
 
 - type: entity
   id: LeftArmVox
@@ -39,6 +45,9 @@
   components:
     - type: Sprite
       state: "l_arm"
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Vox
 
 - type: entity
   id: RightArmVox
@@ -47,6 +56,9 @@
   components:
     - type: Sprite
       state: "r_arm"
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Vox
 
 - type: entity
   id: LeftHandVox
@@ -59,7 +71,7 @@
 - type: entity
   id: RightHandVox
   name: "right vox hand"
-  parent: [PartVox, BaseLeftHand]
+  parent: [PartVox, BaseRightHand]
   components:
     - type: Sprite
       state: "r_hand"
@@ -71,6 +83,9 @@
   components:
     - type: Sprite
       state: "l_leg"
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Vox
 
 - type: entity
   id: RightLegVox
@@ -79,6 +94,9 @@
   components:
     - type: Sprite
       state: "r_leg"
+    - type: Damageable
+      damageContainer: Biological
+      damageModifierSet: Vox
 
 - type: entity
   id: LeftFootVox

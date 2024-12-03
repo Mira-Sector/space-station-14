@@ -49,7 +49,7 @@ public sealed class InteractionPopupSystem : EntitySystem
 
     private void OnAlternativeActivate(EntityUid uid, AlternativeInteractionPopupComponent component, GetVerbsEvent<AlternativeVerb> args)
     {
-        if (!args.CanAccess || !args.CanComplexInteract)
+        if (!args.CanAccess || !args.CanInteract || !args.CanComplexInteract)
             return;
 
         var verb = new AlternativeVerb

@@ -46,6 +46,16 @@ public abstract class SharedArmorSystem : EntitySystem
         args.Args.Damage = DamageSpecifier.ApplyModifierSet(args.Args.Damage, component.Modifiers[part]);
     }
 
+    private void OnBodyDamageModify(EntityUid uid, ArmorComponent component, LimbBodyRelayedEvent<DamageModifyEvent> args)
+    {
+        var part = GetModifier(component, args.Args.BodyPart);
+
+        if (part == null)
+            return;
+
+        args.Args.Damage = DamageSpecifier.ApplyModifierSet(args.Args.Damage, component.Modifiers[part]);
+    }
+
     private List<BodyPartType>? GetModifier(ArmorComponent component, BodyPartType? part)
     {
         if (part == null)

@@ -35,6 +35,7 @@
   id: JobPassenger
   groups:
   - GroupTankHarness
+  - PassengerHead
   - PassengerJumpsuit
   - CommonBackpack
   - PassengerNeck
@@ -64,6 +65,7 @@
   id: JobServiceWorker
   groups:
   - GroupTankHarness
+  - ServiceWorkerHead
   - BartenderJumpsuit
   - CommonBackpack
   - Glasses
@@ -89,6 +91,7 @@
   id: JobLibrarian
   groups:
   - GroupTankHarness
+  - LibrarianHead
   - LibrarianJumpsuit
   - CommonBackpack
   - Glasses
@@ -100,6 +103,7 @@
   id: JobLawyer
   groups:
   - GroupTankHarness
+  - LawyerHead
   - LawyerNeck
   - LawyerJumpsuit
   - CommonBackpack
@@ -182,6 +186,7 @@
   id: JobMusician
   groups:
   - GroupTankHarness
+  - MusicianHead
   - MusicianJumpsuit
   - CommonBackpack
   - MusicianOuterClothing
@@ -226,6 +231,7 @@
   id: JobSalvageSpecialist
   groups:
   - GroupTankHarness
+  - SalvageHead
   - SalvageSpecialistBackpack
   - SalvageSpecialistOuterClothing
   - SalvageSpecialistNeck
@@ -254,6 +260,7 @@
   id: JobTechnicalAssistant
   groups:
   - GroupTankHarness
+  - TechnicalAssistantHead
   - TechnicalAssistantJumpsuit
   - StationEngineerBackpack
   - SurvivalExtended
@@ -278,6 +285,7 @@
   id: JobAtmosphericTechnician
   groups:
   - GroupTankHarness
+  - AtmosphericTechnicianHead
   - AtmosphericTechnicianJumpsuit
   - AtmosphericTechnicianBackpack
   - AtmosphericTechnicianOuterClothing
@@ -324,6 +332,7 @@
   id: JobResearchAssistant
   groups:
   - GroupTankHarness
+  - ResearchAssistantHead
   - ResearchAssistantJumpsuit
   - ScientistBackpack
   - Glasses
@@ -394,6 +403,7 @@
 - type: roleLoadout
   id: JobSecurityCadet
   groups:
+  - SecurityCadetHead
   - SecurityCadetJumpsuit
   - SecurityBackpack
   - SurvivalSecurity
@@ -452,6 +462,7 @@
   id: JobMedicalIntern
   groups:
   - GroupTankHarness
+  - MedicalInternHead
   - MedicalInternJumpsuit
   - MedicalBackpack
   - Glasses
@@ -463,6 +474,7 @@
   id: JobChemist
   groups:
   - GroupTankHarness
+  - ChemistHead
   - MedicalMask
   - ChemistJumpsuit
   - MedicalGloves
@@ -494,7 +506,10 @@
   id: JobZookeeper
   groups:
   - GroupTankHarness
+  - ZooKeeperHead
+  - ZooKeeperJumpSuit
   - CommonBackpack
+  - ZooKeeperShoes
   - Glasses
   - Survival
   - Trinkets
@@ -504,6 +519,7 @@
   id: JobReporter
   groups:
   - GroupTankHarness
+  - ReporterHead
   - ReporterJumpsuit
   - CommonBackpack
   - Glasses
@@ -515,6 +531,7 @@
   id: JobPsychologist
   groups:
   - GroupTankHarness
+  - PsychologistHead
   - PsychologistJumpsuit
   - MedicalBackpack
   - Glasses
@@ -526,6 +543,7 @@
   id: JobBoxer
   groups:
   - GroupTankHarness
+  - BoxerHead
   - BoxerJumpsuit
   - BoxerGloves
   - CommonBackpack

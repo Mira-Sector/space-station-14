@@ -19,15 +19,15 @@ namespace Content.Server.Destructible.Thresholds.Triggers
         [DataField]
         public bool Repeatable = false;
 
-        public bool Reached(DamageableComponent damageable, DestructibleSystem system, DamageChangedEvent args)
+        public bool Reached(DestructibleSystem system, DamageSpecifier totalDamage, bool isPositive, DamageSpecifier? deltaDamage, EntityUid? origin = null)
         {
             if (!Repeatable)
-                return damageable.TotalDamage >= Damage;
+                return totalDamage.GetTotal() >= Damage;
 
-            if (args.DamageDelta == null)
+            if (deltaDamage == null)
                 return false;
 
-            return args.DamageDelta.GetTotal() >= Damage;
+            return deltaDamage.GetTotal() >= Damage;
         }
     }
 }

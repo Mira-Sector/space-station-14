@@ -11679,6 +11679,71 @@ entities:
     - type: Transform
       pos: 8.5,-8.5
       parent: 2
+- proto: Mat
+  entities:
+  - uid: 1739
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 4.5,-2.5
+      parent: 2
+  - uid: 2081
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 3.5,-2.5
+      parent: 2
+  - uid: 2499
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 14.5,4.5
+      parent: 2
+  - uid: 2500
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 14.5,0.5
+      parent: 2
+  - uid: 2501
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 21.5,0.5
+      parent: 2
+  - uid: 2502
+    components:
+    - type: Transform
+      pos: 0.5,7.5
+      parent: 2
+  - uid: 2503
+    components:
+    - type: Transform
+      pos: -1.5,7.5
+      parent: 2
+  - uid: 2504
+    components:
+    - type: Transform
+      pos: -13.5,3.5
+      parent: 2
+  - uid: 2505
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -14.5,0.5
+      parent: 2
+  - uid: 2506
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: -7.5,4.5
+      parent: 2
+  - uid: 2507
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 0.5,-12.5
+      parent: 2
 - proto: MedicalBed
   entities:
   - uid: 1663

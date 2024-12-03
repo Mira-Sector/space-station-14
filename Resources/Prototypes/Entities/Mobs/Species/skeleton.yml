@@ -16,9 +16,6 @@
     prototype: Skeleton
     requiredLegs: 2
     gibSound: /Audio/Effects/bone_rattle.ogg
-  - type: Damageable
-    damageContainer: Biological
-    damageModifierSet: Skeleton
   - type: DamageVisuals
     damageOverlayGroups:
       Brute:
@@ -82,6 +79,7 @@
       effects: # TODO: when magic is around - make a milk transformation to a skeleton monster
       - !type:HealthChange
         scaleByQuantity: true
+        targetIsOrigin: true
         damage:
           groups:
             Burn: -2 # healing obviously up to discussion

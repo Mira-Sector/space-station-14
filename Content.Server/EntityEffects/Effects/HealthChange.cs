@@ -1,10 +1,13 @@
 using Content.Shared.Body.Components;
+using Content.Shared.Body.Part;
+using Content.Shared.Body.Systems;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.EntityEffects;
 using Content.Shared.FixedPoint;
 using Content.Shared.Localizations;
 using JetBrains.Annotations;
+using Robust.Shared.Log;
 using Robust.Shared.Prototypes;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -36,6 +39,10 @@ namespace Content.Server.EntityEffects.Effects
         [DataField]
         [JsonPropertyName("ignoreResistances")]
         public bool IgnoreResistances = true;
+
+        [DataField]
+        [JsonPropertyName("targetIsOrigin")]
+        public bool TargetIsOrigin = false;
 
         protected override string ReagentEffectGuidebookText(IPrototypeManager prototype, IEntitySystemManager entSys)
         {
@@ -121,12 +128,54 @@ namespace Content.Server.EntityEffects.Effects
                 scale = ScaleByQuantity ? reagentArgs.Quantity * reagentArgs.Scale : reagentArgs.Scale;
             }
 
+            // so chems isnt busted
+            if (args.EntityManager.TryGetComponent<BodyComponent>(args.TargetEntity, out var body))
+            {
+                var bodyDamageable = args.EntityManager.System<SharedBodySystem>().GetBodyDamageable(args.TargetEntity, body);
+
+                var partsGroupedByType = Damage.DamageDict
+                    .Where(d => d.Value > 0) // Skip damage types with no damage
+                    .SelectMany(d => bodyDamageable, (damage, part) => (damageType: damage.Key, part.Key, part.Value))
+                    .GroupBy(item => item.Value.Damage.DamageDict.ContainsKey(item.damageType))
+                    .ToDictionary(group => group.Key, group => group.Select(item => item.Key).ToHashSet());
+
+                var hasType = partsGroupedByType.GetValueOrDefault(true, new HashSet<EntityUid>());
+                var noType = partsGroupedByType.GetValueOrDefault(false, new HashSet<EntityUid>());
+
+                // remove the ones where we are able to heal damage
+                noType.ExceptWith(hasType);
+
+                // actually remove them
+                foreach (var toRemove in noType)
+                    bodyDamageable.Remove(toRemove);
+
+                var damagePerPart = (Damage * scale) / bodyDamageable.Count();
+
+                foreach (var (part, _) in bodyDamageable)
+                {
+                    var damage = damagePerPart;
+
+                    if (args.EntityManager.TryGetComponent<BodyPartComponent>(part, out var partComp))
+                        damage /= partComp.OverallDamageScale;
+
+                    args.EntityManager.System<DamageableSystem>().TryChangeDamage(
+                        part,
+                        damage,
+                        IgnoreResistances,
+                        interruptsDoAfters: false,
+                        origin: TargetIsOrigin ? args.TargetEntity : null);
+                }
+
+                return;
+            }
+
+
             args.EntityManager.System<DamageableSystem>().TryChangeDamage(
                 args.TargetEntity,
                 Damage * scale,
                 IgnoreResistances,
                 interruptsDoAfters: false,
-                ignorePartScale: true);
+                origin: TargetIsOrigin ? args.TargetEntity : null);
         }
     }
 }

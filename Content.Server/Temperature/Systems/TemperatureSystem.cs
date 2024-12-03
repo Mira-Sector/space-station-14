@@ -4,6 +4,7 @@ using Content.Server.Atmos.EntitySystems;
 using Content.Server.Body.Components;
 using Content.Server.Temperature.Components;
 using Content.Shared.Alert;
+using Content.Shared.Body.Systems;
 using Content.Shared.Atmos;
 using Content.Shared.Damage;
 using Content.Shared.Database;
@@ -20,6 +21,7 @@ namespace Content.Server.Temperature.Systems;
 public sealed class TemperatureSystem : EntitySystem
 {
     [Dependency] private readonly AlertsSystem _alerts = default!;
+    [Dependency] private readonly SharedBodySystem _body = default!;
     [Dependency] private readonly AtmosphereSystem _atmosphere = default!;
     [Dependency] private readonly DamageableSystem _damageable = default!;
     [Dependency] private readonly IAdminLogManager _adminLogger = default!;
@@ -250,7 +252,7 @@ public sealed class TemperatureSystem : EntitySystem
 
     private void ChangeDamage(EntityUid uid, TemperatureComponent temperature)
     {
-        if (!HasComp<DamageableComponent>(uid))
+        if (!HasComp<DamageableComponent>(uid) && _body.GetBodyDamageable(uid).Count > 0)
             return;
 
         // See this link for where the scaling func comes from:
@@ -311,7 +313,7 @@ public sealed class TemperatureSystem : EntitySystem
 
     private void ChangeTemperatureOnCollide(Entity<ChangeTemperatureOnCollideComponent> ent, ref ProjectileHitEvent args)
     {
-        _temperature.ChangeHeat(args.Target, ent.Comp.Heat, ent.Comp.IgnoreHeatResistance);// adjust the temperature 
+        _temperature.ChangeHeat(args.Target, ent.Comp.Heat, ent.Comp.IgnoreHeatResistance);// adjust the temperature
     }
 
     private void OnParentChange(EntityUid uid, TemperatureComponent component,

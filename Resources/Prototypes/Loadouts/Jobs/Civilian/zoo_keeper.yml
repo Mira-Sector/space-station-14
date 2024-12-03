@@ -1,0 +1,13 @@
+#Head
+- type: loadout
+  id: ZooKeeperHead
+  equipment:
+    head: ClothingHeadSafari
+
+#Jumpsuits
+- type: loadout
+  id: SafariSuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitSafari
+
+

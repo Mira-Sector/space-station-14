@@ -14,6 +14,7 @@ using Content.Shared.Input;
 using Content.Shared.Interaction;
 using Content.Shared.Interaction.Components;
 using Content.Shared.Inventory;
+using Content.Shared.Inventory.Events;
 using Content.Shared.Item;
 using Content.Shared.Lock;
 using Content.Shared.Materials;
@@ -123,6 +124,9 @@ public abstract class SharedStorageSystem : EntitySystem
         SubscribeLocalEvent<StorageComponent, EntInsertedIntoContainerMessage>(OnEntInserted);
         SubscribeLocalEvent<StorageComponent, EntRemovedFromContainerMessage>(OnEntRemoved);
         SubscribeLocalEvent<StorageComponent, ContainerIsInsertingAttemptEvent>(OnInsertAttempt);
+
+        SubscribeLocalEvent<StorageComponent, GotEquippedEvent>(OnEquipped);
+        SubscribeLocalEvent<StorageComponent, GotUnequippedEvent>(OnUnequipped);
 
         SubscribeLocalEvent<StorageComponent, AreaPickupDoAfterEvent>(OnDoAfter);
 
@@ -320,7 +324,9 @@ public abstract class SharedStorageSystem : EntitySystem
         if (!silent)
         {
             if (!_ui.IsUiOpen(uid, StorageComponent.StorageUiKey.Key))
+            {
                 Audio.PlayPredicted(storageComp.StorageOpenSound, uid, entity);
+            }
 
             if (useDelay != null)
                 UseDelay.TryResetDelay((uid, useDelay), id: OpenUiUseDelayID);
@@ -737,6 +743,18 @@ public abstract class SharedStorageSystem : EntitySystem
 
             args.Cancel();
         }
+    }
+
+    private void OnEquipped(EntityUid uid, StorageComponent component, GotEquippedEvent args)
+    {
+        component.CanAnimate = component.Animations;
+        Dirty(uid, component);
+    }
+
+    private void OnUnequipped(EntityUid uid, StorageComponent component, GotUnequippedEvent args)
+    {
+        component.CanAnimate = false;
+        Dirty(uid, component);
     }
 
     public void UpdateAppearance(Entity<StorageComponent?, AppearanceComponent?> entity)

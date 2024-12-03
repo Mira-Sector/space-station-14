@@ -13,9 +13,6 @@
   - type: Body
     prototype: Gingerbread
     requiredLegs: 2
-  - type: Damageable
-    damageContainer: Biological
-    damageModifierSet: Gingerbread
   - type: DamageVisuals
     damageOverlayGroups:
       Brute:
