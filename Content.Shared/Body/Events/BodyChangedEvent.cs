@@ -2,11 +2,11 @@ using Content.Shared.Body.Components;
 
 namespace Content.Shared.Body.Events;
 
-public sealed class BodySetupEvent : EntityEventArgs
+public sealed class BodyChangedEvent : EntityEventArgs
 {
     public BodyComponent Body;
 
-    public BodySetupEvent(BodyComponent body)
+    public BodyChangedEvent(BodyComponent body)
     {
         Body = body;
     }

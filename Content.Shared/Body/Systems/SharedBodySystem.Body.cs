@@ -56,7 +56,6 @@ public partial class SharedBodySystem
         SubscribeLocalEvent<BodyComponent, RejuvenateEvent>(OnRejuvenate);
         SubscribeLocalEvent<BodyComponent, OnIrradiatedEvent>(OnIrradiatedEvent);
 
-        SubscribeLocalEvent<BodyPartComponent, ComponentStartup>(OnPartStartup);
         SubscribeLocalEvent<BodyPartComponent, DamageModifyEvent>(RelayToBody);
         SubscribeLocalEvent<BodyPartComponent, DamageChangedEvent>(RelayToBody);
     }
@@ -81,6 +80,9 @@ public partial class SharedBodySystem
         {
             AddOrgan((insertedUid, organ), ent, ent);
         }
+
+        var ev = new BodyChangedEvent(ent.Comp);
+        RaiseLocalEvent(ent, ev);
     }
 
     private void OnBodyRemoved(Entity<BodyComponent> ent, ref EntRemovedFromContainerMessage args)
@@ -103,6 +105,9 @@ public partial class SharedBodySystem
 
         if (TryComp(removedUid, out OrganComponent? organ))
             RemoveOrgan((removedUid, organ), ent);
+
+        var ev = new BodyChangedEvent(ent.Comp);
+        RaiseLocalEvent(ent, ev);
     }
 
     private void OnBodyInit(Entity<BodyComponent> ent, ref ComponentInit args)
@@ -172,22 +177,6 @@ public partial class SharedBodySystem
             return;
 
         _damageable.Irradiate(uid, args.RadsPerSecond, radiation.RadiationDamageTypeIDs);
-    }
-
-    private void OnPartStartup(EntityUid uid, BodyPartComponent component, ComponentStartup args)
-    {
-        if (component.Body is not {} body)
-            return;
-
-        if (!TryComp<BodyComponent>(body, out var bodyComp))
-            return;
-
-        if (bodyComp.RootContainer.ContainedEntity != uid)
-            return;
-
-        var ev = new BodySetupEvent(bodyComp);
-        RaiseLocalEvent(body, ev);
-        Log.Info($"bodysetup: {uid}");
     }
 
     protected void RelayToBody<T>(EntityUid uid, BodyPartComponent component, T args) where T : class
