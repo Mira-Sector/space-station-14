@@ -285,6 +285,8 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
                 return;
             }
 
+            damageVisComp.LayerMapKeyStates.Clear();
+
             // Otherwise, we start reserving layers. Since the filtering
             // loop above ensures that all of these layers are not null,
             // and have valid state IDs, there should be no issues.
@@ -378,6 +380,9 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
     /// </summary>
     private void AddDamageLayerToSprite(SpriteComponent spriteComponent, DamageVisualizerSprite sprite, string state, string mapKey, int? index = null)
     {
+        if (spriteComponent.LayerMapTryGet(mapKey, out _))
+            return;
+
         var newLayer = spriteComponent.AddLayer(
             new SpriteSpecifier.Rsi(
                 new (sprite.Sprite), state
