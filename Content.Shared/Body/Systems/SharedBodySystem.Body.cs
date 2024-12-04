@@ -317,6 +317,9 @@ public partial class SharedBodySystem
         if (!Resolve(id.Value, ref body, logMissing: false))
             yield break;
 
+        if (body.RootContainer is null)
+            yield break;
+
         if (body.RootContainer.ContainedEntity is null)
             yield break;
 
