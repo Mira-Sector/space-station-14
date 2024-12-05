@@ -106,3 +106,15 @@
         whitelist:
           components:
           - GasTank
+
+- type: entity
+  id: RadiationCollectorFullTankActive
+  suffix: Filled tank Active
+  parent: RadiationCollectorFullTank
+  components:
+  - type: Sprite
+    layers:
+      - state: ca_on
+        map: ["enum.RadiationCollectorVisualLayers.Main"]
+  - type: RadiationCollector
+    enabled: true

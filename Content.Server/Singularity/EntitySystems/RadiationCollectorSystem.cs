@@ -223,6 +223,13 @@ public sealed class RadiationCollectorSystem : EntitySystem
         if (!Resolve(uid, ref appearance, false))
             return;
 
+        var state = RadiationCollectorVisualState.Deactive;
+
+        if (component.Enabled)
+            state = RadiationCollectorVisualState.Active;
+
+        _appearance.SetData(uid, RadiationCollectorVisuals.VisualState, state, appearance);
+
         _appearance.SetData(uid, RadiationCollectorVisuals.TankInserted, gasTank != null, appearance);
 
         UpdatePressureIndicatorAppearance(uid, component, gasTank, appearance);
