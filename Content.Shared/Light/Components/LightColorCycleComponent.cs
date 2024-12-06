@@ -26,9 +26,6 @@ public sealed partial class LightColorCycleComponent : Component
 
     [ViewVariables]
     public TimeSpan Speed => TimeSpan.FromSeconds(_speed);
-
-    [ViewVariables]
-    public TimeSpan NextUpdate;
 }
 
 [DataDefinition, Serializable, NetSerializable]
