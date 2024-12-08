@@ -856,4 +856,10 @@ Entries:
   - message: Ensured limbs damage can always make the body die
     type: Fix
   id: 128
-  time: '2024-12-03T09:00:00.0000000+00:00'
+  time: '2024-12-08T05:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Rlectrical shocking is scaled off the supplied power
+    type: Add
+  id: 129
+  time: '2024-12-08T14:00:00.0000000+00:00'
