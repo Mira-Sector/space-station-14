@@ -89,8 +89,8 @@
   - type: Bloodstream
     bloodReagent: Slime
   - type: Body
-    prototype: Slimes
-    requiredLegs: 1
+    prototype: Geras
+    requiredLegs: 2
   - type: ZombieImmune
   - type: Puller
     needsHands: false

@@ -1460,7 +1460,6 @@
           False: {visible: false}
   - type: Body
     prototype: Primate
-    requiredLegs: 1 # TODO: More than 1 leg
   - type: CreamPied
   - type: FireVisuals
     sprite: Mobs/Effects/onfire.rsi

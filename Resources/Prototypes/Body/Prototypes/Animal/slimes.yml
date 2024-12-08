@@ -6,12 +6,17 @@
     torso:
       part: TorsoSlime
       connections:
-      - legs
+      - left leg
+      - right leg
       organs:
         core: SentientSlimesCore
         lungs: OrganSlimesLungs
-    legs:
-      part: LegsSlime
+    left leg:
+      part: LeftLegSlimes
+      connections:
+      - feet
+    right leg:
+      part: RightLegSlimes
       connections:
       - feet
     feet:
@@ -25,12 +30,17 @@
     torso:
       part: TorsoSlime
       connections:
-      - legs
+      - left leg
+      - right leg
       organs:
         core: SentientSlimesCore
         lungs: OrganSlimesLungs
-    legs:
-      part: LegsGeras
+    left leg:
+      part: LeftLegGeras
+      connections:
+      - feet
+    right leg:
+      part: RightLegGeras
       connections:
       - feet
     feet:

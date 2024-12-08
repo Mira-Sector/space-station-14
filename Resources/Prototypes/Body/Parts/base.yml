@@ -117,7 +117,7 @@
     symmetry: Right
 
 - type: entity
-  id: BaseLeftLeg
+  id: BaseLeftLegNoDamage
   name: "left leg"
   parent: BasePart
   abstract: true
@@ -128,6 +128,13 @@
     missProb: 0.4
     overallDamageScale: 0.8
   - type: MovementBodyPart
+
+- type: entity
+  id: BaseLeftLeg
+  name: "left leg"
+  parent: BaseLeftLegNoDamage
+  abstract: true
+  components:
   - type: BodyPartThresholds
     thresholds:
       0: Healthy
@@ -137,7 +144,7 @@
     damageContainer: Biological
 
 - type: entity
-  id: BaseRightLeg
+  id: BaseRightLegNoDamage
   name: "right leg"
   parent: BasePart
   abstract: true
@@ -148,6 +155,13 @@
     missProb: 0.4
     overallDamageScale: 0.8
   - type: MovementBodyPart
+
+- type: entity
+  id: BaseRightLeg
+  name: "right leg"
+  parent: BaseRightLegNoDamage
+  abstract: true
+  components:
   - type: BodyPartThresholds
     thresholds:
       0: Healthy

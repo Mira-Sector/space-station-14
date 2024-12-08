@@ -1,4 +1,4 @@
-﻿- type: body
+- type: body
   id: Rat
   name: "animal"
   root: torso
@@ -6,15 +6,20 @@
     torso:
       part: TorsoRat
       connections:
-      - legs
+      - left leg
+      - right leg
       organs:
         lungs: OrganRatLungs
         stomach: OrganRatStomach
         liver: OrganAnimalLiver
         heart: OrganAnimalHeart
         kidneys: OrganAnimalKidneys
-    legs:
-      part: LegsAnimal
+    left leg:
+      part: LeftLegAnimal
+      connections:
+      - feet
+    right leg:
+      part: RightLegAnimal
       connections:
       - feet
     feet:
