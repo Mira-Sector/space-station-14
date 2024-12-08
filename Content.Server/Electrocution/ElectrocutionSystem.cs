@@ -30,6 +30,7 @@ using Robust.Shared.Physics.Events;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using System.Diagnostics.CodeAnalysis;
 using PullableComponent = Content.Shared.Movement.Pulling.Components.PullableComponent;
 using PullerComponent = Content.Shared.Movement.Pulling.Components.PullerComponent;
 
@@ -108,6 +109,7 @@ public sealed class ElectrocutionSystem : SharedElectrocutionSystem
 
             // We tried damage scaling based on power in the past and it really wasn't good.
             // Various scaling types didn't fix tiders and HV grilles instantly critting players.
+            // skill issue lol
 
             QueueDel(uid);
         }
@@ -244,27 +246,28 @@ public sealed class ElectrocutionSystem : SharedElectrocutionSystem
         }
 
         var node = PoweredNode(uid, electrified, nodeContainer);
-        if (node?.NodeGroup is not IBasePowerNet)
+        if (node?.NodeGroup is not IBasePowerNet powerNode ||
+        electrified.WireDamageType == null ||
+        !electrified.WireDamageType.ContainsKey(node.NodeGroupID) ||
+        electrified.WireDamageType[node.NodeGroupID] is not ElectrocutionType wireDamageType)
             return false;
-
-        var (damageScalar, timeScalar) = node.NodeGroupID switch
-        {
-            NodeGroupID.HVPower => (electrified.HighVoltageDamageMultiplier, electrified.HighVoltageTimeMultiplier),
-            NodeGroupID.MVPower => (electrified.MediumVoltageDamageMultiplier, electrified.MediumVoltageTimeMultiplier),
-            _ => (1f, 1f)
-        };
 
         {
             var lastRet = true;
             for (var i = targets.Count - 1; i >= 0; i--)
             {
                 var (entity, depth) = targets[i];
+                wireDamageType.Electrocution(EntityManager, _prototypeManager, entity, uid, electrified, powerNode, out var damage, out var time);
+
+                damage *= (int) Math.Round(MathF.Pow(RecursiveDamageMultiplier, depth));
+                time *= MathF.Pow(RecursiveDamageMultiplier, depth);
+
                 lastRet = TryDoElectrocutionPowered(
                     entity,
                     uid,
                     node,
-                    (int) (electrified.ShockDamage * MathF.Pow(RecursiveDamageMultiplier, depth) * damageScalar),
-                    TimeSpan.FromSeconds(electrified.ShockTime * MathF.Pow(RecursiveTimeMultiplier, depth) * timeScalar),
+                    damage,
+                    TimeSpan.FromSeconds(time),
                     true,
                     electrified.SiemensCoefficient);
             }

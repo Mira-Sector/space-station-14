@@ -119,3 +119,35 @@
         cell_slot:
           name: power-cell-slot-component-slot-name-default
           startingItem: PowerCellHigh
+
+- type: entity
+  id: BaseElectrified
+  abstract: true
+  components:
+    - type: Electrified
+      highVoltageNode: high
+      mediumVoltageNode: medium
+      lowVoltageNode: low
+      wireDamageType:
+        Apc:
+          !type:Multiplier
+        MVPower:
+          !type:Logarithmic
+          damage:
+            coefficient: 15
+            growth: 6
+            shift: 1000
+          time:
+            coefficient: 4.8
+            growth: 6
+            shift: 1000
+        HVPower:
+          !type:Logarithmic
+          damage:
+            coefficient: 45.5
+            growth: 2
+            shift: -600
+          time:
+            coefficient: 75
+            growth: 0.00085
+            shift: 0

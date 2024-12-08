@@ -1,5 +1,6 @@
-﻿- type: entity
+- type: entity
   abstract: true
+  parent: BaseElectrified
   id: CableBase
   placement:
     mode: SnapgridCenter

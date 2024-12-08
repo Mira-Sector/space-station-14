@@ -26,7 +26,7 @@ namespace Content.Shared.Electrocution
         /// <summary>
         /// Sets electrified value of component and marks dirty if required.
         /// </summary>
-        public void SetElectrified(Entity<ElectrifiedComponent> ent, bool value)
+        public void SetElectrified(Entity<SharedElectrifiedComponent> ent, bool value)
         {
             if (ent.Comp.Enabled == value)
             {

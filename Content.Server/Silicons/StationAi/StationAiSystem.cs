@@ -1,6 +1,7 @@
 using System.Linq;
 using Content.Server.Chat.Managers;
 using Content.Server.Chat.Systems;
+using Content.Server.Electrocution;
 using Content.Shared.Chat;
 using Content.Shared.Silicons.StationAi;
 using Content.Shared.StationAi;
@@ -16,6 +17,12 @@ public sealed class StationAiSystem : SharedStationAiSystem
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
 
     private readonly HashSet<Entity<StationAiCoreComponent>> _ais = new();
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        SubscribeLocalEvent<ElectrifiedComponent, StationAiElectrifiedEvent>(OnElectrified);
+    }
 
     public override bool SetVisionEnabled(Entity<StationAiVisionComponent> entity, bool enabled, bool announce = false)
     {
