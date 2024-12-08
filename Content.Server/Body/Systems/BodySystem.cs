@@ -2,10 +2,14 @@ using Content.Server.Body.Components;
 using Content.Server.Ghost;
 using Content.Server.Humanoid;
 using Content.Shared.Body.Components;
+using Content.Shared.Body.Events;
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
+using Content.Shared.FixedPoint;
 using Content.Shared.Humanoid;
 using Content.Shared.Mind;
+using Content.Shared.Mobs;
+using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Movement.Events;
 using Content.Shared.Movement.Systems;
@@ -21,7 +25,10 @@ public sealed class BodySystem : SharedBodySystem
     [Dependency] private readonly IGameTiming _gameTiming = default!;
     [Dependency] private readonly HumanoidAppearanceSystem _humanoidSystem = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!;
+    [Dependency] private readonly MobThresholdSystem _mobThreshold = default!;
     [Dependency] private readonly SharedMindSystem _mindSystem = default!;
+
+    private const float LimbMultiplier = 0.1f;
 
     public override void Initialize()
     {
@@ -29,6 +36,7 @@ public sealed class BodySystem : SharedBodySystem
 
         SubscribeLocalEvent<BodyComponent, MoveInputEvent>(OnRelayMoveInput);
         SubscribeLocalEvent<BodyComponent, ApplyMetabolicMultiplierEvent>(OnApplyMetabolicMultiplier);
+        SubscribeLocalEvent<BodyComponent, BodyInitEvent>(OnBodyInit);
     }
 
     private void OnRelayMoveInput(Entity<BodyComponent> ent, ref MoveInputEvent args)
@@ -54,6 +62,74 @@ public sealed class BodySystem : SharedBodySystem
         foreach (var organ in GetBodyOrgans(ent, ent))
         {
             RaiseLocalEvent(organ.Id, ref args);
+        }
+    }
+
+    private void OnBodyInit(EntityUid uid, BodyComponent component, BodyInitEvent args)
+    {
+        if (TryComp<MobThresholdsComponent>(uid, out var thresholds))
+        {
+            var damage = _mobThreshold.GetThresholdForState(uid, MobState.Dead, thresholds);
+
+            if (damage != FixedPoint2.MaxValue)
+            {
+                EnsureBodyThreshold(uid, component, damage);
+                return;
+            }
+        }
+    }
+
+    private void EnsureBodyThreshold(EntityUid uid, BodyComponent body, FixedPoint2 threshold)
+    {
+        var parts = GetBodyDamageable(uid, body);
+        Dictionary<EntityUid, (FixedPoint2 MaxDamage, float Scale)> deadThresholds = new();
+        var totalThreshold = FixedPoint2.Zero;
+
+        foreach (var (part, _) in parts)
+        {
+            if (!TryComp<BodyPartComponent>(part, out var partComp))
+                continue;
+
+            if (!TryGetLimbStateThreshold(part, WoundState.Dead, out var deadThreshold))
+                continue;
+
+            deadThresholds.Add(part, (deadThreshold, partComp.OverallDamageScale));
+            totalThreshold += deadThreshold * partComp.OverallDamageScale;
+        }
+
+        if (totalThreshold >= threshold)
+            return;
+
+        var damageLeft = totalThreshold - threshold;
+
+        foreach (var (part, (deadThreshold, scale)) in deadThresholds)
+        {
+            var weight = deadThreshold * scale;
+
+            var newThreshold = (weight / damageLeft) * threshold / scale;
+
+            if (!TryComp<BodyPartThresholdsComponent>(part, out var thresholdsComp))
+                continue;
+
+
+            FixedPoint2? partDeadThreshold = null;
+
+            foreach (var (partThreshold, partState) in thresholdsComp.Thresholds)
+            {
+                if (partState != WoundState.Dead)
+                    continue;
+
+                partDeadThreshold = partThreshold;
+            }
+
+            if (partDeadThreshold == null)
+                continue;
+
+            newThreshold += partDeadThreshold.Value;
+            newThreshold *= LimbMultiplier;
+
+            thresholdsComp.Thresholds.Remove(partDeadThreshold.Value);
+            thresholdsComp.Thresholds.Add(newThreshold, WoundState.Dead);
         }
     }
 

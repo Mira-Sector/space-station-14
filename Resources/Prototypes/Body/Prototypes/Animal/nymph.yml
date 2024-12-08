@@ -1,4 +1,4 @@
-﻿- type: body
+- type: body
   id: AnimalNymphBrain
   name: "nymph"
   root: torso
@@ -6,7 +6,8 @@
     torso:
       part: TorsoAnimal
       connections:
-      - legs
+      - left leg
+      - right leg
       organs:
         brain: OrganDionaBrain
         lungs: OrganAnimalLungs
@@ -14,8 +15,12 @@
         liver: OrganAnimalLiver
         heart: OrganAnimalHeart
         kidneys: OrganAnimalKidneys
-    legs:
-      part: LegsAnimal
+    left leg:
+      part: LeftLegAnimal
+      connections:
+      - feet
+    right leg:
+      part: RightLegAnimal
       connections:
       - feet
     feet:
@@ -29,15 +34,20 @@
     torso:
       part: TorsoAnimal
       connections:
-      - legs
+      - left leg
+      - right leg
       organs:
         lungs: OrganDionaLungs
         stomach: OrganAnimalStomach
         liver: OrganAnimalLiver
         heart: OrganAnimalHeart
         kidneys: OrganAnimalKidneys
-    legs:
-      part: LegsAnimal
+    left leg:
+      part: LeftLegAnimal
+      connections:
+      - feet
+    right leg:
+      part: RightLegAnimal
       connections:
       - feet
     feet:
@@ -51,15 +61,20 @@
     torso:
       part: TorsoAnimal
       connections:
-      - legs
+      - left leg
+      - right leg
       organs:
         lungs: OrganAnimalLungs
         stomach: OrganDionaStomach
         liver: OrganAnimalLiver
         heart: OrganAnimalHeart
         kidneys: OrganAnimalKidneys
-    legs:
-      part: LegsAnimal
+    left leg:
+      part: LeftLegAnimal
+      connections:
+      - feet
+    right leg:
+      part: RightLegAnimal
       connections:
       - feet
     feet:

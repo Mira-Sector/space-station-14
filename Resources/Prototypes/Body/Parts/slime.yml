@@ -116,27 +116,49 @@
 #The following are geras/slime slime parts
 #Because it turns out body effects movement speed
 - type: entity
-  id: LegsSlime
+  id: LegsSlimes
   name: slime legs
-  parent: LegsAnimal
-  noSpawn: true
+  abstract: true
   components:
+  - type: BodyPartThresholds
+    thresholds:
+      0: Healthy
+      5: Damaged
+      65: Dead
   - type: MovementBodyPart
     walkSpeed: 2
     sprintSpeed: 4
-  - type: Damageable
-    damageContainer: Biological
-    damageModifierSet: Slime
+
+- type: entity
+  id: LeftLegSlimes
+  parent: [ LegsSlimes, BaseLeftLegNoDamage ]
+  noSpawn: true
+
+- type: entity
+  id: RightLegSlimes
+  parent: [ LegsSlimes, BaseRightLegNoDamage ]
+  noSpawn: true
 
 - type: entity
   id: LegsGeras
   name: slime legs
-  parent: LegsAnimal
-  noSpawn: true
+  abstract: true
   components:
+  - type: BodyPartThresholds
+    thresholds:
+      0: Healthy
+      5: Damaged
+      65: Dead
   - type: MovementBodyPart
     walkSpeed: 3
     sprintSpeed: 5 # +.5 from normal movement speed
-  - type: Damageable
-    damageContainer: Biological
-    damageModifierSet: Slime
+
+- type: entity
+  id: LeftLegGeras
+  parent: [ LegsGeras, LeftLegAnimal ]
+  noSpawn: true
+
+- type: entity
+  id: RightLegGeras
+  parent: [ LegsGeras, RightLegAnimal ]
+  noSpawn: true

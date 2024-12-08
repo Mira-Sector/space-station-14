@@ -1,4 +1,4 @@
-﻿- type: body
+- type: body
   id: Primate
   name: "primate"
   root: torso
@@ -7,7 +7,8 @@
       part: TorsoAnimal
       connections:
       - hands
-      - legs
+      - left leg
+      - right leg
       organs:
         lungs: OrganAnimalLungs
         stomach: OrganAnimalStomach
@@ -16,8 +17,12 @@
         kidneys: OrganAnimalKidneys
     hands:
       part: HandsAnimal
-    legs:
-      part: LegsAnimal
+    left leg:
+      part: LeftLegAnimal
+      connections:
+      - feet
+    right leg:
+      part: RightLegAnimal
       connections:
       - feet
     feet:

@@ -1,4 +1,4 @@
-﻿- type: body
+- type: body
   id: Animal
   name: "animal"
   root: torso
@@ -6,15 +6,19 @@
     torso:
       part: TorsoAnimal
       connections:
-      - legs
+      - left leg
+      - right leg
       organs:
         lungs: OrganAnimalLungs
         stomach: OrganAnimalStomach
         liver: OrganAnimalLiver
         heart: OrganAnimalHeart
         kidneys: OrganAnimalKidneys
-    legs:
-      part: LegsAnimal
+    left leg:
+      part: LeftLegAnimal
+      connections:
+    right leg:
+      part: RightLegAnimal
       connections:
       - feet
     feet:
@@ -28,15 +32,20 @@
     torso:
       part: TorsoAnimal
       connections:
-      - legs
+      - left leg
+      - right leg
       organs:
         lungs: OrganAnimalLungs
         stomach: OrganMouseStomach
         liver: OrganAnimalLiver
         heart: OrganAnimalHeart
         kidneys: OrganAnimalKidneys
-    legs:
-      part: LegsAnimal
+    left leg:
+      part: LeftLegAnimal
+      connections:
+      - feet
+    right leg:
+      part: RightLegAnimal
       connections:
       - feet
     feet:

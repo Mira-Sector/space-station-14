@@ -11,3 +11,13 @@ public sealed class BodyChangedEvent : EntityEventArgs
         Body = body;
     }
 }
+
+public sealed class BodyInitEvent : EntityEventArgs
+{
+    public BodyComponent Body;
+
+    public BodyInitEvent(BodyComponent body)
+    {
+        Body = body;
+    }
+}

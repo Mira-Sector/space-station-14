@@ -139,6 +139,9 @@ public partial class SharedBodySystem
         // Obviously can't run in Init to avoid double-spawns on save / load.
         var prototype = Prototypes.Index(component.Prototype.Value);
         MapInitBody(uid, prototype);
+
+        var ev = new BodyInitEvent(component);
+        RaiseLocalEvent(uid, ev);
     }
 
     private void MapInitBody(EntityUid bodyEntity, BodyPrototype prototype)
