@@ -342,6 +342,21 @@ public partial class SharedBodySystem
     }
 
     /// <summary>
+    /// Returns true if we can detach the partId to the bodyId as the root entity.
+    /// </summary>
+    public bool CanDetachToRoot(
+        EntityUid bodyId,
+        EntityUid partId,
+        BodyComponent? body = null,
+        BodyPartComponent? part = null)
+    {
+        return Resolve(bodyId, ref body)
+            && Resolve(partId, ref part)
+            && body.RootContainer.ContainedEntity is not null
+            && bodyId != part.Body;
+    }
+
+    /// <summary>
     /// Returns the root part of this body if it exists.
     /// </summary>
     public (EntityUid Entity, BodyPartComponent BodyPart)? GetRootPartOrNull(EntityUid bodyId, BodyComponent? body = null)
@@ -401,6 +416,18 @@ public partial class SharedBodySystem
             && Containers.Insert(partId, body.RootContainer);
     }
 
+    public bool DetachPartToRoot(
+        EntityUid bodyId,
+        EntityUid partId,
+        BodyComponent? body = null,
+        BodyPartComponent? part = null)
+    {
+        return Resolve(bodyId, ref body)
+            && Resolve(partId, ref part)
+            && CanDetachToRoot(bodyId, partId, body, part)
+            && Containers.Remove(partId, body.RootContainer);
+    }
+
     #endregion
 
     #region Attach/Detach
@@ -434,6 +461,47 @@ public partial class SharedBodySystem
             || !Resolve(partId, ref part, logMissing: false)
             || !CanAttachPart(parentPartId, slot.Id, partId, parentPart, part)
             || !parentPart.Children.ContainsKey(slot.Id))
+        {
+            return false;
+        }
+
+        if (!Containers.TryGetContainer(parentPartId, GetPartSlotContainerId(slot.Id), out var container))
+        {
+            DebugTools.Assert($"Unable to find body slot {slot.Id} for {ToPrettyString(parentPartId)}");
+            return false;
+        }
+
+        return Containers.Insert(partId, container);
+    }
+
+    /// <summary>
+    /// Detaches a body part to the specified body part parent.
+    /// </summary>
+    public bool DetachPart(
+        EntityUid parentPartId,
+        string slotId,
+        EntityUid partId,
+        BodyPartComponent? parentPart = null,
+        BodyPartComponent? part = null)
+    {
+        return Resolve(parentPartId, ref parentPart, logMissing: false)
+            && parentPart.Children.TryGetValue(slotId, out var slot)
+            && DetachPart(parentPartId, slot, partId, parentPart, part);
+    }
+
+    /// <summary>
+    /// Detaches a body part to the specified body part parent.
+    /// </summary>
+    public bool DetachPart(
+        EntityUid parentPartId,
+        BodyPartSlot slot,
+        EntityUid partId,
+        BodyPartComponent? parentPart = null,
+        BodyPartComponent? part = null)
+    {
+        if (!Resolve(parentPartId, ref parentPart, logMissing: false)
+            || !Resolve(partId, ref part, logMissing: false)
+            || parentPart.Children.ContainsKey(slot.Id))
         {
             return false;
         }
