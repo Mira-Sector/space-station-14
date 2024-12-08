@@ -851,3 +851,9 @@ Entries:
     type: Add
   id: 127
   time: '2024-12-03T09:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Ensured limbs damage can always make the body die
+    type: Fix
+  id: 128
+  time: '2024-12-03T09:00:00.0000000+00:00'
