@@ -1,5 +1,5 @@
-﻿- type: entity
-  parent: BaseStructure
+- type: entity
+  parent: [ BaseStructure, BaseElectrified ]
   id: BaseFenceMetal
   name: chain link fence
   description: A metal piece of fencing cordoning off something likely very important.
@@ -53,9 +53,6 @@
   - type: Electrified
     requirePower: true
     noWindowInTile: true
-    highVoltageNode: high
-    mediumVoltageNode: medium
-    lowVoltageNode: low
   - type: NodeContainer
     nodes:
       high:

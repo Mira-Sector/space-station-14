@@ -1,5 +1,5 @@
 using Content.Shared.Doors.Components;
-using Content.Shared.Electrocution;
+using Content.Client.Electrocution;
 using Content.Shared.Silicons.StationAi;
 using Robust.Shared.Utility;
 
@@ -14,6 +14,7 @@ public sealed partial class StationAiSystem
         SubscribeLocalEvent<DoorBoltComponent, GetStationAiRadialEvent>(OnDoorBoltGetRadial);
         SubscribeLocalEvent<AirlockComponent, GetStationAiRadialEvent>(OnEmergencyAccessGetRadial);
         SubscribeLocalEvent<ElectrifiedComponent, GetStationAiRadialEvent>(OnDoorElectrifiedGetRadial);
+        SubscribeLocalEvent<ElectrifiedComponent, StationAiElectrifiedEvent>(OnElectrified);
     }
 
     private void OnDoorBoltGetRadial(Entity<DoorBoltComponent> ent, ref GetStationAiRadialEvent args)

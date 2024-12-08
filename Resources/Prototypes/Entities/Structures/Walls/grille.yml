@@ -1,6 +1,6 @@
 - type: entity
   id: Grille
-  parent: BaseStructure
+  parent: [ BaseStructure, BaseElectrified]
   name: grille
   description: A flimsy framework of iron rods.
   components:
@@ -39,9 +39,6 @@
     - type: Electrified
       requirePower: true
       noWindowInTile: true
-      highVoltageNode: high
-      mediumVoltageNode: medium
-      lowVoltageNode: low
     - type: NodeContainer
       nodes:
         high:
