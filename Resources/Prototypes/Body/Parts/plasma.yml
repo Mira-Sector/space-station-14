@@ -18,6 +18,9 @@
   - type: Sprite
     sprite: Mobs/Species/Plasma/parts.rsi
     state: torso
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Plasma
 
 - type: entity
   id: HeadPlasma
@@ -27,6 +30,9 @@
   - type: Sprite
     sprite: Mobs/Species/Plasma/parts.rsi
     state: head
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Plasma
 
 - type: entity
   id: LeftArmPlasma
@@ -36,6 +42,9 @@
   - type: Sprite
     sprite: Mobs/Species/Plasma/parts.rsi
     state: l_arm
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Plasma
 
 - type: entity
   id: RightArmPlasma
@@ -45,6 +54,9 @@
   - type: Sprite
     sprite: Mobs/Species/Plasma/parts.rsi
     state: r_arm
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Plasma
 
 - type: entity
   id: LeftHandPlasma
@@ -72,6 +84,9 @@
   - type: Sprite
     sprite: Mobs/Species/Plasma/parts.rsi
     state: l_leg
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Plasma
 
 - type: entity
   id: RightLegPlasma
@@ -81,6 +96,9 @@
   - type: Sprite
     sprite: Mobs/Species/Plasma/parts.rsi
     state: r_leg
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Plasma
 
 - type: entity
   id: LeftFootPlasma
