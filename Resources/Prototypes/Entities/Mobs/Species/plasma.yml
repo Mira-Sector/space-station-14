@@ -13,6 +13,12 @@
   - type: Body
     prototype: Plasma
     requiredLegs: 2
+  - type: IgniteOnAtmosExposed
+    fireStacks: 10
+    gas:
+      temperature: 0
+      moles:
+      - 1
   - type: DamageVisuals
     damageOverlayGroups:
       Brute:
