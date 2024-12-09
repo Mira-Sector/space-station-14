@@ -5,13 +5,13 @@ namespace Content.Shared.Surgery;
 public sealed partial class SurgeryGraphEdge
 {
     [DataField("steps")]
-    private SurgeryGraphStep[] _steps = Array.Empty<SurgeryGraphStep>();
+    public SurgeryGraphStep[] _steps = Array.Empty<SurgeryGraphStep>();
 
-    [DataField("completed", serverOnly: true)]
-    private ISurgeryAction[] _completed = Array.Empty<ISurgeryAction>();
+    [DataField("completed")]
+    public ISurgeryAction[] _completed = Array.Empty<ISurgeryAction>();
 
     [DataField("to", required:true)]
-    public string Target { get; private set; } = string.Empty;
+    public string Target { get; set; } = string.Empty;
 
     [ViewVariables]
     public IReadOnlyList<ISurgeryAction> Completed => _completed;

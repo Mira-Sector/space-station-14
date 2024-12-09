@@ -13,7 +13,7 @@ public sealed partial class SurgeryGraphNode
     public ISurgeryAction[] _actions = Array.Empty<ISurgeryAction>();
 
     [DataField("edges")]
-    private SurgeryGraphEdge[] _edges = Array.Empty<SurgeryGraphEdge>();
+    public SurgeryGraphEdge[] _edges = Array.Empty<SurgeryGraphEdge>();
 
     [ViewVariables]
     public IReadOnlyList<SurgeryGraphEdge> Edges => _edges;

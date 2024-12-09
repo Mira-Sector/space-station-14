@@ -6,10 +6,10 @@ using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototy
 namespace Content.Shared.Surgery.Components;
 
 [RegisterComponent, NetworkedComponent]
-[Access(typeof(SurgerySystem)]
+[Access(typeof(SurgerySystem))]
 public sealed partial class SurgeryReceiverComponent : Component
 {
-    [DataField(customTypeSerializer:typeof(List<PrototypeIdSerializer<SurgeryPrototype>>))]
+    [DataField(customTypeSerializer:typeof(PrototypeIdSerializer<SurgeryPrototype>))]
     public List<string> AvailableSurgeries { get; set; } = new();
 
     [ViewVariables]

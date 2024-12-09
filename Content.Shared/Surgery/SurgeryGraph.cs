@@ -13,7 +13,7 @@ public class SurgeryGraph
     [ViewVariables]
     public IReadOnlyDictionary<string, SurgeryGraphNode> Nodes => _nodes;
 
-    protected readonly Dictionary<string, SurgeryGraphNode> _nodes = new();
+    public Dictionary<string, SurgeryGraphNode> _nodes = new();
     protected readonly Dictionary<(string, string), SurgeryGraphNode[]?> _paths = new();
     protected readonly Dictionary<string, Dictionary<SurgeryGraphNode, SurgeryGraphNode?>> _pathfinding = new();
 
