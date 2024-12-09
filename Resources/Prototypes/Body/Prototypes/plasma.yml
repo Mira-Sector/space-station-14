@@ -1,0 +1,49 @@
+- type: body
+  id: Plasma
+  name: plasma
+  root: torso
+  slots:
+    head:
+      part: HeadPlasma
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+    torso:
+      part: TorsoPlasma
+      connections:
+      - right arm
+      - left arm
+      - right leg
+      - left leg
+      organs:
+        heart: OrganHumanHeart
+        lungs: OrganPlasmaLungs
+        stomach: OrganHumanStomach
+        liver: OrganHumanLiver
+        kidneys: OrganHumanKidneys
+    right arm:
+      part: RightArmPlasma
+      connections:
+      - right hand
+    left arm:
+      part: LeftArmPlasma
+      connections:
+      - left hand
+    right hand:
+      part: RightHandPlasma
+    left hand:
+      part: LeftHandPlasma
+    right leg:
+      part: RightLegPlasma
+      connections:
+      - right foot
+    left leg:
+      part: LeftLegPlasma
+      connections:
+      - left foot
+    right foot:
+      part: RightFootPlasma
+    left foot:
+      part: LeftFootPlasma

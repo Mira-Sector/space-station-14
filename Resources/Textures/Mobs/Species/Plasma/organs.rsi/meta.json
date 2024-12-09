@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "https://github.com/tgstation/tgstation/blob/3c20ecc5ae7580f731930b881bd1b1dfa46b5824/icons/obj/medical/organs/organs.dmi",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "lungs"
+    }
+  ]
+}
