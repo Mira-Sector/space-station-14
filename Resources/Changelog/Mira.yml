@@ -869,3 +869,9 @@ Entries:
     type: Tweak
   id: 130
   time: '2024-12-11T14:40:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Meteors take longer to ocure and happen less frequently
+    type: Tweak
+  id: 130
+  time: '2024-12-11T14:50:00.0000000+00:00'
