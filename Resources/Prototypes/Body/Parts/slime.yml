@@ -155,10 +155,10 @@
 
 - type: entity
   id: LeftLegGeras
-  parent: [ LegsGeras, LeftLegAnimal ]
+  parent: [ LegsGeras, BaseLeftLegNoDamage ]
   noSpawn: true
 
 - type: entity
   id: RightLegGeras
-  parent: [ LegsGeras, RightLegAnimal ]
+  parent: [ LegsGeras, BaseRightLegNoDamage ]
   noSpawn: true
