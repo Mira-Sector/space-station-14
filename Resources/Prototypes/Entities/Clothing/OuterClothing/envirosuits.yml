@@ -1,0 +1,438 @@
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitAncientEVA
+  name: NTSRA plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/ancient.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/ancient.rsi
+  - type: ClothingSpeedModifier
+    walkModifier: 0.85
+    sprintModifier: 0.85
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitAncientEVA
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitAtmos
+  name: atmos plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/atmospherics.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/atmospherics.rsi
+  - type: PressureProtection
+    highPressureMultiplier: 0.02
+    lowPressureMultiplier: 1000
+  - type: TemperatureProtection
+    heatingCoefficient: 0.001
+    coolingCoefficient: 0.001
+  - type: ExplosionResistance
+    damageCoefficient: 0.5
+  - type: Armor
+    modifiers:
+      [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0, Radiation: 0.5} }
+  - type: ClothingSpeedModifier
+    walkModifier: 0.7
+    sprintModifier: 0.7
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitAtmos
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitBotany
+  name: botany plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/botany.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/botany.rsi
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitBotany
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitCaptain
+  name: captaion plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/captain.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/captain.rsi
+  - type: ToggleableClothing
+  - type: PressureProtection
+    highPressureMultiplier: 0.02
+    lowPressureMultiplier: 1000
+  - type: ExplosionResistance
+    damageCoefficient: 0.5
+  - type: Armor
+    modifiers:
+      [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.8, Slash: 0.8, Piercing: 0.6, Heat: 0, Radiation: 0.5, Caustic: 0.6 } }
+  - type: ClothingSpeedModifier
+    walkModifier: 0.8
+    sprintModifier: 0.8
+    clothingPrototype: ClothingHeadHelmetEnvirosuitCaptain
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitCargo
+  name: cargo plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/cargo.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/cargo.rsi
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitCargo
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitCentcom
+  name: centcom plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/centcom.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/centcom.rsi
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitCentcom
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitChaplain
+  name: chaplain plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/chaplain.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/chaplain.rsi
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitChaplain
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitChef
+  name: chef plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/chef.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/chef.rsi
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitChef
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitChemistry
+  name: chemistry plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/chemistry.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/chemistry.rsi
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitChemistry
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitChiefEngineer
+  name: chief engineer plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/chief_engineer.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/chief_engineer.rsi
+  - type: PressureProtection
+    highPressureMultiplier: 0.02
+    lowPressureMultiplier: 1000
+  - type: ExplosionResistance
+    damageCoefficient: 0.2
+  - type: Armor
+    modifiers:
+      [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.8, Slash: 0.8, Piercing: 0.8, Heat: 0, Radiation: 0.0, Caustic: 0.7 } }
+  - type: ClothingSpeedModifier
+    walkModifier: 0.75
+    sprintModifier: 0.8
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitChiefEngineer
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitChiefMecialOfficer
+  name: chief medical officer plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/chief_medical_officer.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/chief_medical_officer.rsi
+  - type: PressureProtection
+    highPressureMultiplier: 0.3
+    lowPressureMultiplier: 1000
+  - type: Armor
+    modifiers:
+      [ Torso, Arm, Leg ] : { coefficients: { Heat: 0, Radiation: 0.25, Caustic: 0.1 } }
+  - type: ClothingSpeedModifier
+    walkModifier: 0.9
+    sprintModifier: 0.95
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitChiefMedicalOfficer
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitClown
+  name: clown plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/clown.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/clown.rsi
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitClown
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitDefault
+  name: EVA plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/default.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/default.rsi
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitDefault
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitEngineer
+  name: engineer plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/engineer.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/engineer.rsi
+  - type: PressureProtection
+    highPressureMultiplier: 0.04
+    lowPressureMultiplier: 1000
+  - type: ExplosionResistance
+    damageCoefficient: 0.5
+  - type: Armor
+    modifiers:
+      [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0, Shock: 0.8, Caustic: 0.5, Radiation: 0.2 } }
+  - type: ClothingSpeedModifier
+    walkModifier: 0.7
+    sprintModifier: 0.7
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitEngineer
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitHeadOfPersonnel
+  name: head of personnel plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/head_of_personnel.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/head_of_personnel.rsi
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitHeadOfPersonnel
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitHeadOfSecurity
+  name: head of security plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/head_of_security.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/head_of_security.rsi
+  - type: PressureProtection
+    highPressureMultiplier: 0.45
+    lowPressureMultiplier: 1000
+  - type: ExplosionResistance
+    damageCoefficient: 0.6
+  - type: Armor
+    modifiers:
+      [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.6, Slash: 0.5, Piercing: 0.5, Heat: 0, Radiation: 0.25, Caustic: 0.6 } }
+  - type: ClothingSpeedModifier
+    walkModifier: 0.8
+    sprintModifier: 0.8
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitHeadOfSecurity
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitJanitor
+  name: janitor plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/janitor.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/janitor.rsi
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitJanitor
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitMedical
+  name: medical plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/medical.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/medical.rsi
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitMedical
+
+- type: entity
+  parent: ClothingOuterEnvirosuitClown
+  id: ClothingOuterEnvirosuitMime
+  name: mime plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/mime.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/mime.rsi
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitMime
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitParamedic
+  name: paramedic plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/paramedic.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/paramedic.rsi
+  - type: PressureProtection
+    highPressureMultiplier: 0.5
+    lowPressureMultiplier: 1000
+  - type: ClothingSpeedModifier
+    walkModifier: 0.9
+    sprintModifier: 0.9
+  - type: HeldSpeedModifier
+  - type: TemperatureProtection
+    heatingCoefficient: 0.1
+    coolingCoefficient: 0.1
+  - type: Armor
+    modifiers:
+      [ Torso, Arm, Leg ] : { coefficients: { Heat: 0, Radiation: 0.25, Caustic: 0.5 } }
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitParamedic
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitPrisoner
+  name: prisoner plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/prisoner.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/prisoner.rsi
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitPrisoner
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitResearchDirector
+  name: research director plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/research_director.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/research_director.rsi
+  - type: PressureProtection
+    highPressureMultiplier: 0.02
+    lowPressureMultiplier: 1000
+  - type: Armor
+    modifiers:
+      [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.6, Slash: 0.8, Piercing: 0.9, Heat: 0, Radiation: 0.1, Caustic: 0.2 } }
+  - type: ExplosionResistance
+    damageCoefficient: 0.1
+  - type: ClothingSpeedModifier
+    walkModifier: 0.75
+    sprintModifier: 0.75
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitResearchDirector
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitScientist
+  name: scientist plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/scientist.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/scientist.rsi
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitScientist
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitSecurity
+  name: security plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/security.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/security.rsi
+  - type: PressureProtection
+    highPressureMultiplier: 0.5
+    lowPressureMultiplier: 1000
+  - type: ExplosionResistance
+    damageCoefficient: 0.4
+  - type: Armor
+    modifiers:
+      [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.6, Slash: 0.6, Piercing: 0.6, Heat: 0.00, Radiation: 0.25, Caustic: 0.7 } }
+  - type: ClothingSpeedModifier
+    walkModifier: 0.75
+    sprintModifier: 0.75
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitSecurity
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitSyndicate
+  name: syndicate plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/syndicate.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/syndicate.rsi
+  - type: PressureProtection
+    highPressureMultiplier: 0.05
+    lowPressureMultiplier: 1000
+  - type: ExplosionResistance
+    damageCoefficient: 0.5
+  - type: Armor
+    modifiers:
+      [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.5, Slash: 0.5, Piercing: 0.5, Heat: 0, Radiation: 0.25, Caustic: 0.5 } }
+  - type: ClothingSpeedModifier
+    walkModifier: 0.9
+    sprintModifier: 0.9
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitSyndicate
+
+- type: entity
+  parent: ClothingOuterEnvirosuitBase
+  id: ClothingOuterEnvirosuitWarden
+  name: warden plasma envirosuit
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Envirosuits/warden.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Envirosuits/warden.rsi
+  - type: PressureProtection
+    highPressureMultiplier: 0.5
+    lowPressureMultiplier: 1000
+  - type: ExplosionResistance
+    damageCoefficient: 0.4
+  - type: Armor
+    modifiers:
+      [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.5, Slash: 0.6, Piercing: 0.6, Heat: 0, Radiation: 0.25 , Caustic: 0.7 } }
+  - type: ClothingSpeedModifier
+    walkModifier: 0.7
+    sprintModifier: 0.7
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitWarden

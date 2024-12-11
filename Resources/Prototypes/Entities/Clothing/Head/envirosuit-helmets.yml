@@ -1,0 +1,267 @@
+- type: entity
+  parent: ClothingHeadHelmetEnvirosuitAncientEVA
+  id: ClothingHeadHelmetEnvirosuitAncientEVA
+  name: NTSRA Plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/ancient.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/ancient.rsi
+
+- type: entity
+  parent: ClothingHeadHelmetHardsuitAtmos
+  id: ClothingHeadHelmetEnvirosuitAtmos
+  name: atmos plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/atmospherics.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/atmospherics.rsi
+
+- type: entity
+  parent: ClothingHeadHardsuitWithLightBase
+  id: ClothingHeadHelmetEnvirosuitBotany
+  name: botany plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/botany.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/botany.rsi
+
+- type: entity
+  parent: ClothingHeadHelmetHardsuitCap
+  id: ClothingHeadHelmetEnvirosuitCaptain
+  name: captaion plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/captain.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/captain.rsi
+
+- type: entity
+  parent: ClothingHeadHardsuitWithLightBase
+  id: ClothingHeadHelmetEnvirosuitCargo
+  name: cargo plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/cargo.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/cargo.rsi
+
+- type: entity
+  parent: ClothingHeadHardsuitWithLightBase
+  id: ClothingHeadHelmetEnvirosuitCentcom
+  name: centcom plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/centcom.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/centcom.rsi
+
+- type: entity
+  parent: ClothingHeadHardsuitWithLightBase
+  id: ClothingHeadHelmetEnvirosuitChaplain
+  name: chaplain plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/chaplain.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/chaplain.rsi
+
+- type: entity
+  parent: ClothingHeadHardsuitWithLightBase
+  id: ClothingHeadHelmetEnvirosuitChef
+  name: chef plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/chef.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/chef.rsi
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetEnvirosuitChef
+
+- type: entity
+  parent: ClothingHeadHelmetHardsuitEngineeringWhite
+  id: ClothingHeadHelmetEnvirosuitChiefEngineer
+  name: chief engineer plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/chief_engineer.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/chief_engineer.rsi
+
+- type: entity
+  parent: ClothingHeadHelmetHardsuitMedical
+  id: ClothingHeadHelmetEnvirosuitChiefMecialOfficer
+  name: chief medical officer plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/chief_medical_officer.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/chief_medical_officer.rsi
+
+- type: entity
+  parent: ClothingHeadHelmetHardsuitClown
+  id: ClothingHeadHelmetEnvirosuitClown
+  name: clown plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/clown.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/clown.rsi
+
+- type: entity
+  parent: ClothingHeadHardsuitWithLightBase
+  id: ClothingHeadHelmetEnvirosuitDefault
+  name: EVA plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/default.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/default.rsi
+
+- type: entity
+  parent: ClothingHeadHardsuitWithLightBase
+  id: ClothingHeadHelmetEnvirosuitEngineer
+  name: engineer plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/engineer.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/engineer.rsi
+
+- type: entity
+  parent: ClothingHeadHardsuitWithLightBase
+  id: ClothingHeadHelmetEnvirosuitHeadOfPersonnel
+  name: head of personnel plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/head_of_personnel.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/head_of_personnel.rsi
+
+- type: entity
+  parent: ClothingHeadHelmetHardsuitSecurityRed
+  id: ClothingHeadHelmetEnvirosuitHeadOfSecurity
+  name: head of security plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/head_of_security.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/head_of_security.rsi
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] : { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0, Radiation: 0.25 } }
+
+- type: entity
+  parent: ClothingHeadHardsuitWithLightBase
+  id: ClothingHeadHelmetEnvirosuitJanitor
+  name: janitor plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/janitor.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/janitor.rsi
+
+- type: entity
+  parent: ClothingHeadHardsuitWithLightBase
+  id: ClothingHeadHelmetEnvirosuitMedical
+  name: medical plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/medical.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/medical.rsi
+
+- type: entity
+  parent: ClothingHeadHelmetHardsuitMime
+  id: ClothingHeadHelmetEnvirosuitMime
+  name: mime plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/mime.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/mime.rsi
+
+- type: entity
+  parent: ClothingHeadHelmetVoidParamed
+  id: ClothingHeadHelmetEnvirosuitParamedic
+  name: paramedic plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/paramedic.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/paramedic.rsi
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] : { coefficients: { Heat: 0, Radiation: 0.25 } }
+
+- type: entity
+  parent: ClothingHeadHardsuitWithLightBase
+  id: ClothingHeadHelmetEnvirosuitPrisoner
+  name: prisoner plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/prisoner.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/prisoner.rsi
+
+- type: entity
+  parent: ClothingHeadHelmetHardsuitRd
+  id: ClothingHeadHelmetEnvirosuitResearchDirector
+  name: research director plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/research_director.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/research_director.rsi
+
+- type: entity
+  parent: ClothingHeadHardsuitWithLightBase
+  id: ClothingHeadHelmetEnvirosuitScientist
+  name: scientist plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/scientist.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/scientist.rsi
+
+- type: entity
+  parent: ClothingHeadHelmetHardsuitSecurity
+  id: ClothingHeadHelmetEnvirosuitSecurity
+  name: security plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/security.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/security.rsi
+
+- type: entity
+  parent: ClothingHeadHelmetHardsuitSyndie
+  id: ClothingHeadHelmetEnvirosuitSyndicate
+  name: syndicate plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/syndicate.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/syndicate.rsi
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] : { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0, Radiation: 0.25 } }
+
+- type: entity
+  parent: ClothingHeadHelmetHardsuitWarden
+  id: ClothingHeadHelmetEnvirosuitWarden
+  name: warden plasma envirosuit helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Envirosuits/warden.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Envirosuits/warden.rsi
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] : { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0, Radiation: 0.25 } }
