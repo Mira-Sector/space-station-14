@@ -2,6 +2,7 @@ using Content.Server.Administration;
 using Content.Server.Interaction;
 using Content.Server.Popups;
 using Content.Server.Stunnable;
+using Content.Shared.Actions;
 using Content.Shared.Administration;
 using Content.Shared.Examine;
 using Content.Shared.Instruments;
@@ -26,6 +27,7 @@ public sealed partial class InstrumentSystem : SharedInstrumentSystem
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly IConsoleHost _conHost = default!;
     [Dependency] private readonly IConfigurationManager _cfg = default!;
+    [Dependency] private readonly SharedActionsSystem _action = default!;
     [Dependency] private readonly StunSystem _stuns = default!;
     [Dependency] private readonly UserInterfaceSystem _bui = default!;
     [Dependency] private readonly PopupSystem _popup = default!;
@@ -59,6 +61,7 @@ public sealed partial class InstrumentSystem : SharedInstrumentSystem
         });
 
         SubscribeLocalEvent<InstrumentComponent, ComponentGetState>(OnStrumentGetState);
+        SubscribeLocalEvent<InstrumentComponent, InstrumentActionEvent>(OnAction);
 
         _conHost.RegisterCommand("addtoband", AddToBandCommand);
     }
@@ -76,6 +79,15 @@ public sealed partial class InstrumentSystem : SharedInstrumentSystem
             Master = GetNetEntity(component.Master),
             FilteredChannels = component.FilteredChannels
         };
+    }
+
+    private void OnAction(EntityUid uid, InstrumentComponent component, InstantActionEvent args)
+    {
+        if (args.Handled || args.Performer != component.Player)
+            return;
+
+        _bui.TryToggleUi(uid, InstrumentUiKey.Key, args.Performer);
+        args.Handled = true;
     }
 
     [AdminCommand(AdminFlags.Fun)]
@@ -243,7 +255,7 @@ public sealed partial class InstrumentSystem : SharedInstrumentSystem
                 continue;
 
             // Don't grab puppet instruments.
-            if (!instrumentQuery.TryGetComponent(entity, out var instrument) || instrument.Master != null)
+            if (!instrumentQuery.TryGetComponent(entity, out var instrument) || instrument.Master != null || !instrument.AllowBands)
                 continue;
 
             // We want to use the instrument player's name.

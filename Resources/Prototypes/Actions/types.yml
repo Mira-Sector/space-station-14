@@ -381,3 +381,11 @@
   - type: InstantAction
     icon: { sprite: Interface/Actions/zone_sel.rsi , state: torso }
     event: !type:DamageSelectorActionEvent
+
+- type: entity
+  id: ActionInstrument
+  name: Play Music
+  description: Play your sick dubstep.
+  components:
+  - type: InstantAction
+    event: !type:InstrumentActionEvent
