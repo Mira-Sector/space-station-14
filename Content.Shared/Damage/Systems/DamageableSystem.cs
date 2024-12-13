@@ -4,6 +4,7 @@ using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
 using Content.Shared.Damage.DamageSelector;
 using Content.Shared.Damage.Prototypes;
+using Content.Shared.Effects;
 using Content.Shared.FixedPoint;
 using Content.Shared.Inventory;
 using Content.Shared.Mind.Components;
@@ -13,6 +14,7 @@ using Content.Shared.Radiation.Events;
 using Content.Shared.Rejuvenate;
 using Robust.Shared.GameStates;
 using Robust.Shared.Network;
+using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 
@@ -25,6 +27,7 @@ namespace Content.Shared.Damage
         [Dependency] private readonly INetManager _netMan = default!;
         [Dependency] private readonly MobThresholdSystem _mobThreshold = default!;
         [Dependency] private readonly SharedBodySystem _body = default!;
+        [Dependency] private readonly SharedColorFlashEffectSystem _color = default!;
 
 
         private EntityQuery<AppearanceComponent> _appearanceQuery;
@@ -224,31 +227,47 @@ namespace Content.Shared.Damage
 
             var damagePerPart = damage / parts.Count();
 
-            TryComp<DamagePartSelectorComponent>(origin, out var damageSelectorComp);
+            if (TryComp<DamagePartSelectorComponent>(origin, out var damageSelectorComp))
+            {
+                EntityUid? damagedBody = EntityUid.Invalid;
+
+                foreach (var (part, damageable) in parts)
+                {
+                    if (!TryComp<BodyPartComponent>(part, out var partComp))
+                        continue;
+
+                    if (damagedBody != null)
+                        damagedBody = partComp.Body;
+
+                    if (damageSelectorComp.SelectedPart.Type != partComp.PartType || damageSelectorComp.SelectedPart.Side != partComp.Symmetry)
+                        continue;
+
+                    var newDamage = ChangeDamage(part, damage, damageable, ignoreResistances, interruptsDoAfters, origin, partComp.PartType, uid.Value);
+
+                    if (newDamage == null)
+                        continue;
+
+                    damageDict.Add(part, newDamage);
+                    damagedBody = null;
+                }
+
+                if (damagedBody != null)
+                    _color.RaiseEffect(Color.LimeGreen, new List<EntityUid>() { damagedBody.Value }, Filter.Pvs(damagedBody.Value, entityManager: EntityManager));
+
+                return damageDict;
+            }
 
             foreach (var (part, damageable) in parts)
             {
                 if (!TryComp<BodyPartComponent>(part, out var partComp))
                     continue;
 
-                DamageSpecifier? newDamage = new ();
+                var limbDamage = damage;
 
-                if (damageSelectorComp != null)
-                {
-                    if (damageSelectorComp.SelectedPart.Type != partComp.PartType || damageSelectorComp.SelectedPart.Side != partComp.Symmetry)
-                        continue;
+                if (splitLimbDamage)
+                    limbDamage = damagePerPart;
 
-                    newDamage = ChangeDamage(part, damage, damageable, ignoreResistances, interruptsDoAfters, origin, partComp.PartType, uid.Value);
-                }
-                else
-                {
-                    var limbDamage = damage;
-
-                    if (splitLimbDamage)
-                        limbDamage = damagePerPart;
-
-                    newDamage = ChangeDamage(part, limbDamage, damageable, ignoreResistances, interruptsDoAfters, origin, partComp.PartType, uid.Value);
-                }
+                var newDamage = ChangeDamage(part, limbDamage, damageable, ignoreResistances, interruptsDoAfters, origin, partComp.PartType, uid.Value);
 
                 if (newDamage == null)
                     continue;
