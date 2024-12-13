@@ -3,7 +3,6 @@ using Content.Shared.Body.Components;
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
 using Content.Shared.Damage;
-using Content.Shared.FixedPoint;
 
 namespace Content.Client.Body.Systems;
 
