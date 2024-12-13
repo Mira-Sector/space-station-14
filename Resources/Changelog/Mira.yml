@@ -881,3 +881,11 @@ Entries:
     type: Add
   id: 131
   time: '2024-12-12T17:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: When attacking a dead limb it will flash violet
+    type: Add
+  - message: When attacking a limb that doesnt exist it will flash green
+    type: Add
+  id: 132
+  time: '2024-12-13T11:00:00.0000000+00:00'
