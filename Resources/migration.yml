@@ -485,6 +485,9 @@ CrateCrewMonitoringBoards: CrateCrewMonitoring
 # 2024-11-25
 CrateSlimepersonLifeSupport: CrateNitrogenInternals
 
+# 2024-12-01
+DungeonMasterCircuitBoard: GameMasterCircuitBoard
+
 # Mira
 # 2024-07-28
 WeaponSubMachineGunWt550: WeaponEnergyShotgun
