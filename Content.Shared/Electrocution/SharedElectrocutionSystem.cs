@@ -41,17 +41,6 @@ namespace Content.Shared.Electrocution
             _appearance.SetData(ent.Owner, ElectrifiedVisuals.IsElectrified, value);
         }
 
-        public void SetElectrifiedWireCut(Entity<ElectrifiedComponent> ent, bool value)
-        {
-            if (ent.Comp.IsWireCut == value)
-            {
-                return;
-            }
-
-            ent.Comp.IsWireCut = value;
-            Dirty(ent);
-        }
-
         /// <param name="uid">Entity being electrocuted.</param>
         /// <param name="sourceUid">Source entity of the electrocution.</param>
         /// <param name="shockDamage">How much shock damage the entity takes.</param>
