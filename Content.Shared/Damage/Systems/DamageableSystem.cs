@@ -251,7 +251,7 @@ namespace Content.Shared.Damage
                     damagedBody = null;
                 }
 
-                if (damagedBody != null)
+                if (damagedBody != null && origin != null)
                     _color.RaiseEffect(Color.LimeGreen, new List<EntityUid>() { damagedBody.Value }, Filter.Pvs(damagedBody.Value, entityManager: EntityManager));
 
                 return damageDict;
