@@ -921,3 +921,9 @@ Entries:
     type: Fix
   id: 137
   time: '2024-12-20T01:15:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: If a zombie does not have a head the whole body is damageable
+    type: Fix
+  id: 138
+  time: '2024-12-20T02:15:00.0000000+00:00'
