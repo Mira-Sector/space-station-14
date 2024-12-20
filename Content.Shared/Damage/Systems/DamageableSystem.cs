@@ -236,6 +236,10 @@ namespace Content.Shared.Damage
                     if (!TryComp<BodyPartComponent>(part, out var partComp))
                         continue;
 
+                    // cant deal damage so we need to flash the entity
+                    if (partComp.OverallDamageScale == 0)
+                        continue;
+
                     if (damagedBody != null)
                         damagedBody = partComp.Body;
 

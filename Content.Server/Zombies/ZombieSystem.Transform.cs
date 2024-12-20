@@ -190,9 +190,6 @@ public sealed partial class ZombieSystem
 
         Dirty(target, melee);
 
-        //The zombie gets the assigned damage weaknesses and strengths
-        _damageable.SetDamageModifierSetId(target, "Zombie");
-
         //This makes it so the zombie doesn't take bloodloss damage.
         //NOTE: they are supposed to bleed, just not take damage
         _bloodstream.SetBloodLossThreshold(target, 0f);
@@ -216,13 +213,40 @@ public sealed partial class ZombieSystem
 
         //Heals the zombie from all the damage it took while human
         if (TryComp<DamageableComponent>(target, out var damageablecomp))
+        {
             _damageable.SetAllDamage(target, damageablecomp, 0);
+
+            //The zombie gets the assigned damage weaknesses and strengths
+            _damageable.SetDamageModifierSetId(target, "Zombie");
+        }
+
         _mobState.ChangeMobState(target, MobState.Alive);
 
         if (TryComp<BodyComponent>(target, out var bodyComp))
         {
             zombiecomp.BeforeZombifiedPartScales = _body.GetPartsScale(target, bodyComp);
-            _body.SetPartsScale(target, zombiecomp.PartScales, bodyComp);
+
+            var canRecieveDamage = false;
+
+            foreach (var (beforePart, _) in zombiecomp.BeforeZombifiedPartScales)
+            {
+                foreach (var (part, scale) in zombiecomp.PartScales)
+                {
+                    if (beforePart.Type != part.Type || beforePart.Side != part.Side)
+                        continue;
+
+                    // make sure they can get damaged with the new part scales
+                    if (scale <= 0)
+                        continue;
+
+                    _body.SetPartsScale(target, zombiecomp.PartScales, bodyComp);
+                    canRecieveDamage = true;
+                    break;
+                }
+
+                if (canRecieveDamage)
+                    break;
+            }
 
             foreach (var (part, _) in _body.GetBodyChildren(target, bodyComp))
             {
@@ -230,6 +254,9 @@ public sealed partial class ZombieSystem
                     continue;
 
                 _damageable.SetAllDamage(part, partDamageableComp, 0);
+
+                //The zombie gets the assigned damage weaknesses and strengths
+                _damageable.SetDamageModifierSetId(part, "Zombie");
             }
         }
 
