@@ -150,52 +150,57 @@ public sealed partial class GunSystem : SharedGunSystem
 
         var entity = entityNull.Value;
 
-        if (!TryGetGun(entity, out var gunUid, out var gun))
-        {
+        // dont want to shoot the gun in annother hand if our selected hand doesnt have one
+        if (!TryGetGun(entity, out var _, out var _))
             return;
+
+        if (!TryGetGuns(entity, out var guns))
+            return;
+
+        foreach (var (gunUid, gun) in guns)
+        {
+            var useKey = gun.UseKey ? EngineKeyFunctions.Use : EngineKeyFunctions.UseSecondary;
+
+            if (_inputSystem.CmdStates.GetState(useKey) != BoundKeyState.Down)
+            {
+                if (gun.ShotCounter != 0)
+                    EntityManager.RaisePredictiveEvent(new RequestStopShootEvent { Gun = GetNetEntity(gunUid) });
+                continue;
+            }
+
+            if (gun.NextFire > Timing.CurTime)
+                continue;
+
+            var mousePos = _eyeManager.PixelToMap(_inputManager.MouseScreenPosition);
+
+            if (mousePos.MapId == MapId.Nullspace)
+            {
+                if (gun.ShotCounter != 0)
+                    EntityManager.RaisePredictiveEvent(new RequestStopShootEvent { Gun = GetNetEntity(gunUid) });
+
+                continue;
+            }
+
+            // Define target coordinates relative to gun entity, so that network latency on moving grids doesn't fuck up the target location.
+            var coordinates = TransformSystem.ToCoordinates(entity, mousePos);
+
+            NetEntity? target = null;
+            if (_state.CurrentState is GameplayStateBase screen)
+                target = GetNetEntity(screen.GetClickedEntity(mousePos));
+
+            Log.Debug($"Sending shoot request tick {Timing.CurTick} / {Timing.CurTime}");
+
+            EntityManager.RaisePredictiveEvent(new RequestShootEvent
+            {
+                Target = target,
+                Coordinates = GetNetCoordinates(coordinates),
+                Gun = GetNetEntity(gunUid),
+            });
         }
-
-        var useKey = gun.UseKey ? EngineKeyFunctions.Use : EngineKeyFunctions.UseSecondary;
-
-        if (_inputSystem.CmdStates.GetState(useKey) != BoundKeyState.Down)
-        {
-            if (gun.ShotCounter != 0)
-                EntityManager.RaisePredictiveEvent(new RequestStopShootEvent { Gun = GetNetEntity(gunUid) });
-            return;
-        }
-
-        if (gun.NextFire > Timing.CurTime)
-            return;
-
-        var mousePos = _eyeManager.PixelToMap(_inputManager.MouseScreenPosition);
-
-        if (mousePos.MapId == MapId.Nullspace)
-        {
-            if (gun.ShotCounter != 0)
-                EntityManager.RaisePredictiveEvent(new RequestStopShootEvent { Gun = GetNetEntity(gunUid) });
-
-            return;
-        }
-
-        // Define target coordinates relative to gun entity, so that network latency on moving grids doesn't fuck up the target location.
-        var coordinates = TransformSystem.ToCoordinates(entity, mousePos);
-
-        NetEntity? target = null;
-        if (_state.CurrentState is GameplayStateBase screen)
-            target = GetNetEntity(screen.GetClickedEntity(mousePos));
-
-        Log.Debug($"Sending shoot request tick {Timing.CurTick} / {Timing.CurTime}");
-
-        EntityManager.RaisePredictiveEvent(new RequestShootEvent
-        {
-            Target = target,
-            Coordinates = GetNetCoordinates(coordinates),
-            Gun = GetNetEntity(gunUid),
-        });
     }
 
     public override void Shoot(EntityUid gunUid, GunComponent gun, List<(EntityUid? Entity, IShootable Shootable)> ammo,
-        EntityCoordinates fromCoordinates, EntityCoordinates toCoordinates, out bool userImpulse, EntityUid? user = null, bool throwItems = false)
+        EntityCoordinates fromCoordinates, EntityCoordinates toCoordinates, out bool userImpulse, EntityUid? user = null, bool throwItems = false, int gunCount = 1)
     {
         userImpulse = true;
 
