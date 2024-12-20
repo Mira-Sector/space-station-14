@@ -66,11 +66,11 @@ public sealed class ShowHealthIconsSystem : EquipmentHudSystem<ShowHealthIconsCo
 
         DamageSpecifier totalDamage = new ();
 
-        List<string> damageContainers = new ();
+        List<string?> damageContainers = new ();
         List<ProtoId<HealthIconPrototype>> rottingIcons = new ();
         List<Dictionary<MobState, ProtoId<HealthIconPrototype>>> healthIcons = new ();
 
-        foreach (var (part, _) in _body.GetBodyChildren(entity))
+        foreach (var (part, partComp) in _body.GetBodyChildren(entity))
         {
             if (!TryComp<DamageableComponent>(part, out var partDameagableComp))
                 continue;
@@ -78,7 +78,10 @@ public sealed class ShowHealthIconsSystem : EquipmentHudSystem<ShowHealthIconsCo
             if (!IsValid(partDameagableComp))
                 continue;
 
-            totalDamage += partDameagableComp.Damage;
+            totalDamage += partDameagableComp.Damage * partComp.OverallDamageScale;
+            damageContainers.Add(partDameagableComp.DamageContainerID);
+            rottingIcons.Add(partDameagableComp.RottingIcon);
+            healthIcons.Add(partDameagableComp.HealthIcons);
         }
 
         args.StatusIcons.AddRange(DecideHealthIcons(entity.Owner, totalDamage, GetMostFrequentItem(damageContainers), GetMostFrequentItem(rottingIcons), GetMostFrequentItem(healthIcons)));
