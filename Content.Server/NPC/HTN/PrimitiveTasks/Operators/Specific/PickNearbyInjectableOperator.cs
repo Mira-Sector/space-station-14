@@ -2,8 +2,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Content.Shared.NPC.Components;
 using Content.Server.NPC.Pathfinding;
+using Content.Shared.Body.Components;
+using Content.Shared.Body.Systems;
 using Content.Shared.Chemistry.Components.SolutionManager;
 using Content.Shared.Damage;
+using Content.Shared.FixedPoint;
 using Content.Shared.Interaction;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Silicons.Bots;
@@ -14,6 +17,7 @@ namespace Content.Server.NPC.HTN.PrimitiveTasks.Operators.Specific;
 public sealed partial class PickNearbyInjectableOperator : HTNOperator
 {
     [Dependency] private readonly IEntityManager _entManager = default!;
+    private SharedBodySystem _body = default!;
     private EntityLookupSystem _lookup = default!;
     private MedibotSystem _medibot = default!;
     private PathfindingSystem _pathfinding = default!;
@@ -35,6 +39,7 @@ public sealed partial class PickNearbyInjectableOperator : HTNOperator
     public override void Initialize(IEntitySystemManager sysManager)
     {
         base.Initialize(sysManager);
+        _body = sysManager.GetEntitySystem<SharedBodySystem>();
         _lookup = sysManager.GetEntitySystem<EntityLookupSystem>();
         _medibot = sysManager.GetEntitySystem<MedibotSystem>();
         _pathfinding = sysManager.GetEntitySystem<PathfindingSystem>();
@@ -51,6 +56,7 @@ public sealed partial class PickNearbyInjectableOperator : HTNOperator
         if (!_entManager.TryGetComponent<MedibotComponent>(owner, out var medibot))
             return (false, null);
 
+        var bodyQuery = _entManager.GetEntityQuery<BodyComponent>();
         var damageQuery = _entManager.GetEntityQuery<DamageableComponent>();
         var injectQuery = _entManager.GetEntityQuery<InjectableSolutionComponent>();
         var recentlyInjected = _entManager.GetEntityQuery<NPCRecentlyInjectedComponent>();
@@ -61,9 +67,24 @@ public sealed partial class PickNearbyInjectableOperator : HTNOperator
         {
             if (mobState.TryGetComponent(entity, out var state) &&
                 injectQuery.HasComponent(entity) &&
-                damageQuery.TryGetComponent(entity, out var damage) &&
                 !recentlyInjected.HasComponent(entity))
             {
+                FixedPoint2 totalDamage;
+                var bodyDamage = _body.GetBodyDamage(entity);
+
+                if (bodyDamage != null)
+                {
+                    totalDamage = bodyDamage.GetTotal();
+                }
+                else if (damageQuery.TryGetComponent(entity, out var damage))
+                {
+                    totalDamage = damage.TotalDamage;
+                }
+                else
+                {
+                    continue;
+                }
+
                 // no treating dead bodies
                 if (!_medibot.TryGetTreatment(medibot, state, out var treatment))
                     continue;
@@ -71,7 +92,7 @@ public sealed partial class PickNearbyInjectableOperator : HTNOperator
                 // Only go towards a target if the bot can actually help them or if the medibot is emagged
                 // note: this and the actual injecting don't check for specific damage types so for example,
                 // radiation damage will trigger injection but the tricordrazine won't heal it.
-                if (!emaggedQuery.HasComponent(entity) && !treatment.IsValid(damage.TotalDamage))
+                if (!emaggedQuery.HasComponent(entity) && !treatment.IsValid(totalDamage))
                     continue;
 
                 //Needed to make sure it doesn't sometimes stop right outside it's interaction range
