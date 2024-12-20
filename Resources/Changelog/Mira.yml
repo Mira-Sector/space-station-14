@@ -901,3 +901,9 @@ Entries:
     type: Fix
   id: 134
   time: '2024-12-20T00:25:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Medibots now inject again
+    type: Fix
+  id: 135
+  time: '2024-12-20T00:40:00.0000000+00:00'
