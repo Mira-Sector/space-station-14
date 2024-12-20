@@ -889,3 +889,9 @@ Entries:
     type: Add
   id: 132
   time: '2024-12-13T11:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Gibbing is based on total damage
+    type: Tweak
+  id: 133
+  time: '2024-12-20T00:15:00.0000000+00:00'
