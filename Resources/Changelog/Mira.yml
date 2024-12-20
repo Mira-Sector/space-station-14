@@ -907,3 +907,9 @@ Entries:
     type: Fix
   id: 135
   time: '2024-12-20T00:40:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Grappling hooks and spears now embed again
+    type: Fix
+  id: 136
+  time: '2024-12-20T10:00:00.0000000+00:00'
