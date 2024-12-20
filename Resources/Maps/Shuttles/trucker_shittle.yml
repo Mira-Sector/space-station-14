@@ -47,9 +47,69 @@ entities:
     - type: GridAtmosphere
       version: 2
       data:
+        tiles:
+          -3,-1:
+            0: 57344
+          -3,0:
+            1: 3822
+            0: 57344
+          -2,-1:
+            0: 28672
+            1: 32768
+          -2,0:
+            1: 34679
+            0: 28672
+          -1,0:
+            1: 819
+            0: 34952
+          -1,-1:
+            0: 32768
+          -1,1:
+            0: 17
+            1: 102
+        uniqueMixes:
+        - volume: 2500
+          immutable: True
+          moles:
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+        - volume: 2500
+          temperature: 293.15
+          moles:
+          - 21.824879
+          - 82.10312
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
         chunkSize: 4
     - type: GasTileOverlay
     - type: RadiationGridResistance
+    - type: NavMap
+- proto: APCHighCapacity
+  entities:
+  - uid: 153
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: -2.5,3.5
+      parent: 1
 - proto: AtmosDeviceFanDirectional
   entities:
   - uid: 2
@@ -388,6 +448,16 @@ entities:
     - type: Transform
       pos: -7.5,3.5
       parent: 1
+  - uid: 154
+    components:
+    - type: Transform
+      pos: -2.5,3.5
+      parent: 1
+  - uid: 155
+    components:
+    - type: Transform
+      pos: -2.5,2.5
+      parent: 1
 - proto: CableHV
   entities:
   - uid: 67
@@ -469,6 +539,33 @@ entities:
     components:
     - type: Transform
       pos: -4.5,1.5
+      parent: 1
+  - uid: 159
+    components:
+    - type: Transform
+      pos: -2.5,-0.5
+      parent: 1
+  - uid: 160
+    components:
+    - type: Transform
+      pos: -2.5,3.5
+      parent: 1
+- proto: CableMV
+  entities:
+  - uid: 156
+    components:
+    - type: Transform
+      pos: -3.5,2.5
+      parent: 1
+  - uid: 157
+    components:
+    - type: Transform
+      pos: -3.5,3.5
+      parent: 1
+  - uid: 158
+    components:
+    - type: Transform
+      pos: -2.5,3.5
       parent: 1
 - proto: Catwalk
   entities:
@@ -860,7 +957,7 @@ entities:
       parent: 1
 - proto: SignalButton
   entities:
-  - uid: 152
+  - uid: 135
     components:
     - type: Transform
       rot: 3.141592653589793 rad
@@ -882,14 +979,14 @@ entities:
         - Pressed: Toggle
 - proto: SubstationBasic
   entities:
-  - uid: 135
+  - uid: 136
     components:
     - type: Transform
       pos: -3.5,2.5
       parent: 1
 - proto: TableCounterMetal
   entities:
-  - uid: 136
+  - uid: 137
     components:
     - type: Transform
       rot: 3.141592653589793 rad
@@ -897,59 +994,61 @@ entities:
       parent: 1
 - proto: Thruster
   entities:
-  - uid: 137
+  - uid: 138
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: -0.5,3.5
       parent: 1
-  - uid: 138
+  - uid: 139
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: -0.5,-0.5
       parent: 1
-  - uid: 139
+  - uid: 140
     components:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: -4.5,-0.5
       parent: 1
-  - uid: 140
+  - uid: 141
     components:
     - type: Transform
       pos: -4.5,3.5
       parent: 1
-  - uid: 141
+  - uid: 142
     components:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: -7.5,-0.5
       parent: 1
-  - uid: 142
-    components:
-    - type: Transform
-      pos: -7.5,3.5
-      parent: 1
+    - type: Thruster
+      enabled: False
   - uid: 143
     components:
     - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -10.5,0.5
+      pos: -7.5,3.5
       parent: 1
   - uid: 144
     components:
     - type: Transform
       rot: 1.5707963267948966 rad
-      pos: -10.5,3.5
+      pos: -10.5,0.5
       parent: 1
   - uid: 145
     components:
     - type: Transform
       rot: 1.5707963267948966 rad
-      pos: -10.5,-0.5
+      pos: -10.5,3.5
       parent: 1
   - uid: 146
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: -10.5,-0.5
+      parent: 1
+  - uid: 147
     components:
     - type: Transform
       rot: 1.5707963267948966 rad
@@ -957,25 +1056,25 @@ entities:
       parent: 1
 - proto: WallShuttleInterior
   entities:
-  - uid: 147
+  - uid: 148
     components:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: -1.5,3.5
       parent: 1
-  - uid: 148
+  - uid: 149
     components:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: -2.5,3.5
       parent: 1
-  - uid: 149
+  - uid: 150
     components:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: -2.5,-0.5
       parent: 1
-  - uid: 150
+  - uid: 151
     components:
     - type: Transform
       rot: 3.141592653589793 rad
@@ -983,7 +1082,7 @@ entities:
       parent: 1
 - proto: WindoorSecurePlasma
   entities:
-  - uid: 151
+  - uid: 152
     components:
     - type: Transform
       rot: -1.5707963267948966 rad

@@ -58,6 +58,57 @@ entities:
     - type: GridAtmosphere
       version: 2
       data:
+        tiles:
+          0,0:
+            0: 7
+          0,-1:
+            0: 63232
+            1: 15
+          1,0:
+            1: 16
+          1,-1:
+            0: 4096
+            1: 17
+          -1,-1:
+            1: 76
+            0: 49152
+          0,-2:
+            1: 32768
+          -1,0:
+            1: 64
+          -1,-2:
+            1: 32768
+        uniqueMixes:
+        - volume: 2500
+          temperature: 293.15
+          moles:
+          - 21.824879
+          - 82.10312
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+        - volume: 2500
+          immutable: True
+          moles:
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
         chunkSize: 4
     - type: GasTileOverlay
     - type: RadiationGridResistance
@@ -502,7 +553,7 @@ entities:
       pos: 2.5,1.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -4253.2974
+      secondsUntilStateChange: -8197.212
       state: Opening
   - uid: 83
     components:
@@ -510,7 +561,7 @@ entities:
       pos: 0.5,1.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -4252.647
+      secondsUntilStateChange: -8196.562
       state: Opening
 - proto: CurtainsWhite
   entities:
@@ -520,7 +571,7 @@ entities:
       pos: 1.5,1.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -4253.0303
+      secondsUntilStateChange: -8196.944
       state: Opening
 - proto: GeneratorBasic15kW
   entities:
@@ -681,6 +732,13 @@ entities:
         - Pressed: Toggle
         11:
         - Pressed: Toggle
+- proto: SubstationWallBasic
+  entities:
+  - uid: 122
+    components:
+    - type: Transform
+      pos: 3.5,0.5
+      parent: 1
 - proto: Thruster
   entities:
   - uid: 105
