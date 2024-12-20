@@ -129,17 +129,20 @@ public abstract partial class SharedGunSystem : EntitySystem
 
         if (user == null ||
             !_combatMode.IsInCombatMode(user) ||
-            !TryGetGun(user.Value, out var ent, out var gun))
+            !TryGetGuns(user.Value, out var ents))
         {
             return;
         }
 
-        if (ent != GetEntity(msg.Gun))
-            return;
+        foreach (var (ent, gun) in ents)
+        {
+            if (ent != GetEntity(msg.Gun))
+                continue;
 
-        gun.ShootCoordinates = GetCoordinates(msg.Coordinates);
-        gun.Target = GetEntity(msg.Target);
-        AttemptShoot(user.Value, ent, gun);
+            gun.ShootCoordinates = GetCoordinates(msg.Coordinates);
+            gun.Target = GetEntity(msg.Target);
+            AttemptShoot(user.Value, ent, gun);
+        }
     }
 
     private void OnStopShootRequest(RequestStopShootEvent ev, EntitySessionEventArgs args)
@@ -148,15 +151,18 @@ public abstract partial class SharedGunSystem : EntitySystem
 
         if (args.SenderSession.AttachedEntity == null ||
             !TryComp<GunComponent>(gunUid, out var gun) ||
-            !TryGetGun(args.SenderSession.AttachedEntity.Value, out _, out var userGun))
+            !TryGetGuns(args.SenderSession.AttachedEntity.Value, out var guns))
         {
             return;
         }
 
-        if (userGun != gun)
-            return;
+        foreach (var (_, userGun) in guns)
+        {
+            if (userGun != gun)
+                continue;
 
-        StopShooting(gunUid, gun);
+            StopShooting(gunUid, gun);
+        }
     }
 
     public bool CanShoot(GunComponent component)
@@ -165,6 +171,34 @@ public abstract partial class SharedGunSystem : EntitySystem
             return false;
 
         return true;
+    }
+
+    public bool TryGetGuns(EntityUid entity, out Dictionary<EntityUid, GunComponent> guns)
+    {
+        guns = new();
+
+        if (EntityManager.TryGetComponent(entity, out HandsComponent? hands))
+        {
+            foreach (var (_, hand) in hands.Hands)
+            {
+                if (!TryComp<GunComponent>(hand.HeldEntity, out var gun) || hand.HeldEntity is not {} heldEntity)
+                    continue;
+
+                guns.Add(heldEntity, gun);
+            }
+
+            if (guns.Count > 0)
+                return true;
+        }
+
+        if (TryGetGun(entity, out var gunUid, out var gunComp))
+        {
+            guns.Add(gunUid, gunComp);
+
+            return true;
+        }
+
+        return false;
     }
 
     public bool TryGetGun(EntityUid entity, out EntityUid gunEntity, [NotNullWhen(true)] out GunComponent? gunComp)
