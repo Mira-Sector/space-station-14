@@ -912,4 +912,12 @@ Entries:
   - message: Grappling hooks and spears now embed again
     type: Fix
   id: 136
-  time: '2024-12-20T10:00:00.0000000+00:00'
+  time: '2024-12-20T01:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Medhud icons now show on humans again
+    type: Fix
+  - message: Medhud healthbar is now more accurate
+    type: Fix
+  id: 137
+  time: '2024-12-20T01:15:00.0000000+00:00'
