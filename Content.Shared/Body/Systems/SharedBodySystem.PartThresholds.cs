@@ -31,7 +31,8 @@ public partial class SharedBodySystem
         if (!TryComp<BodyPartComponent>(uid, out var partComp) || partComp.Body == null)
             return;
 
-        _color.RaiseEffect(Color.BetterViolet, new List<EntityUid>() { partComp.Body.Value }, Filter.Pvs(partComp.Body.Value, entityManager: EntityManager));
+        if (args.Origin != null)
+            _color.RaiseEffect(Color.BetterViolet, new List<EntityUid>() { partComp.Body.Value }, Filter.Pvs(partComp.Body.Value, entityManager: EntityManager));
     }
 
     private void OnDamaged(EntityUid uid, BodyPartThresholdsComponent component, DamageChangedEvent args)
