@@ -166,6 +166,7 @@
       types:
         Blunt: 5
   - type: DamagePartAccuracy
+  - type: WoundBody
   - type: SleepEmitSound
   - type: SSDIndicator
   - type: StandingState
