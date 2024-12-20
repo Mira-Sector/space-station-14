@@ -114,6 +114,9 @@ public abstract partial class SharedDisposalUnitComponent : Component
     [ViewVariables(VVAccess.ReadWrite), DataField]
     public bool Engaged;
 
+    [DataField]
+    public float? PowerToggleDelayReduction;
+
     /// <summary>
     /// Next time this unit will flush. Is the lesser of <see cref="FlushDelay"/> and <see cref="AutomaticEngageTime"/>
     /// </summary>

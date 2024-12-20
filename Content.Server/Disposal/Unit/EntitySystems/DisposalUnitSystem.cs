@@ -323,7 +323,7 @@ public sealed class DisposalUnitSystem : SharedDisposalUnitSystem
         if (component.Engaged)
         {
             // Run ManualEngage to recalculate a new flush time
-            ManualEngage(uid, component);
+            ManualEngage(uid, component, powerToggled: true);
         }
     }
 
@@ -674,7 +674,7 @@ public sealed class DisposalUnitSystem : SharedDisposalUnitSystem
                && Comp<TransformComponent>(unit).Anchored;
     }
 
-    public void ManualEngage(EntityUid uid, SharedDisposalUnitComponent component, MetaDataComponent? metadata = null)
+    public void ManualEngage(EntityUid uid, SharedDisposalUnitComponent component, MetaDataComponent? metadata = null, bool powerToggled = false)
     {
         component.Engaged = true;
         UpdateVisualState(uid, component);
@@ -689,7 +689,12 @@ public sealed class DisposalUnitSystem : SharedDisposalUnitSystem
 
         var pauseTime = Metadata.GetPauseTime(uid, metadata);
         var nextEngage = GameTiming.CurTime - pauseTime + component.ManualFlushTime;
-        component.NextFlush = TimeSpan.FromSeconds(Math.Min((component.NextFlush ?? TimeSpan.MaxValue).TotalSeconds, nextEngage.TotalSeconds));
+        var nextFlush = component.NextFlush ?? TimeSpan.MaxValue;
+
+        if (powerToggled && component.PowerToggleDelayReduction != null)
+            nextFlush -= TimeSpan.FromSeconds(component.PowerToggleDelayReduction.Value);
+
+        component.NextFlush = TimeSpan.FromSeconds(Math.Min(nextFlush.TotalSeconds, nextEngage.TotalSeconds));
     }
 
     public void Disengage(EntityUid uid, SharedDisposalUnitComponent component)
