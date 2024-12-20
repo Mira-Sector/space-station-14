@@ -1,7 +1,7 @@
 using System.Numerics;
 using Content.Client.StatusIcon;
 using Content.Client.UserInterface.Systems;
-using Content.Shared.Body.Components;
+using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
 using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
@@ -87,7 +87,10 @@ public sealed class EntityHealthBarOverlay : Overlay
 
                 foreach (var (partUid, partDamageable) in parts)
                 {
-                    damage += partDamageable.Damage;
+                    if (!_entManager.TryGetComponent<BodyPartComponent>(partUid, out var partComp))
+                        continue;
+
+                    damage += partDamageable.Damage * partComp.OverallDamageScale;
 
                     if (partDamageable.HealthBarThreshold > healthBarThreshold)
                         healthBarThreshold = partDamageable.HealthBarThreshold;
