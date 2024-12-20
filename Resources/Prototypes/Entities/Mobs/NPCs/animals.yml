@@ -401,8 +401,7 @@
   - type: Destructible
     thresholds:
     - trigger:
-        !type:DamageTypeTrigger
-        damageType: Blunt
+        !type:DamageTrigger
         damage: 10
       behaviors:
       - !type:GibBehavior { }
@@ -588,8 +587,7 @@
   - type: Destructible
     thresholds:
     - trigger:
-        !type:DamageTypeTrigger
-        damageType: Blunt
+        !type:DamageTrigger
         damage: 60
       behaviors:
       - !type:GibBehavior { }
