@@ -96,7 +96,7 @@ public abstract partial class SharedProjectileSystem : EntitySystem
         if (!component.EmbedOnThrow)
             return;
 
-        if (_whitelist.IsWhitelistFailOrNull(component.Whitelist, args.Target))
+        if (_whitelist.IsWhitelistFail(component.Whitelist, args.Target))
             return;
 
         Embed(uid, args.Target, null, component);
@@ -104,7 +104,7 @@ public abstract partial class SharedProjectileSystem : EntitySystem
 
     private void OnEmbedProjectileHit(EntityUid uid, EmbeddableProjectileComponent component, ref ProjectileHitEvent args)
     {
-        if (_whitelist.IsWhitelistFailOrNull(component.Whitelist, args.Target))
+        if (_whitelist.IsWhitelistFail(component.Whitelist, args.Target))
             return;
 
         Embed(uid, args.Target, args.Shooter, component);
