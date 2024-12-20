@@ -933,3 +933,9 @@ Entries:
     type: Add
   id: 139
   time: '2024-12-20T03:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Toggling power on a disposal unit reduces the flushing time by 1.5 seconds
+    type: Add
+  id: 140
+  time: '2024-12-20T05:15:00.0000000+00:00'
