@@ -927,3 +927,9 @@ Entries:
     type: Fix
   id: 138
   time: '2024-12-20T02:15:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Guns can be dual wielded
+    type: Add
+  id: 139
+  time: '2024-12-20T03:30:00.0000000+00:00'
