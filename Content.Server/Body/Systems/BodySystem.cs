@@ -79,7 +79,7 @@ public sealed class BodySystem : SharedBodySystem
         }
     }
 
-    private void EnsureBodyThreshold(EntityUid uid, BodyComponent body, FixedPoint2 threshold)
+    public void EnsureBodyThreshold(EntityUid uid, BodyComponent body, FixedPoint2 threshold)
     {
         var parts = GetBodyDamageable(uid, body);
         Dictionary<EntityUid, (FixedPoint2 MaxDamage, float Scale)> deadThresholds = new();
