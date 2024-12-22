@@ -953,3 +953,9 @@ Entries:
     type: Fix
   id: 142
   time: '2024-12-22T17:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Geras and other polymorphs now retain their parents damage when transfered
+    type: Fix
+  id: 142
+  time: '2024-12-22T22:30:00.0000000+00:00'
