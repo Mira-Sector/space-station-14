@@ -944,4 +944,12 @@ Entries:
   - message: Diona now absorb puddles they step on
     type: Add
   id: 141
-  time: '2024-12-22217:45:00.0000000+00:00'
+  time: '2024-12-22T17:45:00.0000000+00:00'
+- author: Mathrew
+  changes:
+  - message: Fixed shittles having no atmos
+    type: Fix
+  - message: Fixed shittles not containing an APC / Substation.
+    type: Fix
+  id: 142
+  time: '2024-12-22T17:50:00.0000000+00:00'
