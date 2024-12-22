@@ -13,10 +13,12 @@ using Content.Server.Temperature.Components;
 using Content.Server.Temperature.Systems;
 using Content.Server.Zombies;
 using Content.Shared.Actions;
+using Content.Shared.Body.Part;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Buckle;
 using Content.Shared.Damage;
 using Content.Shared.Destructible;
+using Content.Shared.FixedPoint;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.IdentityManagement;
 using Content.Shared.IdentityManagement.Components;
@@ -45,6 +47,7 @@ public sealed partial class PolymorphSystem : EntitySystem
     [Dependency] private readonly IGameTiming _gameTiming = default!;
     [Dependency] private readonly ActionsSystem _actions = default!;
     [Dependency] private readonly AudioSystem _audio = default!;
+    [Dependency] private readonly BodySystem _body = default!;
     [Dependency] private readonly SharedBuckleSystem _buckle = default!;
     [Dependency] private readonly ContainerSystem _container = default!;
     [Dependency] private readonly DamageableSystem _damageable = default!;
@@ -233,12 +236,9 @@ public sealed partial class PolymorphSystem : EntitySystem
             _container.Insert(child, cont);
 
         //Transfers all damage from the original to the new one
-        if (configuration.TransferDamage &&
-            TryComp<DamageableComponent>(child, out var damageParent) &&
-            _mobThreshold.GetScaledDamage(uid, child, out var damage) &&
-            damage != null)
+        if (configuration.TransferDamage)
         {
-            _damageable.SetDamage(child, damageParent, damage);
+            SetDamage(uid, child, polymorphedComp);
         }
 
         //If there is firestacks transfer them
@@ -349,12 +349,9 @@ public sealed partial class PolymorphSystem : EntitySystem
         _transform.SetParent(parent, parentXform, uidXform.ParentUid);
         _transform.SetCoordinates(parent, parentXform, uidXform.Coordinates, uidXform.LocalRotation);
 
-        if (component.Configuration.TransferDamage &&
-            TryComp<DamageableComponent>(parent, out var damageParent) &&
-            _mobThreshold.GetScaledDamage(uid, parent, out var damage) &&
-            damage != null)
+        if (component.Configuration.TransferDamage)
         {
-            _damageable.SetDamage(parent, damageParent, damage);
+            SetDamage(parent, uid, component);
         }
 
         //If there is firestacks transfer them
@@ -476,5 +473,122 @@ public sealed partial class PolymorphSystem : EntitySystem
 
         if (target.Comp.PolymorphActions.TryGetValue(id, out var val))
             _actions.RemoveAction(target, val);
+    }
+
+    private void SetDamage(EntityUid parent, EntityUid child, PolymorphedEntityComponent polymorph)
+    {
+        var parentBody = _body.GetBodyDamageable(parent);
+        var childBody = _body.GetBodyDamageable(child);
+
+        if (parentBody != null)
+        {
+            Dictionary<BodyPart, DamageSpecifier>? parentDamage = new();
+
+            foreach (var (partUid, partDamage) in parentBody)
+            {
+                if (!TryComp<BodyPartComponent>(partUid, out var partComp))
+                    continue;
+
+                var partType = new BodyPart(partComp.PartType, partComp.Symmetry);
+
+                if (parentDamage.ContainsKey(partType))
+                {
+                    parentDamage[partType] += partDamage.Damage;
+                }
+                else
+                {
+                    parentDamage.Add(partType, partDamage.Damage);
+                }
+            }
+        }
+
+        if (childBody != null)
+        {
+            if (parentBody != null)
+            {
+                // just transfer the bodies damage accross
+                var currentParts = childBody;
+                var beforeParts = parentBody;
+
+                Dictionary<(EntityUid, DamageableComponent), float> childParts = new();
+                var currentTotal = FixedPoint2.Zero;
+
+                foreach (var (childPart, childDamage) in childBody)
+                {
+                    if (!TryComp<BodyPartComponent>(childPart, out var childPartComp))
+                        continue;
+
+                    foreach (var (parentPart, parentDamage) in parentBody)
+                    {
+                        if (!TryComp<BodyPartComponent>(parentPart, out var parentPartComp))
+                            continue;
+
+                        if (childPartComp.PartType != parentPartComp.PartType || childPartComp.Symmetry != parentPartComp.Symmetry)
+                            continue;
+
+                        currentParts.Remove(childPart);
+                        beforeParts.Remove(parentPart);
+
+                        childParts.Add((parentPart, parentDamage), parentPartComp.OverallDamageScale);
+                        currentTotal += parentDamage.TotalDamage * parentPartComp.OverallDamageScale;
+
+                        var newDamage = childDamage.Damage + parentDamage.Damage;
+                        _damageable.SetDamage(childPart, childDamage, newDamage);
+                    }
+                }
+
+                // part mismatch
+                if (currentParts.Count < 0 || beforeParts.Count < 0)
+                {
+                    var targetDamage = _body.GetBodyDamage(parent);
+
+                    if (targetDamage != null)
+                        SetPartDamage(childParts, currentTotal, targetDamage.GetTotal(), polymorph);
+                }
+            }
+            else if (TryComp<DamageableComponent>(parent, out var parentDamage))
+            {
+                // just spread it equally
+                SetPartScale(childBody, parentDamage.TotalDamage, polymorph);
+            }
+        }
+        else if (TryComp<DamageableComponent>(child, out var damageParent) &&
+        _mobThreshold.GetScaledDamage(parent, child, out var damage) &&
+        damage != null)
+        {
+            // the easy route
+            _damageable.SetDamage(child, damageParent, damage);
+        }
+
+        void SetPartScale(Dictionary<EntityUid, DamageableComponent> childBody, FixedPoint2 targetDamage, PolymorphedEntityComponent polymorph)
+        {
+            Dictionary<(EntityUid, DamageableComponent), float> childParts = new();
+            var currentTotal = FixedPoint2.Zero;
+
+            foreach (var (partUid, partDamage) in childBody)
+            {
+                if (!TryComp<BodyPartComponent>(partUid, out var partComp))
+                    continue;
+
+                childParts.Add((partUid, partDamage), partComp.OverallDamageScale);
+                currentTotal += partDamage.TotalDamage * partComp.OverallDamageScale;
+            }
+
+            SetPartDamage(childParts, currentTotal, targetDamage, polymorph);
+        }
+
+        void SetPartDamage(Dictionary<(EntityUid, DamageableComponent), float> childParts, FixedPoint2 currentTotal, FixedPoint2 targetDamage, PolymorphedEntityComponent polymorph)
+        {
+            var scalingFactor = targetDamage / currentTotal;
+
+            foreach (var ((partUid, partDamage), scale) in childParts)
+            {
+                if (!TryComp<BodyPartComponent>(partUid, out var partComp))
+                    continue;
+
+                var newDamage = partDamage.Damage * scalingFactor;
+                _damageable.SetDamage(partUid, partDamage, newDamage);
+            }
+        }
     }
 }
