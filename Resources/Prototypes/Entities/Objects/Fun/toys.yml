@@ -824,6 +824,63 @@
     useSound:
       path: /Audio/Voice/Moth/moth_chitter.ogg
 
+- type: entity
+  parent: BasePlushie
+  id: PlushieAriral
+  name: ariral plushie
+  description: A stuffed toy that resembles a tall cat-like alien humanoid. Seems to be a trinket from an unknown planet.
+  components:
+  - type: Sprite
+    state: plushie_ariraltall
+  - type: EmitSoundOnUse
+    sound:
+      path: /Audio/Items/Toys/mreow.ogg
+  - type: EmitSoundOnLand
+    sound:
+      path: /Audio/Items/Toys/mreow.ogg
+  - type: EmitSoundOnActivate
+    sound:
+      path: /Audio/Items/Toys/mreow.ogg
+  - type: EmitSoundOnTrigger
+    sound:
+      path: /Audio/Items/Toys/mreow.ogg
+      type: MeleeWeapon
+    soundHit:
+      path: /Audio/Items/Toys/mreow.ogg
+  - type: Food
+    requiresSpecialDigestion: true
+    useSound:
+      path: /Audio/Items/Toys/mreow.ogg
+
+- type: entity
+  parent: PlushieAriral
+  id: PlushieAriralShort
+  name: short ariral plushie
+  description: A stuffed toy that resembles a short cat-like alien humanoid. Seems to be a trinket from an unknown planet.
+  components:
+  - type: Sprite
+    state: plushie_ariralshort
+  - type: EmitSoundOnUse
+    sound:
+      path: /Audio/Items/Toys/mreow.ogg
+  - type: EmitSoundOnLand
+    sound:
+      path: /Audio/Items/Toys/mreow.ogg
+  - type: EmitSoundOnActivate
+    sound:
+      path: /Audio/Items/Toys/mreow.ogg
+  - type: EmitSoundOnTrigger
+    sound:
+      path: /Audio/Items/Toys/mreow.ogg
+      type: MeleeWeapon
+    soundHit:
+      path: /Audio/Items/Toys/mreow.ogg
+  - type: Food
+    requiresSpecialDigestion: true
+    useSound:
+      path: /Audio/Items/Toys/mreow.ogg
+
+
 ## Cheapo Figurines
 
 - type: entity

@@ -73,6 +73,11 @@
   copyright: "Taken from ss200, made by Daeberdir"
   source: "https://github.com/ss220-space/Paradise/pull/3756"
 
+- files: ["mreow.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from VotV, made by MrDrNose"
+  source: "https://mrdrnose.itch.io/votv"
+
 - files: ["rubber_chicken_1.ogg"]
   license: "CC0-1.0"
   copyright: "Created by xprospero for ss14"
