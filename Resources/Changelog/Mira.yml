@@ -939,3 +939,9 @@ Entries:
     type: Add
   id: 140
   time: '2024-12-20T05:15:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Diona now absorb puddles they step on
+    type: Add
+  id: 141
+  time: '2024-12-22217:45:00.0000000+00:00'
