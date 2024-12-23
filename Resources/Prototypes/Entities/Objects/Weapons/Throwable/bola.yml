@@ -44,7 +44,7 @@
     breakoutTime: 3.5 #all bola should generally be fast to remove
     walkSpeed: 0.5 #makeshift bola shouldn't slow too much
     sprintSpeed: 0.5
-    staminaDamage: 0 # anything but this is gamebreaking
+    staminaDamage: 20
     canThrowTrigger: true
     canMoveBreakout: true
   - type: LandAtCursor
