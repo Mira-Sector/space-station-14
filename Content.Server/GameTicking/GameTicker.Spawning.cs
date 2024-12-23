@@ -252,9 +252,7 @@ namespace Content.Server.GameTicking
                     {
                         if (presetId.PresetJobName != null)
                         {
-                            _localizationManager.TryGetString(presetId.PresetJobName, out var presetName);
-
-                            if (presetName != null)
+                            if (_localizationManager.TryGetString(presetId.PresetJobName, out var presetName))
                                 jobPrototype.Name = presetName;
                         }
 
