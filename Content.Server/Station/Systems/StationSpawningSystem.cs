@@ -276,7 +276,7 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
         MakeSentientCommand.MakeSentient(entity, EntityManager);
 
         if (job != null)
-        DoJobSpecials(job, entity);
+            DoJobSpecials(job, entity);
 
         _identity.QueueIdentityUpdate(entity);
         return entity;

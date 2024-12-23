@@ -148,7 +148,7 @@ public sealed class StationRecordsSystem : SharedStationRecordsSystem
         {
             Name = name,
             Age = age,
-            JobTitle = job.Name,
+            JobTitle = job.LocalizedName,
             JobIcon = job.Icon,
             JobPrototype = job.ID,
             Species = species,
