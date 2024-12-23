@@ -208,7 +208,7 @@ loadout-group-medical-doctor-backpack = Medical Doctor backpack
 loadout-group-medical-doctor-shoes = Medical Doctor shoes
 loadout-group-medical-doctor-id = Medical Doctor ID
 
-loadout-group-medical-intern-jumpsuit = Medical intern head
+loadout-group-medical-intern-head = Medical intern head
 loadout-group-medical-intern-jumpsuit = Medical intern jumpsuit
 
 loadout-group-chemist-head = Chemist head
