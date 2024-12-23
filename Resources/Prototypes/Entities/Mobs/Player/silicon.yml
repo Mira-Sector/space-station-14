@@ -380,7 +380,7 @@
     unlistedNumber: true
     requiresPower: false
   - type: Holopad
-  - type: StationAiWhitelist  
+  - type: StationAiWhitelist
   - type: UserInterface
     interfaces:
         enum.HolopadUiKey.AiRequestWindow:
@@ -496,6 +496,16 @@
   id: PlayerBorgBattery
   parent: BorgChassisSelectable
   suffix: Battery
+  components:
+  - type: ContainerFill
+    containers:
+      borg_brain:
+        - MMIFilled
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellMedium
 
 - type: entity
   id: PlayerBorgSyndicateAssaultBattery

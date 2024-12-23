@@ -325,6 +325,8 @@
         type: StrippableBoundUserInterface
       enum.DamageSelectorUiKey.Key:
         type: DamageSelectorBoundUserInterface
+      enum.BorgSwitchableTypeUiKey.SelectBorgType:
+        type: BorgSelectTypeUserInterface
   - type: ActivatableUI
     key: enum.BorgUiKey.Key
   - type: IntrinsicUI
