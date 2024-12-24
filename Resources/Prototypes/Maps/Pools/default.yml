@@ -3,13 +3,16 @@
   maps:
   - Aspid
   - Atlas
+  #- Amber
   - Bagel
   - Box
   - Cluster
   - Cog
   - Core
   - Fland
+  #- Gate
   - Gemini
+  #- Loop
   - Marathon
   - Meta
   - Mir

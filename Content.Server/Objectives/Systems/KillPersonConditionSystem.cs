@@ -1,5 +1,6 @@
 using Content.Server.GameTicking.Rules;
 using Content.Server.Objectives.Components;
+using Content.Server.Revolutionary.Components;
 using Content.Server.Shuttles.Systems;
 using Content.Server.Roles;
 using Content.Shared.CCVar;
@@ -92,7 +93,7 @@ public sealed class KillPersonConditionSystem : EntitySystem
             return;
 
         // no other humans to kill
-        var allHumans = _mind.GetAliveHumansExcept(args.MindId);
+        var allHumans = _mind.GetAliveHumans(args.MindId);
         if (allHumans.Count == 0)
         {
             args.Cancelled = true;
@@ -116,19 +117,18 @@ public sealed class KillPersonConditionSystem : EntitySystem
             return;
 
         // no other humans to kill
-        var allHumans = _mind.GetAliveHumansExcept(args.MindId);
+        var allHumans = _mind.GetAliveHumans(args.MindId);
         if (allHumans.Count == 0)
         {
             args.Cancelled = true;
             return;
         }
 
-        var allHeads = new List<EntityUid>();
-        foreach (var mind in allHumans)
+        var allHeads = new HashSet<Entity<MindComponent>>();
+        foreach (var person in allHumans)
         {
-            // RequireAdminNotify used as a cheap way to check for command department
-            if (_job.MindTryGetJob(mind, out _, out var prototype) && prototype.RequireAdminNotify)
-                allHeads.Add(mind);
+            if (TryComp<MindComponent>(person, out var mind) && mind.OwnedEntity is { } ent && HasComp<CommandStaffComponent>(ent))
+                allHeads.Add(person);
         }
 
         if (allHeads.Count == 0)
@@ -177,9 +177,8 @@ public sealed class KillPersonConditionSystem : EntitySystem
             return;
         }
 
-        if (!TryComp<JobComponent>(roleComp.Obsession, out var obsessionJobComp) ||
-            obsessionJobComp == null ||
-            obsessionJobComp.Prototype == null)
+
+        if (!_job.MindTryGetJob(roleComp.Obsession, out var obsessionJob))
         {
             args.Cancelled = true;
             return;
@@ -189,7 +188,7 @@ public sealed class KillPersonConditionSystem : EntitySystem
         DepartmentPrototype? obsessionDepartment = null;
         foreach (var department in _prototypeMan.EnumeratePrototypes<DepartmentPrototype>())
         {
-            if (department.Roles.Contains(obsessionJobComp.Prototype.Value))
+            if (department.Roles.Contains(obsessionJob))
             {
                 obsessionDepartment = department;
                 break;
@@ -202,21 +201,17 @@ public sealed class KillPersonConditionSystem : EntitySystem
             return;
         }
 
-
-        var allHumans = _mind.GetAliveHumansExcept(roleComp.Obsession.Value);
-        allHumans.Remove(uid); //dont want the player to have a suicide mission
+        var allHumans = _mind.GetAliveHumans(roleComp.Obsession.Value);
+        allHumans.Remove((uid, args.Mind)); //dont want the player to have a suicide mission
 
         // get everyone in the obsessions department
         List<EntityUid> targets = new();
         foreach (var human in allHumans)
         {
-            if (!TryComp<JobComponent>(human, out var jobComp))
+            if (!_job.MindTryGetJob(human, out var job))
                 continue;
 
-            if (jobComp.Prototype == null)
-                continue;
-
-            if (obsessionDepartment.Roles.Contains(jobComp.Prototype.Value))
+            if (obsessionDepartment.Roles.Contains(job))
                 targets.Add(human);
         }
 
@@ -235,7 +230,7 @@ public sealed class KillPersonConditionSystem : EntitySystem
             roleComp == null)
             return;
 
-        var targetName = "Unknown";
+        var targetName = string.Empty;
         if (TryComp<MindComponent>(roleComp.Obsession, out var mind) && mind.CharacterName != null)
         {
             targetName = mind.CharacterName;

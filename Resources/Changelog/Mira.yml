@@ -959,3 +959,13 @@ Entries:
     type: Fix
   id: 142
   time: '2024-12-22T22:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Removed 10 seconds succumb delay
+    type: Remove
+  - message: Singularity and tesla no longer have a failsafe
+    type: Remove
+  - message: Bola stun damage has been readded in a reduced form
+    type: Add
+  id: 143
+  time: '2024-12-23T08:00:00.0000000+00:00'

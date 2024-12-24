@@ -186,7 +186,7 @@ ghost-role-information-nukeop-rules = You are a [color=red][bold]Team Antagonist
 
 ghost-role-information-loneop-name = Lone Operative
 ghost-role-information-loneop-description = You are a lone nuclear operative. Destroy the station!
-ghost-role-information-loneop-rules = You are a [color=red][bold]Team Antagonist[/bold][/color] with all other nuclear operatives. Covert syndicate agents are not guaranteed to help you.
+ghost-role-information-loneop-rules = You are a [color=red][bold]Solo Antagonist[/bold][/color]. Covert syndicate agents are not guaranteed to help you.
 
 ghost-role-information-behonker-name = Behonker
 ghost-role-information-behonker-description = You are an antagonist, bring death and honks to those who do not follow the honkmother.
@@ -230,15 +230,16 @@ ghost-role-information-nukeop-reinforcement-rules = You are a [color=red][bold]T
 
 ghost-role-information-syndicate-monkey-reinforcement-name = Syndicate Monkey Agent
 ghost-role-information-syndicate-monkey-reinforcement-description = Someone needs reinforcements. You, a trained monkey, will help them.
-ghost-role-information-syndicate-monkey-reinforcement-rules = You are a [color=red][bold]Team Antagonist[/bold][/color] with the agent who summoned you.
 
 ghost-role-information-syndicate-kobold-reinforcement-name = Syndicate Kobold Agent
 ghost-role-information-syndicate-kobold-reinforcement-description = Someone needs reinforcements. You, a trained kobold, will help them.
-ghost-role-information-syndicate-kobold-reinforcement-rules = You are a [color=red][bold]Team Antagonist[/bold][/color] with the agent who summoned you.
 
 ghost-role-information-syndicate-cyborg-assault-name = Syndicate Assault Cyborg
 ghost-role-information-syndicate-cyborg-saboteur-name = Syndicate Saboteur Cyborg
 ghost-role-information-syndicate-cyborg-description = The Syndicate needs reinforcements. You, a cold silicon killing machine, will help them.
+
+ghost-role-information-derelict-cyborg-name = Derelict Cyborg
+ghost-role-information-derelict-cyborg-description = You are a regular cyborg that got lost in space. After years of exposure to ion storms you find yourself near a space station.
 
 ghost-role-information-security-name = Security
 ghost-role-information-security-description = You are part of a security task force, but seem to have found yourself in a strange situation...
@@ -309,3 +310,8 @@ ghost-role-information-morph-description = Pipe crawl your way to taking over th
 
 ghost-role-information-bombroach-name = Bombroach
 ghost-role-information-bombroach-description = Use any means nessasary to get to the highest ranking official, with the aim to give them a good old explosive hug.
+
+ghost-role-information-gingerbread-name = Gingerbread Man
+ghost-role-information-gingerbread-description = A being of pure holiday spirit.
+                                     Spread molassesy goodness and to all good cheer.
+

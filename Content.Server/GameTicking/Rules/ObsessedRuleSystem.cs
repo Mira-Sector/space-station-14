@@ -29,7 +29,11 @@ public sealed class ObsessedRuleSystem : GameRuleSystem<ObsessedRuleComponent>
         if (component.Obsession != null)
             return;
 
-        var minds = _mind.GetAliveHumansExcept(mind);
+        if (!TryComp<MindComponent>(mind, out var mindComp))
+            return;
+
+        var minds = _mind.GetAliveHumans(mind);
+        minds.Remove((mind, mindComp));
 
         if (minds.Count <= 0)
         {
@@ -40,12 +44,10 @@ public sealed class ObsessedRuleSystem : GameRuleSystem<ObsessedRuleComponent>
         var obsessionMind = _random.Pick(minds);
         component.Obsession = obsessionMind;
 
-        if (!TryComp<MindComponent>(obsessionMind, out var mindComp) ||
-            mindComp == null ||
-            mindComp.CurrentEntity == null)
+        if (!TryComp<MindComponent>(obsessionMind, out var obsessionMindComp) || obsessionMindComp?.CurrentEntity == null)
             return;
 
         EnsureComp<ObsessionComponent>(obsessionMind);
-        EnsureComp<ObsessionComponent>(mindComp.CurrentEntity.Value);
+        EnsureComp<ObsessionComponent>(obsessionMindComp.CurrentEntity.Value);
     }
 }
