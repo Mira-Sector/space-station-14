@@ -7,8 +7,9 @@
   - type: Sprite
     noRot: true
     sprite: Structures/Power/Generation/Tesla/generator.rsi
-    state: icon 
+    state: icon
   - type: SingularityGenerator # TODO: rename the generator
+    failsafeDisabled: true
     spawnId: TeslaEnergyBall
   - type: InteractionOutline
   - type: Fixtures
