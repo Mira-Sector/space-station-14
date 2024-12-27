@@ -150,7 +150,7 @@ public abstract partial class SharedStationAiSystem
         var verb = new AlternativeVerb
         {
             Text = isOpen ? Loc.GetString("ai-close") : Loc.GetString("ai-open"),
-            Act = () => 
+            Act = () =>
             {
                 // no need to show menu if device is not powered.
                 if (!PowerReceiver.IsPowered(ent.Owner))
@@ -217,7 +217,7 @@ public abstract class BaseStationAiAction
 /// Grab actions possible for an AI on the target entity.
 /// </summary>
 [ByRefEvent]
-public record struct GetStationAiRadialEvent()
+public record struct GetStationAiRadialEvent(EntityUid User)
 {
     public List<StationAiRadial> Actions = new();
 }

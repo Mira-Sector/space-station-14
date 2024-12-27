@@ -50,6 +50,8 @@
         type: SiliconLawBoundUserInterface
       enum.CommunicationsConsoleUiKey.Key:
         type: CommunicationsConsoleBoundUserInterface
+      enum.StoreUiKey.Key:
+        type: StoreBoundUserInterface
   - type: IntrinsicUI
     uis:
       enum.RadarConsoleUiKey.Key:
@@ -72,7 +74,6 @@
     canShuttle: false
     title: comms-console-announcement-title-station-ai
     color: "#2ed2fd"
-
 
 # Ai
 - type: entity
@@ -361,7 +362,17 @@
     interfaces:
       enum.SiliconLawsUiKey.Key:
         type: SiliconLawBoundUserInterface
+      enum.StoreUiKey.Key:
+        type: StoreBoundUserInterface
   - type: ComplexInteraction
+  - type: StationAiCanHack
+  - type: Store
+    categories:
+    - AiDestructive
+    - AiUtility
+    - AiUpgrade
+    balance:
+      Power: 10
   - type: DoorRemote
   - type: Actions
   - type: Access

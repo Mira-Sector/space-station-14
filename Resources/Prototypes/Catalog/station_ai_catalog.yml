@@ -1,0 +1,9 @@
+- type: listing
+  id: AiNuke
+  name: ai-power-nuke-name
+  description: ai-power-nuke-desc
+  productAction: ActionStationAiNuke
+  cost:
+    Power: 2
+  categories:
+  - AiDestructive

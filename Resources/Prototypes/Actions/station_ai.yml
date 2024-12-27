@@ -1,4 +1,4 @@
-﻿# Actions
+# Actions
 - type: entity
   id: ActionJumpToCore
   name: Jump to core
@@ -66,3 +66,23 @@
       state: state_laws
     event: !type:ToggleLawsScreenEvent
     useDelay: 0.5
+
+- type: entity
+  id: ActionStationAiShop
+  name: Modules
+  description: Purchace modules with your gained power.
+  components:
+  - type: InstantAction
+    icon: Interface/Actions/shop.png
+    event: !type:StationAiShopActionEvent
+
+- type: entity
+  id: ActionStationAiNuke
+  name: Doomsday Device
+  description: Nuke the whole station.
+  components:
+  - type: InstantAction
+    icon:
+      sprite: Objects/Devices/nuke.rsi
+      state: nuclearbomb_base
+    event: !type:StationAiNukeEvent

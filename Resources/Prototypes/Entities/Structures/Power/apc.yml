@@ -141,6 +141,7 @@
     requirePower: true
     mediumVoltageNode: input
     lowVoltageNode: output
+  - type: StationAiHackable
   - type: LightningTarget
     priority: 1
   - type: StaticPrice
