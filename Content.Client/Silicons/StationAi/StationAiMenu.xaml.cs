@@ -36,13 +36,13 @@ public sealed partial class StationAiMenu : RadialMenu
             return;
         }
 
-        BuildButtons(owner);
+        BuildButtons();
         UpdatePosition();
     }
 
-    private void BuildButtons(EntityUid owner)
+    private void BuildButtons()
     {
-        var ev = new GetStationAiRadialEvent(owner);
+        var ev = new GetStationAiRadialEvent();
         _entManager.EventBus.RaiseLocalEvent(_tracked, ref ev);
 
         var main = FindControl<RadialContainer>("Main");

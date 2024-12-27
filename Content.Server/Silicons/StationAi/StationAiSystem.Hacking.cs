@@ -1,5 +1,7 @@
+using Content.Server.Power.Components;
 using Content.Server.Store.Systems;
 using Content.Shared.FixedPoint;
+using Content.Shared.Power;
 using Content.Shared.Store.Components;
 using Content.Shared.Silicons.StationAi;
 
@@ -12,7 +14,10 @@ public sealed partial class StationAiSystem
     private void InitializeHacking()
     {
         SubscribeLocalEvent<StationAiCanHackComponent, StationAiShopActionEvent>(OnShop);
+
         SubscribeLocalEvent<StationAiHackableComponent, StationAiHackEvent>((u, c, e) => OnHack(u, c, e.User));
+        SubscribeLocalEvent<StationAiHackableComponent, MapInitEvent>(OnMapInit);
+        SubscribeLocalEvent<StationAiHackableComponent, PowerChangedEvent>(OnPowerChanged);
     }
 
     private void OnShop(EntityUid uid, StationAiCanHackComponent component, StationAiShopActionEvent args)
@@ -28,10 +33,31 @@ public sealed partial class StationAiSystem
         if (!component.Enabled || !component.IsPowered || component.Hacked)
             return;
 
+        // TODO: show a popup
+        if (!HasComp<StationAiCanHackComponent>(user))
+            return;
+
         if (!TryUpdateAiPower(user, component.Points))
             return;
 
         component.Hacked = true;
+        Dirty(uid, component);
+    }
+
+    private void OnMapInit(EntityUid uid, StationAiHackableComponent component, MapInitEvent args)
+    {
+        bool isPowered = true;
+
+        if (TryComp<ApcPowerReceiverComponent>(uid, out var power))
+            isPowered = power.Powered;
+
+        component.IsPowered = isPowered;
+        Dirty(uid, component);
+    }
+
+    private void OnPowerChanged(EntityUid uid, StationAiHackableComponent component, ref PowerChangedEvent args)
+    {
+        component.IsPowered = args.Powered;
         Dirty(uid, component);
     }
 

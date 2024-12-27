@@ -20,3 +20,5 @@ electrify-door-off = Disable overcharge
 toggle-light = Toggle light
 
 ai-device-not-responding = Device is not responding
+
+ai-hack = Hack

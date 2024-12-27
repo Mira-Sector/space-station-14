@@ -217,7 +217,7 @@ public abstract class BaseStationAiAction
 /// Grab actions possible for an AI on the target entity.
 /// </summary>
 [ByRefEvent]
-public record struct GetStationAiRadialEvent(EntityUid User)
+public record struct GetStationAiRadialEvent()
 {
     public List<StationAiRadial> Actions = new();
 }

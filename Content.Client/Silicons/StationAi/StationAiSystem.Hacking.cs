@@ -11,10 +11,7 @@ public sealed partial class StationAiSystem
 
     private void OnHackableGetRadial(EntityUid uid, StationAiHackableComponent component, ref GetStationAiRadialEvent args)
     {
-        if (!component.Enabled || !component.IsPowered || component.Hacked)
-            return;
-
-        if (!HasComp<StationAiCanHackComponent>(args.User))
+        if (!component.Enabled || component.Hacked)
             return;
 
         args.Actions.Add(
