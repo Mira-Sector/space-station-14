@@ -82,6 +82,7 @@
   description: Nuke the whole station.
   components:
   - type: InstantAction
+    itemIconStyle: BigAction
     icon:
       sprite: Objects/Devices/nuke.rsi
       state: nuclearbomb_base

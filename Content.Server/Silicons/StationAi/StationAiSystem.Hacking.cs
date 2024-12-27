@@ -30,6 +30,7 @@ public sealed partial class StationAiSystem
 
     private void OnHack(EntityUid uid, StationAiHackableComponent component, EntityUid user)
     {
+        // TODO: add a delay to hacking
         if (!component.Enabled || !component.IsPowered || component.Hacked)
             return;
 
