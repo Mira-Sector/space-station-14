@@ -27,7 +27,7 @@ public abstract partial class SharedStationAiSystem
         if (!HasComp<StationAiCanShuntComponent>(args.User))
             return;
 
-        _doafterSystem.TryStartDoAfter(new DoAfterArgs(EntityManager, args.User, component.Delay, new StationAiShuntingEvent(), uid, uid));
+        _doafterSystem.TryStartDoAfter(new DoAfterArgs(EntityManager, args.User, component.Delay, new StationAiShuntingEvent(), uid, uid, progressBarOverride: uid));
     }
 
     private void OnShunt(EntityUid uid, StationAiShuntingComponent component, StationAiShuntingEvent args)

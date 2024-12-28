@@ -256,7 +256,7 @@ public abstract partial class SharedDoAfterSystem : EntitySystem
         }
 
         comp.DoAfters.Add(doAfter.Index, doAfter);
-        EnsureComp<ActiveDoAfterComponent>(args.User);
+        EnsureComp<ActiveDoAfterComponent>(args.User).ProgressBarOverride = args.ProgressBarOverride;
         Dirty(args.User, comp);
         args.Event.DoAfter = doAfter;
         return true;

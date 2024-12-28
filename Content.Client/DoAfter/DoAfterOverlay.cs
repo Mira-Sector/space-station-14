@@ -68,9 +68,16 @@ public sealed class DoAfterOverlay : Overlay
         var localEnt = _player.LocalSession?.AttachedEntity;
 
         var metaQuery = _entManager.GetEntityQuery<MetaDataComponent>();
-        var enumerator = _entManager.AllEntityQueryEnumerator<ActiveDoAfterComponent, DoAfterComponent, SpriteComponent, TransformComponent>();
-        while (enumerator.MoveNext(out var uid, out _, out var comp, out var sprite, out var xform))
+        var enumerator = _entManager.AllEntityQueryEnumerator<ActiveDoAfterComponent, DoAfterComponent>();
+        while (enumerator.MoveNext(out var uid, out var activeDoAfter, out var comp))
         {
+            var progressBarEntity = activeDoAfter.ProgressBarOverride ?? uid;
+
+            if (!_entManager.TryGetComponent<SpriteComponent>(progressBarEntity, out var sprite))
+                continue;
+
+            var xform = xformQuery.GetComponent(progressBarEntity);
+
             if (xform.MapID != args.MapId)
                 continue;
 
