@@ -1,6 +1,5 @@
 ﻿using Content.Shared.DoAfter;
 using Robust.Shared.Containers;
-using Component = System.ComponentModel.Component;
 
 namespace Content.Shared.Silicons.StationAi;
 
