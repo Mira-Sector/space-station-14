@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using Content.Shared.DoAfter;
 using Content.Client.UserInterface.Systems;
@@ -5,6 +6,8 @@ using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Shared.Enums;
 using Robust.Client.Player;
+using Robust.Shared.Map;
+using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
@@ -71,21 +74,10 @@ public sealed class DoAfterOverlay : Overlay
         var enumerator = _entManager.AllEntityQueryEnumerator<ActiveDoAfterComponent, DoAfterComponent>();
         while (enumerator.MoveNext(out var uid, out var activeDoAfter, out var comp))
         {
-            var progressBarEntity = activeDoAfter.ProgressBarOverride ?? uid;
-
-            if (!_entManager.TryGetComponent<SpriteComponent>(progressBarEntity, out var sprite))
-                continue;
-
-            var xform = xformQuery.GetComponent(progressBarEntity);
-
-            if (xform.MapID != args.MapId)
-                continue;
-
             if (comp.DoAfters.Count == 0)
                 continue;
 
-            var worldPosition = _transform.GetWorldPosition(xform, xformQuery);
-            if (!bounds.Contains(worldPosition))
+            if (!CheckDoAfter(uid, xformQuery, args.MapId, bounds, out var sprite, out var xform, out var worldPosition))
                 continue;
 
             // shades the do-after bar if the do-after bar belongs to other players
@@ -101,7 +93,7 @@ public sealed class DoAfterOverlay : Overlay
                 ? curTime - _meta.GetPauseTime(uid, meta)
                 : curTime;
 
-            var worldMatrix = Matrix3Helpers.CreateTranslation(worldPosition);
+            var worldMatrix = Matrix3Helpers.CreateTranslation(worldPosition.Value);
             var scaledWorld = Matrix3x2.Multiply(scaleMatrix, worldMatrix);
             var matty = Matrix3x2.Multiply(rotationMatrix, scaledWorld);
             handle.SetTransform(matty);
@@ -112,6 +104,15 @@ public sealed class DoAfterOverlay : Overlay
 
             foreach (var doAfter in comp.DoAfters.Values)
             {
+                var doAfterSprite = sprite;
+                var doAfterXform = xform;
+
+                if (doAfter.Args.ProgressBarOverride is {} progressBarOverride)
+                {
+                    if (!CheckDoAfter(progressBarOverride, xformQuery, args.MapId, bounds, out doAfterSprite, out doAfterXform, out _))
+                        continue;
+                }
+
                 // Hide some DoAfters from other players for stealthy actions (ie: thieving gloves)
                 var alpha = 1f;
                 if (doAfter.Args.Hidden || isInContainer)
@@ -164,6 +165,36 @@ public sealed class DoAfterOverlay : Overlay
 
         handle.UseShader(null);
         handle.SetTransform(Matrix3x2.Identity);
+    }
+
+    internal bool CheckDoAfter(EntityUid uid,
+        EntityQuery<TransformComponent> xformQuery,
+        MapId mapId,
+        Box2 bounds,
+        [NotNullWhen(true)] out SpriteComponent? sprite,
+        [NotNullWhen(true)] out TransformComponent? xform,
+        [NotNullWhen(true)] out Vector2? worldPosition)
+    {
+        xform = null;
+        worldPosition = null;
+
+        if (!_entManager.TryGetComponent<SpriteComponent>(uid, out sprite))
+            return false;
+
+        xform = xformQuery.GetComponent(uid);
+
+        if (xform.MapID != mapId)
+            return false;
+
+        worldPosition = _transform.GetWorldPosition(xform, xformQuery);
+
+        if (worldPosition == null)
+            return false;
+
+        if (!bounds.Contains(worldPosition.Value))
+            return false;
+
+        return true;
     }
 
     public Color GetProgressColor(float progress, float alpha = 1f)

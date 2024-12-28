@@ -1,5 +1,3 @@
-﻿using Robust.Shared.GameStates;
-
 namespace Content.Shared.DoAfter;
 
 /// <summary>
@@ -8,6 +6,4 @@ namespace Content.Shared.DoAfter;
 [RegisterComponent]
 public sealed partial class ActiveDoAfterComponent : Component
 {
-    [ViewVariables]
-    public EntityUid? ProgressBarOverride;
 }
