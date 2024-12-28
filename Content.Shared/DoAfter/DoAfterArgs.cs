@@ -46,8 +46,11 @@ public sealed partial class DoAfterArgs
     [DataField]
     public bool Hidden;
 
+    [NonSerialized]
     [DataField]
     public EntityUid? ProgressBarOverride;
+
+    public NetEntity? NetProgressBarOverride;
 
     #region Event options
     /// <summary>
@@ -216,6 +219,7 @@ public sealed partial class DoAfterArgs
         NetUser = entManager.GetNetEntity(User);
         NetTarget = entManager.GetNetEntity(Target);
         NetUsed = entManager.GetNetEntity(Used);
+        NetProgressBarOverride = entManager.GetNetEntity(ProgressBarOverride);
     }
 
     private DoAfterArgs()
@@ -276,6 +280,7 @@ public sealed partial class DoAfterArgs
         NetUser = other.NetUser;
         NetTarget = other.NetTarget;
         NetUsed = other.NetUsed;
+        NetProgressBarOverride = other.NetProgressBarOverride;
         NetEventTarget = other.NetEventTarget;
 
         Event = other.Event.Clone();
