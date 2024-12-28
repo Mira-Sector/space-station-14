@@ -93,31 +93,36 @@ public sealed class DoAfterOverlay : Overlay
                 ? curTime - _meta.GetPauseTime(uid, meta)
                 : curTime;
 
-            var worldMatrix = Matrix3Helpers.CreateTranslation(worldPosition.Value);
-            var scaledWorld = Matrix3x2.Multiply(scaleMatrix, worldMatrix);
-            var matty = Matrix3x2.Multiply(rotationMatrix, scaledWorld);
-            handle.SetTransform(matty);
-
-            var offset = 0f;
-
-            var isInContainer = _container.IsEntityOrParentInContainer(uid, meta, xform);
+            var matty = GetTransform(worldPosition.Value, scaleMatrix, rotationMatrix);
+            Dictionary<EntityUid, float> offsets = new();
 
             foreach (var doAfter in comp.DoAfters.Values)
             {
                 var doAfterSprite = sprite;
                 var doAfterXform = xform;
+                var doAfterMatty = matty;
 
                 if (doAfter.Args.ProgressBarOverride is {} progressBarOverride)
                 {
-                    if (!CheckDoAfter(progressBarOverride, xformQuery, args.MapId, bounds, out doAfterSprite, out doAfterXform, out _))
+                    if (!CheckDoAfter(progressBarOverride, xformQuery, args.MapId, bounds, out doAfterSprite, out doAfterXform, out var doAfterWorldPostion))
                         continue;
+
+                    doAfterMatty = GetTransform(doAfterWorldPostion.Value, scaleMatrix, rotationMatrix);
                 }
+
+                var targetUid = doAfter.Args.ProgressBarOverride ?? uid;
+                var isInContainer = _container.IsEntityOrParentInContainer(targetUid, xform: doAfterXform);
+
+                if (!offsets.ContainsKey(targetUid))
+                    offsets.Add(targetUid, 0f);
+
+                handle.SetTransform(doAfterMatty);
 
                 // Hide some DoAfters from other players for stealthy actions (ie: thieving gloves)
                 var alpha = 1f;
                 if (doAfter.Args.Hidden || isInContainer)
                 {
-                    if (uid != localEnt)
+                    if (targetUid != localEnt)
                         continue;
 
                     // Hints to the local player that this do-after is not visible to other players.
@@ -126,12 +131,12 @@ public sealed class DoAfterOverlay : Overlay
 
                 // Use the sprite itself if we know its bounds. This means short or tall sprites don't get overlapped
                 // by the bar.
-                float yOffset = sprite.Bounds.Height / 2f + 0.05f;
+                float yOffset = doAfterSprite.Bounds.Height / 2f + 0.05f;
 
                 // Position above the entity (we've already applied the matrix transform to the entity itself)
                 // Offset by the texture size for every do_after we have.
                 var position = new Vector2(-_barTexture.Width / 2f / EyeManager.PixelsPerMeter,
-                    yOffset / scale + offset / EyeManager.PixelsPerMeter * scale);
+                    yOffset / scale + offsets[targetUid] / EyeManager.PixelsPerMeter * scale);
 
                 // Draw the underlying bar texture
                 handle.DrawTexture(_barTexture, position);
@@ -159,7 +164,7 @@ public sealed class DoAfterOverlay : Overlay
                 var box = new Box2(new Vector2(StartX, 3f) / EyeManager.PixelsPerMeter, new Vector2(xProgress, 4f) / EyeManager.PixelsPerMeter);
                 box = box.Translated(position);
                 handle.DrawRect(box, color);
-                offset += _barTexture.Height / scale;
+                offsets[targetUid] += _barTexture.Height / scale;
             }
         }
 
@@ -195,6 +200,13 @@ public sealed class DoAfterOverlay : Overlay
             return false;
 
         return true;
+    }
+
+    internal Matrix3x2 GetTransform(Vector2 worldPosition, Matrix3x2 scaleMatrix, Matrix3x2 rotationMatrix)
+    {
+        var worldMatrix = Matrix3Helpers.CreateTranslation(worldPosition);
+        var scaledWorld = Matrix3x2.Multiply(scaleMatrix, worldMatrix);
+        return Matrix3x2.Multiply(rotationMatrix, scaledWorld);
     }
 
     public Color GetProgressColor(float progress, float alpha = 1f)
