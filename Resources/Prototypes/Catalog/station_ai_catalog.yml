@@ -14,6 +14,19 @@
   description: ai-power-lockdown-desc
   productAction: ActionStationAiLockdown
   cost:
-    Power: 10
+    Power: 30
   categories:
   - AiUtility
+
+- type: listing
+  id: AiFirelock
+  name: ai-power-firelock-name
+  description: ai-power-firelock-desc
+  productAction: ActionStationAiFirelock
+  cost:
+    Power: 50
+  categories:
+  - AiUtility
+  conditions:
+  - !type:ListingLimitedStockCondition
+    stock: 1

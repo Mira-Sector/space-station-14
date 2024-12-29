@@ -102,3 +102,16 @@
       state: bolt_door
     event: !type:StationAiLockdownEvent
       resetDelay: 90
+
+- type: entity
+  id: ActionStationAiFirelock
+  name: Override Thermal Sensors
+  description: Disables every firelock on the station.
+  components:
+  - type: InstantAction
+    charges: 1
+    itemIconStyle: BigAction
+    icon:
+      sprite: Structures/Doors/Airlocks/Standard/firelock.rsi
+      state: closed
+    event: !type:StationAiFirelockEvent
