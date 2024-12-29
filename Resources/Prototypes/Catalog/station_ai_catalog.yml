@@ -4,6 +4,16 @@
   description: ai-power-nuke-desc
   productAction: ActionStationAiNuke
   cost:
-    Power: 2
+    Power: 130
   categories:
   - AiDestructive
+
+- type: listing
+  id: AiLockdown
+  name: ai-power-lockdown-name
+  description: ai-power-lockdown-desc
+  productAction: ActionStationAiLockdown
+  cost:
+    Power: 10
+  categories:
+  - AiUtility

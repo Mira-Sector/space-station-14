@@ -1,5 +1,4 @@
 using Content.Server.Nuke;
-using Content.Shared.Actions;
 using Content.Shared.Silicons.StationAi;
 using Content.Shared.Silicons.StationAi.Modules;
 
@@ -7,7 +6,6 @@ namespace Content.Server.Silicons.StationAi.Modules;
 
 public sealed class NukeModuleSystem : EntitySystem
 {
-    [Dependency] private readonly SharedActionsSystem _actions = default!;
     [Dependency] private readonly NukeSystem _nuke = default!;
 
     public override void Initialize()
@@ -36,9 +34,14 @@ public sealed class NukeModuleSystem : EntitySystem
             args.Handled = true;
         }
 
-        // can only arm once
-        if (args.Handled)
-            _actions.RemoveAction(args.Action);
+        // dont let them waste their 130 power
+        if (!args.Handled)
+            return;
+
+        if (args.Action.Comp.Charges > 0)
+            return;
+
+        EntityManager.DeleteEntity(args.Action);
     }
 }
 

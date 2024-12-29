@@ -723,6 +723,8 @@ public abstract partial class SharedDoorSystem : EntitySystem
     {
         var time = GameTiming.CurTime;
 
+        BoltUpdate(time);
+
         foreach (var ent in _activeDoors.ToList())
         {
             var door = ent.Comp;

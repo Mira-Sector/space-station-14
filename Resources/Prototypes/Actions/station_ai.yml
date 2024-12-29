@@ -82,8 +82,23 @@
   description: Nuke the whole station.
   components:
   - type: InstantAction
+    charges: 1
     itemIconStyle: BigAction
     icon:
       sprite: Objects/Devices/nuke.rsi
       state: nuclearbomb_base
     event: !type:StationAiNukeEvent
+
+- type: entity
+  id: ActionStationAiLockdown
+  name: Hostile Station Lockdown
+  description: Close, bolt and electrify every door on the station for 90 seconds.
+  components:
+  - type: InstantAction
+    charges: 1
+    itemIconStyle: BigAction
+    icon:
+      sprite: Interface/Actions/actions_ai.rsi
+      state: bolt_door
+    event: !type:StationAiLockdownEvent
+      resetDelay: 90
