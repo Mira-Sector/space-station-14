@@ -136,3 +136,17 @@
       beepInterval: 1
       beepSound:
         collection: MetalSlam
+
+- type: entity
+  id: ActionStationAiBlackout
+  name: Blackout
+  description: Overload the stations APCs for a 30% chance to blow up the bulbs.
+  components:
+  - type: InstantAction
+    charges: 3
+    itemIconStyle: BigAction
+    icon:
+      sprite: Structures/Power/apc.rsi
+      state: broken
+    event: !type:StationAiBlackoutEvent
+      chance: 0.3

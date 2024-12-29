@@ -40,3 +40,13 @@
     Power: 20
   categories:
   - AiDestructive
+
+- type: listing
+  id: AiBlackout
+  name: ai-power-blackout-name
+  description: ai-power-blackout-desc
+  productAction: ActionStationAiBlackout
+  cost:
+    Power: 15
+  categories:
+  - AiUtility
