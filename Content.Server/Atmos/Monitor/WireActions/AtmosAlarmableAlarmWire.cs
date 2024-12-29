@@ -41,13 +41,17 @@ public sealed partial class AtmosMonitorDeviceNetWire : ComponentWireAction<Atmo
 
     public override bool Cut(EntityUid user, Wire wire, AtmosAlarmableComponent comp)
     {
-        comp.IgnoreAlarms = true;
+        if (!comp.IngoreWirePanel)
+            comp.IgnoreAlarms = true;
+
         return true;
     }
 
     public override bool Mend(EntityUid user, Wire wire, AtmosAlarmableComponent comp)
     {
-        comp.IgnoreAlarms = false;
+        if (!comp.IngoreWirePanel)
+            comp.IgnoreAlarms = false;
+
         return true;
     }
 

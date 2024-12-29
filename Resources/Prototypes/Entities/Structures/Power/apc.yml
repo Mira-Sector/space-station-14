@@ -90,6 +90,8 @@
     interfaces:
       enum.ApcUiKey.Key:
         type: ApcBoundUserInterface
+      enum.AiUi.Key:
+        type: StationAiBoundUserInterface
   - type: ActivatableUI
     inHandsOnly: false
     singleUser: true
@@ -141,6 +143,11 @@
     requirePower: true
     mediumVoltageNode: input
     lowVoltageNode: output
+  - type: StationAiHackable
+    radialSprite:
+      sprite: Interface/Actions/actions_ai.rsi
+      state: hack
+    radialTooltip: ai-hack
   - type: LightningTarget
     priority: 1
   - type: StaticPrice

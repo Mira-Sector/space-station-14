@@ -24,3 +24,7 @@ store-caregory-spellbook-utility = Utility Spells
 store-caregory-spellbook-equipment = Wizard Equipment
 store-caregory-spellbook-events = Event Spells
 
+# AI
+store-category-ai-destructive = Destructive Modules
+store-category-ai-utility = Utility Modules
+store-category-ai-upgrade = Upgrade Modules

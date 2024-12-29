@@ -35,6 +35,9 @@ public sealed partial class AtmosAlarmableComponent : Component
 
     [ViewVariables] public bool IgnoreAlarms { get; set; } = false;
 
+    [DataField]
+    public bool IngoreWirePanel { get; set; } = false;
+
     [DataField("alarmSound")]
     public SoundSpecifier AlarmSound { get; set; } = new SoundPathSpecifier("/Audio/Machines/alarm.ogg");
 
