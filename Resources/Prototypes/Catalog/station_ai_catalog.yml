@@ -30,3 +30,13 @@
   conditions:
   - !type:ListingLimitedStockCondition
     stock: 1
+
+- type: listing
+  id: AiOverload
+  name: ai-power-overload-name
+  description: ai-power-overload-desc
+  productAction: ActionStationAiOverload
+  cost:
+    Power: 20
+  categories:
+  - AiDestructive

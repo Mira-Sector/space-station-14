@@ -6,3 +6,6 @@ ai-power-lockdown-desc = Close, bolt and electrify every door on the station for
 
 ai-power-firelock-name = Override Thermal Sensors
 ai-power-firelock-desc = Disables every firelock on the station.
+
+ai-power-overload-name = Overload Machine
+ai-power-overload-desc = Overload a machine causing it to explode.
