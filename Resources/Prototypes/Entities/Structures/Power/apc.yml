@@ -90,6 +90,8 @@
     interfaces:
       enum.ApcUiKey.Key:
         type: ApcBoundUserInterface
+      enum.AiUi.Key:
+        type: StationAiBoundUserInterface
   - type: ActivatableUI
     inHandsOnly: false
     singleUser: true
@@ -134,6 +136,11 @@
         sound:
           collection: MetalGlassBreak
   - type: StationInfiniteBatteryTarget
+  - type: StationAiShunting
+    icon: 
+      sprite: Interface/Actions/actions_ai.rsi
+      state: shunting
+    tooltip: ai-shunt
   - type: Electrified
     onHandInteract: false
     onInteractUsing: false
