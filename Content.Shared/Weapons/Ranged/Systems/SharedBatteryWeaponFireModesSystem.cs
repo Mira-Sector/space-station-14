@@ -9,16 +9,15 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Weapons.Ranged.Systems;
 
-public sealed class BatteryWeaponFireModesSystem : EntitySystem
+public abstract class SharedBatteryWeaponFireModesSystem : EntitySystem
 {
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+    [Dependency] protected readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
 
     public override void Initialize()
     {
-        base.Initialize();
-
         SubscribeLocalEvent<BatteryWeaponFireModesComponent, ActivateInWorldEvent>(OnInteractHandEvent);
+        SubscribeLocalEvent<BatteryWeaponFireModesComponent, StationAiFireModeChangeEvent>(OnAiInteract);
         SubscribeLocalEvent<BatteryWeaponFireModesComponent, GetVerbsEvent<Verb>>(OnGetVerb);
         SubscribeLocalEvent<BatteryWeaponFireModesComponent, ExaminedEvent>(OnExamined);
     }
@@ -36,7 +35,7 @@ public sealed class BatteryWeaponFireModesSystem : EntitySystem
         args.PushMarkup(Loc.GetString("gun-set-fire-mode", ("mode", proto.Name)));
     }
 
-    private BatteryWeaponFireMode GetMode(BatteryWeaponFireModesComponent component)
+    protected BatteryWeaponFireMode GetMode(BatteryWeaponFireModesComponent component)
     {
         return component.FireModes[component.CurrentFireMode];
     }
@@ -84,12 +83,23 @@ public sealed class BatteryWeaponFireModesSystem : EntitySystem
         CycleFireMode(uid, component, args.User);
     }
 
+    private void OnAiInteract(EntityUid uid, BatteryWeaponFireModesComponent component, StationAiFireModeChangeEvent args)
+    {
+        SetFireMode(uid, component, args.FireMode);
+    }
+
+    protected (BatteryWeaponFireMode, int) GetNextFireMode(BatteryWeaponFireModesComponent component)
+    {
+        var index = (component.CurrentFireMode + 1) % component.FireModes.Count;
+        return (component.FireModes[index], index);
+    }
+
     private void CycleFireMode(EntityUid uid, BatteryWeaponFireModesComponent component, EntityUid user)
     {
         if (component.FireModes.Count < 2)
             return;
 
-        var index = (component.CurrentFireMode + 1) % component.FireModes.Count;
+        var (_, index) = GetNextFireMode(component);
         SetFireMode(uid, component, index, user);
     }
 

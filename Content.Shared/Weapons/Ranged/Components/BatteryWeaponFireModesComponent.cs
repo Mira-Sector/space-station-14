@@ -1,7 +1,9 @@
+using Content.Shared.Silicons.StationAi;
 using Content.Shared.Weapons.Ranged.Systems;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
+using Robust.Shared.Utility;
 
 namespace Content.Shared.Weapons.Ranged.Components;
 
@@ -9,7 +11,7 @@ namespace Content.Shared.Weapons.Ranged.Components;
 /// Allows battery weapons to fire different types of projectiles
 /// </summary>
 [RegisterComponent, NetworkedComponent]
-[Access(typeof(BatteryWeaponFireModesSystem))]
+[Access(typeof(SharedBatteryWeaponFireModesSystem))]
 [AutoGenerateComponentState]
 public sealed partial class BatteryWeaponFireModesComponent : Component
 {
@@ -37,9 +39,18 @@ public sealed partial class BatteryWeaponFireMode
     [DataField("proto", required: true)]
     public EntProtoId Prototype = default!;
 
+    [DataField]
+    public SpriteSpecifier? Icon;
+
     /// <summary>
     /// The battery cost to fire the projectile associated with this firing mode
     /// </summary>
     [DataField]
     public float FireCost = 100;
+}
+
+[Serializable, NetSerializable]
+public sealed class StationAiFireModeChangeEvent : BaseStationAiAction
+{
+    public int FireMode;
 }
