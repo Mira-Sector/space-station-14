@@ -16,6 +16,9 @@ public sealed class BatteryWeaponFireModesSystem : SharedBatteryWeaponFireModesS
 
     private void OnGetRadial(EntityUid uid, BatteryWeaponFireModesComponent component, ref GetStationAiRadialEvent args)
     {
+        if (!component.AiInteract)
+            return;
+
         if (component.FireModes.Count < 2)
             return;
 

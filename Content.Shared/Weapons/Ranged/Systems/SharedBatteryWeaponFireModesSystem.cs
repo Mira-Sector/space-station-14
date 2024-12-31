@@ -85,6 +85,9 @@ public abstract class SharedBatteryWeaponFireModesSystem : EntitySystem
 
     private void OnAiInteract(EntityUid uid, BatteryWeaponFireModesComponent component, StationAiFireModeChangeEvent args)
     {
+        if (!component.AiInteract)
+            return;
+
         SetFireMode(uid, component, args.FireMode);
     }
 

@@ -28,6 +28,10 @@ public sealed partial class BatteryWeaponFireModesComponent : Component
     [DataField]
     [AutoNetworkedField]
     public int CurrentFireMode;
+
+    [DataField]
+    [AutoNetworkedField]
+    public bool AiInteract = false;
 }
 
 [DataDefinition, Serializable, NetSerializable]
