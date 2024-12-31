@@ -294,7 +294,9 @@
     modes:
     - factions:
         - NanoTrasen
-      icon: Inferface/Nano/ntlogo.svg.png
+      icon:
+        sprite: Interface/Misc/factions.rsi
+        state: nanotrasen
       tooltip: ai-turret-faction-nt
     - factions: null
       icon:

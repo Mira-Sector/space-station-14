@@ -74,6 +74,7 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         InitializeAirlock();
         InitializeHeld();
         InitializeLight();
+        InitializeTurret();
 
         SubscribeLocalEvent<StationAiWhitelistComponent, BoundUserInterfaceCheckRangeEvent>(OnAiBuiCheck);
 

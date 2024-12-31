@@ -16,13 +16,15 @@ public sealed partial class StationAiSystem
 
         var (nextMode, nextIndex) = GetNextMode(component);
 
+        var tooltip = nextMode.Factions != null
+            ? Loc.GetString("ai-turret-faction-change", ("faction", Loc.GetString(nextMode.Tooltip)))
+            : Loc.GetString(nextMode.Tooltip);
+
         args.Actions.Add(
             new StationAiRadial
             {
                 Sprite = nextMode.Icon,
-                Tooltip = nextMode.Factions == null
-                    ? Loc.GetString("ai-turret-faction-change", ("faction", Loc.GetString(nextMode.ToolTip)))
-                    : Loc.GetString(nextMode.ToolTip),
+                Tooltip = tooltip,
                 Event = new StationAiTurretEvent()
                 {
                     Mode = nextIndex,

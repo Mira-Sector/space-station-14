@@ -26,7 +26,7 @@ public sealed partial class StationAiTurret
     public SpriteSpecifier? Icon;
 
     [DataField]
-    public LocId ToolTip;
+    public LocId Tooltip;
 
     [DataField]
     public HashSet<ProtoId<NpcFactionPrototype>>? Factions;
