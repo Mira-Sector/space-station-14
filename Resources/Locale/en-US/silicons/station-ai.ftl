@@ -20,3 +20,8 @@ electrify-door-off = Disable overcharge
 toggle-light = Toggle light
 
 ai-device-not-responding = Device is not responding
+
+ai-turret-faction-change = Fire at {$faction}
+ai-turret-no-faction = Disable
+
+ai-turret-faction-nt = Crew

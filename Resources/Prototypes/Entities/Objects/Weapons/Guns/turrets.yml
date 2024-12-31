@@ -98,10 +98,6 @@
       availableModes:
         - FullAuto
       soundGunshot: /Audio/Weapons/Guns/Gunshots/gun_sentry.ogg
-    # TODO: Power ammo provider?
-    - type: BallisticAmmoProvider
-      proto: CartridgeCaselessRifle
-      capacity: 500
     - type: HTN
       rootTask:
         task: TurretCompound
@@ -120,7 +116,18 @@
       context: "human"
 
 - type: entity
-  parent: [BaseWeaponTurret, BaseSyndicateContraband]
+  id: BaseWeaponTurretBullet
+  name: ballistic turret
+  parent: BaseWeaponTurret
+  abstract: true
+  components:
+    # TODO: Power ammo provider?
+    - type: BallisticAmmoProvider
+      proto: CartridgeCaselessRifle
+      capacity: 500
+
+- type: entity
+  parent: [BaseWeaponTurretBullet, BaseSyndicateContraband]
   id: WeaponTurretSyndicate
   suffix: Syndicate
   components:
@@ -129,7 +136,7 @@
         - Syndicate
 
 - type: entity
-  parent: BaseWeaponTurret
+  parent: BaseWeaponTurretBullet
   name: disposable ballistic turret
   id: WeaponTurretSyndicateDisposable
   suffix: Syndicate, Disposable
@@ -178,7 +185,7 @@
       canCreateVacuum: false
 
 - type: entity
-  parent: BaseWeaponTurret
+  parent: BaseWeaponTurretBullet
   id: WeaponTurretNanoTrasen
   suffix: NanoTrasen
   components:
@@ -187,7 +194,7 @@
     - NanoTrasen
 
 - type: entity
-  parent: BaseWeaponTurret
+  parent: BaseWeaponTurretBullet
   id: WeaponTurretHostile
   suffix: Hostile
   components:
@@ -198,7 +205,7 @@
 - type: entity
   name: xeno turret
   description: Shoots 9mm acid projectiles.
-  parent: BaseWeaponTurret
+  parent: BaseWeaponTurretBullet
   id: WeaponTurretXeno
   suffix: Xeno
   components:
@@ -248,3 +255,49 @@
       interactFailureString: petting-failure-generic
       interactSuccessSound:
         path: /Audio/Animals/snake_hiss.ogg
+
+- type: entity
+  name: AI turret
+  description: The stations AIs' last defence.
+  parent: [ BaseWeaponTurret, BaseMachinePowered]
+  id: WeaponTurretAI
+  components:
+  - type: NpcFactionMember
+    factions:
+    - NanoTrasen
+  - type: Battery
+    maxCharge: 10000
+    startingCharge: 10000
+  - type: Appearance
+  - type: StationAiWhitelist
+  - type: UserInterface
+    interfaces:
+      enum.AiUi.Key:
+        type: StationAiBoundUserInterface
+  - type: ProjectileBatteryAmmoProvider
+    proto: BulletLaser
+    fireCost: 100
+  - type: BatteryWeaponFireModes
+    aiInteract: true
+    fireModes:
+    - proto: BulletLaser
+      fireCost: 100
+      icon:
+        sprite: Objects/Weapons/Guns/Projectiles/projectiles_tg.rsi
+        state: heavylaser
+    - proto: BulletDisabler
+      fireCost: 100
+      icon:
+        sprite: Objects/Weapons/Guns/Projectiles/projectiles_tg.rsi
+        state: omnilaser
+  - type: StationAiTurret
+    modes:
+    - factions:
+        - NanoTrasen
+      icon: Inferface/Nano/ntlogo.svg.png
+      tooltip: ai-turret-faction-nt
+    - factions: null
+      icon:
+        sprite: Interface/Misc/crosshair_pointers.rsi
+        state: gun_bolt_sight
+      tooltip: ai-turret-no-faction
