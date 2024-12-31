@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from https://github.com/tgstation/tgstation/commit/3c20ecc5ae7580f731930b881bd1b1dfa46b5824",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "standard_off",
+      "directions": 8
+    },
+    {
+      "name": "popup",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "turretCover"
+    },
+    {
+      "name": "openTurretCover"
+    },
+    {
+      "name": "popdown",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "standard_broken",
+      "directions": 8
+    },
+    {
+      "name": "standard_stun",
+      "directions": 8
+    },
+    {
+      "name": "standard_lethal",
+      "directions": 8
+    },
+    {
+      "name": "turret_frame"
+    },
+    {
+      "name": "turret_frame2"
+    }
+  ]
+}
