@@ -34,10 +34,22 @@ public abstract partial class SharedStationAiSystem
         if (component.Modes.Count < 2)
             return;
 
-        var newMode = component.Modes[args.Mode];
+        SetMode(uid, component, args.Mode);
+    }
+
+    public void SetMode(EntityUid uid, StationAiTurretComponent component, int mode)
+    {
+        if (component.Modes.Count < mode)
+            return;
+
+        component.CurrentMode = mode;
+        var newMode = component.Modes[mode];
 
         if (component.OldFactions == null && TryComp<NpcFactionMemberComponent>(uid, out var npcFaction))
+        {
             component.OldFactions = npcFaction.Factions;
+            Dirty(uid, component);
+        }
 
         EnsureComp<NpcFactionMemberComponent>(uid, out npcFaction);
         _npcFaction.ClearFactions((uid, npcFaction));
