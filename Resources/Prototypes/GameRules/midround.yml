@@ -47,9 +47,8 @@
       briefing:
         text: obsessed-role-greeting
         color: LightSalmon
-      mindComponents:
-      - type: ObsessedRole
-        prototype: Obsessed
+      mindRoles:
+      - MindRoleObsessed
   - type: AntagObjectives
     objectives:
     - KillObsessionObjective
