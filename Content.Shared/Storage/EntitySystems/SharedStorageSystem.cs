@@ -657,6 +657,9 @@ public abstract class SharedStorageSystem : EntitySystem
             $"{ToPrettyString(player):player} is removing {ToPrettyString(item):item} from {ToPrettyString(storage):storage}");
         TransformSystem.DropNextTo(item.Owner, player.Owner);
         Audio.PlayPredicted(storage.Comp.StorageRemoveSound, storage, player, _audioParams);
+
+        var ev = new StorageRemovedItemEvent(player, storage);
+        RaiseLocalEvent(item, ref ev);
     }
 
     private void OnInsertItemIntoLocation(StorageInsertItemIntoLocationEvent msg, EntitySessionEventArgs args)

@@ -259,6 +259,9 @@ namespace Content.Shared.Storage
     [ByRefEvent]
     public record struct StorageInteractUsingAttemptEvent(bool Cancelled = false);
 
+    [ByRefEvent]
+    public record struct StorageRemovedItemEvent(EntityUid User, EntityUid Storage);
+
     [NetSerializable]
     [Serializable]
     public enum StorageVisuals : byte
