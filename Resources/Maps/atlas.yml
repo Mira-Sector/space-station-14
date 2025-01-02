@@ -5713,8 +5713,6 @@ entities:
     - type: Transform
       pos: 14.5,20.5
       parent: 30
-    - type: Apc
-      hasAccess: True
   - uid: 893
     components:
     - type: MetaData
@@ -5785,8 +5783,6 @@ entities:
     - type: Transform
       pos: 13.5,0.5
       parent: 30
-    - type: Apc
-      hasAccess: True
   - uid: 3101
     components:
     - type: MetaData
@@ -5910,8 +5906,6 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 4.5,14.5
       parent: 30
-    - type: Apc
-      hasAccess: True
 - proto: APCHyperCapacity
   entities:
   - uid: 8318
@@ -13153,15 +13147,6 @@ entities:
     - type: Transform
       pos: 25.5,-9.5
       parent: 30
-- proto: CableApcStack
-  entities:
-  - uid: 7222
-    components:
-    - type: Transform
-      pos: -33.610588,0.7706771
-      parent: 30
-    - type: Physics
-      canCollide: False
 - proto: CableHV
   entities:
   - uid: 239
@@ -15771,13 +15756,6 @@ entities:
       parent: 30
 - proto: CableHVStack
   entities:
-  - uid: 7219
-    components:
-    - type: Transform
-      pos: -33.391838,0.4581771
-      parent: 30
-    - type: Physics
-      canCollide: False
   - uid: 8393
     components:
     - type: Transform
@@ -18285,15 +18263,6 @@ entities:
     - type: Transform
       pos: 28.5,4.5
       parent: 30
-- proto: CableMVStack
-  entities:
-  - uid: 7221
-    components:
-    - type: Transform
-      pos: -33.516838,0.6300521
-      parent: 30
-    - type: Physics
-      canCollide: False
 - proto: CableTerminal
   entities:
   - uid: 4427
@@ -21523,6 +21492,14 @@ entities:
       linkedPorts:
         5449:
         - ArtifactAnalyzerSender: ArtifactAnalyzerReceiver
+- proto: ComputerAtmosMonitoring
+  entities:
+  - uid: 6532
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: -33.5,4.5
+      parent: 30
 - proto: computerBodyScanner
   entities:
   - uid: 2613
@@ -21716,11 +21693,11 @@ entities:
       rot: -1.5707963267948966 rad
       pos: -9.5,24.5
       parent: 30
-  - uid: 7015
+  - uid: 7219
     components:
     - type: Transform
       rot: 1.5707963267948966 rad
-      pos: -33.5,2.5
+      pos: -33.5,0.5
       parent: 30
 - proto: ComputerStationRecords
   entities:
@@ -25339,10 +25316,10 @@ entities:
       parent: 30
     - type: FaxMachine
       name: Bar
-  - uid: 6532
+  - uid: 7216
     components:
     - type: Transform
-      pos: -33.5,4.5
+      pos: -33.5,2.5
       parent: 30
     - type: FaxMachine
       name: Engineering
@@ -26401,30 +26378,25 @@ entities:
     - type: Transform
       pos: 26.5,-14.5
       parent: 30
-- proto: FloraRockSolid01
-  entities:
-  - uid: 8169
-    components:
-    - type: Transform
-      pos: -54.618378,10.424448
-      parent: 30
-- proto: FloraRockSolid02
+- proto: FloraRockSolid
   entities:
   - uid: 8019
     components:
     - type: Transform
       pos: -54.47632,13.7491455
       parent: 30
-- proto: FloraTree03
-  entities:
-  - uid: 4048
+  - uid: 8169
     components:
     - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -3.3971837,3.2867959
+      pos: -54.618378,10.424448
       parent: 30
-- proto: FloraTree04
+- proto: FloraTree
   entities:
+  - uid: 255
+    components:
+    - type: Transform
+      pos: -10.411624,2.3174798
+      parent: 30
   - uid: 906
     components:
     - type: Transform
@@ -26435,14 +26407,13 @@ entities:
     - type: Transform
       pos: 7.499776,2.590732
       parent: 30
-- proto: FloraTree05
-  entities:
-  - uid: 255
+  - uid: 4048
     components:
     - type: Transform
-      pos: -10.411624,2.3174798
+      rot: 1.5707963267948966 rad
+      pos: -3.3971837,3.2867959
       parent: 30
-- proto: FloraTreeLarge06
+- proto: FloraTreeLarge
   entities:
   - uid: 3966
     components:
@@ -27886,6 +27857,25 @@ entities:
       parent: 30
     - type: AtmosPipeColor
       color: '#0055CCFF'
+- proto: GasPipeSensorDistribution
+  entities:
+  - uid: 7015
+    components:
+    - type: Transform
+      pos: -39.5,1.5
+      parent: 30
+    - type: AtmosPipeColor
+      color: '#0055CCFF'
+- proto: GasPipeSensorWaste
+  entities:
+  - uid: 6716
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -39.5,-0.5
+      parent: 30
+    - type: AtmosPipeColor
+      color: '#990000FF'
 - proto: GasPipeStraight
   entities:
   - uid: 176
@@ -33049,14 +33039,6 @@ entities:
       parent: 30
     - type: AtmosPipeColor
       color: '#947507FF'
-  - uid: 6214
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -39.5,-0.5
-      parent: 30
-    - type: AtmosPipeColor
-      color: '#990000FF'
   - uid: 6217
     components:
     - type: Transform
@@ -33327,14 +33309,6 @@ entities:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: -32.5,6.5
-      parent: 30
-    - type: AtmosPipeColor
-      color: '#0055CCFF'
-  - uid: 6716
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -39.5,1.5
       parent: 30
     - type: AtmosPipeColor
       color: '#0055CCFF'
@@ -40473,6 +40447,321 @@ entities:
     components:
     - type: Transform
       pos: -48.5,7.5
+      parent: 30
+- proto: HolopadCargoBayLongRange
+  entities:
+  - uid: 8860
+    components:
+    - type: Transform
+      pos: -20.5,14.5
+      parent: 30
+- proto: HolopadCargoFront
+  entities:
+  - uid: 8861
+    components:
+    - type: Transform
+      pos: -31.5,15.5
+      parent: 30
+- proto: HolopadCommandBridgeLongRange
+  entities:
+  - uid: 8893
+    components:
+    - type: Transform
+      pos: 39.5,2.5
+      parent: 30
+- proto: HolopadCommandCaptain
+  entities:
+  - uid: 8859
+    components:
+    - type: Transform
+      pos: 32.5,9.5
+      parent: 30
+- proto: HolopadCommandCe
+  entities:
+  - uid: 8857
+    components:
+    - type: Transform
+      pos: -39.5,9.5
+      parent: 30
+- proto: HolopadCommandCmo
+  entities:
+  - uid: 8858
+    components:
+    - type: Transform
+      pos: -0.5,-13.5
+      parent: 30
+- proto: HolopadCommandHop
+  entities:
+  - uid: 8873
+    components:
+    - type: Transform
+      pos: 26.5,-3.5
+      parent: 30
+- proto: HolopadCommandHos
+  entities:
+  - uid: 8874
+    components:
+    - type: Transform
+      pos: 2.5,21.5
+      parent: 30
+- proto: HolopadCommandQm
+  entities:
+  - uid: 8882
+    components:
+    - type: Transform
+      pos: -25.5,19.5
+      parent: 30
+- proto: HolopadCommandRd
+  entities:
+  - uid: 8884
+    components:
+    - type: Transform
+      pos: -20.5,-10.5
+      parent: 30
+- proto: HolopadCommandVault
+  entities:
+  - uid: 8889
+    components:
+    - type: Transform
+      pos: 27.5,6.5
+      parent: 30
+- proto: HolopadEngineeringAtmosMain
+  entities:
+  - uid: 8853
+    components:
+    - type: Transform
+      pos: -45.5,-1.5
+      parent: 30
+- proto: HolopadEngineeringFront
+  entities:
+  - uid: 8870
+    components:
+    - type: Transform
+      pos: -28.5,0.5
+      parent: 30
+- proto: HolopadEngineeringMain
+  entities:
+  - uid: 8871
+    components:
+    - type: Transform
+      pos: -37.5,6.5
+      parent: 30
+- proto: HolopadEngineeringTelecoms
+  entities:
+  - uid: 8891
+    components:
+    - type: Transform
+      pos: -48.5,10.5
+      parent: 30
+- proto: HolopadGeneralArrivals
+  entities:
+  - uid: 7222
+    components:
+    - type: Transform
+      pos: 18.5,25.5
+      parent: 30
+- proto: HolopadGeneralCryosleep
+  entities:
+  - uid: 8866
+    components:
+    - type: Transform
+      pos: -40.5,-21.5
+      parent: 30
+- proto: HolopadGeneralDisposals
+  entities:
+  - uid: 8868
+    components:
+    - type: Transform
+      pos: -7.5,24.5
+      parent: 30
+- proto: HolopadGeneralEvac
+  entities:
+  - uid: 8872
+    components:
+    - type: Transform
+      pos: 18.5,-19.5
+      parent: 30
+- proto: HolopadGeneralEVAStorage
+  entities:
+  - uid: 8869
+    components:
+    - type: Transform
+      pos: 23.5,7.5
+      parent: 30
+- proto: HolopadGeneralTools
+  entities:
+  - uid: 8890
+    components:
+    - type: Transform
+      pos: -12.5,13.5
+      parent: 30
+- proto: HolopadMedicalChemistry
+  entities:
+  - uid: 8864
+    components:
+    - type: Transform
+      pos: -2.5,-5.5
+      parent: 30
+- proto: HolopadMedicalFront
+  entities:
+  - uid: 8879
+    components:
+    - type: Transform
+      pos: 1.5,-2.5
+      parent: 30
+- proto: HolopadMedicalMedbay
+  entities:
+  - uid: 8880
+    components:
+    - type: Transform
+      pos: 5.5,-5.5
+      parent: 30
+- proto: HolopadScienceAnomaly
+  entities:
+  - uid: 7220
+    components:
+    - type: Transform
+      pos: -17.5,-21.5
+      parent: 30
+- proto: HolopadScienceArtifact
+  entities:
+  - uid: 8852
+    components:
+    - type: Transform
+      pos: -24.5,-20.5
+      parent: 30
+- proto: HolopadScienceFront
+  entities:
+  - uid: 8886
+    components:
+    - type: Transform
+      pos: -15.5,-7.5
+      parent: 30
+- proto: HolopadScienceRnd
+  entities:
+  - uid: 8883
+    components:
+    - type: Transform
+      pos: -15.5,-11.5
+      parent: 30
+- proto: HolopadScienceRobotics
+  entities:
+  - uid: 8885
+    components:
+    - type: Transform
+      pos: -26.5,-11.5
+      parent: 30
+- proto: HolopadSecurityArmory
+  entities:
+  - uid: 7221
+    components:
+    - type: Transform
+      pos: 8.5,21.5
+      parent: 30
+- proto: HolopadSecurityBrig
+  entities:
+  - uid: 8856
+    components:
+    - type: Transform
+      pos: 7.5,10.5
+      parent: 30
+- proto: HolopadSecurityCourtroom
+  entities:
+  - uid: 8865
+    components:
+    - type: Transform
+      pos: 0.5,11.5
+      parent: 30
+- proto: HolopadSecurityDetective
+  entities:
+  - uid: 8867
+    components:
+    - type: Transform
+      pos: -0.5,28.5
+      parent: 30
+- proto: HolopadSecurityFront
+  entities:
+  - uid: 8887
+    components:
+    - type: Transform
+      pos: 18.5,6.5
+      parent: 30
+- proto: HolopadSecurityLawyer
+  entities:
+  - uid: 8877
+    components:
+    - type: Transform
+      pos: 1.5,7.5
+      parent: 30
+- proto: HolopadSecurityLockerRoom
+  entities:
+  - uid: 8888
+    components:
+    - type: Transform
+      pos: 14.5,16.5
+      parent: 30
+- proto: HolopadSecurityPerma
+  entities:
+  - uid: 8881
+    components:
+    - type: Transform
+      pos: -0.5,16.5
+      parent: 30
+- proto: HolopadSecurityWarden
+  entities:
+  - uid: 8892
+    components:
+    - type: Transform
+      pos: 11.5,13.5
+      parent: 30
+- proto: HolopadServiceBar
+  entities:
+  - uid: 8854
+    components:
+    - type: Transform
+      pos: -24.5,2.5
+      parent: 30
+- proto: HolopadServiceBotany
+  entities:
+  - uid: 8855
+    components:
+    - type: Transform
+      pos: -10.5,1.5
+      parent: 30
+- proto: HolopadServiceChapel
+  entities:
+  - uid: 8862
+    components:
+    - type: Transform
+      pos: 22.5,14.5
+      parent: 30
+- proto: HolopadServiceClownMime
+  entities:
+  - uid: 8863
+    components:
+    - type: Transform
+      pos: -6.5,13.5
+      parent: 30
+- proto: HolopadServiceJanitor
+  entities:
+  - uid: 8875
+    components:
+    - type: Transform
+      pos: 23.5,-1.5
+      parent: 30
+- proto: HolopadServiceKitchen
+  entities:
+  - uid: 8876
+    components:
+    - type: Transform
+      pos: -15.5,2.5
+      parent: 30
+- proto: HolopadServiceLibrary
+  entities:
+  - uid: 8878
+    components:
+    - type: Transform
+      pos: -7.5,-9.5
       parent: 30
 - proto: HospitalCurtainsOpen
   entities:
@@ -49977,6 +50266,11 @@ entities:
     - type: Transform
       pos: -16.5,-3.5
       parent: 30
+  - uid: 6214
+    components:
+    - type: Transform
+      pos: -33.5,2.5
+      parent: 30
   - uid: 6643
     components:
     - type: Transform
@@ -50021,16 +50315,6 @@ entities:
     components:
     - type: Transform
       pos: -9.5,-14.5
-      parent: 30
-  - uid: 7216
-    components:
-    - type: Transform
-      pos: -33.5,4.5
-      parent: 30
-  - uid: 7220
-    components:
-    - type: Transform
-      pos: -33.5,0.5
       parent: 30
   - uid: 7269
     components:
