@@ -146,6 +146,9 @@ public sealed partial class NPCCombatSystem
                     steering.ForceMove = true;
                 }
 
+                var lostEv = new NpcRangeTargetLostEvent();
+                RaiseLocalEvent(uid, ref lostEv);
+
                 continue;
             }
 
@@ -160,6 +163,9 @@ public sealed partial class NPCCombatSystem
             {
                 continue;
             }
+
+            var ev = new NpcRangeAttemptEvent();
+            RaiseLocalEvent(uid, ref ev);
 
             var mapVelocity = targetBody.LinearVelocity;
             var targetSpot = targetPos + mapVelocity * distance / ShootSpeed;
@@ -206,3 +212,9 @@ public sealed partial class NPCCombatSystem
         }
     }
 }
+
+[ByRefEvent]
+public record struct NpcRangeAttemptEvent();
+
+[ByRefEvent]
+public record struct NpcRangeTargetLostEvent();
