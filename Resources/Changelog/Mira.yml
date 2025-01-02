@@ -957,7 +957,7 @@ Entries:
   changes:
   - message: Geras and other polymorphs now retain their parents damage when transfered
     type: Fix
-  id: 142
+  id: 143
   time: '2024-12-22T22:30:00.0000000+00:00'
 - author: Doctor-Cpu
   changes:
@@ -967,5 +967,5 @@ Entries:
     type: Remove
   - message: Bola stun damage has been readded in a reduced form
     type: Add
-  id: 143
+  id: 144
   time: '2024-12-23T08:00:00.0000000+00:00'
