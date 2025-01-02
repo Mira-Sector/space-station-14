@@ -100,25 +100,25 @@ namespace Content.Client.Chemistry.UI
         /// Conditionally generates a set of reagent buttons based on the supplied boolean argument.
         /// This was moved outside of BuildReagentRow to facilitate conditional logic, stops indentation depth getting out of hand as well.
         /// </summary>
-        private List<ReagentButton> CreateReagentTransferButtons(ReagentId reagent, bool isBuffer, bool addReagentButtons)
+        private List<ReagentButton> CreateReagentTransferButtons(ReagentId reagent, bool isBuffer, bool addReagentButtons, string origin)
         {
             if (!addReagentButtons)
                 return new List<ReagentButton>(); // Return an empty list if reagentTransferButton creation is disabled.
 
-            var buttonConfigs = new (string text, ChemMasterReagentAmount amount, string origin, string styleClass)[]
+            var buttonConfigs = new (string text, ChemMasterReagentAmount amount, string styleClass)[]
             {
-                ("1", ChemMasterReagentAmount.U1, SharedChemMaster.InputSlotName, StyleBase.ButtonOpenBoth),
-                ("5", ChemMasterReagentAmount.U5, SharedChemMaster.InputSlotName, StyleBase.ButtonOpenBoth),
-                ("10", ChemMasterReagentAmount.U10, SharedChemMaster.InputSlotName, StyleBase.ButtonOpenBoth),
-                ("25", ChemMasterReagentAmount.U25, SharedChemMaster.InputSlotName, StyleBase.ButtonOpenBoth),
-                ("50", ChemMasterReagentAmount.U50, SharedChemMaster.InputSlotName, StyleBase.ButtonOpenBoth),
-                ("100", ChemMasterReagentAmount.U100, SharedChemMaster.InputSlotName, StyleBase.ButtonOpenBoth),
-                (Loc.GetString("chem-master-window-buffer-all-amount"), ChemMasterReagentAmount.All, SharedChemMaster.InputSlotName, StyleBase.ButtonOpenLeft),
+                ("1", ChemMasterReagentAmount.U1, StyleBase.ButtonOpenBoth),
+                ("5", ChemMasterReagentAmount.U5, StyleBase.ButtonOpenBoth),
+                ("10", ChemMasterReagentAmount.U10, StyleBase.ButtonOpenBoth),
+                ("25", ChemMasterReagentAmount.U25, StyleBase.ButtonOpenBoth),
+                ("50", ChemMasterReagentAmount.U50, StyleBase.ButtonOpenBoth),
+                ("100", ChemMasterReagentAmount.U100, StyleBase.ButtonOpenBoth),
+                (Loc.GetString("chem-master-window-buffer-all-amount"), ChemMasterReagentAmount.All, StyleBase.ButtonOpenLeft),
             };
 
             var buttons = new List<ReagentButton>();
 
-            foreach (var (text, amount, origin, styleClass) in buttonConfigs)
+            foreach (var (text, amount, styleClass) in buttonConfigs)
             {
                 var reagentTransferButton = MakeReagentButton(text, amount, reagent, isBuffer, origin, styleClass);
                 buttons.Add(reagentTransferButton);
@@ -230,7 +230,7 @@ namespace Content.Client.Chemistry.UI
                 _prototypeManager.TryIndex(reagentId.Prototype, out ReagentPrototype? proto);
                 var name = proto?.LocalizedName ?? Loc.GetString("chem-master-window-unknown-reagent-text");
                 var reagentColor = proto?.SubstanceColor ?? default(Color);
-                bufferInfo.Children.Add(BuildReagentRow(reagentColor, rowCount++, name, reagentId, quantity, true, true));
+                bufferInfo.Children.Add(BuildReagentRow(reagentColor, rowCount++, name, reagentId, quantity, true, true, bufferName));
             }
         }
 
@@ -269,7 +269,7 @@ namespace Content.Client.Chemistry.UI
             {
                 foreach (var (id, quantity) in info.Entities.Select(x => (x.Id, x.Quantity)))
                 {
-                    control.Children.Add(BuildReagentRow(default(Color), rowCount++, id, default(ReagentId), quantity, false, addReagentButtons));
+                    control.Children.Add(BuildReagentRow(default(Color), rowCount++, id, default(ReagentId), quantity, false, addReagentButtons, SharedChemMaster.InputSlotName));
                 }
             }
 
@@ -282,7 +282,7 @@ namespace Content.Client.Chemistry.UI
                     var name = proto?.LocalizedName ?? Loc.GetString("chem-master-window-unknown-reagent-text");
                     var reagentColor = proto?.SubstanceColor ?? default(Color);
 
-                    control.Children.Add(BuildReagentRow(reagentColor, rowCount++, name, reagent.Reagent, reagent.Quantity, false, addReagentButtons));
+                    control.Children.Add(BuildReagentRow(reagentColor, rowCount++, name, reagent.Reagent, reagent.Quantity, false, addReagentButtons, SharedChemMaster.InputSlotName));
                 }
 
             }
@@ -290,7 +290,7 @@ namespace Content.Client.Chemistry.UI
         /// <summary>
         /// Take reagent/entity data and present rows, labels, and buttons appropriately. todo sprites?
         /// </summary>
-        private Control BuildReagentRow(Color reagentColor, int rowCount, string name, ReagentId reagent, FixedPoint2 quantity, bool isBuffer, bool addReagentButtons)
+        private Control BuildReagentRow(Color reagentColor, int rowCount, string name, ReagentId reagent, FixedPoint2 quantity, bool isBuffer, bool addReagentButtons, string bufferName)
         {
             //Colors rows and sets fallback for reagentcolor to the same as background, this will hide colorPanel for entities hopefully
             var rowColor1 = Color.FromHex("#1B1B1E");
@@ -301,7 +301,7 @@ namespace Content.Client.Chemistry.UI
                 reagentColor = currentRowColor;
             }
             //this calls the separated button builder, and stores the return to render after labels
-            var reagentButtonConstructors = CreateReagentTransferButtons(reagent, isBuffer, addReagentButtons);
+            var reagentButtonConstructors = CreateReagentTransferButtons(reagent, isBuffer, addReagentButtons, bufferName);
 
             // Create the row layout with the color panel
             var rowContainer = new BoxContainer
