@@ -31,3 +31,4 @@ public sealed partial class StationAiTurret
     [DataField]
     public HashSet<ProtoId<NpcFactionPrototype>>? Factions;
 }
+

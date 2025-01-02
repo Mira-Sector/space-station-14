@@ -265,6 +265,14 @@
   - type: NpcFactionMember
     factions:
     - NanoTrasen
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Turrets/ai.rsi
+    drawdepth: Mobs
+    layers:
+      - state: turretCover
+        map: [ "enum.TurretVisualLayers.Base" ]
+      - state: standard_off
+        map: [ "enum.TurretVisualLayers.Turret" ]
   - type: Battery
     maxCharge: 10000
     startingCharge: 10000
@@ -277,6 +285,11 @@
   - type: ProjectileBatteryAmmoProvider
     proto: BulletLaser
     fireCost: 100
+  - type: Gun
+    fireRate: 2
+    selectedMode: FullAuto
+    soundGunshot:
+      path: /Audio/Weapons/Guns/Gunshots/laser_cannon.ogg
   - type: BatteryWeaponFireModes
     aiInteract: true
     fireModes:
@@ -290,6 +303,7 @@
       icon:
         sprite: Objects/Weapons/Guns/Projectiles/projectiles_tg.rsi
         state: omnilaser
+  - type: StationAiTurretVisuals
   - type: StationAiTurret
     modes:
     - factions:
