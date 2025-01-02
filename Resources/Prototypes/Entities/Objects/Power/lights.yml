@@ -215,11 +215,11 @@
   description: A light fixture.
   components:
   - type: LightBulb
-    color: "#FFE080"
+    color: "#F0F1FF" # 7200K color temp
     lightEnergy: 0.9
-    lightRadius: 5
+    lightRadius: 10
     lightSoftness: 0.8
-    PowerUse: 18
+    PowerUse: 25
 
 - type: entity
   parent: LightTube
