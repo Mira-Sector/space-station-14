@@ -580,7 +580,8 @@
   components:
   - type: StationEvent
     startAudio:
-      path: /Audio/Announcements/attention.ogg
+      path: /Audio/Announcements/Default/attention.ogg
+    announcementStart: Attention
     weight: 5
     minimumPlayers: 25
     reoccurrenceDelay: 20
