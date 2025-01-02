@@ -137,6 +137,17 @@
     antagPrototype: Thief
   - type: ThiefRole
 
+# Obsessed
+- type: entity
+  parent: BaseMindRoleAntag
+  id: MindRoleObsessed
+  name: Obsessed Role
+#  description: mind-role-obsessed-description
+  components:
+  - type: MindRole
+    antagPrototype: Obsessed
+  - type: ObsessedRole
+
 # Traitors
 - type: entity
   parent: BaseMindRoleAntag

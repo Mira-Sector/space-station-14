@@ -148,10 +148,12 @@ public sealed class KillPersonConditionSystem : EntitySystem
         if (target.Target != null)
             return;
 
-        _obsession.PickObsession(args.MindId);
+        if (!_obsession.TryGetRole(args.Mind, out var roleComp))
+            return;
 
-        if (!TryComp<ObsessedRoleComponent>(args.MindId, out var roleComp) ||
-            roleComp.Obsession == null)
+        _obsession.PickObsession(args.MindId, roleComp, args.Mind);
+
+        if (roleComp.Obsession == null)
             return;
 
         _target.SetTarget(uid, roleComp.Obsession.Value, target);
@@ -168,10 +170,12 @@ public sealed class KillPersonConditionSystem : EntitySystem
         if (target.Targets != null)
             return;
 
-        _obsession.PickObsession(args.MindId);
+        if (!_obsession.TryGetRole(args.Mind, out var roleComp))
+            return;
 
-        if (!TryComp<ObsessedRoleComponent>(args.MindId, out var roleComp) ||
-            roleComp.Obsession == null)
+        _obsession.PickObsession(args.MindId, roleComp, args.Mind);
+
+        if (roleComp.Obsession == null)
         {
             args.Cancelled = true;
             return;
@@ -202,7 +206,7 @@ public sealed class KillPersonConditionSystem : EntitySystem
         }
 
         var allHumans = _mind.GetAliveHumans(roleComp.Obsession.Value);
-        allHumans.Remove((uid, args.Mind)); //dont want the player to have a suicide mission
+        allHumans.Remove((args.MindId, args.Mind)); //dont want the player to have a suicide mission
 
         // get everyone in the obsessions department
         List<EntityUid> targets = new();
@@ -226,8 +230,10 @@ public sealed class KillPersonConditionSystem : EntitySystem
 
     private void OnAfterObsessionDepartmentAssigned(EntityUid uid, PickObsessionDepartmentComponent comp, ref ObjectiveAfterAssignEvent args)
     {
-        if (!TryComp<ObsessedRoleComponent>(args.MindId, out var roleComp) ||
-            roleComp == null)
+        if (!_obsession.TryGetRole(args.Mind, out var roleComp))
+            return;
+
+        if (roleComp.Obsession == null)
             return;
 
         var targetName = string.Empty;
