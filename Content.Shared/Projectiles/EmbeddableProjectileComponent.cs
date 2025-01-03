@@ -54,6 +54,7 @@ public sealed partial class EmbeddableProjectileComponent : Component
     [DataField, AutoNetworkedField]
     public EntityWhitelist? Whitelist;
 
+    /// <summary>
     /// Uid of the entity the projectile is embed into.
     /// </summary>
     [DataField, AutoNetworkedField]

@@ -47,6 +47,14 @@ entities:
       bodyType: Dynamic
     - type: Fixtures
       fixtures: {}
+<<<<<<< HEAD
+=======
+    - type: DeviceNetwork
+      configurators: []
+      deviceLists: []
+      transmitFrequencyId: ShuttleTimer
+      deviceNetId: Wireless
+>>>>>>> upstream/master
     - type: OccluderTree
     - type: SpreaderGrid
     - type: Shuttle

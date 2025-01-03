@@ -1,4 +1,4 @@
-Document>
+<Document>
   # Antagonists
   Antagonists are the driving force of every shift.
   They are the catalysts for chaos, conflict and mystery in Space Station 14 that also serve to provide a challenge to Nanotrasen and its [color=#cb0000]Security[/color] force.
@@ -16,5 +16,7 @@ Document>
   - [textlink="Space Ninjas" link="SpaceNinja"], masters of espionage and sabotage with special gear.
   - [textlink="Thieves" link="Thieves"] driven by kleptomania, determined to get their fix using their special gloves.
   - [textlink="Various non-humanoid creatures" link="MinorAntagonists"] that generally attack anything that moves.
->>>>>>> 3382743086 (Minor antagonist guidebook changes (#32824))
+  - [textlink="Space Ninjas" link="SpaceNinja"], masters of espionage and sabotage with special gear.
+  - [textlink="Thieves" link="Thieves"] driven by kleptomania, determined to get their fix using their special gloves.
+  - [textlink="Various non-humanoid creatures" link="MinorAntagonists"] that generally attack anything that moves.
 </Document>
