@@ -34,7 +34,7 @@ public sealed partial class LoadoutContainer : BoxContainer
             SelectButton.TooltipSupplier = _ => tooltip;
         }
 
-        if (dummy != null)
+        if (dummy != null && dummy != String.Empty)
         {
             LoadoutSprite(dummy, _entity);
         }
