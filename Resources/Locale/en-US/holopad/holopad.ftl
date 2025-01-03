@@ -6,10 +6,7 @@ holopad-window-options = [color=darkgray][font size=10][italic]Please select an 
 # Call status
 holopad-window-no-calls-in-progress = No holo-calls in progress
 holopad-window-incoming-call = Incoming holo-call from:
-<<<<<<< HEAD
-=======
 holopad-window-relay-label = Originating at:
->>>>>>> upstream/master
 holopad-window-outgoing-call = Attempting to establish a connection...
 holopad-window-call-in-progress = Holo-call in progress
 holopad-window-call-ending = Disconnecting...
@@ -92,10 +89,7 @@ holopad-medical-paramedic = Medical - Paramedic
 holopad-medical-virology = Medical - Virology
 holopad-medical-front = Medical - Front
 holopad-medical-breakroom = Medical - Breakroom
-<<<<<<< HEAD
-=======
 holopad-medical-clinic = Medical - Clinic
->>>>>>> upstream/master
 
 # Cargo
 holopad-cargo-front = Cargo - Front
