@@ -489,10 +489,10 @@ public sealed class LobbyUIController : UIController, IOnStateEntered<LobbyState
                             continue;
                         }
 
-                        if (loadoutProto.EntityDummy != String.Empty && loadoutProto.EntityDummy != null)
+                        if (loadoutProto.UseDummyEntityLobbyDummy && loadoutProto.DummyEntity != null)
                         {
                             isDummy = true;
-                            dummy = loadoutProto.EntityDummy;
+                            dummy = loadoutProto.DummyEntity.Value;
                             break;
                         }
                     }

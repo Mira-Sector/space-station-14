@@ -24,6 +24,9 @@ public sealed partial class LoadoutPrototype : IPrototype, IEquipmentLoadout
     public EntProtoId? DummyEntity;
 
     [DataField]
+    public bool UseDummyEntityLobbyDummy = false;
+
+    [DataField]
     public ProtoId<StartingGearPrototype>? StartingGear;
 
     /// <summary>
@@ -38,13 +41,6 @@ public sealed partial class LoadoutPrototype : IPrototype, IEquipmentLoadout
     /// </summary>
     [DataField]
     public string? Entity { get; set; }
-
-    /// <summary>
-    /// Meant to be used in conjunction with Entity
-    /// Entity to show as the players dummy in the lobby
-    /// </summary>
-    [DataField]
-    public string? EntityDummy { get; set; }
 
     /// <inheritdoc />
     [DataField]
