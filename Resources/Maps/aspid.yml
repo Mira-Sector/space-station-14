@@ -10819,7 +10819,7 @@ entities:
       pos: 12.5,-42.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -7235.664
+      secondsUntilStateChange: -6708.3013
       state: Opening
     - type: DeviceLinkSource
       linkedPorts:
@@ -40902,12 +40902,6 @@ entities:
     - type: Transform
       pos: -27.5,5.5
       parent: 1
-  - uid: 17635
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -0.5,6.5
-      parent: 1
 - proto: CarpetOrange
   entities:
   - uid: 617
@@ -49269,13 +49263,6 @@ entities:
     - type: Transform
       pos: -42.387295,7.580193
       parent: 1
-- proto: ClothingHeadHatSantahat
-  entities:
-  - uid: 17640
-    components:
-    - type: Transform
-      pos: -10.497138,10.410571
-      parent: 1
 - proto: ClothingHeadHatWelding
   entities:
   - uid: 8347
@@ -49574,13 +49561,6 @@ entities:
     components:
     - type: Transform
       pos: -37.519897,-17.403341
-      parent: 1
-- proto: ClothingOuterSanta
-  entities:
-  - uid: 17639
-    components:
-    - type: Transform
-      pos: -10.512763,10.394946
       parent: 1
 - proto: ClothingOuterVestWebMerc
   entities:
@@ -56222,13 +56202,6 @@ entities:
     - type: Transform
       pos: -4.7264047,2.7601516
       parent: 1
-- proto: DrinkGlassWhite
-  entities:
-  - uid: 17634
-    components:
-    - type: Transform
-      pos: -0.6799922,4.7097106
-      parent: 1
 - proto: DrinkGoldenCup
   entities:
   - uid: 7258
@@ -56334,13 +56307,6 @@ entities:
     components:
     - type: Transform
       pos: -6.3873754,21.667553
-      parent: 1
-- proto: DrinkMugRed
-  entities:
-  - uid: 17636
-    components:
-    - type: Transform
-      pos: -0.2893672,3.5534604
       parent: 1
 - proto: DrinkOatMilkCarton
   entities:
@@ -60382,13 +60348,6 @@ entities:
     - type: Transform
       pos: -46.77861,40.963207
       parent: 1
-- proto: FloraTreeChristmas02
-  entities:
-  - uid: 17360
-    components:
-    - type: Transform
-      pos: -0.52257466,6.31561
-      parent: 1
 - proto: FloraTreeStump
   entities:
   - uid: 3420
@@ -60526,13 +60485,6 @@ entities:
     components:
     - type: Transform
       pos: -9.337922,10.467162
-      parent: 1
-- proto: FoodCakeChristmas
-  entities:
-  - uid: 17638
-    components:
-    - type: Transform
-      pos: -0.47737634,4.1538997
       parent: 1
 - proto: FoodCondimentBottleEnzyme
   entities:
@@ -60696,11 +60648,6 @@ entities:
     components:
     - type: Transform
       pos: 12.33918,-1.1745799
-      parent: 1
-  - uid: 17637
-    components:
-    - type: Transform
-      pos: -0.49300134,4.2163997
       parent: 1
 - proto: FoodPlateSmall
   entities:
@@ -119681,197 +119628,6 @@ entities:
     - type: Transform
       pos: 20.623508,52.47136
       parent: 1
-- proto: XmasLights
-  entities:
-  - uid: 17361
-    components:
-    - type: Transform
-      pos: -1.5,11.5
-      parent: 1
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 17461
-    components:
-    - type: Transform
-      pos: -0.5,11.5
-      parent: 1
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 17549
-    components:
-    - type: Transform
-      pos: 0.5,11.5
-      parent: 1
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 17550
-    components:
-    - type: Transform
-      pos: 3.5,11.5
-      parent: 1
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 17551
-    components:
-    - type: Transform
-      pos: -4.5,11.5
-      parent: 1
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 17552
-    components:
-    - type: Transform
-      pos: -11.5,8.5
-      parent: 1
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 17578
-    components:
-    - type: Transform
-      pos: -10.5,8.5
-      parent: 1
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 17584
-    components:
-    - type: Transform
-      pos: -9.5,8.5
-      parent: 1
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 17585
-    components:
-    - type: Transform
-      pos: -7.5,8.5
-      parent: 1
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 17595
-    components:
-    - type: Transform
-      pos: -6.5,8.5
-      parent: 1
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 17599
-    components:
-    - type: Transform
-      pos: -2.5,0.5
-      parent: 1
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 17615
-    components:
-    - type: Transform
-      pos: -1.5,0.5
-      parent: 1
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 17616
-    components:
-    - type: Transform
-      pos: -0.5,0.5
-      parent: 1
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 17617
-    components:
-    - type: Transform
-      pos: 0.5,0.5
-      parent: 1
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 17619
-    components:
-    - type: Transform
-      pos: 1.5,0.5
-      parent: 1
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 17620
-    components:
-    - type: Transform
-      pos: 2.5,0.5
-      parent: 1
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 17621
-    components:
-    - type: Transform
-      pos: 3.5,0.5
-      parent: 1
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 17622
-    components:
-    - type: Transform
-      pos: -13.5,4.5
-      parent: 1
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 17623
-    components:
-    - type: Transform
-      pos: -12.5,4.5
-      parent: 1
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 17628
-    components:
-    - type: Transform
-      pos: -11.5,4.5
-      parent: 1
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 17630
-    components:
-    - type: Transform
-      pos: -10.5,4.5
-      parent: 1
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
 - proto: Zipties
   entities:
   - uid: 9422
