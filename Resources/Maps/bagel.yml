@@ -58564,21 +58564,6 @@ entities:
     - type: Transform
       pos: -15.664602,-30.50866
       parent: 60
-  - uid: 24602
-    components:
-    - type: Transform
-      pos: 9.5,-34.5
-      parent: 60
-  - uid: 24603
-    components:
-    - type: Transform
-      pos: 9.5,-35.5
-      parent: 60
-  - uid: 24609
-    components:
-    - type: Transform
-      pos: 20.541489,-38.333645
-      parent: 60
 - proto: ClothingHeadHatSkub
   entities:
   - uid: 6791
@@ -58718,11 +58703,6 @@ entities:
     components:
     - type: Transform
       pos: 22.494247,-51.263294
-      parent: 60
-  - uid: 24608
-    components:
-    - type: Transform
-      pos: 19.646944,-29.162489
       parent: 60
 - proto: ClothingHeadHelmetCosmonaut
   entities:
@@ -59278,18 +59258,6 @@ entities:
     components:
     - type: Transform
       pos: 22.509872,-51.419544
-      parent: 60
-- proto: ClothingOuterSanta
-  entities:
-  - uid: 24600
-    components:
-    - type: Transform
-      pos: 9.5,-34.5
-      parent: 60
-  - uid: 24601
-    components:
-    - type: Transform
-      pos: 9.5,-35.5
       parent: 60
 - proto: ClothingOuterSkub
   entities:
@@ -66957,25 +66925,6 @@ entities:
     - type: Transform
       pos: -22.455603,19.399242
       parent: 60
-- proto: DrinkTeacup
-  entities:
-  - uid: 24606
-    components:
-    - type: Transform
-      pos: 19.673157,-31.208572
-      parent: 60
-  - uid: 24607
-    components:
-    - type: Transform
-      pos: 19.266907,-29.755447
-      parent: 60
-- proto: DrinkTeapot
-  entities:
-  - uid: 24605
-    components:
-    - type: Transform
-      pos: 19.61678,-30.24429
-      parent: 60
 - proto: DrinkWaterBottleFull
   entities:
   - uid: 18442
@@ -71109,26 +71058,12 @@ entities:
     - type: Transform
       pos: -65.522354,23.506481
       parent: 60
-- proto: FloraTreeChristmas02
-  entities:
-  - uid: 24586
-    components:
-    - type: Transform
-      pos: 27.282818,-18.41108
-      parent: 60
 - proto: FoodApple
   entities:
   - uid: 7496
     components:
     - type: Transform
       pos: 23.590298,-40.29614
-      parent: 60
-- proto: FoodBakedCookieRaisin
-  entities:
-  - uid: 24604
-    components:
-    - type: Transform
-      pos: 19.407532,-30.833572
       parent: 60
 - proto: FoodBanana
   entities:
@@ -154960,125 +154895,6 @@ entities:
     - type: Transform
       pos: -106.46888,24.496986
       parent: 60
-- proto: XmasLights
-  entities:
-  - uid: 24587
-    components:
-    - type: Transform
-      pos: 19.5,-15.5
-      parent: 60
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 24588
-    components:
-    - type: Transform
-      pos: 21.5,-15.5
-      parent: 60
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 24589
-    components:
-    - type: Transform
-      pos: 22.5,-15.5
-      parent: 60
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 24590
-    components:
-    - type: Transform
-      pos: 23.5,-15.5
-      parent: 60
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 24591
-    components:
-    - type: Transform
-      pos: 24.5,-15.5
-      parent: 60
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 24592
-    components:
-    - type: Transform
-      pos: 25.5,-15.5
-      parent: 60
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 24593
-    components:
-    - type: Transform
-      pos: 26.5,-15.5
-      parent: 60
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 24594
-    components:
-    - type: Transform
-      pos: 10.5,-26.5
-      parent: 60
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 24595
-    components:
-    - type: Transform
-      pos: 11.5,-26.5
-      parent: 60
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 24596
-    components:
-    - type: Transform
-      pos: 12.5,-26.5
-      parent: 60
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 24597
-    components:
-    - type: Transform
-      pos: 13.5,-26.5
-      parent: 60
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 24598
-    components:
-    - type: Transform
-      pos: 14.5,-26.5
-      parent: 60
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 24599
-    components:
-    - type: Transform
-      pos: 18.5,-26.5
-      parent: 60
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
 - proto: XylophoneInstrument
   entities:
   - uid: 7242

@@ -10807,7 +10807,7 @@ entities:
       pos: -42.5,29.5
       parent: 5350
     - type: Door
-      secondsUntilStateChange: -3492.5332
+      secondsUntilStateChange: -3188.007
       state: Opening
     - type: DeviceLinkSink
       invokeCounter: 2
@@ -51873,31 +51873,6 @@ entities:
     - type: Transform
       pos: 9.5,-5.5
       parent: 5350
-  - uid: 2722
-    components:
-    - type: Transform
-      pos: 30.5,-0.5
-      parent: 5350
-  - uid: 2723
-    components:
-    - type: Transform
-      pos: 31.5,-0.5
-      parent: 5350
-  - uid: 2724
-    components:
-    - type: Transform
-      pos: 32.5,0.5
-      parent: 5350
-  - uid: 2725
-    components:
-    - type: Transform
-      pos: 32.5,-0.5
-      parent: 5350
-  - uid: 9892
-    components:
-    - type: Transform
-      pos: 31.5,0.5
-      parent: 5350
   - uid: 10072
     components:
     - type: Transform
@@ -52081,11 +52056,6 @@ entities:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: -26.5,-12.5
-      parent: 5350
-  - uid: 26866
-    components:
-    - type: Transform
-      pos: 30.5,0.5
       parent: 5350
 - proto: CarpetOrange
   entities:
@@ -60549,23 +60519,6 @@ entities:
     - type: Transform
       pos: -19.439203,39.44439
       parent: 5350
-- proto: ClothingHeadHatSantahat
-  entities:
-  - uid: 26884
-    components:
-    - type: Transform
-      pos: 30.398344,-3.355002
-      parent: 5350
-  - uid: 26887
-    components:
-    - type: Transform
-      pos: 23.5,-12.5
-      parent: 5350
-  - uid: 26888
-    components:
-    - type: Transform
-      pos: 23.5,-12.5
-      parent: 5350
 - proto: ClothingHeadHatSkub
   entities:
   - uid: 24113
@@ -61179,18 +61132,6 @@ entities:
     - type: Transform
       pos: 48.50155,35.454395
       parent: 5350
-- proto: ClothingOuterSanta
-  entities:
-  - uid: 26885
-    components:
-    - type: Transform
-      pos: 23.5,-12.5
-      parent: 5350
-  - uid: 26886
-    components:
-    - type: Transform
-      pos: 23.5,-12.5
-      parent: 5350
 - proto: ClothingOuterSkub
   entities:
   - uid: 24112
@@ -61489,6 +61430,30 @@ entities:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 34.5,-7.5
+      parent: 5350
+  - uid: 2722
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 32.5,-0.5
+      parent: 5350
+  - uid: 2723
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 32.5,0.5
+      parent: 5350
+  - uid: 2724
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 30.5,-0.5
+      parent: 5350
+  - uid: 2725
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 30.5,0.5
       parent: 5350
   - uid: 2727
     components:
@@ -73328,11 +73293,6 @@ entities:
     - type: Transform
       pos: -17.5,1.5
       parent: 5350
-  - uid: 2720
-    components:
-    - type: Transform
-      pos: 30.5,0.5
-      parent: 5350
 - proto: Flash
   entities:
   - uid: 10422
@@ -73768,13 +73728,6 @@ entities:
     components:
     - type: Transform
       pos: 42.5,34.5
-      parent: 5350
-- proto: FloraTreeChristmas02
-  entities:
-  - uid: 2721
-    components:
-    - type: Transform
-      pos: 31.939726,-0.066894054
       parent: 5350
 - proto: FloraTreeLarge02
   entities:
@@ -127576,6 +127529,13 @@ entities:
     - type: Transform
       pos: -40.5,-19.5
       parent: 5350
+- proto: RandomFoodSingle
+  entities:
+  - uid: 9892
+    components:
+    - type: Transform
+      pos: 31.5,0.5
+      parent: 5350
 - proto: RandomInstruments
   entities:
   - uid: 3241
@@ -140123,6 +140083,16 @@ entities:
     components:
     - type: Transform
       pos: 2.5,43.5
+      parent: 5350
+  - uid: 2720
+    components:
+    - type: Transform
+      pos: 31.5,-0.5
+      parent: 5350
+  - uid: 2721
+    components:
+    - type: Transform
+      pos: 31.5,0.5
       parent: 5350
   - uid: 2728
     components:
@@ -168141,169 +168111,4 @@ entities:
     - type: Transform
       pos: 45.520813,-8.421944
       parent: 5350
-- proto: XmasLights
-  entities:
-  - uid: 26867
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 32.5,0.5
-      parent: 5350
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 26868
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 32.5,-0.5
-      parent: 5350
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 26869
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 32.5,-1.5
-      parent: 5350
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 26870
-    components:
-    - type: Transform
-      pos: 19.5,0.5
-      parent: 5350
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 26871
-    components:
-    - type: Transform
-      pos: 20.5,0.5
-      parent: 5350
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 26872
-    components:
-    - type: Transform
-      pos: 21.5,0.5
-      parent: 5350
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 26873
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 35.5,-7.5
-      parent: 5350
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 26874
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 36.5,-7.5
-      parent: 5350
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 26875
-    components:
-    - type: Transform
-      pos: 35.5,-2.5
-      parent: 5350
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 26876
-    components:
-    - type: Transform
-      pos: 36.5,-2.5
-      parent: 5350
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 26877
-    components:
-    - type: Transform
-      pos: 37.5,-2.5
-      parent: 5350
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 26878
-    components:
-    - type: Transform
-      pos: 34.5,-2.5
-      parent: 5350
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 26879
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 19.5,-7.5
-      parent: 5350
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 26880
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 19.5,-9.5
-      parent: 5350
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 26881
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 19.5,-10.5
-      parent: 5350
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 26882
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 24.5,-8.5
-      parent: 5350
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 26883
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 24.5,-10.5
-      parent: 5350
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
 ...
