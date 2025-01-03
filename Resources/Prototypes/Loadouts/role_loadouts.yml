@@ -29,6 +29,8 @@
 - type: roleLoadout
   id: JobStationAi
   nameDataset: NamesAI
+  groups:
+  - AiScreen
 
 # Civilian
 - type: roleLoadout
