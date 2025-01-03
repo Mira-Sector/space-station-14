@@ -453,7 +453,7 @@ public sealed class LobbyUIController : UIController, IOnStateEntered<LobbyState
     /// </summary>
     public EntityUid LoadProfileEntity(HumanoidCharacterProfile? humanoid, JobPrototype? job, bool jobClothes)
     {
-        EntityUid dummyEnt;
+        string? dummy = null;
         bool isDummy = false;
 
         EntProtoId? previewEntity = null;
@@ -467,16 +467,17 @@ public sealed class LobbyUIController : UIController, IOnStateEntered<LobbyState
         if (previewEntity != null)
         {
             // Special type like borg or AI, do not spawn a human just spawn the entity.
-            dummyEnt = EntityManager.SpawnEntity(previewEntity, MapCoordinates.Nullspace);
-            return dummyEnt;
+            isDummy = true;
+            dummy = previewEntity;
         }
-        else if (humanoid is not null)
+
+        if (humanoid is not null)
         {
             job ??= GetPreferredJob(humanoid);
             var jobLoadout = LoadoutSystem.GetJobPrototype(job.ID);
             humanoid.Loadouts.TryGetValue(jobLoadout, out var loadoutValue);
 
-            var dummy = _prototypeManager.Index<SpeciesPrototype>(humanoid.Species).DollPrototype;
+            dummy ??= _prototypeManager.Index<SpeciesPrototype>(humanoid.Species).DollPrototype;
 
             if (loadoutValue != null)
             {
@@ -489,22 +490,22 @@ public sealed class LobbyUIController : UIController, IOnStateEntered<LobbyState
                             continue;
                         }
 
-                        if (loadoutProto.EntityDummy != String.Empty && loadoutProto.EntityDummy != null)
+                        if (loadoutProto.UseDummyEntityLobbyDummy && loadoutProto.DummyEntity != null)
                         {
                             isDummy = true;
-                            dummy = loadoutProto.EntityDummy;
+                            dummy = loadoutProto.DummyEntity.Value;
                             break;
                         }
                     }
                 }
             }
-
-            dummyEnt = EntityManager.SpawnEntity(dummy, MapCoordinates.Nullspace);
         }
         else
         {
-            dummyEnt = EntityManager.SpawnEntity(_prototypeManager.Index<SpeciesPrototype>(SharedHumanoidAppearanceSystem.DefaultSpecies).DollPrototype, MapCoordinates.Nullspace);
+            dummy ??= _prototypeManager.Index<SpeciesPrototype>(SharedHumanoidAppearanceSystem.DefaultSpecies).DollPrototype;
         }
+
+        var dummyEnt = EntityManager.SpawnEntity(dummy, MapCoordinates.Nullspace);
 
         if (!isDummy)
         {
