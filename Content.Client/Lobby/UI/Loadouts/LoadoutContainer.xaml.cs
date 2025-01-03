@@ -34,12 +34,24 @@ public sealed partial class LoadoutContainer : BoxContainer
             SelectButton.TooltipSupplier = _ => tooltip;
         }
 
-        if (dummy != String.Empty)
+        if (dummy != null)
         {
             LoadoutSprite(dummy, _entity);
         }
         else if (_protoManager.TryIndex(proto, out var loadProto))
         {
+            var ent = loadProto.DummyEntity ?? _entManager.System<LoadoutSystem>().GetFirstOrNull(loadProto);
+
+            if (ent == null)
+                return;
+
+            _entity = _entManager.SpawnEntity(ent, MapCoordinates.Nullspace);
+            Sprite.SetEntity(_entity);
+
+            var spriteTooltip = new Tooltip();
+            spriteTooltip.SetMessage(FormattedMessage.FromUnformatted(_entManager.GetComponent<MetaDataComponent>(_entity.Value).EntityDescription));
+
+            TooltipSupplier = _ => spriteTooltip;
             LoadoutSprite(_entManager.System<LoadoutSystem>().GetFirstOrNull(loadProto), _entity);
         }
 

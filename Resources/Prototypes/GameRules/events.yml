@@ -39,7 +39,6 @@
     - id: MorphSpawn
     - id: DerelictCyborgSpawn
     - id: LoneOpsSpawn
-    - id: DerelictCyborgSpawn
 
 - type: entity
   id: BaseStationEvent
