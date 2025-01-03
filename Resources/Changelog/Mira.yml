@@ -983,3 +983,9 @@ Entries:
     type: Tweak
   id: 145
   time: '2025-01-03T00:01:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added AI screen loadouts
+    type: Add
+  id: 146
+  time: '2025-01-03T08:35:00.0000000+00:00'
