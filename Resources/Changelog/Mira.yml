@@ -997,3 +997,9 @@ Entries:
     type: Add
   id: 147
   time: '2025-01-04T03:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Lizards properly take damage again
+    type: Fix
+  id: 148
+  time: '2025-01-07T07:50:00.0000000+00:00'
