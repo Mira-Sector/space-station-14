@@ -22,4 +22,3 @@ toggle-light = Toggle light
 ai-device-not-responding = Device is not responding
 
 ai-hack = Hack
-ai-consciousness-download-warning = Your consciousness is being downloaded.

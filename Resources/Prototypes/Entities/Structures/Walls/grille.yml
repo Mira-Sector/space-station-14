@@ -21,7 +21,7 @@
         - state: grille
         - state: electrified
           sprite: Effects/electricity.rsi
-          map: ["enum.ElectrifiedLayers.Sparks"]
+          map: ["enum.ElectrifiedLayers.Powered"]
           shader: unshaded
           visible: false
     - type: Icon
@@ -79,8 +79,8 @@
     - type: Appearance
     - type: GenericVisualizer
       visuals:
-        enum.ElectrifiedVisuals.ShowSparks:
-          enum.ElectrifiedLayers.Sparks:
+        enum.ElectrifiedVisuals.IsPowered:
+          enum.ElectrifiedLayers.Powered:
             True: { visible: True }
             False: { visible: False }
     - type: AnimationPlayer
@@ -173,7 +173,7 @@
         - state: grille_diagonal
         - state: electrified_diagonal
           sprite: Effects/electricity.rsi
-          map: ["enum.ElectrifiedLayers.Sparks"]
+          map: ["enum.ElectrifiedLayers.Powered"]
           shader: unshaded
           visible: false
     - type: Icon
@@ -208,7 +208,7 @@
         - state: ratvargrille_diagonal
         - state: electrified_diagonal
           sprite: Effects/electricity.rsi
-          map: ["enum.ElectrifiedLayers.Sparks"]
+          map: ["enum.ElectrifiedLayers.Powered"]
           shader: unshaded
           visible: false
     - type: Icon

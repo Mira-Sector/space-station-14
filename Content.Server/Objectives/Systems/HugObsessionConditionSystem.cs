@@ -30,12 +30,11 @@ public sealed class HugObsessionConditionSystem : EntitySystem
 
     private void OnAssigned(EntityUid uid, HugObsessionConditionComponent comp, ref ObjectiveAssignedEvent args)
     {
-        if (!_obsession.TryGetRole(args.Mind, out var roleComp))
-            return;
+        _obsession.PickObsession(args.MindId);
 
-        _obsession.PickObsession(args.MindId, roleComp, args.Mind);
-
-        if (roleComp.Obsession == null)
+        if (!GetTarget(args.MindId, out var roleComp) ||
+            roleComp == null ||
+            roleComp.Obsession == null)
         {
             args.Cancelled = true;
             return;
@@ -49,10 +48,9 @@ public sealed class HugObsessionConditionSystem : EntitySystem
 
     private void OnAfterAssigned(EntityUid uid, HugObsessionConditionComponent comp, ref ObjectiveAfterAssignEvent args)
     {
-        if (!_obsession.TryGetRole(args.Mind, out var roleComp))
-            return;
-
-        if (roleComp.Obsession == null ||
+        if (!GetTarget(args.MindId, out var roleComp) ||
+            roleComp == null ||
+            roleComp.Obsession == null ||
             comp.HugsNeeded == null)
         {
             return;
@@ -79,29 +77,29 @@ public sealed class HugObsessionConditionSystem : EntitySystem
 
     public void AddHug(EntityUid hugger, EntityUid hugged)
     {
-        if (!TryComp<MindContainerComponent>(hugger, out var huggerContainerComp) ||
-            huggerContainerComp.Mind == null)
+        if (!TryComp<MindContainerComponent>(hugger, out var containerComp) ||
+            containerComp.Mind == null)
             return;
 
-        if (!TryComp<MindContainerComponent>(hugged, out var huggedContainerComp) ||
-            huggedContainerComp.Mind == null)
+        var huggerMind = containerComp.Mind.Value;
+
+        if (!TryComp<MindComponent>(huggerMind, out var mindComp))
             return;
 
-        var huggerMind = huggerContainerComp.Mind.Value;
-        var huggedMind = huggedContainerComp.Mind.Value;
-
-        if (!TryComp<MindComponent>(huggerMind, out var huggerMindComp))
-            return;
-
-        foreach (var objective in huggerMindComp.Objectives)
+        foreach (var objective in mindComp.Objectives)
         {
             if (!TryComp<HugObsessionConditionComponent>(objective, out var hugComp))
                 continue;
 
-            if (!_obsession.TryGetRole(huggerMindComp, out var roleComp))
+            if (!TryComp<ObsessedRoleComponent>(huggerMind, out var roleComp) ||
+                roleComp.Obsession == null)
                 continue;
 
-            if (roleComp.Obsession != huggedMind)
+            if (!TryComp<MindContainerComponent>(hugged, out var huggedMind) ||
+                huggedMind.Mind == null)
+                continue;
+
+            if (roleComp.Obsession != huggedMind.Mind)
                 continue;
 
             hugComp.HugsPerformed += 1;
@@ -127,5 +125,16 @@ public sealed class HugObsessionConditionSystem : EntitySystem
             return 1f;
 
         return progress;
+    }
+
+    private bool GetTarget(EntityUid mind, out ObsessedRoleComponent? roleComp)
+    {
+        roleComp = null;
+
+        if (!TryComp<ObsessedRoleComponent>(mind, out roleComp) ||
+            roleComp == null)
+            return false;
+
+        return true;
     }
 }

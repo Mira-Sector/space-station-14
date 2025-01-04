@@ -1736,7 +1736,11 @@ entities:
     - type: Transform
       pos: 0.5,1.5
       parent: 1
+<<<<<<< HEAD
+- proto: ComputerShuttle
+=======
 - proto: ComputerShuttleSyndie
+>>>>>>> 88ccc191b914192818e5643bcda48e22bba88b06
   entities:
   - uid: 144
     components:
@@ -3304,6 +3308,8 @@ entities:
     - type: Transform
       pos: 10.5,6.5
       parent: 1
+<<<<<<< HEAD
+=======
 - proto: VendingMachineCoffee
   entities:
   - uid: 535
@@ -3318,6 +3324,7 @@ entities:
     - type: Transform
       pos: -5.5,-1.5
       parent: 1
+>>>>>>> 88ccc191b914192818e5643bcda48e22bba88b06
 - proto: VendingMachineTankDispenserEVA
   entities:
   - uid: 456

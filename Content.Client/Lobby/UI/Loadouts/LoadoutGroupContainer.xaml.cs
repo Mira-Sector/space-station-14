@@ -74,9 +74,9 @@ public sealed partial class LoadoutGroupContainer : BoxContainer
             if (!protoMan.TryIndex(loadoutProto, out var loadProto))
                 continue;
 
-            if (loadProto.DummyEntity != null)
+            if (loadProto.EntityDummy != null)
             {
-                loadoutDummy = loadProto.DummyEntity;
+                loadoutDummy = loadProto.EntityDummy;
             }
 
             var matchingLoadout = selected.FirstOrDefault(e => e.Prototype == loadoutProto);

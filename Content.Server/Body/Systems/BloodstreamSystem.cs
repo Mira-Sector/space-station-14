@@ -489,7 +489,7 @@ public sealed class BloodstreamSystem : EntitySystem
             return;
         }
 
-        var currentVolume = bloodSolution.RemoveReagent(component.BloodReagent, bloodSolution.Volume, ignoreReagentData: true);
+        var currentVolume = bloodSolution.RemoveReagent(component.BloodReagent, bloodSolution.Volume);
 
         component.BloodReagent = reagent;
 

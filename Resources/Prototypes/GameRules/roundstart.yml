@@ -116,8 +116,9 @@
       - type: NpcFactionMember
         factions:
         - Syndicate
-      mindRoles:
-      - MindRoleNukeopsCommander
+      mindComponents:
+      - type: NukeopsRole
+        prototype: NukeopsCommander
     - prefRoles: [ NukeopsMedic ]
       fallbackRoles: [ Nukeops, NukeopsCommander ]
       spawnerPrototype: SpawnPointNukeopsMedic
@@ -133,8 +134,9 @@
       - type: NpcFactionMember
         factions:
         - Syndicate
-      mindRoles:
-      - MindRoleNukeopsMedic
+      mindComponents:
+      - type: NukeopsRole
+        prototype: NukeopsMedic
     - prefRoles: [ Nukeops ]
       fallbackRoles: [ NukeopsCommander, NukeopsMedic ]
       spawnerPrototype: SpawnPointNukeopsOperative
@@ -152,8 +154,9 @@
       - type: NpcFactionMember
         factions:
         - Syndicate
-      mindRoles:
-      - MindRoleNukeops
+      mindComponents:
+      - type: NukeopsRole
+        prototype: Nukeops
 
 - type: entity
   abstract: true
@@ -188,22 +191,9 @@
         components:
         - AntagImmune
       lateJoinAdditional: true
-      mindRoles:
-      - MindRoleTraitor
-
-- type: entity
-  id: TraitorReinforcement
-  parent: BaseTraitorRule
-  components:
-  - type: TraitorRule
-    giveUplink: false
-    giveCodewords: false # It would actually give them a different set of codewords than the regular traitors, anyway
-    giveBriefing: false
-  - type: AntagSelection
-    definitions:
-    - prefRoles: [ Traitor ]
-      mindRoles:
-      - MindRoleTraitor
+      mindComponents:
+      - type: TraitorRole
+        prototype: Traitor
 
 - type: entity
   id: Revolutionary
@@ -225,8 +215,9 @@
       components:
       - type: Revolutionary
       - type: HeadRevolutionary
-      mindRoles:
-      - MindRoleHeadRevolutionary
+      mindComponents:
+      - type: RevolutionaryRole
+        prototype: HeadRev
 
 - type: entity
   id: Sandbox
@@ -268,8 +259,9 @@
       - type: ZombifyOnDeath
       - type: IncurableZombie
       - type: InitialInfected
-      mindRoles:
-      - MindRoleInitialInfected
+      mindComponents:
+      - type: InitialInfectedRole
+        prototype: InitialInfected
 
 # event schedulers
 
@@ -287,6 +279,7 @@
         tableId: CalmPestEventsTable
       - !type:NestedSelector
         tableId: SpicyPestEventsTable
+
 
 - type: entityTable
   id: SpaceTrafficControlTable

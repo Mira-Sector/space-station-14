@@ -151,23 +151,6 @@
     - Trash
 
 - type: entity
-  parent: BaseLightbulb
-  name: dim light bulb
-  id: DimLightBulb
-  description: A dim light bulb for populating the darkness of maintenance.
-  components:
-  - type: LightBulb
-    bulb: Bulb
-    color: "#ba473f"
-    lightEnergy: 0.5
-    lightRadius: 5
-    lightSoftness: 3
-  - type: Tag
-    tags:
-    - LightBulb
-    - Trash
-
-- type: entity
   parent: LightBulb
   name: old incandescent light bulb
   id: LightBulbOld
@@ -215,11 +198,11 @@
   description: A light fixture.
   components:
   - type: LightBulb
-    color: "#F0F1FF" # 7200K color temp
+    color: "#FFE080"
     lightEnergy: 0.9
-    lightRadius: 10
+    lightRadius: 5
     lightSoftness: 0.8
-    PowerUse: 25
+    PowerUse: 18
 
 - type: entity
   parent: LightTube

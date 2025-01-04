@@ -30,7 +30,7 @@ namespace Content.Shared.Roles
         ///     The name of this job as displayed to players.
         /// </summary>
         [DataField("name")]
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; private set; } = string.Empty;
 
         [ViewVariables(VVAccess.ReadOnly)]
         public string LocalizedName => Loc.GetString(Name);
@@ -119,15 +119,8 @@ namespace Content.Shared.Roles
         [DataField("jobEntity", customTypeSerializer: typeof(PrototypeIdSerializer<EntityPrototype>))]
         public string? JobEntity = null;
 
-        /// <summary>
-        /// Entity to use as a preview in the lobby/character editor.
-        /// Same restrictions as <see cref="JobEntity"/> apply.
-        /// </summary>
         [DataField]
-        public EntProtoId? JobPreviewEntity = null;
-
-        [DataField]
-        public ProtoId<JobIconPrototype> Icon { get; set; } = "JobIconUnknown";
+        public ProtoId<JobIconPrototype> Icon { get; private set; } = "JobIconUnknown";
 
         [DataField("special", serverOnly: true)]
         public JobSpecial[] Special { get; private set; } = Array.Empty<JobSpecial>();

@@ -1,68 +1,66 @@
 using Robust.Shared.Audio;
-using Robust.Shared.GameStates;
 
 namespace Content.Shared.Electrocution;
 
 /// <summary>
 ///     Component for things that shock users on touch.
 /// </summary>
-[NetworkedComponent]
 public abstract partial class SharedElectrifiedComponent : Component
 {
-    [DataField]
+    [DataField, AutoNetworkedField]
     public bool Enabled = true;
 
     /// <summary>
     /// Should player get damage on collide
     /// </summary>
-    [DataField]
+    [DataField, AutoNetworkedField]
     public bool OnBump = true;
 
     /// <summary>
     /// Should player get damage on attack
     /// </summary>
-    [DataField]
+    [DataField, AutoNetworkedField]
     public bool OnAttacked = true;
 
     /// <summary>
     /// Should player get damage on interact with empty hand
     /// </summary>
-    [DataField]
+    [DataField, AutoNetworkedField]
     public bool OnHandInteract = true;
 
     /// <summary>
     /// Should player get damage on interact while holding an object in their hand
     /// </summary>
-    [DataField]
+    [DataField, AutoNetworkedField]
     public bool OnInteractUsing = true;
 
-    [DataField]
+    [DataField, AutoNetworkedField]
     public float ShockDamage = 7.5f;
 
     /// <summary>
     /// Shock time, in seconds.
     /// </summary>
-    [DataField]
+    [DataField, AutoNetworkedField]
     public float ShockTime = 8f;
 
-    [DataField]
+    [DataField, AutoNetworkedField]
     public SoundSpecifier ShockNoises = new SoundCollectionSpecifier("sparks");
 
-    [DataField]
+    [DataField, AutoNetworkedField]
     public SoundPathSpecifier AirlockElectrifyDisabled = new("/Audio/Machines/airlock_electrify_on.ogg");
 
-    [DataField]
+    [DataField, AutoNetworkedField]
     public SoundPathSpecifier AirlockElectrifyEnabled = new("/Audio/Machines/airlock_electrify_off.ogg");
 
-    [DataField]
+    [DataField, AutoNetworkedField]
     public bool PlaySoundOnShock = true;
 
-    [DataField]
+    [DataField, AutoNetworkedField]
     public float ShockVolume = 20;
 
-    [DataField]
+    [DataField, AutoNetworkedField]
     public float Probability = 1f;
 
-    [DataField]
+    [DataField, AutoNetworkedField]
     public bool IsWireCut = false;
 }

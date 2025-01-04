@@ -337,15 +337,10 @@ public sealed class AdminSystem : EntitySystem
 
     private void UpdatePanicBunker()
     {
-        var hasAdmins = false;
-        foreach (var admin in _adminManager.AllAdmins)
-        {
-            if (_adminManager.HasAdminFlag(admin, AdminFlags.Admin, includeDeAdmin: PanicBunker.CountDeadminnedAdmins))
-            {
-                hasAdmins = true;
-                break;
-            }
-        }
+        var admins = PanicBunker.CountDeadminnedAdmins
+            ? _adminManager.AllAdmins
+            : _adminManager.ActiveAdmins;
+        var hasAdmins = admins.Any();
 
         // TODO Fix order dependent Cvars
         // Please for the sake of my sanity don't make cvars & order dependent.

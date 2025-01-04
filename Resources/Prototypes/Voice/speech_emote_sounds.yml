@@ -34,8 +34,6 @@
       collection: Whistles
     Weh:
       collection: Weh
-    Hew:
-      collection: Hew
     Gasp:
       collection: MaleGasp
     DefaultDeathgasp:
@@ -76,8 +74,6 @@
       collection: Whistles
     Weh:
       collection: Weh
-    Hew:
-      collection: Hew
     Gasp:
       collection: FemaleGasp
     DefaultDeathgasp:
@@ -102,8 +98,6 @@
       collection: MaleCry
     Weh:
       collection: Weh
-    Hew:
-      collection: Hew
     Gasp:
       collection: MaleGasp
     DefaultDeathgasp:
@@ -128,8 +122,6 @@
       collection: FemaleCry
     Weh:
       collection: Weh
-    Hew:
-      collection: Hew
     Gasp:
       collection: FemaleGasp
     DefaultDeathgasp:
@@ -170,8 +162,6 @@
       collection: Whistles
     Weh:
       collection: Weh
-    Hew:
-      collection: Hew
     Gasp:
       collection: MaleGasp
     DefaultDeathgasp:
@@ -214,8 +204,6 @@
       collection: Whistles
     Weh:
       collection: Weh
-    Hew:
-      collection: Hew
     Gasp:
       collection: FemaleGasp
     DefaultDeathgasp:
@@ -245,16 +233,12 @@
       path: /Audio/Voice/Diona/diona_scream.ogg
     Laugh:
       collection: DionaLaugh
-    Chirp:
-      path: /Audio/Animals/nymph_chirp.ogg
     Honk:
       collection: BikeHorn
     CatMeow:
       collection: CatMeows
     Weh:
       collection: Weh
-    Hew:
-      collection: Hew
     Gasp:
       collection: MaleGasp
     DefaultDeathgasp:
@@ -279,8 +263,6 @@
       collection: CatMeows
     Weh:
       collection: Weh
-    Hew:
-      collection: Hew
     Gasp:
       collection: MaleGasp
     DefaultDeathgasp:
@@ -319,8 +301,6 @@
       collection: Whistles
     Weh:
       collection: Weh
-    Hew:
-      collection: Hew
     Gasp:
       collection: MaleGasp
     DefaultDeathgasp:
@@ -362,8 +342,6 @@
       collection: Whistles
     Weh:
       collection: Weh
-    Hew:
-      collection: Hew
     Gasp:
       collection: FemaleGasp
     DefaultDeathgasp:
@@ -391,8 +369,6 @@
       collection: CatMeows
     Weh:
       collection: Weh
-    Hew:
-      collection: Hew
     Gasp:
       collection: MaleGasp
     DefaultDeathgasp:
@@ -462,22 +438,6 @@
       path: /Audio/Voice/Diona/diona_salute.ogg
       params:
        volume: -5
-
-- type: emoteSounds
-  id: ReptilianBodyEmotes
-  sounds:
-    Thump:
-      path: /Audio/Voice/Reptilian/reptilian_tailthump.ogg
-      params:
-        variation: 0.125
-    Clap:
-      collection: Claps
-    Snap:
-      collection: Snaps
-      params:
-        volume: -6
-    Salute:
-      collection: Salutes
 
 # mobs
 - type: emoteSounds

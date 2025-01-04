@@ -30,6 +30,3 @@ reagent-desc-weh = Pure essence of lizard plush. Makes you Weh!
 
 reagent-name-nya = juice that makes you Nya
 reagent-desc-nya = Wow! This is just like one of those Japanese animes.
-
-reagent-name-hew = juice that makes you Hew
-reagent-desc-hew = Pure essence of inversed lizard plush. Makes you Hew!

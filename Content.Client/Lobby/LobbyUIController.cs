@@ -279,7 +279,7 @@ public sealed class LobbyUIController : UIController, IOnStateEntered<LobbyState
 
         _profileEditor.OnOpenGuidebook += _guide.OpenHelp;
 
-        _characterSetup = new CharacterSetupGui(_profileEditor);
+        _characterSetup = new CharacterSetupGui(EntityManager, _prototypeManager, _resourceCache, _preferencesManager, _profileEditor);
 
         _characterSetup.CloseButton.OnPressed += _ =>
         {
@@ -453,23 +453,8 @@ public sealed class LobbyUIController : UIController, IOnStateEntered<LobbyState
     /// </summary>
     public EntityUid LoadProfileEntity(HumanoidCharacterProfile? humanoid, JobPrototype? job, bool jobClothes)
     {
-        string? dummy = null;
+        EntityUid dummyEnt;
         bool isDummy = false;
-
-        EntProtoId? previewEntity = null;
-        if (humanoid != null && jobClothes)
-        {
-            job ??= GetPreferredJob(humanoid);
-
-            previewEntity = job.JobPreviewEntity ?? (EntProtoId?)job?.JobEntity;
-        }
-
-        if (previewEntity != null)
-        {
-            // Special type like borg or AI, do not spawn a human just spawn the entity.
-            isDummy = true;
-            dummy = previewEntity;
-        }
 
         if (humanoid is not null)
         {
@@ -477,7 +462,7 @@ public sealed class LobbyUIController : UIController, IOnStateEntered<LobbyState
             var jobLoadout = LoadoutSystem.GetJobPrototype(job.ID);
             humanoid.Loadouts.TryGetValue(jobLoadout, out var loadoutValue);
 
-            dummy ??= _prototypeManager.Index<SpeciesPrototype>(humanoid.Species).DollPrototype;
+            var dummy = _prototypeManager.Index<SpeciesPrototype>(humanoid.Species).DollPrototype;
 
             if (loadoutValue != null)
             {
@@ -490,22 +475,22 @@ public sealed class LobbyUIController : UIController, IOnStateEntered<LobbyState
                             continue;
                         }
 
-                        if (loadoutProto.UseDummyEntityLobbyDummy && loadoutProto.DummyEntity != null)
+                        if (loadoutProto.EntityDummy != String.Empty && loadoutProto.EntityDummy != null)
                         {
                             isDummy = true;
-                            dummy = loadoutProto.DummyEntity.Value;
+                            dummy = loadoutProto.EntityDummy;
                             break;
                         }
                     }
                 }
             }
+
+            dummyEnt = EntityManager.SpawnEntity(dummy, MapCoordinates.Nullspace);
         }
         else
         {
-            dummy ??= _prototypeManager.Index<SpeciesPrototype>(SharedHumanoidAppearanceSystem.DefaultSpecies).DollPrototype;
+            dummyEnt = EntityManager.SpawnEntity(_prototypeManager.Index<SpeciesPrototype>(SharedHumanoidAppearanceSystem.DefaultSpecies).DollPrototype, MapCoordinates.Nullspace);
         }
-
-        var dummyEnt = EntityManager.SpawnEntity(dummy, MapCoordinates.Nullspace);
 
         if (!isDummy)
         {
@@ -514,8 +499,6 @@ public sealed class LobbyUIController : UIController, IOnStateEntered<LobbyState
 
         if (humanoid != null && jobClothes && job != null)
         {
-            DebugTools.Assert(job != null);
-
             GiveDummyJobClothes(dummyEnt, humanoid, job);
 
             if (_prototypeManager.HasIndex<RoleLoadoutPrototype>(LoadoutSystem.GetJobPrototype(job.ID)))

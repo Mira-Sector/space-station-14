@@ -367,7 +367,7 @@
       [ Head ] : { coefficients: { Blunt: 0.90, Slash: 0.90, Piercing: 0.95, Heat: 0.95 } }
 
 - type: entity
-  parent: [ ClothingMaskGas, BaseSecurityCargoContraband ]
+  parent: [ ClothingMaskGas, BaseRestrictedContraband ]
   id: ClothingMaskGasMerc
   name: mercenary gas mask
   description: Slightly outdated, but reliable military-style gas mask.

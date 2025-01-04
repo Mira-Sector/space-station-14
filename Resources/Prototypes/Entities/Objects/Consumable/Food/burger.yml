@@ -405,7 +405,7 @@
   - type: SolutionContainerManager
     solutions:
       food:
-        maxVol: 20
+        maxVol: 15
         reagents:
         - ReagentId: Nutriment
           Quantity: 4
@@ -631,7 +631,7 @@
   - type: SolutionContainerManager
     solutions:
       food:
-        maxVol: 20
+        maxVol: 15
         reagents:
         - ReagentId: Nutriment
           Quantity: 6
@@ -641,9 +641,6 @@
           Quantity: 5
         - ReagentId: Vitamin
           Quantity: 1
-  - type: Tag
-    tags:
-    - Meat
 
 # Tastes like bun, HEAT.
 
@@ -934,7 +931,7 @@
   - type: SolutionContainerManager
     solutions:
       food:
-        maxVol: 90
+        maxVol: 55
         reagents:
         - ReagentId: Nutriment
           Quantity: 44

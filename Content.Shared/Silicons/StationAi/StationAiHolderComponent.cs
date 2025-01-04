@@ -1,6 +1,5 @@
 using Content.Shared.Containers.ItemSlots;
 using Robust.Shared.GameStates;
-using Robust.Shared.Utility;
 
 namespace Content.Shared.Silicons.StationAi;
 
@@ -14,10 +13,4 @@ public sealed partial class StationAiHolderComponent : Component
 
     [DataField]
     public ItemSlot Slot = new();
-
-    [DataField]
-    public bool UpdateSprite = true;
-
-    [DataField]
-    public Dictionary<StationAiState, Dictionary<StationAiVisualLayers, SpriteSpecifier>> Visuals = new();
 }
