@@ -23,7 +23,6 @@ using Content.Shared.GameTicking;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Movement.Components;
 using Content.Shared.Parallax.Biomes;
-using Content.Shared.Preferences;
 using Content.Shared.Roles;
 using Content.Shared.Salvage;
 using Content.Shared.Shuttles.Components;
@@ -357,8 +356,8 @@ public sealed class ArrivalsSystem : EntitySystem
             return;
         }
 
-        if (ev.Job != null && ev.Job.Prototype != null &&
-        _protoManager.TryIndex<JobPrototype>(ev.Job.Prototype, out var jobProto) &&
+        if (ev.Job != null &&
+        _protoManager.TryIndex<JobPrototype>(ev.Job, out var jobProto) &&
         jobProto != null &&
         jobProto.JobEntity != null)
         {

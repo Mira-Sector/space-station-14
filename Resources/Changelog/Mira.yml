@@ -957,5 +957,35 @@ Entries:
   changes:
   - message: Geras and other polymorphs now retain their parents damage when transfered
     type: Fix
-  id: 142
+  id: 143
   time: '2024-12-22T22:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Removed 10 seconds succumb delay
+    type: Remove
+  - message: Singularity and tesla no longer have a failsafe
+    type: Remove
+  - message: Bola stun damage has been readded in a reduced form
+    type: Add
+  id: 144
+  time: '2024-12-23T08:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Removed the orange lights
+    type: Remove
+  - message: Service radio now works once again
+    type: Fix
+  - message: Cyborgs are now named properly
+    type: Fix
+  - message: Readded dragging items out of containers
+    type: Add
+  - message: Dragging items out of containers applies forensics
+    type: Tweak
+  id: 145
+  time: '2025-01-03T00:01:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added AI screen loadouts
+    type: Add
+  id: 146
+  time: '2025-01-03T08:35:00.0000000+00:00'

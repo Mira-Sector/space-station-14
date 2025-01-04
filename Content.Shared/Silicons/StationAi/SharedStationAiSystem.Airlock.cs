@@ -33,7 +33,7 @@ public abstract partial class SharedStationAiSystem
     }
 
     /// <summary>
-    /// Attempts to bolt door. If wire was cut (AI) or its not powered - notifies AI and does nothing.
+    /// Attempts to toggle the door's emergency access. If wire was cut (AI) or its not powered - notifies AI and does nothing.
     /// </summary>
     private void OnAirlockEmergencyAccess(EntityUid ent, AirlockComponent component, StationAiEmergencyAccessEvent args)
     {
@@ -47,7 +47,7 @@ public abstract partial class SharedStationAiSystem
     }
 
     /// <summary>
-    /// Attempts to bolt door. If wire was cut (AI or for one of power-wires) or its not powered - notifies AI and does nothing.
+    /// Attempts to electrify the door. If wire was cut (AI or for one of power-wires) or its not powered - notifies AI and does nothing.
     /// </summary>
     public void OnElectrified(EntityUid ent, SharedElectrifiedComponent component, StationAiElectrifiedEvent args)
     {

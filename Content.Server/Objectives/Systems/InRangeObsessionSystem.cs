@@ -43,18 +43,16 @@ public sealed class InRangeObsessionSystem : EntitySystem
             if (_gameTiming.CurTime <= comp.NextCheck)
                 continue;
 
+            if (comp.Mind.OwnedEntity == null)
+                continue;
+
             var checkRateTime = TimeSpan.FromSeconds(CheckRate);
             comp.NextCheck = _gameTiming.CurTime + checkRateTime;
 
-            if (!TryComp<MindComponent>(comp.MindId, out var obsessedMindComp) ||
-                obsessedMindComp.CurrentEntity == null)
-                continue;
-
-            var obsesserEnt = obsessedMindComp.CurrentEntity;
-
-            if (!TryComp<ObsessedRoleComponent>(comp.MindId, out var roleComp) ||
+            if (!_obsession.TryGetRole(comp.Mind, out var roleComp) ||
                 roleComp.Obsession == null)
                 continue;
+
 
             if (!TryComp<MindComponent>(roleComp.Obsession, out var obsessionMindComp) ||
                 obsessionMindComp == null)
@@ -67,24 +65,26 @@ public sealed class InRangeObsessionSystem : EntitySystem
             var obsessionEnt = obsessionMindComp.CurrentEntity;
 
 
-                if (_interaction.InRangeAndAccessible(obsesserEnt.Value, obsessionEnt.Value, Range, CollisionMask))
+                if (_interaction.InRangeAndAccessible(comp.Mind.OwnedEntity.Value, obsessionEnt.Value, Range, CollisionMask))
                 comp.TimeSpent += checkRateTime;
         }
     }
 
     private void OnAssigned(EntityUid uid, InRangeObsessionComponent comp, ref ObjectiveAssignedEvent args)
     {
-        _obsession.PickObsession(args.MindId);
+        if (!_obsession.TryGetRole(args.Mind, out var roleComp))
+            return;
 
-        if (!TryComp<ObsessedRoleComponent>(args.MindId, out var roleComp) ||
-            roleComp == null ||
-            roleComp.Obsession == null)
+        _obsession.PickObsession(args.MindId, roleComp, args.Mind);
+
+        if (roleComp.Obsession == null)
         {
             args.Cancelled = true;
             return;
         }
 
         comp.MindId = args.MindId;
+        comp.Mind = args.Mind;
         comp.TimeNeeded = TimeSpan.FromMinutes(_random.Next((int) comp.Min, (int) comp.Max));
         comp.TimeSpent = TimeSpan.Zero;
         comp.NextCheck = _gameTiming.CurTime;
@@ -92,8 +92,7 @@ public sealed class InRangeObsessionSystem : EntitySystem
 
     private void OnAfterAssigned(EntityUid uid, InRangeObsessionComponent comp, ref ObjectiveAfterAssignEvent args)
     {
-        if (!TryComp<ObsessedRoleComponent>(args.MindId, out var roleComp) ||
-            roleComp == null ||
+        if (!_obsession.TryGetRole(args.Mind, out var roleComp) ||
             roleComp.Obsession == null ||
             comp.TimeNeeded == TimeSpan.Zero)
         {

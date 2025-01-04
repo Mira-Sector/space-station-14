@@ -26,9 +26,8 @@
       startingGear: ThiefGear
       components:
       - type: Pacified
-      mindComponents:
-      - type: ThiefRole
-        prototype: Thief
+      mindRoles:
+      - MindRoleThief
       briefing:
         sound: "/Audio/Misc/thief_greeting.ogg"
 
@@ -48,9 +47,8 @@
       briefing:
         text: obsessed-role-greeting
         color: LightSalmon
-      mindComponents:
-      - type: ObsessedRole
-        prototype: Obsessed
+      mindRoles:
+      - MindRoleObsessed
   - type: AntagObjectives
     objectives:
     - KillObsessionObjective
