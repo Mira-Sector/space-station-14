@@ -1,4 +1,4 @@
-﻿# Generic borg
+# Generic borg
 - type: borgType
   id: generic
 
@@ -122,6 +122,29 @@
   radioChannels:
   - Science
   - Service
+
+  addComponents:
+  - type: Slippery
+    superSlippery: true
+  - type: Absorbent
+  - type: AbsorbentToggle
+  - type: Spillable
+    solution: absorbed
+  - type: DrawableSolution
+    solution: absorbed
+  - type: RefillableSolution
+    solution: absorbed
+  - type: DrainableSolution
+    solution: absorbed
+  - type: ExaminableSolution
+    solution: absorbed
+  - type: SolutionContainerManager
+    solutions:
+      absorbed:
+        maxVol: 750
+        reagents:
+        - ReagentId: Water
+          Quantity: 750
 
   # Visual
   inventoryTemplateId: borgShort
