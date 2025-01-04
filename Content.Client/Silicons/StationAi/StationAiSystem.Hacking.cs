@@ -27,7 +27,7 @@ public sealed partial class StationAiSystem
             {
                 Sprite = component.RadialSprite,
                 Tooltip = component.RadialTooltip,
-                Event = new StationAiHackEvent()
+                Event = new StationAiHackAttemptEvent()
             }
         );
     }

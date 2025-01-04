@@ -16,6 +16,9 @@ public sealed partial class StationAiHackableComponent : Component
     public float Points = 10f;
 
     [DataField]
+    public TimeSpan Delay = TimeSpan.FromSeconds(4f);
+
+    [DataField]
     public SpriteSpecifier? RadialSprite;
 
     [DataField("radialTooltip")]

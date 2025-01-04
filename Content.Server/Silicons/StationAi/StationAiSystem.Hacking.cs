@@ -16,7 +16,7 @@ public sealed partial class StationAiSystem
     {
         SubscribeLocalEvent<StationAiCanHackComponent, StationAiShopActionEvent>(OnShop);
 
-        SubscribeLocalEvent<StationAiHackableComponent, StationAiHackEvent>((u, c, e) => OnHack(u, c, e.User));
+        SubscribeLocalEvent<StationAiHackableComponent, StationAiHackDoAfterEvent>(OnDoAfter);
         SubscribeLocalEvent<StationAiHackableComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<StationAiHackableComponent, PowerChangedEvent>(OnPowerChanged);
     }
@@ -29,13 +29,19 @@ public sealed partial class StationAiSystem
         _store.ToggleUi(uid, uid, store);
     }
 
+    private void OnDoAfter(EntityUid uid, StationAiHackableComponent component, StationAiHackDoAfterEvent args)
+    {
+        if (args.Cancelled)
+            return;
+
+        OnHack(uid, component, args.User);
+    }
+
     private void OnHack(EntityUid uid, StationAiHackableComponent component, EntityUid user)
     {
-        // TODO: add a delay to hacking
         if (!component.Enabled || !component.IsPowered || component.Hacked)
             return;
 
-        // TODO: show a popup
         if (!HasComp<StationAiCanHackComponent>(user))
             return;
 
