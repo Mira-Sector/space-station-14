@@ -11710,7 +11710,7 @@ entities:
       pos: -20.5,55.5
       parent: 12
     - type: Door
-      secondsUntilStateChange: -13833.238
+      secondsUntilStateChange: -13527.483
       state: Opening
     - type: DeviceLinkSink
       invokeCounter: 1
@@ -12399,7 +12399,7 @@ entities:
       pos: 39.5,20.5
       parent: 12
     - type: Door
-      secondsUntilStateChange: -8234.166
+      secondsUntilStateChange: -7928.411
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -57507,11 +57507,6 @@ entities:
       parent: 12
 - proto: CarpetGreen
   entities:
-  - uid: 15008
-    components:
-    - type: Transform
-      pos: 18.5,48.5
-      parent: 12
   - uid: 17122
     components:
     - type: Transform
@@ -57648,21 +57643,6 @@ entities:
     components:
     - type: Transform
       pos: 24.5,40.5
-      parent: 12
-  - uid: 27973
-    components:
-    - type: Transform
-      pos: 17.5,48.5
-      parent: 12
-  - uid: 27974
-    components:
-    - type: Transform
-      pos: 17.5,47.5
-      parent: 12
-  - uid: 27990
-    components:
-    - type: Transform
-      pos: 18.5,47.5
       parent: 12
 - proto: CarpetOrange
   entities:
@@ -65734,18 +65714,6 @@ entities:
     - type: Transform
       pos: -24.45467,34.820183
       parent: 12
-- proto: ClothingHeadHatSantahat
-  entities:
-  - uid: 27991
-    components:
-    - type: Transform
-      pos: 30.5,49.5
-      parent: 12
-  - uid: 27992
-    components:
-    - type: Transform
-      pos: 32.5,51.5
-      parent: 12
 - proto: ClothingHeadHatTophat
   entities:
   - uid: 23553
@@ -65783,13 +65751,6 @@ entities:
     components:
     - type: Transform
       pos: 55.53297,28.077326
-      parent: 12
-- proto: ClothingHeadHatXmasCrown
-  entities:
-  - uid: 27996
-    components:
-    - type: Transform
-      pos: 21.62103,45.3504
       parent: 12
 - proto: ClothingHeadHelmetBone
   entities:
@@ -66105,18 +66066,6 @@ entities:
     components:
     - type: Transform
       pos: -24.48592,34.466015
-      parent: 12
-- proto: ClothingOuterSanta
-  entities:
-  - uid: 15016
-    components:
-    - type: Transform
-      pos: 32.5,51.5
-      parent: 12
-  - uid: 27989
-    components:
-    - type: Transform
-      pos: 30.5,49.5
       parent: 12
 - proto: ClothingOuterStraightjacket
   entities:
@@ -66648,6 +66597,17 @@ entities:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 18.5,30.5
+      parent: 12
+  - uid: 15008
+    components:
+    - type: Transform
+      pos: 17.5,49.5
+      parent: 12
+  - uid: 15016
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 17.5,47.5
       parent: 12
   - uid: 15669
     components:
@@ -78870,13 +78830,6 @@ entities:
     - type: Physics
       canCollide: False
     - type: InsideEntityStorage
-- proto: DrinkGlassWhite
-  entities:
-  - uid: 27993
-    components:
-    - type: Transform
-      pos: 21.65228,46.61298
-      parent: 12
 - proto: DrinkGoldenCup
   entities:
   - uid: 10942
@@ -84044,13 +83997,6 @@ entities:
     - type: Transform
       pos: -7.8905973,-55.743637
       parent: 12
-- proto: FloraTreeChristmas02
-  entities:
-  - uid: 15007
-    components:
-    - type: Transform
-      pos: 17.742887,47.85044
-      parent: 12
 - proto: FloraTreeLarge01
   entities:
   - uid: 16656
@@ -84119,18 +84065,6 @@ entities:
     components:
     - type: Transform
       pos: 57.653427,58.37039
-      parent: 12
-- proto: FoodBakedCookieRaisin
-  entities:
-  - uid: 27994
-    components:
-    - type: Transform
-      pos: 21.37103,46.14423
-      parent: 12
-  - uid: 27995
-    components:
-    - type: Transform
-      pos: 21.480406,45.878605
       parent: 12
 - proto: FoodBowlBig
   entities:
@@ -150231,6 +150165,12 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 20.5,53.5
       parent: 12
+  - uid: 15007
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 17.5,48.5
+      parent: 12
   - uid: 15087
     components:
     - type: Transform
@@ -174809,148 +174749,6 @@ entities:
     - type: Transform
       pos: 74.50637,-1.4770226
       parent: 12
-- proto: XmasLights
-  entities:
-  - uid: 27975
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 17.5,44.5
-      parent: 12
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27976
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 17.5,45.5
-      parent: 12
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27977
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 17.5,46.5
-      parent: 12
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27978
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 17.5,47.5
-      parent: 12
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27979
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 17.5,51.5
-      parent: 12
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27980
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 17.5,52.5
-      parent: 12
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27981
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 17.5,53.5
-      parent: 12
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27982
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 17.5,54.5
-      parent: 12
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27983
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 27.5,49.5
-      parent: 12
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27984
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 27.5,48.5
-      parent: 12
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27985
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 27.5,47.5
-      parent: 12
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27986
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 27.5,46.5
-      parent: 12
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27987
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 27.5,45.5
-      parent: 12
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27988
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 27.5,51.5
-      parent: 12
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
 - proto: Zipties
   entities:
   - uid: 13512

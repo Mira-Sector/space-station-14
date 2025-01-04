@@ -12215,7 +12215,7 @@ entities:
       pos: -9.5,60.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -8968.666
+      secondsUntilStateChange: -8732.537
       state: Opening
   - uid: 160
     components:
@@ -13762,7 +13762,7 @@ entities:
       pos: 0.5,-22.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -90409.36
+      secondsUntilStateChange: -90173.23
       state: Opening
   - uid: 439
     components:
@@ -14110,7 +14110,7 @@ entities:
       pos: 24.5,72.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -111923.44
+      secondsUntilStateChange: -111687.305
       state: Opening
   - uid: 501
     components:
@@ -14137,7 +14137,7 @@ entities:
       pos: 18.5,68.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -127796.86
+      secondsUntilStateChange: -127560.73
       state: Opening
   - uid: 505
     components:
@@ -14152,7 +14152,7 @@ entities:
       pos: 23.5,72.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -111923.875
+      secondsUntilStateChange: -111687.74
       state: Opening
   - uid: 507
     components:
@@ -14182,7 +14182,7 @@ entities:
       pos: 10.5,6.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -113372.234
+      secondsUntilStateChange: -113136.1
       state: Opening
   - uid: 511
     components:
@@ -14190,7 +14190,7 @@ entities:
       pos: -0.5,15.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -113365.94
+      secondsUntilStateChange: -113129.805
       state: Opening
   - uid: 512
     components:
@@ -14200,7 +14200,7 @@ entities:
       pos: 2.5,7.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -112826.91
+      secondsUntilStateChange: -112590.77
       state: Opening
   - uid: 513
     components:
@@ -14209,7 +14209,7 @@ entities:
       pos: 11.5,3.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -150587.3
+      secondsUntilStateChange: -150351.17
       state: Opening
   - uid: 514
     components:
@@ -14217,7 +14217,7 @@ entities:
       pos: 5.5,19.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -113382.04
+      secondsUntilStateChange: -113145.91
       state: Opening
   - uid: 515
     components:
@@ -14225,7 +14225,7 @@ entities:
       pos: -0.5,16.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -113366.17
+      secondsUntilStateChange: -113130.04
       state: Opening
   - uid: 516
     components:
@@ -14233,7 +14233,7 @@ entities:
       pos: 13.5,13.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -113380.47
+      secondsUntilStateChange: -113144.336
       state: Opening
   - uid: 517
     components:
@@ -14241,7 +14241,7 @@ entities:
       pos: 14.5,13.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -113380.77
+      secondsUntilStateChange: -113144.64
       state: Opening
 - proto: AirlockScienceLocked
   entities:
@@ -14251,7 +14251,7 @@ entities:
       pos: 27.5,13.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -113342.27
+      secondsUntilStateChange: -113106.14
       state: Opening
   - uid: 519
     components:
@@ -14259,7 +14259,7 @@ entities:
       pos: 30.5,13.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -113340.7
+      secondsUntilStateChange: -113104.57
       state: Opening
   - uid: 520
     components:
@@ -14268,7 +14268,7 @@ entities:
       pos: 17.5,15.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -113379.44
+      secondsUntilStateChange: -113143.305
       state: Opening
   - uid: 521
     components:
@@ -14276,7 +14276,7 @@ entities:
       pos: 30.5,12.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -113340.97
+      secondsUntilStateChange: -113104.836
       state: Opening
   - uid: 522
     components:
@@ -14284,7 +14284,7 @@ entities:
       pos: 27.5,12.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -113342.57
+      secondsUntilStateChange: -113106.44
       state: Opening
   - uid: 523
     components:
@@ -14292,7 +14292,7 @@ entities:
       pos: 15.5,19.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -154673.14
+      secondsUntilStateChange: -154437.02
       state: Opening
   - uid: 524
     components:
@@ -14300,7 +14300,7 @@ entities:
       pos: 11.5,19.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -113383.836
+      secondsUntilStateChange: -113147.7
       state: Opening
   - uid: 525
     components:
@@ -14309,7 +14309,7 @@ entities:
       pos: 17.5,14.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -113379.7
+      secondsUntilStateChange: -113143.57
       state: Opening
   - uid: 526
     components:
@@ -14318,7 +14318,7 @@ entities:
       pos: 22.5,15.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -113377.97
+      secondsUntilStateChange: -113141.836
       state: Opening
   - uid: 527
     components:
@@ -14327,7 +14327,7 @@ entities:
       pos: 22.5,14.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -113377.7
+      secondsUntilStateChange: -113141.57
       state: Opening
 - proto: AirlockSecurity
   entities:
@@ -67798,13 +67798,6 @@ entities:
     - type: Transform
       pos: -44.291927,50.840736
       parent: 2
-- proto: ClothingHeadHatSantahat
-  entities:
-  - uid: 27613
-    components:
-    - type: Transform
-      pos: -16.5,-6.5
-      parent: 2
 - proto: ClothingHeadHatSecsoftFlipped
   entities:
   - uid: 10445
@@ -68317,13 +68310,6 @@ entities:
     - type: Transform
       pos: 6.1979327,-51.567287
       parent: 2
-- proto: ClothingOuterSanta
-  entities:
-  - uid: 27612
-    components:
-    - type: Transform
-      pos: -16.5,-6.5
-      parent: 2
 - proto: ClothingOuterSkub
   entities:
   - uid: 10523
@@ -68682,6 +68668,18 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 5.5,-17.5
+      parent: 2
+  - uid: 10575
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -18.5,-9.5
+      parent: 2
+  - uid: 10576
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: -19.5,-10.5
       parent: 2
   - uid: 10577
     components:
@@ -80026,21 +80024,6 @@ entities:
     - type: Transform
       pos: 7.345516,26.459518
       parent: 2
-  - uid: 27617
-    components:
-    - type: Transform
-      pos: -22.422976,-13.274075
-      parent: 2
-  - uid: 27618
-    components:
-    - type: Transform
-      pos: -31.516726,-6.5084496
-      parent: 2
-  - uid: 27619
-    components:
-    - type: Transform
-      pos: -22.922976,-9.16187
-      parent: 2
 - proto: DrinkTeapot
   entities:
   - uid: 12423
@@ -80052,11 +80035,6 @@ entities:
     components:
     - type: Transform
       pos: 7.345516,26.751186
-      parent: 2
-  - uid: 27616
-    components:
-    - type: Transform
-      pos: -22.610476,-9.430325
       parent: 2
 - proto: DrinkVodkaBottleFull
   entities:
@@ -84090,7 +84068,7 @@ entities:
       pos: 19.5,62.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -151168.52
+      secondsUntilStateChange: -150932.39
       state: Closing
   - uid: 12990
     components:
@@ -85174,13 +85152,6 @@ entities:
     - type: Transform
       pos: -7.91202,-22.458336
       parent: 2
-- proto: FloraTreeChristmas02
-  entities:
-  - uid: 10575
-    components:
-    - type: Transform
-      pos: -18.691158,-10.69261
-      parent: 2
 - proto: FloraTreeLarge06
   entities:
   - uid: 13172
@@ -85229,13 +85200,6 @@ entities:
     components:
     - type: Transform
       pos: -27.541155,39.32159
-      parent: 2
-- proto: FoodBakedCookie
-  entities:
-  - uid: 27615
-    components:
-    - type: Transform
-      pos: -23.44797,-9.355608
       parent: 2
 - proto: FoodBanana
   entities:
@@ -85564,11 +85528,6 @@ entities:
     components:
     - type: Transform
       pos: 47.760105,-41.25114
-      parent: 2
-  - uid: 27614
-    components:
-    - type: Transform
-      pos: -23.44797,-9.293108
       parent: 2
 - proto: FoodPlateTin
   entities:
@@ -120795,7 +120754,7 @@ entities:
       pos: 29.5,63.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -126939.16
+      secondsUntilStateChange: -126703.02
       state: Opening
 - proto: HospitalCurtainsOpen
   entities:
@@ -124301,6 +124260,11 @@ entities:
       parent: 2
 - proto: Matchbox
   entities:
+  - uid: 18787
+    components:
+    - type: Transform
+      pos: -18.372335,-10.521568
+      parent: 2
   - uid: 18788
     components:
     - type: Transform
@@ -143856,6 +143820,13 @@ entities:
     - type: Transform
       pos: -8.418781,-61.47922
       parent: 2
+- proto: SmokingPipeFilledCannabis
+  entities:
+  - uid: 21953
+    components:
+    - type: Transform
+      pos: -18.599516,-10.280319
+      parent: 2
 - proto: SoapOmega
   entities:
   - uid: 21954
@@ -150547,6 +150518,12 @@ entities:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: -22.5,-6.5
+      parent: 2
+  - uid: 23086
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: -18.5,-10.5
       parent: 2
   - uid: 23087
     components:
@@ -174572,160 +174549,6 @@ entities:
     - type: Transform
       pos: 15.463022,24.554256
       parent: 2
-- proto: XmasLights
-  entities:
-  - uid: 10576
-    components:
-    - type: Transform
-      pos: -23.5,-6.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 18787
-    components:
-    - type: Transform
-      pos: -25.5,-6.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 21953
-    components:
-    - type: Transform
-      pos: -24.5,-6.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 23086
-    components:
-    - type: Transform
-      pos: -26.5,-6.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27600
-    components:
-    - type: Transform
-      pos: -22.5,-6.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27601
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -25.5,-9.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27602
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -25.5,-10.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27603
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -25.5,-12.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27604
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -25.5,-15.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27605
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -20.5,-17.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27606
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -19.5,-17.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27607
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -18.5,-17.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27608
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -17.5,-17.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27609
-    components:
-    - type: Transform
-      pos: -19.5,-12.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27610
-    components:
-    - type: Transform
-      pos: -18.5,-12.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 27611
-    components:
-    - type: Transform
-      pos: -17.5,-12.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
 - proto: XylophoneInstrument
   entities:
   - uid: 27437

@@ -10985,7 +10985,7 @@ entities:
       pos: -20.5,-5.5
       parent: 30
     - type: Door
-      secondsUntilStateChange: -23359.332
+      secondsUntilStateChange: -23052.732
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -50723,6 +50723,13 @@ entities:
     - type: Transform
       pos: 4.691009,-15.314314
       parent: 30
+- proto: ClothingHeadHatFedoraGrey
+  entities:
+  - uid: 19762
+    components:
+    - type: Transform
+      pos: 5.49203,10.427187
+      parent: 30
 - proto: ClothingHeadHatGreensoft
   entities:
   - uid: 21359
@@ -50825,23 +50832,6 @@ entities:
     - type: Transform
       pos: 19.385248,46.62064
       parent: 30
-- proto: ClothingHeadHatSantahat
-  entities:
-  - uid: 20961
-    components:
-    - type: Transform
-      pos: -10.5,18.5
-      parent: 30
-  - uid: 20966
-    components:
-    - type: Transform
-      pos: -10.5,18.5
-      parent: 30
-  - uid: 20981
-    components:
-    - type: Transform
-      pos: -3.4962728,12.426138
-      parent: 30
 - proto: ClothingHeadHatTophat
   entities:
   - uid: 19620
@@ -50937,13 +50927,6 @@ entities:
     components:
     - type: Transform
       pos: 35.44555,43.82996
-      parent: 30
-- proto: ClothingHeadHatXmasCrown
-  entities:
-  - uid: 20979
-    components:
-    - type: Transform
-      pos: -4.5,12.5
       parent: 30
 - proto: ClothingHeadHelmetBasic
   entities:
@@ -51331,18 +51314,6 @@ entities:
     components:
     - type: Transform
       pos: -75.60953,-47.39969
-      parent: 30
-- proto: ClothingOuterSanta
-  entities:
-  - uid: 20888
-    components:
-    - type: Transform
-      pos: -10.5,18.5
-      parent: 30
-  - uid: 20960
-    components:
-    - type: Transform
-      pos: -10.5,18.5
       parent: 30
 - proto: ClothingOuterSuitChicken
   entities:
@@ -51741,6 +51712,11 @@ entities:
     components:
     - type: Transform
       pos: -51.5,66.5
+      parent: 30
+  - uid: 4439
+    components:
+    - type: Transform
+      pos: 5.5,10.5
       parent: 30
   - uid: 4440
     components:
@@ -63127,13 +63103,6 @@ entities:
     - type: Transform
       pos: -72.29823,-43.406895
       parent: 30
-- proto: FloraTreeChristmas02
-  entities:
-  - uid: 4441
-    components:
-    - type: Transform
-      pos: 6.187955,10.130682
-      parent: 30
 - proto: FloraTreeLarge03
   entities:
   - uid: 22215
@@ -63239,13 +63208,6 @@ entities:
     components:
     - type: Transform
       pos: -11.54011,18.632044
-      parent: 30
-- proto: FoodCakeChristmasSlice
-  entities:
-  - uid: 20985
-    components:
-    - type: Transform
-      pos: -0.55838966,9.609131
       parent: 30
 - proto: FoodCartCold
   entities:
@@ -63484,11 +63446,6 @@ entities:
     components:
     - type: Transform
       pos: -51.490517,-46.331123
-      parent: 30
-  - uid: 20983
-    components:
-    - type: Transform
-      pos: -0.57401466,9.671631
       parent: 30
 - proto: FoodPlateSmallTrash
   entities:
@@ -121686,6 +121643,13 @@ entities:
     - type: Transform
       pos: -52.5,64.5
       parent: 30
+  - uid: 4441
+    components:
+    - type: MetaData
+      name: cigarette machine
+    - type: Transform
+      pos: 6.5,10.5
+      parent: 30
   - uid: 4954
     components:
     - type: MetaData
@@ -139304,149 +139268,4 @@ entities:
     - type: Transform
       pos: -6.388359,64.59328
       parent: 30
-- proto: XmasLights
-  entities:
-  - uid: 4439
-    components:
-    - type: Transform
-      pos: 4.5,10.5
-      parent: 30
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 19762
-    components:
-    - type: Transform
-      pos: 5.5,10.5
-      parent: 30
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 20872
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -6.5,6.5
-      parent: 30
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 20873
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 6.5,6.5
-      parent: 30
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 20874
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -0.5,6.5
-      parent: 30
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 20875
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 2.5,6.5
-      parent: 30
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 20876
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 3.5,6.5
-      parent: 30
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 20877
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -4.5,6.5
-      parent: 30
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 20878
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -7.5,6.5
-      parent: 30
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 20879
-    components:
-    - type: Transform
-      pos: 6.5,10.5
-      parent: 30
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 20882
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -8.5,6.5
-      parent: 30
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 20883
-    components:
-    - type: Transform
-      pos: -9.5,11.5
-      parent: 30
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 20885
-    components:
-    - type: Transform
-      pos: -8.5,11.5
-      parent: 30
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 20886
-    components:
-    - type: Transform
-      pos: -6.5,11.5
-      parent: 30
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 20887
-    components:
-    - type: Transform
-      pos: 1.5,11.5
-      parent: 30
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
 ...

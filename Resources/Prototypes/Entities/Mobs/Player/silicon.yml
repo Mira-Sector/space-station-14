@@ -37,7 +37,6 @@
   - type: ActionGrant
     actions:
     - ActionJumpToCore
-    - ActionShowJobIcons
     - ActionSurvCameraLights
     - ActionAIViewLaws
   - type: UserInterface
@@ -75,7 +74,33 @@
   - type: CommunicationsConsole
     canShuttle: false
     title: comms-console-announcement-title-station-ai
-    color: "#2ed2fd"
+    color: "#5ed7aa"
+  - type: HolographicAvatar
+    layerData:
+    - sprite: Mobs/Silicon/station_ai.rsi
+      state: default
+  - type: ShowJobIcons
+
+- type: entity
+  id: AiHeldIntellicard
+  description: Components added / removed from an entity that gets inserted into an Intellicard.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: IntrinsicRadioReceiver
+  - type: IntrinsicRadioTransmitter
+    channels:
+    - Binary
+  - type: ActiveRadio
+    channels:
+    - Binary
+    - Common
+  - type: ActionGrant
+    actions:
+    - ActionAIViewLaws
+  - type: UserInterface
+    interfaces:
+      enum.SiliconLawsUiKey.Key:
+        type: SiliconLawBoundUserInterface
 
 # Ai
 - type: entity
@@ -87,7 +112,8 @@
   - type: StationAiHolder
     slot:
       name: station-ai-mind-slot
-      locked: true
+      locked: false
+      disableEject: true
       whitelist:
         tags:
         - StationAi
@@ -210,16 +236,16 @@
     laws: OverlordLawset
 
 - type: entity
-  id: DungeonMasterCircuitBoard
+  id: GameMasterCircuitBoard
   parent: BaseElectronics
-  name: law board (Dungeon Master)
-  description: An electronics board containing the Dungeon Master lawset.
+  name: law board (Game Master)
+  description: An electronics board containing the Game Master lawset.
   components:
   - type: Sprite
     sprite: Objects/Misc/module.rsi
     state: std_mod
   - type: SiliconLawProvider
-    laws: DungeonMasterLawset
+    laws: GameMasterLawset
 
 - type: entity
   id: ArtistCircuitBoard
@@ -235,7 +261,7 @@
 
 - type: entity
   id: AntimovCircuitBoard
-  parent: BaseElectronics
+  parent: [BaseElectronics, BaseSyndicateContraband]
   name: law board (Antimov)
   description: An electronics board containing the Antimov lawset.
   components:
@@ -244,6 +270,7 @@
     state: std_mod
   - type: SiliconLawProvider
     laws: AntimovLawset
+    lawUploadSound: /Audio/Ambience/Antag/silicon_lawboard_antimov.ogg
 
 - type: entity
   id: NutimovCircuitBoard
@@ -260,27 +287,55 @@
 # Items
 - type: entity
   id: Intellicard
-  name: Intellicard
+  name: intellicard
   description: A storage device for AIs.
   parent:
   - BaseItem
   - AiHolder
   suffix: Empty
   components:
+  - type: ContainerComp
+    proto: AiHeldIntellicard
+    container: station_ai_mind_slot
   - type: Sprite
     sprite: Objects/Devices/ai_card.rsi
     layers:
     - state: base
+      map: [ "enum.StationAiVisualLayers.Base" ]
     - state: full
-      map: ["unshaded"]
+      map: [ "enum.StationAiVisualLayers.Screen" ]
       shader: unshaded
-  - type: Appearance
-  - type: GenericVisualizer
+  - type: StationAiHolder
+    slot:
+      name: station-ai-mind-slot
+      locked: false
+      disableEject: true
+      whitelist:
+        tags:
+        - StationAi
+    updateSprite: false
     visuals:
-      enum.StationAiVisualState.Key:
-        unshaded:
-          Empty: { state: empty }
-          Occupied: { state: full }
+      Empty:
+        Screen:
+          sprite: Objects/Devices/ai_card.rsi
+          state: empty
+      Occupied:
+        Screen:
+          sprite: Objects/Devices/ai_card.rsi
+          state: full
+  - type: Appearance
+  - type: Intellicard
+
+- type: entity
+  id: PlayerStationAiPreview
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: Mobs/Silicon/station_ai.rsi
+    layers:
+    - state: base
+    - state: ai
+      shader: unshaded
 
 - type: entity
   id: PlayerStationAiEmpty
@@ -315,16 +370,51 @@
     sprite: Mobs/Silicon/station_ai.rsi
     layers:
     - state: base
+      map: [ "enum.StationAiVisualLayers.Base" ]
     - state: ai_empty
-      map: ["unshaded"]
+      map: [ "enum.StationAiVisualLayers.Screen" ]
       shader: unshaded
-  - type: Appearance
-  - type: GenericVisualizer
+  - type: StationAiHolder
+    slot:
+      name: station-ai-mind-slot
+      locked: false
+      disableEject: true
+      whitelist:
+        tags:
+        - StationAi
     visuals:
-      enum.StationAiVisualState.Key:
-        unshaded:
-          Empty: { state: ai_empty }
-          Occupied: { state: ai }
+      Empty:
+        Screen:
+          sprite: Mobs/Silicon/station_ai.rsi
+          state: ai_empty
+      Occupied:
+        Screen:
+          sprite: Mobs/Silicon/station_ai.rsi
+          state: ai
+  - type: Appearance
+  - type: InteractionPopup
+    interactSuccessString: petting-success-station-ai
+    interactFailureString: petting-failure-station-ai
+    messagePerceivedByOthers: petting-success-station-ai-others # Otherwise AI cannot tell its being pet as It's just a brain inside of the core, not the core itself.
+    interactSuccessSound:
+      path: /Audio/Ambience/Objects/periodic_beep.ogg
+  - type: Telephone
+    compatibleRanges:
+    - Grid
+    - Map
+    - Unlimited
+    listeningRange: 0
+    speakerVolume: Speak
+    unlistedNumber: true
+    requiresPower: false
+  - type: Holopad
+  - type: StationAiWhitelist
+  - type: UserInterface
+    interfaces:
+        enum.HolopadUiKey.AiRequestWindow:
+          type: HolopadBoundUserInterface
+        enum.HolopadUiKey.AiActionWindow:
+          type: HolopadBoundUserInterface
 
 # The job-ready version of an AI spawn.
 - type: entity
@@ -339,7 +429,9 @@
     sprite: Mobs/Silicon/station_ai.rsi
     layers:
     - state: base
+      map: [ "enum.StationAiVisualLayers.Base" ]
     - state: ai
+      map: [ "enum.StationAiVisualLayers.Screen" ]
       shader: unshaded
 
 # The actual brain inside the core
@@ -364,6 +456,7 @@
     interfaces:
       enum.SiliconLawsUiKey.Key:
         type: SiliconLawBoundUserInterface
+        requireInputValidation: false
       enum.StoreUiKey.Key:
         type: StoreBoundUserInterface
   - type: ComplexInteraction
@@ -386,10 +479,14 @@
     drawFov: false
   - type: Examiner
   - type: InputMover
+  - type: Speech
+    speechVerb: Robotic
+    speechSounds: Borg
   - type: Tag
     tags:
     - HideContextMenu
     - StationAi
+    - NoConsoleSound
 
 # Hologram projection that the AI's eye tracks.
 - type: entity
@@ -416,211 +513,43 @@
       shader: unshaded
       map: ["base"]
 
+# The holographic representation of the AI that is projected from a holopad.
+- type: entity
+  id: StationAiHoloLocal
+  name: AI hologram
+  description: A holographic representation of an AI.
+  categories: [ HideSpawnMenu ]
+  suffix: DO NOT MAP
+  components:
+  - type: Transform
+    anchored: true
+  - type: WarpPoint
+    follow: true
+  - type: Eye
+  - type: ContentEye
+  - type: Examiner
+  - type: Actions
+  - type: Alerts
+  - type: FTLSmashImmune
+  - type: CargoSellBlacklist
+  - type: StationAiVision
+    range: 20
+
 # Borgs
 - type: entity
-  id: BasePlayerBorgBattery
+  id: PlayerBorgBattery
+  parent: BorgChassisSelectable
   suffix: Battery
-  abstract: true
   components:
   - type: ContainerFill
     containers:
       borg_brain:
-        - PositronicBrain
+        - MMIFilled
   - type: ItemSlots
     slots:
       cell_slot:
         name: power-cell-slot-component-slot-name-default
         startingItem: PowerCellMedium
-  - type: RandomMetadata
-    nameSegments: [names_borg]
-
-- type: entity
-  id: PlayerBorgGenericBattery
-  parent: [ BasePlayerBorgBattery, BorgChassisGeneric ]
-
-- type: entity
-  id: PlayerBorgGeneric
-  parent: PlayerBorgGenericBattery
-  suffix: Battery, Tools
-  components:
-  - type: ContainerFill
-    containers:
-      borg_brain:
-        - PositronicBrain
-      borg_module:
-        - BorgModuleTool
-
-- type: entity
-  id: DummyBorgGeneric
-  name: generic chassis
-  noSpawn: true
-  components:
-  - type: Sprite
-    sprite: Mobs/Silicon/chassis.rsi
-    drawdepth: Mobs
-    noRot: true
-    layers:
-    - state: robot
-    - state: robot_e
-      shader: unshaded
-
-- type: entity
-  id: PlayerBorgMiningBattery
-  parent: [ BasePlayerBorgBattery, BorgChassisMining ]
-
-- type: entity
-  id: PlayerBorgMining
-  parent: PlayerBorgMiningBattery
-  suffix: Battery, Tools
-  components:
-  - type: ContainerFill
-    containers:
-      borg_brain:
-        - PositronicBrain
-      borg_module:
-        - BorgModuleTool
-        - BorgModuleAppraisal
-
-- type: entity
-  id: DummyBorgMining
-  name: mining chassis
-  noSpawn: true
-  components:
-  - type: Sprite
-    sprite: Mobs/Silicon/chassis.rsi
-    drawdepth: Mobs
-    noRot: true
-    layers:
-    - state: miner
-      map: ["movement"]
-    - state: miner_e
-      shader: unshaded
-
-- type: entity
-  id: PlayerBorgEngineerBattery
-  parent: [ BasePlayerBorgBattery, BorgChassisEngineer ]
-
-- type: entity
-  id: PlayerBorgEngineer
-  parent: PlayerBorgEngineerBattery
-  suffix: Battery, Tools
-  components:
-  - type: ContainerFill
-    containers:
-      borg_brain:
-        - PositronicBrain
-      borg_module:
-        - BorgModuleTool
-        - BorgModuleConstruction
-
-- type: entity
-  id: DummyBorgEngineer
-  name: engineering chassis
-  noSpawn: true
-  components:
-  - type: Sprite
-    sprite: Mobs/Silicon/chassis.rsi
-    drawdepth: Mobs
-    noRot: true
-    layers:
-    - state: engineer
-    - state: engineer_e
-      shader: unshaded
-
-- type: entity
-  id: PlayerBorgJanitorBattery
-  parent: [ BasePlayerBorgBattery, BorgChassisJanitor ]
-
-- type: entity
-  id: PlayerBorgJanitor
-  parent: PlayerBorgJanitorBattery
-  suffix: Battery, Tools
-  components:
-  - type: ContainerFill
-    containers:
-      borg_brain:
-        - PositronicBrain
-      borg_module:
-        - BorgModuleTool
-        - BorgModuleCleaning
-
-- type: entity
-  id: DummyBorgJanitor
-  name: janitor chassis
-  noSpawn: true
-  components:
-  - type: Sprite
-    sprite: Mobs/Silicon/chassis.rsi
-    drawdepth: Mobs
-    noRot: true
-    layers:
-    - state: janitor
-      map: ["movement"]
-    - state: janitor_e
-      shader: unshaded
-
-- type: entity
-  id: PlayerBorgMedicalBattery
-  parent: [ BasePlayerBorgBattery, BorgChassisMedical ]
-
-- type: entity
-  id: PlayerBorgMedical
-  parent: PlayerBorgMedicalBattery
-  suffix: Battery, Tools
-  components:
-  - type: ContainerFill
-    containers:
-      borg_brain:
-        - PositronicBrain
-      borg_module:
-        - BorgModuleTool
-        - BorgModuleTreatment
-
-- type: entity
-  id: DummyBorgMedical
-  name: medical chassis
-  noSpawn: true
-  components:
-  - type: Sprite
-    sprite: Mobs/Silicon/chassis.rsi
-    drawdepth: Mobs
-    noRot: true
-    layers:
-    - state: medical
-      map: ["movement"]
-    - state: medical_e
-      shader: unshaded
-
-- type: entity
-  id: PlayerBorgServiceBattery
-  parent: [ BasePlayerBorgBattery, BorgChassisService ]
-
-- type: entity
-  id: PlayerBorgService
-  parent: PlayerBorgServiceBattery
-  suffix: Battery, Tools
-  components:
-  - type: ContainerFill
-    containers:
-      borg_brain:
-        - PositronicBrain
-      borg_module:
-        - BorgModuleTool
-        - BorgModuleService
-
-- type: entity
-  id: DummyBorgService
-  name: service chassis
-  noSpawn: true
-  components:
-  - type: Sprite
-    sprite: Mobs/Silicon/chassis.rsi
-    drawdepth: Mobs
-    noRot: true
-    layers:
-    - state: service
-    - state: service_e
-      shader: unshaded
 
 - type: entity
   id: PlayerBorgSyndicateAssaultBattery
@@ -703,3 +632,37 @@
     - PlayerBorgSyndicateAssaultGhostRole
     - PlayerBorgSyndicateAssaultGhostRole # Saboteurs are kinda like cyborg medics, we want less.
     - PlayerBorgSyndicateSaboteurGhostRole
+
+- type: entity
+  id: PlayerBorgDerelict
+  parent: BorgChassisDerelict
+  suffix: Battery, Module
+  components:
+  - type: ContainerFill
+    containers:
+      borg_brain:
+        - PositronicBrain
+      borg_module:
+        - BorgModuleTool
+        - BorgModuleFireExtinguisher
+        - BorgModuleGPS
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellHigh
+  - type: RandomMetadata
+    nameSegments: [names_borg]
+
+- type: entity
+  id: PlayerBorgDerelictGhostRole
+  parent: PlayerBorgDerelict
+  suffix: Ghost role
+  components:
+    - type: GhostRole
+      name: ghost-role-information-derelict-cyborg-name
+      description: ghost-role-information-derelict-cyborg-description
+      rules: ghost-role-information-silicon-rules
+      raffle:
+        settings: default
+    - type: GhostTakeoverAvailable
