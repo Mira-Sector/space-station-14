@@ -45,7 +45,7 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
         SubscribeLocalEvent<AbsorbentComponent, UserActivateInWorldEvent>(OnActivateInWorld);
         SubscribeLocalEvent<AbsorbentComponent, SolutionContainerChangedEvent>(OnAbsorbentSolutionChange);
 
-        SubscribeLocalEvent< AbsorbentToggleComponent, StartCollideEvent>(OnCollide);
+        SubscribeLocalEvent<AbsorbentToggleComponent, StartCollideEvent>(OnCollide);
     }
 
     private void OnAbsorbentInit(EntityUid uid, AbsorbentComponent component, ComponentInit args)
