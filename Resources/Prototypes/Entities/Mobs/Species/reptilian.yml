@@ -40,9 +40,6 @@
       Unsexed: MaleReptilian
   - type: BodyEmotes
     soundsId: ReptilianBodyEmotes
-  - type: Damageable
-    damageContainer: Biological
-    damageModifierSet: Scale
   - type: MeleeWeapon
     soundHit:
       collection: AlienClaw
