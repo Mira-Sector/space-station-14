@@ -314,6 +314,7 @@ namespace Content.Shared.Damage
                 var eventUid = body ?? uid;
                 var ev = new DamageModifyEvent(damage, origin, part);
                 RaiseLocalEvent(eventUid, ev);
+
                 damage = ev.Damage;
 
                 if (damage.Empty)
