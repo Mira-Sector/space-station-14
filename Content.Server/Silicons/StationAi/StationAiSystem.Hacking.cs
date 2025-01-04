@@ -9,6 +9,7 @@ namespace Content.Server.Silicons.StationAi;
 
 public sealed partial class StationAiSystem
 {
+    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly StoreSystem _store = default!;
 
     private void InitializeHacking()
@@ -43,6 +44,8 @@ public sealed partial class StationAiSystem
 
         component.Hacked = true;
         Dirty(uid, component);
+
+        _appearance.SetData(uid, HackingVisuals.Hacked, true);
     }
 
     private void OnMapInit(EntityUid uid, StationAiHackableComponent component, MapInitEvent args)
@@ -54,6 +57,8 @@ public sealed partial class StationAiSystem
 
         component.IsPowered = isPowered;
         Dirty(uid, component);
+
+        _appearance.SetData(uid, HackingVisuals.Hacked, component.Hacked);
     }
 
     private void OnPowerChanged(EntityUid uid, StationAiHackableComponent component, ref PowerChangedEvent args)

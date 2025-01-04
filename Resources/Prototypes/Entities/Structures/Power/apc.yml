@@ -57,8 +57,14 @@
       shader: unshaded
       map: ["enum.ApcVisualLayers.Environment"]
       visible: false
+    - state: apc_hacked
+      sprite: Interface/Misc/ai_hud.rsi
+      shader: unshaded
+      map: ["enum.HackingLayers.HUD"]
+      visible: false
   - type: Appearance
   - type: ApcVisuals
+  - type: HackableHUDVisuals
   - type: Battery
     maxCharge: 50000
     startingCharge: 0

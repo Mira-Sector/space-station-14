@@ -26,3 +26,15 @@ public sealed partial class StationAiShopActionEvent : InstantActionEvent
 public sealed class StationAiHackEvent : BaseStationAiAction
 {
 }
+
+[Serializable, NetSerializable]
+public enum HackingLayers : byte
+{
+    HUD
+}
+
+[Serializable, NetSerializable]
+public enum HackingVisuals : byte
+{
+    Hacked
+}

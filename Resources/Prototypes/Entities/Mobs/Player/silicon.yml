@@ -33,6 +33,7 @@
   - type: StationAiHeld
   - type: StationAiOverlay
   - type: ShowElectrocutionHUD
+  - type: ShowHackingHUD
   - type: ActionGrant
     actions:
     - ActionJumpToCore
