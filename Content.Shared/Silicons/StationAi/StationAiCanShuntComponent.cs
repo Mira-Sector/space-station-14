@@ -1,4 +1,4 @@
-﻿using Robust.Shared.Containers;
+using Robust.Shared.Containers;
 using Robust.Shared.GameStates;
 
 namespace Content.Shared.Silicons.StationAi;
@@ -12,6 +12,6 @@ public sealed partial class StationAiCanShuntComponent : Component
         [ViewVariables]
         public BaseContainer? ShuntedContainer { get; set; }
 
-
-
+        [ViewVariables]
+        public bool DrawFoV { get; set; }
 }

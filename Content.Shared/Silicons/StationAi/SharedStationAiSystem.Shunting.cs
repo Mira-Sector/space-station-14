@@ -1,11 +1,10 @@
-﻿using Content.Shared.DoAfter;
+using Content.Shared.DoAfter;
 using Content.Shared.Movement.Events;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Power;
 using Robust.Shared.Containers;
 
 namespace Content.Shared.Silicons.StationAi;
-
 
 public abstract partial class SharedStationAiSystem
 {
@@ -66,8 +65,18 @@ public abstract partial class SharedStationAiSystem
         }
 
         canShuntComp.ShuntedContainer = container;
-        Dirty(args.User, canShuntComp);
         _containers.Insert(args.User, container);
+
+        if (!TryComp<EyeComponent>(args.User, out var eyeComp))
+        {
+            canShuntComp.DrawFoV = false;
+            Dirty(args.User, canShuntComp);
+            return;
+        }
+
+        canShuntComp.DrawFoV = eyeComp.DrawFov;
+        Dirty(args.User, canShuntComp);
+        _eye.SetDrawFov(args.User, false, eyeComp);
     }
 
     private void OnMoveAttempt(EntityUid uid, StationAiCanShuntComponent component, ref MoveInputEvent args)
@@ -85,6 +94,11 @@ public abstract partial class SharedStationAiSystem
 
         if (component.Container != null)
             _containers.Insert(uid, component.Container);
+
+        if (!TryComp<EyeComponent>(uid, out var eyeComp))
+            return;
+
+        _eye.SetDrawFov(uid, component.DrawFoV, eyeComp);
     }
 
     public void OnPowerChange(EntityUid uid, StationAiShuntingComponent component, bool isPowered)
@@ -105,13 +119,16 @@ public abstract partial class SharedStationAiSystem
             if (!TryComp<StationAiCanShuntComponent>(containedEntity, out var canShuntComp))
                 continue;
 
-            if (canShuntComp.Container == null)
-                continue;
-
-            _containers.Insert(containedEntity, canShuntComp.Container);
+            if (canShuntComp.Container != null)
+                _containers.Insert(containedEntity, canShuntComp.Container);
 
             canShuntComp.ShuntedContainer = null;
             Dirty(containedEntity, canShuntComp);
+
+            if (!TryComp<EyeComponent>(containedEntity, out var eyeComp))
+                continue;
+
+            _eye.SetDrawFov(containedEntity, canShuntComp.DrawFoV, eyeComp);
         }
     }
 }

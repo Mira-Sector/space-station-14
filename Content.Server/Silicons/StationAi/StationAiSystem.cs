@@ -28,6 +28,7 @@ public sealed partial class StationAiSystem : SharedStationAiSystem
     {
         base.Initialize();
         InitializeShunting();
+
         SubscribeLocalEvent<ElectrifiedComponent, StationAiElectrifiedEvent>(OnElectrified);
         SubscribeLocalEvent<ExpandICChatRecipientsEvent>(OnExpandICChatRecipients);
     }
