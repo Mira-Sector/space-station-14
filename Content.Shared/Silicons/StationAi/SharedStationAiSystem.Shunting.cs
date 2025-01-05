@@ -54,6 +54,8 @@ public abstract partial class SharedStationAiSystem
         if (!_containers.TryGetContainer(uid, ShuntingContainer, out var container))
             return;
 
+        var hasAiOverlay = HasComp<StationAiOverlayComponent>(args.User);
+
         if (_containers.TryGetContainingContainer(args.User, out var startingContainer))
         {
             canShuntComp.Container = startingContainer;
@@ -67,16 +69,22 @@ public abstract partial class SharedStationAiSystem
         canShuntComp.ShuntedContainer = container;
         _containers.Insert(args.User, container);
 
-        if (!TryComp<EyeComponent>(args.User, out var eyeComp))
+        if (TryComp<EyeComponent>(args.User, out var eyeComp))
+        {
+            canShuntComp.DrawFoV = eyeComp.DrawFov;
+            Dirty(args.User, canShuntComp);
+            _eye.SetDrawFov(args.User, false, eyeComp);
+        }
+        else
         {
             canShuntComp.DrawFoV = false;
             Dirty(args.User, canShuntComp);
-            return;
         }
 
-        canShuntComp.DrawFoV = eyeComp.DrawFov;
-        Dirty(args.User, canShuntComp);
-        _eye.SetDrawFov(args.User, false, eyeComp);
+        if (!hasAiOverlay)
+            return;
+
+        EnsureComp<StationAiOverlayComponent>(args.User);
     }
 
     private void OnMoveAttempt(EntityUid uid, StationAiCanShuntComponent component, ref MoveInputEvent args)
@@ -103,10 +111,8 @@ public abstract partial class SharedStationAiSystem
         if (component.Container != null)
             _containers.Insert(uid, component.Container);
 
-        if (!TryComp<EyeComponent>(uid, out var eyeComp))
-            return;
-
-        _eye.SetDrawFov(uid, component.DrawFoV, eyeComp);
+        if (TryComp<EyeComponent>(uid, out var eyeComp))
+            _eye.SetDrawFov(uid, component.DrawFoV, eyeComp);
     }
 
     public void OnPowerChange(EntityUid uid, StationAiShuntingComponent component, bool isPowered)
