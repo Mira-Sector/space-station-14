@@ -432,6 +432,9 @@ public abstract partial class SharedStationAiSystem : EntitySystem
             _eye.SetTarget(user, ent.Comp.RemoteEntity.Value, eyeComp);
         }
 
+        if (Deleted(ent.Comp.RemoteEntity.Value))
+            return;
+
         _mover.SetRelay(user, ent.Comp.RemoteEntity.Value);
     }
 
