@@ -141,6 +141,11 @@
         sound:
           collection: MetalGlassBreak
   - type: StationInfiniteBatteryTarget
+  - type: StationAiShunting
+    icon: 
+      sprite: Interface/Actions/actions_ai.rsi
+      state: shunting
+    tooltip: ai-shunt
   - type: Electrified
     onHandInteract: false
     onInteractUsing: false

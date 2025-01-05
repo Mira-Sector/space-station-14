@@ -27,8 +27,8 @@ public sealed partial class StationAiSystem : SharedStationAiSystem
     public override void Initialize()
     {
         base.Initialize();
-
         InitializeHacking();
+        InitializeShunting();
 
         SubscribeLocalEvent<ElectrifiedComponent, StationAiElectrifiedEvent>(OnElectrified);
         SubscribeLocalEvent<ExpandICChatRecipientsEvent>(OnExpandICChatRecipients);

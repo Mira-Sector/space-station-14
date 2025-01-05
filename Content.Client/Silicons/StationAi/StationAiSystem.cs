@@ -21,6 +21,7 @@ public sealed partial class StationAiSystem : SharedStationAiSystem
         InitializeAirlock();
         InitializeHacking();
         InitializePowerToggle();
+        InitializeShunting();
 
         SubscribeLocalEvent<StationAiOverlayComponent, LocalPlayerAttachedEvent>(OnAiAttached);
         SubscribeLocalEvent<StationAiOverlayComponent, LocalPlayerDetachedEvent>(OnAiDetached);
