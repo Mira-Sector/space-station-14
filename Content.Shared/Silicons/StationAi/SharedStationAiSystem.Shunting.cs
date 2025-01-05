@@ -81,10 +81,18 @@ public abstract partial class SharedStationAiSystem
 
     private void OnMoveAttempt(EntityUid uid, StationAiCanShuntComponent component, ref MoveInputEvent args)
     {
-        if (component.ShuntedContainer == null)
+        if ((args.Entity.Comp.HeldMoveButtons & MoveButtons.AnyDirection) == MoveButtons.None)
             return;
 
-        if ((args.Entity.Comp.HeldMoveButtons & MoveButtons.AnyDirection) == MoveButtons.None)
+        Eject(uid, component);
+    }
+
+    protected void Eject(EntityUid uid, StationAiCanShuntComponent? component = null)
+    {
+        if (!Resolve(uid, ref component, false))
+            return;
+
+        if (component.ShuntedContainer == null)
             return;
 
         _containers.RemoveEntity(component.ShuntedContainer.Owner, uid);
@@ -114,21 +122,7 @@ public abstract partial class SharedStationAiSystem
 
         foreach (var containedEntity in container.ContainedEntities)
         {
-            _containers.RemoveEntity(uid, containedEntity);
-
-            if (!TryComp<StationAiCanShuntComponent>(containedEntity, out var canShuntComp))
-                continue;
-
-            if (canShuntComp.Container != null)
-                _containers.Insert(containedEntity, canShuntComp.Container);
-
-            canShuntComp.ShuntedContainer = null;
-            Dirty(containedEntity, canShuntComp);
-
-            if (!TryComp<EyeComponent>(containedEntity, out var eyeComp))
-                continue;
-
-            _eye.SetDrawFov(containedEntity, canShuntComp.DrawFoV, eyeComp);
+            Eject(containedEntity);
         }
     }
 }
