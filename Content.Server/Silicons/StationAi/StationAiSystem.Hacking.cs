@@ -52,6 +52,9 @@ public sealed partial class StationAiSystem
         Dirty(uid, component);
 
         _appearance.SetData(uid, HackingVisuals.Hacked, true);
+
+        var ev = new StationAiHackedEvent(user);
+        RaiseLocalEvent(uid, ev);
     }
 
     private void OnMapInit(EntityUid uid, StationAiHackableComponent component, MapInitEvent args)

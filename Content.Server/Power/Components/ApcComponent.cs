@@ -23,6 +23,9 @@ public sealed partial class ApcComponent : BaseApcNetComponent
     /// </summary>
     public TimeSpan LastUiUpdate;
 
+    [DataField]
+    public bool GlobalDisable = false;
+
     [DataField("enabled")]
     public bool MainBreakerEnabled = true;
 

@@ -39,6 +39,16 @@ public sealed class StationAiHackAttemptEvent : BaseStationAiAction;
 [Serializable, NetSerializable]
 public sealed partial class StationAiHackDoAfterEvent : SimpleDoAfterEvent;
 
+public sealed class StationAiHackedEvent : EntityEventArgs
+{
+    public EntityUid Hacker { get; private set; }
+
+    public StationAiHackedEvent(EntityUid hacker)
+    {
+        Hacker = hacker;
+    }
+}
+
 [Serializable, NetSerializable]
 public enum HackingLayers : byte
 {
