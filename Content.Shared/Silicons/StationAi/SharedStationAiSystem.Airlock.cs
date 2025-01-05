@@ -51,6 +51,9 @@ public abstract partial class SharedStationAiSystem
     /// </summary>
     public void OnElectrified(EntityUid ent, SharedElectrifiedComponent component, StationAiElectrifiedEvent args)
     {
+        if (!component.AiToggleable)
+            return;
+
         if (
             component.IsWireCut
             || !PowerReceiver.IsPowered(ent)

@@ -13,6 +13,12 @@ public abstract partial class SharedElectrifiedComponent : Component
     public bool Enabled = true;
 
     /// <summary>
+    /// Can an AI toggle if its electrified
+    /// </summary>
+    [DataField]
+    public bool AiToggleable = true;
+
+    /// <summary>
     /// Should player get damage on collide
     /// </summary>
     [DataField]

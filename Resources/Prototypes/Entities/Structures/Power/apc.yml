@@ -142,11 +142,12 @@
           collection: MetalGlassBreak
   - type: StationInfiniteBatteryTarget
   - type: StationAiShunting
-    icon: 
+    icon:
       sprite: Interface/Actions/actions_ai.rsi
       state: shunting
     tooltip: ai-shunt
   - type: Electrified
+    aiToggleable: false
     onHandInteract: false
     onInteractUsing: false
     onBump: false
