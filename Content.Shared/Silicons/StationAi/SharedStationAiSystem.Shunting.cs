@@ -105,14 +105,17 @@ public abstract partial class SharedStationAiSystem
 
         _containers.RemoveEntity(component.ShuntedContainer.Owner, uid);
 
-        component.ShuntedContainer = null;
-        Dirty(uid, component);
-
         if (component.Container != null)
             _containers.Insert(uid, component.Container);
 
         if (TryComp<EyeComponent>(uid, out var eyeComp))
             _eye.SetDrawFov(uid, component.DrawFoV, eyeComp);
+
+        if (TryGetCore(uid, out var core) && core.Comp?.RemoteEntity != null)
+            _xforms.DropNextTo(core.Comp.RemoteEntity.Value, component.ShuntedContainer.Owner);
+
+        component.ShuntedContainer = null;
+        Dirty(uid, component);
     }
 
     public void OnPowerChange(EntityUid uid, StationAiShuntingComponent component, bool isPowered)
