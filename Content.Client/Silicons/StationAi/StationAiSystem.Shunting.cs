@@ -11,6 +11,9 @@ public sealed partial class StationAiSystem
 
     private void OnGetRadial(EntityUid uid, StationAiShuntingComponent component, ref GetStationAiRadialEvent args)
     {
+        if (!component.IsPowered)
+            return;
+
         args.Actions.Add(
             new StationAiRadial()
             {

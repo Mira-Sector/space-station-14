@@ -6,7 +6,7 @@ using Robust.Shared.Utility;
 namespace Content.Shared.Silicons.StationAi;
 
 
-[RegisterComponent, NetworkedComponent]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class StationAiShuntingComponent : Component
 {
     [DataField("delay")]
@@ -23,6 +23,9 @@ public sealed partial class StationAiShuntingComponent : Component
 
     [ViewVariables]
     public LocId? Tooltip => _tooltip != null ? Loc.GetString(_tooltip) : null;
+
+    [ViewVariables, AutoNetworkedField]
+    public bool IsPowered { get; set; } = false;
 }
 
 [Serializable, NetSerializable]

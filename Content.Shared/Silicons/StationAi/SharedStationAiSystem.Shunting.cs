@@ -1,6 +1,7 @@
 ﻿using Content.Shared.DoAfter;
 using Content.Shared.Movement.Events;
 using Content.Shared.Movement.Systems;
+using Content.Shared.Power;
 using Robust.Shared.Containers;
 
 namespace Content.Shared.Silicons.StationAi;
@@ -17,6 +18,7 @@ public abstract partial class SharedStationAiSystem
         SubscribeLocalEvent<StationAiShuntingComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<StationAiShuntingComponent, StationAiShuntingAttemptEvent>(OnAttempt);
         SubscribeLocalEvent<StationAiShuntingComponent, StationAiShuntingEvent>(OnShunt);
+        SubscribeLocalEvent<StationAiShuntingComponent, PowerChangedEvent>((u, c, a) => OnPowerChange(u, c, a.Powered));
         SubscribeLocalEvent<StationAiCanShuntComponent, MoveInputEvent>(OnMoveAttempt);
     }
 
@@ -27,6 +29,9 @@ public abstract partial class SharedStationAiSystem
 
     private void OnAttempt(EntityUid uid, StationAiShuntingComponent component, StationAiShuntingAttemptEvent args)
     {
+        if (!component.IsPowered)
+            return;
+
         if (!TryComp<StationAiCanShuntComponent>(args.User, out var canShuntComp))
             return;
 
@@ -38,6 +43,9 @@ public abstract partial class SharedStationAiSystem
 
     private void OnShunt(EntityUid uid, StationAiShuntingComponent component, StationAiShuntingEvent args)
     {
+        if (!component.IsPowered)
+            return;
+
        if (!TryComp<StationAiCanShuntComponent>(args.User, out var canShuntComp))
            return;
 
@@ -77,5 +85,33 @@ public abstract partial class SharedStationAiSystem
 
         if (component.Container != null)
             _containers.Insert(uid, component.Container);
+    }
+
+    public void OnPowerChange(EntityUid uid, StationAiShuntingComponent component, bool isPowered)
+    {
+        component.IsPowered = isPowered;
+        Dirty(uid, component);
+
+        if (isPowered)
+            return;
+
+        if (!_containers.TryGetContainer(uid, ShuntingContainer, out var container))
+            return;
+
+        foreach (var containedEntity in container.ContainedEntities)
+        {
+            _containers.RemoveEntity(uid, containedEntity);
+
+            if (!TryComp<StationAiCanShuntComponent>(containedEntity, out var canShuntComp))
+                continue;
+
+            if (canShuntComp.Container == null)
+                continue;
+
+            _containers.Insert(containedEntity, canShuntComp.Container);
+
+            canShuntComp.ShuntedContainer = null;
+            Dirty(containedEntity, canShuntComp);
+        }
     }
 }
