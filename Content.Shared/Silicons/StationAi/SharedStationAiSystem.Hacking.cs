@@ -27,7 +27,7 @@ public abstract partial class SharedStationAiSystem
         if (!HasComp<StationAiCanHackComponent>(args.User))
             return;
 
-        _doAfter.TryStartDoAfter(new DoAfterArgs(EntityManager, args.User, component.Delay, new StationAiHackDoAfterEvent(), uid, uid));
+        _doAfter.TryStartDoAfter(new DoAfterArgs(EntityManager, args.User, component.Delay, new StationAiHackDoAfterEvent(), uid, uid, progressBarOverride: args.User));
     }
 }
 

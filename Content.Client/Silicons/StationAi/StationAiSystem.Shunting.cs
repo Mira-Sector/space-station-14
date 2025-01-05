@@ -1,4 +1,4 @@
-﻿using Content.Shared.Silicons.StationAi;
+using Content.Shared.Silicons.StationAi;
 
 namespace Content.Client.Silicons.StationAi;
 
@@ -11,7 +11,7 @@ public sealed partial class StationAiSystem
 
     private void OnGetRadial(EntityUid uid, StationAiShuntingComponent component, ref GetStationAiRadialEvent args)
     {
-        if (!component.IsPowered)
+        if (!component.IsPowered || !component.Enabled)
             return;
 
         args.Actions.Add(
