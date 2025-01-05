@@ -13,6 +13,7 @@ using Content.Shared.Forensics;
 using Content.Shared.Interaction;
 using Content.Shared.Interaction.Events;
 using Content.Shared.Inventory;
+using Content.Shared.Storage;
 using Content.Shared.Weapons.Melee.Events;
 using Robust.Shared.Random;
 using Content.Shared.Verbs;
@@ -42,6 +43,7 @@ namespace Content.Server.Forensics
             SubscribeLocalEvent<DnaComponent, TransferDnaEvent>(OnTransferDnaEvent);
             SubscribeLocalEvent<DnaSubstanceTraceComponent, SolutionContainerChangedEvent>(OnSolutionChanged);
             SubscribeLocalEvent<CleansForensicsComponent, GetVerbsEvent<UtilityVerb>>(OnUtilityVerb);
+            SubscribeLocalEvent<ForensicsComponent, StorageRemovedItemEvent>(OnStorageRemoved);
         }
 
         private void OnSolutionChanged(Entity<DnaSubstanceTraceComponent> ent, ref SolutionContainerChangedEvent ev)
@@ -191,6 +193,11 @@ namespace Content.Server.Forensics
             };
 
             args.Verbs.Add(verb);
+        }
+
+        private void OnStorageRemoved(Entity<ForensicsComponent> entity, ref StorageRemovedItemEvent args)
+        {
+            ApplyEvidence(args.User, entity);
         }
 
         /// <summary>

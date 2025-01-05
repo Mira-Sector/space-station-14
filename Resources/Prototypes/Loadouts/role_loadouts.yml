@@ -28,14 +28,15 @@
 # Silicons
 - type: roleLoadout
   id: JobStationAi
-  nameDataset: names_ai
+  nameDataset: NamesAI
+  groups:
+  - AiScreen
 
 # Civilian
 - type: roleLoadout
   id: JobPassenger
   groups:
   - GroupTankHarness
-  - PassengerHead
   - PassengerJumpsuit
   - CommonBackpack
   - PassengerNeck
@@ -65,7 +66,6 @@
   id: JobServiceWorker
   groups:
   - GroupTankHarness
-  - ServiceWorkerHead
   - BartenderJumpsuit
   - CommonBackpack
   - Glasses
@@ -91,7 +91,6 @@
   id: JobLibrarian
   groups:
   - GroupTankHarness
-  - LibrarianHead
   - LibrarianJumpsuit
   - CommonBackpack
   - Glasses
@@ -103,7 +102,6 @@
   id: JobLawyer
   groups:
   - GroupTankHarness
-  - LawyerHead
   - LawyerNeck
   - LawyerJumpsuit
   - CommonBackpack
@@ -186,7 +184,6 @@
   id: JobMusician
   groups:
   - GroupTankHarness
-  - MusicianHead
   - MusicianJumpsuit
   - CommonBackpack
   - MusicianOuterClothing
@@ -231,7 +228,6 @@
   id: JobSalvageSpecialist
   groups:
   - GroupTankHarness
-  - SalvageHead
   - SalvageSpecialistBackpack
   - SalvageSpecialistOuterClothing
   - SalvageSpecialistNeck
@@ -285,7 +281,6 @@
   id: JobAtmosphericTechnician
   groups:
   - GroupTankHarness
-  - AtmosphericTechnicianHead
   - AtmosphericTechnicianJumpsuit
   - AtmosphericTechnicianBackpack
   - AtmosphericTechnicianOuterClothing
@@ -388,7 +383,6 @@
 - type: roleLoadout
   id: JobDetective
   groups:
-  - GroupTankHarness
   - DetectiveHead
   - DetectiveNeck
   - DetectiveJumpsuit
@@ -474,7 +468,6 @@
   id: JobChemist
   groups:
   - GroupTankHarness
-  - ChemistHead
   - MedicalMask
   - ChemistJumpsuit
   - MedicalGloves
@@ -519,7 +512,6 @@
   id: JobReporter
   groups:
   - GroupTankHarness
-  - ReporterHead
   - ReporterJumpsuit
   - CommonBackpack
   - Glasses
@@ -531,7 +523,6 @@
   id: JobPsychologist
   groups:
   - GroupTankHarness
-  - PsychologistHead
   - PsychologistJumpsuit
   - MedicalBackpack
   - Glasses
@@ -543,7 +534,6 @@
   id: JobBoxer
   groups:
   - GroupTankHarness
-  - BoxerHead
   - BoxerJumpsuit
   - BoxerGloves
   - CommonBackpack
@@ -551,11 +541,6 @@
   - Survival
   - Trinkets
   - GroupSpeciesBreathTool
-
-- type: roleLoadout
-  id: JobBorg
-  groups:
-  - BorgChassis
 
 # These loadouts are used for non-crew spawns, like off-station antags and event mobs
 # They will be used without player configuration, thus they will only ever apply what is forced by MinLimit

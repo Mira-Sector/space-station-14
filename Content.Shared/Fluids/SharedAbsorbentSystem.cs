@@ -49,7 +49,7 @@ public abstract class SharedAbsorbentSystem : EntitySystem
 
     private void OnAbsorbentToggleInit(EntityUid uid, AbsorbentToggleComponent component, ref MapInitEvent args)
     {
-        if (component.AbsorbentAction != null)
+        if (component.AbsorbentAction != null || component.ToggleActionId == null)
             return;
 
         _actions.AddAction(uid, ref component.AbsorbentAction, component.ToggleActionId, uid);
@@ -70,6 +70,9 @@ public abstract class SharedAbsorbentSystem : EntitySystem
 
     private void OnStrapped(EntityUid uid, AbsorbentToggleComponent component, ref StrappedEvent args)
     {
+        if (component.AbsorbentAction != null || component.ToggleActionId == null)
+            return;
+
         _actions.AddAction(args.Buckle, ref component.AbsorbentAction, component.ToggleActionId, uid);
         Dirty(uid, component);
     }

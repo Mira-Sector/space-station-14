@@ -22,3 +22,5 @@ toggle-light = Toggle light
 ai-device-not-responding = Device is not responding
 
 ai-shunt = Shunt into an APC
+
+ai-consciousness-download-warning = Your consciousness is being downloaded.

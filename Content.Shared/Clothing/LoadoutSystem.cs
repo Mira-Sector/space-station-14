@@ -90,34 +90,30 @@ public sealed class LoadoutSystem : EntitySystem
 
     public string GetName(LoadoutPrototype loadout)
     {
+        if (loadout.DummyEntity is not null && _protoMan.TryIndex<EntityPrototype>(loadout.DummyEntity, out var proto))
+            return proto.Name;
+
         if (_protoMan.TryIndex(loadout.StartingGear, out var gear))
         {
-            return GetName(gear, loadout);
+            return GetName(gear);
         }
 
-        return GetName((IEquipmentLoadout) loadout, loadout);
+        return GetName((IEquipmentLoadout) loadout);
     }
 
     /// <summary>
     /// Tries to get the name of a loadout.
     /// </summary>
-    public string GetName(IEquipmentLoadout? gear, LoadoutPrototype? loadout)
+    public string GetName(IEquipmentLoadout? gear)
     {
         if (gear == null)
             return string.Empty;
-
-        if (loadout != null
-            && loadout.EntityDummy != null
-            && _protoMan.TryIndex<EntityPrototype>(loadout.EntityDummy, out var proto))
-        {
-            return proto.Name;
-        }
 
         var count = gear.Equipment.Count + gear.Storage.Values.Sum(o => o.Count) + gear.Inhand.Count;
 
         if (count == 1)
         {
-            if (gear.Equipment.Count == 1 && _protoMan.TryIndex<EntityPrototype>(gear.Equipment.Values.First(), out proto))
+            if (gear.Equipment.Count == 1 && _protoMan.TryIndex<EntityPrototype>(gear.Equipment.Values.First(), out var proto))
             {
                 return proto.Name;
             }

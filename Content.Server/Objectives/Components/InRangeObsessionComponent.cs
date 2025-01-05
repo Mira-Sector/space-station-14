@@ -1,3 +1,4 @@
+using Content.Shared.Mind;
 namespace Content.Server.Objectives.Components;
 
 [RegisterComponent]
@@ -19,6 +20,9 @@ public sealed partial class InRangeObsessionComponent : Component
     public EntityUid MindId;
 
     [ViewVariables]
+    public MindComponent Mind = default!;
+
+    [ViewVariables]
     public TimeSpan TimeNeeded;
 
     [ViewVariables]
@@ -26,6 +30,4 @@ public sealed partial class InRangeObsessionComponent : Component
 
     [ViewVariables]
     public TimeSpan NextCheck;
-
-
 }
