@@ -130,6 +130,7 @@ public abstract partial class SharedDoAfterSystem : EntitySystem
             doAfterArgs.Used = EnsureEntity<DoAfterComponent>(doAfterArgs.NetUsed, uid);
             doAfterArgs.User = EnsureEntity<DoAfterComponent>(doAfterArgs.NetUser, uid);
             doAfterArgs.EventTarget = EnsureEntity<DoAfterComponent>(doAfterArgs.NetEventTarget, uid);
+            doAfterArgs.ProgressBarOverride = EnsureEntity<DoAfterComponent>(doAfterArgs.NetProgressBarOverride, uid);
         }
 
         comp.NextId = state.NextId;
@@ -213,6 +214,7 @@ public abstract partial class SharedDoAfterSystem : EntitySystem
         args.NetTarget = GetNetEntity(args.Target);
         args.NetUsed = GetNetEntity(args.Used);
         args.NetUser = GetNetEntity(args.User);
+        args.NetProgressBarOverride = GetNetEntity(args.ProgressBarOverride);
         args.NetEventTarget = GetNetEntity(args.EventTarget);
 
         if (args.BreakOnMove)

@@ -456,6 +456,7 @@
         requireInputValidation: false
   - type: ComplexInteraction
   - type: Actions
+  - type: StationAiCanShunt
   - type: Access
     groups:
     - AllAccess
