@@ -23,6 +23,12 @@ public sealed partial class AbsorbentComponent : Component
     public FixedPoint2 PickupAmount = FixedPoint2.New(100);
 
     [DataField]
+    public TimeSpan? Delay;
+
+    [DataField]
+    public string DelayId = "absorb";
+
+    [DataField]
     public float Range = 1.2f;
 
     [DataField]

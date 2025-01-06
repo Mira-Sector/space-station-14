@@ -87,6 +87,7 @@
   - type: Absorbent
     solutionName: chemicals
     pickupAmmount: 5
+    delay: 3
     alwaysPickup: true
     animation: false
     pickupSound: null

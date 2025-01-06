@@ -41,6 +41,7 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
     {
         base.Initialize();
         SubscribeLocalEvent<AbsorbentComponent, ComponentInit>(OnAbsorbentInit);
+        SubscribeLocalEvent<AbsorbentComponent, MapInitEvent>(OnAbsorbentMapInit);
         SubscribeLocalEvent<AbsorbentComponent, AfterInteractEvent>(OnAfterInteract);
         SubscribeLocalEvent<AbsorbentComponent, UserActivateInWorldEvent>(OnActivateInWorld);
         SubscribeLocalEvent<AbsorbentComponent, SolutionContainerChangedEvent>(OnAbsorbentSolutionChange);
@@ -52,6 +53,12 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
     {
         // TODO: I know dirty on init but no prediction moment.
         UpdateAbsorbent(uid, component);
+    }
+
+    private void OnAbsorbentMapInit(EntityUid uid, AbsorbentComponent component, MapInitEvent args)
+    {
+        if (component.Delay != null)
+            _useDelay.SetLength(uid, component.Delay.Value, component.DelayId);
     }
 
     private void OnAbsorbentSolutionChange(EntityUid uid, AbsorbentComponent component, ref SolutionContainerChangedEvent args)
@@ -129,9 +136,17 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
         if (!_solutionContainerSystem.TryGetSolution(used, component.SolutionName, out var absorberSoln))
             return;
 
-        if (TryComp<UseDelayComponent>(used, out var useDelay) && !ignoreDelay
-            && _useDelay.IsDelayed((used, useDelay)))
-            return;
+        if (TryComp<UseDelayComponent>(used, out var useDelay) && !ignoreDelay)
+        {
+            if (component.Delay != null && _useDelay.IsDelayed((used, useDelay), component.DelayId))
+            {
+                return;
+            }
+            else if (_useDelay.IsDelayed((used, useDelay)))
+            {
+                return;
+            }
+        }
 
         // If it's a puddle try to grab from
         if (!TryPuddleInteract(user, used, target, component, useDelay, absorberSoln.Value, popups))
@@ -170,7 +185,12 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
             _audio.PlayPvs(component.TransferSound, target);
 
         if (useDelay != null)
-            _useDelay.TryResetDelay((used, useDelay));
+        {
+            if (component.Delay != null)
+                _useDelay.TryResetDelay((used, useDelay), false, component.DelayId);
+            else
+                _useDelay.TryResetDelay((used, useDelay));
+        }
         return true;
     }
 
@@ -348,7 +368,12 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
             _audio.PlayPvs(absorber.PickupSound, target);
 
         if (useDelay != null)
-            _useDelay.TryResetDelay((used, useDelay));
+        {
+            if (absorber.Delay != null)
+                _useDelay.TryResetDelay((used, useDelay), false, absorber.DelayId);
+            else
+                _useDelay.TryResetDelay((used, useDelay));
+        }
 
         var userXform = Transform(user);
         var targetPos = _transform.GetWorldPosition(target);
