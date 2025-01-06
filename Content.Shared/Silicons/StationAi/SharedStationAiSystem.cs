@@ -84,6 +84,7 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         InitializeHacking();
         InitializeHeld();
         InitializeLight();
+        InitializeShunting();
 
         SubscribeLocalEvent<StationAiWhitelistComponent, BoundUserInterfaceCheckRangeEvent>(OnAiBuiCheck);
 

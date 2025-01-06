@@ -472,6 +472,7 @@
       Power: 10
   - type: DoorRemote
   - type: Actions
+  - type: StationAiCanShunt
   - type: Access
     groups:
     - AllAccess
