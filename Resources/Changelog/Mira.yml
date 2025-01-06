@@ -1002,4 +1002,10 @@ Entries:
   - message: Lizards properly take damage again
     type: Fix
   id: 148
-  time: '2025-01-07T07:50:00.0000000+00:00'
+  time: '2025-01-04T07:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Dragging items out of storage works again
+    type: Fix
+  id: 149
+  time: '2025-01-05T04:30:00.0000000+00:00'
