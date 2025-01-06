@@ -1009,3 +1009,17 @@ Entries:
     type: Fix
   id: 149
   time: '2025-01-05T04:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: The AI can hack APCs to gain power
+    type: Add
+  - message: The AI can spend power for modules in a store
+    type: Add
+  id: 150
+  time: '2025-01-05T05:20:00.0000000+00:00'
+- author: Anurath
+  changes:
+  - message: The AI can shunt into hacked APCs
+    type: Add
+  id: 151
+  time: '2025-01-05T05:20:00.0000000+00:00'
