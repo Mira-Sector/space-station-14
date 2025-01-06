@@ -1035,3 +1035,9 @@ Entries:
     type: Add
   id: 153
   time: '2025-01-05T07:15:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Damage regeneration is no longer super slow
+    type: Fix
+  id: 154
+  time: '2025-01-05T07:45:00.0000000+00:00'
