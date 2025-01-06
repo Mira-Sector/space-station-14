@@ -19,6 +19,7 @@ public abstract partial class SharedStationAiSystem
         SubscribeLocalEvent<StationAiShuntingComponent, StationAiShuntingEvent>(OnShunt);
         SubscribeLocalEvent<StationAiShuntingComponent, PowerChangedEvent>((u, c, a) => OnPowerChange(u, c, a.Powered));
         SubscribeLocalEvent<StationAiShuntingComponent, StationAiHackedEvent>(OnHacked);
+
         SubscribeLocalEvent<StationAiCanShuntComponent, MoveInputEvent>(OnMoveAttempt);
     }
 
