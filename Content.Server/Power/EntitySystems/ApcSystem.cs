@@ -8,6 +8,7 @@ using Content.Shared.Emag.Components;
 using Content.Shared.Emag.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Rounding;
+using Content.Shared.Silicons.StationAi;
 using Robust.Server.GameObjects;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
@@ -35,6 +36,7 @@ public sealed class ApcSystem : EntitySystem
         SubscribeLocalEvent<ApcComponent, ChargeChangedEvent>(OnBatteryChargeChanged);
         SubscribeLocalEvent<ApcComponent, ApcToggleMainBreakerMessage>(OnToggleMainBreaker);
         SubscribeLocalEvent<ApcComponent, GotEmaggedEvent>(OnEmagged);
+        SubscribeLocalEvent<ApcComponent, StationAiHackedEvent>(OnHacked);
 
         SubscribeLocalEvent<ApcComponent, EmpPulseEvent>(OnEmpPulse);
     }
@@ -103,7 +105,15 @@ public sealed class ApcSystem : EntitySystem
             return;
 
         apc.MainBreakerEnabled = !apc.MainBreakerEnabled;
-        battery.CanDischarge = apc.MainBreakerEnabled;
+        ApcUpdateBreaker(uid, apc, battery);
+    }
+
+    private void ApcUpdateBreaker(EntityUid uid, ApcComponent? apc = null, PowerNetworkBatteryComponent? battery = null)
+    {
+        if (!Resolve(uid, ref apc, ref battery))
+            return;
+
+        battery.CanDischarge = !apc.GlobalDisable && apc.MainBreakerEnabled;
 
         UpdateUIState(uid, apc);
         _audio.PlayPvs(apc.OnReceiveMessageSound, uid, AudioParams.Default.WithVolume(-2f));
@@ -113,6 +123,12 @@ public sealed class ApcSystem : EntitySystem
     {
         // no fancy conditions
         args.Handled = true;
+    }
+
+    private void OnHacked(EntityUid uid, ApcComponent comp, StationAiHackedEvent args)
+    {
+        comp.GlobalDisable = true;
+        ApcUpdateBreaker(uid, comp);
     }
 
     public void UpdateApcState(EntityUid uid,
@@ -200,7 +216,7 @@ public sealed class ApcSystem : EntitySystem
 
     private void OnEmpPulse(EntityUid uid, ApcComponent component, ref EmpPulseEvent args)
     {
-        if (component.MainBreakerEnabled)
+        if (!component.GlobalDisable && component.MainBreakerEnabled)
         {
             args.Affected = true;
             args.Disabled = true;

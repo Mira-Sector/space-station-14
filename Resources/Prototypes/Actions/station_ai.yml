@@ -1,4 +1,4 @@
-﻿# Actions
+# Actions
 - type: entity
   id: ActionJumpToCore
   name: Jump to core
@@ -53,3 +53,87 @@
       state: state_laws
     event: !type:ToggleLawsScreenEvent
     useDelay: 0.5
+
+- type: entity
+  id: ActionStationAiShop
+  name: Modules
+  description: Purchace modules with your gained power.
+  components:
+  - type: InstantAction
+    icon: Interface/Actions/shop.png
+    event: !type:StationAiShopActionEvent
+
+- type: entity
+  id: ActionStationAiNuke
+  name: Doomsday Device
+  description: Nuke the whole station.
+  components:
+  - type: InstantAction
+    charges: 1
+    itemIconStyle: BigAction
+    icon:
+      sprite: Objects/Devices/nuke.rsi
+      state: nuclearbomb_base
+    event: !type:StationAiNukeEvent
+
+- type: entity
+  id: ActionStationAiLockdown
+  name: Hostile Station Lockdown
+  description: Close, bolt and electrify every door on the station for 90 seconds.
+  components:
+  - type: InstantAction
+    charges: 1
+    itemIconStyle: BigAction
+    icon:
+      sprite: Interface/Actions/actions_ai.rsi
+      state: bolt_door
+    event: !type:StationAiLockdownEvent
+      resetDelay: 90
+
+- type: entity
+  id: ActionStationAiFirelock
+  name: Override Thermal Sensors
+  description: Disables every firelock on the station.
+  components:
+  - type: InstantAction
+    charges: 1
+    itemIconStyle: BigAction
+    icon:
+      sprite: Structures/Doors/Airlocks/Standard/firelock.rsi
+      state: closed
+    event: !type:StationAiFirelockEvent
+
+- type: entity
+  id: ActionStationAiOverload
+  name: Overload Machine
+  description: Overload a machine causing it to explode.
+  components:
+  - type: EntityTargetAction
+    canTargetSelf: false
+    checkCanAccess: false
+    showOutline: false
+    range: -1
+    charges: 2
+    itemIconStyle: BigAction
+    icon:
+      sprite: Objects/Power/powersink.rsi
+      state: powersink
+    event: !type:StationAiOverloadEvent
+      delay: 5
+      beepInterval: 1
+      beepSound:
+        collection: MetalSlam
+
+- type: entity
+  id: ActionStationAiBlackout
+  name: Blackout
+  description: Overload the stations APCs for a 30% chance to blow up the bulbs.
+  components:
+  - type: InstantAction
+    charges: 3
+    itemIconStyle: BigAction
+    icon:
+      sprite: Structures/Power/apc.rsi
+      state: broken
+    event: !type:StationAiBlackoutEvent
+      chance: 0.3

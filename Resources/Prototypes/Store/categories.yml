@@ -89,6 +89,22 @@
   name: store-category-pointless
   priority: 10
 
+#ai
+- type: storeCategory
+  id: AiDestructive
+  name: store-category-ai-destructive
+  priority: 0
+
+- type: storeCategory
+  id: AiUtility
+  name: store-category-ai-utility
+  priority: 1
+
+- type: storeCategory
+  id: AiUpgrade
+  name: store-category-ai-upgrade
+  priority: 2
+
 #revenant
 - type: storeCategory
   id: RevenantAbilities

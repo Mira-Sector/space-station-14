@@ -33,6 +33,7 @@
   - type: StationAiHeld
   - type: StationAiOverlay
   - type: ShowElectrocutionHUD
+  - type: ShowHackingHUD
   - type: ActionGrant
     actions:
     - ActionJumpToCore
@@ -50,6 +51,8 @@
         type: SiliconLawBoundUserInterface
       enum.CommunicationsConsoleUiKey.Key:
         type: CommunicationsConsoleBoundUserInterface
+      enum.StoreUiKey.Key:
+        type: StoreBoundUserInterface
   - type: IntrinsicUI
     uis:
       enum.RadarConsoleUiKey.Key:
@@ -454,7 +457,20 @@
       enum.SiliconLawsUiKey.Key:
         type: SiliconLawBoundUserInterface
         requireInputValidation: false
+      enum.StoreUiKey.Key:
+        type: StoreBoundUserInterface
   - type: ComplexInteraction
+  - type: StationAiCanHack
+  - type: Store
+    categories:
+    - AiDestructive
+    - AiUtility
+    - AiUpgrade
+    currencyWhitelist:
+    - Power
+    balance:
+      Power: 10
+  - type: DoorRemote
   - type: Actions
   - type: StationAiCanShunt
   - type: Access

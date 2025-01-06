@@ -16,6 +16,48 @@ public abstract partial class SharedDoorSystem
         SubscribeLocalEvent<DoorBoltComponent, DoorStateChangedEvent>(OnStateChanged);
     }
 
+    public void BoltUpdate(TimeSpan time)
+    {
+        var query = EntityQueryEnumerator<DelayDoorBoltComponent>();
+
+        while (query.MoveNext(out var uid, out var component))
+        {
+            if (!TryComp<DoorBoltComponent>(uid, out var bolt))
+            {
+                RemCompDeferred(uid, component);
+                continue;
+            }
+
+            if (!component.Enabled)
+                continue;
+
+            if (time < component.NextBolt)
+                continue;
+
+            SetBoltsDown((uid, bolt), component.Bolt, predicted: true);
+
+            if (!component.Repeatable)
+            {
+                RemCompDeferred(uid, component);
+                continue;
+            }
+
+            component.NextBolt += component.Delay;
+            Dirty(uid, component);
+        }
+    }
+
+    private void OnDelayedInit(EntityUid uid, DelayDoorBoltComponent component, ComponentInit args)
+    {
+        if (!HasComp<DoorBoltComponent>(uid))
+        {
+            RemCompDeferred(uid, component);
+            return;
+        }
+
+        component.NextBolt = GameTiming.CurTime + component.Delay;
+    }
+
     private void OnDoorPry(EntityUid uid, DoorBoltComponent component, ref BeforePryEvent args)
     {
         if (args.Cancelled)

@@ -81,6 +81,7 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         _gridQuery = GetEntityQuery<MapGridComponent>();
 
         InitializeAirlock();
+        InitializeHacking();
         InitializeHeld();
         InitializeLight();
         InitializeShunting();

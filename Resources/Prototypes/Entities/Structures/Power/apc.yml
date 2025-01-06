@@ -57,8 +57,14 @@
       shader: unshaded
       map: ["enum.ApcVisualLayers.Environment"]
       visible: false
+    - state: apc_hacked
+      sprite: Interface/Misc/ai_hud.rsi
+      shader: unshaded
+      map: ["enum.HackingLayers.HUD"]
+      visible: false
   - type: Appearance
   - type: ApcVisuals
+  - type: HackableHUDVisuals
   - type: Battery
     maxCharge: 50000
     startingCharge: 0
@@ -147,6 +153,11 @@
     requirePower: true
     mediumVoltageNode: input
     lowVoltageNode: output
+  - type: StationAiHackable
+    radialSprite:
+      sprite: Interface/Actions/actions_ai.rsi
+      state: hack
+    radialTooltip: ai-hack
   - type: LightningTarget
     priority: 1
   - type: StaticPrice
