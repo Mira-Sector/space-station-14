@@ -1029,3 +1029,9 @@ Entries:
     type: Add
   id: 152
   time: '2025-01-05T06:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Communications console has a unique announcement sound
+    type: Add
+  id: 153
+  time: '2025-01-05T07:15:00.0000000+00:00'
