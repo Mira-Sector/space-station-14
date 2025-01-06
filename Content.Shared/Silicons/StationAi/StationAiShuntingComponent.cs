@@ -1,4 +1,4 @@
-﻿using Content.Shared.DoAfter;
+using Content.Shared.DoAfter;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
@@ -26,6 +26,9 @@ public sealed partial class StationAiShuntingComponent : Component
 
     [ViewVariables, AutoNetworkedField]
     public bool IsPowered { get; set; } = false;
+
+    [ViewVariables, AutoNetworkedField]
+    public bool Enabled { get; set; } = false;
 }
 
 [Serializable, NetSerializable]

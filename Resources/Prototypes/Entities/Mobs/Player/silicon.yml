@@ -80,6 +80,7 @@
     - sprite: Mobs/Silicon/station_ai.rsi
       state: default
   - type: ShowJobIcons
+  - type: StationAiCanHack
 
 - type: entity
   id: AiHeldIntellicard
@@ -460,7 +461,6 @@
       enum.StoreUiKey.Key:
         type: StoreBoundUserInterface
   - type: ComplexInteraction
-  - type: StationAiCanHack
   - type: Store
     categories:
     - AiDestructive

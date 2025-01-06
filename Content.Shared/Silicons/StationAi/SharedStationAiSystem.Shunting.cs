@@ -18,6 +18,8 @@ public abstract partial class SharedStationAiSystem
         SubscribeLocalEvent<StationAiShuntingComponent, StationAiShuntingAttemptEvent>(OnAttempt);
         SubscribeLocalEvent<StationAiShuntingComponent, StationAiShuntingEvent>(OnShunt);
         SubscribeLocalEvent<StationAiShuntingComponent, PowerChangedEvent>((u, c, a) => OnPowerChange(u, c, a.Powered));
+        SubscribeLocalEvent<StationAiShuntingComponent, StationAiHackedEvent>(OnHacked);
+
         SubscribeLocalEvent<StationAiCanShuntComponent, MoveInputEvent>(OnMoveAttempt);
     }
 
@@ -28,7 +30,7 @@ public abstract partial class SharedStationAiSystem
 
     private void OnAttempt(EntityUid uid, StationAiShuntingComponent component, StationAiShuntingAttemptEvent args)
     {
-        if (!component.IsPowered)
+        if (!component.IsPowered || !component.Enabled)
             return;
 
         if (!TryComp<StationAiCanShuntComponent>(args.User, out var canShuntComp))
@@ -42,7 +44,7 @@ public abstract partial class SharedStationAiSystem
 
     private void OnShunt(EntityUid uid, StationAiShuntingComponent component, StationAiShuntingEvent args)
     {
-        if (!component.IsPowered)
+        if (!component.IsPowered || !component.Enabled)
             return;
 
        if (!TryComp<StationAiCanShuntComponent>(args.User, out var canShuntComp))
@@ -133,5 +135,11 @@ public abstract partial class SharedStationAiSystem
         {
             Eject(containedEntity);
         }
+    }
+
+    private void OnHacked(EntityUid uid, StationAiShuntingComponent component, StationAiHackedEvent args)
+    {
+        component.Enabled = true;
+        Dirty(uid, component);
     }
 }

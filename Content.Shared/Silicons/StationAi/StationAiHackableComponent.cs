@@ -3,16 +3,16 @@ using Robust.Shared.Utility;
 
 namespace Content.Shared.Silicons.StationAi;
 
-[RegisterComponent, NetworkedComponent, Access(typeof(SharedStationAiSystem))]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState, Access(typeof(SharedStationAiSystem))]
 public sealed partial class StationAiHackableComponent : Component
 {
-    [DataField]
+    [DataField, AutoNetworkedField]
     public bool Enabled = true;
 
-    [DataField]
+    [DataField, AutoNetworkedField]
     public bool Hacked = false;
 
-    [DataField]
+    [DataField, AutoNetworkedField]
     public float Points = 10f;
 
     [DataField]
@@ -27,6 +27,6 @@ public sealed partial class StationAiHackableComponent : Component
     [ViewVariables]
     public string? RadialTooltip => _radialTooltip != null ? Loc.GetString(_radialTooltip) : null;
 
-    [ViewVariables]
+    [ViewVariables, AutoNetworkedField]
     public bool IsPowered;
 }
