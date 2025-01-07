@@ -61,9 +61,7 @@ public sealed partial class StationAiSystem
         ClearEye((uid, core));
 
         if (TryGetInsertedAI((uid, core), out var ai))
-        {
-            EnsureComp<GhostOnMoveComponent>(ai.Value).CanReturn = false;
-        }
+            EntityManager.DeleteEntity(ai);
     }
 
     private void TurnOn(EntityUid uid, StationAiCoreComponent core)
