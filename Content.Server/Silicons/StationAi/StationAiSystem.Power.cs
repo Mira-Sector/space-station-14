@@ -1,6 +1,6 @@
-using Content.Server.Ghost.Components;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
+using Content.Shared.Popups;
 using Content.Shared.Power;
 using Content.Shared.Silicons.StationAi;
 
@@ -13,6 +13,8 @@ public sealed partial class StationAiSystem
     private void InitializePower()
     {
         SubscribeLocalEvent<StationAiRequirePowerComponent, PowerChangedEvent>(OnCorePowerChange);
+        SubscribeLocalEvent<StationAiRequirePowerComponent, IntellicardAttemptEvent>(OnIntellicardAttempt);
+
     }
 
     private void UpdatePower(float frameTime)
@@ -34,6 +36,15 @@ public sealed partial class StationAiSystem
     private void OnCorePowerChange(EntityUid uid, StationAiRequirePowerComponent component, ref PowerChangedEvent args)
     {
         UpdateState(uid, component);
+    }
+
+    private void OnIntellicardAttempt(EntityUid uid, StationAiRequirePowerComponent component, IntellicardAttemptEvent args)
+    {
+        if (component.IsPowered || args.Cancelled)
+            return;
+
+        args.Cancel();
+        _popup.PopupEntity(Loc.GetString("base-computer-ui-component-not-powered", ("machine", uid)), args.User, args.User, PopupType.MediumCaution);
     }
 
     private void UpdateState(EntityUid uid, StationAiRequirePowerComponent component)

@@ -53,7 +53,7 @@ public abstract partial class SharedStationAiSystem : EntitySystem
     [Dependency] protected readonly SharedMapSystem Maps = default!;
     [Dependency] private readonly   SharedMindSystem _mind = default!;
     [Dependency] private readonly   SharedMoverController _mover = default!;
-    [Dependency] private readonly   SharedPopupSystem _popup = default!;
+    [Dependency] protected readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly   SharedPowerReceiverSystem PowerReceiver = default!;
     [Dependency] private readonly   SharedTransformSystem _xforms = default!;
     [Dependency] private readonly   SharedUserInterfaceSystem _uiSystem = default!;
@@ -281,8 +281,19 @@ public abstract partial class SharedStationAiSystem : EntitySystem
             return;
         }
 
+        var ev = new IntellicardAttemptEvent(args.Used, args.User);
+        RaiseLocalEvent(args.Target.Value, ev);
+
+        if (ev.Cancelled)
+            return;
+
         if (TryGetHeldFromHolder((args.Target.Value, targetHolder), out var held) && _timing.CurTime > intelliComp.NextWarningAllowed)
         {
+            RaiseLocalEvent(held, ev);
+
+            if (ev.Cancelled)
+                return;
+
             intelliComp.NextWarningAllowed = _timing.CurTime + intelliComp.WarningDelay;
             AnnounceIntellicardUsage(held, intelliComp.WarningSound);
         }
@@ -620,6 +631,18 @@ public abstract partial class SharedStationAiSystem : EntitySystem
 public sealed partial class JumpToCoreEvent : InstantActionEvent
 {
 
+}
+
+public sealed partial class IntellicardAttemptEvent : CancellableEntityEventArgs
+{
+    public EntityUid Intellicard;
+    public EntityUid User;
+
+    public IntellicardAttemptEvent(EntityUid intellicard, EntityUid user)
+    {
+        Intellicard = intellicard;
+        User = user;
+    }
 }
 
 [Serializable, NetSerializable]
