@@ -61,6 +61,12 @@
   id: Malfunction
   components:
   - type: MalfunctionRule
+  - type: AntagRandomObjectives
+    sets:
+    - groups: MalfunctionObjectiveGroupKill
+      prob: 0.7
+      maxPicks: 4
+    maxDifficulty: 10
   - type: AntagSelection
     agentName: malfunction-round-end-agent-name
     definitions:

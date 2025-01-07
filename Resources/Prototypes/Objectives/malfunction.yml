@@ -1,0 +1,21 @@
+- type: entity
+  abstract: true
+  parent: BaseObjective
+  id: BaseMalfunctionObjective
+  components:
+  - type: Objective
+    issuer: objective-issuer-malfunction
+  - type: RoleRequirement
+    roles:
+      mindRoles:
+      - MalfunctionRole
+
+- type: entity
+  parent: [BaseObsessedObjective, BaseKillRandomPersonObjective ]
+  id: MalfunctionKillRandomPersonObjective
+  description: 0011 0101 1000 KILL 0011 0101 1000
+
+- type: entity
+  parent: [BaseObsessedObjective, BaseKillRandomHeadObjective ]
+  id: MalfunctionKillRandomHeadObjective
+  description: 6C 75 73 74 MURDER 20 78 65 6E 6F 0A
