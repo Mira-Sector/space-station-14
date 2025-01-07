@@ -24,10 +24,23 @@ public sealed partial class StationAiSystem
         {
             if (aiPower.IsPowered)
             {
+                if (!TryComp<ApcPowerReceiverComponent>(uid, out var power))
+                    continue;
+
+                if (_battery.IsFull(uid, battery))
+                    continue;
+
+                var inputCharge = power.Load > power.PowerReceived ? power.PowerReceived : power.Load;
+                var newCharge = battery.CurrentCharge + inputCharge * frameTime;
+                _battery.SetCharge(uid, newCharge, battery);
+            }
+            else
+            {
                 if (!_battery.TryUseCharge(uid, aiPower.Wattage * frameTime, battery))
                 {
                     aiPower.IsPowered = false;
                     TurnOff(uid, core);
+                    _battery.SetCharge(uid, 0f, battery);
                 }
             }
         }
@@ -69,10 +82,8 @@ public sealed partial class StationAiSystem
         {
             TurnOn(uid, core);
         }
-        else
-        {
-            TurnOff(uid, core);
-        }
+
+        // dont run turn off now as it will instantly kill the ai
     }
 
     private void TurnOff(EntityUid uid, StationAiCoreComponent core)
