@@ -1047,3 +1047,13 @@ Entries:
     type: Add
   id: 155
   time: '2025-01-07T01:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: The AI core can be destroyed
+    type: Add
+  - message: The AI dies if it is without power for too long
+    type: Add
+  - message: The AI core can be reanchored
+    type: Tweak
+  id: 156
+  time: '2025-01-07T09:50:00.0000000+00:00'
