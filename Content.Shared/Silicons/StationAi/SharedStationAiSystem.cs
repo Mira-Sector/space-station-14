@@ -335,9 +335,8 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         ent.Comp.RemoteEntity = null;
     }
 
-    private void OnCorePower(Entity<StationAiCoreComponent> ent, ref PowerChangedEvent args)
+    protected virtual void OnCorePower(Entity<StationAiCoreComponent> ent, ref PowerChangedEvent args)
     {
-        // TODO: I think in 13 they just straightup die so maybe implement that
         if (args.Powered)
         {
             if (!SetupEye(ent))

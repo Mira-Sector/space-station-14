@@ -2,8 +2,10 @@ using System.Linq;
 using Content.Server.Chat.Managers;
 using Content.Server.Electrocution;
 using Content.Server.Chat.Systems;
+using Content.Server.Ghost.Components;
 using Content.Shared.Chat;
 using Content.Shared.Mind;
+using Content.Shared.Power;
 using Content.Shared.Roles;
 using Content.Shared.Silicons.StationAi;
 using Content.Shared.StationAi;
@@ -62,6 +64,17 @@ public sealed partial class StationAiSystem : SharedStationAiSystem
                 continue;
 
             ev.Recipients.TryAdd(actor.PlayerSession, new ICChatRecipientData(range, false));
+        }
+    }
+
+    protected override void OnCorePower(Entity<StationAiCoreComponent> ent, ref PowerChangedEvent args)
+    {
+        base.OnCorePower(ent, ref args);
+
+        if (!args.Powered)
+        {
+            if (TryGetInsertedAI(ent, out var ai))
+                EnsureComp<GhostOnMoveComponent>(ai.Value).CanReturn = false;
         }
     }
 
