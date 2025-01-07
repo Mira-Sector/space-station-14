@@ -1,4 +1,4 @@
-﻿using Robust.Shared.Prototypes;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Audio;
 
 namespace Content.Shared.Silicons.Laws.Components;
@@ -35,4 +35,9 @@ public sealed partial class SiliconLawProviderComponent : Component
     [DataField]
     public bool Subverted = false;
 
+    /// <summary>
+    /// Should we add the role or is it handled elsewhere
+    /// </summary>
+    [DataField]
+    public bool SubvertedMind = true;
 }

@@ -6,6 +6,7 @@ using Content.Shared.Administration;
 using Content.Shared.Database;
 using Content.Shared.Mind.Components;
 using Content.Shared.Roles;
+using Content.Shared.Silicons.StationAi;
 using Content.Shared.Verbs;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
@@ -16,6 +17,7 @@ namespace Content.Server.Administration.Systems;
 public sealed partial class AdminVerbSystem
 {
     [Dependency] private readonly AntagSelectionSystem _antag = default!;
+    [Dependency] private readonly SharedStationAiSystem _stationAi = default!;
     [Dependency] private readonly ZombieSystem _zombie = default!;
 
     [ValidatePrototypeId<EntityPrototype>]
@@ -36,6 +38,9 @@ public sealed partial class AdminVerbSystem
     [ValidatePrototypeId<EntityPrototype>]
     private const string DefaultObsessedRule = "Obsessed";
 
+    [ValidatePrototypeId<EntityPrototype>]
+    private const string DefaultMalfunctionRule = "Malfunction";
+
     [ValidatePrototypeId<StartingGearPrototype>]
     private const string PirateGearId = "PirateGear";
 
@@ -50,7 +55,25 @@ public sealed partial class AdminVerbSystem
         if (!_adminManager.HasAdminFlag(player, AdminFlags.Fun))
             return;
 
-        if (!HasComp<MindContainerComponent>(args.Target) || !TryComp<ActorComponent>(args.Target, out var targetActor))
+        EntityUid target;
+
+        if (HasComp<MindContainerComponent>(args.Target))
+        {
+            target = args.Target;
+        }
+        else if (TryComp<StationAiCoreComponent>(args.Target, out var aiCore))
+        {
+            if (!_stationAi.TryGetInsertedAI((args.Target, aiCore), out var aiTarget))
+                return;
+
+            target = aiTarget.Value;
+        }
+        else
+        {
+            return;
+        }
+
+        if (!TryComp<ActorComponent>(target, out var targetActor))
             return;
 
         var targetPlayer = targetActor.PlayerSession;
@@ -90,7 +113,7 @@ public sealed partial class AdminVerbSystem
             Icon = new SpriteSpecifier.Texture(new("/Textures/Interface/Actions/zombie-turn.png")),
             Act = () =>
             {
-                _zombie.ZombifyEntity(args.Target);
+                _zombie.ZombifyEntity(target);
             },
             Impact = LogImpact.High,
             Message = Loc.GetString("admin-verb-make-zombie"),
@@ -168,5 +191,19 @@ public sealed partial class AdminVerbSystem
             Message = Loc.GetString("admin-verb-make-obsessed"),
         };
         args.Verbs.Add(obsessed);
+
+        Verb malfunction = new()
+        {
+            Text = Loc.GetString("admin-verb-text-make-malfunction"),
+            Category = VerbCategory.Antag,
+            Icon = new SpriteSpecifier.Rsi(new ResPath("/Textures/Objects/Fun/toys.rsi"), "AI"),
+            Act = () =>
+            {
+                _antag.ForceMakeAntag<MalfunctionRuleComponent>(targetPlayer, DefaultMalfunctionRule);
+            },
+            Impact = LogImpact.High,
+            Message = Loc.GetString("admin-verb-make-malfunction"),
+        };
+        args.Verbs.Add(malfunction);
     }
 }

@@ -55,3 +55,26 @@
     - HugObsessionObjective
     - KillDepartmentObsessionObjective
     - SpendTimeObsessionObjective
+
+- type: entity
+  parent: BaseGameRule
+  id: Malfunction
+  components:
+  - type: MalfunctionRule
+  - type: AntagSelection
+    agentName: malfunction-round-end-agent-name
+    definitions:
+    - prefRoles: [ Malfunction ]
+      max: 1
+      playerRatio: 10
+      lateJoinAdditional: true
+      briefing:
+        text: malfunction-role-greeting
+        color: Crimson
+        sound: "/Audio/Misc/malf_greeting.ogg"
+      allowNonHumans: true
+      whitelist:
+        tags:
+        - StationAi
+      mindRoles:
+      - MindRoleMalfunction

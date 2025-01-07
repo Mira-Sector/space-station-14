@@ -24,6 +24,8 @@
       prob: 0.25
     - id: Obsessed
       prob: 0.25
+    - id: Malfunction
+      prob: 0.125
 
 - type: entity
   id: DeathMatch31
