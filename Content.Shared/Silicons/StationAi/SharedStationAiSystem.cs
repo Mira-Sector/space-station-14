@@ -106,7 +106,6 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         SubscribeLocalEvent<StationAiCoreComponent, EntRemovedFromContainerMessage>(OnAiRemove);
         SubscribeLocalEvent<StationAiCoreComponent, MapInitEvent>(OnAiMapInit);
         SubscribeLocalEvent<StationAiCoreComponent, ComponentShutdown>(OnAiShutdown);
-        SubscribeLocalEvent<StationAiCoreComponent, PowerChangedEvent>(OnCorePower);
         SubscribeLocalEvent<StationAiCoreComponent, GetVerbsEvent<Verb>>(OnCoreVerbs);
 
         SubscribeLocalEvent<StationAiCoreSpriteComponent, ComponentInit>(OnCoreSpriteInit);
@@ -337,17 +336,6 @@ public abstract partial class SharedStationAiSystem : EntitySystem
 
     protected virtual void OnCorePower(Entity<StationAiCoreComponent> ent, ref PowerChangedEvent args)
     {
-        if (args.Powered)
-        {
-            if (!SetupEye(ent))
-                return;
-
-            AttachEye(ent);
-        }
-        else
-        {
-            ClearEye(ent);
-        }
     }
 
     private void OnAiMapInit(Entity<StationAiCoreComponent> ent, ref MapInitEvent args)
@@ -378,7 +366,7 @@ public abstract partial class SharedStationAiSystem : EntitySystem
             _eye.SetDrawFov(user.Value, !isRemote);
     }
 
-    private bool SetupEye(Entity<StationAiCoreComponent> ent, EntityCoordinates? coords = null)
+    protected bool SetupEye(Entity<StationAiCoreComponent> ent, EntityCoordinates? coords = null)
     {
         if (_net.IsClient)
             return false;
@@ -403,7 +391,7 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         return true;
     }
 
-    private void ClearEye(Entity<StationAiCoreComponent> ent)
+    protected void ClearEye(Entity<StationAiCoreComponent> ent)
     {
         if (_net.IsClient)
             return;
@@ -413,7 +401,7 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         Dirty(ent);
     }
 
-    private void AttachEye(Entity<StationAiCoreComponent> ent)
+    protected void AttachEye(Entity<StationAiCoreComponent> ent)
     {
         if (ent.Comp.RemoteEntity == null)
             return;
@@ -531,7 +519,7 @@ public abstract partial class SharedStationAiSystem : EntitySystem
 
     private void OnRemoved(Entity<StationAiCoreSpriteComponent> ent, EntityUid container)
     {
-        if (container!= ent.Comp.CoreUid)
+        if (container != ent.Comp.CoreUid)
             return;
 
         if (!TryComp<StationAiHolderComponent>(container, out var coreComp))
