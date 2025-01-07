@@ -1,3 +1,4 @@
+using Content.Shared.Whitelist;
 using Robust.Shared.GameStates;
 
 namespace Content.Shared.Silicons.StationAi;
@@ -10,4 +11,7 @@ public sealed partial class StationAiWhitelistComponent : Component
 {
     [DataField, AutoNetworkedField]
     public bool Enabled = true;
+
+    [DataField, AutoNetworkedField]
+    public EntityWhitelist? Whitelist;
 }

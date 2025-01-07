@@ -55,6 +55,10 @@
   - type: AtmosUnsafeUnanchor
   - type: AtmosPipeColor
   - type: AtmosMonitoringConsoleDevice
+  - type: StationAiWhitelist
+    whitelist:
+      components:
+      - StationAiAtmosInteract
   - type: Tag
     tags:
     - Pipe

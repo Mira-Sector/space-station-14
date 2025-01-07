@@ -34,6 +34,8 @@ public partial class ListingData : IEquatable<ListingData>
         other.ProductActionEntity,
         other.ProductEvent,
         other.RaiseProductEventOnUser,
+        other.Components,
+        other.ReplaceComponents,
         other.PurchaseAmount,
         other.ID,
         other.Categories,
@@ -59,6 +61,8 @@ public partial class ListingData : IEquatable<ListingData>
         EntityUid? productActionEntity,
         object? productEvent,
         bool raiseProductEventOnUser,
+        ComponentRegistry? components,
+        bool replaceComponents,
         int purchaseAmount,
         string id,
         HashSet<ProtoId<StoreCategoryPrototype>> categories,
@@ -80,6 +84,8 @@ public partial class ListingData : IEquatable<ListingData>
         ProductActionEntity = productActionEntity;
         ProductEvent = productEvent;
         RaiseProductEventOnUser = raiseProductEventOnUser;
+        Components = components;
+        ReplaceComponents = replaceComponents;
         PurchaseAmount = purchaseAmount;
         ID = id;
         Categories = categories.ToHashSet();
@@ -178,6 +184,16 @@ public partial class ListingData : IEquatable<ListingData>
 
     [DataField]
     public bool RaiseProductEventOnUser;
+
+    /// <summary>
+    /// Components to add the the purchaser
+    /// </summary>
+    [DataField]
+    [NonSerialized]
+    public ComponentRegistry? Components;
+
+    [DataField]
+    public bool ReplaceComponents = false;
 
     /// <summary>
     /// used internally for tracking how many times an item was purchased.
@@ -291,6 +307,8 @@ public sealed partial class ListingDataWithCostModifiers : ListingData
             listingData.ProductActionEntity,
             listingData.ProductEvent,
             listingData.RaiseProductEventOnUser,
+            listingData.Components,
+            listingData.ReplaceComponents,
             listingData.PurchaseAmount,
             listingData.ID,
             listingData.Categories,

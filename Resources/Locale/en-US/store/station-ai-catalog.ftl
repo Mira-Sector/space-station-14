@@ -12,3 +12,6 @@ ai-power-overload-desc = Overload a machine causing it to explode.
 
 ai-power-blackout-name = Blackout
 ai-power-blackout-desc = Overload the stations APCs for a 30% chance to blow up the bulbs.
+
+ai-power-atmos-name = Atmospherics Upgrade
+ai-power-atmos-desc = Allows you to interact with atmospherics valves and mixers.

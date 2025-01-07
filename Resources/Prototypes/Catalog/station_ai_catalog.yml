@@ -50,3 +50,20 @@
     Power: 15
   categories:
   - AiUtility
+
+- type: listing
+  id: AiAtmos
+  name: ai-power-atmos-name
+  description: ai-power-atmos-desc
+  icon:
+    sprite: Structures/Piping/Atmospherics/vent.rsi
+    state: vent_out
+  components:
+    - type: StationAiAtmosInteract
+  cost:
+    Power: 50
+  categories:
+  - AiUpgrade
+  conditions:
+  - !type:ListingLimitedStockCondition
+    stock: 1
