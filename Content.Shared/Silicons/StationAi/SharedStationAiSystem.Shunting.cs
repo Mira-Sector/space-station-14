@@ -61,7 +61,6 @@ public abstract partial class SharedStationAiSystem
         if (_containers.TryGetContainingContainer(args.User, out var startingContainer))
         {
             canShuntComp.Container = startingContainer;
-            _containers.RemoveEntity(startingContainer.Owner, args.User);
         }
         else
         {
@@ -97,7 +96,7 @@ public abstract partial class SharedStationAiSystem
         Eject(uid, component);
     }
 
-    protected void Eject(EntityUid uid, StationAiCanShuntComponent? component = null)
+    protected void Eject(EntityUid uid, StationAiCanShuntComponent? component = null, bool force = false)
     {
         if (!Resolve(uid, ref component, false))
             return;
@@ -105,10 +104,17 @@ public abstract partial class SharedStationAiSystem
         if (component.ShuntedContainer == null)
             return;
 
-        _containers.RemoveEntity(component.ShuntedContainer.Owner, uid);
-
         if (component.Container != null)
-            _containers.Insert(uid, component.Container);
+        {
+            var ev = new StationAiShuntingEjectAttemptEvent(uid);
+            RaiseLocalEvent(component.Container.Owner, ev);
+
+            if (ev.Cancelled && !force)
+                return;
+
+            if (!_containers.Insert(uid, component.Container) && !force)
+                return;
+        }
 
         if (TryComp<EyeComponent>(uid, out var eyeComp))
             _eye.SetDrawFov(uid, component.DrawFoV, eyeComp);
@@ -122,6 +128,9 @@ public abstract partial class SharedStationAiSystem
 
     public void OnPowerChange(EntityUid uid, StationAiShuntingComponent component, bool isPowered)
     {
+        if (component.IsPowered == isPowered)
+            return;
+
         component.IsPowered = isPowered;
         Dirty(uid, component);
 
@@ -133,7 +142,7 @@ public abstract partial class SharedStationAiSystem
 
         foreach (var containedEntity in container.ContainedEntities)
         {
-            Eject(containedEntity);
+            Eject(containedEntity, force: true);
         }
     }
 

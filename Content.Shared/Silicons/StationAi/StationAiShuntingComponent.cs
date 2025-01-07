@@ -32,11 +32,18 @@ public sealed partial class StationAiShuntingComponent : Component
 }
 
 [Serializable, NetSerializable]
-public sealed class StationAiShuntingAttemptEvent : BaseStationAiAction
-{
-}
+public sealed class StationAiShuntingAttemptEvent : BaseStationAiAction;
 
 [Serializable, NetSerializable]
-public sealed partial class StationAiShuntingEvent : SimpleDoAfterEvent
+public sealed partial class StationAiShuntingEvent : SimpleDoAfterEvent;
+
+public sealed class StationAiShuntingEjectAttemptEvent : CancellableEntityEventArgs
 {
+    public EntityUid ContainedEntity;
+
+    public StationAiShuntingEjectAttemptEvent(EntityUid containedEntity)
+    {
+        ContainedEntity = containedEntity;
+    }
 }
+
