@@ -1002,13 +1002,13 @@ Entries:
   - message: Lizards properly take damage again
     type: Fix
   id: 148
-  time: '2025-01-04T07:50:00.0000000+00:00'
+  time: '2025-01-06T07:50:00.0000000+00:00'
 - author: Doctor-Cpu
   changes:
   - message: Dragging items out of storage works again
     type: Fix
   id: 149
-  time: '2025-01-05T04:30:00.0000000+00:00'
+  time: '2025-01-06T04:30:00.0000000+00:00'
 - author: Doctor-Cpu
   changes:
   - message: The AI can hack APCs to gain power
@@ -1016,28 +1016,34 @@ Entries:
   - message: The AI can spend power for modules in a store
     type: Add
   id: 150
-  time: '2025-01-05T05:20:00.0000000+00:00'
+  time: '2025-01-06T05:20:00.0000000+00:00'
 - author: Anurath
   changes:
   - message: The AI can shunt into hacked APCs
     type: Add
   id: 151
-  time: '2025-01-05T05:20:00.0000000+00:00'
+  time: '2025-01-06T05:20:00.0000000+00:00'
 - author: Doctor-Cpu
   changes:
   - message: Added a 3 second grace period for diona to absorb puddles
     type: Add
   id: 152
-  time: '2025-01-05T06:30:00.0000000+00:00'
+  time: '2025-01-06T06:30:00.0000000+00:00'
 - author: Doctor-Cpu
   changes:
   - message: Communications console has a unique announcement sound
     type: Add
   id: 153
-  time: '2025-01-05T07:15:00.0000000+00:00'
+  time: '2025-01-06T07:15:00.0000000+00:00'
 - author: Doctor-Cpu
   changes:
   - message: Damage regeneration is no longer super slow
     type: Fix
   id: 154
-  time: '2025-01-05T07:45:00.0000000+00:00'
+  time: '2025-01-06T07:45:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added the atmospherics AI module to control atmos devices
+    type: Add
+  id: 155
+  time: '2025-01-07T01:50:00.0000000+00:00'
