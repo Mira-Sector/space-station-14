@@ -376,7 +376,7 @@
     maxCharge: 5000
     startingCharge: 5000
   - type: StationAiRequirePower
-    wattage: 100
+    wattage: 50
   - type: StationAiCore
   - type: StationAiVision
   - type: InteractionOutline
