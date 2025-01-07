@@ -55,7 +55,7 @@ public sealed partial class StationAiSystem
 
     private void OnIntellicardAttempt(EntityUid uid, StationAiRequirePowerComponent component, IntellicardAttemptEvent args)
     {
-        if (component.IsPowered || args.Cancelled)
+        if (component.IsPowered || args.Cancelled || args.Removed)
             return;
 
         args.Cancel();
