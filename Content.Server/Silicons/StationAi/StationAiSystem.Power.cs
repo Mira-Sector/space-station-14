@@ -14,7 +14,7 @@ public sealed partial class StationAiSystem
     {
         SubscribeLocalEvent<StationAiRequirePowerComponent, PowerChangedEvent>(OnCorePowerChange);
         SubscribeLocalEvent<StationAiRequirePowerComponent, IntellicardAttemptEvent>(OnIntellicardAttempt);
-
+        SubscribeLocalEvent<StationAiRequirePowerComponent, StationAiShuntingEjectAttemptEvent>(OnShuntingAttempt);
     }
 
     private void UpdatePower(float frameTime)
@@ -45,6 +45,14 @@ public sealed partial class StationAiSystem
 
         args.Cancel();
         _popup.PopupEntity(Loc.GetString("base-computer-ui-component-not-powered", ("machine", uid)), args.User, args.User, PopupType.MediumCaution);
+    }
+
+    private void OnShuntingAttempt(EntityUid uid, StationAiRequirePowerComponent component, StationAiShuntingEjectAttemptEvent args)
+    {
+        if (component.IsPowered || args.Cancelled)
+            return;
+
+        args.Cancel();
     }
 
     private void UpdateState(EntityUid uid, StationAiRequirePowerComponent component)
