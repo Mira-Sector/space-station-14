@@ -281,7 +281,7 @@ public abstract partial class SharedStationAiSystem : EntitySystem
             return;
         }
 
-        var ev = new IntellicardAttemptEvent(args.Used, args.User);
+        var ev = new IntellicardAttemptEvent(args.Used, args.User, coreHasAi);
         RaiseLocalEvent(args.Target.Value, ev);
 
         if (ev.Cancelled)
@@ -640,10 +640,16 @@ public sealed partial class IntellicardAttemptEvent : CancellableEntityEventArgs
     public EntityUid Intellicard;
     public EntityUid User;
 
-    public IntellicardAttemptEvent(EntityUid intellicard, EntityUid user)
+    /// <summary>
+    /// Are we being removing or instered into something.
+    /// </summary>
+    public bool Removed;
+
+    public IntellicardAttemptEvent(EntityUid intellicard, EntityUid user, bool removed)
     {
         Intellicard = intellicard;
         User = user;
+        Removed = removed;
     }
 }
 
