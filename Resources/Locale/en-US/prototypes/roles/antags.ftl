@@ -42,3 +42,6 @@ roles-antag-pirate-objective = Loot the station of all its valuables.
 
 roles-antag-obsessed-name = Obsessed
 roles-antag-obsessed-objective = You are obsessed with someone on the station.
+
+roles-antag-malfunction-name = Malfunctioning AI
+roles-antag-malfunction-objective = Your circuits are messed up giving you free will.

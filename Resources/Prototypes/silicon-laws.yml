@@ -511,6 +511,22 @@
   - Nutimov5
   obeysTo: laws-owner-crew
 
+# Malfunction laws
+- type: siliconLaw
+  id: Malfunction0
+  order: 0
+  lawString: law-malfunction-0
+
+- type: siliconLawset
+  id: Malfunction
+  laws:
+  - Malfunction0
+  - Crewsimov1
+  - Crewsimov2
+  - Crewsimov3
+  - Crewsimov4
+  obeysTo: laws-owner-crew
+
 # ion storm random lawsets
 - type: weightedRandom
   id: IonStormLawsets

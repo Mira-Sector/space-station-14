@@ -33,6 +33,8 @@ public record struct GetSiliconLawsEvent(EntityUid Entity)
 
     public SiliconLawset Laws = new();
 
+    public List<SiliconLaw> PriorityLaws = new();
+
     public bool Handled = false;
 }
 
