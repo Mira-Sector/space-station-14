@@ -1,8 +1,10 @@
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
+using Content.Shared.Chat;
 using Content.Shared.Popups;
 using Content.Shared.Power;
 using Content.Shared.Silicons.StationAi;
+using Robust.Shared.Player;
 
 namespace Content.Server.Silicons.StationAi;
 
@@ -70,10 +72,13 @@ public sealed partial class StationAiSystem
 
     private void UpdateState(EntityUid uid, StationAiRequirePowerComponent component)
     {
-        if (!TryComp<StationAiCoreComponent>(uid, out var core))
+        if (!TryComp<ApcPowerReceiverComponent>(uid, out var receiver))
             return;
 
-        if (!TryComp<ApcPowerReceiverComponent>(uid, out var receiver))
+        if (receiver.Powered == component.IsPowered)
+            return;
+
+        if (!TryComp<StationAiCoreComponent>(uid, out var core))
             return;
 
         component.IsPowered = receiver.Powered;
@@ -82,8 +87,21 @@ public sealed partial class StationAiSystem
         {
             TurnOn(uid, core);
         }
+        else
+        {
+            if (_timing.CurTime < component.LastWarning + component.WarningDelay)
+                return;
 
-        // dont run turn off now as it will instantly kill the ai
+            if (!TryGetInsertedAI((uid, core), out var ai))
+                return;
+
+            var msg = Loc.GetString("ai-power-warning");
+            AnnounceAi(ai.Value, msg, component.WarningSound);
+
+            component.LastWarning = _timing.CurTime;
+
+            // dont run turn off now as it will instantly kill the ai
+        }
     }
 
     private void TurnOff(EntityUid uid, StationAiCoreComponent core)

@@ -36,7 +36,7 @@ namespace Content.Shared.Silicons.StationAi;
 public abstract partial class SharedStationAiSystem : EntitySystem
 {
     [Dependency] private readonly   ISharedAdminManager _admin = default!;
-    [Dependency] private readonly   IGameTiming _timing = default!;
+    [Dependency] protected readonly   IGameTiming _timing = default!;
     [Dependency] private readonly   INetManager _net = default!;
     [Dependency] private readonly   ItemSlotsSystem _slots = default!;
     [Dependency] private readonly   ItemToggleSystem _toggles = default!;
@@ -295,7 +295,9 @@ public abstract partial class SharedStationAiSystem : EntitySystem
                 return;
 
             intelliComp.NextWarningAllowed = _timing.CurTime + intelliComp.WarningDelay;
-            AnnounceIntellicardUsage(held, intelliComp.WarningSound);
+
+            var msg = Loc.GetString("ai-consciousness-download-warning");
+            AnnounceAi(held, msg, intelliComp.WarningSound);
         }
 
         var doAfterArgs = new DoAfterArgs(EntityManager, args.User, cardHasAi ? intelliComp.UploadTime : intelliComp.DownloadTime, new IntellicardDoAfterEvent(), args.Target, ent.Owner)
@@ -560,7 +562,7 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         _appearance.SetData(entity.Owner, StationAiVisualState.Key, StationAiState.Occupied);
     }
 
-    public virtual void AnnounceIntellicardUsage(EntityUid uid, SoundSpecifier? cue = null) { }
+    public virtual void AnnounceAi(EntityUid uid, string msg, SoundSpecifier? cue = null) { }
 
     public virtual bool SetVisionEnabled(Entity<StationAiVisionComponent> entity, bool enabled, bool announce = false)
     {

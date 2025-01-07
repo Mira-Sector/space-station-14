@@ -25,3 +25,4 @@ ai-hack = Hack
 ai-shunt = Shunt into an APC
 
 ai-consciousness-download-warning = Your consciousness is being downloaded.
+ai-power-warning = Your core is losing power.

@@ -97,12 +97,11 @@ public sealed partial class StationAiSystem : SharedStationAiSystem
         return true;
     }
 
-    public override void AnnounceIntellicardUsage(EntityUid uid, SoundSpecifier? cue = null)
+    public override void AnnounceAi(EntityUid uid, string msg, SoundSpecifier? cue = null)
     {
         if (!TryComp<ActorComponent>(uid, out var actor))
             return;
 
-        var msg = Loc.GetString("ai-consciousness-download-warning");
         var wrappedMessage = Loc.GetString("chat-manager-server-wrap-message", ("message", msg));
         _chats.ChatMessageToOne(ChatChannel.Server, msg, wrappedMessage, default, false, actor.PlayerSession.Channel, colorOverride: Color.Red);
 
