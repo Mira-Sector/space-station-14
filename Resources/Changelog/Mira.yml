@@ -1077,3 +1077,9 @@ Entries:
     type: Fix
   id: 159
   time: '2025-01-07T23:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Examining a persons health works again
+    type: Fix
+  id: 160
+  time: '2025-01-07T23:50:00.0000000+00:00'
