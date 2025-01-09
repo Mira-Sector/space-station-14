@@ -1071,3 +1071,9 @@ Entries:
     type: Fix
   id: 158
   time: '2025-01-09T22:45:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: As a slime person you can press E on yourself to open your storage again
+    type: Fix
+  id: 159
+  time: '2025-01-07T23:30:00.0000000+00:00'
