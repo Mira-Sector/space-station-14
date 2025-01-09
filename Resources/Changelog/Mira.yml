@@ -1063,3 +1063,11 @@ Entries:
     type: Add
   id: 157
   time: '2025-01-07T17:10:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: You no longer slow down further on stamina damage recovery
+    type: Fix
+  - message: Low stamina damage weapons no longer slow you down while high stamina does
+    type: Fix
+  id: 158
+  time: '2025-01-09T22:45:00.0000000+00:00'
