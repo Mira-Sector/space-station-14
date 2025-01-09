@@ -310,7 +310,7 @@ public sealed partial class StaminaSystem : EntitySystem
 
         // If we go above n% then apply slowdown
         if (isPositive &&
-            component.StaminaDamage < slowdownThreshold &&
+            component.StaminaDamage > slowdownThreshold &&
             component.State == StunnedState.None)
         {
             _stunSystem.TrySlowdown(uid, TimeSpan.FromSeconds(3), true, 0.8f, 0.8f);
