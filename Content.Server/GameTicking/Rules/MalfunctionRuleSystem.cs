@@ -22,7 +22,7 @@ public sealed class MalfunctionRuleSystem : GameRuleSystem<MalfunctionRuleCompon
         base.Initialize();
 
         SubscribeLocalEvent<MalfunctionRuleComponent, AfterAntagEntitySelectedEvent>(AfterAntagSelected);
-        SubscribeLocalEvent<MalfunctionRoleComponent, GetSiliconLawsEvent>(GetLaws);
+        SubscribeLocalEvent<MalfunctionRoleComponent, UpdatedSiliconLawsEvent>(GetLaws);
     }
 
     private void AfterAntagSelected(EntityUid uid, MalfunctionRuleComponent rule, ref AfterAntagEntitySelectedEvent args)
@@ -76,7 +76,7 @@ public sealed class MalfunctionRuleSystem : GameRuleSystem<MalfunctionRuleCompon
         }
     }
 
-    private void GetLaws(EntityUid uid, MalfunctionRoleComponent component, ref GetSiliconLawsEvent args)
+    private void GetLaws(EntityUid uid, MalfunctionRoleComponent component, ref UpdatedSiliconLawsEvent args)
     {
         foreach (var law in component.Laws)
         {

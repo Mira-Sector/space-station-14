@@ -348,7 +348,7 @@ public sealed class SiliconLawSystem : SharedSiliconLawSystem
 
             if (_mind.TryGetMind(update, out var _, out var mind))
             {
-                var ev = new GetSiliconLawsEvent(update);
+                var ev = new UpdatedSiliconLawsEvent(update);
 
                 foreach (var role in mind.MindRoles)
                 {
