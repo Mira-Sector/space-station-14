@@ -252,7 +252,7 @@ public sealed class TemperatureSystem : EntitySystem
 
     private void ChangeDamage(EntityUid uid, TemperatureComponent temperature)
     {
-        if (!HasComp<DamageableComponent>(uid) && _body.GetBodyDamageable(uid).Count > 0)
+        if (!HasComp<DamageableComponent>(uid) && _body.GetBodyDamageable(uid).Count < 0)
             return;
 
         // See this link for where the scaling func comes from:
