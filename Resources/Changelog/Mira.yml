@@ -1083,3 +1083,9 @@ Entries:
     type: Fix
   id: 160
   time: '2025-01-07T23:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Temperature damage works again
+    type: Fix
+  id: 161
+  time: '2025-01-07T23:59:00.0000000+00:00'
