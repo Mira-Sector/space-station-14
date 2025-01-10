@@ -1089,3 +1089,9 @@ Entries:
     type: Fix
   id: 161
   time: '2025-01-07T23:59:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Malfunctioning AIs law 0 will not be readded every time you open up your laws
+    type: Fix
+  id: 162
+  time: '2025-01-07T23:59:00.0000000+00:00'
