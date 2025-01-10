@@ -49425,60 +49425,6 @@ entities:
     - type: Transform
       pos: -27.5,-8.5
       parent: 2
-  - uid: 576
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -25.5,1.5
-      parent: 2
-  - uid: 577
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -25.5,2.5
-      parent: 2
-  - uid: 578
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -23.5,0.5
-      parent: 2
-  - uid: 580
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -25.5,0.5
-      parent: 2
-  - uid: 584
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -24.5,2.5
-      parent: 2
-  - uid: 585
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -23.5,2.5
-      parent: 2
-  - uid: 586
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -23.5,1.5
-      parent: 2
-  - uid: 1921
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -24.5,0.5
-      parent: 2
-  - uid: 2124
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -22.5,1.5
-      parent: 2
   - uid: 3857
     components:
     - type: Transform
@@ -49623,24 +49569,6 @@ entities:
       rot: -1.5707963267948966 rad
       pos: -46.5,-23.5
       parent: 2
-  - uid: 9102
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -22.5,2.5
-      parent: 2
-  - uid: 10923
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -22.5,0.5
-      parent: 2
-  - uid: 11968
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -24.5,1.5
-      parent: 2
   - uid: 14247
     components:
     - type: Transform
@@ -49766,6 +49694,43 @@ entities:
     components:
     - type: Transform
       pos: -20.5,-18.5
+      parent: 2
+  - uid: 576
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: -22.5,0.5
+      parent: 2
+  - uid: 577
+    components:
+    - type: Transform
+      pos: -22.5,1.5
+      parent: 2
+  - uid: 578
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: -22.5,2.5
+      parent: 2
+  - uid: 580
+    components:
+    - type: Transform
+      pos: -23.5,0.5
+      parent: 2
+  - uid: 584
+    components:
+    - type: Transform
+      pos: -25.5,1.5
+      parent: 2
+  - uid: 585
+    components:
+    - type: Transform
+      pos: -25.5,0.5
+      parent: 2
+  - uid: 586
+    components:
+    - type: Transform
+      pos: -24.5,1.5
       parent: 2
   - uid: 587
     components:
@@ -49956,6 +49921,31 @@ entities:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: 3.5,-35.5
+      parent: 2
+  - uid: 9102
+    components:
+    - type: Transform
+      pos: -23.5,2.5
+      parent: 2
+  - uid: 10923
+    components:
+    - type: Transform
+      pos: -24.5,2.5
+      parent: 2
+  - uid: 11968
+    components:
+    - type: Transform
+      pos: -24.5,0.5
+      parent: 2
+  - uid: 13670
+    components:
+    - type: Transform
+      pos: -25.5,2.5
+      parent: 2
+  - uid: 13671
+    components:
+    - type: Transform
+      pos: -23.5,1.5
       parent: 2
 - proto: CarpetPink
   entities:
@@ -59784,16 +59774,6 @@ entities:
     - type: Transform
       pos: 83.09198,-33.864143
       parent: 2
-  - uid: 22091
-    components:
-    - type: Transform
-      pos: -13.5,7.5
-      parent: 2
-  - uid: 22092
-    components:
-    - type: Transform
-      pos: -13.5,6.5
-      parent: 2
 - proto: ClothingHeadHatSkub
   entities:
   - uid: 17541
@@ -59826,13 +59806,6 @@ entities:
     components:
     - type: Transform
       pos: 65.29011,-54.032627
-      parent: 2
-- proto: ClothingHeadHatXmasCrown
-  entities:
-  - uid: 22088
-    components:
-    - type: Transform
-      pos: -25.099386,2.5538616
       parent: 2
 - proto: ClothingHeadHelmetAncient
   entities:
@@ -60083,18 +60056,6 @@ entities:
     components:
     - type: Transform
       pos: 21.504559,-48.362946
-      parent: 2
-- proto: ClothingOuterSanta
-  entities:
-  - uid: 22089
-    components:
-    - type: Transform
-      pos: -13.5,7.5
-      parent: 2
-  - uid: 22090
-    components:
-    - type: Transform
-      pos: -13.5,6.5
       parent: 2
 - proto: ClothingOuterSkub
   entities:
@@ -68164,13 +68125,6 @@ entities:
     - type: Transform
       pos: 8.516958,16.625814
       parent: 2
-- proto: DrinkMugRed
-  entities:
-  - uid: 22069
-    components:
-    - type: Transform
-      pos: -23.00145,2.0785117
-      parent: 2
 - proto: DrinkShotGlass
   entities:
   - uid: 980
@@ -68202,22 +68156,12 @@ entities:
     - type: Transform
       pos: -22.471962,21.429884
       parent: 2
-  - uid: 22060
-    components:
-    - type: Transform
-      pos: -22.959337,1.3838617
-      parent: 2
 - proto: DrinkTeapot
   entities:
   - uid: 8527
     components:
     - type: Transform
       pos: -22.667652,21.796803
-      parent: 2
-  - uid: 22070
-    components:
-    - type: Transform
-      pos: -24.543524,0.48476183
       parent: 2
 - proto: DrinkWaterBottleFull
   entities:
@@ -74394,14 +74338,6 @@ entities:
     - type: Transform
       pos: -47.863766,-29.112556
       parent: 2
-- proto: FloraTreeChristmas02
-  entities:
-  - uid: 13671
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -24.022373,1.2551883
-      parent: 2
 - proto: FloraTreeLarge03
   entities:
   - uid: 1077
@@ -74516,13 +74452,6 @@ entities:
     - type: Transform
       pos: 81.52647,-35.503044
       parent: 2
-- proto: FoodBakedCookieRaisin
-  entities:
-  - uid: 22067
-    components:
-    - type: Transform
-      pos: -24.959248,0.89753926
-      parent: 2
 - proto: FoodBoxDonut
   entities:
   - uid: 4557
@@ -74543,18 +74472,6 @@ entities:
     components:
     - type: Transform
       pos: -34.49943,-19.290863
-      parent: 2
-- proto: FoodCakeChristmasSlice
-  entities:
-  - uid: 22059
-    components:
-    - type: Transform
-      pos: -23.470037,0.6606734
-      parent: 2
-  - uid: 22064
-    components:
-    - type: Transform
-      pos: -25.256123,1.8108813
       parent: 2
 - proto: FoodCartCold
   entities:
@@ -74682,25 +74599,6 @@ entities:
     components:
     - type: Transform
       pos: -54.548683,9.681784
-      parent: 2
-- proto: FoodPlateSmall
-  entities:
-  - uid: 22058
-    components:
-    - type: Transform
-      pos: -23.501287,0.73359
-      parent: 2
-  - uid: 22063
-    components:
-    - type: Transform
-      pos: -25.224873,1.8577563
-      parent: 2
-- proto: FoodPlateSmallPlastic
-  entities:
-  - uid: 22066
-    components:
-    - type: Transform
-      pos: -24.927998,1.0381643
       parent: 2
 - proto: FoodPlateSmallTrash
   entities:
@@ -90090,12 +89988,6 @@ entities:
       parent: 2
     - type: AtmosPipeColor
       color: '#0335FCFF'
-  - uid: 13670
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -22.5,2.5
-      parent: 2
   - uid: 13935
     components:
     - type: Transform
@@ -90515,6 +90407,14 @@ entities:
       parent: 2
     - type: AtmosPipeColor
       color: '#0335FCFF'
+  - uid: 18070
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: -22.5,2.5
+      parent: 2
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
   - uid: 18073
     components:
     - type: Transform
@@ -104311,13 +104211,6 @@ entities:
     - type: Transform
       pos: 19.5,-55.5
       parent: 2
-- proto: PlushieArachind
-  entities:
-  - uid: 22061
-    components:
-    - type: Transform
-      pos: -22.334337,1.5088617
-      parent: 2
 - proto: PlushieAtmosian
   entities:
   - uid: 1553
@@ -104344,22 +104237,12 @@ entities:
     - type: Transform
       pos: 71.495,-13.96903
       parent: 2
-  - uid: 18070
-    components:
-    - type: Transform
-      pos: -22.459621,0.55650675
-      parent: 2
 - proto: PlushieDiona
   entities:
   - uid: 4353
     components:
     - type: Transform
       pos: -20.083767,-8.227774
-      parent: 2
-  - uid: 22068
-    components:
-    - type: Transform
-      pos: -22.62645,2.6201787
       parent: 2
 - proto: PlushieHampter
   entities:
@@ -104492,13 +104375,6 @@ entities:
     - type: Transform
       pos: -39.212326,-8.996875
       parent: 2
-- proto: PlushieLizardMirrored
-  entities:
-  - uid: 22062
-    components:
-    - type: Transform
-      pos: -25.771748,2.1077561
-      parent: 2
 - proto: PlushieMoth
   entities:
   - uid: 897
@@ -104526,12 +104402,6 @@ entities:
       desc: This rouny feels like it has experienced the horrors of war.
     - type: Transform
       pos: 35.498035,-33.025932
-      parent: 2
-  - uid: 22065
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -25.662373,1.1475393
       parent: 2
 - proto: PlushieSharkBlue
   entities:
@@ -111731,6 +111601,11 @@ entities:
     - type: Transform
       pos: -33.5,-4.5
       parent: 2
+  - uid: 1921
+    components:
+    - type: Transform
+      pos: -23.5,1.5
+      parent: 2
   - uid: 1922
     components:
     - type: Transform
@@ -118864,15 +118739,15 @@ entities:
       parent: 2
 - proto: SpawnPointMusician
   entities:
+  - uid: 2124
+    components:
+    - type: Transform
+      pos: -24.5,1.5
+      parent: 2
   - uid: 3908
     components:
     - type: Transform
       pos: -38.5,-19.5
-      parent: 2
-  - uid: 22057
-    components:
-    - type: Transform
-      pos: -20.5,5.5
       parent: 2
 - proto: SpawnPointObserver
   entities:
@@ -145438,164 +145313,4 @@ entities:
     - type: Transform
       pos: 1.7595062,-8.203196
       parent: 21128
-- proto: XmasLights
-  entities:
-  - uid: 22071
-    components:
-    - type: Transform
-      pos: -36.5,7.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 22072
-    components:
-    - type: Transform
-      pos: -35.5,7.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 22073
-    components:
-    - type: Transform
-      pos: -34.5,7.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 22074
-    components:
-    - type: Transform
-      pos: -33.5,7.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 22075
-    components:
-    - type: Transform
-      pos: -32.5,7.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 22076
-    components:
-    - type: Transform
-      pos: -31.5,7.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 22077
-    components:
-    - type: Transform
-      pos: -30.5,7.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 22078
-    components:
-    - type: Transform
-      pos: -18.5,3.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 22079
-    components:
-    - type: Transform
-      pos: -17.5,3.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 22080
-    components:
-    - type: Transform
-      pos: -16.5,3.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 22081
-    components:
-    - type: Transform
-      pos: -15.5,3.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 22082
-    components:
-    - type: Transform
-      pos: -13.5,3.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 22083
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -28.5,-4.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 22084
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -27.5,-4.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 22085
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -26.5,-4.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 22086
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -25.5,-4.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
-  - uid: 22087
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -28.5,-1.5
-      parent: 2
-    - type: Physics
-      canCollide: False
-    - type: Fixtures
-      fixtures: {}
 ...

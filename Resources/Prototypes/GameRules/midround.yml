@@ -26,9 +26,8 @@
       startingGear: ThiefGear
       components:
       - type: Pacified
-      mindComponents:
-      - type: ThiefRole
-        prototype: Thief
+      mindRoles:
+      - MindRoleThief
       briefing:
         sound: "/Audio/Misc/thief_greeting.ogg"
 
@@ -48,12 +47,40 @@
       briefing:
         text: obsessed-role-greeting
         color: LightSalmon
-      mindComponents:
-      - type: ObsessedRole
-        prototype: Obsessed
+      mindRoles:
+      - MindRoleObsessed
   - type: AntagObjectives
     objectives:
     - KillObsessionObjective
     - HugObsessionObjective
     - KillDepartmentObsessionObjective
     - SpendTimeObsessionObjective
+
+- type: entity
+  parent: BaseGameRule
+  id: Malfunction
+  components:
+  - type: MalfunctionRule
+  - type: AntagRandomObjectives
+    sets:
+    - groups: MalfunctionObjectiveGroupKill
+      prob: 0.7
+      maxPicks: 4
+    maxDifficulty: 10
+  - type: AntagSelection
+    agentName: malfunction-round-end-agent-name
+    definitions:
+    - prefRoles: [ Malfunction ]
+      max: 1
+      playerRatio: 10
+      lateJoinAdditional: true
+      briefing:
+        text: malfunction-role-greeting
+        color: Crimson
+        sound: "/Audio/Misc/malf_greeting.ogg"
+      allowNonHumans: true
+      whitelist:
+        tags:
+        - StationAi
+      mindRoles:
+      - MindRoleMalfunction

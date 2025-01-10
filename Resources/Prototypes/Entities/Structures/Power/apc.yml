@@ -57,8 +57,14 @@
       shader: unshaded
       map: ["enum.ApcVisualLayers.Environment"]
       visible: false
+    - state: apc_hacked
+      sprite: Interface/Misc/ai_hud.rsi
+      shader: unshaded
+      map: ["enum.HackingLayers.HUD"]
+      visible: false
   - type: Appearance
   - type: ApcVisuals
+  - type: HackableHUDVisuals
   - type: Battery
     maxCharge: 50000
     startingCharge: 0
@@ -90,9 +96,10 @@
     interfaces:
       enum.ApcUiKey.Key:
         type: ApcBoundUserInterface
+      enum.AiUi.Key:
+        type: StationAiBoundUserInterface
   - type: ActivatableUI
     inHandsOnly: false
-    singleUser: true
     key: enum.ApcUiKey.Key
   - type: Construction
     graph: APC
@@ -134,13 +141,24 @@
         sound:
           collection: MetalGlassBreak
   - type: StationInfiniteBatteryTarget
+  - type: StationAiShunting
+    icon:
+      sprite: Interface/Actions/actions_ai.rsi
+      state: shunting
+    tooltip: ai-shunt
   - type: Electrified
+    aiToggleable: false
     onHandInteract: false
     onInteractUsing: false
     onBump: false
     requirePower: true
     mediumVoltageNode: input
     lowVoltageNode: output
+  - type: StationAiHackable
+    radialSprite:
+      sprite: Interface/Actions/actions_ai.rsi
+      state: hack
+    radialTooltip: ai-hack
   - type: LightningTarget
     priority: 1
   - type: StaticPrice

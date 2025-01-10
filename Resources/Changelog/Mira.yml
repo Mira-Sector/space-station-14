@@ -859,7 +859,239 @@ Entries:
   time: '2024-12-08T05:00:00.0000000+00:00'
 - author: Doctor-Cpu
   changes:
-  - message: Rlectrical shocking is scaled off the supplied power
+  - message: Electrical shocking is scaled off the supplied power
     type: Add
   id: 129
   time: '2024-12-08T14:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Slimes and geras no longer have damageable legs
+    type: Tweak
+  id: 130
+  time: '2024-12-11T14:40:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Meteors take longer to ocure and happen less frequently
+    type: Tweak
+  id: 130
+  time: '2024-12-11T14:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Headphones can now play music for the wearer
+    type: Add
+  id: 131
+  time: '2024-12-12T17:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: When attacking a dead limb it will flash violet
+    type: Add
+  - message: When attacking a limb that doesnt exist it will flash green
+    type: Add
+  id: 132
+  time: '2024-12-13T11:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Gibbing is based on total damage
+    type: Tweak
+  id: 133
+  time: '2024-12-20T00:15:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Entities doesnt flash violet when dead
+    type: Fix
+  id: 134
+  time: '2024-12-20T00:25:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Medibots now inject again
+    type: Fix
+  id: 135
+  time: '2024-12-20T00:40:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Grappling hooks and spears now embed again
+    type: Fix
+  id: 136
+  time: '2024-12-20T01:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Medhud icons now show on humans again
+    type: Fix
+  - message: Medhud healthbar is now more accurate
+    type: Fix
+  id: 137
+  time: '2024-12-20T01:15:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: If a zombie does not have a head the whole body is damageable
+    type: Fix
+  id: 138
+  time: '2024-12-20T02:15:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Guns can be dual wielded
+    type: Add
+  id: 139
+  time: '2024-12-20T03:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Toggling power on a disposal unit reduces the flushing time by 1.5 seconds
+    type: Add
+  id: 140
+  time: '2024-12-20T05:15:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Diona now absorb puddles they step on
+    type: Add
+  id: 141
+  time: '2024-12-22T17:45:00.0000000+00:00'
+- author: Mathrew
+  changes:
+  - message: Fixed shittles having no atmos
+    type: Fix
+  - message: Fixed shittles not containing an APC / Substation.
+    type: Fix
+  id: 142
+  time: '2024-12-22T17:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Geras and other polymorphs now retain their parents damage when transfered
+    type: Fix
+  id: 143
+  time: '2024-12-22T22:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Removed 10 seconds succumb delay
+    type: Remove
+  - message: Singularity and tesla no longer have a failsafe
+    type: Remove
+  - message: Bola stun damage has been readded in a reduced form
+    type: Add
+  id: 144
+  time: '2024-12-23T08:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Removed the orange lights
+    type: Remove
+  - message: Service radio now works once again
+    type: Fix
+  - message: Cyborgs are now named properly
+    type: Fix
+  - message: Readded dragging items out of containers
+    type: Add
+  - message: Dragging items out of containers applies forensics
+    type: Tweak
+  id: 145
+  time: '2025-01-03T00:01:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added AI screen loadouts
+    type: Add
+  id: 146
+  time: '2025-01-03T08:35:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Janitor cyborgs can once again clean puddles
+    type: Fix
+  - message: Added a 2.5 second grace period to being slipped
+    type: Add
+  id: 147
+  time: '2025-01-04T03:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Lizards properly take damage again
+    type: Fix
+  id: 148
+  time: '2025-01-06T07:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Dragging items out of storage works again
+    type: Fix
+  id: 149
+  time: '2025-01-06T04:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: The AI can hack APCs to gain power
+    type: Add
+  - message: The AI can spend power for modules in a store
+    type: Add
+  id: 150
+  time: '2025-01-06T05:20:00.0000000+00:00'
+- author: Anurath
+  changes:
+  - message: The AI can shunt into hacked APCs
+    type: Add
+  id: 151
+  time: '2025-01-06T05:20:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added a 3 second grace period for diona to absorb puddles
+    type: Add
+  id: 152
+  time: '2025-01-06T06:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Communications console has a unique announcement sound
+    type: Add
+  id: 153
+  time: '2025-01-06T07:15:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Damage regeneration is no longer super slow
+    type: Fix
+  id: 154
+  time: '2025-01-06T07:45:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added the atmospherics AI module to control atmos devices
+    type: Add
+  id: 155
+  time: '2025-01-07T01:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: The AI core can be destroyed
+    type: Add
+  - message: The AI dies if it is without power for too long
+    type: Add
+  - message: The AI core can be reanchored
+    type: Tweak
+  id: 156
+  time: '2025-01-07T09:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added malfunctioning AI
+    type: Add
+  id: 157
+  time: '2025-01-07T17:10:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: You no longer slow down further on stamina damage recovery
+    type: Fix
+  - message: Low stamina damage weapons no longer slow you down while high stamina does
+    type: Fix
+  id: 158
+  time: '2025-01-09T22:45:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: As a slime person you can press E on yourself to open your storage again
+    type: Fix
+  id: 159
+  time: '2025-01-07T23:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Examining a persons health works again
+    type: Fix
+  id: 160
+  time: '2025-01-07T23:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Temperature damage works again
+    type: Fix
+  id: 161
+  time: '2025-01-07T23:59:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Malfunctioning AIs law 0 will not be readded every time you open up your laws
+    type: Fix
+  id: 162
+  time: '2025-01-07T23:59:00.0000000+00:00'

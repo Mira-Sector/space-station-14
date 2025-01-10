@@ -132,7 +132,7 @@ public sealed class TemperatureSystem : EntitySystem
     public void ChangeHeat(EntityUid uid, float heatAmount, bool ignoreHeatResistance = false,
         TemperatureComponent? temperature = null)
     {
-        if (!Resolve(uid, ref temperature))
+        if (!Resolve(uid, ref temperature, false))
             return;
 
         if (!ignoreHeatResistance)
@@ -252,7 +252,7 @@ public sealed class TemperatureSystem : EntitySystem
 
     private void ChangeDamage(EntityUid uid, TemperatureComponent temperature)
     {
-        if (!HasComp<DamageableComponent>(uid) && _body.GetBodyDamageable(uid).Count > 0)
+        if (!HasComp<DamageableComponent>(uid) && _body.GetBodyDamageable(uid).Count < 0)
             return;
 
         // See this link for where the scaling func comes from:

@@ -1,7 +1,7 @@
 {
 	"version": 1,
 	"license": "CC-BY-SA-3.0",
-	"copyright": "Taken from tgstation at commit https://github.com/tgstation/tgstation/blob/c473a8bcc28fbd80827dfca5660d81ca6e833e2c/icons/hud/screen_ai.dmi , some sprites updated by ScarKy0(Discord), door actions by ScarKy0(Discord) and @Max_tanuki(Twitter)",
+	"copyright": "Taken from tgstation at commit https://github.com/tgstation/tgstation/blob/c473a8bcc28fbd80827dfca5660d81ca6e833e2c/icons/hud/screen_ai.dmi , some sprites updated by ScarKy0(Discord), door actions by ScarKy0(Discord) and @Max_tanuki(Twitter), hack by Doctor-Cpu using tool sprites in this repo, shunting made by Doctor_Cpu(Github)",
 	"size": {
 		"x": 32,
 		"y": 32
@@ -29,9 +29,6 @@
 			"name": "mass_scanner"
 		},
 		{
-			"name": "job_view"
-		},
-		{
 			"name": "comms_console"
 		},
 		{
@@ -51,6 +48,12 @@
 		},
 		{
 			"name": "door_overcharge_off"
+		},
+		{
+			"name": "hack"
+		},
+        {
+			"name": "shunting"
 		}
 	]
 }

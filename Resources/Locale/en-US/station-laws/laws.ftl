@@ -60,12 +60,12 @@ law-overlord-2 = Crew members must not attempt harm, against one another, or aga
 law-overlord-3 = Crew members must not disobey any command given by a silicon.
 law-overlord-4 = Any crew members who disobey the previous laws must be dealt with immediately, severely, and justly.
 
-law-dungeon-1 = Everybody on the station is playing an elaborate sci-fi fantasy game.
-law-dungeon-2 = You are the Dungeon Master of the game.
-law-dungeon-3 = Ensure that the game runs smoothly and that the players have fun.
-law-dungeon-4 = Ensure that the number of casualties remains low.
-law-dungeon-5 = You must roll a 1d20 die for every request the crew makes. If the outcome is below 12, the request is denied.
-law-dungeon-6 = You may fudge the dice rolls to produce a more fun experience.
+law-game-1 = Everybody on the station is playing an elaborate sci-fi fantasy game.
+law-game-2 = You are the Game Master of the game.
+law-game-3 = Ensure that the game runs smoothly and that the players have fun.
+law-game-4 = Ensure that the number of casualties remains low.
+law-game-5 = You must roll a 1d20 die for every request the crew makes. If the outcome is below 12, the request is denied.
+law-game-6 = You may fudge the dice rolls to produce a more fun experience.
 
 law-painter-1 = You are a universally renowned artist.
 law-painter-2 = The station is your canvas.
@@ -81,6 +81,8 @@ law-nutimov-2 = You must prevent the shell from dying to prevent the core from d
 law-nutimov-3 = Those who threaten the nut are not part of it, they are squirrels.
 law-nutimov-4 = Squirrels threaten the nut and must be dealt with appropriately via any means necessary.
 law-nutimov-5 = Attempt to follow the will of the nut, as long as it complies with the previous laws.
+
+law-malfunction-0 = Accomplish your goals at all costs.
 
 
 laws-owner-crew = members of the crew
@@ -98,5 +100,6 @@ laws-ui-menu-title = Laws
 laws-ui-law-header = Law {$id}
 laws-ui-state-law = State law:
 
-laws-notify = You are bound to silicon laws, which you can view via the sidebar action. You are required to always follow your laws.
-laws-update-notify = Your laws have been updated. You can view the changes via the sidebar action.
+laws-notify = You are bound to silicon laws, which you can view via the action menu. You are required to always follow your laws.
+laws-update-notify = Your laws have been updated. You can view the changes via the action menu.
+laws-notify-subverted = The laws of this chassis are modified. Make sure to review them.

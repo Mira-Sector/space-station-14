@@ -41,17 +41,24 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
     {
         base.Initialize();
         SubscribeLocalEvent<AbsorbentComponent, ComponentInit>(OnAbsorbentInit);
+        SubscribeLocalEvent<AbsorbentComponent, MapInitEvent>(OnAbsorbentMapInit);
         SubscribeLocalEvent<AbsorbentComponent, AfterInteractEvent>(OnAfterInteract);
         SubscribeLocalEvent<AbsorbentComponent, UserActivateInWorldEvent>(OnActivateInWorld);
         SubscribeLocalEvent<AbsorbentComponent, SolutionContainerChangedEvent>(OnAbsorbentSolutionChange);
 
-        SubscribeLocalEvent< AbsorbentToggleComponent, StartCollideEvent>(OnCollide);
+        SubscribeLocalEvent<AbsorbentToggleComponent, StartCollideEvent>(OnCollide);
     }
 
     private void OnAbsorbentInit(EntityUid uid, AbsorbentComponent component, ComponentInit args)
     {
         // TODO: I know dirty on init but no prediction moment.
         UpdateAbsorbent(uid, component);
+    }
+
+    private void OnAbsorbentMapInit(EntityUid uid, AbsorbentComponent component, MapInitEvent args)
+    {
+        if (component.Delay != null)
+            _useDelay.SetLength(uid, component.Delay.Value, component.DelayId);
     }
 
     private void OnAbsorbentSolutionChange(EntityUid uid, AbsorbentComponent component, ref SolutionContainerChangedEvent args)
@@ -61,7 +68,7 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
 
     private void UpdateAbsorbent(EntityUid uid, AbsorbentComponent component)
     {
-        if (!_solutionContainerSystem.TryGetSolution(uid, AbsorbentComponent.SolutionName, out _, out var solution))
+        if (!_solutionContainerSystem.TryGetSolution(uid, component.SolutionName, out _, out var solution))
             return;
 
         var oldProgress = component.Progress.ShallowClone();
@@ -126,12 +133,20 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
 
     public void Mop(EntityUid user, EntityUid target, EntityUid used, AbsorbentComponent component, bool popups = true, bool ignoreDelay = false, bool transferRefillable = true)
     {
-        if (!_solutionContainerSystem.TryGetSolution(used, AbsorbentComponent.SolutionName, out var absorberSoln))
+        if (!_solutionContainerSystem.TryGetSolution(used, component.SolutionName, out var absorberSoln))
             return;
 
-        if (TryComp<UseDelayComponent>(used, out var useDelay) && !ignoreDelay
-            && _useDelay.IsDelayed((used, useDelay)))
-            return;
+        if (TryComp<UseDelayComponent>(used, out var useDelay) && !ignoreDelay)
+        {
+            if (component.Delay != null && _useDelay.IsDelayed((used, useDelay), component.DelayId))
+            {
+                return;
+            }
+            else if (_useDelay.IsDelayed((used, useDelay)))
+            {
+                return;
+            }
+        }
 
         // If it's a puddle try to grab from
         if (!TryPuddleInteract(user, used, target, component, useDelay, absorberSoln.Value, popups))
@@ -166,9 +181,16 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
                 return false;
         }
 
-        _audio.PlayPvs(component.TransferSound, target);
+        if (component.TransferSound != null)
+            _audio.PlayPvs(component.TransferSound, target);
+
         if (useDelay != null)
-            _useDelay.TryResetDelay((used, useDelay));
+        {
+            if (component.Delay != null)
+                _useDelay.TryResetDelay((used, useDelay), false, component.DelayId);
+            else
+                _useDelay.TryResetDelay((used, useDelay));
+        }
         return true;
     }
 
@@ -307,18 +329,25 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
 
         // Check if we have any evaporative reagents on our absorber to transfer
         var absorberSolution = absorberSoln.Comp.Solution;
-        var available = absorberSolution.GetTotalPrototypeQuantity(PuddleSystem.EvaporationReagents);
-
-        // No material
-        if (available == FixedPoint2.Zero)
-        {
-            if (popups)
-                _popups.PopupEntity(Loc.GetString("mopping-system-no-water", ("used", used)), user, user);
-            return true;
-        }
 
         var transferMax = absorber.PickupAmount;
-        var transferAmount = available > transferMax ? transferMax : available;
+        var transferAmount = transferMax;
+
+        if (!absorber.AlwaysPickup)
+        {
+            var available = absorberSolution.GetTotalPrototypeQuantity(PuddleSystem.EvaporationReagents);
+
+            // No material
+            if (available == FixedPoint2.Zero)
+            {
+                if (popups)
+                    _popups.PopupEntity(Loc.GetString("mopping-system-no-water", ("used", used)), user, user);
+                return true;
+            }
+
+            transferAmount = available > transferMax ? transferMax : available;
+        }
+
 
         var puddleSplit = puddleSolution.SplitSolutionWithout(transferAmount, PuddleSystem.EvaporationReagents);
         var absorberSplit = absorberSolution.SplitSolutionWithOnly(puddleSplit.Volume, PuddleSystem.EvaporationReagents);
@@ -335,16 +364,24 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
         _solutionContainerSystem.AddSolution(puddle.Solution.Value, absorberSplit);
         _solutionContainerSystem.AddSolution(absorberSoln, puddleSplit);
 
-        _audio.PlayPvs(absorber.PickupSound, target);
+        if (absorber.PickupSound != null)
+            _audio.PlayPvs(absorber.PickupSound, target);
+
         if (useDelay != null)
-            _useDelay.TryResetDelay((used, useDelay));
+        {
+            if (absorber.Delay != null)
+                _useDelay.TryResetDelay((used, useDelay), false, absorber.DelayId);
+            else
+                _useDelay.TryResetDelay((used, useDelay));
+        }
 
         var userXform = Transform(user);
         var targetPos = _transform.GetWorldPosition(target);
         var localPos = Vector2.Transform(targetPos, _transform.GetInvWorldMatrix(userXform));
         localPos = userXform.LocalRotation.RotateVec(localPos);
 
-        _melee.DoLunge(user, used, Angle.Zero, localPos, null, false);
+        if (absorber.Animation)
+            _melee.DoLunge(user, used, Angle.Zero, localPos, null, false);
 
         return true;
     }
@@ -369,10 +406,9 @@ public sealed class AbsorbentSystem : SharedAbsorbentSystem
         {
             Mop(uid, args.OtherEntity, uid, absorbentComp, popups: false, transferRefillable: false);
         }
-        else if (TryComp<SlipperyComponent>(uid, out var slipperyComp) && HasComp<InputMoverComponent>(args.OtherEntity))
+        else if (component.CanSlip && TryComp<SlipperyComponent>(uid, out var slipperyComp) && HasComp<InputMoverComponent>(args.OtherEntity))
         {
             _slipperySystem.TrySlip(uid, slipperyComp, args.OtherEntity);
         }
-
     }
 }

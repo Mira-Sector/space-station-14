@@ -54,7 +54,7 @@ public abstract partial class SharedStationAiSystem
     }
 
     /// <summary>
-    /// Tries to get the entity held in the AI core.
+    /// Tries to get the entity held in the AI core using StationAiCore.
     /// </summary>
     private bool TryGetHeld(Entity<StationAiCoreComponent?> entity, out EntityUid held)
     {
@@ -64,6 +64,24 @@ public abstract partial class SharedStationAiSystem
             return false;
 
         if (!_containers.TryGetContainer(entity.Owner, StationAiCoreComponent.Container, out var container) ||
+            container.ContainedEntities.Count == 0)
+            return false;
+
+        held = container.ContainedEntities[0];
+        return true;
+    }
+
+    /// <summary>
+    /// Tries to get the entity held in the AI using StationAiHolder.
+    /// </summary>
+    private bool TryGetHeldFromHolder(Entity<StationAiHolderComponent?> entity, out EntityUid held)
+    {
+        held = EntityUid.Invalid;
+
+        if (!Resolve(entity.Owner, ref entity.Comp))
+            return false;
+
+        if (!_containers.TryGetContainer(entity.Owner, StationAiHolderComponent.Container, out var container) ||
             container.ContainedEntities.Count == 0)
             return false;
 
@@ -110,6 +128,7 @@ public abstract partial class SharedStationAiSystem
 
         if (TryComp(ev.Actor, out StationAiHeldComponent? aiComp) &&
            (!TryComp(ev.Target, out StationAiWhitelistComponent? whitelistComponent) ||
+            _whitelist.IsWhitelistFail(whitelistComponent.Whitelist, ev.Actor) ||
             !ValidateAi((ev.Actor, aiComp))))
         {
             if (whitelistComponent is { Enabled: false })
@@ -124,9 +143,10 @@ public abstract partial class SharedStationAiSystem
     {
         // Cancel if it's not us or something with a whitelist, or whitelist is disabled.
         args.Cancelled = (!TryComp(args.Target, out StationAiWhitelistComponent? whitelistComponent)
-                          || !whitelistComponent.Enabled)
-                         && ent.Owner != args.Target
-                         && args.Target != null;
+                        || !whitelistComponent.Enabled
+                        || _whitelist.IsWhitelistFail(whitelistComponent.Whitelist, ent.Owner))
+                        && ent.Owner != args.Target
+                        && args.Target != null;
         if (whitelistComponent is { Enabled: false })
         {
             ShowDeviceNotRespondingPopup(ent.Owner);
@@ -150,7 +170,7 @@ public abstract partial class SharedStationAiSystem
         var verb = new AlternativeVerb
         {
             Text = isOpen ? Loc.GetString("ai-close") : Loc.GetString("ai-open"),
-            Act = () => 
+            Act = () =>
             {
                 // no need to show menu if device is not powered.
                 if (!PowerReceiver.IsPowered(ent.Owner))

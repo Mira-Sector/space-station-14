@@ -73,6 +73,8 @@ public abstract partial class SharedProjectileSystem : EntitySystem
         TryComp<PhysicsComponent>(uid, out var physics);
         _physics.SetBodyType(uid, BodyType.Dynamic, body: physics, xform: xform);
         _transform.AttachToGridOrMap(uid, xform);
+        component.EmbeddedIntoUid = null;
+        Dirty(uid, component);
 
         // Reset whether the projectile has damaged anything if it successfully was removed
         if (TryComp<ProjectileComponent>(uid, out var projectile))
@@ -96,7 +98,7 @@ public abstract partial class SharedProjectileSystem : EntitySystem
         if (!component.EmbedOnThrow)
             return;
 
-        if (_whitelist.IsWhitelistFailOrNull(component.Whitelist, args.Target))
+        if (_whitelist.IsWhitelistFail(component.Whitelist, args.Target))
             return;
 
         Embed(uid, args.Target, null, component);
@@ -104,7 +106,7 @@ public abstract partial class SharedProjectileSystem : EntitySystem
 
     private void OnEmbedProjectileHit(EntityUid uid, EmbeddableProjectileComponent component, ref ProjectileHitEvent args)
     {
-        if (_whitelist.IsWhitelistFailOrNull(component.Whitelist, args.Target))
+        if (_whitelist.IsWhitelistFail(component.Whitelist, args.Target))
             return;
 
         Embed(uid, args.Target, args.Shooter, component);
@@ -135,8 +137,10 @@ public abstract partial class SharedProjectileSystem : EntitySystem
         }
 
         _audio.PlayPredicted(component.Sound, uid, null);
+        component.EmbeddedIntoUid = target;
         var ev = new EmbedEvent(user, target);
         RaiseLocalEvent(uid, ref ev);
+        Dirty(uid, component);
     }
 
     private void PreventCollision(EntityUid uid, ProjectileComponent component, ref PreventCollideEvent args)

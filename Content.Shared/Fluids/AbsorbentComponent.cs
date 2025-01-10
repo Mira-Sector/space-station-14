@@ -11,7 +11,8 @@ namespace Content.Shared.Fluids;
 [RegisterComponent, NetworkedComponent]
 public sealed partial class AbsorbentComponent : Component
 {
-    public const string SolutionName = "absorbed";
+    [DataField]
+    public string SolutionName = "absorbed";
 
     public Dictionary<Color, float> Progress = new();
 
@@ -22,15 +23,27 @@ public sealed partial class AbsorbentComponent : Component
     public FixedPoint2 PickupAmount = FixedPoint2.New(100);
 
     [DataField]
+    public TimeSpan? Delay;
+
+    [DataField]
+    public string DelayId = "absorb";
+
+    [DataField]
     public float Range = 1.2f;
 
+    [DataField]
+    public bool AlwaysPickup = false;
+
+    [DataField]
+    public bool Animation = true;
+
     [DataField("pickupSound")]
-    public SoundSpecifier PickupSound = new SoundPathSpecifier("/Audio/Effects/Fluids/watersplash.ogg")
+    public SoundSpecifier? PickupSound = new SoundPathSpecifier("/Audio/Effects/Fluids/watersplash.ogg")
     {
         Params = AudioParams.Default.WithVariation(SharedContentAudioSystem.DefaultVariation),
     };
 
-    [DataField("transferSound")] public SoundSpecifier TransferSound =
+    [DataField("transferSound")] public SoundSpecifier? TransferSound =
         new SoundPathSpecifier("/Audio/Effects/Fluids/slosh.ogg")
         {
             Params = AudioParams.Default.WithVariation(SharedContentAudioSystem.DefaultVariation).WithVolume(-3f),

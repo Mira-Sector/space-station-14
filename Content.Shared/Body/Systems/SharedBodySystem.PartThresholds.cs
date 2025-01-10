@@ -1,17 +1,21 @@
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Part;
 using Content.Shared.Damage;
+using Content.Shared.Effects;
 using Content.Shared.FixedPoint;
+using Robust.Shared.Player;
 using System.Linq;
 
 namespace Content.Shared.Body.Systems;
 
 public partial class SharedBodySystem
 {
+    [Dependency] private readonly SharedColorFlashEffectSystem _color = default!;
+
     private void InitializePartThresholds()
     {
-        SubscribeLocalEvent<BodyPartThresholdsComponent, BeforeDamageChangedEvent>(OnBeforeDamaged);
         SubscribeLocalEvent<BodyPartThresholdsComponent, DamageChangedEvent>(OnDamaged);
+        SubscribeLocalEvent<BodyPartThresholdsComponent, BeforeDamageChangedEvent>(OnBeforeDamaged);
     }
 
     private void OnBeforeDamaged(EntityUid uid, BodyPartThresholdsComponent component, ref BeforeDamageChangedEvent args)
@@ -19,7 +23,16 @@ public partial class SharedBodySystem
         if (args.Cancelled)
             return;
 
-        args.Cancelled = args.Damage.AnyPositive() && component.CurrentState == WoundState.Dead;
+        if (!args.Damage.AnyPositive() || component.CurrentState != WoundState.Dead)
+            return;
+
+        args.Cancelled = true;
+
+        if (!TryComp<BodyPartComponent>(uid, out var partComp) || partComp.Body == null)
+            return;
+
+        if (args.Origin != null)
+            _color.RaiseEffect(Color.BetterViolet, new List<EntityUid>() { partComp.Body.Value }, Filter.Pvs(partComp.Body.Value, entityManager: EntityManager));
     }
 
     private void OnDamaged(EntityUid uid, BodyPartThresholdsComponent component, DamageChangedEvent args)

@@ -88,6 +88,7 @@ namespace Content.Client.Actions
                 return;
 
             component.Whitelist = state.Whitelist;
+            component.ShowOutline = state.ShowOutline;
             component.CanTargetSelf = state.CanTargetSelf;
             BaseHandleState<EntityTargetActionComponent>(uid, component, state);
         }
@@ -258,13 +259,13 @@ namespace Content.Client.Actions
 
         public void LinkAllActions(ActionsComponent? actions = null)
         {
-             if (_playerManager.LocalEntity is not { } user ||
-                 !Resolve(user, ref actions, false))
-             {
-                 return;
-             }
+            if (_playerManager.LocalEntity is not { } user ||
+                !Resolve(user, ref actions, false))
+            {
+                return;
+            }
 
-             LinkActions?.Invoke(actions);
+            LinkActions?.Invoke(actions);
         }
 
         public override void Shutdown()

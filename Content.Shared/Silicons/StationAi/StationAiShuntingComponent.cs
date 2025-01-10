@@ -1,0 +1,49 @@
+using Content.Shared.DoAfter;
+using Robust.Shared.GameStates;
+using Robust.Shared.Serialization;
+using Robust.Shared.Utility;
+
+namespace Content.Shared.Silicons.StationAi;
+
+
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+public sealed partial class StationAiShuntingComponent : Component
+{
+    [DataField("delay")]
+    public float _delay = 3f;
+
+    [ViewVariables]
+    public TimeSpan Delay => TimeSpan.FromSeconds(_delay);
+
+    [DataField]
+    public SpriteSpecifier? Icon { get; set; }
+
+    [DataField("tooltip")]
+    public string? _tooltip { get; set; }
+
+    [ViewVariables]
+    public LocId? Tooltip => _tooltip != null ? Loc.GetString(_tooltip) : null;
+
+    [ViewVariables, AutoNetworkedField]
+    public bool IsPowered { get; set; } = false;
+
+    [ViewVariables, AutoNetworkedField]
+    public bool Enabled { get; set; } = false;
+}
+
+[Serializable, NetSerializable]
+public sealed class StationAiShuntingAttemptEvent : BaseStationAiAction;
+
+[Serializable, NetSerializable]
+public sealed partial class StationAiShuntingEvent : SimpleDoAfterEvent;
+
+public sealed class StationAiShuntingEjectAttemptEvent : CancellableEntityEventArgs
+{
+    public EntityUid ContainedEntity;
+
+    public StationAiShuntingEjectAttemptEvent(EntityUid containedEntity)
+    {
+        ContainedEntity = containedEntity;
+    }
+}
+

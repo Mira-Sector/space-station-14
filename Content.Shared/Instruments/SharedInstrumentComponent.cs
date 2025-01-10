@@ -1,3 +1,4 @@
+using Content.Shared.Actions;
 using System.Collections;
 using Robust.Shared.Audio.Midi;
 using Robust.Shared.GameStates;
@@ -6,7 +7,6 @@ using Robust.Shared.Serialization;
 namespace Content.Shared.Instruments;
 
 [NetworkedComponent]
-[Access(typeof(SharedInstrumentSystem))]
 public abstract partial class SharedInstrumentComponent : Component
 {
     [ViewVariables]
@@ -26,6 +26,15 @@ public abstract partial class SharedInstrumentComponent : Component
 
     [DataField("respectMidiLimits"), ViewVariables(VVAccess.ReadWrite)]
     public bool RespectMidiLimits { get; set; } = true;
+
+    [DataField]
+    public bool PlayPVS = true;
+
+    [DataField]
+    public bool AllowBands = true;
+
+    [ViewVariables]
+    public EntityUid? Player;
 
     [ViewVariables(VVAccess.ReadWrite)]
     public EntityUid? Master { get; set; } = null;
@@ -138,3 +147,5 @@ public enum InstrumentUiKey
 {
     Key,
 }
+
+public sealed partial class InstrumentActionEvent : InstantActionEvent;

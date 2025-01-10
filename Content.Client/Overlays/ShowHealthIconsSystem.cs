@@ -21,6 +21,7 @@ public sealed class ShowHealthIconsSystem : EquipmentHudSystem<ShowHealthIconsCo
     [Dependency] private readonly IPrototypeManager _prototypeMan = default!;
     [Dependency] private readonly SharedBodySystem _body = default!;
 
+    [ViewVariables]
     public HashSet<string> DamageContainers = new();
 
     public override void Initialize()
@@ -29,6 +30,7 @@ public sealed class ShowHealthIconsSystem : EquipmentHudSystem<ShowHealthIconsCo
 
         SubscribeLocalEvent<DamageableComponent, GetStatusIconsEvent>(OnGetStatusIconsEvent);
         SubscribeLocalEvent<BodyComponent, GetStatusIconsEvent>(OnBodyGetStatusIconsEvent);
+        SubscribeLocalEvent<ShowHealthIconsComponent, AfterAutoHandleStateEvent>(OnHandleState);
     }
 
     protected override void UpdateInternal(RefreshEquipmentHudEvent<ShowHealthIconsComponent> component)
@@ -46,6 +48,11 @@ public sealed class ShowHealthIconsSystem : EquipmentHudSystem<ShowHealthIconsCo
         base.DeactivateInternal();
 
         DamageContainers.Clear();
+    }
+
+    private void OnHandleState(Entity<ShowHealthIconsComponent> ent, ref AfterAutoHandleStateEvent args)
+    {
+        RefreshOverlay(ent);
     }
 
     private void OnGetStatusIconsEvent(Entity<DamageableComponent> entity, ref GetStatusIconsEvent args)
@@ -66,11 +73,11 @@ public sealed class ShowHealthIconsSystem : EquipmentHudSystem<ShowHealthIconsCo
 
         DamageSpecifier totalDamage = new ();
 
-        List<string> damageContainers = new ();
+        List<string?> damageContainers = new ();
         List<ProtoId<HealthIconPrototype>> rottingIcons = new ();
         List<Dictionary<MobState, ProtoId<HealthIconPrototype>>> healthIcons = new ();
 
-        foreach (var (part, _) in _body.GetBodyChildren(entity))
+        foreach (var (part, partComp) in _body.GetBodyChildren(entity))
         {
             if (!TryComp<DamageableComponent>(part, out var partDameagableComp))
                 continue;
@@ -78,7 +85,10 @@ public sealed class ShowHealthIconsSystem : EquipmentHudSystem<ShowHealthIconsCo
             if (!IsValid(partDameagableComp))
                 continue;
 
-            totalDamage += partDameagableComp.Damage;
+            totalDamage += partDameagableComp.Damage * partComp.OverallDamageScale;
+            damageContainers.Add(partDameagableComp.DamageContainerID);
+            rottingIcons.Add(partDameagableComp.RottingIcon);
+            healthIcons.Add(partDameagableComp.HealthIcons);
         }
 
         args.StatusIcons.AddRange(DecideHealthIcons(entity.Owner, totalDamage, GetMostFrequentItem(damageContainers), GetMostFrequentItem(rottingIcons), GetMostFrequentItem(healthIcons)));

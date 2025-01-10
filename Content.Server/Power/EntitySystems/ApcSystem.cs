@@ -2,13 +2,13 @@ using Content.Server.Emp;
 using Content.Server.Popups;
 using Content.Server.Power.Components;
 using Content.Server.Power.Pow3r;
-using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
 using Content.Shared.APC;
 using Content.Shared.Emag.Components;
 using Content.Shared.Emag.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Rounding;
+using Content.Shared.Silicons.StationAi;
 using Robust.Server.GameObjects;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
@@ -36,6 +36,7 @@ public sealed class ApcSystem : EntitySystem
         SubscribeLocalEvent<ApcComponent, ChargeChangedEvent>(OnBatteryChargeChanged);
         SubscribeLocalEvent<ApcComponent, ApcToggleMainBreakerMessage>(OnToggleMainBreaker);
         SubscribeLocalEvent<ApcComponent, GotEmaggedEvent>(OnEmagged);
+        SubscribeLocalEvent<ApcComponent, StationAiHackedEvent>(OnHacked);
 
         SubscribeLocalEvent<ApcComponent, EmpPulseEvent>(OnEmpPulse);
     }
@@ -71,11 +72,8 @@ public sealed class ApcSystem : EntitySystem
         component.NeedStateUpdate = true;
     }
 
-    //Update the HasAccess var for UI to read
     private void OnBoundUiOpen(EntityUid uid, ApcComponent component, BoundUIOpenedEvent args)
     {
-        // TODO: this should be per-player not stored on the apc
-        component.HasAccess = _accessReader.IsAllowed(args.Actor, uid);
         UpdateApcState(uid, component);
     }
 
@@ -107,7 +105,15 @@ public sealed class ApcSystem : EntitySystem
             return;
 
         apc.MainBreakerEnabled = !apc.MainBreakerEnabled;
-        battery.CanDischarge = apc.MainBreakerEnabled;
+        ApcUpdateBreaker(uid, apc, battery);
+    }
+
+    private void ApcUpdateBreaker(EntityUid uid, ApcComponent? apc = null, PowerNetworkBatteryComponent? battery = null)
+    {
+        if (!Resolve(uid, ref apc, ref battery))
+            return;
+
+        battery.CanDischarge = !apc.GlobalDisable && apc.MainBreakerEnabled;
 
         UpdateUIState(uid, apc);
         _audio.PlayPvs(apc.OnReceiveMessageSound, uid, AudioParams.Default.WithVolume(-2f));
@@ -117,6 +123,12 @@ public sealed class ApcSystem : EntitySystem
     {
         // no fancy conditions
         args.Handled = true;
+    }
+
+    private void OnHacked(EntityUid uid, ApcComponent comp, StationAiHackedEvent args)
+    {
+        comp.GlobalDisable = true;
+        ApcUpdateBreaker(uid, comp);
     }
 
     public void UpdateApcState(EntityUid uid,
@@ -165,7 +177,7 @@ public sealed class ApcSystem : EntitySystem
         // TODO: Fix ContentHelpers or make a new one coz this is cooked.
         var charge = ContentHelpers.RoundToNearestLevels(battery.CurrentStorage / battery.Capacity, 1.0, 100 / ChargeAccuracy) / 100f * ChargeAccuracy;
 
-        var state = new ApcBoundInterfaceState(apc.MainBreakerEnabled, apc.HasAccess,
+        var state = new ApcBoundInterfaceState(apc.MainBreakerEnabled,
             (int) MathF.Ceiling(battery.CurrentSupply), apc.LastExternalState,
             charge);
 
@@ -204,7 +216,7 @@ public sealed class ApcSystem : EntitySystem
 
     private void OnEmpPulse(EntityUid uid, ApcComponent component, ref EmpPulseEvent args)
     {
-        if (component.MainBreakerEnabled)
+        if (!component.GlobalDisable && component.MainBreakerEnabled)
         {
             args.Affected = true;
             args.Disabled = true;

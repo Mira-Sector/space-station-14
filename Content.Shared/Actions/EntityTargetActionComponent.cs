@@ -1,4 +1,4 @@
-﻿using Content.Shared.Whitelist;
+using Content.Shared.Whitelist;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
 
@@ -25,6 +25,8 @@ public sealed partial class EntityTargetActionComponent : BaseTargetActionCompon
     /// <remarks>No whitelist check when null.</remarks>
     [DataField("whitelist")] public EntityWhitelist? Whitelist;
 
+    [DataField] public bool ShowOutline = true;
+
     /// <summary>
     /// Whether this action considers the user as a valid target entity when using this action.
     /// </summary>
@@ -35,11 +37,13 @@ public sealed partial class EntityTargetActionComponent : BaseTargetActionCompon
 public sealed class EntityTargetActionComponentState : BaseActionComponentState
 {
     public EntityWhitelist? Whitelist;
+    public bool ShowOutline;
     public bool CanTargetSelf;
 
     public EntityTargetActionComponentState(EntityTargetActionComponent component, IEntityManager entManager) : base(component, entManager)
     {
         Whitelist = component.Whitelist;
+        ShowOutline = component.ShowOutline;
         CanTargetSelf = component.CanTargetSelf;
     }
 }

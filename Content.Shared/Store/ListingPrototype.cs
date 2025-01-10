@@ -34,12 +34,15 @@ public partial class ListingData : IEquatable<ListingData>
         other.ProductActionEntity,
         other.ProductEvent,
         other.RaiseProductEventOnUser,
+        other.Components,
+        other.ReplaceComponents,
         other.PurchaseAmount,
         other.ID,
         other.Categories,
         other.OriginalCost,
         other.RestockTime,
-        other.DiscountDownTo
+        other.DiscountDownTo,
+        other.DisableRefund
     )
     {
 
@@ -58,12 +61,15 @@ public partial class ListingData : IEquatable<ListingData>
         EntityUid? productActionEntity,
         object? productEvent,
         bool raiseProductEventOnUser,
+        ComponentRegistry? components,
+        bool replaceComponents,
         int purchaseAmount,
         string id,
         HashSet<ProtoId<StoreCategoryPrototype>> categories,
         IReadOnlyDictionary<ProtoId<CurrencyPrototype>, FixedPoint2> originalCost,
         TimeSpan restockTime,
-        Dictionary<ProtoId<CurrencyPrototype>, FixedPoint2> dataDiscountDownTo
+        Dictionary<ProtoId<CurrencyPrototype>, FixedPoint2> dataDiscountDownTo,
+        bool disableRefund
     )
     {
         Name = name;
@@ -78,12 +84,15 @@ public partial class ListingData : IEquatable<ListingData>
         ProductActionEntity = productActionEntity;
         ProductEvent = productEvent;
         RaiseProductEventOnUser = raiseProductEventOnUser;
+        Components = components;
+        ReplaceComponents = replaceComponents;
         PurchaseAmount = purchaseAmount;
         ID = id;
         Categories = categories.ToHashSet();
         OriginalCost = originalCost;
         RestockTime = restockTime;
         DiscountDownTo = new Dictionary<ProtoId<CurrencyPrototype>, FixedPoint2>(dataDiscountDownTo);
+        DisableRefund = disableRefund;
     }
 
     [ViewVariables]
@@ -177,6 +186,16 @@ public partial class ListingData : IEquatable<ListingData>
     public bool RaiseProductEventOnUser;
 
     /// <summary>
+    /// Components to add the the purchaser
+    /// </summary>
+    [DataField]
+    [NonSerialized]
+    public ComponentRegistry? Components;
+
+    [DataField]
+    public bool ReplaceComponents = false;
+
+    /// <summary>
     /// used internally for tracking how many times an item was purchased.
     /// </summary>
     [DataField]
@@ -193,6 +212,12 @@ public partial class ListingData : IEquatable<ListingData>
     /// </summary>
     [DataField]
     public Dictionary<ProtoId<CurrencyPrototype>, FixedPoint2> DiscountDownTo = new();
+
+    /// <summary>
+    /// Whether or not to disable refunding for the store when the listing is purchased from it.
+    /// </summary>
+    [DataField]
+    public bool DisableRefund = false;
 
     public bool Equals(ListingData? listing)
     {
@@ -282,12 +307,15 @@ public sealed partial class ListingDataWithCostModifiers : ListingData
             listingData.ProductActionEntity,
             listingData.ProductEvent,
             listingData.RaiseProductEventOnUser,
+            listingData.Components,
+            listingData.ReplaceComponents,
             listingData.PurchaseAmount,
             listingData.ID,
             listingData.Categories,
             listingData.OriginalCost,
             listingData.RestockTime,
-            listingData.DiscountDownTo
+            listingData.DiscountDownTo,
+            listingData.DisableRefund
         )
     {
     }

@@ -1,15 +1,12 @@
 using System.Linq;
 using System.Numerics;
 using Content.Server.Cargo.Systems;
-using Content.Server.Interaction;
 using Content.Server.Power.EntitySystems;
-using Content.Server.Stunnable;
 using Content.Server.Weapons.Ranged.Components;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Database;
 using Content.Shared.Effects;
-using Content.Shared.Interaction.Components;
 using Content.Shared.Projectiles;
 using Content.Shared.Weapons.Melee;
 using Content.Shared.Weapons.Ranged;
@@ -33,16 +30,13 @@ public sealed partial class GunSystem : SharedGunSystem
     [Dependency] private readonly IComponentFactory _factory = default!;
     [Dependency] private readonly BatterySystem _battery = default!;
     [Dependency] private readonly DamageExamineSystem _damageExamine = default!;
-    [Dependency] private readonly InteractionSystem _interaction = default!;
     [Dependency] private readonly PricingSystem _pricing = default!;
     [Dependency] private readonly SharedColorFlashEffectSystem _color = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly StaminaSystem _stamina = default!;
-    [Dependency] private readonly StunSystem _stun = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!;
 
     private const float DamagePitchVariation = 0.05f;
-    public const float GunClumsyChance = 0.5f;
 
     public override void Initialize()
     {
@@ -67,30 +61,18 @@ public sealed partial class GunSystem : SharedGunSystem
     }
 
     public override void Shoot(EntityUid gunUid, GunComponent gun, List<(EntityUid? Entity, IShootable Shootable)> ammo,
-        EntityCoordinates fromCoordinates, EntityCoordinates toCoordinates, out bool userImpulse, EntityUid? user = null, bool throwItems = false)
+        EntityCoordinates fromCoordinates, EntityCoordinates toCoordinates, out bool userImpulse, EntityUid? user = null, bool throwItems = false, int gunCount = 1)
     {
         userImpulse = true;
 
-        // Try a clumsy roll
-        // TODO: Who put this here
-        if (TryComp<ClumsyComponent>(user, out var clumsy) && gun.ClumsyProof == false)
+        if (user != null)
         {
-            for (var i = 0; i < ammo.Count; i++)
+            var selfEvent = new SelfBeforeGunShotEvent(user.Value, (gunUid, gun), ammo);
+            RaiseLocalEvent(user.Value, selfEvent);
+            if (selfEvent.Cancelled)
             {
-                if (_interaction.TryRollClumsy(user.Value, GunClumsyChance, clumsy))
-                {
-                    // Wound them
-                    Damageable.TryChangeDamage(user, clumsy.ClumsyDamage, origin: user);
-                    _stun.TryParalyze(user.Value, TimeSpan.FromSeconds(3f), true);
-
-                    // Apply salt to the wound ("Honk!")
-                    Audio.PlayPvs(new SoundPathSpecifier("/Audio/Weapons/Guns/Gunshots/bang.ogg"), gunUid);
-                    Audio.PlayPvs(clumsy.ClumsySound, gunUid);
-
-                    PopupSystem.PopupEntity(Loc.GetString("gun-clumsy"), user.Value);
-                    userImpulse = false;
-                    return;
-                }
+                userImpulse = false;
+                return;
             }
         }
 
@@ -98,7 +80,7 @@ public sealed partial class GunSystem : SharedGunSystem
         var toMap = toCoordinates.ToMapPos(EntityManager, TransformSystem);
         var mapDirection = toMap - fromMap.Position;
         var mapAngle = mapDirection.ToAngle();
-        var angle = GetRecoilAngle(Timing.CurTime, gun, mapDirection.ToAngle());
+        var angle = GetRecoilAngle(Timing.CurTime, gun, mapDirection.ToAngle(), gunCount);
 
         // If applicable, this ensures the projectile is parented to grid on spawn, instead of the map.
         var fromEnt = MapManager.TryFindGridAt(fromMap, out var gridUid, out var grid)
@@ -355,10 +337,13 @@ public sealed partial class GunSystem : SharedGunSystem
         return angles;
     }
 
-    private Angle GetRecoilAngle(TimeSpan curTime, GunComponent component, Angle direction)
+    private Angle GetRecoilAngle(TimeSpan curTime, GunComponent component, Angle direction, int gunCount)
     {
         var timeSinceLastFire = (curTime - component.LastFire).TotalSeconds;
-        var newTheta = MathHelper.Clamp(component.CurrentAngle.Theta + component.AngleIncreaseModified.Theta - component.AngleDecayModified.Theta * timeSinceLastFire, component.MinAngleModified.Theta, component.MaxAngleModified.Theta);
+        var gunCountModifier = gunCount > 1 ? Random.NextFloat(gunCount, gunCount + 0.5f) : 1;
+
+        var newTheta = MathHelper.Clamp(component.CurrentAngle.Theta + (gunCountModifier * component.AngleIncreaseModified.Theta) - component.AngleDecayModified.Theta * timeSinceLastFire, component.MinAngleModified.Theta, component.MaxAngleModified.Theta);
+
         component.CurrentAngle = new Angle(newTheta);
         component.LastFire = component.NextFire;
 

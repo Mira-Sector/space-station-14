@@ -11,7 +11,6 @@ using Content.Server.Mind.Commands;
 using Content.Server.NPC;
 using Content.Server.NPC.HTN;
 using Content.Server.NPC.Systems;
-using Content.Server.Roles;
 using Content.Server.Speech.Components;
 using Content.Server.Temperature.Components;
 using Content.Shared.Body.Components;
@@ -49,19 +48,19 @@ namespace Content.Server.Zombies;
 /// </remarks>
 public sealed partial class ZombieSystem
 {
+    [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedBodySystem _body = default!;
-    [Dependency] private readonly SharedHandsSystem _hands = default!;
-    [Dependency] private readonly ServerInventorySystem _inventory = default!;
+    [Dependency] private readonly IChatManager _chatMan = default!;
+    [Dependency] private readonly SharedCombatModeSystem _combat = default!;
     [Dependency] private readonly NpcFactionSystem _faction = default!;
-    [Dependency] private readonly NPCSystem _npc = default!;
+    [Dependency] private readonly SharedHandsSystem _hands = default!;
     [Dependency] private readonly HumanoidAppearanceSystem _humanoidAppearance = default!;
     [Dependency] private readonly IdentitySystem _identity = default!;
-    [Dependency] private readonly MovementSpeedModifierSystem _movementSpeedModifier = default!;
-    [Dependency] private readonly SharedCombatModeSystem _combat = default!;
-    [Dependency] private readonly IChatManager _chatMan = default!;
+    [Dependency] private readonly ServerInventorySystem _inventory = default!;
     [Dependency] private readonly MindSystem _mind = default!;
+    [Dependency] private readonly MovementSpeedModifierSystem _movementSpeedModifier = default!;
+    [Dependency] private readonly NPCSystem _npc = default!;
     [Dependency] private readonly SharedRoleSystem _roles = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
 
     /// <summary>
     /// Handles an entity turning into a zombie when they die or go into crit
@@ -190,9 +189,6 @@ public sealed partial class ZombieSystem
 
         Dirty(target, melee);
 
-        //The zombie gets the assigned damage weaknesses and strengths
-        _damageable.SetDamageModifierSetId(target, "Zombie");
-
         //This makes it so the zombie doesn't take bloodloss damage.
         //NOTE: they are supposed to bleed, just not take damage
         _bloodstream.SetBloodLossThreshold(target, 0f);
@@ -216,13 +212,40 @@ public sealed partial class ZombieSystem
 
         //Heals the zombie from all the damage it took while human
         if (TryComp<DamageableComponent>(target, out var damageablecomp))
+        {
             _damageable.SetAllDamage(target, damageablecomp, 0);
+
+            //The zombie gets the assigned damage weaknesses and strengths
+            _damageable.SetDamageModifierSetId(target, "Zombie");
+        }
+
         _mobState.ChangeMobState(target, MobState.Alive);
 
         if (TryComp<BodyComponent>(target, out var bodyComp))
         {
             zombiecomp.BeforeZombifiedPartScales = _body.GetPartsScale(target, bodyComp);
-            _body.SetPartsScale(target, zombiecomp.PartScales, bodyComp);
+
+            var canRecieveDamage = false;
+
+            foreach (var (beforePart, _) in zombiecomp.BeforeZombifiedPartScales)
+            {
+                foreach (var (part, scale) in zombiecomp.PartScales)
+                {
+                    if (beforePart.Type != part.Type || beforePart.Side != part.Side)
+                        continue;
+
+                    // make sure they can get damaged with the new part scales
+                    if (scale <= 0)
+                        continue;
+
+                    _body.SetPartsScale(target, zombiecomp.PartScales, bodyComp);
+                    canRecieveDamage = true;
+                    break;
+                }
+
+                if (canRecieveDamage)
+                    break;
+            }
 
             foreach (var (part, _) in _body.GetBodyChildren(target, bodyComp))
             {
@@ -230,6 +253,9 @@ public sealed partial class ZombieSystem
                     continue;
 
                 _damageable.SetAllDamage(part, partDamageableComp, 0);
+
+                //The zombie gets the assigned damage weaknesses and strengths
+                _damageable.SetDamageModifierSetId(part, "Zombie");
             }
         }
 
@@ -251,7 +277,7 @@ public sealed partial class ZombieSystem
         if (hasMind && _mind.TryGetSession(mindId, out var session))
         {
             //Zombie role for player manifest
-            _roles.MindAddRole(mindId, new ZombieRoleComponent { PrototypeId = zombiecomp.ZombieRoleId });
+            _roles.MindAddRole(mindId, "MindRoleZombie", mind: null, silent: true);
 
             //Greeting message for new bebe zombers
             _chatMan.DispatchServerMessage(session, Loc.GetString("zombie-infection-greeting"));

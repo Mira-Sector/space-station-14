@@ -1,3 +1,4 @@
+using Content.Shared.Body.Systems;
 using Content.Shared.Damage;
 using Content.Shared.Examine;
 using Content.Shared.FixedPoint;
@@ -9,6 +10,7 @@ namespace Content.Shared.HealthExaminable;
 
 public sealed class HealthExaminableSystem : EntitySystem
 {
+    [Dependency] private readonly SharedBodySystem _bodySystem = default!;
     [Dependency] private readonly ExamineSystemShared _examineSystem = default!;
 
     public override void Initialize()
@@ -20,8 +22,22 @@ public sealed class HealthExaminableSystem : EntitySystem
 
     private void OnGetExamineVerbs(EntityUid uid, HealthExaminableComponent component, GetVerbsEvent<ExamineVerb> args)
     {
-        if (!TryComp<DamageableComponent>(uid, out var damage))
+        var bodyDamage = _bodySystem.GetBodyDamage(uid);
+
+        DamageSpecifier damageDict;
+
+        if (bodyDamage != null)
+        {
+            damageDict = bodyDamage;
+        }
+        else if (TryComp<DamageableComponent>(uid, out var damageComp))
+        {
+            damageDict = damageComp.Damage;
+        }
+        else
+        {
             return;
+        }
 
         var detailsRange = _examineSystem.IsInDetailsRange(args.User, uid);
 
@@ -29,7 +45,7 @@ public sealed class HealthExaminableSystem : EntitySystem
         {
             Act = () =>
             {
-                var markup = CreateMarkup(uid, component, damage);
+                var markup = CreateMarkup(uid, component, damageDict);
                 _examineSystem.SendExamineTooltip(args.User, uid, markup, false, false);
             },
             Text = Loc.GetString("health-examinable-verb-text"),
@@ -42,14 +58,14 @@ public sealed class HealthExaminableSystem : EntitySystem
         args.Verbs.Add(verb);
     }
 
-    public FormattedMessage CreateMarkup(EntityUid uid, HealthExaminableComponent component, DamageableComponent damage)
+    public FormattedMessage CreateMarkup(EntityUid uid, HealthExaminableComponent component, DamageSpecifier damage)
     {
         var msg = new FormattedMessage();
 
         var first = true;
         foreach (var type in component.ExaminableTypes)
         {
-            if (!damage.Damage.DamageDict.TryGetValue(type, out var dmg))
+            if (!damage.DamageDict.TryGetValue(type, out var dmg))
                 continue;
 
             if (dmg == FixedPoint2.Zero)

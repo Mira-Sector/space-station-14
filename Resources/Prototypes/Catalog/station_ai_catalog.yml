@@ -1,0 +1,69 @@
+- type: listing
+  id: AiNuke
+  name: ai-power-nuke-name
+  description: ai-power-nuke-desc
+  productAction: ActionStationAiNuke
+  cost:
+    Power: 130
+  categories:
+  - AiDestructive
+
+- type: listing
+  id: AiLockdown
+  name: ai-power-lockdown-name
+  description: ai-power-lockdown-desc
+  productAction: ActionStationAiLockdown
+  cost:
+    Power: 30
+  categories:
+  - AiUtility
+
+- type: listing
+  id: AiFirelock
+  name: ai-power-firelock-name
+  description: ai-power-firelock-desc
+  productAction: ActionStationAiFirelock
+  cost:
+    Power: 50
+  categories:
+  - AiUtility
+  conditions:
+  - !type:ListingLimitedStockCondition
+    stock: 1
+
+- type: listing
+  id: AiOverload
+  name: ai-power-overload-name
+  description: ai-power-overload-desc
+  productAction: ActionStationAiOverload
+  cost:
+    Power: 20
+  categories:
+  - AiDestructive
+
+- type: listing
+  id: AiBlackout
+  name: ai-power-blackout-name
+  description: ai-power-blackout-desc
+  productAction: ActionStationAiBlackout
+  cost:
+    Power: 15
+  categories:
+  - AiUtility
+
+- type: listing
+  id: AiAtmos
+  name: ai-power-atmos-name
+  description: ai-power-atmos-desc
+  icon:
+    sprite: Structures/Piping/Atmospherics/vent.rsi
+    state: vent_out
+  components:
+    - type: StationAiAtmosInteract
+  cost:
+    Power: 50
+  categories:
+  - AiUpgrade
+  conditions:
+  - !type:ListingLimitedStockCondition
+    stock: 1

@@ -4,10 +4,12 @@ using Content.Shared.Instruments;
 using Content.Shared.Physics;
 using JetBrains.Annotations;
 using Robust.Client.Audio.Midi;
+using Robust.Client.Player;
 using Robust.Shared.Audio.Midi;
 using Robust.Shared.Configuration;
 using Robust.Shared.GameStates;
 using Robust.Shared.Network;
+using Robust.Shared.Player;
 using Robust.Shared.Timing;
 
 namespace Content.Client.Instruments;
@@ -16,6 +18,7 @@ public sealed class InstrumentSystem : SharedInstrumentSystem
 {
     [Dependency] private readonly IClientNetManager _netManager = default!;
     [Dependency] private readonly IMidiManager _midiManager = default!;
+    [Dependency] private readonly IPlayerManager _player = default!;
     [Dependency] private readonly IGameTiming _gameTiming = default!;
     [Dependency] private readonly IConfigurationManager _cfg = default!;
 
@@ -103,6 +106,9 @@ public sealed class InstrumentSystem : SharedInstrumentSystem
         {
             return;
         }
+
+        if (!instrument.PlayPVS && _player.LocalEntity != instrument.Player)
+            return;
 
         if (instrument.IsRendererAlive)
         {
@@ -307,6 +313,10 @@ public sealed class InstrumentSystem : SharedInstrumentSystem
         var uid = GetEntity(midiEv.Uid);
 
         if (!TryComp(uid, out InstrumentComponent? instrument))
+            return;
+
+
+        if (!instrument.PlayPVS && _player.LocalEntity != instrument.Player)
             return;
 
         var renderer = instrument.Renderer;

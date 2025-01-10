@@ -27,8 +27,8 @@
 - type: weightedRandom
   id: TraitorObjectiveGroupKill
   weights:
-    KillRandomPersonObjective: 1
-    KillRandomHeadObjective: 0.25
+    TraitorKillRandomPersonObjective: 1
+    TraitorKillRandomHeadObjective: 0.25
 
 - type: weightedRandom
   id: TraitorObjectiveGroupState
@@ -117,5 +117,11 @@
   id: ThiefObjectiveGroupEscape
   weights:
     EscapeThiefShuttleObjective: 1
+
+- type: weightedRandom
+  id: MalfunctionObjectiveGroupKill
+  weights:
+    MalfunctionKillRandomPersonObjective: 1
+    MalfunctionKillRandomHeadObjective: 0.25
 
 #Changeling, crew, wizard, when you code it...
