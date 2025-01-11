@@ -1095,3 +1095,9 @@ Entries:
     type: Fix
   id: 162
   time: '2025-01-07T23:59:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Chemicals should not heal at comically low ammounts
+    type: Fix
+  id: 163
+  time: '2025-01-11T18:25:00.0000000+00:00'
