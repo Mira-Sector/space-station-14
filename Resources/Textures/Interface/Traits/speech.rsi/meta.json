@@ -1,0 +1,44 @@
+{
+	"version": 1,
+	"license": "CC-BY-SA-3.0",
+	"copyright": "Doctor-Cpu",
+	"size": {
+		"x": 32,
+		"y": 32
+	},
+	"states": [
+		{
+			"name": "accentless"
+		},
+		{
+			"name": "french"
+		},
+		{
+			"name": "german"
+		},
+		{
+			"name": "italian"
+		},
+		{
+			"name": "liar"
+		},
+		{
+			"name": "lisp"
+		},
+		{
+			"name": "southern"
+		},
+		{
+			"name": "spanish"
+		},
+		{
+			"name": "stutter"
+		},
+		{
+			"name": "cowboy"
+        },
+		{
+			"name": "pirate"
+		}
+	]
+}
