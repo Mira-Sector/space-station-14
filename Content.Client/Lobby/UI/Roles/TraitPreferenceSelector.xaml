@@ -2,11 +2,11 @@
         <BoxContainer Name="Container" Margin="4" Orientation="Horizontal">
             <Button Name="Selected" ToggleMode="True" HorizontalExpand="True" Access="Public">
                 <BoxContainer Margin="8,0,8,8">
-                    <BoxContainer Margin="0,8,0,0">
-                        <SpriteView Name="TraitIcon" OverrideDirection="South" VerticalExpand="False" SetSize="64 64" Scale="2 2" Access="Public"/>
-                        <BoxContainer Margin="8,2,8,2">
-                            <PanelContainer MinSize="2, 48" HorizontalExpand="False" VerticalExpand="True" StyleClasses="LowDivider"/>
-                        </BoxContainer>
+                    <BoxContainer Margin="0,8,8,0">
+                        <TextureRect Name="TraitIcon" Stretch="KeepAspectCentered" VerticalExpand="False" SetSize="64 64" Access="Public"/>
+                    </BoxContainer>
+                    <BoxContainer Margin="8,2,8,2">
+                        <PanelContainer MinSize="2, 48" HorizontalExpand="False" VerticalExpand="True" StyleClasses="LowDivider"/>
                     </BoxContainer>
                     <BoxContainer Orientation="Vertical" HorizontalExpand="True">
                         <PanelContainer Name="NameContainer" HorizontalExpand="True" VerticalExpand="False">

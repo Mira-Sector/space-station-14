@@ -1,5 +1,6 @@
 using Content.Shared.Whitelist;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Utility;
 
 namespace Content.Shared.Traits;
 
@@ -24,6 +25,12 @@ public sealed partial class TraitPrototype : IPrototype
     /// </summary>
     [DataField]
     public LocId Description { get; private set; }
+
+    /// <summary>
+    /// The icon to show in the lobby.
+    /// </summary>
+    [DataField]
+    public SpriteSpecifier? Icon { get; private set; }
 
     /// <summary>
     /// Don't apply this trait to entities this whitelist IS NOT valid for.
