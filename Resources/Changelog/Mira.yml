@@ -1101,3 +1101,9 @@ Entries:
     type: Fix
   id: 163
   time: '2025-01-11T18:25:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Improved the trait UI in the lobby
+    type: Tweak
+  id: 164
+  time: '2025-01-13T12:40:00.0000000+00:00'
