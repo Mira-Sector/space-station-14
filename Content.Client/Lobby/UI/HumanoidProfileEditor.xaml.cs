@@ -575,11 +575,7 @@ namespace Content.Client.Lobby.UI
                     if (selector == null)
                         continue;
 
-                    if (category is { MaxTraitPoints: >= 0 } &&
-                        selector.Cost + selectionCount > category.MaxTraitPoints)
-                    {
-                        selector.Checkbox.Label.FontColorOverride = Color.Red;
-                    }
+                    selector.Enabled = category is { MaxTraitPoints: >= 0 } && selector.Cost + selectionCount > category.MaxTraitPoints;
 
                     TraitsList.AddChild(selector);
                 }

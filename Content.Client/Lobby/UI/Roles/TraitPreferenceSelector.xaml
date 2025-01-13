@@ -1,7 +1,25 @@
-<Control xmlns="https://spacestation14.io"
-         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-        <BoxContainer Name="Container"
-                      Orientation="Horizontal">
-            <CheckBox Name="Checkbox" Access="Public"/>
+<Control xmlns="https://spacestation14.io" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        <BoxContainer Name="Container" Margin="4" Orientation="Horizontal">
+            <Button Name="Selected" ToggleMode="True" HorizontalExpand="True" Access="Public">
+                <BoxContainer Margin="8,0,8,8">
+                    <BoxContainer Margin="0,8,0,0">
+                        <SpriteView Name="TraitIcon" OverrideDirection="South" VerticalExpand="False" SetSize="64 64" Scale="2 2" Access="Public"/>
+                        <BoxContainer Margin="8,2,8,2">
+                            <PanelContainer MinSize="2, 48" HorizontalExpand="False" VerticalExpand="True" StyleClasses="LowDivider"/>
+                        </BoxContainer>
+                    </BoxContainer>
+                    <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+                        <PanelContainer Name="NameContainer" HorizontalExpand="True" VerticalExpand="False">
+                            <BoxContainer Margin="4,0,4,0" Orientation="Horizontal" VerticalExpand="False">
+                                <RichTextLabel Name="TraitName" HorizontalAlignment="Left" VerticalAlignment="Center" Access="Public"/>
+                                <Label Name="TraitPoints" HorizontalAlignment="Right" VerticalAlignment="Center" HorizontalExpand="True" StyleClasses="LabelBig" Access="Public"/>
+                            </BoxContainer>
+                        </PanelContainer>
+                        <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+                            <RichTextLabel Name="TraitDescription" HorizontalAlignment="Left" VerticalAlignment="Stretch" HorizontalExpand="False" VerticalExpand="True" Access="Public"/>
+                        </BoxContainer>
+                    </BoxContainer>
+                </BoxContainer>
+            </Button>
         </BoxContainer>
 </Control>
