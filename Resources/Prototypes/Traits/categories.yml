@@ -5,7 +5,7 @@
 - type: traitCategory
   id: SpeechTraits
   name: trait-category-speech
-  maxTraitPoints: 2
+  startingPoints: 2
 
 - type: traitCategory
   id: Quirks
