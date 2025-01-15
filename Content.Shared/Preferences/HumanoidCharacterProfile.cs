@@ -403,7 +403,7 @@ namespace Content.Shared.Preferences
 
             var list = new HashSet<ProtoId<TraitPrototype>>(_traitPreferences) { traitId };
 
-            if (traitCategory == null || traitCategory.MaxTraitPoints < 0)
+            if (traitCategory == null)
             {
                 return new(this)
                 {
@@ -411,7 +411,7 @@ namespace Content.Shared.Preferences
                 };
             }
 
-            var count = 0;
+            var points = traitCategory.StartingPoints;
             foreach (var trait in list)
             {
                 // If trait not found or another category don't count its points.
@@ -421,10 +421,10 @@ namespace Content.Shared.Preferences
                     continue;
                 }
 
-                count += otherProto.Cost;
+                points -= otherProto.Cost;
             }
 
-            if (count > traitCategory.MaxTraitPoints && traitProto.Cost != 0)
+            if (points < 0 && traitProto.Cost != 0)
             {
                 return new(this);
             }
@@ -662,11 +662,16 @@ namespace Content.Shared.Preferences
                 if (!protoManager.TryIndex(traitProto.Category, out var category))
                     continue;
 
-                var existing = groups.GetOrNew(category.ID);
-                existing += traitProto.Cost;
+                if (!groups.ContainsKey(category.ID))
+                {
+                    groups.Add(category.ID, category.StartingPoints);
+                }
+
+                var existing = groups[category.ID];
+                existing -= traitProto.Cost;
 
                 // Too expensive.
-                if (existing > category.MaxTraitPoints)
+                if (existing < 0)
                     continue;
 
                 groups[category.ID] = existing;
