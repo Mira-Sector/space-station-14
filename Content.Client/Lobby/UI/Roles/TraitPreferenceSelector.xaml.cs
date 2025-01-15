@@ -60,7 +60,7 @@ public sealed partial class TraitPreferenceSelector : Control
         if (trait.Cost > 0)
             color = Color.IndianRed;
         else if (trait.Cost < 0)
-            color = Color.PaleGreen;
+            color = Color.ForestGreen;
         else
             color = Color.RoyalBlue;
 
