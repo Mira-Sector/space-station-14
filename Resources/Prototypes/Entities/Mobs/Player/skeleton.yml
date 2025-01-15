@@ -54,6 +54,6 @@
     raffle:
       settings: default
   - type: GhostTakeoverAvailable
-  - type: Loadout
-    prototypes: [LimitedPassengerGear]
+  - type: ClosetSkeleton
+    fallbackEquipment: LimitedPassengerGear
   - type: RandomHumanoidAppearance
