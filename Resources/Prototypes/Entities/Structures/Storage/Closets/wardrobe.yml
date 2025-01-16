@@ -70,6 +70,8 @@
     stateBaseClosed: generic
     stateDoorOpen: generic_open
     stateDoorClosed: orange_door
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonPrisonerGear
 
 # Yellow wardrobe
 - type: entity
