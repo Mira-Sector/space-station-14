@@ -1,5 +1,4 @@
 using Content.Shared.Body.Components;
-using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
@@ -7,7 +6,6 @@ using Content.Shared.EntityEffects;
 using Content.Shared.FixedPoint;
 using Content.Shared.Localizations;
 using JetBrains.Annotations;
-using Robust.Shared.Log;
 using Robust.Shared.Prototypes;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -133,49 +131,133 @@ namespace Content.Server.EntityEffects.Effects
             {
                 var bodyDamageable = args.EntityManager.System<SharedBodySystem>().GetBodyDamageable(args.TargetEntity, body);
 
-                var partsGroupedByType = Damage.DamageDict
-                    .Where(d => d.Value > 0) // Skip damage types with no damage
-                    .SelectMany(d => bodyDamageable, (damage, part) => (damageType: damage.Key, part.Key, part.Value))
-                    .GroupBy(item => item.Value.Damage.DamageDict.ContainsKey(item.damageType))
-                    .ToDictionary(group => group.Key, group => group.Select(item => item.Key).ToHashSet());
+                // split the damage as the damage that is going to be healing goes down a lengthy codepath
+                // which is responsable for making sure it only heals limbs that it applies to
+                Dictionary<EntityUid, DamageSpecifier> positiveDamage = new();
+                Dictionary<EntityUid, DamageSpecifier> negativeDamage = new();
 
-                var hasType = partsGroupedByType.GetValueOrDefault(true, new HashSet<EntityUid>());
-                var noType = partsGroupedByType.GetValueOrDefault(false, new HashSet<EntityUid>());
+                foreach (var (part, partDamage) in bodyDamageable)
+                {
+                    var damageDict = partDamage.Damage.DamageDict;
 
-                // remove the ones where we are able to heal damage
-                noType.ExceptWith(hasType);
+                    DamageSpecifier positiveLimbDamage = new();
+                    DamageSpecifier negativeLimbDamage = new();
 
-                // actually remove them
-                foreach (var toRemove in noType)
-                    bodyDamageable.Remove(toRemove);
+                    foreach (var (damageType, damageValue) in Damage.DamageDict)
+                    {
+                        if (damageValue == 0)
+                            continue;
 
-                var damagePerPart = (Damage * scale) / bodyDamageable.Count();
+                        if (!damageDict.ContainsKey(damageType))
+                            continue;
+
+                        if (damageValue < 0)
+                        {
+                            // we cant heal the chemical
+                            if (damageDict[damageType] <= 0)
+                                continue;
+
+                            positiveLimbDamage.DamageDict.Add(damageType, damageValue);
+                        }
+                        else
+                        {
+                            negativeLimbDamage.DamageDict.Add(damageType, damageValue);
+                        }
+                    }
+
+                    positiveDamage.Add(part, positiveLimbDamage);
+                    negativeDamage.Add(part, negativeLimbDamage);
+                }
 
                 foreach (var (part, _) in bodyDamageable)
                 {
-                    var damage = damagePerPart;
-
-                    if (args.EntityManager.TryGetComponent<BodyPartComponent>(part, out var partComp))
-                        damage /= partComp.OverallDamageScale;
-
-                    args.EntityManager.System<DamageableSystem>().TryChangeDamage(
-                        part,
-                        damage,
-                        IgnoreResistances,
-                        interruptsDoAfters: false,
-                        origin: TargetIsOrigin ? args.TargetEntity : null);
+                    DamageEntity(part, DoHealing(part, positiveDamage[part], positiveDamage));
+                    DamageEntity(part, DoDamage(negativeDamage[part], negativeDamage));
                 }
 
                 return;
             }
 
+            DamageEntity(args.TargetEntity, Damage);
 
-            args.EntityManager.System<DamageableSystem>().TryChangeDamage(
-                args.TargetEntity,
-                Damage * scale,
-                IgnoreResistances,
-                interruptsDoAfters: false,
-                origin: TargetIsOrigin ? args.TargetEntity : null);
+            void DamageEntity(EntityUid uid, DamageSpecifier damage)
+            {
+                args.EntityManager.System<DamageableSystem>().TryChangeDamage(
+                    uid,
+                    damage * scale,
+                    IgnoreResistances,
+                    interruptsDoAfters: false,
+                    origin: TargetIsOrigin ? args.TargetEntity : null);
+            }
+
+            DamageSpecifier DoHealing(EntityUid targetPart, DamageSpecifier targetDamage, Dictionary<EntityUid, DamageSpecifier> damage)
+            {
+                HashSet<DamageSpecifier> matches = new();
+
+                foreach (var (part, partDamage) in damage)
+                {
+                    if (part == targetPart)
+                        continue;
+
+                    DamageSpecifier matchingPartDamage = new();
+
+                    foreach (var (damageType, damageValue) in partDamage.DamageDict)
+                    {
+                        if (!targetDamage.DamageDict.ContainsKey(damageType))
+                            continue;
+
+                        if (damageValue == 0)
+                            continue;
+
+                        matchingPartDamage.DamageDict[damageType] = damageValue;
+                    }
+
+                    matches.Add(matchingPartDamage);
+                }
+
+                DamageSpecifier totalDamage = new();
+                Dictionary<string, (FixedPoint2, uint)> matchedTypes = new();
+
+                foreach (var matchDamageSpecifier in matches)
+                {
+                    foreach (var (damageType, damageValue) in targetDamage.DamageDict)
+                    {
+                        // no match so just add what we wanted to if it already isnt there
+                        if (!matchDamageSpecifier.DamageDict.ContainsKey(damageType))
+                        {
+                            if (!totalDamage.DamageDict.ContainsKey(damageType))
+                                totalDamage.DamageDict.Add(damageType, damageValue);
+
+                            continue;
+                        }
+
+                        if (!matchedTypes.ContainsKey(damageType))
+                        {
+                            matchedTypes.Add(damageType, (matchDamageSpecifier.DamageDict[damageType], 1));
+                            continue;
+                        }
+
+                        var (currentDamage, count) = matchedTypes[damageType];
+
+                        matchedTypes[damageType] = (currentDamage + matchDamageSpecifier.DamageDict[damageType], count + 1);
+                    }
+                }
+
+                foreach (var (damageType, (damageValue, count)) in matchedTypes)
+                {
+                    if (totalDamage.DamageDict.ContainsKey(damageType))
+                        totalDamage.DamageDict[damageType] += (damageValue / count);
+                    else
+                        totalDamage.DamageDict.Add(damageType, (damageValue / count));
+                }
+
+                return totalDamage;
+            }
+
+            DamageSpecifier DoDamage(DamageSpecifier targetDamage, Dictionary<EntityUid, DamageSpecifier> damage)
+            {
+                return targetDamage / damage.Count();
+            }
         }
     }
 }

@@ -182,9 +182,8 @@ namespace Content.Shared.Damage
                 EntityUid? bodyUid = null;
 
                 if (TryComp<BodyPartComponent>(uid, out var bodyPartComp))
-                {
                     bodyUid = bodyPartComp.Body;
-                }
+
                 return ChangeDamage(uid.Value, damage, damageable, ignoreResistances, interruptsDoAfters, origin, body: bodyUid);
             }
 

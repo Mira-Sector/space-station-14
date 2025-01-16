@@ -9,6 +9,8 @@
     stateBaseClosed: cabinet
     stateDoorOpen: cabinet_open
     stateDoorClosed: cabinet_door
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonBartenderGear
 
   - type: AccessReader
     access: [["Bar"]]
@@ -43,6 +45,8 @@
     stateDoorClosed: qm_door
   - type: AccessReader
     access: [["Quartermaster"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonQuartermasterGear
 
 - type: entity
   id: LockerSalvageSpecialist
@@ -57,6 +61,8 @@
     stateDoorClosed: mining_door
   - type: AccessReader
     access: [["Salvage"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonSalvageGear
 
 # Command
 - type: entity
@@ -71,6 +77,8 @@
     stateDoorClosed: cap_door
   - type: AccessReader
     access: [["Captain"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonCaptainGear
 
 - type: entity
   id: LockerHeadOfPersonnel
@@ -84,6 +92,8 @@
     stateDoorClosed: hop_door
   - type: AccessReader
     access: [["HeadOfPersonnel"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonHoPGear
 
 # CE
 - type: entity
@@ -98,6 +108,8 @@
     stateDoorClosed: ce_door
   - type: AccessReader
     access: [ [ "ChiefEngineer" ] ]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonCEGear
 
 # Electrical supplies
 - type: entity
@@ -112,6 +124,8 @@
     stateDoorClosed: eng_elec_door
   - type: AccessReader
     access: [ [ "Engineering" ] ]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonEngineerGear
 
 # Welding supplies
 - type: entity
@@ -126,6 +140,8 @@
     stateDoorClosed: eng_weld_door
   - type: AccessReader
     access: [ [ "Engineering" ] ]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonEngineerGear
 
 # Atmos tech
 - type: entity
@@ -140,6 +156,8 @@
     stateDoorClosed: atmos_door
   - type: AccessReader
     access: [ [ "Atmospherics" ] ]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonAtmosGear
 
 # Engineer
 - type: entity
@@ -154,6 +172,8 @@
     stateDoorClosed: eng_secure_door
   - type: AccessReader
     access: [ [ "Engineering" ] ]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonEngineerGear
 
 # Freezer
 - type: entity
@@ -175,6 +195,8 @@
     node: done
     containers:
     - entity_storage
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonChefGear
 
 - type: entity
   id: LockerFreezer
@@ -198,6 +220,8 @@
     stateDoorClosed: hydro_door
   - type: AccessReader
     access: [ [ "Hydroponics" ] ]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonBotanistGear
 
 # Medicine
 - type: entity
@@ -213,6 +237,8 @@
     stateDoorClosed: med_door
   - type: AccessReader
     access: [ [ "Medical" ] ]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonMedicalDoctorGear
 
 # Medical doctor
 - type: entity
@@ -227,6 +253,8 @@
     stateDoorClosed: med_secure_door
   - type: AccessReader
     access: [ [ "Medical" ] ]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonMedicalDoctorGear
 
 # Paramedic
 - type: entity
@@ -241,6 +269,8 @@
     stateDoorClosed: paramed_door
   - type: AccessReader
     access: [ [ "Medical" ] ]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonParamedicGear
 
 
 # Chemical
@@ -256,6 +286,8 @@
     stateDoorClosed: chemical_door
   - type: AccessReader
     access: [ [ "Chemistry" ] ]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonChemistGear
 
 # CMO
 - type: entity
@@ -270,6 +302,8 @@
     stateDoorClosed: cmo_door
   - type: AccessReader
     access: [ [ "ChiefMedicalOfficer" ] ]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonCMOGear
 
 # Science
 - type: entity
@@ -284,6 +318,8 @@
     stateDoorClosed: rd_door
   - type: AccessReader
     access: [ [ "ResearchDirector" ] ]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonRDGear
 
 - type: entity
   id: LockerScientist
@@ -297,6 +333,8 @@
     stateDoorClosed: science_door
   - type: AccessReader
     access: [ [ "Research" ] ]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonScientistGear
 
 # HoS
 - type: entity
@@ -311,6 +349,8 @@
     stateDoorClosed: hos_door
   - type: AccessReader
     access: [["HeadOfSecurity"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonHoSGear
 
 # Warden
 - type: entity
@@ -325,6 +365,8 @@
     stateDoorClosed: warden_door
   - type: AccessReader
     access: [["Armory"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonWardenGear
 
 # Brigmedic
 - type: entity
@@ -339,6 +381,8 @@
     stateDoorClosed: brigmedic_door
   - type: AccessReader
     access: [["Medical"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonBrigmedicGear
 
 # Security Officer
 - type: entity
@@ -353,6 +397,8 @@
     stateDoorClosed: sec_door
   - type: AccessReader
     access: [["Security"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonSecurityOfficerGear
 
 - type: entity
   id: GunSafe
@@ -372,6 +418,8 @@
     - entity_storage
   - type: StaticPrice
     price: 660
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonSecurityOfficerGear
 
 - type: entity
   id: GunSafeBaseSecure
@@ -390,6 +438,8 @@
   components:
   - type: AccessReader
     access: [["Detective"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonDetectiveGear
 
 - type: entity
   id: LockerEvidence
@@ -399,6 +449,8 @@
   components:
   - type: AccessReader
     access: [["Security"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonWardenGear
 
 # Syndicate
 - type: entity
@@ -453,6 +505,8 @@
     stateBaseClosed: clown
     stateDoorOpen: clown_open
     stateDoorClosed: clown_door
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonClownGear
 
 # Mime
 - type: entity
@@ -467,6 +521,8 @@
     stateBaseClosed: mime
     stateDoorOpen: mime_open
     stateDoorClosed: mime_door
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonMimeGear
 
 # Representative
 - type: entity

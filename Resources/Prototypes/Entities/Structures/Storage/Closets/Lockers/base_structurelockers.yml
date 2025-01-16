@@ -54,6 +54,8 @@
     node: done
     containers:
     - entity_storage
+  - type: ClosetSkeletonLocker
+    equipment: LimitedPassengerGear
 
 - type: entity
   id: LockerBaseSecure
