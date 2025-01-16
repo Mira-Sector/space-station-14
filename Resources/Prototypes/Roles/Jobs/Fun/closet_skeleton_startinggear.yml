@@ -1,0 +1,237 @@
+# Command
+- type: startingGear
+  id: SkeletonCaptainGear
+  equipment:
+    head: ClothingHeadHatCapcap
+    jumpsuit: ClothingUniformJumpsuitCaptain
+    neck: ClothingNeckMantleCap
+    shoes: ClothingShoesBootsLaceup
+    gloves: ClothingHandsGlovesCaptain
+
+- type: startingGear
+  id: SkeletonHoPGear
+  equipment:
+    head: ClothingHeadHatHopcap
+    jumpsuit: ClothingUniformJumpsuitHoP
+    neck: ClothingNeckMantleHop
+    shoes: ClothingShoesColorBrown
+    gloves: ClothingHandsGlovesHop
+
+# Cargo
+- type: startingGear
+  id: SkeletonQuartermasterGear
+  equipment:
+    head: ClothingHeadHatBeretQM
+    jumpsuit: ClothingUniformJumpsuitQMTurtleneck
+    neck: ClothingNeckMantleQM
+    shoes: ClothingShoesColorBrown
+    gloves: ClothingHandsGlovesColorBrown
+
+- type: startingGear
+  id: SkeletonCargoGear
+  equipment:
+    head: ClothingHeadHatCargosoft
+    jumpsuit: ClothingUniformJumpsuitCargo
+    shoes: ClothingShoesColorBlack
+
+- type: startingGear
+  id: SkeletonSalvageGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitSalvageSpecialist
+    shoes: ClothingShoesBootsSalvage
+
+# Engineering
+- type: startingGear
+  id: SkeletonCEGear
+  equipment:
+    head: ClothingHeadHatBeretEngineering
+    jumpsuit: ClothingUniformJumpsuitChiefEngineerTurtle
+    neck: ClothingNeckMantleCE
+    shoes: ClothingShoesColorBrown
+
+- type: startingGear
+  id: SkeletonEngineerGear
+  equipment:
+    head: ClothingHeadHatHardhatYellow
+    outerClothing: ClothingOuterVestHazard
+    jumpsuit: ClothingUniformJumpsuitEngineering
+    shoes: ClothingShoesBootsWork
+
+- type: startingGear
+  id: SkeletonAtmosGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitAtmos
+    shoes: ClothingShoesColorWhite
+
+# Medical
+- type: startingGear
+  id: SkeletonCMOGear
+  equipment:
+    head: ClothingHeadHatBeretCmo
+    outerClothing: ClothingOuterCoatLabCmo
+    jumpsuit: ClothingUniformJumpsuitCmoTurtle
+    neck: ClothingNeckMantleCMO
+    shoes: ClothingShoesColorBrown
+    gloves: ClothingHandsGlovesNitrile
+
+- type: startingGear
+  id: SkeletonMedicalDoctorGear
+  equipment:
+    head: ClothingHeadNurseHat
+    outerClothing: ClothingOuterCoatLab
+    jumpsuit: ClothingUniformJumpsuitMedicalDoctor
+    shoes: ClothingShoesColorWhite
+    gloves: ClothingHandsGlovesLatex
+
+- type: startingGear
+  id: SkeletonChemistGear
+  equipment:
+    outerClothing: ClothingOuterCoatLabChem
+    jumpsuit: ClothingUniformJumpsuitChemistry
+    shoes: ClothingShoesColorWhite
+    gloves: ClothingHandsGlovesLatex
+
+- type: startingGear
+  id: SkeletonParamedicGear
+  equipment:
+    head: ClothingHeadHatParamedicsoft
+    outerClothing: ClothingOuterCoatParamedicWB
+    jumpsuit: ClothingUniformJumpsuitParamedic
+    shoes: ClothingShoesColorBlue
+    gloves: ClothingHandsGlovesNitrile
+
+# Science
+- type: startingGear
+  id: SkeletonRDGear
+  equipment:
+    head: ClothingHeadHatBeretRND
+    outerClothing: ClothingOuterCoatRD
+    jumpsuit: ClothingUniformJumpsuitResearchDirector
+    neck: ClothingNeckMantleRD
+    shoes: ClothingShoesColorBrown
+    gloves: ClothingHandsGlovesColorPurple
+
+- type: startingGear
+  id: SkeletonScientistGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitScientist
+    neck: ClothingNeckTieSci
+    shoes: ClothingShoesColorWhite
+
+# Security
+- type: startingGear
+  id: SkeletonHoSGear
+  equipment:
+    head: ClothingHeadHatHoshat
+    outerClothing: ClothingOuterCoatHoSTrench
+    jumpsuit: ClothingUniformJumpsuitHoS
+    neck: ClothingNeckMantleHOS
+    shoes: ClothingShoesBootsCombatFilled
+    gloves: ClothingHandsGlovesCombat
+
+- type: startingGear
+  id: SkeletonSecurityOfficerGear
+  equipment:
+    head: ClothingHeadHelmetJustice
+    outerClothing: ClothingOuterArmorBasic
+    jumpsuit: ClothingUniformJumpsuitSec
+    shoes: ClothingShoesBootsCombatFilled
+    gloves: ClothingHandsGlovesColorBlack
+
+- type: startingGear
+  id: SkeletonDetectiveGear
+  equipment:
+    head: ClothingHeadHatFedoraBrown
+    outerClothing: ClothingOuterCoatDetectiveLoadout
+    jumpsuit: ClothingUniformJumpsuitDetective
+    neck: ClothingNeckTieDet
+    shoes: ClothingShoesBootsCombatFilled
+    gloves: ClothingHandsGlovesForensic
+
+- type: startingGear
+  id: SkeletonWardenGear
+  equipment:
+    head: ClothingHeadHatWarden
+    outerClothing: ClothingOuterCoatWarden
+    jumpsuit: ClothingUniformJumpsuitWarden
+    shoes: ClothingShoesBootsCombatFilled
+    gloves: ClothingHandsGlovesColorBlack
+
+- type: startingGear
+  id: SkeletonBrigMedicGear
+  equipment:
+    head: ClothingHeadHatBeretBrigmedic
+    outerClothing: ClothingOuterCoatAMG
+    jumpsuit: ClothingUniformJumpsuitBrigmedic
+    shoes: ClothingShoesColorRed
+    gloves: ClothingHandsGlovesLatex
+
+# Service
+- type: startingGear
+  id: SkeletonBartenderGear
+  equipment:
+    head: ClothingHeadHatTophat
+    outerClothing: ClothingOuterApronBar
+    jumpsuit: ClothingUniformJumpsuitBartender
+    shoes: ClothingShoesColorBlack
+
+- type: startingGear
+  id: SkeletonBotanistGear
+  equipment:
+    outerClothing: ClothingOuterApronBotanist
+    jumpsuit: ClothingUniformJumpsuitHydroponics
+    shoes: ClothingShoesColorBrown
+    gloves: ClothingHandsGlovesLeather
+
+- type: startingGear
+  id: SkeletonChaplainGear
+  equipment:
+    head: ClothingHeadHatFez
+    outerClothing: ClothingOuterHoodieChaplain
+    jumpsuit: ClothingUniformJumpsuitMonasticRobeLight
+    neck: ClothingNeckStoleChaplain
+    shoes: ClothingShoesColorBlack
+
+- type: startingGear
+  id: SkeletonClownGear
+  equipment:
+    mask: ClothingMaskClown
+    jumpsuit: ClothingUniformJumpsuitClown
+    shoes: ClothingShoesClown
+
+- type: startingGear
+  id: SkeletonJanitorGear
+  equipment:
+    head: ClothingHeadHatPurplesoft
+    jumpsuit: ClothingUniformJumpsuitJanitor
+    shoes: ClothingShoesGaloshes
+    gloves: ClothingHandsGlovesJanitor
+
+- type: startingGear
+  id: SkeletonLawyerGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitLawyerBlue
+    neck: ClothingNeckLawyerBadge
+    shoes: ClothingShoesBootsLaceup
+
+- type: startingGear
+  id: SkeletonLibrarianGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitLibrarian
+    neck: ClothingNeckScarfStripedGreen
+    shoes: ClothingShoesBootsLaceup
+
+- type: startingGear
+  id: SkeletonMimeGear
+  equipment:
+    head: ClothingHeadHatBeret
+    mask: ClothingMaskMime
+    jumpsuit: ClothingUniformJumpsuitMime
+    shoes: ClothingShoesColorWhite
+    gloves: ClothingHandsGlovesColorWhite
+
+- type: startingGear
+  id: SkeletonMusicianGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitMusician
+    shoes: ClothingShoesBootsLaceup
