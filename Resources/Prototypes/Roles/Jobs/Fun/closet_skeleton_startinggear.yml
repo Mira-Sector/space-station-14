@@ -12,7 +12,7 @@
   id: SkeletonHoPGear
   equipment:
     head: ClothingHeadHatHopcap
-    jumpsuit: ClothingUniformJumpsuitHoP
+    jumpsuit: ClothingUniformJumpsuitHOP
     neck: ClothingNeckMantleHop
     shoes: ClothingShoesColorBrown
     gloves: ClothingHandsGlovesHop
