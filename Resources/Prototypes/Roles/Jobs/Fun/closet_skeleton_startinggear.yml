@@ -12,7 +12,7 @@
   id: SkeletonHoPGear
   equipment:
     head: ClothingHeadHatHopcap
-    jumpsuit: ClothingUniformJumpsuitHoP
+    jumpsuit: ClothingUniformJumpsuitHOP
     neck: ClothingNeckMantleHop
     shoes: ClothingShoesColorBrown
     gloves: ClothingHandsGlovesHop
@@ -69,7 +69,7 @@
   equipment:
     head: ClothingHeadHatBeretCmo
     outerClothing: ClothingOuterCoatLabCmo
-    jumpsuit: ClothingUniformJumpsuitCmoTurtle
+    jumpsuit: ClothingUniformJumpsuitCMOTurtle
     neck: ClothingNeckMantleCMO
     shoes: ClothingShoesColorBrown
     gloves: ClothingHandsGlovesNitrile
@@ -118,6 +118,14 @@
     neck: ClothingNeckTieSci
     shoes: ClothingShoesColorWhite
 
+- type: startingGear
+  id: SkeletonRobotGear
+  equipment:
+    head: ClothingHeadHatCardborg
+    jumpsuit: ClothingUniformJumpsuitColorGrey
+    outerClothing: ClothingOuterCardborg
+    shoes: ClothingShoesColorBlack
+
 # Security
 - type: startingGear
   id: SkeletonHoSGear
@@ -158,13 +166,19 @@
     gloves: ClothingHandsGlovesColorBlack
 
 - type: startingGear
-  id: SkeletonBrigMedicGear
+  id: SkeletonBrigmedicGear
   equipment:
     head: ClothingHeadHatBeretBrigmedic
     outerClothing: ClothingOuterCoatAMG
     jumpsuit: ClothingUniformJumpsuitBrigmedic
     shoes: ClothingShoesColorRed
     gloves: ClothingHandsGlovesLatex
+
+- type: startingGear
+  id: SkeletonPrisonerGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitPrisoner
+    shoes: ClothingShoesColorBlack
 
 # Service
 - type: startingGear
@@ -191,6 +205,15 @@
     jumpsuit: ClothingUniformJumpsuitMonasticRobeLight
     neck: ClothingNeckStoleChaplain
     shoes: ClothingShoesColorBlack
+
+- type: startingGear
+  id: SkeletonChefGear
+  equipment:
+    head: ClothingHeadHatChef
+    mask: ClothingMaskItalianMoustache
+    outerClothing: ClothingOuterJacketChef
+    jumpsuit: ClothingUniformJumpsuitChef
+    shoes: ClothingShoesChef
 
 - type: startingGear
   id: SkeletonClownGear
