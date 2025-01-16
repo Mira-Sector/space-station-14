@@ -186,6 +186,11 @@
     - !type:OverallPlaytimeRequirement
       time: 10800 # 3 hours
 
+    StationAi:
+    - !type:RoleTimeRequirement
+      role: JobBorg
+      time: 10800 # 3 hours
+
     Chef:
     - !type:DepartmentTimeRequirement
       department: Civilian
