@@ -118,6 +118,13 @@
     neck: ClothingNeckTieSci
     shoes: ClothingShoesColorWhite
 
+- type: startingGear
+  id: SkeletonRobotGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitScientist
+    neck: ClothingNeckTieSci
+    shoes: ClothingShoesColorWhite
+
 # Security
 - type: startingGear
   id: SkeletonHoSGear
@@ -191,6 +198,15 @@
     jumpsuit: ClothingUniformJumpsuitMonasticRobeLight
     neck: ClothingNeckStoleChaplain
     shoes: ClothingShoesColorBlack
+
+- type: startingGear
+  id: SkeletonChefGear
+  equipment:
+    head: ClothingHeadHatChef
+    outerClothing: ClothingOuterJacketChef
+    jumpsuit: ClothingUniformJumpsuitChef
+    neck: ClothingNeckStoleChaplain
+    shoes: ClothingShoesChef
 
 - type: startingGear
   id: SkeletonClownGear
