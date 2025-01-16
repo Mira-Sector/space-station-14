@@ -1119,3 +1119,9 @@ Entries:
     type: Tweak
   id: 166
   time: '2025-01-16T17:10:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Senior loadouts require 10 hours in the department
+    type: Tweak
+  id: 166
+  time: '2025-01-16T17:10:00.0000000+00:00'
