@@ -121,9 +121,10 @@
 - type: startingGear
   id: SkeletonRobotGear
   equipment:
-    jumpsuit: ClothingUniformJumpsuitScientist
-    neck: ClothingNeckTieSci
-    shoes: ClothingShoesColorWhite
+    head: ClothingHeadHatCardborg
+    jumpsuit: ClothingUniformJumpsuitColorGrey
+    outerClothing: ClothingOuterCardborg
+    shoes: ClothingShoesColorBlack
 
 # Security
 - type: startingGear
@@ -203,9 +204,9 @@
   id: SkeletonChefGear
   equipment:
     head: ClothingHeadHatChef
+    mask: ClothingMaskItalianMoustache
     outerClothing: ClothingOuterJacketChef
     jumpsuit: ClothingUniformJumpsuitChef
-    neck: ClothingNeckStoleChaplain
     shoes: ClothingShoesChef
 
 - type: startingGear
