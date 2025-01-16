@@ -1,4 +1,4 @@
-﻿using Content.Server.StationEvents.Events;
+using Content.Server.StationEvents.Events;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 
@@ -15,4 +15,14 @@ public sealed partial class RandomEntityStorageSpawnRuleComponent : Component
     /// </summary>
     [DataField(required: true)]
     public EntProtoId Prototype;
+}
+
+public sealed partial class RandomEntityStorageSpawnedEvent : EntityEventArgs
+{
+    public EntityUid Storage;
+
+    public RandomEntityStorageSpawnedEvent(EntityUid storage)
+    {
+        Storage = storage;
+    }
 }

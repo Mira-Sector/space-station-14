@@ -44,6 +44,10 @@ public sealed class RandomEntityStorageSpawnRule : StationEventSystem<RandomEnti
         if (!_entityStorage.Insert(spawn, locker, storageComp))
         {
             Del(spawn);
+            return;
         }
+
+        var ev = new RandomEntityStorageSpawnedEvent(locker);
+        RaiseLocalEvent(spawn, ev);
     }
 }
