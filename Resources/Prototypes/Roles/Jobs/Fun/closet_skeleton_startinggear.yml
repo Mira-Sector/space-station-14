@@ -158,7 +158,7 @@
     gloves: ClothingHandsGlovesColorBlack
 
 - type: startingGear
-  id: SkeletonBrigMedicGear
+  id: SkeletonBrigmedicGear
   equipment:
     head: ClothingHeadHatBeretBrigmedic
     outerClothing: ClothingOuterCoatAMG
