@@ -137,6 +137,8 @@
     stateBaseClosed: generic
     stateDoorOpen: generic_open
     stateDoorClosed: red_door
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonSecurityOfficerGear
 
 - type: entity
   id: WardrobeAtmospherics
@@ -148,12 +150,17 @@
     stateBaseClosed: generic
     stateDoorOpen: generic_open
     stateDoorClosed: atmos_wardrobe_door
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonAtmosGear
 
 - type: entity
   id: ClosetJanitor
   parent: WardrobeMixed
   name: custodial closet
   description: It's a storage unit for janitorial clothes and gear.
+  components:
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonJanitorGear
 
 - type: entity
   id: WardrobeFormal
@@ -166,66 +173,105 @@
   parent: WardrobeBlack
   name: chef's closet
   description: It's a storage unit for foodservice garments and mouse traps.
+  components:
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonChefGear
 
 - type: entity
   id: WardrobeChapel
   parent: WardrobeBlack
   name: chaplain's wardrobe
   description: It's a storage unit for Nanotrasen-approved religious attire.
+  components:
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonChaplainGear
 
 - type: entity
   id: ClosetLegal
   parent: WardrobeBlue
   name: legal closet
   description: It's a storage unit for courtroom apparel and items.
+  components:
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonLawyerGear
 
 - type: entity
   id: WardrobeCargo
   parent: WardrobePrison
   name: cargo wardrobe
+  components:
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonCargoGear
 
 - type: entity
   id: WardrobeSalvage
   parent: WardrobeMixed
   name: salvage wardrobe
   description: Notably not salvaged.
+  components:
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonSalvageGear
 
 - type: entity
   id: WardrobeEngineering
   parent: WardrobeYellow
   name: engineering wardrobe
+  components:
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonEngineerGear
 
 - type: entity
   id: WardrobeMedicalDoctor
   parent: WardrobeWhite
   name: medical doctor's wardrobe
+  components:
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonMedicalDoctorGear
 
 - type: entity
   id: WardrobeRobotics
   parent: WardrobeBlack
   name: robotics wardrobe
+  components:
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonRobotGear
 
 - type: entity
   id: WardrobeChemistry
   parent: WardrobeWhite
   name: chemistry wardrobe
+  components:
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonRobotGear
 
 - type: entity
   id: WardrobeGenetics
   parent: WardrobeWhite
   name: genetics wardrobe
+  components:
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonMedicalDoctorGear
 
 - type: entity
   id: WardrobeVirology
   parent: WardrobeWhite
   name: virology wardrobe
+  components:
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonMedicalDoctorGear
 
 - type: entity
   id: WardrobeScience
   parent: WardrobeWhite
   name: science wardrobe
+  components:
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonScientistGear
 
 - type: entity
   id: WardrobeBotanist
   parent: WardrobeGreen
   name: botanist wardrobe
+  components:
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonBotanistGear
