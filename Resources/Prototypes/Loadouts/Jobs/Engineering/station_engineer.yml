@@ -4,19 +4,9 @@
   effects:
   - !type:JobRequirementLoadoutEffect
     requirement:
-      !type:RoleTimeRequirement
-      role: JobAtmosphericTechnician
-      time: 0
-  - !type:JobRequirementLoadoutEffect
-    requirement:
-      !type:RoleTimeRequirement
-      role: JobStationEngineer
-      time: 0
-  - !type:JobRequirementLoadoutEffect
-    requirement:
       !type:DepartmentTimeRequirement
       department: Engineering
-      time: 0
+      time: 36000 #10 hrs
 
 # Head
 - type: startingGear

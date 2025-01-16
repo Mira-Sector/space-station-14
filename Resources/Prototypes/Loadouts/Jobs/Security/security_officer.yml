@@ -2,26 +2,11 @@
 - type: loadoutEffectGroup
   id: SeniorOfficer
   effects:
-  - !type:JobRequirementLoadoutEffect
-    requirement:
-      !type:RoleTimeRequirement
-      role: JobWarden
-      time: 0
-  - !type:JobRequirementLoadoutEffect
-    requirement:
-      !type:DepartmentTimeRequirement
-      department: Security
-      time: 0
-
-#Security Star
-- type: loadoutEffectGroup
-  id: SecurityStarWorthy
-  effects:
     - !type:JobRequirementLoadoutEffect
       requirement:
         !type:DepartmentTimeRequirement
         department: Security
-        time: 360000 #100 hrs
+        time: 36000 #10 hrs
 
 # Head
 - type: loadout
@@ -67,7 +52,7 @@
 
 - type: loadout
   id: TrooperUniform
-  equipment: 
+  equipment:
     jumpsuit: ClothingUniformSecurityTrooper
 
 - type: loadout
@@ -164,7 +149,7 @@
   id: SecStar
   effects:
   - !type:GroupLoadoutEffect
-    proto: SecurityStarWorthy
+    proto: SeniorOfficer
   storage:
     back:
     - Dinkystar
