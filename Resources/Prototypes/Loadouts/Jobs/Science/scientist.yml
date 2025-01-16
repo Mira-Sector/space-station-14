@@ -6,7 +6,7 @@
     requirement:
       !type:DepartmentTimeRequirement
       department: Science
-      time: 0
+      time: 36000 #10 hrs
 
 # Head
 - type: startingGear

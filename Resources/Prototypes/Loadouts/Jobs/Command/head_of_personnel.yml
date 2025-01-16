@@ -6,7 +6,7 @@
     requirement:
       !type:RoleTimeRequirement
       role: JobHeadOfPersonnel
-      time: 0
+      time: 36000 # 10 hours
 
 # Jumpsuit
 - type: loadout
