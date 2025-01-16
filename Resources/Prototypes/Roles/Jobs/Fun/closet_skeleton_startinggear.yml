@@ -69,7 +69,7 @@
   equipment:
     head: ClothingHeadHatBeretCmo
     outerClothing: ClothingOuterCoatLabCmo
-    jumpsuit: ClothingUniformJumpsuitCmoTurtle
+    jumpsuit: ClothingUniformJumpsuitCMOTurtle
     neck: ClothingNeckMantleCMO
     shoes: ClothingShoesColorBrown
     gloves: ClothingHandsGlovesNitrile
