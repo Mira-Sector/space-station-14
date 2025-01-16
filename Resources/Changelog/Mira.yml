@@ -1107,3 +1107,9 @@ Entries:
     type: Tweak
   id: 164
   time: '2025-01-13T12:40:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Closet skeletons get different clothing based on where they spawn
+    type: Add
+  id: 165
+  time: '2025-01-16T17:10:00.0000000+00:00'
