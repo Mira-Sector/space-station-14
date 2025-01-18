@@ -52,7 +52,7 @@ namespace Content.Shared.Preferences
         /// Enabled traits.
         /// </summary>
         [DataField]
-        private HashSet<ProtoId<TraitPrototype>> _traitPreferences = new();
+        private List<ProtoId<TraitPrototype>> _traitPreferences = new();
 
         /// <summary>
         /// <see cref="_loadouts"/>
@@ -116,7 +116,7 @@ namespace Content.Shared.Preferences
         /// <summary>
         /// <see cref="_traitPreferences"/>
         /// </summary>
-        public IReadOnlySet<ProtoId<TraitPrototype>> TraitPreferences => _traitPreferences;
+        public IReadOnlyList<ProtoId<TraitPrototype>> TraitPreferences => _traitPreferences;
 
         /// <summary>
         /// If we're unable to get one of our preferred jobs do we spawn as a fallback job or do we stay in lobby.
@@ -137,7 +137,7 @@ namespace Content.Shared.Preferences
             Dictionary<ProtoId<JobPrototype>, JobPriority> jobPriorities,
             PreferenceUnavailableMode preferenceUnavailable,
             HashSet<ProtoId<AntagPrototype>> antagPreferences,
-            HashSet<ProtoId<TraitPrototype>> traitPreferences,
+            List<ProtoId<TraitPrototype>> traitPreferences,
             Dictionary<string, RoleLoadout> loadouts)
         {
             Name = name;
@@ -182,7 +182,7 @@ namespace Content.Shared.Preferences
                 new Dictionary<ProtoId<JobPrototype>, JobPriority>(other.JobPriorities),
                 other.PreferenceUnavailable,
                 new HashSet<ProtoId<AntagPrototype>>(other.AntagPreferences),
-                new HashSet<ProtoId<TraitPrototype>>(other.TraitPreferences),
+                new List<ProtoId<TraitPrototype>>(other.TraitPreferences),
                 new Dictionary<string, RoleLoadout>(other.Loadouts))
         {
         }
@@ -401,7 +401,7 @@ namespace Content.Shared.Preferences
             if (category != null && !protoManager.TryIndex(category, out traitCategory))
                 return new(this);
 
-            var list = new HashSet<ProtoId<TraitPrototype>>(_traitPreferences) { traitId };
+            var list = new List<ProtoId<TraitPrototype>>(_traitPreferences) { traitId };
 
             if (traitCategory == null)
             {
@@ -437,8 +437,61 @@ namespace Content.Shared.Preferences
 
         public HumanoidCharacterProfile WithoutTraitPreference(ProtoId<TraitPrototype> traitId, IPrototypeManager protoManager)
         {
-            var list = new HashSet<ProtoId<TraitPrototype>>(_traitPreferences);
+            var list = new List<ProtoId<TraitPrototype>>(_traitPreferences);
             list.Remove(traitId);
+
+            // if the trait gives us more points we need to remove some as we're in point debt
+            if (!protoManager.TryIndex<TraitPrototype>(traitId, out var trait) || trait.Cost > 0)
+            {
+                return new(this)
+                {
+                    _traitPreferences = list,
+                };
+            }
+
+            var points = 0;
+            List<TraitPrototype> categoryTraits = new();
+
+            if (protoManager.TryIndex<TraitCategoryPrototype>(trait.Category, out var category, false))
+                points = category.StartingPoints;
+
+            foreach (var selectedTraitId in list)
+            {
+                if (!protoManager.TryIndex<TraitPrototype>(selectedTraitId, out var selectedTrait))
+                    continue;
+
+                if (selectedTrait.Category != trait.Category)
+                    continue;
+
+                categoryTraits.Add(selectedTrait);
+                points -= selectedTrait.Cost;
+            }
+
+            if (points > 0)
+            {
+                // relax, debt collectors wont take away your house (yet)
+                return new(this)
+                {
+                    _traitPreferences = list,
+                };
+            }
+
+            // start removing from the last added trait
+            categoryTraits.Reverse();
+
+            foreach (var selectedTrait in categoryTraits)
+            {
+                // dont put us further into debt
+                if (selectedTrait.Cost <= 0)
+                    continue;
+
+                list.Remove(selectedTrait.ID);
+                points += selectedTrait.Cost;
+
+                // escaped debt
+                if (points >= 0)
+                    break;
+            }
 
             return new(this)
             {
@@ -615,7 +668,7 @@ namespace Content.Shared.Preferences
             _antagPreferences.UnionWith(antags);
 
             _traitPreferences.Clear();
-            _traitPreferences.UnionWith(GetValidTraits(traits, prototypeManager));
+            _traitPreferences = GetValidTraits(traits, prototypeManager);
 
             // Checks prototypes exist for all loadouts and dump / set to default if not.
             var toRemove = new ValueList<string>();
