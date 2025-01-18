@@ -1,6 +1,7 @@
+using Content.Shared.SpeciesChat;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Set;
 
-namespace Content.Shared.SpeciesChat;
+namespace Content.Server.SpeciesChat;
 
 [RegisterComponent]
 public sealed partial class RandomSpeciesLanguageComponent : Component
