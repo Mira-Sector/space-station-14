@@ -143,3 +143,5 @@
           False: { visible: false }
   - type: Transform
     anchored: true
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonChaplainGear

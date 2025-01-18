@@ -1,4 +1,4 @@
-﻿# Tool closet
+# Tool closet
 - type: entity
   id: ClosetTool
   name: tool closet
@@ -10,6 +10,8 @@
     stateBaseClosed: eng
     stateDoorOpen: eng_open
     stateDoorClosed: eng_tool_door
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonEngineerGear
 
 # Radiation suit closet
 - type: entity
@@ -23,6 +25,8 @@
     stateBaseClosed: eng
     stateDoorOpen: eng_open
     stateDoorClosed: eng_rad_door
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonEngineerGear
 
 # Emergency closet
 - type: entity
@@ -62,6 +66,8 @@
     stateBaseClosed: fire
     stateDoorOpen: fire_open
     stateDoorClosed: fire_door
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonAtmosGear
 
 # EOD closet
 - type: entity
@@ -75,6 +81,8 @@
     stateBaseClosed: bomb
     stateDoorOpen: bomb_open
     stateDoorClosed: bomb_door
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonSecurityOfficerGear
 
 # Janitorial bomb suit closet
 - type: entity
@@ -89,6 +97,8 @@
     stateBaseClosed: janitor_bomb
     stateDoorOpen: janitor_bomb_open
     stateDoorClosed: janitor_bomb_door
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonJanitorGear
 
 # Biohazard
 
@@ -104,6 +114,8 @@
     stateBaseClosed: bio
     stateDoorOpen: bio_open
     stateDoorClosed: bio_door
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonJanitorGear
 
 # Virology variant
 - type: entity
@@ -115,6 +127,8 @@
     stateBaseClosed: bio_viro
     stateDoorOpen: bio_viro_open
     stateDoorClosed: bio_viro_door
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonMedicalDoctorGear
 
 # Security variant
 - type: entity
@@ -126,6 +140,8 @@
     stateBaseClosed: bio_sec
     stateDoorOpen: bio_sec_open
     stateDoorClosed: bio_sec_door
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonSecurityOfficerGear
 
 # Janitor variant
 - type: entity
@@ -137,6 +153,8 @@
     stateBaseClosed: bio_jan
     stateDoorOpen: bio_jan_open
     stateDoorClosed: bio_jan_door
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonJanitorGear
 
 # Maintenance closet
 - type: entity

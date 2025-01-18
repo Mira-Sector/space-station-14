@@ -47,6 +47,8 @@
     node: done
     containers:
     - entity_storage
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonChefGear
 
 - type: entity
   parent: CratePlastic
@@ -57,6 +59,8 @@
     sprite: Structures/Storage/Crates/hydroponics.rsi
   - type: Sprite
     sprite: Structures/Storage/Crates/hydroponics.rsi
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonBotanistGear
 
 - type: entity
   parent: CratePlastic
@@ -67,6 +71,8 @@
     sprite: Structures/Storage/Crates/medical.rsi
   - type: Sprite
     sprite: Structures/Storage/Crates/medical.rsi
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonMedicalDoctorGear
 
 - type: entity
   parent: CrateGenericSteel
@@ -78,6 +84,8 @@
     sprite: Structures/Storage/Crates/radiation.rsi
   - type: Sprite
     sprite: Structures/Storage/Crates/radiation.rsi
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonEngineerGear
 
 - type: entity
   parent: CratePlastic
@@ -98,6 +106,8 @@
     sprite: Structures/Storage/Crates/electrical.rsi
   - type: Sprite
     sprite: Structures/Storage/Crates/electrical.rsi
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonEngineerGear
 
 - type: entity
   parent: CrateGenericSteel
@@ -108,6 +118,8 @@
     sprite: Structures/Storage/Crates/engineering.rsi
   - type: Sprite
     sprite: Structures/Storage/Crates/engineering.rsi
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonEngineerGear
 
 - type: entity
   parent: CrateGenericSteel
@@ -118,6 +130,8 @@
     sprite: Structures/Storage/Crates/science.rsi
   - type: Sprite
     sprite: Structures/Storage/Crates/science.rsi
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonScientistGear
 
 - type: entity
   parent: CrateGenericSteel
@@ -128,6 +142,8 @@
     sprite: Structures/Storage/Crates/surgery.rsi
   - type: Sprite
     sprite: Structures/Storage/Crates/surgery.rsi
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonMedicalDoctorGear
 
 - type: entity
   parent: CrateGeneric
@@ -186,6 +202,8 @@
     sprite: Structures/Storage/Crates/sec_gear.rsi
   - type: AccessReader
     access: [["Security"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonSecurityOfficerGear
 
 - type: entity
   parent: CrateBaseSecure
@@ -198,6 +216,8 @@
     sprite: Structures/Storage/Crates/engicrate_secure.rsi
   - type: AccessReader
     access: [["Engineering"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonEngineerGear
 
 - type: entity
   parent: CrateBaseSecure
@@ -210,6 +230,8 @@
     sprite: Structures/Storage/Crates/medicalcrate_secure.rsi
   - type: AccessReader
     access: [["Medical"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonMedicalDoctorGear
 
 - type: entity
   parent: CrateBaseSecure
@@ -222,6 +244,8 @@
       sprite: Structures/Storage/Crates/chemcrate_secure.rsi
     - type: AccessReader
       access: [["Chemistry"]]
+    - type: ClosetSkeletonLocker
+      equipment: SkeletonChemistGear
 
 - type: entity
   parent: CrateBaseSecure
@@ -244,6 +268,8 @@
     sprite: Structures/Storage/Crates/scicrate_secure.rsi
   - type: AccessReader
     access: [["Research"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonScientistGear
 
 - type: entity
   parent: CrateBaseSecure
@@ -256,6 +282,8 @@
     sprite: Structures/Storage/Crates/plasma.rsi
   - type: AccessReader
     access: [["Engineering"], ["Research"], ["Chemistry"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonScientistGear
 
 - type: entity
   parent: CrateBaseSecure
@@ -278,6 +306,8 @@
     sprite: Structures/Storage/Crates/hydro_secure.rsi
   - type: AccessReader
     access: [["Hydroponics"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonBotanistGear
 
 - type: entity
   parent: CrateBaseSecure
@@ -290,6 +320,8 @@
     sprite: Structures/Storage/Crates/weapon.rsi
   - type: AccessReader
     access: [["Armory"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonSecurityOfficerGear
 
 - type: entity
   parent: [ CrateBaseSecure, BaseRestrictedContraband ]
@@ -302,6 +334,8 @@
     sprite: Structures/Storage/Crates/sec_gear.rsi
   - type: AccessReader
     access: [["Armory"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonHoSGear
 
 - type: entity
   parent: CrateBaseSecure
@@ -314,6 +348,8 @@
     sprite: Structures/Storage/Crates/command.rsi
   - type: AccessReader
     access: [["Command"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonHoPGear
 
 - type: entity
   parent: CrateGeneric
@@ -371,6 +407,8 @@
     - entity_storage
   - type: StaticPrice
     price: 125
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonChefGear
 
 - type: entity
   parent: CrateGeneric
@@ -423,6 +461,8 @@
         - LargeMobLayer
   - type: StaticPrice
     price: 75
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonCaptainGear
 
 - type: entity
   parent: CrateGeneric
@@ -474,6 +514,8 @@
   - type: Icon
     sprite: Structures/Storage/Crates/toybox.rsi
     state: crate_icon
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonClownGear
 
 - type: entity
   parent: CrateGeneric
@@ -513,6 +555,8 @@
     node: cratecoffin
     containers:
     - entity_storage
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonChaplainGear
 
 - type: entity
   parent: CrateGeneric
@@ -614,6 +658,8 @@
       sprite: Structures/Storage/Crates/labels.rsi
       offset: "0.0,0.03125"
       map: ["enum.PaperLabelVisuals.Layer"]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonJanitorGear
 
 - type: entity
   parent: CrateBaseSecure
@@ -640,6 +686,8 @@
       map: ["enum.PaperLabelVisuals.Layer"]
   - type: AccessReader
     access: [["Janitor"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonJanitorGear
 
 - type: entity
   parent: CrateBaseWeldable

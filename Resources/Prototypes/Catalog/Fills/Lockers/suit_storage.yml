@@ -115,6 +115,8 @@
         - id: ClothingMaskBreath
   - type: AccessReader
     access: [["Engineering"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonEngineerGear
 
 #Atmospherics hardsuit
 - type: entity
@@ -129,6 +131,8 @@
         - id: ClothingMaskBreath
   - type: AccessReader
     access: [["Atmospherics"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonAtmosGear
 
 #Security hardsuit
 - type: entity
@@ -143,6 +147,8 @@
         - id: ClothingMaskBreath
   - type: AccessReader
     access: [["Security"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonSecurityOfficerGear
 
 #CE's hardsuit
 - type: entity
@@ -156,6 +162,8 @@
         tableId: FillChiefEngineerHardsuit
   - type: AccessReader
     access: [["ChiefEngineer"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonCEGear
 
 #CMO's hardsuit
 - type: entity
@@ -169,6 +177,8 @@
         tableId: FillChiefMedicalOfficerHardsuit
   - type: AccessReader
     access: [ [ "ChiefMedicalOfficer" ] ]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonCMOGear
 
 #RD's hardsuit
 - type: entity
@@ -182,6 +192,8 @@
         tableId: FillResearchDirectorHardsuit
   - type: AccessReader
     access: [ [ "ResearchDirector" ] ]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonRDGear
 
 #HOS's hardsuit
 - type: entity
@@ -195,6 +207,8 @@
         tableId: FillHeadOfSecurityHardsuit
   - type: AccessReader
     access: [["HeadOfSecurity"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonHoSGear
 
 #Warden's hardsuit
 - type: entity
@@ -209,6 +223,8 @@
         - id: ClothingMaskBreath
   - type: AccessReader
     access: [["Armory"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonWardenGear
 
 #Captain's hardsuit
 - type: entity
@@ -222,6 +238,8 @@
         tableId: FillCaptainHardsuit
   - type: AccessReader
     access: [["Captain"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonCaptainGear
 
 #Salvage hardsuit
 - type: entity
@@ -235,6 +253,8 @@
         tableId: FillSalvageSpecialistHardsuitSpatio
   - type: AccessReader
     access: [["Salvage"]]
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonSalvageGear
 
 #Blood-red hardsuit
 - type: entity

@@ -260,7 +260,7 @@ namespace Content.Server.Database
                 jobs,
                 (PreferenceUnavailableMode) profile.PreferenceUnavailable,
                 antags.ToHashSet(),
-                traits.ToHashSet(),
+                traits.ToList(),
                 loadouts
             );
         }

@@ -5,7 +5,10 @@
   name: trait-accentless-name
   description: trait-accentless-desc
   category: SpeechTraits
-  cost: 2
+  cost: -1
+  icon:
+    sprite: Interface/Traits/speech.rsi
+    state: accentless
   components:
   - type: Accentless
     removes:
@@ -22,6 +25,9 @@
   description: trait-southern-desc
   category: SpeechTraits
   cost: 1
+  icon:
+    sprite: Interface/Traits/speech.rsi
+    state: southern
   components:
   - type: SouthernAccent
 
@@ -31,6 +37,9 @@
   description: trait-pirate-accent-desc
   category: SpeechTraits
   cost: 1
+  icon:
+    sprite: Interface/Traits/speech.rsi
+    state: pirate
   components:
   - type: PirateAccent
 
@@ -40,6 +49,9 @@
   description: trait-cowboy-desc
   category: SpeechTraits
   cost: 1
+  icon:
+    sprite: Interface/Traits/speech.rsi
+    state: cowboy
   components:
   - type: ReplacementAccent
     accent: cowboy
@@ -50,6 +62,9 @@
   description: trait-german-desc
   category: SpeechTraits
   cost: 1
+  icon:
+    sprite: Interface/Traits/speech.rsi
+    state: german
   components:
   - type: GermanAccent
 
@@ -59,6 +74,9 @@
   description: trait-italian-desc
   category: SpeechTraits
   cost: 1
+  icon:
+    sprite: Interface/Traits/speech.rsi
+    state: italian
   components:
   - type: ReplacementAccent
     accent: italian
@@ -69,6 +87,9 @@
   description: trait-french-desc
   category: SpeechTraits
   cost: 1
+  icon:
+    sprite: Interface/Traits/speech.rsi
+    state: french
   components:
   - type: FrenchAccent
 
@@ -78,6 +99,9 @@
   description: trait-spanish-desc
   category: SpeechTraits
   cost: 1
+  icon:
+    sprite: Interface/Traits/speech.rsi
+    state: spanish
   components:
   - type: SpanishAccent
 
@@ -87,6 +111,9 @@
   description: trait-liar-desc
   category: SpeechTraits
   cost: 1
+  icon:
+    sprite: Interface/Traits/speech.rsi
+    state: liar
   components:
   - type: ReplacementAccent
     accent: liar
@@ -99,6 +126,9 @@
   description: trait-socialanxiety-desc
   category: SpeechTraits
   cost: 2
+  icon:
+    sprite: Interface/Traits/speech.rsi
+    state: stutter
   components:
   - type: StutteringAccent
     matchRandomProb: 0.1
@@ -112,5 +142,8 @@
   description: trait-frontal-lisp-desc
   category: SpeechTraits
   cost: 2
+  icon:
+    sprite: Interface/Traits/speech.rsi
+    state: lisp
   components:
   - type: FrontalLisp

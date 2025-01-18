@@ -3,6 +3,9 @@
   name: trait-pacifist-name
   description: trait-pacifist-desc
   category: Quirks
+  icon:
+    sprite: Interface/Traits/quirks.rsi
+    state: pacifist
   components:
   - type: Pacified
 
@@ -11,6 +14,9 @@
   name: trait-lightweight-name
   description: trait-lightweight-desc
   category: Quirks
+  icon:
+    sprite: Interface/Traits/quirks.rsi
+    state: drunk
   components:
   - type: LightweightDrunk
     boozeStrengthMultiplier: 2
@@ -20,5 +26,8 @@
   name: trait-snoring-name
   description: trait-snoring-desc
   category: Quirks
+  icon:
+    sprite: Interface/Traits/quirks.rsi
+    state: snoring
   components:
   - type: Snoring

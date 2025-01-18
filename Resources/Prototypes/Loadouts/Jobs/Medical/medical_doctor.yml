@@ -4,19 +4,9 @@
   effects:
   - !type:JobRequirementLoadoutEffect
     requirement:
-      !type:RoleTimeRequirement
-      role: JobChemist
-      time: 0
-  - !type:JobRequirementLoadoutEffect
-    requirement:
-      !type:RoleTimeRequirement
-      role: JobMedicalDoctor
-      time: 0
-  - !type:JobRequirementLoadoutEffect
-    requirement:
       !type:DepartmentTimeRequirement
       department: Medical
-      time: 0
+      time: 36000 #10 hrs
 
 # Other Timers
 

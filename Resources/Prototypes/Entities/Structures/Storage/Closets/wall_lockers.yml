@@ -92,6 +92,8 @@
     stateBaseClosed: generic
     stateDoorOpen: generic_open
     stateDoorClosed: orange_door
+  - type: ClosetSkeletonLocker
+    equipment: SkeletonPrisonerGear
 
 - type: entity
   id: ClosetWallYellow

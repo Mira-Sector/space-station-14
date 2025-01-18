@@ -4,19 +4,9 @@
   effects:
   - !type:JobRequirementLoadoutEffect
     requirement:
-      !type:RoleTimeRequirement
-      role: JobCargoTechnician
-      time: 0
-  - !type:JobRequirementLoadoutEffect
-    requirement:
-      !type:RoleTimeRequirement
-      role: JobSalvageSpecialist
-      time: 0
-  - !type:JobRequirementLoadoutEffect
-    requirement:
       !type:DepartmentTimeRequirement
       department: Cargo
-      time: 0
+      time: 36000 #10 hrs
 
 # Head
 - type: loadout
