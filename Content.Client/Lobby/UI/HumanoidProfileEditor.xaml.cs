@@ -482,7 +482,8 @@ namespace Content.Client.Lobby.UI
         {
             TraitsList.DisposeAllChildren();
 
-            var traits = _prototypeManager.EnumeratePrototypes<TraitPrototype>().OrderBy(t => Loc.GetString(t.Name)).ToList();
+            // need negative traits first as they give us points
+            var traits = _prototypeManager.EnumeratePrototypes<TraitPrototype>().OrderBy(c => c.Cost).OrderBy(t => Loc.GetString(t.Name)).ToList();
             TabContainer.SetTabTitle(3, Loc.GetString("humanoid-profile-editor-traits-tab"));
 
             if (traits.Count < 1)
@@ -523,6 +524,7 @@ namespace Content.Client.Lobby.UI
                 if (categoryId != TraitCategoryPrototype.Default)
                 {
                     category = _prototypeManager.Index<TraitCategoryPrototype>(categoryId);
+
                     // Label
                     TraitsList.AddChild(new Label
                     {
@@ -533,7 +535,7 @@ namespace Content.Client.Lobby.UI
                 }
 
                 List<TraitPreferenceSelector?> selectors = new();
-                var selectionCount = 0;
+                var points = category?.StartingPoints ?? 0;
 
                 foreach (var traitProto in categoryTraits)
                 {
@@ -542,7 +544,7 @@ namespace Content.Client.Lobby.UI
 
                     selector.Preference = Profile?.TraitPreferences.Contains(trait.ID) == true;
                     if (selector.Preference)
-                        selectionCount += trait.Cost;
+                        points -= trait.Cost;
 
                     selector.PreferenceChanged += preference =>
                     {
@@ -562,21 +564,18 @@ namespace Content.Client.Lobby.UI
                 }
 
                 // Selection counter
-                if (category is { MaxTraitPoints: >= 0 })
+                TraitsList.AddChild(new Label
                 {
-                    TraitsList.AddChild(new Label
-                    {
-                        Text = Loc.GetString("humanoid-profile-editor-trait-count-hint", ("current", selectionCount) ,("max", category.MaxTraitPoints)),
-                        FontColorOverride = Color.Gray
-                    });
-                }
+                    Text = Loc.GetString("humanoid-profile-editor-trait-count-hint", ("current", points)),
+                    FontColorOverride = Color.Gray
+                });
 
                 foreach (var selector in selectors)
                 {
                     if (selector == null)
                         continue;
 
-                    selector.Enabled = category is { MaxTraitPoints: >= 0 } && selector.Cost + selectionCount > category.MaxTraitPoints;
+                    selector.Enabled = points - selector.Cost < 0;
 
                     TraitsList.AddChild(selector);
                 }

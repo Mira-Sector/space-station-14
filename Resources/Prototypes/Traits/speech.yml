@@ -5,7 +5,7 @@
   name: trait-accentless-name
   description: trait-accentless-desc
   category: SpeechTraits
-  cost: 2
+  cost: -1
   icon:
     sprite: Interface/Traits/speech.rsi
     state: accentless

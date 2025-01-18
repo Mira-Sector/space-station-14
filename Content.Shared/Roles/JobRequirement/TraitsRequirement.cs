@@ -7,6 +7,7 @@ using JetBrains.Annotations;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
+using System.Linq;
 
 namespace Content.Shared.Roles;
 
@@ -18,7 +19,7 @@ namespace Content.Shared.Roles;
 public sealed partial class TraitsRequirement : JobRequirement
 {
     [DataField(required: true)]
-    public HashSet<ProtoId<TraitPrototype>> Traits = new();
+    public List<ProtoId<TraitPrototype>> Traits = new();
 
     public override bool Check(IEntityManager entManager,
         IPrototypeManager protoManager,
