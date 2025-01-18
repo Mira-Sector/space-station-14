@@ -147,3 +147,25 @@
     state: lisp
   components:
   - type: FrontalLisp
+
+# Positive
+
+- type: trait
+  id: Bilingual
+  name: trait-bilingual-name
+  description: trait-bilingual-desc
+  cost: 1
+  icon:
+    sprite: Interface/Traits/speech.rsi
+    state: bilingual
+  components:
+  - type: RandomSpeciesLanguage
+    spokenLanguages:
+    - Common
+    - Draconic
+    - Moffic
+    - Calcic
+    - Slime
+    - Monkey
+    - Buzzwords
+    - Binary
