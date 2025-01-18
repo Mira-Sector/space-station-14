@@ -483,7 +483,7 @@ namespace Content.Client.Lobby.UI
             TraitsList.DisposeAllChildren();
 
             // need negative traits first as they give us points
-            var traits = _prototypeManager.EnumeratePrototypes<TraitPrototype>().OrderBy(c => c.Cost).OrderBy(t => Loc.GetString(t.Name)).ToList();
+            var traits = _prototypeManager.EnumeratePrototypes<TraitPrototype>().OrderByDescending(c => c.Cost).ThenBy(t => Loc.GetString(t.Name)).ToList();
             TabContainer.SetTabTitle(3, Loc.GetString("humanoid-profile-editor-traits-tab"));
 
             if (traits.Count < 1)
