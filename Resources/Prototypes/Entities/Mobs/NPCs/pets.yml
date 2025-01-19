@@ -306,7 +306,7 @@
     makeSentient: true
     name: ghost-role-information-lordbingus-name
     description: ghost-role-information-lordbingus-description
-    rules: ghost-role-information-antagonist-rules
+    rules: ghost-role-information-freeagent-rules
   - type: HitscanBatteryAmmoProvider
     proto: RedLaser
     fireCost: 62.5
@@ -327,8 +327,8 @@
     implants:
     - MacroBombImplant
   - type: InteractionPopup
-    interactSuccessString: petting-success-bingus
-    interactFailureString: petting-failure-generic
+    interactSuccessString: petting-success-lordbingus
+    interactFailureString: petting-failure-lordbingus
 
 - type: entity
   name: McGriff
