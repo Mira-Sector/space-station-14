@@ -48,7 +48,10 @@ public sealed partial class TraitPrototype : IPrototype
     /// The components that get added to the player, when they pick this trait.
     /// </summary>
     [DataField]
-    public ComponentRegistry Components { get; private set; } = default!;
+    public ComponentRegistry? Components { get; private set; } = default!;
+
+    [DataField(serverOnly: true)]
+    public TraitSpecial[] Special { get; private set; } = Array.Empty<TraitSpecial>();
 
     /// <summary>
     /// Gear that is given to the player, when they pick this trait.

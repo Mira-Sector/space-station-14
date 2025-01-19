@@ -65,3 +65,6 @@ trait-spanish-desc = Hola señor, donde esta la biblioteca.
 
 trait-bilingual-name = Bilingual
 trait-bilingual-desc = You learned a random language. Maybe those mothic classes weren't that bad!
+
+trait-glowing-name = Glowing
+trait-glowing-desc = You glow in the dark.

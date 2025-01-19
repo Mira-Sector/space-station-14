@@ -2,6 +2,7 @@
   id: Pacifist
   name: trait-pacifist-name
   description: trait-pacifist-desc
+  cost: -3
   icon:
     sprite: Interface/Traits/quirks.rsi
     state: pacifist
@@ -28,3 +29,15 @@
     state: snoring
   components:
   - type: Snoring
+
+- type: trait
+  id: Glowing
+  name: trait-glowing-name
+  description: trait-glowing-desc
+  cost: 1
+  icon:
+    sprite: Interface/Traits/quirks.rsi
+    state: glowing
+  special:
+  - !type:AddImplantSpecial
+    implants: [ LightImplant ]
