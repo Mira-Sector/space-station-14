@@ -18,10 +18,10 @@ public sealed partial class RandomSpeciesLanguageSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<RandomSpeciesLanguageComponent, ComponentInit>(OnRandomInit);
+        SubscribeLocalEvent<RandomSpeciesLanguageComponent, ComponentStartup>((u, c, a) => OnRandomInit(u, c));
     }
 
-    private void OnRandomInit(EntityUid uid, RandomSpeciesLanguageComponent component, ComponentInit args)
+    private void OnRandomInit(EntityUid uid, RandomSpeciesLanguageComponent component)
     {
         EnsureComp<SpeciesLanguageComponent>(uid, out var languagesComp);
 
@@ -62,10 +62,16 @@ public sealed partial class RandomSpeciesLanguageSystem : EntitySystem
         }
 
         if (spokenLangauges.Count <= 0 && understoodLanguages.Count <= 0)
+        {
+            RemComp<RandomSpeciesLanguageComponent>(uid);
             return;
+        }
 
         if (!TryComp<ActorComponent>(uid, out var actor))
+        {
+            RemComp<RandomSpeciesLanguageComponent>(uid);
             return;
+        }
 
         SendMessage(Loc.GetString("chat-species-fluff-intro"), actor);
 
@@ -82,6 +88,8 @@ public sealed partial class RandomSpeciesLanguageSystem : EntitySystem
             SendMessage(Loc.GetString("chat-species-fluff-understood"), actor);
             SendLanguages(understoodLanguages.ToList(), actor);
         }
+
+        RemComp<RandomSpeciesLanguageComponent>(uid);
 
         void SendLanguages(List<string> languages, ActorComponent actor)
         {

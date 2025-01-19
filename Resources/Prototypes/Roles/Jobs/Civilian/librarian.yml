@@ -12,7 +12,7 @@
   special:
   - !type:AddComponentSpecial
     components:
-    - type: RandomSpeciesLanguage
+    - type: SpeciesLanguage
       spokenLanguages:
         - Common
         - Draconic
