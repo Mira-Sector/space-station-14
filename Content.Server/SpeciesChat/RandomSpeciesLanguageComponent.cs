@@ -1,20 +1,20 @@
+using Content.Shared.SpeciesChat;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Set;
 
-namespace Content.Shared.SpeciesChat;
+namespace Content.Server.SpeciesChat;
 
 [RegisterComponent]
-public sealed partial class SpeciesLanguageComponent : Component
+public sealed partial class RandomSpeciesLanguageComponent : Component
 {
-    /// <summary>
-    /// Every language they can speak for others to hear if they can understand the language
-    /// </summary>
     [DataField(customTypeSerializer: typeof(PrototypeIdHashSetSerializer<SpeciesChannelPrototype>))]
     public HashSet<string> SpokenLanguages = new();
 
-    /// <summary>
-    /// Can hear these languages
-    /// If unset uses every language they can speak instead
-    /// </summary>
+    [DataField]
+    public uint SpokenLanguagesAmount = 1;
+
     [DataField(customTypeSerializer: typeof(PrototypeIdHashSetSerializer<SpeciesChannelPrototype>))]
     public HashSet<string> UnderstoodLanguages = new();
+
+    [DataField]
+    public uint UnderstoodLanguagesAmount = 1;
 }

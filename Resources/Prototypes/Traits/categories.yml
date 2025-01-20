@@ -1,12 +1,4 @@
 - type: traitCategory
-  id: Disabilities
-  name: trait-category-disabilities
-
-- type: traitCategory
   id: SpeechTraits
   name: trait-category-speech
   startingPoints: 2
-
-- type: traitCategory
-  id: Quirks
-  name: trait-category-quirks

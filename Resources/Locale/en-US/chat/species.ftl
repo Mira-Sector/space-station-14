@@ -1,3 +1,7 @@
+chat-species-fluff-intro = You've attended some classes off shift.
+chat-species-fluff-spoken = You can speak:
+chat-species-fluff-understood = You can hear others speak:
+
 chat-species-common = Galactic Common
 chat-species-draconic = Draconic
 chat-species-moffic = Moffic

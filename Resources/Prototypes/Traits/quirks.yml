@@ -2,7 +2,7 @@
   id: Pacifist
   name: trait-pacifist-name
   description: trait-pacifist-desc
-  category: Quirks
+  cost: -3
   icon:
     sprite: Interface/Traits/quirks.rsi
     state: pacifist
@@ -13,7 +13,6 @@
   id: LightweightDrunk
   name: trait-lightweight-name
   description: trait-lightweight-desc
-  category: Quirks
   icon:
     sprite: Interface/Traits/quirks.rsi
     state: drunk
@@ -25,9 +24,20 @@
   id: Snoring
   name: trait-snoring-name
   description: trait-snoring-desc
-  category: Quirks
   icon:
     sprite: Interface/Traits/quirks.rsi
     state: snoring
   components:
   - type: Snoring
+
+- type: trait
+  id: Glowing
+  name: trait-glowing-name
+  description: trait-glowing-desc
+  cost: 1
+  icon:
+    sprite: Interface/Traits/quirks.rsi
+    state: glowing
+  special:
+  - !type:AddImplantSpecial
+    implants: [ LightImplant ]
