@@ -6,6 +6,7 @@ petting-success-generic = You pet {THE($target)} on {POSS-ADJ($target)} head.
 petting-success-soft-floofy = You pet {THE($target)} on {POSS-ADJ($target)} soft floofy head.
 
 petting-success-bingus = You pet {THE($target)} on {POSS-ADJ($target)} wrinkly little head.
+petting-success-lordbingus = You pet {THE($target)} on {POSS-ADJ($target)} huge wrinkly reagal head.
 petting-success-bird = You pet {THE($target)} on {POSS-ADJ($target)} cute feathery head.
 petting-success-carp = You pet {THE($target)} on {POSS-ADJ($target)} fishy little head.
 petting-success-cat = You pet {THE($target)} on {POSS-ADJ($target)} fuzzy little head.
@@ -53,6 +54,7 @@ petting-failure-bear = You reach out to pet {THE($target)}, but {SUBJECT($target
 petting-failure-monkey = You reach out to pet {THE($target)}, but {SUBJECT($target)} almost {CONJUGATE-BASIC($target, "bite", "bites")} your fingers!
 petting-failure-nymph = You reach out to pet {THE($target)}, but {SUBJECT($target)} {CONJUGATE-BASIC($target, "move", "moves")} {POSS-ADJ($target)} branches away.
 petting-failure-shadow = You try to pet {THE($target)}, but your hand passes through the cold darkness of {POSS-ADJ($target)} body.
+petting-failure-lordbingus = You try to pet {THE($target)}, but Lord Bingus dissmissis you deeming you unworthy.
 
 ## Petting silicons
 
