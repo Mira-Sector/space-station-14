@@ -375,6 +375,17 @@
       path: /Audio/Weapons/Guns/Gunshots/laser_cannon2.ogg
       params:
         variation: 0.175
+  - type: MeleeWeapon
+    soundHit:
+        path: /Audio/Effects/bite.ogg
+        params:
+          variation: 0.1
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Slash: 10
+        Structural: 15
   - type: AutoImplant
     implants:
     - MacroBombImplant
