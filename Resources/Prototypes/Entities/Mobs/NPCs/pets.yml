@@ -212,10 +212,9 @@
     - VimPilot
 
 - type: entity
-  name: Bingus
   parent: [SimpleMobBase, StripableInventoryBase]
-  id: MobBingus
-  description: Bingus my beloved...
+  id: BaseBingus
+  abstract: true
   components:
   - type: Sprite
     drawdepth: Mobs
@@ -240,14 +239,14 @@
     footprintPrototypeAlternative: Footprint4LegsRight
   - type: Residue
     residueAge:
-    - ageLocId: footprint-paw-fresh
-      ageThrestholdMin: 0
-    - ageLocId: footprint-paw-mild
-      ageThrestholdMin: 5
-    - ageLocId: footprint-paw-old
-      ageThrestholdMin: 10
-    - ageLocId: footprint-paw-ancient
-      ageThrestholdMin: 20
+      - ageLocId: footprint-paw-fresh
+        ageThrestholdMin: 0
+      - ageLocId: footprint-paw-mild
+        ageThrestholdMin: 5
+      - ageLocId: footprint-paw-old
+        ageThrestholdMin: 10
+      - ageLocId: footprint-paw-ancient
+        ageThrestholdMin: 20
   - type: Inventory
     speciesId: cat
     templateId: pet
@@ -274,6 +273,14 @@
     attributes:
       proper: true
       gender: epicene
+  
+
+- type: entity
+  name: Bingus
+  parent: BaseBingus
+  id: MobBingus
+  description: Bingus my beloved...
+  components:
   - type: Tag
     tags:
     - CannotSuicide
@@ -281,26 +288,68 @@
   - type: StealTarget
     stealGroup: AnimalNamedCat
 
-
 - type: entity
   name: Lord Bingus
-  parent: MobBingus
+  parent: BaseBingus
   id: MobLordBingus
   description: All hail lord Bingus for all gose to plan...
   components:
   - type: Sprite
-    sprite: Mobs/Pets/bingus.rsi
+    sprite: Mobs/Pets/lordbingus.rsi
     layers:
     - map: ["enum.DamageStateVisualLayers.Base"]
-      state: bingus
+      state: lordbingus
   - type: DamageStateVisuals
     states:
       Alive:
-        Base: bingus
+        Base: lordbingus
       Critical:
-        Base: bingus_dead
+        Base: lord_bingus_dead
       Dead:
-        Base: bingus_dead
+        Base: lord_bingus_dead
+  - type: Tag
+    tags:
+    - CannotSuicide
+    - VimPilot
+  - type: StealTarget
+    stealGroup: AnimalNamedCat
+  - type: InteractionPopup
+    interactSuccessString: petting-success-lordbingus
+    interactFailureString: petting-failure-lordbingus
+
+
+- type: entity
+  name: Lord Bingus
+  suffix: admeme
+  parent: BaseBingus
+  id: MobLordBingusAdmeme
+  description: All hail lord Bingus for all gose to plan...
+  components:
+  - type: Sprite
+    scale: 2,2
+    sprite: Mobs/Pets/lordbingus.rsi
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      state: lordbingus
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: lordbingus
+      Critical:
+        Base: lord_bingus_dead
+      Dead:
+        Base: lord_bingus_dead
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.70
+        density: 20
+        mask:
+          - MobMask
+        layer:
+          - MobLayer
   - type: GhostRole
     allowMovement: true
     makeSentient: true
@@ -308,21 +357,24 @@
     description: ghost-role-information-lordbingus-description
     rules: ghost-role-information-freeagent-rules
   - type: HitscanBatteryAmmoProvider
-    proto: RedLaser
-    fireCost: 62.5
+    proto: RedHeavyLaser
+    fireCost: 100
   - type: Battery
     maxCharge: 1000
     startingCharge: 1000
   - type: BatterySelfRecharger
     autoRecharge: true
-    autoRechargeRate: 40
+    autoRechargeRate: 30
   - type: Gun
-    fireRate: 0.75
+    fireRate: 0.6
     useKey: false
     selectedMode: SemiAuto
     availableModes:
       - SemiAuto
-    soundGunshot: /Audio/Weapons/Guns/Gunshots/laser_clown.ogg
+    soundGunshot: 
+      path: /Audio/Weapons/Guns/Gunshots/laser_cannon2.ogg
+      params:
+        variation: 0.175
   - type: AutoImplant
     implants:
     - MacroBombImplant
