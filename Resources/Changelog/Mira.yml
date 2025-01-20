@@ -1131,3 +1131,9 @@ Entries:
     type: Add
   id: 167
   time: '2025-01-18T16:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Round start cyborgs get a positronic brain again
+    type: Fix
+  id: 168
+  time: '2025-01-20T13:15:00.0000000+00:00'
