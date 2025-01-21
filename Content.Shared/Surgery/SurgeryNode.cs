@@ -20,4 +20,5 @@ public class SurgeryNode
     /// </summary>
     [DataField]
     public SurgerySpecial[] Special { get; set; } = Array.Empty<SurgerySpecial>();
+
 }
