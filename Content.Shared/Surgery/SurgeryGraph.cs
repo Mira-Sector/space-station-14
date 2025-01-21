@@ -1,6 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Content.Shared.Surgery;
 
-[Virtual, DataDefinition]
+[DataDefinition, Serializable]
 public partial class SurgeryGraph
 {
     public const string StartingNode = "start";
@@ -10,4 +12,26 @@ public partial class SurgeryGraph
     /// </summary>
     [DataField]
     public List<SurgeryNode> Nodes { get; set; } = new();
+
+    public bool TryFindNode(string nodeId, [NotNullWhen(true)] out SurgeryNode? targetNode)
+    {
+        targetNode = null;
+
+        foreach (var node in Nodes)
+        {
+            if (node.ID != nodeId)
+                continue;
+
+            targetNode = node;
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool TryGetStaringNode(SurgeryGraph graph, [NotNullWhen(true)] out SurgeryNode? start)
+    {
+        return TryFindNode(SurgeryGraph.StartingNode, out start);
+    }
+
 }

@@ -16,6 +16,6 @@ public sealed partial class SurgerySystem
             return;
 
         EnsureComp<SurgeryRecieverBodyComponent>(body, out var surgeryBodyComp);
-        surgeryBodyComp.Limbs.Add(uid, component);
+        surgeryBodyComp.Limbs.Add(uid);
     }
 }

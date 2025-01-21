@@ -12,5 +12,5 @@ namespace Content.Shared.Surgery.Components;
 public sealed partial class SurgeryRecieverBodyComponent : Component
 {
     [ViewVariables, AutoNetworkedField]
-    public Dictionary<EntityUid, SurgeryRecieverComponent> Limbs = new();
+    public HashSet<EntityUid> Limbs = new();
 }
