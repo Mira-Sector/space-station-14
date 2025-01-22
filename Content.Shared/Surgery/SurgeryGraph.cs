@@ -19,7 +19,7 @@ public partial class SurgeryGraph
 
         foreach (var node in Nodes)
         {
-            if (node.ID != nodeId)
+            if (node.Id != nodeId)
                 continue;
 
             targetNode = node;
@@ -29,9 +29,8 @@ public partial class SurgeryGraph
         return false;
     }
 
-    public bool TryGetStaringNode(SurgeryGraph graph, [NotNullWhen(true)] out SurgeryNode? start)
+    public bool TryGetStaringNode([NotNullWhen(true)] out SurgeryNode? start)
     {
         return TryFindNode(SurgeryGraph.StartingNode, out start);
     }
-
 }

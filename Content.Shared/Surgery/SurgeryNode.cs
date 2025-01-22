@@ -4,7 +4,7 @@ namespace Content.Shared.Surgery;
 public partial class SurgeryNode
 {
     [DataField]
-    public string? ID { get; protected set; } = default!;
+    public string? Id { get; protected set; } = default!;
 
     /// <summary>
     /// Edges this node has to other nodes.
