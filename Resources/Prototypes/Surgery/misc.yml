@@ -1,0 +1,24 @@
+- type: surgery
+  id: test
+  nodes:
+  - id: start
+    edges:
+    - connection: node1
+      requirements:
+      - !type:ToolRequirement
+        tool: Sawing
+    - connection: node2
+      requirements:
+      - !type:ToolRequirement
+        tool: Cutting
+  - id: node1
+    special:
+    - !type:AddComponentLimb
+      components:
+      - type: Dna
+  - id: node1
+    edges:
+    - connection: start
+      requirements:
+      - !type:ToolRequirement
+        tool: Sawing

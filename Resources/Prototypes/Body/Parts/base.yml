@@ -33,6 +33,9 @@
       0: Healthy
       15: Damaged
       100: Dead
+  - type: SurgeryReciever
+    availableSurgeries:
+    - test
 
 - type: entity
   id: BaseHead
