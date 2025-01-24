@@ -13,4 +13,5 @@ public sealed partial class SurgeryRecieverBodyComponent : Component
 {
     [ViewVariables, AutoNetworkedField]
     public HashSet<EntityUid> Limbs = new();
+
 }

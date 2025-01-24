@@ -140,8 +140,14 @@ public partial class SharedBodySystem
         var prototype = Prototypes.Index(component.Prototype.Value);
         MapInitBody(uid, prototype);
 
-        var ev = new BodyInitEvent(component);
-        RaiseLocalEvent(uid, ev);
+        var bodyEv = new BodyInitEvent(component);
+        RaiseLocalEvent(uid, bodyEv);
+
+        foreach (var (partUid, partComp) in GetBodyChildren(uid, component))
+        {
+            var limbEv= new LimbInitEvent(partComp);
+            RaiseLocalEvent(partUid, limbEv);
+        }
     }
 
     private void MapInitBody(EntityUid bodyEntity, BodyPrototype prototype)

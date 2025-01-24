@@ -17,4 +17,7 @@ public sealed partial class SurgeryRecieverComponent : Component
     /// </summary>
     [ViewVariables, AutoNetworkedField]
     public SurgeryGraph Graph = new();
+
+    [ViewVariables]
+    public SurgeryNode? CurrentNode;
 }

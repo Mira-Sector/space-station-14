@@ -14,4 +14,8 @@ public sealed partial class AddComponentLimb : SurgerySpecial
         var entMan = IoCManager.Resolve<IEntityManager>();
         entMan.AddComponents(limb, Components);
     }
+
+    public override void NodeLeft(EntityUid body, EntityUid limb)
+    {
+    }
 }
