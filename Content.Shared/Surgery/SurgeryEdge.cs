@@ -1,6 +1,8 @@
+using Robust.Shared.Serialization;
+
 namespace Content.Shared.Surgery;
 
-[DataDefinition, Serializable]
+[DataDefinition, Serializable, NetSerializable]
 public partial class SurgeryEdge
 {
     /// <summary>

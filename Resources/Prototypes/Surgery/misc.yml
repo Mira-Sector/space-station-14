@@ -6,11 +6,13 @@
     - connection: node1
       requirements:
       - !type:ToolRequirement
-        tool: Sawing
+        qualities:
+        - Sawing
     - connection: node2
       requirements:
       - !type:ToolRequirement
-        tool: Cutting
+        qualities:
+        - Cutting
   - id: node1
     special:
     - !type:AddComponentLimb
@@ -21,4 +23,5 @@
     - connection: start
       requirements:
       - !type:ToolRequirement
-        tool: Sawing
+        qualities:
+        - Sawing

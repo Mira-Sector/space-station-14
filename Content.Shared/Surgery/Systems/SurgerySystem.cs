@@ -1,15 +1,18 @@
 using Content.Shared.Body.Events;
 using Content.Shared.Body.Part;
 using Content.Shared.Damage.DamageSelector;
+using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
-using Robust.Shared.Prototypes;
 using Content.Shared.Surgery.Components;
+using Robust.Shared.Prototypes;
+using System.Linq;
 
 namespace Content.Shared.Surgery.Systems;
 
 public sealed partial class SurgerySystem : EntitySystem
 {
     [Dependency] private readonly IPrototypeManager _prototype = default!;
+    [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
 
     public override void Initialize()
     {
@@ -18,6 +21,8 @@ public sealed partial class SurgerySystem : EntitySystem
         SubscribeLocalEvent<SurgeryRecieverComponent, LimbInitEvent>(OnLimbInit);
         SubscribeLocalEvent<SurgeryRecieverComponent, InteractUsingEvent>(OnLimbInteract);
         SubscribeLocalEvent<SurgeryRecieverBodyComponent, InteractUsingEvent>(OnBodyInteract);
+
+        SubscribeLocalEvent<SurgeryRecieverComponent, SurgeryDoAfterEvent>(OnDoAfter);
     }
 
     private void OnLimbInit(EntityUid uid, SurgeryRecieverComponent component, LimbInitEvent args)
@@ -64,6 +69,23 @@ public sealed partial class SurgerySystem : EntitySystem
         }
     }
 
+    private void OnDoAfter(EntityUid uid, SurgeryRecieverComponent component, SurgeryDoAfterEvent args)
+    {
+        if (args.Cancelled || args.Handled)
+            return;
+
+        if (!TryComp<BodyPartComponent>(uid, out var bodyPartComp) || bodyPartComp.Body is not {} body)
+            return;
+
+        args.Handled = true;
+
+        DoNodeLeftSpecials(component.CurrentNode?.Special, body, uid);
+        component.CurrentNode = args.TargetEdge.Connection;
+        DoNodeReachedSpecials(component.CurrentNode?.Special, body, uid);
+
+        component.DoAfters.Remove(args.DoAfter.Id);
+    }
+
     public bool TryTraverseGraph(EntityUid uid, SurgeryRecieverComponent surgery, EntityUid body, EntityUid user, EntityUid used)
     {
         if (surgery.CurrentNode == null && !surgery.Graph.TryGetStaringNode(out surgery.CurrentNode))
@@ -71,7 +93,7 @@ public sealed partial class SurgerySystem : EntitySystem
 
         foreach (var edge in surgery.CurrentNode.Edges)
         {
-            // when merging the graph we make sure there arent multiple edges to traverse
+            // when merging the graph we made sure there arent multiple edges to traverse
             if (TryEdge(uid, surgery, edge, body, user, used))
                 return true;
         }
@@ -81,17 +103,29 @@ public sealed partial class SurgerySystem : EntitySystem
 
     public bool TryEdge(EntityUid uid, SurgeryRecieverComponent surgery, SurgeryEdge edge, EntityUid body, EntityUid user, EntityUid used)
     {
-        if (!RequirementsPassed(uid, surgery, edge, body, user, used))
+        var requirementsPassed = RequirementsPassed(uid, edge, body, user, used);
+
+        if (requirementsPassed == SurgeryEdgeState.Failed)
             return false;
+
+        foreach (var doAfter in surgery.DoAfters)
+        {
+            _doAfter.Cancel(doAfter);
+        }
+
+        surgery.DoAfters.Clear();
+
+        if (requirementsPassed == SurgeryEdgeState.DoAfter)
+            return TryStartDoAfters(uid, surgery, edge, body, user, used);
 
         DoNodeLeftSpecials(surgery.CurrentNode?.Special, body, uid);
         surgery.CurrentNode = edge.Connection;
-        DotNodeReachedSpecials(surgery.CurrentNode?.Special, body, uid);
+        DoNodeReachedSpecials(surgery.CurrentNode?.Special, body, uid);
 
         return true;
     }
 
-    private void DotNodeReachedSpecials(SurgerySpecial[]? specials, EntityUid body, EntityUid limb)
+    private void DoNodeReachedSpecials(SurgerySpecial[]? specials, EntityUid body, EntityUid limb)
     {
         if (specials == null)
             return;
@@ -113,13 +147,59 @@ public sealed partial class SurgerySystem : EntitySystem
         }
     }
 
-    public bool RequirementsPassed(EntityUid uid, SurgeryRecieverComponent surgery, SurgeryEdge edge, EntityUid body, EntityUid user, EntityUid used)
+    public SurgeryEdgeState RequirementsPassed(EntityUid uid, SurgeryEdge edge, EntityUid body, EntityUid user, EntityUid? used)
     {
+        var doAfters = 0;
+        var directPassed = false;
+
         foreach (var requirement in edge.Requirements)
         {
-            if (!requirement.RequirementMet(body, uid, user, used))
-                return false;
+            switch (requirement.RequirementMet(body, uid, user, used))
+            {
+                case SurgeryEdgeState.Failed:
+                {
+                    return SurgeryEdgeState.Failed;
+                }
+                case SurgeryEdgeState.DoAfter:
+                {
+                    doAfters++;
+                    break;
+                }
+                case SurgeryEdgeState.Passed:
+                {
+                    directPassed = true;
+                    break;
+                }
+            }
         }
+
+        // we need to know if there is a fallback incase all doafters fail
+        if (directPassed)
+            return SurgeryEdgeState.Passed;
+
+        if (doAfters >= 0)
+            return SurgeryEdgeState.DoAfter;
+
+        return SurgeryEdgeState.Failed;
+    }
+
+    private bool TryStartDoAfters(EntityUid uid, SurgeryRecieverComponent surgery, SurgeryEdge edge, EntityUid body, EntityUid user, EntityUid used)
+    {
+        var failedDoAfters = 0;
+
+        foreach (var requirement in edge.Requirements)
+        {
+            if (!requirement.StartDoAfter(_doAfter, edge, body, uid, user, used, out var doAfter))
+            {
+                failedDoAfters++;
+                continue;
+            }
+
+            surgery.DoAfters.Add(doAfter.Value);
+        }
+
+        if (failedDoAfters >= edge.Requirements.Count())
+            return false;
 
         return true;
     }

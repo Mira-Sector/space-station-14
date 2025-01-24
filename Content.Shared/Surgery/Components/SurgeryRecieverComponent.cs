@@ -1,3 +1,4 @@
+using Content.Shared.DoAfter;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
@@ -20,4 +21,10 @@ public sealed partial class SurgeryRecieverComponent : Component
 
     [ViewVariables]
     public SurgeryNode? CurrentNode;
+
+    /// <summary>
+    /// Keep track of doafters as they will need to be cancelled when we change node
+    /// </summary>
+    [ViewVariables]
+    public HashSet<DoAfterId> DoAfters = new();
 }
