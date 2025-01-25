@@ -36,7 +36,9 @@ public sealed partial class SurgerySystem
 
         if (!mergedGraph.TryGetStaringNode(out var mergedStartingNode))
         {
-            mergedGraph.Nodes.Add(targetStartingNode);
+            var startingNodeId = mergedGraph.GetNextId();
+            mergedGraph.Nodes.Add(startingNodeId, targetStartingNode);
+            mergedGraph.StartingNode = startingNodeId;
             mergedStartingNode = targetStartingNode;
         }
 
@@ -80,7 +82,7 @@ public sealed partial class SurgerySystem
                     }
 
                     //diverting edge
-                    if (TryFindMatchingNode(targetEdgeNode, mergedGraph.Nodes, out var matchingNode))
+                    if (TryFindMatchingNode(targetEdgeNode, mergedGraph.Nodes.Values.ToList(), out var matchingNode))
                     {
                         if (targetEdge.Connection != null)
                             targetNodes.Push(targetEdgeNode);
@@ -92,7 +94,7 @@ public sealed partial class SurgerySystem
                         SurgeryNode newNode = new();
                         newNode.Edges.Add(targetEdge);
                         newNode.Special.Union(targetNode.Special);
-                        mergedGraph.Nodes.Add(newNode);
+                        mergedGraph.Nodes.Add(mergedGraph.GetNextId(), newNode);
 
                         ExtendGraph(targetEdgeNode, newNode, targetGraph, mergedGraph);
                     }
@@ -112,6 +114,8 @@ public sealed partial class SurgerySystem
         Stack<(SurgeryNode TargetNode, SurgeryNode MergedNode)> stack = new();
         stack.Push((currentTargetNode, currentMergedNode));
 
+        Stack<(SurgeryEdge Edge, SurgeryNode? Connection)> connections = new();
+
         while (stack.TryPop(out var pair))
         {
             var targetNode = pair.TargetNode;
@@ -125,13 +129,16 @@ public sealed partial class SurgerySystem
                 if (!targetGraph.TryFindNode(edge.Connection, out var edgeConnection))
                     continue;
 
-                if (TryFindMatchingNode(edgeConnection, mergedGraph.Nodes, out var matchingNode))
+                if (TryFindMatchingNode(edgeConnection, mergedGraph.Nodes.Values.ToList(), out var matchingNode))
                 {
-                    mergedNode.Edges.Add(new SurgeryEdge
+                    var newEdge = new SurgeryEdge
                     {
-                        Connection = matchingNode.GetHashCode(),
                         Requirement = edge.Requirement
-                    });
+                    };
+
+                    mergedNode.Edges.Add(newEdge);
+
+                    connections.Push((newEdge, matchingNode));
                 }
                 else if (edge.Connection != null)
                 {
@@ -140,17 +147,30 @@ public sealed partial class SurgerySystem
                         Special = MergeSpecialArrays(mergedNode.Special, edgeConnection.Special),
                     };
 
-                    newMergedNode.Edges.Add(new SurgeryEdge
+                    var newEdge = new SurgeryEdge
                     {
-                        Connection = newMergedNode.GetHashCode(),
                         Requirement = edge.Requirement
-                    });
+                    };
 
-                    mergedGraph.Nodes.Add(newMergedNode);
+                    newMergedNode.Edges.Add(newEdge);
+                    connections.Push((newEdge, newMergedNode));
+
+                    mergedGraph.Nodes.Add(mergedGraph.GetNextId(), newMergedNode);
 
                     stack.Push((edgeConnection, newMergedNode));
                 }
             }
+        }
+
+        while (connections.TryPop(out var pair))
+        {
+            var edge = pair.Edge;
+            var connection = pair.Connection;
+
+            if (!mergedGraph.TryFindNodeId(connection, out var connectionId))
+                continue;
+
+            edge.Connection = connectionId;
         }
     }
 

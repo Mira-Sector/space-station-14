@@ -1,5 +1,6 @@
 - type: surgery
   id: test
+  startingNode: start
   nodes:
   - id: start
     edges:

@@ -5,21 +5,41 @@ namespace Content.Shared.Surgery;
 [DataDefinition, Serializable]
 public partial class SurgeryGraph
 {
-    public const string StartingNode = "start";
+    [DataField("nodes")]
+    public List<SurgeryNode> _nodes { get; set; } = new();
 
     /// <summary>
     /// List of nodes this graph contains
     /// </summary>
-    [DataField]
-    public List<SurgeryNode> Nodes { get; set; } = new();
+    [ViewVariables]
+    public Dictionary<int, SurgeryNode> Nodes { get; set; } = new();
 
-    public bool TryFindNode(int? hashCode, [NotNullWhen(true)] out SurgeryNode? targetNode)
+    [DataField("startingNode", required:true)]
+    public string _startingNode = default!;
+
+    [ViewVariables]
+    public int StartingNode;
+
+    public int GetNextId()
+    {
+        var largest = 0;
+
+        foreach (var (id, _) in Nodes)
+        {
+            if (id > largest)
+                largest = id;
+        }
+
+        return largest + 1;
+    }
+
+    public bool TryFindNode(int? targetId, [NotNullWhen(true)] out SurgeryNode? targetNode)
     {
         targetNode = null;
 
-        foreach (var node in Nodes)
+        foreach (var (nodeId, node) in Nodes)
         {
-            if (node.GetHashCode() != hashCode)
+            if (nodeId != targetId)
                 continue;
 
             targetNode = node;
@@ -29,11 +49,27 @@ public partial class SurgeryGraph
         return false;
     }
 
+    public bool TryFindNodeId(SurgeryNode? targetNode, [NotNullWhen(true)] out int? targetNodeId)
+    {
+        targetNodeId = null;
+
+        foreach (var (nodeId, node) in Nodes)
+        {
+            if (node == targetNode)
+            {
+                targetNodeId = nodeId;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public bool TryFindNode(string nodeId, [NotNullWhen(true)] out SurgeryNode? targetNode)
     {
         targetNode = null;
 
-        foreach (var node in Nodes)
+        foreach (var node in _nodes)
         {
             if (node.Id != nodeId)
                 continue;
@@ -47,6 +83,6 @@ public partial class SurgeryGraph
 
     public bool TryGetStaringNode([NotNullWhen(true)] out SurgeryNode? start)
     {
-        return TryFindNode(SurgeryGraph.StartingNode, out start);
+        return TryFindNode(StartingNode, out start);
     }
 }
