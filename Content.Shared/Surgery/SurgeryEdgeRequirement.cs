@@ -13,6 +13,8 @@ public abstract partial class SurgeryEdgeRequirement
     public abstract SurgeryEdgeState RequirementMet(EntityUid body, EntityUid limb, EntityUid user, EntityUid? tool);
 
     public abstract bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge ,EntityUid body, EntityUid limb, EntityUid user, EntityUid? tool, [NotNullWhen(true)] out DoAfterId? doAfterId);
+
+    public abstract bool RequirementsMatch(SurgeryEdgeRequirement other, [NotNullWhen(true)] out SurgeryEdgeRequirement? merged);
 }
 
 [Serializable, NetSerializable]

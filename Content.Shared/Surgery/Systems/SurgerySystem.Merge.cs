@@ -61,7 +61,7 @@ public sealed partial class SurgerySystem
             {
                 foreach (var mergedEdge in mergedNode.Edges)
                 {
-                    if (RequirementsMatch(targetEdge.Requirements, mergedEdge.Requirements))
+                    if (mergedEdge.Requirement.RequirementsMatch(targetEdge.Requirement, out var newRequirement))
                     {
                         if (targetEdge.Connection != null)
                             targetNodes.Push(targetEdge.Connection);
@@ -69,6 +69,7 @@ public sealed partial class SurgerySystem
                         if (mergedEdge.Connection != null)
                             mergedNodes.Push(mergedEdge.Connection);
 
+                        mergedEdge.Requirement = newRequirement;
                         continue;
                     }
 
@@ -121,7 +122,7 @@ public sealed partial class SurgerySystem
                     mergedNode.Edges.Add(new SurgeryEdge
                     {
                         Connection = matchingNode,
-                        Requirements = edge.Requirements
+                        Requirement = edge.Requirement
                     });
                 }
                 else if (edge.Connection != null)
@@ -135,7 +136,7 @@ public sealed partial class SurgerySystem
                     newMergedNode.Edges.Add(new SurgeryEdge
                     {
                         Connection = newMergedNode,
-                        Requirements = edge.Requirements
+                        Requirement = edge.Requirement
                     });
 
                     mergedGraph.Nodes.Add(newMergedNode);
@@ -149,17 +150,6 @@ public sealed partial class SurgerySystem
     private static SurgerySpecial[] MergeSpecialArrays(SurgerySpecial[] array1, SurgerySpecial[] array2)
     {
         return array1.Concat(array2).Distinct().ToArray();
-    }
-
-    private bool RequirementsMatch(SurgeryEdgeRequirement[] requirements1, SurgeryEdgeRequirement[] requirements2)
-    {
-        foreach (var requirement1 in requirements1)
-        {
-            if (!requirements2.Contains(requirement1))
-                return false;
-        }
-
-        return true;
     }
 
     private bool TryFindMatchingNode(SurgeryNode? targetNode, List<SurgeryNode> nodes, [NotNullWhen(true)] out SurgeryNode? matchingNode)
@@ -179,7 +169,7 @@ public sealed partial class SurgerySystem
 
                 foreach (var nodeEdge in node.Edges)
                 {
-                    if (!RequirementsMatch(targetEdge.Requirements, nodeEdge.Requirements))
+                    if (!nodeEdge.Requirement.RequirementsMatch(targetEdge.Requirement, out _))
                     {
                         edgeFailed = true;
                         break;

@@ -45,4 +45,31 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
 
         return toolSystem.UseTool(tool.Value, user, limb, Delay, Qualities, new SurgeryDoAfterEvent(targetEdge), out doAfterId);
     }
+
+    public override bool RequirementsMatch(SurgeryEdgeRequirement other, [NotNullWhen(true)] out SurgeryEdgeRequirement? merged)
+    {
+        merged = null;
+
+        if (other is not ToolRequirement otherTool)
+            return false;
+
+        if (Qualities != otherTool.Qualities)
+            return false;
+
+        merged = new ToolRequirement()
+        {
+            Qualities = Qualities,
+            Delay = TimeSpan.FromSeconds(Math.Min(Delay.TotalSeconds, otherTool.Delay.TotalSeconds)) //use the shortest delay
+        };
+
+# if DEBUG
+        var logMan = IoCManager.Resolve<ILogManager>();
+        var log = logMan.RootSawmill;
+
+        if (Delay != otherTool.Delay)
+            log.Warning($"Surgery ToolRequirement has mismatching delays of {Delay} and {otherTool.Delay} with {Qualities}.");
+# endif
+
+        return true;
+    }
 }

@@ -5,7 +5,6 @@ using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
 using Content.Shared.Surgery.Components;
 using Robust.Shared.Prototypes;
-using System.Linq;
 
 namespace Content.Shared.Surgery.Systems;
 
@@ -103,7 +102,7 @@ public sealed partial class SurgerySystem : EntitySystem
 
     public bool TryEdge(EntityUid uid, SurgeryRecieverComponent surgery, SurgeryEdge edge, EntityUid body, EntityUid user, EntityUid used)
     {
-        var requirementsPassed = RequirementsPassed(uid, edge, body, user, used);
+        var requirementsPassed = edge.Requirement.RequirementMet(body, uid, user, used);
 
         if (requirementsPassed == SurgeryEdgeState.Failed)
             return false;
@@ -116,7 +115,14 @@ public sealed partial class SurgerySystem : EntitySystem
         surgery.DoAfters.Clear();
 
         if (requirementsPassed == SurgeryEdgeState.DoAfter)
-            return TryStartDoAfters(uid, surgery, edge, body, user, used);
+        {
+            var doAfterStarted = edge.Requirement.StartDoAfter(_doAfter, edge, body, uid, user, used, out var doAfterId);
+
+            if (doAfterId != null)
+                surgery.DoAfters.Add(doAfterId.Value);
+
+            return doAfterStarted;
+        }
 
         DoNodeLeftSpecials(surgery.CurrentNode?.Special, body, uid);
         surgery.CurrentNode = edge.Connection;
@@ -145,62 +151,5 @@ public sealed partial class SurgerySystem : EntitySystem
         {
             special.NodeLeft(body, limb);
         }
-    }
-
-    public SurgeryEdgeState RequirementsPassed(EntityUid uid, SurgeryEdge edge, EntityUid body, EntityUid user, EntityUid? used)
-    {
-        var doAfters = 0;
-        var directPassed = false;
-
-        foreach (var requirement in edge.Requirements)
-        {
-            switch (requirement.RequirementMet(body, uid, user, used))
-            {
-                case SurgeryEdgeState.Failed:
-                {
-                    return SurgeryEdgeState.Failed;
-                }
-                case SurgeryEdgeState.DoAfter:
-                {
-                    doAfters++;
-                    break;
-                }
-                case SurgeryEdgeState.Passed:
-                {
-                    directPassed = true;
-                    break;
-                }
-            }
-        }
-
-        // we need to know if there is a fallback incase all doafters fail
-        if (directPassed)
-            return SurgeryEdgeState.Passed;
-
-        if (doAfters >= 0)
-            return SurgeryEdgeState.DoAfter;
-
-        return SurgeryEdgeState.Failed;
-    }
-
-    private bool TryStartDoAfters(EntityUid uid, SurgeryRecieverComponent surgery, SurgeryEdge edge, EntityUid body, EntityUid user, EntityUid used)
-    {
-        var failedDoAfters = 0;
-
-        foreach (var requirement in edge.Requirements)
-        {
-            if (!requirement.StartDoAfter(_doAfter, edge, body, uid, user, used, out var doAfter))
-            {
-                failedDoAfters++;
-                continue;
-            }
-
-            surgery.DoAfters.Add(doAfter.Value);
-        }
-
-        if (failedDoAfters >= edge.Requirements.Count())
-            return false;
-
-        return true;
     }
 }

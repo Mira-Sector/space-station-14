@@ -4,13 +4,11 @@
   - id: start
     edges:
     - connection: node1
-      requirements:
-      - !type:ToolRequirement
+      requirement: !type:ToolRequirement
         qualities:
         - Sawing
     - connection: node2
-      requirements:
-      - !type:ToolRequirement
+      requirement: !type:ToolRequirement
         qualities:
         - Cutting
   - id: node1
@@ -21,7 +19,6 @@
   - id: node1
     edges:
     - connection: start
-      requirements:
-      - !type:ToolRequirement
+      requirement: !type:ToolRequirement
         qualities:
         - Sawing

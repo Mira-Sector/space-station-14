@@ -8,8 +8,8 @@ public partial class SurgeryEdge
     /// <summary>
     /// Requirements that must be met for this edge to be taken.
     /// </summary>
-    [DataField]
-    public SurgeryEdgeRequirement[] Requirements { get; set; } = Array.Empty<SurgeryEdgeRequirement>();
+    [DataField(required:true)]
+    public SurgeryEdgeRequirement Requirement { get; set; } = default!;
 
     [DataField("connection")]
     public string? _connection;
