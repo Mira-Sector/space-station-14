@@ -16,7 +16,7 @@
     - !type:AddComponentLimb
       components:
       - type: Dna
-  - id: node1
+  - id: node2
     edges:
     - connection: start
       requirement: !type:ToolRequirement
