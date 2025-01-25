@@ -83,9 +83,9 @@ public sealed partial class SurgerySystem : EntitySystem
 
         args.Handled = true;
 
-        DoNodeLeftSpecials(component.CurrentNode?.Special, body, uid);
+        DoNodeLeftSpecials(component.CurrentNode?.Special, body, uid, args.User, args.Used);
         component.CurrentNode = newNode;
-        DoNodeReachedSpecials(component.CurrentNode?.Special, body, uid);
+        DoNodeReachedSpecials(component.CurrentNode?.Special, body, uid, args.User, args.Used);
 
         component.DoAfters.Remove(args.DoAfter.Id);
         CancelDoAfters(component);
@@ -131,34 +131,34 @@ public sealed partial class SurgerySystem : EntitySystem
         if (!surgery.Graph.TryFindNode(edge.Connection, out var newNode))
             return false;
 
-        DoNodeLeftSpecials(surgery.CurrentNode?.Special, body, uid);
+        DoNodeLeftSpecials(surgery.CurrentNode?.Special, body, uid, user, used);
         surgery.CurrentNode = newNode;
-        DoNodeReachedSpecials(surgery.CurrentNode?.Special, body, uid);
+        DoNodeReachedSpecials(surgery.CurrentNode?.Special, body, uid, user, used);
 
         Dirty(uid, surgery);
 
         return true;
     }
 
-    private void DoNodeReachedSpecials(SurgerySpecial[]? specials, EntityUid body, EntityUid limb)
+    private void DoNodeReachedSpecials(SurgerySpecial[]? specials, EntityUid body, EntityUid limb, EntityUid user, EntityUid? used)
     {
         if (specials == null)
             return;
 
         foreach (var special in specials)
         {
-            special.NodeReached(body, limb);
+            special.NodeReached(body, limb, user, used);
         }
     }
 
-    private void DoNodeLeftSpecials(SurgerySpecial[]? specials, EntityUid body, EntityUid limb)
+    private void DoNodeLeftSpecials(SurgerySpecial[]? specials, EntityUid body, EntityUid limb, EntityUid user, EntityUid? used)
     {
         if (specials == null)
             return;
 
         foreach (var special in specials)
         {
-            special.NodeLeft(body, limb);
+            special.NodeLeft(body, limb, user, used);
         }
     }
 

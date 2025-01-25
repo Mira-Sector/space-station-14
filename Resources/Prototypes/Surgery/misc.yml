@@ -37,5 +37,3 @@
   - id: node1
     special:
     - !type:RemoveLimb
-      components:
-      - type: Dna
