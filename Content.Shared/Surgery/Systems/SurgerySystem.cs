@@ -29,6 +29,8 @@ public sealed partial class SurgerySystem : EntitySystem
         component.Graph = MergeGraphs(component.AvailableSurgeries);
         component.Graph.TryGetStaringNode(out component.CurrentNode);
 
+        Dirty(uid, component);
+
         if (args.Part.Body is not {} body)
             return;
 
@@ -76,13 +78,18 @@ public sealed partial class SurgerySystem : EntitySystem
         if (!TryComp<BodyPartComponent>(uid, out var bodyPartComp) || bodyPartComp.Body is not {} body)
             return;
 
+        if (!component.Graph.TryFindNode(args.TargetEdge.Connection, out var newNode))
+            return;
+
         args.Handled = true;
 
         DoNodeLeftSpecials(component.CurrentNode?.Special, body, uid);
-        component.CurrentNode = args.TargetEdge.Connection;
+        component.CurrentNode = newNode;
         DoNodeReachedSpecials(component.CurrentNode?.Special, body, uid);
 
         component.DoAfters.Remove(args.DoAfter.Id);
+
+        Dirty(uid, component);
     }
 
     public bool TryTraverseGraph(EntityUid uid, SurgeryRecieverComponent surgery, EntityUid body, EntityUid user, EntityUid used)
@@ -121,12 +128,18 @@ public sealed partial class SurgerySystem : EntitySystem
             if (doAfterId != null)
                 surgery.DoAfters.Add(doAfterId.Value);
 
+            Dirty(uid, surgery);
             return doAfterStarted;
         }
 
+        if (!surgery.Graph.TryFindNode(edge.Connection, out var newNode))
+            return false;
+
         DoNodeLeftSpecials(surgery.CurrentNode?.Special, body, uid);
-        surgery.CurrentNode = edge.Connection;
+        surgery.CurrentNode = newNode;
         DoNodeReachedSpecials(surgery.CurrentNode?.Special, body, uid);
+
+        Dirty(uid, surgery);
 
         return true;
     }

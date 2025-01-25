@@ -13,6 +13,22 @@ public partial class SurgeryGraph
     [DataField]
     public List<SurgeryNode> Nodes { get; set; } = new();
 
+    public bool TryFindNode(int? hashCode, [NotNullWhen(true)] out SurgeryNode? targetNode)
+    {
+        targetNode = null;
+
+        foreach (var node in Nodes)
+        {
+            if (node.GetHashCode() != hashCode)
+                continue;
+
+            targetNode = node;
+            return true;
+        }
+
+        return false;
+    }
+
     public bool TryFindNode(string nodeId, [NotNullWhen(true)] out SurgeryNode? targetNode)
     {
         targetNode = null;

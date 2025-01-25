@@ -61,23 +61,29 @@ public sealed partial class SurgerySystem
             {
                 foreach (var mergedEdge in mergedNode.Edges)
                 {
+                    targetGraph.TryFindNode(targetEdge.Connection, out var targetEdgeNode);
+
                     if (mergedEdge.Requirement.RequirementsMatch(targetEdge.Requirement, out var newRequirement))
                     {
-                        if (targetEdge.Connection != null)
-                            targetNodes.Push(targetEdge.Connection);
+                        if (targetEdgeNode != null)
+                            targetNodes.Push(targetEdgeNode);
 
-                        if (mergedEdge.Connection != null)
-                            mergedNodes.Push(mergedEdge.Connection);
+                        if (mergedGraph.TryFindNode(mergedEdge.Connection, out var mergedEdgeNode))
+                            mergedNodes.Push(mergedEdgeNode);
 
                         mergedEdge.Requirement = newRequirement;
                         continue;
                     }
+                    else if (targetEdgeNode == null)
+                    {
+                        continue;
+                    }
 
                     //diverting edge
-                    if (TryFindMatchingNode(targetEdge.Connection, mergedGraph.Nodes, out var matchingNode))
+                    if (TryFindMatchingNode(targetEdgeNode, mergedGraph.Nodes, out var matchingNode))
                     {
                         if (targetEdge.Connection != null)
-                            targetNodes.Push(targetEdge.Connection);
+                            targetNodes.Push(targetEdgeNode);
 
                         mergedNodes.Push(matchingNode);
                     }
@@ -86,17 +92,16 @@ public sealed partial class SurgerySystem
                         SurgeryNode newNode = new();
                         newNode.Edges.Add(targetEdge);
                         newNode.Special.Union(targetNode.Special);
-                        newNode.Connections.Union(targetNode.Connections);
                         mergedGraph.Nodes.Add(newNode);
 
-                        ExtendGraph(targetEdge.Connection, newNode, mergedGraph);
+                        ExtendGraph(targetEdgeNode, newNode, targetGraph, mergedGraph);
                     }
                 }
             }
         }
     }
 
-    private void ExtendGraph(SurgeryNode? currentTargetNode, SurgeryNode currentMergedNode, SurgeryGraph mergedGraph)
+    private void ExtendGraph(SurgeryNode? currentTargetNode, SurgeryNode currentMergedNode, SurgeryGraph targetGraph, SurgeryGraph mergedGraph)
     {
         if (currentTargetNode == null)
             return;
@@ -117,11 +122,14 @@ public sealed partial class SurgerySystem
 
             foreach (var edge in targetNode.Edges)
             {
-                if (TryFindMatchingNode(edge.Connection, mergedGraph.Nodes, out var matchingNode))
+                if (!targetGraph.TryFindNode(edge.Connection, out var edgeConnection))
+                    continue;
+
+                if (TryFindMatchingNode(edgeConnection, mergedGraph.Nodes, out var matchingNode))
                 {
                     mergedNode.Edges.Add(new SurgeryEdge
                     {
-                        Connection = matchingNode,
+                        Connection = matchingNode.GetHashCode(),
                         Requirement = edge.Requirement
                     });
                 }
@@ -129,19 +137,18 @@ public sealed partial class SurgerySystem
                 {
                     SurgeryNode newMergedNode = new()
                     {
-                        Special = MergeSpecialArrays(mergedNode.Special, edge.Connection.Special),
-                        Connections = new HashSet<SurgeryEdge>(edge.Connection.Connections)
+                        Special = MergeSpecialArrays(mergedNode.Special, edgeConnection.Special),
                     };
 
                     newMergedNode.Edges.Add(new SurgeryEdge
                     {
-                        Connection = newMergedNode,
+                        Connection = newMergedNode.GetHashCode(),
                         Requirement = edge.Requirement
                     });
 
                     mergedGraph.Nodes.Add(newMergedNode);
 
-                    stack.Push((edge.Connection, newMergedNode));
+                    stack.Push((edgeConnection, newMergedNode));
                 }
             }
         }

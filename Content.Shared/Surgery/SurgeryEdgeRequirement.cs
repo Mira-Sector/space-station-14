@@ -1,12 +1,10 @@
 using Content.Shared.DoAfter;
-using JetBrains.Annotations;
 using Robust.Shared.Serialization;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Content.Shared.Surgery;
 
 [ImplicitDataDefinitionForInheritors]
-[MeansImplicitUse]
 [Serializable, NetSerializable]
 public abstract partial class SurgeryEdgeRequirement
 {

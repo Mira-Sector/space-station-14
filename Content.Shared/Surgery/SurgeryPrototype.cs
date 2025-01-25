@@ -31,8 +31,7 @@ public sealed partial class SurgeryPrototype : SurgeryGraph, IPrototype, ISerial
                 if (!TryFindNode(edge._connection, out var connection))
                     throw new InvalidDataException($"Cannot find node {edge._connection} in surgery graph {ID}");
 
-                edge.Connection = connection;
-                connection.Connections.Add(edge);
+                edge.Connection = connection.GetHashCode();
             }
         }
     }

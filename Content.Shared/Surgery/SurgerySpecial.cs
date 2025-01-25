@@ -1,6 +1,8 @@
+using Robust.Shared.Serialization;
+
 namespace Content.Shared.Surgery;
 
-[ImplicitDataDefinitionForInheritors]
+[ImplicitDataDefinitionForInheritors, Serializable, NetSerializable]
 public abstract partial class SurgerySpecial
 {
     public abstract void NodeReached(EntityUid body, EntityUid limb);

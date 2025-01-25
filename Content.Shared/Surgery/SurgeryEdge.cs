@@ -12,14 +12,14 @@ public partial class SurgeryEdge
     public SurgeryEdgeRequirement Requirement { get; set; } = default!;
 
     [DataField("connection")]
-    public string? _connection;
+    public string? _connection { get; private set; }
 
     /// <summary>
-    /// What node does this edge connect to.
+    /// Hashcode of what node does this edge connect to.
     /// </summary>
     /// <remarks>
     /// null represents no connection.
     /// </remarks>
     [ViewVariables]
-    public SurgeryNode? Connection;
+    public int? Connection;
 }

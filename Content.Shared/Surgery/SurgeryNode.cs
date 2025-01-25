@@ -1,6 +1,8 @@
+using Robust.Shared.Serialization;
+
 namespace Content.Shared.Surgery;
 
-[DataDefinition, Serializable]
+[DataDefinition, Serializable, NetSerializable]
 public partial class SurgeryNode
 {
     [DataField]
@@ -13,17 +15,11 @@ public partial class SurgeryNode
     /// This edge cannot always be taken as it may have requirements <see cref=SurgeryEdge.Requirements>.
     /// </remarks>
     [DataField]
-    public HashSet<SurgeryEdge> Edges { get; set; } = new();
+    public List<SurgeryEdge> Edges { get; set; } = new();
 
     /// <summary>
     /// List of special actions such as adding components which get run whenever this node is reached and left.
     /// </summary>
     [DataField]
     public SurgerySpecial[] Special { get; set; } = Array.Empty<SurgerySpecial>();
-
-    /// <summary>
-    /// Edges connected to this node.
-    /// </summary>
-    [ViewVariables]
-    public HashSet<SurgeryEdge> Connections = new();
 }

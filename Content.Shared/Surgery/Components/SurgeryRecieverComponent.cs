@@ -4,7 +4,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Surgery.Components;
 
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+[RegisterComponent, NetworkedComponent]
 public sealed partial class SurgeryRecieverComponent : Component
 {
     /// <summary>
@@ -16,7 +16,7 @@ public sealed partial class SurgeryRecieverComponent : Component
     /// <summary>
     /// All the surgeries graphs merged into one graph.
     /// </summary>
-    [ViewVariables, AutoNetworkedField]
+    [ViewVariables]
     public SurgeryGraph Graph = new();
 
     [ViewVariables]
@@ -26,5 +26,5 @@ public sealed partial class SurgeryRecieverComponent : Component
     /// Keep track of doafters as they will need to be cancelled when we change node
     /// </summary>
     [ViewVariables]
-    public HashSet<DoAfterId> DoAfters = new();
+    public List<DoAfterId> DoAfters = new();
 }
