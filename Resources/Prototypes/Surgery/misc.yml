@@ -23,3 +23,19 @@
       requirement: !type:ToolRequirement
         qualities:
         - Sawing
+
+- type: surgery
+  id: test2
+  startingNode: start
+  nodes:
+  - id: start
+    edges:
+    - connection: node1
+      requirement: !type:ToolRequirement
+        qualities:
+        - Sawing
+  - id: node1
+    special:
+    - !type:RemoveLimb
+      components:
+      - type: Dna

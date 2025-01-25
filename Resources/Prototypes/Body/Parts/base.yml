@@ -79,6 +79,9 @@
       50: Dead
   - type: Damageable
     damageContainer: Biological
+  - type: SurgeryReciever
+    availableSurgeries:
+    - test2
 
 - type: entity
   id: BaseRightArm

@@ -88,6 +88,7 @@ public sealed partial class SurgerySystem : EntitySystem
         DoNodeReachedSpecials(component.CurrentNode?.Special, body, uid);
 
         component.DoAfters.Remove(args.DoAfter.Id);
+        CancelDoAfters(component);
 
         Dirty(uid, component);
     }
@@ -114,12 +115,7 @@ public sealed partial class SurgerySystem : EntitySystem
         if (requirementsPassed == SurgeryEdgeState.Failed)
             return false;
 
-        foreach (var doAfter in surgery.DoAfters)
-        {
-            _doAfter.Cancel(doAfter);
-        }
-
-        surgery.DoAfters.Clear();
+        CancelDoAfters(surgery);
 
         if (requirementsPassed == SurgeryEdgeState.DoAfter)
         {
@@ -165,4 +161,15 @@ public sealed partial class SurgerySystem : EntitySystem
             special.NodeLeft(body, limb);
         }
     }
+
+    private void CancelDoAfters(SurgeryRecieverComponent component)
+    {
+        foreach (var doAfter in component.DoAfters)
+        {
+            _doAfter.Cancel(doAfter);
+        }
+
+        component.DoAfters.Clear();
+    }
+
 }
