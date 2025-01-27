@@ -56,6 +56,23 @@
         "name": "vent_lockout"
     },
     {
+        "name": "vent_lockout-off",
+        "delays": [
+            [
+                0.03,
+                0.04,
+                0.05,
+                0.06,
+                0.08,
+                0.1,
+                0.15,
+                0.2,
+                0.3,
+                1
+            ]
+        ]
+    },
+    {
         "name": "vent_off"
     },
     {
