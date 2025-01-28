@@ -1153,3 +1153,9 @@ Entries:
     type: Add
   id: 170
   time: '2025-01-28T01:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added animations to the doafter bar
+    type: Add
+  id: 171
+  time: '2025-01-28T18:20:00.0000000+00:00'
