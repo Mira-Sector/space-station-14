@@ -1159,3 +1159,9 @@ Entries:
     type: Add
   id: 171
   time: '2025-01-28T18:20:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Changed the air vent, air scrubber and air alarm sprites
+    type: Tweak
+  id: 172
+  time: '2025-01-28T19:00:00.0000000+00:00'
