@@ -25,7 +25,9 @@ public sealed class DoAfterOverlay : Overlay
     private readonly ProgressColorSystem _progressColor;
     private readonly SharedContainerSystem _container;
 
+
     private readonly Texture _barTexture;
+    private readonly SpriteSpecifier _cogTexture;
     private readonly ShaderInstance _unshadedShader;
 
     /// <summary>
@@ -50,6 +52,7 @@ public sealed class DoAfterOverlay : Overlay
         _progressColor = _entManager.System<ProgressColorSystem>();
         var sprite = new SpriteSpecifier.Rsi(new("/Textures/Interface/Misc/progress_bar.rsi"), "icon");
         _barTexture = _entManager.EntitySysManager.GetEntitySystem<SpriteSystem>().Frame0(sprite);
+        _cogTexture = new SpriteSpecifier.Rsi(new("/Textures/Interface/Misc/progress_cog.rsi"), "cog");
 
         _unshadedShader = protoManager.Index<ShaderPrototype>("unshaded").Instance();
     }
@@ -138,8 +141,12 @@ public sealed class DoAfterOverlay : Overlay
                 var position = new Vector2(-_barTexture.Width / 2f / EyeManager.PixelsPerMeter,
                     yOffset / scale + offsets[targetUid] / EyeManager.PixelsPerMeter * scale);
 
+                var cogPos = new Vector2(position.X + _barTexture.Width / scale / EyeManager.PixelsPerMeter, position.Y + _barTexture.Height * 2 / scale) / EyeManager.PixelsPerMeter;
+                var cogTexture = _entManager.System<SpriteSystem>().GetFrame(_cogTexture, curTime);
+
                 // Draw the underlying bar texture
                 handle.DrawTexture(_barTexture, position);
+                handle.DrawTexture(cogTexture, cogPos);
 
                 Color color;
                 float elapsedRatio;
