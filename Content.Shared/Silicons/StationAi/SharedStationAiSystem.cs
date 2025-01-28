@@ -324,6 +324,8 @@ public abstract partial class SharedStationAiSystem : EntitySystem
 
     private void OnHolderConInsert(Entity<StationAiHolderComponent> ent, ref EntInsertedIntoContainerMessage args)
     {
+        ent.Comp.AiDied = false;
+        Dirty(ent);
         UpdateAppearance((ent.Owner, ent.Comp));
     }
 
@@ -527,6 +529,8 @@ public abstract partial class SharedStationAiSystem : EntitySystem
 
         Dirty(container, coreComp);
 
+        coreComp.AiDied = false;
+        Dirty(container, coreComp);
         UpdateAppearance((container, coreComp));
     }
 
@@ -547,10 +551,16 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         UpdateAppearance((container, coreComp));
     }
 
-    private void UpdateAppearance(Entity<StationAiHolderComponent?> entity)
+    protected void UpdateAppearance(Entity<StationAiHolderComponent?> entity)
     {
         if (!Resolve(entity.Owner, ref entity.Comp, false))
             return;
+
+        if (entity.Comp.AiDied)
+        {
+            _appearance.SetData(entity.Owner, StationAiVisualState.Key, StationAiState.Dead);
+            return;
+        }
 
         if (!_containers.TryGetContainer(entity.Owner, StationAiHolderComponent.Container, out var container) ||
             container.Count == 0)

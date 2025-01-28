@@ -408,6 +408,10 @@
         Screen:
           sprite: Mobs/Silicon/station_ai.rsi
           state: ai
+      Dead:
+        Screen:
+          sprite: Mobs/Silicon/station_ai.rsi
+          state: ai_dead
   - type: Appearance
   - type: InteractionPopup
     interactSuccessString: petting-success-station-ai
