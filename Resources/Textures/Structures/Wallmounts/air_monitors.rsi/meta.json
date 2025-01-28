@@ -4,63 +4,17 @@
         "x": 32,
         "y": 32
     },
-    "copyright": "Taken from tgstation, modified for SS14",
+    "copyright": "Taken from tgstation, modified for SS14, air alarms recoloured by Doctor-Cpu",
     "license": "CC-BY-SA-3.0",
     "states": [
         {
             "name": "alarm0",
-            "directions": 4,
-            "delays": [
-                [
-                    0.5,
-                    0.1,
-                    0.1,
-                    1.0,
-                    0.2,
-                    0.1
-                ],
-                [
-                    0.5,
-                    0.1,
-                    0.1,
-                    1.0,
-                    0.2,
-                    0.1
-                ],
-                [
-                    0.5,
-                    0.1,
-                    0.1,
-                    1.0,
-                    0.2,
-                    0.1
-                ],
-                [
-                    0.5,
-                    0.1,
-                    0.1,
-                    1.0,
-                    0.2,
-                    0.1
-                ]
-            ]
+            "directions": 1
         },
         {
             "name": "alarm1",
-            "directions": 4,
+            "directions": 1,
             "delays": [
-                [
-                    0.5,
-                    0.5
-                ],
-                [
-                    0.5,
-                    0.5
-                ],
-                [
-                    0.5,
-                    0.5
-                ],
                 [
                     0.5,
                     0.5
@@ -69,21 +23,10 @@
         },
         {
             "name": "alarm2",
-            "directions": 4,
+            "directions": 1,
             "delays": [
                 [
                     0.5,
-                    0.5
-                ],
-                [
-                    0.5,
-                    0.5
-                ],
-                [
-                    0.5,
-                    0.5
-                ],
-                [
                     0.5,
                     0.5
                 ]
@@ -91,22 +34,22 @@
         },
         {
             "name": "alarm_b1",
-            "directions": 4
+            "directions": 1
         },
         {
             "name": "alarm_b2",
-            "directions": 4
+            "directions": 1
         },
         {
             "name": "alarm_bitem"
         },
         {
             "name": "alarmp",
-            "directions": 4
+            "directions": 1
         },
         {
             "name": "alarmx",
-            "directions": 4
+            "directions": 1
         },
         {
             "name": "auth_off"

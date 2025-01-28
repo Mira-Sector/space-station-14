@@ -81,8 +81,10 @@
   - type: Sprite
     sprite: Structures/Wallmounts/air_monitors.rsi
     layers:
+    - state: alarmp
     - state: alarm0
       map: ["airAlarmBase"] # TODO: fire alarm enum
+      shader: unshaded
     - state: alarmx
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: Transform
