@@ -9,11 +9,10 @@ using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Timing;
-using System.Numerics;
 
 namespace Content.Shared.Atmos.Piping.Crawling.Systems;
 
-public sealed class SharedPipeCrawlingSystem : EntitySystem
+public abstract partial class SharedPipeCrawlingSystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedContainerSystem _containers = default!;
@@ -23,13 +22,13 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
     [Dependency] private readonly MobStateSystem _mobState = default!;
 
     const string PipeContainer = "pipe";
-    Vector2 Offset = new Vector2(0.5f, 0.5f);
-
     const float CrawlSpeedMultiplier = 0.8f;
 
     public override void Initialize()
     {
         base.Initialize();
+
+        EnterPointInitialize();
 
         SubscribeLocalEvent<PipeCrawlingComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<PipeCrawlingComponent, ComponentRemove>(OnRemoved);
@@ -41,22 +40,13 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
     {
         base.Update(frameTime);
 
-        var query = EntityQueryEnumerator<PipeCrawlingComponent>();
-        while (query.MoveNext(out var uid, out var component))
+        var query = EntityQueryEnumerator<PipeCrawlingComponent, CanEnterPipeCrawlingComponent, MovementSpeedModifierComponent, InputMoverComponent>();
+        while (query.MoveNext(out var uid, out var component, out var pipeCrawlerComp, out var speedComp, out var inputComp))
         {
             if (!component.IsMoving)
                 continue;
 
-            if (!TryComp<CanEnterPipeCrawlingComponent>(uid, out var pipeCrawlerComp))
-                continue;
-
             if (!TryComp<PipeCrawlingPipeComponent>(component.CurrentPipe, out var pipeComp))
-                continue;
-
-            if (!TryComp<MovementSpeedModifierComponent>(uid, out var speedComp))
-                continue;
-
-            if (!TryComp<InputMoverComponent>(uid, out var inputComp))
                 continue;
 
             if (TryComp<PhysicsComponent>(uid, out var physics))
@@ -70,7 +60,7 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
                 continue;
             }
 
-            component.NextMoveAttempt = _timing.CurTime + TimeSpan.FromSeconds(pipeCrawlerComp.PipeMoveSpeed ?? (1f / speedComp.BaseSprintSpeed) * CrawlSpeedMultiplier);
+            component.NextMoveAttempt += TimeSpan.FromSeconds(pipeCrawlerComp.PipeMoveSpeed ?? (1f / speedComp.BaseSprintSpeed) * CrawlSpeedMultiplier);
 
             if (_mobState.IsIncapacitated(uid))
                 continue;
@@ -84,14 +74,14 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
             var newPipe = pipeComp.ConnectedPipes[direction];
 
             if (_containers.TryGetContainer(component.CurrentPipe, PipeContainer, out var currentPipeContainer) &&
-                TryComp<PipeCrawlingPipeComponent>(component.CurrentPipe, out var currentPipeComp))
+                HasComp<PipeCrawlingPipeComponent>(component.CurrentPipe))
             {
                 var newPipeCoords = Transform(newPipe).Coordinates;
                 _containers.Remove(uid, currentPipeContainer, destination: newPipeCoords, localRotation: direction.ToAngle());
             }
 
             if (_containers.TryGetContainer(newPipe, PipeContainer, out var newPipeContainer) &&
-            TryComp<PipeCrawlingPipeComponent>(newPipe, out var newPipeComp))
+            HasComp<PipeCrawlingPipeComponent>(newPipe))
             {
                 _containers.Insert(uid, newPipeContainer);
             }
