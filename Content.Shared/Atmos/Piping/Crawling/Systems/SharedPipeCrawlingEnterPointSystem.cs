@@ -178,8 +178,13 @@ public abstract partial class SharedPipeCrawlingSystem
 
     private void OnDoAfter(EntityUid pipe, PipeCrawlingEnterPointComponent component, PipeEnterDoAfterEvent args)
     {
+        if (args.Handled || args.Cancelled)
+            return;
+
         if (!_containers.TryGetContainer(pipe, PipeContainer, out var pipeContainer))
             return;
+
+        args.Handled = true;
 
         _containers.Insert(args.User, pipeContainer);
         var pipeCrawlComp = EnsureComp<PipeCrawlingComponent>(args.User);
