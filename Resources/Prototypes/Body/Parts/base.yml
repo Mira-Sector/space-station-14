@@ -81,6 +81,7 @@
     damageContainer: Biological
   - type: SurgeryReciever
     availableSurgeries:
+    - test
     - test2
 
 - type: entity
