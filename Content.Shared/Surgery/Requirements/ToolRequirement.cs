@@ -1,5 +1,4 @@
 using Content.Shared.DoAfter;
-using Content.Shared.Surgery.Systems;
 using Content.Shared.Tools.Systems;
 using JetBrains.Annotations;
 using Robust.Shared.Serialization;
@@ -40,8 +39,6 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
 
         var entMan = IoCManager.Resolve<IEntityManager>();
         var toolSystem = entMan.System<SharedToolSystem>();
-
-        var surgerySystem = entMan.System<SurgerySystem>();
 
         return toolSystem.UseTool(tool.Value, user, limb, Delay, Qualities, new SurgeryDoAfterEvent(targetEdge), out doAfterId);
     }

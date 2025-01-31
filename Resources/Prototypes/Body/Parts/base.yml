@@ -81,8 +81,7 @@
     damageContainer: Biological
   - type: SurgeryReciever
     availableSurgeries:
-    - test
-    - test2
+    - LimbAmputation
 
 - type: entity
   id: BaseRightArm
@@ -102,6 +101,9 @@
       50: Dead
   - type: Damageable
     damageContainer: Biological
+  - type: SurgeryReciever
+    availableSurgeries:
+    - LimbAmputation
 
 - type: entity
   id: BaseLeftHand
@@ -149,6 +151,9 @@
       65: Dead
   - type: Damageable
     damageContainer: Biological
+  - type: SurgeryReciever
+    availableSurgeries:
+    - LimbAmputation
 
 - type: entity
   id: BaseRightLegNoDamage
@@ -176,6 +181,9 @@
       65: Dead
   - type: Damageable
     damageContainer: Biological
+  - type: SurgeryReciever
+    availableSurgeries:
+    - LimbAmputation
 
 
 - type: entity
