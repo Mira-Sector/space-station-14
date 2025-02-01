@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "size":
+  {
+    "x": 32,
+    "y": 32
+  },
+  "license": "CC-BY-SA-3.0",
+  "copyright": "bingus by https://github.com/Mira-Sector/space-station-14/blob/eaeb472163443e236dce7f739aee6b10d36cd585/Resources/Textures/Mobs/Pets/bingus.rsi, fancy crown from https://github.com/tgstation/tgstation/blob/3c20ecc5ae7580f731930b881bd1b1dfa46b5824/icons/mob/clothing/head/costume.dmi, crown and bingus eddited by aspifyfellow",
+  "states":
+  [
+    {
+      "name": "lordbingus",
+      "directions": 4
+    },
+
+    {
+      "name": "lord_bingus_dead",
+      "directions": 1
+    }
+  ]
+}
