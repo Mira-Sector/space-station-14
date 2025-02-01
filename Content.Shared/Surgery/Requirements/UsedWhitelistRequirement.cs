@@ -49,6 +49,7 @@ public sealed partial class UsedWhitelistRequirement : SurgeryEdgeRequirement
         var doAfterArgs = new DoAfterArgs(entMan, user, Delay.Value, new SurgeryDoAfterEvent(targetEdge, bodyPart), limb, used: tool)
         {
             BreakOnMove = true,
+            RequireDown = true
         };
 
         return doAfter.TryStartDoAfter(doAfterArgs, out doAfterId);

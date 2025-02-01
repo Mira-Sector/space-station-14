@@ -1,3 +1,4 @@
+using Content.Shared.Buckle.Components;
 using Content.Shared.FixedPoint;
 using Robust.Shared.Serialization;
 
@@ -147,6 +148,12 @@ public sealed partial class DoAfterArgs
     /// </summary>
     [DataField]
     public bool RequireCanInteract = true;
+
+    /// <summary>
+    ///     If non null, Require the target to be either be standing up or down from crawling or lying a bed.
+    /// </summary>
+    [DataField]
+    public bool? RequireDown;
     #endregion
 
     #region Duplicates
@@ -270,6 +277,7 @@ public sealed partial class DoAfterArgs
         BreakOnDamage = other.BreakOnDamage;
         DamageThreshold = other.DamageThreshold;
         RequireCanInteract = other.RequireCanInteract;
+        RequireDown = other.RequireDown;
         AttemptFrequency = other.AttemptFrequency;
         BlockDuplicate = other.BlockDuplicate;
         CancelDuplicate = other.CancelDuplicate;

@@ -3,6 +3,7 @@ using Content.Shared.Body.Part;
 using Content.Shared.Damage.DamageSelector;
 using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
+using Content.Shared.Standing;
 using Content.Shared.Surgery.Components;
 using Robust.Shared.Prototypes;
 
@@ -59,6 +60,9 @@ public sealed partial class SurgerySystem : EntitySystem
         if (!TryComp<BodyPartComponent>(uid, out var bodyPartComp) || bodyPartComp.Body is not {} body)
             return;
 
+        if (!PreCheck(uid))
+            return;
+
         BodyPart bodyPart = new(bodyPartComp.PartType, bodyPartComp.Symmetry);
 
         TryTraverseGraph(uid, component, body, args.User, args.Used, bodyPart);
@@ -68,6 +72,9 @@ public sealed partial class SurgerySystem : EntitySystem
     private void OnBodyInteract(EntityUid uid, SurgeryRecieverBodyComponent component, InteractUsingEvent args)
     {
         if (!TryComp<DamagePartSelectorComponent>(args.User, out var damageSelectorComp))
+            return;
+
+        if (!PreCheck(uid))
             return;
 
         var limbHandled = false;
@@ -107,6 +114,14 @@ public sealed partial class SurgerySystem : EntitySystem
             if (TryTraverseGraph(uid, surgeries.Surgeries, uid, args.User, args.Used, surgeries.BodyPart))
                 return;
         }
+    }
+
+    private bool PreCheck(EntityUid uid)
+    {
+        if (TryComp<StandingStateComponent>(uid, out var standingComp) && standingComp.Standing)
+            return false;
+
+        return true;
     }
 
     private void OnBodyDoAfter(EntityUid uid, SurgeryRecieverBodyComponent component, SurgeryDoAfterEvent args)
