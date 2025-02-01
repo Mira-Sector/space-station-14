@@ -107,3 +107,21 @@
   components:
   - type: Sprite
     state: trans_flag
+
+- type: entity
+  parent: BaseFlag
+  id: AroFlag
+  name: aromantic flag
+  description: "for when friends is enough"
+  components:
+  - type: Sprite
+    state: aro_flag
+
+- type: entity
+  parent: BaseFlag
+  id: AsexualFlag
+  name: asexual flag
+  description: "zero is better than none"
+  components:
+  - type: Sprite
+    state: asexual_flag
