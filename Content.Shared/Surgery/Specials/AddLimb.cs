@@ -12,9 +12,15 @@ public sealed partial class AddLimb : SurgerySpecial
     {
         var entMan = IoCManager.Resolve<IEntityManager>();
         var bodySys = entMan.System<SharedBodySystem>();
+        var logMan = IoCManager.Resolve<ILogManager>();
+        var log = logMan.RootSawmill;
 
         foreach (var container in bodySys.GetBodyContainers(body))
         {
+            if (container.ContainedEntities.Count > 0)
+                continue;
+
+            log.Debug(SharedBodySystem.GetPartSlotContainerIdFromContainer(container.ID) ?? "null");
         }
     }
 
@@ -22,4 +28,3 @@ public sealed partial class AddLimb : SurgerySpecial
     {
     }
 }
-

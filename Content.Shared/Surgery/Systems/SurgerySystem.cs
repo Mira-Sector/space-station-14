@@ -20,6 +20,7 @@ public sealed partial class SurgerySystem : EntitySystem
 
         SubscribeLocalEvent<SurgeryRecieverComponent, LimbInitEvent>(OnLimbInit);
         SubscribeLocalEvent<SurgeryRecieverBodyComponent, BodyInitEvent>(OnBodyInit);
+
         SubscribeLocalEvent<SurgeryRecieverComponent, InteractUsingEvent>(OnLimbInteract);
         SubscribeLocalEvent<SurgeryRecieverBodyComponent, InteractUsingEvent>(OnBodyInteract);
 
@@ -38,8 +39,10 @@ public sealed partial class SurgerySystem : EntitySystem
         if (args.Part.Body is not {} body)
             return;
 
+        BodyPart bodyPart = new(args.Part.PartType, args.Part.Symmetry);
+
         EnsureComp<SurgeryRecieverBodyComponent>(body, out var surgeryBodyComp);
-        surgeryBodyComp.Limbs.Add(uid);
+        surgeryBodyComp.Limbs.Add(bodyPart, GetNetEntity(uid));
     }
 
     // as no surgeries can be added from the limbs we dont need to listen to ComponentAdded
@@ -77,29 +80,34 @@ public sealed partial class SurgerySystem : EntitySystem
         if (!PreCheck(uid))
             return;
 
-        var limbHandled = false;
+        var limbFound = false;
 
-        foreach (var limb in component.Limbs)
+        foreach (var (bodyPart, netLimb) in component.Limbs)
         {
+            var limb = GetEntity(netLimb);
+
             if (!TryComp<SurgeryRecieverComponent>(limb, out var surgeryComp))
                 continue;
 
             if (!TryComp<BodyPartComponent>(limb, out var partComp) || partComp.Body != uid)
                 continue;
 
-            if (partComp.PartType != damageSelectorComp.SelectedPart.Type)
+            if (bodyPart.Type != damageSelectorComp.SelectedPart.Type)
                 continue;
 
-            if (partComp.Symmetry != damageSelectorComp.SelectedPart.Side)
+            if (bodyPart.Side != damageSelectorComp.SelectedPart.Side)
                 continue;
 
-            BodyPart bodyPart = new(partComp.PartType, partComp.Symmetry);
+            // we have a limb we can do surgery on
+            limbFound = true;
 
             // may have multiple limbs so dont exit early
-            limbHandled |= TryTraverseGraph(limb, surgeryComp, uid, args.User, args.Used, bodyPart);
+            TryTraverseGraph(limb, surgeryComp, uid, args.User, args.Used, bodyPart);
         }
 
-        if (limbHandled)
+        // if we have a possible limb they may have nothing do do
+        // so we dont logically or with the TryTraverseGraph
+        if (limbFound)
             return;
 
         // the body may have a surgery to persue instead
@@ -126,19 +134,36 @@ public sealed partial class SurgerySystem : EntitySystem
 
     private void OnBodyDoAfter(EntityUid uid, SurgeryRecieverBodyComponent component, SurgeryDoAfterEvent args)
     {
-        if (args.Cancelled || args.Handled)
+        if (args.Handled)
             return;
 
         foreach (var surgeries in component.Surgeries)
         {
+            if (!surgeries.Surgeries.DoAfters.Contains(args.DoAfter.Id))
+                continue;
+
+            if (args.Cancelled)
+            {
+                surgeries.Surgeries.DoAfters.Remove(args.DoAfter.Id);
+                continue;
+            }
+
             OnDoAfter(null, uid, surgeries.Surgeries, args);
         }
     }
 
     private void OnLimbDoAfter(EntityUid uid, SurgeryRecieverComponent component, SurgeryDoAfterEvent args)
     {
-        if (args.Cancelled || args.Handled)
+        if (args.Handled)
             return;
+
+        if (args.Cancelled)
+        {
+            if (component.DoAfters.Contains(args.DoAfter.Id))
+                component.DoAfters.Remove(args.DoAfter.Id);
+
+            return;
+        }
 
         if (!TryComp<BodyPartComponent>(uid, out var bodyPartComp) || bodyPartComp.Body is not {} body)
             return;
