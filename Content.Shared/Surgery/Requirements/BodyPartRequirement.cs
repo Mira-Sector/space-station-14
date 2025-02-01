@@ -12,36 +12,24 @@ namespace Content.Shared.Surgery.Requirements;
 public sealed partial class BodyPartRequirement : SurgeryEdgeRequirement
 {
     [DataField]
-    public BodyPart? BodyPart;
-
-    [DataField]
     public TimeSpan? Delay;
 
     [DataField]
     public bool RequireAiming = true;
 
-    public override SurgeryEdgeState RequirementMet(EntityUid body, EntityUid limb, EntityUid user, EntityUid? tool)
+    public override SurgeryEdgeState RequirementMet(EntityUid body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart)
     {
         if (tool == null)
             return SurgeryEdgeState.Failed;
-
-        if (BodyPart == null && !RequireAiming)
-        {
-            var logMan = IoCManager.Resolve<ILogManager>();
-            var log = logMan.RootSawmill;
-
-            log.Warning("BodyPartRequirement has no requested body part and does not require aiming. Aborting!");
-            return SurgeryEdgeState.Failed;
-        }
 
         var entMan = IoCManager.Resolve<IEntityManager>();
 
         if (!entMan.TryGetComponent<BodyPartComponent>(tool.Value, out var bodyPartComp))
             return SurgeryEdgeState.Failed;
 
-        if (BodyPart != null)
+        if (bodyPart != null)
         {
-            if (bodyPartComp.PartType != BodyPart.Type || bodyPartComp.Symmetry != BodyPart.Side)
+            if (bodyPartComp.PartType != bodyPart.Type || bodyPartComp.Symmetry != bodyPart.Side)
                 return SurgeryEdgeState.Failed;
         }
 
@@ -50,9 +38,9 @@ public sealed partial class BodyPartRequirement : SurgeryEdgeRequirement
             if (!entMan.TryGetComponent<DamagePartSelectorComponent>(user, out var damageSelectorComp))
                 return SurgeryEdgeState.Failed;
 
-            if (BodyPart != null)
+            if (bodyPart != null)
             {
-                if (damageSelectorComp.SelectedPart != BodyPart)
+                if (damageSelectorComp.SelectedPart != bodyPart)
                     return SurgeryEdgeState.Failed;
             }
             else
@@ -68,7 +56,7 @@ public sealed partial class BodyPartRequirement : SurgeryEdgeRequirement
         return SurgeryEdgeState.DoAfter;
     }
 
-    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid body, EntityUid limb, EntityUid user, EntityUid? tool, [NotNullWhen(true)] out DoAfterId? doAfterId)
+    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
     {
         doAfterId = null;
 
@@ -77,7 +65,7 @@ public sealed partial class BodyPartRequirement : SurgeryEdgeRequirement
 
         var entMan = IoCManager.Resolve<IEntityManager>();
 
-        var doAfterArgs = new DoAfterArgs(entMan, user, Delay.Value, new SurgeryDoAfterEvent(targetEdge), limb, used: tool)
+        var doAfterArgs = new DoAfterArgs(entMan, user, Delay.Value, new SurgeryDoAfterEvent(targetEdge, bodyPart), limb, used: tool)
         {
             BreakOnMove = true,
         };
@@ -92,9 +80,6 @@ public sealed partial class BodyPartRequirement : SurgeryEdgeRequirement
         if (other is not BodyPartRequirement otherRequirement)
             return false;
 
-        if (BodyPart != otherRequirement.BodyPart)
-            return false;
-
         if (RequireAiming != otherRequirement.RequireAiming)
             return false;
 
@@ -105,7 +90,6 @@ public sealed partial class BodyPartRequirement : SurgeryEdgeRequirement
 
         merged = new BodyPartRequirement()
         {
-            BodyPart = BodyPart,
             RequireAiming = RequireAiming,
             Delay = delay
         };
@@ -115,7 +99,7 @@ public sealed partial class BodyPartRequirement : SurgeryEdgeRequirement
         var log = logMan.RootSawmill;
 
         if (Delay != otherRequirement.Delay)
-            log.Warning($"Surgery BodyPartRequirement has mismatching delays of {Delay} and {otherRequirement.Delay} with {BodyPart}, {RequireAiming}.");
+            log.Warning($"Surgery BodyPartRequirement has mismatching delays of {Delay} and {otherRequirement.Delay} with {RequireAiming}.");
 # endif
 
         return true;

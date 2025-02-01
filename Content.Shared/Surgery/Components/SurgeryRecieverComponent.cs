@@ -5,26 +5,17 @@ using Robust.Shared.Prototypes;
 namespace Content.Shared.Surgery.Components;
 
 [RegisterComponent, NetworkedComponent]
-public sealed partial class SurgeryRecieverComponent : Component
+public sealed partial class SurgeryRecieverComponent : Component, ISurgeryReciever
 {
-    /// <summary>
-    /// List of surgery graphs that will get merged into one <see cref=SurgeryRecieverComponent.Graph>
-    /// </summary>
     [DataField]
-    public List<ProtoId<SurgeryPrototype>> AvailableSurgeries = new();
-
-    /// <summary>
-    /// All the surgeries graphs merged into one graph.
-    /// </summary>
-    [ViewVariables]
-    public SurgeryGraph Graph = new();
+    public List<ProtoId<SurgeryPrototype>> AvailableSurgeries { get; set; } = new();
 
     [ViewVariables]
-    public SurgeryNode? CurrentNode;
+    public SurgeryGraph Graph { get; set; } = new();
 
-    /// <summary>
-    /// Keep track of doafters as they will need to be cancelled when we change node
-    /// </summary>
     [ViewVariables]
-    public List<DoAfterId> DoAfters = new();
+    public SurgeryNode? CurrentNode { get; set; }
+
+    [ViewVariables]
+    public List<DoAfterId> DoAfters { get; set; } = new();
 }

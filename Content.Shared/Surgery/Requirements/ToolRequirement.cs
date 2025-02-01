@@ -1,3 +1,4 @@
+using Content.Shared.Body.Part;
 using Content.Shared.DoAfter;
 using Content.Shared.Tools.Systems;
 using JetBrains.Annotations;
@@ -16,7 +17,7 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
     [DataField]
     public TimeSpan Delay = TimeSpan.FromSeconds(1f);
 
-    public override SurgeryEdgeState RequirementMet(EntityUid body, EntityUid limb, EntityUid user, EntityUid? tool)
+    public override SurgeryEdgeState RequirementMet(EntityUid body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart)
     {
         if (tool == null)
             return SurgeryEdgeState.Failed;
@@ -30,7 +31,7 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
         return SurgeryEdgeState.Failed;
     }
 
-    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid body, EntityUid limb, EntityUid user, EntityUid? tool, [NotNullWhen(true)] out DoAfterId? doAfterId)
+    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
     {
         doAfterId = null;
 
@@ -40,7 +41,7 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
         var entMan = IoCManager.Resolve<IEntityManager>();
         var toolSystem = entMan.System<SharedToolSystem>();
 
-        return toolSystem.UseTool(tool.Value, user, limb, Delay, Qualities, new SurgeryDoAfterEvent(targetEdge), out doAfterId);
+        return toolSystem.UseTool(tool.Value, user, limb, Delay, Qualities, new SurgeryDoAfterEvent(targetEdge, bodyPart), out doAfterId);
     }
 
     public override bool RequirementsMatch(SurgeryEdgeRequirement other, [NotNullWhen(true)] out SurgeryEdgeRequirement? merged)

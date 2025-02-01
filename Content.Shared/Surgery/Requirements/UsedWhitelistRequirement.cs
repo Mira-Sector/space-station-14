@@ -1,3 +1,4 @@
+using Content.Shared.Body.Part;
 using Content.Shared.DoAfter;
 using Content.Shared.Whitelist;
 using JetBrains.Annotations;
@@ -19,7 +20,7 @@ public sealed partial class UsedWhitelistRequirement : SurgeryEdgeRequirement
     [DataField]
     public TimeSpan? Delay;
 
-    public override SurgeryEdgeState RequirementMet(EntityUid body, EntityUid limb, EntityUid user, EntityUid? tool)
+    public override SurgeryEdgeState RequirementMet(EntityUid body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart)
     {
         if (tool == null)
             return SurgeryEdgeState.Failed;
@@ -36,7 +37,7 @@ public sealed partial class UsedWhitelistRequirement : SurgeryEdgeRequirement
         return SurgeryEdgeState.DoAfter;
     }
 
-    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid body, EntityUid limb, EntityUid user, EntityUid? tool, [NotNullWhen(true)] out DoAfterId? doAfterId)
+    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
     {
         doAfterId = null;
 
@@ -45,7 +46,7 @@ public sealed partial class UsedWhitelistRequirement : SurgeryEdgeRequirement
 
         var entMan = IoCManager.Resolve<IEntityManager>();
 
-        var doAfterArgs = new DoAfterArgs(entMan, user, Delay.Value, new SurgeryDoAfterEvent(targetEdge), limb, used: tool)
+        var doAfterArgs = new DoAfterArgs(entMan, user, Delay.Value, new SurgeryDoAfterEvent(targetEdge, bodyPart), limb, used: tool)
         {
             BreakOnMove = true,
         };

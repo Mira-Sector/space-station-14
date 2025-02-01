@@ -18,16 +18,19 @@ public sealed partial class SurgerySystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<SurgeryRecieverComponent, LimbInitEvent>(OnLimbInit);
+        SubscribeLocalEvent<SurgeryRecieverBodyComponent, BodyInitEvent>(OnBodyInit);
         SubscribeLocalEvent<SurgeryRecieverComponent, InteractUsingEvent>(OnLimbInteract);
         SubscribeLocalEvent<SurgeryRecieverBodyComponent, InteractUsingEvent>(OnBodyInteract);
 
-        SubscribeLocalEvent<SurgeryRecieverComponent, SurgeryDoAfterEvent>(OnDoAfter);
+        SubscribeLocalEvent<SurgeryRecieverComponent, SurgeryDoAfterEvent>(OnLimbDoAfter);
+        SubscribeLocalEvent<SurgeryRecieverBodyComponent, SurgeryDoAfterEvent>(OnBodyDoAfter);
     }
 
     private void OnLimbInit(EntityUid uid, SurgeryRecieverComponent component, LimbInitEvent args)
     {
         component.Graph = MergeGraphs(component.AvailableSurgeries);
-        component.Graph.TryGetStaringNode(out component.CurrentNode);
+        component.Graph.TryGetStaringNode(out var startingNode);
+        component.CurrentNode = startingNode;
 
         Dirty(uid, component);
 
@@ -38,18 +41,36 @@ public sealed partial class SurgerySystem : EntitySystem
         surgeryBodyComp.Limbs.Add(uid);
     }
 
+    // as no surgeries can be added from the limbs we dont need to listen to ComponentAdded
+    private void OnBodyInit(EntityUid uid, SurgeryRecieverBodyComponent component, BodyInitEvent args)
+    {
+        foreach (var surgeries in component.Surgeries)
+        {
+            surgeries.Surgeries.Graph = MergeGraphs(surgeries.Surgeries.AvailableSurgeries);
+            surgeries.Surgeries.Graph.TryGetStaringNode(out var startingNode);
+            surgeries.Surgeries.CurrentNode = startingNode;
+        }
+
+        Dirty(uid, component);
+    }
+
     private void OnLimbInteract(EntityUid uid, SurgeryRecieverComponent component, InteractUsingEvent args)
     {
         if (!TryComp<BodyPartComponent>(uid, out var bodyPartComp) || bodyPartComp.Body is not {} body)
             return;
 
-        TryTraverseGraph(uid, component, body, args.User, args.Used);
+        BodyPart bodyPart = new(bodyPartComp.PartType, bodyPartComp.Symmetry);
+
+        TryTraverseGraph(uid, component, body, args.User, args.Used, bodyPart);
+        Dirty(uid, component);
     }
 
     private void OnBodyInteract(EntityUid uid, SurgeryRecieverBodyComponent component, InteractUsingEvent args)
     {
         if (!TryComp<DamagePartSelectorComponent>(args.User, out var damageSelectorComp))
             return;
+
+        var limbHandled = false;
 
         foreach (var limb in component.Limbs)
         {
@@ -65,12 +86,41 @@ public sealed partial class SurgerySystem : EntitySystem
             if (partComp.Symmetry != damageSelectorComp.SelectedPart.Side)
                 continue;
 
+            BodyPart bodyPart = new(partComp.PartType, partComp.Symmetry);
+
             // may have multiple limbs so dont exit early
-            TryTraverseGraph(limb, surgeryComp, uid, args.User, args.Used);
+            limbHandled |= TryTraverseGraph(limb, surgeryComp, uid, args.User, args.Used, bodyPart);
+        }
+
+        if (limbHandled)
+            return;
+
+        // the body may have a surgery to persue instead
+        foreach (var surgeries in component.Surgeries)
+        {
+            if (surgeries.BodyPart.Type != damageSelectorComp.SelectedPart.Type)
+                continue;
+
+            if (surgeries.BodyPart.Side != damageSelectorComp.SelectedPart.Side)
+                continue;
+
+            if (TryTraverseGraph(uid, surgeries.Surgeries, uid, args.User, args.Used, surgeries.BodyPart))
+                return;
         }
     }
 
-    private void OnDoAfter(EntityUid uid, SurgeryRecieverComponent component, SurgeryDoAfterEvent args)
+    private void OnBodyDoAfter(EntityUid uid, SurgeryRecieverBodyComponent component, SurgeryDoAfterEvent args)
+    {
+        if (args.Cancelled || args.Handled)
+            return;
+
+        foreach (var surgeries in component.Surgeries)
+        {
+            OnDoAfter(null, uid, surgeries.Surgeries, args);
+        }
+    }
+
+    private void OnLimbDoAfter(EntityUid uid, SurgeryRecieverComponent component, SurgeryDoAfterEvent args)
     {
         if (args.Cancelled || args.Handled)
             return;
@@ -78,39 +128,50 @@ public sealed partial class SurgerySystem : EntitySystem
         if (!TryComp<BodyPartComponent>(uid, out var bodyPartComp) || bodyPartComp.Body is not {} body)
             return;
 
-        if (!component.Graph.TryFindNode(args.TargetEdge.Connection, out var newNode))
+        if (args.BodyPart.Type != bodyPartComp.PartType || args.BodyPart.Side != bodyPartComp.Symmetry)
+            return;
+
+        OnDoAfter(uid, body, component, args);
+    }
+
+    private void OnDoAfter(EntityUid? limb, EntityUid body, ISurgeryReciever surgeryReciever, SurgeryDoAfterEvent args)
+    {
+        if (!surgeryReciever.Graph.TryFindNode(args.TargetEdge.Connection, out var newNode))
             return;
 
         args.Handled = true;
 
-        DoNodeLeftSpecials(component.CurrentNode?.Special, body, uid, args.User, args.Used);
-        component.CurrentNode = newNode;
-        DoNodeReachedSpecials(component.CurrentNode?.Special, body, uid, args.User, args.Used);
+        DoNodeLeftSpecials(surgeryReciever.CurrentNode?.Special, body, limb, args.User, args.Used, args.BodyPart);
+        surgeryReciever.CurrentNode = newNode;
+        DoNodeReachedSpecials(surgeryReciever.CurrentNode?.Special, body, limb, args.User, args.Used, args.BodyPart);
 
-        component.DoAfters.Remove(args.DoAfter.Id);
-        CancelDoAfters(component);
-
-        Dirty(uid, component);
+        surgeryReciever.DoAfters.Remove(args.DoAfter.Id);
+        CancelDoAfters(surgeryReciever);
     }
 
-    public bool TryTraverseGraph(EntityUid uid, SurgeryRecieverComponent surgery, EntityUid body, EntityUid user, EntityUid used)
+    public bool TryTraverseGraph(EntityUid? limb, ISurgeryReciever surgery, EntityUid body, EntityUid user, EntityUid used, BodyPart bodyPart)
     {
-        if (surgery.CurrentNode == null && !surgery.Graph.TryGetStaringNode(out surgery.CurrentNode))
-            return false;
+        if (surgery.CurrentNode == null)
+        {
+            if (!surgery.Graph.TryGetStaringNode(out var startingNode))
+                return false;
+
+            surgery.CurrentNode = startingNode;
+        }
 
         foreach (var edge in surgery.CurrentNode.Edges)
         {
             // when merging the graph we made sure there arent multiple edges to traverse
-            if (TryEdge(uid, surgery, edge, body, user, used))
+            if (TryEdge(limb, surgery, edge, body, user, used, bodyPart))
                 return true;
         }
 
         return false;
     }
 
-    public bool TryEdge(EntityUid uid, SurgeryRecieverComponent surgery, SurgeryEdge edge, EntityUid body, EntityUid user, EntityUid used)
+    public bool TryEdge(EntityUid? limb, ISurgeryReciever surgery, SurgeryEdge edge, EntityUid body, EntityUid user, EntityUid used, BodyPart bodyPart)
     {
-        var requirementsPassed = edge.Requirement.RequirementMet(body, uid, user, used);
+        var requirementsPassed = edge.Requirement.RequirementMet(body, limb, user, used, bodyPart);
 
         if (requirementsPassed == SurgeryEdgeState.Failed)
             return false;
@@ -119,57 +180,54 @@ public sealed partial class SurgerySystem : EntitySystem
 
         if (requirementsPassed == SurgeryEdgeState.DoAfter)
         {
-            var doAfterStarted = edge.Requirement.StartDoAfter(_doAfter, edge, body, uid, user, used, out var doAfterId);
+            var doAfterStarted = edge.Requirement.StartDoAfter(_doAfter, edge, body, limb, user, used, bodyPart, out var doAfterId);
 
             if (doAfterId != null)
                 surgery.DoAfters.Add(doAfterId.Value);
 
-            Dirty(uid, surgery);
             return doAfterStarted;
         }
 
         if (!surgery.Graph.TryFindNode(edge.Connection, out var newNode))
             return false;
 
-        DoNodeLeftSpecials(surgery.CurrentNode?.Special, body, uid, user, used);
+        DoNodeLeftSpecials(surgery.CurrentNode?.Special, body, limb, user, used, bodyPart);
         surgery.CurrentNode = newNode;
-        DoNodeReachedSpecials(surgery.CurrentNode?.Special, body, uid, user, used);
-
-        Dirty(uid, surgery);
+        DoNodeReachedSpecials(surgery.CurrentNode?.Special, body, limb, user, used, bodyPart);
 
         return true;
     }
 
-    private void DoNodeReachedSpecials(SurgerySpecial[]? specials, EntityUid body, EntityUid limb, EntityUid user, EntityUid? used)
+    private void DoNodeReachedSpecials(SurgerySpecial[]? specials, EntityUid body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
     {
         if (specials == null)
             return;
 
         foreach (var special in specials)
         {
-            special.NodeReached(body, limb, user, used);
+            special.NodeReached(body, limb, user, used, bodyPart);
         }
     }
 
-    private void DoNodeLeftSpecials(SurgerySpecial[]? specials, EntityUid body, EntityUid limb, EntityUid user, EntityUid? used)
+    private void DoNodeLeftSpecials(SurgerySpecial[]? specials, EntityUid body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
     {
         if (specials == null)
             return;
 
         foreach (var special in specials)
         {
-            special.NodeLeft(body, limb, user, used);
+            special.NodeLeft(body, limb, user, used, bodyPart);
         }
     }
 
-    private void CancelDoAfters(SurgeryRecieverComponent component)
+    private void CancelDoAfters(ISurgeryReciever surgeryReciever)
     {
-        foreach (var doAfter in component.DoAfters)
+        foreach (var doAfter in surgeryReciever.DoAfters)
         {
             _doAfter.Cancel(doAfter);
         }
 
-        component.DoAfters.Clear();
+        surgeryReciever.DoAfters.Clear();
     }
 
 }

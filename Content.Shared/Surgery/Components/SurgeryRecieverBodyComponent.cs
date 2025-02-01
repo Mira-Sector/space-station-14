@@ -1,4 +1,7 @@
+using Content.Shared.Body.Part;
+using Content.Shared.DoAfter;
 using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Surgery.Components;
 
@@ -11,7 +14,39 @@ namespace Content.Shared.Surgery.Components;
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class SurgeryRecieverBodyComponent : Component
 {
+    /// <summary>
+    /// Used for surgeries that need to be targeted but on a limb that doesn't exist
+    /// </summary>
+    [DataField]
+    public HashSet<SurgeryBodyReciever> Surgeries = new();
+
     [ViewVariables, AutoNetworkedField]
     public HashSet<EntityUid> Limbs = new();
+}
 
+
+[DataDefinition]
+public sealed partial class SurgeryBodyReciever
+{
+    [DataField(required: true)]
+    public BodyPart BodyPart = default!;
+
+    [DataField(required: true)]
+    public SurgeryBodyPartReciever Surgeries = new();
+}
+
+[DataDefinition]
+public sealed partial class SurgeryBodyPartReciever : ISurgeryReciever
+{
+    [DataField]
+    public List<ProtoId<SurgeryPrototype>> AvailableSurgeries { get; set; } = new();
+
+    [ViewVariables]
+    public SurgeryGraph Graph { get; set; } = new();
+
+    [ViewVariables]
+    public SurgeryNode? CurrentNode { get; set; }
+
+    [ViewVariables]
+    public List<DoAfterId> DoAfters { get; set; } = new();
 }
