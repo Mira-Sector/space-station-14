@@ -410,9 +410,6 @@
   components:
   - type: Sprite
     state: chair-cheese
-  - type: Construction
-    graph: Seat
-    node: chairCheese
   - type: Damageable
     damageModifierSet: Wood
   - type: Destructible
