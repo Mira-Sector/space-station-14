@@ -18,6 +18,12 @@ public sealed partial class StationAiHolderComponent : Component
     [DataField]
     public bool UpdateSprite = true;
 
+    /// <summary>
+    /// Are we empty because the AI died.
+    /// </summary>
+    [DataField]
+    public bool AiDied = false;
+
     [DataField]
     public Dictionary<StationAiState, Dictionary<StationAiVisualLayers, SpriteSpecifier>> Visuals = new();
 }

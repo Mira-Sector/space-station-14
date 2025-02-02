@@ -166,6 +166,7 @@
   - type: ConditionalSpawner
     prototypes:
       - MobBingus
+      - MobLordBingus
 
 - type: entity
   name: Space Cat Spawner
@@ -208,6 +209,7 @@
       - MobCatException
       - MobCatFloppa
       - MobBingus
+      - MobLordBingus
 
 - type: entity
   name: Generic Cat Spawner

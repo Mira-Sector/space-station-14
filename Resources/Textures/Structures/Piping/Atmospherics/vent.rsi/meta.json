@@ -1,37 +1,139 @@
 {
-   "version":1,
-   "size":{
-      "x":32,
-      "y":32
+   "version": 1,
+   "size": {
+        "x":32,
+        "y":32
    },
-   "license":"CC-BY-SA-3.0",
-   "copyright":"Taken from https://github.com/BeeStation/BeeStation-Hornet at commit 4ccd79de285e79e504308bcd6fa5908d6b7685f7",
-   "states":[
-      {
-         "name":"vent_passive",
-         "directions" : 4
-      },
-      {
-         "name":"vent_off",
-         "directions" : 4
-      },
-      {
-         "name":"vent_welded",
-         "directions" : 4
-      },
-      {
-         "name":"vent_out",
-         "directions" : 4,
-         "delays":[ [ 0.08, 0.08, 0.08, 0.08 ], [ 0.08, 0.08, 0.08, 0.08 ], [ 0.08, 0.08, 0.08, 0.08 ], [ 0.08, 0.08, 0.08, 0.08 ] ]
-      },
-      {
-         "name":"vent_in",
-         "directions" : 4,
-         "delays":[ [ 0.08, 0.08, 0.08, 0.08 ], [ 0.08, 0.08, 0.08, 0.08 ], [ 0.08, 0.08, 0.08, 0.08 ], [ 0.08, 0.08, 0.08, 0.08 ] ]
-      },
-      {
-         "name":"vent_lockout",
-         "directions" : 4
-      }
-   ]
+   "license": "CC-BY-SA-3.0",
+   "copyright": "Taken from tgstation at https://github.com/tgstation/tgstation/blob/9b308c274d206fecb0c04165405130255866b8c9/icons/obj/atmospherics/components/unary_devices.dmi, vent_passive and vent_lockout modified by Doctor-Cpu",
+   "states": [
+    {
+        "name": "vent_in-off",
+        "delays": [
+            [
+                0.03,
+                0.04,
+                0.05,
+                0.06,
+                0.08,
+                0.1,
+                0.15,
+                0.2,
+                0.3,
+                1
+            ]
+        ]
+    },
+    {
+        "name": "vent_in-starting",
+        "delays": [
+            [
+                0.3,
+                0.2,
+                0.15,
+                0.1,
+                0.08,
+                0.06,
+                0.05,
+                0.04
+            ]
+        ]
+    },
+    {
+        "name": "vent_in",
+        "delays": [
+            [
+                0.03,
+                0.03,
+                0.03,
+                0.03,
+                0.03,
+                0.03
+            ]
+        ]
+    },
+    {
+        "name": "vent_lockout"
+    },
+    {
+        "name": "vent_lockout-off",
+        "delays": [
+            [
+                0.03,
+                0.04,
+                0.05,
+                0.06,
+                0.08,
+                0.1,
+                0.15,
+                0.2,
+                0.3,
+                1
+            ]
+        ]
+    },
+    {
+        "name": "vent_off"
+    },
+    {
+        "name": "vent_out-off",
+        "delays": [
+            [
+                0.03,
+                0.04,
+                0.05,
+                0.06,
+                0.08,
+                0.1,
+                0.15,
+                0.2,
+                0.3,
+                0.1
+            ]
+        ]
+    },
+    {
+        "name": "vent_out-starting",
+        "delays": [
+            [
+                0.3,
+                0.2,
+                0.15,
+                0.1,
+                0.08,
+                0.06,
+                0.05,
+                0.04
+            ]
+        ]
+    },
+    {
+        "name": "vent_out",
+        "delays": [
+            [
+                0.03,
+                0.03,
+                0.03,
+                0.03,
+                0.03,
+                0.03
+            ]
+        ]
+    },
+    {
+        "name": "vent_passive",
+        "delays": [
+            [
+                0.03,
+                0.03,
+                0.03,
+                0.03,
+                0.03,
+                0.03
+            ]
+        ]
+    },
+    {
+        "name": "vent_welded"
+    }]
 }

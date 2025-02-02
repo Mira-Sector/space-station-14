@@ -110,6 +110,13 @@ public sealed partial class StationAiSystem
 
         if (TryGetInsertedAI((uid, core), out var ai))
             EntityManager.DeleteEntity(ai);
+
+        if (!TryComp<StationAiHolderComponent>(uid, out var holderComp))
+            return;
+
+        holderComp.AiDied = true;
+        Dirty(uid, holderComp);
+        UpdateAppearance((uid, holderComp));
     }
 
     private void TurnOn(EntityUid uid, StationAiCoreComponent core)
