@@ -410,6 +410,17 @@
   components:
   - type: Sprite
     state: chair-cheese
+  - type: FlavorProfile
+    flavors:
+    - cheesy
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 22.5
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 22.5
+  - type: Food
   - type: Damageable
     damageModifierSet: Wood
   - type: Destructible
