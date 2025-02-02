@@ -57,3 +57,99 @@
     state: icon
   - type: Item
     sprite: Objects/Misc/Handy_Flags/pirate_handy_flag.rsi
+
+- type: entity
+  parent: BaseItem
+  id: LesbianHandyFlag
+  name: lesbian handheld flag
+  description: "Come on, show these people how much you love WOMEN!"
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/Handy_Flags/lesbian_handy_flag.rsi
+    state: icon
+  - type: Item
+    sprite: Objects/Misc/Handy_Flags/lesbian_handy_flag.rsi
+
+- type: entity
+  parent: BaseItem
+  id: TransexualHandyFlag
+  name: trans handheld flag
+  description: "Holding this, you feel some kind of power... And need for pickles?"
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/Handy_Flags/transexual_handy_flag_rsi
+    state: icon
+  - type: Item
+    sprite: Objects/Misc/Handy_Flags/transexual_handy_flag_rsi
+
+- type: entity
+  parent: BaseItem
+  id: AromanticismHandyFlag
+  name: aromantic handheld flag
+  description: "Show these people how neutral you feel!"
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/Handy_Flags/aromanticism_handy_flag.rsi
+    state: icon
+  - type: Item
+    sprite: Objects/Misc/Handy_Flags/aromanticism_handy_flag.rsi
+
+- type: entity
+  parent: BaseItem
+  id: AsexualityHandyFlag
+  name: asexual handheld flag
+  description: "Show these people how neutral you feel!²"
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/Handy_Flags/asexuality_handy_flag.rsi
+    state: icon
+  - type: Item
+    sprite: Objects/Misc/Handy_Flags/asexuality_handy_flag.rsi
+
+- type: entity
+  parent: BaseItem
+  id: BisexualHandyFlag
+  name: bisexual handheld flag
+  description: "It's time for trouble, and make it double!"
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/Handy_Flags/bisexual_handy_flag.rsi
+    state: icon
+  - type: Item
+    sprite: Objects/Misc/Handy_Flags/bisexual_handy_flag.rsi
+
+- type: entity
+  parent: BaseItem
+  id: NonbinaryHandyFlag
+  name: non-binary handheld flag
+  description: "Boy, girl, what's the difference? Let's be neither!"
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/Handy_Flags/nonbinary_handy_flag.rsi
+    state: icon
+  - type: Item
+    sprite: Objects/Misc/Handy_Flags/nonbinary_handy_flag.rsi
+
+- type: entity
+  parent: BaseItem
+  id: PansexualityHandyFlag
+  name: pansexual handheld flag
+  description: "Don't let whoever is holding this cook..."
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/Handy_Flags/pansexual_handy_flag.rsi
+    state: icon
+  - type: Item
+    sprite: Objects/Misc/Handy_Flags/pansexual_handy_flag.rsi
+
+- type: entity
+  parent: BaseItem
+  id: IntersexHandyFlag
+  name: intersex handheld flag
+  description: "Circle?"
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/Handy_Flags/intersex_handy_flag.rsi
+    state: icon
+  - type: Item
+    sprite: Objects/Misc/Handy_Flags/intersex_handy_flag.rsi
