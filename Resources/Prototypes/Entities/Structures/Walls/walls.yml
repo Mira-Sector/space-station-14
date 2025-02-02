@@ -1540,9 +1540,6 @@
           Quantity: 22.5
   - type: Icon
     sprite: Structures/Walls/cheese.rsi
-  - type: Construction
-    graph: Girder
-    node: cheeseWall
   - type: Food
   - type: Destructible
     thresholds:
