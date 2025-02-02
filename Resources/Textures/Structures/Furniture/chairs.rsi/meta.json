@@ -99,9 +99,9 @@
 		"name": "brass_chair",
 		"directions": 4
 	},
-      {
-          "name": "chair-cheese",
-          "directions": 4
-      }
+    {
+        "name": "chair-cheese",
+        "directions": 4
+    }
   ]
 }
