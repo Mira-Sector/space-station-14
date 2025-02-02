@@ -402,3 +402,35 @@
             max: 4
   - type: StaticPrice
     price: 50
+
+- type: entity
+  name: cheese chair
+  id: ChairCheese
+  parent: UnanchoredChairBase
+  components:
+  - type: Sprite
+    state: chair-cheese
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 10
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          FoodCheeseSlice:
+            min: 2
+            max: 2
+  - type: Tag
+    tags:
+    - Cheese
+  - type: StaticPrice
+    price: 150
+

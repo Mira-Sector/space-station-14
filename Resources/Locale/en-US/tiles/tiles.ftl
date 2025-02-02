@@ -129,3 +129,4 @@ tiles-jungle-astro-grass = jungle astro-grass
 tiles-astro-ice = astro-ice
 tiles-astro-snow = astro-snow
 tiles-wood-large = large wood
+tiles-cheese-floor = cheese floor
