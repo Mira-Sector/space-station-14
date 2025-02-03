@@ -1,0 +1,350 @@
+- type: entity
+  name: big cheese
+  id: MobCheeseKing
+  parent: [ SimpleMobBase, MobCombat ]
+  description: WHAT THE FUCK WHAT THE FUCK WHAT THE FU
+  components:
+  - type: CombatMode
+  - type: MovementSpeedModifier
+    baseWalkSpeed : 3.50
+    baseSprintSpeed : 5.50
+  - type: InputMover
+  - type: MobMover
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Reactive
+    groups:
+      Flammable: [Touch]
+      Extinguish: [Touch]
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: Sprite
+    drawdepth: SmallMobs
+    sprite: Mobs\Aliens\cheese_king.rsi
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      state: cheeseking
+  - type: Physics
+    bodyType: KinematicController
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.3
+        density: 230
+        mask:
+        - SmallMobMask
+        layer:
+        - SmallMobLayer
+  - type: MobState
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      300: Dead
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    animation: WeaponArcBite
+    soundHit:
+        path: /Audio/Effects/bite.ogg
+    damage:
+      types:
+        Slash: 12
+        Piercing: 8
+  - type: Body
+    prototype: cheese
+  - type: Hunger # probably should be prototyped
+    thresholds:
+      Overfed: 500
+      Okay: 150
+      Peckish: 100
+      Starving: 50
+      Dead: 0
+    baseDecayRate: 0.01666666666
+  - type: Thirst
+    thresholds:
+      OverHydrated: 1000
+      Okay: 900
+      Thirsty: 600
+      Parched: 500
+      Dead: 0
+    baseDecayRate: 0.1
+  - type: DamageStateVisuals
+    rotate: true
+    states:
+      Alive:
+        Base: cheese
+      Critical:
+        Base: critical
+      Dead:
+        Base: dead
+  - type: GhostRole
+    makeSentient: true
+    name: cheese king
+    description: Take over the station with your CHEESE! Don't question how this works.
+    rules: ghost-role-information-freeagent-rules
+    raffle:
+      settings: default
+  - type: GhostTakeoverAvailable
+  - type: Tag
+    tags:
+      - CannotSuicide
+      - FootstepSound
+  - type: NoSlip
+  - type: CheeseKing
+    hungerPerArmyUse: 10
+    hungerPerDomainUse: 25
+  - type: MobsterAccent
+  - type: Speech
+    speechVerb: SmallMob
+  - type: Butcherable
+    spawned:
+    - id: FoodCheese
+      amount: 1
+  - type: MobPrice
+    price: 2500 # cheese wealth
+  - type: RandomMetadata
+    nameSegments:
+    - RegalRatNameKingdom
+    - RegalRatNameTitle
+  - type: GuideHelp
+    guides:
+    - MinorAntagonists
+  - type: Grammar
+    attributes:
+      gender: male
+  - type: Sharp
+
+- type: entity
+  name: small sentient cheese
+  id: MobCheeseServant
+  parent: [ SimpleMobBase, MobCombat ]
+  description: How? How does this work? Why? Why would someone make this?
+  categories: [ HideSpawnMenu ] #Must be configured to a King or the AI breaks.
+  components:
+  - type: CombatMode
+  - type: MovementSpeedModifier
+    baseWalkSpeed : 4
+    baseSprintSpeed : 4.5
+  - type: InputMover
+  - type: MobMover
+  - type: HTN
+    rootTask:
+      task: CheeseServantCompound
+    blackboard:
+      IdleRange: !type:Single
+        3.5
+      FollowCloseRange: !type:Single
+        2.0
+      FollowRange: !type:Single
+        3.0
+  - type: Reactive
+    groups:
+      Flammable: [Touch]
+      Extinguish: [Touch]
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: Sprite
+    drawdepth: SmallMobs
+    sprite: Mobs/Aliens/cheese.rsi
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base", "movement"]
+      state: cheese
+
+  - type: SpriteMovement
+    movementLayers:
+      movement:
+        state: cheese-moving
+    noMovementLayers:
+      movement:
+        state: cheese
+  - type: Physics
+    bodyType: KinematicController
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.2
+        density: 30 #Bulky by cheese standards...
+        mask:
+        - SmallMobMask
+        layer:
+        - SmallMobLayer
+  - type: MobState
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      20: Critical
+      45: Dead
+  - type: Stamina
+    critThreshold: 60
+  - type: MeleeWeapon
+    angle: 0
+    animation: WeaponArcBite
+    soundHit:
+        path: /Audio/Effects/bite.ogg
+    damage:
+      types:
+        Slash: 5
+        Piercing: 3
+  - type: Body
+    prototype: cheese
+  - type: Hunger # probably should be prototyped
+    thresholds:
+      Overfed: 200
+      Okay: 150
+      Peckish: 100
+      Starving: 50
+      Dead: 0
+    baseDecayRate: 0.01666666666
+  - type: Thirst
+    thresholds:
+      OverHydrated: 600
+      Okay: 450
+      Thirsty: 300
+      Parched: 150
+      Dead: 0
+    baseDecayRate: 0.1
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: cheese
+      Critical:
+        Base: dead
+      Dead:
+        Base: splat
+  - type: Butcherable
+    spawned:
+    - id: FoodCheeseSlice
+      amount: 1
+  - type: Vocal
+    sounds:
+      Male: Mouse
+      Female: Mouse
+      Unsexed: Mouse
+    wilhelmProbability: 0.001
+  - type: Tag
+    tags:
+      - CannotSuicide
+      - FootstepSound
+  - type: NoSlip
+  - type: MobPrice
+    price: 750 # cheese wealth
+  - type: MobsterAccent
+    isBoss: false
+  - type: Speech
+    speechVerb: SmallMob
+  - type: GuideHelp
+    guides:
+    - MinorAntagonists
+  - type: FireVisuals
+    sprite: Mobs/Effects/onfire.rsi
+    normalState: Mouse_burning
+
+- type: weightedRandomEntity
+  id: CheeseKingLoot
+  weights:
+    RandomSpawner100: 25 #garbage
+    FoodCheese: 60 #food
+    IngotGold1: 15 #loot
+
+- type: entity
+  id: ActionCheeseKingRaiseArmy
+  name: Raise Army
+  description: Spend some hunger to summon an allied cheese to help defend you.
+  components:
+  - type: InstantAction
+    useDelay: 4
+    icon:
+      sprite: Interface/Actions/actions_rat_king.rsi
+      state: ratKingArmy
+    event: !type:RatKingRaiseArmyActionEvent
+
+- type: entity
+  id: ActionCheeseKingDomain
+  name: Rat King's Domain
+  description: Spend some hunger to release a cloud of ammonia into the air.
+  components:
+  - type: InstantAction
+    useDelay: 6
+    icon:
+      sprite: Interface/Actions/actions_rat_king.rsi
+      state: ratKingDomain
+    event: !type:RatKingDomainActionEvent
+
+- type: entity
+  id: ActionCheeseKingOrderStay
+  name: Stay
+  description: Command your army to stand in place.
+  components:
+  - type: InstantAction
+    useDelay: 1
+    icon:
+      sprite: Interface/Actions/actions_rat_king.rsi
+      state: stayOff
+    iconOn:
+      sprite: Interface/Actions/actions_rat_king.rsi
+      state: stay
+    event:
+      !type:RatKingOrderActionEvent
+        type: Stay
+    priority: 5
+
+- type: entity
+  id: ActionCheeseKingOrderFollow
+  name: Follow
+  description: Command your army to follow you around.
+  components:
+  - type: InstantAction
+    useDelay: 1
+    icon:
+      sprite: Interface/Actions/actions_rat_king.rsi
+      state: followOff
+    iconOn:
+      sprite: Interface/Actions/actions_rat_king.rsi
+      state: follow
+    event:
+      !type:RatKingOrderActionEvent
+      type: Follow
+    priority: 6
+
+- type: entity
+  id: ActionCheeseKingOrderCheeseEm
+  name: Cheese 'Em
+  description: Command your army to attack whoever you point at.
+  components:
+  - type: InstantAction
+    useDelay: 1
+    icon:
+      sprite: Interface/Actions/actions_rat_king.rsi
+      state: attackOff
+    iconOn:
+      sprite: Interface/Actions/actions_rat_king.rsi
+      state: attack
+    event:
+      !type:RatKingOrderActionEvent
+      type: CheeseEm
+    priority: 7
+
+- type: entity
+  id: ActionCheeseKingOrderLoose
+  name: Loose
+  description: Command your army to act at their own will.
+  components:
+  - type: InstantAction
+    useDelay: 1
+    icon:
+      sprite: Interface/Actions/actions_rat_king.rsi
+      state: looseOff
+    iconOn:
+      sprite: Interface/Actions/actions_rat_king.rsi
+      state: loose
+    event:
+      !type:RatKingOrderActionEvent
+      type: Loose
+    priority: 8
