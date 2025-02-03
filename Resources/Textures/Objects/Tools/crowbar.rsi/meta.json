@@ -1,7 +1,7 @@
 {
   "version": 1,
   "license": "CC-BY-SA-3.0",
-  "copyright": "Taken from tgstation at https://github.com/tgstation/tgstation/commit/eea0599511b088fdab9d43e562210cdbd51c6a98, cover is edited by Ubaser.",
+  "copyright": "Taken from tgstation at https://github.com/tgstation/tgstation/commit/eea0599511b088fdab9d43e562210cdbd51c6a98, cover is edited by Ubaser, modified into cheese by SillyGabe",
   "size": {
     "x": 32,
     "y": 32
@@ -51,6 +51,18 @@
     },
     {
       "name": "yellow-storage"
+    },
+    {
+      "name": "cheese-icon"
+    },
+    {
+      "name": "cheese-storage"
+    },
+    {
+      "name": "cheese-inhand-right"
+    },
+    {
+      "name": "cheese-inhand-left"
     }
   ]
 }
