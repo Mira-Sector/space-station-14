@@ -1,6 +1,7 @@
 using System.Net;
 using Content.Server.Database;
 using Content.Shared.CCVar;
+using Content.Shared.Chat;
 using Content.Shared.Info;
 using Robust.Shared.Configuration;
 using Robust.Shared.Network;
@@ -12,6 +13,7 @@ public sealed class RulesManager
     [Dependency] private readonly IServerDbManager _dbManager = default!;
     [Dependency] private readonly INetManager _netManager = default!;
     [Dependency] private readonly IConfigurationManager _cfg = default!;
+    [Dependency] private readonly ISharedChatManager _chat = default!;
 
     private static DateTime LastValidReadTime => DateTime.UtcNow - TimeSpan.FromDays(60);
 
@@ -41,6 +43,9 @@ public sealed class RulesManager
 
     private async void OnRulesAccepted(RulesAcceptedMessage message)
     {
+        if (message.Forced)
+            _chat.SendAdminAlert($"Player: {message.MsgChannel.UserName} fucked the rules");
+
         var date = DateTime.UtcNow;
         await _dbManager.SetLastReadRules(message.MsgChannel.UserId, date);
     }
