@@ -1557,3 +1557,31 @@
   - type: IconSmooth
     key: walls
     base: cheese
+
+- type: entity
+  id: WallInvisibleAdmeme
+  name: invisible wall
+  suffix: invisible wall [Admeme]
+  components:
+  - type: Tag
+    tags:
+    - Wall
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,0.5,0.5"
+        mask:
+        - FullTileMask
+        layer:
+        - GlassLayer
+  - type: Airtight
+  - type: Sprite
+    sprite: Structures/Walls/invisible.rsi
+  placement:
+    mode: SnapgridCenter
+    snap:
+    - Wall

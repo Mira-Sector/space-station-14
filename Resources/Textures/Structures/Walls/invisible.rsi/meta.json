@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "size":
+  {
+    "x": 32,
+    "y": 32
+  },
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Made by SillyGabe",
+  "states":
+  [{
+    "name": "full"
+  },
+  {
+    "name": "invisible0",
+    "directions": 4
+  },
+  {
+    "name": "invisible1",
+    "directions": 4
+  },
+  {
+    "name": "invisible2",
+    "directions": 4
+  },
+  {
+    "name": "invisible3",
+    "directions": 4
+  },
+  {
+    "name": "invisible4",
+    "directions": 4
+  },
+  {
+    "name": "invisible5",
+    "directions": 4
+  },
+  {
+    "name": "invisible6",
+    "directions": 4
+  },
+  {
+      "name": "invisible7",
+      "directions": 4
+  },
+  {
+    "name": "icon",
+  }]
+}
