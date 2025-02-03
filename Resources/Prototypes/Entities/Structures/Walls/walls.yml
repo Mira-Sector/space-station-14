@@ -1545,7 +1545,7 @@
     thresholds:
     - trigger:
         !type:DamageTrigger
-        damage: 15 # weak
+        damage: 30 # weak
       behaviors:
       - !type:SpawnEntitiesBehavior
         spawn:
@@ -1557,29 +1557,8 @@
   - type: IconSmooth
     key: walls
     base: cheese
-
-- type: entity
-  id: WallInvisibleAdmeme
-  name: invisible wall
-  suffix: invisible wall [Admeme] #This makes it be called "invisible wall (invisible wall [admeme]), but doesn't show up on the menu otherwise.
-  placement:
-    mode: SnapgridCenter
-    snap:
-    - Wall
-  components:
-  - type: Tag
-    tags:
-    - Wall
-  - type: Physics
-    bodyType: Static
-  - type: Fixtures
-    fixtures:
-      fix1:
-        shape:
-          !type:PhysShapeAabb
-          bounds: "-0.5,-0.5,0.5,0.5"
-        mask:
-        - FullTileMask
-        layer:
-        - GlassLayer
-  - type: Airtight
+  - type: PassiveDamage # Cheese regeneration
+    damageCap: 30
+    damage:
+      groups:
+        Structural: -5
