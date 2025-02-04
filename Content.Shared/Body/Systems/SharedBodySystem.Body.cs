@@ -128,7 +128,6 @@ public partial class SharedBodySystem
     {
         // Setup the initial container.
         ent.Comp.RootContainer.Container = Containers.EnsureContainer<ContainerSlot>(ent, BodyRootContainerId);
-        _alerts.ShowAlert(ent.Owner, ent.Comp.Alert);
     }
 
     private void OnBodyRemove(Entity<BodyComponent> ent, ref ComponentRemove args)
@@ -153,7 +152,15 @@ public partial class SharedBodySystem
         {
             var limbEv= new LimbInitEvent(partComp);
             RaiseLocalEvent(partUid, limbEv);
+
+            if (!HasComp<DamageableComponent>(partUid) || !HasComp<BodyPartThresholdsComponent>(partUid))
+                continue;
+
+            var bodyPart = new BodyPart(partComp.PartType, partComp.Symmetry);
+            component.AlertLayers.Add(bodyPart, BodyPartToLayer(bodyPart));
         }
+
+        _alerts.ShowAlert(uid, component.Alert);
     }
 
     private void MapInitBody(EntityUid bodyEntity, BodyPrototype prototype)

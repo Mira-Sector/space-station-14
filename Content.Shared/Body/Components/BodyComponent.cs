@@ -47,4 +47,7 @@ public sealed partial class BodyComponent : Component
 
     [DataField]
     public ProtoId<AlertPrototype> Alert = "LimbHealth";
+
+    [ViewVariables, AutoNetworkedField]
+    public Dictionary<BodyPart, BodyPartLayer> AlertLayers = new();
 }
