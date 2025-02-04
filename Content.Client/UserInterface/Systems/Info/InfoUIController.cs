@@ -39,7 +39,7 @@ public sealed class InfoUIController : UIController, IOnStateExited<GameplayStat
             "",
             (_, _, _) =>
         {
-            OnAcceptPressed();
+            OnAcceptPressed(true);
         });
     }
 
@@ -83,7 +83,15 @@ public sealed class InfoUIController : UIController, IOnStateExited<GameplayStat
 
     private void OnAcceptPressed()
     {
-        _netManager.ClientSendMessage(new RulesAcceptedMessage());
+        OnAcceptPressed(false);
+    }
+
+    private void OnAcceptPressed(bool forced)
+    {
+        _netManager.ClientSendMessage(new RulesAcceptedMessage
+        {
+            Forced = forced
+        });
 
         _rulesPopup?.Orphan();
         _rulesPopup = null;

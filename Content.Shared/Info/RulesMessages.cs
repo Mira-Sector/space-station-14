@@ -1,4 +1,4 @@
-﻿using Lidgren.Network;
+using Lidgren.Network;
 using Robust.Shared.Network;
 using Robust.Shared.Serialization;
 
@@ -35,13 +35,17 @@ public sealed class SendRulesInformationMessage : NetMessage
 /// </summary>
 public sealed class RulesAcceptedMessage : NetMessage
 {
+    public bool Forced { get; set; }
+
     public override MsgGroups MsgGroup => MsgGroups.Command;
 
     public override void ReadFromBuffer(NetIncomingMessage buffer, IRobustSerializer serializer)
     {
+        Forced = buffer.ReadBoolean();
     }
 
     public override void WriteToBuffer(NetOutgoingMessage buffer, IRobustSerializer serializer)
     {
+        buffer.Write(Forced);
     }
 }
