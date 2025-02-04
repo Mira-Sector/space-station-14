@@ -906,7 +906,7 @@
   id: TableCheese
   parent: CounterBase
   name: cheese table
-  description: Woud look complete with a cheese chair! But seriously, what..?
+  description: Gouda taste good!
   components:
   - type: Sprite
     sprite: Structures/Furniture/Tables/cheese.rsi
@@ -941,7 +941,7 @@
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
   - type: IconSmooth
-    key: countercheese
+    key: tablecheese
     base: state_
   - type: FlavorProfile
     flavors:
