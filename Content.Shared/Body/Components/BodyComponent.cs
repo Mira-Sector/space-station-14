@@ -1,4 +1,5 @@
 using Content.Shared.Alert;
+using Content.Shared.Body.Part;
 using Content.Shared.Body.Prototypes;
 using Content.Shared.Body.Systems;
 using Robust.Shared.Audio;
@@ -24,10 +25,11 @@ public sealed partial class BodyComponent : Component
     /// <remarks>
     /// Typically is the torso.
     /// </remarks>
-    [ViewVariables] public ContainerSlot RootContainer = default!;
+    [ViewVariables]
+    public (BodyPart BodyPart, ContainerSlot Container) RootContainer = default!;
 
     [ViewVariables]
-    public string RootPartSlot => RootContainer.ID;
+    public string RootPartSlot => RootContainer.Container.ID;
 
     [DataField, AutoNetworkedField]
     public SoundSpecifier GibSound = new SoundCollectionSpecifier("gib");

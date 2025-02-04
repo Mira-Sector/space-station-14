@@ -40,7 +40,7 @@ public sealed partial class BodyPartRequirement : SurgeryEdgeRequirement
 
             if (bodyPart != null)
             {
-                if (damageSelectorComp.SelectedPart != bodyPart)
+                if (damageSelectorComp.SelectedPart.Type != bodyPart.Type || damageSelectorComp.SelectedPart.Side != bodyPart.Side)
                     return SurgeryEdgeState.Failed;
             }
             else

@@ -98,12 +98,12 @@ public sealed partial class BodyPartComponent : Component
 public partial struct BodyPartSlot
 {
     public string Id;
-    public BodyPartType Type;
+    public BodyPart BodyPart;
 
-    public BodyPartSlot(string id, BodyPartType type)
+    public BodyPartSlot(string id, BodyPart bodyPart)
     {
         Id = id;
-        Type = type;
+        BodyPart = bodyPart;
     }
 };
 

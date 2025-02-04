@@ -127,7 +127,7 @@ public partial class SharedBodySystem
     private void OnBodyInit(Entity<BodyComponent> ent, ref ComponentInit args)
     {
         // Setup the initial container.
-        ent.Comp.RootContainer = Containers.EnsureContainer<ContainerSlot>(ent, BodyRootContainerId);
+        ent.Comp.RootContainer.Container = Containers.EnsureContainer<ContainerSlot>(ent, BodyRootContainerId);
         _alerts.ShowAlert(ent.Owner, ent.Comp.Alert);
     }
 
@@ -282,7 +282,7 @@ public partial class SharedBodySystem
                 cameFromEntities[connection] = childPart;
 
                 var childPartComponent = Comp<BodyPartComponent>(childPart);
-                var partSlot = CreatePartSlot(parentEntity, connection, childPartComponent.PartType, parentPartComponent);
+                var partSlot = CreatePartSlot(parentEntity, connection, new BodyPart(childPartComponent.PartType, childPartComponent.Symmetry), parentPartComponent);
                 var cont = Containers.GetContainer(parentEntity, GetPartSlotContainerId(connection));
 
                 if (partSlot is null || !Containers.Insert(childPart, cont))
@@ -318,21 +318,21 @@ public partial class SharedBodySystem
     /// <summary>
     /// Gets all body containers on this entity including the root one.
     /// </summary>
-    public IEnumerable<BaseContainer> GetBodyContainers(
+    public IEnumerable<(BodyPart BodyPart, BaseContainer Container)> GetBodyContainers(
         EntityUid id,
         BodyComponent? body = null,
         BodyPartComponent? rootPart = null)
     {
         if (!Resolve(id, ref body, logMissing: false)
-            || body.RootContainer.ContainedEntity is null
-            || !Resolve(body.RootContainer.ContainedEntity.Value, ref rootPart))
+            || body.RootContainer.Container.ContainedEntity is null
+            || !Resolve(body.RootContainer.Container.ContainedEntity.Value, ref rootPart))
         {
             yield break;
         }
 
         yield return body.RootContainer;
 
-        foreach (var childContainer in GetPartContainers(body.RootContainer.ContainedEntity.Value, rootPart))
+        foreach (var childContainer in GetPartContainers(body.RootContainer.Container.ContainedEntity.Value, rootPart))
         {
             yield return childContainer;
         }
@@ -352,16 +352,16 @@ public partial class SharedBodySystem
         if (!Resolve(id.Value, ref body, logMissing: false))
             yield break;
 
-        if (body.RootContainer is null)
+        if (body.RootContainer.Container is null)
             yield break;
 
-        if (body.RootContainer.ContainedEntity is null)
+        if (body.RootContainer.Container.ContainedEntity is null)
             yield break;
 
-        if (!Resolve(body.RootContainer.ContainedEntity.Value, ref rootPart))
+        if (!Resolve(body.RootContainer.Container.ContainedEntity.Value, ref rootPart))
             yield break;
 
-        foreach (var child in GetBodyPartChildren(body.RootContainer.ContainedEntity.Value, rootPart))
+        foreach (var child in GetBodyPartChildren(body.RootContainer.Container.ContainedEntity.Value, rootPart))
         {
             yield return child;
         }
@@ -394,12 +394,12 @@ public partial class SharedBodySystem
         BodyComponent? body = null)
     {
         if (!Resolve(bodyId, ref body, logMissing: false)
-            || body.RootContainer.ContainedEntity is null)
+            || body.RootContainer.Container.ContainedEntity is null)
         {
             yield break;
         }
 
-        foreach (var slot in GetAllBodyPartSlots(body.RootContainer.ContainedEntity.Value))
+        foreach (var slot in GetAllBodyPartSlots(body.RootContainer.Container.ContainedEntity.Value))
         {
             yield return slot;
         }
