@@ -204,3 +204,14 @@
         Blunt: 4
     soundHit:
       collection: FootstepBlood
+  - type: FlavorProfile
+    flavors:
+    - cheesy
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 10
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 10
+  - type: Food

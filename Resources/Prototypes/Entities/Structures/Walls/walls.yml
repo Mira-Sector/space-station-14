@@ -1560,5 +1560,5 @@
   - type: PassiveDamage # Cheese regeneration
     damageCap: 30
     damage:
-      groups:
+      type:
         Structural: -5
