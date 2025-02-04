@@ -418,3 +418,54 @@
   - type: Construction
     graph: BananiumAltarGraph
     node: bananiumAltar
+
+- type: entity
+  id: AltarCheese
+  parent: AltarBase
+  name: cheese altar
+  description: Cheddar of the gods.
+  components:
+  - type: Sprite
+    sprite: Structures/Furniture/Altars/Cults/cheese.rsi
+    layers:
+    - state: full
+  - type: Icon
+    sprite: Structures/Furniture/Altars/Cults/cheese.rsi
+    state: full
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 40
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 40
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: Skub
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          FoodCheeseSlice:
+            min: 20
+            max: 20
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: PointLight
+    radius: 1.5
+    energy: 1.5
+    color: "#f7df47"
+  - type: FlavorProfile
+    flavors:
+    - cheesy
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 50
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 50
+  - type: Food

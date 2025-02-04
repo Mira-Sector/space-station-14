@@ -188,3 +188,25 @@
     sprite: Objects/Fun/toys.rsi
     state: plushie_lizard
     noRot: false
+
+- type: entity
+  parent: ImmovableRodKeepTilesStill
+  id: ImmovableRodCheese
+  name: immovable cheese
+  description: Go ahead. Try to eat it.
+  components:
+  - type: Sprite
+    sprite: Objects/Consumable/Food/ingredients.rsi
+    state: cheesewheel
+    noRot: false
+  - type: FlavorProfile
+    flavors:
+    - cheesy
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 50
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 50
+  - type: Food
