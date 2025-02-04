@@ -930,7 +930,7 @@
       behaviors:
       - !type:PlaySoundBehavior
         sound:
-          collection: WoodDestroy
+          path: /Audio/Weapons/Xeno/alien_claw_flesh3.ogg
           params:
             volume: -6
       - !type:SpawnEntitiesBehavior

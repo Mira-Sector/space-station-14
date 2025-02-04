@@ -1,0 +1,163 @@
+- type: entity
+  parent: [ SimpleMobBase, MobCombat ]
+  id: BaseMobCheese
+  name: wandering cheese
+  description: A shambling mass of cheese, animated through cheddar energy.
+  abstract: true
+  components:
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      NavClimb: !type:Bool
+        true
+      NavSmash: !type:Bool
+        true
+  - type: NPCImprintingOnSpawnBehaviour
+    spawnFriendsSearchRadius: 10
+    whitelist:
+      components:
+      - Anomaly # Friendly to inner anomaly host
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: Tag
+    tags:
+    - DoorBumpOpener
+    - Cheese
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: Mobs/Aliens/flesh.rsi
+  - type: MovementAlwaysTouching
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1
+    baseSprintSpeed: 1.5
+  - type: MobState
+    allowedStates:
+    - Alive
+    - Dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      75: Dead
+  - type: Stamina
+    critThreshold: 50
+  - type: Butcherable
+    spawned:
+    - id: FoodCheese
+      amount: 1
+  - type: Bloodstream
+    bloodMaxVolume: 100
+  - type: CombatMode
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/Xeno/alien_claw_flesh3.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 6
+  - type: ReplacementAccent
+    accent: genericAggressive
+
+- type: entity
+  parent: BaseMobCheese
+  id: MobCheeseJared
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: jared
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: jared
+      Critical:
+        Base: dead
+      Dead:
+        Base: dead
+  - type: MeleeWeapon
+    soundHit:
+        path: /Audio/Weapons/Xeno/alien_claw_flesh3.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 8
+
+- type: entity
+  parent: BaseMobCheese
+  id: MobCheeseGolem
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: golem
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: golem
+      Critical:
+        Base: dead
+      Dead:
+        Base: dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: MeleeWeapon
+    soundHit:
+        path: /Audio/Weapons/Xeno/alien_claw_flesh3.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 8
+
+- type: entity
+  parent: BaseMobCheese
+  id: MobCheeseClamp
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: clamp
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: clamp
+      Critical:
+        Base: dead
+      Dead:
+        Base: dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      30: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2
+    baseSprintSpeed: 2.5
+
+- type: entity
+  parent: BaseMobCheese
+  id: MobCheeseLover
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: lover
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: lover
+      Critical:
+        Base: dead
+      Dead:
+        Base: dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      30: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2
+    baseSprintSpeed: 2.5

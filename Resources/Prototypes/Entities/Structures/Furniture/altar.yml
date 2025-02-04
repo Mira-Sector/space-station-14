@@ -436,17 +436,17 @@
     thresholds:
     - trigger:
         !type:DamageTrigger
-        damage: 40
+        damage: 100
       behaviors:
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
     - trigger:
         !type:DamageTrigger
-        damage: 40
+        damage: 100
       behaviors:
       - !type:PlaySoundBehavior
         sound:
-          collection: Skub
+          path: /Audio/Misc/narsie_rises.ogg
       - !type:SpawnEntitiesBehavior
         spawn:
           FoodCheeseSlice:

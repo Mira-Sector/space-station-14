@@ -433,7 +433,7 @@
         acts: [ "Destruction" ]
       - !type:PlaySoundBehavior
         sound:
-          collection: WoodDestroy
+          path: /Audio/Weapons/Xeno/alien_claw_flesh3.ogg
       - !type:SpawnEntitiesBehavior
         spawn:
           FoodCheeseSlice:
