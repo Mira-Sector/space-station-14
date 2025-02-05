@@ -512,15 +512,10 @@
     - settings:
         spawnOnPulse: true
         spawnOnStabilityChanged: true
+        spawnOnSuperCritical: true
         minAmount: 4
         maxAmount: 10
         maxRange: 10
-      floor: FloorCheese
-    - settings:
-        spawnOnSuperCritical: true
-        minAmount: 10
-        maxAmount: 50
-        maxRange: 45
       floor: FloorCheese
   - type: EntitySpawnAnomaly
     entries:
@@ -544,3 +539,11 @@
         maxRange: 30
       spawns:
       - WallCheese
+    - settings:
+        spawnOnSuperCritical: true
+        minAmount: 1
+        maxAmount: 2
+        minRange: 5
+        maxRange: 20
+      spawns:
+      - AltarCheeseAwakened
