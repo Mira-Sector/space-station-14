@@ -18,6 +18,7 @@
     whitelist:
       components:
       - Anomaly # Friendly to inner anomaly host
+      - BibleUser #Cheese priest. By that, I mean Italians.
   - type: NpcFactionMember
     factions:
     - SimpleHostile
@@ -27,11 +28,11 @@
     - Cheese
   - type: Sprite
     drawdepth: Mobs
-    sprite: Mobs/Aliens/flesh.rsi
+    sprite: Mobs/Aliens/cheese.rsi
   - type: MovementAlwaysTouching
   - type: MovementSpeedModifier
-    baseWalkSpeed: 1
-    baseSprintSpeed: 1.5
+    baseWalkSpeed: 1.5
+    baseSprintSpeed: 2.5
   - type: MobState
     allowedStates:
     - Alive
@@ -39,7 +40,7 @@
   - type: MobThresholds
     thresholds:
       0: Alive
-      75: Dead
+      50: Dead
   - type: Stamina
     critThreshold: 50
   - type: Butcherable
@@ -51,12 +52,12 @@
   - type: CombatMode
   - type: MeleeWeapon
     soundHit:
-      path: /Audio/Weapons/Xeno/alien_claw_flesh3.ogg
+      collection: FootstepBlood
     angle: 0
-    animation: WeaponArcClaw
+    animation: WeaponArcPunch
     damage:
       types:
-        Slash: 6
+        Blunt: 9
   - type: ReplacementAccent
     accent: genericAggressive
 
@@ -78,12 +79,12 @@
         Base: dead
   - type: MeleeWeapon
     soundHit:
-        path: /Audio/Weapons/Xeno/alien_claw_flesh3.ogg
+      collection: FootstepBlood
     angle: 0
-    animation: WeaponArcClaw
+    animation: WeaponArcPunch
     damage:
       types:
-        Slash: 8
+        Blunt: 9
 
 - type: entity
   parent: BaseMobCheese
@@ -107,12 +108,12 @@
       50: Dead
   - type: MeleeWeapon
     soundHit:
-        path: /Audio/Weapons/Xeno/alien_claw_flesh3.ogg
+      collection: FootstepBlood
     angle: 0
-    animation: WeaponArcClaw
+    animation: WeaponArcPunch
     damage:
       types:
-        Slash: 8
+        Blunt: 9
 
 - type: entity
   parent: BaseMobCheese

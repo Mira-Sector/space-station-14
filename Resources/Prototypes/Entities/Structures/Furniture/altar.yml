@@ -469,3 +469,78 @@
         - ReagentId: Nutriment
           Quantity: 50
   - type: Food
+
+- type: entity
+  id: AltarCheeseAwakened
+  parent: AltarBase
+  name: awakened cheese altar
+  description: Cheddar of the gods.
+  components:
+  - type: Sprite
+    sprite: Structures/Furniture/Altars/Cults/cheese.rsi
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      state: awakened
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: awakened_overlay
+      shader: unshaded
+  - type: Icon
+    sprite: Structures/Furniture/Altars/Cults/cheese.rsi
+    state: awakened
+  - type: PointLight
+    radius: 1.5
+    energy: 1.5
+    color: "#f7df47"
+  - type: FlavorProfile
+    flavors:
+    - cheesy
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 500
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 500
+  - type: Food
+  - type: Anomaly
+    corePrototype: ImmovableRodCheese
+    coreInertPrototype: FoodCheese
+    minPulseLength: 10
+    maxPulseLength: 20
+  - type: TileSpawnAnomaly
+    entries:
+    - settings:
+        spawnOnPulse: true
+        spawnOnStabilityChanged: true
+        minAmount: 4
+        maxAmount: 10
+        maxRange: 10
+      floor: FloorCheese
+    - settings:
+        spawnOnSuperCritical: true
+        minAmount: 10
+        maxAmount: 50
+        maxRange: 45
+      floor: FloorCheese
+  - type: EntitySpawnAnomaly
+    entries:
+    - settings:
+        spawnOnPulse: true
+        minAmount: 1
+        maxAmount: 4
+        minRange: 1.5
+        maxRange: 2.5
+      spawns:
+      - MobCheeseJared
+      - MobCheeseGolem
+      - MobCheeseClamp
+      - MobCheeseLover
+    - settings:
+        spawnOnSuperCritical: true
+        spawnOnPulse: true
+        minAmount: 5
+        maxAmount: 12
+        minRange: 2
+        maxRange: 30
+      spawns:
+      - WallCheese

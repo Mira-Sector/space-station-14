@@ -9,6 +9,12 @@
   "states": [
     {
       "name": "full"
+    },
+    {
+      "name": "awakened"
+    },
+    {
+      "name": "awakened_overlay"
     }
   ]
 }

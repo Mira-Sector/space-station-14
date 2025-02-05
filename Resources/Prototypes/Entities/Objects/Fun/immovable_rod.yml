@@ -210,3 +210,5 @@
         - ReagentId: Nutriment
           Quantity: 50
   - type: Food
+  - type: TimedDespawn
+    lifetime: 1000
