@@ -42,40 +42,20 @@ public partial class SharedBodySystem
         Dirty(organEnt, organEnt.Comp);
     }
 
-    /// <summary>
-    /// Creates the specified organ slot on the parent entity.
-    /// </summary>
-    private OrganSlot? CreateOrganSlot(Entity<BodyPartComponent?> parentEnt, string slotId)
+    private OrganSlot? CreateOrganSlot(Entity<OrganComponent?> organ, Entity<BodyPartComponent?> parentEnt, string slotId)
     {
+        if (!Resolve(organ, ref organ.Comp))
+            return null;
+
         if (!Resolve(parentEnt, ref parentEnt.Comp, logMissing: false))
             return null;
 
         Containers.EnsureContainer<ContainerSlot>(parentEnt, GetOrganContainerId(slotId));
-        var slot = new OrganSlot(slotId);
+        var slot = new OrganSlot(slotId, organ.Comp.OrganType);
         parentEnt.Comp.Organs.Add(slotId, slot);
         return slot;
     }
 
-    /// <summary>
-    /// Attempts to create the specified organ slot on the specified parent if it exists.
-    /// </summary>
-    public bool TryCreateOrganSlot(
-        EntityUid? parent,
-        string slotId,
-        [NotNullWhen(true)] out OrganSlot? slot,
-        BodyPartComponent? part = null)
-    {
-        slot = null;
-
-        if (parent is null || !Resolve(parent.Value, ref part, logMissing: false))
-        {
-            return false;
-        }
-
-        Containers.EnsureContainer<ContainerSlot>(parent.Value, GetOrganContainerId(slotId));
-        slot = new OrganSlot(slotId);
-        return part.Organs.TryAdd(slotId, slot.Value);
-    }
 
     /// <summary>
     /// Returns whether the slotId exists on the partId.

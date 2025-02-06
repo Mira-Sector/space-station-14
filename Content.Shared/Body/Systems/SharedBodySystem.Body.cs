@@ -312,12 +312,14 @@ public partial class SharedBodySystem
     {
         foreach (var (organSlotId, organProto) in organs)
         {
-            var slot = CreateOrganSlot((ent, ent), organSlotId);
-            SpawnInContainerOrDrop(organProto, ent, GetOrganContainerId(organSlotId));
+            var organ = Spawn(organProto, new EntityCoordinates(ent, Vector2.Zero));
+
+            var slot = CreateOrganSlot(organ, (ent, ent), organSlotId);
 
             if (slot is null)
             {
                 Log.Error($"Could not create organ for slot {organSlotId} in {ToPrettyString(ent)}");
+                QueueDel(organ);
             }
         }
     }

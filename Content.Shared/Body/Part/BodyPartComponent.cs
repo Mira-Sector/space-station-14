@@ -1,4 +1,5 @@
 using Content.Shared.Body.Components;
+using Content.Shared.Body.Organ;
 using Content.Shared.Body.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.GameStates;
@@ -115,9 +116,11 @@ public partial struct BodyPartSlot
 public partial struct OrganSlot
 {
     public string Id;
+    public OrganType OrganType;
 
-    public OrganSlot(string id)
+    public OrganSlot(string id, OrganType organType)
     {
         Id = id;
+        OrganType = organType;
     }
 };
