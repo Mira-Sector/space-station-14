@@ -21,11 +21,15 @@ public sealed partial class SurgerySystem : EntitySystem
         SubscribeLocalEvent<SurgeryRecieverComponent, LimbInitEvent>(OnLimbInit);
         SubscribeLocalEvent<SurgeryRecieverBodyComponent, BodyInitEvent>(OnBodyInit);
 
+        SubscribeLocalEvent<SurgeryRecieverBodyComponent, BodyPartAddedEvent>(OnBodyPartAdded);
+        SubscribeLocalEvent<SurgeryRecieverBodyComponent, BodyPartRemovedEvent>(OnBodyPartRemoved);
+
         SubscribeLocalEvent<SurgeryRecieverComponent, InteractUsingEvent>(OnLimbInteract);
         SubscribeLocalEvent<SurgeryRecieverBodyComponent, InteractUsingEvent>(OnBodyInteract);
 
         SubscribeLocalEvent<SurgeryRecieverComponent, SurgeryDoAfterEvent>(OnLimbDoAfter);
         SubscribeLocalEvent<SurgeryRecieverBodyComponent, SurgeryDoAfterEvent>(OnBodyDoAfter);
+
     }
 
     private void OnLimbInit(EntityUid uid, SurgeryRecieverComponent component, LimbInitEvent args)
@@ -56,6 +60,22 @@ public sealed partial class SurgerySystem : EntitySystem
         }
 
         Dirty(uid, component);
+    }
+
+    private void OnBodyPartAdded(EntityUid uid, SurgeryRecieverBodyComponent component, ref BodyPartAddedEvent args)
+    {
+        component.Limbs.Add(new BodyPart(args.Part.Comp.PartType, args.Part.Comp.Symmetry), GetNetEntity(args.Part));
+    }
+
+    private void OnBodyPartRemoved(EntityUid uid, SurgeryRecieverBodyComponent component, ref BodyPartRemovedEvent args)
+    {
+        foreach (var limb in component.Limbs.Keys)
+        {
+            if (limb.Type != args.Part.Comp.PartType || limb.Side != args.Part.Comp.Symmetry)
+                continue;
+
+            component.Limbs.Remove(limb);
+        }
     }
 
     private void OnLimbInteract(EntityUid uid, SurgeryRecieverComponent component, InteractUsingEvent args)
