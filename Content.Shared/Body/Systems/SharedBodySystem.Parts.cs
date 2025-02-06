@@ -129,7 +129,7 @@ public partial class SharedBodySystem
                 if (!TryComp<BodyPartComponent>(contained, out var containedPart))
                     continue;
 
-                AddPart(bodyEnt, (contained, containedPart), containerId);
+                AddPart(bodyEnt, (contained, containedPart), GetPartSlotContainerId(containerId));
             }
         }
     }
@@ -159,7 +159,7 @@ public partial class SharedBodySystem
                 if (!TryComp<BodyPartComponent>(contained, out var containedPart))
                     continue;
 
-                RemovePart(bodyEnt, (contained, containedPart), containerId);
+                RemovePart(bodyEnt, (contained, containedPart), GetPartSlotContainerId(containerId));
             }
         }
     }
