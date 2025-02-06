@@ -17,5 +17,5 @@ public sealed partial class SurgeryRecieverComponent : Component, ISurgeryReciev
     public SurgeryNode? CurrentNode { get; set; }
 
     [ViewVariables]
-    public List<DoAfterId> DoAfters { get; set; } = new();
+    public HashSet<DoAfterId> DoAfters { get; set; } = new();
 }

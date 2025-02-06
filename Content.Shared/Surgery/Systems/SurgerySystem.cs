@@ -282,6 +282,7 @@ public sealed partial class SurgerySystem : EntitySystem
 
     private void CancelDoAfters(ISurgeryReciever surgeryReciever)
     {
+        var doAfters = new HashSet<DoAfterId>(surgeryReciever.DoAfters);
         foreach (var doAfter in surgeryReciever.DoAfters)
         {
             _doAfter.Cancel(doAfter);

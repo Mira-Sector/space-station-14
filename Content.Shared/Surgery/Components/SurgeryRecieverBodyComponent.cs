@@ -48,5 +48,5 @@ public sealed partial class SurgeryBodyPartReciever : ISurgeryReciever
     public SurgeryNode? CurrentNode { get; set; }
 
     [ViewVariables]
-    public List<DoAfterId> DoAfters { get; set; } = new();
+    public HashSet<DoAfterId> DoAfters { get; set; } = new();
 }

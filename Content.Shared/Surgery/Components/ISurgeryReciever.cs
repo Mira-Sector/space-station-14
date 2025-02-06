@@ -24,5 +24,5 @@ public interface ISurgeryReciever
     /// Keep track of doafters as they will need to be cancelled when we change node
     /// </summary>
     [ViewVariables]
-    public List<DoAfterId> DoAfters { get; set; }
+    public HashSet<DoAfterId> DoAfters { get; set; }
 }
