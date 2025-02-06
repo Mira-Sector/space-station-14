@@ -145,3 +145,13 @@
   - type: Tag
     tags:
     - Book
+  - type: FlavorProfile
+    flavors:
+    - cheesy
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 20
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 20 #If needed in-game, add the food component.
