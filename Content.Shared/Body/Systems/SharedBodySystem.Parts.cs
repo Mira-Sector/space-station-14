@@ -118,6 +118,20 @@ public partial class SharedBodySystem
         RaiseLocalEvent(bodyEnt, ref ev);
 
         AddLeg(partEnt, bodyEnt);
+
+        foreach (var containerId in partEnt.Comp.Children.Keys)
+        {
+            if (!Containers.TryGetContainer(partEnt, GetPartSlotContainerId(containerId), out var container))
+                continue;
+
+            foreach (var contained in container.ContainedEntities)
+            {
+                if (!TryComp<BodyPartComponent>(contained, out var containedPart))
+                    continue;
+
+                AddPart(bodyEnt, (contained, containedPart), containerId);
+            }
+        }
     }
 
     protected virtual void RemovePart(
@@ -134,6 +148,20 @@ public partial class SharedBodySystem
 
         RemoveLeg(partEnt, bodyEnt);
         PartRemoveDamage(bodyEnt, partEnt);
+
+        foreach (var containerId in partEnt.Comp.Children.Keys)
+        {
+            if (!Containers.TryGetContainer(partEnt, GetPartSlotContainerId(containerId), out var container))
+                continue;
+
+            foreach (var contained in container.ContainedEntities)
+            {
+                if (!TryComp<BodyPartComponent>(contained, out var containedPart))
+                    continue;
+
+                RemovePart(bodyEnt, (contained, containedPart), containerId);
+            }
+        }
     }
 
     private void AddLeg(Entity<BodyPartComponent> legEnt, Entity<BodyComponent?> bodyEnt)
