@@ -66,13 +66,18 @@
 - type: tile
   id: Lattice
   name: tiles-lattice
-  sprite: /Textures/Tiles/lattice.png
+  sprite: /Textures/Tiles/Misc/Lattice/lattice.png
   baseTurf: Space
   isSubfloor: true
   deconstructTools: [ Cutting ]
   weather: true
   footstepSounds:
     collection: FootstepPlating
+  edgeSprites:
+    South: /Textures/Tiles/Misc/Lattice/double_edge_south.png
+    East: /Textures/Tiles/Misc/Lattice/double_edge_east.png
+    North: /Textures/Tiles/Misc/Lattice/double_edge_north.png
+    West: /Textures/Tiles/Misc/Lattice/double_edge_west.png
   friction: 0.3
   isSpace: true
   itemDrop: PartRodMetal1
