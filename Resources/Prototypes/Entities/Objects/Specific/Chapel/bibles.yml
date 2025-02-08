@@ -96,7 +96,7 @@
 - type: entity
   name: cheesy bible
   description: Looking at it, you can't make yourself eat it...
-  parent: BaseStorageItem
+  parent: [Bible, BaseCheeseFlavor]
   id: BibleCheese
   components:
   - type: UseDelay
@@ -113,31 +113,12 @@
     damageOnUntrainedUse: ## What a non-chaplain takes when attempting to heal someone
       groups:
         Burn: 30
-  - type: MeleeWeapon
-    soundHit:
-      collection: Punch
-    damage:
-      types:
-        Holy: 25
-        Blunt: 1
-  - type: Prayable
-    bibleUserOnly: true
-  - type: ReactionMixer
-    mixMessage: "bible-mixing-success"
-    reactionTypes:
-    - Holy
   - type: Sprite
     sprite: Objects/Specific/Chapel/cheese-bible.rsi
     state: icon
   - type: Item
     size: Small
     sprite: Objects/Specific/Chapel/cheese-bible.rsi
-  - type: Clothing
-    slots:
-    - Belt
-  - type: Storage
-    grid:
-    - 0,0,0,1
   - type: UserInterface
     interfaces:
       enum.StorageUiKey.Key:
@@ -145,9 +126,6 @@
   - type: Tag
     tags:
     - Book
-  - type: FlavorProfile
-    flavors:
-    - cheesy
   - type: SolutionContainerManager
     solutions:
       food:

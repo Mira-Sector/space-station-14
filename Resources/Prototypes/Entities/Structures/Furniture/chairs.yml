@@ -406,13 +406,10 @@
 - type: entity
   name: cheese chair
   id: ChairCheese
-  parent: UnanchoredChairBase
+  parent: [UnanchoredChairBase, BaseCheeseFlavor]
   components:
   - type: Sprite
     state: chair-cheese
-  - type: FlavorProfile
-    flavors:
-    - cheesy
   - type: SolutionContainerManager
     solutions:
       food:

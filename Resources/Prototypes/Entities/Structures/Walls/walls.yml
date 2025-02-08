@@ -1517,7 +1517,7 @@
     base: cobblebrick
 
 - type: entity
-  parent: BaseWall
+  parent: [BaseWall, BaseCheeseFlavor]
   id: WallCheese
   name: cheese wall
   description: I bet a rat king would love this.
@@ -1528,16 +1528,13 @@
     - Structure
   - type: Sprite
     sprite: Structures/Walls/cheese.rsi
-  - type: FlavorProfile
-    flavors:
-     - cheesy
   - type: SolutionContainerManager
     solutions:
       food:
-        maxVol: 22.5
+        maxVol: 35
         reagents:
         - ReagentId: Nutriment
-          Quantity: 22.5
+          Quantity: 35
   - type: Icon
     sprite: Structures/Walls/cheese.rsi
   - type: Food
@@ -1550,8 +1547,8 @@
       - !type:SpawnEntitiesBehavior
         spawn:
           FoodCheeseSlice:
-            min: 5
-            max: 5
+            min: 7
+            max: 7
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
   - type: IconSmooth

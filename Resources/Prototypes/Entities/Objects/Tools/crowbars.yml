@@ -187,7 +187,7 @@
 # Cheese Crowbar
 - type: entity
   name: cheese crowbar
-  parent: BaseCrowbar
+  parent: [BaseCrowbar, BaseCheeseFlavor]
   id: CheeseCrowbar
   description: I don't even know what to say.
   components:
@@ -204,9 +204,6 @@
         Blunt: 4
     soundHit:
       collection: FootstepBlood
-  - type: FlavorProfile
-    flavors:
-    - cheesy
   - type: SolutionContainerManager
     solutions:
       food:

@@ -421,7 +421,7 @@
 
 - type: entity
   id: AltarCheese
-  parent: AltarBase
+  parent: [AltarBase, BaseCheeseFlavor]
   name: cheese altar
   description: Cheddar of the gods.
   components:
@@ -458,9 +458,6 @@
     radius: 1.5
     energy: 1.5
     color: "#f7df47"
-  - type: FlavorProfile
-    flavors:
-    - cheesy
   - type: SolutionContainerManager
     solutions:
       food:
@@ -472,9 +469,9 @@
 
 - type: entity
   id: AltarCheeseAwakened
-  parent: AltarBase
+  parent: [AltarBase, BaseCheeseFlavor]
   name: awakened cheese altar
-  description: Cheddar of the gods.
+  description: Cheddar of the gods. The situation is bad. Eat this as fast as possible!
   components:
   - type: Sprite
     sprite: Structures/Furniture/Altars/Cults/cheese.rsi
@@ -491,16 +488,13 @@
     radius: 1.5
     energy: 1.5
     color: "#f7df47"
-  - type: FlavorProfile
-    flavors:
-    - cheesy
   - type: SolutionContainerManager
     solutions:
       food:
-        maxVol: 500
+        maxVol: 60
         reagents:
         - ReagentId: Nutriment
-          Quantity: 500
+          Quantity: 60
   - type: Food
   - type: Anomaly
     corePrototype: ImmovableRodCheese
