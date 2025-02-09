@@ -50,7 +50,10 @@ public partial class SharedBodySystem
         if (!Resolve(parentEnt, ref parentEnt.Comp, logMissing: false))
             return null;
 
-        Containers.EnsureContainer<ContainerSlot>(parentEnt, GetOrganContainerId(slotId));
+        var container = Containers.EnsureContainer<ContainerSlot>(parentEnt, GetOrganContainerId(slotId));
+        if (!Containers.Insert(organ.Owner, container))
+            return null;
+
         var slot = new OrganSlot(slotId, organ.Comp.OrganType);
         parentEnt.Comp.Organs.Add(slotId, slot);
         return slot;
