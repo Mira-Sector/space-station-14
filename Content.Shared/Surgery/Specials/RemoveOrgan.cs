@@ -64,6 +64,7 @@ public sealed partial class RemoveOrgan : SurgerySpecial
 
         foreach (var organ in organs)
         {
+            // add a ui/radial menu or smth idk
         }
     }
 

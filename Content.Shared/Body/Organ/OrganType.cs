@@ -7,8 +7,13 @@ public enum OrganType
 {
     Other = 0,
     Brain,
+    Tongue,
+    Ears,
+    Heart,
     Lungs,
     Eyes,
     Liver,
-    Stomach
+    Stomach,
+    Kidneys,
+    Appendix
 }
