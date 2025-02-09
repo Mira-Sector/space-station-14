@@ -1177,3 +1177,11 @@ Entries:
     type: Tweak
   id: 174
   time: '2025-02-04T11:30:00.0000000+00:00'
+- author: Anurath
+  changes:
+  - message: Cyborgs grant the AI vision
+    type: Add
+  - message: Cyborgs have a wire panel
+    type: Add
+  id: 175
+  time: '2025-02-09T20:30:00.0000000+00:00'
