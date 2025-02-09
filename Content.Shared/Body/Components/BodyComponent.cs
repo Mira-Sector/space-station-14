@@ -29,6 +29,12 @@ public sealed partial class BodyComponent : Component
     public (BodyPart BodyPart, ContainerSlot Container) RootContainer = default!;
 
     [ViewVariables]
+    public ContainerSlot RootContainerVV
+    {
+        get => RootContainer.Container;
+    }
+
+    [ViewVariables]
     public string RootPartSlot => RootContainer.Container.ID;
 
     [DataField, AutoNetworkedField]
