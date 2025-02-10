@@ -9,7 +9,7 @@ namespace Content.Shared.Surgery;
 [Serializable, NetSerializable]
 public abstract partial class SurgeryEdgeRequirement
 {
-    public abstract SurgeryEdgeState RequirementMet(EntityUid body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart);
+    public abstract SurgeryEdgeState RequirementMet(EntityUid body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui);
 
     public abstract bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge ,EntityUid body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId);
 
@@ -21,7 +21,8 @@ public enum SurgeryEdgeState
 {
     Failed,
     Passed,
-    DoAfter
+    DoAfter,
+    UserInterface
 }
 
 [Serializable, NetSerializable]

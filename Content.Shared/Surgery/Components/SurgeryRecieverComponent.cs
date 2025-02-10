@@ -18,4 +18,7 @@ public sealed partial class SurgeryRecieverComponent : Component, ISurgeryReciev
 
     [ViewVariables]
     public HashSet<DoAfterId> DoAfters { get; set; } = new();
+
+    [ViewVariables]
+    public HashSet<Enum> UserInterfaces { get; set; } = new();
 }

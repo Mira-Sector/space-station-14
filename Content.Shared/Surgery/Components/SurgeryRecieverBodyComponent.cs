@@ -49,4 +49,7 @@ public sealed partial class SurgeryBodyPartReciever : ISurgeryReciever
 
     [ViewVariables]
     public HashSet<DoAfterId> DoAfters { get; set; } = new();
+
+    [ViewVariables]
+    public HashSet<Enum> UserInterfaces { get; set; } = new();
 }

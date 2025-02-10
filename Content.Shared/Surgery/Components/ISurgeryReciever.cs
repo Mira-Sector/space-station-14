@@ -25,4 +25,10 @@ public interface ISurgeryReciever
     /// </summary>
     [ViewVariables]
     public HashSet<DoAfterId> DoAfters { get; set; }
+
+    /// <summary>
+    /// Keep track of the open uis as they will need to be closed
+    /// </summary>
+    [ViewVariables]
+    public HashSet<Enum> UserInterfaces { get; set; }
 }

@@ -17,8 +17,10 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
     [DataField]
     public TimeSpan Delay = TimeSpan.FromSeconds(1f);
 
-    public override SurgeryEdgeState RequirementMet(EntityUid body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart)
+    public override SurgeryEdgeState RequirementMet(EntityUid body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
     {
+        ui = null;
+
         if (tool == null)
             return SurgeryEdgeState.Failed;
 

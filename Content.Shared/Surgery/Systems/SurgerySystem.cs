@@ -13,6 +13,7 @@ public sealed partial class SurgerySystem : EntitySystem
 {
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
 
     public override void Initialize()
     {
@@ -206,7 +207,7 @@ public sealed partial class SurgerySystem : EntitySystem
         DoNodeReachedSpecials(surgeryReciever.CurrentNode?.Special, body, limb, args.User, args.Used, args.BodyPart);
 
         surgeryReciever.DoAfters.Remove(args.DoAfter.Id);
-        CancelDoAfters(surgeryReciever);
+        CancelDoAfters(limb ?? body, surgeryReciever);
     }
 
     public bool TryTraverseGraph(EntityUid? limb, ISurgeryReciever surgery, EntityUid body, EntityUid user, EntityUid used, BodyPart bodyPart)
@@ -219,24 +220,55 @@ public sealed partial class SurgerySystem : EntitySystem
             surgery.CurrentNode = startingNode;
         }
 
+        List<Enum> uis = new();
+
         foreach (var edge in surgery.CurrentNode.Edges)
         {
             // when merging the graph we made sure there arent multiple edges to traverse
-            if (TryEdge(limb, surgery, edge, body, user, used, bodyPart))
-                return true;
+            switch (TryEdge(limb, surgery, edge, body, user, used, bodyPart, out var ui))
+            {
+                case SurgeryEdgeState.Passed:
+                case SurgeryEdgeState.DoAfter:
+                {
+                    return true;
+                }
+                case SurgeryEdgeState.UserInterface:
+                {
+                    if (ui != null)
+                        uis.Add(ui);
+
+                    break;
+                }
+            }
+        }
+
+        if (uis.Count > 0)
+        {
+            _ui.OpenUi(limb ?? body, uis[0], user);
+            return true;
         }
 
         return false;
     }
 
-    public bool TryEdge(EntityUid? limb, ISurgeryReciever surgery, SurgeryEdge edge, EntityUid body, EntityUid user, EntityUid used, BodyPart bodyPart)
+    public SurgeryEdgeState TryEdge(EntityUid? limb, ISurgeryReciever surgery, SurgeryEdge edge, EntityUid body, EntityUid user, EntityUid used, BodyPart bodyPart, out Enum? ui)
     {
-        var requirementsPassed = edge.Requirement.RequirementMet(body, limb, user, used, bodyPart);
+        var requirementsPassed = edge.Requirement.RequirementMet(body, limb, user, used, bodyPart, out ui);
 
         if (requirementsPassed == SurgeryEdgeState.Failed)
-            return false;
+            return SurgeryEdgeState.Failed;
 
-        CancelDoAfters(surgery);
+        if (requirementsPassed == SurgeryEdgeState.UserInterface)
+        {
+            if (ui == null)
+                return SurgeryEdgeState.Failed;
+
+            surgery.UserInterfaces.Add(ui);
+
+            return SurgeryEdgeState.UserInterface;
+        }
+
+        CancelDoAfters(limb ?? body, surgery);
 
         if (requirementsPassed == SurgeryEdgeState.DoAfter)
         {
@@ -245,17 +277,17 @@ public sealed partial class SurgerySystem : EntitySystem
             if (doAfterId != null)
                 surgery.DoAfters.Add(doAfterId.Value);
 
-            return doAfterStarted;
+            return doAfterStarted ? SurgeryEdgeState.DoAfter : SurgeryEdgeState.Failed;
         }
 
         if (!surgery.Graph.TryFindNode(edge.Connection, out var newNode))
-            return false;
+            return SurgeryEdgeState.Failed;
 
         DoNodeLeftSpecials(surgery.CurrentNode?.Special, body, limb, user, used, bodyPart);
         surgery.CurrentNode = newNode;
         DoNodeReachedSpecials(surgery.CurrentNode?.Special, body, limb, user, used, bodyPart);
 
-        return true;
+        return SurgeryEdgeState.Passed;
     }
 
     private void DoNodeReachedSpecials(SurgerySpecial[]? specials, EntityUid body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
@@ -264,9 +296,7 @@ public sealed partial class SurgerySystem : EntitySystem
             return;
 
         foreach (var special in specials)
-        {
             special.NodeReached(body, limb, user, used, bodyPart);
-        }
     }
 
     private void DoNodeLeftSpecials(SurgerySpecial[]? specials, EntityUid body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
@@ -275,20 +305,25 @@ public sealed partial class SurgerySystem : EntitySystem
             return;
 
         foreach (var special in specials)
-        {
             special.NodeLeft(body, limb, user, used, bodyPart);
-        }
     }
 
-    private void CancelDoAfters(ISurgeryReciever surgeryReciever)
+    private void CancelDoAfters(EntityUid uid, ISurgeryReciever surgeryReciever)
     {
         var doAfters = new HashSet<DoAfterId>(surgeryReciever.DoAfters);
         foreach (var doAfter in surgeryReciever.DoAfters)
         {
+            if (!_doAfter.IsRunning(doAfter))
+                continue;
+
             _doAfter.Cancel(doAfter);
         }
 
         surgeryReciever.DoAfters.Clear();
-    }
 
+        foreach (var ui in surgeryReciever.UserInterfaces)
+            _ui.CloseUi(uid, ui);
+
+        surgeryReciever.UserInterfaces.Clear();
+    }
 }
