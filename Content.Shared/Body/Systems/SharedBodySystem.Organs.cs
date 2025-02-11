@@ -9,6 +9,47 @@ namespace Content.Shared.Body.Systems;
 
 public partial class SharedBodySystem
 {
+    [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
+
+    private void InitializeOrgans()
+    {
+        SubscribeLocalEvent<OrganReplaceableComponent, BoundUIOpenedEvent>(OnUIOpened);
+    }
+
+    private void OnUIOpened(EntityUid uid, OrganReplaceableComponent component, BoundUIOpenedEvent args)
+    {
+        UpdateUserInterface(uid, component);
+    }
+
+    private void UpdateUserInterface(EntityUid uid, OrganReplaceableComponent organReplaceable, BodyPartComponent? bodyPart = null)
+    {
+        if (!Resolve(uid, ref bodyPart))
+            return;
+
+        if (!_ui.IsUiOpen(uid, OrganSelectionUiKey.Key))
+            return;
+
+        Dictionary<OrganType, NetEntity> organs = new();
+
+        foreach (var organSlot in bodyPart.Organs.Values)
+        {
+            if (!Containers.TryGetContainer(uid, GetOrganContainerId(organSlot.Id), out var container))
+                continue;
+
+            if (container.ContainedEntities.Count != 1)
+                continue;
+
+            var organ = container.ContainedEntities[0];
+
+            if (!TryComp<OrganComponent>(organ, out var organComp))
+                continue;
+
+            organs.Add(organComp.OrganType, GetNetEntity(organ));
+        }
+
+        _ui.SetUiState(uid, OrganSelectionUiKey.Key, new OrganSelectionBoundUserInterfaceState(organs));
+    }
+
     private void AddOrgan(
         Entity<OrganComponent> organEnt,
         EntityUid bodyUid,

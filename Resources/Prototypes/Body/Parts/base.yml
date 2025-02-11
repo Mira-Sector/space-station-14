@@ -33,9 +33,15 @@
       0: Healthy
       15: Damaged
       100: Dead
+  - type: OrganReplaceable
   - type: SurgeryReciever
     availableSurgeries:
-    - test
+    - OrganManipulation
+  - type: UserInterface
+    interfaces:
+      enum.OrganSelectionUiKey.Key:
+        type: OrganSelectionBoundUserInterface
+        requireInputValidation: false
 
 - type: entity
   id: BaseHead
@@ -53,6 +59,16 @@
       0: Healthy
       10: Damaged
       75: Dead
+  - type: OrganReplaceable
+  - type: SurgeryReciever
+    availableSurgeries:
+    - LimbAmputation
+    - OrganManipulation
+  - type: UserInterface
+    interfaces:
+      enum.OrganSelectionUiKey.Key:
+        type: OrganSelectionBoundUserInterface
+        requireInputValidation: false
   - type: Input
     context: "ghost"
   - type: Damageable

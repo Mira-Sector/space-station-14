@@ -19,10 +19,10 @@ public abstract partial class SurgeryEdgeRequirement
 [Serializable, NetSerializable]
 public enum SurgeryEdgeState
 {
-    Failed,
-    Passed,
-    DoAfter,
-    UserInterface
+    Failed, //cant be run
+    Passed, //passed and something has been done
+    DoAfter, //passed and we are waiting for a doafter to finish
+    UserInterface //passed and we are waiting the ui to do something
 }
 
 [Serializable, NetSerializable]
