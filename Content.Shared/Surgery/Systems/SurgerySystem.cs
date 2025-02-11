@@ -30,7 +30,6 @@ public sealed partial class SurgerySystem : EntitySystem
 
         SubscribeLocalEvent<SurgeryRecieverComponent, SurgeryDoAfterEvent>(OnLimbDoAfter);
         SubscribeLocalEvent<SurgeryRecieverBodyComponent, SurgeryDoAfterEvent>(OnBodyDoAfter);
-
     }
 
     private void OnLimbInit(EntityUid uid, SurgeryRecieverComponent component, LimbInitEvent args)
@@ -81,6 +80,9 @@ public sealed partial class SurgerySystem : EntitySystem
 
     private void OnLimbInteract(EntityUid uid, SurgeryRecieverComponent component, InteractUsingEvent args)
     {
+        if (args.Handled)
+            return;
+
         if (!TryComp<BodyPartComponent>(uid, out var bodyPartComp) || bodyPartComp.Body is not {} body)
             return;
 
@@ -89,12 +91,15 @@ public sealed partial class SurgerySystem : EntitySystem
 
         BodyPart bodyPart = new(bodyPartComp.PartType, bodyPartComp.Symmetry);
 
-        TryTraverseGraph(uid, component, body, args.User, args.Used, bodyPart);
+        args.Handled = TryTraverseGraph(uid, component, body, args.User, args.Used, bodyPart);
         Dirty(uid, component);
     }
 
     private void OnBodyInteract(EntityUid uid, SurgeryRecieverBodyComponent component, InteractUsingEvent args)
     {
+        if (args.Handled)
+            return;
+
         if (!TryComp<DamagePartSelectorComponent>(args.User, out var damageSelectorComp))
             return;
 
@@ -126,6 +131,8 @@ public sealed partial class SurgerySystem : EntitySystem
             TryTraverseGraph(limb, surgeryComp, uid, args.User, args.Used, bodyPart);
         }
 
+        args.Handled = limbFound;
+
         // if we have a possible limb they may have nothing do do
         // so we dont logically or with the TryTraverseGraph
         if (limbFound)
@@ -141,7 +148,10 @@ public sealed partial class SurgerySystem : EntitySystem
                 continue;
 
             if (TryTraverseGraph(uid, surgeries.Surgeries, uid, args.User, args.Used, surgeries.BodyPart))
+            {
+                args.Handled = true;
                 return;
+            }
         }
     }
 
@@ -220,12 +230,12 @@ public sealed partial class SurgerySystem : EntitySystem
             surgery.CurrentNode = startingNode;
         }
 
-        List<Enum> uis = new();
+        Enum? ui = null;
 
         foreach (var edge in surgery.CurrentNode.Edges)
         {
             // when merging the graph we made sure there arent multiple edges to traverse
-            switch (TryEdge(limb, surgery, edge, body, user, used, bodyPart, out var ui))
+            switch (TryEdge(limb, surgery, edge, body, user, used, bodyPart, out var edgeUi))
             {
                 case SurgeryEdgeState.Passed:
                 case SurgeryEdgeState.DoAfter:
@@ -234,17 +244,15 @@ public sealed partial class SurgerySystem : EntitySystem
                 }
                 case SurgeryEdgeState.UserInterface:
                 {
-                    if (ui != null)
-                        uis.Add(ui);
-
+                    ui ??= edgeUi;
                     break;
                 }
             }
         }
 
-        if (uis.Count > 0)
+        if (ui != null)
         {
-            _ui.OpenUi(limb ?? body, uis[0], user);
+            _ui.OpenUi(limb ?? body, ui, user);
             return true;
         }
 
