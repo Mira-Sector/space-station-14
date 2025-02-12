@@ -182,6 +182,9 @@ public partial class SharedBodySystem
         if (!Resolve(bodyEnt, ref bodyEnt.Comp, logMissing: false))
             return;
 
+        if (LifeStage(legEnt) >= EntityLifeStage.Terminating || LifeStage(bodyEnt) >= EntityLifeStage.Terminating)
+            return;
+
         if (legEnt.Comp.PartType == BodyPartType.Leg)
         {
             bodyEnt.Comp.LegEntities.Remove(legEnt);
