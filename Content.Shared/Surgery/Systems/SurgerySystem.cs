@@ -45,15 +45,6 @@ public sealed partial class SurgerySystem : EntitySystem
         component.CurrentNode = startingNode;
 
         Dirty(uid, component);
-
-        if (bodyPartComp.Body is not {} body)
-            return;
-
-        BodyPart bodyPart = new(bodyPartComp.PartType, bodyPartComp.Symmetry);
-
-        EnsureComp<SurgeryRecieverBodyComponent>(body, out var surgeryBodyComp);
-        surgeryBodyComp.Limbs.Add(bodyPart, GetNetEntity(uid));
-        Dirty(body, surgeryBodyComp);
     }
 
     private void OnBodyInit(EntityUid uid, SurgeryRecieverBodyComponent component)
@@ -70,7 +61,18 @@ public sealed partial class SurgerySystem : EntitySystem
 
     private void OnBodyPartAdded(EntityUid uid, SurgeryRecieverBodyComponent component, ref BodyPartAddedEvent args)
     {
-        component.Limbs.Add(new BodyPart(args.Part.Comp.PartType, args.Part.Comp.Symmetry), GetNetEntity(args.Part));
+        if (!HasComp<SurgeryRecieverComponent>(args.Part))
+            return;
+
+        var netId = GetNetEntity(args.Part);
+
+        foreach (var existingId in component.Limbs.Values)
+        {
+            if (netId == existingId)
+                return;
+        }
+
+        component.Limbs.Add(new BodyPart(args.Part.Comp.PartType, args.Part.Comp.Symmetry), netId);
     }
 
     private void OnBodyPartRemoved(EntityUid uid, SurgeryRecieverBodyComponent component, ref BodyPartRemovedEvent args)
