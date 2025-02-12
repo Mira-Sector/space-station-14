@@ -22,6 +22,30 @@ public sealed partial class SurgeryRecieverBodyComponent : Component
 
     [ViewVariables, AutoNetworkedField]
     public Dictionary<BodyPart, NetEntity> Limbs = new();
+
+    /// <summary>
+    /// My sanity requires me to do this
+    /// </summary>
+    [ViewVariables]
+    public Dictionary<NetEntity, SurgeryRecieverComponent> LimbsVV
+    {
+        get
+        {
+            Dictionary<NetEntity, SurgeryRecieverComponent> dict = new();
+
+            var entMan = IoCManager.Resolve<EntityManager>();
+
+            foreach (var limb in Limbs.Values)
+            {
+                if (!entMan.TryGetComponent<SurgeryRecieverComponent>(entMan.GetEntity(limb), out var limbComp))
+                    continue;
+
+                dict.Add(limb, limbComp);
+            }
+
+            return dict;
+        }
+    }
 }
 
 
