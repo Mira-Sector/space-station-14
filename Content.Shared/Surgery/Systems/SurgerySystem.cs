@@ -19,8 +19,11 @@ public sealed partial class SurgerySystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<SurgeryRecieverComponent, LimbInitEvent>(OnLimbInit);
-        SubscribeLocalEvent<SurgeryRecieverBodyComponent, BodyInitEvent>(OnBodyInit);
+        SubscribeLocalEvent<SurgeryRecieverComponent, ComponentInit>((u, c, a) => OnLimbInit(u, c));
+        SubscribeLocalEvent<SurgeryRecieverBodyComponent, ComponentInit>((u, c, a) => OnBodyInit(u, c));
+
+        SubscribeLocalEvent<SurgeryRecieverComponent, LimbInitEvent>((u, c, a) => OnLimbInit(u, c, a.Part));
+        SubscribeLocalEvent<SurgeryRecieverBodyComponent, BodyInitEvent>((u, c, a) => OnBodyInit(u, c));
 
         SubscribeLocalEvent<SurgeryRecieverBodyComponent, BodyPartAddedEvent>(OnBodyPartAdded);
         SubscribeLocalEvent<SurgeryRecieverBodyComponent, BodyPartRemovedEvent>(OnBodyPartRemoved);
@@ -32,25 +35,28 @@ public sealed partial class SurgerySystem : EntitySystem
         SubscribeLocalEvent<SurgeryRecieverBodyComponent, SurgeryDoAfterEvent>(OnBodyDoAfter);
     }
 
-    private void OnLimbInit(EntityUid uid, SurgeryRecieverComponent component, LimbInitEvent args)
+    private void OnLimbInit(EntityUid uid, SurgeryRecieverComponent component, BodyPartComponent? bodyPartComp = null)
     {
+        if (!Resolve(uid, ref bodyPartComp))
+            return;
+
         component.Graph = MergeGraphs(component.AvailableSurgeries);
         component.Graph.TryGetStaringNode(out var startingNode);
         component.CurrentNode = startingNode;
 
         Dirty(uid, component);
 
-        if (args.Part.Body is not {} body)
+        if (bodyPartComp.Body is not {} body)
             return;
 
-        BodyPart bodyPart = new(args.Part.PartType, args.Part.Symmetry);
+        BodyPart bodyPart = new(bodyPartComp.PartType, bodyPartComp.Symmetry);
 
         EnsureComp<SurgeryRecieverBodyComponent>(body, out var surgeryBodyComp);
         surgeryBodyComp.Limbs.Add(bodyPart, GetNetEntity(uid));
+        Dirty(body, surgeryBodyComp);
     }
 
-    // as no surgeries can be added from the limbs we dont need to listen to ComponentAdded
-    private void OnBodyInit(EntityUid uid, SurgeryRecieverBodyComponent component, BodyInitEvent args)
+    private void OnBodyInit(EntityUid uid, SurgeryRecieverBodyComponent component)
     {
         foreach (var surgeries in component.Surgeries)
         {

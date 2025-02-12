@@ -6,7 +6,7 @@ namespace Content.Shared.Surgery.Systems;
 public sealed partial class SurgerySystem
 {
     // calculating the graph is expensive and reused multiple times so cache it
-    Dictionary<List<ProtoId<SurgeryPrototype>>, SurgeryGraph> Graphs = new();
+    private Dictionary<List<ProtoId<SurgeryPrototype>>, SurgeryGraph> Graphs = new();
 
     public SurgeryGraph MergeGraphs(List<ProtoId<SurgeryPrototype>> prototypeIds)
     {

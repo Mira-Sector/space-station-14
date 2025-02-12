@@ -150,7 +150,7 @@ public partial class SharedBodySystem
 
         foreach (var (partUid, partComp) in GetBodyChildren(uid, component))
         {
-            var limbEv= new LimbInitEvent(partComp);
+            var limbEv = new LimbInitEvent(partComp);
             RaiseLocalEvent(partUid, limbEv);
 
             if (!HasComp<DamageableComponent>(partUid) || !HasComp<BodyPartThresholdsComponent>(partUid))

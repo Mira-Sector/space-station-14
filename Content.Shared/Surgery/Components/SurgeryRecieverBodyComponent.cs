@@ -25,7 +25,7 @@ public sealed partial class SurgeryRecieverBodyComponent : Component
 }
 
 
-[DataDefinition]
+[DataDefinition, Serializable]
 public sealed partial class SurgeryBodyReciever
 {
     [DataField(required: true)]
@@ -35,7 +35,7 @@ public sealed partial class SurgeryBodyReciever
     public SurgeryBodyPartReciever Surgeries = new();
 }
 
-[DataDefinition]
+[DataDefinition, Serializable]
 public sealed partial class SurgeryBodyPartReciever : ISurgeryReciever
 {
     [DataField]

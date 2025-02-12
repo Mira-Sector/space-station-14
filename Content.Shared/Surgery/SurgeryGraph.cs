@@ -1,8 +1,9 @@
+using Robust.Shared.Serialization;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Content.Shared.Surgery;
 
-[DataDefinition, Serializable]
+[DataDefinition, Serializable, NetSerializable]
 public partial class SurgeryGraph
 {
     [DataField("nodes")]
@@ -14,7 +15,7 @@ public partial class SurgeryGraph
     [ViewVariables]
     public Dictionary<int, SurgeryNode> Nodes { get; set; } = new();
 
-    [DataField("startingNode", required:true)]
+    [DataField("startingNode", required: true)]
     public string _startingNode = default!;
 
     [ViewVariables]
