@@ -10,8 +10,25 @@ public sealed partial class SurgerySystem
 
     public SurgeryGraph MergeGraphs(List<ProtoId<SurgeryPrototype>> prototypeIds)
     {
-        if (Graphs.ContainsKey(prototypeIds))
-            return Graphs[prototypeIds];
+        foreach (var (graphProtoIds, graph) in Graphs)
+        {
+            if (prototypeIds.Count != graphProtoIds.Count)
+                continue;
+
+            var failed = false;
+
+            for (var i = 0; i < prototypeIds.Count; i++)
+            {
+                if (prototypeIds[i] != graphProtoIds[i])
+                {
+                    failed = true;
+                    break;
+                }
+            }
+
+            if (!failed)
+                return graph;
+        }
 
         SurgeryGraph mergedGraph = new();
 
