@@ -26,6 +26,7 @@ public sealed partial class NPCBlackboard : IEnumerable<KeyValuePair<string, obj
         {"InteractRange", SharedInteractionSystem.InteractionRange},
         {"MaximumIdleTime", 7f},
         {MedibotInjectRange, 4f},
+        {SecuritronArrestRange, 12f},
         {MeleeMissChance, 0.3f},
         {"MeleeRange", 1f},
         {"MinimumIdleTime", 2f},
@@ -292,6 +293,7 @@ public sealed partial class NPCBlackboard : IEnumerable<KeyValuePair<string, obj
     public const string FollowTarget = "FollowTarget";
     public const string Inventory = "Inventory";
     public const string MedibotInjectRange = "MedibotInjectRange";
+    public const string SecuritronArrestRange = "SecuritronArrestRange";
 
     public const string MeleeMissChance = "MeleeMissChance";
 

@@ -21,7 +21,7 @@ public sealed partial class PickNearbyWantedOperator : HTNOperator
     private StationSystem _station = default!;
 
     [DataField]
-    public string RangeKey = NPCBlackboard.MedibotInjectRange;
+    public string RangeKey = NPCBlackboard.SecuritronArrestRange;
 
     /// <summary>
     /// Target entity to inject
