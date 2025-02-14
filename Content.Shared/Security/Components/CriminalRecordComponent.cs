@@ -1,3 +1,4 @@
+using Content.Shared.Inventory;
 using Content.Shared.StatusIcon;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
@@ -11,5 +12,43 @@ public sealed partial class CriminalRecordComponent : Component
     ///     The icon that should be displayed based on the criminal status of the entity.
     /// </summary>
     [DataField, AutoNetworkedField]
-    public ProtoId<SecurityIconPrototype> StatusIcon = "SecurityIconWanted";
+    public ProtoId<SecurityIconPrototype>? StatusIcon;
+
+    /// <summary>
+    ///     How naughty they have been :3
+    ///     Certain stuff that is considered "being a criminal" will increase this while some may decreae it.
+    /// </summary>
+    [ViewVariables]
+    public float Points;
+
+    [ViewVariables]
+    public SecurityStatus LastSecurityStatus;
+
+    [DataField]
+    public Dictionary<SecurityStatus, float> SecurityStatusPoints = new()
+    {
+        {SecurityStatus.None, 0f},
+        {SecurityStatus.Suspected, 1f},
+        {SecurityStatus.Wanted, 4f},
+        {SecurityStatus.Detained, 2f},
+        {SecurityStatus.Paroled, 2f},
+        {SecurityStatus.Discharged, 1f},
+    };
+
+    [DataField]
+    public Dictionary<SlotFlags, float> ClothingSlotPoints = new()
+    {
+        {SlotFlags.HEAD, 0.75f},
+        {SlotFlags.EYES, 0.25f},
+        {SlotFlags.EARS, 0.125f},
+        {SlotFlags.MASK, 0.125f},
+        {SlotFlags.OUTERCLOTHING, 1f},
+        {SlotFlags.INNERCLOTHING, 1f},
+        {SlotFlags.NECK, 0.5f},
+        {SlotFlags.BACK, 0.75f},
+        {SlotFlags.BELT, 0.75f},
+        {SlotFlags.GLOVES, 0.25f},
+        {SlotFlags.FEET, 0.125f},
+        {SlotFlags.SUITSTORAGE, 1f},
+    };
 }
