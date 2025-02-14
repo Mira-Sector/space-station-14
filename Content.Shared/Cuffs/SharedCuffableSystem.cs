@@ -74,6 +74,7 @@ namespace Content.Shared.Cuffs
             SubscribeLocalEvent<CuffableComponent, BuckleAttemptEvent>(OnBuckleAttemptEvent);
             SubscribeLocalEvent<CuffableComponent, UnbuckleAttemptEvent>(OnUnbuckleAttemptEvent);
             SubscribeLocalEvent<CuffableComponent, GetVerbsEvent<Verb>>(AddUncuffVerb);
+            SubscribeLocalEvent<CuffableComponent, GetVerbsEvent<AlternativeVerb>>(OnForceCuffVerb);
             SubscribeLocalEvent<CuffableComponent, UnCuffDoAfterEvent>(OnCuffableDoAfter);
             SubscribeLocalEvent<CuffableComponent, PullStartedMessage>(OnPull);
             SubscribeLocalEvent<CuffableComponent, PullStoppedMessage>(OnPull);
@@ -87,6 +88,8 @@ namespace Content.Shared.Cuffs
             SubscribeLocalEvent<HandcuffComponent, MeleeHitEvent>(OnCuffMeleeHit);
             SubscribeLocalEvent<HandcuffComponent, AddCuffDoAfterEvent>(OnAddCuffDoAfter);
             SubscribeLocalEvent<HandcuffComponent, VirtualItemDeletedEvent>(OnCuffVirtualItemDeleted);
+
+            SubscribeLocalEvent<CanForceHandcuffComponent, ComponentInit>(OnForceStartup);
         }
 
         private void CheckInteract(Entity<CuffableComponent> ent, ref InteractionAttemptEvent args)
@@ -143,6 +146,11 @@ namespace Content.Shared.Cuffs
         }
 
         private void OnStartup(EntityUid uid, CuffableComponent component, ComponentInit args)
+        {
+            component.Container = _container.EnsureContainer<Container>(uid, _componentFactory.GetComponentName(component.GetType()));
+        }
+
+        private void OnForceStartup(EntityUid uid, CanForceHandcuffComponent component, ComponentInit args)
         {
             component.Container = _container.EnsureContainer<Container>(uid, _componentFactory.GetComponentName(component.GetType()));
         }
@@ -336,6 +344,14 @@ namespace Content.Shared.Cuffs
                 return;
             args.Handled = true;
 
+            if (TryComp<CanForceHandcuffComponent>(args.User, out var canForceCuff))
+            {
+                if (args.Cancelled)
+                    EntityManager.DeleteEntity(canForceCuff.Handcuffs);
+
+                canForceCuff.Handcuffs = null;
+            }
+
             if (!args.Cancelled && TryAddNewCuffs(target, user, uid, cuffable))
             {
                 component.Used = true;
@@ -408,6 +424,61 @@ namespace Content.Shared.Cuffs
             {
                 UpdateCuffState(ent.Owner, ent.Comp);
             }
+        }
+
+        private void OnForceCuffVerb(EntityUid uid, CuffableComponent component, GetVerbsEvent<AlternativeVerb> args)
+        {
+            if (!args.CanAccess)
+                return;
+
+            if (!args.CanInteract)
+                return;
+
+            if (!TryComp<CanForceHandcuffComponent>(args.User, out var forceCuffComp))
+                return;
+
+            if (forceCuffComp.Handcuffs != null)
+                return;
+
+            if (forceCuffComp.RequireHands && args.Hands == null)
+                return;
+
+            if (forceCuffComp.Complex && !args.CanComplexInteract)
+                return;
+
+            var verb = new AlternativeVerb()
+            {
+                Text = Loc.GetString("force-handcuff-verb-get-data-text"),
+                Act = () =>
+                {
+                    ForceCuff(forceCuffComp, args.Target, args.User);
+                }
+            };
+
+            args.Verbs.Add(verb);
+        }
+
+        private void ForceCuff(CanForceHandcuffComponent component, EntityUid target, EntityUid user)
+        {
+            if (component.Container == null)
+                return;
+
+            var handcuffs = EntityManager.Spawn(component.HandcuffsId);
+
+            if (!_container.Insert(handcuffs, component.Container, force: true))
+            {
+                EntityManager.DeleteEntity(handcuffs);
+                return;
+            }
+
+            component.Handcuffs = handcuffs;
+
+            if (TryCuffingHands(user, target, handcuffs, false))
+                return;
+
+            EntityManager.DeleteEntity(handcuffs);
+            component.Handcuffs = null;
+
         }
 
         /// <summary>
@@ -501,6 +572,14 @@ namespace Content.Shared.Cuffs
                 return false;
             }
 
+            return TryCuffingHands(user, target, handcuff, true, handcuffComponent, cuffable);
+        }
+
+        public bool TryCuffingHands(EntityUid user, EntityUid target, EntityUid handcuff, bool requireHands, HandcuffComponent? handcuffComponent = null, CuffableComponent? cuffable = null)
+        {
+            if (!Resolve(handcuff, ref handcuffComponent) || !Resolve(target, ref cuffable, false))
+                return false;
+
             var cuffTime = handcuffComponent.CuffTime;
 
             if (HasComp<StunnedComponent>(target))
@@ -514,7 +593,7 @@ namespace Content.Shared.Cuffs
                 BreakOnMove = true,
                 BreakOnWeightlessMove = false,
                 BreakOnDamage = true,
-                NeedHand = true,
+                NeedHand = requireHands,
                 DistanceThreshold = 1f // shorter than default but still feels good
             };
 

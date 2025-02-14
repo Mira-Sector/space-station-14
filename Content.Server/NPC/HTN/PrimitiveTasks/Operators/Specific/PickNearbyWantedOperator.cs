@@ -3,6 +3,7 @@ using Content.Shared.Interaction;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Security.Components;
+using Content.Shared.Stunnable;
 using System.Threading;
 using System.Threading.Tasks;
 

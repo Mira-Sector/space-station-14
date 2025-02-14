@@ -469,6 +469,9 @@
   - type: BatterySelfRecharger
     autoRecharge: true
     autoRechargeRate: 40
+  - type: CanForceHandcuff
+    handcuffsId: Zipties
+    requireHands: false
   - type: Construction
     graph: SecBot
     node: bot
