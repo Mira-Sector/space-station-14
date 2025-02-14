@@ -466,6 +466,9 @@
     damage:
       types:
         Blunt: 0
+  - type: BatterySelfRecharger
+    autoRecharge: true
+    autoRechargeRate: 40
   - type: Construction
     graph: SecBot
     node: bot
