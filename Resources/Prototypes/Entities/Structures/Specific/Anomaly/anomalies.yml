@@ -45,7 +45,7 @@
     - AnomalousResearch
   - type: EmitSoundOnSpawn
     sound:
-      path: /Audio/April/SNOOPING.ogg
+      path: /Audio/April/rick1.ogg
   - type: SecretDataAnomaly
     randomStartSecretMin: 0
     randomStartSecretMax: 2
