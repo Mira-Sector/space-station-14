@@ -446,7 +446,9 @@
 - type: entity
   parent:
   - MobSiliconBase
+  - ShowSecurityIcons
   - StripableInventoryBase
+  - BaseStunbaton
   id: MobSecuritron
   name: securitron
   description: :3333
@@ -457,6 +459,13 @@
   - type: HTN
     rootTask:
       task: SecbotCompound
+  - type: CombatMode
+  - type: MeleeWeapon
+    hidden: true
+    animation: WeaponArcThrust
+    damage:
+      types:
+        Blunt: 0
   - type: Construction
     graph: SecBot
     node: bot
