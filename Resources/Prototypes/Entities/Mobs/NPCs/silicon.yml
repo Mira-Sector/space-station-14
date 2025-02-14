@@ -442,3 +442,31 @@
     - Hexadecimal
     - Common
     - Supply
+
+- type: entity
+  parent:
+  - MobSiliconBase
+  - StripableInventoryBase
+  id: MobSecuritron
+  name: securitron
+  description: :3333
+  components:
+  - type: Sprite
+    sprite: Mobs/Silicon/Bots/securitron.rsi
+    state: secbot
+  - type: HTN
+    rootTask:
+      task: SecbotCompound
+  - type: Construction
+    graph: SecBot
+    node: bot
+  - type: SentienceTarget
+    flavorKind: station-event-random-sentience-flavor-mechanical
+  - type: Anchorable
+  - type: InteractionPopup
+    interactSuccessString: petting-success-secbot
+    interactFailureString: petting-failure-secbot
+    interactSuccessSound:
+      path: /Audio/Ambience/Objects/periodic_beep.ogg
+  - type: Inventory
+    templateId: medibot
