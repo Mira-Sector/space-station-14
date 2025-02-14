@@ -47,7 +47,7 @@
   - type: MeleeWeapon
     altDisarm: false
     soundHit:
-        path: /Audio/Weapons/Xeno/alien_claw_flesh1.ogg
+        path: /Audio/Weapons/bladeslice.ogg
     angle: 0
     animation: WeaponArcClaw
     damage:

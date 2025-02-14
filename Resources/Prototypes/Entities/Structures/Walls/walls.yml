@@ -1183,6 +1183,17 @@
   - type: IconSmooth
     key: woods
     base: wood
+  - type: FlavorProfile
+    flavors:
+    - dirty #Hey, this wall tastes like dirt!
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 50
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 50
+  - type: Food
 
 - type: entity
   parent: BaseWall
