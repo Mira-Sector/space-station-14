@@ -45,7 +45,7 @@
     - AnomalousResearch
   - type: EmitSoundOnSpawn
     sound:
-      path: /Audio/Effects/teleport_arrival.ogg
+      path: /Audio/April/SNOOPING.ogg
   - type: SecretDataAnomaly
     randomStartSecretMin: 0
     randomStartSecretMax: 2
