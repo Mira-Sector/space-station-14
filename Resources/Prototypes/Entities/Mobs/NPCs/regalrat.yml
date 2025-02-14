@@ -1,8 +1,8 @@
 - type: entity
-  name: rat king
+  name: cheese king
   id: MobRatKing
   parent: [ SimpleMobBase, MobCombat ]
-  description: He's da rat. He make da roolz.
+  description: It's da cheese. It make da roolz.
   components:
   - type: CombatMode
   - type: MovementSpeedModifier
@@ -26,9 +26,6 @@
     layers:
     - map: ["enum.DamageStateVisualLayers.Base"]
       state: regalrat
-    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
-      state: eyes
-      shader: unshaded
   - type: Physics
     bodyType: KinematicController
   - type: Fixtures
@@ -80,7 +77,6 @@
     states:
       Alive:
         Base: regalrat
-        BaseUnshaded: eyes
       Critical:
         Base: critical
       Dead:
@@ -106,7 +102,7 @@
     speechVerb: SmallMob
   - type: Butcherable
     spawned:
-    - id: ClothingHeadHatFancyCrown #how did that get there?
+    - id: FoodCheese
       amount: 1
   - type: MobPrice
     price: 2500 # rat wealth
@@ -160,10 +156,10 @@
     - MinorAntagonists
 
 - type: entity
-  name: rat servant
+  name: cheese servant
   id: MobRatServant
   parent: [ SimpleMobBase, MobCombat ]
-  description: He's da mini rat. He don't make da roolz.
+  description: It's da mini cheese. It don't make da roolz.
   categories: [ HideSpawnMenu ] #Must be configured to a King or the AI breaks.
   components:
   - type: CombatMode
@@ -195,9 +191,6 @@
     layers:
     - map: ["enum.DamageStateVisualLayers.Base", "movement"]
       state: rat
-    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded"]
-      state: eyes
-      shader: unshaded
 
   - type: SpriteMovement
     movementLayers:
@@ -265,7 +258,7 @@
         Base: splat
   - type: Butcherable
     spawned:
-    - id: FoodMeatRat
+    - id: FoodCheeseSlice
       amount: 1
   - type: Vocal
     sounds:
