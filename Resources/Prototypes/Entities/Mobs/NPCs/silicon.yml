@@ -451,7 +451,7 @@
   - BaseStunbaton
   id: MobSecuritron
   name: securitron
-  description: :3333
+  description: Tiders hate this one simple trick!
   components:
   - type: Sprite
     sprite: Mobs/Silicon/Bots/securitron.rsi
