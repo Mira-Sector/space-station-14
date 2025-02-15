@@ -3,13 +3,14 @@
   branches:
     - tasks:
         - !type:HTNCompoundTask
-          task: StunWantedNearbyCompound
+          task: ArrestWantedNearbyCompound
+
     - tasks:
         - !type:HTNCompoundTask
           task: IdleCompound
 
 - type: htnCompound
-  id: StunWantedNearbyCompound
+  id: ArrestWantedNearbyCompound
   branches:
     - tasks:
         - !type:HTNPrimitiveTask
@@ -21,6 +22,27 @@
           operator: !type:MoveToOperator
             pathfindInPlanning: false
 
+        - !type:HTNCompoundTask
+          task: ArrestTargetCompound
+
+- type: htnCompound
+  id: ArrestTargetCompound
+  branches:
+    - preconditions:
+        - !type:TargetStunnedPrecondition
+          stunned: true
+          targetKey: StunTarget
+      tasks:
+        - !type:HTNPrimitiveTask
+          operator: !type:ForceHandcuffOperator
+            targetKey: StunTarget
+
+    - preconditions:
+        - !type:TargetStunnedPrecondition
+          stunned: false
+          targetKey: StunTarget
+      tasks:
         - !type:HTNPrimitiveTask
           operator: !type:MeleeOperator
             targetKey: StunTarget
+

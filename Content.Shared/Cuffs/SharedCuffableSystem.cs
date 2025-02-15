@@ -458,27 +458,27 @@ namespace Content.Shared.Cuffs
             args.Verbs.Add(verb);
         }
 
-        private void ForceCuff(CanForceHandcuffComponent component, EntityUid target, EntityUid user)
+        public bool ForceCuff(CanForceHandcuffComponent component, EntityUid target, EntityUid user)
         {
             if (component.Container == null)
-                return;
+                return false;
 
             var handcuffs = EntityManager.Spawn(component.HandcuffsId);
 
             if (!_container.Insert(handcuffs, component.Container, force: true))
             {
                 EntityManager.DeleteEntity(handcuffs);
-                return;
+                return false;
             }
 
             component.Handcuffs = handcuffs;
 
             if (TryCuffingHands(user, target, handcuffs, false))
-                return;
+                return true;
 
             EntityManager.DeleteEntity(handcuffs);
             component.Handcuffs = null;
-
+            return false;
         }
 
         /// <summary>
