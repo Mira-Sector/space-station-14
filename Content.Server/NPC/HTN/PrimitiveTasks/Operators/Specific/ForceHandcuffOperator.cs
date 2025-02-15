@@ -33,6 +33,9 @@ public sealed partial class ForceHandcuffOperator : HTNOperator
         if (!_entMan.TryGetComponent<CanForceHandcuffComponent>(owner, out var canForceCuff))
             return HTNOperatorStatus.Failed;
 
+        if (canForceCuff.Container?.ContainedEntities.Count > 0)
+            return HTNOperatorStatus.Continuing;
+
         return _cuffable.ForceCuff(canForceCuff, target, owner) ? HTNOperatorStatus.Finished : HTNOperatorStatus.Failed;
     }
 }
