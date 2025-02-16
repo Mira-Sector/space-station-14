@@ -22,7 +22,7 @@ public sealed partial class CriminalRecordComponent : Component
     ///     How naughty they have been :3
     ///     Certain stuff that is considered "being a criminal" will increase this while some may decreae it.
     /// </summary>
-    [ViewVariables]
+    [ViewVariables, AutoNetworkedField]
     public float Points;
 
     [DataField]
