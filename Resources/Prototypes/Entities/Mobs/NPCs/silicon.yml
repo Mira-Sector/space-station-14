@@ -456,6 +456,17 @@
   - type: Sprite
     sprite: Mobs/Silicon/Bots/securitron.rsi
     state: secbot
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 50
+        mask:
+        - SmallMobMask
+        layer:
+        - SmallMobLayer
   - type: HTN
     rootTask:
       task: SecbotCompound
