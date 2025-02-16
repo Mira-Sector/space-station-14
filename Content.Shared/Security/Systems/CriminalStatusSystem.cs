@@ -70,10 +70,12 @@ public sealed class CriminalStatusSystem : EntitySystem
         if (CheckIdCard(uid, contraband))
             return;
 
+        var points = GetPoints(clothing, contraband.CriminalPoints);
+
         if (equip)
-            component.Points += contraband.CriminalPoints * slotMultiplier;
+            component.Points += points;
         else
-            component.Points -= contraband.CriminalPoints * slotMultiplier;
+            component.Points -= points;
     }
 
     private void OnPickupOrDrop(EntityUid uid, CriminalRecordComponent component, EntityUid item, bool pickup)
@@ -87,10 +89,12 @@ public sealed class CriminalStatusSystem : EntitySystem
         if (CheckIdCard(uid, contraband))
             return;
 
+        var points = GetPoints(item, contraband.CriminalPoints);
+
         if (pickup)
-            component.Points += contraband.CriminalPoints;
+            component.Points += points;
         else
-            component.Points -= contraband.CriminalPoints;
+            component.Points -= points;
     }
 
     private bool CheckIdCard(EntityUid uid, ContrabandComponent contraband)
@@ -102,5 +106,13 @@ public sealed class CriminalStatusSystem : EntitySystem
         }
 
         return contraband.AllowedDepartments != null && departments != null && departments.Intersect(contraband.AllowedDepartments).Any();
+    }
+
+    private float GetPoints(EntityUid uid, float points)
+    {
+        var ev = new GetCriminalPointsEvent(points);
+        RaiseLocalEvent(uid, ev);
+
+        return ev.Points;
     }
 }

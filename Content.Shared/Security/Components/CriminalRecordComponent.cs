@@ -2,6 +2,7 @@ using Content.Shared.Inventory;
 using Content.Shared.StatusIcon;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared.Security.Components;
 
@@ -51,4 +52,15 @@ public sealed partial class CriminalRecordComponent : Component
         {SlotFlags.FEET, 0.125f},
         {SlotFlags.SUITSTORAGE, 1f},
     };
+}
+
+[Serializable, NetSerializable]
+public sealed partial class GetCriminalPointsEvent : EntityEventArgs
+{
+    public float Points;
+
+    public GetCriminalPointsEvent(float points)
+    {
+        Points = points;
+    }
 }
