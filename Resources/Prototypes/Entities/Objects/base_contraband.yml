@@ -37,6 +37,7 @@
   components:
   - type: Contraband
     severity: Restricted
+    criminalPoints: 3
 
 # one department restricted contraband
 - type: entity
