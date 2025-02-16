@@ -21,6 +21,7 @@
         - !type:HTNPrimitiveTask
           operator: !type:MoveToOperator
             pathfindInPlanning: false
+            removeKeyOnFinish: false
 
         - !type:HTNCompoundTask
           task: ArrestTargetCompound
@@ -36,6 +37,11 @@
         - !type:HTNPrimitiveTask
           operator: !type:ForceHandcuffOperator
             targetKey: StunTarget
+        - !type:HTNPrimitiveTask
+          operator: !type:SendRadioOperator
+            message: securitron-target-arrested
+            radioChannel: Security
+            key: StunTarget
 
     - preconditions:
         - !type:TargetStunnedPrecondition
@@ -45,4 +51,3 @@
         - !type:HTNPrimitiveTask
           operator: !type:MeleeOperator
             targetKey: StunTarget
-

@@ -473,7 +473,7 @@ namespace Content.Shared.Cuffs
 
             component.Handcuffs = handcuffs;
 
-            if (TryCuffingHands(user, target, handcuffs, false))
+            if (TryCuffing(user, target, handcuffs, requireHands: false))
                 return true;
 
             EntityManager.DeleteEntity(handcuffs);
@@ -547,7 +547,7 @@ namespace Content.Shared.Cuffs
         }
 
         /// <returns>False if the target entity isn't cuffable.</returns>
-        public bool TryCuffing(EntityUid user, EntityUid target, EntityUid handcuff, HandcuffComponent? handcuffComponent = null, CuffableComponent? cuffable = null)
+        public bool TryCuffing(EntityUid user, EntityUid target, EntityUid handcuff, HandcuffComponent? handcuffComponent = null, CuffableComponent? cuffable = null, bool requireHands = true)
         {
             if (!Resolve(handcuff, ref handcuffComponent) || !Resolve(target, ref cuffable, false))
                 return false;
@@ -566,19 +566,11 @@ namespace Content.Shared.Cuffs
                 return true;
             }
 
-            if (!_hands.CanDrop(user, handcuff))
+            if (requireHands && !_hands.CanDrop(user, handcuff))
             {
                 _popup.PopupClient(Loc.GetString("handcuff-component-cannot-drop-cuffs", ("target", Identity.Name(target, EntityManager, user))), user, user);
                 return false;
             }
-
-            return TryCuffingHands(user, target, handcuff, true, handcuffComponent, cuffable);
-        }
-
-        public bool TryCuffingHands(EntityUid user, EntityUid target, EntityUid handcuff, bool requireHands, HandcuffComponent? handcuffComponent = null, CuffableComponent? cuffable = null)
-        {
-            if (!Resolve(handcuff, ref handcuffComponent) || !Resolve(target, ref cuffable, false))
-                return false;
 
             var cuffTime = handcuffComponent.CuffTime;
 

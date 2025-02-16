@@ -485,3 +485,8 @@
       path: /Audio/Ambience/Objects/periodic_beep.ogg
   - type: Inventory
     templateId: medibot
+  - type: ActiveRadio
+    channels:
+    - Hexadecimal
+    - Common
+    - Security

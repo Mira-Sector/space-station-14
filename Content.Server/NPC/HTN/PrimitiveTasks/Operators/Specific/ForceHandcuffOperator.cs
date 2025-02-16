@@ -17,12 +17,6 @@ public sealed partial class ForceHandcuffOperator : HTNOperator
         _cuffable = sysManager.GetEntitySystem<SharedCuffableSystem>();
     }
 
-    public override void TaskShutdown(NPCBlackboard blackboard, HTNOperatorStatus status)
-    {
-        base.TaskShutdown(blackboard, status);
-        blackboard.Remove<EntityUid>(TargetKey);
-    }
-
     public override HTNOperatorStatus Update(NPCBlackboard blackboard, float frameTime)
     {
         var owner = blackboard.GetValue<EntityUid>(NPCBlackboard.Owner);
