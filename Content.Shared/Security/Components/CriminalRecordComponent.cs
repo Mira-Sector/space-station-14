@@ -14,15 +14,15 @@ public sealed partial class CriminalRecordComponent : Component
     [DataField, AutoNetworkedField]
     public ProtoId<SecurityIconPrototype>? StatusIcon;
 
+    [DataField, AutoNetworkedField]
+    public SecurityStatus Status = SecurityStatus.None;
+
     /// <summary>
     ///     How naughty they have been :3
     ///     Certain stuff that is considered "being a criminal" will increase this while some may decreae it.
     /// </summary>
     [ViewVariables]
     public float Points;
-
-    [ViewVariables]
-    public SecurityStatus LastSecurityStatus;
 
     [DataField]
     public Dictionary<SecurityStatus, float> SecurityStatusPoints = new()

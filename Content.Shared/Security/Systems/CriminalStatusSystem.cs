@@ -21,7 +21,7 @@ public sealed class CriminalStatusSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<CriminalRecordComponent, CriminalRecordChangeStatus>(OnCriminalRecordChanged);
+        SubscribeLocalEvent<CriminalRecordComponent, CriminalRecordChanged>(OnCriminalRecordChanged);
 
         SubscribeLocalEvent<CriminalRecordComponent, ClothingDidEquippedEvent>((u, c, a) => OnEquippedOrUniquip(u, c, a.Clothing, true));
         SubscribeLocalEvent<CriminalRecordComponent, ClothingDidUnequippedEvent>((u, c, a) => OnEquippedOrUniquip(u, c, a.Clothing, false));
@@ -30,14 +30,10 @@ public sealed class CriminalStatusSystem : EntitySystem
         SubscribeLocalEvent<CriminalRecordComponent, DidUnequipHandEvent>((u, c, a) => OnPickupOrDrop(u, c, a.Unequipped, false));
     }
 
-    private void OnCriminalRecordChanged(EntityUid uid, CriminalRecordComponent component, ref CriminalRecordChangeStatus args)
+    private void OnCriminalRecordChanged(EntityUid uid, CriminalRecordComponent component, CriminalRecordChanged args)
     {
-        if (component.LastSecurityStatus == args.Status)
-            return;
-
-        component.Points -= component.SecurityStatusPoints[component.LastSecurityStatus];
+        component.Points -= component.SecurityStatusPoints[args.PreviousStatus];
         component.Points += component.SecurityStatusPoints[args.Status];
-        component.LastSecurityStatus = args.Status;
     }
 
     private void OnEquippedOrUniquip(EntityUid uid, CriminalRecordComponent component, Entity<ClothingComponent> clothing, bool equip)

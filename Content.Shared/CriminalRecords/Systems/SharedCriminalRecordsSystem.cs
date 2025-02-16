@@ -33,7 +33,8 @@ public abstract class SharedCriminalRecordsSystem : EntitySystem
     {
         EnsureComp<CriminalRecordComponent>(characterUid, out var record);
 
-        var previousIcon = record.StatusIcon;
+        if (status == record.Status)
+            return;
 
         record.StatusIcon = status switch
         {
@@ -46,8 +47,14 @@ public abstract class SharedCriminalRecordsSystem : EntitySystem
             _ => record.StatusIcon
         };
 
-        if (previousIcon != record.StatusIcon)
-            Dirty(characterUid, record);
+        var previousStatus = record.Status;
+
+        var ev = new CriminalRecordChanged(status, previousStatus);
+        RaiseLocalEvent(characterUid, ev);
+
+        record.Status = status;
+
+        Dirty(characterUid, record);
     }
 }
 
