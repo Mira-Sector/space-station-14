@@ -19,7 +19,6 @@
   - type: InputMover
   - type: Clickable
   - type: InteractionOutline
-  - type: Access
   - type: Physics
     bodyType: Dynamic
   - type: Fixtures
