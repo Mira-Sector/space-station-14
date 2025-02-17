@@ -1205,6 +1205,9 @@
   id: StringInstrument
 
 - type: Tag
+  id: StunBaton
+
+- type: Tag
   id: SubdermalImplant
 
 - type: Tag
