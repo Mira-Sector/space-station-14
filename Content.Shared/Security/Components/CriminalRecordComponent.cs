@@ -29,11 +29,11 @@ public sealed partial class CriminalRecordComponent : Component
     public Dictionary<SecurityStatus, float> SecurityStatusPoints = new()
     {
         {SecurityStatus.None, 0f},
-        {SecurityStatus.Suspected, 1f},
-        {SecurityStatus.Wanted, 4f},
-        {SecurityStatus.Detained, 2f},
-        {SecurityStatus.Paroled, 2f},
-        {SecurityStatus.Discharged, 1f},
+        {SecurityStatus.Suspected, 5f},
+        {SecurityStatus.Wanted, 10f},
+        {SecurityStatus.Detained, 10f},
+        {SecurityStatus.Paroled, 5f},
+        {SecurityStatus.Discharged, 3f},
     };
 
     [DataField]
