@@ -8,6 +8,7 @@ tilemap:
   16: FloorBlue
   17: FloorBlueCircuit
   21: FloorCarpetOffice
+  6: FloorCheese
   29: FloorDark
   34: FloorDarkMono
   41: FloorEighties
@@ -225,7 +226,7 @@ entities:
           version: 6
         5,-1:
           ind: 5,-1
-          tiles: ewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAagAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAagAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAagAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAagAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAewAAAAAAewAAAAAAagAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbgAAAAABbgAAAAABbgAAAAABewAAAAAAAAAAAAAAewAAAAAAewAAAAAAagAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbgAAAAAAbgAAAAADbgAAAAADewAAAAAAewAAAAAAewAAAAAAewAAAAAAagAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbgAAAAAAbgAAAAADbgAAAAACewAAAAAAewAAAAAAewAAAAAAewAAAAAAagAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbgAAAAAAbgAAAAABbgAAAAABewAAAAAAewAAAAAAewAAAAAAewAAAAAAagAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbgAAAAABbgAAAAADbgAAAAACewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbgAAAAAAbgAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbgAAAAACbgAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbgAAAAADbgAAAAABewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAegAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          tiles: ewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAagAAAAAAewAAAAAABgAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAagAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAagAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAagAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAewAAAAAAewAAAAAAagAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbgAAAAABbgAAAAABbgAAAAABewAAAAAAAAAAAAAAewAAAAAAewAAAAAAagAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbgAAAAAAbgAAAAADbgAAAAADewAAAAAAewAAAAAAewAAAAAAewAAAAAAagAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbgAAAAAAbgAAAAADbgAAAAACewAAAAAAewAAAAAAewAAAAAAewAAAAAAagAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbgAAAAAAbgAAAAABbgAAAAABewAAAAAAewAAAAAAewAAAAAAewAAAAAAagAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbgAAAAABbgAAAAADbgAAAAACewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbgAAAAAAbgAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbgAAAAACbgAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbgAAAAADbgAAAAABewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAegAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
           version: 6
         5,-2:
           ind: 5,-2
@@ -3049,9 +3050,7 @@ entities:
             2793: 15,0
             2794: 17,0
             2795: 20,0
-            2796: 22,0
             2797: 24,1
-            2798: 27,0
             2799: 29,0
             2800: 31,1
             2801: 36,0
@@ -3250,9 +3249,6 @@ entities:
             2994: 19,0
             2995: 19,1
             2996: 21,0
-            2997: 23,0
-            2998: 24,0
-            2999: 26,0
             3000: 26,-1
             3001: 26,-2
             3002: 25,-5
@@ -3327,6 +3323,75 @@ entities:
             2713: 29,-29
             2714: 30,-27
             2715: 30,-28
+            3064: 28,0
+            3065: 24,0
+            3066: 26,0
+            3067: 26,0
+            3068: 24,-1
+            3069: 26,-2
+            3070: 25,30
+            3071: 26,32
+            3072: 25,35
+            3073: 21,36
+            3074: 19,35
+            3075: 17,37
+            3076: 26,40
+            3077: 23,44
+            3078: 23,46
+            3079: 20,44
+            3080: 29,46
+            3081: 25,45
+            3082: 34,45
+            3083: 30,45
+            3084: 30,40
+            3085: 30,42
+            3086: 30,42
+            3087: 31,36
+            3088: 30,35
+            3090: 43,23
+            3091: 44,24
+            3092: 45,25
+            3093: 46,13
+            3094: 45,19
+            3095: 50,20
+            3096: 55,19
+            3097: 55,18
+            3098: 60,15
+            3099: 55,-1
+            3100: 60,2
+            3101: 58,-2
+            3102: 60,-2
+            3103: 49,-2
+            3104: 48,0
+            3105: 43,-2
+            3106: 41,0
+            3107: 40,4
+            3108: 41,5
+            3109: 40,9
+            3110: 42,11
+            3111: 38,-1
+            3112: 51,-7
+            3113: 50,-8
+            3114: 50,-5
+            3115: 61,-3
+            3116: 67,2
+            3117: 66,1
+            3118: 72,2
+            3119: 71,4
+            3120: 72,7
+            3121: 71,7
+            3122: 78,1
+            3123: 80,2
+            3124: 76,4
+            3125: 78,5
+            3126: 77,4
+            3127: 78,3
+            3128: 77,3
+            3129: 78,1
+            3130: 80,-7
+            3131: 77,-6
+            3132: 80,-5
+            3133: 76,-9
         - node:
             cleanable: True
             color: '#FFFFFFFF'
@@ -5234,32 +5299,32 @@ entities:
             color: '#FFFFFFFF'
             id: SpaceStationSign1
           decals:
-            997: 23,0
+            3139: 23,0
         - node:
             color: '#FFFFFFFF'
             id: SpaceStationSign2
           decals:
-            996: 24,0
+            3138: 24,0
         - node:
             color: '#FFFFFFFF'
             id: SpaceStationSign3
           decals:
-            995: 25,0
+            3137: 25,0
         - node:
             color: '#FFFFFFFF'
             id: SpaceStationSign4
           decals:
-            991: 26,0
+            3136: 26,0
         - node:
             color: '#FFFFFFFF'
             id: SpaceStationSign5
           decals:
-            992: 27,0
+            3135: 27,0
         - node:
             color: '#FFFFFFFF'
             id: SpaceStationSign6
           decals:
-            993: 28,0
+            3134: 28,0
         - node:
             color: '#FFFFFFFF'
             id: SpaceStationSign7
@@ -8049,7 +8114,7 @@ entities:
       pos: 24.5,-39.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -9758.025
+      secondsUntilStateChange: -10212.291
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -8256,7 +8321,7 @@ entities:
       pos: 32.5,-49.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -3652.153
+      secondsUntilStateChange: -4106.419
       state: Opening
     - type: DeviceLinkSink
       invokeCounter: 1
@@ -11350,6 +11415,12 @@ entities:
       parent: 2
     - type: SpamEmitSound
       enabled: False
+  - uid: 13901
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 105.5,-21.5
+      parent: 2
 - proto: Bloodpack
   entities:
   - uid: 13830
@@ -33639,6 +33710,14 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 38.5,6.5
       parent: 2
+- proto: ChairCheese
+  entities:
+  - uid: 13908
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 89.47494,-12.355395
+      parent: 2
 - proto: ChairMeat
   entities:
   - uid: 5001
@@ -35147,6 +35226,13 @@ entities:
     components:
     - type: Transform
       pos: 19.545155,5.62142
+      parent: 2
+- proto: ClothingNeckLGBTPin
+  entities:
+  - uid: 13900
+    components:
+    - type: Transform
+      pos: 103.253525,-15.486198
       parent: 2
 - proto: ClothingNeckScarfStripedRed
   entities:
@@ -42923,6 +43009,23 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 31.5,-9.5
+      parent: 2
+- proto: FoodCheeseSlice
+  entities:
+  - uid: 13905
+    components:
+    - type: Transform
+      pos: 89.78744,-12.167895
+      parent: 2
+  - uid: 13906
+    components:
+    - type: Transform
+      pos: 89.17806,-12.699145
+      parent: 2
+  - uid: 13907
+    components:
+    - type: Transform
+      pos: 89.72494,-12.65227
       parent: 2
 - proto: FoodCondimentBottleEnzyme
   entities:
@@ -61305,6 +61408,13 @@ entities:
     - type: Transform
       pos: 54.42104,17.661463
       parent: 2
+- proto: LGBTQHandyFlag
+  entities:
+  - uid: 13899
+    components:
+    - type: Transform
+      pos: 102.66635,-15.528009
+      parent: 2
 - proto: LightReplacer
   entities:
   - uid: 9174
@@ -61790,6 +61900,11 @@ entities:
     components:
     - type: Transform
       pos: 23.5,4.5
+      parent: 2
+  - uid: 13904
+    components:
+    - type: Transform
+      pos: 105.5,-22.5
       parent: 2
 - proto: MaintenancePlantSpawner
   entities:
@@ -71521,6 +71636,12 @@ entities:
       parent: 2
     - type: SpamEmitSound
       enabled: False
+  - uid: 13902
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 105.5,-23.5
+      parent: 2
 - proto: SpawnMobAlexander
   entities:
   - uid: 10858
@@ -71534,6 +71655,13 @@ entities:
     components:
     - type: Transform
       pos: 62.5,10.5
+      parent: 2
+- proto: SpawnMobBeepsky
+  entities:
+  - uid: 13898
+    components:
+    - type: Transform
+      pos: 33.5,17.5
       parent: 2
 - proto: SpawnMobCatGeneric
   entities:
@@ -74584,6 +74712,12 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 102.5,-16.5
+      parent: 2
+  - uid: 13903
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 105.5,-22.5
       parent: 2
 - proto: TablePlasmaGlass
   entities:
