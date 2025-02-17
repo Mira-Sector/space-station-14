@@ -1,13 +1,14 @@
 using Content.Shared.Access.Components;
-using Content.Shared.Access.Systems;
 using Content.Shared.Actions;
 using Content.Shared.Audio;
 using Content.Shared.Buckle;
 using Content.Shared.Buckle.Components;
 using Content.Shared.Hands;
 using Content.Shared.Inventory.VirtualItem;
+using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Systems;
+using Content.Shared.Whitelist;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
@@ -17,7 +18,6 @@ namespace Content.Shared.Vehicles;
 
 public abstract partial class SharedVehicleSystem : EntitySystem
 {
-    [Dependency] private readonly AccessReaderSystem _access = default!;
     [Dependency] private readonly SharedActionsSystem _actions = default!;
     [Dependency] private readonly SharedAmbientSoundSystem _ambientSound = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
@@ -25,6 +25,7 @@ public abstract partial class SharedVehicleSystem : EntitySystem
     [Dependency] private readonly SharedBuckleSystem _buckle = default!;
     [Dependency] private readonly SharedMoverController _mover = default!;
     [Dependency] private readonly SharedVirtualItemSystem _virtualItem = default!;
+    [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
 
     public static readonly EntProtoId HornActionId = "ActionHorn";
     public static readonly EntProtoId SirenActionId = "ActionSiren";
@@ -46,6 +47,8 @@ public abstract partial class SharedVehicleSystem : EntitySystem
 
         SubscribeLocalEvent<VehicleComponent, HornActionEvent>(OnHorn);
         SubscribeLocalEvent<VehicleComponent, SirenActionEvent>(OnSiren);
+
+        SubscribeLocalEvent<VehicleComponent, GetAdditionalAccessEvent>(OnGetAdditionalAccess);
     }
 
     private void OnInit(EntityUid uid, VehicleComponent component, ComponentInit args)
@@ -66,31 +69,53 @@ public abstract partial class SharedVehicleSystem : EntitySystem
 
     private void OnInsert(EntityUid uid, VehicleComponent component, ref EntInsertedIntoContainerMessage args)
     {
-        if (HasComp<InstantActionComponent>(args.Entity))
+        if (!ItemSlotWhitelist(uid, args.Entity))
             return;
 
         component.EngineRunning = true;
-        _appearance.SetData(component.Owner, VehicleState.Animated, true);
+        _appearance.SetData(uid, VehicleState.Animated, true);
 
-        _ambientSound.SetAmbience(component.Owner, true);
+        _ambientSound.SetAmbience(uid, true);
 
         if (component.Driver == null)
             return;
 
-        Mount(component.Driver.Value, component.Owner);
+        Mount(component.Driver.Value, uid);
     }
 
     private void OnEject(EntityUid uid, VehicleComponent component, ref EntRemovedFromContainerMessage args)
     {
-        component.EngineRunning = false;
-        _appearance.SetData(component.Owner, VehicleState.Animated, false);
+        if (!ItemSlotWhitelist(uid, args.Entity))
+            return;
 
-        _ambientSound.SetAmbience(component.Owner, false);
+        component.EngineRunning = false;
+        _appearance.SetData(uid, VehicleState.Animated, false);
+
+        _ambientSound.SetAmbience(uid, false);
 
         if (component.Driver == null)
             return;
 
-        Dismount(component.Driver.Value, component.Owner);
+        Dismount(component.Driver.Value, uid);
+    }
+
+    private bool ItemSlotWhitelist(EntityUid vehicle, EntityUid item)
+    {
+        if (!TryComp<ItemSlotsComponent>(vehicle, out var slotsComp))
+            return false;
+
+        var passed = false;
+
+        foreach (var slot in slotsComp.Slots.Values)
+        {
+            if (!_whitelist.CheckBoth(item, slot.Blacklist, slot.Whitelist))
+                continue;
+
+            passed = true;
+            break;
+        }
+
+        return passed;
     }
 
     private void OnHorn(EntityUid uid, VehicleComponent component, InstantActionEvent args)
@@ -104,7 +129,7 @@ public abstract partial class SharedVehicleSystem : EntitySystem
         if (component.HornSound == null)
             return;
 
-        _audio.PlayPredicted(component.HornSound, component.Owner, component.Driver);
+        _audio.PlayPvs(component.HornSound, uid);
         args.Handled = true;
     }
 
@@ -125,7 +150,7 @@ public abstract partial class SharedVehicleSystem : EntitySystem
         }
         else
         {
-            var audio = _audio.PlayPvs(component.SirenSound, component.Owner, AudioParams.Default.WithLoop(true).WithMaxDistance(5));
+            var audio = _audio.PlayPvs(component.SirenSound, uid, AudioParams.Default.WithLoop(true).WithMaxDistance(5));
 
             if (audio != null)
                 component.SirenStream = audio.Value.Entity;
@@ -197,8 +222,8 @@ public abstract partial class SharedVehicleSystem : EntitySystem
 
         _buckle.TryUnbuckle(args.User, args.User);
 
-        Dismount(args.User, comp.Owner);
-        _appearance.SetData(comp.Owner, VehicleState.DrawOver, false);
+        Dismount(args.User, uid);
+        _appearance.SetData(uid, VehicleState.DrawOver, false);
     }
 
     private void AddHorns(EntityUid driver, EntityUid vehicle)
@@ -215,19 +240,6 @@ public abstract partial class SharedVehicleSystem : EntitySystem
 
     private void Mount(EntityUid driver, EntityUid vehicle)
     {
-        if (TryComp<AccessComponent>(vehicle, out var accessComp))
-        {
-            var accessSources = _access.FindPotentialAccessItems(driver);
-            var access = _access.FindAccessTags(driver, accessSources);
-
-            foreach (var tag in access)
-            {
-                accessComp.Tags.Add(tag);
-            }
-
-            Dirty(vehicle, accessComp);
-        }
-
         _mover.SetRelay(driver, vehicle);
     }
 
@@ -250,12 +262,14 @@ public abstract partial class SharedVehicleSystem : EntitySystem
             _actions.RemoveAction(driver, vehicleComp.SirenAction);
 
         _virtualItem.DeleteInHandsMatching(driver, vehicle);
+    }
 
-        if (TryComp<AccessComponent>(vehicle, out var accessComp))
-        {
-            accessComp.Tags.Clear();
-            Dirty(vehicle, accessComp);
-        }
+    private void OnGetAdditionalAccess(EntityUid uid, VehicleComponent component, ref GetAdditionalAccessEvent args)
+    {
+        if (component.Driver == null)
+            return;
+
+        args.Entities.Add(component.Driver.Value);
     }
 }
 
