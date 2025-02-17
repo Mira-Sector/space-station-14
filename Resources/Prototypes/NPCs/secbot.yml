@@ -7,7 +7,7 @@
 
     - tasks:
         - !type:HTNCompoundTask
-          task: IdleCompound
+          task: SecbotPatrolCompound
 
 - type: htnCompound
   id: ArrestWantedNearbyCompound
@@ -51,3 +51,23 @@
         - !type:HTNPrimitiveTask
           operator: !type:MeleeOperator
             targetKey: StunTarget
+
+- type: htnCompound
+  id: SecbotPatrolCompound
+  branches:
+    - tasks:
+        - !type:HTNPrimitiveTask
+          operator: !type:EntityWhitelistOperator
+            whitelist:
+              components:
+              - NavMapBeacon
+            targetKey: PatrolTarget
+            targetMoveKey: PatrolCoordinates
+            listKey: PatrolTargets
+
+        - !type:HTNPrimitiveTask
+          operator: !type:MoveToOperator
+            pathfindInPlanning: false
+            stopOnLineOfSight: true
+            targetKey: PatrolCoordinates
+            rangeKey: VisionRange
