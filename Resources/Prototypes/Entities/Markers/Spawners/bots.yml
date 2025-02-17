@@ -40,3 +40,17 @@
     prototypes:
       - MobSecuritron
 
+
+- type: entity
+  name: beepsky spawner
+  id : SpawnMobBeepsky
+  parent: MarkerBase
+  components:
+  - type: Sprite
+    layers:
+      - state: green
+      - sprite: Mobs/Silicon/Bots/securitron.rsi
+        state: secbot
+  - type: ConditionalSpawner
+    prototypes:
+      - MobSecuritron
