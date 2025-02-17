@@ -1205,3 +1205,9 @@ Entries:
     type: Fix
   id: 178
   time: '2025-02-17T21:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Criminal points now checks all the ids rather than the highest priority
+    type: Fix
+  id: 178
+  time: '2025-02-17T22:10:00.0000000+00:00'
