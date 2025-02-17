@@ -1,9 +1,9 @@
 using Content.Server.NPC.Pathfinding;
+using Content.Shared.Cuffs.Components;
 using Content.Shared.Interaction;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Security.Components;
-using Content.Shared.Stunnable;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -47,15 +47,20 @@ public sealed partial class PickNearbyWantedOperator : HTNOperator
         if (!blackboard.TryGetValue<float>(RangeKey, out var range, _entManager))
             return (false, null);
 
-        var mobStateQuery = _entManager.GetEntityQuery<MobStateComponent>();
+        var cuffableQuery = _entManager.GetEntityQuery<CuffableComponent>();
         var criminalRecordQuery = _entManager.GetEntityQuery<CriminalRecordComponent>();
+        var mobStateQuery = _entManager.GetEntityQuery<MobStateComponent>();
 
         foreach (var entity in _lookup.GetEntitiesInRange(owner, range))
         {
+            if (!criminalRecordQuery.TryGetComponent(entity, out var criminalRecord) || criminalRecord.Points < MaxPoints)
+                continue;
+
             if (!mobStateQuery.TryGetComponent(entity, out var state) || state.CurrentState != MobState.Alive)
                 continue;
 
-            if (!criminalRecordQuery.TryGetComponent(entity, out var criminalRecord) || criminalRecord.Points < MaxPoints)
+            // we still want to stun them if they cant ever be fully arrested
+            if (cuffableQuery.TryGetComponent(entity, out var cuffable) && cuffable.CuffedHandCount > 0)
                 continue;
 
             //Needed to make sure it doesn't sometimes stop right outside it's interaction range

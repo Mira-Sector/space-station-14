@@ -563,7 +563,7 @@ namespace Content.Shared.Cuffs
             {
                 _popup.PopupClient(Loc.GetString("handcuff-component-target-has-no-free-hands-error",
                     ("targetName", Identity.Name(target, EntityManager, user))), user, user);
-                return true;
+                return requireHands;
             }
 
             if (requireHands && !_hands.CanDrop(user, handcuff))
