@@ -21,8 +21,6 @@ public sealed class CriminalStatusSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<CriminalRecordComponent, StartingGearEquippedEvent>(OnStartingGearEquipped);
-
         SubscribeLocalEvent<CriminalRecordComponent, CriminalRecordChanged>(OnCriminalRecordChanged);
 
         SubscribeLocalEvent<CriminalRecordComponent, ClothingDidEquippedEvent>((u, c, a) => OnEquippedOrUniquip(u, c, true, a.Clothing.Owner, a.Clothing.Comp));
@@ -32,33 +30,22 @@ public sealed class CriminalStatusSystem : EntitySystem
         SubscribeLocalEvent<CriminalRecordComponent, DidUnequipHandEvent>((u, c, a) => OnPickupOrDrop(u, c, a.Unequipped, false));
     }
 
-    private void OnStartingGearEquipped(EntityUid uid, CriminalRecordComponent component, ref StartingGearEquippedEvent args)
-    {
-        // gotta recalculate as when spawning stuff in they may not have their id yet
-        component.Points = 0f;
-
-        foreach (var item in _inventory.GetHandOrInventoryEntities(uid))
-        {
-            if (OnEquippedOrUniquip(uid, component, true, item))
-                continue;
-
-            OnPickupOrDrop(uid, component, item, true);
-        }
-    }
-
     private void OnCriminalRecordChanged(EntityUid uid, CriminalRecordComponent component, CriminalRecordChanged args)
     {
         component.Points -= component.SecurityStatusPoints[args.PreviousStatus];
         component.Points += component.SecurityStatusPoints[args.Status];
     }
 
-    private bool OnEquippedOrUniquip(EntityUid uid, CriminalRecordComponent component, bool equip, EntityUid clothingUid, ClothingComponent? clothingComp = null)
+    private bool OnEquippedOrUniquip(EntityUid uid, CriminalRecordComponent component, bool equip, EntityUid clothingUid, ClothingComponent? clothingComp = null, bool checkId = true)
     {
         if (!Resolve(clothingUid, ref clothingComp, false))
             return false;
 
         if (clothingComp.InSlot == null)
             return false;
+
+        if (checkId && UpdateIdCard((uid, component), clothingUid))
+            return true;
 
         if (!TryComp<ContrabandComponent>(clothingUid, out var contraband))
             return true;
@@ -99,8 +86,11 @@ public sealed class CriminalStatusSystem : EntitySystem
         return true;
     }
 
-    private bool OnPickupOrDrop(EntityUid uid, CriminalRecordComponent component, EntityUid item, bool pickup)
+    private bool OnPickupOrDrop(EntityUid uid, CriminalRecordComponent component, EntityUid item, bool pickup, bool checkId = true)
     {
+        if (checkId && UpdateIdCard((uid, component), item))
+            return true;
+
         if (!TryComp<ContrabandComponent>(item, out var contraband))
             return false;
 
@@ -131,11 +121,34 @@ public sealed class CriminalStatusSystem : EntitySystem
         return contraband.AllowedDepartments != null && departments != null && departments.Intersect(contraband.AllowedDepartments).Any();
     }
 
+    private bool UpdateIdCard(Entity<CriminalRecordComponent> ent, EntityUid item)
+    {
+        // if access has changed we need to recalculate
+        if (!_id.TryGetIdCard(item, out _))
+            return false;
+
+        RecalculatePoints(ent);
+        return true;
+    }
+
     private float GetPoints(EntityUid uid, float points)
     {
         var ev = new GetCriminalPointsEvent(points);
         RaiseLocalEvent(uid, ev);
 
         return ev.Points;
+    }
+
+    private void RecalculatePoints(Entity<CriminalRecordComponent> ent)
+    {
+        ent.Comp.Points = 0f;
+
+        foreach (var item in _inventory.GetHandOrInventoryEntities(ent.Owner))
+        {
+            if (OnEquippedOrUniquip(ent.Owner, ent.Comp, true, item, checkId: false))
+                continue;
+
+            OnPickupOrDrop(ent.Owner, ent.Comp, item, true, checkId: false);
+        }
     }
 }
