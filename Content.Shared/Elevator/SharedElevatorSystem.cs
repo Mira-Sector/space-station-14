@@ -79,4 +79,24 @@ public abstract partial class SharedElevatorSystem : EntitySystem
         }
     }
 
+    protected void CollisionTeleport(EntityUid uid, ElevatorCollisionComponent component)
+    {
+        if (!TryComp<ElevatorEntranceComponent>(uid, out var entrance))
+            return;
+
+        if (component.Collided.Count <= 0)
+            return;
+
+        var coords = Transform(uid).Coordinates.Position;
+
+        Dictionary<NetEntity, Vector2> entities = new();
+        foreach (var entity in component.Collided)
+        {
+            var entCoords = Transform(GetEntity(entity)).Coordinates.Position;
+
+            entities.Add(entity, Vector2.Subtract(coords, entCoords));
+        }
+
+        Teleport(uid, entrance, entities);
+    }
 }

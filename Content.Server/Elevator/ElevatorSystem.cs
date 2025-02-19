@@ -3,7 +3,6 @@ using Content.Server.Station.Systems;
 using Content.Shared.Elevator;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map;
-using System.Numerics;
 
 namespace Conent.Server.Elevator;
 
@@ -25,23 +24,7 @@ public sealed partial class ElevatorSystem : SharedElevatorSystem
         if (args.Port != component.InputPort)
             return;
 
-        if (!TryComp<ElevatorEntranceComponent>(uid, out var entrance))
-            return;
-
-        if (component.Collided.Count <= 0)
-            return;
-
-        var coords = Transform(uid).Coordinates.Position;
-
-        Dictionary<NetEntity, Vector2> entities = new();
-        foreach (var entity in component.Collided)
-        {
-            var entCoords = Transform(GetEntity(entity)).Coordinates.Position;
-
-            entities.Add(entity, Vector2.Subtract(coords, entCoords));
-        }
-
-        Teleport(uid, entrance, entities);
+        CollisionTeleport(uid, component);
     }
 
     private void OnMapInit(EntityUid uid, ElevatorStationComponent component, MapInitEvent args)
