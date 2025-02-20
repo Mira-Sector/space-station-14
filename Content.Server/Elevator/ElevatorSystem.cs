@@ -13,16 +13,16 @@ public sealed partial class ElevatorSystem : SharedElevatorSystem
 
     public override void Initialize()
     {
-        SubscribeLocalEvent<ElevatorRangeComponent, SignalReceivedEvent>(OnRangeSignal);
+        SubscribeLocalEvent<ElevatorCollisionComponent, SignalReceivedEvent>(OnCollisionSignal);
         SubscribeLocalEvent<ElevatorStationComponent, MapInitEvent>(OnMapInit);
     }
 
-    private void OnRangeSignal(EntityUid uid, ElevatorRangeComponent component, ref SignalReceivedEvent args)
+    private void OnCollisionSignal(EntityUid uid, ElevatorCollisionComponent component, ref SignalReceivedEvent args)
     {
         if (args.Port != component.InputPort)
             return;
 
-        RangeTeleport(uid, component);
+        CollisionTeleport(uid, component);
     }
 
     private void OnMapInit(EntityUid uid, ElevatorStationComponent component, MapInitEvent args)

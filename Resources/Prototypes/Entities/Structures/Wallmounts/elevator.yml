@@ -13,12 +13,24 @@
     exitId: salvage
   - type: ElevatorExit
     exitId: salvage
-  - type: ElevatorRange
-    range: 1.5
-    offset: 0, 0.5
+  - type: ElevatorCollision
+    collisionId: elevator
   - type: DeviceLinkSink
     ports:
       - ElevatorFloorChange
+  - type: Physics
+    bodyType: Dynamic
+  - type: Fixtures
+    fixtures:
+      elevator:
+        hard: false
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-1.5,0.5,1.5,3.5"
+        mask:
+        - ItemMask
+        layer:
+        - SlipLayer
   - type: Sprite
     drawdepth: WallMountedItems
     sprite: Structures/Wallmounts/elevator_control.rsi/
