@@ -1,5 +1,6 @@
 using Content.Shared.DeviceLinking;
 using Robust.Shared.Map;
+using Robust.Shared.Physics.Events;
 using System.Numerics;
 
 namespace Content.Shared.Elevator;
@@ -7,7 +8,6 @@ namespace Content.Shared.Elevator;
 public abstract partial class SharedElevatorSystem : EntitySystem
 {
     [Dependency] private readonly SharedDeviceLinkSystem _deviceLink = default!;
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
     [Dependency] protected readonly SharedMapSystem _map = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
 
@@ -15,14 +15,34 @@ public abstract partial class SharedElevatorSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<ElevatorRangeComponent, ComponentInit>(OnRangeInit);
+        SubscribeLocalEvent<ElevatorCollisionComponent, ComponentInit>(OnCollisionInit);
+        SubscribeLocalEvent<ElevatorCollisionComponent, StartCollideEvent>(OnStartCollide);
+        SubscribeLocalEvent<ElevatorCollisionComponent, EndCollideEvent>(OnEndCollide);
 
         SubscribeLocalEvent<ElevatorExitComponent, ElevatorTeleportEvent>(OnTeleport);
     }
 
-    private void OnRangeInit(EntityUid uid, ElevatorRangeComponent component, ComponentInit args)
+    private void OnCollisionInit(EntityUid uid, ElevatorCollisionComponent component, ComponentInit args)
     {
         _deviceLink.EnsureSinkPorts(uid, component.InputPort);
+    }
+
+    private void OnStartCollide(EntityUid uid, ElevatorCollisionComponent component, ref StartCollideEvent args)
+    {
+        if (args.OurFixtureId != component.CollisionId)
+            return;
+
+        // purposfully dont store the offset
+        // they are likely to move about whilst still being in the collision
+        component.Collided.Add(GetNetEntity(args.OtherEntity));
+    }
+
+    private void OnEndCollide(EntityUid uid, ElevatorCollisionComponent component, ref EndCollideEvent args)
+    {
+        if (args.OurFixtureId != component.CollisionId)
+            return;
+
+        component.Collided.Remove(GetNetEntity(args.OtherEntity));
     }
 
     protected void Teleport(EntityUid uid, ElevatorEntranceComponent component, Dictionary<NetEntity, Vector2> entities)
@@ -60,36 +80,22 @@ public abstract partial class SharedElevatorSystem : EntitySystem
         }
     }
 
-    protected void RangeTeleport(EntityUid uid, ElevatorRangeComponent component)
+    protected void CollisionTeleport(EntityUid uid, ElevatorCollisionComponent component)
     {
         if (!TryComp<ElevatorEntranceComponent>(uid, out var entrance))
             return;
 
-        var xform = Transform(uid);
-        var mapId = xform.MapID;
-        var coords = xform.Coordinates.Position;
+        if (component.Collided.Count <= 0)
+            return;
 
-        var minX = coords.X + component.Offset.X - component.Range;
-        var maxX = coords.X + component.Offset.X + component.Range;
-        var minY = coords.Y + component.Offset.Y - component.Range;
-        var maxY = coords.Y + component.Offset.Y + component.Range;
-
-        var range = Math.Max(Math.Abs(component.Offset.X), Math.Abs(component.Offset.Y)) + component.Range;
+        var coords = Transform(uid).Coordinates.Position;
 
         Dictionary<NetEntity, Vector2> entities = new();
-        foreach (var entity in _lookup.GetEntitiesInRange(uid, range, LookupFlags.Dynamic))
+        foreach (var entity in component.Collided)
         {
-            var entCoords = Transform(entity).Coordinates.Position;
+            var entCoords = Transform(GetEntity(entity)).Coordinates.Position;
 
-            if (entCoords.X < minX || entCoords.X > maxX)
-                continue;
-
-            if (entCoords.Y < minY || entCoords.Y > maxY)
-                continue;
-
-            var relativeCoords = Vector2.Subtract(coords, entCoords);
-
-            entities.Add(GetNetEntity(entity), relativeCoords);
+            entities.Add(entity, Vector2.Subtract(coords, entCoords));
         }
 
         Teleport(uid, entrance, entities);
