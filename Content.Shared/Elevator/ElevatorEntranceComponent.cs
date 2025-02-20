@@ -1,4 +1,5 @@
 using Robust.Shared.GameStates;
+using Robust.Shared.Map;
 
 namespace Content.Shared.Elevator;
 
@@ -15,7 +16,7 @@ public sealed partial class ElevatorEntranceComponent : Component
     public string EntranceId = string.Empty;
 
     [ViewVariables, AutoNetworkedField]
-    public EntityUid? StartingMap;
+    public MapId? StartingMap;
 
     [DataField(required: true)]
     public string ExitId = string.Empty;

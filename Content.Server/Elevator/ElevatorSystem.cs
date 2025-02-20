@@ -1,5 +1,4 @@
 using Content.Server.DeviceLinking.Events;
-using Content.Server.Station.Systems;
 using Content.Shared.Elevator;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map;
@@ -8,11 +7,9 @@ namespace Conent.Server.Elevator;
 
 public sealed partial class ElevatorSystem : SharedElevatorSystem
 {
-    [Dependency] private readonly SharedMapSystem _map = default!;
     [Dependency] private readonly MapLoaderSystem _mapLoader = default!;
     [Dependency] private readonly IMapManager _mapManager = default!;
     [Dependency] private readonly MetaDataSystem _metaData = default!;
-    [Dependency] private readonly StationSystem _station = default!;
 
     public override void Initialize()
     {
@@ -49,17 +46,17 @@ public sealed partial class ElevatorSystem : SharedElevatorSystem
         var exitQuery = EntityQueryEnumerator<ElevatorExitComponent>();
 
         // construct a dictionary for faster lookups
-        Dictionary<EntityUid, Dictionary<string, EntityUid>> mapToExitId = new();
+        Dictionary<MapId, Dictionary<string, EntityUid>> mapToExitId = new();
         while (exitQuery.MoveNext(out var exitUid, out var exitComp))
         {
-            var station = _station.GetOwningStation(exitUid);
+            var map = Transform(exitUid).MapID;
 
-            if (station == null)
+            if (map == MapId.Nullspace)
                 continue;
 
-            exitComp.StartingMap = station;
+            exitComp.StartingMap = map;
 
-            if (mapToExitId.TryGetValue(station.Value, out var exitIds))
+            if (mapToExitId.TryGetValue(map, out var exitIds))
             {
                 exitIds.Add(exitComp.ExitId, exitUid);
             }
@@ -67,15 +64,15 @@ public sealed partial class ElevatorSystem : SharedElevatorSystem
             {
                 Dictionary<string, EntityUid> newExitIds = new();
                 newExitIds.Add(exitComp.ExitId, exitUid);
-                mapToExitId.Add(station.Value, newExitIds);
+                mapToExitId.Add(map, newExitIds);
             }
         }
 
         while (entranceQuery.MoveNext(out var entranceUid, out var entranceComp))
         {
-            var station = _station.GetOwningStation(entranceUid);
+            var map = Transform(entranceUid).MapID;
 
-            if (station != uid)
+            if (map == MapId.Nullspace)
                 continue;
 
             if (!component.ElevatorMaps.TryGetValue(entranceComp.ElevatorMapKey, out var netMap))
@@ -84,22 +81,20 @@ public sealed partial class ElevatorSystem : SharedElevatorSystem
                 continue;
             }
 
-            var map = GetEntity(netMap);
-
             if (!mapToExitId.TryGetValue(map, out var exitIds))
             {
-                Log.Error($"Cannot find map {ToPrettyString(map)} in mapToExitId.");
+                Log.Error($"Cannot find map {map.ToString()} in mapToExitId.");
                 continue;
             }
 
             if (!exitIds.TryGetValue(entranceComp.ExitId, out var exit))
             {
-                Log.Error($"Cannot find {entranceComp.ExitId} on map {ToPrettyString(map)}.");
+                Log.Error($"Cannot find {entranceComp.ExitId} on map {map.ToString()}.");
                 continue;
             }
 
-            entranceComp.ElevatorMap = map;
-            entranceComp.StartingMap = station;
+            entranceComp.ElevatorMap = GetEntity(netMap);
+            entranceComp.StartingMap = map;
             entranceComp.Exit = exit;
         }
     }

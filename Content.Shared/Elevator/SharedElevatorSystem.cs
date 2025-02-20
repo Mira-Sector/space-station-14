@@ -8,6 +8,7 @@ public abstract partial class SharedElevatorSystem : EntitySystem
 {
     [Dependency] private readonly SharedDeviceLinkSystem _deviceLink = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
+    [Dependency] protected readonly SharedMapSystem _map = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
 
     public override void Initialize()
@@ -38,13 +39,13 @@ public abstract partial class SharedElevatorSystem : EntitySystem
         if (exitComp.StartingMap is not {} exitMap)
             return;
 
-        var ev = new ElevatorTeleportEvent(entities, GetNetEntity(entranceMap), GetNetEntity(exitMap));
+        var ev = new ElevatorTeleportEvent(entities, entranceMap, exitMap);
         RaiseLocalEvent(exitUid, ev);
     }
 
     private void OnTeleport(EntityUid uid, ElevatorExitComponent component, ElevatorTeleportEvent args)
     {
-        var targetMap = GetEntity(args.TargetMap);
+        var targetMap = _map.GetMap(args.TargetMap);
         var originPos = Transform(uid).Coordinates.Position;
 
         foreach (var (netEnt, offset) in args.Entities)
