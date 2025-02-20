@@ -68,14 +68,27 @@ public abstract partial class SharedElevatorSystem : EntitySystem
         var mapId = xform.MapID;
         var coords = xform.Coordinates.Position;
 
-        var box = new Box2(Vector2.Add(component.Range.BottomLeft, coords), Vector2.Add(component.Range.TopRight, coords));
+        var minX = coords.X + component.Offset.X - component.Range;
+        var maxX = coords.X + component.Offset.X + component.Range;
+        var minY = coords.Y + component.Offset.Y - component.Range;
+        var maxY = coords.Y + component.Offset.Y + component.Range;
+
+        var range = Math.Max(Math.Abs(component.Offset.X), Math.Abs(component.Offset.Y)) + component.Range;
 
         Dictionary<NetEntity, Vector2> entities = new();
-        foreach (var entity in _lookup.GetEntitiesIntersecting(mapId, box))
+        foreach (var entity in _lookup.GetEntitiesInRange(uid, range, LookupFlags.Dynamic))
         {
             var entCoords = Transform(entity).Coordinates.Position;
 
-            entities.Add(GetNetEntity(entity), Vector2.Subtract(coords, entCoords));
+            if (entCoords.X < minX || entCoords.X > maxX)
+                continue;
+
+            if (entCoords.Y < minY || entCoords.Y > maxY)
+                continue;
+
+            var relativeCoords = Vector2.Subtract(coords, entCoords);
+
+            entities.Add(GetNetEntity(entity), relativeCoords);
         }
 
         Teleport(uid, entrance, entities);
