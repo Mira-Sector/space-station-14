@@ -1,3 +1,4 @@
+using Robust.Shared.Map;
 using Robust.Shared.Serialization;
 using System.Numerics;
 
@@ -6,10 +7,10 @@ namespace Content.Shared.Elevator;
 [Serializable, NetSerializable]
 public abstract partial class BaseElevatorTeleportEvent : EntityEventArgs
 {
-    public NetEntity SourceMap;
-    public NetEntity TargetMap;
+    public MapId SourceMap;
+    public MapId TargetMap;
 
-    public BaseElevatorTeleportEvent(NetEntity sourceMap, NetEntity targetMap)
+    public BaseElevatorTeleportEvent(MapId sourceMap, MapId targetMap)
     {
         SourceMap = sourceMap;
         TargetMap = targetMap;
@@ -21,7 +22,7 @@ public sealed partial class ElevatorTeleportEvent : BaseElevatorTeleportEvent
 {
     public Dictionary<NetEntity, Vector2> Entities;
 
-    public ElevatorTeleportEvent(Dictionary<NetEntity, Vector2> entities, NetEntity sourceMap, NetEntity targetMap) : base(sourceMap, targetMap)
+    public ElevatorTeleportEvent(Dictionary<NetEntity, Vector2> entities, MapId sourceMap, MapId targetMap) : base(sourceMap, targetMap)
     {
         Entities = entities;
     }
@@ -30,7 +31,7 @@ public sealed partial class ElevatorTeleportEvent : BaseElevatorTeleportEvent
 [Serializable, NetSerializable]
 public sealed partial class ElevatorGotTeleportedEvent : BaseElevatorTeleportEvent
 {
-    public ElevatorGotTeleportedEvent(NetEntity sourceMap, NetEntity targetMap) : base(sourceMap, targetMap)
+    public ElevatorGotTeleportedEvent(MapId sourceMap, MapId targetMap) : base(sourceMap, targetMap)
     {
     }
 }
