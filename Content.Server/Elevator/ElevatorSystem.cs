@@ -11,6 +11,7 @@ public sealed partial class ElevatorSystem : SharedElevatorSystem
     [Dependency] private readonly SharedMapSystem _map = default!;
     [Dependency] private readonly MapLoaderSystem _mapLoader = default!;
     [Dependency] private readonly IMapManager _mapManager = default!;
+    [Dependency] private readonly MetaDataSystem _metaData = default!;
     [Dependency] private readonly StationSystem _station = default!;
 
     public override void Initialize()
@@ -38,6 +39,8 @@ public sealed partial class ElevatorSystem : SharedElevatorSystem
                 _mapManager.DeleteMap(mapId);
                 continue;
             }
+
+            _metaData.SetEntityName(mapUid.Value, key);
 
             component.ElevatorMaps.Add(key, GetNetEntity(mapUid.Value));
         }
