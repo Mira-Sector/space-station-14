@@ -14,7 +14,8 @@
   - type: ElevatorExit
     exitId: salvage
   - type: ElevatorRange
-    matrix: -1.5, 0.5, 1.5, 3.5
+    range: 1.5
+    offset: 0, 0.5
   - type: DeviceLinkSink
     ports:
       - ElevatorFloorChange
