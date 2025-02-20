@@ -96,6 +96,10 @@ barsign-prototype-description-emprah = Enjoyed by fanatics, heretics, and brain-
 barsign-prototype-name-spacebucks = Spacebucks
 barsign-prototype-description-spacebucks = You can't get away from them, even in space, and even after we started calling them 'spesos' instead.
 
+## Central Stop
+barsign-prototype-name-centralstop = Central Stop
+barsign-prototype-description-centralstop = High class luxury.
+
 ## EmpBarSign
 barsign-prototype-description-empbarsign = Something has gone very wrong.
 
