@@ -1,5 +1,7 @@
 using Content.Shared.DeviceLinking;
 using Content.Shared.StepTrigger.Systems;
+using Robust.Shared.Audio;
+using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Timing;
 using System.Numerics;
@@ -8,6 +10,7 @@ namespace Content.Shared.Elevator;
 
 public abstract partial class SharedElevatorSystem : EntitySystem
 {
+    [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedDeviceLinkSystem _deviceLink = default!;
     [Dependency] protected readonly SharedMapSystem _map = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
@@ -28,6 +31,9 @@ public abstract partial class SharedElevatorSystem : EntitySystem
         SubscribeLocalEvent<ElevatorCollisionComponent, StepTriggeredOnEvent>(OnStartCollide);
         SubscribeLocalEvent<ElevatorCollisionComponent, StepTriggeredOffEvent>(OnEndCollide);
         SubscribeLocalEvent<ElevatorCollisionComponent, ElevatorGetEntityOffsetsEvent>(OnCollisionGetOffsets);
+
+        SubscribeLocalEvent<ElevatorMusicComponent, ElevatorTeleportingEvent>(OnMusicAttempt);
+        SubscribeLocalEvent<ElevatorMusicComponent, ElevatorTeleportedEvent>(OnMusicTeleport);
     }
 
     public override void Update(float frameTime)
@@ -127,15 +133,17 @@ public abstract partial class SharedElevatorSystem : EntitySystem
         if (component.Exit is not {} exit)
             return;
 
-
         if (component.Delay == null)
         {
             _deviceLink.InvokePort(uid, component.FinishedPort);
 
-            var ev = new ElevatorTeleportEvent(args);
-            RaiseLocalEvent(exit, ev);
+            var exitEv = new ElevatorTeleportEvent(args);
+            RaiseLocalEvent(exit, exitEv);
             return;
         }
+
+        var entranceEv = new ElevatorTeleportingEvent(args);
+        RaiseLocalEvent(uid, entranceEv);
 
         _deviceLink.InvokePort(uid, component.DelayPort);
 
@@ -144,6 +152,7 @@ public abstract partial class SharedElevatorSystem : EntitySystem
 
         component.NextTeleport = _timing.CurTime + component.Delay;
         component.NextTeleportEntities = args.Entities;
+        Dirty(uid, component);
     }
 
     private void OnTeleport(EntityUid uid, ElevatorExitComponent component, ElevatorTeleportEvent args)
@@ -181,5 +190,28 @@ public abstract partial class SharedElevatorSystem : EntitySystem
             var entCoords = Transform(GetEntity(entity)).Coordinates.Position;
             args.Offsets.Add(entity, xform.LocalRotation.RotateVec(Vector2.Subtract(coords, entCoords)));
         }
+    }
+
+    private void OnMusicAttempt(EntityUid uid, ElevatorMusicComponent component, ElevatorTeleportingEvent args)
+    {
+        var sound = _audio.PlayPvs(component.Music, uid, new AudioParams().WithLoop(true).WithPlayOffset(component.NextPlayOffset));
+
+        if (sound == null)
+            return;
+
+        component.SoundEntity = sound.Value;
+    }
+
+    private void OnMusicTeleport(EntityUid uid, ElevatorMusicComponent component, ElevatorTeleportedEvent args)
+    {
+        if (component.SoundEntity == null)
+            return;
+
+        var (soundUid, soundComp) = component.SoundEntity.Value;
+
+        component.NextPlayOffset = soundComp.PlaybackPosition;
+
+        _audio.Stop(soundUid);
+        component.SoundEntity = null;
     }
 }
