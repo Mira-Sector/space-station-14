@@ -10,7 +10,7 @@ public sealed partial class ElevatorEntranceComponent : Component
     public string ElevatorMapKey = string.Empty;
 
     [ViewVariables, AutoNetworkedField]
-    public EntityUid? ElevatorMap;
+    public MapId? ElevatorMap;
 
     [DataField(required: true)]
     public string EntranceId = string.Empty;
