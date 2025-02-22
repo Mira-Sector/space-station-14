@@ -16,6 +16,7 @@
     exitId: salvage
   - type: ElevatorCollision
     collisionId: elevator
+  - type: ElevatorMusic
   - type: DeviceLinkSink
     ports:
       - ElevatorFloorChange

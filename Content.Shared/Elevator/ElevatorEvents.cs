@@ -33,6 +33,9 @@ public abstract partial class BaseElevatorEntitiesTeleportEvent : BaseElevatorTe
     }
 }
 
+/// <summary>
+///     Raised on the entrance incase it wishes to delay the teleportation logic.
+/// </summary>
 [Serializable, NetSerializable]
 public sealed partial class ElevatorAttemptTeleportEvent : BaseElevatorEntitiesTeleportEvent
 {
@@ -45,6 +48,24 @@ public sealed partial class ElevatorAttemptTeleportEvent : BaseElevatorEntitiesT
     }
 }
 
+/// <summary>
+///     Raised on the entrance that it is teleporting.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed partial class ElevatorTeleportingEvent : BaseElevatorEntitiesTeleportEvent
+{
+    public ElevatorTeleportingEvent (HashSet<NetEntity> entities, MapId sourceMap, MapId targetMap) : base(entities, sourceMap, targetMap)
+    {
+    }
+
+    public ElevatorTeleportingEvent(BaseElevatorEntitiesTeleportEvent baseArgs) : base(baseArgs)
+    {
+    }
+}
+
+/// <summary>
+///     Raised on the exit so it will do the teleporting.
+/// </summary>
 [Serializable, NetSerializable]
 public sealed partial class ElevatorTeleportEvent : BaseElevatorEntitiesTeleportEvent
 {
@@ -57,6 +78,24 @@ public sealed partial class ElevatorTeleportEvent : BaseElevatorEntitiesTeleport
     }
 }
 
+/// <summary>
+///     Raised on the entrance that the teleportation was successfull.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed partial class ElevatorTeleportedEvent : BaseElevatorEntitiesTeleportEvent
+{
+    public ElevatorTeleportedEvent(HashSet<NetEntity> entities, MapId sourceMap, MapId targetMap) : base(entities, sourceMap, targetMap)
+    {
+    }
+
+    public ElevatorTeleportedEvent(BaseElevatorEntitiesTeleportEvent baseArgs) : base(baseArgs)
+    {
+    }
+}
+
+/// <summary>
+///     Raised on the entrance when teleporting to see their relative coords.
+/// </summary>
 [Serializable, NetSerializable]
 public sealed partial class ElevatorGetEntityOffsetsEvent : BaseElevatorEntitiesTeleportEvent
 {
@@ -71,6 +110,9 @@ public sealed partial class ElevatorGetEntityOffsetsEvent : BaseElevatorEntities
     }
 }
 
+/// <summary>
+///     Raised on an entity that got teleported by the elevator.
+/// </summary>
 [Serializable, NetSerializable]
 public sealed partial class ElevatorGotTeleportedEvent : BaseElevatorTeleportEvent
 {
