@@ -41,7 +41,7 @@ public sealed partial class ElevatorSystem : SharedElevatorSystem
 
             _metaData.SetEntityName(mapUid.Value, key);
 
-            component.ElevatorMaps.Add(key, GetNetEntity(mapUid.Value));
+            component.ElevatorMaps.Add(key, mapId);
         }
 
         var entranceQuery = EntityQueryEnumerator<ElevatorEntranceComponent>();
@@ -83,7 +83,7 @@ public sealed partial class ElevatorSystem : SharedElevatorSystem
                 continue;
             }
 
-            if (!mapToExitId.TryGetValue(map, out var exitIds))
+            if (!mapToExitId.TryGetValue(netMap, out var exitIds))
             {
                 Log.Error($"Cannot find map {map.ToString()} in mapToExitId.");
                 continue;
@@ -95,7 +95,7 @@ public sealed partial class ElevatorSystem : SharedElevatorSystem
                 continue;
             }
 
-            entranceComp.ElevatorMap = GetEntity(netMap);
+            entranceComp.ElevatorMap = netMap;
             entranceComp.StartingMap = map;
             entranceComp.Exit = exit;
         }

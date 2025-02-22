@@ -1,4 +1,5 @@
 using Robust.Shared.GameStates;
+using Robust.Shared.Map;
 using Robust.Shared.Utility;
 
 namespace Content.Shared.Elevator;
@@ -10,5 +11,5 @@ public sealed partial class ElevatorStationComponent : Component
     public Dictionary<string, ResPath> ElevatorMapPaths = new();
 
     [ViewVariables, AutoNetworkedField]
-    public Dictionary<string, NetEntity> ElevatorMaps = new();
+    public Dictionary<string, MapId> ElevatorMaps = new();
 }

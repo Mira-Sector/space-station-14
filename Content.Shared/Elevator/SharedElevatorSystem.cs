@@ -100,5 +100,6 @@ public abstract partial class SharedElevatorSystem : EntitySystem
         }
 
         Teleport(uid, entrance, entities);
+        component.Collided.Clear();
     }
 }
