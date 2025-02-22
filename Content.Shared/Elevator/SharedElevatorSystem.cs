@@ -66,13 +66,15 @@ public abstract partial class SharedElevatorSystem : EntitySystem
 
     private void OnTeleport(EntityUid uid, ElevatorExitComponent component, ElevatorTeleportEvent args)
     {
+        var xform = Transform(uid);
+
         var targetMap = _map.GetMap(args.TargetMap);
-        var originPos = Transform(uid).Coordinates.Position;
+        var originPos = xform.Coordinates.Position;
 
         foreach (var (netEnt, offset) in args.Entities)
         {
             var entity = GetEntity(netEnt);
-            var coords = new EntityCoordinates(targetMap, Vector2.Add(originPos, offset));
+            var coords = new EntityCoordinates(targetMap, Vector2.Add(originPos, xform.LocalRotation.RotateVec(offset)));
 
             _xform.SetCoordinates(entity, coords);
 
@@ -89,14 +91,15 @@ public abstract partial class SharedElevatorSystem : EntitySystem
         if (component.Collided.Count <= 0)
             return;
 
-        var coords = Transform(uid).Coordinates.Position;
+        var xform = Transform(uid);
+        var coords = xform.Coordinates.Position;
 
         Dictionary<NetEntity, Vector2> entities = new();
         foreach (var entity in component.Collided)
         {
             var entCoords = Transform(GetEntity(entity)).Coordinates.Position;
 
-            entities.Add(entity, Vector2.Subtract(coords, entCoords));
+            entities.Add(entity, xform.LocalRotation.RotateVec(Vector2.Subtract(coords, entCoords)));
         }
 
         Teleport(uid, entrance, entities);
