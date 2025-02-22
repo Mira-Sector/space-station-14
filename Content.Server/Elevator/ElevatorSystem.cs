@@ -13,6 +13,8 @@ public sealed partial class ElevatorSystem : SharedElevatorSystem
 
     public override void Initialize()
     {
+        base.Initialize();
+
         SubscribeLocalEvent<ElevatorCollisionComponent, SignalReceivedEvent>(OnCollisionSignal);
         SubscribeLocalEvent<ElevatorStationComponent, MapInitEvent>(OnMapInit);
     }

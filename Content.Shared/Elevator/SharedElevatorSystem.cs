@@ -1,6 +1,6 @@
 using Content.Shared.DeviceLinking;
+using Content.Shared.StepTrigger.Systems;
 using Robust.Shared.Map;
-using Robust.Shared.Physics.Events;
 using System.Numerics;
 
 namespace Content.Shared.Elevator;
@@ -16,8 +16,10 @@ public abstract partial class SharedElevatorSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<ElevatorCollisionComponent, ComponentInit>(OnCollisionInit);
-        SubscribeLocalEvent<ElevatorCollisionComponent, StartCollideEvent>(OnStartCollide);
-        SubscribeLocalEvent<ElevatorCollisionComponent, EndCollideEvent>(OnEndCollide);
+
+        SubscribeLocalEvent<ElevatorCollisionComponent, StepTriggerAttemptEvent>(OnStepTriggerAttempt);
+        SubscribeLocalEvent<ElevatorCollisionComponent, StepTriggeredOnEvent>(OnStartCollide);
+        SubscribeLocalEvent<ElevatorCollisionComponent, StepTriggeredOffEvent>(OnEndCollide);
 
         SubscribeLocalEvent<ElevatorExitComponent, ElevatorTeleportEvent>(OnTeleport);
     }
@@ -27,22 +29,21 @@ public abstract partial class SharedElevatorSystem : EntitySystem
         _deviceLink.EnsureSinkPorts(uid, component.InputPort);
     }
 
-    private void OnStartCollide(EntityUid uid, ElevatorCollisionComponent component, ref StartCollideEvent args)
+    private void OnStepTriggerAttempt(EntityUid uid, ElevatorCollisionComponent component, ref StepTriggerAttemptEvent args)
     {
-        if (args.OurFixtureId != component.CollisionId)
-            return;
-
-        // purposfully dont store the offset
-        // they are likely to move about whilst still being in the collision
-        component.Collided.Add(GetNetEntity(args.OtherEntity));
+        args.Continue = !component.Collided.Contains(GetNetEntity(args.Tripper));
     }
 
-    private void OnEndCollide(EntityUid uid, ElevatorCollisionComponent component, ref EndCollideEvent args)
+    private void OnStartCollide(EntityUid uid, ElevatorCollisionComponent component, ref StepTriggeredOnEvent args)
     {
-        if (args.OurFixtureId != component.CollisionId)
-            return;
+        // purposfully dont store the offset
+        // they are likely to move about whilst still being in the collision
+        component.Collided.Add(GetNetEntity(args.Tripper));
+    }
 
-        component.Collided.Remove(GetNetEntity(args.OtherEntity));
+    private void OnEndCollide(EntityUid uid, ElevatorCollisionComponent component, ref StepTriggeredOffEvent args)
+    {
+        component.Collided.Remove(GetNetEntity(args.Tripper));
     }
 
     protected void Teleport(EntityUid uid, ElevatorEntranceComponent component, Dictionary<NetEntity, Vector2> entities)

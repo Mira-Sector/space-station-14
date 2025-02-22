@@ -18,26 +18,29 @@
   - type: DeviceLinkSink
     ports:
       - ElevatorFloorChange
+  - type: StepTrigger
+    intersectRatio: 0.9
+    requiredTriggeredSpeed: 0
+    ignoreWeightless: true
+    stepOn: true
   - type: Physics
-    bodyType: Dynamic
+    bodyType: Static
   - type: Fixtures
     fixtures:
       elevator:
-        hard: false
         shape:
           !type:PhysShapeAabb
-          bounds: "-1.5,0.5,1.5,3.5"
-        mask:
-        - ItemMask
+          bounds: "-1.5,-0.5,1.5,-3.5"
+        hard: false
         layer:
-        - SlipLayer
+          - LowImpassable
+          - ItemMask
   - type: Sprite
     drawdepth: WallMountedItems
     sprite: Structures/Wallmounts/elevator_control.rsi/
     state: box
   - type: InteractionOutline
   - type: Clickable
-  - type: Transform
   - type: WallMount
   - type: Tag
     tags:
