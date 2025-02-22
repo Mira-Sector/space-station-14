@@ -18,13 +18,56 @@ public abstract partial class BaseElevatorTeleportEvent : EntityEventArgs
 }
 
 [Serializable, NetSerializable]
-public sealed partial class ElevatorTeleportEvent : BaseElevatorTeleportEvent
+public abstract partial class BaseElevatorEntitiesTeleportEvent : BaseElevatorTeleportEvent
 {
-    public Dictionary<NetEntity, Vector2> Entities;
+    public HashSet<NetEntity> Entities;
 
-    public ElevatorTeleportEvent(Dictionary<NetEntity, Vector2> entities, MapId sourceMap, MapId targetMap) : base(sourceMap, targetMap)
+    public BaseElevatorEntitiesTeleportEvent(HashSet<NetEntity> entities, MapId sourceMap, MapId targetMap) : base(sourceMap, targetMap)
     {
         Entities = entities;
+    }
+
+    public BaseElevatorEntitiesTeleportEvent(BaseElevatorEntitiesTeleportEvent baseArgs) : base(baseArgs.SourceMap, baseArgs.TargetMap)
+    {
+        Entities = baseArgs.Entities;
+    }
+}
+
+[Serializable, NetSerializable]
+public sealed partial class ElevatorAttemptTeleportEvent : BaseElevatorEntitiesTeleportEvent
+{
+    public ElevatorAttemptTeleportEvent(HashSet<NetEntity> entities, MapId sourceMap, MapId targetMap) : base(entities, sourceMap, targetMap)
+    {
+    }
+
+    public ElevatorAttemptTeleportEvent(BaseElevatorEntitiesTeleportEvent baseArgs) : base(baseArgs)
+    {
+    }
+}
+
+[Serializable, NetSerializable]
+public sealed partial class ElevatorTeleportEvent : BaseElevatorEntitiesTeleportEvent
+{
+    public ElevatorTeleportEvent(HashSet<NetEntity> entities, MapId sourceMap, MapId targetMap) : base(entities, sourceMap, targetMap)
+    {
+    }
+
+    public ElevatorTeleportEvent(BaseElevatorEntitiesTeleportEvent baseArgs) : base(baseArgs)
+    {
+    }
+}
+
+[Serializable, NetSerializable]
+public sealed partial class ElevatorGetEntityOffsetsEvent : BaseElevatorEntitiesTeleportEvent
+{
+    public Dictionary<NetEntity, Vector2> Offsets = new();
+
+    public ElevatorGetEntityOffsetsEvent(HashSet<NetEntity> entities, MapId sourceMap, MapId targetMap) : base(entities, sourceMap, targetMap)
+    {
+    }
+
+    public ElevatorGetEntityOffsetsEvent(BaseElevatorEntitiesTeleportEvent baseArgs) : base(baseArgs)
+    {
     }
 }
 

@@ -1,5 +1,7 @@
+using Content.Shared.DeviceLinking;
 using Robust.Shared.GameStates;
 using Robust.Shared.Map;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Elevator;
 
@@ -11,4 +13,10 @@ public sealed partial class ElevatorExitComponent : Component
 
     [ViewVariables, AutoNetworkedField]
     public MapId? StartingMap;
+
+    [DataField]
+    public ProtoId<SourcePortPrototype> DelayPort = "ElevatorExitDelayed";
+
+    [DataField]
+    public ProtoId<SourcePortPrototype> FinishedPort = "ElevatorExitFinished";
 }
