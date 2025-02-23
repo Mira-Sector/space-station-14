@@ -1186,6 +1186,8 @@
   packetPrototype: AloeSeeds
   productPrototypes:
     - FoodAloe
+  mutationPrototypes:
+    - spesoe
   lifespan: 25
   maturation: 10
   production: 3
@@ -1199,6 +1201,29 @@
       Max: 10
       PotencyDivisor: 10
     Dermaline:
+      Min: 1
+      Max: 10
+      PotencyDivisor: 10
+
+- type: seed
+  id: spesoe
+  name: seeds-spesoe-name
+  noun: seeds-noun-seeds
+  displayName: seeds-spesoe-display-name
+  plantRsi: Objects/Specific/Hydroponics/spesoe.rsi
+  packetPrototype: SpesoeSeeds
+  productPrototypes:
+    - ProduceSpesoe
+  lifespan: 25
+  maturation: 10
+  production: 3
+  yield: 3
+  potency: 10
+  idealLight: 8
+  growthStages: 5
+  waterConsumption: 0.60
+  chemicals:
+    Happiness:
       Min: 1
       Max: 10
       PotencyDivisor: 10
@@ -1933,6 +1958,8 @@
       Max: 8
       PotencyDivisor: 30
 
+
+
 - type: seed
   id: cherry
   name: seeds-cherry-name
@@ -1989,3 +2016,89 @@
       Min: 1
       Max: 2
       PotencyDivisor: 40
+
+- type: seed
+  id: sunflower
+  name: seeds-sunflower-name
+  noun: seeds-noun-seeds
+  displayName: seeds-sunflower-display-name
+  plantRsi: Objects/Specific/Hydroponics/sunflower.rsi
+  packetPrototype: SunflowerSeeds
+  productPrototypes:
+    - ProduceSunflower
+  mutationPrototypes:
+    - lampflower
+    - voidflower
+  lifespan: 30
+  maturation: 10
+  production: 5
+  yield: 1
+  potency: 35
+  growthStages: 4
+  chemicals:
+    Oil:
+      Min: 1
+      Max: 20
+      PotencyDivisor: 4
+    Nutriment:
+      Min: 1
+      Max: 2
+      PotencyDivisor: 20
+    Vitamin:
+      Min: 1
+      Max: 5
+      PotensyDivisor: 20
+
+- type: seed
+  id: lampflower
+  name: seeds-lampflower-name
+  noun: seeds-noun-seeds
+  displayName: seeds-lampflower-display-name
+  plantRsi: Objects/Specific/Hydroponics/lampflower.rsi
+  packetPrototype: LampflowerSeeds
+  productPrototypes:
+    - ProduceLampflower
+  lifespan: 30
+  maturation: 10
+  production: 5
+  yield: 1
+  potency: 35
+  growthStages: 4
+  chemicals:
+    Oil: #Solar Oil
+      Min: 1
+      Max: 20
+      PotencyDivisor: 4
+    Nutriment:
+      Min: 1
+      Max: 2
+      PotencyDivisor: 20
+    Vitamin:
+      Min: 1
+      Max: 5
+      PotensyDivisor: 20
+
+- type: seed
+  id: voidflower
+  name: seeds-voidflower-name
+  noun: seeds-noun-seeds
+  displayName: seeds-voidflower-display-name
+  plantRsi: Objects/Specific/Hydroponics/voidflower.rsi
+  packetPrototype: VoidflowerSeeds
+  productPrototypes:
+    - ProduceVoidflower
+  lifespan: 30
+  maturation: 10
+  production: 5
+  yield: 1
+  potency: 35
+  growthStages: 4
+  chemicals:
+    Oil: #Void Oil
+      Min: 1
+      Max: 25 #Void Oil consumed the vitamins
+      PotencyDivisor: 4
+    Nutriment:
+      Min: 1
+      Max: 2
+      PotencyDivisor: 20

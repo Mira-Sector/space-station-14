@@ -825,6 +825,18 @@
       [ Head ] : { coefficients: { Caustic: 0.95 } }
 
 - type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadHatSunflowerRing
+  name: sunflower ring
+  description: Good morning starshine, the earth says hello!
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Hats/sunflowerring.rsi
+    scale: 1.5, 1.5
+  - type: Clothing
+    sprite: Clothing/Head/Hats/sunflowerring.rsi
+
+- type: entity
   parent: [ClothingHeadBase, BaseSyndicateContraband]
   id: ClothingHeadHatSyndie
   name: syndicate hat

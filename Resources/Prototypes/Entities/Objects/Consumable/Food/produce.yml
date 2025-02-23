@@ -1433,6 +1433,31 @@
       Burger: Aloe
 
 - type: entity
+  name: spesoe
+  description: This leaf is made of legal currency.
+  id: ProduceSpesoe
+  parent: ProduceBase
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/spesoe.rsi
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: Happiness
+          Quantity: 10
+  - type: Log
+    spawnedPrototype: SpaceCash10
+    spawnCount: 3
+  - type: Produce
+    seedId: spesoe
+  - type: Tag
+    tags:
+    - ClothMade
+  - type: Extractable
+    grindableSolutionName: food
+
+- type: entity
   name: poppy
   parent: FoodProduceBase
   id: FoodPoppy
@@ -2593,3 +2618,161 @@
     entries:
       Taco: AnomalyBerry
       Burger: AnomalyBerryBurger
+
+- type: entity
+  name: sunflower
+  description: a bulky flower filled with natural oils.
+  id: ProduceSunflower
+  parent: ProduceBase
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/sunflower.rsi
+    scale: 1.5,1.5
+  - type: Produce
+    seedId: sunflower
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 27
+        reagents:
+        - ReagentId: Oil
+          Quantity: 20
+        - ReagentId: Nutriment
+          Quantity: 2
+        - ReagentId: Vitamin
+          Quantity: 5
+  - type: Tag
+    tags:
+    - Flower
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: SunflowerCore
+    - id: ClothingHeadHatSunflowerRing
+
+- type: entity
+  name: sunflower core
+  parent: FoodInjectableBase
+  id: SunflowerCore
+  description: the core of a sunflower, the seeds might be a snack.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/sunflower.rsi
+    state: core
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 25
+        reagents:
+        - ReagentId: Oil
+          Quantity: 20
+        - ReagentId: Vitamin
+          Quantity: 5
+  - type: Seed
+    seedId: sunflower
+  - type: Extractable
+    grindableSolutionName: food
+
+- type: entity
+  name: lampflower
+  description: a bulky flower with a glistening glow.
+  id: ProduceLampflower
+  parent: ProduceBase
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/lampflower.rsi
+    scale: 1.5,1.5
+  - type: Produce
+    seedId: lampflower
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 27
+        reagents:
+        - ReagentId: Oil #solar oil
+          Quantity: 20
+        - ReagentId: Nutriment
+          Quantity: 2
+        - ReagentId: Vitamin
+          Quantity: 5
+  - type: Tag
+    tags:
+    - Flower
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: LampflowerCore
+    #- id: ClothingHeadHatLampflowerRing
+
+- type: entity
+  name: lampflower core
+  parent: FoodInjectableBase
+  id: LampflowerCore
+  description: the core of a lampflower, it seems the seed's oily contents are what produce its light
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/lampflower.rsi
+    state: core
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 25
+        reagents:
+        - ReagentId: Oil #Solar Oil
+          Quantity: 20
+        - ReagentId: Vitamin
+          Quantity: 5
+  - type: Seed
+    seedId: lampflower
+  - type: Extractable
+    grindableSolutionName: food
+
+- type: entity
+  name: voidflower
+  description: a bulky flower that bends light around it.
+  id: ProduceVoidflower
+  parent: ProduceBase
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/voidflower.rsi
+    scale: 1.5,1.5
+  - type: Produce
+    seedId: voidflower
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 27
+        reagents:
+        - ReagentId: Oil #void oil
+          Quantity: 25
+        - ReagentId: Nutriment
+          Quantity: 2
+  - type: Tag
+    tags:
+    - Flower
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: VoidflowerCore
+    #- id: ClothingHeadHatVoidflowerRing
+
+- type: entity
+  name: voidflower core
+  parent: FoodInjectableBase
+  id: VoidflowerCore
+  description: the core of a voidflower, it's like looking into a miniature black hole.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/voidflower.rsi
+    state: core
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 25
+        reagents:
+        - ReagentId: Oil #Void Oil
+          Quantity: 25
+  - type: Seed
+    seedId: voidflower
+  - type: Extractable
+    grindableSolutionName: food
