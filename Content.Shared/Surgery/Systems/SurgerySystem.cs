@@ -306,7 +306,7 @@ public sealed partial class SurgerySystem : EntitySystem
         return SurgeryEdgeState.Passed;
     }
 
-    private void DoNodeReachedSpecials(SurgerySpecial[]? specials, EntityUid body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
+    private void DoNodeReachedSpecials(HashSet<SurgerySpecial>? specials, EntityUid body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
     {
         if (specials == null)
             return;
@@ -315,7 +315,7 @@ public sealed partial class SurgerySystem : EntitySystem
             special.NodeReached(body, limb, user, used, bodyPart);
     }
 
-    private void DoNodeLeftSpecials(SurgerySpecial[]? specials, EntityUid body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
+    private void DoNodeLeftSpecials(HashSet<SurgerySpecial>? specials, EntityUid body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
     {
         if (specials == null)
             return;

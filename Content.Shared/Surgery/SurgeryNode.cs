@@ -21,5 +21,5 @@ public partial class SurgeryNode
     /// List of special actions such as adding components which get run whenever this node is reached and left.
     /// </summary>
     [DataField]
-    public SurgerySpecial[] Special { get; set; } = Array.Empty<SurgerySpecial>();
+    public HashSet<SurgerySpecial> Special { get; set; } = new();
 }
