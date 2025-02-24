@@ -41,7 +41,6 @@
     interfaces:
       enum.OrganSelectionUiKey.Key:
         type: OrganSelectionBoundUserInterface
-        requireInputValidation: false
 
 - type: entity
   id: BaseHead
@@ -68,7 +67,6 @@
     interfaces:
       enum.OrganSelectionUiKey.Key:
         type: OrganSelectionBoundUserInterface
-        requireInputValidation: false
   - type: Input
     context: "ghost"
   - type: Damageable

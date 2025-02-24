@@ -16,7 +16,7 @@ public sealed partial class OrganRequirement : SurgeryEdgeRequirement
         ui = null;
 
         // the body doesnt contain any organs
-        if (limb == null || tool == null)
+        if (limb == null)
             return SurgeryEdgeState.Failed;
 
         ui = OrganSelectionUiKey.Key;

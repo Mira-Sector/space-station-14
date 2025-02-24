@@ -72,7 +72,7 @@ public sealed partial class SurgeryBodyPartReciever : ISurgeryReciever
     public SurgeryNode? CurrentNode { get; set; }
 
     [ViewVariables]
-    public HashSet<DoAfterId> DoAfters { get; set; } = new();
+    public Dictionary<DoAfterId, (EntityUid, SurgeryEdgeRequirement)> DoAfters { get; set; } = new();
 
     [ViewVariables]
     public HashSet<Enum> UserInterfaces { get; set; } = new();

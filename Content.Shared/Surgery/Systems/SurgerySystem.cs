@@ -178,7 +178,7 @@ public sealed partial class SurgerySystem : EntitySystem
 
         foreach (var surgeries in component.Surgeries)
         {
-            if (!surgeries.Surgeries.DoAfters.Contains(args.DoAfter.Id))
+            if (!surgeries.Surgeries.DoAfters.ContainsKey(args.DoAfter.Id))
                 continue;
 
             if (args.Cancelled)
@@ -198,7 +198,7 @@ public sealed partial class SurgerySystem : EntitySystem
 
         if (args.Cancelled)
         {
-            if (component.DoAfters.Contains(args.DoAfter.Id))
+            if (component.DoAfters.ContainsKey(args.DoAfter.Id))
                 component.DoAfters.Remove(args.DoAfter.Id);
 
             return;
@@ -260,7 +260,7 @@ public sealed partial class SurgerySystem : EntitySystem
 
         if (ui != null)
         {
-            _ui.OpenUi(limb ?? body, ui, user);
+            _ui.TryOpenUi(limb ?? body, ui, user);
             return true;
         }
 
@@ -269,6 +269,19 @@ public sealed partial class SurgerySystem : EntitySystem
 
     public SurgeryEdgeState TryEdge(EntityUid? limb, ISurgeryReciever surgery, SurgeryEdge edge, EntityUid body, EntityUid user, EntityUid used, BodyPart bodyPart, out Enum? ui)
     {
+        ui = null;
+
+        foreach (var (doAfterId, (doAfterUser, requirement)) in surgery.DoAfters)
+        {
+            if (requirement != edge.Requirement)
+                continue;
+
+            // yes its passed
+            // its valid as we are already doing something
+            if (doAfterUser == user)
+                return SurgeryEdgeState.Passed;
+        }
+
         var requirementsPassed = edge.Requirement.RequirementMet(body, limb, user, used, bodyPart, out ui);
 
         if (requirementsPassed == SurgeryEdgeState.Failed)
@@ -291,7 +304,7 @@ public sealed partial class SurgerySystem : EntitySystem
             var doAfterStarted = edge.Requirement.StartDoAfter(_doAfter, edge, body, limb, user, used, bodyPart, out var doAfterId);
 
             if (doAfterId != null)
-                surgery.DoAfters.Add(doAfterId.Value);
+                surgery.DoAfters.Add(doAfterId.Value, (user, edge.Requirement));
 
             return doAfterStarted ? SurgeryEdgeState.DoAfter : SurgeryEdgeState.Failed;
         }
@@ -326,8 +339,7 @@ public sealed partial class SurgerySystem : EntitySystem
 
     private void CancelDoAfters(EntityUid uid, ISurgeryReciever surgeryReciever)
     {
-        var doAfters = new HashSet<DoAfterId>(surgeryReciever.DoAfters);
-        foreach (var doAfter in surgeryReciever.DoAfters)
+        foreach (var doAfter in surgeryReciever.DoAfters.Keys)
         {
             if (!_doAfter.IsRunning(doAfter))
                 continue;

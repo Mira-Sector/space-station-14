@@ -24,7 +24,7 @@ public interface ISurgeryReciever
     /// Keep track of doafters as they will need to be cancelled when we change node
     /// </summary>
     [ViewVariables]
-    public HashSet<DoAfterId> DoAfters { get; set; }
+    public Dictionary<DoAfterId, (EntityUid, SurgeryEdgeRequirement)> DoAfters { get; set; }
 
     /// <summary>
     /// Keep track of the open uis as they will need to be closed

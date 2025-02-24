@@ -1,5 +1,4 @@
 using Robust.Shared.Prototypes;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Content.Shared.Surgery.Systems;
