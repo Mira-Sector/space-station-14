@@ -901,3 +901,56 @@
   - type: Construction
     graph: Table
     node: CounterMetal
+
+- type: entity
+  id: TableCheese
+  parent: CounterBase
+  name: cheese table
+  description: Gouda taste good!
+  components:
+  - type: Sprite
+    sprite: Structures/Furniture/Tables/cheese.rsi
+  - type: Icon
+    sprite: Structures/Furniture/Tables/cheese.rsi
+    state: full
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 30
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 30
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Weapons/Xeno/alien_claw_flesh3.ogg
+          params:
+            volume: -6
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          FoodCheeseSlice:
+            min: 4
+            max: 4
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: IconSmooth
+    key: tablecheese
+    base: state_
+  - type: FlavorProfile
+    flavors:
+    - cheesy
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 20
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 20
+  - type: Food

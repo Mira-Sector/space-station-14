@@ -1,0 +1,8 @@
+- type: entity
+  abstract: true
+  id: BaseCheeseFlavor
+  name: BaseCheeseFlavor
+  components:
+  - type: FlavorProfile
+    flavors:
+    - cheesy
