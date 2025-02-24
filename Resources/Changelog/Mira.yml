@@ -1177,3 +1177,43 @@ Entries:
     type: Tweak
   id: 174
   time: '2025-02-04T11:30:00.0000000+00:00'
+- author: Anurath
+  changes:
+  - message: Cyborgs grant the AI vision
+    type: Add
+  - message: Cyborgs have a wire panel
+    type: Add
+  id: 175
+  time: '2025-02-09T20:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Adjusted lattice edges
+    type: Tweak
+  id: 176
+  time: '2025-02-09T20:55:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added the securitron which patrols the halls and arrests anyone wanted
+    type: Add
+  id: 177
+  time: '2025-02-17T17:25:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Vehicles no longer spawn activated without a key
+    type: Fix
+  - message: Vehicles access properly updates
+    type: Fix
+  id: 178
+  time: '2025-02-17T21:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Criminal points now checks all the ids rather than the highest priority
+    type: Fix
+  id: 178
+  time: '2025-02-17T22:10:00.0000000+00:00'
+- author: Doctor-Cpu, Anurath, aspiffyfellow, Mehnix, Sentient Salad, lordofgab
+  changes:
+  - message: New central command map
+    type: Add
+  id: 179
+  time: '2025-02-22T20:00:00.0000000+00:00'

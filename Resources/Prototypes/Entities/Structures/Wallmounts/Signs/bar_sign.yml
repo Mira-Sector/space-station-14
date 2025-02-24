@@ -1,4 +1,4 @@
-﻿- type: entity
+- type: entity
   id: BaseBarSign
   parent: BaseStructure
   name: bar sign
@@ -273,3 +273,12 @@
   components:
   - type: BarSign
     current: Spacebucks
+
+- type: entity
+  parent: BaseBarSign
+  id: BarSignCentralStop
+  name: Central Stop
+  description: High class luxury.
+  components:
+  - type: BarSign
+    current: CentralStop

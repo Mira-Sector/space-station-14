@@ -1,4 +1,4 @@
-﻿using Content.Shared.Roles;
+using Content.Shared.Roles;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
@@ -25,4 +25,8 @@ public sealed partial class ContrabandComponent : Component
     [DataField]
     [AutoNetworkedField]
     public HashSet<ProtoId<DepartmentPrototype>>? AllowedDepartments = ["Security"];
+
+    [DataField]
+    [AutoNetworkedField]
+    public float CriminalPoints = 0f;
 }
