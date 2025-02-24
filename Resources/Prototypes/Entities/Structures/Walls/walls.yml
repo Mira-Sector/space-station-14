@@ -1517,6 +1517,11 @@
     base: cobblebrick
 
 - type: entity
+  id: WallInvisibleAdmeme
+  name: invisible wall
+  suffix: invisible wall [Admeme] #This makes it be called "invisible wall (invisible wall [admeme]), but doesn't show up on the menu otherwise.
+
+- type: entity
   parent: [BaseWall, BaseCheeseFlavor]
   id: WallCheese
   name: cheese wall
