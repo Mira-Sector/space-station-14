@@ -73,30 +73,29 @@ public sealed partial class SurgerySystem
             if (!nodeMap.TryGetValue(targetNode, out var mergedNode))
                 continue;
 
-            if (NodesMatch(targetNode, mergedNode, out var matchingTargetEdge, out var matchingMergedEdge))
+            GetMatchingEdges(targetNode, mergedNode, out var matchingEdges, out var missingEdges);
+
+            foreach (var (targetEdge, mergedEdge) in matchingEdges)
             {
-                if (targetGraph.TryFindNode(matchingTargetEdge.Connection, out var targetConnection))
+                if (targetGraph.TryFindNode(targetEdge.Connection, out var targetConnection))
                 {
-                    if (mergedGraph.TryFindNode(matchingMergedEdge.Connection, out var mergedConnection))
+                    if (mergedGraph.TryFindNode(mergedEdge.Connection, out var mergedConnection))
                     {
                         targetQueue.Enqueue(targetConnection);
                         nodeMap.Add(targetConnection, mergedConnection);
                     }
                     else
                     {
-                        var newNode = new SurgeryNode();
-                        mergedGraph.Nodes.Add(mergedGraph.GetNextId(), newNode);
-                        ContinueGraph(matchingTargetEdge, targetNode, newNode, targetGraph, mergedGraph);
+                        ContinueGraph(targetEdge, targetNode, mergedNode, targetGraph, mergedGraph);
                     }
                 }
             }
-            else
+
+            foreach (var (targetEdge, mergedEdge) in missingEdges)
             {
-                foreach (var edge in targetNode.Edges)
+                if (mergedGraph.TryFindNode(mergedEdge.Connection, out var mergedConnection))
                 {
-                    var newNode = new SurgeryNode();
-                    mergedGraph.Nodes.Add(mergedGraph.GetNextId(), newNode);
-                    ContinueGraph(edge, targetNode, newNode, targetGraph, mergedGraph);
+                    ContinueGraph(targetEdge, targetNode, mergedConnection, targetGraph, mergedGraph);
                 }
             }
         }
@@ -115,18 +114,18 @@ public sealed partial class SurgerySystem
             ContinueGraph(edge, targetStartingNode, newNode, targetGraph, mergedGraph);
     }
 
-    private bool NodesMatch(SurgeryNode targetNode, SurgeryNode mergedNode, [NotNullWhen(true)] out SurgeryEdge? matchingTargetEdge, [NotNullWhen(true)] out SurgeryEdge? matchingMergedEdge)
+    private void GetMatchingEdges(SurgeryNode targetNode, SurgeryNode mergedNode, out Dictionary<SurgeryEdge, SurgeryEdge> matchingEdges, out Dictionary<SurgeryEdge, SurgeryEdge> missingEdges)
     {
-        matchingTargetEdge = null;
-        matchingMergedEdge = null;
+        matchingEdges = new();
+        missingEdges = new();
 
         if (targetNode.Special.Count() != mergedNode.Special.Count())
-            return false;
+            return;
 
         foreach (var targetSpecial in targetNode.Special)
         {
             if (!mergedNode.Special.Contains(targetSpecial))
-                return false;
+                return;
         }
 
         foreach (var targetEdge in targetNode.Edges)
@@ -135,14 +134,14 @@ public sealed partial class SurgerySystem
             {
                 if (targetEdge.Requirement.RequirementsMatch(mergedEdge.Requirement, out var _))
                 {
-                    matchingTargetEdge = targetEdge;
-                    matchingMergedEdge = mergedEdge;
-                    return true;
+                    matchingEdges.Add(targetEdge, mergedEdge);
+                }
+                else
+                {
+                    missingEdges.Add(targetEdge, mergedEdge);
                 }
             }
         }
-
-        return false;
     }
 
     private void ContinueGraph(SurgeryEdge sourceTargetEdge, SurgeryNode sourceTargetNode, SurgeryNode sourceMergedNode, SurgeryGraph targetGraph, SurgeryGraph mergedGraph)
