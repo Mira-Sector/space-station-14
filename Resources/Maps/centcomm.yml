@@ -81,6 +81,7 @@ entities:
       name: grid
     - type: Transform
       pos: -0.4375,-0.5104167
+      parent: invalid
     - type: MapGrid
       chunks:
         0,0:
@@ -6017,20 +6018,6 @@ entities:
       rot: 1.5707963267948966 rad
       pos: -18.5,24.5
       parent: 2
-- proto: AirlockBrigGlassLocked
-  entities:
-  - uid: 156
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -28.5,-1.5
-      parent: 2
-  - uid: 157
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -28.5,2.5
-      parent: 2
 - proto: AirlockCargoGlassLocked
   entities:
   - uid: 1548
@@ -6099,7 +6086,7 @@ entities:
       pos: -20.5,-0.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -4324.9844
+      secondsUntilStateChange: -4924.099
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -6170,7 +6157,7 @@ entities:
       pos: -8.5,19.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -19683.67
+      secondsUntilStateChange: -20282.783
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -6292,7 +6279,7 @@ entities:
       pos: -6.5,31.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -31716.348
+      secondsUntilStateChange: -32315.46
       state: Opening
     - type: DeviceLinkSource
       linkedPorts:
@@ -6426,7 +6413,7 @@ entities:
       pos: 2.5,-4.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -3921.5847
+      secondsUntilStateChange: -4520.6997
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -6482,7 +6469,7 @@ entities:
       pos: -0.5,-17.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -13690.008
+      secondsUntilStateChange: -14289.122
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -6495,7 +6482,7 @@ entities:
       pos: -21.5,-7.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -4301.5513
+      secondsUntilStateChange: -4900.666
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -6667,6 +6654,11 @@ entities:
       parent: 2
 - proto: AirlockSecurity
   entities:
+  - uid: 13
+    components:
+    - type: Transform
+      pos: -28.5,0.5
+      parent: 2
   - uid: 2030
     components:
     - type: Transform
@@ -6676,6 +6668,18 @@ entities:
     components:
     - type: Transform
       pos: -43.5,18.5
+      parent: 2
+- proto: AirlockSecurityGlass
+  entities:
+  - uid: 1
+    components:
+    - type: Transform
+      pos: -28.5,-1.5
+      parent: 2
+  - uid: 156
+    components:
+    - type: Transform
+      pos: -28.5,2.5
       parent: 2
 - proto: AirlockSecurityGlassLocked
   entities:
@@ -6713,11 +6717,6 @@ entities:
       parent: 2
 - proto: AirlockSecurityLocked
   entities:
-  - uid: 13
-    components:
-    - type: Transform
-      pos: -28.5,0.5
-      parent: 2
   - uid: 203
     components:
     - type: Transform
@@ -7692,12 +7691,6 @@ entities:
       parent: 2
 - proto: BaseComputerAiAccess
   entities:
-  - uid: 337
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -8.5,-32.5
-      parent: 2
   - uid: 2611
     components:
     - type: Transform
@@ -7918,6 +7911,13 @@ entities:
     - type: Physics
       canCollide: False
     - type: ActionsContainer
+- proto: BiomassReclaimer
+  entities:
+  - uid: 157
+    components:
+    - type: Transform
+      pos: -8.5,-32.5
+      parent: 2
 - proto: BlastDoor
   entities:
   - uid: 1384
@@ -20794,7 +20794,9 @@ entities:
     - type: DeviceLinkSource
       linkedPorts:
         320:
-        - MedicalScannerSender: CloningPodReceiver
+        - CloningPodSender: CloningPodReceiver
+        332:
+        - MedicalScannerSender: MedicalScannerReceiver
 - proto: ComputerComms
   entities:
   - uid: 3646
@@ -25513,7 +25515,7 @@ entities:
       pos: -25.5,7.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -943.22095
+      secondsUntilStateChange: -1542.3358
       state: Opening
   - uid: 2789
     components:
@@ -25522,7 +25524,7 @@ entities:
       pos: -26.5,8.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -941.2543
+      secondsUntilStateChange: -1540.3691
       state: Opening
 - proto: FenceWoodSmallStraight
   entities:
@@ -26514,7 +26516,7 @@ entities:
       pos: -48.5,1.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -1686.3868
+      secondsUntilStateChange: -2285.5015
       state: Closing
     - type: DeviceNetwork
       deviceLists:
@@ -39256,20 +39258,12 @@ entities:
       rot: 1.5707963267948966 rad
       pos: -28.5,1.5
       parent: 2
-    - type: DeviceLinkSource
-      linkedPorts:
-        157:
-        - Pressed: Toggle
   - uid: 171
     components:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: -28.5,-0.5
       parent: 2
-    - type: DeviceLinkSource
-      linkedPorts:
-        156:
-        - Pressed: Toggle
   - uid: 220
     components:
     - type: Transform
@@ -39899,6 +39893,13 @@ entities:
       rot: 3.141592653589793 rad
       pos: -32.5,17.5
       parent: 2
+- proto: MaterialBiomass
+  entities:
+  - uid: 337
+    components:
+    - type: Transform
+      pos: -8.449394,-32.651875
+      parent: 2
 - proto: MedicalBed
   entities:
   - uid: 275
@@ -40406,7 +40407,7 @@ entities:
   - uid: 2845
     components:
     - type: MetaData
-      desc: 'commerating a someone spiffy. for their spiffy contributions what ever they are. :) #HateMir'
+      desc: 'Commemorating a someone spiffy. for their spiffy contributions what ever they are. :) #HateMir'
       name: a spiffy plaque
     - type: Transform
       rot: 3.141592653589793 rad
@@ -44367,7 +44368,7 @@ entities:
   - uid: 508
     components:
     - type: MetaData
-      desc: oh the hours i spent writing in an alien language... (C#)
+      desc: Oh the hours i spent writing in an alien language... (C#)
       name: eepy princess
     - type: Transform
       rot: -1.5707963267948966 rad
@@ -44403,15 +44404,11 @@ entities:
   entities:
   - uid: 2835
     components:
+    - type: MetaData
+      desc: A plaque commemorating every shift that has not gone wrong.
+      name: monotony plaque
     - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -13.5,11.5
-      parent: 2
-  - uid: 2842
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -6.5,-10.5
+      pos: -11.5,11.5
       parent: 2
   - uid: 2843
     components:
@@ -44422,32 +44419,20 @@ entities:
       rot: 1.5707963267948966 rad
       pos: -4.5,11.5
       parent: 2
-  - uid: 2846
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -4.5,-10.5
-      parent: 2
   - uid: 2865
     components:
     - type: MetaData
       desc: Been many places, seen many faces, stolen untold amounts of contraband.
-      name: Wandering Moth
+      name: wandering moth
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: -13.5,-10.5
-      parent: 2
-  - uid: 2867
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -11.5,11.5
       parent: 2
   - uid: 2905
     components:
     - type: MetaData
       desc: '⠀⢸⠂⠀⠀⠀⠘⣧⠀⠀⣟⠛⠲⢤⡀⠀⠀⣰⠏⠀⠀⠀⠀⠀⢹⡀                      ⠀⡿⠀⠀⠀⠀⠀⠈⢷⡀⢻⡀⠀⠀⠙⢦⣰⠏⠀⠀⠀⠀⠀⠀⢸⠀                      ⠀⡇⠀⠀⠀⠀⠀⠀⢀⣻⠞⠛⠀⠀⠀⠀⠻⠀⠀⠀⠀⠀⠀⠀⢸⠀                      ⠀⡇⠀⠀⠀⠀⠀⠀⠛⠓⠒⠓⠓⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠀                      ⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⠀                      ⠀⢿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⣀⣀⠀⠀⢀⡟⠀                      ⠀⠘⣇⠀⠘⣿⠋⢹⠛⣿⡇⠀⠀⠀⠀⣿⣿⡇⠀⢳⠉⠀⣠⡾⠁⠀                      ⣦⣤⣽⣆⢀⡇⠀⢸⡇⣾⡇⠀⠀⠀⠀⣿⣿⡷⠀⢸⡇⠐⠛⠛⣿⠀                      ⠹⣦⠀⠀⠸⡇⠀⠸⣿⡿⠁⢀⡀⠀⠀⠿⠿⠃⠀⢸⠇⠀⢀⡾⠁⠀                      ⠀⠈⡿⢠⢶⣡⡄⠀⠀⠀⠀⠉⠁⠀⠀⠀⠀⠀⣴⣧⠆⠀⢻⡄⠀⠀                      ⠀⢸⠃⠀⠘⠉⠀⠀⠀⠠⣄⡴⠲⠶⠴⠃⠀⠀⠀⠉⡀⠀⠀⢻⡄⠀                      ⠀⠘⠒⠒⠻⢦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⠞⠛⠒⠛⠋⠁⠀                      ⠀⠀⠀⠀⠀⠀⠸⣟⠓⠒⠂⠀⠀⠀⠀⠀⠈⢷⡀⠀⠀⠀⠀⠀⠀⠀                      ⠀⠀⠀⠀⠀⠀⠀⠙⣦⠀⠀⠀⠀⠀⠀⠀⠀⠈⢷⠀⠀⠀⠀⠀⠀⠀                      ⠀⠀⠀⠀⠀⠀⠀⣼⣃⡀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣆⠀⠀⠀⠀⠀⠀                      ⠀⠀⠀⠀⠀⠀⠀⠉⣹⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⠀⠀⠀⠀⠀⠀                      '
-      name: Cloudy's Thoughts
+      name: Cloudy's thoughts
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: -11.5,-10.5
@@ -44456,7 +44441,7 @@ entities:
     components:
     - type: MetaData
       desc: 'Did you know that you can shunt into ACPs as the station AI? Probably not.                                                  (I miss the voices) '
-      name: "Anurath's little known fact:"
+      name: Anurath's little known fact
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: -20.5,-3.5
@@ -45111,6 +45096,9 @@ entities:
     - type: Transform
       pos: -55.5,0.5
       parent: 2
+    - type: WarpPoint
+      follow: True
+      location: Central Command
 - proto: SpawnVehicleATV
   entities:
   - uid: 2488
@@ -53632,7 +53620,7 @@ entities:
       pos: -17.5,18.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -32172.547
+      secondsUntilStateChange: -32771.66
       state: Opening
   - uid: 2882
     components:
