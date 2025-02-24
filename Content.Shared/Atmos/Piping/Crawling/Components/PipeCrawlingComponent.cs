@@ -9,6 +9,9 @@ public sealed partial class PipeCrawlingComponent : Component
     public EntityUid CurrentPipe;
 
     [ViewVariables]
+    public Direction TargetDirection;
+
+    [ViewVariables]
     public TimeSpan NextMoveAttempt;
 
     [ViewVariables]
