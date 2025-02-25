@@ -3,10 +3,11 @@ using Content.Server.Body.Systems;
 using Content.Server.NodeContainer.EntitySystems;
 using Content.Server.NodeContainer.Nodes;
 using Content.Shared.Atmos.Piping.Crawling.Components;
+using Content.Shared.Atmos.Piping.Crawling.Systems;
 
 namespace Content.Server.Atmos.Piping.Crawling;
 
-public sealed class PipeCrawlingSystem : EntitySystem
+public sealed class PipeCrawlingSystem : SharedPipeCrawlingSystem
 {
     [Dependency] private readonly InternalsSystem _internals = default!;
     [Dependency] private readonly NodeContainerSystem _nodeContainer = default!;
