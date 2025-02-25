@@ -1,4 +1,4 @@
-﻿- type: body
+- type: body
   id: Diona
   name: diona
   root: torso
@@ -9,6 +9,9 @@
       - torso
       organs:
         brain: OrganDionaBrainNymph
+        eyes: OrganDionaEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
     torso:
       part: TorsoDiona
       connections:

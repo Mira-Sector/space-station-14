@@ -1,7 +1,9 @@
 using Content.Shared.Body.Components;
+using Content.Shared.Body.Prototypes;
 using Content.Shared.Body.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 
 namespace Content.Shared.Body.Part;
@@ -98,12 +100,12 @@ public sealed partial class BodyPartComponent : Component
 public partial struct BodyPartSlot
 {
     public string Id;
-    public BodyPartType Type;
+    public BodyPart BodyPart;
 
-    public BodyPartSlot(string id, BodyPartType type)
+    public BodyPartSlot(string id, BodyPart bodyPart)
     {
         Id = id;
-        Type = type;
+        BodyPart = bodyPart;
     }
 };
 
@@ -115,9 +117,11 @@ public partial struct BodyPartSlot
 public partial struct OrganSlot
 {
     public string Id;
+    public ProtoId<OrganPrototype> OrganType;
 
-    public OrganSlot(string id)
+    public OrganSlot(string id, ProtoId<OrganPrototype> organType)
     {
         Id = id;
+        OrganType = organType;
     }
 };

@@ -1,0 +1,18 @@
+<DefaultWindow xmlns="https://spacestation14.io"
+            Title="{Loc 'organ-selector-interface-title'}"
+            MinSize="640 400">
+    <BoxContainer
+        Orientation="Vertical"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Margin="4">
+        <SpriteView Name="LimbIcon" Access="Public" Scale="8 8" MinSize="48, 48" OverrideDirection="South"/>
+        <BoxContainer
+            Name="OrganList"
+            Orientation="Vertical"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Margin="4">
+        </BoxContainer>
+    </BoxContainer>
+</DefaultWindow>
