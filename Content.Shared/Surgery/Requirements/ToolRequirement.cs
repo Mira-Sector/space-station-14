@@ -53,8 +53,25 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
         if (other is not ToolRequirement otherTool)
             return false;
 
-        if (Qualities != otherTool.Qualities)
+        if (Qualities.Count != otherTool.Qualities.Count)
             return false;
+
+        foreach (var quality in Qualities)
+        {
+            var matchFound = false;
+
+            foreach (var otherQuality in otherTool.Qualities)
+            {
+                if (quality != otherQuality)
+                    continue;
+
+                matchFound = true;
+                break;
+            }
+
+            if (!matchFound)
+                return false;
+        }
 
         merged = new ToolRequirement()
         {

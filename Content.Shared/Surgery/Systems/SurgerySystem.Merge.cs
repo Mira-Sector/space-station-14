@@ -90,12 +90,9 @@ public sealed partial class SurgerySystem
                 }
             }
 
-            foreach (var (targetEdge, mergedEdge) in missingEdges)
+            foreach (var targetEdge in missingEdges)
             {
-                if (mergedGraph.TryFindNode(mergedEdge.Connection, out var mergedConnection))
-                {
-                    ContinueGraph(targetEdge, targetNode, mergedConnection, targetGraph, mergedGraph);
-                }
+                ContinueGraph(targetEdge, targetNode, mergedNode, targetGraph, mergedGraph);
             }
         }
     }
@@ -113,7 +110,7 @@ public sealed partial class SurgerySystem
             ContinueGraph(edge, targetStartingNode, newNode, targetGraph, mergedGraph);
     }
 
-    private void GetMatchingEdges(SurgeryNode targetNode, SurgeryNode mergedNode, out Dictionary<SurgeryEdge, SurgeryEdge> matchingEdges, out Dictionary<SurgeryEdge, SurgeryEdge> missingEdges)
+    private void GetMatchingEdges(SurgeryNode targetNode, SurgeryNode mergedNode, out Dictionary<SurgeryEdge, SurgeryEdge> matchingEdges, out HashSet<SurgeryEdge> missingEdges)
     {
         matchingEdges = new();
         missingEdges = new();
@@ -129,16 +126,24 @@ public sealed partial class SurgerySystem
 
         foreach (var targetEdge in targetNode.Edges)
         {
+            SurgeryEdge? matchingEdge = null;
+
             foreach (var mergedEdge in mergedNode.Edges)
             {
-                if (targetEdge.Requirement.RequirementsMatch(mergedEdge.Requirement, out var _))
-                {
-                    matchingEdges.Add(targetEdge, mergedEdge);
-                }
-                else
-                {
-                    missingEdges.Add(targetEdge, mergedEdge);
-                }
+                if (!targetEdge.Requirement.RequirementsMatch(mergedEdge.Requirement, out var _))
+                    continue;
+
+                matchingEdge = mergedEdge;
+                break;
+            }
+
+            if (matchingEdge != null)
+            {
+                matchingEdges.Add(targetEdge, matchingEdge);
+            }
+            else
+            {
+                missingEdges.Add(targetEdge);
             }
         }
     }
