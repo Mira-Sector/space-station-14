@@ -26,7 +26,9 @@ public sealed class BodySystem : SharedBodySystem
         var sprite = args.SpriteViewEnt.Comp;
         var parts = GetBodyChildren(uid, component);
 
-        foreach ((var currentPart, var currentPartComp) in parts)
+        HashSet<BodyPart> foundParts = new();
+
+        foreach (var (currentPart, currentPartComp) in parts)
         {
             if (!TryComp<DamageableComponent>(currentPart, out var damageableComp))
                 continue;
@@ -34,7 +36,8 @@ public sealed class BodySystem : SharedBodySystem
             if (!TryComp<BodyPartThresholdsComponent>(currentPart, out var thresholdsComp) || !TryGetLimbStateThreshold(currentPart, DeadState, out var deadThreshold, thresholdsComp))
                 continue;
 
-            var layer = BodyPartToLayer(currentPartComp.PartType, currentPartComp.Symmetry);
+            var bodyPart = new BodyPart(currentPartComp.PartType, currentPartComp.Symmetry);
+            var layer = BodyPartToLayer(bodyPart);
 
             if (layer == BodyPartLayer.None)
                 continue;
@@ -61,6 +64,27 @@ public sealed class BodySystem : SharedBodySystem
             }
 
             var state = $"{layer.ToString()}{offset}";
+            sprite.LayerSetState(layer, state);
+
+            foundParts.Add(bodyPart);
+        }
+
+        foreach (var (bodyPart, layer) in component.AlertLayers)
+        {
+            var matchFound = false;
+
+            foreach (var foundPart in foundParts)
+            {
+                if (bodyPart.Type != foundPart.Type || bodyPart.Side != foundPart.Side)
+                    continue;
+
+                matchFound = true;
+            }
+
+            if (matchFound)
+                continue;
+
+            var state = $"{layer}Removed";
             sprite.LayerSetState(layer, state);
         }
     }

@@ -42,3 +42,18 @@
         - type: StationJobs
           availableJobs:
             ChiefEngineer: [ -1, -1 ]
+
+- type: gameMap
+  id: TestSurgery
+  mapName: Test Surgery
+  mapPath: /Maps/Test/test_surgery.yml
+  minPlayers: 0
+  stations:
+    Surgery:
+      stationProto: TestStation
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: "Surgery"
+        - type: StationJobs
+          availableJobs:
+            ChiefMedicalOfficer: [ -1, -1 ]

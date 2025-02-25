@@ -1,4 +1,5 @@
 using Content.Shared.Body.Components;
+using Content.Shared.Body.Part;
 
 namespace Content.Shared.Body.Events;
 
@@ -19,5 +20,15 @@ public sealed class BodyInitEvent : EntityEventArgs
     public BodyInitEvent(BodyComponent body)
     {
         Body = body;
+    }
+}
+
+public sealed class LimbInitEvent : EntityEventArgs
+{
+    public BodyPartComponent Part;
+
+    public LimbInitEvent(BodyPartComponent part)
+    {
+        Part = part;
     }
 }

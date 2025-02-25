@@ -1,4 +1,4 @@
-﻿- type: body
+- type: body
   id: Human
   name: "human"
   root: torso
@@ -10,6 +10,8 @@
       organs:
         brain: OrganHumanBrain
         eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
     torso:
       part: TorsoHuman
       connections:
@@ -23,6 +25,7 @@
         stomach: OrganHumanStomach
         liver: OrganHumanLiver
         kidneys: OrganHumanKidneys
+        appendix: OrganHumanAppendix
     right_arm:
       part: RightArmHuman
       connections:

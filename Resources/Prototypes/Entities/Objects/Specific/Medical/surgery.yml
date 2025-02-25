@@ -142,6 +142,9 @@
   - type: Item
     sprite: Objects/Specific/Medical/Surgery/scissors.rsi
     storedRotation: 90
+  - type: Tool
+    qualities:
+    - Retracting
 
 - type: entity
   name: hemostat
@@ -154,6 +157,9 @@
   - type: Item
     heldPrefix: hemostat
     storedRotation: 90
+  - type: Tool
+    qualities:
+    - Clamping
 
   # - type: entity
   #   name: bone setter

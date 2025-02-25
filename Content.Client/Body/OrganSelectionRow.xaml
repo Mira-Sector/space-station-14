@@ -1,0 +1,12 @@
+<PanelContainer xmlns="https://spacestation14.io"
+    HorizontalAlignment="Center"
+    VerticalAlignment="Center">
+    <BoxContainer
+        Name="OrganRow"
+        Orientation="Horizontal"
+        VerticalExpand="True"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Margin="4">
+    </BoxContainer>
+</PanelContainer>

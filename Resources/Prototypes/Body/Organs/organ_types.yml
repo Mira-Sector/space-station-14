@@ -1,0 +1,69 @@
+- type: organ
+  id: Brain
+  name: organ-type-brain
+  emptySlotSprite:
+    sprite: Interface/organ_selection.rsi
+    state: brain
+
+- type: organ
+  id: Tongue
+  name: organ-type-tongue
+  emptySlotSprite:
+    sprite: Interface/organ_selection.rsi
+    state: tongue
+
+- type: organ
+  id: Ears
+  name: organ-type-ears
+  emptySlotSprite:
+    sprite: Interface/organ_selection.rsi
+    state: ears
+
+- type: organ
+  id: Heart
+  name: organ-type-heart
+  emptySlotSprite:
+    sprite: Interface/organ_selection.rsi
+    state: heart
+
+- type: organ
+  id: Lungs
+  name: organ-type-lungs
+  emptySlotSprite:
+    sprite: Interface/organ_selection.rsi
+    state: lungs
+
+- type: organ
+  id: Eyes
+  name: organ-type-eyes
+  emptySlotSprite:
+    sprite: Interface/organ_selection.rsi
+    state: eyes
+
+- type: organ
+  id: Liver
+  name: organ-type-liver
+  emptySlotSprite:
+    sprite: Interface/organ_selection.rsi
+    state: liver
+
+- type: organ
+  id: Stomach
+  name: organ-type-stomach
+  emptySlotSprite:
+    sprite: Interface/organ_selection.rsi
+    state: stomach
+
+- type: organ
+  id: Kidneys
+  name: organ-type-kidneys
+  emptySlotSprite:
+    sprite: Interface/organ_selection.rsi
+    state: kidneys
+
+- type: organ
+  id: Appendix
+  name: organ-type-appendix
+  emptySlotSprite:
+    sprite: Interface/organ_selection.rsi
+    state: appendix
