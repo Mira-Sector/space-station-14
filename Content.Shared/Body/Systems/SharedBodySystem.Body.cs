@@ -15,7 +15,6 @@ using Content.Shared.Gibbing.Systems;
 using Content.Shared.Inventory;
 using Content.Shared.Radiation.Events;
 using Content.Shared.Rejuvenate;
-using Content.Shared.Standing;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
@@ -56,14 +55,6 @@ public partial class SharedBodySystem
         SubscribeLocalEvent<BodyComponent, CanDragEvent>(OnBodyCanDrag);
         SubscribeLocalEvent<BodyComponent, RejuvenateEvent>(OnRejuvenate);
         SubscribeLocalEvent<BodyComponent, OnIrradiatedEvent>(OnIrradiatedEvent);
-
-        SubscribeLocalEvent<BodyComponent, StandAttemptEvent>(RelayToLimbs);
-        SubscribeLocalEvent<BodyComponent, StoodEvent>(RelayToLimbs);
-        SubscribeLocalEvent<BodyComponent, DownAttemptEvent>(RelayToLimbs);
-        SubscribeLocalEvent<BodyComponent, DownedEvent>(RelayToLimbs);
-
-        SubscribeLocalEvent<BodyPartComponent, DamageModifyEvent>(RelayToBody);
-        SubscribeLocalEvent<BodyPartComponent, DamageChangedEvent>(RelayToBody);
     }
 
     private void OnBodyInserted(Entity<BodyComponent> ent, ref EntInsertedIntoContainerMessage args)
@@ -207,46 +198,6 @@ public partial class SharedBodySystem
             return;
 
         _damageable.Irradiate(uid, args.RadsPerSecond, radiation.RadiationDamageTypeIDs);
-    }
-
-    protected void RelayToBody<T>(EntityUid uid, BodyPartComponent component, T args) where T : class
-    {
-        if (component.Body == null)
-            return;
-
-        var ev = new LimbBodyRelayedEvent<T>(args, uid);
-
-        RaiseLocalEvent(component.Body.Value, ref ev);
-    }
-
-    protected void RelayRefToBody<T>(EntityUid uid, BodyPartComponent component, ref T args) where T : class
-    {
-        if (component.Body == null)
-            return;
-
-        var ev = new LimbBodyRelayedEvent<T>(args, uid);
-
-        RaiseLocalEvent(component.Body.Value, ref ev);
-    }
-
-    protected void RelayToLimbs<T>(EntityUid uid, BodyComponent component, T args) where T : class
-    {
-        var ev = new BodyLimbRelayedEvent<T>(args, uid);
-
-        foreach (var (limb, _) in GetBodyChildren(uid, component))
-        {
-            RaiseLocalEvent(limb, ref ev);
-        }
-    }
-
-    protected void RelayRefToLimbs<T>(EntityUid uid, BodyComponent component, ref T args) where T : class
-    {
-        var ev = new BodyLimbRelayedEvent<T>(args, uid);
-
-        foreach (var (limb, _) in GetBodyChildren(uid, component))
-        {
-            RaiseLocalEvent(limb, ref ev);
-        }
     }
 
     /// <summary>

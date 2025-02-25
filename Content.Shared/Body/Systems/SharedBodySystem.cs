@@ -44,6 +44,7 @@ public abstract partial class SharedBodySystem : EntitySystem
         InitializeOrgans();
         InitializeParts();
         InitializePartThresholds();
+        InitializeRelays();
     }
 
     /// <summary>

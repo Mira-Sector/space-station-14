@@ -12,13 +12,11 @@ using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using System.Numerics;
-using System.Runtime;
 
 namespace Content.Server.Footprint.Systems;
 
 public sealed partial class FootprintSystem : EntitySystem
 {
-
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
@@ -30,7 +28,6 @@ public sealed partial class FootprintSystem : EntitySystem
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly IMapManager _mapManager = default!;
-
 
     const string ShoeSlot = "shoes";
 
