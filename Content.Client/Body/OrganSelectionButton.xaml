@@ -15,7 +15,12 @@
                 VerticalExpand="True"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
-                <SpriteView Name="Icon" Access="Public" Scale="2 2" MinSize="8 8" OverrideDirection="South" />
+                <TextureRect
+                Name="Icon"
+                Access="Public"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                TextureScale="2.5 2.5"/>
                 <BoxContainer Margin="4">
                     <Label Name="OrganName" Access="Public" Align="Center" HorizontalExpand="True"/>
                 </BoxContainer>

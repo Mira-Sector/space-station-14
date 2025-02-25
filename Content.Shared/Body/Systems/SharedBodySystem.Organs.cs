@@ -3,7 +3,9 @@ using Content.Shared.Body.Components;
 using Content.Shared.Body.Events;
 using Content.Shared.Body.Organ;
 using Content.Shared.Body.Part;
+using Content.Shared.Body.Prototypes;
 using Robust.Shared.Containers;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Body.Systems;
 
@@ -29,7 +31,7 @@ public partial class SharedBodySystem
         if (!_ui.IsUiOpen(uid, OrganSelectionUiKey.Key))
             return;
 
-        Dictionary<OrganType, NetEntity> organs = new();
+        Dictionary<ProtoId<OrganPrototype>, NetEntity> organs = new();
 
         foreach (var organSlot in bodyPart.Organs.Values)
         {

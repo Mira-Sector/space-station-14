@@ -1,3 +1,5 @@
+using Content.Shared.Body.Prototypes;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 
 namespace Content.Shared.Body.Organ;
@@ -11,9 +13,9 @@ public enum OrganSelectionUiKey
 [Serializable, NetSerializable]
 public sealed class OrganSelectionBoundUserInterfaceState : BoundUserInterfaceState
 {
-    public Dictionary<OrganType, NetEntity> Organs;
+    public Dictionary<ProtoId<OrganPrototype>, NetEntity> Organs;
 
-    public OrganSelectionBoundUserInterfaceState(Dictionary<OrganType, NetEntity> organs)
+    public OrganSelectionBoundUserInterfaceState(Dictionary<ProtoId<OrganPrototype>, NetEntity> organs)
     {
         Organs = organs;
     }
