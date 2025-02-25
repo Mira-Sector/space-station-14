@@ -56,4 +56,4 @@
           mapNameTemplate: "Surgery"
         - type: StationJobs
           availableJobs:
-            ChiefMedicalOfficer: [ 1, 1 ]
+            ChiefMedicalOfficer: [ -1, -1 ]
