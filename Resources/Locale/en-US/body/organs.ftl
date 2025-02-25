@@ -1,3 +1,6 @@
+organ-selector-interface-title = Organ Selector
+organ-name-none = Empty
+
 organ-type-brain = Brain
 organ-type-tongue = Tongue
 organ-type-ears = Ears

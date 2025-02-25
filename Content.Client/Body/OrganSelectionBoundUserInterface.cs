@@ -32,5 +32,13 @@ public sealed class OrganSelectionBoundUserInterface : BoundUserInterface
             return;
 
         _window.UpdateState(_owner.Value, cast);
+
+        foreach (var (button, netId) in _window.Buttons)
+        {
+            button.OnOrganPressed += (organ) =>
+            {
+                SendMessage(new OrganSelectionButtonPressedMessage(organ, netId));
+            };
+        }
     }
 }

@@ -13,10 +13,23 @@ public enum OrganSelectionUiKey
 [Serializable, NetSerializable]
 public sealed class OrganSelectionBoundUserInterfaceState : BoundUserInterfaceState
 {
-    public Dictionary<ProtoId<OrganPrototype>, NetEntity> Organs;
+    public Dictionary<ProtoId<OrganPrototype>, NetEntity?> Organs;
 
-    public OrganSelectionBoundUserInterfaceState(Dictionary<ProtoId<OrganPrototype>, NetEntity> organs)
+    public OrganSelectionBoundUserInterfaceState(Dictionary<ProtoId<OrganPrototype>, NetEntity?> organs)
     {
         Organs = organs;
+    }
+}
+
+[Serializable, NetSerializable]
+public sealed class OrganSelectionButtonPressedMessage : BoundUserInterfaceMessage
+{
+    public ProtoId<OrganPrototype> OrganPrototype;
+    public NetEntity? OrganId;
+
+    public OrganSelectionButtonPressedMessage(ProtoId<OrganPrototype> organPrototype, NetEntity? organId)
+    {
+        OrganPrototype = organPrototype;
+        OrganId = organId;
     }
 }
