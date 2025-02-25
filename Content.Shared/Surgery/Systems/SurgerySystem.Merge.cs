@@ -166,6 +166,9 @@ public sealed partial class SurgerySystem
 
         while (targetNodes.TryDequeue(out var targetNode))
         {
+            if (nodeMap.ContainsKey(targetNode))
+                continue;
+
             var id = mergedGraph.GetNextId();
 
             SurgeryNode newNode = new SurgeryNode()

@@ -4,7 +4,7 @@
   nodes:
   - id: Start
     edges:
-    - connection: Scalpel2 #Scalpel1 for my own sanity
+    - connection: Scalpel1
       requirement: !type:ToolRequirement
         qualities:
         - Slicing
@@ -34,6 +34,8 @@
         - Slicing
   - id: Scalpel2
     edges:
-    - connection: OrganInsert
-      requirement: !type:OrganRequirement
-  - id: OrganInsert
+    - requirement: !type:OrganRequirement
+    - connection: Start
+      requirement: !type:ToolRequirement
+        qualities:
+        - Slicing

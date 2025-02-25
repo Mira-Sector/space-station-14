@@ -39,8 +39,9 @@
         qualities:
         - Slicing
   - id: Scalpel2
-    special:
-    - !type:RemoveLimb
+    edges:
+    - connection: Start
+      requirement: !type:LimbRequirement
 
 - type: surgery
   id: LimbReplacement
@@ -64,12 +65,7 @@
       requirement: !type:ToolRequirement
         qualities:
         - Clamping
-    special:
-    - !type:RemoveLimb
   - id: Hemostat
     edges:
-    - connection: InsertLimb
-      requirement: !type:BodyPartRequirement
-  - id: InsertLimb
-    special:
-    - !type:AddLimb
+    - connection: Start
+      requirement: !type:LimbRequirement

@@ -158,7 +158,7 @@ public sealed partial class SurgerySystem : EntitySystem
             if (surgeries.BodyPart.Side != damageSelectorComp.SelectedPart.Side)
                 continue;
 
-            if (TryTraverseGraph(uid, surgeries.Surgeries, uid, user, used, surgeries.BodyPart))
+            if (TryTraverseGraph(null, surgeries.Surgeries, uid, user, used, surgeries.BodyPart))
             {
                 args.Handled = true;
                 return;
