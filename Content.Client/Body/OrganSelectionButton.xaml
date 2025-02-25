@@ -1,8 +1,25 @@
 <PanelContainer xmlns="https://spacestation14.io"
+                MinHeight="64"
                 HorizontalExpand="True">
-    <Button Name="Button" Access="Public">
-        <SpriteView Name="Icon" Access="Public" Scale="2 2" SetSize="48 48" OverrideDirection="South" />
-        <Label Name="OrganName" Access="Public" HorizontalExpand="True" StyleClasses="LabelSubText" ClipText="True" />
-        <Label Name="OrganType" Access="Public" HorizontalExpand="True" StyleClasses="LabelSubText" ClipText="True" />
-    </Button>
+    <BoxContainer Orientation="Vertical"
+        VerticalExpand="True"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Margin="4">
+        <BoxContainer>
+            <Label Name="OrganType" Access="Public" Align="Center" HorizontalExpand="True"/>
+        </BoxContainer>
+        <Button Name="Button" Access="Public" StyleClasses="OpenBoth">
+            <BoxContainer
+                Orientation="Vertical"
+                VerticalExpand="True"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <SpriteView Name="Icon" Access="Public" Scale="2 2" MinSize="8 8" OverrideDirection="South" />
+                <BoxContainer Margin="4">
+                    <Label Name="OrganName" Access="Public" Align="Center" HorizontalExpand="True"/>
+                </BoxContainer>
+            </BoxContainer>
+        </Button>
+    </BoxContainer>
 </PanelContainer>

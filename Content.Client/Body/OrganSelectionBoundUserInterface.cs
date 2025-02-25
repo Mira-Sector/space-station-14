@@ -10,8 +10,12 @@ public sealed class OrganSelectionBoundUserInterface : BoundUserInterface
     [ViewVariables]
     private OrganSelectionWindow? _window;
 
+    [ViewVariables]
+    private EntityUid? _owner;
+
     public OrganSelectionBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
+        _owner = owner;
     }
 
     protected override void Open()
@@ -24,9 +28,9 @@ public sealed class OrganSelectionBoundUserInterface : BoundUserInterface
     {
         base.UpdateState(state);
 
-        if (_window == null || state is not OrganSelectionBoundUserInterfaceState cast)
+        if (_window == null || _owner == null || state is not OrganSelectionBoundUserInterfaceState cast)
             return;
 
-        _window.UpdateState(cast);
+        _window.UpdateState(_owner.Value, cast);
     }
 }

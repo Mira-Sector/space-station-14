@@ -18,38 +18,29 @@ public sealed partial class OrganSelectionWindow : DefaultWindow
         IoCManager.InjectDependencies(this);
     }
 
-    public void UpdateState(OrganSelectionBoundUserInterfaceState state)
+    public void UpdateState(EntityUid limb, OrganSelectionBoundUserInterfaceState state)
     {
         OrganList.RemoveAllChildren();
 
         var entMan = IoCManager.Resolve<EntityManager>();
-        var row = NewRow();
 
-        var i = 0;
+        HashSet<OrganSelectionButton> buttons = new();
+
         foreach (var (type, netId) in state.Organs.OrderBy(x => x.Key))
         {
-            i++;
-
-            if (i > RowCount)
+            if (buttons.Count >= RowCount)
             {
-                OrganList.AddChild(row);
-                row = NewRow();
-                i = 0;
+                OrganList.AddChild(new OrganSelectionRow(buttons));
+                buttons.Clear();
             }
 
             var uid = entMan.GetEntity(netId);
 
             var button = new OrganSelectionButton(uid, type);
-            row.AddChild(button);
+            buttons.Add(button);
         }
-    }
 
-    private BoxContainer NewRow()
-    {
-        return new BoxContainer()
-        {
-            Orientation = BoxContainer.LayoutOrientation.Horizontal,
-            Margin = new Thickness(8)
-        };
+        OrganList.AddChild(new OrganSelectionRow(buttons));
+        LimbIcon.SetEntity(limb);
     }
 }

@@ -21,6 +21,6 @@ public sealed partial class OrganSelectionButton : PanelContainer
 
         Icon.SetEntity(uid);
         OrganName.Text = entMan.GetComponent<MetaDataComponent>(uid).EntityName;
-        OrganType.Text = Loc.GetString($"organ-type-{nameof(type)}");
+        OrganType.Text = Loc.GetString($"organ-type-{nameof(type).ToLower()}");
     }
 }
