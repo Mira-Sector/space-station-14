@@ -6,6 +6,7 @@ using Content.Shared.Body.Organ;
 using Content.Shared.Body.Part;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
+using Content.Shared.Interaction;
 using Content.Shared.Movement.Components;
 using Robust.Shared.Containers;
 using Robust.Shared.Utility;
@@ -21,6 +22,8 @@ public partial class SharedBodySystem
         // If you modify this also see the Body partial for root parts.
         SubscribeLocalEvent<BodyPartComponent, EntInsertedIntoContainerMessage>(OnBodyPartInserted);
         SubscribeLocalEvent<BodyPartComponent, EntRemovedFromContainerMessage>(OnBodyPartRemoved);
+
+        SubscribeLocalEvent<BodyPartComponent, AccessibleTargetOverrideEvent>(OnBodyPartAccessible);
     }
 
     private void OnBodyPartInserted(Entity<BodyPartComponent> ent, ref EntInsertedIntoContainerMessage args)
@@ -59,6 +62,15 @@ public partial class SharedBodySystem
 
         if (TryComp(removedUid, out OrganComponent? organ))
             RemoveOrgan((removedUid, organ), ent);
+    }
+
+    private void OnBodyPartAccessible(Entity<BodyPartComponent> ent, ref AccessibleTargetOverrideEvent args)
+    {
+        if (ent.Comp.Body is not {} body)
+            return;
+
+        args.Handled = true;
+        args.Accessible = Containers.IsInSameOrParentContainer(args.User, body, out _, out _);
     }
 
     private void RecursiveBodyUpdate(Entity<BodyPartComponent> ent, EntityUid? bodyUid)
