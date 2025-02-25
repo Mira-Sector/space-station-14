@@ -28,8 +28,11 @@ public sealed partial class SurgerySystem : EntitySystem
         SubscribeLocalEvent<SurgeryRecieverBodyComponent, BodyPartAddedEvent>(OnBodyPartAdded);
         SubscribeLocalEvent<SurgeryRecieverBodyComponent, BodyPartRemovedEvent>(OnBodyPartRemoved);
 
-        SubscribeLocalEvent<SurgeryRecieverComponent, InteractUsingEvent>(OnLimbInteract);
-        SubscribeLocalEvent<SurgeryRecieverBodyComponent, InteractUsingEvent>(OnBodyInteract);
+        SubscribeLocalEvent<SurgeryRecieverComponent, InteractUsingEvent>((u, c, a) => OnLimbInteract(u, c, a.User, a.Used, a));
+        SubscribeLocalEvent<SurgeryRecieverBodyComponent, InteractUsingEvent>((u, c, a) => OnBodyInteract(u, c, a.User, a.Used, a));
+
+        SubscribeLocalEvent<SurgeryRecieverComponent, InteractHandEvent>((u, c, a) => OnLimbInteract(u, c, a.User, null, a));
+        SubscribeLocalEvent<SurgeryRecieverBodyComponent, InteractHandEvent>((u, c, a) => OnBodyInteract(u, c, a.User, null, a));
 
         SubscribeLocalEvent<SurgeryRecieverComponent, SurgeryDoAfterEvent>(OnLimbDoAfter);
         SubscribeLocalEvent<SurgeryRecieverBodyComponent, SurgeryDoAfterEvent>(OnBodyDoAfter);
@@ -86,7 +89,7 @@ public sealed partial class SurgerySystem : EntitySystem
         }
     }
 
-    private void OnLimbInteract(EntityUid uid, SurgeryRecieverComponent component, InteractUsingEvent args)
+    private void OnLimbInteract(EntityUid uid, SurgeryRecieverComponent component, EntityUid user, EntityUid? used, HandledEntityEventArgs args)
     {
         if (args.Handled)
             return;
@@ -99,16 +102,16 @@ public sealed partial class SurgerySystem : EntitySystem
 
         BodyPart bodyPart = new(bodyPartComp.PartType, bodyPartComp.Symmetry);
 
-        args.Handled = TryTraverseGraph(uid, component, body, args.User, args.Used, bodyPart);
+        args.Handled = TryTraverseGraph(uid, component, body, user, used, bodyPart);
         Dirty(uid, component);
     }
 
-    private void OnBodyInteract(EntityUid uid, SurgeryRecieverBodyComponent component, InteractUsingEvent args)
+    private void OnBodyInteract(EntityUid uid, SurgeryRecieverBodyComponent component, EntityUid user, EntityUid? used, HandledEntityEventArgs args)
     {
         if (args.Handled)
             return;
 
-        if (!TryComp<DamagePartSelectorComponent>(args.User, out var damageSelectorComp))
+        if (!TryComp<DamagePartSelectorComponent>(user, out var damageSelectorComp))
             return;
 
         if (!PreCheck(uid))
@@ -136,7 +139,7 @@ public sealed partial class SurgerySystem : EntitySystem
             limbFound = true;
 
             // may have multiple limbs so dont exit early
-            TryTraverseGraph(limb, surgeryComp, uid, args.User, args.Used, bodyPart);
+            TryTraverseGraph(limb, surgeryComp, uid, user, used, bodyPart);
         }
 
         args.Handled = limbFound;
@@ -155,7 +158,7 @@ public sealed partial class SurgerySystem : EntitySystem
             if (surgeries.BodyPart.Side != damageSelectorComp.SelectedPart.Side)
                 continue;
 
-            if (TryTraverseGraph(uid, surgeries.Surgeries, uid, args.User, args.Used, surgeries.BodyPart))
+            if (TryTraverseGraph(uid, surgeries.Surgeries, uid, user, used, surgeries.BodyPart))
             {
                 args.Handled = true;
                 return;
@@ -228,7 +231,7 @@ public sealed partial class SurgerySystem : EntitySystem
         CancelDoAfters(limb ?? body, surgeryReciever);
     }
 
-    public bool TryTraverseGraph(EntityUid? limb, ISurgeryReciever surgery, EntityUid body, EntityUid user, EntityUid used, BodyPart bodyPart)
+    public bool TryTraverseGraph(EntityUid? limb, ISurgeryReciever surgery, EntityUid body, EntityUid user, EntityUid? used, BodyPart bodyPart)
     {
         if (surgery.CurrentNode == null)
         {
@@ -267,7 +270,7 @@ public sealed partial class SurgerySystem : EntitySystem
         return false;
     }
 
-    public SurgeryEdgeState TryEdge(EntityUid? limb, ISurgeryReciever surgery, SurgeryEdge edge, EntityUid body, EntityUid user, EntityUid used, BodyPart bodyPart, out Enum? ui)
+    public SurgeryEdgeState TryEdge(EntityUid? limb, ISurgeryReciever surgery, SurgeryEdge edge, EntityUid body, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui)
     {
         ui = null;
 
