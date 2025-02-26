@@ -80,6 +80,9 @@ public sealed partial class SurgerySystem : EntitySystem
 
     private void OnBodyPartRemoved(EntityUid uid, SurgeryRecieverBodyComponent component, ref BodyPartRemovedEvent args)
     {
+        if (MetaData(args.Part).EntityLifeStage >= EntityLifeStage.Terminating)
+            return;
+
         foreach (var limb in component.Limbs.Keys)
         {
             if (limb.Type != args.Part.Comp.PartType || limb.Side != args.Part.Comp.Symmetry)
@@ -139,10 +142,8 @@ public sealed partial class SurgerySystem : EntitySystem
             limbFound = true;
 
             // may have multiple limbs so dont exit early
-            TryTraverseGraph(limb, surgeryComp, uid, user, used, bodyPart);
+            args.Handled |= TryTraverseGraph(limb, surgeryComp, uid, user, used, bodyPart);
         }
-
-        args.Handled = limbFound;
 
         // if we have a possible limb they may have nothing do do
         // so we dont logically or with the TryTraverseGraph
