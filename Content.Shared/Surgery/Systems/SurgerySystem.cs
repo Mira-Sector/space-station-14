@@ -139,10 +139,8 @@ public sealed partial class SurgerySystem : EntitySystem
             limbFound = true;
 
             // may have multiple limbs so dont exit early
-            TryTraverseGraph(limb, surgeryComp, uid, user, used, bodyPart);
+            args.Handled |= TryTraverseGraph(limb, surgeryComp, uid, user, used, bodyPart);
         }
-
-        args.Handled = limbFound;
 
         // if we have a possible limb they may have nothing do do
         // so we dont logically or with the TryTraverseGraph
