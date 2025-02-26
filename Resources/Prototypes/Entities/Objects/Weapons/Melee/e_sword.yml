@@ -93,6 +93,17 @@
   - type: Item
     sprite: Objects/Fun/toy_sword.rsi
   - type: ItemToggleMeleeWeapon
+  - type: ComponentToggler
+    components:
+    - type: Sharp
+    - type: DisarmMalus
+      malus: 0.6
+    - type: Execution
+      doAfterDuration: 4.0
+  - type: ItemToggleHot
+  - type: ItemToggleSize
+    activatedSize: Huge
+  - type: ItemTogglePointLight
 
 - type: entity
   name: energy dagger
