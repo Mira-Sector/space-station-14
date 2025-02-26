@@ -1223,3 +1223,11 @@ Entries:
     type: Add
   id: 180
   time: '2025-02-25T16:40:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Interacting with someone lying down works again
+    type: Fix
+  - message: The server no longer crashes when restarting the round
+    type: Fix
+  id: 181
+  time: '2025-02-26T17:50:00.0000000+00:00'
