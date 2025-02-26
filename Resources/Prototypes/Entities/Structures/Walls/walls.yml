@@ -1527,47 +1527,6 @@
     key: cobblebricks
     base: cobblebrick
 
-- type: entity
-  parent: BaseWall
-  id: WallCheese
-  name: cheese wall
-  description: I bet a rat king would love this.
-  components:
-  - type: Tag
-    tags:
-    - Wall
-    - Structure
-  - type: Sprite
-    sprite: Structures/Walls/cheese.rsi
-  - type: FlavorProfile
-    flavors:
-     - cheesy
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 22.5
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 22.5
-  - type: Icon
-    sprite: Structures/Walls/cheese.rsi
-  - type: Food
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 15 # weak
-      behaviors:
-      - !type:SpawnEntitiesBehavior
-        spawn:
-          FoodCheeseSlice:
-            min: 5
-            max: 5
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
-  - type: IconSmooth
-    key: walls
-    base: cheese
 
 - type: entity
   id: WallInvisibleAdmeme
@@ -1594,3 +1553,47 @@
         layer:
         - GlassLayer
   - type: Airtight
+
+- type: entity
+  parent: [BaseWall, BaseCheeseFlavor]
+  id: WallCheese
+  name: cheese wall
+  description: I bet a rat king would love this.
+  components:
+  - type: Tag
+    tags:
+    - Wall
+    - Structure
+  - type: Sprite
+    sprite: Structures/Walls/cheese.rsi
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 35
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 35
+  - type: Icon
+    sprite: Structures/Walls/cheese.rsi
+  - type: Food
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 30 # weak
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          FoodCheeseSlice:
+            min: 7
+            max: 7
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: IconSmooth
+    key: walls
+    base: cheese
+  - type: PassiveDamage # Cheese regeneration
+    damageCap: 30
+    damage:
+      type:
+        Structural: -5

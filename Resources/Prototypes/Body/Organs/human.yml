@@ -43,6 +43,7 @@
   - type: Sprite
     state: brain
   - type: Organ
+    organType: Brain
   - type: Input
     context: "ghost"
   - type: Brain
@@ -74,13 +75,15 @@
   - type: Item
     size: Small
     heldPrefix: brain
-  
+
 - type: entity
   id: OrganHumanEyes
   parent: BaseHumanOrgan
   name: eyes
   description: "I see you!"
   components:
+  - type: Organ
+    organType: Eyes
   - type: Sprite
     layers:
       - state: eyeball-l
@@ -95,6 +98,8 @@
   name: tongue
   description: "A fleshy muscle mostly used for lying."
   components:
+  - type: Organ
+    organType: Tongue
   - type: Sprite
     state: tongue
 
@@ -103,6 +108,8 @@
   parent: BaseHumanOrgan
   name: appendix
   components:
+  - type: Organ
+    organType: Appendix
   - type: Sprite
     layers:
     - state: appendix
@@ -115,6 +122,8 @@
   name: ears
   description: "There are three parts to the ear. Inner, middle and outer. Only one of these parts should normally be visible."
   components:
+  - type: Organ
+    organType: Ears
   - type: Sprite
     state: ears
 
@@ -131,6 +140,8 @@
   - type: Item
     size: Small
     heldPrefix: lungs
+  - type: Organ
+    organType: Lungs
   - type: Lung
   - type: Metabolizer
     removeEmpty: true
@@ -176,6 +187,8 @@
   - type: Item
     size: Small
     heldPrefix: heart
+  - type: Organ
+    organType: Heart
 
 - type: entity
   id: OrganHumanStomach
@@ -197,6 +210,8 @@
         reagents:
         - ReagentId: UncookedAnimalProteins
           Quantity: 5
+  - type: Organ
+    organType: Stomach
   - type: Stomach
   # The stomach metabolizes stuff like foods and drinks.
   # TODO: Have it work off of the ent's solution container, and move this
@@ -217,6 +232,8 @@
   components:
   - type: Sprite
     state: liver
+  - type: Organ
+    organType: Liver
   - type: Item
     size: Small
     heldPrefix: liver
@@ -237,6 +254,8 @@
     layers:
       - state: kidney-l
       - state: kidney-r
+  - type: Organ
+    organType: Kidneys
   - type: Item
     size: Small
     heldPrefix: kidneys

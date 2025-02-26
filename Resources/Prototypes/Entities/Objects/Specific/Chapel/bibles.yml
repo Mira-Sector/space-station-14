@@ -92,3 +92,44 @@
     icon: { sprite: Clothing/Head/Hats/witch.rsi, state: icon }
     event: !type:SummonActionEvent
     useDelay: 1
+
+- type: entity
+  name: cheesy bible
+  description: Looking at it, you can't make yourself eat it...
+  parent: [Bible, BaseCheeseFlavor]
+  id: BibleCheese
+  components:
+  - type: UseDelay
+    delay: 10.0
+  - type: Bible
+    damage:
+      groups:
+        Brute: -20
+        Burn: -20
+    damageOnFail:
+      groups:
+        Brute: 10
+        Airloss: 15
+    damageOnUntrainedUse: ## What a non-chaplain takes when attempting to heal someone
+      groups:
+        Burn: 30
+  - type: Sprite
+    sprite: Objects/Specific/Chapel/cheese-bible.rsi
+    state: icon
+  - type: Item
+    size: Small
+    sprite: Objects/Specific/Chapel/cheese-bible.rsi
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
+  - type: Tag
+    tags:
+    - Book
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 20
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 20 #If needed in-game, add the food component.

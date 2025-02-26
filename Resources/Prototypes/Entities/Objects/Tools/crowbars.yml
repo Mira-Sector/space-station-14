@@ -183,3 +183,32 @@
       - state: equipped-BELT
       - state: cover-equipped-BELT
         color: "#968000"
+
+# Cheese Crowbar
+- type: entity
+  name: cheese crowbar
+  parent: [BaseCrowbar, BaseCheeseFlavor]
+  id: CheeseCrowbar
+  description: I don't even know what to say.
+  components:
+  - type: Sprite
+    state: cheese-icon
+  - type: Item
+    storedSprite:
+      sprite: Objects/Tools/crowbar.rsi
+      state: cheese-storage
+  - type: MeleeWeapon
+    wideAnimationRotation: -135
+    damage:
+      types:
+        Blunt: 4
+    soundHit:
+      collection: FootstepBlood
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 10
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 10
+  - type: Food

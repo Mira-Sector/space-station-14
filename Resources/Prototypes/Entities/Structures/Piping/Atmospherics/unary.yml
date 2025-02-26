@@ -397,7 +397,7 @@
   - type: AtmosDevice
   - type: PipeRestrictOverlap
   - type: ApcPowerReceiver
-    powerLoad: 10000
+    powerLoad: 1000
   - type: Machine
     board: CondenserMachineCircuitBoard
   - type: WiresPanel

@@ -1,4 +1,4 @@
-﻿- type: body
+- type: body
   id: Dwarf
   name: "dwarf"
   root: torso
@@ -10,6 +10,8 @@
       organs:
         brain: OrganHumanBrain
         eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
     torso:
       part: TorsoHuman
       connections:
@@ -23,6 +25,7 @@
         stomach: OrganDwarfStomach
         liver: OrganDwarfLiver
         kidneys: OrganHumanKidneys
+        appendix: OrganHumanAppendix
     right arm:
       part: RightArmHuman
       connections:

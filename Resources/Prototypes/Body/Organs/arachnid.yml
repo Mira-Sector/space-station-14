@@ -61,6 +61,8 @@
     layers:
       - state: lung-l
       - state: lung-r
+  - type: Organ
+    organType: Lungs
   - type: Lung
   - type: Metabolizer
     updateInterval: 1.5
@@ -97,6 +99,8 @@
   - type: Item
     size: Small
     heldPrefix: heart
+  - type: Organ
+    organType: Heart
   - type: Metabolizer
     updateInterval: 1.5
     maxReagents: 2
@@ -118,6 +122,8 @@
     heldPrefix: liver
   - type: Sprite
     state: liver
+  - type: Organ
+    organType: Liver
   - type: Metabolizer # The liver metabolizes certain chemicals only, like alcohol.
     updateInterval: 1.5
     maxReagents: 1
@@ -141,6 +147,8 @@
   - type: Item
     size: Small
     heldPrefix: kidneys
+  - type: Organ
+    organType: Kidneys
   - type: Metabolizer
     updateInterval: 1.5
     maxReagents: 5
@@ -160,6 +168,8 @@
   - type: Item
     size: Small
     heldPrefix: eyeballs
+  - type: Organ
+    organType: Eyes
 
 - type: entity
   id: OrganArachnidTongue
@@ -169,3 +179,5 @@
   components:
   - type: Sprite
     state: tongue
+  - type: Organ
+    organType: Tongue
