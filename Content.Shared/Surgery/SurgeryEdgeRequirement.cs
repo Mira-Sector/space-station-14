@@ -9,9 +9,9 @@ namespace Content.Shared.Surgery;
 [Serializable, NetSerializable]
 public abstract partial class SurgeryEdgeRequirement
 {
-    public abstract SurgeryEdgeState RequirementMet(EntityUid body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui);
+    public abstract SurgeryEdgeState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui);
 
-    public abstract bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge ,EntityUid body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId);
+    public abstract bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge ,EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId);
 
     public abstract bool RequirementsMatch(SurgeryEdgeRequirement other, [NotNullWhen(true)] out SurgeryEdgeRequirement? merged);
 }

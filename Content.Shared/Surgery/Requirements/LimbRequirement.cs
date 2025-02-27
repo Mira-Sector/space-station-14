@@ -13,7 +13,7 @@ namespace Content.Shared.Surgery.Requirements;
 [Serializable, NetSerializable]
 public sealed partial class LimbRequirement : SurgeryEdgeRequirement
 {
-    public override SurgeryEdgeState RequirementMet(EntityUid body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
+    public override SurgeryEdgeState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
     {
         ui = null;
 
@@ -26,8 +26,9 @@ public sealed partial class LimbRequirement : SurgeryEdgeRequirement
             return SurgeryEdgeState.Passed;
         }
 
-        if (tool is not {} used)
+        if (tool is not {} used || body == null)
             return SurgeryEdgeState.Failed;
+
 
         var containerSys = entMan.System<SharedContainerSystem>();
         var bodySys = entMan.System<SharedBodySystem>();
@@ -35,7 +36,7 @@ public sealed partial class LimbRequirement : SurgeryEdgeRequirement
         if (!entMan.TryGetComponent<BodyPartComponent>(used, out var bodyPartComp))
             return SurgeryEdgeState.Failed;
 
-        foreach (var (bodypart, container) in bodySys.GetBodyContainers(body))
+        foreach (var (bodypart, container) in bodySys.GetBodyContainers(body.Value))
         {
             // must be empty
             if (container.ContainedEntities.Count > 0)
@@ -51,7 +52,7 @@ public sealed partial class LimbRequirement : SurgeryEdgeRequirement
         return SurgeryEdgeState.Failed;
     }
 
-    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
+    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
     {
         doAfterId = null;
         return false;

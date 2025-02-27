@@ -54,28 +54,7 @@ namespace Content.Shared.Damage
         /// </summary>
         private void DamageableInit(EntityUid uid, DamageableComponent component, ComponentInit _)
         {
-            // for the general body
-            // tracks the overall health of the mob
             InitDamageTypes(component);
-
-            if (!TryComp<BodyComponent>(uid, out var bodyComp) ||
-                !_prototypeManager.TryIndex(bodyComp.Prototype, out var bodyProto))
-            {
-                return;
-            }
-
-            foreach ((var _, var part) in bodyProto.Slots)
-            {
-                if (part.Part == null)
-                    continue;
-
-                var partId = _prototypeManager.Index(part.Part.Value);
-
-                if (!partId.TryGetComponent<DamageableComponent>(out var partDamagableComp))
-                    continue;
-
-                InitDamageTypes(partDamagableComp);
-            }
         }
 
         private void InitDamageTypes(DamageableComponent component)

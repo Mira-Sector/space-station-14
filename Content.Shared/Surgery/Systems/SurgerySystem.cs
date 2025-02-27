@@ -97,15 +97,12 @@ public sealed partial class SurgerySystem : EntitySystem
         if (args.Handled)
             return;
 
-        if (!TryComp<BodyPartComponent>(uid, out var bodyPartComp) || bodyPartComp.Body is not {} body)
-            return;
-
-        if (!PreCheck(uid))
+        if (!TryComp<BodyPartComponent>(uid, out var bodyPartComp))
             return;
 
         BodyPart bodyPart = new(bodyPartComp.PartType, bodyPartComp.Symmetry);
 
-        args.Handled = TryTraverseGraph(uid, component, body, user, used, bodyPart);
+        args.Handled = TryTraverseGraph(uid, component, bodyPartComp.Body, user, used, bodyPart);
         Dirty(uid, component);
     }
 
@@ -208,16 +205,16 @@ public sealed partial class SurgerySystem : EntitySystem
             return;
         }
 
-        if (!TryComp<BodyPartComponent>(uid, out var bodyPartComp) || bodyPartComp.Body is not {} body)
+        if (!TryComp<BodyPartComponent>(uid, out var bodyPartComp))
             return;
 
         if (args.BodyPart.Type != bodyPartComp.PartType || args.BodyPart.Side != bodyPartComp.Symmetry)
             return;
 
-        OnDoAfter(uid, body, component, args);
+        OnDoAfter(uid, bodyPartComp.Body, component, args);
     }
 
-    private void OnDoAfter(EntityUid? limb, EntityUid body, ISurgeryReciever surgeryReciever, SurgeryDoAfterEvent args)
+    private void OnDoAfter(EntityUid? limb, EntityUid? body, ISurgeryReciever surgeryReciever, SurgeryDoAfterEvent args)
     {
         if (!surgeryReciever.Graph.TryFindNode(args.TargetEdge.Connection, out var newNode))
             return;
@@ -232,7 +229,7 @@ public sealed partial class SurgerySystem : EntitySystem
         CancelDoAfters(limb ?? body, surgeryReciever);
     }
 
-    public bool TryTraverseGraph(EntityUid? limb, ISurgeryReciever surgery, EntityUid body, EntityUid user, EntityUid? used, BodyPart bodyPart)
+    public bool TryTraverseGraph(EntityUid? limb, ISurgeryReciever surgery, EntityUid? body, EntityUid user, EntityUid? used, BodyPart bodyPart)
     {
         if (surgery.CurrentNode == null)
         {
@@ -264,14 +261,19 @@ public sealed partial class SurgerySystem : EntitySystem
 
         if (ui != null)
         {
-            _ui.TryOpenUi(limb ?? body, ui, user);
+            var uiUid = limb ?? body;
+
+            if (uiUid == null)
+                return false;
+
+            _ui.TryOpenUi(uiUid.Value, ui, user);
             return true;
         }
 
         return false;
     }
 
-    public SurgeryEdgeState TryEdge(EntityUid? limb, ISurgeryReciever surgery, SurgeryEdge edge, EntityUid body, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui)
+    public SurgeryEdgeState TryEdge(EntityUid? limb, ISurgeryReciever surgery, SurgeryEdge edge, EntityUid? body, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui)
     {
         ui = null;
 
@@ -323,7 +325,7 @@ public sealed partial class SurgerySystem : EntitySystem
         return SurgeryEdgeState.Passed;
     }
 
-    private void DoNodeReachedSpecials(HashSet<SurgerySpecial>? specials, EntityUid body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
+    private void DoNodeReachedSpecials(HashSet<SurgerySpecial>? specials, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
     {
         if (specials == null)
             return;
@@ -332,7 +334,7 @@ public sealed partial class SurgerySystem : EntitySystem
             special.NodeReached(body, limb, user, used, bodyPart);
     }
 
-    private void DoNodeLeftSpecials(HashSet<SurgerySpecial>? specials, EntityUid body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
+    private void DoNodeLeftSpecials(HashSet<SurgerySpecial>? specials, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
     {
         if (specials == null)
             return;
@@ -341,7 +343,7 @@ public sealed partial class SurgerySystem : EntitySystem
             special.NodeLeft(body, limb, user, used, bodyPart);
     }
 
-    private void CancelDoAfters(EntityUid uid, ISurgeryReciever surgeryReciever)
+    private void CancelDoAfters(EntityUid? uid, ISurgeryReciever surgeryReciever)
     {
         foreach (var doAfter in surgeryReciever.DoAfters.Keys)
         {
@@ -351,10 +353,13 @@ public sealed partial class SurgerySystem : EntitySystem
             _doAfter.Cancel(doAfter);
         }
 
+        if (uid == null)
+            return;
+
         surgeryReciever.DoAfters.Clear();
 
         foreach (var ui in surgeryReciever.UserInterfaces)
-            _ui.CloseUi(uid, ui);
+            _ui.CloseUi(uid.Value, ui);
 
         surgeryReciever.UserInterfaces.Clear();
     }
