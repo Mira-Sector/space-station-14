@@ -1231,3 +1231,9 @@ Entries:
     type: Fix
   id: 181
   time: '2025-02-26T17:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Torsos and heads dead threshold now get set to the bodies overall dead threshold
+    type: Tweak
+  id: 182
+  time: '2025-02-27T04:10:00.0000000+00:00'
