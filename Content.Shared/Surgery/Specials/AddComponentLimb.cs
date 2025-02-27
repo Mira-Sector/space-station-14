@@ -12,7 +12,7 @@ public sealed partial class AddComponentLimb : SurgerySpecial
     [NonSerialized]
     public ComponentRegistry Components = new();
 
-    public override void NodeReached(EntityUid body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
+    public override void NodeReached(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
     {
         if (limb == null)
             return;
@@ -21,7 +21,7 @@ public sealed partial class AddComponentLimb : SurgerySpecial
         entMan.AddComponents(limb.Value, Components);
     }
 
-    public override void NodeLeft(EntityUid body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
+    public override void NodeLeft(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
     {
     }
 }
