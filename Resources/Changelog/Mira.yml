@@ -1237,3 +1237,9 @@ Entries:
     type: Tweak
   id: 182
   time: '2025-02-27T04:10:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Surgery can be performed on limbs that have been removed
+    type: Tweak
+  id: 183
+  time: '2025-02-27T07:40:00.0000000+00:00'
