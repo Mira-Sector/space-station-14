@@ -3,9 +3,14 @@
   supportedGroups:
     - Brute
     - Burn
-    - Toxin
     - Airloss
-    - Genetic
+  supportedTypes:
+    - Radiation
+
+- type: damageContainer
+  id: Liver
+  supportedTypes:
+    - Poison
 
 - type: damageContainer
   id: Inorganic

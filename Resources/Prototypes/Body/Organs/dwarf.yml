@@ -1,4 +1,4 @@
-﻿- type: entity
+- type: entity
   id: OrganDwarfHeart
   parent: OrganHumanHeart
   name: dwarf heart
@@ -13,6 +13,8 @@
   components:
   - type: Metabolizer
     metabolizerTypes: [Dwarf]
+  - type: Damageable
+    damageContainer: Liver
 
 - type: entity
   id: OrganDwarfStomach

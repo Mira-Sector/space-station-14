@@ -24,6 +24,8 @@
       solutions:
         stomach:
           maxVol: 30.0
+    - type: Damageable
+      damageContainer: Liver
 
 - type: entity
   id: OrganSlimesLungs

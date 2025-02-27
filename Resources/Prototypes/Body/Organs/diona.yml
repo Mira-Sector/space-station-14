@@ -102,6 +102,8 @@
   - type: Item
     size: Small
     heldPrefix: stomach
+  - type: Damageable
+    damageContainer: Liver
 
 - type: entity
   id: OrganDionaLungs
