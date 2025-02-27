@@ -26,13 +26,14 @@
   components:
   - type: BodyPart
     partType: Torso
+    vital: true
   - type: Damageable
     damageContainer: Biological
   - type: BodyPartThresholds
     thresholds:
-      0: Healthy
-      15: Damaged
-      100: Dead
+      Healthy: 0
+      Damaged: 15
+      Dead: 100
   - type: OrganReplaceable
   - type: SurgeryReciever
     availableSurgeries:
@@ -55,9 +56,9 @@
     missProb: 0.6
   - type: BodyPartThresholds
     thresholds:
-      0: Healthy
-      10: Damaged
-      75: Dead
+      Healthy: 0
+      Damaged: 10
+      Dead: 75
   - type: OrganReplaceable
   - type: SurgeryReciever
     availableSurgeries:
@@ -88,9 +89,9 @@
     missProb: 0.5
   - type: BodyPartThresholds
     thresholds:
-      0: Healthy
-      5: Damaged
-      50: Dead
+      Healthy: 0
+      Damaged: 5
+      Dead: 50
   - type: Damageable
     damageContainer: Biological
   - type: SurgeryReciever
@@ -110,9 +111,9 @@
     missProb: 0.5
   - type: BodyPartThresholds
     thresholds:
-      0: Healthy
-      5: Damaged
-      50: Dead
+      Healthy: 0
+      Damaged: 5
+      Dead: 50
   - type: Damageable
     damageContainer: Biological
   - type: SurgeryReciever
@@ -160,9 +161,9 @@
   components:
   - type: BodyPartThresholds
     thresholds:
-      0: Healthy
-      5: Damaged
-      65: Dead
+      Healthy: 0
+      Damaged: 5
+      Dead: 65
   - type: Damageable
     damageContainer: Biological
   - type: SurgeryReciever
@@ -190,9 +191,9 @@
   components:
   - type: BodyPartThresholds
     thresholds:
-      0: Healthy
-      5: Damaged
-      65: Dead
+      Healthy: 0
+      Damaged: 5
+      Dead: 65
   - type: Damageable
     damageContainer: Biological
   - type: SurgeryReciever

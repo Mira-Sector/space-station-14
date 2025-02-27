@@ -71,7 +71,7 @@ public sealed class BodySystem : SharedBodySystem
         {
             var damage = _mobThreshold.GetThresholdForState(uid, MobState.Dead, thresholds);
 
-            if (damage != FixedPoint2.MaxValue)
+            if (damage != FixedPoint2.Zero)
             {
                 EnsureBodyThreshold(uid, component, damage);
                 return;
@@ -83,6 +83,7 @@ public sealed class BodySystem : SharedBodySystem
     {
         var parts = GetBodyDamageable(uid, body);
         Dictionary<EntityUid, (FixedPoint2 MaxDamage, float Scale)> deadThresholds = new();
+        HashSet<EntityUid> vitalLimbs = new();
         var totalThreshold = FixedPoint2.Zero;
 
         foreach (var (part, _) in parts)
@@ -90,11 +91,33 @@ public sealed class BodySystem : SharedBodySystem
             if (!TryComp<BodyPartComponent>(part, out var partComp))
                 continue;
 
-            if (!TryGetLimbStateThreshold(part, WoundState.Dead, out var deadThreshold))
+            if (!TryComp<BodyPartThresholdsComponent>(part, out var thresholdsComp))
                 continue;
 
-            deadThresholds.Add(part, (deadThreshold, partComp.OverallDamageScale));
+            if (!thresholdsComp.Thresholds.TryGetValue(WoundState.Dead, out var deadThreshold))
+                continue;
+
+            if (partComp.IsVital)
+            {
+                vitalLimbs.Add(part);
+            }
+            else
+            {
+                deadThresholds.Add(part, (deadThreshold, partComp.OverallDamageScale));
+            }
+
             totalThreshold += deadThreshold * partComp.OverallDamageScale;
+        }
+
+        foreach (var part in vitalLimbs)
+        {
+            if (!TryComp<BodyPartThresholdsComponent>(part, out var thresholdsComp))
+                continue;
+
+            if (!thresholdsComp.Thresholds.ContainsKey(WoundState.Dead))
+                continue;
+
+            thresholdsComp.Thresholds[WoundState.Dead] = threshold;
         }
 
         if (totalThreshold >= threshold)
@@ -104,32 +127,16 @@ public sealed class BodySystem : SharedBodySystem
 
         foreach (var (part, (deadThreshold, scale)) in deadThresholds)
         {
-            var weight = deadThreshold * scale;
-
-            var newThreshold = (weight / damageLeft) * threshold / scale;
-
             if (!TryComp<BodyPartThresholdsComponent>(part, out var thresholdsComp))
                 continue;
 
+            var weight = deadThreshold * scale;
+            var newThreshold = (weight / damageLeft) * threshold / scale;
 
-            FixedPoint2? partDeadThreshold = null;
-
-            foreach (var (partThreshold, partState) in thresholdsComp.Thresholds)
-            {
-                if (partState != WoundState.Dead)
-                    continue;
-
-                partDeadThreshold = partThreshold;
-            }
-
-            if (partDeadThreshold == null)
-                continue;
-
-            newThreshold += partDeadThreshold.Value;
+            newThreshold += deadThreshold;
             newThreshold *= LimbMultiplier;
 
-            thresholdsComp.Thresholds.Remove(partDeadThreshold.Value);
-            thresholdsComp.Thresholds.Add(newThreshold, WoundState.Dead);
+            thresholdsComp.Thresholds[WoundState.Dead] = newThreshold;
         }
     }
 
