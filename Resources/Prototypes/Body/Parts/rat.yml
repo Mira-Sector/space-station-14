@@ -8,13 +8,14 @@
   components:
   - type: BodyPart
     partType: Torso
+    vital: true
   - type: Damageable
     damageContainer: Biological
   - type: BodyPartThresholds
     thresholds:
-      0: Healthy
-      15: Damaged
-      200: Dead
+      Healthy: 0
+      Damaged: 15
+      Dead: 200
   - type: Tag
     tags:
       - Trash

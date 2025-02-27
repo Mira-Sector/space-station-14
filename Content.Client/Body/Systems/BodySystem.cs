@@ -33,8 +33,9 @@ public sealed class BodySystem : SharedBodySystem
             if (!TryComp<DamageableComponent>(currentPart, out var damageableComp))
                 continue;
 
-            if (!TryComp<BodyPartThresholdsComponent>(currentPart, out var thresholdsComp) || !TryGetLimbStateThreshold(currentPart, DeadState, out var deadThreshold, thresholdsComp))
+            if (!TryComp<BodyPartThresholdsComponent>(currentPart, out var thresholdsComp) || !thresholdsComp.Thresholds.TryGetValue(DeadState, out var deadThreshold))
                 continue;
+
 
             var bodyPart = new BodyPart(currentPartComp.PartType, currentPartComp.Symmetry);
             var layer = BodyPartToLayer(bodyPart);

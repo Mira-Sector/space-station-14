@@ -30,14 +30,15 @@
       state: "torso_m"
     - type: BodyPart
       partType: Torso
+      vital: true
     - type: Damageable
       damageContainer: Biological
       damageModifierSet: Skeleton
     - type: BodyPartThresholds
       thresholds:
-        0: Healthy
-        15: Damaged
-        100: Dead
+        Healthy: 0
+        Damaged: 15
+        Dead: 100
 
 - type: entity
   id: HeadSkeleton
@@ -58,9 +59,9 @@
       damageModifierSet: Skeleton
     - type: BodyPartThresholds
       thresholds:
-        0: Healthy
-        10: Damaged
-        75: Dead
+        Healthy: 0
+        Damaged: 10
+        Dead: 75
     - type: Input
       context: "human"
     - type: Speech
@@ -105,9 +106,9 @@
       damageModifierSet: Skeleton
     - type: BodyPartThresholds
       thresholds:
-        0: Healthy
-        5: Damaged
-        50: Dead
+        Healthy: 0
+        Damaged: 5
+        Dead: 50
 
 - type: entity
   id: RightArmSkeleton
@@ -128,9 +129,9 @@
       damageModifierSet: Skeleton
     - type: BodyPartThresholds
       thresholds:
-        0: Healthy
-        5: Damaged
-        50: Dead
+        Healthy: 0
+        Damaged: 5
+        Dead: 50
 
 - type: entity
   id: LeftHandSkeleton
@@ -182,9 +183,9 @@
       damageModifierSet: Skeleton
     - type: BodyPartThresholds
       thresholds:
-        0: Healthy
-        5: Damaged
-        65: Dead
+        Healthy: 0
+        Damaged: 5
+        Dead: 65
 
 - type: entity
   id: RightLegSkeleton
@@ -206,9 +207,9 @@
       damageModifierSet: Skeleton
     - type: BodyPartThresholds
       thresholds:
-        0: Healthy
-        5: Damaged
-        65: Dead
+        Healthy: 0
+        Damaged: 5
+        Dead: 65
 
 - type: entity
   id: LeftFootSkeleton
