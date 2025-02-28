@@ -13,7 +13,7 @@ public sealed partial class AppendixComponent : Component
     public DamageSpecifier BurstDamage = new();
 
     [DataField]
-    public TimeSpan DamageDelay = TimeSpan.FromSeconds(2f);
+    public TimeSpan DamageDelay = TimeSpan.FromSeconds(3f);
 
     [ViewVariables, AutoNetworkedField]
     public TimeSpan NextDamage;
