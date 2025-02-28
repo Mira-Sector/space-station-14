@@ -1,6 +1,7 @@
 using Content.Shared.Atmos.Rotting;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Part;
+using Content.Shared.Examine;
 using Content.Shared.Interaction.Events;
 using Content.Shared.Medical;
 using Content.Shared.Mobs.Systems;
@@ -20,9 +21,11 @@ public sealed class HeartSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<BodyComponent, DefibrillateAttemptEvent>(OnBodyDefib);
+
         SubscribeLocalEvent<HeartComponent, UseInHandEvent>(OnHeartUseInHand);
         SubscribeLocalEvent<HeartComponent, BodyOrganRelayedEvent<DefibrillateAttemptEvent>>(OnHeartDefib);
         SubscribeLocalEvent<HeartComponent, StartedRottingEvent>(OnHeartRotting);
+        SubscribeLocalEvent<HeartComponent, ExaminedEvent>(OnHeartExamined);
     }
 
     private void OnHeartUseInHand(EntityUid uid, HeartComponent component, UseInHandEvent args)
@@ -67,5 +70,13 @@ public sealed class HeartSystem : EntitySystem
     {
         _appearance.SetData(uid, HeartVisuals.Beating, false);
         component.Beating = false;
+    }
+
+    private void OnHeartExamined(EntityUid uid, HeartComponent component, ref ExaminedEvent args)
+    {
+        if (!args.IsInDetailsRange)
+            return;
+
+        args.PushMarkup(Loc.GetString(component.Beating ? component.BeatingExamine : component.NotBeatingExamine));
     }
 }

@@ -8,6 +8,12 @@ public sealed partial class HeartComponent : Component
 {
     [DataField, AutoNetworkedField]
     public bool Beating = true;
+
+    [DataField]
+    public LocId BeatingExamine = "heart-examine-beating";
+
+    [DataField]
+    public LocId NotBeatingExamine = "heart-examine-not-beating";
 }
 
 [Serializable, NetSerializable]
