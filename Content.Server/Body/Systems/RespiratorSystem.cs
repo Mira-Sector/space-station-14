@@ -87,8 +87,6 @@ public sealed class RespiratorSystem : EntitySystem
 
             respirator.NextUpdate += ev.Delay;
 
-            Log.Debug(ev.Delay.ToString());
-
             if (_mobState.IsDead(uid))
                 continue;
 

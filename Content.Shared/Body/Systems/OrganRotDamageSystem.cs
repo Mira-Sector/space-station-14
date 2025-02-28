@@ -2,6 +2,7 @@ using Content.Shared.Atmos.Rotting;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Organ;
 using Content.Shared.Damage;
+using Content.Shared.Mobs.Systems;
 using Robust.Shared.Timing;
 
 namespace Content.Shared.Body.Systems;
@@ -9,6 +10,7 @@ namespace Content.Shared.Body.Systems;
 public sealed class OrganRotDamageSystem : EntitySystem
 {
     [Dependency] private readonly DamageableSystem _damageable = default!;
+    [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
 
     public override void Initialize()
@@ -34,6 +36,9 @@ public sealed class OrganRotDamageSystem : EntitySystem
                 return;
 
             organRotComp.NextDamage = _timing.CurTime + organRotComp.DamageDelay;
+
+            if (_mobState.IsDead(body))
+                continue;
 
             if (!organRotComp.Enabled)
                 continue;
