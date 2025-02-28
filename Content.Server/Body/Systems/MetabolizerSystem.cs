@@ -1,4 +1,5 @@
 using Content.Server.Body.Components;
+using Content.Shared.Atmos.Rotting;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Body.Organ;
@@ -24,6 +25,7 @@ namespace Content.Server.Body.Systems
         [Dependency] private readonly IRobustRandom _random = default!;
         [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
         [Dependency] private readonly MobStateSystem _mobStateSystem = default!;
+        [Dependency] private readonly SharedRottingSystem _rotting = default!;
         [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
 
         private EntityQuery<OrganComponent> _organQuery;
@@ -140,6 +142,9 @@ namespace Content.Server.Body.Systems
             {
                 return;
             }
+
+            if (_rotting.IsRotten(ent))
+                return;
 
             // randomize the reagent list so we don't have any weird quirks
             // like alphabetical order or insertion order mattering for processing

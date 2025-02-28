@@ -39,6 +39,9 @@
       heldPrefix: brain
     - type: Damageable
       damageContainer: Liver
+    - type: Perishable
+      rotAfter: 1800
+      molsPerSecondPerUnitMass: 0
 
 
 - type: entity

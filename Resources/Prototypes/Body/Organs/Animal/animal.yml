@@ -130,6 +130,9 @@
     heldPrefix: liver
   - type: Damageable
     damageContainer: Liver
+  - type: Perishable
+    rotAfter: 900
+    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganAnimalHeart

@@ -257,6 +257,9 @@
       rateModifier: 0.1 # removes alcohol very slowly along with the stomach removing it as a drink
   - type: Damageable
     damageContainer: Liver
+  - type: Perishable
+    rotAfter: 900
+    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganHumanKidneys
