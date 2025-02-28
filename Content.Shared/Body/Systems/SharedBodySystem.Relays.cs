@@ -16,8 +16,6 @@ public partial class SharedBodySystem
         SubscribeLocalEvent<BodyComponent, DownAttemptEvent>(RelayToLimbs);
         SubscribeLocalEvent<BodyComponent, DownedEvent>(RelayToLimbs);
 
-        SubscribeLocalEvent<BodyComponent, DefibrillateAttemptEvent>(RelayToOrgans);
-
         SubscribeLocalEvent<BodyPartComponent, DamageModifyEvent>(RelayToBody);
         SubscribeLocalEvent<BodyPartComponent, DamageChangedEvent>(RelayToBody);
 

@@ -11,6 +11,7 @@ using Content.Shared.Medical;
 using Content.Shared.Mobs.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
+using System.Linq;
 
 namespace Content.Shared.Body.Systems;
 
@@ -28,6 +29,7 @@ public partial class SharedBodySystem
 
         SubscribeLocalEvent<OrganComponent, IsRottingEvent>(OnOrganIsRotting);
 
+        SubscribeLocalEvent<BodyComponent, DefibrillateAttemptEvent>(OnBodyDefib);
         SubscribeLocalEvent<HeartComponent, UseInHandEvent>(OnHeartUseInHand);
         SubscribeLocalEvent<HeartComponent, BodyOrganRelayedEvent<DefibrillateAttemptEvent>>(OnHeartDefib);
         SubscribeLocalEvent<HeartComponent, StartedRottingEvent>(OnHeartRotting);
@@ -131,6 +133,19 @@ public partial class SharedBodySystem
 
         if (component.Beating)
             component.NextDamage = _timing.CurTime;
+    }
+
+
+    private void OnBodyDefib(EntityUid uid, BodyComponent component, DefibrillateAttemptEvent args)
+    {
+        if (!GetBodyOrganEntityComps<HeartComponent>((uid, component)).Any())
+        {
+            args.Cancel();
+            args.Reason = "defibrillator-heart-missing";
+            return;
+        }
+
+        RelayToOrgans(uid, component, args);
     }
 
     private void OnHeartDefib(EntityUid uid, HeartComponent component, ref BodyOrganRelayedEvent<DefibrillateAttemptEvent> args)
