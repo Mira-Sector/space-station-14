@@ -22,9 +22,12 @@ public sealed class HeartSystem : EntitySystem
 
         SubscribeLocalEvent<BodyComponent, DefibrillateAttemptEvent>(OnBodyDefib);
 
+        SubscribeLocalEvent<HeartComponent, StartedRottingEvent>(OnHeartRotting);
+        SubscribeLocalEvent<HeartComponent, RotUpdateEvent>(OnHeartRotUpdate);
+        SubscribeLocalEvent<HeartComponent, ComponentInit>(OnHeartInit);
+
         SubscribeLocalEvent<HeartComponent, UseInHandEvent>(OnHeartUseInHand);
         SubscribeLocalEvent<HeartComponent, BodyOrganRelayedEvent<DefibrillateAttemptEvent>>(OnHeartDefib);
-        SubscribeLocalEvent<HeartComponent, StartedRottingEvent>(OnHeartRotting);
         SubscribeLocalEvent<HeartComponent, ExaminedEvent>(OnHeartExamined);
     }
 
@@ -69,6 +72,16 @@ public sealed class HeartSystem : EntitySystem
     {
         _appearance.SetData(uid, HeartVisuals.Beating, false);
         component.Beating = false;
+    }
+
+    private void OnHeartRotUpdate(EntityUid uid, HeartComponent component, RotUpdateEvent args)
+    {
+        component.CurrentRespirationMutliplier = component.HealthyRespirationMultiplier + args.RotProgress * (component.DamagedRespirationMultiplier - component.HealthyRespirationMultiplier);
+    }
+
+    private void OnHeartInit(EntityUid uid, HeartComponent component, ComponentInit args)
+    {
+        component.CurrentRespirationMutliplier = component.HealthyRespirationMultiplier;
     }
 
     private void OnHeartExamined(EntityUid uid, HeartComponent component, ref ExaminedEvent args)

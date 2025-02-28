@@ -1,4 +1,5 @@
 using Robust.Shared.GameStates;
+using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
 namespace Content.Shared.Atmos.Rotting;
@@ -56,3 +57,16 @@ public sealed partial class PerishableComponent : Component
 
 [ByRefEvent]
 public record struct IsRottingEvent(bool Handled = false);
+
+[Serializable, NetSerializable]
+public sealed partial class RotUpdateEvent : EntityEventArgs
+{
+    public int Stage;
+    public float RotProgress;
+
+    public RotUpdateEvent(int stage, float rotProgress)
+    {
+        Stage = stage;
+        RotProgress = rotProgress;
+    }
+}

@@ -14,6 +14,15 @@ public sealed partial class HeartComponent : Component
 
     [DataField]
     public LocId NotBeatingExamine = "heart-examine-not-beating";
+
+    [DataField]
+    public float HealthyRespirationMultiplier = 1f;
+
+    [DataField]
+    public float DamagedRespirationMultiplier = 0.25f;
+
+    [ViewVariables, AutoNetworkedField]
+    public float CurrentRespirationMutliplier;
 }
 
 [Serializable, NetSerializable]

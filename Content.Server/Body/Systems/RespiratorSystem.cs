@@ -48,6 +48,9 @@ public sealed class RespiratorSystem : EntitySystem
         SubscribeLocalEvent<RespiratorComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<RespiratorComponent, EntityUnpausedEvent>(OnUnpaused);
         SubscribeLocalEvent<RespiratorComponent, ApplyMetabolicMultiplierEvent>(OnApplyMetabolicMultiplier);
+
+        // I dont fancy writing a server system just for this
+        SubscribeLocalEvent<HeartComponent, GetRespiratingUpdateDelay>(OnHeartRespiratingDelay);
     }
 
     private void OnMapInit(Entity<RespiratorComponent> ent, ref MapInitEvent args)
@@ -60,6 +63,11 @@ public sealed class RespiratorSystem : EntitySystem
         ent.Comp.NextUpdate += args.PausedTime;
     }
 
+    private void OnHeartRespiratingDelay(EntityUid uid, HeartComponent component, GetRespiratingUpdateDelay args)
+    {
+        args.Delay *= component.CurrentRespirationMutliplier;
+    }
+
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
@@ -70,7 +78,16 @@ public sealed class RespiratorSystem : EntitySystem
             if (_gameTiming.CurTime < respirator.NextUpdate)
                 continue;
 
-            respirator.NextUpdate += respirator.UpdateInterval;
+            var ev = new GetRespiratingUpdateDelay(respirator.UpdateInterval);
+
+            foreach (var (organ, _) in _bodySystem.GetBodyOrgans(uid, body))
+            {
+                RaiseLocalEvent(organ, ev);
+            }
+
+            respirator.NextUpdate += ev.Delay;
+
+            Log.Debug(ev.Delay.ToString());
 
             if (_mobState.IsDead(uid))
                 continue;

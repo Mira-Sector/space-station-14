@@ -81,6 +81,9 @@ public sealed class RottingSystem : SharedRottingSystem
                 Dirty(uid, perishable);
             }
 
+            var updateEv = new RotUpdateEvent(stage, GetRotProgress(uid, perishable));
+            RaiseLocalEvent(uid, updateEv);
+
             if (IsRotten(uid) || !IsRotProgressing(uid, perishable))
                 continue;
 
@@ -90,8 +93,8 @@ public sealed class RottingSystem : SharedRottingSystem
                 var rot = AddComp<RottingComponent>(uid);
                 rot.NextRotUpdate = _timing.CurTime + rot.RotUpdateRate;
 
-                var ev = new StartedRottingEvent();
-                RaiseLocalEvent(uid, ev);
+                var rotEv = new StartedRottingEvent();
+                RaiseLocalEvent(uid, rotEv);
             }
         }
 
