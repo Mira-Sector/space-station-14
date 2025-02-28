@@ -140,6 +140,9 @@
       Lung:
         maxVol: 100
         canReact: False
+  - type: Perishable
+    rotAfter: 990
+    molsPerSecondPerUnitMass: 0
 
 # Organs that turn into nymphs on removal
 - type: entity

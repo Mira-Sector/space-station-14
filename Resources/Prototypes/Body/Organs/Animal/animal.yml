@@ -64,6 +64,9 @@
   - type: Item
     size: Small
     heldPrefix: lungs
+  - type: Perishable
+    rotAfter: 990
+    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganAnimalStomach

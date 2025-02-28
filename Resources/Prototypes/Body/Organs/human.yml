@@ -172,6 +172,9 @@
         reagents:
         - ReagentId: UncookedAnimalProteins
           Quantity: 5
+  - type: Perishable
+    rotAfter: 990
+    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganHumanHeart

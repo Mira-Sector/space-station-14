@@ -125,7 +125,7 @@ public sealed class RespiratorSystem : EntitySystem
         if (!Resolve(uid, ref body, logMissing: false))
             return;
 
-        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((uid, body));
+        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((uid, body)).Where(x => !x.Comp1.Broken).ToList();
 
         // Inhale gas
         var ev = new InhaleLocationEvent();
@@ -155,7 +155,7 @@ public sealed class RespiratorSystem : EntitySystem
         if (!Resolve(uid, ref body, logMissing: false))
             return;
 
-        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((uid, body));
+        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((uid, body)).Where(x => !x.Comp1.Broken).ToList();
 
         // exhale gas
 
@@ -212,7 +212,7 @@ public sealed class RespiratorSystem : EntitySystem
         if (!Resolve(ent, ref ent.Comp))
             return false;
 
-        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((ent, null));
+        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((ent, null)).Where(x => !x.Comp1.Broken).ToList();
         if (organs.Count == 0)
             return false;
 
@@ -314,7 +314,7 @@ public sealed class RespiratorSystem : EntitySystem
             _adminLogger.Add(LogType.Asphyxiation, $"{ToPrettyString(ent):entity} stopped suffocating");
 
         // TODO: This is not going work with multiple different lungs, if that ever becomes a possibility
-        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((ent, null));
+        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((ent, null)).Where(x => !x.Comp1.Broken).ToList();
         foreach (var entity in organs)
         {
             _alertsSystem.ClearAlert(ent, entity.Comp1.Alert);
