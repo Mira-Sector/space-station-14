@@ -35,29 +35,6 @@ public partial class SharedBodySystem
         SubscribeLocalEvent<HeartComponent, StartedRottingEvent>(OnHeartRotting);
     }
 
-    private void UpdateOrgans(float frameTime)
-    {
-        var heartQuery = EntityQueryEnumerator<HeartComponent>();
-        while (heartQuery.MoveNext(out var heartUid, out var heartComp))
-        {
-            if (!heartComp.Beating)
-                continue;
-
-            if (heartComp.NextDamage > _timing.CurTime)
-                continue;
-
-            if (!TryComp<OrganComponent>(heartUid, out var organComp) || organComp.Body is not {} body)
-                continue;
-
-            if (_mobState.IsDead(body))
-                continue;
-
-            Damageable.TryChangeDamage(body, heartComp.DisabledDamage, interruptsDoAfters: false);
-
-            heartComp.NextDamage += heartComp.DisabledDamageDelay;
-        }
-    }
-
     private void OnUIOpened(EntityUid uid, OrganReplaceableComponent component, BoundUIOpenedEvent args)
     {
         UpdateUserInterface(uid, component);

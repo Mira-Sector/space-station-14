@@ -1,4 +1,3 @@
-using Content.Shared.Damage;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
 
@@ -9,15 +8,6 @@ public sealed partial class HeartComponent : Component
 {
     [DataField, AutoNetworkedField]
     public bool Beating = true;
-
-    [DataField]
-    public DamageSpecifier DisabledDamage = new();
-
-    [DataField]
-    public TimeSpan DisabledDamageDelay = TimeSpan.FromSeconds(2.5f);
-
-    [ViewVariables, AutoNetworkedField]
-    public TimeSpan NextDamage;
 }
 
 [Serializable, NetSerializable]

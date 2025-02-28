@@ -47,13 +47,6 @@ public abstract partial class SharedBodySystem : EntitySystem
         InitializeRelays();
     }
 
-    public override void Update(float frameTime)
-    {
-        base.Update(frameTime);
-
-        UpdateOrgans(frameTime);
-    }
-
     /// <summary>
     /// Inverse of <see cref="GetPartSlotContainerId"/>
     /// </summary>

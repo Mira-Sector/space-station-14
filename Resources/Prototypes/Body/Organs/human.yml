@@ -193,9 +193,6 @@
     - id: Poison
     - id: Narcotic
   - type: Heart
-    disabledDamage:
-      types:
-        Asphyxiation: 2
   - type: Perishable
     rotAfter: 360
     molsPerSecondPerUnitMass: 0
