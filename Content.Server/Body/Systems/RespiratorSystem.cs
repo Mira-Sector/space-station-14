@@ -18,6 +18,7 @@ using Content.Shared.Mobs.Systems;
 using JetBrains.Annotations;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
+using System.Linq;
 
 namespace Content.Server.Body.Systems;
 
@@ -104,8 +105,18 @@ public sealed class RespiratorSystem : EntitySystem
                 continue;
             }
 
-            StopSuffocation((uid, respirator));
-            respirator.SuffocationCycles = 0;
+            if (_bodySystem.TryGetBodyOrganEntityComps<HeartComponent>((uid, body), out var hearts) && hearts.Any(x => x.Comp1.Beating))
+            {
+                StopSuffocation((uid, respirator));
+                respirator.SuffocationCycles = 0;
+                continue;
+            }
+
+            // purpusfully not gasping
+            // your lungs are full but the heart are doing fuck all
+            TakeSuffocationDamage((uid, respirator));
+            respirator.SuffocationCycles += 1;
+            continue;
         }
     }
 
