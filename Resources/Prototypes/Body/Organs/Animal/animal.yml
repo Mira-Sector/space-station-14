@@ -139,6 +139,13 @@
   components:
   - type: Sprite
     state: heart-on
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.HeartVisuals.Beating:
+        enum.HeartVisualLayers.Beating:
+          True: { state: heart-on }
+          False: { state: heart-off }
   - type: Organ
     organType: Heart
   - type: Metabolizer
@@ -148,6 +155,13 @@
     - id: Medicine
     - id: Poison
     - id: Narcotic
+  - type: Heart
+    disabledDamage:
+      types:
+        Asphyxiation: 2
+  - type: Perishable
+    rotAfter: 360
+    molsPerSecondPerUnitMass: 0
   - type: Item
     size: Small
     heldPrefix: heart

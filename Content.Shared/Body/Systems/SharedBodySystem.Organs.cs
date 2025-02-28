@@ -1,10 +1,14 @@
 using System.Diagnostics.CodeAnalysis;
+using Content.Shared.Atmos.Rotting;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Events;
 using Content.Shared.Body.Organ;
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Prototypes;
 using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Interaction.Events;
+using Content.Shared.Medical;
+using Content.Shared.Mobs.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
 
@@ -13,12 +17,43 @@ namespace Content.Shared.Body.Systems;
 public partial class SharedBodySystem
 {
     [Dependency] private readonly SharedHandsSystem _hands = default!;
+    [Dependency] private readonly MobStateSystem _mobState = default!;
+    [Dependency] private readonly SharedRottingSystem _rotting = default!;
     [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
 
     private void InitializeOrgans()
     {
         SubscribeLocalEvent<OrganReplaceableComponent, BoundUIOpenedEvent>(OnUIOpened);
         SubscribeLocalEvent<OrganReplaceableComponent, OrganSelectionButtonPressedMessage>(OnOrganButton);
+
+        SubscribeLocalEvent<OrganComponent, IsRottingEvent>(OnOrganIsRotting);
+
+        SubscribeLocalEvent<HeartComponent, UseInHandEvent>(OnHeartUseInHand);
+        SubscribeLocalEvent<HeartComponent, BodyOrganRelayedEvent<DefibrillateAttemptEvent>>(OnHeartDefib);
+        SubscribeLocalEvent<HeartComponent, StartedRottingEvent>(OnHeartRotting);
+    }
+
+    private void UpdateOrgans(float frameTime)
+    {
+        var heartQuery = EntityQueryEnumerator<HeartComponent>();
+        while (heartQuery.MoveNext(out var heartUid, out var heartComp))
+        {
+            if (!heartComp.Beating)
+                continue;
+
+            if (heartComp.NextDamage > _timing.CurTime)
+                continue;
+
+            if (!TryComp<OrganComponent>(heartUid, out var organComp) || organComp.Body is not {} body)
+                continue;
+
+            if (_mobState.IsDead(body))
+                continue;
+
+            Damageable.TryChangeDamage(body, heartComp.DisabledDamage, interruptsDoAfters: false);
+
+            heartComp.NextDamage += heartComp.DisabledDamageDelay;
+        }
     }
 
     private void OnUIOpened(EntityUid uid, OrganReplaceableComponent component, BoundUIOpenedEvent args)
@@ -77,12 +112,53 @@ public partial class SharedBodySystem
         _ui.SetUiState(uid, OrganSelectionUiKey.Key, new OrganSelectionBoundUserInterfaceState(organs));
     }
 
+    private void OnOrganIsRotting(EntityUid uid, OrganComponent component, ref IsRottingEvent args)
+    {
+        args.Handled = component.Body != null;
+    }
+
+    private void OnHeartUseInHand(EntityUid uid, HeartComponent component, UseInHandEvent args)
+    {
+        if (args.Handled)
+            return;
+
+        if (_rotting.IsRotten(uid))
+            return;
+
+        component.Beating ^= true;
+        _appearance.SetData(uid, HeartVisuals.Beating, component.Beating);
+        args.Handled = true;
+
+        if (component.Beating)
+            component.NextDamage = _timing.CurTime;
+    }
+
+    private void OnHeartDefib(EntityUid uid, HeartComponent component, ref BodyOrganRelayedEvent<DefibrillateAttemptEvent> args)
+    {
+        if (args.Args.Cancelled)
+            return;
+
+        if (component.Beating)
+            return;
+
+        args.Args.Cancel();
+        args.Args.Reason = "defibrillator-heart-off";
+    }
+
+    private void OnHeartRotting(EntityUid uid, HeartComponent component, StartedRottingEvent args)
+    {
+        _appearance.SetData(uid, HeartVisuals.Beating, false);
+        component.Beating = false;
+        component.NextDamage = _timing.CurTime;
+    }
+
     private void AddOrgan(
         Entity<OrganComponent> organEnt,
         EntityUid bodyUid,
         EntityUid parentPartUid)
     {
         organEnt.Comp.Body = bodyUid;
+        organEnt.Comp.BodyPart = parentPartUid;
         var addedEv = new OrganAddedEvent(parentPartUid);
         RaiseLocalEvent(organEnt, ref addedEv);
 
@@ -107,6 +183,7 @@ public partial class SharedBodySystem
         }
 
         organEnt.Comp.Body = null;
+        organEnt.Comp.BodyPart = null;
         Dirty(organEnt, organEnt.Comp);
     }
 
@@ -164,6 +241,9 @@ public partial class SharedBodySystem
             return false;
         }
 
+        organ.BodyPart = partId;
+        Dirty(organId, organ);
+
         var containerId = GetOrganContainerId(slotId);
 
         return Containers.TryGetContainer(partId, containerId, out var container)
@@ -175,10 +255,15 @@ public partial class SharedBodySystem
     /// </summary>
     public bool RemoveOrgan(EntityUid organId, OrganComponent? organ = null)
     {
+        if (!Resolve(organId, ref organ))
+            return false;
+
         if (!Containers.TryGetContainingContainer((organId, null, null), out var container))
             return false;
 
         var parent = container.Owner;
+        organ.BodyPart = null;
+        Dirty(organId, organ);
 
         return HasComp<BodyPartComponent>(parent)
             && Containers.Remove(organId, container);

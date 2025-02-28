@@ -24,6 +24,13 @@
       solutions:
         stomach:
           maxVol: 30.0
+    - type: Heart
+      disabledDamage:
+        types:
+          Asphyxiation: 2
+    - type: Perishable
+      rotAfter: 360
+      molsPerSecondPerUnitMass: 0
     - type: Damageable
       damageContainer: Liver
 

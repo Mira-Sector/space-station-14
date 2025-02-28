@@ -89,6 +89,9 @@ public sealed class RottingSystem : SharedRottingSystem
             {
                 var rot = AddComp<RottingComponent>(uid);
                 rot.NextRotUpdate = _timing.CurTime + rot.RotUpdateRate;
+
+                var ev = new StartedRottingEvent();
+                RaiseLocalEvent(uid, ev);
             }
         }
 

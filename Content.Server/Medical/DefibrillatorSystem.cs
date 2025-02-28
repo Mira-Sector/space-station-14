@@ -94,15 +94,14 @@ public sealed class DefibrillatorSystem : EntitySystem
     /// <returns>
     ///     Returns true if the target is valid to be defibed, false otherwise.
     /// </returns>
-    public bool CanZap(EntityUid uid, EntityUid target, EntityUid? user = null, DefibrillatorComponent? component = null, bool targetCanBeAlive = false)
+    public bool CanZap(EntityUid uid, EntityUid target, EntityUid user, DefibrillatorComponent? component = null, bool targetCanBeAlive = false)
     {
         if (!Resolve(uid, ref component))
             return false;
 
         if (!_toggle.IsActivated(uid))
         {
-            if (user != null)
-                _popup.PopupEntity(Loc.GetString("defibrillator-not-on"), uid, user.Value);
+            _popup.PopupEntity(Loc.GetString("defibrillator-not-on"), uid, user);
             return false;
         }
 
@@ -120,6 +119,15 @@ public sealed class DefibrillatorSystem : EntitySystem
 
         if (!targetCanBeAlive && !component.CanDefibCrit && _mobState.IsCritical(target, mobState))
             return false;
+
+        var ev = new DefibrillateAttemptEvent(user, uid, target);
+        RaiseLocalEvent(target, ev);
+
+        if (ev.Cancelled)
+        {
+            _popup.PopupEntity(Loc.GetString(ev.Reason), uid, user);
+            return false;
+        }
 
         return true;
     }
