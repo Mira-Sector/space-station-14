@@ -21,7 +21,7 @@ public partial class SharedBodySystem
 
     }
 
-    private void RelayToBody<T>(EntityUid uid, BodyPartComponent component, T args) where T : class
+    public void RelayToBody<T>(EntityUid uid, BodyPartComponent component, T args) where T : class
     {
         if (component.Body == null)
             return;
@@ -30,7 +30,7 @@ public partial class SharedBodySystem
         RaiseLocalEvent(component.Body.Value, ref ev);
     }
 
-    private void RelayRefToBody<T>(EntityUid uid, BodyPartComponent component, ref T args) where T : struct
+    public void RelayRefToBody<T>(EntityUid uid, BodyPartComponent component, ref T args) where T : struct
     {
         if (component.Body == null)
             return;
@@ -39,7 +39,7 @@ public partial class SharedBodySystem
         RaiseLocalEvent(component.Body.Value, ref ev);
     }
 
-    private void RelayToLimbs<T>(EntityUid uid, BodyComponent component, T args) where T : class
+    public void RelayToLimbs<T>(EntityUid uid, BodyComponent component, T args) where T : class
     {
         var ev = new BodyLimbRelayedEvent<T>(args, uid);
 
@@ -49,7 +49,7 @@ public partial class SharedBodySystem
         }
     }
 
-    private void RelayRefToLimbs<T>(EntityUid uid, BodyComponent component, ref T args) where T : struct
+    public void RelayRefToLimbs<T>(EntityUid uid, BodyComponent component, ref T args) where T : struct
     {
         var ev = new BodyLimbRelayedEvent<T>(args, uid);
 
@@ -59,7 +59,7 @@ public partial class SharedBodySystem
         }
     }
 
-    private void RelayToOrgans<T>(EntityUid uid, BodyComponent component, T args) where T : class
+    public void RelayToOrgans<T>(EntityUid uid, BodyComponent component, T args) where T : class
     {
         var ev = new BodyOrganRelayedEvent<T>(args, uid);
 
@@ -69,7 +69,7 @@ public partial class SharedBodySystem
         }
     }
 
-    private void RelayToOrgans<T>(EntityUid uid, BodyComponent component, ref T args) where T : struct
+    public void RelayToOrgans<T>(EntityUid uid, BodyComponent component, ref T args) where T : struct
     {
         var ev = new BodyOrganRelayedEvent<T>(args, uid);
 
@@ -79,7 +79,7 @@ public partial class SharedBodySystem
         }
     }
 
-    private void RelayRefToOrgans<T>(EntityUid uid, BodyPartComponent component, T args) where T : class
+    public void RelayRefToOrgans<T>(EntityUid uid, BodyPartComponent component, T args) where T : class
     {
         var ev = new LimbOrganRelayedEvent<T>(args, uid);
 
@@ -89,7 +89,7 @@ public partial class SharedBodySystem
         }
     }
 
-    private void RelayRefToOrgans<T>(EntityUid uid, BodyPartComponent component, ref T args) where T : struct
+    public void RelayRefToOrgans<T>(EntityUid uid, BodyPartComponent component, ref T args) where T : struct
     {
         var ev = new LimbOrganRelayedEvent<T>(args, uid);
 
@@ -99,7 +99,7 @@ public partial class SharedBodySystem
         }
     }
 
-    private void RelayToLimb<T>(EntityUid uid, OrganComponent component, T args) where T : class
+    public void RelayToLimb<T>(EntityUid uid, OrganComponent component, T args) where T : class
     {
         if (component.BodyPart is not {} bodyPart)
             return;
@@ -109,7 +109,7 @@ public partial class SharedBodySystem
         RaiseLocalEvent(bodyPart, ref ev);
     }
 
-    private void RelayRefToLimb<T>(EntityUid uid, OrganComponent component, ref T args) where T : struct
+    public void RelayRefToLimb<T>(EntityUid uid, OrganComponent component, ref T args) where T : struct
     {
         if (component.BodyPart is not {} bodyPart)
             return;
