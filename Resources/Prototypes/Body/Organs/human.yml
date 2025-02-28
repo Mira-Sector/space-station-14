@@ -119,6 +119,9 @@
     burstDamage:
       types:
         Poison: 3.5
+  - type: Perishable
+    rotAfter: 900
+    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganHumanEars
