@@ -41,7 +41,6 @@ public sealed class HeartSystem : EntitySystem
         args.Handled = true;
     }
 
-
     private void OnBodyDefib(EntityUid uid, BodyComponent component, DefibrillateAttemptEvent args)
     {
         if (!_body.GetBodyOrganEntityComps<HeartComponent>((uid, component)).Any())

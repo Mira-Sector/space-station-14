@@ -115,6 +115,10 @@
     - state: appendix
     - state: appendix-inflamed
       visible: false
+  - type: Appendix
+    burstDamage:
+      types:
+        Poison: 3.5
 
 - type: entity
   id: OrganHumanEars
