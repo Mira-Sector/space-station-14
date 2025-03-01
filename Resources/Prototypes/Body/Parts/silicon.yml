@@ -35,6 +35,9 @@
   - type: BodyPart
     partType: Arm
     symmetry: Left
+  - type: SurgeryReciever
+    availableSurgeries:
+    - ProstheticsAmputation
   - type: Sprite
     state: borg_l_arm
   - type: Icon
@@ -55,6 +58,9 @@
   - type: BodyPart
     partType: Arm
     symmetry: Right
+  - type: SurgeryReciever
+    availableSurgeries:
+    - ProstheticsAmputation
   - type: Sprite
     state: borg_r_arm
   - type: Icon
@@ -75,6 +81,9 @@
   - type: BodyPart
     partType: Leg
     symmetry: Left
+  - type: SurgeryReciever
+    availableSurgeries:
+     - ProstheticsAmputation
   - type: Sprite
     state: borg_l_leg
   - type: Icon
@@ -95,6 +104,9 @@
   - type: BodyPart
     partType: Leg
     symmetry: Right
+  - type: SurgeryReciever
+    availableSurgeries:
+    - ProstheticsAmputation
   - type: Sprite
     state: borg_r_leg
   - type: Icon
@@ -114,6 +126,9 @@
   components:
   - type: BodyPart
     partType: Head
+  - type: SurgeryReciever
+    availableSurgeries:
+     - ProstheticsAmputation
   - type: Sprite
     state: borg_head
   - type: Icon
