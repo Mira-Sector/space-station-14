@@ -8,7 +8,7 @@
   - type: Icon
     sprite: Objects/Specific/Robotics/cyborg_parts.rsi
   - type: Damageable
-    damageContainer: Inorganic
+    damageContainer: Silicon
   - type: BodyPart
   - type: ContainerContainer
     containers:
@@ -33,7 +33,7 @@
   name: cyborg left arm
   components:
   - type: BodyPart
-    partType: Hand
+    partType: Arm
     symmetry: Left
   - type: Sprite
     state: borg_l_arm
@@ -53,7 +53,7 @@
   name: cyborg right arm
   components:
   - type: BodyPart
-    partType: Hand
+    partType: Arm
     symmetry: Right
   - type: Sprite
     state: borg_r_arm
