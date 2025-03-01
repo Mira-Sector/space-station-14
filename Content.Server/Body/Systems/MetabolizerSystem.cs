@@ -89,7 +89,7 @@ namespace Content.Server.Body.Systems
 
         private void OnRotUpdate(Entity<MetabolizerRotComponent> ent, ref RotUpdateEvent args)
         {
-            ent.Comp.Currentutliplier = ent.Comp.HealthyMultiplier + args.RotProgress * (ent.Comp.DamagedMultiplier - ent.Comp.HealthyMultiplier);
+            ent.Comp.CurrentMutliplier = ent.Comp.HealthyMultiplier + args.RotProgress * (ent.Comp.DamagedMultiplier - ent.Comp.HealthyMultiplier);
 
             if (!ent.Comp.DisabledOnRot)
                 return;
@@ -107,7 +107,7 @@ namespace Content.Server.Body.Systems
 
         private void OnRotUpdateDelay(Entity<MetabolizerRotComponent> ent, ref GetMetabolizingUpdateDelay args)
         {
-            args.Delay *= ent.Comp.Currentutliplier;
+            args.Delay *= ent.Comp.CurrentMutliplier;
 
             if (!ent.Comp.Enabled)
                 args.Cancel();

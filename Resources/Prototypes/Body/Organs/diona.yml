@@ -149,6 +149,8 @@
   - type: Perishable
     rotAfter: 990
     molsPerSecondPerUnitMass: 0
+  - type: CoughOnRespire
+  - type: CoughRotChangeModify
 
 # Organs that turn into nymphs on removal
 - type: entity

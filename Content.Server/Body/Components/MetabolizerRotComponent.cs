@@ -10,7 +10,7 @@ public sealed partial class MetabolizerRotComponent : Component
     public float DamagedMultiplier = 2.25f;
 
     [ViewVariables]
-    public float Currentutliplier;
+    public float CurrentMutliplier;
 
     [DataField]
     public bool DisabledOnRot = true;

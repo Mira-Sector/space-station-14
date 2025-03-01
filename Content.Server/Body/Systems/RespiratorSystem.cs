@@ -153,6 +153,8 @@ public sealed class RespiratorSystem : EntitySystem
             return;
         }
 
+        var inhaleEv = new InhaledEvent();
+
         var actualGas = ev.Gas.RemoveVolume(Atmospherics.BreathVolume);
 
         var lungRatio = 1.0f / organs.Count;
@@ -162,6 +164,8 @@ public sealed class RespiratorSystem : EntitySystem
             // Merge doesn't remove gas from the giver.
             _atmosSys.Merge(lung.Air, gas);
             _lungSystem.GasToReagent(organUid, lung);
+
+            RaiseLocalEvent(organUid, ref inhaleEv);
         }
     }
 
@@ -186,6 +190,8 @@ public sealed class RespiratorSystem : EntitySystem
             ev.Gas ??= GasMixture.SpaceGas;
         }
 
+        var exhaleEv = new ExhaledEvent();
+
         var outGas = new GasMixture(ev.Gas.Volume);
         foreach (var (organUid, lung, _) in organs)
         {
@@ -194,6 +200,8 @@ public sealed class RespiratorSystem : EntitySystem
 
             if (_solutionContainerSystem.ResolveSolution(organUid, lung.SolutionName, ref lung.Solution))
                 _solutionContainerSystem.RemoveAllSolution(lung.Solution.Value);
+
+            RaiseLocalEvent(organUid, ref exhaleEv);
         }
 
         _atmosSys.Merge(ev.Gas, outGas);
@@ -378,3 +386,9 @@ public record struct InhaleLocationEvent(GasMixture? Gas);
 
 [ByRefEvent]
 public record struct ExhaleLocationEvent(GasMixture? Gas);
+
+[ByRefEvent]
+public record struct InhaledEvent();
+
+[ByRefEvent]
+public record struct ExhaledEvent();
