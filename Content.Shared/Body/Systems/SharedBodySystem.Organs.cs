@@ -6,6 +6,7 @@ using Content.Shared.Body.Organ;
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Prototypes;
 using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Mobs.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
 
@@ -13,6 +14,7 @@ namespace Content.Shared.Body.Systems;
 
 public partial class SharedBodySystem
 {
+    [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
     [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
 
@@ -82,7 +84,7 @@ public partial class SharedBodySystem
 
     private void OnOrganIsRotting(EntityUid uid, OrganComponent component, ref IsRottingEvent args)
     {
-        args.Handled = component.Body != null;
+        args.Handled = component.Body is {} body && _mobState.IsAlive(body);
     }
 
     private void AddOrgan(
