@@ -1243,3 +1243,23 @@ Entries:
     type: Tweak
   id: 183
   time: '2025-02-27T07:40:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Organs now rot when not in an alive body or cold
+    type: Add
+  - message: Rotting lungs cause you to cough more often and collapse when fully rotten
+    type: Add
+  - message: Hearts beating can be toggled in hands causing gasping
+    type: Add
+  - message: Hearts stop beating when rotten
+    type: Add
+  - message: Poison damage on a body is now contained on the liver
+    type: Tweak
+  - message: As a liver rots it deals more poison damage and slows down metabolizing
+    type: Add
+  - message: As an appendix rots it deals poison damage
+    type: Add
+  - message: A rotting stomach causes an increasing probability of vomiting
+    type: Add
+  id: 184
+  time: '2025-03-01T13:50:00.0000000+00:00'
