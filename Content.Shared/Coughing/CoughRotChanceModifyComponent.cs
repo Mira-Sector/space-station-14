@@ -15,7 +15,7 @@ public sealed partial class CoughRotChangeModifyComponent : Component
     public float HealthyMultiplier = 0.5f;
 
     [DataField]
-    public float DamagedMultiplier = 2.5f;
+    public float DamagedMultiplier = 3.5f;
 
     [ViewVariables, AutoNetworkedField]
     public float CurrentMutliplier;

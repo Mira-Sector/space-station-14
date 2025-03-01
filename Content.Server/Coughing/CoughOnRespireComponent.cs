@@ -4,5 +4,5 @@ namespace Content.Server.Coughing;
 public sealed partial class CoughOnRespireComponent : Component
 {
     [DataField]
-    public float Chance = 0.2f;
+    public float Chance = 0.05f;
 }
