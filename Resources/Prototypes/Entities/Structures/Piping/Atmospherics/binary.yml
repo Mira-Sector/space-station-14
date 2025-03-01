@@ -224,6 +224,12 @@
   placement:
     mode: SnapgridCenter
   components:
+    - type: NodeContainer
+      nodes:
+        pipe:
+          !type:PipeNode
+          nodeGroupID: Pipe
+          pipeDirection: Longitudinal
     - type: Sprite
       sprite: Structures/Piping/Atmospherics/trap.rsi
       layers:
@@ -235,18 +241,6 @@
     - type: Appearance
     - type: PipeColorVisuals
     - type: PipeCrawlingPipeBlock
-    - type: NodeContainer
-      nodes:
-        inlet:
-          !type:PipeNode
-          nodeGroupID: Pipe
-          pipeDirection: North
-          volume: 100
-        outlet:
-          !type:PipeNode
-          nodeGroupID: Pipe
-          pipeDirection: South
-          volume: 100
     - type: Construction
       graph: GasBinary
       node: valve

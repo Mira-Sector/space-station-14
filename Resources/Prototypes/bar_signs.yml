@@ -181,3 +181,11 @@
     sprite: Structures/Wallmounts/barsign.rsi
     state: spacebucks
   description: barsign-prototype-description-spacebucks
+
+- type: barSign
+  id: CentralStop
+  name: barsign-prototype-name-centralstop
+  icon:
+    sprite: Structures/Wallmounts/barsign.rsi
+    state: centralstop
+  description: barsign-prototype-description-centralstop

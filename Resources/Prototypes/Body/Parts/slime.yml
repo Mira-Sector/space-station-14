@@ -122,9 +122,9 @@
   components:
   - type: BodyPartThresholds
     thresholds:
-      0: Healthy
-      5: Damaged
-      65: Dead
+      Healthy: 0
+      Damaged: 5
+      Dead: 65
   - type: MovementBodyPart
     walkSpeed: 2
     sprintSpeed: 4
@@ -146,9 +146,9 @@
   components:
   - type: BodyPartThresholds
     thresholds:
-      0: Healthy
-      5: Damaged
-      65: Dead
+      Healthy: 0
+      Damaged: 5
+      Dead: 65
   - type: MovementBodyPart
     walkSpeed: 3
     sprintSpeed: 5 # +.5 from normal movement speed

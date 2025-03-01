@@ -1,0 +1,41 @@
+- type: surgery
+  id: OrganManipulation
+  startingNode: Start
+  nodes:
+  - id: Start
+    edges:
+    - connection: Scalpel1
+      requirement: !type:ToolRequirement
+        qualities:
+        - Slicing
+  - id: Scalpel1
+    edges:
+    - connection: Retractor
+      requirement: !type:ToolRequirement
+        qualities:
+        - Retracting
+  - id: Retractor
+    edges:
+    - connection: Saw
+      requirement: !type:ToolRequirement
+        qualities:
+        - Sawing
+  - id: Saw
+    edges:
+    - connection: Hemostat1
+      requirement: !type:ToolRequirement
+        qualities:
+        - Clamping
+  - id: Hemostat1
+    edges:
+    - connection: Scalpel2
+      requirement: !type:ToolRequirement
+        qualities:
+        - Slicing
+  - id: Scalpel2
+    edges:
+    - requirement: !type:OrganRequirement
+    - connection: Start
+      requirement: !type:ToolRequirement
+        qualities:
+        - Slicing

@@ -15,6 +15,7 @@
         liver: OrganAnimalLiver
         heart: OrganAnimalHeart
         kidneys: OrganAnimalKidneys
+        appendix: OrganHumanAppendix
     hands:
       part: HandsAnimal
     left leg:

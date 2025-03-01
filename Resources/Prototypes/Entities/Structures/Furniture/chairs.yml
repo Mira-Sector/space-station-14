@@ -406,10 +406,18 @@
 - type: entity
   name: cheese chair
   id: ChairCheese
-  parent: UnanchoredChairBase
+  parent: [UnanchoredChairBase, BaseCheeseFlavor]
   components:
   - type: Sprite
     state: chair-cheese
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 22.5
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 22.5
+  - type: Food
   - type: Damageable
     damageModifierSet: Wood
   - type: Destructible
@@ -422,7 +430,7 @@
         acts: [ "Destruction" ]
       - !type:PlaySoundBehavior
         sound:
-          collection: WoodDestroy
+          path: /Audio/Weapons/Xeno/alien_claw_flesh3.ogg
       - !type:SpawnEntitiesBehavior
         spawn:
           FoodCheeseSlice:

@@ -57,9 +57,9 @@
     - state: l_leg
   - type: BodyPartThresholds
     thresholds:
-      0: Healthy
-      5: Damaged
-      65: Dead
+      Healthy: 0
+      Damaged: 5
+      Dead: 65
 
 - type: entity
   id: RightLegAnimal
@@ -72,9 +72,9 @@
     - state: r_leg
   - type: BodyPartThresholds
     thresholds:
-      0: Healthy
-      5: Damaged
-      65: Dead
+      Healthy: 0
+      Damaged: 5
+      Dead: 65
 
 - type: entity
   id: FeetAnimal
@@ -100,13 +100,14 @@
     - state: torso_m
   - type: BodyPart
     partType: Torso
+    vital: true
   - type: Damageable
     damageContainer: Biological
   - type: BodyPartThresholds
     thresholds:
-      0: Healthy
-      15: Damaged
-      100: Dead
+      Healthy: 0
+      Damaged: 15
+      Dead: 100
   - type: Extractable
     juiceSolution:
       reagents:

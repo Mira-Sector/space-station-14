@@ -1,0 +1,29 @@
+<PanelContainer xmlns="https://spacestation14.io"
+                MinHeight="64"
+                HorizontalExpand="True">
+    <BoxContainer Orientation="Vertical"
+        VerticalExpand="True"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Margin="4">
+        <BoxContainer>
+            <Label Name="OrganType" Access="Public" Align="Center" HorizontalExpand="True"/>
+        </BoxContainer>
+        <Button Name="OrganButton" Access="Public" StyleClasses="OpenBoth">
+            <BoxContainer
+                Orientation="Vertical"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <TextureRect
+                Name="Icon"
+                Access="Public"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                TextureScale="2.5 2.5"/>
+                <BoxContainer Margin="4">
+                    <Label Name="OrganName" Access="Public" Align="Center" HorizontalExpand="True"/>
+                </BoxContainer>
+            </BoxContainer>
+        </Button>
+    </BoxContainer>
+</PanelContainer>
