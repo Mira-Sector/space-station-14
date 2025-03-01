@@ -113,6 +113,7 @@
   - type: Perishable
     rotAfter: 900
     molsPerSecondPerUnitMass: 0
+  - type: VomitOnRot
 
 - type: entity
   id: OrganDionaLungs

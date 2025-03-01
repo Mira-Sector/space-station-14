@@ -248,6 +248,10 @@
     groups:
     - id: Food
     - id: Drink
+  - type: VomitOnRot
+  - type: Perishable
+    rotAfter: 780
+    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganHumanLiver
