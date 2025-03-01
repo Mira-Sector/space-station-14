@@ -15,6 +15,9 @@ public sealed partial class OrganComponent : Component
     [DataField, AutoNetworkedField]
     public EntityUid? Body;
 
+    [DataField, AutoNetworkedField]
+    public EntityUid? BodyPart;
+
     [DataField(required: true), AutoNetworkedField]
     public ProtoId<OrganPrototype> OrganType;
 }

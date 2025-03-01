@@ -17,6 +17,9 @@ public sealed partial class LungComponent : Component
         Temperature = Atmospherics.NormalBodyTemperature
     };
 
+    [DataField]
+    public bool Broken = false;
+
     /// <summary>
     /// The name/key of the solution on this entity which these lungs act on.
     /// </summary>

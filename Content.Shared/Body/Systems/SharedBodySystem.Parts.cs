@@ -144,6 +144,11 @@ public partial class SharedBodySystem
                 AddPart(bodyEnt, (contained, containedPart), GetPartSlotContainerId(containerId));
             }
         }
+
+        foreach (var (organUid, organComp) in GetPartOrgans(partEnt))
+        {
+            organComp.Body = bodyEnt;
+        }
     }
 
     protected virtual void RemovePart(
@@ -173,6 +178,11 @@ public partial class SharedBodySystem
 
                 RemovePart(bodyEnt, (contained, containedPart), GetPartSlotContainerId(containerId));
             }
+        }
+
+        foreach (var (organUid, organComp) in GetPartOrgans(partEnt))
+        {
+            organComp.Body = null;
         }
     }
 

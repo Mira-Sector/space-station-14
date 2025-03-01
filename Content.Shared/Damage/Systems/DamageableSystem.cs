@@ -241,15 +241,14 @@ namespace Content.Shared.Damage
 
             foreach (var (part, damageable) in parts)
             {
-                if (!TryComp<BodyPartComponent>(part, out var partComp))
-                    continue;
+                BodyPartType? partType = TryComp<BodyPartComponent>(part, out var partComp) ? partComp.PartType : null;
 
                 var limbDamage = damage;
 
                 if (splitLimbDamage)
                     limbDamage = damagePerPart;
 
-                var newDamage = ChangeDamage(part, limbDamage, damageable, ignoreResistances, interruptsDoAfters, origin, partComp.PartType, uid.Value);
+                var newDamage = ChangeDamage(part, limbDamage, damageable, ignoreResistances, interruptsDoAfters, origin, partType, uid.Value);
 
                 if (newDamage == null)
                     continue;

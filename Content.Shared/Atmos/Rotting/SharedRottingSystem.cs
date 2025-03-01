@@ -1,4 +1,4 @@
-﻿using Content.Shared.Examine;
+using Content.Shared.Examine;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
@@ -171,5 +171,16 @@ public abstract class SharedRottingSystem : EntitySystem
             return 0;
 
         return (int) (comp.TotalRotTime.TotalSeconds / perishable.RotAfter.TotalSeconds);
+    }
+
+    public float GetRotProgress(EntityUid uid, PerishableComponent? component = null)
+    {
+        if (!Resolve(uid, ref component, false))
+            return 0f;
+
+        if (HasComp<RottingComponent>(uid))
+            return 1f;
+
+        return (float) (component.RotAccumulator.TotalSeconds / component.RotAfter.TotalSeconds);
     }
 }

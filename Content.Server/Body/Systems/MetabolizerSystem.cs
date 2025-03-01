@@ -1,4 +1,5 @@
 using Content.Server.Body.Components;
+using Content.Shared.Atmos.Rotting;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Body.Organ;
@@ -24,6 +25,7 @@ namespace Content.Server.Body.Systems
         [Dependency] private readonly IRobustRandom _random = default!;
         [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
         [Dependency] private readonly MobStateSystem _mobStateSystem = default!;
+        [Dependency] private readonly SharedRottingSystem _rotting = default!;
         [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
 
         private EntityQuery<OrganComponent> _organQuery;
@@ -39,7 +41,12 @@ namespace Content.Server.Body.Systems
             SubscribeLocalEvent<MetabolizerComponent, ComponentInit>(OnMetabolizerInit);
             SubscribeLocalEvent<MetabolizerComponent, MapInitEvent>(OnMapInit);
             SubscribeLocalEvent<MetabolizerComponent, EntityUnpausedEvent>(OnUnpaused);
+
             SubscribeLocalEvent<MetabolizerComponent, ApplyMetabolicMultiplierEvent>(OnApplyMetabolicMultiplier);
+
+            SubscribeLocalEvent<MetabolizerRotComponent, RotUpdateEvent>(OnRotUpdate);
+            SubscribeLocalEvent<MetabolizerRotComponent, StartedRottingEvent>(OnStartedRotting);
+            SubscribeLocalEvent<MetabolizerRotComponent, GetMetabolizingUpdateDelay>(OnRotUpdateDelay);
         }
 
         private void OnMapInit(Entity<MetabolizerComponent> ent, ref MapInitEvent args)
@@ -80,6 +87,32 @@ namespace Content.Server.Body.Systems
             ent.Comp.UpdateInterval /= args.Multiplier;
         }
 
+        private void OnRotUpdate(Entity<MetabolizerRotComponent> ent, ref RotUpdateEvent args)
+        {
+            ent.Comp.CurrentMutliplier = ent.Comp.HealthyMultiplier + args.RotProgress * (ent.Comp.DamagedMultiplier - ent.Comp.HealthyMultiplier);
+
+            if (!ent.Comp.DisabledOnRot)
+                return;
+
+            ent.Comp.Enabled = args.RotProgress < 1f;
+        }
+
+        private void OnStartedRotting(Entity<MetabolizerRotComponent> ent, ref StartedRottingEvent args)
+        {
+            if (!ent.Comp.DisabledOnRot)
+                return;
+
+            ent.Comp.Enabled = false;
+        }
+
+        private void OnRotUpdateDelay(Entity<MetabolizerRotComponent> ent, ref GetMetabolizingUpdateDelay args)
+        {
+            args.Delay *= ent.Comp.CurrentMutliplier;
+
+            if (!ent.Comp.Enabled)
+                args.Cancel();
+        }
+
         public override void Update(float frameTime)
         {
             base.Update(frameTime);
@@ -98,8 +131,13 @@ namespace Content.Server.Body.Systems
                 if (_gameTiming.CurTime < metab.NextUpdate)
                     continue;
 
-                metab.NextUpdate += metab.UpdateInterval;
-                TryMetabolize((uid, metab));
+                var ev = new GetMetabolizingUpdateDelay(metab.UpdateInterval);
+                RaiseLocalEvent(uid, ev);
+
+                metab.NextUpdate += ev.Delay;
+
+                if (!ev.Cancelled)
+                    TryMetabolize((uid, metab));
             }
         }
 
@@ -140,6 +178,9 @@ namespace Content.Server.Body.Systems
             {
                 return;
             }
+
+            if (_rotting.IsRotten(ent))
+                return;
 
             // randomize the reagent list so we don't have any weird quirks
             // like alphabetical order or insertion order mattering for processing
@@ -255,5 +296,15 @@ namespace Content.Server.Body.Systems
         /// If true, apply the multiplier. If false, revert it.
         /// </summary>
         public readonly bool Apply = Apply;
+    }
+
+    public sealed partial class GetMetabolizingUpdateDelay : CancellableEntityEventArgs
+    {
+        public TimeSpan Delay;
+
+        public GetMetabolizingUpdateDelay(TimeSpan delay)
+        {
+            Delay = delay;
+        }
     }
 }

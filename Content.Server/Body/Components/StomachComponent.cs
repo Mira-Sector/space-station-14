@@ -71,3 +71,5 @@ namespace Content.Server.Body.Components
         }
     }
 }
+
+public sealed partial class StomachDigestedEvent : EntityEventArgs;

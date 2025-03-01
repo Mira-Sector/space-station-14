@@ -22,14 +22,14 @@ public sealed partial class ModifyLungGas : EntityEffect
 
         if (args is EntityEffectReagentArgs reagentArgs)
         {
-            if (!args.EntityManager.TryGetComponent<LungComponent>(reagentArgs.OrganEntity, out var organLung))
+            if (!args.EntityManager.TryGetComponent<LungComponent>(reagentArgs.OrganEntity, out var organLung) || organLung.Broken)
                 return;
             lung = organLung;
             amount = reagentArgs.Quantity.Float();
         }
         else
         {
-            if (!args.EntityManager.TryGetComponent<LungComponent>(args.TargetEntity, out var organLung)) //Likely needs to be modified to ensure it works correctly
+            if (!args.EntityManager.TryGetComponent<LungComponent>(args.TargetEntity, out var organLung) || organLung.Broken) //Likely needs to be modified to ensure it works correctly
                 return;
             lung = organLung;
         }
