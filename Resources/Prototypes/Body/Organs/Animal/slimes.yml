@@ -33,6 +33,7 @@
       damage:
         types:
           Poison: 4
+    - type: MetabolizerRot
     - type: Damageable
       damageContainer: Liver
 

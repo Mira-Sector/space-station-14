@@ -41,7 +41,12 @@ namespace Content.Server.Body.Systems
             SubscribeLocalEvent<MetabolizerComponent, ComponentInit>(OnMetabolizerInit);
             SubscribeLocalEvent<MetabolizerComponent, MapInitEvent>(OnMapInit);
             SubscribeLocalEvent<MetabolizerComponent, EntityUnpausedEvent>(OnUnpaused);
+
             SubscribeLocalEvent<MetabolizerComponent, ApplyMetabolicMultiplierEvent>(OnApplyMetabolicMultiplier);
+
+            SubscribeLocalEvent<MetabolizerRotComponent, RotUpdateEvent>(OnRotUpdate);
+            SubscribeLocalEvent<MetabolizerRotComponent, StartedRottingEvent>(OnStartedRotting);
+            SubscribeLocalEvent<MetabolizerRotComponent, GetMetabolizingUpdateDelay>(OnRotUpdateDelay);
         }
 
         private void OnMapInit(Entity<MetabolizerComponent> ent, ref MapInitEvent args)
@@ -82,6 +87,32 @@ namespace Content.Server.Body.Systems
             ent.Comp.UpdateInterval /= args.Multiplier;
         }
 
+        private void OnRotUpdate(Entity<MetabolizerRotComponent> ent, ref RotUpdateEvent args)
+        {
+            ent.Comp.Currentutliplier = ent.Comp.HealthyMultiplier + args.RotProgress * (ent.Comp.DamagedMultiplier - ent.Comp.HealthyMultiplier);
+
+            if (!ent.Comp.DisabledOnRot)
+                return;
+
+            ent.Comp.Enabled = args.RotProgress < 1f;
+        }
+
+        private void OnStartedRotting(Entity<MetabolizerRotComponent> ent, ref StartedRottingEvent args)
+        {
+            if (!ent.Comp.DisabledOnRot)
+                return;
+
+            ent.Comp.Enabled = false;
+        }
+
+        private void OnRotUpdateDelay(Entity<MetabolizerRotComponent> ent, ref GetMetabolizingUpdateDelay args)
+        {
+            args.Delay *= ent.Comp.Currentutliplier;
+
+            if (!ent.Comp.Enabled)
+                args.Cancel();
+        }
+
         public override void Update(float frameTime)
         {
             base.Update(frameTime);
@@ -100,8 +131,13 @@ namespace Content.Server.Body.Systems
                 if (_gameTiming.CurTime < metab.NextUpdate)
                     continue;
 
-                metab.NextUpdate += metab.UpdateInterval;
-                TryMetabolize((uid, metab));
+                var ev = new GetMetabolizingUpdateDelay(metab.UpdateInterval);
+                RaiseLocalEvent(uid, ev);
+
+                metab.NextUpdate += ev.Delay;
+
+                if (!ev.Cancelled)
+                    TryMetabolize((uid, metab));
             }
         }
 
@@ -260,5 +296,15 @@ namespace Content.Server.Body.Systems
         /// If true, apply the multiplier. If false, revert it.
         /// </summary>
         public readonly bool Apply = Apply;
+    }
+
+    public sealed partial class GetMetabolizingUpdateDelay : CancellableEntityEventArgs
+    {
+        public TimeSpan Delay;
+
+        public GetMetabolizingUpdateDelay(TimeSpan delay)
+        {
+            Delay = delay;
+        }
     }
 }

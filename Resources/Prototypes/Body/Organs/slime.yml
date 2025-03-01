@@ -44,6 +44,7 @@
       damage:
         types:
           Poison: 4
+    - type: MetabolizerRot
     - type: Perishable
       rotAfter: 1800
       molsPerSecondPerUnitMass: 0
