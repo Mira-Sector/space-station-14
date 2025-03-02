@@ -315,5 +315,6 @@ ghost-role-information-morph-description = Pipe crawl your way to taking over th
 ghost-role-information-bombroach-name = Bombroach
 ghost-role-information-bombroach-description = Use any means nessasary to get to the highest ranking official, with the aim to give them a good old explosive hug.
 
-ghost-role-information-lordbingus-name = Lord Bingus
-ghost-role-information-lordbingus-description = Enact your will for you are lord Bingus and all goes to plan.
+ghost-role-information-clownothing-name = ClownoThing
+ghost-role-information-clownothing-description = You must rule the station. Hide in the maintenance system. Clown on your enemies.
+

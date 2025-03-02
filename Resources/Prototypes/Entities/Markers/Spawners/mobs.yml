@@ -926,3 +926,17 @@
   - type: ConditionalSpawner
     prototypes:
     - MobReindeerDoe
+
+- type: entity
+  name: ClownoThing Spawner
+  id: SpawnMobClownothing
+  parent: MarkerBase
+  components:
+  - type: Sprite
+    layers:
+    - state: green
+    - state: clown
+      sprite: Markers/jobs.rsi
+  - type: ConditionalSpawner
+    prototypes:
+    - MobClownothing

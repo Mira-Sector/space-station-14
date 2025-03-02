@@ -24,6 +24,7 @@
     - id: SpiderClownSpawn
     - id: SpiderSpawn
     - id: VentClog
+    - id: ClownoThing
 
 - type: entityTable
   id: BasicAntagEventsTable
@@ -615,3 +616,29 @@
       min: 1
       max: 1
       pickPlayer: false
+
+- type: entity
+  parent: BaseGameRule
+  id: ClownoThing
+  components:
+  - type: StationEvent
+    weight: 6.5
+    earliestStart: 30
+    reoccurrenceDelay: 20
+    minimumPlayers: 10
+    duration: null
+  - type: AntagSpawner
+    prototype: MobClownothing
+#  - type: AntagObjectives
+#    objectives:
+#    - CarpRiftsObjective
+#    - DragonSurviveObjective
+  - type: AntagSelection
+    agentName: dragon-round-end-agent-name
+    definitions:
+    - spawnerPrototype: SpawnPointClownothing
+      min: 1
+      max: 1
+      pickPlayer: false
+      mindRoles:
+      - MindRoleDragon
