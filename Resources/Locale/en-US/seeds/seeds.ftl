@@ -150,3 +150,13 @@ seeds-lampflower-name = lampflower
 seeds-lampflower-display-name = lampflower
 seeds-voidflower-name = voidflower
 seeds-voidflower-display-name = voidflower
+seeds-coconut-name = coconut
+seeds-coconut-display-name = coconut
+seeds-plasteelcap-name = plasteelcap
+seeds-plasteelcap-display-name = plasteelcaps
+seeds-chaosberries-name = chaos berry
+seeds-chaosberries-display-name chaos berries
+seeds-bananiumplant-name = organic bananium
+seeds-bananiumplant-display-name = bananium plant
+seeds-voltato-name = voltato
+seeds-voltato-display-name = voltatoes

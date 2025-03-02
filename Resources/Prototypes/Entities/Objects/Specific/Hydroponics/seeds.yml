@@ -779,3 +779,53 @@
     seedId: voidflower
   - type: Sprite
     sprite: Objects/Specific/Hydroponics/voidflower.rsi
+
+- type: entity
+  parent: SeedBase
+  name: packet of coconut seeds
+  id: CoconutSeeds
+  components:
+    - type: Seed
+      seedId: coconut
+    - type: Sprite
+      sprite: Objects/Specific/Hydroponics/coconut.rsi
+
+- type: entity
+  parent: SeedBase
+  name: packet of plasteel cap spores
+  id: PlasteelcapSeeds
+  components:
+    - type: Seed
+      seedId: plasteelcap
+    - type: Sprite
+      sprite: Objects/Specific/Hydroponics/plasteelcap.rsi
+
+- type: entity
+  parent: SeedBase
+  name: packet of chaos berry seeds
+  id: ChaosberrySeeds
+  components:
+    - type: Seed
+      seedId: chaosberries
+    - type: Sprite
+      sprite: Objects/Specific/Hydroponics/chaosberries.rsi
+
+- type: entity
+  parent: SeedBase
+  name: packet of bananium seeds
+  id: BananiumPlantSeeds
+  components:
+    - type: Seed
+      seedId: bananiumplant
+    - type: Sprite
+      sprite: Objects/Specific/Hydroponics/bananiumplant.rsi
+
+- type: entity
+  parent: SeedBase
+  name: packet of voltato seeds
+  id: VoltatoSeeds
+  components:
+    - type: Seed
+      seedId: voltato
+    - type: Sprite
+      sprite: Objects/Specific/Hydroponics/voltato.rsi

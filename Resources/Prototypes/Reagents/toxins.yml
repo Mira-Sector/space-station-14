@@ -702,3 +702,28 @@
           shouldHave: false
         walkSpeedModifier: 0.4
         sprintSpeedModifier: 0.4
+
+- type: reagent
+  id: Voidoil
+  name: reagent-name-voidoil
+  group: Toxins
+  desc: reagent-desc-voidoil
+  physicalDesc: reagent-physical-desc-inky
+  flavor: oily
+  color: "#58031e"
+  metabolisms:
+    Poison: #make chemical convert all other chemicals into it
+      metabolismRate: 0.5
+      effects:
+        - !type:PopupMessage
+          type: Local
+          visualType: MediumCaution
+          messages: [ "generic-reagent-effect-consuming-insides"]
+          probability: 0.33
+        - !type:SatiateHunger
+          factor: -3
+        - !type:SatiateThirst
+          factor: -3
+        - !type:ModifyBloodLevel #bleeding also leaks chemical, which transforms blood into more void oil.
+          amount: -5
+

@@ -398,3 +398,30 @@
         conditions:
         - !type:ReagentThreshold
           min: 50
+
+- type: reagent
+  id: Solaroil
+  name: reagent-name-solaroil
+  desc: reagent-desc-solaroil
+  physicalDesc: reagent-physical-desc-glowing
+  flavor: glowing
+  color: "#fffb00"
+  components:
+  - type: PointLight
+    radius: 6.0
+    color: "#fffb00"
+  metabolisms:
+    Drink:
+      metabolismRate: 0.1
+      effects: #not sure how to make a person glow yet
+      - !type:Glow
+        radius: 5
+        color: "#fffb00"
+
+- type: reagent
+  id: Chaos
+  name: reagent-name-chaos
+  desc: reagent-desc-chaos
+  physicalDesc: reagent-physical-desc-fizzy
+  flavor: sweet
+  color: "#9f32a3"

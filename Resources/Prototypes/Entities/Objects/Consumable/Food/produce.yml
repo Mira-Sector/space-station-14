@@ -787,7 +787,6 @@
       Burger: Potato
       Taco: Potato
 
-
 - type: entity
   name: tomato
   parent: [FoodProduceBase, ItemHeftyBase]
@@ -2621,7 +2620,7 @@
 
 - type: entity
   name: sunflower
-  description: a bulky flower filled with natural oils.
+  description: A bulky flower filled with natural oils.
   id: ProduceSunflower
   parent: ProduceBase
   components:
@@ -2654,7 +2653,7 @@
   name: sunflower core
   parent: FoodInjectableBase
   id: SunflowerCore
-  description: the core of a sunflower, the seeds might be a snack.
+  description: The core of a sunflower, the seeds might be a snack.
   components:
   - type: Sprite
     sprite: Objects/Specific/Hydroponics/sunflower.rsi
@@ -2668,6 +2667,9 @@
           Quantity: 20
         - ReagentId: Vitamin
           Quantity: 5
+  - type: FlavorProfile
+    flavors:
+      - oily
   - type: Seed
     seedId: sunflower
   - type: Extractable
@@ -2675,7 +2677,7 @@
 
 - type: entity
   name: lampflower
-  description: a bulky flower with a glistening glow.
+  description: A bulky flower with a glistening glow.
   id: ProduceLampflower
   parent: ProduceBase
   components:
@@ -2689,7 +2691,7 @@
       food:
         maxVol: 27
         reagents:
-        - ReagentId: Oil #solar oil
+        - ReagentId: Solaroil #solar oil
           Quantity: 20
         - ReagentId: Nutriment
           Quantity: 2
@@ -2703,12 +2705,24 @@
     spawned:
     - id: LampflowerCore
     #- id: ClothingHeadHatLampflowerRing
+  - type: PointLight
+    radius: 6.0
+    color: "#fffb00"
+  - type: Perishable
+    # lots of point lights are laggy, so rot after 15 minutes to reduce that.
+    rotAfter: 900
+    molsPerSecondPerUnitMass: 0
+    forceRotProgression: true
+  - type: RotInto
+    entity: LampflowerCoreRot
+    # once it would say bloated, turn into the rotten prototype
+    stage: 1
 
 - type: entity
   name: lampflower core
   parent: FoodInjectableBase
   id: LampflowerCore
-  description: the core of a lampflower, it seems the seed's oily contents are what produce its light
+  description: The core of a lampflower, it seems the seed's oily contents are what produce its light
   components:
   - type: Sprite
     sprite: Objects/Specific/Hydroponics/lampflower.rsi
@@ -2718,18 +2732,54 @@
       food:
         maxVol: 25
         reagents:
-        - ReagentId: Oil #Solar Oil
+        - ReagentId: Solaroil #Solar Oil
           Quantity: 20
         - ReagentId: Vitamin
           Quantity: 5
+  - type: FlavorProfile
+    flavors:
+      - glowing
   - type: Seed
     seedId: lampflower
   - type: Extractable
     grindableSolutionName: food
+  - type: PointLight
+    radius: 6.0
+    color: "#fffb00"
+  - type: Perishable
+    # lots of point lights are laggy, so rot after 15 minutes to reduce that.
+    rotAfter: 900
+    molsPerSecondPerUnitMass: 0
+    forceRotProgression: true
+  - type: RotInto
+    entity: LampflowerCoreRot
+    # once it would say bloated, turn into the rotten prototype
+    stage: 1
+
+- type: entity
+  name: empty lampflower core
+  parent: FoodInjectableBase
+  id: LampflowerCoreRot
+  description: The empty core of a lampflower, its light has gone out.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/lampflower.rsi
+    state: corerot
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 5
+        reagents:
+        - ReagentId: Vitamin
+          Quantity: 5
+  - type: Tag
+    tags:
+      - Trash
+      - Recyclable
 
 - type: entity
   name: voidflower
-  description: a bulky flower that bends light around it.
+  description: A bulky flower that bends light around it.
   id: ProduceVoidflower
   parent: ProduceBase
   components:
@@ -2738,12 +2788,16 @@
     scale: 1.5,1.5
   - type: Produce
     seedId: voidflower
+  - type: SingularityDistortion
+    intensity: 300
+    falloffPower: 3
+    hasEventHorizon: true
   - type: SolutionContainerManager
     solutions:
       food:
         maxVol: 27
         reagents:
-        - ReagentId: Oil #void oil
+        - ReagentId: Voidoil #void oil ate the vitamins
           Quantity: 25
         - ReagentId: Nutriment
           Quantity: 2
@@ -2760,19 +2814,319 @@
   name: voidflower core
   parent: FoodInjectableBase
   id: VoidflowerCore
-  description: the core of a voidflower, it's like looking into a miniature black hole.
+  description: The core of a voidflower, it's like looking into a miniature black hole.
   components:
   - type: Sprite
     sprite: Objects/Specific/Hydroponics/voidflower.rsi
     state: core
+  - type: SingularityDistortion
+    intensity: 300
+    falloffPower: 3
+    hasEventHorizon: true
   - type: SolutionContainerManager
     solutions:
       food:
         maxVol: 25
         reagents:
-        - ReagentId: Oil #Void Oil
+        - ReagentId: Voidoil
           Quantity: 25
   - type: Seed
     seedId: voidflower
   - type: Extractable
     grindableSolutionName: food
+
+- type: entity
+  name: coconut
+  parent: ProduceBase
+  id: ProduceCoconut
+  description: Not actually a nut, but sure looks like one. You think you could cut it open to get at what's inside, or use a syringe.
+  components:
+  - type: Produce
+    seedId: coconut
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/coconut.rsi
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 15
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 5
+        - ReagentId: Vitamin
+          Quantity: 5
+        - ReagentId: Fiber
+          Quantity: 5
+      drink:
+        maxVol: 30
+        reagents:
+        - ReagentId: CoconutWater
+          Quantity: 20
+  - type: DrawableSolution
+    solution: drink
+  - type: InjectableSolution
+    solution: drink
+  - type: MeleeWeapon
+    damage:
+      types:
+        Blunt: 6
+  - type: DamageOtherOnHit
+    damage:
+      types:
+        Blunt: 5
+  - type: LandAtCursor
+  - type: Damageable
+    damageContainer: Biological
+  - type: DamageOnHighSpeedImpact
+    minimumSpeed: 0.1
+    damage:
+      types:
+        Blunt: 1
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 15
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: desecration
+      - !type:SpillBehavior
+        solution: drink
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: Log
+    spawnedPrototype: ProduceCoconutOpen
+    spawnCount: 1
+
+- type: entity #add liquid levels
+  name: sliced coconut
+  parent: ProduceBase
+  id: ProduceCoconutOpen
+  description: Now you just need to find one of those tiny umbrellas.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/coconut.rsi
+    state: open
+    layers:
+      - state: open
+      - state: open-1
+        map: ["enum.SolutionContainerLayers.Fill"]
+        visible: false
+  - type: SolutionContainerManager
+    solutions:
+      food:
+          maxVol: 15
+          reagents:
+          - ReagentId: Nutriment
+            Quantity: 5
+          - ReagentId: Vitamin
+            Quantity: 5
+          - ReagentId: Fiber
+            Quantity: 5
+      drink:
+        maxVol: 30
+        reagents:
+        - ReagentId: CoconutWater
+          Quantity: 20
+  - type: SolutionContainerVisuals
+    solution: drink
+    maxFillLevels: 3
+    fillBaseName: open-
+  - type: Drink
+  - type: Spillable
+    solution: drink
+  - type: MixableSolution
+    solution: drink
+  - type: RefillableSolution
+    solution: drink
+  - type: DrainableSolution
+    solution: drink
+  - type: ExaminableSolution
+    solution: drink
+  - type: DrawableSolution
+    solution: drink
+  - type: SolutionTransfer
+    maxTransferAmount: 30
+    canChangeTransferAmount: true
+  - type: SolutionItemStatus
+    solution: drink
+  - type: UserInterface
+    interfaces:
+      enum.TransferAmountUiKey.Key:
+        type: TransferAmountBoundUserInterface
+  - type: Damageable
+    damageContainer: Biological
+  - type: DamageOnHighSpeedImpact
+    minimumSpeed: 0.1
+    damage:
+      types:
+        Blunt: 1
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 15
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: desecration
+      - !type:SpillBehavior
+        solution: drink
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
+  name: plasteel-cap log
+  description: Plasteel also grows on mushrooms, as it turns out.
+  id: plasteelLog
+  parent: ProduceBase
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/plasteelcap.rsi
+  - type: SolutionContainerManager
+  - type: MeleeWeapon
+    damage:
+      types:
+        Blunt: 15
+  - type: Produce
+    seedId: plasteelcap
+  - type: Log
+    spawnedPrototype: SheetPlasteel1
+    spawnCount: 1
+
+- type: entity
+  name: chaos berry
+  description: A handful of multicoloured berries, what could they contain?
+  id: FoodChaosBerries
+  parent: FoodInjectableBase
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/chaosberries.rsi
+    state: produce
+  - type: Produce
+    seedId: chaosberries
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 16
+        reagents:
+        - ReagentId: Chaos
+          Quantity: 8
+        - ReagentId: Nutriment
+          Quantity: 4
+        - ReagentId: Vitamin
+          Quantity: 4
+  - type: Tag
+    tags:
+    - Fruit
+  - type: FlavorProfile
+  flavors:
+    - berry
+
+- type: entity
+  name: unstable bananium
+  parent: FoodInjectableBase
+  id: ProduceBananiumPlant
+  description: A rapidly decaying isotope of bananium. You probably shouldn't be standing so close.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/bananiumplant.rsi
+    state: produce
+  - type: Produce
+    seedId: bananiumplant
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 12
+        reagents:
+        - ReagentId: UnstableMutagen
+          Quantity: 10
+        - ReagentId: Nutriment
+          Quantity: 2
+  - type: RadiationSource
+    intensity: 0.5
+  - type: Food
+    trash:
+    - TrashBananiumPeel
+  - type: BadFood
+  - type: PointLight
+    radius: 1.5
+    color: "#3de72e"
+  - type: Perishable
+    # unstable isotope, rots quickily into regular bananium.
+    rotAfter: 20
+    molsPerSecondPerUnitMass: 0
+    forceRotProgression: true
+  - type: RotInto
+    entity: MaterialBananium1
+    # once it would say bloated, turn into the rotten prototype
+    stage: 1
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: JuiceBanana
+        Quantity: 5
+      - ReagentId: Radium
+        Quantity: 5
+  - type: Tag
+    tags:
+    - Fruit
+  - type: FlavorProfile
+    flavors:
+      - banana
+
+- type: entity
+  name: voltato
+  parent: FoodProduceBase
+  id: FoodVoltato
+  description: A favoured tool of the Space IRA for its electronics charging utility and no other reasons.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/voltato.rsi
+  - type: Produce
+    seedId: voltato
+  - type: FlavorProfile
+    flavors:
+      - potatoes
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 14
+        reagents:
+        - ReagentId: SulfuricAcid
+          Quantity: 10
+        - ReagentId: Vitamin
+          Quantity: 4
+      battery:
+        maxVol: 5
+  - type: InjectableSolution
+    solution: battery
+  - type: DrawableSolution
+    solution: battery
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: SulfuricAcid
+        Quantity: 10
+  - type: PowerCell
+  - type: Battery
+    maxCharge: 500
+    startingCharge: 500
+  - type: HitscanBatteryAmmoProvider
+    proto: RedLightLaser
+    fireCost: 50
+  - type: BatteryTransfer
+    canRecieve: true
+    canTransfer: true
+  - type: Explosive
+    explosionType: Default
+    maxIntensity: 200
+    intensitySlope: 1.5
+  - type: Riggable
+  - type: Tag
+    tags:
+    - Potato
+    - Vegetable
+    - PowerCell
+
+
