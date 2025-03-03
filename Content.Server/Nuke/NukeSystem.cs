@@ -445,15 +445,23 @@ public sealed class NukeSystem : EntitySystem
     /// <summary>
     ///     Force a nuclear bomb to start a countdown timer
     /// </summary>
-    public void ArmBomb(EntityUid uid, NukeComponent? component = null)
+    public bool ArmBomb(EntityUid uid, NukeComponent? component = null)
     {
         if (!Resolve(uid, ref component))
-            return;
+            return false;
 
         if (component.Status == NukeStatus.ARMED)
-            return;
+            return false;
 
         var nukeXform = Transform(uid);
+
+        if (!nukeXform.Anchored)
+        {
+            // Admin command shenanigans, just make sure.
+            if (!_transform.AnchorEntity(uid, nukeXform))
+                return false;
+        }
+
         var stationUid = _station.GetStationInMap(nukeXform.MapID);
         // The nuke may not be on a station, so it's more important to just
         // let people know that a nuclear bomb was armed in their vicinity instead.
@@ -485,15 +493,10 @@ public sealed class NukeSystem : EntitySystem
         _navMap.SetBeaconEnabled(uid, true);
 
         _itemSlots.SetLock(uid, component.DiskSlot, true);
-        if (!nukeXform.Anchored)
-        {
-            // Admin command shenanigans, just make sure.
-            _transform.AnchorEntity(uid, nukeXform);
-        }
-
         component.Status = NukeStatus.ARMED;
         UpdateUserInterface(uid, component);
         UpdateAppearance(uid, component);
+        return true;
     }
 
     /// <summary>

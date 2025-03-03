@@ -30,8 +30,16 @@ public sealed class NukeModuleSystem : EntitySystem
             if (aiXForm.MapUid != nukeXForm.MapUid)
                 continue;
 
-            _nuke.ArmBomb(nukeUid, nukeComp);
-            args.Handled = true;
+            var prevTime = nukeComp.RemainingTime;
+            _nuke.SetRemainingTime(nukeUid, nukeComp.Timer, nukeComp);
+
+            if (!_nuke.ArmBomb(nukeUid, nukeComp))
+            {
+                _nuke.SetRemainingTime(nukeUid, prevTime, nukeComp);
+                continue;
+            }
+
+            args.Handled |= true;
         }
 
         // dont let them waste their 130 power
