@@ -13,6 +13,8 @@ public sealed class NukeModuleSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<StationAiCanHackComponent, StationAiNukeEvent>(OnAction);
+        SubscribeLocalEvent<NukeModuleNukeComponent, NukeDisarmSuccessEvent>(RemoveNuke);
+        SubscribeLocalEvent<NukeModuleNukeComponent, NukeExplodedEvent>(RemoveNuke);
     }
 
     private void OnAction(EntityUid uid, StationAiCanHackComponent component, StationAiNukeEvent args)
@@ -39,6 +41,9 @@ public sealed class NukeModuleSystem : EntitySystem
                 continue;
             }
 
+            EnsureComp<NukeModuleNukeComponent>(nukeUid).StationAi = args.Performer;
+            EnsureComp<NukeModuleStationAiComponent>(args.Performer).Nukes.Add(nukeUid);
+
             args.Handled |= true;
         }
 
@@ -50,6 +55,12 @@ public sealed class NukeModuleSystem : EntitySystem
             return;
 
         EntityManager.DeleteEntity(args.Action);
+    }
+
+    private void RemoveNuke(EntityUid uid, NukeModuleNukeComponent component, EntityEventArgs args)
+    {
+        if (TryComp<NukeModuleStationAiComponent>(component.StationAi, out var aiComp))
+            aiComp.Nukes.Remove(uid);
     }
 }
 

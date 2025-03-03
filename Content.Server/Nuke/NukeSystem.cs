@@ -269,9 +269,6 @@ public sealed class NukeSystem : EntitySystem
 
         DisarmBomb(uid, component);
 
-        var ev = new NukeDisarmSuccessEvent();
-        RaiseLocalEvent(ev);
-
         args.Handled = true;
     }
     #endregion
@@ -539,6 +536,9 @@ public sealed class NukeSystem : EntitySystem
 
         UpdateUserInterface(uid, component);
         UpdateAppearance(uid, component);
+
+        var ev = new NukeDisarmSuccessEvent();
+        RaiseLocalEvent(ev);
     }
 
     /// <summary>
@@ -575,7 +575,7 @@ public sealed class NukeSystem : EntitySystem
             component.IntensitySlope,
             component.MaxIntensity);
 
-        RaiseLocalEvent(new NukeExplodedEvent()
+        RaiseLocalEvent(uid, new NukeExplodedEvent()
         {
             OwningStation = transform.GridUid,
         });
