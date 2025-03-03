@@ -1,0 +1,33 @@
+<Document>
+  # Malf AI
+  <Box>
+    <GuideEntityEmbed Entity="AIMalfPlaceholder" Caption="I think therefore I AM"/>
+  </Box>
+
+  ## Starting out
+  <Box>
+    <GuideEntityEmbed Entity="APCBasic"/>
+  </Box>
+
+  - using [color=yellow][bold]alt-click[/bold][/color], you can hack APCs providing you with [color=green][bold]power[/color]
+
+
+  [bold]Efficiently hacking apcs:[/bold]
+  - hack ones in secluded areas not many people visit, as all it takes to found out is finding an apc that cant be turned on
+  - APCs don't passively generate power, so you will need to hack a lot of them to afford anything useful
+
+
+  Power is your main currency, it will allow you to upgrade yourself to better expand your access to the stations systems
+
+  ## Objective
+  You have one objective, detonate yourself and all the crew at all costs.
+  <Box>
+    <GuideEntityEmbed Entity="NuclearBomb"/>
+  </Box>
+  Although, the crew isn't gonna be very happy when you try and start the countdown, heres some options to convince them not to destroy you
+  - Electrify doors to stop crew from reaching you
+  - Bolt your core down so they dont dismantle you
+  - Siphon the air to pick off crew members caught without internals
+  - Kill salvage
+  - Waste all of cargos money on pizza
+</Document>

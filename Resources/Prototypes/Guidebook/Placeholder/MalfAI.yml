@@ -1,0 +1,10 @@
+
+- type: entity
+  parent: BaseItem
+  id: AIMalfPlaceholder
+  name: AI MALF!!!!
+  abstract: false
+  components:
+  - type: Sprite
+    sprite: Guidebook/Placeholders/malfAI.rsi
+    state: AiMalf
