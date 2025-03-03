@@ -33,7 +33,7 @@ public sealed class NukeModuleSystem : EntitySystem
                 continue;
 
             var prevTime = nukeComp.RemainingTime;
-            _nuke.SetRemainingTime(nukeUid, nukeComp.Timer, nukeComp);
+            _nuke.SetRemainingTime(nukeUid, Math.Min(nukeComp.Timer, nukeComp.RemainingTime + args.AdditionalDelay), nukeComp);
 
             if (!_nuke.ArmBomb(nukeUid, nukeComp))
             {

@@ -75,6 +75,7 @@
       sprite: Objects/Devices/nuke.rsi
       state: nuclearbomb_base
     event: !type:StationAiNukeEvent
+      additionalDelay: 60
 
 - type: entity
   id: ActionStationAiLockdown
