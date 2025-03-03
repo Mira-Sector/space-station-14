@@ -14,7 +14,7 @@
     makeSentient: true
     name: ghost-role-information-clownothing-name
     description: ghost-role-information-clownothing-description
-    rules: ghost-role-information-space-dragon-rules
+    rules: ghost-role-information-clownothing-rules
     raffle:
       settings: default
   - type: GhostTakeoverAvailable
@@ -61,7 +61,7 @@
       Alive:
         Base: clownothing
       Dead:
-        Base: dead
+        Base: clownothing_dead
   - type: Physics
     bodyType: KinematicController
   - type: Fixtures
@@ -84,8 +84,8 @@
   - type: MobThresholds
     thresholds:
       0: Alive
-      450: Critical
-      500: Dead
+      275: Critical
+      300: Dead
   - type: SlowOnDamage
     speedModifierThresholds:
       250: 0.7
