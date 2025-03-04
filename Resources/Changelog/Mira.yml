@@ -1263,3 +1263,13 @@ Entries:
     type: Add
   id: 184
   time: '2025-03-01T13:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Nukes the station AI has armed now get disarmed when they are placed into an intelicard
+    type: Tweak
+  - message: When the station AI arms a nuke it adds an additonal minute to the timer
+    type: Tweak
+  - message: The round ends when a nuke the AI has armed explodes
+    type: Tweak
+  id: 185
+  time: '2025-03-04T01:10:00.0000000+00:00'
