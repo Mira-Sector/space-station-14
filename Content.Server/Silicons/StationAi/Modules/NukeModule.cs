@@ -13,6 +13,8 @@ public sealed class NukeModuleSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<StationAiCanHackComponent, StationAiNukeEvent>(OnAction);
+        SubscribeLocalEvent<NukeModuleStationAiComponent, GotIntellicardedEvent>(OnIntellicarded);
+
         SubscribeLocalEvent<NukeModuleNukeComponent, NukeDisarmSuccessEvent>(RemoveNuke);
         SubscribeLocalEvent<NukeModuleNukeComponent, NukeExplodedEvent>(RemoveNuke);
     }
@@ -62,5 +64,15 @@ public sealed class NukeModuleSystem : EntitySystem
         if (TryComp<NukeModuleStationAiComponent>(component.StationAi, out var aiComp))
             aiComp.Nukes.Remove(uid);
     }
-}
 
+    private void OnIntellicarded(EntityUid uid, NukeModuleStationAiComponent component, GotIntellicardedEvent args)
+    {
+        foreach (var nuke in component.Nukes)
+        {
+            _nuke.DisarmBomb(nuke);
+            RemComp<NukeModuleNukeComponent>(nuke);
+        }
+
+        RemCompDeferred(uid, component);
+    }
+}
