@@ -1279,3 +1279,9 @@ Entries:
     type: Tweak
   id: 186
   time: '2025-03-04T01:15:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Organs only rot if the body is also rotting
+    type: Tweak
+  id: 187
+  time: '2025-03-04T04:05:00.0000000+00:00'
