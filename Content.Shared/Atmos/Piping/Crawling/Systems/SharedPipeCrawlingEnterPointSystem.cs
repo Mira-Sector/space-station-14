@@ -7,18 +7,14 @@ using Robust.Shared.Containers;
 
 namespace Content.Shared.Atmos.Piping.Crawling.Systems;
 
-public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
+
+public abstract partial class SharedPipeCrawlingSystem
 {
-    [Dependency] private readonly SharedContainerSystem _containers = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
     [Dependency] private readonly WeldableSystem _weldable = default!;
 
-    const string PipeContainer = "pipe";
-
-    public override void Initialize()
+    private void EnterPointInitialize()
     {
-        base.Initialize();
-
         SubscribeLocalEvent<PipeCrawlingEnterPointComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<PipeCrawlingEnterPointComponent, AnchorStateChangedEvent>(OnAnchored);
         SubscribeLocalEvent<PipeCrawlingEnterPointComponent, WeldableChangedEvent>(OnWelded);
@@ -182,13 +178,18 @@ public sealed class SharedPipeCrawlingEnterPointSystem : EntitySystem
 
     private void OnDoAfter(EntityUid pipe, PipeCrawlingEnterPointComponent component, PipeEnterDoAfterEvent args)
     {
+        if (args.Handled || args.Cancelled)
+            return;
+
         if (!_containers.TryGetContainer(pipe, PipeContainer, out var pipeContainer))
             return;
+
+        args.Handled = true;
 
         _containers.Insert(args.User, pipeContainer);
         var pipeCrawlComp = EnsureComp<PipeCrawlingComponent>(args.User);
         pipeCrawlComp.CurrentPipe = pipe;
-        pipeCrawlComp.NextMoveAttempt = TimeSpan.Zero;
+        pipeCrawlComp.NextMoveAttempt = _timing.CurTime;
 
         Dirty(args.User, pipeCrawlComp);
     }
