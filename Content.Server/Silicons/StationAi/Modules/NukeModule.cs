@@ -1,4 +1,5 @@
 using Content.Server.Nuke;
+using Content.Server.RoundEnd;
 using Content.Shared.Silicons.StationAi;
 using Content.Shared.Silicons.StationAi.Modules;
 
@@ -7,6 +8,7 @@ namespace Content.Server.Silicons.StationAi.Modules;
 public sealed class NukeModuleSystem : EntitySystem
 {
     [Dependency] private readonly NukeSystem _nuke = default!;
+    [Dependency] private readonly RoundEndSystem _roundEnd = default!;
 
     public override void Initialize()
     {
@@ -16,7 +18,7 @@ public sealed class NukeModuleSystem : EntitySystem
         SubscribeLocalEvent<NukeModuleStationAiComponent, GotIntellicardedEvent>(OnIntellicarded);
 
         SubscribeLocalEvent<NukeModuleNukeComponent, NukeDisarmSuccessEvent>(RemoveNuke);
-        SubscribeLocalEvent<NukeModuleNukeComponent, NukeExplodedEvent>(RemoveNuke);
+        SubscribeLocalEvent<NukeModuleNukeComponent, NukeExplodedEvent>(OnNukeExploded);
     }
 
     private void OnAction(EntityUid uid, StationAiCanHackComponent component, StationAiNukeEvent args)
@@ -59,7 +61,7 @@ public sealed class NukeModuleSystem : EntitySystem
         EntityManager.DeleteEntity(args.Action);
     }
 
-    private void RemoveNuke(EntityUid uid, NukeModuleNukeComponent component, EntityEventArgs args)
+    private void RemoveNuke(EntityUid uid, NukeModuleNukeComponent component, NukeDisarmSuccessEvent args)
     {
         if (TryComp<NukeModuleStationAiComponent>(component.StationAi, out var aiComp))
             aiComp.Nukes.Remove(uid);
@@ -76,5 +78,16 @@ public sealed class NukeModuleSystem : EntitySystem
         }
 
         RemCompDeferred(uid, component);
+    }
+
+    private void OnNukeExploded(EntityUid uid, NukeModuleNukeComponent component, NukeExplodedEvent ev)
+    {
+        if (ev.OwningStation is not {} nukeStation)
+            return;
+
+        if (Transform(component.StationAi).GridUid != nukeStation)
+            return;
+
+        _roundEnd.EndRound();
     }
 }
