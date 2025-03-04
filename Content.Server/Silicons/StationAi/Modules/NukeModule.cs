@@ -63,6 +63,8 @@ public sealed class NukeModuleSystem : EntitySystem
     {
         if (TryComp<NukeModuleStationAiComponent>(component.StationAi, out var aiComp))
             aiComp.Nukes.Remove(uid);
+
+        RemCompDeferred(uid, component);
     }
 
     private void OnIntellicarded(EntityUid uid, NukeModuleStationAiComponent component, GotIntellicardedEvent args)

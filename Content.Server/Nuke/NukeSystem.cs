@@ -538,7 +538,7 @@ public sealed class NukeSystem : EntitySystem
         UpdateAppearance(uid, component);
 
         var ev = new NukeDisarmSuccessEvent();
-        RaiseLocalEvent(ev);
+        RaiseLocalEvent(uid, ev);
     }
 
     /// <summary>
