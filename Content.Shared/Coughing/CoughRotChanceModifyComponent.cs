@@ -12,10 +12,10 @@ public sealed partial class CoughRotChangeModifyComponent : Component
     public bool Enabled = true;
 
     [DataField]
-    public float HealthyMultiplier = 0.5f;
+    public float HealthyMultiplier = 1f;
 
     [DataField]
-    public float DamagedMultiplier = 3.5f;
+    public float DamagedMultiplier = 6f;
 
     [ViewVariables, AutoNetworkedField]
     public float CurrentMutliplier;
