@@ -79,13 +79,14 @@
   components:
   - type: RandomHumanoidAppearance
     randomizeName: false
-  - type: Damageable
+  - type: DamageOnSpawn
+    splitLimbDamage: false
     damage:
       types:
-        Bloodloss: 49
-        Asphyxiation: 76
-        Slash: 56
-        Blunt: 19
+        Bloodloss: 18
+        Asphyxiation: 20
+        Slash: 13
+        Blunt: 8
   - type: Inventory
     templateId: corpse
 
