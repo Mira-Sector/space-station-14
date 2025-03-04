@@ -84,7 +84,19 @@ public partial class SharedBodySystem
 
     private void OnOrganIsRotting(EntityUid uid, OrganComponent component, ref IsRottingEvent args)
     {
-        args.Handled = component.Body is {} body && _mobState.IsAlive(body);
+        if (component.Body is not {} body)
+            return;
+
+        if (_mobState.IsAlive(body))
+        {
+            args.Handled = true;
+            return;
+        }
+
+        var ev = new IsRottingEvent();
+        RaiseLocalEvent(body, ref ev);
+
+        args.Handled = ev.Handled;
     }
 
     private void AddOrgan(
