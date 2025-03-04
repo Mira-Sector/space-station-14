@@ -171,3 +171,15 @@
         amount: 2
       - id: ClothingMaskSterile
         amount: 2
+
+- type: entity
+  id: BodyBagFullRandom
+  suffix: Random
+  parent: BodyBag
+  components:
+  - type: EntityStorage
+    open: true
+  - type: EntityStorageCloseOnSpawn # burn this shit asap
+  - type: StorageFill
+    contents:
+      - id: MobRandomHumanoidCorpse

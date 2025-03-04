@@ -147,3 +147,14 @@
   cost: 750
   category: cargoproduct-category-name-medical
   group: market
+
+- type: cargoProduct
+  id: MedicalBody
+  name: replacement body
+  icon:
+    sprite: Mobs/Species/Human/organs.rsi
+    state: stomach
+  product: BodyBagFullRandom
+  cost: 1200
+  category: cargoproduct-category-name-medical
+  group: market
