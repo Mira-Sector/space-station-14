@@ -28,6 +28,9 @@ namespace Content.Server.NodeContainer.Nodes
         /// </summary>
         public PipeDirection CurrentPipeDirection { get; private set; }
 
+        [DataField]
+        public int Layer;
+
         private HashSet<PipeNode>? _alwaysReachable;
 
         public void AddAlwaysReachable(PipeNode pipeNode)
@@ -188,6 +191,9 @@ namespace Content.Server.NodeContainer.Nodes
 
                 foreach (var pipe in LinkableNodesInDirection(pos, pipeDir, grid, nodeQuery))
                 {
+                    if (pipe.Layer != Layer)
+                        continue;
+
                     yield return pipe;
                 }
             }
@@ -224,8 +230,13 @@ namespace Content.Server.NodeContainer.Nodes
 
                 foreach (var node in container.Nodes.Values)
                 {
-                    if (node is PipeNode pipe)
-                        yield return pipe;
+                    if (node is not PipeNode pipe)
+                        continue;
+
+                    if (pipe.Layer != Layer)
+                        continue;
+
+                    yield return pipe;
                 }
             }
         }
