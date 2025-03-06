@@ -72,10 +72,41 @@
       pipe: !type:Container
   - type: PipeCrawlingPipe
 
+- type: entity
+  abstract: true
+  id: GasPipeLayererableBase
+  parent: GasPipeBase
+  components:
+  - type: PipeLayerable
+  - type: PipeLayerVisuals
+    layers:
+    - enum.PipeVisualLayers.Pipe
+    displacements:
+      1:
+        sizeMaps:
+          32:
+            sprite: Structures/Piping/Atmospherics/displacement.rsi
+            state: 1
+      2:
+        sizeMaps:
+          32:
+            sprite: Structures/Piping/Atmospherics/displacement.rsi
+            state: 2
+      -1:
+        sizeMaps:
+          32:
+            sprite: Structures/Piping/Atmospherics/displacement.rsi
+            state: -1
+      -2:
+        sizeMaps:
+          32:
+            sprite: Structures/Piping/Atmospherics/displacement.rsi
+            state: -2
+
 #Note: The PipeDirection of the PipeNode should be the south-facing version, because the entity starts at an angle of 0 (south)
 
 - type: entity
-  parent: GasPipeBase
+  parent: GasPipeLayererableBase
   id: GasPipeHalf
   suffix: Half
   components:
@@ -94,7 +125,7 @@
     node: half
 
 - type: entity
-  parent: GasPipeBase
+  parent: GasPipeLayererableBase
   id: GasPipeStraight
   suffix: Straight
   components:
@@ -127,7 +158,7 @@
       collection: MetalThud # this NEEDS to changed to the metal pipe falling sound effect on april first every year
 
 - type: entity
-  parent: GasPipeBase
+  parent: GasPipeLayererableBase
   id: GasPipeBend
   suffix: Bend
   components:
@@ -167,7 +198,7 @@
         Blunt: 8 # Woe, pipe be upon ye!
 
 - type: entity
-  parent: GasPipeBase
+  parent: GasPipeLayererableBase
   id: GasPipeTJunction
   suffix: TJunction
   components:
@@ -203,7 +234,7 @@
       collection: MetalThud
 
 - type: entity
-  parent: GasPipeBase
+  parent: GasPipeLayererableBase
   id: GasPipeFourway
   suffix: Fourway
   components:
@@ -239,7 +270,7 @@
 
 - type: entity
   id: GasPipeBroken
-  parent: GasPipeBase
+  parent: GasPipeLayererableBase
   name: broken pipe
   description: It used to hold gas.
   components:
