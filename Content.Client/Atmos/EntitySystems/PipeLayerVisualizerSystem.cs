@@ -1,13 +1,15 @@
 using Content.Client.Atmos.Components;
 using Content.Client.DisplacementMap;
-using Robust.Client.GameObjects;
 using Content.Shared.Atmos.Piping;
+using Robust.Client.GameObjects;
+using Robust.Shared.Reflection;
 
 namespace Content.Client.Atmos.EntitySystems;
 
 public sealed class PipeLayerVisualizerSystem : VisualizerSystem<PipeLayerVisualsComponent>
 {
     [Dependency] private readonly DisplacementMapSystem _displacement = default!;
+    [Dependency] private readonly IReflectionManager _refMan = default!;
 
     protected override void OnAppearanceChange(EntityUid uid, PipeLayerVisualsComponent component, ref AppearanceChangeEvent args)
     {
@@ -26,15 +28,15 @@ public sealed class PipeLayerVisualizerSystem : VisualizerSystem<PipeLayerVisual
         if (!component.Displacements.TryGetValue(currentLayer, out var displacement))
             return;
 
-        foreach (var layerId in component.Layers)
+        foreach (var layer in component.Layers)
         {
-            if (!args.Sprite.LayerMapTryGet(layerId, out var index))
+            if (!_refMan.TryParseEnumReference(layer, out var @enum))
                 continue;
 
-            if (!args.Sprite.TryGetLayer(index, out var layer))
+            if (!args.Sprite.LayerMapTryGet(@enum, out var index))
                 continue;
 
-            _displacement.TryAddDisplacement(displacement, args.Sprite, index, layer.State.Name!, component.RevealedLayers);
+            _displacement.TryAddDisplacement(displacement, args.Sprite, index, layer, component.RevealedLayers);
         }
     }
 }
