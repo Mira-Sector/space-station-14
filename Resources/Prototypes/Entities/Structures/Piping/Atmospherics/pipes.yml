@@ -81,6 +81,10 @@
   - type: PipeLayerVisuals
     layers:
     - enum.PipeVisualLayers.Pipe
+    - enum.PipeConnectionLayer.NorthConnection
+    - enum.PipeConnectionLayer.SouthConnection
+    - enum.PipeConnectionLayer.EastConnection
+    - enum.PipeConnectionLayer.WestConnection
     displacements:
       1:
         sizeMaps:
