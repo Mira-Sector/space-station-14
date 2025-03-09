@@ -2,12 +2,6 @@ using Robust.Shared.Serialization;
 
 namespace Content.Shared.Atmos
 {
-    [Serializable, NetSerializable]
-    public enum PipeVisuals
-    {
-        VisualState
-    }
-
     [Flags]
     [Serializable, NetSerializable]
     public enum PipeDirection

@@ -20,10 +20,10 @@ public sealed class AtmosPipeAppearanceSystem : EntitySystem
 
     private void OnNodeUpdate(EntityUid uid, PipeAppearanceComponent component, ref NodeGroupsRebuilt args)
     {
-        UpdateAppearance(args.NodeOwner);
+        UpdateAppearance(args.NodeOwner, component);
     }
 
-    private void UpdateAppearance(EntityUid uid, AppearanceComponent? appearance = null, NodeContainerComponent? container = null,
+    private void UpdateAppearance(EntityUid uid, PipeAppearanceComponent component, AppearanceComponent? appearance = null, NodeContainerComponent? container = null,
         TransformComponent? xform = null)
     {
         if (!Resolve(uid, ref appearance, ref container, ref xform, false))
@@ -34,7 +34,7 @@ public sealed class AtmosPipeAppearanceSystem : EntitySystem
 
         // get connected entities
         var anyPipeNodes = false;
-        HashSet<EntityUid> connected = new();
+        Dictionary<EntityUid, HashSet<int>> connected = new();
         foreach (var node in container.Nodes.Values)
         {
             if (node is not PipeNode)
@@ -44,8 +44,19 @@ public sealed class AtmosPipeAppearanceSystem : EntitySystem
 
             foreach (var connectedNode in node.ReachableNodes)
             {
-                if (connectedNode is PipeNode)
-                    connected.Add(connectedNode.Owner);
+                if (connectedNode is not PipeNode pipeNode)
+                    continue;
+
+                if (connected.TryGetValue(pipeNode.Owner, out var layers))
+                {
+                    layers.Add(pipeNode.Layer);
+                }
+                else
+                {
+                    layers = new();
+                    layers.Add(pipeNode.Layer);
+                    connected.Add(connectedNode.Owner, layers);
+                }
             }
         }
 
@@ -53,22 +64,37 @@ public sealed class AtmosPipeAppearanceSystem : EntitySystem
             return;
 
         // find the cardinal directions of any connected entities
-        var netConnectedDirections = PipeDirection.None;
+        Dictionary<int, PipeDirection> netConnectedDirections = new();
         var tile = grid.TileIndicesFor(xform.Coordinates);
-        foreach (var neighbour in connected)
+        foreach (var (neighbour, layers) in connected)
         {
-            var otherTile = grid.TileIndicesFor(Transform(neighbour).Coordinates);
-
-            netConnectedDirections |= (otherTile - tile) switch
+            foreach (var layer in layers)
             {
-                (0, 1) => PipeDirection.North,
-                (0, -1) => PipeDirection.South,
-                (1, 0) => PipeDirection.East,
-                (-1, 0) => PipeDirection.West,
-                _ => PipeDirection.None
-            };
+                if (netConnectedDirections.TryGetValue(layer, out var directions))
+                {
+                    var otherTile = grid.TileIndicesFor(Transform(neighbour).Coordinates);
+
+                    directions |= (otherTile - tile) switch
+                    {
+                        (0, 1) => PipeDirection.North,
+                        (0, -1) => PipeDirection.South,
+                        (1, 0) => PipeDirection.East,
+                        (-1, 0) => PipeDirection.West,
+                        _ => PipeDirection.None
+                    };
+                }
+                else
+                {
+                    directions = PipeDirection.None;
+                    netConnectedDirections.Add(layer, directions);
+                }
+            }
         }
 
-        _appearance.SetData(uid, PipeVisuals.VisualState, netConnectedDirections, appearance);
+        if (netConnectedDirections != component.ConnectedDirections)
+        {
+            component.ConnectedDirections = netConnectedDirections;
+            _appearance.QueueUpdate(uid, appearance);
+        }
     }
 }
