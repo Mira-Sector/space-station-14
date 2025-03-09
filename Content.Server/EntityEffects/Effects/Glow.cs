@@ -40,7 +40,7 @@ public sealed partial class Glow : EntityEffect
 
             foreach (var quant in reagentArgs.Source.Contents.ToArray())
             {
-                //log.Debug($"{quant.Reagent} {quant.Quantity} {reagentArgs.Reagent.ID} {reagentArgs.Quantity}");
+                log.Debug($"{quant.Reagent} {quant.Quantity} {reagentArgs.Reagent.ID} {reagentArgs.Quantity}");
                 if (quant.Reagent.Prototype == reagentArgs.Reagent.ID && quant.Quantity - reagentArgs.Quantity <= 0)
                 {
                     //log.Debug($"ded");

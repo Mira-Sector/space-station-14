@@ -2205,8 +2205,8 @@
   chemicals:
     UnstableMutagen:
       Min: 1
-      Max: 10
-      PotencyDivisor: 10
+      Max: 12
+      PotencyDivisor: 8
     Nutriment: #tasty
       Min: 1
       Max: 2

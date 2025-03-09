@@ -2894,9 +2894,17 @@
         solution: drink
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
-  - type: Log
-    spawnedPrototype: ProduceCoconutOpen
-    spawnCount: 1
+  - type: SliceableFoodDrink
+    count: 1
+    slice: ProduceCoconutOpen
+  - type: Extractable
+    juiceSolution:
+      reagents:
+        - ReagentId: Milk
+          Quantity: 10 #juicing the rind and coconut water produces a form of milk
+  - type: Tag
+    tags:
+    - Fruit
 
 - type: entity #add liquid levels
   name: sliced coconut
@@ -2915,14 +2923,14 @@
   - type: SolutionContainerManager
     solutions:
       food:
-          maxVol: 15
-          reagents:
-          - ReagentId: Nutriment
-            Quantity: 5
-          - ReagentId: Vitamin
-            Quantity: 5
-          - ReagentId: Fiber
-            Quantity: 5
+        maxVol: 15
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 5
+        - ReagentId: Vitamin
+          Quantity: 5
+        - ReagentId: Fiber
+          Quantity: 5
       drink:
         maxVol: 30
         reagents:
@@ -2998,11 +3006,10 @@
   name: chaos berry
   description: A handful of multicoloured berries, what could they contain?
   id: FoodChaosBerries
-  parent: FoodInjectableBase
+  parent: FoodProduceBase
   components:
   - type: Sprite
     sprite: Objects/Specific/Hydroponics/chaosberries.rsi
-    state: produce
   - type: Produce
     seedId: chaosberries
   - type: SolutionContainerManager
@@ -3025,22 +3032,21 @@
 
 - type: entity
   name: unstable bananium
-  parent: FoodInjectableBase
+  parent: FoodProduceBase
   id: ProduceBananiumPlant
   description: A rapidly decaying isotope of bananium. You probably shouldn't be standing so close.
   components:
   - type: Sprite
     sprite: Objects/Specific/Hydroponics/bananiumplant.rsi
-    state: produce
   - type: Produce
     seedId: bananiumplant
   - type: SolutionContainerManager
     solutions:
       food:
-        maxVol: 12
+        maxVol: 14
         reagents:
-        - ReagentId: UnstableMutagen
-          Quantity: 10
+        - ReagentId: UnstableMutagen #radiation risk and time limit for infinite mutation fuel.
+          Quantity: 12
         - ReagentId: Nutriment
           Quantity: 2
   - type: RadiationSource
@@ -3079,7 +3085,7 @@
   name: voltato
   parent: FoodProduceBase
   id: FoodVoltato
-  description: A favoured tool of the Space IRA for its electronics charging utility and no other reasons.
+  description: A favoured food of the Space IRA for its electronics charging utility and no other reasons.
   components:
   - type: Sprite
     sprite: Objects/Specific/Hydroponics/voltato.rsi
@@ -3110,7 +3116,7 @@
         Quantity: 10
   - type: PowerCell
   - type: Battery
-    maxCharge: 500
+    maxCharge: 500 #somewhere between a small and medium battery
     startingCharge: 500
   - type: HitscanBatteryAmmoProvider
     proto: RedLightLaser
