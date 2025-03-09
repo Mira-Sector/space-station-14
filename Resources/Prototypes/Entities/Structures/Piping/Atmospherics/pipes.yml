@@ -74,8 +74,7 @@
 
 - type: entity
   abstract: true
-  id: GasPipeLayererableBase
-  parent: GasPipeBase
+  id: GasPipeLayerableBase
   components:
   - type: PipeLayerable
   - type: PipeLayerVisuals
@@ -115,7 +114,7 @@
 #Note: The PipeDirection of the PipeNode should be the south-facing version, because the entity starts at an angle of 0 (south)
 
 - type: entity
-  parent: GasPipeLayererableBase
+  parent: [ GasPipeLayerableBase, GasPipeBase ]
   id: GasPipeHalf
   suffix: Half
   components:
@@ -134,7 +133,7 @@
     node: half
 
 - type: entity
-  parent: GasPipeLayererableBase
+  parent: [ GasPipeLayerableBase, GasPipeBase ]
   id: GasPipeStraight
   suffix: Straight
   components:
@@ -167,7 +166,7 @@
       collection: MetalThud # this NEEDS to changed to the metal pipe falling sound effect on april first every year
 
 - type: entity
-  parent: GasPipeLayererableBase
+  parent: [ GasPipeLayerableBase, GasPipeBase ]
   id: GasPipeBend
   suffix: Bend
   components:
@@ -207,7 +206,7 @@
         Blunt: 8 # Woe, pipe be upon ye!
 
 - type: entity
-  parent: GasPipeLayererableBase
+  parent: [ GasPipeLayerableBase, GasPipeBase ]
   id: GasPipeTJunction
   suffix: TJunction
   components:
@@ -243,7 +242,7 @@
       collection: MetalThud
 
 - type: entity
-  parent: GasPipeLayererableBase
+  parent: [ GasPipeLayerableBase, GasPipeBase ]
   id: GasPipeFourway
   suffix: Fourway
   components:
@@ -279,7 +278,7 @@
 
 - type: entity
   id: GasPipeBroken
-  parent: GasPipeLayererableBase
+  parent: [ GasPipeLayerableBase, GasPipeBase ]
   name: broken pipe
   description: It used to hold gas.
   components:
@@ -304,7 +303,7 @@
 
 - type: entity
   abstract: true
-  parent: GasPipeLayererableBase
+  parent: [ GasPipeLayerableBase, GasPipeBase ]
   id: GasPipeManifoldBase
   name: pipe manifold
   components:
