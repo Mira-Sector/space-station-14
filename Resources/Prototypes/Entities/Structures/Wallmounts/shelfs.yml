@@ -471,3 +471,11 @@
   - type: AccessReader
     access: [["Chemistry"]]
 
+- type: entity
+  parent: ShelfRMetal
+  id: ShelfShelfRMetalSecure
+  suffix: Command, Secure
+  components:
+  - type: AccessReader
+    access: [["Command"]]
+
