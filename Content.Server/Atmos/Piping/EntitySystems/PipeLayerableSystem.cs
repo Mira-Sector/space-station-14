@@ -11,6 +11,7 @@ public sealed partial class PipeLayerableSystem : EntitySystem
 {
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly NodeContainerSystem _nodeContainer = default!;
+    [Dependency] private readonly NodeGroupSystem _nodeGroup = default!;
 
     public override void Initialize()
     {
@@ -77,7 +78,11 @@ public sealed partial class PipeLayerableSystem : EntitySystem
             return false;
 
         foreach (var node in nodes)
+        {
             node.Layer += offset;
+            _nodeGroup.QueueNodeRemove(node);
+            _nodeGroup.QueueReflood(node);
+        }
 
         ent.Comp.Layer = layer;
         _appearance.SetData(ent, PipeLayerVisuals.Layer, layer);
