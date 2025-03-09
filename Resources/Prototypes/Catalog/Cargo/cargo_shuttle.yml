@@ -109,7 +109,7 @@
   icon:
     sprite: Objects/Weapons/Guns/Shuttles/launcher.rsi
     state: exp-320g
-  shuttle: /Maps/Shuttles/Sneeker_shittle.yml
+  shuttle: /Maps/Shuttles/Sneak_shittle.yml
   cost: 20000
   category: cargoproduct-category-name-shuttle
   group: market
