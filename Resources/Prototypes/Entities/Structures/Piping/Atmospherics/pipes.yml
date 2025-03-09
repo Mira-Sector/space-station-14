@@ -96,6 +96,11 @@
           32:
             sprite: Structures/Piping/Atmospherics/displacement.rsi
             state: 2
+      0:
+        sizeMaps:
+          32:
+            sprite: Structures/Piping/Atmospherics/displacement.rsi
+            state: 0
       -1:
         sizeMaps:
           32:

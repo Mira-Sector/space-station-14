@@ -20,7 +20,7 @@ public sealed class PipeLayerVisualizerSystem : VisualizerSystem<PipeLayerVisual
             return;
 
         foreach (var layer in component.RevealedLayers)
-            args.Sprite.RemoveLayer(layer);
+            args.Sprite.LayerMapRemove(layer);
 
         component.RevealedLayers.Clear();
 
