@@ -139,10 +139,19 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
 
                 foreach (var node in currentNodeComp.Nodes.Values)
                 {
-                    if (node is PipeNode pipeNode &&
-                        (pipeNode.CurrentPipeDirection == mainPipeDir || (pipeNode.CurrentPipeDirection & mainPipeDir) == mainPipeDir))
+                    if (node is not PipeNode pipeNode ||
+                        (pipeNode.CurrentPipeDirection != mainPipeDir && (pipeNode.CurrentPipeDirection & mainPipeDir) != mainPipeDir))
                     {
-                        HashSet<EntityUid> pipeList = new();
+                        continue;
+                    }
+
+                    if (connectedPipes.TryGetValue(dir, out var pipeList))
+                    {
+                        pipeList.Add(pipe);
+                    }
+                    else
+                    {
+                        pipeList = new();
                         pipeList.Add(pipe);
                         connectedPipes.Add(dir, pipeList);
                         connectedPipesDir.Add(dir, pipeNode.CurrentPipeDirection);
