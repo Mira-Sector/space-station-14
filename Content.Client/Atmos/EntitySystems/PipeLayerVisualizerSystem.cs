@@ -38,11 +38,14 @@ public sealed class PipeLayerVisualizerSystem : VisualizerSystem<PipeLayerVisual
 
         foreach (var layer in component.Layers)
         {
-            if (!_refMan.TryParseEnumReference(layer, out var @enum))
-                continue;
+            if (!args.Sprite.LayerMapTryGet(layer, out var index))
+            {
+                if (!_refMan.TryParseEnumReference(layer, out var @enum, false))
+                    continue;
 
-            if (!args.Sprite.LayerMapTryGet(@enum, out var index))
-                continue;
+                if (!args.Sprite.LayerMapTryGet(@enum, out index))
+                    continue;
+            }
 
             _displacement.TryAddDisplacement(displacement, args.Sprite, index, layer, component.RevealedLayers);
         }
