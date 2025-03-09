@@ -22,7 +22,15 @@ public sealed class PipeLayerVisualizerSystem : VisualizerSystem<PipeLayerVisual
         foreach (var layer in component.RevealedLayers)
             args.Sprite.LayerMapRemove(layer);
 
+        if (component.ChangeDrawDepth)
+        {
+            // reset it back to what it was
+            args.Sprite.DrawDepth -= component.LastLayer;
+            args.Sprite.DrawDepth += currentLayer;
+        }
+
         component.RevealedLayers.Clear();
+        component.LastLayer = currentLayer;
 
         // we still need to cleanup our previous layer
         if (!component.Displacements.TryGetValue(currentLayer, out var displacement))
@@ -38,5 +46,6 @@ public sealed class PipeLayerVisualizerSystem : VisualizerSystem<PipeLayerVisual
 
             _displacement.TryAddDisplacement(displacement, args.Sprite, index, layer, component.RevealedLayers);
         }
+
     }
 }

@@ -11,6 +11,12 @@ public sealed partial class PipeLayerVisualsComponent : Component
     [DataField(required: true)]
     public HashSet<string> Layers = new();
 
+    [DataField]
+    public bool ChangeDrawDepth = true;
+
     [ViewVariables]
     public HashSet<string> RevealedLayers = new();
+
+    [ViewVariables]
+    public int LastLayer;
 }
