@@ -104,7 +104,7 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
 
         var pipeCoords = _map.TileIndicesFor(gridUid!.Value, grid, xform.Coordinates);
 
-        Dictionary<Direction, EntityUid> connectedPipes = new();
+        Dictionary<Direction, HashSet<EntityUid>> connectedPipes = new();
         Dictionary<Direction, PipeDirection> connectedPipesDir = new();
         foreach (PipeDirection pipeDir in Enum.GetValues(typeof(PipeDirection)))
         {
@@ -142,7 +142,9 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
                     if (node is PipeNode pipeNode &&
                         (pipeNode.CurrentPipeDirection == mainPipeDir || (pipeNode.CurrentPipeDirection & mainPipeDir) == mainPipeDir))
                     {
-                        connectedPipes.Add(dir, pipe);
+                        HashSet<EntityUid> pipeList = new();
+                        pipeList.Add(pipe);
+                        connectedPipes.Add(dir, pipeList);
                         connectedPipesDir.Add(dir, pipeNode.CurrentPipeDirection);
                     }
                 }
@@ -162,13 +164,16 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
             Dirty(uid, component);
 
 
-            foreach ((var dir, var pipe) in connectedPipes)
+            foreach ((var dir, var pipes) in connectedPipes)
             {
-                if (component.UpdatedBy.Contains(pipe))
-                    continue;
+                foreach (var pipe in pipes)
+                {
+                    if (component.UpdatedBy.Contains(pipe))
+                        continue;
 
-                // update the connected pipes
-                UpdateState(pipe, null, connectedPipesDir[dir], uid);
+                    // update the connected pipes
+                    UpdateState(pipe, null, connectedPipesDir[dir], uid);
+                }
             }
         }
     }
