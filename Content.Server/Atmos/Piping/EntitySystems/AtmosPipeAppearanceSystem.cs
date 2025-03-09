@@ -63,38 +63,34 @@ public sealed class AtmosPipeAppearanceSystem : EntitySystem
         if (!anyPipeNodes)
             return;
 
+        component.ConnectedDirections.Clear();
+
         // find the cardinal directions of any connected entities
-        Dictionary<int, PipeDirection> netConnectedDirections = new();
         var tile = grid.TileIndicesFor(xform.Coordinates);
         foreach (var (neighbour, layers) in connected)
         {
             foreach (var layer in layers)
             {
-                if (netConnectedDirections.TryGetValue(layer, out var directions))
-                {
-                    var otherTile = grid.TileIndicesFor(Transform(neighbour).Coordinates);
-
-                    directions |= (otherTile - tile) switch
-                    {
-                        (0, 1) => PipeDirection.North,
-                        (0, -1) => PipeDirection.South,
-                        (1, 0) => PipeDirection.East,
-                        (-1, 0) => PipeDirection.West,
-                        _ => PipeDirection.None
-                    };
-                }
-                else
+                if (!component.ConnectedDirections.TryGetValue(layer, out var directions))
                 {
                     directions = PipeDirection.None;
-                    netConnectedDirections.Add(layer, directions);
+                    component.ConnectedDirections.Add(layer, directions);
                 }
+
+                var otherTile = grid.TileIndicesFor(Transform(neighbour).Coordinates);
+
+                component.ConnectedDirections[layer] |= (otherTile - tile) switch
+                {
+                    (0, 1) => PipeDirection.North,
+                    (0, -1) => PipeDirection.South,
+                    (1, 0) => PipeDirection.East,
+                    (-1, 0) => PipeDirection.West,
+                    _ => PipeDirection.None
+                };
             }
         }
 
-        if (netConnectedDirections != component.ConnectedDirections)
-        {
-            component.ConnectedDirections = netConnectedDirections;
-            _appearance.QueueUpdate(uid, appearance);
-        }
+        Dirty(uid, component);
+        _appearance.QueueUpdate(uid, appearance);
     }
 }
