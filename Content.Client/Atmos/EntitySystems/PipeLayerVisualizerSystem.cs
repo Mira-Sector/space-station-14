@@ -46,6 +46,5 @@ public sealed class PipeLayerVisualizerSystem : VisualizerSystem<PipeLayerVisual
 
             _displacement.TryAddDisplacement(displacement, args.Sprite, index, layer, component.RevealedLayers);
         }
-
     }
 }

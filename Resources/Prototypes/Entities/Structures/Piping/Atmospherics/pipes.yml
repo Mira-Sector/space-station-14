@@ -301,3 +301,158 @@
       behaviors:
       - !type:DoActsBehavior
         acts: ["Destruction"]
+
+- type: entity
+  abstract: true
+  parent: GasPipeLayererableBase
+  id: GasPipeManifoldBase
+  name: pipe manifold
+  components:
+  - type: Sprite
+    sprite: Structures/Piping/Atmospherics/manifold.rsi
+
+- type: entity
+  parent: GasPipeManifoldBase
+  id: GasPipeManifold5
+  suffix: 5 layers
+  components:
+  - type: NodeContainer
+    nodes:
+      -2:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+        layer: -2
+      -1:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: SWBend
+        layer: -1
+      0:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+        layer: 0
+      1:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+        layer: 1
+      2:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+        layer: 2
+  - type: Sprite
+    layers:
+      - state: 5
+        map: [ "enum.PipeVisualLayers.Pipe" ]
+  - type: Item
+    size: Small
+    shape:
+    - 0,0,5,0
+    storedSprite:
+      sprite: Structures/Piping/Atmospherics/manifold.rsi
+      state: storage5
+
+- type: entity
+  parent: GasPipeManifoldBase
+  id: GasPipeManifold4
+  suffix: 4 layers
+  components:
+  - type: NodeContainer
+    nodes:
+      -1:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: SWBend
+        layer: -1
+      0:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+        layer: 0
+      1:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+        layer: 1
+      2:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+        layer: 2
+  - type: Sprite
+    layers:
+      - state: 4
+        map: [ "enum.PipeVisualLayers.Pipe" ]
+  - type: Item
+    size: Small
+    shape:
+    - 0,0,4,0
+    storedSprite:
+      sprite: Structures/Piping/Atmospherics/manifold.rsi
+      state: storage4
+
+- type: entity
+  parent: GasPipeManifoldBase
+  id: GasPipeManifold3
+  suffix: 3 layers
+  components:
+  - type: NodeContainer
+    nodes:
+      0:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+        layer: 0
+      1:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+        layer: 1
+      2:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+        layer: 2
+  - type: Sprite
+    layers:
+      - state: 3
+        map: [ "enum.PipeVisualLayers.Pipe" ]
+  - type: Item
+    size: Small
+    shape:
+    - 0,0,3,0
+    storedSprite:
+      sprite: Structures/Piping/Atmospherics/manifold.rsi
+      state: storage3
+
+- type: entity
+  parent: GasPipeManifoldBase
+  id: GasPipeManifold2
+  suffix: 2 layers
+  components:
+  - type: NodeContainer
+    nodes:
+      0:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+        layer: 0
+      1:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+        layer: 1
+  - type: Sprite
+    layers:
+      - state: 2
+        map: [ "enum.PipeVisualLayers.Pipe" ]
+  - type: Item
+    size: Small
+    shape:
+    - 0,0,2,0
+    storedSprite:
+      sprite: Structures/Piping/Atmospherics/manifold.rsi
+      state: storage2
