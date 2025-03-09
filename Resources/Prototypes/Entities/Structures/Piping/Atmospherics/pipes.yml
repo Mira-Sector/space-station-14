@@ -309,6 +309,10 @@
   components:
   - type: Sprite
     sprite: Structures/Piping/Atmospherics/manifold.rsi
+  - type: PipeAppearance
+    sprite:
+      sprite: Structures/Piping/Atmospherics/manifold.rsi
+      state: connector
 
 - type: entity
   parent: GasPipeManifoldBase
