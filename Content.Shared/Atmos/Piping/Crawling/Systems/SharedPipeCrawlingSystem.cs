@@ -81,23 +81,28 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
                 continue;
             }
 
-            var newPipe = pipeComp.ConnectedPipes[direction];
+            var newPipes = pipeComp.ConnectedPipes[direction];
 
-            if (_containers.TryGetContainer(component.CurrentPipe, PipeContainer, out var currentPipeContainer) &&
-                TryComp<PipeCrawlingPipeComponent>(component.CurrentPipe, out var currentPipeComp))
+            // only insert us into the first available pipe
+            foreach (var newPipe in newPipes)
             {
-                var newPipeCoords = Transform(newPipe).Coordinates;
-                _containers.Remove(uid, currentPipeContainer, destination: newPipeCoords, localRotation: direction.ToAngle());
-            }
+                if (_containers.TryGetContainer(component.CurrentPipe, PipeContainer, out var currentPipeContainer) &&
+                    TryComp<PipeCrawlingPipeComponent>(component.CurrentPipe, out var currentPipeComp))
+                {
+                    var newPipeCoords = Transform(newPipe).Coordinates;
+                    _containers.Remove(uid, currentPipeContainer, destination: newPipeCoords, localRotation: direction.ToAngle());
+                }
 
-            if (_containers.TryGetContainer(newPipe, PipeContainer, out var newPipeContainer) &&
-            TryComp<PipeCrawlingPipeComponent>(newPipe, out var newPipeComp))
-            {
-                _containers.Insert(uid, newPipeContainer);
-            }
+                if (_containers.TryGetContainer(newPipe, PipeContainer, out var newPipeContainer) &&
+                TryComp<PipeCrawlingPipeComponent>(newPipe, out var newPipeComp))
+                {
+                    _containers.Insert(uid, newPipeContainer);
+                }
 
-            component.CurrentPipe = newPipe;
-            Dirty(uid, component);
+                component.CurrentPipe = newPipe;
+                Dirty(uid, component);
+                break;
+            }
         }
     }
 
