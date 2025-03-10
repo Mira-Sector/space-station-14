@@ -3,6 +3,7 @@ using Content.Server.NodeContainer.EntitySystems;
 using Content.Server.NodeContainer.Nodes;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
+using Content.Shared.Atmos.Piping;
 using Robust.Shared.Map.Components;
 
 namespace Content.Server.Atmos.Piping.EntitySystems;
@@ -91,6 +92,12 @@ public sealed class AtmosPipeAppearanceSystem : EntitySystem
         }
 
         Dirty(uid, component);
-        _appearance.QueueUpdate(uid, appearance);
+
+
+        foreach (PipeAppearanceLayer layerKey in Enum.GetValues(typeof(PipeAppearanceLayer)))
+        {
+            component.ConnectedDirections.TryGetValue(PipeAppearanceLayerHelpers.EnumToLayer(layerKey), out var pipeDirection);
+            _appearance.SetData(uid, layerKey, pipeDirection, appearance);
+        }
     }
 }

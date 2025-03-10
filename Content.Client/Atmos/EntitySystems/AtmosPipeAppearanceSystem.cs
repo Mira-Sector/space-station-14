@@ -5,7 +5,6 @@ using Content.Shared.Atmos.Piping;
 using Content.Shared.Atmos.Piping.Layerable;
 using JetBrains.Annotations;
 using Robust.Client.GameObjects;
-using System.Linq;
 
 namespace Content.Client.Atmos.EntitySystems;
 
@@ -73,7 +72,19 @@ public sealed class AtmosPipeAppearanceSystem : EntitySystem
             return;
         }
 
-        if (!TryComp<PipeAppearanceComponent>(uid, out var pipeAppearanceComp))
+        var zLayers = GetZLayers(uid);
+        Dictionary<int, PipeDirection> layerConnections = new();
+
+        foreach (var layer in zLayers)
+        {
+            if (!_appearance.TryGetData<PipeDirection?>(uid, PipeAppearanceLayerHelpers.LayerToEnum(layer), out var direction))
+                continue;
+
+            if (direction != null)
+                layerConnections.Add(layer, direction.Value);
+        }
+
+        if (layerConnections.Count <= 0)
         {
             HideAllPipeConnection((uid, args.Sprite));
             return;
@@ -83,7 +94,7 @@ public sealed class AtmosPipeAppearanceSystem : EntitySystem
             color = Color.White;
 
         // transform connected directions to local-coordinates
-        foreach (var (zLayer, direction) in pipeAppearanceComp.ConnectedDirections)
+        foreach (var (zLayer, direction) in layerConnections)
         {
             var connectedDirections = direction.RotatePipeDirection(-Transform(uid).LocalRotation);
 
@@ -108,7 +119,7 @@ public sealed class AtmosPipeAppearanceSystem : EntitySystem
         // set the rest of the zlayers to disabled
         foreach (var zLayer in GetZLayers(uid))
         {
-            if (pipeAppearanceComp.ConnectedDirections.ContainsKey(zLayer))
+            if (layerConnections.ContainsKey(zLayer))
                 continue;
 
             foreach (PipeConnectionLayer layerKey in Enum.GetValues(typeof(PipeConnectionLayer)))
