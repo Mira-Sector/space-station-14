@@ -1,4 +1,5 @@
 using Content.Shared.DisplacementMap;
+using System.Numerics;
 
 namespace Content.Client.Atmos.Components;
 
@@ -6,10 +7,16 @@ namespace Content.Client.Atmos.Components;
 public sealed partial class PipeLayerVisualsComponent : Component
 {
     [DataField]
-    public Dictionary<int, DisplacementData> Displacements = new();
+    public Dictionary<int, DisplacementData>? Displacements;
 
-    [DataField(required: true)]
-    public HashSet<string> Layers = new();
+    [DataField]
+    public HashSet<string>? DisplacementLayers;
+
+    [DataField]
+    public Dictionary<int, Vector2>? Offsets;
+
+    [DataField]
+    public HashSet<string>? OffsetLayers;
 
     [DataField]
     public bool ChangeDrawDepth = true;
