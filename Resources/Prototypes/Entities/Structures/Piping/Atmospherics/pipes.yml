@@ -78,7 +78,7 @@
   components:
   - type: PipeLayerable
   - type: PipeLayerVisuals
-    layers:
+    displacementLayers:
     - enum.PipeVisualLayers.Pipe
     - NorthConnection_-2
     - SouthConnection_-2
@@ -329,6 +329,36 @@
     sprite:
       sprite: Structures/Piping/Atmospherics/manifold.rsi
       state: connector
+  - type: PipeLayerVisuals
+    offsetLayers:
+    - enum.PipeVisualLayers.Pipe
+    - NorthConnection_-2
+    - SouthConnection_-2
+    - EastConnection_-2
+    - WestConnection_-2
+    - NorthConnection_-1
+    - SouthConnection_-1
+    - EastConnection_-1
+    - WestConnection_-1
+    - NorthConnection_0
+    - SouthConnection_0
+    - EastConnection_0
+    - WestConnection_0
+    - NorthConnection_1
+    - SouthConnection_1
+    - EastConnection_1
+    - WestConnection_1
+    - NorthConnection_2
+    - SouthConnection_2
+    - EastConnection_2
+    - WestConnection_2
+    offsets:
+      -2: -0.4, 0
+      -1: -0.2, 0
+      1: 0.2, 0
+      2: 0.4, 0
+    displacements: null
+    displacementLayers: null
 
 - type: entity
   parent: GasPipeManifoldBase
@@ -474,6 +504,17 @@
   components:
   - type: NodeContainer
     nodes:
+      -1:
+        !type:PipeNode
+        nodeGroupID: Pipe
+        pipeDirection: Longitudinal
+        layer: -1
+        connectableLayers:
+        - -2
+        - -1
+        - 0
+        - 1
+        - 2
       0:
         !type:PipeNode
         nodeGroupID: Pipe
@@ -490,17 +531,6 @@
         nodeGroupID: Pipe
         pipeDirection: Longitudinal
         layer: 1
-        connectableLayers:
-        - -2
-        - -1
-        - 0
-        - 1
-        - 2
-      2:
-        !type:PipeNode
-        nodeGroupID: Pipe
-        pipeDirection: Longitudinal
-        layer: 2
         connectableLayers:
         - -2
         - -1

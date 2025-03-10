@@ -4,7 +4,6 @@ using Content.Shared.Atmos.Piping;
 using Robust.Client.GameObjects;
 using Robust.Shared.Reflection;
 using System.Diagnostics.CodeAnalysis;
-using System.Numerics;
 
 namespace Content.Client.Atmos.EntitySystems;
 
