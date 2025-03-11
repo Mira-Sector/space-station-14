@@ -36,9 +36,15 @@ public sealed class PipeLayerVisualizerSystem : VisualizerSystem<PipeLayerVisual
             component.Offsets.TryGetValue(currentLayer, out var newOffset);
             component.Offsets.TryGetValue(component.LastLayer, out var oldOffset);
 
+            HashSet<int> foundIndexes = new();
+
             foreach (var layerId in component.OffsetLayers)
             {
                 if (!TryGetIndex(layerId, args.Sprite, out var index))
+                    continue;
+
+                // already changed this layer under a different key
+                if (!foundIndexes.Add(index.Value))
                     continue;
 
                 if (!args.Sprite.TryGetLayer(index.Value, out var layer))
