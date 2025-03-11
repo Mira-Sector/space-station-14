@@ -426,6 +426,13 @@
         nodeGroupID: Pipe
         pipeDirection: Longitudinal
         layer: 2
+  - type: PipeAlwaysConnectedNodes
+    nodes:
+    - -2
+    - -1
+    - 0
+    - 1
+    - 2
   - type: Sprite
     layers:
       - state: 5
@@ -465,6 +472,12 @@
         nodeGroupID: Pipe
         pipeDirection: Longitudinal
         layer: 2
+  - type: PipeAlwaysConnectedNodes
+    nodes:
+    - -1
+    - 0
+    - 1
+    - 2
   - type: Sprite
     layers:
       - state: 4
@@ -499,6 +512,11 @@
         nodeGroupID: Pipe
         pipeDirection: Longitudinal
         layer: 1
+  - type: PipeAlwaysConnectedNodes
+    nodes:
+    - -1
+    - 0
+    - 1
   - type: Sprite
     layers:
       - state: 3
@@ -528,6 +546,10 @@
         nodeGroupID: Pipe
         pipeDirection: Longitudinal
         layer: 1
+  - type: PipeAlwaysConnectedNodes
+    nodes:
+    - 0
+    - 1
   - type: Sprite
     layers:
       - state: 2
