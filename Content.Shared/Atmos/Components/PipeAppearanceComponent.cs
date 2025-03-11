@@ -1,5 +1,7 @@
+using Content.Shared.Atmos.Piping;
 using Robust.Shared.Utility;
 using Robust.Shared.GameStates;
+using System.Numerics;
 
 namespace Content.Shared.Atmos.Components;
 
@@ -11,4 +13,7 @@ public sealed partial class PipeAppearanceComponent : Component
 
     [ViewVariables, AutoNetworkedField]
     public Dictionary<int, PipeDirection> ConnectedDirections = new();
+
+    [DataField]
+    public Dictionary<int, Dictionary<PipeConnectionLayer, Vector2>> LayerOffsets = new();
 }

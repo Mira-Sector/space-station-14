@@ -28,17 +28,30 @@ public sealed class AtmosPipeAppearanceSystem : EntitySystem
 
         var zLayers = GetZLayers(uid);
 
-        foreach (PipeConnectionLayer layerKey in Enum.GetValues(typeof(PipeConnectionLayer)))
+        foreach (var zLayer in zLayers)
         {
-            foreach (var zLayer in zLayers)
+            component.LayerOffsets.TryGetValue(zLayer, out var offsets);
+
+            foreach (PipeConnectionLayer layerKey in Enum.GetValues(typeof(PipeConnectionLayer)))
             {
                 var key = layerKey + "_" + zLayer.ToString();
 
                 sprite.LayerMapReserveBlank(key);
-                var layer = sprite.LayerMapGet(key);
-                sprite.LayerSetRSI(layer, component.Sprite.RsiPath);
-                sprite.LayerSetState(layer, component.Sprite.RsiState);
-                sprite.LayerSetDirOffset(layer, ToOffset(layerKey));
+                var index = sprite.LayerMapGet(key);
+                sprite.LayerSetRSI(index, component.Sprite.RsiPath);
+                sprite.LayerSetState(index, component.Sprite.RsiState);
+                sprite.LayerSetDirOffset(index, ToOffset(layerKey));
+
+                if (offsets == null)
+                    continue;
+
+                if (!offsets.TryGetValue(layerKey, out var offset))
+                    continue;
+
+                if (!sprite.TryGetLayer(index, out var layer))
+                    continue;
+
+                layer.Offset += offset;
             }
         }
     }
@@ -157,13 +170,5 @@ public sealed class AtmosPipeAppearanceSystem : EntitySystem
             PipeConnectionLayer.WestConnection => SpriteComponent.DirectionOffset.Clockwise,
             _ => SpriteComponent.DirectionOffset.None,
         };
-    }
-
-    private enum PipeConnectionLayer : byte
-    {
-        NorthConnection = PipeDirection.North,
-        SouthConnection = PipeDirection.South,
-        EastConnection = PipeDirection.East,
-        WestConnection = PipeDirection.West,
     }
 }

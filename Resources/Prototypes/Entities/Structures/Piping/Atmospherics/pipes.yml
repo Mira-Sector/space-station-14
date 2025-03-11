@@ -325,10 +325,6 @@
   components:
   - type: Sprite
     sprite: Structures/Piping/Atmospherics/manifold.rsi
-  - type: PipeAppearance
-    sprite:
-      sprite: Structures/Piping/Atmospherics/manifold.rsi
-      state: connector
   - type: PipeLayerVisuals
     offsetLayers:
     - enum.PipeVisualLayers.Pipe
@@ -359,6 +355,31 @@
       2: -0.28125, 0
     displacements: null
     displacementLayers: null
+  - type: PipeAppearance
+    sprite:
+      sprite: Structures/Piping/Atmospherics/manifold.rsi
+      state: connector
+    layerOffsets:
+      -2:
+        NorthConnection: 0.3125, 0
+        SouthConnection: 0.3125, 0
+        EastConnection: 0.3125, 0
+        WestConnection: 0.3125, 0
+      -1:
+        NorthConnection: 0.15625, 0
+        SouthConnection: 0.15625, 0
+        EastConnection: 0.15625, 0
+        WestConnection: 0.15625, 0
+      1:
+        NorthConnection: -0.125, 0
+        SouthConnection: -0.125, 0
+        EastConnection: -0.125, 0
+        WestConnection: -0.125, 0
+      2:
+        NorthConnection: -0.28125, 0
+        SouthConnection: -0.28125, 0
+        EastConnection: -0.28125, 0
+        WestConnection: -0.28125, 0
 
 - type: entity
   parent: GasPipeManifoldBase
