@@ -406,56 +406,26 @@
         nodeGroupID: Pipe
         pipeDirection: Longitudinal
         layer: -2
-        connectableLayers:
-        - -2
-        - -1
-        - 0
-        - 1
-        - 2
       -1:
         !type:PipeNode
         nodeGroupID: Pipe
         pipeDirection: SWBend
         layer: -1
-        connectableLayers:
-        - -2
-        - -1
-        - 0
-        - 1
-        - 2
       0:
         !type:PipeNode
         nodeGroupID: Pipe
         pipeDirection: Longitudinal
         layer: 0
-        connectableLayers:
-        - -2
-        - -1
-        - 0
-        - 1
-        - 2
       1:
         !type:PipeNode
         nodeGroupID: Pipe
         pipeDirection: Longitudinal
         layer: 1
-        connectableLayers:
-        - -2
-        - -1
-        - 0
-        - 1
-        - 2
       2:
         !type:PipeNode
         nodeGroupID: Pipe
         pipeDirection: Longitudinal
         layer: 2
-        connectableLayers:
-        - -2
-        - -1
-        - 0
-        - 1
-        - 2
   - type: Sprite
     layers:
       - state: 5
@@ -480,45 +450,21 @@
         nodeGroupID: Pipe
         pipeDirection: SWBend
         layer: -1
-        connectableLayers:
-        - -2
-        - -1
-        - 0
-        - 1
-        - 2
       0:
         !type:PipeNode
         nodeGroupID: Pipe
         pipeDirection: Longitudinal
         layer: 0
-        connectableLayers:
-        - -2
-        - -1
-        - 0
-        - 1
-        - 2
       1:
         !type:PipeNode
         nodeGroupID: Pipe
         pipeDirection: Longitudinal
         layer: 1
-        connectableLayers:
-        - -2
-        - -1
-        - 0
-        - 1
-        - 2
       2:
         !type:PipeNode
         nodeGroupID: Pipe
         pipeDirection: Longitudinal
         layer: 2
-        connectableLayers:
-        - -2
-        - -1
-        - 0
-        - 1
-        - 2
   - type: Sprite
     layers:
       - state: 4
@@ -543,34 +489,16 @@
         nodeGroupID: Pipe
         pipeDirection: Longitudinal
         layer: -1
-        connectableLayers:
-        - -2
-        - -1
-        - 0
-        - 1
-        - 2
       0:
         !type:PipeNode
         nodeGroupID: Pipe
         pipeDirection: Longitudinal
         layer: 0
-        connectableLayers:
-        - -2
-        - -1
-        - 0
-        - 1
-        - 2
       1:
         !type:PipeNode
         nodeGroupID: Pipe
         pipeDirection: Longitudinal
         layer: 1
-        connectableLayers:
-        - -2
-        - -1
-        - 0
-        - 1
-        - 2
   - type: Sprite
     layers:
       - state: 3
@@ -595,23 +523,11 @@
         nodeGroupID: Pipe
         pipeDirection: Longitudinal
         layer: 0
-        connectableLayers:
-        - -2
-        - -1
-        - 0
-        - 1
-        - 2
       1:
         !type:PipeNode
         nodeGroupID: Pipe
         pipeDirection: Longitudinal
         layer: 1
-        connectableLayers:
-        - -2
-        - -1
-        - 0
-        - 1
-        - 2
   - type: Sprite
     layers:
       - state: 2

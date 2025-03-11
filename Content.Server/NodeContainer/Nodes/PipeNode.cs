@@ -31,9 +31,6 @@ namespace Content.Server.NodeContainer.Nodes
         [DataField]
         public int Layer;
 
-        [DataField]
-        public HashSet<int> ConnectableLayers = new();
-
         private HashSet<PipeNode>? _alwaysReachable;
 
         public void AddAlwaysReachable(PipeNode pipeNode)
@@ -210,12 +207,6 @@ namespace Content.Server.NodeContainer.Nodes
                 if (pipe.NodeGroupID == NodeGroupID
                     && pipe.CurrentPipeDirection.HasDirection(pipeDir.GetOpposite()))
                 {
-                    if (ConnectableLayers.Contains(pipe.Layer))
-                    {
-                        yield return pipe;
-                        continue;
-                    }
-
                     if (Layer == pipe.Layer)
                         yield return pipe;
                 }
