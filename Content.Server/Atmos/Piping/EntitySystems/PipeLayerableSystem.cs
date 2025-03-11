@@ -3,6 +3,8 @@ using Content.Server.NodeContainer.EntitySystems;
 using Content.Server.NodeContainer.Nodes;
 using Content.Shared.Atmos.Piping;
 using Content.Shared.Atmos.Piping.Layerable;
+using Content.Shared.Interaction;
+using Content.Shared.Interaction.Events;
 using Content.Shared.Verbs;
 
 namespace Content.Server.Atmos.Piping.EntitySystems;
@@ -19,6 +21,9 @@ public sealed partial class PipeLayerableSystem : EntitySystem
 
         SubscribeLocalEvent<PipeLayerableComponent, GetVerbsEvent<InteractionVerb>>(OnInteractionVerbs);
         SubscribeLocalEvent<PipeLayerableComponent, GetVerbsEvent<AlternativeVerb>>(OnAlternativeVerbs);
+
+        SubscribeLocalEvent<PipeLayerableComponent, InteractHandEvent>(OnHandInteract);
+        SubscribeLocalEvent<PipeLayerableComponent, UseInHandEvent>(OnHandUse);
     }
 
     private void OnInteractionVerbs(Entity<PipeLayerableComponent> ent, ref GetVerbsEvent<InteractionVerb> args)
@@ -47,6 +52,25 @@ public sealed partial class PipeLayerableSystem : EntitySystem
         };
 
         args.Verbs.Add(verb);
+    }
+
+    private void OnHandInteract(Entity<PipeLayerableComponent> ent, ref InteractHandEvent args)
+    {
+        if (args.Handled)
+            return;
+
+        if (!Transform(ent).Anchored)
+            return;
+
+        args.Handled = TryIncrementLayer((ent.Owner, ent.Comp));
+    }
+
+    private void OnHandUse(Entity<PipeLayerableComponent> ent, ref UseInHandEvent args)
+    {
+        if (args.Handled)
+            return;
+
+        args.Handled = TryIncrementLayer((ent.Owner, ent.Comp));
     }
 
     public bool TryIncrementLayer(Entity<PipeLayerableComponent?> ent, bool reverse = false)
