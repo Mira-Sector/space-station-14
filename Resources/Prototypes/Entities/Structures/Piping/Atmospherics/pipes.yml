@@ -353,10 +353,10 @@
     - EastConnection_2
     - WestConnection_2
     offsets:
-      -2: -0.4, 0
-      -1: -0.2, 0
-      1: 0.2, 0
-      2: 0.4, 0
+      -2: 0.3125, 0
+      -1: 0.15625, 0
+      1: -0.125, 0
+      2: -0.28125, 0
     displacements: null
     displacementLayers: null
 
