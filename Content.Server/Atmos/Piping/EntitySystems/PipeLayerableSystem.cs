@@ -110,6 +110,7 @@ public sealed partial class PipeLayerableSystem : EntitySystem
 
         ent.Comp.Layer = layer;
         _appearance.SetData(ent, PipeLayerVisuals.Layer, layer);
+        Dirty(ent);
         return true;
     }
 
