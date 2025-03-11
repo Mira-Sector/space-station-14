@@ -80,6 +80,10 @@
   - type: PipeLayerVisuals
     displacementLayers:
     - enum.PipeVisualLayers.Pipe
+    - enum.SubfloorLayers.FirstLayer
+    - enum.PowerDeviceVisualLayers.Powered
+    - enabled
+    - base
     - NorthConnection_-2
     - SouthConnection_-2
     - EastConnection_-2
@@ -126,6 +130,66 @@
           32:
             sprite: Structures/Piping/Atmospherics/displacement.rsi
             state: -2
+
+- type: entity
+  abstract: true
+  id: GasPipeLayerableOffsetBase
+  components:
+  - type: PipeLayerable
+  - type: PipeLayerVisuals
+    offsetLayers:
+    - enum.PipeVisualLayers.Pipe
+    - enum.SubfloorLayers.FirstLayer
+    - enum.PowerDeviceVisualLayers.Powered
+    - enabled
+    - base
+    - NorthConnection_-2
+    - SouthConnection_-2
+    - EastConnection_-2
+    - WestConnection_-2
+    - NorthConnection_-1
+    - SouthConnection_-1
+    - EastConnection_-1
+    - WestConnection_-1
+    - NorthConnection_0
+    - SouthConnection_0
+    - EastConnection_0
+    - WestConnection_0
+    - NorthConnection_1
+    - SouthConnection_1
+    - EastConnection_1
+    - WestConnection_1
+    - NorthConnection_2
+    - SouthConnection_2
+    - EastConnection_2
+    - WestConnection_2
+    offsets:
+      -2: 0.3125, 0
+      -1: 0.15625, 0
+      1: -0.125, 0
+      2: -0.28125, 0
+  - type: PipeAppearance
+    layerOffsets:
+      -2:
+        NorthConnection: 0.3125, 0
+        SouthConnection: 0.3125, 0
+        EastConnection: 0.3125, 0
+        WestConnection: 0.3125, 0
+      -1:
+        NorthConnection: 0.15625, 0
+        SouthConnection: 0.15625, 0
+        EastConnection: 0.15625, 0
+        WestConnection: 0.15625, 0
+      1:
+        NorthConnection: -0.125, 0
+        SouthConnection: -0.125, 0
+        EastConnection: -0.125, 0
+        WestConnection: -0.125, 0
+      2:
+        NorthConnection: -0.28125, 0
+        SouthConnection: -0.28125, 0
+        EastConnection: -0.28125, 0
+        WestConnection: -0.28125, 0
 
 #Note: The PipeDirection of the PipeNode should be the south-facing version, because the entity starts at an angle of 0 (south)
 
@@ -319,67 +383,16 @@
 
 - type: entity
   abstract: true
-  parent: [ GasPipeLayerableBase, GasPipeBase ]
+  parent: [ GasPipeLayerableOffsetBase , GasPipeBase ]
   id: GasPipeManifoldBase
   name: pipe manifold
   components:
   - type: Sprite
     sprite: Structures/Piping/Atmospherics/manifold.rsi
-  - type: PipeLayerVisuals
-    offsetLayers:
-    - enum.PipeVisualLayers.Pipe
-    - NorthConnection_-2
-    - SouthConnection_-2
-    - EastConnection_-2
-    - WestConnection_-2
-    - NorthConnection_-1
-    - SouthConnection_-1
-    - EastConnection_-1
-    - WestConnection_-1
-    - NorthConnection_0
-    - SouthConnection_0
-    - EastConnection_0
-    - WestConnection_0
-    - NorthConnection_1
-    - SouthConnection_1
-    - EastConnection_1
-    - WestConnection_1
-    - NorthConnection_2
-    - SouthConnection_2
-    - EastConnection_2
-    - WestConnection_2
-    offsets:
-      -2: 0.3125, 0
-      -1: 0.15625, 0
-      1: -0.125, 0
-      2: -0.28125, 0
-    displacements: null
-    displacementLayers: null
   - type: PipeAppearance
     sprite:
       sprite: Structures/Piping/Atmospherics/manifold.rsi
       state: connector
-    layerOffsets:
-      -2:
-        NorthConnection: 0.3125, 0
-        SouthConnection: 0.3125, 0
-        EastConnection: 0.3125, 0
-        WestConnection: 0.3125, 0
-      -1:
-        NorthConnection: 0.15625, 0
-        SouthConnection: 0.15625, 0
-        EastConnection: 0.15625, 0
-        WestConnection: 0.15625, 0
-      1:
-        NorthConnection: -0.125, 0
-        SouthConnection: -0.125, 0
-        EastConnection: -0.125, 0
-        WestConnection: -0.125, 0
-      2:
-        NorthConnection: -0.28125, 0
-        SouthConnection: -0.28125, 0
-        EastConnection: -0.28125, 0
-        WestConnection: -0.28125, 0
 
 - type: entity
   parent: GasPipeManifoldBase

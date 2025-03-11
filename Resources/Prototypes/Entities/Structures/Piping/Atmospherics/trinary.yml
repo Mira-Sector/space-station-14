@@ -28,7 +28,7 @@
           pipeDirection: South
 
 - type: entity
-  parent: GasTrinaryBase
+  parent: [ GasPipeLayerableOffsetBase , GasTrinaryBase ]
   id: GasFilter
   name: gas filter
   description: Very useful for filtering gases.
@@ -72,7 +72,7 @@
         path: /Audio/Ambience/Objects/gas_hiss.ogg
     - type: AtmosMonitoringConsoleDevice
       navMapBlip: GasFlowRegulator
-      
+
 - type: entity
   parent: GasFilter
   id: GasFilterFlipped
@@ -118,7 +118,7 @@
         pipeDirection: North
 
 - type: entity
-  parent: GasTrinaryBase
+  parent: [ GasPipeLayerableOffsetBase , GasTrinaryBase ]
   id: GasMixer
   name: gas mixer
   description: Very useful for mixing gases.
@@ -162,7 +162,7 @@
         path: /Audio/Ambience/Objects/gas_hiss.ogg
     - type: AtmosMonitoringConsoleDevice
       navMapBlip: GasFlowRegulator
-      
+
 - type: entity
   parent: GasMixer
   id: GasMixerFlipped
@@ -207,7 +207,7 @@
     node: mixerflipped
 
 - type: entity
-  parent: GasPipeBase
+  parent: [ GasPipeLayerableBase , GasPipeBase ]
   id: PressureControlledValve
   name: pneumatic valve
   description: Valve controlled by pressure.
