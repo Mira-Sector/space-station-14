@@ -30,6 +30,8 @@ public abstract class SharedTrayScannerSystem : EntitySystem
 
         foreach (var layer in scanner.ToggleableLayers)
             scanner.RevealedLayers.Add(layer);
+
+        Dirty(uid, scanner);
     }
 
     private void OnGetVerbs(EntityUid uid, TrayScannerComponent scanner, GetVerbsEvent<Verb> args)
@@ -54,6 +56,8 @@ public abstract class SharedTrayScannerSystem : EntitySystem
                     {
                         scanner.RevealedLayers.Add(layer);
                     }
+
+                    Dirty(uid, scanner);
                 }
             };
 
