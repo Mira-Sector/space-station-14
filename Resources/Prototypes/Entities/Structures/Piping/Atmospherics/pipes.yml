@@ -392,8 +392,8 @@
     visuals:
       enum.PipeLayerVisuals.Layer:
         enum.PipeVisualLayers.Pipe:
-          -2: { state: pipeFourway-2 }
-          -1: { state: pipeFourway-1 }
+          -2: { state: pipeFourway_-2 }
+          -1: { state: pipeFourway_-1 }
           0: { state: pipeFourway }
           1: { state: pipeFourway_1 }
           2: { state: pipeFourway_2 }
