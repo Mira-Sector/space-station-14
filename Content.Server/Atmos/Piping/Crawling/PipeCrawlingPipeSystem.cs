@@ -81,7 +81,7 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
         if (!TryComp<NodeContainerComponent>(uid, out var nodeComp))
             return;
 
-        // get the current pipes directions to itterate over
+        // get the current pipes directions to iterate over
         if (currentPipeDir == null)
         {
             currentPipeDir = PipeDirection.None;
@@ -127,6 +127,9 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
                     break; // we can only have one match per direction. no pipe stacking :(
 
                 if (pipe == uid)
+                    continue;
+
+                if (connectedPipes.ContainsKey(dir) && connectedPipes[dir].Contains(pipe))
                     continue;
 
                 if (HasComp<PipeCrawlingPipeBlockComponent>(pipe))
@@ -178,6 +181,9 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
                 foreach (var pipe in pipes)
                 {
                     if (component.UpdatedBy.Contains(pipe))
+                        continue;
+
+                    if (pipe == uid)
                         continue;
 
                     // update the connected pipes
