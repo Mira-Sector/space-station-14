@@ -3,6 +3,7 @@ using Content.Server.NodeContainer.EntitySystems;
 using Content.Server.NodeContainer.Nodes;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
+using Content.Shared.Atmos.Piping;
 using Robust.Shared.Map.Components;
 
 namespace Content.Server.Atmos.Piping.EntitySystems;
@@ -20,10 +21,10 @@ public sealed class AtmosPipeAppearanceSystem : EntitySystem
 
     private void OnNodeUpdate(EntityUid uid, PipeAppearanceComponent component, ref NodeGroupsRebuilt args)
     {
-        UpdateAppearance(args.NodeOwner);
+        UpdateAppearance(args.NodeOwner, component);
     }
 
-    private void UpdateAppearance(EntityUid uid, AppearanceComponent? appearance = null, NodeContainerComponent? container = null,
+    private void UpdateAppearance(EntityUid uid, PipeAppearanceComponent component, AppearanceComponent? appearance = null, NodeContainerComponent? container = null,
         TransformComponent? xform = null)
     {
         if (!Resolve(uid, ref appearance, ref container, ref xform, false))
@@ -34,7 +35,7 @@ public sealed class AtmosPipeAppearanceSystem : EntitySystem
 
         // get connected entities
         var anyPipeNodes = false;
-        HashSet<EntityUid> connected = new();
+        Dictionary<EntityUid, HashSet<int>> connected = new();
         foreach (var node in container.Nodes.Values)
         {
             if (node is not PipeNode)
@@ -44,31 +45,59 @@ public sealed class AtmosPipeAppearanceSystem : EntitySystem
 
             foreach (var connectedNode in node.ReachableNodes)
             {
-                if (connectedNode is PipeNode)
-                    connected.Add(connectedNode.Owner);
+                if (connectedNode is not PipeNode pipeNode)
+                    continue;
+
+                if (connected.TryGetValue(pipeNode.Owner, out var layers))
+                {
+                    layers.Add(pipeNode.Layer);
+                }
+                else
+                {
+                    layers = new();
+                    layers.Add(pipeNode.Layer);
+                    connected.Add(connectedNode.Owner, layers);
+                }
             }
         }
 
         if (!anyPipeNodes)
             return;
 
-        // find the cardinal directions of any connected entities
-        var netConnectedDirections = PipeDirection.None;
-        var tile = grid.TileIndicesFor(xform.Coordinates);
-        foreach (var neighbour in connected)
-        {
-            var otherTile = grid.TileIndicesFor(Transform(neighbour).Coordinates);
+        component.ConnectedDirections.Clear();
 
-            netConnectedDirections |= (otherTile - tile) switch
+        // find the cardinal directions of any connected entities
+        var tile = grid.TileIndicesFor(xform.Coordinates);
+        foreach (var (neighbour, layers) in connected)
+        {
+            foreach (var layer in layers)
             {
-                (0, 1) => PipeDirection.North,
-                (0, -1) => PipeDirection.South,
-                (1, 0) => PipeDirection.East,
-                (-1, 0) => PipeDirection.West,
-                _ => PipeDirection.None
-            };
+                if (!component.ConnectedDirections.TryGetValue(layer, out var directions))
+                {
+                    directions = PipeDirection.None;
+                    component.ConnectedDirections.Add(layer, directions);
+                }
+
+                var otherTile = grid.TileIndicesFor(Transform(neighbour).Coordinates);
+
+                component.ConnectedDirections[layer] |= (otherTile - tile) switch
+                {
+                    (0, 1) => PipeDirection.North,
+                    (0, -1) => PipeDirection.South,
+                    (1, 0) => PipeDirection.East,
+                    (-1, 0) => PipeDirection.West,
+                    _ => PipeDirection.None
+                };
+            }
         }
 
-        _appearance.SetData(uid, PipeVisuals.VisualState, netConnectedDirections, appearance);
+        Dirty(uid, component);
+
+
+        foreach (PipeAppearanceLayer layerKey in Enum.GetValues(typeof(PipeAppearanceLayer)))
+        {
+            component.ConnectedDirections.TryGetValue(PipeAppearanceLayerHelpers.EnumToLayer(layerKey), out var pipeDirection);
+            _appearance.SetData(uid, layerKey, pipeDirection, appearance);
+        }
     }
 }
