@@ -78,58 +78,28 @@
   components:
   - type: PipeLayerable
   - type: PipeLayerVisuals
-    displacementLayers:
-    - enum.PipeVisualLayers.Pipe
-    - enum.SubfloorLayers.FirstLayer
-    - enum.PowerDeviceVisualLayers.Powered
-    - enabled
-    - base
-    - NorthConnection_-2
-    - SouthConnection_-2
-    - EastConnection_-2
-    - WestConnection_-2
-    - NorthConnection_-1
-    - SouthConnection_-1
-    - EastConnection_-1
-    - WestConnection_-1
-    - NorthConnection_0
-    - SouthConnection_0
-    - EastConnection_0
-    - WestConnection_0
-    - NorthConnection_1
-    - SouthConnection_1
-    - EastConnection_1
-    - WestConnection_1
-    - NorthConnection_2
-    - SouthConnection_2
-    - EastConnection_2
-    - WestConnection_2
-    displacements:
-      1:
-        sizeMaps:
-          32:
-            sprite: Structures/Piping/Atmospherics/displacement.rsi
-            state: 1
-      2:
-        sizeMaps:
-          32:
-            sprite: Structures/Piping/Atmospherics/displacement.rsi
-            state: 2
-      0:
-        sizeMaps:
-          32:
-            sprite: Structures/Piping/Atmospherics/displacement.rsi
-            state: 0
-      -1:
-        sizeMaps:
-          32:
-            sprite: Structures/Piping/Atmospherics/displacement.rsi
-            state: -1
+  - type: PipeAppearance
+    layerOffsets:
       -2:
-        sizeMaps:
-          32:
-            sprite: Structures/Piping/Atmospherics/displacement.rsi
-            state: -2
+        NorthConnection: 0.3125, 0
+        SouthConnection: 0.3125, 0
+        EastConnection: 0.3125, 0
+        WestConnection: 2.909090909, 0
+      -1:
+        NorthConnection: 0.15625, 0
+        SouthConnection: 0.15625, 0
+        EastConnection: 0.15625, 0
+        WestConnection: 0.15625, 0
+      1:
+        NorthConnection: -0.125, 0
+        SouthConnection: -0.125, 0
+        EastConnection: -0.125, 0
+        WestConnection: -0.125, 0
+      2:
+        NorthConnection: -0.28125, 0
+        SouthConnection: -0.28125, 0
+        EastConnection: -0.28125, 0
+        WestConnection: -0.28125, 0
 
 - type: entity
   abstract: true
@@ -164,37 +134,15 @@
     - EastConnection_2
     - WestConnection_2
     offsets:
-      -2: 0.3125, 0
-      -1: 0.15625, 0
-      1: -0.125, 0
-      2: -0.28125, 0
-  - type: PipeAppearance
-    layerOffsets:
-      -2:
-        NorthConnection: 0.3125, 0
-        SouthConnection: 0.3125, 0
-        EastConnection: 0.3125, 0
-        WestConnection: 0.3125, 0
-      -1:
-        NorthConnection: 0.15625, 0
-        SouthConnection: 0.15625, 0
-        EastConnection: 0.15625, 0
-        WestConnection: 0.15625, 0
-      1:
-        NorthConnection: -0.125, 0
-        SouthConnection: -0.125, 0
-        EastConnection: -0.125, 0
-        WestConnection: -0.125, 0
-      2:
-        NorthConnection: -0.28125, 0
-        SouthConnection: -0.28125, 0
-        EastConnection: -0.28125, 0
-        WestConnection: -0.28125, 0
+      -2: 0.28125, 0
+      -1: 0.125, 0
+      1: -0.15625, 0
+      2: -0.3125, 0
 
 #Note: The PipeDirection of the PipeNode should be the south-facing version, because the entity starts at an angle of 0 (south)
 
 - type: entity
-  parent: [ GasPipeLayerableBase, GasPipeBase ]
+  parent: [ GasPipeLayerableOffsetBase, GasPipeBase ]
   id: GasPipeHalf
   suffix: Half
   components:
@@ -213,7 +161,7 @@
     node: half
 
 - type: entity
-  parent: [ GasPipeLayerableBase, GasPipeBase ]
+  parent: [ GasPipeLayerableOffsetBase, GasPipeBase ]
   id: GasPipeStraight
   suffix: Straight
   components:
@@ -260,6 +208,15 @@
     layers:
       - state: pipeBend
         map: [ "enum.PipeVisualLayers.Pipe" ]
+  - type: GenericVisualizer
+    visuals:
+      enum.PipeLayerVisuals.Layer:
+        enum.PipeVisualLayers.Pipe:
+          -2: { state: pipeBend_-2 }
+          -1: { state: pipeBend_-1 }
+          0: { state: pipeBend }
+          1: { state: pipeBend_1 }
+          2: { state: pipeBend_2 }
   - type: Construction
     graph: GasPipe
     node: bend
@@ -300,6 +257,15 @@
     layers:
       - state: pipeTJunction
         map: [ "enum.PipeVisualLayers.Pipe" ]
+  - type: GenericVisualizer
+    visuals:
+      enum.PipeLayerVisuals.Layer:
+        enum.PipeVisualLayers.Pipe:
+          -2: { state: pipeTJunction_-2 }
+          -1: { state: pipeTJunction_-1 }
+          0: { state: pipeTJunction }
+          2: { state: pipeTJunction_2 }
+          1: { state: pipeTJunction_1 }
   - type: Construction
     graph: GasPipe
     node: tjunction
@@ -338,6 +304,15 @@
     layers:
       - state: pipeFourway
         map: [ "enum.PipeVisualLayers.Pipe" ]
+  - type: GenericVisualizer
+    visuals:
+      enum.PipeLayerVisuals.Layer:
+        enum.PipeVisualLayers.Pipe:
+          -2: { state: pipeFourway-2 }
+          -1: { state: pipeFourway-1 }
+          0: { state: pipeFourway }
+          1: { state: pipeFourway_1 }
+          2: { state: pipeFourway_2 }
   - type: Construction
     graph: GasPipe
     node: fourway
@@ -358,7 +333,7 @@
 
 - type: entity
   id: GasPipeBroken
-  parent: [ GasPipeLayerableBase, GasPipeBase ]
+  parent: [ GasPipeLayerableOffsetBase, GasPipeBase ]
   name: broken pipe
   description: It used to hold gas.
   components:
