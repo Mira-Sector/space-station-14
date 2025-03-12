@@ -161,8 +161,8 @@
     offsets:
       -2: 0.28125, 0
       -1: 0.125, 0
-      1: -0.15625, 0
-      2: -0.3125, 0
+      1: -0.16, 0
+      2: -0.32, 0
 
 - type: entity
   abstract: true
@@ -452,6 +452,19 @@
     sprite:
       sprite: Structures/Piping/Atmospherics/manifold.rsi
       state: connector
+    layerOffsets:
+      1:
+        NorthConnection: -0.16, 0
+        SouthConnection: 0.138, 0
+      2:
+        NorthConnection: -0.32, 0
+        SouthConnection: 0.32, 0
+      -1:
+        NorthConnection: 0.138, 0
+        SouthConnection: -0.16, 0
+      -2:
+        NorthConnection: 0.28125, 0
+        SouthConnection: 0.32, 0
 
 - type: entity
   parent: GasPipeManifoldBase
@@ -468,7 +481,7 @@
       -1:
         !type:PipeNode
         nodeGroupID: Pipe
-        pipeDirection: SWBend
+        pipeDirection: Longitudinal
         layer: -1
       0:
         !type:PipeNode
