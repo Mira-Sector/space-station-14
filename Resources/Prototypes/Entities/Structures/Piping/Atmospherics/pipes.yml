@@ -84,22 +84,22 @@
         NorthConnection: 0.3125, 0
         SouthConnection: 0.3125, 0
         EastConnection: 0.3125, 0
-        WestConnection: 2.909090909, 0
+        WestConnection: 0.325, 0
       -1:
         NorthConnection: 0.15625, 0
         SouthConnection: 0.15625, 0
         EastConnection: 0.15625, 0
         WestConnection: 0.15625, 0
       1:
-        NorthConnection: -0.125, 0
-        SouthConnection: -0.125, 0
-        EastConnection: -0.125, 0
-        WestConnection: -0.125, 0
+        NorthConnection: 0, 0.15625
+        SouthConnection: 0, 0.15625
+        EastConnection: 0, 0.15625
+        WestConnection: 0, 0.15625
       2:
-        NorthConnection: -0.28125, 0
-        SouthConnection: -0.28125, 0
-        EastConnection: -0.28125, 0
-        WestConnection: -0.28125, 0
+        NorthConnection: 0, 0.3125
+        SouthConnection: 0, 0.3125
+        EastConnection: 0, 0.3125
+        WestConnection: 0, 0.3125
 
 - type: entity
   abstract: true
