@@ -78,28 +78,53 @@
   components:
   - type: PipeLayerable
   - type: PipeLayerVisuals
-  - type: PipeAppearance
-    layerOffsets:
-      -2:
-        NorthConnection: 0.3125, 0
-        SouthConnection: 0.3125, 0
-        EastConnection: 0.3125, 0
-        WestConnection: 0.325, 0
-      -1:
-        NorthConnection: 0.15625, 0
-        SouthConnection: 0.15625, 0
-        EastConnection: 0.15625, 0
-        WestConnection: 0.15625, 0
+    displacementLayers:
+    - NorthConnection_-2
+    - SouthConnection_-2
+    - EastConnection_-2
+    - WestConnection_-2
+    - NorthConnection_-1
+    - SouthConnection_-1
+    - EastConnection_-1
+    - WestConnection_-1
+    - NorthConnection_0
+    - SouthConnection_0
+    - EastConnection_0
+    - WestConnection_0
+    - NorthConnection_1
+    - SouthConnection_1
+    - EastConnection_1
+    - WestConnection_1
+    - NorthConnection_2
+    - SouthConnection_2
+    - EastConnection_2
+    - WestConnection_2
+    displacements:
       1:
-        NorthConnection: 0, 0.15625
-        SouthConnection: 0, 0.15625
-        EastConnection: 0, 0.15625
-        WestConnection: 0, 0.15625
+        sizeMaps:
+          32:
+            sprite: Structures/Piping/Atmospherics/pipeconnection_displacement.rsi
+            state: 1
       2:
-        NorthConnection: 0, 0.3125
-        SouthConnection: 0, 0.3125
-        EastConnection: 0, 0.3125
-        WestConnection: 0, 0.3125
+        sizeMaps:
+          32:
+            sprite: Structures/Piping/Atmospherics/pipeconnection_displacement.rsi
+            state: 2
+      0:
+        sizeMaps:
+          32:
+            sprite: Structures/Piping/Atmospherics/pipeconnection_displacement.rsi
+            state: 0
+      -1:
+        sizeMaps:
+          32:
+            sprite: Structures/Piping/Atmospherics/pipeconnection_displacement.rsi
+            state: -1
+      -2:
+        sizeMaps:
+          32:
+            sprite: Structures/Piping/Atmospherics/pipeconnection_displacement.rsi
+            state: -2
 
 - type: entity
   abstract: true
