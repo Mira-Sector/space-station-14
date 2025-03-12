@@ -6,12 +6,15 @@ using Content.Shared.Atmos.Piping.Layerable;
 using Content.Shared.Interaction;
 using Content.Shared.Interaction.Events;
 using Content.Shared.Verbs;
+using Robust.Server.GameObjects;
+using Robust.Shared.Map.Components;
 
 namespace Content.Server.Atmos.Piping.EntitySystems;
 
 public sealed partial class PipeLayerableSystem : EntitySystem
 {
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private readonly MapSystem _map = default!;
     [Dependency] private readonly NodeContainerSystem _nodeContainer = default!;
     [Dependency] private readonly NodeGroupSystem _nodeGroup = default!;
 
@@ -121,6 +124,27 @@ public sealed partial class PipeLayerableSystem : EntitySystem
         if (!Resolve(ent, ref ent.Comp2))
             return false;
 
+        HashSet<int> otherEntityLayers = new();
+
+        var xform = Transform(ent);
+
+        if (xform.GridUid is {} gridUid && TryComp<MapGridComponent>(gridUid, out var grid))
+        {
+            foreach (var anchoredEnt in _map.GetAnchoredEntities(gridUid, grid, xform.Coordinates))
+            {
+                if (!TryComp<NodeContainerComponent>(anchoredEnt, out var anchoredEntNode))
+                    continue;
+
+                foreach (var node in anchoredEntNode.Nodes.Values)
+                {
+                    if (node is not PipeNode pipeNode)
+                        continue;
+
+                    otherEntityLayers.Add(pipeNode.Layer);
+                }
+            }
+        }
+
         foreach (var node in ent.Comp2.Nodes.Values)
         {
             if (node is not PipeNode pipeNode)
@@ -130,6 +154,9 @@ public sealed partial class PipeLayerableSystem : EntitySystem
 
             var newLayer = pipeNode.Layer + offset;
             if (!InBounds(ent, newLayer))
+                return false;
+
+            if (otherEntityLayers.Contains(newLayer))
                 return false;
         }
 
