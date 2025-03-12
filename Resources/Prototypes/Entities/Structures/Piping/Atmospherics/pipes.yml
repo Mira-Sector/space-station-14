@@ -492,6 +492,9 @@
     - 0
     - 1
     - 2
+  - type: Construction
+    graph: GasPipe
+    node: manifold5
   - type: Sprite
     layers:
       - state: 5
@@ -537,6 +540,9 @@
     - 0
     - 1
     - 2
+  - type: Construction
+    graph: GasPipe
+    node: manifold4
   - type: Sprite
     layers:
       - state: 4
@@ -576,6 +582,9 @@
     - -1
     - 0
     - 1
+  - type: Construction
+    graph: GasPipe
+    node: manifold3
   - type: Sprite
     layers:
       - state: 3
@@ -609,6 +618,9 @@
     nodes:
     - 0
     - 1
+  - type: Construction
+    graph: GasPipe
+    node: manifold2
   - type: Sprite
     layers:
       - state: 2
