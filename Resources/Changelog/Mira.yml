@@ -1291,3 +1291,11 @@ Entries:
     type: Add
   id: 188
   time: '2025-03-04T08:05:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Pipes can switch to different layers
+    type: Add
+  - message: Manifolds can merge multiple pipe layers into one
+    type: Add
+  id: 189
+  time: '2025-03-12T18:05:00.0000000+00:00'
