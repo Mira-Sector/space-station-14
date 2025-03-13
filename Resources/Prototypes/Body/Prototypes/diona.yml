@@ -20,6 +20,7 @@
       - right leg
       - left leg
       organs:
+        heart: OrganHumanHeart
         stomach: OrganDionaStomachNymph
         lungs: OrganDionaLungsNymph
     right arm:
