@@ -87,6 +87,7 @@
         reagents:
         - ReagentId: UncookedAnimalProteins
           Quantity: 5
+  - type: Temperature
   - type: Perishable
     rotAfter: 990
     molsPerSecondPerUnitMass: 0
@@ -121,6 +122,7 @@
     - id: Medicine
     - id: Poison
     - id: Narcotic
+  - type: Temperature
   - type: Perishable
     rotAfter: 360
     molsPerSecondPerUnitMass: 0
@@ -154,6 +156,7 @@
     damage:
       types:
         Poison: 4
+  - type: Temperature
   - type: MetabolizerRot
   - type: Perishable
     rotAfter: 900

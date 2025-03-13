@@ -25,6 +25,7 @@
       solutions:
         stomach:
           maxVol: 30.0
+    - type: Temperature
     - type: Heart
     - type: Perishable
       rotAfter: 360
@@ -70,6 +71,7 @@
         Lung:
           maxVol: 100.0
           canReact: false
+    - type: Temperature
     - type: Perishable
       rotAfter: 990
       molsPerSecondPerUnitMass: 0
