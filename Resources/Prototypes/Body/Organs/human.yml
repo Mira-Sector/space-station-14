@@ -120,6 +120,7 @@
     damage:
       types:
         Poison: 2.5
+  - type: Temperature
   - type: Perishable
     rotAfter: 900
     molsPerSecondPerUnitMass: 0
@@ -173,6 +174,7 @@
         reagents:
         - ReagentId: UncookedAnimalProteins
           Quantity: 5
+  - type: Temperature
   - type: Perishable
     rotAfter: 990
     molsPerSecondPerUnitMass: 0
@@ -205,6 +207,7 @@
     - id: Medicine
     - id: Poison
     - id: Narcotic
+  - type: Temperature
   - type: Heart
   - type: Perishable
     rotAfter: 360
@@ -248,6 +251,7 @@
     groups:
     - id: Food
     - id: Drink
+  - type: Temperature
   - type: VomitOnRot
   - type: Perishable
     rotAfter: 780
@@ -279,6 +283,7 @@
     damage:
       types:
         Poison: 4
+  - type: Temperature
   - type: MetabolizerRot
   - type: Perishable
     rotAfter: 900

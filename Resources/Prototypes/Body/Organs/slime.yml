@@ -44,6 +44,7 @@
       damage:
         types:
           Poison: 4
+    - type: Temperature
     - type: MetabolizerRot
     - type: Perishable
       rotAfter: 1800
@@ -91,6 +92,7 @@
   - type: Item
     size: Small
     heldPrefix: lungs
+  - type: Temperature
   - type: Perishable
     rotAfter: 990
     molsPerSecondPerUnitMass: 0
