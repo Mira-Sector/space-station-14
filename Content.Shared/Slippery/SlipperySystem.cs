@@ -91,6 +91,15 @@ public sealed class SlipperySystem : EntitySystem
 
     private void OnRecentSlipAttempt(EntityUid uid, RecentlySlipppedComponent component, SlipAttemptEvent args)
     {
+        if (!TryComp<SlipGraceComponent>(uid, out var slipGrace))
+        {
+            Log.Error($"{ToPrettyString(uid)} has {nameof(RecentlySlipppedComponent)} but no {nameof(SlipGraceComponent)}.");
+            return;
+        }
+
+        if (!slipGrace.SuperSlippery && args.SuperSlippery)
+            return;
+
         if (component.NextSlip > _timing.CurTime)
         {
             args.NoSlip = true;
@@ -102,6 +111,9 @@ public sealed class SlipperySystem : EntitySystem
 
     private void OnGraceSlipped(EntityUid uid, SlipGraceComponent component, ref SlippedEvent args)
     {
+        if (args.SuperSlippery && !component.SuperSlippery)
+            return;
+
         EnsureComp<RecentlySlipppedComponent>(uid).NextSlip = _timing.CurTime + component.Delay;
     }
 
@@ -116,7 +128,7 @@ public sealed class SlipperySystem : EntitySystem
         if (HasComp<KnockedDownComponent>(other) && !component.SuperSlippery)
             return;
 
-        var attemptEv = new SlipAttemptEvent();
+        var attemptEv = new SlipAttemptEvent(component.SuperSlippery);
         RaiseLocalEvent(other, attemptEv);
         if (attemptEv.SlowOverSlippery)
             _speedModifier.AddModifiedEntity(other);
@@ -132,7 +144,7 @@ public sealed class SlipperySystem : EntitySystem
         var slipEv = new SlipEvent(other);
         RaiseLocalEvent(uid, ref slipEv);
 
-        var slippedEv = new SlippedEvent(uid);
+        var slippedEv = new SlippedEvent(uid, component.SuperSlippery);
         RaiseLocalEvent(other, ref slippedEv);
 
         if (TryComp(other, out PhysicsComponent? physics) && !HasComp<SlidingComponent>(other))
@@ -168,10 +180,15 @@ public sealed class SlipperySystem : EntitySystem
 public sealed class SlipAttemptEvent : EntityEventArgs, IInventoryRelayEvent
 {
     public bool NoSlip;
-
     public bool SlowOverSlippery;
-
     public SlotFlags TargetSlots { get; } = SlotFlags.FEET;
+
+    public bool SuperSlippery;
+
+    public SlipAttemptEvent(bool superSlippery)
+    {
+        SuperSlippery = superSlippery;
+    }
 }
 
 /// <summary>
@@ -188,5 +205,6 @@ public readonly record struct SlipEvent(EntityUid Slipped);
 
 /// Raised on the entity that got slipped
 /// <param name="Slipper">The entity being slipped</param>
+/// <param name="SuperSlippery">Was whatever slipped us super slippery</param>
 [ByRefEvent]
-public readonly record struct SlippedEvent(EntityUid Slipper);
+public readonly record struct SlippedEvent(EntityUid Slipper, bool SuperSlippery);
