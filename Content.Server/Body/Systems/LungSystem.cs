@@ -1,6 +1,7 @@
 using Content.Server.Atmos.Components;
 using Content.Server.Atmos.EntitySystems;
 using Content.Server.Body.Components;
+using Content.Shared.Atmos.Rotting;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Atmos;
 using Content.Shared.Chemistry.Components;
@@ -21,6 +22,8 @@ public sealed class LungSystem : EntitySystem
     {
         base.Initialize();
         SubscribeLocalEvent<LungComponent, ComponentInit>(OnComponentInit);
+        SubscribeLocalEvent<LungComponent, StartedRottingEvent>(OnRotting);
+
         SubscribeLocalEvent<BreathToolComponent, GotEquippedEvent>(OnGotEquipped);
         SubscribeLocalEvent<BreathToolComponent, GotUnequippedEvent>(OnGotUnequipped);
         SubscribeLocalEvent<BreathToolComponent, ItemMaskToggledEvent>(OnMaskToggled);
@@ -54,6 +57,11 @@ public sealed class LungSystem : EntitySystem
             solution.MaxVolume = 100.0f;
             solution.CanReact = false; // No dexalin lungs
         }
+    }
+
+    private void OnRotting(Entity<LungComponent> ent, ref StartedRottingEvent args)
+    {
+        ent.Comp.Broken = true;
     }
 
     private void OnMaskToggled(Entity<BreathToolComponent> ent, ref ItemMaskToggledEvent args)

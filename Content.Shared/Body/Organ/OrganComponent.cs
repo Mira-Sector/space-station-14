@@ -1,6 +1,7 @@
+using Content.Shared.Body.Prototypes;
 using Content.Shared.Body.Systems;
-using Robust.Shared.Containers;
 using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Body.Organ;
 
@@ -13,4 +14,10 @@ public sealed partial class OrganComponent : Component
     /// </summary>
     [DataField, AutoNetworkedField]
     public EntityUid? Body;
+
+    [DataField, AutoNetworkedField]
+    public EntityUid? BodyPart;
+
+    [DataField(required: true), AutoNetworkedField]
+    public ProtoId<OrganPrototype> OrganType;
 }

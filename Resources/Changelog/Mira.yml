@@ -1211,3 +1211,109 @@ Entries:
     type: Fix
   id: 178
   time: '2025-02-17T22:10:00.0000000+00:00'
+- author: Doctor-Cpu, Anurath, aspiffyfellow, Mehnix, Sentient Salad, lordofgab
+  changes:
+  - message: New central command map
+    type: Add
+  id: 179
+  time: '2025-02-22T20:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Surgery is no longer a week away
+    type: Add
+  id: 180
+  time: '2025-02-25T16:40:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Interacting with someone lying down works again
+    type: Fix
+  - message: The server no longer crashes when restarting the round
+    type: Fix
+  id: 181
+  time: '2025-02-26T17:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Torsos and heads dead threshold now get set to the bodies overall dead threshold
+    type: Tweak
+  id: 182
+  time: '2025-02-27T04:10:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Surgery can be performed on limbs that have been removed
+    type: Tweak
+  id: 183
+  time: '2025-02-27T07:40:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Organs now rot when not in an alive body or cold
+    type: Add
+  - message: Rotting lungs cause you to cough more often and collapse when fully rotten
+    type: Add
+  - message: Hearts beating can be toggled in hands causing gasping
+    type: Add
+  - message: Hearts stop beating when rotten
+    type: Add
+  - message: Poison damage on a body is now contained on the liver
+    type: Tweak
+  - message: As a liver rots it deals more poison damage and slows down metabolizing
+    type: Add
+  - message: As an appendix rots it deals poison damage
+    type: Add
+  - message: A rotting stomach causes an increasing probability of vomiting
+    type: Add
+  id: 184
+  time: '2025-03-01T13:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Nukes the station AI has armed now get disarmed when they are placed into an intelicard
+    type: Tweak
+  - message: When the station AI arms a nuke it adds an additonal minute to the timer
+    type: Tweak
+  - message: The round ends when a nuke the AI has armed explodes
+    type: Tweak
+  id: 185
+  time: '2025-03-04T01:10:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: The chance of coughing has been drasticly reduced
+    type: Tweak
+  id: 186
+  time: '2025-03-04T01:15:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Organs only rot if the body is also rotting
+    type: Tweak
+  id: 187
+  time: '2025-03-04T04:05:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: You can order a random dead species body from cargo
+    type: Add
+  id: 188
+  time: '2025-03-04T08:05:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Pipes can switch to different layers
+    type: Add
+  - message: Manifolds can merge multiple pipe layers into one
+    type: Add
+  id: 189
+  time: '2025-03-12T18:05:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Super slipery stuff, such as lube, no longer have a grace period
+    type: Tweak
+  id: 190
+  time: '2025-03-13T15:45:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Organs no longer rot when they are cold
+    type: Tweak
+  id: 191
+  time: '2025-03-13T16:05:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Diona now have a heart
+    type: Fix
+  id: 192
+  time: '2025-03-13T16:25:00.0000000+00:00'

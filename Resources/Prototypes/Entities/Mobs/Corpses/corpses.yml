@@ -86,3 +86,9 @@
     - CMOGear
     - ChiefEngineerGear
     - QuartermasterGear
+
+- type: entity
+  id: MobRandomHumanoidCorpse
+  components:
+    - type: RandomHumanoidSpawner
+      settings: CorpseHumanoid

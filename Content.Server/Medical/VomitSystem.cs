@@ -4,6 +4,7 @@ using Content.Server.Fluids.EntitySystems;
 using Content.Server.Forensics;
 using Content.Server.Popups;
 using Content.Server.Stunnable;
+using Content.Shared.Body.Organ;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Reagent;
@@ -41,19 +42,6 @@ namespace Content.Server.Medical
             if (stomachList.Count == 0)
                 return;
 
-            // Vomiting makes you hungrier and thirstier
-            if (TryComp<HungerComponent>(uid, out var hunger))
-                _hunger.ModifyHunger(uid, hungerAdded, hunger);
-
-            if (TryComp<ThirstComponent>(uid, out var thirst))
-                _thirst.ModifyThirst(uid, thirst, thirstAdded);
-
-            // It fully empties the stomach, this amount from the chem stream is relatively small
-            var solutionSize = (MathF.Abs(thirstAdded) + MathF.Abs(hungerAdded)) / 6;
-            // Apply a bit of slowdown
-            if (TryComp<StatusEffectsComponent>(uid, out var status))
-                _stun.TrySlowdown(uid, TimeSpan.FromSeconds(solutionSize), true, 0.5f, 0.5f, status);
-
             // TODO: Need decals
             var solution = new Solution();
 
@@ -67,6 +55,45 @@ namespace Content.Server.Medical
                     _solutionContainer.UpdateChemicals(stomach.Comp1.Solution.Value);
                 }
             }
+
+            VomitBody(uid, thirstAdded, hungerAdded, solution);
+        }
+
+        public void VomitOrgan(Entity<OrganComponent?, StomachComponent?> ent, float thirstAdded = -40f, float hungerAdded = -40f)
+        {
+            if (!Resolve(ent, ref ent.Comp1, ref ent.Comp2))
+                return;
+
+            if (ent.Comp1.Body is not {} body)
+                return;
+
+            var solution = new Solution();
+
+            if (_solutionContainer.ResolveSolution(ent.Owner, StomachSystem.DefaultSolutionName, ref ent.Comp2.Solution, out var sol))
+            {
+                solution.AddSolution(sol, _proto);
+                sol.RemoveAllSolution();
+                _solutionContainer.UpdateChemicals(ent.Comp2.Solution.Value);
+            }
+
+            VomitBody(body, thirstAdded, hungerAdded, solution);
+        }
+
+        private void VomitBody(EntityUid uid, float thirstAdded, float hungerAdded, Solution solution)
+        {
+            // Vomiting makes you hungrier and thirstier
+            if (TryComp<HungerComponent>(uid, out var hunger))
+                _hunger.ModifyHunger(uid, hungerAdded, hunger);
+
+            if (TryComp<ThirstComponent>(uid, out var thirst))
+                _thirst.ModifyThirst(uid, thirst, thirstAdded);
+
+            // It fully empties the stomach, this amount from the chem stream is relatively small
+            var solutionSize = (MathF.Abs(thirstAdded) + MathF.Abs(hungerAdded)) / 6;
+            // Apply a bit of slowdown
+            if (TryComp<StatusEffectsComponent>(uid, out var status))
+                _stun.TrySlowdown(uid, TimeSpan.FromSeconds(solutionSize), true, 0.5f, 0.5f, status);
+
             // Adds a tiny amount of the chem stream from earlier along with vomit
             if (TryComp<BloodstreamComponent>(uid, out var bloodStream))
             {

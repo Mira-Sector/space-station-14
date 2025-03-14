@@ -85,3 +85,13 @@ public enum RespiratorStatus
     Inhaling,
     Exhaling
 }
+
+public sealed partial class GetRespiratingUpdateDelay : EntityEventArgs
+{
+    public TimeSpan Delay;
+
+    public GetRespiratingUpdateDelay(TimeSpan delay)
+    {
+        Delay = delay;
+    }
+}

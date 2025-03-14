@@ -251,6 +251,7 @@
     damageRecovery:
       types:
         Asphyxiation: -1.0
+  - type: Cougher
 
 # Used for mobs that have a bloodstream
 - type: entity

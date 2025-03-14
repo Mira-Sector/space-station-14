@@ -43,6 +43,7 @@
   - type: Sprite
     state: brain
   - type: Organ
+    organType: Brain
   - type: Input
     context: "ghost"
   - type: Brain
@@ -74,13 +75,15 @@
   - type: Item
     size: Small
     heldPrefix: brain
-  
+
 - type: entity
   id: OrganHumanEyes
   parent: BaseHumanOrgan
   name: eyes
   description: "I see you!"
   components:
+  - type: Organ
+    organType: Eyes
   - type: Sprite
     layers:
       - state: eyeball-l
@@ -95,6 +98,8 @@
   name: tongue
   description: "A fleshy muscle mostly used for lying."
   components:
+  - type: Organ
+    organType: Tongue
   - type: Sprite
     state: tongue
 
@@ -103,11 +108,22 @@
   parent: BaseHumanOrgan
   name: appendix
   components:
+  - type: Organ
+    organType: Appendix
   - type: Sprite
     layers:
     - state: appendix
     - state: appendix-inflamed
       visible: false
+  - type: OrganRotDamage
+    mode: Rotted
+    damage:
+      types:
+        Poison: 2.5
+  - type: Temperature
+  - type: Perishable
+    rotAfter: 900
+    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganHumanEars
@@ -115,6 +131,8 @@
   name: ears
   description: "There are three parts to the ear. Inner, middle and outer. Only one of these parts should normally be visible."
   components:
+  - type: Organ
+    organType: Ears
   - type: Sprite
     state: ears
 
@@ -131,6 +149,8 @@
   - type: Item
     size: Small
     heldPrefix: lungs
+  - type: Organ
+    organType: Lungs
   - type: Lung
   - type: Metabolizer
     removeEmpty: true
@@ -154,6 +174,12 @@
         reagents:
         - ReagentId: UncookedAnimalProteins
           Quantity: 5
+  - type: Temperature
+  - type: Perishable
+    rotAfter: 990
+    molsPerSecondPerUnitMass: 0
+  - type: CoughOnRespire
+  - type: CoughRotChangeModify
 
 - type: entity
   id: OrganHumanHeart
@@ -163,6 +189,14 @@
   components:
   - type: Sprite
     state: heart-on
+    map: [ "enum.HeartVisualLayers.Beating" ]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.HeartVisuals.Beating:
+        enum.HeartVisualLayers.Beating:
+          True: { state: heart-on }
+          False: { state: heart-off }
   # The heart 'metabolizes' medicines and poisons that aren't filtered out by other organs.
   # This is done because these chemicals need to have some effect even if they aren't being filtered out of your body.
   # You're technically 'immune to poison' without a heart, but.. uhh, you'll have bigger problems on your hands.
@@ -173,9 +207,16 @@
     - id: Medicine
     - id: Poison
     - id: Narcotic
+  - type: Temperature
+  - type: Heart
+  - type: Perishable
+    rotAfter: 360
+    molsPerSecondPerUnitMass: 0
   - type: Item
     size: Small
     heldPrefix: heart
+  - type: Organ
+    organType: Heart
 
 - type: entity
   id: OrganHumanStomach
@@ -197,6 +238,8 @@
         reagents:
         - ReagentId: UncookedAnimalProteins
           Quantity: 5
+  - type: Organ
+    organType: Stomach
   - type: Stomach
   # The stomach metabolizes stuff like foods and drinks.
   # TODO: Have it work off of the ent's solution container, and move this
@@ -208,6 +251,11 @@
     groups:
     - id: Food
     - id: Drink
+  - type: Temperature
+  - type: VomitOnRot
+  - type: Perishable
+    rotAfter: 780
+    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganHumanLiver
@@ -217,6 +265,8 @@
   components:
   - type: Sprite
     state: liver
+  - type: Organ
+    organType: Liver
   - type: Item
     size: Small
     heldPrefix: liver
@@ -226,6 +276,18 @@
     groups:
     - id: Alcohol
       rateModifier: 0.1 # removes alcohol very slowly along with the stomach removing it as a drink
+  - type: Damageable
+    damageContainer: Liver
+  - type: OrganRotDamage
+    mode: Rotting
+    damage:
+      types:
+        Poison: 4
+  - type: Temperature
+  - type: MetabolizerRot
+  - type: Perishable
+    rotAfter: 900
+    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganHumanKidneys
@@ -237,6 +299,8 @@
     layers:
       - state: kidney-l
       - state: kidney-r
+  - type: Organ
+    organType: Kidneys
   - type: Item
     size: Small
     heldPrefix: kidneys

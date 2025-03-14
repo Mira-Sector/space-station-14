@@ -41,6 +41,7 @@
     - state: lung-l
     - state: lung-r
   - type: Organ
+    organType: Lungs
   - type: Lung
   - type: Metabolizer
     removeEmpty: true
@@ -63,6 +64,10 @@
   - type: Item
     size: Small
     heldPrefix: lungs
+  - type: Temperature
+  - type: Perishable
+    rotAfter: 990
+    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganAnimalStomach
@@ -73,6 +78,7 @@
   - type: Sprite
     state: stomach
   - type: Organ
+    organType: Stomach
   - type: SolutionContainerManager
     solutions:
       stomach:
@@ -92,6 +98,11 @@
   - type: Item
     size: Small
     heldPrefix: stomach
+  - type: VomitOnRot
+  - type: Temperature
+  - type: Perishable
+    rotAfter: 780
+    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganMouseStomach
@@ -116,6 +127,7 @@
   - type: Sprite
     state: liver
   - type: Organ
+    organType: Liver
   - type: Metabolizer
     maxReagents: 1
     metabolizerTypes: [ Animal ]
@@ -125,6 +137,18 @@
   - type: Item
     size: Small
     heldPrefix: liver
+  - type: Damageable
+    damageContainer: Liver
+  - type: OrganRotDamage
+    mode: Rotting
+    damage:
+      types:
+        Poison: 4
+  - type: Temperature
+  - type: MetabolizerRot
+  - type: Perishable
+    rotAfter: 900
+    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganAnimalHeart
@@ -134,7 +158,15 @@
   components:
   - type: Sprite
     state: heart-on
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.HeartVisuals.Beating:
+        enum.HeartVisualLayers.Beating:
+          True: { state: heart-on }
+          False: { state: heart-off }
   - type: Organ
+    organType: Heart
   - type: Metabolizer
     maxReagents: 2
     metabolizerTypes: [ Animal ]
@@ -142,6 +174,11 @@
     - id: Medicine
     - id: Poison
     - id: Narcotic
+  - type: Temperature
+  - type: Heart
+  - type: Perishable
+    rotAfter: 360
+    molsPerSecondPerUnitMass: 0
   - type: Item
     size: Small
     heldPrefix: heart
@@ -157,6 +194,7 @@
     - state: kidney-l
     - state: kidney-r
   - type: Organ
+    organType: Kidneys
   - type: Metabolizer
     maxReagents: 5
     metabolizerTypes: [ Animal ]

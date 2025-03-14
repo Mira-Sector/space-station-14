@@ -1,4 +1,4 @@
-﻿- type: body
+- type: body
   id: Gingerbread
   name: gingerbread
   root: torso
@@ -10,6 +10,8 @@
       organs:
         brain: OrganHumanBrain
         eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
     torso:
       part: TorsoGingerbread
       connections:
@@ -23,6 +25,7 @@
         stomach: OrganHumanStomach
         liver: OrganHumanLiver
         kidneys: OrganHumanKidneys
+        appendix: OrganHumanAppendix
     right arm:
       part: RightArmGingerbread
       connections:

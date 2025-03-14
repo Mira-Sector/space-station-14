@@ -1,5 +1,6 @@
 using Content.Shared.Damage;
 using Robust.Shared.GameStates;
+using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
 namespace Content.Shared.Atmos.Rotting;
@@ -50,3 +51,6 @@ public sealed partial class RottingComponent : Component
         }
     };
 }
+
+[Serializable, NetSerializable]
+public sealed partial class StartedRottingEvent : EntityEventArgs;

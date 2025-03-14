@@ -1,4 +1,17 @@
 ## Random humanoids
+#
+- type: randomHumanoidSettings
+  id: CorpseHumanoid
+  components:
+    - type: RandomHumanoidAppearance
+    - type: DamageOnSpawn
+      splitLimbDamage: false
+      damage:
+        types:
+          Bloodloss: 18
+          Asphyxiation: 20
+          Slash: 13
+          Blunt: 8
 
 - type: randomHumanoidSettings
   id: EventHumanoid

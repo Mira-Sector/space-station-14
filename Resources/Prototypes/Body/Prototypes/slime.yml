@@ -1,10 +1,13 @@
-﻿- type: body
+- type: body
   id: Slime
   name: "slime"
   root: torso
   slots:
     head:
       part: HeadSlime
+      organs:
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
       connections:
       - torso
     torso:
@@ -17,6 +20,7 @@
       organs:
         core: SentientSlimeCore
         lungs: OrganSlimeLungs
+        appendix: OrganHumanAppendix
     right arm:
       part: RightArmSlime
       connections:

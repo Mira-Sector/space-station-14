@@ -1,5 +1,3 @@
-using Robust.Shared.GameObjects;
-
 namespace Content.Shared.Body.Part;
 
 [ByRefEvent]
@@ -14,6 +12,34 @@ public record struct LimbBodyRelayedEvent<TEvent>(TEvent Args, EntityUid Limb)
 {
     public readonly TEvent Args = Args;
     public readonly EntityUid Limb = Limb;
+}
+
+[ByRefEvent]
+public record struct BodyLimbRelayedEvent<TEvent>(TEvent Args, EntityUid Body)
+{
+    public readonly TEvent Args = Args;
+    public readonly EntityUid Body = Body;
+}
+
+[ByRefEvent]
+public record struct BodyOrganRelayedEvent<TEvent>(TEvent Args, EntityUid Body)
+{
+    public readonly TEvent Args = Args;
+    public readonly EntityUid Body = Body;
+}
+
+[ByRefEvent]
+public record struct LimbOrganRelayedEvent<TEvent>(TEvent Args, EntityUid Limb)
+{
+    public readonly TEvent Args = Args;
+    public readonly EntityUid Limb = Limb;
+}
+
+[ByRefEvent]
+public record struct OrganLimbRelayedEvent<TEvent>(TEvent Args, EntityUid Organ)
+{
+    public readonly TEvent Args = Args;
+    public readonly EntityUid Organ = Organ;
 }
 
 public sealed class LimbStateChangedEvent : EntityEventArgs

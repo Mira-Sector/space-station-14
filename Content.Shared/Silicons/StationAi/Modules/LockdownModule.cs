@@ -74,19 +74,11 @@ public sealed class LockdownModuleSystem : EntitySystem
 
 public sealed partial class StationAiLockdownEvent : InstantActionEvent
 {
-    [ViewVariables]
-    public TimeSpan ResetDelay => TimeSpan.FromSeconds(_resetDelay);
-
-    [DataField("resetDelay")]
-    public float _resetDelay;
-
-    public StationAiLockdownEvent(float delay)
-    {
-        _resetDelay = delay;
-    }
+    [DataField]
+    public TimeSpan ResetDelay;
 
     public StationAiLockdownEvent(TimeSpan delay)
     {
-        _resetDelay = (float) delay.TotalSeconds;
+        ResetDelay = delay;
     }
 }

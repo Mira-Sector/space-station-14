@@ -1268,12 +1268,17 @@ namespace Content.Shared.Interaction
         /// </summary>
         public bool IsAccessible(Entity<TransformComponent?> user, Entity<TransformComponent?> target)
         {
-            var ev = new AccessibleOverrideEvent(user, target);
+            var userEv = new AccessibleOverrideEvent(user, target);
+            RaiseLocalEvent(user, ref userEv);
 
-            RaiseLocalEvent(user, ref ev);
+            if (userEv.Handled)
+                return userEv.Accessible;
 
-            if (ev.Handled)
-                return ev.Accessible;
+            var targetEv = new AccessibleTargetOverrideEvent(user, target);
+            RaiseLocalEvent(target, ref targetEv);
+
+            if (targetEv.Handled)
+                return targetEv.Accessible;
 
             if (_containerSystem.IsInSameOrParentContainer(user, target, out _, out var container))
                 return true;
@@ -1482,6 +1487,21 @@ namespace Content.Shared.Interaction
     /// <param name="Target"></param>
     [ByRefEvent]
     public record struct AccessibleOverrideEvent(EntityUid User, EntityUid Target)
+    {
+        public readonly EntityUid User = User;
+        public readonly EntityUid Target = Target;
+
+        public bool Handled;
+        public bool Accessible = false;
+    }
+
+    /// <summary>
+    /// Override event raised directed on the target to say the user can access them.
+    /// </summary>
+    /// <param name="User"></param>
+    /// <param name="Target"></param>
+    [ByRefEvent]
+    public record struct AccessibleTargetOverrideEvent(EntityUid User, EntityUid Target)
     {
         public readonly EntityUid User = User;
         public readonly EntityUid Target = Target;

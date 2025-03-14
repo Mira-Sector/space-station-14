@@ -1,3 +1,5 @@
+using Content.Shared.SubFloor;
+
 namespace Content.Client.SubFloor;
 
 /// <summary>
@@ -7,4 +9,14 @@ namespace Content.Client.SubFloor;
 public sealed partial class TrayRevealedComponent : Component
 {
 
+}
+
+public sealed class TrayCanRevealEvent : CancellableEntityEventArgs
+{
+    public Entity<TrayScannerComponent> Tray;
+
+    public TrayCanRevealEvent(Entity<TrayScannerComponent> tray)
+    {
+        Tray = tray;
+    }
 }

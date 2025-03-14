@@ -1,20 +1,20 @@
-using Content.Shared.Body.Systems;
 using Content.Shared.FixedPoint;
 using Robust.Shared.GameStates;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared.Body.Part;
 
-[RegisterComponent, NetworkedComponent]
-[Access(typeof(SharedBodySystem))]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class BodyPartThresholdsComponent : Component
 {
-    [DataField(required: true)]
-    public SortedDictionary<FixedPoint2, WoundState> Thresholds = new();
+    [DataField(required: true), AutoNetworkedField]
+    public Dictionary<WoundState, FixedPoint2> Thresholds = new();
 
-    [DataField]
+    [DataField, AutoNetworkedField]
     public WoundState CurrentState = WoundState.Healthy;
 }
 
+[Serializable, NetSerializable]
 public enum WoundState
 {
     Healthy,

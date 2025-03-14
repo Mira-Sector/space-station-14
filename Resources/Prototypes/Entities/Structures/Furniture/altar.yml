@@ -418,3 +418,126 @@
   - type: Construction
     graph: BananiumAltarGraph
     node: bananiumAltar
+
+- type: entity
+  id: AltarCheese
+  parent: [AltarBase, BaseCheeseFlavor]
+  name: cheese altar
+  description: Cheddar of the gods.
+  components:
+  - type: Sprite
+    sprite: Structures/Furniture/Altars/Cults/cheese.rsi
+    layers:
+    - state: full
+  - type: Icon
+    sprite: Structures/Furniture/Altars/Cults/cheese.rsi
+    state: full
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Misc/narsie_rises.ogg
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          FoodCheeseSlice:
+            min: 20
+            max: 20
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: PointLight
+    radius: 1.5
+    energy: 1.5
+    color: "#f7df47"
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 50
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 50
+  - type: Food
+
+- type: entity
+  id: AltarCheeseAwakened
+  parent: [AltarBase, BaseCheeseFlavor]
+  name: awakened cheese altar
+  description: Cheddar of the gods. The situation is bad. Eat this as fast as possible!
+  components:
+  - type: Sprite
+    sprite: Structures/Furniture/Altars/Cults/cheese.rsi
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      state: awakened
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: awakened_overlay
+      shader: unshaded
+  - type: Icon
+    sprite: Structures/Furniture/Altars/Cults/cheese.rsi
+    state: awakened
+  - type: PointLight
+    radius: 1.5
+    energy: 1.5
+    color: "#f7df47"
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 60
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 60
+  - type: Food
+  - type: Anomaly
+    corePrototype: ImmovableRodCheese
+    coreInertPrototype: FoodCheese
+    minPulseLength: 10
+    maxPulseLength: 20
+  - type: TileSpawnAnomaly
+    entries:
+    - settings:
+        spawnOnPulse: true
+        spawnOnStabilityChanged: true
+        spawnOnSuperCritical: true
+        minAmount: 4
+        maxAmount: 10
+        maxRange: 10
+      floor: FloorCheese
+  - type: EntitySpawnAnomaly
+    entries:
+    - settings:
+        spawnOnPulse: true
+        minAmount: 1
+        maxAmount: 2
+        minRange: 1.5
+        maxRange: 2
+      spawns:
+      - MobCheeseJared
+      - MobCheeseGolem
+      - MobCheeseClamp
+      - MobCheeseLover
+    - settings:
+        spawnOnSuperCritical: true
+        spawnOnPulse: true
+        minAmount: 4
+        maxAmount: 7
+        minRange: 2
+        maxRange: 15
+      spawns:
+      - WallCheese
+    - settings:
+        spawnOnSuperCritical: true
+        minAmount: 1
+        maxAmount: 2
+        minRange: 5
+        maxRange: 15
+      spawns:
+      - AltarCheeseAwakened

@@ -67,3 +67,17 @@
   toolName: tool-quality-rolling-tool-name
   spawn: RollingPin
   icon: { sprite: Objects/Tools/rolling_pin.rsi, state: icon }
+
+- type: tool
+  id: Retracting
+  name: tool-quality-retracting-name
+  toolName: tool-quality-retracting-tool-name
+  spawn: Retractor
+  icon: { sprite: Objects/Specific/Medical/Surgery/scissors.rsi, state: retractor }
+
+- type: tool
+  id: Clamping
+  name: tool-quality-clamping-name
+  toolName: tool-quality-clamping-tool-name
+  spawn: Hemostat
+  icon: { sprite: Objects/Specific/Medical/Surgery/scissors.rsi, state: hemostat }

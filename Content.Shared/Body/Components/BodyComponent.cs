@@ -1,4 +1,5 @@
 using Content.Shared.Alert;
+using Content.Shared.Body.Part;
 using Content.Shared.Body.Prototypes;
 using Content.Shared.Body.Systems;
 using Robust.Shared.Audio;
@@ -24,10 +25,17 @@ public sealed partial class BodyComponent : Component
     /// <remarks>
     /// Typically is the torso.
     /// </remarks>
-    [ViewVariables] public ContainerSlot RootContainer = default!;
+    [ViewVariables]
+    public (BodyPart BodyPart, ContainerSlot Container) RootContainer = default!;
 
     [ViewVariables]
-    public string RootPartSlot => RootContainer.ID;
+    public ContainerSlot RootContainerVV
+    {
+        get => RootContainer.Container;
+    }
+
+    [ViewVariables]
+    public string RootPartSlot => RootContainer.Container.ID;
 
     [DataField, AutoNetworkedField]
     public SoundSpecifier GibSound = new SoundCollectionSpecifier("gib");
@@ -45,4 +53,7 @@ public sealed partial class BodyComponent : Component
 
     [DataField]
     public ProtoId<AlertPrototype> Alert = "LimbHealth";
+
+    [ViewVariables, AutoNetworkedField]
+    public Dictionary<BodyPart, BodyPartLayer> AlertLayers = new();
 }
