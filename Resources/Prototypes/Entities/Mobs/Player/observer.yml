@@ -71,6 +71,7 @@
   id: MobObserver
   components:
   - type: Spectral
+  - type: GhostVisuals
 
 - type: entity
   id: ActionGhostBoo
