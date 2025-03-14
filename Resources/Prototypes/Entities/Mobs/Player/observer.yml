@@ -72,6 +72,18 @@
   components:
   - type: Spectral
   - type: GhostVisuals
+    layersToTransfer:
+    - Hair
+    - FacialHair
+    - Snout
+    - HeadSide
+    - HeadTop
+    markingsToTransfer:
+    - Hair
+    - FacialHair
+    - Snout
+    - HeadSide
+    - HeadTop
 
 - type: entity
   id: ActionGhostBoo
