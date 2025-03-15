@@ -83,12 +83,17 @@
     - Hair
     - FacialHair
     - Snout
+    - Head
     - HeadSide
     - HeadTop
-    - LArm
-    - RArm
+    - Arms
     layerDisplacements:
       enum.HumanoidVisualLayers.Hair:
+        sizeMaps:
+          32:
+            sprite: Mobs/Ghosts/displacement.rsi
+            state: hair
+      enum.HumanoidVisualLayers.Head:
         sizeMaps:
           32:
             sprite: Mobs/Ghosts/displacement.rsi
@@ -123,6 +128,7 @@
       enum.GhostVisuals.Species:
         enum.GhostVisuals.Layer:
           Arachnid: { state: arachnid }
+          Diona: { state: diona }
           Moth: { state: moth }
 
 - type: entity
