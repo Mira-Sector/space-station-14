@@ -63,6 +63,7 @@ public sealed class GhostVisualsSystem : EntitySystem
             _appearance.SetData(ent.Owner, GhostVisuals.Color, humanoidComp.SkinColor);
 
         ent.Comp.LayersModified.Clear();
+        ghostHumanoid.MarkingSet.Clear();
 
         foreach (var markingCategory in ent.Comp.MarkingsToTransfer)
         {

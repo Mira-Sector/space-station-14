@@ -90,6 +90,11 @@
           32:
             sprite: Mobs/Ghosts/displacement.rsi
             state: hair
+      enum.HumanoidVisualLayers.HeadTop:
+        sizeMaps:
+          32:
+            sprite: Mobs/Ghosts/displacement.rsi
+            state: hair
 
 - type: entity
   id: ActionGhostBoo

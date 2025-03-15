@@ -38,7 +38,6 @@ public sealed class GhostVisualizerSystem : VisualizerSystem<GhostVisualsCompone
                 if (!_prototype.TryIndex<MarkingPrototype>(markingId, out var marking))
                     continue;
 
-
                 foreach (var markingLayer in marking.Sprites)
                 {
                     if (markingLayer is not SpriteSpecifier.Rsi rsi)
