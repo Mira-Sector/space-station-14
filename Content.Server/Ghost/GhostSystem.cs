@@ -463,6 +463,9 @@ namespace Content.Server.Ghost
             var ghost = SpawnAtPosition(GameTicker.ObserverPrototypeName, spawnPosition.Value);
             var ghostComponent = Comp<GhostComponent>(ghost);
 
+            var ev = new GhostedEvent((mind.Owner, mind.Comp));
+            RaiseLocalEvent(ghost, ev);
+
             // Try setting the ghost entity name to either the character name or the player name.
             // If all else fails, it'll default to the default entity prototype name, "observer".
             // However, that should rarely happen.
@@ -582,5 +585,15 @@ namespace Content.Server.Ghost
         public MindComponent Mind { get; } = mind;
         public bool CanReturnGlobal { get; } = canReturnGlobal;
         public bool Result { get; set; }
+    }
+
+    public sealed class GhostedEvent : EntityEventArgs
+    {
+        public Entity<MindComponent> Mind;
+
+        public GhostedEvent(Entity<MindComponent> mind)
+        {
+            Mind = mind;
+        }
     }
 }
