@@ -42,14 +42,14 @@
   - type: Sprite
     sprite: Mobs/Ghosts/ghost_human.rsi
     layers:
+    - map: [ "enum.GhostVisuals.Layer" ]
+      state: animated
+      shader: unshaded
     - map: [ "enum.HumanoidVisualLayers.Snout" ]
     - map: [ "enum.HumanoidVisualLayers.FacialHair" ]
     - map: [ "enum.HumanoidVisualLayers.Hair" ]
     - map: [ "enum.HumanoidVisualLayers.HeadSide" ]
     - map: [ "enum.HumanoidVisualLayers.HeadTop" ]
-    - map: [ "enum.GhostVisuals.Layer" ]
-      state: animated
-      shader: unshaded
   - type: ContentEye
     maxZoom: 1.44,1.44
   - type: Eye
