@@ -136,6 +136,7 @@
           Diona: { state: diona }
           Moth: { state: moth }
           Reptilian: { state: reptilian }
+          Vox: { state: vox }
 
 - type: entity
   id: ActionGhostBoo
