@@ -74,7 +74,12 @@ public sealed class GhostVisualsSystem : EntitySystem
                 if (!_prototype.TryIndex<MarkingPrototype>(markingId.MarkingId, out var marking))
                     continue;
 
-                _humanoid.AddMarking(ent, markingId.MarkingId, markingId.MarkingColors);
+                List<Color> newColors = new();
+
+                foreach (var color in markingId.MarkingColors)
+                    newColors.Add(color.WithAlpha(ent.Comp.MarkingsAlpha));
+
+                _humanoid.AddMarking(ent, markingId.MarkingId, newColors);
                 layers.Add(marking.BodyPart);
             }
         }

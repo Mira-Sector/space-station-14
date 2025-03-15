@@ -11,6 +11,9 @@ public sealed partial class GhostVisualsComponent : Component
     public HashSet<MarkingCategories> MarkingsToTransfer = new();
 
     [DataField]
+    public float MarkingsAlpha;
+
+    [DataField]
     public bool TransferColor = true;
 }
 
