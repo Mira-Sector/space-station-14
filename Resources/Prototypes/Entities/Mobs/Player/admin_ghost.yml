@@ -1,5 +1,5 @@
 - type: entity
-  parent: [MobObserverBase, InventoryBase]
+  parent: [MobObserverBase, MobObserverVisuals, InventoryBase]
   id: AdminObserver
   name: admin observer
   categories: [ HideSpawnMenu ]

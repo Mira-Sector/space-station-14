@@ -70,12 +70,10 @@
     tags:
     - BypassInteractionRangeChecks
 
-# proto for player ghosts specifically
 - type: entity
-  parent: MobObserverBase
-  id: MobObserver
+  id: MobObserverVisuals
+  abstract: true
   components:
-  - type: Spectral
   - type: GhostVisuals
     markingsAlpha: 0.9
     markingsToTransfer:
@@ -146,6 +144,13 @@
           Moth: { state: moth }
           Reptilian: { state: reptilian }
           Vox: { state: vox }
+
+# proto for player ghosts specifically
+- type: entity
+  parent: [ MobObserverBase, MobObserverVisuals ]
+  id: MobObserver
+  components:
+  - type: Spectral
 
 - type: entity
   id: ActionGhostBoo
