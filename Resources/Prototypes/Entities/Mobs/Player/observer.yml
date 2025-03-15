@@ -91,6 +91,11 @@
           32:
             sprite: Mobs/Ghosts/displacement.rsi
             state: hair
+      enum.HumanoidVisualLayers.FacialHair:
+        sizeMaps:
+          32:
+            sprite: Mobs/Ghosts/displacement.rsi
+            state: hair
       enum.HumanoidVisualLayers.Snout:
         sizeMaps:
           32:
@@ -146,7 +151,7 @@
           Reptilian: { state: reptilian }
           Vox: { state: vox }
           Human: { state: human }
-          Dwarf: { state: dwarf }
+          Dwarf: { state: human }
           Slime: { state: slime }
 
 # proto for player ghosts specifically
