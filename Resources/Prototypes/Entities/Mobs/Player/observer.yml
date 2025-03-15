@@ -96,6 +96,11 @@
           32:
             sprite: Mobs/Ghosts/displacement.rsi
             state: hair
+      enum.HumanoidVisualLayers.HeadSide:
+        sizeMaps:
+          32:
+            sprite: Mobs/Ghosts/displacement.rsi
+            state: hair
       enum.HumanoidVisualLayers.Eyes:
         sizeMaps:
           32:
@@ -105,6 +110,7 @@
     visuals:
       enum.GhostVisuals.Species:
         enum.GhostVisuals.Layer:
+          Arachnid: { state: arachnid }
           Moth: { state: moth }
 
 - type: entity
