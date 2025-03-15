@@ -47,9 +47,10 @@
     - map: [ "enum.HumanoidVisualLayers.Snout" ]
     - map: [ "enum.HumanoidVisualLayers.FacialHair" ]
     - map: [ "enum.HumanoidVisualLayers.Hair" ]
+    - map: [ "enum.HumanoidVisualLayers.Eyes" ]
+    - map: [ "enum.HumanoidVisualLayers.Head" ]
     - map: [ "enum.HumanoidVisualLayers.HeadSide" ]
     - map: [ "enum.HumanoidVisualLayers.HeadTop" ]
-    - map: [ "enum.HumanoidVisualLayers.Eyes" ]
   - type: ContentEye
     maxZoom: 1.44,1.44
   - type: Eye
@@ -80,6 +81,7 @@
     - Hair
     - FacialHair
     - Snout
+    - Head
     - HeadSide
     - HeadTop
     - Arms
