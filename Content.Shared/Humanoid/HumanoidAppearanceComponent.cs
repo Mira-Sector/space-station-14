@@ -50,7 +50,7 @@ public sealed partial class HumanoidAppearanceComponent : Component
     ///     The initial profile and base layers to apply to this humanoid.
     /// </summary>
     [DataField]
-    public ProtoId<HumanoidProfilePrototype>? Initial { get; private set; }
+    public ProtoId<HumanoidProfilePrototype>? Initial { get; set; }
 
     /// <summary>
     ///     Skin color of this humanoid.

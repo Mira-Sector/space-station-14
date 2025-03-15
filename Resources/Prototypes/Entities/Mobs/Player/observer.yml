@@ -41,10 +41,15 @@
   components:
   - type: Sprite
     sprite: Mobs/Ghosts/ghost_human.rsi
-    color: "#fff8"
     layers:
-    - state: animated
-      shader: unshaded
+    - map: [ "enum.GhostVisuals.Layer" ]
+      state: animated
+    - map: [ "enum.HumanoidVisualLayers.Snout" ]
+    - map: [ "enum.HumanoidVisualLayers.FacialHair" ]
+    - map: [ "enum.HumanoidVisualLayers.Hair" ]
+    - map: [ "enum.HumanoidVisualLayers.Eyes" ]
+    - map: [ "enum.HumanoidVisualLayers.HeadSide" ]
+    - map: [ "enum.HumanoidVisualLayers.HeadTop" ]
   - type: ContentEye
     maxZoom: 1.44,1.44
   - type: Eye
@@ -71,6 +76,76 @@
   id: MobObserver
   components:
   - type: Spectral
+  - type: GhostVisuals
+    markingsAlpha: 0.9
+    markingsToTransfer:
+    - Hair
+    - FacialHair
+    - Snout
+    - Head
+    - HeadSide
+    - HeadTop
+    - Arms
+    layerDisplacements:
+      enum.HumanoidVisualLayers.Hair:
+        sizeMaps:
+          32:
+            sprite: Mobs/Ghosts/displacement.rsi
+            state: hair
+      enum.HumanoidVisualLayers.Snout:
+        sizeMaps:
+          32:
+            sprite: Mobs/Ghosts/displacement.rsi
+            state: hair
+      enum.HumanoidVisualLayers.Head:
+        sizeMaps:
+          32:
+            sprite: Mobs/Ghosts/displacement.rsi
+            state: hair
+      enum.HumanoidVisualLayers.HeadTop:
+        sizeMaps:
+          32:
+            sprite: Mobs/Ghosts/displacement.rsi
+            state: hair
+      enum.HumanoidVisualLayers.HeadSide:
+        sizeMaps:
+          32:
+            sprite: Mobs/Ghosts/displacement.rsi
+            state: hair
+      enum.HumanoidVisualLayers.Eyes:
+        sizeMaps:
+          32:
+            sprite: Mobs/Ghosts/displacement.rsi
+            state: hair
+      enum.HumanoidVisualLayers.LArm:
+        sizeMaps:
+          32:
+            sprite: Mobs/Ghosts/displacement.rsi
+            state: hair
+      enum.HumanoidVisualLayers.RArm:
+        sizeMaps:
+          32:
+            sprite: Mobs/Ghosts/displacement.rsi
+            state: hair
+      enum.HumanoidVisualLayers.LHand:
+        sizeMaps:
+          32:
+            sprite: Mobs/Ghosts/displacement.rsi
+            state: hair
+      enum.HumanoidVisualLayers.RHand:
+        sizeMaps:
+          32:
+            sprite: Mobs/Ghosts/displacement.rsi
+            state: hair
+  - type: GenericVisualizer
+    visuals:
+      enum.GhostVisuals.Species:
+        enum.GhostVisuals.Layer:
+          Arachnid: { state: arachnid }
+          Diona: { state: diona }
+          Moth: { state: moth }
+          Reptilian: { state: reptilian }
+          Vox: { state: vox }
 
 - type: entity
   id: ActionGhostBoo
