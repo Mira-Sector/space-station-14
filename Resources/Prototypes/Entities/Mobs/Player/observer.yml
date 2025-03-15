@@ -144,6 +144,8 @@
           Moth: { state: moth }
           Reptilian: { state: reptilian }
           Vox: { state: vox }
+          Human: { state: human }
+          Dwarf: { state: dwarf }
 
 # proto for player ghosts specifically
 - type: entity
