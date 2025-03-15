@@ -85,6 +85,8 @@
     - Snout
     - HeadSide
     - HeadTop
+    - LArm
+    - RArm
     layerDisplacements:
       enum.HumanoidVisualLayers.Hair:
         sizeMaps:
@@ -102,6 +104,16 @@
             sprite: Mobs/Ghosts/displacement.rsi
             state: hair
       enum.HumanoidVisualLayers.Eyes:
+        sizeMaps:
+          32:
+            sprite: Mobs/Ghosts/displacement.rsi
+            state: hair
+      enum.HumanoidVisualLayers.LArm:
+        sizeMaps:
+          32:
+            sprite: Mobs/Ghosts/displacement.rsi
+            state: hair
+      enum.HumanoidVisualLayers.RArm:
         sizeMaps:
           32:
             sprite: Mobs/Ghosts/displacement.rsi
