@@ -30,14 +30,11 @@ public sealed class GhostVisualizerSystem : VisualizerSystem<GhostVisualsCompone
             if (!AppearanceSystem.TryGetData(uid, @enum, out _, args.Component))
                 continue;
 
-            if (!component.LayersModified.TryGetValue(@enum, out var markings))
-            {
-                if (!sprite.LayerMapTryGet(@enum, out var index))
-                    continue;
-
+            if (sprite.LayerMapTryGet(@enum, out var index))
                 _displacement.TryAddDisplacement(displacement, sprite, index, layerId, component.RevealedLayers);
+
+            if (!component.LayersModified.TryGetValue(@enum, out var markings))
                 continue;
-            }
 
             foreach (var markingId in markings)
             {
@@ -51,7 +48,7 @@ public sealed class GhostVisualizerSystem : VisualizerSystem<GhostVisualsCompone
 
                     var markingLayerId = $"{markingId}-{rsi.RsiState}";
 
-                    if (!sprite.LayerMapTryGet(markingLayerId, out var index))
+                    if (!sprite.LayerMapTryGet(markingLayerId, out index))
                         continue;
 
                     _displacement.TryAddDisplacement(displacement, sprite, index, markingLayerId, component.RevealedLayers);
