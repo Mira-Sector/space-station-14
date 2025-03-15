@@ -62,7 +62,7 @@ public sealed class GhostVisualsSystem : EntitySystem
         if (ent.Comp.TransferColor)
             _appearance.SetData(ent.Owner, GhostVisuals.Color, humanoidComp.SkinColor);
 
-        HashSet<HumanoidVisualLayers> layers = new();
+        ent.Comp.LayersModified.Clear();
 
         foreach (var markingCategory in ent.Comp.MarkingsToTransfer)
         {
@@ -80,19 +80,32 @@ public sealed class GhostVisualsSystem : EntitySystem
                     newColors.Add(color.WithAlpha(ent.Comp.MarkingsAlpha));
 
                 _humanoid.AddMarking(ent, markingId.MarkingId, newColors);
-                layers.Add(marking.BodyPart);
+                _appearance.SetData(ent, marking.BodyPart, true);
+
+                if (ent.Comp.LayersModified.TryGetValue(marking.BodyPart, out var markingLayers))
+                {
+                    markingLayers.Add(markingId.MarkingId);
+                }
+                else
+                {
+                    markingLayers = new();
+                    markingLayers.Add(markingId.MarkingId);
+                    ent.Comp.LayersModified.Add(marking.BodyPart, markingLayers);
+                }
             }
         }
 
         foreach (HumanoidVisualLayers layer in Enum.GetValues(typeof(HumanoidVisualLayers)))
         {
-            if (layers.Contains(layer))
+            if (ent.Comp.LayersModified.ContainsKey(layer))
                 continue;
 
             ghostHumanoid.HiddenLayers.Add(layer);
+            _appearance.RemoveData(ent, layer);
         }
 
         Dirty(ent, ghostHumanoid);
+        Dirty(ent);
 
         if (usingProfile)
             EntityManager.DeleteEntity(lastBody.Value);

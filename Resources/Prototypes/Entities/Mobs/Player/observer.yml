@@ -84,6 +84,12 @@
     - Snout
     - HeadSide
     - HeadTop
+    layerDisplacements:
+      enum.HumanoidVisualLayers.Hair:
+        sizeMaps:
+          32:
+            sprite: Mobs/Ghosts/displacement.rsi
+            state: hair
 
 - type: entity
   id: ActionGhostBoo
