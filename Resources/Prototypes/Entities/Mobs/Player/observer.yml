@@ -48,6 +48,7 @@
     - map: [ "enum.HumanoidVisualLayers.Snout" ]
     - map: [ "enum.HumanoidVisualLayers.FacialHair" ]
     - map: [ "enum.HumanoidVisualLayers.Hair" ]
+    - map: [ "enum.HumanoidVisualLayers.Eyes" ]
     - map: [ "enum.HumanoidVisualLayers.HeadSide" ]
     - map: [ "enum.HumanoidVisualLayers.HeadTop" ]
   - type: ContentEye
@@ -95,6 +96,16 @@
           32:
             sprite: Mobs/Ghosts/displacement.rsi
             state: hair
+      enum.HumanoidVisualLayers.Eyes:
+        sizeMaps:
+          32:
+            sprite: Mobs/Ghosts/displacement.rsi
+            state: hair
+  - type: GenericVisualizer
+    visuals:
+      enum.GhostVisuals.Species:
+        enum.GhostVisuals.Layer:
+          Moth: { state: moth }
 
 - type: entity
   id: ActionGhostBoo

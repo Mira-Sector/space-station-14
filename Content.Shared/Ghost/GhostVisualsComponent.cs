@@ -31,5 +31,6 @@ public sealed partial class GhostVisualsComponent : Component
 public enum GhostVisuals
 {
     Color,
+    Species,
     Layer,
 }

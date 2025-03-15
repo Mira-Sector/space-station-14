@@ -31,7 +31,13 @@ public sealed class GhostVisualizerSystem : VisualizerSystem<GhostVisualsCompone
                 continue;
 
             if (!component.LayersModified.TryGetValue(@enum, out var markings))
+            {
+                if (!sprite.LayerMapTryGet(@enum, out var index))
+                    continue;
+
+                _displacement.TryAddDisplacement(displacement, sprite, index, layerId, component.RevealedLayers);
                 continue;
+            }
 
             foreach (var markingId in markings)
             {

@@ -59,10 +59,17 @@ public sealed class GhostVisualsSystem : EntitySystem
         ghostHumanoid.Age = humanoidComp.Age;
         _humanoid.SetSex(ent, humanoidComp.Sex, false, ghostHumanoid);
 
+        ent.Comp.LayersModified.Clear();
+        _appearance.SetData(ent.Owner, GhostVisuals.Species, ghostHumanoid.Species);
+
         if (ent.Comp.TransferColor)
+        {
             _appearance.SetData(ent.Owner, GhostVisuals.Color, humanoidComp.SkinColor);
 
-        ent.Comp.LayersModified.Clear();
+            ghostHumanoid.SkinColor = humanoidComp.SkinColor;
+            ghostHumanoid.EyeColor = humanoidComp.EyeColor;
+        }
+
         ghostHumanoid.MarkingSet.Clear();
 
         foreach (var markingCategory in ent.Comp.MarkingsToTransfer)
@@ -104,6 +111,9 @@ public sealed class GhostVisualsSystem : EntitySystem
             ghostHumanoid.HiddenLayers.Add(layer);
             _appearance.RemoveData(ent, layer);
         }
+
+        ghostHumanoid.HiddenLayers.Remove(HumanoidVisualLayers.Eyes);
+        _appearance.SetData(ent, HumanoidVisualLayers.Eyes, true);
 
         Dirty(ent, ghostHumanoid);
         Dirty(ent);
