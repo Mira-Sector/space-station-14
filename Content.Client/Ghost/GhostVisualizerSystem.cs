@@ -11,46 +11,15 @@ public sealed class GhostVisualizerSystem : VisualizerSystem<GhostVisualsCompone
         if (args.Sprite is not {} sprite)
             return;
 
-        if (AppearanceSystem.TryGetData<Color>(uid, GhostVisuals.Color, out var color, args.Component))
-        {
-            foreach (var layer in sprite.AllLayers)
-                layer.Color = color;
-        }
+        if (!AppearanceSystem.TryGetData<Color>(uid, GhostVisuals.Color, out var color, args.Component))
+            return;
 
-        foreach (var layerId in component.LayersToTransfer)
-        {
-            if (!AppearanceSystem.TryGetData<SpriteSpecifier>(uid, layerId, out var layerSprite, args.Component))
-                continue;
+        if (!args.Sprite.LayerMapTryGet(GhostVisuals.Layer, out var index))
+            return;
 
-            if (args.Sprite.LayerMapTryGet(layerId, out var index))
-            {
-                if (!args.Sprite.TryGetLayer(index, out var layer))
-                    continue;
-            }
-            else
-            {
-                index = args.Sprite.LayerMapReserveBlank(layerId);
-            }
+        if (!args.Sprite.TryGetLayer(index, out var layer))
+            return;
 
-            args.Sprite.AddLayer(layerSprite, index);
-        }
-
-        foreach (var marking in component.Markings)
-        {
-            if (!AppearanceSystem.TryGetData<SpriteSpecifier>(uid, marking, out var markingSprite, args.Component))
-                continue;
-
-            if (args.Sprite.LayerMapTryGet(marking, out var index))
-            {
-                if (!args.Sprite.TryGetLayer(index, out var layer))
-                    continue;
-            }
-            else
-            {
-                index = args.Sprite.LayerMapReserveBlank(marking);
-            }
-
-            args.Sprite.AddLayer(markingSprite, index);
-        }
+        layer.Color = color;
     }
 }

@@ -4,7 +4,6 @@ using Content.Shared.Ghost;
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Markings;
 using Robust.Shared.Prototypes;
-using System.Linq;
 
 namespace Content.Server.Ghost;
 
@@ -50,39 +49,45 @@ public sealed class GhostVisualsSystem : EntitySystem
                 return;
         }
 
+        // cant immediately add it else we crash
+        var ghostHumanoid = new HumanoidAppearanceComponent();
+        ghostHumanoid.Species = humanoidComp.Species;
+        ghostHumanoid.Initial = humanoidComp.Initial;
+        AddComp(ent, ghostHumanoid);
+
+        ghostHumanoid.Gender = humanoidComp.Gender;
+        ghostHumanoid.Age = humanoidComp.Age;
+        _humanoid.SetSex(ent, humanoidComp.Sex, false, ghostHumanoid);
+
         if (ent.Comp.TransferColor)
             _appearance.SetData(ent.Owner, GhostVisuals.Color, humanoidComp.SkinColor);
 
-        foreach (var layerId in ent.Comp.LayersToTransfer.Except(humanoidComp.HiddenLayers))
-        {
-            if (!humanoidComp.BaseLayers.TryGetValue(layerId, out var layer))
-                continue;
-
-            if (layer.BaseSprite == null)
-                continue;
-
-            _appearance.SetData(ent.Owner, layerId, layer.BaseSprite);
-        }
+        HashSet<HumanoidVisualLayers> layers = new();
 
         foreach (var markingCategory in ent.Comp.MarkingsToTransfer)
         {
             if (!humanoidComp.MarkingSet.Markings.TryGetValue(markingCategory, out var markings))
                 continue;
 
-            foreach (var marking in markings)
+            foreach (var markingId in markings)
             {
-                if (!marking.Visible)
+                if (!_prototype.TryIndex<MarkingPrototype>(markingId.MarkingId, out var marking))
                     continue;
 
-                if (!_prototype.TryIndex<MarkingPrototype>(marking.MarkingId, out var markingProto))
-                    continue;
-
-                ent.Comp.Markings.Add(markingProto.BodyPart);
-                _appearance.SetData(ent.Owner, markingProto.BodyPart, markingProto.Sprites.First());
+                _humanoid.AddMarking(ent, markingId.MarkingId, markingId.MarkingColors);
+                layers.Add(marking.BodyPart);
             }
         }
 
-        Dirty(ent);
+        foreach (HumanoidVisualLayers layer in Enum.GetValues(typeof(HumanoidVisualLayers)))
+        {
+            if (layers.Contains(layer))
+                continue;
+
+            ghostHumanoid.HiddenLayers.Add(layer);
+        }
+
+        Dirty(ent, ghostHumanoid);
 
         if (usingProfile)
             EntityManager.DeleteEntity(lastBody.Value);
