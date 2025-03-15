@@ -1317,3 +1317,9 @@ Entries:
     type: Fix
   id: 192
   time: '2025-03-13T16:25:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Ghosts now look like their past body
+    type: Add
+  id: 193
+  time: '2025-03-15T20:55:00.0000000+00:00'
