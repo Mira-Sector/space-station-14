@@ -48,6 +48,7 @@
     - map: [ "enum.HumanoidVisualLayers.FacialHair" ]
     - map: [ "enum.HumanoidVisualLayers.Hair" ]
     - map: [ "enum.HumanoidVisualLayers.Eyes" ]
+    - map: [ "enum.HumanoidVisualLayers.Head" ]
     - map: [ "enum.HumanoidVisualLayers.HeadSide" ]
     - map: [ "enum.HumanoidVisualLayers.HeadTop" ]
   - type: ContentEye
@@ -146,6 +147,7 @@
           Vox: { state: vox }
           Human: { state: human }
           Dwarf: { state: dwarf }
+          Slime: { state: slime }
 
 # proto for player ghosts specifically
 - type: entity
