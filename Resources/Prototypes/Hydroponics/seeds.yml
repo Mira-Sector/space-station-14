@@ -2094,12 +2094,8 @@
   chemicals:
     Voidoil:
       Min: 1
-      Max: 25 #Void Oil consumed the vitamins
+      Max: 25 
       PotencyDivisor: 4
-    Nutriment:
-      Min: 1
-      Max: 2
-      PotencyDivisor: 20
 
 #coconut, plasteelcap, chaosberries, bananium plant, voltato
 - type: seed
@@ -2111,11 +2107,14 @@
   packetPrototype: CoconutSeeds
   productPrototypes:
     - ProduceCoconut
+  mutationPrototypes:
+    - cryoconut
   lifespan: 50
   maturation: 15
   production: 5
   yield: 2
   potency: 20
+  harvestRepeat: Repeat
   chemicals:
     Vitamin:
       Min: 1
@@ -2133,6 +2132,42 @@
       Min: 2
       Max: 20
       PotencyDivisor: 5
+
+- type: seed
+  id: cryoconut
+  name: seeds-cryoconut-name
+  noun: seeds-noun-seeds
+  displayName: seeds-cryoconut-display-name
+  plantRsi: Objects/Specific/Hydroponics/cryoconut.rsi
+  packetPrototype: CryoconutSeeds
+  productPrototypes:
+    - ProduceCryoconut
+  lifespan: 50
+  maturation: 15
+  production: 5
+  yield: 2
+  potency: 20
+  harvestRepeat: Repeat
+  idealHeat: 3 #can survive the cold vacuum of space, it's got cryoxadone after all
+  heatTolerance: 300
+  lowPressureTolerance: 100
+  chemicals:
+    Fresium:
+      Min: 1
+      Max: 2
+      PotencyDivisor: 50
+    Nutriment:
+      Min: 1
+      Max: 5
+      PotencyDivisor: 20
+    Fiber:
+      Min: 1
+      Max: 5
+      PotencyDivisor: 20
+    Cryoxadone:
+      Min: 2
+      Max: 10
+      PotencyDivisor: 10
 
 - type: seed
   id: plasteelcap
@@ -2153,8 +2188,10 @@
   waterConsumption: 0.60
   nutrientConsumption: 0.80
   lightTolerance: 6
-  idealHeat: 288
-
+  idealHeat: 288 ##plants can't naturally make plasma, so it gets it from the environment
+  #consumeGasses: {"Plasma", 5} #or it would if i could figure out how this worked
+  #exudeGasses: {"Tritinum", 100}
+          
 - type: seed
   id: chaosberries
   name: seeds-chaosberries-name
@@ -2172,10 +2209,10 @@
   idealLight: 7
   nutrientConsumption: 0.6
   chemicals:
-    Chaos:
-      Min: 1
+    Chaos: #ideally, chaos gets replaced by a random chemical
+      Min: 2
       Max: 8
-      Potencydivisor: 8
+      PotencyDivisor: 10
     Nutriment:
       Min: 2
       Max: 4

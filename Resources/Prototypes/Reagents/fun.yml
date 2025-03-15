@@ -414,9 +414,11 @@
     Drink:
       metabolismRate: 0.1
       effects: #not sure how to make a person glow yet
-      - !type:Glow
-        radius: 5
-        color: "#fffb00"
+      - !type:GenericStatusEffect
+        key: Glowing
+        component: Glowing
+        type: Add
+        time: 4
 
 - type: reagent
   id: Chaos

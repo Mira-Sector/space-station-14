@@ -28,33 +28,14 @@ public sealed partial class Glow : EntityEffect
 
     public override void Effect(EntityEffectBaseArgs args)
     {
-        var logMan = IoCManager.Resolve<ILogManager>();
-        var log = logMan.RootSawmill;
-        var lightSystem = args.EntityManager.System<SharedPointLightSystem>();
-        var light = lightSystem.EnsureLight(args.TargetEntity);
-
-        if (args is EntityEffectReagentArgs reagentArgs)
-        {
-            if (reagentArgs.Source == null || reagentArgs.Reagent == null)
-                return;
-
-            foreach (var quant in reagentArgs.Source.Contents.ToArray())
-            {
-                log.Debug($"{quant.Reagent} {quant.Quantity} {reagentArgs.Reagent.ID} {reagentArgs.Quantity}");
-                if (quant.Reagent.Prototype == reagentArgs.Reagent.ID && quant.Quantity - reagentArgs.Quantity <= 0)
-                {
-                    //log.Debug($"ded");
-                    lightSystem.RemoveLightDeferred(args.TargetEntity);
-                    return; //bad, will permenantly leave someone glowing if they vomit out the chemical just before it finishes
-                }           //also means chemical has to be in their system the entire time. prefer to be more like a drug overlay.
-            }
-        }
         if (Color == Color.Black)
         {
             var random = IoCManager.Resolve<IRobustRandom>();
             Color = random.Pick(Colors);
         }
-        log.Debug($"isGlow");
+
+        var lightSystem = args.EntityManager.System<SharedPointLightSystem>();
+        var light = lightSystem.EnsureLight(args.TargetEntity);
         lightSystem.SetRadius(args.TargetEntity, Radius, light);
         lightSystem.SetColor(args.TargetEntity, Color, light);
         lightSystem.SetCastShadows(args.TargetEntity, false, light); // this is expensive, and botanists make lots of plants

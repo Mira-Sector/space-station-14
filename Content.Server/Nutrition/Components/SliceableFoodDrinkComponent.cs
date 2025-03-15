@@ -39,5 +39,5 @@ public sealed partial class SliceableFoodDrinkComponent : Component
     /// additional container that will be transferred over, defaults to "drink". "food" is still always transferred over.
     /// </summary>
     [DataField]
-    public String Extra = "drink";
+    public string Extra = "drink";
 }

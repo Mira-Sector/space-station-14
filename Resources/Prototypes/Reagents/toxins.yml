@@ -727,3 +727,4 @@
         - !type:ModifyBloodLevel #bleeding also leaks chemical, which transforms blood into more void oil.
           amount: -5
 
+

@@ -74,7 +74,7 @@ public sealed class SliceableFoodDrinkSystem : EntitySystem
 
         var logMan = IoCManager.Resolve<ILogManager>();
         var log = logMan.RootSawmill;
-        log.Debug($"chop");
+        //log.Debug($"chop");
 
         if (!Resolve(uid, ref component, ref food, ref transform) ||
             string.IsNullOrEmpty(component.Slice))
@@ -89,7 +89,7 @@ public sealed class SliceableFoodDrinkSystem : EntitySystem
         if (!_solutionContainer.TryGetSolution(uid, component.Extra, out var solnDrink, out var solutionDrink))
             return false;
 
-        log.Debug($"has drink");
+        //log.Debug($"has drink");
 
         var sliceVolume = solution.Volume / FixedPoint2.New(component.TotalCount);
         var sliceVolumeDrink = solutionDrink.Volume / FixedPoint2.New(component.TotalCount);
@@ -103,7 +103,7 @@ public sealed class SliceableFoodDrinkSystem : EntitySystem
 
             // Fill new slice
             FillSlice(sliceUid, lostSolution);
-            log.Debug($"check drink");
+            //log.Debug($"check drink");
 
             var lostSolutionDrink =
                 _solutionContainer.SplitSolution(solnDrink.Value, sliceVolumeDrink);

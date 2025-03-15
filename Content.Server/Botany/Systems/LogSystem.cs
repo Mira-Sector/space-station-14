@@ -32,7 +32,6 @@ public sealed class LogSystem : EntitySystem
         for (var i = 0; i < component.SpawnCount; i++)
         {
             var plank = Spawn(component.SpawnedPrototype, pos);
-
             if (inContainer)
                 _handsSystem.PickupOrDrop(args.User, plank);
             else
