@@ -93,6 +93,11 @@
           32:
             sprite: Mobs/Ghosts/displacement.rsi
             state: hair
+      enum.HumanoidVisualLayers.Snout:
+        sizeMaps:
+          32:
+            sprite: Mobs/Ghosts/displacement.rsi
+            state: hair
       enum.HumanoidVisualLayers.Head:
         sizeMaps:
           32:
@@ -130,6 +135,7 @@
           Arachnid: { state: arachnid }
           Diona: { state: diona }
           Moth: { state: moth }
+          Reptilian: { state: reptilian }
 
 - type: entity
   id: ActionGhostBoo
