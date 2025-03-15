@@ -44,7 +44,6 @@
     layers:
     - map: [ "enum.GhostVisuals.Layer" ]
       state: animated
-      shader: unshaded
     - map: [ "enum.HumanoidVisualLayers.Snout" ]
     - map: [ "enum.HumanoidVisualLayers.FacialHair" ]
     - map: [ "enum.HumanoidVisualLayers.Hair" ]
@@ -78,7 +77,7 @@
   components:
   - type: Spectral
   - type: GhostVisuals
-    markingsAlpha: 0.8
+    markingsAlpha: 0.9
     markingsToTransfer:
     - Hair
     - FacialHair
@@ -124,6 +123,16 @@
             sprite: Mobs/Ghosts/displacement.rsi
             state: hair
       enum.HumanoidVisualLayers.RArm:
+        sizeMaps:
+          32:
+            sprite: Mobs/Ghosts/displacement.rsi
+            state: hair
+      enum.HumanoidVisualLayers.LHand:
+        sizeMaps:
+          32:
+            sprite: Mobs/Ghosts/displacement.rsi
+            state: hair
+      enum.HumanoidVisualLayers.RHand:
         sizeMaps:
           32:
             sprite: Mobs/Ghosts/displacement.rsi
