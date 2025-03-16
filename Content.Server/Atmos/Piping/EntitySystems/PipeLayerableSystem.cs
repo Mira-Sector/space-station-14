@@ -23,9 +23,6 @@ public sealed partial class PipeLayerableSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<PipeLayerableComponent, GetVerbsEvent<InteractionVerb>>(OnInteractionVerbs);
-        SubscribeLocalEvent<PipeLayerableComponent, GetVerbsEvent<AlternativeVerb>>(OnAlternativeVerbs);
-
-        SubscribeLocalEvent<PipeLayerableComponent, InteractHandEvent>(OnHandInteract);
         SubscribeLocalEvent<PipeLayerableComponent, UseInHandEvent>(OnHandUse);
     }
 
@@ -34,38 +31,18 @@ public sealed partial class PipeLayerableSystem : EntitySystem
         if (!args.CanAccess || !args.CanInteract || !args.CanComplexInteract)
             return;
 
-        var verb = new InteractionVerb()
+        args.Verbs.Add(new InteractionVerb()
         {
             Text = Loc.GetString("pipe-layerable-increment"),
-            Act = () => TryIncrementLayer((ent.Owner, ent.Comp))
-        };
+            Act = () => TryIncrementLayer((ent.Owner, ent.Comp)),
+            Priority = 1
+        });
 
-        args.Verbs.Add(verb);
-    }
-
-    private void OnAlternativeVerbs(Entity<PipeLayerableComponent> ent, ref GetVerbsEvent<AlternativeVerb> args)
-    {
-        if (!args.CanAccess || !args.CanInteract || !args.CanComplexInteract)
-            return;
-
-        var verb = new AlternativeVerb()
+        args.Verbs.Add(new InteractionVerb()
         {
             Text = Loc.GetString("pipe-layerable-decrement"),
-            Act = () => TryIncrementLayer((ent.Owner, ent.Comp), true)
-        };
-
-        args.Verbs.Add(verb);
-    }
-
-    private void OnHandInteract(Entity<PipeLayerableComponent> ent, ref InteractHandEvent args)
-    {
-        if (args.Handled)
-            return;
-
-        if (!Transform(ent).Anchored)
-            return;
-
-        args.Handled = TryIncrementLayer((ent.Owner, ent.Comp));
+            Act = () => TryIncrementLayer((ent.Owner, ent.Comp), true),
+        });
     }
 
     private void OnHandUse(Entity<PipeLayerableComponent> ent, ref UseInHandEvent args)
