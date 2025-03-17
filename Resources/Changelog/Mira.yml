@@ -1323,3 +1323,11 @@ Entries:
     type: Add
   id: 193
   time: '2025-03-15T20:55:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Clicking on pipes to change its layer has been removed
+    type: Remove
+  - message: Changing a pipes layer now takes into account the pipes direction
+    type: Fix
+  id: 194
+  time: '2025-03-17T14:35:00.0000000+00:00'
