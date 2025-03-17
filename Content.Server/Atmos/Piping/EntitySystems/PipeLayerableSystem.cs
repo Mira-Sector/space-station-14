@@ -1,9 +1,9 @@
 using Content.Server.NodeContainer;
 using Content.Server.NodeContainer.EntitySystems;
 using Content.Server.NodeContainer.Nodes;
+using Content.Shared.Atmos;
 using Content.Shared.Atmos.Piping;
 using Content.Shared.Atmos.Piping.Layerable;
-using Content.Shared.Interaction;
 using Content.Shared.Interaction.Events;
 using Content.Shared.Verbs;
 using Robust.Server.GameObjects;
@@ -101,7 +101,7 @@ public sealed partial class PipeLayerableSystem : EntitySystem
         if (!Resolve(ent, ref ent.Comp2))
             return false;
 
-        HashSet<int> otherEntityLayers = new();
+        Dictionary<int, HashSet<PipeDirection>> otherEntityLayers = new();
 
         var xform = Transform(ent);
 
@@ -117,7 +117,16 @@ public sealed partial class PipeLayerableSystem : EntitySystem
                     if (node is not PipeNode pipeNode)
                         continue;
 
-                    otherEntityLayers.Add(pipeNode.Layer);
+                    if (otherEntityLayers.TryGetValue(pipeNode.Layer, out var directions))
+                    {
+                        directions.Add(pipeNode.CurrentPipeDirection);
+                    }
+                    else
+                    {
+                        directions = new();
+                        directions.Add(pipeNode.CurrentPipeDirection);
+                        otherEntityLayers.Add(pipeNode.Layer, directions);
+                    }
                 }
             }
         }
@@ -133,7 +142,10 @@ public sealed partial class PipeLayerableSystem : EntitySystem
             if (!InBounds(ent, newLayer))
                 return false;
 
-            if (otherEntityLayers.Contains(newLayer))
+            if (!otherEntityLayers.TryGetValue(newLayer, out var directions))
+                continue;
+
+            if (directions.Contains(pipeNode.CurrentPipeDirection))
                 return false;
         }
 
