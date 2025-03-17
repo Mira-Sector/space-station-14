@@ -22,7 +22,7 @@ public sealed partial class HeartComponent : Component
     public float DamagedRespirationMultiplier = 0.25f;
 
     [ViewVariables, AutoNetworkedField]
-    public float CurrentRespirationMutliplier;
+    public float CurrentRespirationMultiplier;
 }
 
 [Serializable, NetSerializable]

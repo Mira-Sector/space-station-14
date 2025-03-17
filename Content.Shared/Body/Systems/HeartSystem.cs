@@ -76,12 +76,12 @@ public sealed class HeartSystem : EntitySystem
 
     private void OnHeartRotUpdate(EntityUid uid, HeartComponent component, RotUpdateEvent args)
     {
-        component.CurrentRespirationMutliplier = component.HealthyRespirationMultiplier + args.RotProgress * (component.DamagedRespirationMultiplier - component.HealthyRespirationMultiplier);
+        component.CurrentRespirationMultiplier = component.HealthyRespirationMultiplier + args.RotProgress * (component.DamagedRespirationMultiplier - component.HealthyRespirationMultiplier);
     }
 
     private void OnHeartInit(EntityUid uid, HeartComponent component, ComponentInit args)
     {
-        component.CurrentRespirationMutliplier = component.HealthyRespirationMultiplier;
+        component.CurrentRespirationMultiplier = component.HealthyRespirationMultiplier;
     }
 
     private void OnHeartExamined(EntityUid uid, HeartComponent component, ref ExaminedEvent args)

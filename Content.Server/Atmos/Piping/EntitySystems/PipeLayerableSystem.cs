@@ -61,13 +61,7 @@ public sealed partial class PipeLayerableSystem : EntitySystem
         var newLayer = reverse ? ent.Comp.Layer - 1 : ent.Comp.Layer + 1;
 
         if (!InBounds((ent.Owner, ent.Comp), newLayer))
-        {
-            // wrap around
-            if (reverse)
-                newLayer = ent.Comp.MaxLayer;
-            else
-                newLayer = ent.Comp.MinLayer;
-        }
+            newLayer = reverse ? ent.Comp.MaxLayer : ent.Comp.MinLayer; // wrap around
 
         return TrySetLayer(ent, newLayer);
     }
