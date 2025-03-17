@@ -2668,10 +2668,6 @@
     scale: 1.5,1.5
   - type: Produce
     seedId: lampflower
-  - type: Food
-    trash:
-    - ClothingHeadHatSunflowerRing
-  - type: SolutionContainerManager
     solutions:
       food:
         maxVol: 27
@@ -2688,8 +2684,11 @@
   - type: Butcherable
     butcheringType: Knife
     spawned:
-    - id: ClothingHeadHatSunflowerRing
-    #- id: ClothingHeadHatLampflowerRing
+    - id: ClothingHeadHatLampflowerRing
+  - type: Food
+    trash:
+    - ClothingHeadHatLampflowerRing
+  - type: SolutionContainerManager
   - type: PointLight
     radius: 6.0
     color: "#fffb00"
@@ -2752,11 +2751,10 @@
   - type: Butcherable
     butcheringType: Knife
     spawned:
-    - id: ClothinfHeadHatSunflowerRing
-    #- id: ClothingHeadHatVoidflowerRing
+    - id: ClothingHeadHatVoidflowerRing
   - type: Food
     trash:
-    - ClothingHeadHatSunflowerRing
+    - ClothingHeadHatVoidflowerRing
   - type: FlavorProfile
     flavors:
       - inky
@@ -2785,7 +2783,7 @@
       drink:
         maxVol: 30
         reagents:
-        - ReagentId: CoconutWater #gets lost if coconut is grinded as extractable only accepts one solution, so can only be food or drink >:(
+        - ReagentId: CoconutWater #gets lost if coconut is grinded as extractable only accepts one solution, so can only be food or drink >:( (unless we change that)
           Quantity: 20
   - type: DrawableSolution
     solution: drink

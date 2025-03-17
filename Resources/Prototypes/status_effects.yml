@@ -73,5 +73,6 @@
   id: Adrenaline
   alert: Adrenaline
 
-#- type: statusEffect
-#  id: Glowing
+- type: statusEffect
+  id: Glowing
+  alwaysAllowed: true

@@ -837,6 +837,38 @@
     sprite: Clothing/Head/Hats/sunflowerring.rsi
 
 - type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadHatLampflowerRing
+  name: lampflower ring
+  description: A beacon of light to all those around you, especially moths.
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Hats/lampflowerring.rsi
+    scale: 1.5, 1.5
+  - type: Clothing
+    sprite: Clothing/Head/Hats/lampflowerring.rsi
+  - type: PointLight
+    radius: 2.0
+    color: "#fffb00"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadHatVoidflowerRing
+  name: voidflower ring
+  description: Let the void consume you.
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Hats/voidflowerring.rsi
+    scale: 1.5, 1.5
+  - type: Clothing
+    sprite: Clothing/Head/Hats/voidflowerring.rsi
+  - type: SingularityDistortion
+    intensity: 300
+    falloffPower: 3
+    hasEventHorizon: true
+  - type: IdentityBlocker
+
+- type: entity
   parent: [ClothingHeadBase, BaseSyndicateContraband]
   id: ClothingHeadHatSyndie
   name: syndicate hat
