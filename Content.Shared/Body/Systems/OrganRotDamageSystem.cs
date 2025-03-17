@@ -55,6 +55,9 @@ public sealed class OrganRotDamageSystem : EntitySystem
 
     private void OnRotUpdate(EntityUid uid, OrganRotDamageComponent component, RotUpdateEvent args)
     {
+        if (args.Stage < component.MinStage)
+            return;
+
         if (component.Mode != OrganRotDamageMode.Rotting)
             return;
 

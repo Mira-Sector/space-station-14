@@ -65,7 +65,7 @@ public sealed class RespiratorSystem : EntitySystem
 
     private void OnHeartRespiratingDelay(EntityUid uid, HeartComponent component, GetRespiratingUpdateDelay args)
     {
-        args.Delay *= component.CurrentRespirationMutliplier;
+        args.Delay *= component.CurrentRespirationMultiplier;
     }
 
     public override void Update(float frameTime)

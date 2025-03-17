@@ -14,6 +14,9 @@ public sealed partial class OrganRotDamageComponent : Component
     public bool Enabled;
 
     [DataField]
+    public int MinStage = 2;
+
+    [DataField]
     public TimeSpan DamageDelay = TimeSpan.FromSeconds(3f);
 
     [ViewVariables]
