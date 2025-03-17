@@ -1331,3 +1331,9 @@ Entries:
     type: Fix
   id: 194
   time: '2025-03-17T14:35:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Organ rotting damage doesn't instantly start giving damage
+    type: Tweak
+  id: 195
+  time: '2025-03-17T15:00:00.0000000+00:00'
