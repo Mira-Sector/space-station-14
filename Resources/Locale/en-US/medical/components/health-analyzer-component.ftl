@@ -23,3 +23,10 @@ health-analyzer-window-scan-mode-active = Active
 health-analyzer-window-scan-mode-inactive = Inactive
 
 health-analyzer-popup-scan-target = {CAPITALIZE(THE($user))} is trying to scan you!
+
+health-analyzer-body-none-head = Head:
+health-analyzer-body-none-torso = Torso:
+health-analyzer-body-left-arm = Left Arm:
+health-analyzer-body-right-arm = Right Arm:
+health-analyzer-body-left-leg = Left Leg:
+health-analyzer-body-right-leg = Right Leg:

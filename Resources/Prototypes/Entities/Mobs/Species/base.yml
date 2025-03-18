@@ -335,6 +335,20 @@
         Asphyxiation: -1.0
   - type: FireVisuals
     alternateState: Standing
+  - type: HealthAnalyzerBody
+    limbs:
+      !type:BodyPart { type: Head, side: None }:
+        offset: 0, 10
+      !type:BodyPart { type: Torso, side: None }:
+        offset: 0, 10
+      !type:BodyPart { type: Arm, side: Left }:
+        offset: 0, 10
+      !type:BodyPart { type: Arm, side: Right }:
+        offset: 0, 10
+      !type:BodyPart { type: Leg, side: Left }:
+        offset: 0, 10
+      !type:BodyPart { type: Leg, side: Right }:
+        offset: 0, 10
   - type: SurgeryRecieverBody
     surgeries:
       - bodyPart: !type:BodyPart { type: Head, side: None }

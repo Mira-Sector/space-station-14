@@ -24,7 +24,7 @@ namespace Content.Client.HealthAnalyzer.UI
                 if (!EntMan.TryGetEntity(cast.TargetEntity, out var target))
                     return;
 
-                _window = EntMan.HasComponent<HealthAnalyzerBodyComponent>(target) ? this.CreateWindow<HealthAnalyzerWindow>() : this.CreateWindow<HealthAnalyzerWindow>();
+                _window = EntMan.HasComponent<HealthAnalyzerBodyComponent>(target) ? this.CreateWindow<HealthAnalyzerBodyWindow>() : this.CreateWindow<HealthAnalyzerWindow>();
                 _window.Title = EntMan.GetComponent<MetaDataComponent>(Owner).EntityName;
 
                 if (_window == null)

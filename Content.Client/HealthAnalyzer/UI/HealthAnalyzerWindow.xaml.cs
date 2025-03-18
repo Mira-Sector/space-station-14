@@ -7,71 +7,68 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.XAML;
 using System.Linq;
 
-namespace Content.Client.HealthAnalyzer.UI
+namespace Content.Client.HealthAnalyzer.UI;
+
+[GenerateTypedNameReferences]
+public sealed partial class HealthAnalyzerWindow : BaseHealthAnalyzerWindow
 {
-    [GenerateTypedNameReferences]
-    public sealed partial class HealthAnalyzerWindow : BaseHealthAnalyzerWindow
+    private readonly SharedBodySystem _bodySystem;
+
+    public HealthAnalyzerWindow()
     {
-        private readonly SharedBodySystem _bodySystem;
+        RobustXamlLoader.Load(this);
 
-        public HealthAnalyzerWindow()
+        _bodySystem = _entityManager.System<SharedBodySystem>();
+    }
+
+    public override void Populate(HealthAnalyzerScannedUserMessage msg)
+    {
+        var target = _entityManager.GetEntity(msg.TargetEntity);
+
+        DamageSpecifier damage = new();
+
+        if (target != null)
         {
-            RobustXamlLoader.Load(this);
+            var bodyDamage = _bodySystem.GetBodyDamage(target.Value);
 
-            _bodySystem = _entityManager.System<SharedBodySystem>();
+            if (bodyDamage != null)
+            {
+                damage = bodyDamage;
+            }
+            else if (_entityManager.TryGetComponent<DamageableComponent>(target, out var damageable))
+            {
+                damage = damageable.Damage;
+            }
+            else
+            {
+                target = null;
+            }
         }
 
-        public override void Populate(HealthAnalyzerScannedUserMessage msg)
+        if (target == null)
         {
-            var target = _entityManager.GetEntity(msg.TargetEntity);
-
-            DamageSpecifier damage = new();
-
-            if (target != null)
-            {
-                var bodyDamage = _bodySystem.GetBodyDamage(target.Value);
-
-                if (bodyDamage != null)
-                {
-                    damage = bodyDamage;
-                }
-                else if (_entityManager.TryGetComponent<DamageableComponent>(target, out var damageable))
-                {
-                    damage = damageable.Damage;
-                }
-                else
-                {
-                    target = null;
-                }
-            }
-
-            if (target == null)
-            {
-                NoPatientDataText.Visible = true;
-                return;
-            }
-
-            NoPatientDataText.Visible = false;
-
-            DrawScanMode(ScanModeLabel, msg.ScanMode);
-            DrawPatient(SpriteView, NoDataTex, NameLabel, SpeciesLabel, target.Value, msg.ScanMode);
-            DrawBasicDiagnostics(TemperatureLabel, BloodLabel, StatusLabel, DamageLabel, target.Value, msg.Temperature, msg.BloodLevel, damage);
-
-            var showAlerts = DrawAlerts(AlertsContainer, msg.Unrevivable, msg.Bleeding);
-            AlertsDivider.Visible = showAlerts;
-            AlertsContainer.Visible = showAlerts;
-
-            // Damage Groups
-
-            var damageSortedGroups =
-                damage.GetDamagePerGroup(_prototypes).OrderByDescending(damage => damage.Value)
-                    .ToDictionary(x => x.Key, x => x.Value);
-
-            IReadOnlyDictionary<string, FixedPoint2> damagePerType = damage.DamageDict;
-
-            GroupsContainer.RemoveAllChildren();
-            foreach (var container in DrawDiagnosticGroups(damageSortedGroups, damagePerType))
-                GroupsContainer.AddChild(container);
+            NoPatientDataText.Visible = true;
+            return;
         }
+
+        NoPatientDataText.Visible = false;
+
+        DrawScanMode(ScanModeLabel, msg.ScanMode);
+        DrawPatient(SpriteView, NoDataTex, NameLabel, SpeciesLabel, target.Value, msg.ScanMode);
+        DrawBasicDiagnostics(TemperatureLabel, BloodLabel, StatusLabel, DamageLabel, target.Value, msg.Temperature, msg.BloodLevel, damage);
+
+        var showAlerts = DrawAlerts(AlertsContainer, msg.Unrevivable, msg.Bleeding);
+        AlertsDivider.Visible = showAlerts;
+        AlertsContainer.Visible = showAlerts;
+
+        var damageSortedGroups =
+            damage.GetDamagePerGroup(_prototypes).OrderByDescending(damage => damage.Value)
+                .ToDictionary(x => x.Key, x => x.Value);
+
+        IReadOnlyDictionary<string, FixedPoint2> damagePerType = damage.DamageDict;
+
+        GroupsContainer.RemoveAllChildren();
+        foreach (var container in DrawDiagnosticGroups(damageSortedGroups, damagePerType))
+            GroupsContainer.AddChild(container);
     }
 }
