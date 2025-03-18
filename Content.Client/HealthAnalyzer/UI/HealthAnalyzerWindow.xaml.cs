@@ -55,7 +55,7 @@ public sealed partial class HealthAnalyzerWindow : BaseHealthAnalyzerWindow
 
         DrawScanMode(ScanModeLabel, msg.ScanMode);
         DrawPatient(SpriteView, NoDataTex, NameLabel, SpeciesLabel, target.Value, msg.ScanMode);
-        DrawBasicDiagnostics(TemperatureLabel, BloodLabel, StatusLabel, DamageLabel, target.Value, msg.Temperature, msg.BloodLevel, damage);
+        DrawBasicDiagnostics(TemperatureLabel, BloodLabel, StatusLabel, DamageLabel, target.Value, msg.Temperature, msg.BloodLevel, damage.GetTotal());
 
         var showAlerts = DrawAlerts(AlertsContainer, msg.Unrevivable, msg.Bleeding);
         AlertsDivider.Visible = showAlerts;

@@ -34,7 +34,7 @@ public sealed partial class HealthAnalyzerBodyWindow : BaseHealthAnalyzerWindow
 
         DrawScanMode(ScanModeLabel, msg.ScanMode);
         DrawPatient(SpriteView, NoDataTex, NameLabel, SpeciesLabel, target.Value, msg.ScanMode);
-        DrawBasicDiagnostics(TemperatureLabel, BloodLabel, StatusLabel, DamageLabel, target.Value, msg.Temperature, msg.BloodLevel, damage);
+        DrawBasicDiagnostics(TemperatureLabel, BloodLabel, StatusLabel, DamageLabel, target.Value, msg.Temperature, msg.BloodLevel, damage.GetTotal());
 
         var showAlerts = DrawAlerts(AlertsContainer, msg.Unrevivable, msg.Bleeding);
         AlertsDivider.Visible = showAlerts;
@@ -59,7 +59,7 @@ public sealed partial class HealthAnalyzerBodyWindow : BaseHealthAnalyzerWindow
 
             progressBar.ProgressLabel.Text = Loc.GetString($"health-analyzer-body-{part.Side.ToString().ToLower()}-{part.Type.ToString().ToLower()}");
             progressBar.ProgressTex.Progress = Math.Abs((float) (damageable.TotalDamage / deadThreshold) - 1);
-            progressBar.ProgressText.Text = $"{damageable.TotalDamage}/{deadThreshold}";
+            progressBar.ProgressText.Text = $"{deadThreshold - damageable.TotalDamage}/{deadThreshold}";
         }
     }
 
