@@ -69,17 +69,27 @@
                 <TextureRect Name="NoDataTex" Access="Public" SetSize="512 512" Visible="false" Stretch="KeepAspectCentered" TexturePath="/Textures/Interface/Misc/health_analyzer_out_of_range.png"/>
             </BoxContainer>
         </BoxContainer>
-        <PanelContainer Name="AlertsDivider" Visible="False" StyleClasses="LowDivider" />
-        <BoxContainer Name="AlertsContainer" Visible="False" Margin="0 5" Orientation="Vertical" HorizontalAlignment="Center">
-        </BoxContainer>
-        <PanelContainer StyleClasses="LowDivider" />
+        <PanelContainer StyleClasses="LowDivider"/>
         <BoxContainer
-            Name="GroupsContainer"
-            Orientation="Vertical"
             VerticalExpand="True"
-            HorizontalAlignment="Center"
             HorizontalExpand="True"
-            Margin="8">
+            Orientation="Vertical">
+            <BoxContainer
+                Name="GroupsContainer"
+                Orientation="Vertical"
+                VerticalExpand="True"
+                HorizontalAlignment="Center"
+                HorizontalExpand="True"
+                Margin="8">
+            </BoxContainer>
+            <PanelContainer Name="AlertsDivider" Access="Public" StyleClasses="LowDivider" />
+            <BoxContainer
+                Name="AlertsContainer"
+                Visible="False"
+                Margin="16"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom">
+            </BoxContainer>
         </BoxContainer>
     </BoxContainer>
 </controls:BaseHealthAnalyzerWindow>

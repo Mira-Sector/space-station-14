@@ -117,7 +117,7 @@ public partial class BaseHealthAnalyzerWindow : FancyWindow
 
     protected bool DrawAlerts(BoxContainer AlertsContainer, bool? unrevivable, bool? Bleeding)
     {
-        if (unrevivable != true && !Bleeding != true)
+        if (unrevivable != true && Bleeding != true)
             return false;
 
         AlertsContainer.DisposeAllChildren();
