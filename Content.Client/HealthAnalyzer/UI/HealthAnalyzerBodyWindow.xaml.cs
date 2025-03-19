@@ -81,12 +81,7 @@ public sealed partial class HealthAnalyzerBodyWindow : BaseHealthAnalyzerWindow
             if (!Updateable)
                 return;
 
-            var selectableLimbs = new Dictionary<BodyPart, (EntityUid, DamageableComponent, HealthAnalyzerLimb, TextureRect)>(limbs);
-
-            if (SelectedPart is {})
-                selectableLimbs.Remove(SelectedPart);
-
-            foreach (var (part, (_, _, data, button)) in selectableLimbs)
+            foreach (var (part, (_, _, data, button)) in limbs)
             {
                 var selectedTexture = _spriteSystem.Frame0(data.SelectedSprite);
                 var scale = selectedTexture.Size / LimbButton.Size;
@@ -96,7 +91,11 @@ public sealed partial class HealthAnalyzerBodyWindow : BaseHealthAnalyzerWindow
 
                 if (color != Color.Transparent && color != new Color())
                 {
-                    SelectedPart = part;
+                    if (SelectedPart == part)
+                        SelectedPart = null;
+                    else
+                        SelectedPart = part;
+
                     break;
                 }
             }
