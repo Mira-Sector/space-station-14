@@ -118,6 +118,7 @@ public sealed class BodySystem : SharedBodySystem
                 continue;
 
             thresholdsComp.Thresholds[WoundState.Dead] = threshold;
+            Dirty(part, thresholdsComp);
         }
 
         if (totalThreshold >= threshold)
@@ -137,6 +138,7 @@ public sealed class BodySystem : SharedBodySystem
             newThreshold *= LimbMultiplier;
 
             thresholdsComp.Thresholds[WoundState.Dead] = newThreshold;
+            Dirty(part, thresholdsComp);
         }
     }
 
