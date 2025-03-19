@@ -253,6 +253,8 @@
   - type: NpcFactionMember
     factions:
     - Passive
+  - type: Body
+    prototype: Chicken
 
 - type: entity
   parent: MobChicken
