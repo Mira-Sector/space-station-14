@@ -208,7 +208,7 @@ public partial class BaseHealthAnalyzerWindow : FancyWindow
     {
         var label = new RichTextLabel();
 
-        label.Text = $"[font size={FontTag.DefaultSize * scale}]{text}[/font]";
+        label.Text = $"[font size={Math.Round(FontTag.DefaultSize * scale)}]{text}[/font]";
         return label;
     }
 

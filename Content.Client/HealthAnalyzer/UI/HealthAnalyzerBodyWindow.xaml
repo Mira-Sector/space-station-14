@@ -74,22 +74,27 @@
             VerticalExpand="True"
             HorizontalExpand="True"
             Orientation="Vertical">
+            <RichTextLabel
+                Name="LimbDamageLabel"
+                Access="Public"
+                HorizontalAlignment="Center"
+                HorizontalExpand="True"
+                Margin="8 8 8 0"/>
             <BoxContainer
                 Name="GroupsContainer"
                 Orientation="Vertical"
                 VerticalExpand="True"
                 HorizontalAlignment="Center"
                 HorizontalExpand="True"
-                Margin="8">
+                Margin="8 0 8 8">
             </BoxContainer>
-            <PanelContainer Name="AlertsDivider" Access="Public" StyleClasses="LowDivider" />
+            <PanelContainer Name="AlertsDivider" Access="Public" StyleClasses="LowDivider"/>
             <BoxContainer
                 Name="AlertsContainer"
                 Visible="False"
                 Margin="16"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Bottom">
-            </BoxContainer>
+                VerticalAlignment="Bottom"/>
         </BoxContainer>
     </BoxContainer>
 </controls:BaseHealthAnalyzerWindow>

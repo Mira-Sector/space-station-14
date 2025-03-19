@@ -108,6 +108,7 @@ public sealed partial class HealthAnalyzerBodyWindow : BaseHealthAnalyzerWindow
         {
             DrawLimbDamage(limbData.Damageable.Damage);
             limbData.Texture.Texture = _spriteSystem.Frame0(limbData.Data.SelectedSprite);
+            LimbDamageLabel.Text = Loc.GetString($"[font size=16]{Loc.GetString($"health-analyzer-body-{SelectedPart.Side.ToString().ToLower()}-{SelectedPart.Type.ToString().ToLower()}")}[/font]");
         }
         else
         {
@@ -115,6 +116,7 @@ public sealed partial class HealthAnalyzerBodyWindow : BaseHealthAnalyzerWindow
                 button.Texture = _spriteSystem.Frame0(data.SelectedSprite);
 
             DrawLimbDamage(damage);
+            LimbDamageLabel.Text = $"[font size=16]{Loc.GetString("health-analyzer-body-all")}[/font]";
         }
     }
 
@@ -125,7 +127,7 @@ public sealed partial class HealthAnalyzerBodyWindow : BaseHealthAnalyzerWindow
                 .ToDictionary(x => x.Key, x => x.Value);
 
         GroupsContainer.RemoveAllChildren();
-        foreach (var container in DrawDiagnosticGroups(damageSortedGroups, damage.DamageDict, 1.25f))
+        foreach (var container in DrawDiagnosticGroups(damageSortedGroups, damage.DamageDict, 1.125f))
             GroupsContainer.AddChild(container);
     }
 

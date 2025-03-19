@@ -32,3 +32,4 @@ health-analyzer-body-left-arm = Left Arm:
 health-analyzer-body-right-arm = Right Arm:
 health-analyzer-body-left-leg = Left Leg:
 health-analyzer-body-right-leg = Right Leg:
+health-analyzer-body-all = Overall:
