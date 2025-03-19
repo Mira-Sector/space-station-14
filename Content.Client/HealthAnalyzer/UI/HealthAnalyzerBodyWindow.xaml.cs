@@ -92,7 +92,7 @@ public sealed partial class HealthAnalyzerBodyWindow : BaseHealthAnalyzerWindow
                 var scale = selectedTexture.Size / LimbButton.Size;
                 var pixel = scale * args.Event.RelativePosition;
 
-                var color = selectedTexture.GetPixel(Math.Round(pixel.X), Math.Round(pixel.Y));
+                var color = selectedTexture.GetPixel((int) Math.Round(pixel.X), (int) Math.Round(pixel.Y));
 
                 if (color != Color.Transparent && color != new Color())
                 {
