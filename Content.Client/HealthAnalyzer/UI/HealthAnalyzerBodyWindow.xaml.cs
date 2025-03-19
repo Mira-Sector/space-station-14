@@ -125,7 +125,7 @@ public sealed partial class HealthAnalyzerBodyWindow : BaseHealthAnalyzerWindow
                 .ToDictionary(x => x.Key, x => x.Value);
 
         GroupsContainer.RemoveAllChildren();
-        foreach (var container in DrawDiagnosticGroups(damageSortedGroups, damage.DamageDict))
+        foreach (var container in DrawDiagnosticGroups(damageSortedGroups, damage.DamageDict, 1.25f))
             GroupsContainer.AddChild(container);
     }
 

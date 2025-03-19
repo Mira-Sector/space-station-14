@@ -1,7 +1,7 @@
 <controls:BaseHealthAnalyzerWindow
     xmlns="https://spacestation14.io"
     xmlns:controls="clr-namespace:Content.Client.HealthAnalyzer.UI"
-    SetSize="1024 800"
+    SetSize="960 800"
     Resizable="False">
     <BoxContainer
         Name="RootContainer"
@@ -75,8 +75,11 @@
         <PanelContainer StyleClasses="LowDivider" />
         <BoxContainer
             Name="GroupsContainer"
-            Margin="0 5 0 5"
-            Orientation="Vertical">
+            Orientation="Vertical"
+            VerticalExpand="True"
+            HorizontalAlignment="Center"
+            HorizontalExpand="True"
+            Margin="8">
         </BoxContainer>
     </BoxContainer>
 </controls:BaseHealthAnalyzerWindow>
