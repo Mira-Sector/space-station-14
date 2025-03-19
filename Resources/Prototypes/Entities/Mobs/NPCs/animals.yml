@@ -128,6 +128,8 @@
     rootTask:
       task: SimpleHostileCompound
   - type: ZombieImmune
+  - type: Body
+    prototype: Bee
 
 - type: entity
   name: bee
