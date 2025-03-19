@@ -1,0 +1,51 @@
+﻿- type: entity
+  id: BaseBatPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: BatTorso
+  name: bat torso
+  parent: [BaseBatPart, BaseTorso]
+
+- type: entity
+  id: BatHead
+  name: bat head
+  parent: [BaseBatPart, BaseHead]
+
+- type: entity
+  id: BatLeftArm
+  name: left bat arm
+  parent: [BaseBatPart, BaseLeftArm]
+
+- type: entity
+  id: BatRightArm
+  name: right bat arm
+  parent: [BaseBatPart, BaseRightArm]
+
+- type: entity
+  id: BatLeftLeg
+  name: left bat leg
+  parent: [BaseBatPart, BaseLeftLeg]
+
+- type: entity
+  id: BatRightLeg
+  name: right bat leg
+  parent: [BaseBatPart, BaseRightLeg]
+
+- type: entity
+  id: BatLeftFoot
+  name: left bat foot
+  parent: [BaseBatPart,BaseLeftFoot]
+
+- type: entity
+  id: BatRightFoot
+  name: right bat foot
+  parent: [ BaseBatPart, BaseRightFoot]

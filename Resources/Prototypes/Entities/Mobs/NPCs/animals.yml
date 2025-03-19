@@ -64,6 +64,8 @@
   - type: Tag
     tags:
     - VimPilot
+  - type: Body
+    prototype: Bat
 
 - type: entity
   name: bee
