@@ -1,7 +1,6 @@
 using Content.Shared.Body.Part;
 using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
-using System.Numerics;
 
 namespace Content.Shared.MedicalScanner;
 
@@ -15,9 +14,9 @@ public sealed partial class HealthAnalyzerBodyComponent : Component
 [DataDefinition, Serializable, NetSerializable]
 public sealed partial class HealthAnalyzerLimb
 {
-    [DataField]
-    public SpriteSpecifier? Sprite;
+    [DataField(required: true)]
+    public SpriteSpecifier HoverSprite = default!;
 
-    [DataField]
-    public Vector2 Offset;
+    [DataField(required: true)]
+    public SpriteSpecifier SelectedSprite = default!;
 }

@@ -51,7 +51,14 @@
                     Name="SpriteView"
                     Access="Public"
                     SetSize="640 640">
-                    <TextureRect Name="CurrentLimb" Access="Public" SetSize="512 512" Visible="False" Stretch="KeepAspect"/>
+                    <TextureButton Name="LimbButton" Access="Public" SetSize="512 512">
+                        <TextureRect Name="ButtonHead" Access="Public" SetSize="512 512" TextureScale="16 16" Visible="False"/>
+                        <TextureRect Name="ButtonTorso" Access="Public" SetSize="512 512" TextureScale="16 16" Visible="False"/>
+                        <TextureRect Name="ButtonRightArm" Access="Public" SetSize="512 512" TextureScale="16 16" Visible="False"/>
+                        <TextureRect Name="ButtonLeftArm" Access="Public" SetSize="512 512" TextureScale="16 16" Visible="False"/>
+                        <TextureRect Name="ButtonRightLeg" Access="Public" SetSize="512 512" TextureScale="16 16" Visible="False"/>
+                        <TextureRect Name="ButtonLeftLeg" Access="Public" SetSize="512 512" TextureScale="16 16" Visible="False"/>
+                    </TextureButton>
                     <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarHead" Access="Public" Visible="False" Margin="512 0 0 386"/>
                     <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarTorso" Access="Public" Visible="False" Margin="0 0 512 386"/>
                     <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarRightArm" Access="Public" Visible="False" Margin="512 0 0 128"/>
