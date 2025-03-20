@@ -83,6 +83,13 @@ public partial class BaseHealthAnalyzerWindow : FancyWindow
         spriteView.Visible = scanMode.HasValue && scanMode.Value;
         noDataTex.Visible = !spriteView.Visible;
 
+        if (spriteView.Visible && spriteView.Sprite!.Rotation != Angle.Zero)
+        {
+            var angle = spriteView.Sprite!.Rotation / 2;
+            spriteView.WorldRotation = angle;
+            spriteView.EyeRotation = angle;
+        }
+
         var name = new FormattedMessage();
         name.PushColor(Color.White);
         name.AddText(_entityManager.HasComponent<MetaDataComponent>(target) ? Identity.Name(target, _entityManager) : Loc.GetString("health-analyzer-window-entity-unknown-text"));

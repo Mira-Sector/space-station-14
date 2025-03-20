@@ -50,6 +50,7 @@
                     Scale="16 16"
                     Name="SpriteView"
                     Access="Public"
+                    Stretch="None"
                     SetSize="640 640">
                     <TextureButton Name="LimbButton" Access="Public" SetSize="512 512">
                         <TextureRect Name="ButtonHead" Access="Public" SetSize="512 512" TextureScale="16 16" Visible="False"/>
