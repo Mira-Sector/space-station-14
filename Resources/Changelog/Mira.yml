@@ -1369,3 +1369,9 @@ Entries:
     type: Add
   id: 200
   time: '2025-03-20T21:40:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Disabler and energy bolts can go through windows and grills
+    type: Tweak
+  id: 201
+  time: '2025-03-20T22:20:00.0000000+00:00'
