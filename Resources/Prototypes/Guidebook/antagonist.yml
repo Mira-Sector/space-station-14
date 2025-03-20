@@ -11,6 +11,7 @@
   - SpaceNinja
   - Thieves
   - Obsessed
+  - Malf
 
 - type: guideEntry
   id: Traitors
@@ -51,3 +52,8 @@
   id: Obsessed
   name: guide-entry-obsessed
   text: "/ServerInfo/Guidebook/Antagonist/Obsessed.xml"
+
+- type: guideEntry
+  id: Malf
+  name: guide-entry-malf
+  text: "/ServerInfo/Guidebook/Antagonist/Malf.xml"
