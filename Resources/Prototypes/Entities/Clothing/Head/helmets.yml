@@ -33,6 +33,15 @@
     tags:
     - WhitelistChameleon
     - SecurityHelmet
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Blunt: 0.7
+          Slash: 0.7
+          Piercing: 0.7
+          Heat: 0.8
 
 #Mercenary Helmet
 - type: entity
@@ -45,6 +54,16 @@
     sprite: Clothing/Head/Helmets/merc_helmet.rsi
   - type: Clothing
     sprite: Clothing/Head/Helmets/merc_helmet.rsi
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Blunt: 0.7
+          Slash: 0.7
+          Piercing: 0.5
+          Heat: 0.9
+
 
 #SWAT Helmet
 - type: entity
@@ -60,7 +79,12 @@
   - type: Armor #This is intentionally not spaceproof, when the time comes to port the values from SS13 this should be buffed from what it was.
     basePart: Head
     modifiers:
-      [ Head ] : { coefficients: { Blunt: 0.80, Slash: 0.80, Piercing: 0.80, Heat: 0.80, Radiation: 0.80, Caustic: 0.95 } }
+      [ Head ] :
+        coefficients:
+          Blunt: 0.7
+          Slash: 0.7
+          Piercing: 0.5
+          Heat: 0.9
   - type: ExplosionResistance
     damageCoefficient: 0.75
 
@@ -76,6 +100,15 @@
     sprite: Clothing/Head/Helmets/swat_syndicate.rsi
   - type: Clothing
     sprite: Clothing/Head/Helmets/swat_syndicate.rsi
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Blunt: 0.6
+          Slash: 0.6
+          Piercing: 0.3
+          Heat: 0.9
 
 #Light Riot Helmet
 - type: entity
@@ -92,7 +125,13 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] : { coefficients: { Blunt: 0.8, Slash: 0.8, Piercing: 0.95 } }
+      [ Head ] :
+        coefficients:
+          Blunt: 0.4
+          Slash: 0.4
+          Piercing: 0.7
+          Heat: 0.9
+          Caustic: 0.9
 
 #Bombsuit Helmet
 - type: entity
@@ -111,7 +150,12 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] : { coefficients: { Blunt: 0.95, Slash: 0.95, Piercing: 0.95 } }
+      [ Head ] :
+        coefficients:
+          Blunt: 0.9
+          Slash: 0.9
+          Piercing: 0.9
+          Heat: 0.75
   - type: HideLayerClothing
     slots:
     - Hair
@@ -131,6 +175,15 @@
     sprite: Clothing/Head/Helmets/janitor_bombsuit.rsi
   - type: Clothing
     sprite: Clothing/Head/Helmets/janitor_bombsuit.rsi
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Blunt: 0.9
+          Slash: 0.9
+          Piercing: 0.9
+          Heat: 0.75
 
 #Cult Helmet
 - type: entity
@@ -147,7 +200,12 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] : { coefficients: { Blunt: 0.9, Slash: 0.8, Piercing: 0.9, Heat: 0.9 } }
+      [ Head ] :
+        coefficients:
+          Blunt: 0.5
+          Slash: 0.5
+          Piercing: 0.6
+          Heat: 0.5
 
 #Space Ninja Helmet
 - type: entity
@@ -171,6 +229,15 @@
     - Snout
     - HeadTop
     - HeadSide
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Blunt: 0.8
+          Slash: 0.8
+          Piercing: 0.8
+          Heat: 0.8
 
 #Templar Helmet
 - type: entity
@@ -197,6 +264,17 @@
     sprite: Clothing/Head/Helmets/thunderdome.rsi
   - type: Clothing
     sprite: Clothing/Head/Helmets/thunderdome.rsi
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Blunt: 0.2
+          Slash: 0.2
+          Piercing: 0.2
+          Heat: 0.5
+          Radiation: 0
+          Caustic: 0.75
 
 #Wizard Helmet
 - type: entity
@@ -211,6 +289,17 @@
     sprite: Clothing/Head/Helmets/wizardhelm.rsi
   - type: IngestionBlocker
   - type: IdentityBlocker
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Blunt: 0.2
+          Slash: 0.2
+          Piercing: 0.2
+          Heat: 0.5
+          Radiation: 0
+          Caustic: 0.75
 
 #Fire Helmet
 - type: entity
@@ -241,6 +330,14 @@
     - Snout
     - HeadTop
     - HeadSide
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Slash: 0.9
+          Heat: 0.8
+          Cold: 0.8
 
 #Atmos Fire Helmet
 - type: entity
@@ -275,6 +372,14 @@
     - HeadTop
     - HeadSide
   - type: BreathMask
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Slash: 0.9
+          Heat: 0.8
+          Cold: 0.8
 
 #Chitinous Helmet
 - type: entity
@@ -290,7 +395,13 @@
   - type: Armor #admeme item so it should be fine being overpowered while helmets are still intentionally kneecapped.
     basePart: Head
     modifiers:
-      [ Head ] : { coefficients: { Blunt: 0.5, Slash: 0.5, Piercing: 0.5, Heat: 0.9 } }
+      [ Head ] :
+        coefficients:
+          Blunt: 0.5
+          Slash: 0.5
+          Piercing: 0.5
+          Heat: 0.9
+          Radiation: 0.8
 
 #ERT HELMETS
 #ERT Leader Helmet
@@ -304,6 +415,15 @@
     sprite: Clothing/Head/Helmets/ert_leader.rsi
   - type: Clothing
     sprite: Clothing/Head/Helmets/ert_leader.rsi
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Blunt: 0.7
+          Slash: 0.7
+          Piercing: 0.7
+          Heat: 0.8
 
 #ERT Security Helmet
 - type: entity
@@ -316,6 +436,15 @@
     sprite: Clothing/Head/Helmets/ert_security.rsi
   - type: Clothing
     sprite: Clothing/Head/Helmets/ert_security.rsi
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Blunt: 0.7
+          Slash: 0.7
+          Piercing: 0.7
+          Heat: 0.8
 
 #ERT Medic Helmet
 - type: entity
@@ -328,6 +457,15 @@
     sprite: Clothing/Head/Helmets/ert_medic.rsi
   - type: Clothing
     sprite: Clothing/Head/Helmets/ert_medic.rsi
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Blunt: 0.7
+          Slash: 0.7
+          Piercing: 0.7
+          Heat: 0.8
 
 #ERT Engineer Helmet
 - type: entity
@@ -340,6 +478,15 @@
     sprite: Clothing/Head/Helmets/ert_engineer.rsi
   - type: Clothing
     sprite: Clothing/Head/Helmets/ert_engineer.rsi
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Blunt: 0.7
+          Slash: 0.7
+          Piercing: 0.7
+          Heat: 0.8
 
 #ERT Janitor Helmet
 - type: entity
@@ -352,6 +499,15 @@
     sprite: Clothing/Head/Helmets/ert_janitor.rsi
   - type: Clothing
     sprite: Clothing/Head/Helmets/ert_janitor.rsi
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Blunt: 0.7
+          Slash: 0.7
+          Piercing: 0.7
+          Heat: 0.8
 
 - type: entity
   parent: [ BaseSyndicateContraband, ClothingHeadHelmetBase ]
@@ -366,7 +522,13 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] : { coefficients: { Blunt: 0.85, Slash: 0.85, Piercing: 0.85, Heat: 0.85 } }
+      [ Head ] :
+        coefficients:
+          Blunt: 0.35
+          Slash: 0.35
+          Piercing: 0.35
+          Heat: 0.35
+          Caustic: 0.5
 
 #Bone Helmet
 - type: entity
@@ -382,6 +544,14 @@
   - type: Construction
     graph: BoneHelmet
     node: helmet
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Blunt: 0.6
+          Slash: 0.8
+          Piercing: 0.4
 
 - type: entity
   parent: [ ClothingHeadHelmetBase, BaseMinorContraband ]
@@ -393,6 +563,15 @@
     sprite: Clothing/Head/Helmets/podwars_helmet.rsi
   - type: Clothing
     sprite: Clothing/Head/Helmets/podwars_helmet.rsi
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Blunt: 0.5
+          Slash: 0.5
+          Piercing: 0.6
+          Heat: 0.5
 
 #Justice Helmet
 - type: entity
@@ -463,6 +642,15 @@
   - type: Construction
     graph: HelmetJustice
     node: helmet
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Blunt: 0.7
+          Slash: 0.7
+          Piercing: 0.7
+          Heat: 0.8
 
 - type: entity
   parent: ClothingHeadHelmetJustice
@@ -483,3 +671,4 @@
     useDelay: 1
     itemIconStyle: BigItem
     event: !type:ToggleActionEvent
+
