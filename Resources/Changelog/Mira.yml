@@ -1349,3 +1349,9 @@ Entries:
     type: Add
   id: 197
   time: '2025-03-19T20:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Limbs now properly flash green when they cant be damaged anymore
+    type: Fix
+  id: 198
+  time: '2025-03-20T17:50:00.0000000+00:00'
