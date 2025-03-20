@@ -50,28 +50,28 @@ public partial class SharedBodySystem
 
     internal void CheckThresholds(EntityUid limb, EntityUid body, BodyPartThresholdsComponent thresholds, DamageableComponent damage)
     {
-        WoundState? lowestPossibleState = null;
-        FixedPoint2? lowestPossibleThreshold = null;
+        WoundState? highestPossibleState = null;
+        FixedPoint2 highestPossibleThreshold = new();
 
         foreach (var (limbState, limbThreshold) in thresholds.Thresholds)
         {
             if (damage.TotalDamage < limbThreshold)
                 continue;
 
-            if (limbThreshold > lowestPossibleThreshold)
+            if (limbThreshold < highestPossibleThreshold)
                 continue;
 
-            lowestPossibleState = limbState;
-            lowestPossibleThreshold = limbThreshold;
+            highestPossibleState = limbState;
+            highestPossibleThreshold = limbThreshold;
         }
 
-        if (lowestPossibleState == null)
+        if (highestPossibleState == null)
             return;
 
-        if (lowestPossibleState.Value == thresholds.CurrentState)
+        if (highestPossibleState.Value == thresholds.CurrentState)
             return;
 
-        DoThreshold(limb, body, thresholds, lowestPossibleState.Value);
+        DoThreshold(limb, body, thresholds, highestPossibleState.Value);
     }
 
     internal void DoThreshold(EntityUid limb, EntityUid body, BodyPartThresholdsComponent thresholds, WoundState state)
@@ -82,5 +82,6 @@ public partial class SharedBodySystem
         // TODO: do something on state change
 
         thresholds.CurrentState = state;
+        Dirty(limb, thresholds);
     }
 }

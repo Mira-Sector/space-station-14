@@ -89,7 +89,7 @@ public sealed partial class HealthAnalyzerBodyWindow : BaseHealthAnalyzerWindow
 
                 var color = selectedTexture.GetPixel((int) Math.Round(pixel.X), (int) Math.Round(pixel.Y));
 
-                if (color != Color.Transparent && color != new Color())
+                if (color.A > 0)
                 {
                     if (SelectedPart == part)
                         SelectedPart = null;

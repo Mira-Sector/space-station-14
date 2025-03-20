@@ -6,10 +6,10 @@ using Robust.Shared.Utility;
 
 namespace Content.Shared.Damage.DamageSelector;
 
-[RegisterComponent, NetworkedComponent]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class DamagePartSelectorComponent : Component
 {
-    [ViewVariables]
+    [ViewVariables, AutoNetworkedField]
     public BodyPart SelectedPart = new BodyPart(BodyPartType.Torso, BodyPartSymmetry.None);
 
     [DataField(required: true)]
