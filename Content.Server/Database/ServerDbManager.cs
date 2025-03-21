@@ -181,6 +181,14 @@ namespace Content.Server.Database
 
         #endregion
 
+        #region Mimic
+
+        Task<List<MimicPhraseProb>> GetMimicPhraseProbs(string prototype, CancellationToken cancel = default);
+
+        Task UpdateMimicProbs(IReadOnlyCollection<MimicPhrasesUpdate> updates);
+
+        #endregion
+
         #region Player Records
         Task UpdatePlayerRecordAsync(
             NetUserId userId,
@@ -584,6 +592,22 @@ namespace Content.Server.Database
         {
             DbWriteOpsMetric.Inc();
             return RunDbCommand(() => _db.UpdatePlayTimes(updates));
+        }
+
+        #endregion
+
+        #region Mimic
+
+        public Task<List<MimicPhraseProb>> GetMimicPhraseProbs(string prototype, CancellationToken cancel)
+        {
+            DbReadOpsMetric.Inc();
+            return RunDbCommand(() => _db.GetMimicPhrases(prototype, cancel));
+        }
+
+        public Task UpdateMimicProbs(IReadOnlyCollection<MimicPhrasesUpdate> updates)
+        {
+            DbWriteOpsMetric.Inc();
+            return RunDbCommand(() => _db.UpdateMimicPhrases(updates));
         }
 
         #endregion
@@ -1199,6 +1223,8 @@ namespace Content.Server.Database
     }
 
     public sealed record PlayTimeUpdate(NetUserId User, string Tracker, TimeSpan Time);
+
+    public sealed record MimicPhrasesUpdate(ProtoId<EntityPrototype> Prototype, string Phrase, float? Prob);
 
     internal sealed class SyncAsyncEnumerable<T> : IAsyncEnumerable<T>
     {

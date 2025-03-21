@@ -591,6 +591,66 @@ namespace Content.Server.Database
 
         #endregion
 
+        #region Mimic
+        public async Task<List<MimicPhraseProb>> GetMimicPhrases(string prototype, CancellationToken cancel)
+        {
+            await using var db = await GetDb(cancel);
+
+            return await db.DbContext.MimicPhraseProb
+                .Where(p => p.PrototypeId == prototype)
+                .ToListAsync(cancel);
+        }
+
+        public async Task UpdateMimicPhrases(IReadOnlyCollection<MimicPhrasesUpdate> updates)
+        {
+            await using var db = await GetDb();
+
+            var prototypes = updates.Select(u => u.Prototype).Distinct().ToArray();
+            var dbProb = (await db.DbContext.MimicPhraseProb
+                    .Where(p => prototypes.Contains(p.PrototypeId))
+                    .ToArrayAsync())
+                .GroupBy(p => p.PrototypeId)
+                .ToDictionary(g => g.Key, g => g.ToDictionary(p => p.Phrase, p => p));
+
+            foreach (var (prototype, phrase, prob) in updates)
+            {
+                if (dbProb.TryGetValue(prototype, out var phrases)
+                    && phrases.TryGetValue(phrase, out var entry))
+                {
+                    if (prob is {})
+                    {
+                        // already exists
+                        // update it
+                        entry.Prob = prob.Value;
+                    }
+                    else
+                    {
+                        // delete it
+                        await db.DbContext.MimicPhraseProb.Where(x => x.PrototypeId == prototype && x.Phrase == phrase).ExecuteDeleteAsync();
+                    }
+
+                    continue;
+                }
+
+                // wut
+                if (prob is not {})
+                    continue;
+
+                var phraseProb = new MimicPhraseProb
+                {
+                    PrototypeId = prototype,
+                    Phrase = phrase,
+                    Prob = prob.Value
+                };
+
+                db.DbContext.MimicPhraseProb.Add(phraseProb);
+            }
+
+            await db.DbContext.SaveChangesAsync();
+        }
+
+        #endregion
+
         #region Player Records
         /*
          * PLAYER RECORDS

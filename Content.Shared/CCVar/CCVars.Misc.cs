@@ -1,4 +1,4 @@
-﻿using Robust.Shared.Configuration;
+using Robust.Shared.Configuration;
 
 namespace Content.Shared.CCVar;
 
@@ -76,6 +76,12 @@ public sealed partial class CCVars
     /// </summary>
     public static readonly CVarDef<float>
         PlayTimeSaveInterval = CVarDef.Create("playtime.save_interval", 900f, CVar.SERVERONLY);
+
+    /// <summary>
+    ///     Time between mimic learned phrases autosaves, in seconds.
+    /// </summary>
+    public static readonly CVarDef<float>
+        MimicPhraseSaveInterval = CVarDef.Create("mimic.save_interval", 1200f, CVar.SERVERONLY);
 
     /// <summary>
     ///     The maximum amount of time the entity GC can process, in ms.
