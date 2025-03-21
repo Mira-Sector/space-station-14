@@ -1224,7 +1224,7 @@ namespace Content.Server.Database
 
     public sealed record PlayTimeUpdate(NetUserId User, string Tracker, TimeSpan Time);
 
-    public sealed record MimicPhrasesUpdate(ProtoId<EntityPrototype> Prototype, string Phrase, float? Prob);
+    public sealed record MimicPhrasesUpdate(EntProtoId Prototype, string Phrase, float? Prob);
 
     internal sealed class SyncAsyncEnumerable<T> : IAsyncEnumerable<T>
     {

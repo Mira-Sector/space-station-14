@@ -8,4 +8,10 @@ public sealed partial class MimicLearnerComponent : Component
     /// </summary>
     [DataField]
     public float LearningChance = 0.5f;
+
+    /// <summary>
+    /// What probability to add for a phrase we just heard
+    /// </summary>
+    [DataField]
+    public float PhraseProb = 0.002f;
 }

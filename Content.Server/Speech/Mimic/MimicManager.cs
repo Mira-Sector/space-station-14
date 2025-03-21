@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Content.Server.Speech.Mimic;
 
-public delegate void UpdateLearnedCallback(ProtoId<EntityPrototype> prototype, Dictionary<string, float> phrases);
+public delegate void UpdateLearnedCallback(EntProtoId prototype, Dictionary<string, float> phrases);
 
 public sealed class MimicManager
 {
@@ -26,14 +26,14 @@ public sealed class MimicManager
 
     private ISawmill _sawmill = default!;
 
-    private ValueList<ProtoId<EntityPrototype>> _entProtosDirty;
+    private ValueList<EntProtoId> _entProtosDirty;
 
     private readonly List<Task> _pendingSaveTasks = new();
 
     private TimeSpan _saveInterval;
     private TimeSpan _lastSave;
 
-    private readonly Dictionary<ProtoId<EntityPrototype>, MimicLearnedData> _mimicLearnedData = new();
+    private readonly Dictionary<EntProtoId, MimicLearnedData> _mimicLearnedData = new();
 
     public event UpdateLearnedCallback? UpdateLearned;
 
@@ -83,7 +83,7 @@ public sealed class MimicManager
         _entProtosDirty.Clear();
     }
 
-    private void RefreshSinglePrototype(ProtoId<EntityPrototype> prototype, MimicLearnedData data, TimeSpan time)
+    private void RefreshSinglePrototype(EntProtoId prototype, MimicLearnedData data, TimeSpan time)
     {
         DebugTools.Assert(data.Initialized);
 
@@ -134,7 +134,7 @@ public sealed class MimicManager
         TrackPending(DoSaveAsync());
     }
 
-    public async void SavePrototype(ProtoId<EntityPrototype> prototype)
+    public async void SavePrototype(EntProtoId prototype)
     {
         FlushAllPrototypes();
 
@@ -177,7 +177,7 @@ public sealed class MimicManager
         _sawmill.Debug($"Saved {log.Count} mimic phrases");
     }
 
-    private async Task DoSavePrototypeAsync(ProtoId<EntityPrototype> prototype)
+    private async Task DoSavePrototypeAsync(EntProtoId prototype)
     {
         var log = new List<MimicPhrasesUpdate>();
 
@@ -195,7 +195,7 @@ public sealed class MimicManager
         _sawmill.Debug($"Saved {log.Count} mimicked phrases for {prototype}");
     }
 
-    public async Task LoadData(ProtoId<EntityPrototype> prototype, CancellationToken cancel)
+    public async Task LoadData(EntProtoId prototype, CancellationToken cancel)
     {
         var data = new MimicLearnedData();
         _mimicLearnedData.Add(prototype, data);
@@ -209,7 +209,7 @@ public sealed class MimicManager
         data.Initialized = true;
     }
 
-    public void AddProbToPhrase(ProtoId<EntityPrototype> prototype, string phrase, float prob)
+    public void AddProbToPhrase(EntProtoId prototype, string phrase, float prob)
     {
         if (!_mimicLearnedData.TryGetValue(prototype, out var data) || !data.Initialized)
             throw new InvalidOperationException($"Mimic learned phases is not yet loaded for {prototype}!");
@@ -225,7 +225,7 @@ public sealed class MimicManager
         data.DbPhrasesDirty.Add(phrase);
     }
 
-    public bool TryGetPhraseProbs(ProtoId<EntityPrototype> prototype, [NotNullWhen(true)] out Dictionary<string, float>? prob)
+    public bool TryGetPhraseProbs(EntProtoId prototype, [NotNullWhen(true)] out Dictionary<string, float>? prob)
     {
         prob = null;
 
@@ -238,7 +238,7 @@ public sealed class MimicManager
         return true;
     }
 
-    public bool TryGetPhraseProb(ProtoId<EntityPrototype> prototype, string phrase, [NotNullWhen(true)] out float? prob)
+    public bool TryGetPhraseProb(EntProtoId prototype, string phrase, [NotNullWhen(true)] out float? prob)
     {
         prob = null;
 
@@ -253,7 +253,7 @@ public sealed class MimicManager
         return true;
     }
 
-    public Dictionary<string, float> GetPhraseProbs(ProtoId<EntityPrototype> prototype)
+    public Dictionary<string, float> GetPhraseProbs(EntProtoId prototype)
     {
         if (!_mimicLearnedData.TryGetValue(prototype, out var data) || !data.Initialized)
             throw new InvalidOperationException($"Mimicked phases are not yet loaded for {prototype}!");
@@ -261,7 +261,7 @@ public sealed class MimicManager
         return data.LearnedPhrases;
     }
 
-    public float GetProbForPhrase(ProtoId<EntityPrototype> prototype, string phrase)
+    public float GetProbForPhrase(EntProtoId prototype, string phrase)
     {
         if (!_mimicLearnedData.TryGetValue(prototype, out var data) || !data.Initialized)
             throw new InvalidOperationException($"Mimicked phases are not yet loaded for {prototype}!");

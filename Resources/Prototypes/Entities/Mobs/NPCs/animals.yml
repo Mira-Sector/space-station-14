@@ -2318,6 +2318,7 @@
       path: /Audio/Animals/parrot_raught.ogg
   - type: Bloodstream
     bloodMaxVolume: 50
+  - type: MimicLearner
 
 - type: entity
   name: penguin
