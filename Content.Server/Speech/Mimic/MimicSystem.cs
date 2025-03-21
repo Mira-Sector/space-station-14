@@ -3,6 +3,7 @@ using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Robust.Shared.CPUJob.JobQueues;
 using Robust.Shared.CPUJob.JobQueues.Queues;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using System.Threading;
 
@@ -19,14 +20,41 @@ public sealed partial class MimicSystem : EntitySystem
     private readonly JobQueue _mimicQueue = new();
     private readonly List<(MimicLoadDataJob Job, CancellationTokenSource CancelToken)> _mimicJobs = new();
 
+    private Dictionary<EntProtoId, Dictionary<string, float>> _toUpdate = new();
+
     public override void Initialize()
     {
         base.Initialize();
 
+        _mimic.UpdateLearned += UpdateLearned;
+
         SubscribeLocalEvent<MimicLearnerComponent, ComponentInit>(OnInit);
-        SubscribeLocalEvent<MimicLearnerComponent, ComponentRemove>(OnRemove);
+        SubscribeLocalEvent<MimicLearnerComponent, ComponentShutdown>(OnShutdown);
         SubscribeLocalEvent<MimicLearnerComponent, ListenAttemptEvent>(OnAttemptListen);
         SubscribeLocalEvent<MimicLearnerComponent, ListenEvent>(OnListen);
+    }
+
+    public override void Shutdown()
+    {
+        base.Shutdown();
+
+        _mimic.UpdateLearned -= UpdateLearned;
+    }
+
+    private void UpdateLearned(EntProtoId prototype, Dictionary<string, float> phrases)
+    {
+        if (!_toUpdate.TryGetValue(prototype, out var toAdd))
+            return;
+
+        foreach (var (phrase, prob) in toAdd)
+        {
+            if (phrases.ContainsKey(phrase))
+                continue;
+
+            phrases.Add(phrase, prob);
+        }
+
+        _toUpdate.Remove(prototype);
     }
 
     public override void Update(float frameTime)
@@ -56,7 +84,7 @@ public sealed partial class MimicSystem : EntitySystem
         _mimicQueue.EnqueueJob(job);
     }
 
-    private void OnRemove(Entity<MimicLearnerComponent> ent, ref ComponentRemove args)
+    private void OnShutdown(Entity<MimicLearnerComponent> ent, ref ComponentShutdown args)
     {
         foreach (var (job, cancelToken) in _mimicJobs.ToArray())
         {
@@ -66,6 +94,12 @@ public sealed partial class MimicSystem : EntitySystem
                 _mimicJobs.Remove((job, cancelToken));
             }
         }
+
+        if (MetaData(ent).EntityPrototype is not {} entityPrototype)
+            return;
+
+        _mimic.RefreshSinglePrototype(entityPrototype);
+        _mimic.SavePrototype(entityPrototype);
     }
 
     private void OnAttemptListen(Entity<MimicLearnerComponent> ent, ref ListenAttemptEvent args)
@@ -90,6 +124,24 @@ public sealed partial class MimicSystem : EntitySystem
         if (MetaData(ent).EntityPrototype is not {} entityPrototype)
             return;
 
-        _mimic.AddProbToPhrase(entityPrototype, args.Message, ent.Comp.PhraseProb);
+        if (_mimic.TryGetPhraseProb(entityPrototype, args.Message, out var _))
+        {
+            _mimic.AddProbToPhrase(entityPrototype, args.Message, ent.Comp.PhraseProb);
+            return;
+        }
+
+        if (_toUpdate.TryGetValue(entityPrototype, out var phrases))
+        {
+            if (phrases.ContainsKey(args.Message))
+                return;
+
+            phrases.Add(args.Message, ent.Comp.PhraseProb);
+        }
+        else
+        {
+            phrases = new();
+            phrases.Add(args.Message, ent.Comp.PhraseProb);
+            _toUpdate.Add(entityPrototype, phrases);
+        }
     }
 }

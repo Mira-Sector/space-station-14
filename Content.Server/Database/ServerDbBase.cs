@@ -605,7 +605,7 @@ namespace Content.Server.Database
         {
             await using var db = await GetDb();
 
-            var prototypes = updates.Select(u => u.Prototype).Distinct().ToArray();
+            var prototypes = updates.Select(u => u.Prototype.Id).Distinct().ToArray();
             var dbProb = (await db.DbContext.MimicPhraseProb
                     .Where(p => prototypes.Contains(p.PrototypeId))
                     .ToArrayAsync())

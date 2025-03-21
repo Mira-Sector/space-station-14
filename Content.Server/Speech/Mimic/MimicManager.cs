@@ -83,6 +83,17 @@ public sealed class MimicManager
         _entProtosDirty.Clear();
     }
 
+    public void RefreshSinglePrototype(EntProtoId prototype)
+    {
+        var time = _timing.RealTime;
+
+        if (!_mimicLearnedData.TryGetValue(prototype, out var data))
+            return;
+
+        RefreshSinglePrototype(prototype, data, time);
+        data.IsDirty = false;
+    }
+
     private void RefreshSinglePrototype(EntProtoId prototype, MimicLearnedData data, TimeSpan time)
     {
         DebugTools.Assert(data.Initialized);
@@ -111,7 +122,7 @@ public sealed class MimicManager
         }
     }
 
-    public void FlushPrototype(string prototype)
+    public void FlushPrototype(EntProtoId prototype)
     {
         var time = _timing.RealTime;
         var data = _mimicLearnedData[prototype];
@@ -192,11 +203,14 @@ public sealed class MimicManager
 
         await _db.UpdateMimicProbs(log);
 
-        _sawmill.Debug($"Saved {log.Count} mimicked phrases for {prototype}");
+        _sawmill.Debug($"Saved {log.Count} mimicked phrases for {prototype.Id}");
     }
 
     public async Task LoadData(EntProtoId prototype, CancellationToken cancel)
     {
+        if (_mimicLearnedData.ContainsKey(prototype))
+            return;
+
         var data = new MimicLearnedData();
         _mimicLearnedData.Add(prototype, data);
 
@@ -212,17 +226,20 @@ public sealed class MimicManager
     public void AddProbToPhrase(EntProtoId prototype, string phrase, float prob)
     {
         if (!_mimicLearnedData.TryGetValue(prototype, out var data) || !data.Initialized)
-            throw new InvalidOperationException($"Mimic learned phases is not yet loaded for {prototype}!");
+            throw new InvalidOperationException($"Mimic learned phases is not yet loaded for {prototype.Id}!");
 
         AddProbToPhrase(data, phrase, prob);
     }
 
     private static void AddProbToPhrase(MimicLearnedData data, string phrase, float prob)
     {
-        ref var probability = ref CollectionsMarshal.GetValueRefOrAddDefault(data.LearnedPhrases, phrase, out _);
-        prob += probability;
+        ref var probability = ref CollectionsMarshal.GetValueRefOrAddDefault(data.LearnedPhrases, phrase, out var found);
+
+        if (found)
+            prob += probability;
 
         data.DbPhrasesDirty.Add(phrase);
+        data.IsDirty = true;
     }
 
     public bool TryGetPhraseProbs(EntProtoId prototype, [NotNullWhen(true)] out Dictionary<string, float>? prob)
@@ -256,7 +273,7 @@ public sealed class MimicManager
     public Dictionary<string, float> GetPhraseProbs(EntProtoId prototype)
     {
         if (!_mimicLearnedData.TryGetValue(prototype, out var data) || !data.Initialized)
-            throw new InvalidOperationException($"Mimicked phases are not yet loaded for {prototype}!");
+            throw new InvalidOperationException($"Mimicked phases are not yet loaded for {prototype.Id}!");
 
         return data.LearnedPhrases;
     }
@@ -264,7 +281,7 @@ public sealed class MimicManager
     public float GetProbForPhrase(EntProtoId prototype, string phrase)
     {
         if (!_mimicLearnedData.TryGetValue(prototype, out var data) || !data.Initialized)
-            throw new InvalidOperationException($"Mimicked phases are not yet loaded for {prototype}!");
+            throw new InvalidOperationException($"Mimicked phases are not yet loaded for {prototype.Id}!");
 
         return data.LearnedPhrases.GetValueOrDefault(phrase);
     }
