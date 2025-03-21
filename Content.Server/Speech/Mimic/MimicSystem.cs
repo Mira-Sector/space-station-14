@@ -1,6 +1,7 @@
 using Content.Server.Administration.Logs;
 using Content.Server.Speech.Components;
 using Content.Shared.Database;
+using Content.Shared.GameTicking;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Robust.Shared.CPUJob.JobQueues;
@@ -31,6 +32,7 @@ public sealed partial class MimicSystem : EntitySystem
 
         _mimic.UpdateLearned += UpdateLearned;
 
+        SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundRestart);
         SubscribeLocalEvent<MimicLearnerComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<MimicLearnerComponent, ComponentShutdown>(OnShutdown);
         SubscribeLocalEvent<MimicLearnerComponent, ListenAttemptEvent>(OnAttemptListen);
@@ -97,12 +99,21 @@ public sealed partial class MimicSystem : EntitySystem
                 _mimicJobs.Remove((job, cancelToken));
             }
         }
+    }
 
-        if (MetaData(ent).EntityPrototype is not {} entityPrototype)
-            return;
+    private void OnRoundRestart(RoundRestartCleanupEvent args)
+    {
+        foreach (var (job, cancelToken) in _mimicJobs.ToArray())
+        {
+            cancelToken.Cancel();
+            _mimicJobs.Remove((job, cancelToken));
+        }
 
-        _mimic.RefreshSinglePrototype(entityPrototype);
-        _mimic.SavePrototype(entityPrototype);
+        foreach (var (prototype, phrases) in _toUpdate)
+        {
+            _mimic.RefreshSinglePrototype(prototype);
+            _mimic.SavePrototype(prototype);
+        }
     }
 
     private void OnAttemptListen(Entity<MimicLearnerComponent> ent, ref ListenAttemptEvent args)

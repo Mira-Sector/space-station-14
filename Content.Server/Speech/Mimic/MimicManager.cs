@@ -218,7 +218,7 @@ public sealed class MimicManager
         cancel.ThrowIfCancellationRequested();
 
         foreach (var phraseProb in phrases)
-            data.LearnedPhrases.Add(phraseProb.PrototypeId, phraseProb.Prob);
+            data.LearnedPhrases.Add(phraseProb.Phrase, phraseProb.Prob);
 
         data.Initialized = true;
     }
