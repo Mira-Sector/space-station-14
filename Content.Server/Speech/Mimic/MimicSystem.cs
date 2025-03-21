@@ -1,4 +1,6 @@
+using Content.Server.Administration.Logs;
 using Content.Server.Speech.Components;
+using Content.Shared.Database;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Robust.Shared.CPUJob.JobQueues;
@@ -11,6 +13,7 @@ namespace Content.Server.Speech.Mimic;
 
 public sealed partial class MimicSystem : EntitySystem
 {
+    [Dependency] private readonly IAdminLogManager _admin = default!;
     [Dependency] private readonly MimicManager _mimic = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
@@ -143,5 +146,7 @@ public sealed partial class MimicSystem : EntitySystem
             phrases.Add(args.Message, ent.Comp.PhraseProb);
             _toUpdate.Add(entityPrototype, phrases);
         }
+
+        _admin.Add(LogType.MimicLearned, LogImpact.Medium, $"{ToPrettyString(args.Source)} caused {entityPrototype.ID} to learn the phrase: {args.Message}");
     }
 }
