@@ -25,5 +25,5 @@ public sealed partial class MimicLearnerComponent : Component
     /// What probability to add for a phrase we just heard for the current round
     /// </summary>
     [DataField]
-    public float CurrentRoundPhraseProb = 0.002f;
+    public float CurrentRoundPhraseProb = 0.02f;
 }
