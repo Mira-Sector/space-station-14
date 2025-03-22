@@ -71,7 +71,11 @@ public sealed partial class MimicSystem : EntitySystem
         foreach (var (job, cancelToken) in _mimicJobs.ToArray())
         {
             if (job.Status == JobStatus.Finished)
+            {
                 _mimicJobs.Remove((job, cancelToken));
+
+                _toUpdate.Add(job.Prototype, _mimic.GetPhraseProbs(job.Prototype));
+            }
         }
     }
 
@@ -114,6 +118,8 @@ public sealed partial class MimicSystem : EntitySystem
             _mimic.RefreshSinglePrototype(prototype);
             _mimic.SavePrototype(prototype);
         }
+
+        _toUpdate.Clear();
     }
 
     private void OnAttemptListen(Entity<MimicLearnerComponent> ent, ref ListenAttemptEvent args)
@@ -138,18 +144,16 @@ public sealed partial class MimicSystem : EntitySystem
         if (MetaData(ent).EntityPrototype is not {} entityPrototype)
             return;
 
-        if (_mimic.TryGetPhraseProb(entityPrototype, args.Message, out var _))
-        {
-            _mimic.AddProbToPhrase(entityPrototype, args.Message, ent.Comp.PhraseProb);
-            return;
-        }
-
         if (_toUpdate.TryGetValue(entityPrototype, out var phrases))
         {
-            if (phrases.ContainsKey(args.Message))
-                return;
-
-            phrases.Add(args.Message, ent.Comp.PhraseProb);
+            if (phrases.TryGetValue(args.Message, out var prob))
+            {
+                prob += ent.Comp.PhraseProb;
+            }
+            else
+            {
+                phrases.Add(args.Message, ent.Comp.PhraseProb);
+            }
         }
         else
         {

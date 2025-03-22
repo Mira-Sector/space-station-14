@@ -236,7 +236,7 @@ public sealed class MimicManager
         ref var probability = ref CollectionsMarshal.GetValueRefOrAddDefault(data.LearnedPhrases, phrase, out var found);
 
         if (found)
-            prob += probability;
+            probability += prob;
 
         data.DbPhrasesDirty.Add(phrase);
         data.IsDirty = true;

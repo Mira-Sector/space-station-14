@@ -9,7 +9,7 @@ public sealed class MimicLoadDataJob : Job<bool>
 {
     private MimicManager _mimic;
 
-    private EntProtoId Prototype;
+    public EntProtoId Prototype;
     public EntityUid Caller;
 
     public MimicLoadDataJob(
