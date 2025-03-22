@@ -59,8 +59,8 @@
   name: Medium Shuttle
   description: A average shuttle to fuck off into space in.
   icon:
-    sprite:
-    state:
+    sprite: Structures/Furniture/folding_chair.rsi
+    state: folding_folded
   shuttle: /Maps/Shuttles/medium_shittle.yml
   cost: 9500
   category: cargoproduct-category-name-shuttle
@@ -117,7 +117,7 @@
 - type: cargoProduct
   id: ShuttleBox
   name: Box Shuttle
-  description: A boxy looking shuttle.
+  description: A second-hand flying shitbox...
   icon:
     sprite: Objects/Storage/boxicons.rsi
     state: box
