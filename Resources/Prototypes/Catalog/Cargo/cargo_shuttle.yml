@@ -31,9 +31,21 @@
   group: market
 
 - type: cargoProduct
+  id: ShuttleSalvage
+  name: Salvage Shuttle
+  description: The good ol reliable.
+  icon:
+    sprite: Objects/Weapons/Melee/pickaxe.rsi
+    state: pickaxe
+  shuttle: /Maps/Shuttles/salvage_shuttle.yml
+  cost: 14000
+  category: cargoproduct-category-name-shuttle
+  group: market
+
+- type: cargoProduct
   id: ShuttleLarge
   name: Large Shuttle
-  description: Your generic shuttle to fuck off into space in
+  description: Your Large and Spacious shuttle, built to transport large amounts of crates.
   icon:
     sprite: Structures/Furniture/chairs.rsi
     state: shuttle
@@ -43,14 +55,26 @@
   group: market
 
 - type: cargoProduct
-  id: ShuttleMeme
-  name: Miniscule Shuttle
-  description: A shuttle so tiny not even the mothroaches would ride it. (no refunds!)
+  id: ShuttleMedium
+  name: Medium Shuttle
+  description: A average shuttle to fuck off into space in.
+  icon:
+    sprite:
+    state:
+  shuttle: /Maps/Shuttles/medium_shittle.yml
+  cost: 9500
+  category: cargoproduct-category-name-shuttle
+  group: market
+
+- type: cargoProduct
+  id: ShuttleSmall
+  name: Small Shuttle
+  description: It's not small... its average... *(no refunds!)
   icon:
     sprite: Objects/Specific/Janitorial/trashbag.rsi
-    state: icon-0
-  shuttle: /Maps/Shuttles/meme_shittle.yml
-  cost: 5146
+    state: icon
+  shuttle: /Maps/Shuttles/shittle.yml
+  cost: 6149
   category: cargoproduct-category-name-shuttle
   group: market
 
@@ -64,36 +88,12 @@
   shuttle: /Maps/Shuttles/trucker_shittle.yml
   cost: 10000
   category: cargoproduct-category-name-shuttle
-  group: market
-
-- type: cargoProduct
-  id: ShuttleSalvage
-  name: Salvage Shuttle
-  description: The good ol reliable.
-  icon:
-    sprite: Objects/Weapons/Melee/pickaxe.rsi
-    state: pickaxe
-  shuttle: /Maps/Shuttles/salvage_shuttle.yml
-  cost: 14000
-  category: cargoproduct-category-name-shuttle
-  group: market
-
-- type: cargoProduct
-  id: ShuttleBasic
-  name: Small Shuttle
-  description: Small but gold shuttle. Bring a suit!
-  icon:
-    sprite: Clothing/Head/Helmets/ancientvoidsuit.rsi
-    state: icon
-  shuttle: /Maps/Shuttles/shittle.yml
-  cost: 7500
-  category: cargoproduct-category-name-shuttle
-  group: market
+  group: marketi
 
 - type: cargoProduct
   id: ShuttleScoop
   name: Scoop Shuttle
-  description: Big doors to grab stuff from the depths of space.
+  description: Big doors to grab stuff from the depths of space...
   icon:
     sprite: Objects/Tools/shovel.rsi
     state: icon
@@ -125,6 +125,19 @@
   cost: 8000
   category: cargoproduct-category-name-shuttle
   group: market
+
+- type: cargoProduct
+  id: ShuttleSpear
+  name: Spear Shuttle
+  description: A small, ugly looking shuttle... at least it flies...
+  icon:
+    sprite: Objects/Weapons/Melee/spear.rsi
+    state: spear
+  shuttle: /Maps/Shuttles/spear_shuttle.yml
+  cost: 8500
+  category: cargoproduct-category-name-shuttle
+  group: market
+
 
 # - type: cargoProduct
   # id: ShuttlePowerKit
