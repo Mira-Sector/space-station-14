@@ -2266,7 +2266,7 @@
 # Would be cool to have some functionality for the parrot to be able to sit on stuff
 - type: entity
   name: parrot
-  parent: [ SimpleMobBase, FlyingMobBase ]
+  parent: [ SimpleMobBase, FlyingMobBase, StripableInventoryBase ]
   id: MobParrot
   description: Infiltrates your domain, spies on you, and somehow still a cool pet.
   components:
@@ -2302,6 +2302,9 @@
     spawned:
     - id: FoodMeat
       amount: 1
+  - type: Stripping
+  - type: Inventory
+    templateId: parrot
   - type: Speech
     speechSounds: Parrot
     speechVerb: Parrot

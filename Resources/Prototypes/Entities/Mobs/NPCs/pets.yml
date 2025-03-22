@@ -273,7 +273,7 @@
     attributes:
       proper: true
       gender: epicene
-  
+
 
 - type: entity
   name: Bingus
@@ -371,7 +371,7 @@
     selectedMode: SemiAuto
     availableModes:
       - SemiAuto
-    soundGunshot: 
+    soundGunshot:
       path: /Audio/Weapons/Guns/Gunshots/laser_cannon2.ogg
       params:
         variation: 0.175
@@ -1025,3 +1025,19 @@
     attributes:
       proper: true
       gender: female
+
+- type: entity
+  name: Poly
+  parent: MobParrot
+  id: MobParrotPoly
+  description: Will not shut up about the CEs love life.
+  components:
+  - type: Loadout
+    prototypes: [ MobParrotPolyGear ]
+  - type: Tag
+    tags:
+    - CannotSuicide
+  - type: Grammar
+    attributes:
+      proper: true
+      gender: male

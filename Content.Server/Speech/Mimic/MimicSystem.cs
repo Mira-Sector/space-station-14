@@ -151,6 +151,16 @@ public sealed partial class MimicSystem : EntitySystem
             var message = _random.Pick(speakerComp.NextMessages);
             _chat.TrySendInGameICMessage(uid, message, InGameICChatType.Speak, true);
             speakerComp.NextMessages.Remove(message);
+
+            if (_random.Prob(speakerComp.LongTermForgetChance))
+            {
+                UpdateLongTerm(entityPrototype, message, speakerComp.LongTermForgetProb);
+            }
+
+            if (_random.Prob(speakerComp.CurrentRoundForgetChance))
+            {
+                UpdateCache(entityPrototype, message, speakerComp.CurrentRoundForgetProb);
+            }
         }
     }
 
@@ -223,49 +233,15 @@ public sealed partial class MimicSystem : EntitySystem
         if (MetaData(ent).EntityPrototype is not {} entityPrototype)
             return;
 
-        if (_random.Prob(ent.Comp.LongTermPhraseProb))
+        if (_random.Prob(ent.Comp.LongTermLearningChance))
         {
-            if (_toUpdate.TryGetValue(entityPrototype, out var phrases))
-            {
-                if (phrases.TryGetValue(args.Message, out var prob))
-                {
-                    prob += ent.Comp.LongTermPhraseProb;
-                }
-                else
-                {
-                    phrases.Add(args.Message, ent.Comp.LongTermPhraseProb);
-                }
-            }
-            else
-            {
-                phrases = new();
-                phrases.Add(args.Message, ent.Comp.LongTermPhraseProb);
-                _toUpdate.Add(entityPrototype, phrases);
-            }
-
+            UpdateLongTerm(entityPrototype, args.Message, ent.Comp.LongTermPhraseProb);
             SendAdminLog(ref args);
         }
 
-        if (_random.Prob(ent.Comp.CurrentRoundPhraseProb))
+        if (_random.Prob(ent.Comp.CurrentRoundLearningChance))
         {
-            if (_cachedPhrases.TryGetValue(entityPrototype, out var cachedPhrases))
-            {
-                if (cachedPhrases.TryGetValue(args.Message, out var prob))
-                {
-                    prob += ent.Comp.CurrentRoundPhraseProb;
-                }
-                else
-                {
-                    cachedPhrases.Add(args.Message, ent.Comp.CurrentRoundPhraseProb);
-                }
-            }
-            else
-            {
-                cachedPhrases = new();
-                cachedPhrases.Add(args.Message, ent.Comp.CurrentRoundPhraseProb);
-                _cachedPhrases.Add(entityPrototype, cachedPhrases);
-            }
-
+            UpdateCache(entityPrototype, args.Message, ent.Comp.CurrentRoundPhraseProb);
             SendAdminLog(ref args);
         }
 
@@ -284,5 +260,47 @@ public sealed partial class MimicSystem : EntitySystem
     private TimeSpan NextMessageDelay(MimicSpeakerComponent component)
     {
         return _random.Next(component.MinDelay, component.MaxDelay);
+    }
+
+    private void UpdateLongTerm(EntProtoId entityPrototype, string phrase, float probability)
+    {
+        if (_toUpdate.TryGetValue(entityPrototype, out var phrases))
+        {
+            if (phrases.TryGetValue(phrase, out var prob))
+            {
+                prob += probability;
+            }
+            else
+            {
+                phrases.Add(phrase, probability);
+            }
+        }
+        else
+        {
+            phrases = new();
+            phrases.Add(phrase, probability);
+            _toUpdate.Add(entityPrototype, phrases);
+        }
+    }
+
+    private void UpdateCache(EntProtoId entityPrototype, string phrase, float probability)
+    {
+        if (_cachedPhrases.TryGetValue(entityPrototype, out var phrases))
+        {
+            if (phrases.TryGetValue(phrase, out var prob))
+            {
+                prob += probability;
+            }
+            else
+            {
+                phrases.Add(phrase, probability);
+            }
+        }
+        else
+        {
+            phrases = new();
+            phrases.Add(phrase, probability);
+            _cachedPhrases.Add(entityPrototype, phrases);
+        }
     }
 }

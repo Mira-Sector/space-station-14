@@ -17,4 +17,28 @@ public sealed partial class MimicSpeakerComponent : Component
 
     [ViewVariables]
     public List<string> NextMessages = new();
+
+    /// <summary>
+    /// How likely we are to forget a phrase we just said long term
+    /// </summary>
+    [DataField]
+    public float LongTermForgetChance = 0.005f;
+
+    /// <summary>
+    /// How likely we are to forget a phrase we just said in the current round
+    /// </summary>
+    [DataField]
+    public float CurrentRoundForgetChance = 0.07f;
+
+    /// <summary>
+    /// What probability to remove for a phrase we just said for long term storage
+    /// </summary>
+    [DataField]
+    public float LongTermForgetProb = 0.005f;
+
+    /// <summary>
+    /// What probability to remove for a phrase we just said for the current round
+    /// </summary>
+    [DataField]
+    public float CurrentRoundForgetProb = 0.07f;
 }
