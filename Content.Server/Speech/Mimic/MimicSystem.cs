@@ -1,10 +1,13 @@
 using Content.Server.Administration.Logs;
 using Content.Server.Chat.Systems;
 using Content.Server.Speech.Components;
+using Content.Server.Radio.Components;
+using Content.Server.Radio.EntitySystems;
 using Content.Shared.Database;
 using Content.Shared.GameTicking;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
+using Content.Shared.Radio.Components;
 using Robust.Shared.CPUJob.JobQueues;
 using Robust.Shared.CPUJob.JobQueues.Queues;
 using Robust.Shared.Prototypes;
@@ -22,6 +25,7 @@ public sealed partial class MimicSystem : EntitySystem
     [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly MimicManager _mimic = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!;
+    [Dependency] private readonly RadioSystem _radio = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
 
@@ -149,7 +153,14 @@ public sealed partial class MimicSystem : EntitySystem
             }
 
             var message = _random.Pick(speakerComp.NextMessages);
-            _chat.TrySendInGameICMessage(uid, message, InGameICChatType.Speak, true);
+            _chat.TrySendInGameICMessage(uid, message, InGameICChatType.Speak, false);
+
+            if (TryComp<WearingHeadsetComponent>(uid, out var wearingHeadsetComp) && TryComp<EncryptionKeyHolderComponent>(wearingHeadsetComp.Headset, out var keysComp))
+            {
+                foreach (var channel in keysComp.Channels)
+                    _radio.SendRadioMessage(uid, message, channel, wearingHeadsetComp.Headset);
+            }
+
             speakerComp.NextMessages.Remove(message);
 
             if (_random.Prob(speakerComp.LongTermForgetChance))
