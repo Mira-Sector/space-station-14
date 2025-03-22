@@ -7,7 +7,7 @@ public sealed partial class MimicLearnerComponent : Component
     /// How likely we are to learn a new phrase once weve heard it long term
     /// </summary>
     [DataField]
-    public float LongTermLearningChance = 0.5f;
+    public float LongTermLearningChance = 0.1f;
 
     /// <summary>
     /// How likely we are to learn a new phrase once weve heard it for the current round
