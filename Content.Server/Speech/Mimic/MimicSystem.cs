@@ -113,14 +113,44 @@ public sealed partial class MimicSystem : EntitySystem
 
             Debug.Assert(_cachedPhrases.ContainsKey(entityPrototype));
 
-            foreach (var (phrase, prob) in _cachedPhrases[entityPrototype])
+            if (speakerComp.NextMessages.Count <= 0)
             {
-                if (!_random.Prob(prob))
-                    continue;
+                // not too much randomness
+                var cachedMessages = _cachedPhrases[entityPrototype];
+                _random.Shuffle<KeyValuePair<string, float>>(cachedMessages.ToList());
 
-                _chat.TrySendInGameICMessage(uid, phrase, InGameICChatType.Speak, true);
-                break;
+                for (var i = 1; i <= speakerComp.CachedMessages; i++)
+                {
+                    string? phraseAdded = null;
+                    foreach (var (phrase, prob) in cachedMessages)
+                    {
+                        if (!_random.Prob(prob))
+                            continue;
+
+                        speakerComp.NextMessages.Add(phrase);
+                        phraseAdded = phrase;
+                        break;
+                    }
+
+                    if (phraseAdded == null)
+                        continue;
+
+                    // so we dont pick the same phrase multiple times in a row
+                    cachedMessages.Remove(phraseAdded);
+
+                    // not enough to add a new phrase
+                    if (cachedMessages.Count <= 0)
+                        break;
+                }
+
+                // still fucked?
+                if (speakerComp.NextMessages.Count <= 0)
+                    continue;
             }
+
+            var message = _random.Pick(speakerComp.NextMessages);
+            _chat.TrySendInGameICMessage(uid, message, InGameICChatType.Speak, true);
+            speakerComp.NextMessages.Remove(message);
         }
     }
 

@@ -11,4 +11,10 @@ public sealed partial class MimicSpeakerComponent : Component
 
     [ViewVariables]
     public TimeSpan NextMessage;
+
+    [DataField]
+    public int CachedMessages = 10;
+
+    [ViewVariables]
+    public List<string> NextMessages = new();
 }
