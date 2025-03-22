@@ -174,8 +174,8 @@
       allowMovement: true
       allowSpeech: true
       makeSentient: true
-      name: ghost-role-information-sentient-carp-name
-      description: ghost-role-information-sentient-carp-description
+      name: ghost-role-information-clownthings-name
+      description: ghost-role-information-clownthings-description
       rules: ghost-role-information-space-dragon-summoned-carp-rules
       raffle:
         settings: short
@@ -189,6 +189,22 @@
           Base: alive
         Dead:
           Base: dead
+    - type: Prying
+      pryPowered: true
+      force: true
+      speedModifier: 1.5
+      useSound:
+        path: /Audio/Items/crowbar.ogg
+    - type: MeleeWeapon
+      altDisarm: false
+      angle: 0
+      animation: WeaponArcBite
+      soundHit:
+        path: /Audio/Items/bikehorn.ogg
+      damage:
+        types:
+          Blunt: 5
+          Slash: 7
 
 - type: entity
   id: MobCarpDungeon

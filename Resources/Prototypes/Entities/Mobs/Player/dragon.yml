@@ -129,7 +129,7 @@
   - type: MeleeWeapon
     altDisarm: false
     soundHit:
-      path: /Audio/Weapons/Xeno/alien_claw_flesh3.ogg
+      path: /Audio/Items/bikehorn.ogg
     damage:
       types:
         Piercing: 12.5
@@ -151,6 +151,12 @@
     - DoorBumpOpener
   - type: Puller
     needsHands: false
+  - type: Prying
+    pryPowered: true
+    force: true
+    speedModifier: 1.5
+    useSound:
+      path: /Audio/Items/crowbar.ogg
 
 - type: entity
   parent: BaseMobDragon

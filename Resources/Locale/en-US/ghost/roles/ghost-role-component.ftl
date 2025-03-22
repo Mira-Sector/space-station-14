@@ -318,3 +318,6 @@ ghost-role-information-bombroach-description = Use any means nessasary to get to
 ghost-role-information-clownothing-name = ClownoThing
 ghost-role-information-clownothing-description = You must rule the station. Hide in the maintenance system. Clown on your enemies.
 
+ghost-role-information-clownthings-name = Clown Thing
+ghost-role-information-clownthings-description = Help the clownothing rule the station by honking on the crew!
+
