@@ -34,7 +34,7 @@ public sealed partial class MimicSystem : EntitySystem
     private readonly JobQueue _mimicQueue = new();
     private readonly List<(MimicLoadDataJob Job, CancellationTokenSource CancelToken)> _mimicJobs = new();
 
-    private Dictionary<EntProtoId, Dictionary<string, float>> _toUpdate = new();
+    private Dictionary<EntProtoId, Dictionary<string, float?>> _toUpdate = new();
     private Dictionary<EntProtoId, Dictionary<string, float>> _cachedPhrases = new();
 
     public override void Initialize()
@@ -60,7 +60,7 @@ public sealed partial class MimicSystem : EntitySystem
         _mimic.UpdateLearned -= UpdateLearned;
     }
 
-    private void UpdateLearned(EntProtoId prototype, Dictionary<string, float> phrases)
+    private void UpdateLearned(EntProtoId prototype, Dictionary<string, float?> phrases)
     {
         if (!_toUpdate.TryGetValue(prototype, out var toAdd))
             return;
@@ -165,12 +165,12 @@ public sealed partial class MimicSystem : EntitySystem
 
             if (_random.Prob(speakerComp.LongTermForgetChance))
             {
-                UpdateLongTerm(entityPrototype, message, speakerComp.LongTermForgetProb);
+                UpdateLongTerm(entityPrototype, message, -speakerComp.LongTermForgetProb);
             }
 
             if (_random.Prob(speakerComp.CurrentRoundForgetChance))
             {
-                UpdateCache(entityPrototype, message, speakerComp.CurrentRoundForgetProb);
+                UpdateCache(entityPrototype, message, -speakerComp.CurrentRoundForgetProb);
             }
         }
     }
@@ -221,8 +221,6 @@ public sealed partial class MimicSystem : EntitySystem
             _mimic.RefreshSinglePrototype(prototype);
             _mimic.SavePrototype(prototype);
         }
-
-        _toUpdate.Clear();
     }
 
     private void OnLearnerAttemptListen(Entity<MimicLearnerComponent> ent, ref ListenAttemptEvent args)
@@ -280,13 +278,16 @@ public sealed partial class MimicSystem : EntitySystem
             if (phrases.TryGetValue(phrase, out var prob))
             {
                 prob += probability;
+
+                if (prob <= 0)
+                    prob = null; // weve forgotten it :(
             }
-            else
+            else if (probability > 0)
             {
                 phrases.Add(phrase, probability);
             }
         }
-        else
+        else if (probability > 0)
         {
             phrases = new();
             phrases.Add(phrase, probability);
@@ -301,13 +302,16 @@ public sealed partial class MimicSystem : EntitySystem
             if (phrases.TryGetValue(phrase, out var prob))
             {
                 prob += probability;
+
+                if (prob <= 0)
+                    phrases.Remove(phrase);
             }
-            else
+            else if (probability > 0)
             {
                 phrases.Add(phrase, probability);
             }
         }
-        else
+        else if (probability > 0)
         {
             phrases = new();
             phrases.Add(phrase, probability);

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Content.Server.Speech.Mimic;
 
-public delegate void UpdateLearnedCallback(EntProtoId prototype, Dictionary<string, float> phrases);
+public delegate void UpdateLearnedCallback(EntProtoId prototype, Dictionary<string, float?> phrases);
 
 public sealed class MimicManager
 {
@@ -223,12 +223,15 @@ public sealed class MimicManager
         data.Initialized = true;
     }
 
-    private static void AddProbToPhrase(MimicLearnedData data, string phrase, float prob)
+    private static void AddProbToPhrase(MimicLearnedData data, string phrase, float? prob)
     {
         ref var probability = ref CollectionsMarshal.GetValueRefOrAddDefault(data.LearnedPhrases, phrase, out var found);
 
         if (found)
-            probability += prob;
+        {
+            if (prob != null)
+                probability += prob.Value;
+        }
 
         data.DbPhrasesDirty.Add(phrase);
         data.IsDirty = true;
@@ -284,7 +287,7 @@ public sealed class MimicManager
         public bool IsDirty;
 
         // Active tracking info
-        public readonly Dictionary<string, float> PhrasesToUpdate = new();
+        public readonly Dictionary<string, float?> PhrasesToUpdate = new();
         public TimeSpan LastUpdate;
 
         /// <summary>
