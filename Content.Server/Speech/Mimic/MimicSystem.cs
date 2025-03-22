@@ -51,6 +51,7 @@ public sealed partial class MimicSystem : EntitySystem
         SubscribeLocalEvent<MimicLearnerComponent, ListenEvent>(OnLearnerListen);
 
         SubscribeLocalEvent<MimicSpeakerComponent, ComponentInit>(OnSpeakerInit);
+        SubscribeLocalEvent<MimicSpeakerComponent, EntitySpokeEvent>(OnSpeakerSpoke);
     }
 
     public override void Shutdown()
@@ -157,12 +158,6 @@ public sealed partial class MimicSystem : EntitySystem
             var message = _random.Pick(speakerComp.NextMessages);
             _chat.TrySendInGameICMessage(uid, message, InGameICChatType.Speak, false);
 
-            if (TryComp<WearingHeadsetComponent>(uid, out var wearingHeadsetComp) && TryComp<EncryptionKeyHolderComponent>(wearingHeadsetComp.Headset, out var keysComp))
-            {
-                foreach (var channel in keysComp.Channels)
-                    _radio.SendRadioMessage(uid, message, channel, wearingHeadsetComp.Headset);
-            }
-
             speakerComp.NextMessages.Remove(message);
 
             if (_random.Prob(speakerComp.LongTermForgetChance))
@@ -268,6 +263,18 @@ public sealed partial class MimicSystem : EntitySystem
     {
         ent.Comp.NextMessage = _timing.CurTime + NextMessageDelay(ent.Comp);
         LoadMimicData(ent);
+    }
+
+    private void OnSpeakerSpoke(Entity<MimicSpeakerComponent> ent, ref EntitySpokeEvent args)
+    {
+        if (args.SpeciesChannel != null || args.RadioChannel != null)
+            return;
+
+        if (TryComp<WearingHeadsetComponent>(ent, out var wearingHeadsetComp) && TryComp<EncryptionKeyHolderComponent>(wearingHeadsetComp.Headset, out var keysComp))
+        {
+            foreach (var channel in keysComp.Channels)
+                _radio.SendRadioMessage(ent, args.Message, channel, wearingHeadsetComp.Headset);
+        }
     }
 
     private TimeSpan NextMessageDelay(MimicSpeakerComponent component)
