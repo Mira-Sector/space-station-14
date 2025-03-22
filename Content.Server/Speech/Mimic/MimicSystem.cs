@@ -220,50 +220,59 @@ public sealed partial class MimicSystem : EntitySystem
         if (HasComp<MimicLearnerComponent>(args.Source))
             return;
 
-        if (!_random.Prob(ent.Comp.LearningChance))
-            return;
-
         if (MetaData(ent).EntityPrototype is not {} entityPrototype)
             return;
 
-        if (_toUpdate.TryGetValue(entityPrototype, out var phrases))
+        if (_random.Prob(ent.Comp.LongTermPhraseProb))
         {
-            if (phrases.TryGetValue(args.Message, out var prob))
+            if (_toUpdate.TryGetValue(entityPrototype, out var phrases))
             {
-                prob += ent.Comp.PhraseProb;
+                if (phrases.TryGetValue(args.Message, out var prob))
+                {
+                    prob += ent.Comp.LongTermPhraseProb;
+                }
+                else
+                {
+                    phrases.Add(args.Message, ent.Comp.LongTermPhraseProb);
+                }
             }
             else
             {
-                phrases.Add(args.Message, ent.Comp.PhraseProb);
+                phrases = new();
+                phrases.Add(args.Message, ent.Comp.LongTermPhraseProb);
+                _toUpdate.Add(entityPrototype, phrases);
             }
-        }
-        else
-        {
-            phrases = new();
-            phrases.Add(args.Message, ent.Comp.PhraseProb);
-            _toUpdate.Add(entityPrototype, phrases);
+
+            SendAdminLog(ref args);
         }
 
-        // also add it to our cache
-        if (_cachedPhrases.TryGetValue(entityPrototype, out var cachedPhrases))
+        if (_random.Prob(ent.Comp.CurrentRoundPhraseProb))
         {
-            if (cachedPhrases.TryGetValue(args.Message, out var prob))
+            if (_cachedPhrases.TryGetValue(entityPrototype, out var cachedPhrases))
             {
-                prob += ent.Comp.PhraseProb;
+                if (cachedPhrases.TryGetValue(args.Message, out var prob))
+                {
+                    prob += ent.Comp.CurrentRoundPhraseProb;
+                }
+                else
+                {
+                    cachedPhrases.Add(args.Message, ent.Comp.CurrentRoundPhraseProb);
+                }
             }
             else
             {
-                cachedPhrases.Add(args.Message, ent.Comp.PhraseProb);
+                cachedPhrases = new();
+                cachedPhrases.Add(args.Message, ent.Comp.CurrentRoundPhraseProb);
+                _cachedPhrases.Add(entityPrototype, cachedPhrases);
             }
-        }
-        else
-        {
-            cachedPhrases = new();
-            cachedPhrases.Add(args.Message, ent.Comp.PhraseProb);
-            _cachedPhrases.Add(entityPrototype, phrases);
+
+            SendAdminLog(ref args);
         }
 
-        _admin.Add(LogType.MimicLearned, LogImpact.Medium, $"{ToPrettyString(args.Source)} caused {entityPrototype.ID} to learn the phrase: {args.Message}");
+        void SendAdminLog(ref ListenEvent args)
+        {
+            _admin.Add(LogType.MimicLearned, LogImpact.Medium, $"{ToPrettyString(args.Source)} caused {entityPrototype.ID} to learn the phrase: {args.Message}");
+        }
     }
 
     private void OnSpeakerInit(Entity<MimicSpeakerComponent> ent, ref ComponentInit args)

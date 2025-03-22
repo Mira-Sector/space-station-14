@@ -4,14 +4,26 @@ namespace Content.Server.Speech.Mimic;
 public sealed partial class MimicLearnerComponent : Component
 {
     /// <summary>
-    /// How likely we are to learn a new phrase once weve heard it
+    /// How likely we are to learn a new phrase once weve heard it long term
     /// </summary>
     [DataField]
-    public float LearningChance = 0.5f;
+    public float LongTermLearningChance = 0.5f;
 
     /// <summary>
-    /// What probability to add for a phrase we just heard
+    /// How likely we are to learn a new phrase once weve heard it for the current round
     /// </summary>
     [DataField]
-    public float PhraseProb = 0.002f;
+    public float CurrentRoundLearningChance = 0.5f;
+
+    /// <summary>
+    /// What probability to add for a phrase we just heard for long term storage
+    /// </summary>
+    [DataField]
+    public float LongTermPhraseProb = 0.0005f;
+
+    /// <summary>
+    /// What probability to add for a phrase we just heard for the current round
+    /// </summary>
+    [DataField]
+    public float CurrentRoundPhraseProb = 0.002f;
 }
