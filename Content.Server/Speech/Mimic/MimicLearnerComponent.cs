@@ -26,4 +26,13 @@ public sealed partial class MimicLearnerComponent : Component
     /// </summary>
     [DataField]
     public float CurrentRoundPhraseProb = 0.02f;
+
+    /// <summary>
+    /// The middle point of the probability
+    /// If the total phrases known is below this we multiply by how close
+    /// If we are over do nothing
+    /// </summary>
+    [DataField]
+    public int MidPointProb = 500;
+
 }

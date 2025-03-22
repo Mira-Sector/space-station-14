@@ -15,6 +15,14 @@ public sealed partial class MimicSpeakerComponent : Component
     [DataField]
     public int CachedMessages = 10;
 
+    /// <summary>
+    /// The middle point of the probability
+    /// If the total phrases known is below this we multiply by how close
+    /// If we are over do nothing
+    /// </summary>
+    [DataField]
+    public int MidPointProb = 500;
+
     [ViewVariables]
     public List<string> NextMessages = new();
 

@@ -119,6 +119,8 @@ public sealed partial class MimicSystem : EntitySystem
 
             if (speakerComp.NextMessages.Count <= 0)
             {
+                var probMultiplier = speakerComp.MidPointProb <= _cachedPhrases.Count() ? 1f : speakerComp.MidPointProb - _cachedPhrases.Count();
+
                 // not too much randomness
                 var cachedMessages = _cachedPhrases[entityPrototype];
                 _random.Shuffle<KeyValuePair<string, float>>(cachedMessages.ToList());
@@ -128,7 +130,7 @@ public sealed partial class MimicSystem : EntitySystem
                     string? phraseAdded = null;
                     foreach (var (phrase, prob) in cachedMessages)
                     {
-                        if (!_random.Prob(prob))
+                        if (!_random.Prob(Math.Min(prob * probMultiplier, 1f)))
                             continue;
 
                         speakerComp.NextMessages.Add(phrase);
@@ -242,15 +244,17 @@ public sealed partial class MimicSystem : EntitySystem
         if (MetaData(ent).EntityPrototype is not {} entityPrototype)
             return;
 
-        if (_random.Prob(ent.Comp.LongTermLearningChance))
+        var probMultiplier = ent.Comp.MidPointProb <= _cachedPhrases.Count() ? 1f : ent.Comp.MidPointProb - _cachedPhrases.Count();
+
+        if (_random.Prob(Math.Min(ent.Comp.LongTermLearningChance * probMultiplier, 1f)))
         {
-            UpdateLongTerm(entityPrototype, args.Message, ent.Comp.LongTermPhraseProb);
+            UpdateLongTerm(entityPrototype, args.Message, Math.Min(ent.Comp.LongTermPhraseProb * probMultiplier, 1f));
             SendAdminLog(ref args);
         }
 
-        if (_random.Prob(ent.Comp.CurrentRoundLearningChance))
+        if (_random.Prob(Math.Min(ent.Comp.CurrentRoundLearningChance * probMultiplier, 1f)))
         {
-            UpdateCache(entityPrototype, args.Message, ent.Comp.CurrentRoundPhraseProb);
+            UpdateCache(entityPrototype, args.Message, Math.Min(ent.Comp.CurrentRoundPhraseProb * probMultiplier, 1f));
             SendAdminLog(ref args);
         }
 
