@@ -80,7 +80,7 @@ public sealed partial class SurgerySystem : EntitySystem
 
     private void OnBodyPartRemoved(EntityUid uid, SurgeryRecieverBodyComponent component, ref BodyPartRemovedEvent args)
     {
-        if (MetaData(args.Part).EntityLifeStage >= EntityLifeStage.Terminating)
+        if (Deleted(uid) || Deleted(args.Part))
             return;
 
         foreach (var limb in component.Limbs.Keys)
