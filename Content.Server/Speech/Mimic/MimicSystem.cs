@@ -1,4 +1,5 @@
 using Content.Server.Administration.Logs;
+using Content.Server.Chat.Systems;
 using Content.Server.Speech.Components;
 using Content.Shared.Database;
 using Content.Shared.GameTicking;
@@ -8,6 +9,9 @@ using Robust.Shared.CPUJob.JobQueues;
 using Robust.Shared.CPUJob.JobQueues.Queues;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Robust.Shared.Timing;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 
 namespace Content.Server.Speech.Mimic;
@@ -15,9 +19,11 @@ namespace Content.Server.Speech.Mimic;
 public sealed partial class MimicSystem : EntitySystem
 {
     [Dependency] private readonly IAdminLogManager _admin = default!;
+    [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly MimicManager _mimic = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
 
     private const double MimicJobTime = 0.02;
 
@@ -25,6 +31,7 @@ public sealed partial class MimicSystem : EntitySystem
     private readonly List<(MimicLoadDataJob Job, CancellationTokenSource CancelToken)> _mimicJobs = new();
 
     private Dictionary<EntProtoId, Dictionary<string, float>> _toUpdate = new();
+    private Dictionary<EntProtoId, Dictionary<string, float>> _cachedPhrases = new();
 
     public override void Initialize()
     {
@@ -33,10 +40,13 @@ public sealed partial class MimicSystem : EntitySystem
         _mimic.UpdateLearned += UpdateLearned;
 
         SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundRestart);
-        SubscribeLocalEvent<MimicLearnerComponent, ComponentInit>(OnInit);
-        SubscribeLocalEvent<MimicLearnerComponent, ComponentShutdown>(OnShutdown);
-        SubscribeLocalEvent<MimicLearnerComponent, ListenAttemptEvent>(OnAttemptListen);
-        SubscribeLocalEvent<MimicLearnerComponent, ListenEvent>(OnListen);
+
+        SubscribeLocalEvent<MimicLearnerComponent, ComponentInit>(OnLearnerInit);
+        SubscribeLocalEvent<MimicLearnerComponent, ComponentShutdown>(OnLearnerShutdown);
+        SubscribeLocalEvent<MimicLearnerComponent, ListenAttemptEvent>(OnLearnerAttemptListen);
+        SubscribeLocalEvent<MimicLearnerComponent, ListenEvent>(OnLearnerListen);
+
+        SubscribeLocalEvent<MimicSpeakerComponent, ComponentInit>(OnSpeakerInit);
     }
 
     public override void Shutdown()
@@ -74,26 +84,68 @@ public sealed partial class MimicSystem : EntitySystem
             {
                 _mimicJobs.Remove((job, cancelToken));
 
-                _toUpdate.Add(job.Prototype, _mimic.GetPhraseProbs(job.Prototype));
+                var phrasesToAdd = _mimic.GetPhraseProbs(job.Prototype);
+
+                if (_cachedPhrases.TryGetValue(job.Prototype, out var phrases))
+                {
+                    phrases.Union(phrasesToAdd);
+                }
+                else
+                {
+                    _cachedPhrases.Add(job.Prototype, phrasesToAdd);
+                }
+            }
+        }
+
+        var speakerQuery = EntityQueryEnumerator<MimicSpeakerComponent>();
+        while (speakerQuery.MoveNext(out var uid, out var speakerComp))
+        {
+            if (speakerComp.NextMessage > _timing.CurTime)
+                continue;
+
+            speakerComp.NextMessage += NextMessageDelay(speakerComp);
+
+            if (TryComp<MobStateComponent>(uid, out var mobStateComp) && !_mobState.IsAlive(uid, mobStateComp))
+                continue;
+
+            if (MetaData(uid).EntityPrototype is not {} entityPrototype)
+                continue;
+
+            Debug.Assert(_cachedPhrases.ContainsKey(entityPrototype));
+
+            foreach (var (phrase, prob) in _cachedPhrases[entityPrototype])
+            {
+                if (!_random.Prob(prob))
+                    continue;
+
+                _chat.TrySendInGameICMessage(uid, phrase, InGameICChatType.Speak, true);
+                break;
             }
         }
     }
 
-    private void OnInit(Entity<MimicLearnerComponent> ent, ref ComponentInit args)
+    private void OnLearnerInit(Entity<MimicLearnerComponent> ent, ref ComponentInit args)
     {
         EnsureComp<ActiveListenerComponent>(ent);
+        LoadMimicData(ent);
+    }
 
-        if (MetaData(ent).EntityPrototype is not {} entityPrototype)
+    private void LoadMimicData(EntityUid uid)
+    {
+        if (MetaData(uid).EntityPrototype is not {} entityPrototype)
+            return;
+
+        if (_cachedPhrases.ContainsKey(entityPrototype))
             return;
 
         var cancelToken = new CancellationTokenSource();
-        var job = new MimicLoadDataJob(MimicJobTime, entityPrototype, ent, _mimic, cancelToken.Token);
+        var job = new MimicLoadDataJob(MimicJobTime, entityPrototype, uid, _mimic, cancelToken.Token);
 
         _mimicJobs.Add((job, cancelToken));
         _mimicQueue.EnqueueJob(job);
     }
 
-    private void OnShutdown(Entity<MimicLearnerComponent> ent, ref ComponentShutdown args)
+    private void OnLearnerShutdown(Entity<MimicLearnerComponent> ent, ref ComponentShutdown args)
     {
         foreach (var (job, cancelToken) in _mimicJobs.ToArray())
         {
@@ -122,7 +174,7 @@ public sealed partial class MimicSystem : EntitySystem
         _toUpdate.Clear();
     }
 
-    private void OnAttemptListen(Entity<MimicLearnerComponent> ent, ref ListenAttemptEvent args)
+    private void OnLearnerAttemptListen(Entity<MimicLearnerComponent> ent, ref ListenAttemptEvent args)
     {
         if (!TryComp<MobStateComponent>(ent, out var mobStateComp))
             return;
@@ -133,7 +185,7 @@ public sealed partial class MimicSystem : EntitySystem
         args.Cancel();
     }
 
-    private void OnListen(Entity<MimicLearnerComponent> ent, ref ListenEvent args)
+    private void OnLearnerListen(Entity<MimicLearnerComponent> ent, ref ListenEvent args)
     {
         if (HasComp<MimicLearnerComponent>(args.Source))
             return;
@@ -162,6 +214,36 @@ public sealed partial class MimicSystem : EntitySystem
             _toUpdate.Add(entityPrototype, phrases);
         }
 
+        // also add it to our cache
+        if (_cachedPhrases.TryGetValue(entityPrototype, out var cachedPhrases))
+        {
+            if (cachedPhrases.TryGetValue(args.Message, out var prob))
+            {
+                prob += ent.Comp.PhraseProb;
+            }
+            else
+            {
+                cachedPhrases.Add(args.Message, ent.Comp.PhraseProb);
+            }
+        }
+        else
+        {
+            cachedPhrases = new();
+            cachedPhrases.Add(args.Message, ent.Comp.PhraseProb);
+            _cachedPhrases.Add(entityPrototype, phrases);
+        }
+
         _admin.Add(LogType.MimicLearned, LogImpact.Medium, $"{ToPrettyString(args.Source)} caused {entityPrototype.ID} to learn the phrase: {args.Message}");
+    }
+
+    private void OnSpeakerInit(Entity<MimicSpeakerComponent> ent, ref ComponentInit args)
+    {
+        ent.Comp.NextMessage = _timing.CurTime + NextMessageDelay(ent.Comp);
+        LoadMimicData(ent);
+    }
+
+    private TimeSpan NextMessageDelay(MimicSpeakerComponent component)
+    {
+        return _random.Next(component.MinDelay, component.MaxDelay);
     }
 }

@@ -223,14 +223,6 @@ public sealed class MimicManager
         data.Initialized = true;
     }
 
-    public void AddProbToPhrase(EntProtoId prototype, string phrase, float prob)
-    {
-        if (!_mimicLearnedData.TryGetValue(prototype, out var data) || !data.Initialized)
-            throw new InvalidOperationException($"Mimic learned phases is not yet loaded for {prototype.Id}!");
-
-        AddProbToPhrase(data, phrase, prob);
-    }
-
     private static void AddProbToPhrase(MimicLearnedData data, string phrase, float prob)
     {
         ref var probability = ref CollectionsMarshal.GetValueRefOrAddDefault(data.LearnedPhrases, phrase, out var found);
