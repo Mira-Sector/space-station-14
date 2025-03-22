@@ -158,11 +158,18 @@
     - type: SalvageMobRestrictions
 
 - type: entity
-  name: space carp
+  name: clown thing
   id: MobCarpDragon
-  suffix: DragonBrood
+  description: Just run. Why would you even face this thing.
+  suffix: ClownBrood
   parent: MobCarp
   components:
+    - type: Sprite
+      drawdepth: Mobs
+      sprite: Mobs/Aliens/clown_things.rsi
+      layers:
+      - map: [ "enum.DamageStateVisualLayers.Base" ]
+        state: alive
     - type: GhostRole
       allowMovement: true
       allowSpeech: true
@@ -176,6 +183,12 @@
     - type: HTN
       rootTask:
         task: DragonCarpCompound
+    - type: DamageStateVisuals
+      states:
+        Alive:
+          Base: alive
+        Dead:
+          Base: dead
 
 - type: entity
   id: MobCarpDungeon
