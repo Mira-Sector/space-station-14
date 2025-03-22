@@ -6194,7 +6194,7 @@ entities:
       pos: -8.5,45.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -1772.8959
+      secondsUntilStateChange: -1984.997
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -6527,7 +6527,7 @@ entities:
       pos: -3.5,20.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -8592.47
+      secondsUntilStateChange: -8804.57
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -8798,16 +8798,6 @@ entities:
     components:
     - type: Transform
       pos: 17.707003,-15.576565
-      parent: 1
-  - uid: 6787
-    components:
-    - type: Transform
-      pos: 12.643603,-12.352579
-      parent: 1
-  - uid: 6788
-    components:
-    - type: Transform
-      pos: 12.565478,-12.461954
       parent: 1
   - uid: 7304
     components:
@@ -28466,6 +28456,14 @@ entities:
     components:
     - type: Transform
       pos: -2.712697,50.332752
+      parent: 1
+- proto: ComputerAlert
+  entities:
+  - uid: 6759
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 12.5,-12.5
       parent: 1
 - proto: ComputerAnalysisConsole
   entities:
@@ -55846,7 +55844,7 @@ entities:
       pos: -14.5,18.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -5953.0586
+      secondsUntilStateChange: -6165.1597
       state: Opening
   - uid: 10970
     components:
@@ -55855,7 +55853,7 @@ entities:
       pos: -14.5,20.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -6038.558
+      secondsUntilStateChange: -6250.659
       state: Opening
   - uid: 10971
     components:
@@ -55864,7 +55862,7 @@ entities:
       pos: -14.5,21.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -6037.9585
+      secondsUntilStateChange: -6250.0596
       state: Opening
 - proto: HospitalCurtainsOpen
   entities:
@@ -58854,26 +58852,6 @@ entities:
     - type: Transform
       pos: -16.855633,-2.3938773
       parent: 1
-  - uid: 6789
-    components:
-    - type: Transform
-      pos: 12.221728,-12.274454
-      parent: 1
-  - uid: 6790
-    components:
-    - type: Transform
-      pos: 12.221728,-12.352579
-      parent: 1
-  - uid: 6791
-    components:
-    - type: Transform
-      pos: 12.221728,-12.415079
-      parent: 1
-  - uid: 6792
-    components:
-    - type: Transform
-      pos: 12.221728,-12.493204
-      parent: 1
   - uid: 7306
     components:
     - type: Transform
@@ -59180,11 +59158,6 @@ entities:
     components:
     - type: Transform
       pos: -16.293133,-2.3157523
-      parent: 1
-  - uid: 6793
-    components:
-    - type: Transform
-      pos: 12.143603,-12.633829
       parent: 1
   - uid: 7416
     components:
@@ -69968,12 +69941,6 @@ entities:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: 11.5,-12.5
-      parent: 1
-  - uid: 6759
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 12.5,-12.5
       parent: 1
   - uid: 6763
     components:
