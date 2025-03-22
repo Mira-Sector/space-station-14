@@ -230,7 +230,7 @@ public sealed class MimicManager
         if (found)
         {
             if (prob != null)
-                probability += prob.Value;
+                probability = Math.Min(probability + prob.Value, 1f);
         }
 
         data.DbPhrasesDirty.Add(phrase);

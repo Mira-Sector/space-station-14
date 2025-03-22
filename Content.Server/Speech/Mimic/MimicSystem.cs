@@ -214,10 +214,9 @@ public sealed partial class MimicSystem : EntitySystem
         }
 
         foreach (var (prototype, phrases) in _toUpdate)
-        {
             _mimic.RefreshSinglePrototype(prototype);
-            _mimic.SavePrototype(prototype);
-        }
+
+        _mimic.Save();
     }
 
     private void OnLearnerAttemptListen(Entity<MimicLearnerComponent> ent, ref ListenAttemptEvent args)
