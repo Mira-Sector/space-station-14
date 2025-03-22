@@ -11,7 +11,7 @@
     range: 5
     volume: -5
     sound:
-      path: /Audio/April/bigchungloop.ogg
+      path: /Audio/Ambience/anomaly_drone.ogg
   - type: Fixtures
     fixtures:
       anom:
