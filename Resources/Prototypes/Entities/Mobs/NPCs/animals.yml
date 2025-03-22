@@ -2320,8 +2320,8 @@
     bloodMaxVolume: 50
   - type: MimicLearner
   - type: MimicSpeaker
-    minDelay: 0.5
-    maxDelay: 1
+    minDelay: 5
+    maxDelay: 30
 
 - type: entity
   name: penguin
