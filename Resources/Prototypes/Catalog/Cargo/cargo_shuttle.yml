@@ -21,7 +21,7 @@
 - type: cargoProduct
   id: ShuttleCargo
   name: Cargo Shuttle
-  description: A spare shuttle to help transport the pizzas off the trade station.
+  description: A spare shuttle to help transport the pizzas off of the trade station.
   icon:
     sprite: Clothing/Head/Soft/cargosoft.rsi
     state: icon
@@ -57,7 +57,7 @@
 - type: cargoProduct
   id: ShuttleTrucker
   name: Trucker Shuttle
-  description: Your generic shuttle to fuck off into space in
+  description: Your generic no-nonsense shuttle to fuck off into space in
   icon:
     sprite: Clothing/Head/Hats/truckershat.rsi
     state: icon
@@ -116,12 +116,12 @@
 
 - type: cargoProduct
   id: ShuttleBox
-  name:
-  description: A boxy looking shuttle
+  name: Box Shuttle
+  description: A boxy looking shuttle.
   icon:
-   sprite: Objects/Storage/boxicons.rsi
-    state: icon
-shuttle: /Maps/Shuttles/box_shuttle.yml
+    sprite: Objects/Storage/boxicons.rsi
+    state: box
+  shuttle: /Maps/Shuttles/box_shuttle.yml
   cost: 8000
   category: cargoproduct-category-name-shuttle
   group: market
