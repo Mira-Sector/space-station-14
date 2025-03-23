@@ -312,6 +312,9 @@ uplink-clothing-thieving-gloves-desc = Discretely steal from pockets and improve
 uplink-clothing-outer-vest-web-name = Web Vest
 uplink-clothing-outer-vest-web-desc = A synthetic armor vest. This one has added webbing and ballistic plates.
 
+uplink-clothing-head-helmet-swat-syndicate-name = Syndicate SWAT Helmet
+uplink-clothing-head-helmet-swat-syndicate-desc = An extremely robust helmet, commonly used by paramilitary forces. It is adorned in a nefarious red and black stripe pattern.
+
 uplink-clothing-shoes-boots-mag-syndie-name = Blood-red Magboots
 uplink-clothing-shoes-boots-mag-syndie-desc = A pair of boots that prevent slipping and, in zero gravity, allow you to move normally, at the cost of a slight slowdown. Additionally, they have jetpack functionality and come fueled, but don't last for long.
 

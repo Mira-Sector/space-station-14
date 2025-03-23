@@ -21,6 +21,17 @@ public abstract class BeforeDefibrillatorZapsEvent : CancellableEntityEventArgs,
 }
 
 /// <summary>
+///     This event is raised on the target if they are allowed to be defibrillated.
+///     The event is triggered on the target and all their clothing.
+/// </summary>
+public sealed class DefibrillateAttemptEvent : BeforeDefibrillatorZapsEvent
+{
+    public LocId Reason;
+
+    public DefibrillateAttemptEvent(EntityUid entityUsingDefib, EntityUid defib, EntityUid defibtarget) : base(entityUsingDefib, defib, defibtarget) { }
+}
+
+/// <summary>
 ///     This event is raised on the user using the defibrillator before is actually zaps someone.
 ///     The event is triggered on the user and all their clothing.
 /// </summary>

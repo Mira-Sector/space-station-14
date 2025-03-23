@@ -2,6 +2,7 @@ using Content.Client.SubFloor;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
 using Content.Shared.Atmos.Piping;
+using Content.Shared.Atmos.Piping.Layerable;
 using JetBrains.Annotations;
 using Robust.Client.GameObjects;
 
@@ -25,25 +26,50 @@ public sealed class AtmosPipeAppearanceSystem : EntitySystem
         if (!TryComp(uid, out SpriteComponent? sprite))
             return;
 
-        foreach (PipeConnectionLayer layerKey in Enum.GetValues(typeof(PipeConnectionLayer)))
+        var zLayers = GetZLayers(uid);
+
+        foreach (var zLayer in zLayers)
         {
-            sprite.LayerMapReserveBlank(layerKey);
-            var layer = sprite.LayerMapGet(layerKey);
-            sprite.LayerSetRSI(layer, component.Sprite.RsiPath);
-            sprite.LayerSetState(layer, component.Sprite.RsiState);
-            sprite.LayerSetDirOffset(layer, ToOffset(layerKey));
+            component.LayerOffsets.TryGetValue(zLayer, out var offsets);
+
+            foreach (PipeConnectionLayer layerKey in Enum.GetValues(typeof(PipeConnectionLayer)))
+            {
+                var key = layerKey + "_" + zLayer.ToString();
+
+                sprite.LayerMapReserveBlank(key);
+                var index = sprite.LayerMapGet(key);
+                sprite.LayerSetRSI(index, component.Sprite.RsiPath);
+                sprite.LayerSetState(index, component.Sprite.RsiState);
+                sprite.LayerSetDirOffset(index, ToOffset(layerKey));
+
+                if (offsets == null)
+                    continue;
+
+                if (!offsets.TryGetValue(layerKey, out var offset))
+                    continue;
+
+                if (!sprite.TryGetLayer(index, out var layer))
+                    continue;
+
+                layer.Offset += offset;
+            }
         }
     }
 
-    private void HideAllPipeConnection(SpriteComponent sprite)
+    private void HideAllPipeConnection(Entity<SpriteComponent> ent)
     {
+        var zLayers = GetZLayers(ent);
+
         foreach (PipeConnectionLayer layerKey in Enum.GetValues(typeof(PipeConnectionLayer)))
         {
-            if (!sprite.LayerMapTryGet(layerKey, out var key))
-                continue;
+            foreach (var zLayer in zLayers)
+            {
+                if (!ent.Comp.LayerMapTryGet(layerKey + "_" + zLayer.ToString(), out var key))
+                    continue;
 
-            var layer = sprite[key];
-            layer.Visible = false;
+                var layer = ent.Comp[key];
+                layer.Visible = false;
+            }
         }
     }
 
@@ -59,9 +85,21 @@ public sealed class AtmosPipeAppearanceSystem : EntitySystem
             return;
         }
 
-        if (!_appearance.TryGetData<PipeDirection>(uid, PipeVisuals.VisualState, out var worldConnectedDirections, args.Component))
+        var zLayers = GetZLayers(uid);
+        Dictionary<int, PipeDirection> layerConnections = new();
+
+        foreach (var layer in zLayers)
         {
-            HideAllPipeConnection(args.Sprite);
+            if (!_appearance.TryGetData<PipeDirection?>(uid, PipeAppearanceLayerHelpers.LayerToEnum(layer), out var direction))
+                continue;
+
+            if (direction != null)
+                layerConnections.Add(layer, direction.Value);
+        }
+
+        if (layerConnections.Count <= 0)
+        {
+            HideAllPipeConnection((uid, args.Sprite));
             return;
         }
 
@@ -69,23 +107,57 @@ public sealed class AtmosPipeAppearanceSystem : EntitySystem
             color = Color.White;
 
         // transform connected directions to local-coordinates
-        var connectedDirections = worldConnectedDirections.RotatePipeDirection(-Transform(uid).LocalRotation);
-
-        foreach (PipeConnectionLayer layerKey in Enum.GetValues(typeof(PipeConnectionLayer)))
+        foreach (var (zLayer, direction) in layerConnections)
         {
-            if (!args.Sprite.LayerMapTryGet(layerKey, out var key))
+            var connectedDirections = direction.RotatePipeDirection(-Transform(uid).LocalRotation);
+
+            foreach (PipeConnectionLayer layerKey in Enum.GetValues(typeof(PipeConnectionLayer)))
+            {
+                if (!args.Sprite.LayerMapTryGet(layerKey + "_" + zLayer.ToString(), out var key))
+                    continue;
+
+                var layer = args.Sprite[key];
+                var dir = (PipeDirection) layerKey;
+                var visible = connectedDirections.HasDirection(dir);
+
+                layer.Visible &= visible;
+
+                if (!visible)
+                    continue;
+
+                layer.Color = color;
+            }
+        }
+
+        // set the rest of the zlayers to disabled
+        foreach (var zLayer in GetZLayers(uid))
+        {
+            if (layerConnections.ContainsKey(zLayer))
                 continue;
 
-            var layer = args.Sprite[key];
-            var dir = (PipeDirection) layerKey;
-            var visible = connectedDirections.HasDirection(dir);
+            foreach (PipeConnectionLayer layerKey in Enum.GetValues(typeof(PipeConnectionLayer)))
+            {
+                if (!args.Sprite.LayerMapTryGet(layerKey + "_" + zLayer.ToString(), out var key))
+                    continue;
 
-            layer.Visible &= visible;
+                var layer = args.Sprite[key];
+                layer.Visible = false;
+            }
+        }
+    }
 
-            if (!visible)
-                continue;
+    private IEnumerable<int> GetZLayers(EntityUid uid)
+    {
+        if (TryComp<PipeLayerableComponent>(uid, out var layerableComp))
+        {
+            var totalLayers = Math.Abs(layerableComp.MinLayer) + Math.Abs(layerableComp.MaxLayer);
 
-            layer.Color = color;
+            for (var i = 0; i <= totalLayers; i++)
+                yield return (layerableComp.MinLayer + i);
+        }
+        else
+        {
+            yield return 0;
         }
     }
 
@@ -98,13 +170,5 @@ public sealed class AtmosPipeAppearanceSystem : EntitySystem
             PipeConnectionLayer.WestConnection => SpriteComponent.DirectionOffset.Clockwise,
             _ => SpriteComponent.DirectionOffset.None,
         };
-    }
-
-    private enum PipeConnectionLayer : byte
-    {
-        NorthConnection = PipeDirection.North,
-        SouthConnection = PipeDirection.South,
-        EastConnection = PipeDirection.East,
-        WestConnection = PipeDirection.West,
     }
 }

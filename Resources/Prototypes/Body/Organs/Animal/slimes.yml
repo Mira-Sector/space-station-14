@@ -8,6 +8,7 @@
       sprite: Mobs/Species/Slime/organs.rsi
       state: brain-slime
     - type: Stomach
+    - type: VomitOnRot
     - type: Metabolizer
       maxReagents: 3
       metabolizerTypes: [ Slime ]
@@ -24,6 +25,19 @@
       solutions:
         stomach:
           maxVol: 30.0
+    - type: Temperature
+    - type: Heart
+    - type: Perishable
+      rotAfter: 360
+      molsPerSecondPerUnitMass: 0
+    - type: OrganRotDamage
+      mode: Rotting
+      damage:
+        types:
+          Poison: 4
+    - type: MetabolizerRot
+    - type: Damageable
+      damageContainer: Liver
 
 - type: entity
   id: OrganSlimesLungs
@@ -57,3 +71,7 @@
         Lung:
           maxVol: 100.0
           canReact: false
+    - type: Temperature
+    - type: Perishable
+      rotAfter: 990
+      molsPerSecondPerUnitMass: 0

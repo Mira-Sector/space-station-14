@@ -20,6 +20,12 @@
     - Snout
     - HeadTop
     - HeadSide
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Caustic: 0.5
 
 - type: entity
   parent: ClothingHeadHatHoodBioGeneral
@@ -33,6 +39,12 @@
     sprite: Clothing/Head/Hoods/Bio/cmo.rsi
   - type: Clothing
     sprite: Clothing/Head/Hoods/Bio/cmo.rsi
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Caustic: 0.5
 
 - type: entity
   parent: ClothingHeadHatHoodBioGeneral
@@ -46,6 +58,12 @@
     sprite: Clothing/Head/Hoods/Bio/janitor.rsi
   - type: Clothing
     sprite: Clothing/Head/Hoods/Bio/janitor.rsi
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Caustic: 0.5
 
 - type: entity
   parent: ClothingHeadHatHoodBioGeneral
@@ -59,6 +77,12 @@
     sprite: Clothing/Head/Hoods/Bio/scientist.rsi
   - type: Clothing
     sprite: Clothing/Head/Hoods/Bio/scientist.rsi
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Caustic: 0.5
 
 - type: entity
   parent: ClothingHeadHatHoodBioGeneral
@@ -72,6 +96,12 @@
     sprite: Clothing/Head/Hoods/Bio/security.rsi
   - type: Clothing
     sprite: Clothing/Head/Hoods/Bio/security.rsi
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Caustic: 0.5
 
 - type: entity
   parent: ClothingHeadHatHoodBioGeneral
@@ -85,6 +115,12 @@
     sprite: Clothing/Head/Hoods/Bio/virology.rsi
   - type: Clothing
     sprite: Clothing/Head/Hoods/Bio/virology.rsi
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Caustic: 0.5
 
 - type: entity
   parent: ClothingHeadBase
@@ -153,7 +189,11 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] : { coefficients: { Heat: 0.95, Radiation: 0.65 } }
+      [ Head ] :
+        coefficients:
+          Heat: 0.90
+          Radiation: 0.01
+
   - type: IdentityBlocker
   - type: BreathMask
   - type: HideLayerClothing

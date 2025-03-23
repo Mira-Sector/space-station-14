@@ -229,10 +229,14 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         // Try to insert our thing into them
         if (_slots.CanEject(ent.Owner, args.User, ent.Comp.Slot))
         {
-            if (!_slots.TryInsert(args.Args.Target.Value, targetHolder.Slot, ent.Comp.Slot.Item!.Value, args.User, excludeUserAudio: true))
-            {
+            if (ent.Comp.Slot.Item is not {} item)
                 return;
-            }
+
+            if (!_slots.TryInsert(args.Args.Target.Value, targetHolder.Slot, item, args.User, excludeUserAudio: true))
+                return;
+
+            var ev = new GotIntellicardedEvent(args.Args.Target.Value, ent.Owner, args.User);
+            RaiseLocalEvent(item, ev);
 
             args.Handled = true;
             return;
@@ -241,10 +245,14 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         // Otherwise try to take from them
         if (_slots.CanEject(args.Args.Target.Value, args.User, targetHolder.Slot))
         {
-            if (!_slots.TryInsert(ent.Owner, ent.Comp.Slot, targetHolder.Slot.Item!.Value, args.User, excludeUserAudio: true))
-            {
+            if (targetHolder.Slot.Item is not {} item)
                 return;
-            }
+
+            if (!_slots.TryInsert(ent.Owner, ent.Comp.Slot, item, args.User, excludeUserAudio: true))
+                return;
+
+            var ev = new IntellicardedToCoreEvent(args.Args.Target.Value, ent.Owner, args.User);
+            RaiseLocalEvent(item, ev);
 
             args.Handled = true;
         }
@@ -666,6 +674,33 @@ public sealed partial class IntellicardAttemptEvent : CancellableEntityEventArgs
 [Serializable, NetSerializable]
 public sealed partial class IntellicardDoAfterEvent : SimpleDoAfterEvent;
 
+public sealed partial class GotIntellicardedEvent : EntityEventArgs
+{
+    public EntityUid Intellicard;
+    public EntityUid Core;
+    public EntityUid User;
+
+    public GotIntellicardedEvent(EntityUid intellicard, EntityUid core, EntityUid user)
+    {
+        Intellicard = intellicard;
+        Core = core;
+        User = user;
+    }
+}
+
+public sealed partial class IntellicardedToCoreEvent : EntityEventArgs
+{
+    public EntityUid Intellicard;
+    public EntityUid Core;
+    public EntityUid User;
+
+    public IntellicardedToCoreEvent(EntityUid intellicard, EntityUid core, EntityUid user)
+    {
+        Intellicard = intellicard;
+        Core = core;
+        User = user;
+    }
+}
 
 [Serializable, NetSerializable]
 public enum StationAiVisualState : byte

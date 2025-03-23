@@ -123,6 +123,16 @@
     sprite: Clothing/Ears/Headsets/engineering.rsi
 
 - type: entity
+  parent: ClothingHeadsetEngineering
+  id: ClothingHeadsetEngineeringPoly
+  suffix: Poly
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyEngineering # no spamming common round start
+
+- type: entity
   parent: [ClothingHeadsetEngineering, BaseCommandContraband]
   id: ClothingHeadsetCE
   name: ce headset

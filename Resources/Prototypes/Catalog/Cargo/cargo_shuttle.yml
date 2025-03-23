@@ -4,7 +4,7 @@
     sprite: Structures/Shuttles/thruster.rsi
     state: base
   product: CrateEngineeringThruster
-  cost: 1500
+  cost: 1250
   category: cargoproduct-category-name-shuttle
   group: market
 
@@ -14,7 +14,7 @@
     sprite: Structures/Shuttles/gyroscope.rsi
     state: base
   product: CrateEngineeringGyroscope
-  cost: 4000
+  cost: 3500
   category: cargoproduct-category-name-shuttle
   group: market
 
@@ -26,7 +26,7 @@
     sprite: Clothing/Head/Soft/cargosoft.rsi
     state: icon
   shuttle: /Maps/Shuttles/cargo.yml
-  cost: 13000
+  cost: 14500
   category: cargoproduct-category-name-shuttle
   group: market
 
@@ -45,12 +45,12 @@
 - type: cargoProduct
   id: ShuttleMeme
   name: Miniscule Shuttle
-  description: A shuttle so tiny not even the mothroaches would ride it.
+  description: A shuttle so tiny not even the mothroaches would ride it. (no refunds!)
   icon:
     sprite: Objects/Specific/Janitorial/trashbag.rsi
     state: icon-0
   shuttle: /Maps/Shuttles/meme_shittle.yml
-  cost: 5600
+  cost: 5146
   category: cargoproduct-category-name-shuttle
   group: market
 
@@ -62,19 +62,19 @@
     sprite: Clothing/Head/Hats/truckershat.rsi
     state: icon
   shuttle: /Maps/Shuttles/trucker_shittle.yml
-  cost: 12000
+  cost: 10000
   category: cargoproduct-category-name-shuttle
   group: market
 
 - type: cargoProduct
   id: ShuttleSalvage
   name: Salvage Shuttle
-  description: The old reliable.
+  description: The good ol reliable.
   icon:
     sprite: Objects/Weapons/Melee/pickaxe.rsi
     state: pickaxe
   shuttle: /Maps/Shuttles/salvage_shuttle.yml
-  cost: 15000
+  cost: 14000
   category: cargoproduct-category-name-shuttle
   group: market
 
@@ -86,7 +86,7 @@
     sprite: Clothing/Head/Helmets/ancientvoidsuit.rsi
     state: icon
   shuttle: /Maps/Shuttles/shittle.yml
-  cost: 8000
+  cost: 7500
   category: cargoproduct-category-name-shuttle
   group: market
 
@@ -98,7 +98,7 @@
     sprite: Objects/Tools/shovel.rsi
     state: icon
   shuttle: /Maps/Shuttles/scoop_shittle.yml
-  cost: 13000
+  cost: 9000
   category: cargoproduct-category-name-shuttle
   group: market
 
@@ -109,7 +109,7 @@
   icon:
     sprite: Objects/Weapons/Guns/Shuttles/launcher.rsi
     state: exp-320g
-  shuttle: /Maps/Shuttles/scoop_shittle.yml
+  shuttle: /Maps/Shuttles/sneak_shittle.yml
   cost: 20000
   category: cargoproduct-category-name-shuttle
   group: market

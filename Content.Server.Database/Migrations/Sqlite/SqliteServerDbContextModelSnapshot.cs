@@ -626,6 +626,33 @@ namespace Content.Server.Database.Migrations.Sqlite
                     b.ToTable("job", (string)null);
                 });
 
+            modelBuilder.Entity("Content.Server.Database.MimicPhraseProb", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("mimic_phrase_prob_id");
+
+                    b.Property<string>("Phrase")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("phrase");
+
+                    b.Property<float>("Prob")
+                        .HasColumnType("REAL")
+                        .HasColumnName("prob");
+
+                    b.Property<string>("PrototypeId")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("prototype_id");
+
+                    b.HasKey("Id")
+                        .HasName("PK_mimic_phrase_prob");
+
+                    b.ToTable("mimic_phrase_prob", (string)null);
+                });
+
             modelBuilder.Entity("Content.Server.Database.PlayTime", b =>
                 {
                     b.Property<int>("Id")

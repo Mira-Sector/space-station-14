@@ -1,10 +1,12 @@
 using System.Diagnostics.CodeAnalysis;
+using Content.Shared.Atmos.Rotting;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Events;
 using Content.Shared.Body.Organ;
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Prototypes;
 using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Mobs.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
 
@@ -12,6 +14,7 @@ namespace Content.Shared.Body.Systems;
 
 public partial class SharedBodySystem
 {
+    [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
     [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
 
@@ -19,6 +22,8 @@ public partial class SharedBodySystem
     {
         SubscribeLocalEvent<OrganReplaceableComponent, BoundUIOpenedEvent>(OnUIOpened);
         SubscribeLocalEvent<OrganReplaceableComponent, OrganSelectionButtonPressedMessage>(OnOrganButton);
+
+        SubscribeLocalEvent<OrganComponent, IsRottingEvent>(OnOrganIsRotting);
     }
 
     private void OnUIOpened(EntityUid uid, OrganReplaceableComponent component, BoundUIOpenedEvent args)
@@ -77,12 +82,30 @@ public partial class SharedBodySystem
         _ui.SetUiState(uid, OrganSelectionUiKey.Key, new OrganSelectionBoundUserInterfaceState(organs));
     }
 
+    private void OnOrganIsRotting(EntityUid uid, OrganComponent component, ref IsRottingEvent args)
+    {
+        if (component.Body is not {} body)
+            return;
+
+        if (_mobState.IsAlive(body))
+        {
+            args.Handled = true;
+            return;
+        }
+
+        var ev = new IsRottingEvent();
+        RaiseLocalEvent(body, ref ev);
+
+        args.Handled = ev.Handled;
+    }
+
     private void AddOrgan(
         Entity<OrganComponent> organEnt,
         EntityUid bodyUid,
         EntityUid parentPartUid)
     {
         organEnt.Comp.Body = bodyUid;
+        organEnt.Comp.BodyPart = parentPartUid;
         var addedEv = new OrganAddedEvent(parentPartUid);
         RaiseLocalEvent(organEnt, ref addedEv);
 
@@ -107,6 +130,7 @@ public partial class SharedBodySystem
         }
 
         organEnt.Comp.Body = null;
+        organEnt.Comp.BodyPart = null;
         Dirty(organEnt, organEnt.Comp);
     }
 
@@ -164,6 +188,9 @@ public partial class SharedBodySystem
             return false;
         }
 
+        organ.BodyPart = partId;
+        Dirty(organId, organ);
+
         var containerId = GetOrganContainerId(slotId);
 
         return Containers.TryGetContainer(partId, containerId, out var container)
@@ -175,10 +202,15 @@ public partial class SharedBodySystem
     /// </summary>
     public bool RemoveOrgan(EntityUid organId, OrganComponent? organ = null)
     {
+        if (!Resolve(organId, ref organ))
+            return false;
+
         if (!Containers.TryGetContainingContainer((organId, null, null), out var container))
             return false;
 
         var parent = container.Owner;
+        organ.BodyPart = null;
+        Dirty(organId, organ);
 
         return HasComp<BodyPartComponent>(parent)
             && Containers.Remove(organId, container);

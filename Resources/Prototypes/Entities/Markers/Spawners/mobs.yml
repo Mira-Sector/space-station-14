@@ -928,15 +928,15 @@
     - MobReindeerDoe
 
 - type: entity
-  name: ClownoThing Spawner
-  id: SpawnMobClownothing
+  name: Poly Spawner
+  id: SpawnMobParrotPoly
   parent: MarkerBase
   components:
   - type: Sprite
     layers:
     - state: green
-    - state: clown
-      sprite: Markers/jobs.rsi
+    - state: parrot
+      sprite: Mobs/Animals/parrot.rsi
   - type: ConditionalSpawner
     prototypes:
-    - MobClownothing
+    - MobParrotPoly

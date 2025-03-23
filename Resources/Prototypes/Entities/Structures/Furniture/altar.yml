@@ -516,9 +516,9 @@
     - settings:
         spawnOnPulse: true
         minAmount: 1
-        maxAmount: 4
+        maxAmount: 2
         minRange: 1.5
-        maxRange: 2.5
+        maxRange: 2
       spawns:
       - MobCheeseJared
       - MobCheeseGolem
@@ -527,10 +527,10 @@
     - settings:
         spawnOnSuperCritical: true
         spawnOnPulse: true
-        minAmount: 5
-        maxAmount: 12
+        minAmount: 4
+        maxAmount: 7
         minRange: 2
-        maxRange: 30
+        maxRange: 15
       spawns:
       - WallCheese
     - settings:
@@ -538,6 +538,6 @@
         minAmount: 1
         maxAmount: 2
         minRange: 5
-        maxRange: 20
+        maxRange: 15
       spawns:
       - AltarCheeseAwakened

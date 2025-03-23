@@ -55,7 +55,8 @@ public sealed class SharedSuicideSystem : EntitySystem
 
         if (TryComp<BodyPartThresholdsComponent>(target, out var limbThresholds))
         {
-            lethalThreshold = limbThresholds.Thresholds.Keys.Last();
+            if (!limbThresholds.Thresholds.TryGetValue(WoundState.Dead, out lethalThreshold))
+                return;
         }
         else if (TryComp<MobThresholdsComponent>(target, out var mobThresholds))
         {

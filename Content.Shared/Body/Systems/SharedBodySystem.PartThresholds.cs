@@ -50,17 +50,28 @@ public partial class SharedBodySystem
 
     internal void CheckThresholds(EntityUid limb, EntityUid body, BodyPartThresholdsComponent thresholds, DamageableComponent damage)
     {
-        foreach (var (limbThreshold, limbState) in thresholds.Thresholds.Reverse())
+        WoundState? highestPossibleState = null;
+        FixedPoint2 highestPossibleThreshold = new();
+
+        foreach (var (limbState, limbThreshold) in thresholds.Thresholds)
         {
             if (damage.TotalDamage < limbThreshold)
                 continue;
 
-            if (limbState == thresholds.CurrentState)
-                return;
+            if (limbThreshold < highestPossibleThreshold)
+                continue;
 
-            DoThreshold(limb, body, thresholds, limbState);
-            break;
+            highestPossibleState = limbState;
+            highestPossibleThreshold = limbThreshold;
         }
+
+        if (highestPossibleState == null)
+            return;
+
+        if (highestPossibleState.Value == thresholds.CurrentState)
+            return;
+
+        DoThreshold(limb, body, thresholds, highestPossibleState.Value);
     }
 
     internal void DoThreshold(EntityUid limb, EntityUid body, BodyPartThresholdsComponent thresholds, WoundState state)
@@ -71,24 +82,6 @@ public partial class SharedBodySystem
         // TODO: do something on state change
 
         thresholds.CurrentState = state;
-    }
-
-    public bool TryGetLimbStateThreshold(EntityUid limb, WoundState state, out FixedPoint2 threshold, BodyPartThresholdsComponent? thresholds = null)
-    {
-        threshold = FixedPoint2.Zero;
-
-        if (!Resolve(limb, ref thresholds, false))
-            return false;
-
-        foreach (var (limbThreshold, limbState) in thresholds.Thresholds)
-        {
-            if (limbState != state)
-                continue;
-
-            threshold = limbThreshold;
-            return true;
-        }
-
-        return false;
+        Dirty(limb, thresholds);
     }
 }

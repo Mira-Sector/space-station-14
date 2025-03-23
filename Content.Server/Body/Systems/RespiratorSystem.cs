@@ -18,6 +18,7 @@ using Content.Shared.Mobs.Systems;
 using JetBrains.Annotations;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
+using System.Linq;
 
 namespace Content.Server.Body.Systems;
 
@@ -47,6 +48,9 @@ public sealed class RespiratorSystem : EntitySystem
         SubscribeLocalEvent<RespiratorComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<RespiratorComponent, EntityUnpausedEvent>(OnUnpaused);
         SubscribeLocalEvent<RespiratorComponent, ApplyMetabolicMultiplierEvent>(OnApplyMetabolicMultiplier);
+
+        // I dont fancy writing a server system just for this
+        SubscribeLocalEvent<HeartComponent, GetRespiratingUpdateDelay>(OnHeartRespiratingDelay);
     }
 
     private void OnMapInit(Entity<RespiratorComponent> ent, ref MapInitEvent args)
@@ -59,6 +63,11 @@ public sealed class RespiratorSystem : EntitySystem
         ent.Comp.NextUpdate += args.PausedTime;
     }
 
+    private void OnHeartRespiratingDelay(EntityUid uid, HeartComponent component, GetRespiratingUpdateDelay args)
+    {
+        args.Delay *= component.CurrentRespirationMultiplier;
+    }
+
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
@@ -69,7 +78,14 @@ public sealed class RespiratorSystem : EntitySystem
             if (_gameTiming.CurTime < respirator.NextUpdate)
                 continue;
 
-            respirator.NextUpdate += respirator.UpdateInterval;
+            var ev = new GetRespiratingUpdateDelay(respirator.UpdateInterval);
+
+            foreach (var (organ, _) in _bodySystem.GetBodyOrgans(uid, body))
+            {
+                RaiseLocalEvent(organ, ev);
+            }
+
+            respirator.NextUpdate += ev.Delay;
 
             if (_mobState.IsDead(uid))
                 continue;
@@ -104,8 +120,18 @@ public sealed class RespiratorSystem : EntitySystem
                 continue;
             }
 
-            StopSuffocation((uid, respirator));
-            respirator.SuffocationCycles = 0;
+            if (_bodySystem.TryGetBodyOrganEntityComps<HeartComponent>((uid, body), out var hearts) && hearts.Any(x => x.Comp1.Beating))
+            {
+                StopSuffocation((uid, respirator));
+                respirator.SuffocationCycles = 0;
+                continue;
+            }
+
+            // purpusfully not gasping
+            // your lungs are full but the heart are doing fuck all
+            TakeSuffocationDamage((uid, respirator));
+            respirator.SuffocationCycles += 1;
+            continue;
         }
     }
 
@@ -114,7 +140,7 @@ public sealed class RespiratorSystem : EntitySystem
         if (!Resolve(uid, ref body, logMissing: false))
             return;
 
-        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((uid, body));
+        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((uid, body)).Where(x => !x.Comp1.Broken).ToList();
 
         // Inhale gas
         var ev = new InhaleLocationEvent();
@@ -127,6 +153,8 @@ public sealed class RespiratorSystem : EntitySystem
             return;
         }
 
+        var inhaleEv = new InhaledEvent();
+
         var actualGas = ev.Gas.RemoveVolume(Atmospherics.BreathVolume);
 
         var lungRatio = 1.0f / organs.Count;
@@ -136,6 +164,8 @@ public sealed class RespiratorSystem : EntitySystem
             // Merge doesn't remove gas from the giver.
             _atmosSys.Merge(lung.Air, gas);
             _lungSystem.GasToReagent(organUid, lung);
+
+            RaiseLocalEvent(organUid, ref inhaleEv);
         }
     }
 
@@ -144,7 +174,7 @@ public sealed class RespiratorSystem : EntitySystem
         if (!Resolve(uid, ref body, logMissing: false))
             return;
 
-        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((uid, body));
+        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((uid, body)).Where(x => !x.Comp1.Broken).ToList();
 
         // exhale gas
 
@@ -160,6 +190,8 @@ public sealed class RespiratorSystem : EntitySystem
             ev.Gas ??= GasMixture.SpaceGas;
         }
 
+        var exhaleEv = new ExhaledEvent();
+
         var outGas = new GasMixture(ev.Gas.Volume);
         foreach (var (organUid, lung, _) in organs)
         {
@@ -168,6 +200,8 @@ public sealed class RespiratorSystem : EntitySystem
 
             if (_solutionContainerSystem.ResolveSolution(organUid, lung.SolutionName, ref lung.Solution))
                 _solutionContainerSystem.RemoveAllSolution(lung.Solution.Value);
+
+            RaiseLocalEvent(organUid, ref exhaleEv);
         }
 
         _atmosSys.Merge(ev.Gas, outGas);
@@ -201,7 +235,7 @@ public sealed class RespiratorSystem : EntitySystem
         if (!Resolve(ent, ref ent.Comp))
             return false;
 
-        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((ent, null));
+        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((ent, null)).Where(x => !x.Comp1.Broken).ToList();
         if (organs.Count == 0)
             return false;
 
@@ -303,7 +337,7 @@ public sealed class RespiratorSystem : EntitySystem
             _adminLogger.Add(LogType.Asphyxiation, $"{ToPrettyString(ent):entity} stopped suffocating");
 
         // TODO: This is not going work with multiple different lungs, if that ever becomes a possibility
-        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((ent, null));
+        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((ent, null)).Where(x => !x.Comp1.Broken).ToList();
         foreach (var entity in organs)
         {
             _alertsSystem.ClearAlert(ent, entity.Comp1.Alert);
@@ -352,3 +386,9 @@ public record struct InhaleLocationEvent(GasMixture? Gas);
 
 [ByRefEvent]
 public record struct ExhaleLocationEvent(GasMixture? Gas);
+
+[ByRefEvent]
+public record struct InhaledEvent();
+
+[ByRefEvent]
+public record struct ExhaledEvent();

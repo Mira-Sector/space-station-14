@@ -236,7 +236,7 @@ public abstract partial class InteractionTest
             // I lost an hour of my life trying to track down how the hell interaction tests were breaking
             // so greatz to this. Just make your own body prototype!
             var bodySystem = SEntMan.System<BodySystem>();
-            var hands = bodySystem.GetBodyChildrenOfType(SEntMan.GetEntity(Player), BodyPartType.Hand).ToArray();
+            var hands = bodySystem.GetBodyChildrenOfType(SEntMan.GetEntity(Player), Initia.Hand).ToArray();
 
             for (var i = 1; i < hands.Length; i++)
             {

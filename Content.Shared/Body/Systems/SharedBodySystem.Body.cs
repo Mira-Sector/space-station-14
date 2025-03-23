@@ -382,6 +382,14 @@ public partial class SharedBodySystem
                 continue;
 
             totalDamage += partDamageComp.Damage * partComp.OverallDamageScale;
+
+            foreach (var (organUid, organComp) in GetPartOrgans(partUid, partComp))
+            {
+                if (!TryComp<DamageableComponent>(organUid, out var organDamageComp))
+                    continue;
+
+                totalDamage += organDamageComp.Damage;
+            }
         }
 
         return totalDamage;
@@ -396,12 +404,20 @@ public partial class SharedBodySystem
         if (bodyId == null || !Resolve(bodyId.Value, ref body, false))
             return damageableComps;
 
-        foreach (var (part, _) in GetBodyChildren(bodyId, body))
+        foreach (var (partUid, partComp) in GetBodyChildren(bodyId, body))
         {
-            if (!TryComp<DamageableComponent>(part, out var partDamageComp))
+            if (!TryComp<DamageableComponent>(partUid, out var partDamageComp))
                 continue;
 
-            damageableComps.Add(part, partDamageComp);
+            damageableComps.Add(partUid, partDamageComp);
+
+            foreach (var (organUid, _) in GetPartOrgans(partUid, partComp))
+            {
+                if (!TryComp<DamageableComponent>(organUid, out var organDamageComp))
+                    continue;
+
+                damageableComps.Add(organUid, organDamageComp);
+            }
         }
 
         return damageableComps;
@@ -418,12 +434,20 @@ public partial class SharedBodySystem
 
         List<ProtoId<DamageContainerPrototype>?> damageContainers = new ();
 
-        foreach (var (part, _) in GetBodyChildren(bodyId, body))
+        foreach (var (partUid, partComp) in GetBodyChildren(bodyId, body))
         {
-            if (!TryComp<DamageableComponent>(part, out var partDamageComp))
+            if (!TryComp<DamageableComponent>(partUid, out var partDamageComp))
                 continue;
 
             damageContainers.Add(partDamageComp.DamageContainerID);
+
+            foreach (var (organUid, _) in GetPartOrgans(partUid, partComp))
+            {
+                if (!TryComp<DamageableComponent>(organUid, out var organDamageComp))
+                    continue;
+
+                damageContainers.Add(organDamageComp.DamageContainerID);
+            }
         }
 
         return GetMostFrequentDamageContainer(damageContainers);

@@ -115,6 +115,15 @@
     - state: appendix
     - state: appendix-inflamed
       visible: false
+  - type: OrganRotDamage
+    mode: Rotted
+    damage:
+      types:
+        Poison: 2.5
+  - type: Temperature
+  - type: Perishable
+    rotAfter: 900
+    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganHumanEars
@@ -165,6 +174,12 @@
         reagents:
         - ReagentId: UncookedAnimalProteins
           Quantity: 5
+  - type: Temperature
+  - type: Perishable
+    rotAfter: 990
+    molsPerSecondPerUnitMass: 0
+  - type: CoughOnRespire
+  - type: CoughRotChangeModify
 
 - type: entity
   id: OrganHumanHeart
@@ -174,6 +189,14 @@
   components:
   - type: Sprite
     state: heart-on
+    map: [ "enum.HeartVisualLayers.Beating" ]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.HeartVisuals.Beating:
+        enum.HeartVisualLayers.Beating:
+          True: { state: heart-on }
+          False: { state: heart-off }
   # The heart 'metabolizes' medicines and poisons that aren't filtered out by other organs.
   # This is done because these chemicals need to have some effect even if they aren't being filtered out of your body.
   # You're technically 'immune to poison' without a heart, but.. uhh, you'll have bigger problems on your hands.
@@ -184,6 +207,11 @@
     - id: Medicine
     - id: Poison
     - id: Narcotic
+  - type: Temperature
+  - type: Heart
+  - type: Perishable
+    rotAfter: 360
+    molsPerSecondPerUnitMass: 0
   - type: Item
     size: Small
     heldPrefix: heart
@@ -223,6 +251,11 @@
     groups:
     - id: Food
     - id: Drink
+  - type: Temperature
+  - type: VomitOnRot
+  - type: Perishable
+    rotAfter: 780
+    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganHumanLiver
@@ -243,6 +276,18 @@
     groups:
     - id: Alcohol
       rateModifier: 0.1 # removes alcohol very slowly along with the stomach removing it as a drink
+  - type: Damageable
+    damageContainer: Liver
+  - type: OrganRotDamage
+    mode: Rotting
+    damage:
+      types:
+        Poison: 4
+  - type: Temperature
+  - type: MetabolizerRot
+  - type: Perishable
+    rotAfter: 900
+    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganHumanKidneys
