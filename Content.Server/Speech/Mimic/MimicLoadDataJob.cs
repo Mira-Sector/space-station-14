@@ -26,7 +26,6 @@ public sealed class MimicLoadDataJob : Job<bool>
 
     protected override async Task<bool> Process()
     {
-        await WaitAsyncTask(_mimic.LoadData(Prototype, Cancellation));
-        return true;
+        return await WaitAsyncTask<bool>(_mimic.LoadData(Prototype, Cancellation));
     }
 }

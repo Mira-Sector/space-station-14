@@ -32,7 +32,7 @@ public sealed partial class MimicSystem : EntitySystem
     private const double MimicJobTime = 0.02;
 
     private readonly JobQueue _mimicQueue = new();
-    private readonly List<(MimicLoadDataJob Job, CancellationTokenSource CancelToken)> _mimicJobs = new();
+    private readonly Dictionary<EntProtoId, (MimicLoadDataJob Job, CancellationTokenSource CancelToken)> _mimicJobs = new();
 
     private Dictionary<EntProtoId, Dictionary<string, float?>> _toUpdate = new();
     private Dictionary<EntProtoId, Dictionary<string, float>> _cachedPhrases = new();
@@ -83,21 +83,28 @@ public sealed partial class MimicSystem : EntitySystem
 
         _mimicQueue.Process();
 
-        foreach (var (job, cancelToken) in _mimicJobs.ToArray())
+        foreach (var (prototype, (job, cancelToken)) in _mimicJobs.ToArray())
         {
             if (job.Status == JobStatus.Finished)
             {
-                _mimicJobs.Remove((job, cancelToken));
+                _mimicJobs.Remove(prototype);
 
-                var phrasesToAdd = _mimic.GetPhraseProbs(job.Prototype);
+                if (!job.Result)
+                {
+                    Log.Warning($"Failed to load mimic phrases for {job.Prototype}. Retrying");
+                    LoadMimicData(job.Caller);
+                    continue;
+                }
 
-                if (_cachedPhrases.TryGetValue(job.Prototype, out var phrases))
+                var phrasesToAdd = _mimic.GetPhraseProbs(prototype);
+
+                if (_cachedPhrases.TryGetValue(prototype, out var phrases))
                 {
                     phrases.Union(phrasesToAdd);
                 }
                 else
                 {
-                    _cachedPhrases.Add(job.Prototype, phrasesToAdd);
+                    _cachedPhrases.Add(prototype, phrasesToAdd);
                 }
             }
         }
@@ -183,34 +190,34 @@ public sealed partial class MimicSystem : EntitySystem
         if (MetaData(uid).EntityPrototype is not {} entityPrototype)
             return;
 
-        if (_cachedPhrases.ContainsKey(entityPrototype))
+        if (_cachedPhrases.ContainsKey(entityPrototype) || _mimicJobs.ContainsKey(entityPrototype))
             return;
 
         var cancelToken = new CancellationTokenSource();
         var job = new MimicLoadDataJob(MimicJobTime, entityPrototype, uid, _mimic, cancelToken.Token);
 
-        _mimicJobs.Add((job, cancelToken));
+        _mimicJobs.Add(entityPrototype, (job, cancelToken));
         _mimicQueue.EnqueueJob(job);
     }
 
     private void OnLearnerShutdown(Entity<MimicLearnerComponent> ent, ref ComponentShutdown args)
     {
-        foreach (var (job, cancelToken) in _mimicJobs.ToArray())
+        foreach (var (prototype, (job, cancelToken)) in _mimicJobs.ToArray())
         {
             if (job.Caller == ent.Owner)
             {
                 cancelToken.Cancel();
-                _mimicJobs.Remove((job, cancelToken));
+                _mimicJobs.Remove(prototype);
             }
         }
     }
 
     private void OnRoundRestart(RoundRestartCleanupEvent args)
     {
-        foreach (var (job, cancelToken) in _mimicJobs.ToArray())
+        foreach (var (prototype, (job, cancelToken)) in _mimicJobs.ToArray())
         {
             cancelToken.Cancel();
-            _mimicJobs.Remove((job, cancelToken));
+            _mimicJobs.Remove(prototype);
         }
 
         foreach (var (prototype, phrases) in _toUpdate)
