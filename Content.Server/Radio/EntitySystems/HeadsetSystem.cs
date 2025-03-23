@@ -99,8 +99,13 @@ public sealed class HeadsetSystem : SharedHeadsetSystem
 
     private void OnHeadsetReceive(EntityUid uid, HeadsetComponent component, ref RadioReceiveEvent args)
     {
-        if (TryComp(Transform(uid).ParentUid, out ActorComponent? actor))
+        var parent = Transform(uid).ParentUid;
+
+        if (TryComp(parent, out ActorComponent? actor))
             _netMan.ServerSendMessage(args.ChatMsg, actor.PlayerSession.Channel);
+
+        var ev = new RadioReceivedEvent(args.Message, args.MessageSource, args.Channel, args.RadioSource, uid);
+        RaiseLocalEvent(parent, ref ev);
     }
 
     private void OnEmpPulse(EntityUid uid, HeadsetComponent component, ref EmpPulseEvent args)

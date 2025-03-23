@@ -6,6 +6,9 @@ namespace Content.Server.Radio;
 [ByRefEvent]
 public readonly record struct RadioReceiveEvent(string Message, EntityUid MessageSource, RadioChannelPrototype Channel, EntityUid RadioSource, MsgChatMessage ChatMsg);
 
+[ByRefEvent]
+public readonly record struct RadioReceivedEvent(string Message, EntityUid MessageSource, RadioChannelPrototype Channel, EntityUid RadioSource, EntityUid Radio);
+
 /// <summary>
 /// Use this event to cancel sending message per receiver
 /// </summary>

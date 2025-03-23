@@ -1,6 +1,7 @@
 using Content.Server.Administration.Logs;
 using Content.Server.Chat.Systems;
 using Content.Server.Speech.Components;
+using Content.Server.Radio;
 using Content.Server.Radio.Components;
 using Content.Server.Radio.EntitySystems;
 using Content.Shared.Database;
@@ -49,6 +50,7 @@ public sealed partial class MimicSystem : EntitySystem
         SubscribeLocalEvent<MimicLearnerComponent, ComponentShutdown>(OnLearnerShutdown);
         SubscribeLocalEvent<MimicLearnerComponent, ListenAttemptEvent>(OnLearnerAttemptListen);
         SubscribeLocalEvent<MimicLearnerComponent, ListenEvent>(OnLearnerListen);
+        SubscribeLocalEvent<MimicLearnerComponent, RadioReceivedEvent>(OnLearnerRadio);
 
         SubscribeLocalEvent<MimicSpeakerComponent, ComponentInit>(OnSpeakerInit);
         SubscribeLocalEvent<MimicSpeakerComponent, EntitySpokeEvent>(OnSpeakerSpoke);
@@ -242,6 +244,22 @@ public sealed partial class MimicSystem : EntitySystem
         if (HasComp<MimicLearnerComponent>(args.Source))
             return;
 
+        LearnMessage(ent, args.Message, args.Source);
+    }
+
+    private void OnLearnerRadio(Entity<MimicLearnerComponent> ent, ref RadioReceivedEvent args)
+    {
+        if (ent.Owner == args.RadioSource || ent.Owner == args.Radio)
+            return;
+
+        if (HasComp<MimicLearnerComponent>(args.MessageSource) || HasComp<MimicLearnerComponent>(args.Radio))
+            return;
+
+        LearnMessage(ent, args.Message, args.MessageSource);
+    }
+
+    private void LearnMessage(Entity<MimicLearnerComponent> ent, string message, EntityUid source)
+    {
         if (MetaData(ent).EntityPrototype is not {} entityPrototype)
             return;
 
@@ -249,19 +267,19 @@ public sealed partial class MimicSystem : EntitySystem
 
         if (_random.Prob(Math.Min(ent.Comp.LongTermLearningChance * probMultiplier, 1f)))
         {
-            UpdateLongTerm(entityPrototype, args.Message, Math.Min(ent.Comp.LongTermPhraseProb * probMultiplier, 1f));
-            SendAdminLog(ref args);
+            UpdateLongTerm(entityPrototype, message, Math.Min(ent.Comp.LongTermPhraseProb * probMultiplier, 1f));
+            SendAdminLog();
         }
 
         if (_random.Prob(Math.Min(ent.Comp.CurrentRoundLearningChance * probMultiplier, 1f)))
         {
-            UpdateCache(entityPrototype, args.Message, Math.Min(ent.Comp.CurrentRoundPhraseProb * probMultiplier, 1f));
-            SendAdminLog(ref args);
+            UpdateCache(entityPrototype, message, Math.Min(ent.Comp.CurrentRoundPhraseProb * probMultiplier, 1f));
+            SendAdminLog();
         }
 
-        void SendAdminLog(ref ListenEvent args)
+        void SendAdminLog()
         {
-            _admin.Add(LogType.MimicLearned, LogImpact.Medium, $"{ToPrettyString(args.Source)} caused {entityPrototype.ID} to learn the phrase: {args.Message}");
+            _admin.Add(LogType.MimicLearned, LogImpact.Medium, $"{ToPrettyString(source)} caused {entityPrototype.ID} to learn the phrase: {message}");
         }
     }
 
