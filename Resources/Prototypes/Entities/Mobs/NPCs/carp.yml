@@ -198,13 +198,19 @@
     - type: MeleeWeapon
       altDisarm: false
       angle: 0
-      animation: WeaponArcBite
+      animation: WeaponArcPunch
       soundHit:
-        path: /Audio/Items/bikehorn.ogg
+        collection: BikeHorn
       damage:
         types:
           Blunt: 5
           Slash: 7
+    - type: FootstepModifier
+      footstepSoundCollection:
+        collection: FootstepClown
+        params:
+          variation: 0.17
+          volume: 3
 
 - type: entity
   id: MobCarpDungeon

@@ -85,8 +85,8 @@
   - type: MobThresholds
     thresholds:
       0: Alive
-      300: Critical
-      400: Dead
+      325: Critical
+      450: Dead
   - type: SlowOnDamage
     speedModifierThresholds:
       250: 0.7
@@ -128,8 +128,10 @@
     soundPerceivedByOthers: false # A 75% chance for a loud roar would get old fast.
   - type: MeleeWeapon
     altDisarm: false
+    angle: 0
+    animation: WeaponArcPunch
     soundHit:
-      path: /Audio/Items/bikehorn.ogg
+      collection: BikeHorn
     damage:
       types:
         Piercing: 12.5
@@ -157,6 +159,12 @@
     speedModifier: 1.5
     useSound:
       path: /Audio/Items/crowbar.ogg
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: FootstepClown
+      params:
+        variation: 0.17
+        volume: 3
 
 - type: entity
   parent: BaseMobDragon
