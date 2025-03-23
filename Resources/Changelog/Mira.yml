@@ -1381,3 +1381,9 @@ Entries:
     type: Add
   id: 202
   time: '2025-03-22T05:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Poly can now learn phrases they hear from the radio
+    type: Add
+  id: 203
+  time: '2025-03-23T21:30:00.0000000+00:00'
