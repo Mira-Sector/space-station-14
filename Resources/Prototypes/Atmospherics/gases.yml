@@ -114,7 +114,7 @@
 - type: gas
   id: 10
   name: gases-nitrium
-  specificHeat: 100
+  specificHeat: 10
   heatCapacityRatio: 1.5
   molarMass: 44
   gasOverlaySprite: /Textures/Effects/atmospherics.rsi
