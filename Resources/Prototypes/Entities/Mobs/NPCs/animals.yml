@@ -864,10 +864,10 @@
     price: 50
 
 - type: entity
-  name: cow
+  name: woc
   parent: SimpleMobBase
   id: MobCow
-  description: Moo.
+  description: .ooM
   components:
   - type: Sprite
     drawdepth: Mobs
