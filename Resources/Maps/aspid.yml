@@ -10819,7 +10819,7 @@ entities:
       pos: 12.5,-42.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -11344.88
+      secondsUntilStateChange: -11437.32
       state: Opening
     - type: DeviceLinkSource
       linkedPorts:
@@ -12566,239 +12566,368 @@ entities:
       rot: 1.5707963267948966 rad
       pos: -24.5,-19.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 8819
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 1.5,-5.5
       parent: 8756
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 9764
     components:
     - type: Transform
       pos: -31.5,-13.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 10145
     components:
     - type: Transform
       pos: 29.5,-14.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 10308
     components:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: -41.5,7.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 10458
     components:
     - type: Transform
       pos: 5.5,-31.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 10545
     components:
     - type: Transform
       pos: 10.5,-19.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 10595
     components:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: 6.5,-16.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 10650
     components:
     - type: Transform
       pos: 16.5,-10.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 10693
     components:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: -7.5,-16.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 10723
     components:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: -11.5,-38.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 10991
     components:
     - type: Transform
       pos: 44.5,-6.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 11083
     components:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 22.5,5.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 11109
     components:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 23.5,-3.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 11235
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 16.5,9.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 11281
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 13.5,-1.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 11339
     components:
     - type: Transform
       pos: 24.5,23.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 11375
     components:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: -3.5,75.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 11376
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: -4.5,74.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 11377
     components:
     - type: Transform
       pos: 6.5,75.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 11551
     components:
     - type: Transform
       pos: -24.5,49.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 11552
     components:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: -20.5,50.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 11573
     components:
     - type: Transform
       pos: -42.5,44.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 11610
     components:
     - type: Transform
       pos: -30.5,57.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 11862
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: -7.5,56.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 12023
     components:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: -20.5,31.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 12024
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: -25.5,32.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 12025
     components:
     - type: Transform
       pos: -17.5,26.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 12026
     components:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: -8.5,23.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 12027
     components:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: -12.5,32.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 12325
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: -35.5,25.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 12405
     components:
     - type: Transform
       pos: 10.5,62.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 12406
     components:
     - type: Transform
       pos: 27.5,51.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 12407
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 24.5,42.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 12408
     components:
     - type: Transform
       pos: 41.5,41.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 12460
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 6.5,46.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 12862
     components:
     - type: Transform
       pos: 20.5,30.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 12863
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 8.5,31.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 12864
     components:
     - type: Transform
       pos: 5.5,26.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 12865
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 17.5,19.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 13196
     components:
     - type: Transform
       pos: -11.5,5.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 13197
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: -21.5,8.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
   - uid: 13198
     components:
     - type: Transform
       pos: -21.5,-1.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
 - proto: APCElectronics
   entities:
   - uid: 9127
@@ -12813,6 +12942,9 @@ entities:
     - type: Transform
       pos: 16.5,-21.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        shunting: !type:ContainerSlot {}
 - proto: AppraisalTool
   entities:
   - uid: 9332
@@ -62147,6 +62279,22 @@ entities:
       parent: 1
     - type: AtmosPipeColor
       color: '#0055CCFF'
+- proto: GasPipeSensorDistribution
+  entities:
+  - uid: 2734
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: -8.5,-18.5
+      parent: 1
+- proto: GasPipeSensorWaste
+  entities:
+  - uid: 2647
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: -10.5,-18.5
+      parent: 1
 - proto: GasPipeStraight
   entities:
   - uid: 2542
@@ -62443,14 +62591,6 @@ entities:
       rot: 1.5707963267948966 rad
       pos: -4.5,-32.5
       parent: 1
-  - uid: 2647
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -8.5,-18.5
-      parent: 1
-    - type: AtmosPipeColor
-      color: '#0055CCFF'
   - uid: 2649
     components:
     - type: Transform
@@ -62552,14 +62692,6 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: -9.5,-18.5
-      parent: 1
-    - type: AtmosPipeColor
-      color: '#990000FF'
-  - uid: 2734
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: -10.5,-18.5
       parent: 1
     - type: AtmosPipeColor
       color: '#990000FF'
