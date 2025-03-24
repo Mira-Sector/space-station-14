@@ -206,21 +206,23 @@ public sealed class MimicManager
         _sawmill.Debug($"Saved {log.Count} mimicked phrases for {prototype.Id}");
     }
 
-    public async Task LoadData(EntProtoId prototype, CancellationToken cancel)
+    public async Task<bool> LoadData(EntProtoId prototype, CancellationToken cancel)
     {
         if (_mimicLearnedData.ContainsKey(prototype))
-            return;
+            return true;
 
         var data = new MimicLearnedData();
         _mimicLearnedData.Add(prototype, data);
 
         var phrases = await _db.GetMimicPhraseProbs(prototype, cancel);
-        cancel.ThrowIfCancellationRequested();
+        if (cancel.IsCancellationRequested)
+            return false;
 
         foreach (var phraseProb in phrases)
             data.LearnedPhrases.Add(phraseProb.Phrase, phraseProb.Prob);
 
         data.Initialized = true;
+        return true;
     }
 
     private static void AddProbToPhrase(MimicLearnedData data, string phrase, float? prob)

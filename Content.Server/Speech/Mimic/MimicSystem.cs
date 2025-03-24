@@ -1,6 +1,7 @@
 using Content.Server.Administration.Logs;
 using Content.Server.Chat.Systems;
 using Content.Server.Speech.Components;
+using Content.Server.Radio;
 using Content.Server.Radio.Components;
 using Content.Server.Radio.EntitySystems;
 using Content.Shared.Database;
@@ -32,7 +33,7 @@ public sealed partial class MimicSystem : EntitySystem
     private const double MimicJobTime = 0.02;
 
     private readonly JobQueue _mimicQueue = new();
-    private readonly List<(MimicLoadDataJob Job, CancellationTokenSource CancelToken)> _mimicJobs = new();
+    private readonly Dictionary<EntProtoId, (MimicLoadDataJob Job, CancellationTokenSource CancelToken)> _mimicJobs = new();
 
     private Dictionary<EntProtoId, Dictionary<string, float?>> _toUpdate = new();
     private Dictionary<EntProtoId, Dictionary<string, float>> _cachedPhrases = new();
@@ -49,6 +50,7 @@ public sealed partial class MimicSystem : EntitySystem
         SubscribeLocalEvent<MimicLearnerComponent, ComponentShutdown>(OnLearnerShutdown);
         SubscribeLocalEvent<MimicLearnerComponent, ListenAttemptEvent>(OnLearnerAttemptListen);
         SubscribeLocalEvent<MimicLearnerComponent, ListenEvent>(OnLearnerListen);
+        SubscribeLocalEvent<MimicLearnerComponent, RadioReceivedEvent>(OnLearnerRadio);
 
         SubscribeLocalEvent<MimicSpeakerComponent, ComponentInit>(OnSpeakerInit);
         SubscribeLocalEvent<MimicSpeakerComponent, EntitySpokeEvent>(OnSpeakerSpoke);
@@ -83,21 +85,28 @@ public sealed partial class MimicSystem : EntitySystem
 
         _mimicQueue.Process();
 
-        foreach (var (job, cancelToken) in _mimicJobs.ToArray())
+        foreach (var (prototype, (job, cancelToken)) in _mimicJobs.ToArray())
         {
             if (job.Status == JobStatus.Finished)
             {
-                _mimicJobs.Remove((job, cancelToken));
+                _mimicJobs.Remove(prototype);
 
-                var phrasesToAdd = _mimic.GetPhraseProbs(job.Prototype);
+                if (!job.Result)
+                {
+                    Log.Warning($"Failed to load mimic phrases for {job.Prototype}. Retrying");
+                    LoadMimicData(job.Caller);
+                    continue;
+                }
 
-                if (_cachedPhrases.TryGetValue(job.Prototype, out var phrases))
+                var phrasesToAdd = _mimic.GetPhraseProbs(prototype);
+
+                if (_cachedPhrases.TryGetValue(prototype, out var phrases))
                 {
                     phrases.Union(phrasesToAdd);
                 }
                 else
                 {
-                    _cachedPhrases.Add(job.Prototype, phrasesToAdd);
+                    _cachedPhrases.Add(prototype, phrasesToAdd);
                 }
             }
         }
@@ -183,34 +192,34 @@ public sealed partial class MimicSystem : EntitySystem
         if (MetaData(uid).EntityPrototype is not {} entityPrototype)
             return;
 
-        if (_cachedPhrases.ContainsKey(entityPrototype))
+        if (_cachedPhrases.ContainsKey(entityPrototype) || _mimicJobs.ContainsKey(entityPrototype))
             return;
 
         var cancelToken = new CancellationTokenSource();
         var job = new MimicLoadDataJob(MimicJobTime, entityPrototype, uid, _mimic, cancelToken.Token);
 
-        _mimicJobs.Add((job, cancelToken));
+        _mimicJobs.Add(entityPrototype, (job, cancelToken));
         _mimicQueue.EnqueueJob(job);
     }
 
     private void OnLearnerShutdown(Entity<MimicLearnerComponent> ent, ref ComponentShutdown args)
     {
-        foreach (var (job, cancelToken) in _mimicJobs.ToArray())
+        foreach (var (prototype, (job, cancelToken)) in _mimicJobs.ToArray())
         {
             if (job.Caller == ent.Owner)
             {
                 cancelToken.Cancel();
-                _mimicJobs.Remove((job, cancelToken));
+                _mimicJobs.Remove(prototype);
             }
         }
     }
 
     private void OnRoundRestart(RoundRestartCleanupEvent args)
     {
-        foreach (var (job, cancelToken) in _mimicJobs.ToArray())
+        foreach (var (prototype, (job, cancelToken)) in _mimicJobs.ToArray())
         {
             cancelToken.Cancel();
-            _mimicJobs.Remove((job, cancelToken));
+            _mimicJobs.Remove(prototype);
         }
 
         foreach (var (prototype, phrases) in _toUpdate)
@@ -235,6 +244,22 @@ public sealed partial class MimicSystem : EntitySystem
         if (HasComp<MimicLearnerComponent>(args.Source))
             return;
 
+        LearnMessage(ent, args.Message, args.Source);
+    }
+
+    private void OnLearnerRadio(Entity<MimicLearnerComponent> ent, ref RadioReceivedEvent args)
+    {
+        if (ent.Owner == args.RadioSource || ent.Owner == args.Radio)
+            return;
+
+        if (HasComp<MimicLearnerComponent>(args.MessageSource) || HasComp<MimicLearnerComponent>(args.Radio))
+            return;
+
+        LearnMessage(ent, args.Message, args.MessageSource);
+    }
+
+    private void LearnMessage(Entity<MimicLearnerComponent> ent, string message, EntityUid source)
+    {
         if (MetaData(ent).EntityPrototype is not {} entityPrototype)
             return;
 
@@ -242,19 +267,19 @@ public sealed partial class MimicSystem : EntitySystem
 
         if (_random.Prob(Math.Min(ent.Comp.LongTermLearningChance * probMultiplier, 1f)))
         {
-            UpdateLongTerm(entityPrototype, args.Message, Math.Min(ent.Comp.LongTermPhraseProb * probMultiplier, 1f));
-            SendAdminLog(ref args);
+            UpdateLongTerm(entityPrototype, message, Math.Min(ent.Comp.LongTermPhraseProb * probMultiplier, 1f));
+            SendAdminLog();
         }
 
         if (_random.Prob(Math.Min(ent.Comp.CurrentRoundLearningChance * probMultiplier, 1f)))
         {
-            UpdateCache(entityPrototype, args.Message, Math.Min(ent.Comp.CurrentRoundPhraseProb * probMultiplier, 1f));
-            SendAdminLog(ref args);
+            UpdateCache(entityPrototype, message, Math.Min(ent.Comp.CurrentRoundPhraseProb * probMultiplier, 1f));
+            SendAdminLog();
         }
 
-        void SendAdminLog(ref ListenEvent args)
+        void SendAdminLog()
         {
-            _admin.Add(LogType.MimicLearned, LogImpact.Medium, $"{ToPrettyString(args.Source)} caused {entityPrototype.ID} to learn the phrase: {args.Message}");
+            _admin.Add(LogType.MimicLearned, LogImpact.Medium, $"{ToPrettyString(source)} caused {entityPrototype.ID} to learn the phrase: {message}");
         }
     }
 
