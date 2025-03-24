@@ -244,40 +244,8 @@ public abstract partial class InventorySystem
         if (slotDefinition.DependsOn != null && !TryGetSlotEntity(target, slotDefinition.DependsOn, out _, inventory))
             return false;
 
-        if (TryComp<RequireWhitelistStorageComponent>(itemUid, out var whitelistComp))
-        {
-            bool whitelistPassed = false;
-
-            if (whitelistComp.IgnoreSlots.Contains(slot))
-            {
-                whitelistPassed = true;
-            }
-
-            foreach (var tagSlot in whitelistComp.Slots)
-            {
-                if (whitelistPassed)
-                {
-                    break; //whitelist has passed elsewhere
-                }
-
-                if (!TryGetSlotEntity(target, tagSlot, out EntityUid? slotEntity, inventory))
-                {
-                    continue;
-                }
-
-                if (_whitelistSystem.IsWhitelistPass(whitelistComp.Whitelist, slotEntity.Value))
-                {
-                    whitelistPassed = true;
-                    break; //only need one to pass whitelist
-                }
-
-            }
-
-            if (!whitelistPassed)
-            {
-                return false;
-            }
-        }
+        if (!WhitelistCheck(itemUid, target, slot, inventory))
+            return false;
 
         var fittingInPocket = slotDefinition.SlotFlags.HasFlag(SlotFlags.POCKET) &&
                               item != null &&
@@ -480,6 +448,12 @@ public abstract partial class InventorySystem
                 //this recursive call might be risky
                 TryUnequip(actor, target, slotDef.Name, out _, ref itemsDropped, true, true, predicted, inventory, reparent: reparent);
             }
+
+            if (!TryGetSlotEntity(actor, slotDef.Name, out var slotItem, inventory))
+                continue;
+
+            if (!WhitelistCheck(slotItem.Value, actor, slotDef.Name, inventory))
+                TryUnequip(actor, target, slotDef.Name, out _, ref itemsDropped, true, true, predicted, inventory, reparent: reparent);
         }
 
         // we check if any items were dropped, and make a popup if they were.
@@ -572,5 +546,25 @@ public abstract partial class InventorySystem
 
         entityUid = container.ContainedEntity;
         return entityUid != null;
+    }
+
+    private bool WhitelistCheck(EntityUid itemUid, EntityUid target, string slot, InventoryComponent inventory)
+    {
+        if (!TryComp<RequireWhitelistStorageComponent>(itemUid, out var whitelistComp))
+            return true;
+
+        if (whitelistComp.IgnoreSlots.Contains(slot))
+            return true;
+
+        foreach (var tagSlot in whitelistComp.Slots)
+        {
+            if (!TryGetSlotEntity(target, tagSlot, out var slotEntity, inventory))
+                continue;
+
+            if (_whitelistSystem.IsWhitelistPass(whitelistComp.Whitelist, slotEntity.Value))
+                return true; //only need one to pass whitelist
+        }
+
+        return false;
     }
 }
