@@ -105,6 +105,18 @@
         mouth: ""
 
 - type: entity
+  parent: BaseMobCarp
+  id: MobCarpNoColors
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: alive
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: mouth
+      shader: unshaded
+
+- type: entity
   name: magicarp
   parent: BaseMobCarp
   id: MobCarpMagic
@@ -162,7 +174,7 @@
   id: MobCarpDragon
   description: Just run. Why would you even face this thing.
   suffix: ClownBrood
-  parent: MobCarp
+  parent: MobCarpNoColors
   components:
     - type: Sprite
       drawdepth: Mobs
