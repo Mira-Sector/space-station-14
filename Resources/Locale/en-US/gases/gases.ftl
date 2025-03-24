@@ -8,3 +8,4 @@ gases-ammonia = Ammonia
 gases-n2o = Nitrous Oxide
 gases-frezon = Frezon
 gases-pluoxium = Pluoxium
+gases-nitrium = Nitrium

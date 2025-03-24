@@ -104,8 +104,17 @@
 - type: gas
   id: 9
   name: gases-pluoxium
-  specificHeat: 30
+  specificHeat: 80
   heatCapacityRatio: 1.4
   color: 164A80
   reagent: Pluoxium
-  pricePerMole: 2.5
+  pricePerMole: 1.5
+
+- type: gas
+  id: 10
+  name: gases-nitrium
+  specificHeat: 10
+  heatCapacityRatio: 1.5
+  color: 4D271B
+  reagent: Nitrium
+  pricePerMole: 4

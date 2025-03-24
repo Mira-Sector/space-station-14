@@ -7,5 +7,6 @@ gas-oxygen-abbreviation = O₂
 gas-plasma-abbreviation = P
 gas-tritium-abbreviation = T
 gas-water-vapor-abbreviation = H₂O
-gas-pluoxium-abbreviation = O₂T
+gas-pluoxium-abbreviation = TO₂
+gas-nitrium-abbreviation = TN₂O₃
 gas-unknown-abbreviation = X

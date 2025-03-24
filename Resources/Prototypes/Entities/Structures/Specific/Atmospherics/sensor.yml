@@ -26,6 +26,7 @@
         NitrousOxide: stationNO
         Frezon: danger
         Pluoxium: ignore
+        Nitrium: stationNitrium
     - type: Tag
       tags:
         - AirSensor

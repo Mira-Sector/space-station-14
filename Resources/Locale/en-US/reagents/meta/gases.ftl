@@ -21,3 +21,6 @@ reagent-desc-frezon = A highly effective coolant.. and hallucinogenic.
 
 reagent-name-pluoxium = Pluoxium
 reagent-desc-pluoxium = Highly effective oxygen replacement. Non flammable!
+
+reagent-name-nitrium = Nitrium
+reagent-desc-nitrium = Better than steroids.

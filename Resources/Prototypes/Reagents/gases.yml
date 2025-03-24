@@ -366,7 +366,7 @@
 - type: reagent
   id: Pluoxium
   name: reagent-name-pluoxium
-  desc: reagent-desc- pluoxium
+  desc: reagent-desc-pluoxium
   physicalDesc: reagent-physical-desc-gaseous
   flavor: bitter
   color: "#164a80"
@@ -423,3 +423,43 @@
             type: Vox
         clear: true
         time: 1
+
+- type: reagent
+  id: Nitrium
+  name: reagent-name-nitrium
+  desc: reagent-desc-nitrium
+  physicalDesc: reagent-physical-desc-gaseous
+  flavor: bitter
+  color: "#4d271b"
+  boilingPoint: -162.4
+  meltingPoint: -195.6
+  metabolisms:
+    Gas:
+      effects:
+      - !type:GenericStatusEffect
+        key: Stun
+        time: 0.75
+        type: Remove
+      - !type:GenericStatusEffect
+        key: KnockedDown
+        time: 0.75
+        type: Remove
+      - !type:GenericStatusEffect
+        key: Adrenaline
+        component: IgnoreSlowOnDamage
+        time: 5
+      - !type:MovespeedModifier
+        conditions:
+        - !type:ReagentThreshold
+          reagent: Nitrium
+          min: 15
+        walkSpeedModifier: 1.75
+        sprintSpeedModifier: 1.75
+      - !type:GenericStatusEffect
+        conditions:
+        - !type:ReagentThreshold
+          reagent: Nitrium
+          min: 15
+        key: ForcedSleep
+        time: 1
+        type: Remove
