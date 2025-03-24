@@ -83,7 +83,7 @@
   priority: 4
   minimumTemperature: 50
   maximumTemperature: 273
-  rateMultiplier: 15
+  rateMultiplier: 25
   reactants:
     Oxygen: 5
     CarbonDioxide: 3
@@ -91,6 +91,19 @@
   products:
     Pluoxium: 6
   enthalpy: 156000
+
+- type: gasReaction
+  id: NitriumProduction
+  priority: 5
+  minimumTemperature: 1500
+  rateMultiplier: 25
+  reactants:
+    Tritium: 2
+    Nitrogen: 1
+    NitrousOxide: 1
+  products:
+    Nitrium: 3
+  enthalpy: -26000
 
 - type: gasReaction
   id: NitriumDecomposition

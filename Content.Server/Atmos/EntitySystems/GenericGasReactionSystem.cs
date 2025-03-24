@@ -49,7 +49,7 @@ public sealed class GenericGasReactionSystem : EntitySystem
         if (reaction.Reactants.Count == 0)
             return ReactionResult.NoReaction;
 
-        if (mix.Temperature < reaction.MaximumTemperatureRequirement)
+        if (mix.Temperature > reaction.MaximumTemperatureRequirement)
             return ReactionResult.NoReaction;
 
         // Add concentration-dependent reaction rate
