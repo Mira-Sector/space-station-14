@@ -35,7 +35,7 @@ public sealed class GenericGasReactionSystem : EntitySystem
         if (temp < Atmospherics.TCMB)
             return 0;
 
-        return A*MathF.Exp(-Ea/(Atmospherics.R*temp));
+        return reaction.RateMultiplier*A*MathF.Exp(-Ea/(Atmospherics.R*temp));
     }
 
     public ReactionResult React(GasReactionPrototype reaction, GasMixture mix, IGasMixtureHolder? holder)
@@ -47,6 +47,9 @@ public sealed class GenericGasReactionSystem : EntitySystem
 
         // Check if this is a generic YAML reaction (has reactants)
         if (reaction.Reactants.Count == 0)
+            return ReactionResult.NoReaction;
+
+        if (mix.Temperature < reaction.MaximumTemperatureRequirement)
             return ReactionResult.NoReaction;
 
         // Add concentration-dependent reaction rate
