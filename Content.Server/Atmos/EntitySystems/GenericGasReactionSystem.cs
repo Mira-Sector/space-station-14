@@ -38,78 +38,76 @@ public sealed class GenericGasReactionSystem : EntitySystem
         return A*MathF.Exp(-Ea/(Atmospherics.R*temp));
     }
 
-    /// <summary>
-    ///     Run all of the reactions given on the given gas mixture located in the given container.
-    /// </summary>
-    public ReactionResult ReactAll(IEnumerable<GasReactionPrototype> reactions, GasMixture mix, IGasMixtureHolder? holder)
+    public ReactionResult React(GasReactionPrototype reaction, GasMixture mix, IGasMixtureHolder? holder)
     {
-        float nTotal = mix.TotalMoles;
+        var nTotal = mix.TotalMoles;
         // Guard against very small amounts of gas in mixture
         if (nTotal < Atmospherics.GasMinMoles)
             return ReactionResult.NoReaction;
 
-        foreach (var reaction in reactions)
+        // Check if this is a generic YAML reaction (has reactants)
+        if (reaction.Reactants.Count == 0)
+            return ReactionResult.NoReaction;
+
+        // Add concentration-dependent reaction rate
+        // For 1A + 2B -> 3C, the concentration-dependence is [A]^1 * [B]^2
+        float rate = 1f; // rate of this reaction
+        foreach (var (reactant, num) in reaction.Reactants)
         {
-            // Check if this is a generic YAML reaction (has reactants)
-            if (reaction.Reactants.Count == 0)
-                continue;
+            float concentration = mix.GetMoles(reactant)/nTotal;
+            rate *= MathF.Pow(concentration, num);
+        }
 
-            // Add concentration-dependent reaction rate
-            // For 1A + 2B -> 3C, the concentration-dependence is [A]^1 * [B]^2
-            float rate = 1f; // rate of this reaction
-            foreach (var (reactant, num) in reaction.Reactants)
+        // Sum catalysts
+        float catalystEnergy = 0;
+        foreach (var (catalyst, dE) in reaction.Catalysts)
+        {
+            float concentration = mix.GetMoles(catalyst)/nTotal;
+            catalystEnergy += dE * concentration;
+        }
+
+        // Now apply temperature-dependent reaction rate scaling
+        rate *= ReactionRate(reaction, mix, catalystEnergy);
+
+        // Nothing to do
+        if (rate <= 0)
+            return ReactionResult.NoReaction;
+
+        // Go through and remove all the reactants
+        // If any of the reactants were zero, then the code above would have already set
+        // rate to zero, so we don't have to check that again here.
+        foreach (var (reactant, num) in reaction.Reactants)
+        {
+            mix.AdjustMoles(reactant, -num*rate);
+        }
+
+        // Go through and add products
+        foreach (var (product, num) in reaction.Products)
+        {
+            mix.AdjustMoles(product, num*rate);
+        }
+
+        // Add heat from the reaction
+        if (reaction.Enthalpy != 0)
+        {
+            _atmosphere.AddHeat(mix, reaction.Enthalpy/_atmosphere.HeatScale * rate);
+            if (reaction.Enthalpy > 0)
             {
-                float concentration = mix.GetMoles(reactant)/nTotal;
-                rate *= MathF.Pow(concentration, num);
-            }
-
-            // Sum catalysts
-            float catalystEnergy = 0;
-            foreach (var (catalyst, dE) in reaction.Catalysts)
-            {
-                float concentration = mix.GetMoles(catalyst)/nTotal;
-                catalystEnergy += dE * concentration;
-            }
-
-            // Now apply temperature-dependent reaction rate scaling
-            rate *= ReactionRate(reaction, mix, catalystEnergy);
-
-            // Nothing to do
-            if (rate <= 0)
-                continue;
-
-            // Go through and remove all the reactants
-            // If any of the reactants were zero, then the code above would have already set
-            // rate to zero, so we don't have to check that again here.
-            foreach (var (reactant, num) in reaction.Reactants)
-            {
-                mix.AdjustMoles(reactant, -num*rate);
-            }
-
-            // Go through and add products
-            foreach (var (product, num) in reaction.Products)
-            {
-                mix.AdjustMoles(product, num*rate);
-            }
-
-            // Add heat from the reaction
-            if (reaction.Enthalpy != 0)
-            {
-                _atmosphere.AddHeat(mix, reaction.Enthalpy/_atmosphere.HeatScale * rate);
-                if (reaction.Enthalpy > 0)
+                mix.ReactionResults[GasReaction.Fire] += rate;
+                var location = holder as TileAtmosphere;
+                if (location != null)
                 {
-                    mix.ReactionResults[GasReaction.Fire] += rate;
-                    var location = holder as TileAtmosphere;
-                    if (location != null)
+                    if (mix.Temperature > Atmospherics.FireMinimumTemperatureToExist)
                     {
-                        if (mix.Temperature > Atmospherics.FireMinimumTemperatureToExist)
-                        {
-                            _atmosphere.HotspotExpose(location.GridIndex, location.GridIndices, mix.Temperature, mix.Volume);
-                        }
+                        _atmosphere.HotspotExpose(location.GridIndex, location.GridIndices, mix.Temperature, mix.Volume);
                     }
                 }
             }
         }
+
+        if (reaction.CancelReactions)
+            return ReactionResult.StopReactions;
+
         return ReactionResult.Reacting;
     }
 }

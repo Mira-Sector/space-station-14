@@ -1,4 +1,4 @@
-﻿using Content.Server.Atmos.EntitySystems;
+using Content.Server.Atmos.EntitySystems;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Reactions;
 using Robust.Shared.Prototypes;
@@ -68,6 +68,9 @@ namespace Content.Server.Atmos.Reactions
         /// </summary>
         [DataField("catalysts")]
         public Dictionary<Gas, int> Catalysts = new();
+
+        [DataField]
+        public bool CancelReactions;
 
         /// <summary>
         /// Process all reaction effects.

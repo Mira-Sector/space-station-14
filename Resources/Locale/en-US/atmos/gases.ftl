@@ -9,4 +9,5 @@ gas-tritium-abbreviation = T
 gas-water-vapor-abbreviation = H₂O
 gas-pluoxium-abbreviation = TO₂
 gas-nitrium-abbreviation = TN₂O₃
+gas-noblium-abbreviation = TN
 gas-unknown-abbreviation = X

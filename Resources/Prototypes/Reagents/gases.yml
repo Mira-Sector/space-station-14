@@ -463,3 +463,13 @@
         key: ForcedSleep
         time: 1
         type: Remove
+
+- type: reagent
+  id: Noblium
+  name: reagent-name-noblium
+  desc: reagent-desc-noblium
+  physicalDesc: reagent-physical-desc-gaseous
+  flavor: bitter
+  color: "#4d271b"
+  boilingPoint: -252.8
+  meltingPoint: -265.2

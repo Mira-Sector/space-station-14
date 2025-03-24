@@ -78,6 +78,27 @@
     Nitrogen: 2
     Oxygen: 1
 
+- type: gasReaction
+  id: NobliumCancel
+  priority: 9
+  minimumTemperature: 20
+  reactants:
+    Noblium: 0
+  minimumRequirements:
+  - 0 # oxygen
+  - 0 # nitrogen
+  - 0 # CO2
+  - 0 # Plasma
+  - 0 # Tritium
+  - 0 # Water vapor
+  - 0 # Ammonia
+  - 0 # N2O
+  - 0 # Frezon
+  - 0 # Pluoxium
+  - 0 # Nitrium
+  - 5 # Noblium
+  cancelReactions: true
+
 #- type: gasReaction
 #  id: WaterVaporPuddle
 #  priority: 1

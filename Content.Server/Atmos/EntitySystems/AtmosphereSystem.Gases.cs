@@ -325,19 +325,89 @@ namespace Content.Server.Atmos.EntitySystems
         /// </summary>
         public ReactionResult React(GasMixture mixture, IGasMixtureHolder? holder)
         {
-            // First pass: run through the legacy (hard-coded) gas reactions
+            Dictionary<int, HashSet<GasReactionPrototype>> reactions = new();
+            Dictionary<int, HashSet<GasReactionPrototype>> cancellableReactions = new();
+            HashSet<int> priorities = new();
+
+            foreach (var prototype in GasReactions)
+            {
+                if (prototype.CancelReactions)
+                {
+                    if (cancellableReactions.TryGetValue(prototype.Priority, out var priorityReactions))
+                    {
+                        priorityReactions.Add(prototype);
+                    }
+                    else
+                    {
+                        priorityReactions = new();
+                        priorityReactions.Add(prototype);
+                        cancellableReactions.Add(prototype.Priority, priorityReactions);
+                    }
+                }
+                else
+                {
+                    if (reactions.TryGetValue(prototype.Priority, out var priorityReactions))
+                    {
+                        priorityReactions.Add(prototype);
+                    }
+                    else
+                    {
+                        priorityReactions = new();
+                        priorityReactions.Add(prototype);
+                        reactions.Add(prototype.Priority, priorityReactions);
+                    }
+                }
+
+                priorities.Add(prototype.Priority);
+            }
+
             var reaction = ReactionResult.NoReaction;
             var temperature = mixture.Temperature;
             var energy = GetThermalEnergy(mixture);
 
-            foreach (var prototype in GasReactions)
+            foreach (var priority in priorities.OrderDescending())
+            {
+                if (cancellableReactions.ContainsKey(priority))
+                {
+                    var cancelled = false;
+                    foreach (var prototype in cancellableReactions[priority])
+                    {
+                        OldReaction(prototype);
+                        reaction |= _reaction.React(prototype, mixture, holder);
+
+                        if(!reaction.HasFlag(ReactionResult.StopReactions))
+                            continue;
+
+                        cancelled = true;
+                        break;
+                    }
+
+                    if (cancelled)
+                        break;
+                }
+
+                if (reactions.ContainsKey(priority))
+                {
+                    foreach (var prototype in reactions[priority])
+                    {
+                        OldReaction(prototype);
+                        reaction |= _reaction.React(prototype, mixture, holder);
+
+                        if(reaction.HasFlag(ReactionResult.StopReactions))
+                            break;
+                    }
+                }
+            }
+
+            return reaction;
+
+            void OldReaction(GasReactionPrototype prototype)
             {
                 if (energy < prototype.MinimumEnergyRequirement ||
                     temperature < prototype.MinimumTemperatureRequirement ||
                     temperature > prototype.MaximumTemperatureRequirement)
-                    continue;
+                    return;
 
-                var doReaction = true;
                 for (var i = 0; i < prototype.MinimumRequirements.Length; i++)
                 {
                     if(i >= Atmospherics.TotalNumberOfGases)
@@ -345,23 +415,12 @@ namespace Content.Server.Atmos.EntitySystems
 
                     var req = prototype.MinimumRequirements[i];
 
-                    if (!(mixture.GetMoles(i) < req))
-                        continue;
-
-                    doReaction = false;
-                    break;
+                    if ((mixture.GetMoles(i) < req))
+                        return;
                 }
 
-                if (!doReaction)
-                    continue;
-
                 reaction = prototype.React(mixture, holder, this, HeatScale);
-                if(reaction.HasFlag(ReactionResult.StopReactions))
-                    break;
             }
-
-            // Second pass: Regardless of result, run YAML gas reactions
-            return _reaction.ReactAll(GasReactions, mixture, holder);
         }
 
         public enum GasCompareResult

@@ -161,6 +161,7 @@ namespace Content.Shared.Atmos
             [Gas.WaterVapor] = Loc.GetString("gas-water-vapor-abbreviation"),
             [Gas.Pluoxium] = Loc.GetString("gas-pluoxium-abbreviation"),
             [Gas.Nitrium] = Loc.GetString("gas-nitrium-abbreviation"),
+            [Gas.Noblium] = Loc.GetString("gas-noblium-abbreviation"),
         };
 
         #region Excited Groups
@@ -190,7 +191,7 @@ namespace Content.Shared.Atmos
         /// <summary>
         ///     Total number of gases. Increase this if you want to add more!
         /// </summary>
-        public const int TotalNumberOfGases = 11;
+        public const int TotalNumberOfGases = 12;
 
         /// <summary>
         ///     This is the actual length of the gases arrays in mixtures.
@@ -345,6 +346,7 @@ namespace Content.Shared.Atmos
         NitrousOxide = 7,
         Frezon = 8,
         Pluoxium = 9,
-        Nitrium = 10
+        Nitrium = 10,
+        Noblium = 11
     }
 }

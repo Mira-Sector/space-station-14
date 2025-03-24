@@ -24,3 +24,6 @@ reagent-desc-pluoxium = Highly effective oxygen replacement. Non flammable!
 
 reagent-name-nitrium = Nitrium
 reagent-desc-nitrium = Better than steroids.
+
+reagent-name-noblium = Noblium
+reagent-desc-noblium = Most boring gas in space.

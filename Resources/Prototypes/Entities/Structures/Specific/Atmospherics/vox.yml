@@ -17,6 +17,7 @@
       Frezon: danger
       Pluoxium: voxOxygen
       Nitrium: stationNitrium
+      Noblium: danger
 
 - type: entity
   parent: [AirSensorVoxBase, AirSensor]
@@ -43,6 +44,7 @@
     - Frezon
     - Pluoxium
     - Nitrium
+    - Noblium
 
 # use this to prevent overriding filters with hardcoded defaults
 - type: entity

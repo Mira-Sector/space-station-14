@@ -27,6 +27,7 @@
         Frezon: danger
         Pluoxium: ignore
         Nitrium: stationNitrium
+        Noblium: ignore
     - type: Tag
       tags:
         - AirSensor
