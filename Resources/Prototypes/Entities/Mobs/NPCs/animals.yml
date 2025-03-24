@@ -1778,10 +1778,10 @@
     - type: GuidebookControlsTest
 
 - type: entity
-  name: mouse
+  name: Мышь
   parent: SimpleMobBase
   id: MobMouse
-  description: Squeak!
+  description: Писк!
   components:
   - type: Body
     prototype: Mouse
@@ -1908,8 +1908,7 @@
     spawned:
     - id: FoodMeatRat
       amount: 1
-  - type: ReplacementAccent
-    accent: mouse
+  - type: RussianAccent
   - type: Tag
     tags:
     - Trash
