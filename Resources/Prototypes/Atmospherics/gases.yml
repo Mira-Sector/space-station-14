@@ -1,4 +1,4 @@
-﻿- type: gas
+- type: gas
   id: 0
   name: gases-oxygen
   specificHeat: 20
@@ -100,3 +100,12 @@
   color: 3a758c
   reagent: Frezon
   pricePerMole: 3
+
+- type: gas
+  id: 9
+  name: gases-pluoxium
+  specificHeat: 30
+  heatCapacityRatio: 1.4
+  color: 164A80
+  reagent: Pluoxium
+  pricePerMole: 2.5
