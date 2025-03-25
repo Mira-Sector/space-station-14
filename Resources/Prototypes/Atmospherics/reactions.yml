@@ -139,6 +139,18 @@
   cancelReactions: true
 
 - type: gasReaction
+  id: HalonProduction
+  priority: 6
+  minimumTemperature: 50
+  reactants:
+    NitrousOxide: 1
+    CarbonDioxide: 1
+  products:
+    Halon: 1
+    Oxygen: 1
+  enthalpy: 16600
+
+- type: gasReaction
   id: HalonDecomposition
   priority: 7
   minimumTemperature: 343.15
