@@ -34529,6 +34529,11 @@ entities:
       parent: 4812
 - proto: ComputerAlert
   entities:
+  - uid: 2655
+    components:
+    - type: Transform
+      pos: 2.5,34.5
+      parent: 4812
   - uid: 4560
     components:
     - type: Transform
@@ -34830,11 +34835,6 @@ entities:
       parent: 4812
 - proto: ComputerSolarControl
   entities:
-  - uid: 2655
-    components:
-    - type: Transform
-      pos: 2.5,34.5
-      parent: 4812
   - uid: 10322
     components:
     - type: Transform
