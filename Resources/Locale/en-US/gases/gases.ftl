@@ -10,3 +10,4 @@ gases-frezon = Frezon
 gases-pluoxium = Pluoxium
 gases-nitrium = Nitrium
 gases-noblium = Noblium
+gases-halon = Halon

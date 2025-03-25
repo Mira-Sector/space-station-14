@@ -83,26 +83,24 @@
   priority: 4
   minimumTemperature: 50
   maximumTemperature: 273
-  rateMultiplier: 25
   reactants:
-    Oxygen: 5
-    CarbonDioxide: 3
+    Oxygen: 100
+    CarbonDioxide: 50
     Tritium: 1
   products:
-    Pluoxium: 6
-  enthalpy: 156000
+    Pluoxium: 130
+  enthalpy: 15600
 
 - type: gasReaction
   id: NitriumProduction
   priority: 5
   minimumTemperature: 1500
-  rateMultiplier: 25
   reactants:
-    Tritium: 2
-    Nitrogen: 1
-    NitrousOxide: 1
+    Tritium: 20
+    Nitrogen: 10
+    NitrousOxide: 5
   products:
-    Nitrium: 3
+    Nitrium: 30
   enthalpy: -26000
 
 - type: gasReaction
@@ -110,12 +108,13 @@
   priority: 1
   maximumTemperature: 343.15
   reactants:
-    Nitrium: 1
+    Nitrium: 3
+  catalysts:
     Oxygen: 1
   products:
-    Nitrogen: 3
+    Nitrogen: 1
     Tritium: 1
-    Oxygen: 2
+    Oxygen: 1
   enthalpy: 1100
 
 - type: gasReaction
@@ -126,7 +125,7 @@
     Nitrogen: 1
     Tritium: 1
   products:
-    Noblium: 1
+    Noblium: 2
   enthalpy: 276000
 
 - type: gasReaction
@@ -138,6 +137,17 @@
   products:
     Noblium: 1
   cancelReactions: true
+
+- type: gasReaction
+  id: HalonDecomposition
+  priority: 7
+  minimumTemperature: 343.15
+  reactants:
+    Halon: 1
+    Oxygen: 20
+  products:
+    Pluoxium: 20
+  enthalpy: -2310000
 
 #- type: gasReaction
 #  id: WaterVaporPuddle

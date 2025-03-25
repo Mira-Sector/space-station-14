@@ -27,3 +27,6 @@ reagent-desc-nitrium = Better than steroids.
 
 reagent-name-noblium = Noblium
 reagent-desc-noblium = Most boring gas in space.
+
+reagent-name-halon = Halon
+reagent-desc-halon = The chemists fire extinguisher. Trusted since 1994.

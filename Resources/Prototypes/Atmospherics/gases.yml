@@ -106,7 +106,7 @@
   name: gases-pluoxium
   specificHeat: 80
   heatCapacityRatio: 1.4
-  molarMass: 8
+  molarMass: 2
   color: 164A80
   reagent: Pluoxium
   pricePerMole: 1.5
@@ -135,3 +135,15 @@
   color: 00FFD0
   reagent: Noblium
   pricePerMole: 1.75
+
+- type: gas
+  id: 12
+  name: gases-halon
+  specificHeat: 175
+  heatCapacityRatio: 1.5
+  molarMass: 128
+  gasOverlaySprite: /Textures/Effects/atmospherics.rsi
+  gasOverlayState: halon
+  color: 99CCFF
+  reagent: Halon
+  pricePerMole: 2.5

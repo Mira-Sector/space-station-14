@@ -17,7 +17,6 @@
       Frezon: danger
       Pluoxium: voxOxygen
       Nitrium: stationNitrium
-      Noblium: danger
 
 - type: entity
   parent: [AirSensorVoxBase, AirSensor]

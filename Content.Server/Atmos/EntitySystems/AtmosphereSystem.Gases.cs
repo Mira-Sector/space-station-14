@@ -20,7 +20,7 @@ namespace Content.Server.Atmos.EntitySystems
 
         public Dictionary<int, HashSet<GasReactionPrototype>> NonCancellableGasReactions = new();
         public Dictionary<int, HashSet<GasReactionPrototype>> CancellableGasReactions = new();
-        public List<int> Priorities = new();
+        public SortedSet<int> Priorities = new();
 
         /// <summary>
         ///     Cached array of gas specific heats.
@@ -65,8 +65,6 @@ namespace Content.Server.Atmos.EntitySystems
 
                 Priorities.Add(prototype.Priority);
             }
-
-            Priorities.Sort((a, b) => b.CompareTo(a));
 
             Array.Resize(ref _gasSpecificHeats, MathHelper.NextMultipleOf(Atmospherics.TotalNumberOfGases, 4));
 
@@ -364,7 +362,7 @@ namespace Content.Server.Atmos.EntitySystems
             var temperature = mixture.Temperature;
             var energy = GetThermalEnergy(mixture);
 
-            foreach (var priority in Priorities)
+            foreach (var priority in Priorities.OrderDescending())
             {
                 if (CancellableGasReactions.ContainsKey(priority))
                 {
@@ -372,7 +370,6 @@ namespace Content.Server.Atmos.EntitySystems
                     foreach (var prototype in CancellableGasReactions[priority])
                     {
                         OldReaction(prototype);
-                        reaction |= _reaction.React(prototype, mixture, holder);
 
                         if(!reaction.HasFlag(ReactionResult.StopReactions))
                             continue;

@@ -54,18 +54,18 @@ public sealed class GenericGasReactionSystem : EntitySystem
 
         // Add concentration-dependent reaction rate
         // For 1A + 2B -> 3C, the concentration-dependence is [A]^1 * [B]^2
-        float rate = 1f; // rate of this reaction
+        var rate = 1f; // rate of this reaction
         foreach (var (reactant, num) in reaction.Reactants)
         {
-            float concentration = mix.GetMoles(reactant)/nTotal;
+            var concentration = mix.GetMoles(reactant)/nTotal;
             rate *= MathF.Pow(concentration, num);
         }
 
         // Sum catalysts
-        float catalystEnergy = 0;
+        var catalystEnergy = 0f;
         foreach (var (catalyst, dE) in reaction.Catalysts)
         {
-            float concentration = mix.GetMoles(catalyst)/nTotal;
+            var concentration = mix.GetMoles(catalyst)/nTotal;
             catalystEnergy += dE * concentration;
         }
 
