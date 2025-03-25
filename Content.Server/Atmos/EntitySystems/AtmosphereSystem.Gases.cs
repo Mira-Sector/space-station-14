@@ -16,10 +16,11 @@ namespace Content.Server.Atmos.EntitySystems
         private GasReactionPrototype[] _gasReactions = Array.Empty<GasReactionPrototype>();
         private float[] _gasSpecificHeats = new float[Atmospherics.TotalNumberOfGases];
 
-        /// <summary>
-        ///     List of gas reactions ordered by priority.
-        /// </summary>
         public IEnumerable<GasReactionPrototype> GasReactions => _gasReactions;
+
+        public Dictionary<int, HashSet<GasReactionPrototype>> NonCancellableGasReactions = new();
+        public Dictionary<int, HashSet<GasReactionPrototype>> CancellableGasReactions = new();
+        public List<int> Priorities = new();
 
         /// <summary>
         ///     Cached array of gas specific heats.
@@ -32,6 +33,40 @@ namespace Content.Server.Atmos.EntitySystems
         {
             _gasReactions = _protoMan.EnumeratePrototypes<GasReactionPrototype>().ToArray();
             Array.Sort(_gasReactions, (a, b) => b.Priority.CompareTo(a.Priority));
+
+            foreach (var prototype in GasReactions)
+            {
+                if (prototype.CancelReactions)
+                {
+                    if (CancellableGasReactions.TryGetValue(prototype.Priority, out var priorityReactions))
+                    {
+                        priorityReactions.Add(prototype);
+                    }
+                    else
+                    {
+                        priorityReactions = new();
+                        priorityReactions.Add(prototype);
+                        CancellableGasReactions.Add(prototype.Priority, priorityReactions);
+                    }
+                }
+                else
+                {
+                    if (NonCancellableGasReactions.TryGetValue(prototype.Priority, out var priorityReactions))
+                    {
+                        priorityReactions.Add(prototype);
+                    }
+                    else
+                    {
+                        priorityReactions = new();
+                        priorityReactions.Add(prototype);
+                        NonCancellableGasReactions.Add(prototype.Priority, priorityReactions);
+                    }
+                }
+
+                Priorities.Add(prototype.Priority);
+            }
+
+            Priorities.Sort((a, b) => b.CompareTo(a));
 
             Array.Resize(ref _gasSpecificHeats, MathHelper.NextMultipleOf(Atmospherics.TotalNumberOfGases, 4));
 
@@ -325,52 +360,16 @@ namespace Content.Server.Atmos.EntitySystems
         /// </summary>
         public ReactionResult React(GasMixture mixture, IGasMixtureHolder? holder)
         {
-            Dictionary<int, HashSet<GasReactionPrototype>> reactions = new();
-            Dictionary<int, HashSet<GasReactionPrototype>> cancellableReactions = new();
-            HashSet<int> priorities = new();
-
-            foreach (var prototype in GasReactions)
-            {
-                if (prototype.CancelReactions)
-                {
-                    if (cancellableReactions.TryGetValue(prototype.Priority, out var priorityReactions))
-                    {
-                        priorityReactions.Add(prototype);
-                    }
-                    else
-                    {
-                        priorityReactions = new();
-                        priorityReactions.Add(prototype);
-                        cancellableReactions.Add(prototype.Priority, priorityReactions);
-                    }
-                }
-                else
-                {
-                    if (reactions.TryGetValue(prototype.Priority, out var priorityReactions))
-                    {
-                        priorityReactions.Add(prototype);
-                    }
-                    else
-                    {
-                        priorityReactions = new();
-                        priorityReactions.Add(prototype);
-                        reactions.Add(prototype.Priority, priorityReactions);
-                    }
-                }
-
-                priorities.Add(prototype.Priority);
-            }
-
             var reaction = ReactionResult.NoReaction;
             var temperature = mixture.Temperature;
             var energy = GetThermalEnergy(mixture);
 
-            foreach (var priority in priorities.OrderDescending())
+            foreach (var priority in Priorities)
             {
-                if (cancellableReactions.ContainsKey(priority))
+                if (CancellableGasReactions.ContainsKey(priority))
                 {
                     var cancelled = false;
-                    foreach (var prototype in cancellableReactions[priority])
+                    foreach (var prototype in CancellableGasReactions[priority])
                     {
                         OldReaction(prototype);
                         reaction |= _reaction.React(prototype, mixture, holder);
@@ -386,9 +385,9 @@ namespace Content.Server.Atmos.EntitySystems
                         break;
                 }
 
-                if (reactions.ContainsKey(priority))
+                if (NonCancellableGasReactions.ContainsKey(priority))
                 {
-                    foreach (var prototype in reactions[priority])
+                    foreach (var prototype in NonCancellableGasReactions[priority])
                     {
                         OldReaction(prototype);
                         reaction |= _reaction.React(prototype, mixture, holder);

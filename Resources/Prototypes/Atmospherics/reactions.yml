@@ -122,7 +122,6 @@
   id: NobliumProduction
   priority: 9
   maximumTemperature: 50
-  rateMultiplier: 10
   reactants:
     Nitrogen: 1
     Tritium: 1
