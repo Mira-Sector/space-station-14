@@ -25,7 +25,7 @@
 
 - type: gasReaction
   id: FrezonCoolant
-  priority: 1
+  priority: 8
   minimumTemperature: 23.15
   minimumRequirements:
   - 0     # oxygen
@@ -119,8 +119,20 @@
   enthalpy: 1100
 
 - type: gasReaction
-  id: NobliumCancel
+  id: NobliumProduction
   priority: 9
+  maximumTemperature: 50
+  rateMultiplier: 10
+  reactants:
+    Nitrogen: 1
+    Tritium: 1
+  products:
+    Noblium: 1
+  enthalpy: 276000
+
+- type: gasReaction
+  id: NobliumCancel
+  priority: 8
   minimumTemperature: 20
   reactants:
     Noblium: 1
