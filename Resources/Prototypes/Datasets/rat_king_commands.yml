@@ -1,27 +1,27 @@
 ﻿- type: dataset
   id: RatKingCommandStay
   values:
-    - "Sit!"
-    - "Stay!"
-    - "Stop!"
+    - "Cheese, sit!"
+    - "Cheese, stay still and say cheese!"
+    - "Gahh,cheese, stop moving!"
 
 - type: dataset
   id: RatKingCommandFollow
   values:
-    - "Heel!"
-    - "Follow!"
+    - "Cheese,follow!"
+    - "Cheese... COULD YOU FOLLOW ME AND DO AS I SAY FOR A SECOND?!"
 
 - type: dataset
   id: RatKingCommandCheeseEm
   values:
-    - "Attack!"
-    - "Sic!"
-    - "Kill!"
+    - "Cheese!"
+    - "Cheese!!"
+    - "Cheese!!!"
     - "Cheese 'Em!"
     - "FUCKING KILL 'EM!!!!!!!"
 
 - type: dataset
   id: RatKingCommandLoose
   values:
-    - "Free!"
-    - "Loose!"
+    - "Cheese, go free!"
+    - "CHEESEEEE, LEAVE MY SIGHT!!"
