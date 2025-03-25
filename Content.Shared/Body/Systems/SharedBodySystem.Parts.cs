@@ -173,6 +173,9 @@ public partial class SharedBodySystem
 
             foreach (var contained in container.ContainedEntities)
             {
+                if (MetaData(contained).EntityLifeStage >= EntityLifeStage.Terminating)
+                    continue;
+
                 if (!TryComp<BodyPartComponent>(contained, out var containedPart))
                     continue;
 
