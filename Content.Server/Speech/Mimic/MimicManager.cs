@@ -143,6 +143,7 @@ public sealed class MimicManager
         FlushAllPrototypes();
 
         TrackPending(DoSaveAsync());
+        _lastSave = _timing.RealTime;
     }
 
     public async void SavePrototype(EntProtoId prototype)
