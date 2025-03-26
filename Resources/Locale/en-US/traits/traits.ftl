@@ -68,3 +68,6 @@ trait-bilingual-desc = You learned a random language. Maybe those mothic classes
 
 trait-glowing-name = Glowing
 trait-glowing-desc = You glow in the dark.
+
+trait-uwu-name = OwO accent
+trait-uwu-desc = Your accent makes it clear you are a degenerate. Mrrreow~

@@ -1,7 +1,7 @@
 {
 	"version": 1,
 	"license": "CC-BY-SA-3.0",
-	"copyright": "Doctor-Cpu",
+	"copyright": "Doctor-Cpu, owo.png by SillyAmy",
 	"size": {
 		"x": 32,
 		"y": 32
@@ -42,6 +42,9 @@
         },
 		{
 			"name": "pirate"
-		}
+		},
+        {
+            "name": "owo"
+        }
 	]
 }
