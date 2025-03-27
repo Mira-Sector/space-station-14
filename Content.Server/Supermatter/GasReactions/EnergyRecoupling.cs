@@ -4,7 +4,7 @@ using Content.Shared.Atmos;
 namespace Content.Server.Supermatter.GasReactions;
 
 [DataDefinition]
-public partial class EnergyRecoupling : SupermatterGasReaction
+public sealed partial class EnergyRecoupling : SupermatterGasReaction
 {
     /// <summary>
     /// What to use in the case this is space

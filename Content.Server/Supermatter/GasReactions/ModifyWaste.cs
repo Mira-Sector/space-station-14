@@ -4,10 +4,10 @@ using Content.Shared.Atmos;
 namespace Content.Server.Supermatter.GasReactions;
 
 [DataDefinition]
-public partial class ModifyWaste : SupermatterGasReaction
+public sealed partial class ModifyWaste : SupermatterGasReaction
 {
     [DataField]
-    public float MaxMoles;
+    public float Multiplier;
 
     public override bool React(EntityUid supermatter, Gas? gas, GasMixture air, IEntityManager entMan)
     {
@@ -15,11 +15,11 @@ public partial class ModifyWaste : SupermatterGasReaction
             return false;
 
         if (gas != null && gasEmitterComp.PreviousPercentage.TryGetValue(gas.Value, out var previousPercentage))
-            gasEmitterComp.CurrentRate -= previousPercentage * MaxMoles;
+            gasEmitterComp.CurrentRate -= previousPercentage * Multiplier;
 
         var percentage = gas == null ? 1f : air.GetMoles(gas.Value);
 
-        gasEmitterComp.CurrentRate += percentage * MaxMoles;
+        gasEmitterComp.CurrentRate += percentage * Multiplier;
 
         if (gas == null)
             return true;

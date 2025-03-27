@@ -6,7 +6,7 @@ using Robust.Shared.Random;
 namespace Content.Server.Supermatter.Delaminations;
 
 [DataDefinition]
-public partial class SpawnDelamination : SupermatterDelamination
+public sealed partial class SpawnDelamination : SupermatterDelamination
 {
     [DataField]
     public float? Range = new();

@@ -2,7 +2,7 @@ using Content.Server.Supermatter.Components;
 namespace Content.Server.Supermatter.Delaminations;
 
 [DataDefinition]
-public partial class EnergyRequirement : DelaminationRequirement
+public sealed partial class EnergyRequirement : DelaminationRequirement
 {
     [DataField]
     public float Min = float.MinValue;

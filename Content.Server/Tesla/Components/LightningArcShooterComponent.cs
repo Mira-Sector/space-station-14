@@ -1,4 +1,3 @@
-using Content.Server.Tesla.EntitySystems;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server.Tesla.Components;
@@ -6,7 +5,7 @@ namespace Content.Server.Tesla.Components;
 /// <summary>
 /// Periodically fires electric arcs at surrounding objects.
 /// </summary>
-[RegisterComponent, Access(typeof(LightningArcShooterSystem)), AutoGenerateComponentPause]
+[RegisterComponent, AutoGenerateComponentPause]
 public sealed partial class LightningArcShooterComponent : Component
 {
     /// <summary>

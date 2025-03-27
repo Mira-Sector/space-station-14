@@ -1,12 +1,13 @@
 namespace Content.Server.Supermatter.Components;
 
-[RegisterComponent]
+[RegisterComponent, AutoGenerateComponentPause]
 public sealed partial class SupermatterDelaminationCountdownComponent : Component
 {
     [DataField]
     public TimeSpan Length;
 
     [ViewVariables]
+    [AutoPausedField]
     public TimeSpan ElapsedTime;
 
     [ViewVariables]
@@ -16,5 +17,6 @@ public sealed partial class SupermatterDelaminationCountdownComponent : Componen
     public TimeSpan TickDelay;
 
     [ViewVariables]
+    [AutoPausedField]
     public TimeSpan NextTick;
 }

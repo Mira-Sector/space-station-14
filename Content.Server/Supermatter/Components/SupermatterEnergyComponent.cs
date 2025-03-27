@@ -6,7 +6,9 @@ public sealed partial class SupermatterEnergyComponent : Component
     [ViewVariables, Access(typeof(SupermatterSystem), Other = AccessPermissions.Read)]
     public float CurrentEnergy
     {
-        get => CurrentEnergy;
-        set => Math.Max(value, 0f);
+        get => _currentEnergy;
+        set => _currentEnergy = Math.Max(value, 0f);
     }
+
+    private float _currentEnergy;
 }

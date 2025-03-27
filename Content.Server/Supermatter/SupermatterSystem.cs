@@ -42,12 +42,13 @@ public sealed partial class SupermatterSystem : EntitySystem
         SubscribeLocalEvent<SupermatterModifyEnergyOnCollideComponent, SupermatterEnergyCollidedEvent>(OnModifyEnergyCollide);
 
         SubscribeLocalEvent<SupermatterEnergyArcShooterComponent, ComponentInit>(OnArcShooterInit);
-        SubscribeLocalEvent<SupermatterEnergyArcShooterComponent, SupermatterEnergyModifiedEvent>(OnArcShooterEnergyModified);
+        SubscribeLocalEvent<SupermatterEnergyArcShooterComponent, AtmosExposedUpdateEvent>(OnArcShooterAtmosExposed);
 
         SubscribeLocalEvent<SupermatterRadiationComponent, ComponentInit>(OnRadiationInit);
         SubscribeLocalEvent<SupermatterRadiationComponent, SupermatterEnergyModifiedEvent>(OnRadiationEnergyModified);
 
         SubscribeLocalEvent<SupermatterEnergyDecayComponent, AtmosExposedUpdateEvent>(OnDecayAtmosExposed);
+        SubscribeLocalEvent<SupermatterEnergyHeatGainComponent, AtmosExposedUpdateEvent>(OnHeatGainAtmosExposed);
     }
 
     public override void Update(float frameTime)
@@ -62,7 +63,7 @@ public sealed partial class SupermatterSystem : EntitySystem
 
             gasEmitterComp.NextSpawn += gasEmitterComp.Delay;
 
-            var air = _atmos.GetContainingMixture(uid, true, true);
+            var air = _atmos.GetContainingMixture(uid, false, false);
 
             if (air == null)
                 continue;
@@ -106,9 +107,8 @@ public sealed partial class SupermatterSystem : EntitySystem
 
             decayComp.NextDecay += decayComp.Delay;
 
-            var energy = (float) Math.Pow(energyComp.CurrentEnergy, decayComp.EnergyDecay);
-            ModifyEnergy((uid, energyComp), energy);
-            decayComp.LastLostEnergy += energy;
+            ModifyEnergy((uid, energyComp), decayComp.EnergyDecay);
+            decayComp.LastLostEnergy += decayComp.EnergyDecay;
         }
     }
 
@@ -181,14 +181,14 @@ public sealed partial class SupermatterSystem : EntitySystem
         var positive = args.CurrentIntegerity - args.PreviousIntegerity > 0;
         var match = GetRadioMessage<FixedPoint2>(ent.Comp.IntegerityMessages, args.CurrentIntegerity, positive);
         ent.Comp.LastIntegerityMessage = match.Key;
-        _radio.SendRadioMessage(ent, Loc.GetString(match.Value), ent.Comp.Channel, ent);
+        _radio.SendRadioMessage(ent, Loc.GetString(match.Value, ("key", match.Key)), ent.Comp.Channel, ent);
     }
 
     private void OnRadioCountdownTick(Entity<SupermatterRadioComponent> ent, ref SupermatterCountdownTickEvent args)
     {
         var match = GetRadioMessage<TimeSpan>(ent.Comp.CountdownMessages, args.ElapsedTime, true);
         ent.Comp.LastCountdownMessage = match.Key;
-        _radio.SendRadioMessage(ent, Loc.GetString(match.Value), ent.Comp.Channel, ent);
+        _radio.SendRadioMessage(ent, Loc.GetString(match.Value, ("key", match.Key)), ent.Comp.Channel, ent);
     }
 
     private KeyValuePair<T, LocId> GetRadioMessage<T>(Dictionary<T, LocId> messages, T comparison, bool positive) where T : IComparable<T>
@@ -277,12 +277,11 @@ public sealed partial class SupermatterSystem : EntitySystem
         args.Energy += ent.Comp.Additional;
     }
 
-    private void OnArcShooterEnergyModified(Entity<SupermatterEnergyArcShooterComponent> ent, ref SupermatterEnergyModifiedEvent args)
+    private void OnArcShooterAtmosExposed(Entity<SupermatterEnergyArcShooterComponent> ent, ref AtmosExposedUpdateEvent args)
     {
         var arcComp = EntityManager.GetComponent<LightningArcShooterComponent>(ent);
-        var reduction = (float) Math.Log(args.CurrentEnergy, ent.Comp.DelayPerEnergy);
-        arcComp.ShootMinInterval = ent.Comp.MinInterval - reduction;
-        arcComp.ShootMaxInterval = ent.Comp.MaxInterval - reduction;
+        arcComp.ShootMinInterval = ent.Comp.MinInterval;
+        arcComp.ShootMaxInterval = ent.Comp.MaxInterval;
     }
 
     private void OnRadiationEnergyModified(Entity<SupermatterRadiationComponent> ent, ref SupermatterEnergyModifiedEvent args)
@@ -295,6 +294,11 @@ public sealed partial class SupermatterSystem : EntitySystem
     private void OnDecayAtmosExposed(Entity<SupermatterEnergyDecayComponent> ent, ref AtmosExposedUpdateEvent args)
     {
         ent.Comp.LastLostEnergy = 0f;
+    }
+
+    private void OnHeatGainAtmosExposed(Entity<SupermatterEnergyHeatGainComponent> ent, ref AtmosExposedUpdateEvent args)
+    {
+        ent.Comp.CurrentGain = 0f;
     }
 
     public void ModifyIntegerity(Entity<SupermatterIntegerityComponent?> ent, FixedPoint2 integerity)

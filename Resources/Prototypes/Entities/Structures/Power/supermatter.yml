@@ -1,5 +1,5 @@
 - type: entity
-  id: SuperMatter
+  id: Supermatter
   parent: BaseStructure
   name: supermatter crystal
   description: Get away from the beam Gordon!
@@ -17,7 +17,130 @@
     radius: 3
     energy: 2.4
   - type: AtmosExposed
-  - type: Supermatter
+  - type: SupermatterDelaminationCountdown
+    length: 30
+    tickDelay: 5
+  - type: SupermatterEnergyArcShooter
+    delayPerEnergy: 12
+  - type: SupermatterEnergyCollide
+    whitelist:
+      tags:
+      - EmitterBolt
+    ourFixtureId: fix1
+    otherFixtureId: projectile
+  - type: SupermatterEnergy
+  - type: SupermatterEnergyDecay
+    delay: 2
+    energyDecay: -1.5
+  - type: SupermatterGasEmitter
+    ratios:
+      Plasma: 1
+      Oxygen: 1
+    minRate: 10
+  - type: SupermatterGasReaction
+    gasReactions:
+      Noblium:
+      - !type:PowerTransmission
+        multiplier: 0.3
+      - !type:ModifyWaste
+        multiplier: -14
+      - !type:HeatEnergyGain
+        multiplier: -1
+      Frezon:
+      - !type:PowerTransmission
+        multiplier: -3
+      - !type:ModifyWaste
+        multiplier: -9
+      - !type:HeatEnergyGain
+        multiplier: -1
+      Nitrogen:
+      - !type:ModifyWaste
+        multiplier: -2.5
+      - !type:HeatEnergyGain
+        multiplier: -1
+      Pluoxium:
+      - !type:PowerTransmission
+        multiplier: -0.5
+      - !type:ModifyWaste
+        multiplier: -1.5
+      - !type:HeatEnergyGain
+        multiplier: -1
+      Oxygen:
+      - !type:PowerTransmission
+        multiplier: 1.15
+      - !type:HeatEnergyGain
+        multiplier: 1
+      Ammonia:
+      - !type:HeatEnergyGain
+        multiplier: 0.5
+      CarbonDioxide:
+      - !type:ModifyWaste
+        multiplier: 1
+      - !type:HeatEnergyGain
+        multiplier: 1
+      - !type:EnergyRecoupling
+      WaterVapor:
+      - !type:PowerTransmission
+        multiplier: -0.25
+      - !type:ModifyWaste
+        multiplier: -1.5
+      - !type:HeatEnergyGain
+        multiplier: 1
+      Plasma:
+      - !type:PowerTransmission
+        multiplier: 0.4
+      - !type:ModifyWaste
+        multiplier: 14
+      - !type:HeatEnergyGain
+        multiplier: 1
+      Tritium:
+      - !type:PowerTransmission
+        multiplier: 3
+      - !type:ModifyWaste
+        multiplier: 9
+      - !type:HeatEnergyGain
+        multiplier: 1
+  - type: SupermatterIntegerity
+  - type: SupermatterRadiation
+    intensityBase: 8
+    slopeBase: 16
+  - type: SupermatterRadio
+    integerityMessages:
+      75: supermatter-radio-integerity-caution
+      50: supermatter-radio-integerity-caution
+      35: supermatter-radio-integerity-warning
+      25: supermatter-radio-integerity-warning
+      15: supermatter-radio--integerity-danger
+      10: supermatter-radio-integerity-danger
+      5: supermatter-radio-integerity-danger
+      0: supermatter-radio-integerity-fucked
+    countdownMessages:
+      25: supermatter-radio-countdown
+      20: supermatter-radio-countdown
+      15: supermatter-radio-countdown
+      10: supermatter-radio-countdown
+      5: supermatter-radio-countdown
+      4: supermatter-radio-countdown
+      3: supermatter-radio-countdown
+      2: supermatter-radio-countdown
+      1: supermatter-radio-countdown
+    channel: Engineering
+  - type: SupermatterDelaminatable
+    delaminations:
+    - !type:SpawnDelamination
+      prototypes:
+      - Singularity
+    - !type:SpawnDelamination
+      requirements:
+      - !type:EnergyRequirement
+        min: 5000
+      prototypes:
+      - TeslaEnergyBall
+    - !type:ExplosionDelamination
+      type: Radioactive
+      totalIntensity: 1000
+      intensitySlope: 3
+      maxIntensity: 75
   - type: EventHorizon
     radius: 0.3
     consumeTiles: false

@@ -18,5 +18,5 @@ public sealed partial class SupermatterEnergyCollideComponent : Component
     public string OtherFixtureId = string.Empty;
 
     [DataField]
-    public float BaseEnergyOnCollide = 10f;
+    public float BaseEnergyOnCollide = 200f;
 }

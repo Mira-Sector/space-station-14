@@ -13,9 +13,11 @@ public sealed partial class SupermatterGasEmitterComponent : Component
     [ViewVariables]
     public float CurrentRate
     {
-        get => CurrentRate;
-        set => Math.Max(value, MinRate);
+        get => _currentRate;
+        set => _currentRate = Math.Max(value, MinRate);
     }
+
+    private float _currentRate;
 
     [DataField]
     public float MinRate;
@@ -23,9 +25,11 @@ public sealed partial class SupermatterGasEmitterComponent : Component
     [ViewVariables]
     public float CurrentTemperature
     {
-        get => CurrentRate;
-        set => Math.Max(value, MinTemperature);
+        get => _currentTemperature;
+        set => _currentTemperature = Math.Max(value, MinTemperature);
     }
+
+    private float _currentTemperature;
 
     [DataField]
     public float MinTemperature;
@@ -51,7 +55,7 @@ public sealed partial class SupermatterGasEmitterComponent : Component
     /// <remarks>
     /// Used to cleanup <see cref= PreviousPercentage>
     /// </remarks>
-    public readonly ImmutableArray<Type> ModifiableReactions = new()
+    public readonly HashSet<Type> ModifiableReactions = new()
     {
         typeof(ModifyWaste)
     };
