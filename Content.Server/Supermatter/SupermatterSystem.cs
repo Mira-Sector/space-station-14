@@ -18,6 +18,7 @@ public sealed partial class SupermatterSystem : EntitySystem
         SubscribeLocalEvent<SupermatterIntegerityComponent, ComponentInit>(OnIntegerityInit);
         SubscribeLocalEvent<SupermatterGasReactionComponent, AtmosExposedUpdateEvent>(OnAtmosExposed);
         SubscribeLocalEvent<SupermatterRadioComponent, SupermatterIntegerityModifiedEvent>(OnRadioIntegerityModified);
+        SubscribeLocalEvent<SupermatterDelaminatableComponent, SupermatterDelaminatedEvent>(OnDelaminateableDelaminated);
     }
 
     private void OnIntegerityInit(Entity<SupermatterIntegerityComponent> ent, ref ComponentInit args)
@@ -67,6 +68,18 @@ public sealed partial class SupermatterSystem : EntitySystem
 
         ent.Comp.LastMessage = match.Key;
         _radio.SendRadioMessage(ent, Loc.GetString(match.Value), ent.Comp.Channel, ent);
+    }
+
+    private void OnDelaminateableDelaminated(Entity<SupermatterDelaminatableComponent> ent, ref SupermatterDelaminatedEvent args)
+    {
+        foreach (var delamination in ent.Comp.Delaminations)
+        {
+            if (!delamination.RequirementsMet(ent, EntityManager))
+                continue;
+
+            delamination.Delaminate(ent, EntityManager);
+            return;
+        }
     }
 
     public void ModifyIntegerity(Entity<SupermatterIntegerityComponent?> ent, FixedPoint2 integerity)
