@@ -2,6 +2,7 @@ using Content.Server.Radio.EntitySystems;
 using Content.Server.Supermatter.Components;
 using Content.Server.Supermatter.Events;
 using Content.Server.Supermatter.GasReactions;
+using Content.Server.Tesla.Components;
 using Content.Shared.Atmos;
 using Content.Server.Atmos.EntitySystems;
 using Content.Shared.FixedPoint;
@@ -38,6 +39,9 @@ public sealed partial class SupermatterSystem : EntitySystem
 
         SubscribeLocalEvent<SupermatterEnergyCollideComponent, StartCollideEvent>(OnEnergyCollideCollide);
         SubscribeLocalEvent<SupermatterModifyEnergyOnCollideComponent, SupermatterEnergyCollidedEvent>(OnModifyEnergyCollide);
+
+        SubscribeLocalEvent<SupermatterEnergyArcShooterComponent, ComponentInit>(OnArcShooterInit);
+        SubscribeLocalEvent<SupermatterEnergyArcShooterComponent, SupermatterEnergyModifiedEvent>(OnArcShooterEnergyModified);
     }
 
     public override void Update(float frameTime)
@@ -99,6 +103,13 @@ public sealed partial class SupermatterSystem : EntitySystem
         ent.Comp.NextSpawn = _timing.CurTime + ent.Comp.Delay;
         ent.Comp.CurrentRate = ent.Comp.MinRate;
         ent.Comp.CurrentTemperature = ent.Comp.MinTemperature;
+    }
+
+    private void OnArcShooterInit(Entity<SupermatterEnergyArcShooterComponent> ent, ref ComponentInit args)
+    {
+        EnsureComp<LightningArcShooterComponent>(ent, out var arcShooterComp);
+        ent.Comp.MinInterval = arcShooterComp.ShootMinInterval;
+        ent.Comp.MaxInterval = arcShooterComp.ShootMaxInterval;
     }
 
     private void OnAtmosExposed(Entity<SupermatterGasReactionComponent> ent, ref AtmosExposedUpdateEvent args)
@@ -234,10 +245,18 @@ public sealed partial class SupermatterSystem : EntitySystem
         ModifyEnergy(ent.Owner, ev.Energy);
     }
 
-    private void OnModifyEnergyCollide (Entity<SupermatterModifyEnergyOnCollideComponent> ent, ref SupermatterEnergyCollidedEvent args)
+    private void OnModifyEnergyCollide(Entity<SupermatterModifyEnergyOnCollideComponent> ent, ref SupermatterEnergyCollidedEvent args)
     {
         args.Energy *= ent.Comp.Scale;
         args.Energy += ent.Comp.Additional;
+    }
+
+    private void OnArcShooterEnergyModified(Entity<SupermatterEnergyArcShooterComponent> ent, ref SupermatterEnergyModifiedEvent args)
+    {
+        var arcComp = EntityManager.GetComponent<LightningArcShooterComponent>(ent);
+        var reduction = (float) Math.Log(args.CurrentEnergy, ent.Comp.DelayPerEnergy);
+        arcComp.ShootMinInterval = ent.Comp.MinInterval - reduction;
+        arcComp.ShootMaxInterval = ent.Comp.MaxInterval - reduction;
     }
 
     public void ModifyIntegerity(Entity<SupermatterIntegerityComponent?> ent, FixedPoint2 integerity)
