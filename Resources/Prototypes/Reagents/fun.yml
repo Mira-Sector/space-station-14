@@ -406,14 +406,16 @@
   physicalDesc: reagent-physical-desc-glowing
   flavor: glowing
   color: "#fffb00"
+  worksOnTheDead: true
   reactiveEffects:
-    Drink:
+    Acidic:
       methods: [ Touch ]
       effects:
       - !type:Glowing
-        glowPower: 45
   metabolisms:
     Drink:
       metabolismRate: 1
       effects:
       - !type:Glowing
+      - !type:AdjustTemperature
+        amount: 5500
