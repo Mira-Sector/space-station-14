@@ -1,3 +1,4 @@
+using Content.Server.Supermatter.GasReactions;
 using Content.Shared.Atmos;
 
 namespace Content.Server.Supermatter.Components;
@@ -6,5 +7,8 @@ namespace Content.Server.Supermatter.Components;
 public sealed partial class SupermatterGasReactionComponent : Component
 {
     [DataField]
-    public Dictionary<Gas, SupermatterGasReaction> GasReactions = new();
+    public Dictionary<Gas, HashSet<SupermatterGasReaction>> GasReactions = new();
+
+    [DataField]
+    public HashSet<SupermatterGasReaction> SpaceReactions = new();
 }
