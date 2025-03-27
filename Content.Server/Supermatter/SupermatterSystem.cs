@@ -95,6 +95,18 @@ public sealed partial class SupermatterSystem : EntitySystem
             RaiseLocalEvent(uid, timerEv);
             countdownComp.NextTick += countdownComp.TickDelay;
         }
+
+        var decayQuery = EntityQueryEnumerator<SupermatterEnergyDecayComponent, SupermatterEnergyComponent>();
+        while (decayQuery.MoveNext(out var uid, out var decayComp, out var energyComp))
+        {
+            if (decayComp.NextDecay > _timing.CurTime)
+                continue;
+
+            decayComp.NextDecay += decayComp.Delay;
+
+            var energy = (float) Math.Pow(energyComp.CurrentEnergy, decayComp.EnergyDecay);
+            ModifyEnergy((uid, energyComp), energy);
+        }
     }
 
     private void OnIntegerityInit(Entity<SupermatterIntegerityComponent> ent, ref ComponentInit args)
