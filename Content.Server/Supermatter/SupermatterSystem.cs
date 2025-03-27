@@ -25,7 +25,10 @@ public sealed partial class SupermatterSystem : EntitySystem
         SubscribeLocalEvent<SupermatterIntegerityComponent, ComponentInit>(OnIntegerityInit);
 
         SubscribeLocalEvent<SupermatterDelaminatableComponent, SupermatterDelaminatedEvent>(OnDelaminateableDelaminated);
+
         SubscribeLocalEvent<SupermatterRadioComponent, SupermatterIntegerityModifiedEvent>(OnRadioIntegerityModified);
+        SubscribeLocalEvent<SupermatterRadioComponent, SupermatterCountdownTickEvent>(OnRadioCountdownTick);
+        SubscribeLocalEvent<SupermatterDelaminationCountdownComponent, SupermatterBeforeDelaminatedEvent>(OnCountdownBeforeDelamination);
 
         SubscribeLocalEvent<SupermatterGasReactionComponent, AtmosExposedUpdateEvent>(OnAtmosExposed);
 
@@ -58,6 +61,31 @@ public sealed partial class SupermatterSystem : EntitySystem
                 air.AdjustMoles(gas, ratio * gasEmitterComp.CurrentRate);
 
             air.Temperature += gasEmitterComp.CurrentTemperature;
+        }
+
+        var countdownQuery = EntityQueryEnumerator<SupermatterDelaminationCountdownComponent>();
+        while (countdownQuery.MoveNext(out var uid, out var countdownComp))
+        {
+            if (!countdownComp.Active)
+                continue;
+
+            countdownComp.ElapsedTime += TimeSpan.FromSeconds(frameTime);
+
+            if (countdownComp.ElapsedTime > countdownComp.Length)
+            {
+                var delaminatingEv = new SupermatterDelaminatedEvent();
+                RaiseLocalEvent(uid, delaminatingEv);
+                countdownComp.Active = false;
+                continue;
+            }
+
+            // so we dont spam events
+            if (countdownComp.NextTick > _timing.CurTime)
+                continue;
+
+            var timerEv = new SupermatterCountdownTickEvent(countdownComp.ElapsedTime);
+            RaiseLocalEvent(uid, timerEv);
+            countdownComp.NextTick += countdownComp.TickDelay;
         }
     }
 
@@ -114,30 +142,40 @@ public sealed partial class SupermatterSystem : EntitySystem
     private void OnRadioIntegerityModified(Entity<SupermatterRadioComponent> ent, ref SupermatterIntegerityModifiedEvent args)
     {
         var positive = args.CurrentIntegerity - args.PreviousIntegerity > 0;
-        KeyValuePair<FixedPoint2, LocId> match = new();
+        var match = GetRadioMessage<FixedPoint2>(ent.Comp.IntegerityMessages, args.CurrentIntegerity, positive);
+        ent.Comp.LastIntegerityMessage = match.Key;
+        _radio.SendRadioMessage(ent, Loc.GetString(match.Value), ent.Comp.Channel, ent);
+    }
 
-        foreach (var (threshold, message) in ent.Comp.Messages)
+    private void OnRadioCountdownTick(Entity<SupermatterRadioComponent> ent, ref SupermatterCountdownTickEvent args)
+    {
+        var match = GetRadioMessage<TimeSpan>(ent.Comp.CountdownMessages, args.ElapsedTime, true);
+        ent.Comp.LastCountdownMessage = match.Key;
+        _radio.SendRadioMessage(ent, Loc.GetString(match.Value), ent.Comp.Channel, ent);
+    }
+
+    private KeyValuePair<T, LocId> GetRadioMessage<T>(Dictionary<T, LocId> messages, T comparison, bool positive) where T : IComparable<T>
+    {
+        KeyValuePair<T, LocId> match = new();
+
+        foreach (var (key, message) in messages)
         {
             if (positive)
             {
-                if (threshold > args.CurrentIntegerity)
+                if (key.CompareTo(comparison) > 0)
                     continue;
             }
             else
             {
-                if (threshold < args.CurrentIntegerity)
+                if (key.CompareTo(comparison) < 0)
                     continue;
             }
 
-            if (threshold > match.Key)
-                match = new(threshold, message);
+            if (key.CompareTo(match.Key) > 0)
+                match = new(key, message);
         }
 
-        if (match.Key == ent.Comp.LastMessage)
-            return;
-
-        ent.Comp.LastMessage = match.Key;
-        _radio.SendRadioMessage(ent, Loc.GetString(match.Value), ent.Comp.Channel, ent);
+        return match;
     }
 
     private void OnDelaminateableDelaminated(Entity<SupermatterDelaminatableComponent> ent, ref SupermatterDelaminatedEvent args)
@@ -150,6 +188,12 @@ public sealed partial class SupermatterSystem : EntitySystem
             delamination.Delaminate(ent, EntityManager);
             return;
         }
+    }
+
+    private void OnCountdownBeforeDelamination(Entity<SupermatterDelaminationCountdownComponent> ent, ref SupermatterBeforeDelaminatedEvent args)
+    {
+        args.Handled = true;
+        ent.Comp.ElapsedTime = TimeSpan.Zero;
     }
 
     private void OnGasEmitterGasReact(Entity<SupermatterGasEmitterComponent> ent, ref SupermatterGasReactedEvent args)
@@ -209,9 +253,16 @@ public sealed partial class SupermatterSystem : EntitySystem
 
         if (ent.Comp.Integerity < 0)
         {
+            ent.Comp.Integerity = 0f; //clamp it
+
+            var beforeDelaminateEv = new SupermatterBeforeDelaminatedEvent();
+            RaiseLocalEvent(ent, beforeDelaminateEv);
+
+            if (beforeDelaminateEv.Handled)
+                return;
+
             var delaminatingEv = new SupermatterDelaminatedEvent();
             RaiseLocalEvent(ent, delaminatingEv);
-            ent.Comp.Integerity = 0f; //clamp it
         }
     }
 
