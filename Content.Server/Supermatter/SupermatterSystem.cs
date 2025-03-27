@@ -6,6 +6,7 @@ using Content.Server.Tesla.Components;
 using Content.Shared.Atmos;
 using Content.Server.Atmos.EntitySystems;
 using Content.Shared.FixedPoint;
+using Content.Shared.Radiation.Components;
 using Content.Shared.Whitelist;
 using Robust.Shared.Timing;
 using Robust.Shared.Physics.Events;
@@ -42,6 +43,9 @@ public sealed partial class SupermatterSystem : EntitySystem
 
         SubscribeLocalEvent<SupermatterEnergyArcShooterComponent, ComponentInit>(OnArcShooterInit);
         SubscribeLocalEvent<SupermatterEnergyArcShooterComponent, SupermatterEnergyModifiedEvent>(OnArcShooterEnergyModified);
+
+        SubscribeLocalEvent<SupermatterRadiationComponent, ComponentInit>(OnRadiationInit);
+        SubscribeLocalEvent<SupermatterRadiationComponent, SupermatterEnergyModifiedEvent>(OnRadiationEnergyModified);
     }
 
     public override void Update(float frameTime)
@@ -110,6 +114,13 @@ public sealed partial class SupermatterSystem : EntitySystem
         EnsureComp<LightningArcShooterComponent>(ent, out var arcShooterComp);
         ent.Comp.MinInterval = arcShooterComp.ShootMinInterval;
         ent.Comp.MaxInterval = arcShooterComp.ShootMaxInterval;
+    }
+
+    private void OnRadiationInit(Entity<SupermatterRadiationComponent> ent, ref ComponentInit args)
+    {
+        EnsureComp<RadiationSourceComponent>(ent, out var radiationComp);
+        ent.Comp.Intensity = radiationComp.Intensity;
+        ent.Comp.Slope = radiationComp.Slope;
     }
 
     private void OnAtmosExposed(Entity<SupermatterGasReactionComponent> ent, ref AtmosExposedUpdateEvent args)
@@ -257,6 +268,13 @@ public sealed partial class SupermatterSystem : EntitySystem
         var reduction = (float) Math.Log(args.CurrentEnergy, ent.Comp.DelayPerEnergy);
         arcComp.ShootMinInterval = ent.Comp.MinInterval - reduction;
         arcComp.ShootMaxInterval = ent.Comp.MaxInterval - reduction;
+    }
+
+    private void OnRadiationEnergyModified(Entity<SupermatterRadiationComponent> ent, ref SupermatterEnergyModifiedEvent args)
+    {
+        var radiationComp = EntityManager.GetComponent<RadiationSourceComponent>(ent);
+        radiationComp.Intensity = ent.Comp.Intensity + (float) Math.Log(args.CurrentEnergy, ent.Comp.IntensityBase);
+        radiationComp.Slope = ent.Comp.Slope - (float) Math.Log(args.CurrentEnergy, ent.Comp.SlopeBase);
     }
 
     public void ModifyIntegerity(Entity<SupermatterIntegerityComponent?> ent, FixedPoint2 integerity)
