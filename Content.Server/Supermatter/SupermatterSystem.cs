@@ -5,7 +5,9 @@ using Content.Server.Supermatter.GasReactions;
 using Content.Shared.Atmos;
 using Content.Server.Atmos.EntitySystems;
 using Content.Shared.FixedPoint;
+using Content.Shared.Whitelist;
 using Robust.Shared.Timing;
+using Robust.Shared.Physics.Events;
 
 namespace Content.Server.Supermatter;
 
@@ -14,19 +16,25 @@ public sealed partial class SupermatterSystem : EntitySystem
     [Dependency] private readonly AtmosphereSystem _atmos = default!;
     [Dependency] private readonly RadioSystem _radio = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
 
     public override void Initialize()
     {
         base.Initialize();
 
         SubscribeLocalEvent<SupermatterIntegerityComponent, ComponentInit>(OnIntegerityInit);
-        SubscribeLocalEvent<SupermatterGasReactionComponent, AtmosExposedUpdateEvent>(OnAtmosExposed);
-        SubscribeLocalEvent<SupermatterRadioComponent, SupermatterIntegerityModifiedEvent>(OnRadioIntegerityModified);
+
         SubscribeLocalEvent<SupermatterDelaminatableComponent, SupermatterDelaminatedEvent>(OnDelaminateableDelaminated);
+        SubscribeLocalEvent<SupermatterRadioComponent, SupermatterIntegerityModifiedEvent>(OnRadioIntegerityModified);
+
+        SubscribeLocalEvent<SupermatterGasReactionComponent, AtmosExposedUpdateEvent>(OnAtmosExposed);
 
         SubscribeLocalEvent<SupermatterGasEmitterComponent, ComponentInit>(OnGasEmitterInit);
         SubscribeLocalEvent<SupermatterGasEmitterComponent, SupermatterGasReactedEvent>(OnGasEmitterGasReact);
         SubscribeLocalEvent<SupermatterGasEmitterComponent, SupermatterSpaceGasReactedEvent>(OnGasEmitterSpaceReact);
+
+        SubscribeLocalEvent<SupermatterEnergyCollideComponent, StartCollideEvent>(OnEnergyCollideCollide);
+        SubscribeLocalEvent<SupermatterModifyEnergyOnCollideComponent, SupermatterEnergyCollidedEvent>(OnModifyEnergyCollide);
     }
 
     public override void Update(float frameTime)
@@ -47,9 +55,7 @@ public sealed partial class SupermatterSystem : EntitySystem
                 continue;
 
             foreach (var (gas, ratio) in gasEmitterComp.Ratios)
-            {
                 air.AdjustMoles(gas, ratio * gasEmitterComp.CurrentRate);
-            }
 
             air.Temperature += gasEmitterComp.CurrentTemperature;
         }
@@ -167,6 +173,27 @@ public sealed partial class SupermatterSystem : EntitySystem
     private void OnGasEmitterSpaceReact(Entity<SupermatterGasEmitterComponent> ent, ref SupermatterSpaceGasReactedEvent args)
     {
         ent.Comp.PreviousPercentage.Clear();
+    }
+
+    private void OnEnergyCollideCollide(Entity<SupermatterEnergyCollideComponent> ent, ref StartCollideEvent args)
+    {
+        if (args.OurFixtureId != ent.Comp.OurFixtureId || args.OtherFixtureId != ent.Comp.OtherFixtureId)
+            return;
+
+        if (!_whitelist.CheckBoth(args.OtherEntity, ent.Comp.Blacklist, ent.Comp.Whitelist))
+            return;
+
+        var ev = new SupermatterEnergyCollidedEvent(ent, ent.Comp.BaseEnergyOnCollide);
+        RaiseLocalEvent(args.OtherEntity, ev);
+
+        EntityManager.DeleteEntity(args.OtherEntity);
+        ModifyEnergy(ent.Owner, ev.Energy);
+    }
+
+    private void OnModifyEnergyCollide (Entity<SupermatterModifyEnergyOnCollideComponent> ent, ref SupermatterEnergyCollidedEvent args)
+    {
+        args.Energy *= ent.Comp.Scale;
+        args.Energy += ent.Comp.Additional;
     }
 
     public void ModifyIntegerity(Entity<SupermatterIntegerityComponent?> ent, FixedPoint2 integerity)
