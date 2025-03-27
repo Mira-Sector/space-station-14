@@ -711,6 +711,7 @@
   physicalDesc: reagent-physical-desc-inky
   flavor: oily
   color: "#58031e"
+  worksOnTheDead: true #also means you can't build it up in dead people.
   metabolisms:
     Poison: #make chemical convert all other chemicals into it
       metabolismRate: 0.5
@@ -726,5 +727,16 @@
           factor: -3
         - !type:ModifyBloodLevel #bleeding also leaks chemical, which transforms blood into more void oil.
           amount: -5
+        - !type:GenericStatusEffect
+          key: Glowing
+          time: 300
+          type: Remove
+  plantMetabolism:
+  - !type:PlantAdjustToxins
+    amount: -3
+  - !type:PlantAdjustNutrition
+    amount: -3
+  - !type:PlantAdjustWater
+    amount: -3
 
 

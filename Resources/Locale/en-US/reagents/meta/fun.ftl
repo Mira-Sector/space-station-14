@@ -36,6 +36,3 @@ reagent-desc-hew = Pure essence of inversed lizard plush. Makes you Hew!
 
 reagent-name-solaroil = solar oil
 reagent-desc-solaroil = an anomalous liquid that produces a powerful golden glow. Those that consume the chemical find they too glow for a time.
-
-reagent-name-chaos = chaotic liquid
-reagent-desc-chaos = an anomalous liquid existing in a state of chemical superposition. Upon observation it quickly collapses into a seemingly random reagent.

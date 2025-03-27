@@ -3,12 +3,15 @@
 namespace Content.Server.Glowing;
 
 /// <summary>
-///     Exists for use as a status effect (eventually). Make user glow
+///     Exists for use as a status effect. Makes user glow.
 /// </summary>
 [RegisterComponent]
 [Access(typeof(GlowingSystem))]
 public sealed partial class GlowingComponent : Component
 {
-    //public Color Color = Color.Gold;
-    //public int Radius = 5;
+    [DataField]
+    public Color Color = Color.Black;
+
+    [DataField]
+    public float Radius = 1f;
 }

@@ -8,16 +8,16 @@
   },
   "states": [
     {
-      "name": "open"
+       "name": "open"
     },
     {
        "name": "open-1"
     },
     {
-        "name": "open-2"
+       "name": "open-2"
     },
     {
-        "name": "open-3"
+       "name": "open-3"
     },
     {
       "name": "dead"

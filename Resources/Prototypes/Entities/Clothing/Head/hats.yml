@@ -862,11 +862,13 @@
     scale: 1.5, 1.5
   - type: Clothing
     sprite: Clothing/Head/Hats/voidflowerring.rsi
-  - type: SingularityDistortion
-    intensity: 300
-    falloffPower: 3
-    hasEventHorizon: true
   - type: IdentityBlocker
+  - type: HideLayerClothing
+    slots:
+    - Head
+    - Snout
+    - Hair
+    - FacialHair
 
 - type: entity
   parent: [ClothingHeadBase, BaseSyndicateContraband]

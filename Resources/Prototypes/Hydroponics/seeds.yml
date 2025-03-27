@@ -89,6 +89,7 @@
     - FoodBanana
   mutationPrototypes:
     - mimana
+    - bananiumplant
   harvestRepeat: Repeat
   lifespan: 50
   maturation: 6
@@ -130,6 +131,35 @@
       Max: 5
       PotencyDivisor: 20
     Nutriment:
+      Min: 1
+      Max: 2
+      PotencyDivisor: 50
+
+- type: seed
+  id: bananiumplant
+  name: seeds-bananiumplant-name
+  noun: seeds-noun-seeds
+  displayName: seeds-bananiumplant-display-name
+  plantRsi: Objects/Specific/Hydroponics/bananiumplant.rsi
+  packetPrototype: BananiumPlantSeeds
+  productPrototypes:
+    - ProduceBananiumPlant
+  harvestRepeat: Repeat
+  lifespan: 50
+  maturation: 6
+  production: 6
+  yield: 2
+  idealLight: 9
+  waterConsumption: 0.60
+  idealHeat: 298
+  weedTolerance: 90 #radiation kills the weeds.
+  pestTolerance: 90 #and the pests.
+  chemicals:
+    UnstableMutagen:
+      Min: 1
+      Max: 12
+      PotencyDivisor: 8
+    Nutriment: #tasty
       Min: 1
       Max: 2
       PotencyDivisor: 50
@@ -384,6 +414,8 @@
   packetPrototype: PotatoSeeds
   productPrototypes:
     - FoodPotato
+  mutationPrototypes:
+    - voltato
   lifespan: 30
   maturation: 10
   production: 3
@@ -393,6 +425,32 @@
   waterConsumption: 0.60
   chemicals:
     Nutriment:
+      Min: 1
+      Max: 10
+      PotencyDivisor: 10
+    Vitamin:
+      Min: 1
+      Max: 4
+      PotencyDivisor: 25
+
+- type: seed
+  id: voltato
+  name: seeds-voltato-name
+  noun: seeds-noun-seeds
+  displayName: seeds-voltato-display-name
+  plantRsi: Objects/Specific/Hydroponics/voltato.rsi
+  packetPrototype: VoltatoSeeds
+  productPrototypes:
+    - FoodVoltato
+  lifespan: 30
+  maturation: 10
+  production: 3
+  yield: 3
+  potency: 10
+  growthStages: 4
+  waterConsumption: 0.60
+  chemicals:
+    SulfuricAcid:
       Min: 1
       Max: 10
       PotencyDivisor: 10
@@ -501,6 +559,8 @@
   packetPrototype: SteelcapSeeds
   productPrototypes:
     - SteelLog
+  mutationPrototypes:
+    - plasteelcap
   lifespan: 80
   maturation: 15
   ligneous: true
@@ -510,6 +570,27 @@
   growthStages: 3
   waterConsumption: 0.60
   nutrientConsumption: 0.80
+  lightTolerance: 6
+  idealHeat: 288
+
+- type: seed
+  id: plasteelcap
+  name: seeds-plasteelcap-name
+  noun: seeds-noun-spores
+  displayName: seeds-plasteelcap-display-name
+  plantRsi: Objects/Specific/Hydroponics/plasteelcap.rsi
+  packetPrototype: PlasteelcapSeeds
+  productPrototypes:
+    - PlasteelLog
+  lifespan: 80
+  maturation: 15
+  ligneous: true
+  production: 3
+  yield: 3
+  potency: 1
+  growthStages: 3
+  waterConsumption: 0.60
+  nutrientConsumption: 1.6
   lightTolerance: 6
   idealHeat: 288
 
@@ -1738,6 +1819,8 @@
   packetPrototype: BerrySeeds
   productPrototypes:
     - FoodBerries
+  mutationPrototypes:
+    - chaosberries
   harvestRepeat: Repeat
   lifespan: 50
   maturation: 6
@@ -1754,6 +1837,23 @@
       Min: 1
       Max: 4
       PotencyDivisor: 40
+
+- type: seed
+  id: chaosberries
+  name: seeds-chaosberries-name
+  noun: seeds-noun-seeds
+  displayName: seeds-chaosberries-display-name
+  plantRsi: Objects/Specific/Hydroponics/chaosberries.rsi
+  packetPrototype: ChaosBerrySeeds
+  productPrototypes:
+    - ProduceChaosPod
+  harvestRepeat: Repeat
+  lifespan: 50
+  maturation: 6
+  production: 6
+  yield: 4
+  idealLight: 7
+  nutrientConsumption: 0.6
 
 - type: seed
   id: bungo
@@ -2037,7 +2137,7 @@
     Oil:
       Min: 1
       Max: 20
-      PotencyDivisor: 4
+      PotencyDivisor: 5
     Nutriment:
       Min: 1
       Max: 2
@@ -2066,7 +2166,7 @@
     Solaroil:
       Min: 1
       Max: 20
-      PotencyDivisor: 4
+      PotencyDivisor: 5
     Nutriment:
       Min: 1
       Max: 2
@@ -2094,10 +2194,9 @@
   chemicals:
     Voidoil:
       Min: 1
-      Max: 25 
+      Max: 25
       PotencyDivisor: 4
 
-#coconut, plasteelcap, chaosberries, bananium plant, voltato
 - type: seed
   id: coconut
   name: seeds-coconut-name
@@ -2169,108 +2268,8 @@
       Max: 10
       PotencyDivisor: 10
 
-- type: seed
-  id: plasteelcap
-  name: seeds-plasteelcap-name
-  noun: seeds-noun-spores
-  displayName: seeds-plasteelcap-display-name
-  plantRsi: Objects/Specific/Hydroponics/plasteelcap.rsi
-  packetPrototype: PlasteelcapSeeds
-  productPrototypes:
-    - PlasteelLog
-  lifespan: 80
-  maturation: 15
-  ligneous: true
-  production: 3
-  yield: 3
-  potency: 1
-  growthStages: 3
-  waterConsumption: 0.60
-  nutrientConsumption: 0.80
-  lightTolerance: 6
-  idealHeat: 288 ##plants can't naturally make plasma, so it gets it from the environment
-  #consumeGasses: {"Plasma", 5} #or it would if i could figure out how this worked
-  #exudeGasses: {"Tritinum", 100}
-          
-- type: seed
-  id: chaosberries
-  name: seeds-chaosberries-name
-  noun: seeds-noun-seeds
-  displayName: seeds-chaosberries-display-name
-  plantRsi: Objects/Specific/Hydroponics/chaosberries.rsi
-  packetPrototype: ChaosberrySeeds
-  productPrototypes:
-    - FoodChaosBerries
-  harvestRepeat: Repeat
-  lifespan: 50
-  maturation: 6
-  production: 6
-  yield: 4
-  idealLight: 7
-  nutrientConsumption: 0.6
-  chemicals:
-    Chaos: #ideally, chaos gets replaced by a random chemical
-      Min: 2
-      Max: 8
-      PotencyDivisor: 10
-    Nutriment:
-      Min: 2
-      Max: 4
-      PotencyDivisor: 30
-    Vitamin:
-      Min: 1
-      Max: 4
-      PotencyDivisor: 40
 
-- type: seed
-  id: bananiumplant
-  name: seeds-bananiumplant-name
-  noun: seeds-noun-seeds
-  displayName: seeds-bananiumplant-display-name
-  plantRsi: Objects/Specific/Hydroponics/bananiumplant.rsi
-  packetPrototype: BananiumPlantSeeds
-  productPrototypes:
-    - ProduceBananiumPlant
-  harvestRepeat: Repeat
-  lifespan: 50
-  maturation: 6
-  production: 6
-  yield: 2
-  idealLight: 9
-  waterConsumption: 0.60
-  idealHeat: 298
-  chemicals:
-    UnstableMutagen:
-      Min: 1
-      Max: 12
-      PotencyDivisor: 8
-    Nutriment: #tasty
-      Min: 1
-      Max: 2
-      PotencyDivisor: 50
 
-- type: seed
-  id: voltato
-  name: seeds-voltato-name
-  noun: seeds-noun-seeds
-  displayName: seeds-voltato-display-name
-  plantRsi: Objects/Specific/Hydroponics/voltato.rsi
-  packetPrototype: VoltatoSeeds
-  productPrototypes:
-    - FoodVoltato
-  lifespan: 30
-  maturation: 10
-  production: 3
-  yield: 3
-  potency: 10
-  growthStages: 4
-  waterConsumption: 0.60
-  chemicals:
-    SulfuricAcid:
-      Min: 1
-      Max: 10
-      PotencyDivisor: 10
-    Vitamin:
-      Min: 1
-      Max: 4
-      PotencyDivisor: 25
+
+
+

@@ -42,15 +42,31 @@ public sealed class GlowingSystem : EntitySystem
         _statusEffectsSystem.TryRemoveStatusEffect(uid, GlowingKey);
     }
 
+    ///<summary>
+    /// On component initiating, create generic glowing effect, that can be updated later.
+    ///</summary>
     public void OnGlowInit(EntityUid uid, GlowingComponent component, ComponentInit args)
     {
-        var radius = 4f;
-        Color colour = Color.Gold;
         var light = _light.EnsureLight(uid);
 
-        _light.SetRadius(uid, radius, light);
-        _light.SetColor(uid, colour, light);
+        _light.SetRadius(uid, component.Radius, light);
+        _light.SetColor(uid, component.Color, light);
         _light.SetCastShadows(uid, false, light);
+    }
+
+    public void UpdateGlowRadius(EntityUid uid, float radius)
+    {
+        _light.SetRadius(uid, radius);
+    }
+
+    public void UpdateGlowColor(EntityUid uid, Color color)
+    {
+        _light.SetColor(uid, color);
+    }
+
+    public void UpdateGlowEnergy(EntityUid uid, float energy)
+    {
+        _light.SetEnergy(uid, energy);
     }
 
     public void OnGlowShutdown(EntityUid uid, GlowingComponent component, ComponentShutdown args)

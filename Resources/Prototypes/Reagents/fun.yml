@@ -406,26 +406,14 @@
   physicalDesc: reagent-physical-desc-glowing
   flavor: glowing
   color: "#fffb00"
-  components:
-  - type: PointLight
-    radius: 6.0
-    color: "#fffb00"
+  reactiveEffects:
+    Drink:
+      methods: [ Touch ]
+      effects:
+      - !type:Glowing
+        glowPower: 45
   metabolisms:
     Drink:
       metabolismRate: 1
       effects:
-      - !type:GenericStatusEffect
-        key: Glowing
-        component: Glowing
-        time: 60
-        type: Add
-        refresh: false
-
-
-- type: reagent
-  id: Chaos
-  name: reagent-name-chaos
-  desc: reagent-desc-chaos
-  physicalDesc: reagent-physical-desc-fizzy
-  flavor: sweet
-  color: "#9f32a3"
+      - !type:Glowing

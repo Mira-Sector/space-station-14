@@ -65,6 +65,17 @@
 
 - type: entity
   parent: SeedBase
+  name: packet of bananium seeds
+  description: "There seems to be a small radiation warning on this seed packet"
+  id: BananiumPlantSeeds
+  components:
+    - type: Seed
+      seedId: bananiumplant
+    - type: Sprite
+      sprite: Objects/Specific/Hydroponics/bananiumplant.rsi
+
+- type: entity
+  parent: SeedBase
   name: packet of carrot seeds
   id: CarrotSeeds
   components:
@@ -177,6 +188,17 @@
 
 - type: entity
   parent: SeedBase
+  name: packet of voltato seeds
+  description: "Electronic Spuds charged via Potatovoltaic leaves"
+  id: VoltatoSeeds
+  components:
+    - type: Seed
+      seedId: voltato
+    - type: Sprite
+      sprite: Objects/Specific/Hydroponics/voltato.rsi
+
+- type: entity
+  parent: SeedBase
   name: packet of sugarcane seeds
   id: SugarcaneSeeds
   components:
@@ -224,6 +246,16 @@
       seedId: steelcap
     - type: Sprite
       sprite: Objects/Specific/Hydroponics/steelcap.rsi
+
+- type: entity
+  parent: SeedBase
+  name: packet of plasteel cap spores
+  id: PlasteelcapSeeds
+  components:
+    - type: Seed
+      seedId: plasteelcap
+    - type: Sprite
+      sprite: Objects/Specific/Hydroponics/plasteelcap.rsi
 
 - type: entity
   parent: SeedBase
@@ -637,6 +669,16 @@
 
 - type: entity
   parent: SeedBase
+  name: packet of chaos berry seeds
+  id: ChaosBerrySeeds
+  components:
+    - type: Seed
+      seedId: chaosberries
+    - type: Sprite
+      sprite: Objects/Specific/Hydroponics/chaosberries.rsi
+
+- type: entity
+  parent: SeedBase
   name: packet of bungo seeds
   description: "Don't eat the pits."
   id: BungoSeeds
@@ -772,7 +814,7 @@
 - type: entity
   parent: SeedBase
   name: packet of voidflower seeds
-  description: "Very much not radiant."
+  description: "Exceptionally un-radiant."
   id: VoidflowerSeeds
   components:
   - type: Seed
@@ -783,6 +825,7 @@
 - type: entity
   parent: SeedBase
   name: packet of coconut seeds
+  description: "Positively Tropical"
   id: CoconutSeeds
   components:
     - type: Seed
@@ -793,6 +836,7 @@
 - type: entity
   parent: SeedBase
   name: packet of cryoconut seeds
+  description: "Positively Arctic"
   id: CryoconutSeeds
   components:
     - type: Seed
@@ -800,42 +844,6 @@
     - type: Sprite
       sprite: Objects/Specific/Hydroponics/cryoconut.rsi
 
-- type: entity
-  parent: SeedBase
-  name: packet of plasteel cap spores
-  id: PlasteelcapSeeds
-  components:
-    - type: Seed
-      seedId: plasteelcap
-    - type: Sprite
-      sprite: Objects/Specific/Hydroponics/plasteelcap.rsi
 
-- type: entity
-  parent: SeedBase
-  name: packet of chaos berry seeds
-  id: ChaosberrySeeds
-  components:
-    - type: Seed
-      seedId: chaosberries
-    - type: Sprite
-      sprite: Objects/Specific/Hydroponics/chaosberries.rsi
 
-- type: entity
-  parent: SeedBase
-  name: packet of bananium seeds
-  id: BananiumPlantSeeds
-  components:
-    - type: Seed
-      seedId: bananiumplant
-    - type: Sprite
-      sprite: Objects/Specific/Hydroponics/bananiumplant.rsi
 
-- type: entity
-  parent: SeedBase
-  name: packet of voltato seeds
-  id: VoltatoSeeds
-  components:
-    - type: Seed
-      seedId: voltato
-    - type: Sprite
-      sprite: Objects/Specific/Hydroponics/voltato.rsi

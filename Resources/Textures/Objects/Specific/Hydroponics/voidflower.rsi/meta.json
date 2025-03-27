@@ -8,16 +8,31 @@
     },
     "states": [
       {
-        "name": "core"
-      },
-      {
         "name": "dead"
       },
       {
-        "name": "harvest"
+        "name": "harvest",
+        "delays":
+        [
+            [
+                0.20,
+                0.20,
+                0.20,
+                0.20
+            ]
+        ]
       },
       {
-        "name": "produce"
+        "name": "produce",
+        "delays":
+        [
+            [
+                0.20,
+                0.20,
+                0.20,
+                0.20
+            ]
+        ]
       },
       {
         "name": "seed"

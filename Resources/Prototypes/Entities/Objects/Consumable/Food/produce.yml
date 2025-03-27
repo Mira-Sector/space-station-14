@@ -202,6 +202,25 @@
     spawnCount: 1
 
 - type: entity
+  name: plasteel-cap log
+  description: Plasteel also grows on mushrooms, as it turns out.
+  id: PlasteelLog
+  parent: ProduceBase
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/plasteelcap.rsi
+  - type: SolutionContainerManager
+  - type: MeleeWeapon
+    damage:
+      types:
+        Blunt: 15
+  - type: Produce
+    seedId: plasteelcap
+  - type: Log
+    spawnedPrototype: SheetPlasteel1
+    spawnCount: 1
+
+- type: entity
   name: nettle
   description: Stingy little prick.
   id: Nettle
@@ -345,6 +364,61 @@
     entries:
       Burger: Mimana
       Taco: Mimana
+
+- type: entity
+  name: unstable bananium
+  parent: FoodProduceBase
+  id: ProduceBananiumPlant
+  description: A rapidly decaying isotope of bananium. You probably shouldn't be standing so close.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/bananiumplant.rsi
+  - type: Produce
+    seedId: bananiumplant
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 14
+        reagents:
+        - ReagentId: UnstableMutagen #radiation risk and time limit for infinite mutation fuel.
+          Quantity: 12
+        - ReagentId: Nutriment
+          Quantity: 2
+  - type: RadiationSource
+    intensity: 0.75
+  - type: Food
+    trash:
+    - TrashBananiumPeel
+  - type: BadFood
+  - type: PointLight
+    radius: 1.5
+    color: "#3de72e"
+  - type: Perishable
+    # unstable isotope, rots quickily into regular bananium.
+    rotAfter: 20
+    molsPerSecondPerUnitMass: 0
+    forceRotProgression: true
+  - type: RotInto
+    entity: MaterialBananium1
+    # once it would say bloated, turn into the rotten prototype
+    stage: 1
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: JuiceBanana
+        Quantity: 5
+      - ReagentId: Radium
+        Quantity: 5
+  - type: Tag
+    tags:
+    - Fruit
+  - type: FlavorProfile
+    flavors:
+      - banana
+  - type: FoodSequenceElement
+    entries:
+      Burger: UnstableBananium
+      Taco: UnstableBananium
 
 - type: entity
   name: banana peel
@@ -786,6 +860,68 @@
     entries:
       Burger: Potato
       Taco: Potato
+
+- type: entity
+  name: voltato
+  parent: FoodProduceBase
+  id: FoodVoltato
+  description: A favoured food of the Space IRA for its electronics charging utility and no other reasons.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/voltato.rsi
+    layers:
+    - map: [ "enum.PowerCellVisualLayers.Base" ]
+      state: produce
+    - map: [ "enum.PowerCellVisualLayers.Unshaded" ]
+      state: o2 #names are hardcoded to be o+number
+      shader: unshaded
+  - type: Appearance
+  - type: PowerCellVisuals
+  - type: Produce
+    seedId: voltato
+  - type: FlavorProfile
+    flavors:
+      - potatoes
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 14
+        reagents:
+        - ReagentId: SulfuricAcid
+          Quantity: 10
+        - ReagentId: Vitamin
+          Quantity: 4
+      battery:
+        maxVol: 5
+  - type: InjectableSolution
+    solution: battery
+  - type: DrawableSolution
+    solution: battery
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Zinc
+        Quantity: 5
+  - type: PowerCell
+  - type: Battery
+    maxCharge: 500 #somewhere between a small and medium battery
+    startingCharge: 500
+  - type: HitscanBatteryAmmoProvider
+    proto: RedLightLaser
+    fireCost: 50
+  - type: BatteryTransfer
+    canRecieve: true
+    canTransfer: true
+  - type: Explosive
+    explosionType: Default
+    maxIntensity: 200
+    intensitySlope: 1.5
+  - type: Riggable
+  - type: Tag
+    tags:
+    - Potato
+    - Vegetable
+    - PowerCell
 
 - type: entity
   name: tomato
@@ -1442,9 +1578,10 @@
   - type: SolutionContainerManager
     solutions:
       food:
+        maxVol: 8
         reagents:
         - ReagentId: Happiness
-          Quantity: 10
+          Quantity: 8
   - type: LogStack
     spawnedPrototype: Credit
     usePotency: true
@@ -1453,8 +1590,10 @@
   - type: Tag
     tags:
     - ClothMade
-  - type: Extractable
-    grindableSolutionName: food
+  - type: FoodSequenceElement
+    entries:
+      Burger: Spesoe
+      Taco: Spesoe
 
 - type: entity
   name: poppy
@@ -2227,6 +2366,70 @@
       Burger: BerriesBurger
 
 - type: entity
+  name: chaos berry pod
+  description: A durable pod that protects chaos berries from the outside world, or perhaps the other way around? Rip it open and find out.
+  id: ProduceChaosPod
+  parent: ProduceBase
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/chaosberries.rsi
+  - type: Produce
+    seedId: chaosberries
+  - type: SolutionContainerManager
+  - type: SpawnItemsOnUse
+    items:
+      - id: FoodChaosBerries
+    sound:
+      path: /Audio/Effects/packetrip.ogg
+  - type: Tag
+    tags:
+    - Fruit
+
+- type: entity      #due to a bug(?) chemical reaction effects don't occur when you harvest a grown plants. So can't use a chemical reaction to decide random chemical here.
+  name: chaos berry #best that can be done is a random weighted list, this has to be a seperate item or it gets overwritten. It doesn't scale with potency though :(
+  description: A handful of multicoloured berries, what could they contain?
+  id: FoodChaosBerries
+  parent: FoodProduceBase
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/chaosberries.rsi
+    layers:
+      - state: berry
+        map: ["enum.SolutionContainerLayers.Base"]
+      - state: chem-1
+        map: ["enum.SolutionContainerLayers.Fill"]
+        visible: true
+    state: berry
+  - type: Produce
+    seedId: chaosberries
+  - type: RandomFillSolution
+    solution: food
+    weightedRandomId: RandomPickBotanyReagent
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 15
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 3
+        - ReagentId: Vitamin
+          Quantity: 2
+  - type: SolutionContainerVisuals
+    solution: food
+    maxFillLevels: 3
+    fillBaseName: chem-
+  - type: Tag
+    tags:
+    - Fruit
+  - type: FoodSequenceElement
+    entries:
+      Taco: ChaosBerries
+      Burger: ChaosBerriesBurger
+  - type: FlavorProfile
+  flavors:
+    - berry
+
+- type: entity
   name: bungo fruit
   parent: FoodProduceBase
   id: FoodBungo
@@ -2653,6 +2856,10 @@
   - type: Tag
     tags:
     - Flower
+  - type: FoodSequenceElement
+    entries:
+      Taco: Sunflower
+      Burger: Sunflower
 
 - type: entity
   name: lampflower
@@ -2668,6 +2875,10 @@
     scale: 1.5,1.5
   - type: Produce
     seedId: lampflower
+  - type: Food
+    trash:
+    - ClothingHeadHatLampflowerRing
+  - type: SolutionContainerManager
     solutions:
       food:
         maxVol: 27
@@ -2678,22 +2889,14 @@
           Quantity: 2
         - ReagentId: Vitamin
           Quantity: 5
-  - type: Tag
-    tags:
-    - Flower
   - type: Butcherable
     butcheringType: Knife
     spawned:
     - id: ClothingHeadHatLampflowerRing
-  - type: Food
-    trash:
-    - ClothingHeadHatLampflowerRing
-  - type: SolutionContainerManager
   - type: PointLight
     radius: 6.0
     color: "#fffb00"
-  - type: Perishable
-    # lots of point lights are laggy, so rot after 15 minutes to reduce that.
+  - type: Perishable    # lots of point lights are laggy, so rot after 15 minutes to reduce that.
     rotAfter: 900
     molsPerSecondPerUnitMass: 0
     forceRotProgression: true
@@ -2701,6 +2904,13 @@
     entity: LampflowerCoreRot
     # once it would say bloated, turn into the rotten prototype
     stage: 1
+  - type: Tag
+    tags:
+    - Flower
+  - type: FoodSequenceElement
+    entries:
+      Taco: Lampflower
+      Burger: Lampflower
 
 - type: entity
   name: empty lampflower core
@@ -2725,7 +2935,7 @@
 
 - type: entity
   name: voidflower
-  description: A bulky flower that bends light around it.
+  description: A bulky flower with core of darkness.
   id: ProduceVoidflower
   parent: FoodProduceBase
   components:
@@ -2734,10 +2944,6 @@
     scale: 1.5,1.5
   - type: Produce
     seedId: voidflower
-  - type: SingularityDistortion
-    intensity: 300
-    falloffPower: 3
-    hasEventHorizon: true
   - type: SolutionContainerManager
     solutions:
       food:
@@ -2758,6 +2964,10 @@
   - type: FlavorProfile
     flavors:
       - inky
+  - type: FoodSequenceElement
+    entries:
+      Taco: Voidflower
+      Burger: Voidflower
 
 - type: entity
   name: coconut
@@ -2783,7 +2993,7 @@
       drink:
         maxVol: 30
         reagents:
-        - ReagentId: CoconutWater #gets lost if coconut is grinded as extractable only accepts one solution, so can only be food or drink >:( (unless we change that)
+        - ReagentId: CoconutWater #gets lost if coconut is grinded as extractable only accepts one solution, so can only be food or drink >:( 
           Quantity: 20
   - type: DrawableSolution
     solution: drink
@@ -2817,9 +3027,11 @@
         solution: drink
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
-  - type: SliceableFoodDrink
+  - type: SliceableFood
     count: 1
     slice: ProduceCoconutOpen
+    spawnOffset: 0
+    extraSolution: drink
   - type: Extractable
     juiceSolution:
       reagents:
@@ -2929,6 +3141,7 @@
         - ReagentId: Fiber
           Quantity: 5
       drink:
+        temperature: 273
         maxVol: 20
         canReact: false
         reagents:
@@ -2938,8 +3151,6 @@
     solution: drink
   - type: InjectableSolution
     solution: drink
-  - type: SolutionHeater
-    heatPerSecond: -30
   - type: MeleeWeapon
     damage:
       types:
@@ -2964,9 +3175,11 @@
         solution: drink
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
-  - type: SliceableFoodDrink
+  - type: SliceableFood
     count: 1
     slice: ProduceCryoconutOpen
+    spawnOffset: 0
+    extraSolution: drink
   - type: Extractable
     juiceSolution:
       reagents:
@@ -3002,6 +3215,7 @@
         - ReagentId: Fiber
           Quantity: 5
       drink:
+        temperature: 273
         maxVol: 20
         reagents:
         - ReagentId: Cryoxadone
@@ -3053,159 +3267,5 @@
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
   - type: DnaSubstanceTrace
-
-- type: entity
-  name: plasteel-cap log
-  description: Plasteel also grows on mushrooms, as it turns out.
-  id: plasteelLog
-  parent: ProduceBase
-  components:
-  - type: Sprite
-    sprite: Objects/Specific/Hydroponics/plasteelcap.rsi
-  - type: SolutionContainerManager
-  - type: MeleeWeapon
-    damage:
-      types:
-        Blunt: 15
-  - type: Produce
-    seedId: plasteelcap
-  - type: Log
-    spawnedPrototype: SheetPlasteel1
-    spawnCount: 1
-
-- type: entity
-  name: chaos berry
-  description: A handful of multicoloured berries, what could they contain?
-  id: FoodChaosBerries
-  parent: FoodProduceBase
-  components:
-  - type: Sprite
-    sprite: Objects/Specific/Hydroponics/chaosberries.rsi
-  - type: Produce
-    seedId: chaosberries
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-        - ReagentId: Chaos
-          Quantity: 8
-        - ReagentId: Nutriment
-          Quantity: 4
-        - ReagentId: Vitamin
-          Quantity: 4
-      random:
-        maxVol: 4
-  - type: Tag
-    tags:
-    - Fruit
-  - type: FlavorProfile
-  flavors:
-    - berry
-
-- type: entity
-  name: unstable bananium
-  parent: FoodProduceBase
-  id: ProduceBananiumPlant
-  description: A rapidly decaying isotope of bananium. You probably shouldn't be standing so close.
-  components:
-  - type: Sprite
-    sprite: Objects/Specific/Hydroponics/bananiumplant.rsi
-  - type: Produce
-    seedId: bananiumplant
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 14
-        reagents:
-        - ReagentId: UnstableMutagen #radiation risk and time limit for infinite mutation fuel.
-          Quantity: 12
-        - ReagentId: Nutriment
-          Quantity: 2
-  - type: RadiationSource
-    intensity: 0.5
-  - type: Food
-    trash:
-    - TrashBananiumPeel
-  - type: BadFood
-  - type: PointLight
-    radius: 1.5
-    color: "#3de72e"
-  - type: Perishable
-    # unstable isotope, rots quickily into regular bananium.
-    rotAfter: 20
-    molsPerSecondPerUnitMass: 0
-    forceRotProgression: true
-  - type: RotInto
-    entity: MaterialBananium1
-    # once it would say bloated, turn into the rotten prototype
-    stage: 1
-  - type: Extractable
-    juiceSolution:
-      reagents:
-      - ReagentId: JuiceBanana
-        Quantity: 5
-      - ReagentId: Radium
-        Quantity: 5
-  - type: Tag
-    tags:
-    - Fruit
-  - type: FlavorProfile
-    flavors:
-      - banana
-
-- type: entity
-  name: voltato
-  parent: FoodProduceBase
-  id: FoodVoltato
-  description: A favoured food of the Space IRA for its electronics charging utility and no other reasons.
-  components:
-  - type: Sprite
-    sprite: Objects/Specific/Hydroponics/voltato.rsi
-  - type: Produce
-    seedId: voltato
-  - type: FlavorProfile
-    flavors:
-      - potatoes
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 14
-        reagents:
-        - ReagentId: SulfuricAcid
-          Quantity: 10
-        - ReagentId: Vitamin
-          Quantity: 4
-      battery:
-        maxVol: 5
-  - type: InjectableSolution
-    solution: battery
-  - type: DrawableSolution
-    solution: battery
-  - type: Extractable
-    juiceSolution:
-      reagents:
-      - ReagentId: SulfuricAcid
-        Quantity: 10
-  - type: PowerCell
-  - type: Battery
-    maxCharge: 500 #somewhere between a small and medium battery
-    startingCharge: 500
-  - type: HitscanBatteryAmmoProvider
-    proto: RedLightLaser
-    fireCost: 50
-  - type: BatteryTransfer
-    canRecieve: true
-    canTransfer: true
-  - type: Explosive
-    explosionType: Default
-    maxIntensity: 200
-    intensitySlope: 1.5
-  - type: Riggable
-  - type: Tag
-    tags:
-    - Potato
-    - Vegetable
-    - PowerCell
 
 

@@ -81,7 +81,25 @@ public sealed class SliceableFoodSystem : EntitySystem
         if (!TryComp<UtensilComponent>(usedItem, out var utensil) || (utensil.Types & UtensilType.Knife) == 0)
             return false;
 
+        var isExtraSolution = false;
+        var solnEx = soln; //IDE whines if these aren't defined due to "may be null" error
+        var solutionEx = solution;
+        var extraSolution = "";
+        if (!string.IsNullOrEmpty(component.ExtraSolution))//check to see if extra solution is defined. If it isn't it should be ignored.
+        {
+            if (!_solutionContainer.TryGetSolution(uid, component.ExtraSolution, out var solnExtra, out var solutionExtra))
+            {
+                return false;
+            }
+            isExtraSolution = true;
+            solnEx = solnExtra; //if it was defined, apply the values actually wanted.
+            solutionEx = solutionExtra;
+            extraSolution = component.ExtraSolution;
+        }
+
         var sliceVolume = solution.Volume / FixedPoint2.New(component.TotalCount);
+        var sliceVolumeExtra = solutionEx.Volume / FixedPoint2.New(component.TotalCount);
+
         for (int i = 0; i < component.TotalCount; i++)
         {
             var sliceUid = Slice(uid, user, component, transform);
@@ -91,6 +109,13 @@ public sealed class SliceableFoodSystem : EntitySystem
 
             // Fill new slice
             FillSlice(sliceUid, lostSolution);
+
+            if (isExtraSolution == true)
+            {
+                var lostSolutionExtra =
+                    _solutionContainer.SplitSolution(solnEx.Value, sliceVolumeExtra);
+                FillSliceExtra(sliceUid, lostSolutionExtra, extraSolution);
+            }
         }
 
         _audio.PlayPvs(component.Sound, transform.Coordinates, AudioParams.Default.WithVolume(-2));
@@ -158,6 +183,17 @@ public sealed class SliceableFoodSystem : EntitySystem
         // Replace all reagents on prototype not just copying poisons (example: slices of eaten pizza should have less nutrition)
         if (TryComp<FoodComponent>(sliceUid, out var sliceFoodComp) &&
             _solutionContainer.TryGetSolution(sliceUid, sliceFoodComp.Solution, out var itsSoln, out var itsSolution))
+        {
+            _solutionContainer.RemoveAllSolution(itsSoln.Value);
+
+            var lostSolutionPart = solution.SplitSolution(itsSolution.AvailableVolume);
+            _solutionContainer.TryAddSolution(itsSoln.Value, lostSolutionPart);
+        }
+    }
+
+    private void FillSliceExtra(EntityUid sliceUid, Solution solution, String extra) //fill up an extra solution, such as drink.
+    {
+        if (_solutionContainer.TryGetSolution(sliceUid, extra, out var itsSoln, out var itsSolution))
         {
             _solutionContainer.RemoveAllSolution(itsSoln.Value);
 

@@ -96,6 +96,13 @@ namespace Content.Shared.Chemistry.Reaction
         public bool Source;
 
         /// <summary>
+        /// Prevents reaction occurring if container has less than this many reagents
+        /// EG: Would be higher than zero for a chemical that would react with anything in the container with it, but should be prevented from reacting with just itself.
+        /// </summary>
+        [DataField]
+        public int RequiredReagentCount = 0;
+
+        /// <summary>
         ///     Comparison for creating a sorted set of reactions. Determines the order in which reactions occur.
         /// </summary>
         public int CompareTo(ReactionPrototype? other)
