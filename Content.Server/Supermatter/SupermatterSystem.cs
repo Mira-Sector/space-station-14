@@ -32,7 +32,7 @@ public sealed partial class SupermatterSystem : EntitySystem
         SubscribeLocalEvent<SupermatterRadioComponent, SupermatterCountdownTickEvent>(OnRadioCountdownTick);
         SubscribeLocalEvent<SupermatterDelaminationCountdownComponent, SupermatterBeforeDelaminatedEvent>(OnCountdownBeforeDelamination);
 
-        SubscribeLocalEvent<SupermatterGasReactionComponent, AtmosExposedUpdateEvent>(OnAtmosExposed);
+        SubscribeLocalEvent<SupermatterGasReactionComponent, AtmosExposedUpdateEvent>(OnGasReactionAtmosExposed);
 
         SubscribeLocalEvent<SupermatterGasEmitterComponent, ComponentInit>(OnGasEmitterInit);
         SubscribeLocalEvent<SupermatterGasEmitterComponent, SupermatterGasReactedEvent>(OnGasEmitterGasReact);
@@ -46,6 +46,8 @@ public sealed partial class SupermatterSystem : EntitySystem
 
         SubscribeLocalEvent<SupermatterRadiationComponent, ComponentInit>(OnRadiationInit);
         SubscribeLocalEvent<SupermatterRadiationComponent, SupermatterEnergyModifiedEvent>(OnRadiationEnergyModified);
+
+        SubscribeLocalEvent<SupermatterEnergyDecayComponent, AtmosExposedUpdateEvent>(OnDecayAtmosExposed);
     }
 
     public override void Update(float frameTime)
@@ -106,6 +108,7 @@ public sealed partial class SupermatterSystem : EntitySystem
 
             var energy = (float) Math.Pow(energyComp.CurrentEnergy, decayComp.EnergyDecay);
             ModifyEnergy((uid, energyComp), energy);
+            decayComp.LastLostEnergy += energy;
         }
     }
 
@@ -135,7 +138,7 @@ public sealed partial class SupermatterSystem : EntitySystem
         ent.Comp.Slope = radiationComp.Slope;
     }
 
-    private void OnAtmosExposed(Entity<SupermatterGasReactionComponent> ent, ref AtmosExposedUpdateEvent args)
+    private void OnGasReactionAtmosExposed(Entity<SupermatterGasReactionComponent> ent, ref AtmosExposedUpdateEvent args)
     {
         if (args.GasMixture.TotalMoles < Atmospherics.GasMinMoles)
         {
@@ -287,6 +290,11 @@ public sealed partial class SupermatterSystem : EntitySystem
         var radiationComp = EntityManager.GetComponent<RadiationSourceComponent>(ent);
         radiationComp.Intensity = ent.Comp.Intensity + (float) Math.Log(args.CurrentEnergy, ent.Comp.IntensityBase);
         radiationComp.Slope = ent.Comp.Slope - (float) Math.Log(args.CurrentEnergy, ent.Comp.SlopeBase);
+    }
+
+    private void OnDecayAtmosExposed(Entity<SupermatterEnergyDecayComponent> ent, ref AtmosExposedUpdateEvent args)
+    {
+        ent.Comp.LastLostEnergy = 0f;
     }
 
     public void ModifyIntegerity(Entity<SupermatterIntegerityComponent?> ent, FixedPoint2 integerity)
