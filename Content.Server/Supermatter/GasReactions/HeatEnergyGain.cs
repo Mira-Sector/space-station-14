@@ -9,14 +9,14 @@ public sealed partial class HeatEnergyGain : SupermatterGasReaction
     [DataField]
     public float Multiplier;
 
-    public override bool React(EntityUid supermatter, Gas? gas, GasMixture air, IEntityManager entMan)
+    public override bool React(EntityUid supermatter, Gas? gas, GasMixture air, TimeSpan lastReaction, IEntityManager entMan)
     {
         if (!entMan.TryGetComponent<SupermatterEnergyHeatGainComponent>(supermatter, out var heatGainComponent))
             return false;
 
         var supermatterSys = entMan.System<SupermatterSystem>();
 
-        var energy = heatGainComponent.CurrentGain + Multiplier;
+        var energy = heatGainComponent.CurrentGain + Multiplier * (float) lastReaction.TotalSeconds;
         supermatterSys.ModifyEnergy(supermatter, heatGainComponent.CurrentGain - energy);
         heatGainComponent.CurrentGain += energy;
         return true;

@@ -8,7 +8,7 @@ namespace Content.Server.Supermatter.Components;
 public sealed partial class SupermatterGasEmitterComponent : Component
 {
     [DataField]
-    public Dictionary<Gas, float> Ratios = new();
+    public Dictionary<Gas, int> Ratios = new();
 
     [ViewVariables]
     public float CurrentRate

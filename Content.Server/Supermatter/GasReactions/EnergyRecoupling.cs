@@ -12,7 +12,7 @@ public sealed partial class EnergyRecoupling : SupermatterGasReaction
     [DataField]
     public float Energy;
 
-    public override bool React(EntityUid supermatter, Gas? gas, GasMixture air, IEntityManager entMan)
+    public override bool React(EntityUid supermatter, Gas? gas, GasMixture air, TimeSpan lastReaction, IEntityManager entMan)
     {
         if (!entMan.TryGetComponent<SupermatterEnergyDecayComponent>(supermatter, out var decayComp))
             return false;

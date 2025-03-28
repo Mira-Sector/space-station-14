@@ -140,10 +140,14 @@ public sealed partial class SupermatterSystem : EntitySystem
 
     private void OnGasReactionAtmosExposed(Entity<SupermatterGasReactionComponent> ent, ref AtmosExposedUpdateEvent args)
     {
+        var lastReaction = _timing.CurTime - ent.Comp.LastReaction;
+
         if (args.GasMixture.TotalMoles < Atmospherics.GasMinMoles)
         {
             foreach (var reaction in ent.Comp.SpaceReactions)
-                reaction.React(ent, null, args.GasMixture, EntityManager);
+                reaction.React(ent, null, args.GasMixture, lastReaction, EntityManager);
+
+            ent.Comp.LastReaction = _timing.CurTime;
 
             var spaceEv = new SupermatterSpaceGasReactedEvent();
             RaiseLocalEvent(ent, spaceEv);
@@ -156,7 +160,7 @@ public sealed partial class SupermatterSystem : EntitySystem
         {
             foreach (var reaction in reactions)
             {
-                if (!reaction.React(ent, gas, args.GasMixture, EntityManager))
+                if (!reaction.React(ent, gas, args.GasMixture, lastReaction, EntityManager))
                     continue;
 
                 if (completedReactions.TryGetValue(gas, out var newReactions))
@@ -171,6 +175,8 @@ public sealed partial class SupermatterSystem : EntitySystem
                 }
             }
         }
+
+        ent.Comp.LastReaction = _timing.CurTime;
 
         var ev = new SupermatterGasReactedEvent(completedReactions);
         RaiseLocalEvent(ent, ev);

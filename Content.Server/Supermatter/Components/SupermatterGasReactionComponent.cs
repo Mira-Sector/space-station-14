@@ -11,4 +11,7 @@ public sealed partial class SupermatterGasReactionComponent : Component
 
     [DataField]
     public HashSet<SupermatterGasReaction> SpaceReactions = new();
+
+    [ViewVariables]
+    public TimeSpan LastReaction;
 }

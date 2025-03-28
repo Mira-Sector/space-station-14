@@ -9,17 +9,17 @@ public sealed partial class ModifyWaste : SupermatterGasReaction
     [DataField]
     public float Multiplier;
 
-    public override bool React(EntityUid supermatter, Gas? gas, GasMixture air, IEntityManager entMan)
+    public override bool React(EntityUid supermatter, Gas? gas, GasMixture air, TimeSpan lastReaction, IEntityManager entMan)
     {
         if (!entMan.TryGetComponent<SupermatterGasEmitterComponent>(supermatter, out var gasEmitterComp))
             return false;
 
         if (gas != null && gasEmitterComp.PreviousPercentage.TryGetValue(gas.Value, out var previousPercentage))
-            gasEmitterComp.CurrentRate -= previousPercentage * Multiplier;
+            gasEmitterComp.CurrentRate -= previousPercentage * Multiplier * (float) lastReaction.TotalSeconds;
 
-        var percentage = gas == null ? 1f : air.GetMoles(gas.Value);
+        var percentage = gas == null ? 1f : air.GetMoles(gas.Value) / air.TotalMoles;
 
-        gasEmitterComp.CurrentRate += percentage * Multiplier;
+        gasEmitterComp.CurrentRate += percentage * Multiplier * (float) lastReaction.TotalSeconds;
 
         if (gas == null)
             return true;
