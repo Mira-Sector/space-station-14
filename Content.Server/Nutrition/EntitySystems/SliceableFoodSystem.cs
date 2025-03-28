@@ -194,9 +194,6 @@ public sealed class SliceableFoodSystem : EntitySystem
 
     private void FillSliceExtra(EntityUid sliceUid, Entity<SolutionComponent> solnValue, FixedPoint2 sliceExtra, string? extra) //fill up an extra solution, such as drink.
     {
-        //if (solnValue == null)//it shouldn't be null if it got here but if it somehow is then return
-        //    return;
-
         var solution = _solutionContainer.SplitSolution(solnValue, sliceExtra);
         if (_solutionContainer.TryGetSolution(sliceUid, extra, out var itsSoln, out var itsSolution))
         {
