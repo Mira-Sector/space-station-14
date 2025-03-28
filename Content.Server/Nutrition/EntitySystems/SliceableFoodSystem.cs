@@ -112,9 +112,9 @@ public sealed class SliceableFoodSystem : EntitySystem
                 // Fill new slice
                 FillSlice(sliceUid, lostSolution);
 
-                if (isExtraSolution == true) //if there is an extra solution, add that one too
+                if (isExtraSolution == true && solnEx != null) //if there is an extra solution, add that one too
                 {
-                    FillSliceExtra(sliceUid, solnEx, sliceVolumeExtra, extraSolution);
+                    FillSliceExtra(sliceUid, solnEx.Value, sliceVolumeExtra, extraSolution);
                 }
             }
         }
@@ -192,12 +192,12 @@ public sealed class SliceableFoodSystem : EntitySystem
         }
     }
 
-    private void FillSliceExtra(EntityUid sliceUid, Entity<SolutionComponent>? solnValue, FixedPoint2 sliceExtra, String? extra) //fill up an extra solution, such as drink.
+    private void FillSliceExtra(EntityUid sliceUid, Entity<SolutionComponent> solnValue, FixedPoint2 sliceExtra, string? extra) //fill up an extra solution, such as drink.
     {
-        if (solnValue == null)//it shouldn't be null if it got here but if it somehow is then return
-            return;
+        //if (solnValue == null)//it shouldn't be null if it got here but if it somehow is then return
+        //    return;
 
-        var solution = _solutionContainer.SplitSolution(solnValue.Value, sliceExtra);
+        var solution = _solutionContainer.SplitSolution(solnValue, sliceExtra);
         if (_solutionContainer.TryGetSolution(sliceUid, extra, out var itsSoln, out var itsSolution))
         {
             _solutionContainer.RemoveAllSolution(itsSoln.Value);
