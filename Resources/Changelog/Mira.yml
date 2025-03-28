@@ -1393,3 +1393,27 @@ Entries:
     type: Fix
   id: 204
   time: '2025-03-24T01:30:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: Added spesoe (a mutation of aloe, chopping it gives an amount of spesos equal to the plant's potency, contains a small amount of happiness)
+    type: Add
+  - message: Added Voltato (a mutation of potatoes, acts as a battery with 500 charge, between a small and medium battery. Contains sulphuric acid and zinc)
+    type: Add
+  - message: Added Chaos Berries (a mutation of Berries, when harvested provides a pod that can be opened to obtain a berry. The berry has 5-10u of a random chemical pulling from the same list random plant mutation chemicals does)
+    type: Add
+  - message: Added Plasteelcap (a mutation of Steelcap, can be chopped up for plasteel)
+    type: Add
+  - message: Added Unstable Bananium (a mutation of Bananas. Harvested produce is radioactive and unstable, will degrade after 20 seconds into bananium. If grinded before that provides Unstable Mutagen, or radium if juiced)
+    type: Add
+  - message: Added Sunflower (new plant, found in seed vendor. Contains oil. Can be butchered to make into a sunflower ring hat)
+    type: Add
+  - message: Added Lampflower (a mutation of Sunflowers. Produce naturally glows, but rots after 15 minutes to prevent point light spam. Can be butchered to make a lampflower ring hat that also glows, although less so. Contains new Reagent Solar Oil)
+    type: Add
+  - message: Added Voidflower (a mutation of Sunflowers. Contains new Reagent Void Oil. Can be butchered to make a voidflower ring that hides identity and looks spooky)
+    type: Add
+  - message: Added Coconut (new plant, found in exotic seeds crate. Acts as a liquid container and can be syringed out of or injected into, holds 30u and naturally contains coconut water. Butchering makes a sliced coconut that can be drunk out of like a cup. Liquids injected into coconuts are retained when sliced, but not when grinded.
+    type: Add
+  - message: Added Cryoconut (a mutation of Coconuts. Acts as a liquid container that also prevents reactions, like a cryo beaker. Can be syringed out of or injected into, holds 20u and naturally contains cryoxadone. Fiber also contains a very small amount of fresium. Cut Cryoconut doesn't retain no-reaction quality.
+    type: Add
+  id: 205
+  time: '2025-03-28T23:00:00.0000000+00:00'
