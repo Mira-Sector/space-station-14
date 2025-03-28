@@ -89,6 +89,7 @@
     - FoodBanana
   mutationPrototypes:
     - mimana
+    - bananiumplant
   harvestRepeat: Repeat
   lifespan: 50
   maturation: 6
@@ -130,6 +131,35 @@
       Max: 5
       PotencyDivisor: 20
     Nutriment:
+      Min: 1
+      Max: 2
+      PotencyDivisor: 50
+
+- type: seed
+  id: bananiumplant
+  name: seeds-bananiumplant-name
+  noun: seeds-noun-seeds
+  displayName: seeds-bananiumplant-display-name
+  plantRsi: Objects/Specific/Hydroponics/bananiumplant.rsi
+  packetPrototype: BananiumPlantSeeds
+  productPrototypes:
+    - ProduceBananiumPlant
+  harvestRepeat: Repeat
+  lifespan: 50
+  maturation: 6
+  production: 6
+  yield: 2
+  idealLight: 9
+  waterConsumption: 0.60
+  idealHeat: 298
+  weedTolerance: 90 #radiation kills the weeds.
+  pestTolerance: 90 #and the pests.
+  chemicals:
+    UnstableMutagen:
+      Min: 1
+      Max: 12
+      PotencyDivisor: 8
+    Nutriment: #tasty
       Min: 1
       Max: 2
       PotencyDivisor: 50
@@ -384,6 +414,8 @@
   packetPrototype: PotatoSeeds
   productPrototypes:
     - FoodPotato
+  mutationPrototypes:
+    - voltato
   lifespan: 30
   maturation: 10
   production: 3
@@ -393,6 +425,32 @@
   waterConsumption: 0.60
   chemicals:
     Nutriment:
+      Min: 1
+      Max: 10
+      PotencyDivisor: 10
+    Vitamin:
+      Min: 1
+      Max: 4
+      PotencyDivisor: 25
+
+- type: seed
+  id: voltato
+  name: seeds-voltato-name
+  noun: seeds-noun-seeds
+  displayName: seeds-voltato-display-name
+  plantRsi: Objects/Specific/Hydroponics/voltato.rsi
+  packetPrototype: VoltatoSeeds
+  productPrototypes:
+    - FoodVoltato
+  lifespan: 30
+  maturation: 10
+  production: 3
+  yield: 3
+  potency: 10
+  growthStages: 4
+  waterConsumption: 0.60
+  chemicals:
+    SulfuricAcid:
       Min: 1
       Max: 10
       PotencyDivisor: 10
@@ -501,6 +559,8 @@
   packetPrototype: SteelcapSeeds
   productPrototypes:
     - SteelLog
+  mutationPrototypes:
+    - plasteelcap
   lifespan: 80
   maturation: 15
   ligneous: true
@@ -510,6 +570,27 @@
   growthStages: 3
   waterConsumption: 0.60
   nutrientConsumption: 0.80
+  lightTolerance: 6
+  idealHeat: 288
+
+- type: seed
+  id: plasteelcap
+  name: seeds-plasteelcap-name
+  noun: seeds-noun-spores
+  displayName: seeds-plasteelcap-display-name
+  plantRsi: Objects/Specific/Hydroponics/plasteelcap.rsi
+  packetPrototype: PlasteelcapSeeds
+  productPrototypes:
+    - PlasteelLog
+  lifespan: 80
+  maturation: 15
+  ligneous: true
+  production: 3
+  yield: 3
+  potency: 1
+  growthStages: 3
+  waterConsumption: 0.60
+  nutrientConsumption: 1.6
   lightTolerance: 6
   idealHeat: 288
 
@@ -1186,6 +1267,8 @@
   packetPrototype: AloeSeeds
   productPrototypes:
     - FoodAloe
+  mutationPrototypes:
+    - spesoe
   lifespan: 25
   maturation: 10
   production: 3
@@ -1199,6 +1282,29 @@
       Max: 10
       PotencyDivisor: 10
     Dermaline:
+      Min: 1
+      Max: 10
+      PotencyDivisor: 10
+
+- type: seed
+  id: spesoe
+  name: seeds-spesoe-name
+  noun: seeds-noun-seeds
+  displayName: seeds-spesoe-display-name
+  plantRsi: Objects/Specific/Hydroponics/spesoe.rsi
+  packetPrototype: SpesoeSeeds
+  productPrototypes:
+    - ProduceSpesoe
+  lifespan: 25
+  maturation: 10
+  production: 3
+  yield: 3
+  potency: 10
+  idealLight: 8
+  growthStages: 5
+  waterConsumption: 0.60
+  chemicals:
+    Happiness:
       Min: 1
       Max: 10
       PotencyDivisor: 10
@@ -1713,6 +1819,8 @@
   packetPrototype: BerrySeeds
   productPrototypes:
     - FoodBerries
+  mutationPrototypes:
+    - chaosberries
   harvestRepeat: Repeat
   lifespan: 50
   maturation: 6
@@ -1729,6 +1837,23 @@
       Min: 1
       Max: 4
       PotencyDivisor: 40
+
+- type: seed
+  id: chaosberries
+  name: seeds-chaosberries-name
+  noun: seeds-noun-seeds
+  displayName: seeds-chaosberries-display-name
+  plantRsi: Objects/Specific/Hydroponics/chaosberries.rsi
+  packetPrototype: ChaosBerrySeeds
+  productPrototypes:
+    - ProduceChaosPod
+  harvestRepeat: Repeat
+  lifespan: 50
+  maturation: 6
+  production: 6
+  yield: 4
+  idealLight: 7
+  nutrientConsumption: 0.6
 
 - type: seed
   id: bungo
@@ -1989,3 +2114,162 @@
       Min: 1
       Max: 2
       PotencyDivisor: 40
+
+- type: seed
+  id: sunflower
+  name: seeds-sunflower-name
+  noun: seeds-noun-seeds
+  displayName: seeds-sunflower-display-name
+  plantRsi: Objects/Specific/Hydroponics/sunflower.rsi
+  packetPrototype: SunflowerSeeds
+  productPrototypes:
+    - ProduceSunflower
+  mutationPrototypes:
+    - lampflower
+    - voidflower
+  lifespan: 30
+  maturation: 10
+  production: 5
+  yield: 1
+  potency: 35
+  growthStages: 4
+  chemicals:
+    Oil:
+      Min: 1
+      Max: 20
+      PotencyDivisor: 5
+    Nutriment:
+      Min: 1
+      Max: 2
+      PotencyDivisor: 20
+    Vitamin:
+      Min: 1
+      Max: 5
+      PotensyDivisor: 20
+
+- type: seed
+  id: lampflower
+  name: seeds-lampflower-name
+  noun: seeds-noun-seeds
+  displayName: seeds-lampflower-display-name
+  plantRsi: Objects/Specific/Hydroponics/lampflower.rsi
+  packetPrototype: LampflowerSeeds
+  productPrototypes:
+    - ProduceLampflower
+  lifespan: 30
+  maturation: 10
+  production: 5
+  yield: 1
+  potency: 35
+  growthStages: 4
+  chemicals:
+    Solaroil:
+      Min: 1
+      Max: 20
+      PotencyDivisor: 5
+    Nutriment:
+      Min: 1
+      Max: 2
+      PotencyDivisor: 20
+    Vitamin:
+      Min: 1
+      Max: 5
+      PotensyDivisor: 20
+
+- type: seed
+  id: voidflower
+  name: seeds-voidflower-name
+  noun: seeds-noun-seeds
+  displayName: seeds-voidflower-display-name
+  plantRsi: Objects/Specific/Hydroponics/voidflower.rsi
+  packetPrototype: VoidflowerSeeds
+  productPrototypes:
+    - ProduceVoidflower
+  lifespan: 30
+  maturation: 10
+  production: 5
+  yield: 1
+  potency: 35
+  growthStages: 4
+  chemicals:
+    Voidoil:
+      Min: 1
+      Max: 25
+      PotencyDivisor: 4
+
+- type: seed
+  id: coconut
+  name: seeds-coconut-name
+  noun: seeds-noun-seeds
+  displayName: seeds-coconut-display-name
+  plantRsi: Objects/Specific/Hydroponics/coconut.rsi
+  packetPrototype: CoconutSeeds
+  productPrototypes:
+    - ProduceCoconut
+  mutationPrototypes:
+    - cryoconut
+  lifespan: 50
+  maturation: 15
+  production: 5
+  yield: 2
+  potency: 20
+  harvestRepeat: Repeat
+  chemicals:
+    Vitamin:
+      Min: 1
+      Max: 5
+      PotencyDivisor: 20
+    Nutriment:
+      Min: 1
+      Max: 5
+      PotencyDivisor: 20
+    Fiber:
+      Min: 1
+      Max: 5
+      PotencyDivisor: 20
+    CoconutWater:
+      Min: 2
+      Max: 20
+      PotencyDivisor: 5
+
+- type: seed
+  id: cryoconut
+  name: seeds-cryoconut-name
+  noun: seeds-noun-seeds
+  displayName: seeds-cryoconut-display-name
+  plantRsi: Objects/Specific/Hydroponics/cryoconut.rsi
+  packetPrototype: CryoconutSeeds
+  productPrototypes:
+    - ProduceCryoconut
+  lifespan: 50
+  maturation: 15
+  production: 5
+  yield: 2
+  potency: 20
+  harvestRepeat: Repeat
+  idealHeat: 3 #can survive the cold vacuum of space, it's got cryoxadone after all
+  heatTolerance: 300
+  lowPressureTolerance: 100
+  chemicals:
+    Fresium:
+      Min: 1
+      Max: 2
+      PotencyDivisor: 50
+    Nutriment:
+      Min: 1
+      Max: 5
+      PotencyDivisor: 20
+    Fiber:
+      Min: 1
+      Max: 5
+      PotencyDivisor: 20
+    Cryoxadone:
+      Min: 2
+      Max: 10
+      PotencyDivisor: 10
+
+
+
+
+
+

@@ -398,3 +398,24 @@
         conditions:
         - !type:ReagentThreshold
           min: 50
+
+- type: reagent
+  id: Solaroil
+  name: reagent-name-solaroil
+  desc: reagent-desc-solaroil
+  physicalDesc: reagent-physical-desc-glowing
+  flavor: glowing
+  color: "#fffb00"
+  worksOnTheDead: true
+  reactiveEffects:
+    Acidic:
+      methods: [ Touch ]
+      effects:
+      - !type:Glowing
+  metabolisms:
+    Drink:
+      metabolismRate: 1
+      effects:
+      - !type:Glowing
+      - !type:AdjustTemperature
+        amount: 5500
