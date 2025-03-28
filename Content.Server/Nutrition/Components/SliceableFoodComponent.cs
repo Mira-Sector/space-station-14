@@ -40,4 +40,7 @@ public sealed partial class SliceableFoodComponent : Component
     /// </summary>
     [DataField]
     public string? ExtraSolution;
+
+    [DataField]
+    public bool TransferReagents = true;
 }

@@ -35,7 +35,6 @@ public sealed class LogStackSystem : EntitySystem
 
         if (component.UsePotency)
         {
-            //ProduceComponent? prod = null;
             if (!TryComp<ProduceComponent>(uid, out var prod))
                 return;
 
@@ -58,7 +57,7 @@ public sealed class LogStackSystem : EntitySystem
             var xform = Transform(spawned);
             _containerSystem.AttachParentToContainerOrGrid((spawned, xform));
             xform.LocalRotation = 0;
-            _randomHelper.RandomOffset(spawned, 0.25f);
+            _randomHelper.RandomOffset(spawned, component.RandomOffset);
         }
 
         QueueDel(uid);

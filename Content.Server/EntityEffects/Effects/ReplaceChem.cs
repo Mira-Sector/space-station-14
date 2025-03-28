@@ -15,13 +15,13 @@ public sealed partial class ReplaceChem : EntityEffect
     /// the chemical that will replace the target chemical, if left null will be chosen randomly based off of a WeightedRandomFillSolution that can be defined with "replaceList"
     ///</summary>
     [DataField]
-    public string? ReplaceWith = null;
+    public string? ReplaceWith;
 
     ///<summary>
     /// the chemical that will be replaced. If left null all chemicals in the solution will be replaced instead.
     ///</summary>
     [DataField]
-    public string? ReplaceTarget = null;
+    public string? ReplaceTarget;
 
     ///<summary>
     /// WeightedRandomFillSolution List used if no ReplaceWith value set to pick a replacing chemical. Defaults to RandomPickBotanyReagent.

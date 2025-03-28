@@ -82,9 +82,9 @@ public sealed class SliceableFoodSystem : EntitySystem
             return false;
 
         var isExtraSolution = false;
-        var solnEx = soln; //IDE whines if these aren't defined due to "may be null" error
-        var solutionEx = solution;
-        var extraSolution = "";
+        Entity<SolutionComponent>? solnEx = null; //define here, replace with real values if needed.
+        Solution? solutionEx = solution;
+        string? extraSolution = null;
         if (!string.IsNullOrEmpty(component.ExtraSolution))//check to see if extra solution is defined. If it isn't it should be ignored.
         {
             if (!_solutionContainer.TryGetSolution(uid, component.ExtraSolution, out var solnExtra, out var solutionExtra))
@@ -92,7 +92,7 @@ public sealed class SliceableFoodSystem : EntitySystem
                 return false;
             }
             isExtraSolution = true;
-            solnEx = solnExtra; //if it was defined, apply the values actually wanted.
+            solnEx = solnExtra.Value; //if it was defined, apply the values actually wanted.
             solutionEx = solutionExtra;
             extraSolution = component.ExtraSolution;
 
@@ -104,16 +104,18 @@ public sealed class SliceableFoodSystem : EntitySystem
         for (int i = 0; i < component.TotalCount; i++)
         {
             var sliceUid = Slice(uid, user, component, transform);
-
-            var lostSolution =
-                _solutionContainer.SplitSolution(soln.Value, sliceVolume);
-
-            // Fill new slice
-            FillSlice(sliceUid, lostSolution);
-
-            if (isExtraSolution == true) //if there is an extra solution, add that one too
+            if (component.TransferReagents == true)
             {
-                FillSliceExtra(sliceUid, solnEx.Value, sliceVolumeExtra, extraSolution);
+                var lostSolution =
+                    _solutionContainer.SplitSolution(soln.Value, sliceVolume);
+
+                // Fill new slice
+                FillSlice(sliceUid, lostSolution);
+
+                if (isExtraSolution == true) //if there is an extra solution, add that one too
+                {
+                    FillSliceExtra(sliceUid, solnEx, sliceVolumeExtra, extraSolution);
+                }
             }
         }
 
@@ -190,9 +192,12 @@ public sealed class SliceableFoodSystem : EntitySystem
         }
     }
 
-    private void FillSliceExtra(EntityUid sliceUid, Entity<SolutionComponent> solnValue, FixedPoint2 sliceExtra, String extra) //fill up an extra solution, such as drink.
+    private void FillSliceExtra(EntityUid sliceUid, Entity<SolutionComponent>? solnValue, FixedPoint2 sliceExtra, String? extra) //fill up an extra solution, such as drink.
     {
-        var solution = _solutionContainer.SplitSolution(solnValue, sliceExtra);
+        if (solnValue == null)//it shouldn't be null if it got here but if it somehow is then return
+            return;
+
+        var solution = _solutionContainer.SplitSolution(solnValue.Value, sliceExtra);
         if (_solutionContainer.TryGetSolution(sliceUid, extra, out var itsSoln, out var itsSolution))
         {
             _solutionContainer.RemoveAllSolution(itsSoln.Value);

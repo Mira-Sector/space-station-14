@@ -2993,7 +2993,7 @@
       drink:
         maxVol: 30
         reagents:
-        - ReagentId: CoconutWater #gets lost if coconut is grinded as extractable only accepts one solution, so can only be food or drink >:( 
+        - ReagentId: CoconutWater #gets lost if coconut is grinded as extractable only accepts one solution, so can only be food or drink >:(
           Quantity: 20
   - type: DrawableSolution
     solution: drink

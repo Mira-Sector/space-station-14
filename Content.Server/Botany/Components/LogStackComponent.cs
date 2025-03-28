@@ -1,7 +1,6 @@
 using Content.Server.Botany.Systems;
 using Robust.Shared.Prototypes;
 using Content.Shared.Stacks;
-//using Content.Shared.Random;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 
 namespace Content.Server.Botany.Components;
@@ -13,11 +12,10 @@ namespace Content.Server.Botany.Components;
 
 public sealed partial class LogStackComponent : Component
 {
-    //[Dependency] protected readonly RandomHelperSystem _randomHelper = default!;
     /// <summary>
     ///     Spawned stacking entity
     /// </summary>
-    [DataField, ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public ProtoId<StackPrototype> SpawnedPrototype = "Credit";
 
     /// <summary>
@@ -33,9 +31,15 @@ public sealed partial class LogStackComponent : Component
     [DataField]
     public float PotencyDivisor = 1f;
     /// <summary>
-    ///     replaces spawnCount value with whatever a plant's potency is. Only works for plants, obviously.
+    ///     Replaces spawnCount value with whatever a plant's potency is. Only works for plants, obviously.
     ///     note that spawned in plants will be spawnCount/PotencyDivisor, has to be naturally grown to draw directly from potency.
     /// </summary>
     [DataField]
     public bool UsePotency = false;
+
+    /// <summary>
+    ///     How much does each spawned item get moved from position of chopped item.
+    /// </summary>
+    [DataField]
+    public float RandomOffset = 0.25f;
 }
