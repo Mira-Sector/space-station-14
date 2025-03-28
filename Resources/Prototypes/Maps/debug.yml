@@ -57,3 +57,18 @@
         - type: StationJobs
           availableJobs:
             ChiefMedicalOfficer: [ -1, -1 ]
+
+- type: gameMap
+  id: TestSm
+  mapName: Test Supermatter
+  mapPath: /Maps/Test/test_sm.yml
+  minPlayers: 0
+  stations:
+    Supermatter:
+      stationProto: TestStation
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: "Supermatter"
+        - type: StationJobs
+          availableJobs:
+            ChiefEngineer: [ -1, -1 ]
