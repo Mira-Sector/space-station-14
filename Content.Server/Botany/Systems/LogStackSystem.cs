@@ -35,9 +35,10 @@ public sealed class LogStackSystem : EntitySystem
 
         if (component.UsePotency)
         {
-            ProduceComponent? prod = null;
-            if (!Resolve(uid, ref prod))
+            //ProduceComponent? prod = null;
+            if (!TryComp<ProduceComponent>(uid, out var prod))
                 return;
+
             if (prod.Seed != null)
                 amount = prod.Seed.Potency; //set to potency value if it exists
             amount = (float)Math.Ceiling((float)amount / component.PotencyDivisor); //round up to avoid zeros
@@ -48,7 +49,7 @@ public sealed class LogStackSystem : EntitySystem
         var pos = Transform(uid).Coordinates;
 
         var stackPrototype = _protoMan.Index<StackPrototype>(component.SpawnedPrototype);
-        var spawned = _stack.Spawn((int)amount, stackPrototype, pos);
+        var spawned = _stack.Spawn((int)amount, component.SpawnedPrototype, pos);
 
         if (inContainer)
             _handsSystem.PickupOrDrop(args.User, spawned);

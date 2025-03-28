@@ -26,7 +26,7 @@ public sealed partial class Glowing : EntityEffect
 
     public override void Effect(EntityEffectBaseArgs args)
     {
-        var glowPower = GlowPower;
+        var glowPower = TimeSpan.FromSeconds(GlowPower);
 
         if (args is EntityEffectReagentArgs reagentArgs)//if reagent, scale based on amount of reagent
         {

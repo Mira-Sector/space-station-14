@@ -15,13 +15,13 @@ public sealed partial class ReplaceChem : EntityEffect
     /// the chemical that will replace the target chemical, if left null will be chosen randomly based off of a WeightedRandomFillSolution that can be defined with "replaceList"
     ///</summary>
     [DataField]
-    public string ReplaceWith = "";
+    public string? ReplaceWith = null;
 
     ///<summary>
     /// the chemical that will be replaced. If left null all chemicals in the solution will be replaced instead.
     ///</summary>
     [DataField]
-    public string ReplaceTarget = "";
+    public string? ReplaceTarget = null;
 
     ///<summary>
     /// WeightedRandomFillSolution List used if no ReplaceWith value set to pick a replacing chemical. Defaults to RandomPickBotanyReagent.
@@ -36,7 +36,7 @@ public sealed partial class ReplaceChem : EntityEffect
             return; //if no solution component, go home.
 
         ReagentId replaceChem;
-        if (ReplaceWith == "") //if no specific replacement chemical chosen, choose randomly.
+        if (ReplaceWith == null) //if no specific replacement chemical chosen, choose randomly.
         {
             var random = IoCManager.Resolve<IRobustRandom>();
             var prototypeManager = IoCManager.Resolve<IPrototypeManager>();
@@ -56,7 +56,7 @@ public sealed partial class ReplaceChem : EntityEffect
             replaceChem = new(ReplaceWith, null);
         }
 
-        if (ReplaceTarget == "") //if no target, replace everything
+        if (ReplaceTarget == null) //if no target, replace everything
         {
             var chemTotal = container.Solution.Volume;
             container.Solution.RemoveAllSolution();//purges all data. Could keep it by splitting and then adding but like, why?

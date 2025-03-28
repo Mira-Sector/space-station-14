@@ -17,24 +17,24 @@ public sealed class GlowingSystem : EntitySystem
         SubscribeLocalEvent<GlowingComponent, ComponentShutdown>(OnGlowShutdown);
 
     }
-    public void DoGlow(EntityUid uid, double time, StatusEffectsComponent? status = null)
+    public void DoGlow(EntityUid uid, TimeSpan time, StatusEffectsComponent? status = null)
     {
         if (!Resolve(uid, ref status, false))
             return;
 
         if (!_statusEffectsSystem.HasStatusEffect(uid, GlowingKey, status))
         {
-            _statusEffectsSystem.TryAddStatusEffect<GlowingComponent>(uid, GlowingKey, TimeSpan.FromSeconds(time), false, status);
+            _statusEffectsSystem.TryAddStatusEffect<GlowingComponent>(uid, GlowingKey, time, false, status);
         }
         else
         {
-            _statusEffectsSystem.TryAddTime(uid, GlowingKey, TimeSpan.FromSeconds(time), status);
+            _statusEffectsSystem.TryAddTime(uid, GlowingKey, time, status);
         }
     }
 
-    public void TryRemoveGlowTime(EntityUid uid, double timeRemoved)
+    public void TryRemoveGlowTime(EntityUid uid, TimeSpan timeRemoved)
     {
-        _statusEffectsSystem.TryRemoveTime(uid, GlowingKey, TimeSpan.FromSeconds(timeRemoved));
+        _statusEffectsSystem.TryRemoveTime(uid, GlowingKey, timeRemoved);
     }
 
     public void TryRemoveGlow(EntityUid uid)

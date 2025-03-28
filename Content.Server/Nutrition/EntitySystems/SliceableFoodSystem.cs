@@ -95,6 +95,7 @@ public sealed class SliceableFoodSystem : EntitySystem
             solnEx = solnExtra; //if it was defined, apply the values actually wanted.
             solutionEx = solutionExtra;
             extraSolution = component.ExtraSolution;
+
         }
 
         var sliceVolume = solution.Volume / FixedPoint2.New(component.TotalCount);
@@ -110,11 +111,9 @@ public sealed class SliceableFoodSystem : EntitySystem
             // Fill new slice
             FillSlice(sliceUid, lostSolution);
 
-            if (isExtraSolution == true)
+            if (isExtraSolution == true) //if there is an extra solution, add that one too
             {
-                var lostSolutionExtra =
-                    _solutionContainer.SplitSolution(solnEx.Value, sliceVolumeExtra);
-                FillSliceExtra(sliceUid, lostSolutionExtra, extraSolution);
+                FillSliceExtra(sliceUid, solnEx.Value, sliceVolumeExtra, extraSolution);
             }
         }
 
@@ -191,8 +190,9 @@ public sealed class SliceableFoodSystem : EntitySystem
         }
     }
 
-    private void FillSliceExtra(EntityUid sliceUid, Solution solution, String extra) //fill up an extra solution, such as drink.
+    private void FillSliceExtra(EntityUid sliceUid, Entity<SolutionComponent> solnValue, FixedPoint2 sliceExtra, String extra) //fill up an extra solution, such as drink.
     {
+        var solution = _solutionContainer.SplitSolution(solnValue, sliceExtra);
         if (_solutionContainer.TryGetSolution(sliceUid, extra, out var itsSoln, out var itsSolution))
         {
             _solutionContainer.RemoveAllSolution(itsSoln.Value);

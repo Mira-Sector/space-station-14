@@ -832,7 +832,6 @@
   components:
   - type: Sprite
     sprite: Clothing/Head/Hats/sunflowerring.rsi
-    scale: 1.5, 1.5
   - type: Clothing
     sprite: Clothing/Head/Hats/sunflowerring.rsi
 
@@ -844,7 +843,6 @@
   components:
   - type: Sprite
     sprite: Clothing/Head/Hats/lampflowerring.rsi
-    scale: 1.5, 1.5
   - type: Clothing
     sprite: Clothing/Head/Hats/lampflowerring.rsi
   - type: PointLight
@@ -859,7 +857,6 @@
   components:
   - type: Sprite
     sprite: Clothing/Head/Hats/voidflowerring.rsi
-    scale: 1.5, 1.5
   - type: Clothing
     sprite: Clothing/Head/Hats/voidflowerring.rsi
   - type: IdentityBlocker
