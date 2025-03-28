@@ -186,7 +186,7 @@ public sealed partial class SupermatterSystem : EntitySystem
     private void OnRadioIntegerityModified(Entity<SupermatterRadioComponent> ent, ref SupermatterIntegerityModifiedEvent args)
     {
         var positive = args.CurrentIntegerity - args.PreviousIntegerity > 0;
-        var match = GetRadioMessage<FixedPoint2>(ent.Comp.IntegerityMessages, args.CurrentIntegerity, positive);
+        var match = GetRadioMessage<FixedPoint2>(ent.Comp.IntegerityMessages, (args.CurrentIntegerity / args.MaxIntegerity) * 100, positive);
 
         if (match.Key == ent.Comp.LastIntegerityMessage)
             return;
@@ -352,7 +352,7 @@ public sealed partial class SupermatterSystem : EntitySystem
         var oldIntegerity = ent.Comp.Integerity;
         ent.Comp.Integerity += integerity;
 
-        var modifiedEv = new SupermatterIntegerityModifiedEvent(ent.Comp.Integerity, oldIntegerity);
+        var modifiedEv = new SupermatterIntegerityModifiedEvent(ent.Comp.Integerity, oldIntegerity, ent.Comp.MaxIntegrity);
         RaiseLocalEvent(ent, modifiedEv);
 
         if (ent.Comp.Integerity > 0)

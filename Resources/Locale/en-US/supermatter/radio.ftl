@@ -1,6 +1,6 @@
-supermatter-radio-integerity-caution = Supermatter integerity is at {$key}.
-supermatter-radio-integerity-warning = Warning: Supermatter integerity is at {$key}.
-supermatter-radio-integerity-danger = Danger: Supermatter integerity is at {$key}.
+supermatter-radio-integerity-caution = Supermatter integerity is at {$key}%.
+supermatter-radio-integerity-warning = Warning: Supermatter integerity is at {$key}%.
+supermatter-radio-integerity-danger = Danger: Supermatter integerity is at {$key}%.
 supermatter-radio-integerity-fuck =
     Supermatter nearing delamnination.
     Immediate intervention required.

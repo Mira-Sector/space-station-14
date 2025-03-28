@@ -110,13 +110,12 @@
     slopeBase: 16
   - type: SupermatterRadio
     integerityMessages:
-      300: supermatter-radio-integerity-caution
-      350: supermatter-radio-integerity-caution
-      250: supermatter-radio-integerity-warning
-      200: supermatter-radio-integerity-warning
-      150: supermatter-radio--integerity-danger
-      100: supermatter-radio-integerity-danger
-      50: supermatter-radio-integerity-danger
+      30: supermatter-radio-integerity-caution
+      25: supermatter-radio-integerity-caution
+      20: supermatter-radio-integerity-warning
+      15: supermatter-radio-integerity-warning
+      10: supermatter-radio-integerity-danger
+      5: supermatter-radio-integerity-danger
       0: supermatter-radio-integerity-fucked
     countdownMessages:
       25: supermatter-radio-countdown
