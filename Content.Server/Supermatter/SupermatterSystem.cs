@@ -49,6 +49,7 @@ public sealed partial class SupermatterSystem : EntitySystem
 
         SubscribeLocalEvent<SupermatterEnergyDecayComponent, AtmosExposedUpdateEvent>(OnDecayAtmosExposed);
         SubscribeLocalEvent<SupermatterEnergyHeatGainComponent, AtmosExposedUpdateEvent>(OnHeatGainAtmosExposed);
+        SubscribeLocalEvent<SupermatterModifyIntegerityOnEnergyComponent, SupermatterEnergyModifiedEvent>(OnEnergyIntegerityModifyEnergy);
     }
 
     public override void Update(float frameTime)
@@ -82,7 +83,7 @@ public sealed partial class SupermatterSystem : EntitySystem
 
             countdownComp.ElapsedTime += TimeSpan.FromSeconds(frameTime);
 
-            if (countdownComp.ElapsedTime > countdownComp.Length)
+            if (countdownComp.ElapsedTime >= countdownComp.Length)
             {
                 var delaminatingEv = new SupermatterDelaminatedEvent();
                 RaiseLocalEvent(uid, delaminatingEv);
@@ -94,7 +95,7 @@ public sealed partial class SupermatterSystem : EntitySystem
             if (countdownComp.NextTick > _timing.CurTime)
                 continue;
 
-            var timerEv = new SupermatterCountdownTickEvent(countdownComp.ElapsedTime);
+            var timerEv = new SupermatterCountdownTickEvent(countdownComp.ElapsedTime, countdownComp.Length);
             RaiseLocalEvent(uid, timerEv);
             countdownComp.NextTick += countdownComp.TickDelay;
         }
@@ -186,15 +187,23 @@ public sealed partial class SupermatterSystem : EntitySystem
     {
         var positive = args.CurrentIntegerity - args.PreviousIntegerity > 0;
         var match = GetRadioMessage<FixedPoint2>(ent.Comp.IntegerityMessages, args.CurrentIntegerity, positive);
+
+        if (match.Key == ent.Comp.LastIntegerityMessage)
+            return;
+
         ent.Comp.LastIntegerityMessage = match.Key;
         _radio.SendRadioMessage(ent, Loc.GetString(match.Value, ("key", match.Key)), ent.Comp.Channel, ent);
     }
 
     private void OnRadioCountdownTick(Entity<SupermatterRadioComponent> ent, ref SupermatterCountdownTickEvent args)
     {
-        var match = GetRadioMessage<TimeSpan>(ent.Comp.CountdownMessages, args.ElapsedTime, true);
+        var match = GetRadioMessage<TimeSpan>(ent.Comp.CountdownMessages, args.Timer - args.ElapsedTime, true);
+
+        if (match.Key == ent.Comp.LastCountdownMessage)
+            return;
+
         ent.Comp.LastCountdownMessage = match.Key;
-        _radio.SendRadioMessage(ent, Loc.GetString(match.Value, ("key", match.Key)), ent.Comp.Channel, ent);
+        _radio.SendRadioMessage(ent, Loc.GetString(match.Value, ("key", match.Key.TotalSeconds)), ent.Comp.Channel, ent);
     }
 
     private KeyValuePair<T, LocId> GetRadioMessage<T>(Dictionary<T, LocId> messages, T comparison, bool positive) where T : IComparable<T>
@@ -237,6 +246,7 @@ public sealed partial class SupermatterSystem : EntitySystem
     {
         args.Handled = true;
         ent.Comp.ElapsedTime = TimeSpan.Zero;
+        ent.Comp.Active = true;
     }
 
     private void OnGasEmitterGasReact(Entity<SupermatterGasEmitterComponent> ent, ref SupermatterGasReactedEvent args)
@@ -308,6 +318,32 @@ public sealed partial class SupermatterSystem : EntitySystem
         ent.Comp.CurrentGain = 0f;
     }
 
+    private void OnEnergyIntegerityModifyEnergy(Entity<SupermatterModifyIntegerityOnEnergyComponent> ent, ref SupermatterEnergyModifiedEvent args)
+    {
+        if (args.CurrentEnergy > ent.Comp.Max)
+            return;
+
+        if (args.CurrentEnergy < ent.Comp.Min)
+            return;
+
+        var delta = args.CurrentEnergy - args.PreviousEnergy;
+
+        if (ent.Comp.IntegerityPerEnergy < 0)
+        {
+            // dont change the integerity if we are recovering
+            if (delta < 0)
+                return;
+        }
+        else
+        {
+            // dont change the intergerity if we are loosing energy
+            if (delta > 0)
+                return;
+        }
+
+        ModifyIntegerity(ent.Owner, ent.Comp.IntegerityPerEnergy * delta);
+    }
+
     public void ModifyIntegerity(Entity<SupermatterIntegerityComponent?> ent, FixedPoint2 integerity)
     {
         if (!Resolve(ent.Owner, ref ent.Comp))
@@ -319,19 +355,24 @@ public sealed partial class SupermatterSystem : EntitySystem
         var modifiedEv = new SupermatterIntegerityModifiedEvent(ent.Comp.Integerity, oldIntegerity);
         RaiseLocalEvent(ent, modifiedEv);
 
-        if (ent.Comp.Integerity < 0)
-        {
-            ent.Comp.Integerity = 0f; //clamp it
+        if (ent.Comp.Integerity > 0)
+            return;
 
-            var beforeDelaminateEv = new SupermatterBeforeDelaminatedEvent();
-            RaiseLocalEvent(ent, beforeDelaminateEv);
+        ent.Comp.Integerity = 0f; //clamp it
 
-            if (beforeDelaminateEv.Handled)
-                return;
+        if (ent.Comp.IsDelaminating)
+            return;
 
-            var delaminatingEv = new SupermatterDelaminatedEvent();
-            RaiseLocalEvent(ent, delaminatingEv);
-        }
+        ent.Comp.IsDelaminating = true;
+
+        var beforeDelaminateEv = new SupermatterBeforeDelaminatedEvent();
+        RaiseLocalEvent(ent, beforeDelaminateEv);
+
+        if (beforeDelaminateEv.Handled)
+            return;
+
+        var delaminatingEv = new SupermatterDelaminatedEvent();
+        RaiseLocalEvent(ent, delaminatingEv);
     }
 
     public void ModifyEnergy(Entity<SupermatterEnergyComponent?> ent, float energy)
@@ -340,9 +381,14 @@ public sealed partial class SupermatterSystem : EntitySystem
             return;
 
         var oldEnergy = ent.Comp.CurrentEnergy;
-        ent.Comp.CurrentEnergy += energy;
+        var newEnergy = ent.Comp.CurrentEnergy + energy;
 
-        var modifiedEv = new SupermatterEnergyModifiedEvent(ent.Comp.CurrentEnergy, oldEnergy);
+        if (oldEnergy == newEnergy)
+            return;
+
+        ent.Comp.CurrentEnergy = newEnergy;
+
+        var modifiedEv = new SupermatterEnergyModifiedEvent(newEnergy, oldEnergy);
         RaiseLocalEvent(ent, modifiedEv);
     }
 }

@@ -102,18 +102,21 @@
       - !type:HeatEnergyGain
         multiplier: 1
   - type: SupermatterIntegerity
+  - type: SupermatterModifyIntegerityOnEnergy
+    min: 5000
+    integerityPerEnergy: -1.2
   - type: SupermatterRadiation
     intensityBase: 8
     slopeBase: 16
   - type: SupermatterRadio
     integerityMessages:
-      75: supermatter-radio-integerity-caution
-      50: supermatter-radio-integerity-caution
-      35: supermatter-radio-integerity-warning
-      25: supermatter-radio-integerity-warning
-      15: supermatter-radio--integerity-danger
-      10: supermatter-radio-integerity-danger
-      5: supermatter-radio-integerity-danger
+      300: supermatter-radio-integerity-caution
+      350: supermatter-radio-integerity-caution
+      250: supermatter-radio-integerity-warning
+      200: supermatter-radio-integerity-warning
+      150: supermatter-radio--integerity-danger
+      100: supermatter-radio-integerity-danger
+      50: supermatter-radio-integerity-danger
       0: supermatter-radio-integerity-fucked
     countdownMessages:
       25: supermatter-radio-countdown
@@ -129,12 +132,14 @@
   - type: SupermatterDelaminatable
     delaminations:
     - !type:SpawnDelamination
+      count: 1
       prototypes:
       - Singularity
     - !type:SpawnDelamination
       requirements:
       - !type:EnergyRequirement
         min: 5000
+      count: 1
       prototypes:
       - TeslaEnergyBall
     - !type:ExplosionDelamination

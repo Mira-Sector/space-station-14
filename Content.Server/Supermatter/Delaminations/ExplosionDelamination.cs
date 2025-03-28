@@ -23,5 +23,6 @@ public sealed partial class ExplosionDelamination : SupermatterDelamination
     {
         var explosionSys = entMan.System<ExplosionSystem>();
         explosionSys.QueueExplosion(supermatter, Type, TotalIntensity, IntensitySlope, MaxIntensity);
+        entMan.QueueDeleteEntity(supermatter);
     }
 }

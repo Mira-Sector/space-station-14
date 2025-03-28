@@ -27,5 +27,7 @@ public sealed partial class SpawnDelamination : SupermatterDelamination
             var newPos = Range == null ? pos : new MapCoordinates(pos.Position + random.NextVector2(-Range.Value, Range.Value), pos.MapId);
             entMan.Spawn(random.Pick(Prototypes), newPos);
         }
+
+        entMan.QueueDeleteEntity(supermatter);
     }
 }
