@@ -264,7 +264,7 @@ public sealed partial class SupermatterSystem : EntitySystem
 
     private void OnEnergyCollideCollide(Entity<SupermatterEnergyCollideComponent> ent, ref StartCollideEvent args)
     {
-        if (args.OurFixtureId != ent.Comp.OurFixtureId || args.OtherFixtureId != ent.Comp.OtherFixtureId)
+        if (args.OurFixtureId != ent.Comp.OurFixtureId)
             return;
 
         if (!_whitelist.CheckBoth(args.OtherEntity, ent.Comp.Blacklist, ent.Comp.Whitelist))
@@ -273,8 +273,9 @@ public sealed partial class SupermatterSystem : EntitySystem
         var ev = new SupermatterEnergyCollidedEvent(ent, ent.Comp.BaseEnergyOnCollide);
         RaiseLocalEvent(args.OtherEntity, ev);
 
-        EntityManager.DeleteEntity(args.OtherEntity);
         ModifyEnergy(ent.Owner, ev.Energy);
+
+        QueueDel(args.OtherEntity);
     }
 
     private void OnModifyEnergyCollide(Entity<SupermatterModifyEnergyOnCollideComponent> ent, ref SupermatterEnergyCollidedEvent args)

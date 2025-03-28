@@ -1051,6 +1051,9 @@ entities:
     - type: Transform
       pos: -7.5,13.5
       parent: 2
+    - type: BatterySelfRecharger
+      autoRechargeRate: 2500000
+      autoRecharge: True
 - proto: Emitter
   entities:
   - uid: 92
@@ -1245,6 +1248,11 @@ entities:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: -7.5,-7.5
+      parent: 2
+  - uid: 402
+    components:
+    - type: Transform
+      pos: -0.5,-1.5
       parent: 2
 - proto: GasPressurePump
   entities:
@@ -1596,6 +1604,13 @@ entities:
     - type: Transform
       pos: 7.5,13.5
       parent: 2
+- proto: SpawnSupermatter
+  entities:
+  - uid: 3
+    components:
+    - type: Transform
+      pos: 0.5,0.5
+      parent: 2
 - proto: SuitStorageCE
   entities:
   - uid: 310
@@ -1603,90 +1618,6 @@ entities:
     - type: Transform
       pos: 8.5,13.5
       parent: 2
-- proto: Supermatter
-  entities:
-  - uid: 3
-    components:
-    - type: Transform
-      pos: 0.5,0.5
-      parent: 2
-    - type: Fixtures
-      fixtures:
-        fix1:
-          shape: !type:PolygonShape
-            radius: 0.01
-            vertices:
-            - -0.45,-0.45
-            - 0.45,-0.45
-            - 0.45,0.45
-            - -0.45,0.45
-          mask: []
-          layer:
-          - TableLayer
-          - LowImpassable
-          density: 60
-          hard: True
-          restitution: 0
-          friction: 0.4
-        Emitter:
-          shape: !type:PolygonShape
-            radius: 0.01
-            vertices:
-            - -0.45,-0.45
-            - 0.45,-0.45
-            - 0.45,0.45
-            - -0.45,0.45
-          mask:
-          - Opaque
-          layer: []
-          density: 1
-          hard: False
-          restitution: 0
-          friction: 0.4
-        EventHorizonCollider:
-          shape: !type:PolygonShape
-            radius: 0.3
-            vertices:
-            - -0.25,-0.25
-            - 0.25,-0.25
-            - 0.25,0.25
-            - -0.25,0.25
-          mask:
-          - Opaque
-          layer:
-          - Impassable
-          - TableLayer
-          - HighImpassable
-          - LowImpassable
-          - BulletImpassable
-          - InteractImpassable
-          density: 99999
-          hard: True
-          restitution: 0.8
-          friction: 0.4
-        EventHorizonConsumer:
-          shape: !type:PolygonShape
-            radius: 0.3
-            vertices:
-            - -0.3,-0.3
-            - 0.3,-0.3
-            - 0.3,0.3
-            - -0.3,0.3
-          mask:
-          - Opaque
-          layer:
-          - Impassable
-          - TableLayer
-          - HighImpassable
-          - LowImpassable
-          - BulletImpassable
-          - InteractImpassable
-          density: 1
-          hard: False
-          restitution: 0
-          friction: 0.4
-    - type: LightningArcShooter
-    - type: RadiationSource
 - proto: TeslaGroundingRod
   entities:
   - uid: 102

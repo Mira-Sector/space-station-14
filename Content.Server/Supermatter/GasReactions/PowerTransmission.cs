@@ -32,8 +32,8 @@ public sealed partial class PowerTransmission : SupermatterGasReaction
         }
 
         power *= (float) lastReaction.TotalSeconds;
-        arcShooter.ShootMinInterval -= supermatterArcShooterComp.MinInterval * power;
-        arcShooter.ShootMaxInterval -= supermatterArcShooterComp.MaxInterval * power;
+        arcShooter.ShootMinInterval -= supermatterArcShooterComp.MinInterval / power;
+        arcShooter.ShootMaxInterval -= supermatterArcShooterComp.MaxInterval / power;
 
         return true;
     }

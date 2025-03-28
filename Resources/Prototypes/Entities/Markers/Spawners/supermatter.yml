@@ -1,0 +1,13 @@
+- type: entity
+  name: Supermatter Spawner
+  id: SpawnSupermatter
+  parent: MarkerBase
+  components:
+  - type: Sprite
+    layers:
+      - state: green
+      - sprite: Structures/Power/Generation/supermatter.rsi
+        state: sm
+  - type: ConditionalSpawner
+    prototypes:
+      - Supermatter
