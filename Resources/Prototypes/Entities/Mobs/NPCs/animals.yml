@@ -2534,6 +2534,8 @@
   - type: Damageable
     damageContainer: Biological
     damageModifierSet: Scale
+  - type: Body
+    prototype: Snake
 
 # Code unique spider prototypes or combine them all into one spider and get a
 # random sprite state when you spawn it.
