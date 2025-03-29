@@ -1470,8 +1470,6 @@
         clownedon:
           True: {visible: true}
           False: {visible: false}
-  - type: Body
-    prototype: GeneticAncestor
   - type: CreamPied
   - type: FireVisuals
     sprite: Mobs/Effects/onfire.rsi
@@ -1561,6 +1559,8 @@
         Burn: 3
     clumsySound:
       path: /Audio/Animals/monkey_scream.ogg
+  - type: Body
+    prototype: GeneticAncestor
 
 
 - type: entity
@@ -1733,6 +1733,8 @@
     name: ghost-role-information-kobold-name
     description: ghost-role-information-kobold-description
     rules: ghost-role-information-nonantagonist-rules
+  - type:
+    prototype: Kobold
 
 - type: entity
   name: kobold

@@ -1,0 +1,61 @@
+﻿- type: entity
+  id: BaseKoboldPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: KoboldTorso
+  name: kobold torso
+  parent: [BaseKoboldPart, BaseTorso]
+
+- type: entity
+  id: KoboldHead
+  name: kobold head
+  parent: [BaseKoboldPart, BaseHead]
+
+- type: entity
+  id: KoboldLeftArm
+  name: left geneti cancestor arm
+  parent: [BaseKoboldPart, BaseLeftArm]
+
+- type: entity
+  id: KoboldLeftHand
+  name: left genetic ancestor hand
+  parent: [BaseKoboldPart, BaseLeftHand]
+
+- type: entity
+  id: KoboldRightArm
+  name: right geneti cancestor arm
+  parent: [BaseKoboldPart, BaseRightArm]
+
+- type: entity
+  id: KoboldRightHand
+  name: right genetic ancestor hand
+  parent: [BaseKoboldPart, BaseRightHand]
+
+- type: entity
+  id: KoboldLeftLeg
+  name: left genetic ancestor leg
+  parent: [BaseKoboldPart, BaseLeftLeg]
+
+- type: entity
+  id: KoboldRightLeg
+  name: right genetic ancestor leg
+  parent: [BaseKoboldPart, BaseRightLeg]
+
+- type: entity
+  id: KoboldLeftFoot
+  name: left genetic ancestor foot
+  parent: [BaseKoboldPart,BaseLeftFoot]
+
+- type: entity
+  id: KoboldRightFoot
+  name: right genetic ancestor foot
+  parent: [ BaseKoboldPart, BaseRightFoot]

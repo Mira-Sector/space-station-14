@@ -1,10 +1,10 @@
 ﻿- type: body
-  id: GeneticAncestor
-  name: genetic ancestor
+  id: Monkey
+  name: Monkey
   root: torso
   slots:
     head:
-      part: GeneticancestorHead
+      part: MonkeyHead
       connections:
       - torso
       organs:
@@ -13,7 +13,7 @@
         ears: OrganHumanEars
         tongue: OrganHumanTongue
     torso:
-      part: GeneticancestorTorso
+      part: MonkeyTorso
       connections:
       - right_arm
       - left_arm
@@ -26,28 +26,28 @@
         heart: OrganAnimalHeart
         kidneys: OrganAnimalKidneys
     right_arm:
-      part: GeneticancestorRightArm
+      part: MonkeyRightArm
       connections:
       - right_hand
     left_arm:
-      part: GeneticancestorLeftArm
+      part: MonkeyLeftArm
       connections:
       - left_hand
     right_hand:
-      part: GeneticancestorRightHand
+      part: MonkeyRightHand
 
     left_hand:
-      part: GeneticancestorLeftHand
+      part: MonkeyLeftHand
 
     right_leg:
-      part: GeneticancestorRightLeg
+      part: MonkeyRightLeg
       connections:
       - right_foot
     left_leg:
-      part: GeneticancestorLeftLeg
+      part: MonkeyLeftLeg
       connections:
       - left_foot
     right_foot:
-      part: GeneticancestorRightFoot
+      part: MonkeyRightFoot
     left_foot:
-      part: GeneticancestorLeftFoot
+      part: MonkeyLeftFoot
