@@ -1,0 +1,53 @@
+﻿- type: body
+  id: GeneticAncestor
+  name: genetic ancestor
+  root: torso
+  slots:
+    head:
+      part: GeneticancestorHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: GeneticancestorTorso
+      connections:
+      - right_arm
+      - left_arm
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_arm:
+      part: GeneticancestorRightArm
+      connections:
+      - right_hand
+    left_arm:
+      part: GeneticancestorLeftArm
+      connections:
+      - left_hand
+    right_hand:
+      part: GeneticancestorRightHand
+
+    left_hand:
+      part: GeneticancestorLeftHand
+
+    right_leg:
+      part: GeneticancestorRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: GeneticancestorLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: GeneticancestorRightFoot
+    left_foot:
+      part: GeneticancestorLeftFoot
