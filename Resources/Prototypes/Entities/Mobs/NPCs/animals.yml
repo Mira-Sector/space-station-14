@@ -1216,6 +1216,8 @@
   - type: NpcFactionMember
     factions:
     - Passive
+  - type: Body
+    prototype: Goose
 
 - type: entity
   name: gorilla
