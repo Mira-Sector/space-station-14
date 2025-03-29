@@ -2169,6 +2169,8 @@
   - type: SpeciesLanguage
     understoodLanguages:
     - Draconic
+  - type: Body
+    prototype: Lizard
 
 
 - type: entity
