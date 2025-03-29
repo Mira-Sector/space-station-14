@@ -1,0 +1,43 @@
+﻿- type: body
+  id: Crab
+  name: crab
+  root: torso
+  slots:
+    head:
+      part: CrabHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: CrabTorso
+      connections:
+      - right_arm
+      - left_arm
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_arm:
+      part: CrabRightArm
+    left_arm:
+      part: CrabLeftArm
+    right_leg:
+      part: CrabRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: CrabLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: CrabRightFoot
+    left_foot:
+      part: CrabLeftFoot

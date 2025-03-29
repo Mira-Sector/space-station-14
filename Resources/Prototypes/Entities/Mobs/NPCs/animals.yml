@@ -956,8 +956,6 @@
   - type: NpcFactionMember
     factions:
     - Passive
-  - type: Body
-    prototype: AnimalRuminant
   - type: HTN
     rootTask:
       task: RuminantCompound
@@ -965,6 +963,8 @@
     guides:
     - Chef
     - FoodRecipes
+  - type: Body
+    prototype: Cow
 
 - type: entity
   name: crab
@@ -1045,7 +1045,7 @@
     rootTask:
       task: RuminantCompound
   - type: Body
-    prototype: AnimalHemocyanin
+    prototype: Crab
 
 - type: entity
   name: goat
