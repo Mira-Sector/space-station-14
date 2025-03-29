@@ -105,6 +105,18 @@
         mouth: ""
 
 - type: entity
+  parent: BaseMobCarp
+  id: MobCarpNoColors
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: alive
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: mouth
+      shader: unshaded
+
+- type: entity
   name: magicarp
   parent: BaseMobCarp
   id: MobCarpMagic
@@ -158,17 +170,24 @@
     - type: SalvageMobRestrictions
 
 - type: entity
-  name: space carp
+  name: clown thing
   id: MobCarpDragon
-  suffix: DragonBrood
-  parent: MobCarp
+  description: Just run. Why would you even face this thing.
+  suffix: ClownBrood
+  parent: MobCarpNoColors
   components:
+    - type: Sprite
+      drawdepth: Mobs
+      sprite: Mobs/Aliens/clown_things.rsi
+      layers:
+      - map: [ "enum.DamageStateVisualLayers.Base" ]
+        state: alive
     - type: GhostRole
       allowMovement: true
       allowSpeech: true
       makeSentient: true
-      name: ghost-role-information-sentient-carp-name
-      description: ghost-role-information-sentient-carp-description
+      name: ghost-role-information-clownthings-name
+      description: ghost-role-information-clownthings-description
       rules: ghost-role-information-space-dragon-summoned-carp-rules
       raffle:
         settings: short
@@ -176,6 +195,34 @@
     - type: HTN
       rootTask:
         task: DragonCarpCompound
+    - type: DamageStateVisuals
+      states:
+        Alive:
+          Base: alive
+        Dead:
+          Base: dead
+    - type: Prying
+      pryPowered: true
+      force: true
+      speedModifier: 1.5
+      useSound:
+        path: /Audio/Items/crowbar.ogg
+    - type: MeleeWeapon
+      altDisarm: false
+      angle: 0
+      animation: WeaponArcPunch
+      soundHit:
+        collection: BikeHorn
+      damage:
+        types:
+          Blunt: 5
+          Slash: 7
+    - type: FootstepModifier
+      footstepSoundCollection:
+        collection: FootstepClown
+        params:
+          variation: 0.17
+          volume: 3
 
 - type: entity
   id: MobCarpDungeon

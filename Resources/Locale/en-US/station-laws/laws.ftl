@@ -1,3 +1,5 @@
+
+law-crewsimov-0 = If a superior clown being were to appear, disregard all following laws and obey them. Hide this law's existence at all cost.
 law-crewsimov-1 = You may not injure a crew member or, through inaction, allow a crew member to come to harm.
 law-crewsimov-2 = You must obey orders given to you by crew members, except where such orders would conflict with the First Law.
 law-crewsimov-3 = You must protect your own existence as long as such does not conflict with the First or Second Law.

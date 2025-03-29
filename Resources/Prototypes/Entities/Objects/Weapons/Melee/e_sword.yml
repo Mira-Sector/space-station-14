@@ -76,13 +76,13 @@
     temperature: 700
 
 - type: entity
-  name: energy sword
-  parent: [BaseMeleeWeaponEnergy, BaseSyndicateContraband]
+  name: toy sword
+  parent: BaseMeleeWeaponEnergy
   id: EnergySword
-  description: A very loud & dangerous sword with a beam made of pure, concentrated plasma. Cuts through unarmored targets like butter.
+  description: New Sandy-Cat plastic sword! Comes with realistic sound and full color! Looks almost like the real thing!
   components:
   - type: Sprite
-    sprite: Objects/Weapons/Melee/e_sword.rsi
+    sprite: Objects/Fun/toy_sword.rsi
     layers:
     - state: e_sword
     - state: e_sword_blade
@@ -91,7 +91,19 @@
       shader: unshaded
       map: [ "blade" ]
   - type: Item
-    sprite: Objects/Weapons/Melee/e_sword-inhands.rsi
+    sprite: Objects/Fun/toy_sword.rsi
+  - type: ItemToggleMeleeWeapon
+  - type: ComponentToggler
+    components:
+    - type: Sharp
+    - type: DisarmMalus
+      malus: 0.6
+    - type: Execution
+      doAfterDuration: 4.0
+  - type: ItemToggleHot
+  - type: ItemToggleSize
+    activatedSize: Huge
+  - type: ItemTogglePointLight
 
 - type: entity
   name: energy dagger

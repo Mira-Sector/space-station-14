@@ -169,3 +169,15 @@
     - Monkey
     - Buzzwords
     - Binary
+
+- type: trait
+  id: UWUSpeechTrait
+  name: trait-uwu-name
+  description: trait-uwu-desc
+  category: SpeechTraits
+  cost: 2
+  icon:
+    sprite: Interface/Traits/speech.rsi
+    state: owo
+  components:
+  - type: OwOAccent

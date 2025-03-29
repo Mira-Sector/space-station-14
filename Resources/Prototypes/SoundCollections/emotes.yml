@@ -48,10 +48,12 @@
   id: MaleSigh
   files:
     - /Audio/Voice/Human/male_sigh.ogg
+    - /Audio/Voice/Human/male_sigh.ogg
 
 - type: soundCollection
   id: FemaleSigh
   files:
+    - /Audio/Voice/Human/female_sigh.ogg
     - /Audio/Voice/Human/female_sigh.ogg
 
 - type: soundCollection
