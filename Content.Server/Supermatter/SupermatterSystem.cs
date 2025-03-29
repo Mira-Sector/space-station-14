@@ -341,7 +341,7 @@ public sealed partial class SupermatterSystem : EntitySystem
                 return;
         }
 
-        ModifyIntegerity(ent.Owner, ent.Comp.IntegerityPerEnergy * delta);
+        ModifyIntegerity(ent.Owner, ent.Comp.IntegerityPerEnergy);
     }
 
     public void ModifyIntegerity(Entity<SupermatterIntegerityComponent?> ent, FixedPoint2 integerity)
@@ -350,13 +350,27 @@ public sealed partial class SupermatterSystem : EntitySystem
             return;
 
         var oldIntegerity = ent.Comp.Integerity;
-        ent.Comp.Integerity += integerity;
+        var newIntegerity = ent.Comp.Integerity + integerity;
 
-        var modifiedEv = new SupermatterIntegerityModifiedEvent(ent.Comp.Integerity, oldIntegerity, ent.Comp.MaxIntegrity);
-        RaiseLocalEvent(ent, modifiedEv);
-
-        if (ent.Comp.Integerity > 0)
+        if (oldIntegerity == newIntegerity)
             return;
+
+        if (integerity > 0 && newIntegerity > ent.Comp.MaxIntegrity)
+            return;
+
+        if (newIntegerity <= ent.Comp.MaxIntegrity)
+        {
+            var modifiedEv = new SupermatterIntegerityModifiedEvent(newIntegerity, oldIntegerity, ent.Comp.MaxIntegrity);
+            RaiseLocalEvent(ent, modifiedEv);
+
+            ent.Comp.Integerity = newIntegerity;
+            return;
+        }
+        else if (ent.Comp.Integerity < 0)
+        {
+            ent.Comp.Integerity = ent.Comp.MaxIntegrity;
+            return;
+        }
 
         ent.Comp.Integerity = 0f; //clamp it
 

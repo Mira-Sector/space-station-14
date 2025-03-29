@@ -30,8 +30,8 @@
     ourFixtureId: emitter
   - type: SupermatterEnergy
   - type: SupermatterEnergyDecay
-    delay: 2
-    energyDecay: -1.5
+    delay: 1
+    energyDecay: 10
   - type: SupermatterGasEmitter
     ratios:
       Plasma: 1
@@ -104,7 +104,7 @@
   - type: SupermatterIntegerity
   - type: SupermatterModifyIntegerityOnEnergy
     min: 5000
-    integerityPerEnergy: -1.2
+    integerityPerEnergy: -10
   - type: SupermatterRadiation
     intensityBase: 8
     slopeBase: 16
