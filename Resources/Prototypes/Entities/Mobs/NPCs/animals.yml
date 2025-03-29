@@ -2830,6 +2830,8 @@
   - type: Tag
     tags:
     - VimPilot
+  - type: Body
+    prototype: Possum
 
 - type: entity
   name: possum
