@@ -868,6 +868,8 @@
     bloodMaxVolume: 0.1
   - type: MobPrice
     price: 50
+  - type: Body
+    prototype: Butterfly
 
 - type: entity
   name: cow
