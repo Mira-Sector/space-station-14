@@ -22,40 +22,40 @@
 
 - type: entity
   id: KoboldLeftArm
-  name: left geneti cancestor arm
+  name: left kobold arm
   parent: [BaseKoboldPart, BaseLeftArm]
 
 - type: entity
   id: KoboldLeftHand
-  name: left genetic ancestor hand
+  name: left kobold hand
   parent: [BaseKoboldPart, BaseLeftHand]
 
 - type: entity
   id: KoboldRightArm
-  name: right geneti cancestor arm
+  name: right kobold arm
   parent: [BaseKoboldPart, BaseRightArm]
 
 - type: entity
   id: KoboldRightHand
-  name: right genetic ancestor hand
+  name: kobold hand
   parent: [BaseKoboldPart, BaseRightHand]
 
 - type: entity
   id: KoboldLeftLeg
-  name: left genetic ancestor leg
+  name: left kobold leg
   parent: [BaseKoboldPart, BaseLeftLeg]
 
 - type: entity
   id: KoboldRightLeg
-  name: right genetic ancestor leg
+  name: kobold leg
   parent: [BaseKoboldPart, BaseRightLeg]
 
 - type: entity
   id: KoboldLeftFoot
-  name: left genetic ancestor foot
+  name: left kobold foot
   parent: [BaseKoboldPart,BaseLeftFoot]
 
 - type: entity
   id: KoboldRightFoot
-  name: right genetic ancestor foot
-  parent: [ BaseKoboldPart, BaseRightFoot]
+  name: kobold foot
+  parent: [BaseKoboldPart, BaseRightFoot]

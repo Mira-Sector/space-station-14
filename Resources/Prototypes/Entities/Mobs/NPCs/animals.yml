@@ -1733,7 +1733,7 @@
     name: ghost-role-information-kobold-name
     description: ghost-role-information-kobold-description
     rules: ghost-role-information-nonantagonist-rules
-  - type:
+  - type: Body
     prototype: Kobold
 
 - type: entity
@@ -2576,7 +2576,7 @@
       amount: 2
   - type: CombatMode
   - type: Body
-    prototype: AnimalHemocyanin
+    prototype: Spider
   - type: MobThresholds
     thresholds:
       0: Alive
