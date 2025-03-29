@@ -2338,6 +2338,8 @@
       path: /Audio/Animals/parrot_raught.ogg
   - type: Bloodstream
     bloodMaxVolume: 50
+  - type: Body
+    prototype: Parrot
 
 - type: entity
   name: penguin
