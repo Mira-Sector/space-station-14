@@ -2280,6 +2280,8 @@
   - type: Tag
     tags:
     - VimPilot
+  - type: Body
+    prototype: Frog
 
 # Would be cool to have some functionality for the parrot to be able to sit on stuff
 - type: entity
