@@ -1147,7 +1147,7 @@
     factions:
     - Passive
   - type: Body
-    prototype: AnimalRuminant
+    prototype: Goat
   - type: NPCRetaliation
     attackMemoryLength: 5
   - type: FactionException
