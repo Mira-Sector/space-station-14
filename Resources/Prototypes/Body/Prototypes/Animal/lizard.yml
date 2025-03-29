@@ -1,41 +1,37 @@
-﻿- type: entity
-  id: BaseLizardPart
-  abstract: true
-  components:
-  - type: Extractable
-    juiceSolution:
-      reagents:
-      - ReagentId: Fat
-        Quantity: 10
-      - ReagentId: Blood
-        Quantity: 20
-
-- type: entity
-  id: LizardTorso
-  name: lizard torso
-  parent: [BaseLizardPart, BaseTorso]
-
-- type: entity
-  id: LizardHead
-  name: lizard head
-  parent: [BaseLizardPart, BaseHead]
-
-- type: entity
-  id: LizardLeftLeg
-  name: left lizard leg
-  parent: [BaseLizardPart, BaseLeftLeg]
-
-- type: entity
-  id: LizardRightLeg
-  name: right lizard leg
-  parent: [BaseLizardPart, BaseRightLeg]
-
-- type: entity
-  id: LizardLeftFoot
-  name: left lizard foot
-  parent: [BaseLizardPart,BaseLeftFoot]
-
-- type: entity
-  id: LizardRightFoot
-  name: right lizard foot
-  parent: [ BaseLizardPart, BaseRightFoot]
+﻿- type: body
+  id: Lizard
+  name: lizard
+  root: torso
+  slots:
+    head:
+      part: LizardHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: LizardTorso
+      connections:
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_leg:
+      part: LizardRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: LizardLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: LizardRightFoot
+    left_foot:
+      part: LizardLeftFoot

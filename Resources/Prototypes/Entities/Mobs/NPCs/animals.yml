@@ -2219,6 +2219,8 @@
     interactSuccessSpawn: EffectHearts
   - type: Bloodstream
     bloodMaxVolume: 50
+  - type: Body
+    prototype: Slug
 
 - type: entity
   name: frog

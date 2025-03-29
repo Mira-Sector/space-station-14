@@ -1,10 +1,10 @@
 ﻿- type: body
-  id: Lizard
-  name: lizard
+  id: Slug
+  name: slug
   root: torso
   slots:
     head:
-      part: LizardHead
+      part: SlugHead
       connections:
       - torso
       organs:
@@ -13,7 +13,7 @@
         ears: OrganHumanEars
         tongue: OrganHumanTongue
     torso:
-      part: LizardTorso
+      part: SlugTorso
       connections:
       - right_leg
       - left_leg
@@ -24,14 +24,14 @@
         heart: OrganAnimalHeart
         kidneys: OrganAnimalKidneys
     right_leg:
-      part: LizardRightLeg
+      part: SlugRightLeg
       connections:
       - right_foot
     left_leg:
-      part: LizardLeftLeg
+      part: SlugLeftLeg
       connections:
       - left_foot
     right_foot:
-      part: LizardRightFoot
+      part: SlugRightFoot
     left_foot:
-      part: LizardLeftFoot
+      part: SlugLeftFoot
