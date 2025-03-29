@@ -21,7 +21,7 @@
 - type: cargoProduct
   id: ShuttleCargo
   name: Cargo Shuttle
-  description: A spare shuttle to help transport the pizzas off of the trade station.
+  description: A spare shuttle to help transport the pizza's off the trade station.
   icon:
     sprite: Clothing/Head/Soft/cargosoft.rsi
     state: icon
@@ -88,7 +88,7 @@
   shuttle: /Maps/Shuttles/trucker_shittle.yml
   cost: 10000
   category: cargoproduct-category-name-shuttle
-  group: marketi
+  group: market
 
 - type: cargoProduct
   id: ShuttleScoop
