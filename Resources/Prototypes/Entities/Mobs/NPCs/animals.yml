@@ -1285,6 +1285,8 @@
   - type: HTN
     rootTask:
       task: SimpleHostileCompound
+  - type: Body
+    prototype: Gorilla
 
 - type: entity
   name: kangaroo
