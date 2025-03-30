@@ -1,5 +1,5 @@
 - type: entity
-  name: stun prod
+  name: officer beater
   parent: [BaseItem, BaseMinorContraband]
   id: Stunprod
   description: A stun prod for illegal incapacitation.
