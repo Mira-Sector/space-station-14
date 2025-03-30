@@ -1,0 +1,51 @@
+﻿- type: entity
+  id: BaseFerretPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: FerretTorso
+  name: ferret torso
+  parent: [BaseFerretPart, BaseTorso]
+
+- type: entity
+  id: FerretHead
+  name: ferret head
+  parent: [BaseFerretPart, BaseHead]
+
+- type: entity
+  id: FerretLeftArm
+  name: left ferret arm
+  parent: [BaseFerretPart, BaseLeftArm]
+
+- type: entity
+  id: FerretRightArm
+  name: right ferret arm
+  parent: [BaseFerretPart, BaseRightArm]
+
+- type: entity
+  id: FerretLeftLeg
+  name: left ferret leg
+  parent: [BaseFerretPart, BaseLeftLeg]
+
+- type: entity
+  id: FerretRightLeg
+  name: ferret leg
+  parent: [BaseFerretPart, BaseRightLeg]
+
+- type: entity
+  id: FerretLeftFoot
+  name: left ferret foot
+  parent: [BaseFerretPart,BaseLeftFoot]
+
+- type: entity
+  id: FerretRightFoot
+  name: ferret foot
+  parent: [BaseFerretPart, BaseRightFoot]

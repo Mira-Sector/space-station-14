@@ -1,0 +1,41 @@
+﻿- type: entity
+  id: BaseSyndiecatPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: SyndiecatTorso
+  name: syndiecat torso
+  parent: [BaseSyndiecatPart, BaseTorso]
+
+- type: entity
+  id: SyndiecatHead
+  name: syndiecat head
+  parent: [BaseSyndiecatPart, BaseHead]
+
+- type: entity
+  id: SyndiecatLeftLeg
+  name: left syndiecat leg
+  parent: [BaseSyndiecatPart, BaseLeftLeg]
+
+- type: entity
+  id: SyndiecatRightLeg
+  name: syndiecat leg
+  parent: [BaseSyndiecatPart, BaseRightLeg]
+
+- type: entity
+  id: SyndiecatLeftFoot
+  name: left syndiecat foot
+  parent: [BaseSyndiecatPart,BaseLeftFoot]
+
+- type: entity
+  id: SyndiecatRightFoot
+  name: syndiecat foot
+  parent: [BaseSyndiecatPart, BaseRightFoot]

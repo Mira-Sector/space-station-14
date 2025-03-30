@@ -3082,6 +3082,8 @@
   - type: Tag
     tags:
     - VimPilot
+  - type: Body
+    prototype: Corgi
 
 - type: entity
   name: corrupted corgi
@@ -3251,6 +3253,8 @@
   - type: Tag
     tags:
     - VimPilot
+  - type: Body
+    prototype: Cat
 
 - type: entity
   name: calico cat
@@ -3322,6 +3326,8 @@
         Slash: 6
         Piercing: 6
         Structural: 15
+  - type: Body
+    prototype: Syndiecat
 
 - type: entity
   name: space cat
@@ -3481,6 +3487,8 @@
   - type: Tag
     tags:
     - VimPilot
+  - type: Body
+    prototype: Sloth
 
 - type: entity
   name: ferret
@@ -3547,6 +3555,8 @@
   - type: Tag
     tags:
     - VimPilot
+  - type: Body
+    prototype: Ferret
 
 - type: entity
   name: hamster
@@ -3702,6 +3712,8 @@
   - type: FireVisuals
     sprite: Mobs/Effects/onfire.rsi
     normalState: Mouse_burning
+  - type: Body
+    prototype: Hamster
 
 - type: entity
   name: pig
@@ -3785,6 +3797,8 @@
   - type: HTN
     rootTask:
       task: RuminantCompound
+  - type: Body
+    prototype: Pig
 
 - type: entity
   name: diona nymph
@@ -3878,6 +3892,8 @@
     reformTime: 10
     popupText: diona-reform-attempt
     reformPrototype: MobDionaReformed
+  - type: Body
+    prototype: Dionanymph
 
 - type: entity
   parent: MobDionaNymph
@@ -3948,6 +3964,8 @@
       task: SimpleHostileCompound
   - type: Puller
     needsHands: false
+  - type: Body
+    prototype: Reindeer
 
 - type: entity
   name: reindeer doe
