@@ -10,6 +10,7 @@ using Content.Shared.Radiation.Components;
 using Content.Shared.Whitelist;
 using Robust.Shared.Timing;
 using Robust.Shared.Physics.Events;
+using System.Linq;
 
 namespace Content.Server.Supermatter;
 
@@ -134,9 +135,7 @@ public sealed partial class SupermatterSystem : EntitySystem
 
     private void OnRadiationInit(Entity<SupermatterRadiationComponent> ent, ref ComponentInit args)
     {
-        EnsureComp<RadiationSourceComponent>(ent, out var radiationComp);
-        ent.Comp.Intensity = radiationComp.Intensity;
-        ent.Comp.Slope = radiationComp.Slope;
+        ent.Comp.Intensity = EnsureComp<RadiationSourceComponent>(ent).Intensity;
     }
 
     private void OnGasReactionAtmosExposed(Entity<SupermatterGasReactionComponent> ent, ref AtmosExposedUpdateEvent args)
@@ -258,7 +257,7 @@ public sealed partial class SupermatterSystem : EntitySystem
             {
                 foreach (var reaction in reactions)
                 {
-                    if (ent.Comp.ModifiableReactions.Contains(reaction.GetType()))
+                    if (SupermatterGasEmitterComponent.ModifiableReactions.Contains(reaction.GetType()))
                         continue;
                 }
             }
@@ -303,9 +302,7 @@ public sealed partial class SupermatterSystem : EntitySystem
 
     private void OnRadiationEnergyModified(Entity<SupermatterRadiationComponent> ent, ref SupermatterEnergyModifiedEvent args)
     {
-        var radiationComp = EntityManager.GetComponent<RadiationSourceComponent>(ent);
-        radiationComp.Intensity = ent.Comp.Intensity + (float) Math.Log(args.CurrentEnergy, ent.Comp.IntensityBase);
-        radiationComp.Slope = ent.Comp.Slope - (float) Math.Log(args.CurrentEnergy, ent.Comp.SlopeBase);
+        EntityManager.GetComponent<RadiationSourceComponent>(ent).Intensity = ent.Comp.Intensity + (float) Math.Pow((1 + ent.Comp.IntensityPower), args.CurrentEnergy);
     }
 
     private void OnDecayAtmosExposed(Entity<SupermatterEnergyDecayComponent> ent, ref AtmosExposedUpdateEvent args)
@@ -320,10 +317,7 @@ public sealed partial class SupermatterSystem : EntitySystem
 
     private void OnEnergyIntegerityModifyEnergy(Entity<SupermatterModifyIntegerityOnEnergyComponent> ent, ref SupermatterEnergyModifiedEvent args)
     {
-        if (args.CurrentEnergy > ent.Comp.Max)
-            return;
-
-        if (args.CurrentEnergy < ent.Comp.Min)
+        if (args.CurrentEnergy > ent.Comp.Max || args.CurrentEnergy < ent.Comp.Min)
             return;
 
         var delta = args.CurrentEnergy - args.PreviousEnergy;

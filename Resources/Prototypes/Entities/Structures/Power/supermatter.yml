@@ -105,9 +105,11 @@
   - type: SupermatterModifyIntegerityOnEnergy
     min: 5000
     integerityPerEnergy: -10
+  - type: RadiationSource
+    intensity: 1
+    slope: 0.7
   - type: SupermatterRadiation
-    intensityBase: 8
-    slopeBase: 16
+    intensityPower: 0.00053
   - type: SupermatterRadio
     integerityMessages:
       30: supermatter-radio-integerity-caution

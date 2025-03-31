@@ -4,14 +4,8 @@ namespace Content.Server.Supermatter.Components;
 public sealed partial class SupermatterRadiationComponent : Component
 {
     [DataField]
-    public float IntensityBase;
-
-    [DataField]
-    public float SlopeBase;
+    public float IntensityPower;
 
     [ViewVariables]
     public float Intensity;
-
-    [ViewVariables]
-    public float Slope;
 }

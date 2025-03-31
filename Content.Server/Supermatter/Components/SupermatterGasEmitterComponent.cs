@@ -55,8 +55,5 @@ public sealed partial class SupermatterGasEmitterComponent : Component
     /// <remarks>
     /// Used to cleanup <see cref= PreviousPercentage>
     /// </remarks>
-    public readonly HashSet<Type> ModifiableReactions = new()
-    {
-        typeof(ModifyWaste)
-    };
+    public static readonly Type[] ModifiableReactions = [ typeof(ModifyWaste) ];
 }
