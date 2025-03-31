@@ -335,12 +335,15 @@ public sealed partial class SupermatterSystem : EntitySystem
                 return;
         }
 
-        ModifyIntegerity(ent.Owner, ent.Comp.IntegerityPerEnergy);
+        ModifyIntegerity(ent.Owner, ent.Comp.IntegerityPerEnergy * delta);
     }
 
     public void ModifyIntegerity(Entity<SupermatterIntegerityComponent?> ent, FixedPoint2 integerity)
     {
         if (!Resolve(ent.Owner, ref ent.Comp))
+            return;
+
+        if (integerity > 0 && ent.Comp.Integerity == ent.Comp.MaxIntegrity)
             return;
 
         var oldIntegerity = ent.Comp.Integerity;
@@ -349,20 +352,12 @@ public sealed partial class SupermatterSystem : EntitySystem
         if (oldIntegerity == newIntegerity)
             return;
 
-        if (integerity > 0 && newIntegerity > ent.Comp.MaxIntegrity)
-            return;
-
-        if (newIntegerity <= ent.Comp.MaxIntegrity)
+        if (newIntegerity > 0)
         {
             var modifiedEv = new SupermatterIntegerityModifiedEvent(newIntegerity, oldIntegerity, ent.Comp.MaxIntegrity);
             RaiseLocalEvent(ent, modifiedEv);
 
-            ent.Comp.Integerity = newIntegerity;
-            return;
-        }
-        else if (ent.Comp.Integerity < 0)
-        {
-            ent.Comp.Integerity = ent.Comp.MaxIntegrity;
+            ent.Comp.Integerity = newIntegerity > ent.Comp.MaxIntegrity ? ent.Comp.MaxIntegrity : newIntegerity;
             return;
         }
 

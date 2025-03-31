@@ -104,7 +104,7 @@
   - type: SupermatterIntegerity
   - type: SupermatterModifyIntegerityOnEnergy
     min: 5000
-    integerityPerEnergy: -10
+    integerityPerEnergy: -1.8
   - type: RadiationSource
     intensity: 1
     slope: 0.7
