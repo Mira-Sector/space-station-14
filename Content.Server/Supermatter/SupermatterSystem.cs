@@ -245,6 +245,9 @@ public sealed partial class SupermatterSystem : EntitySystem
 
         foreach (var (gas, reactions) in ent.Comp.GasReactions)
         {
+            if (args.GasMixture.GetMoles(gas) < Atmospherics.GasMinMoles)
+                continue;
+
             foreach (var reaction in reactions)
             {
                 if (!reaction.React(ent, gas, args.GasMixture, lastReaction, EntityManager))
