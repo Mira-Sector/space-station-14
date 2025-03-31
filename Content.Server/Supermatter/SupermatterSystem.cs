@@ -21,6 +21,7 @@ namespace Content.Server.Supermatter;
 public sealed partial class SupermatterSystem : EntitySystem
 {
     [Dependency] private readonly AtmosphereSystem _atmos = default!;
+    [Dependency] private readonly SharedMapSystem _map = default!;
     [Dependency] private readonly RadioSystem _radio = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
@@ -30,6 +31,9 @@ public sealed partial class SupermatterSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
+
+        SubscribeLocalEvent<SupermatterDelaminationTeleportMapComponent, SupermatterDelaminationTeleportGetPositionEvent>(OnDelaminationTeleportGetPos);
+        SubscribeLocalEvent<SupermatterDelaminationTeleportMapReturnComponent, ComponentInit>(OnMapReturnInit);
 
         SubscribeLocalEvent<SupermatterActiveComponent, MapInitEvent>(OnActiveInit);
         SubscribeLocalEvent<SupermatterActiveComponent, EntityConsumedByEventHorizonEvent>(OnActiveEventHorizon);
@@ -159,6 +163,45 @@ public sealed partial class SupermatterSystem : EntitySystem
                 }
             }
         }
+
+        var mapReturnQuery = EntityQueryEnumerator<SupermatterDelaminationTeleportMapReturnComponent>();
+        while (mapReturnQuery.MoveNext(out var uid, out var mapReturnComp))
+        {
+            if (mapReturnComp.NextTeleport > _timing.CurTime)
+                continue;
+
+            while (Transform(uid).ChildEnumerator.MoveNext(out var entity))
+            {
+                if (TryComp<SupermatterDelaminationTeleportedComponent>(entity, out var teleportedComp))
+                {
+                    _transform.SetMapCoordinates(entity, teleportedComp.StartingCoords);
+                    RemCompDeferred<SupermatterDelaminationTeleportedComponent>(entity);
+                }
+                else
+                {
+                    Log.Warning($"Tried teleporting {ToPrettyString(entity)} from delamination map but does not have starting coords.");
+                }
+            }
+
+            QueueDel(uid);
+        }
+    }
+
+    private void OnDelaminationTeleportGetPos(Entity<SupermatterDelaminationTeleportMapComponent> ent, ref SupermatterDelaminationTeleportGetPositionEvent args)
+    {
+        foreach (var (entity, pos) in args.Entities)
+        {
+            var mapUid = _map.CreateMap(out var mapId);
+            EntityManager.AddComponents(mapUid, ent.Comp.MapComponents);
+            args.Entities[entity] = new MapCoordinates(ent.Comp.MapPosition, mapId);
+        }
+
+        args.Handled = true;
+    }
+
+    private void OnMapReturnInit(Entity<SupermatterDelaminationTeleportMapReturnComponent> ent, ref ComponentInit args)
+    {
+        ent.Comp.NextTeleport = _timing.CurTime + ent.Comp.Delay;
     }
 
     private void OnActiveInit(Entity<SupermatterActiveComponent> ent, ref MapInitEvent args)

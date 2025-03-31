@@ -134,9 +134,16 @@
       3: supermatter-radio-countdown
       2: supermatter-radio-countdown
       1: supermatter-radio-countdown
+      0: supermatter-radio-countdown
     channel: Engineering
   - type: SupermatterDelaminatable
     delaminations:
+    - delaminations:
+      - !type:TeleportInRange
+        range: 175
+        whitelist:
+          components:
+          - Body
     - delaminations:
       - !type:SpawnDelamination
         count: 1
@@ -156,6 +163,12 @@
         totalIntensity: 1000
         intensitySlope: 3
         maxIntensity: 75
+  - type: SupermatterDelaminationTeleportMap
+    mapComponents:
+    - type: Parallax
+      parallax: Blank
+    - type: SupermatterDelaminationTeleportMapReturn
+      delay: 2.5
   - type: SupermatterSpawnOnIntegerity
     spawns:
     - min: 300

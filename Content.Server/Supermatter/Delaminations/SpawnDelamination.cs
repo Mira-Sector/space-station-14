@@ -9,7 +9,7 @@ namespace Content.Server.Supermatter.Delaminations;
 public sealed partial class SpawnDelamination : SupermatterDelaminationType
 {
     [DataField]
-    public float? Range = new();
+    public float? Range;
 
     [DataField]
     public HashSet<EntProtoId> Prototypes = new();
