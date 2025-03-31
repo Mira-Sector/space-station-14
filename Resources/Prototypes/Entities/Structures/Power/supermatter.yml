@@ -31,7 +31,7 @@
   - type: SupermatterEnergy
   - type: SupermatterEnergyDecay
     delay: 1
-    energyDecay: 10
+    energyDecay: -10
   - type: SupermatterGasEmitter
     ratios:
       Plasma: 1
