@@ -1,6 +1,6 @@
 namespace Content.Server.Supermatter.Events;
 
-public sealed partial class SupermatterDeactivatedEvent : HandledEntityEventArgs
+public sealed partial class SupermatterDeactivatedEvent : EntityEventArgs
 {
     public SupermatterDeactivatedEvent()
     {

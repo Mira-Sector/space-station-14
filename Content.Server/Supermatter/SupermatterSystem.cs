@@ -166,12 +166,16 @@ public sealed partial class SupermatterSystem : EntitySystem
 
     private void OnArcShooterActivated(Entity<SupermatterEnergyArcShooterComponent> ent, ref SupermatterActivatedEvent args)
     {
-        EntityManager.GetComponent<LightningArcShooterComponent>(ent).Enabled = true;
+        var arcShooterComp = EntityManager.GetComponent<LightningArcShooterComponent>(ent);
+        arcShooterComp.Enabled = true;
+        arcShooterComp.NextShootTime = _timing.CurTime;
+        ent.Comp.Enabled = true;
     }
 
     private void OnArcShooterDeactivated(Entity<SupermatterEnergyArcShooterComponent> ent, ref SupermatterDeactivatedEvent args)
     {
         EntityManager.GetComponent<LightningArcShooterComponent>(ent).Enabled = false;
+        ent.Comp.Enabled = false;
     }
 
     private void OnRadiationInit(Entity<SupermatterRadiationComponent> ent, ref ComponentInit args)
