@@ -5,7 +5,7 @@ using Robust.Shared.Prototypes;
 namespace Content.Server.Supermatter.Delaminations;
 
 [DataDefinition]
-public sealed partial class ExplosionDelamination : SupermatterDelamination
+public sealed partial class ExplosionDelamination : SupermatterDelaminationType
 {
     [DataField(required: true)]
     public ProtoId<ExplosionPrototype> Type;

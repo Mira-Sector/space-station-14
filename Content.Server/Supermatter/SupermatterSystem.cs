@@ -1,6 +1,7 @@
 using Content.Server.Radio.EntitySystems;
 using Content.Server.Singularity.Events;
 using Content.Server.Supermatter.Components;
+using Content.Server.Supermatter.Delaminations;
 using Content.Server.Supermatter.Events;
 using Content.Server.Supermatter.GasReactions;
 using Content.Server.Tesla.Components;
@@ -321,13 +322,26 @@ public sealed partial class SupermatterSystem : EntitySystem
 
     private void OnDelaminateableDelaminated(Entity<SupermatterDelaminatableComponent> ent, ref SupermatterDelaminatedEvent args)
     {
-        foreach (var delamination in ent.Comp.Delaminations)
+        foreach (var data in ent.Comp.Delaminations)
         {
-            if (!delamination.RequirementsMet(ent, EntityManager))
+            if (!RequirementsMet(data.Requirements))
                 continue;
 
-            delamination.Delaminate(ent, EntityManager);
+            foreach (var delamination in data.Delaminations)
+                delamination.Delaminate(ent, EntityManager);
+
             return;
+        }
+
+        bool RequirementsMet(HashSet<DelaminationRequirement> requirements)
+        {
+            foreach (var requirement in requirements)
+            {
+                if (!requirement.RequirementMet(ent, EntityManager))
+                    return false;
+            }
+
+            return true;
         }
     }
 

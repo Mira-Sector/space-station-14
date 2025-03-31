@@ -137,22 +137,25 @@
     channel: Engineering
   - type: SupermatterDelaminatable
     delaminations:
-    - !type:SpawnDelamination
-      count: 1
-      prototypes:
-      - Singularity
-    - !type:SpawnDelamination
+    - delaminations:
+      - !type:SpawnDelamination
+        count: 1
+        prototypes:
+        - Singularity
+    - delaminations:
+      - !type:SpawnDelamination
+        count: 1
+        prototypes:
+        - TeslaEnergyBall
       requirements:
       - !type:EnergyRequirement
         min: 5000
-      count: 1
-      prototypes:
-      - TeslaEnergyBall
-    - !type:ExplosionDelamination
-      type: Radioactive
-      totalIntensity: 1000
-      intensitySlope: 3
-      maxIntensity: 75
+    - delaminations:
+      - !type:ExplosionDelamination
+        type: Radioactive
+        totalIntensity: 1000
+        intensitySlope: 3
+        maxIntensity: 75
   - type: SupermatterSpawnOnIntegerity
     spawns:
     - min: 300
