@@ -2948,6 +2948,7 @@
     solutions:
       food:
         maxVol: 25
+        canReact: false #reduces chance of errors if mutated chemicals are added, as void oil can't convert them on harvest.
         reagents:
         - ReagentId: Voidoil #void oil ate everything else
           Quantity: 25
