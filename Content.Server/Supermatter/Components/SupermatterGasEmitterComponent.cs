@@ -1,6 +1,5 @@
 using Content.Server.Supermatter.GasReactions;
 using Content.Shared.Atmos;
-using System.Collections.Immutable;
 
 namespace Content.Server.Supermatter.Components;
 
@@ -18,6 +17,9 @@ public sealed partial class SupermatterGasEmitterComponent : Component
     }
 
     private float _currentRate;
+
+    [ViewVariables]
+    public bool Enabled;
 
     [DataField]
     public float MinRate;

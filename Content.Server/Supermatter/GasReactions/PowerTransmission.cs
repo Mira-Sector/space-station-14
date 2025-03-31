@@ -15,7 +15,7 @@ public sealed partial class PowerTransmission : SupermatterGasReaction
 
     public override bool React(EntityUid supermatter, Gas? gas, GasMixture air, TimeSpan lastReaction, IEntityManager entMan)
     {
-        if (!entMan.TryGetComponent<SupermatterEnergyArcShooterComponent>(supermatter, out var supermatterArcShooterComp))
+        if (!entMan.TryGetComponent<SupermatterEnergyArcShooterComponent>(supermatter, out var supermatterArcShooterComp) || !supermatterArcShooterComp.Enabled)
             return false;
 
         var arcShooter = entMan.GetComponent<LightningArcShooterComponent>(supermatter);

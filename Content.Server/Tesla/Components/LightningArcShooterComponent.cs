@@ -8,6 +8,9 @@ namespace Content.Server.Tesla.Components;
 [RegisterComponent, AutoGenerateComponentPause]
 public sealed partial class LightningArcShooterComponent : Component
 {
+    [DataField]
+    public bool Enabled = true;
+
     /// <summary>
     /// The number of lightning bolts that are fired at the same time. From 0 to N
     /// Important balance value: if there aren't a N number of coils or grounders around the tesla,
