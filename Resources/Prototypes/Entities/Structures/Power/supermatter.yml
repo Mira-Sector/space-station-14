@@ -153,6 +153,34 @@
       totalIntensity: 1000
       intensitySlope: 3
       maxIntensity: 75
+  - type: SupermatterSpawnOnIntegerity
+    spawns:
+    - min: 300
+      max: 400
+      prototypes:
+      - RandomAnomalySpawner
+      range: 8
+      minSpawns: 0
+      maxSpawns: 1
+      minDelay: 30
+      maxDelay: 60
+    - min: 400
+      max: 500
+      prototypes:
+      - RandomAnomalySpawner
+      range: 8
+      minSpawns: 0
+      maxSpawns: 1
+      minDelay: 15
+      maxDelay: 25
+    - min: 500
+      prototypes:
+      - RandomAnomalySpawner
+      range: 8
+      minSpawns: 0
+      maxSpawns: 1
+      minDelay: 1
+      maxDelay: 5
   - type: EventHorizon
     radius: 0.3
     consumeTiles: false

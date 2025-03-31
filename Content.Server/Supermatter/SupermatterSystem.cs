@@ -9,8 +9,10 @@ using Content.Server.Atmos.EntitySystems;
 using Content.Shared.FixedPoint;
 using Content.Shared.Radiation.Components;
 using Content.Shared.Whitelist;
-using Robust.Shared.Timing;
+using Robust.Shared.Map;
 using Robust.Shared.Physics.Events;
+using Robust.Shared.Random;
+using Robust.Shared.Timing;
 using System.Linq;
 
 namespace Content.Server.Supermatter;
@@ -20,6 +22,8 @@ public sealed partial class SupermatterSystem : EntitySystem
     [Dependency] private readonly AtmosphereSystem _atmos = default!;
     [Dependency] private readonly RadioSystem _radio = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly SharedTransformSystem _transform = default!;
+    [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
 
     public override void Initialize()
@@ -62,6 +66,10 @@ public sealed partial class SupermatterSystem : EntitySystem
         SubscribeLocalEvent<SupermatterEnergyDecayComponent, AtmosExposedUpdateEvent>(OnDecayAtmosExposed);
         SubscribeLocalEvent<SupermatterEnergyHeatGainComponent, AtmosExposedUpdateEvent>(OnHeatGainAtmosExposed);
         SubscribeLocalEvent<SupermatterModifyIntegerityOnEnergyComponent, SupermatterEnergyModifiedEvent>(OnEnergyIntegerityModifyEnergy);
+
+        SubscribeLocalEvent<SupermatterSpawnOnIntegerityComponent, SupermatterActivatedEvent>(OnSpawnIntegerityActivated);
+        SubscribeLocalEvent<SupermatterSpawnOnIntegerityComponent, SupermatterDeactivatedEvent>(OnSpawnIntegerityDeactivated);
+        SubscribeLocalEvent<SupermatterSpawnOnIntegerityComponent, SupermatterIntegerityModifiedEvent>(OnSpawnIntegerityModified);
     }
 
     public override void Update(float frameTime)
@@ -125,6 +133,29 @@ public sealed partial class SupermatterSystem : EntitySystem
 
             ModifyEnergy((uid, energyComp), decayComp.EnergyDecay);
             decayComp.LastLostEnergy += decayComp.EnergyDecay;
+        }
+
+        var integeritySpawnQuery = EntityQueryEnumerator<SupermatterSpawnOnIntegerityComponent>();
+        while (integeritySpawnQuery.MoveNext(out var uid, out var spawnComp))
+        {
+            var pos = _transform.GetMapCoordinates(uid);
+
+            foreach (var spawn in spawnComp.Spawns)
+            {
+                if (spawn.CanSpawn)
+                    continue;
+
+                if (spawn.NextSpawn > _timing.CurTime)
+                    continue;
+
+                spawn.NextSpawn += _random.Next(spawn.MinDelay, spawn.MaxDelay);
+
+                for (var i = 0; i < _random.Next(spawn.MinSpawns, spawn.MaxSpawns); i++)
+                {
+                    var newPos = spawn.Range == null ? pos : new MapCoordinates(pos.Position + _random.NextVector2(-spawn.Range.Value, spawn.Range.Value), pos.MapId);
+                    Spawn(_random.Pick(spawn.Prototypes), newPos);
+                }
+            }
         }
     }
 
@@ -409,6 +440,42 @@ public sealed partial class SupermatterSystem : EntitySystem
         }
 
         ModifyIntegerity(ent.Owner, ent.Comp.IntegerityPerEnergy * delta);
+    }
+
+
+    private void OnSpawnIntegerityActivated(Entity<SupermatterSpawnOnIntegerityComponent> ent, ref SupermatterActivatedEvent args)
+    {
+        SpawnIntegerityCheckSpawns(ent);
+    }
+
+    private void OnSpawnIntegerityDeactivated(Entity<SupermatterSpawnOnIntegerityComponent> ent, ref SupermatterDeactivatedEvent args)
+    {
+        foreach (var spawn in ent.Comp.Spawns)
+            spawn.CanSpawn = false;
+    }
+
+    private void OnSpawnIntegerityModified(Entity<SupermatterSpawnOnIntegerityComponent> ent, ref SupermatterIntegerityModifiedEvent args)
+    {
+        SpawnIntegerityCheckSpawns(ent, args.CurrentIntegerity);
+    }
+
+    private void SpawnIntegerityCheckSpawns(Entity<SupermatterSpawnOnIntegerityComponent> ent, FixedPoint2? integerity = null)
+    {
+        if (integerity == null)
+        {
+            if (!TryComp<SupermatterIntegerityComponent>(ent, out var integerityComp))
+                return;
+
+            integerity = integerityComp.Integerity;
+        }
+
+        foreach (var spawn in ent.Comp.Spawns)
+        {
+            spawn.CanSpawn = spawn.Min < integerity && spawn.Max >= integerity;
+
+            if (spawn.CanSpawn)
+                spawn.NextSpawn = _timing.CurTime + _random.Next(spawn.MinDelay, spawn.MaxDelay);
+        }
     }
 
     public void ModifyIntegerity(Entity<SupermatterIntegerityComponent?> ent, FixedPoint2 integerity)
