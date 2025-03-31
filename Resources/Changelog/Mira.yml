@@ -1417,3 +1417,9 @@ Entries:
     type: Add
   id: 205
   time: '2025-03-28T23:00:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: Void oil now evaporates, removes less blood but metabolises slower
+    type: Tweak
+  id: 206
+  time: '2024-06-31T14:00:00.0000000+00:00'
