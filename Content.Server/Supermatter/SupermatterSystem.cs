@@ -40,6 +40,7 @@ public sealed partial class SupermatterSystem : EntitySystem
         SubscribeLocalEvent<SupermatterRadioComponent, SupermatterIntegerityModifiedEvent>(OnRadioIntegerityModified);
         SubscribeLocalEvent<SupermatterRadioComponent, SupermatterCountdownTickEvent>(OnRadioCountdownTick);
         SubscribeLocalEvent<SupermatterDelaminationCountdownComponent, SupermatterBeforeDelaminatedEvent>(OnCountdownBeforeDelamination);
+        SubscribeLocalEvent<SupermatterDelaminationCountdownComponent, SupermatterActivatedEvent>(OnCountdownActivated);
         SubscribeLocalEvent<SupermatterDelaminationCountdownComponent, SupermatterDeactivatedEvent>(OnCountdownDeactivated);
 
         SubscribeLocalEvent<SupermatterGasReactionComponent, AtmosExposedUpdateEvent>(OnGasReactionAtmosExposed);
