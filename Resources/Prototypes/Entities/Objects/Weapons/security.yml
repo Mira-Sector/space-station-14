@@ -11,7 +11,7 @@
     damage: 35
 
 - type: entity
-  name: stun baton
+  name: tider beater
   parent: [BaseStunbaton, BaseItem, BaseRestrictedContraband]
   id: Stunbaton
   description: A stun baton for incapacitating people with. Actively harming with this is considered bad tone.

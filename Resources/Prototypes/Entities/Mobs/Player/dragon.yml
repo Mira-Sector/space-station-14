@@ -2,8 +2,8 @@
   parent: [ SimpleSpaceMobBase, FlyingMobBase ]
   id: BaseMobDragon
   suffix: ""
-  name: space dragon
-  description: A flying leviathan, loosely related to space carps.
+  name: clownothing
+  description: A... OH MY GOD WHAT THE ABSOLUTE FUCKITY FUCK
   abstract: true
   components:
   - type: Bloodstream
@@ -12,9 +12,9 @@
     allowMovement: true
     allowSpeech: true
     makeSentient: true
-    name: ghost-role-information-space-dragon-name
-    description: ghost-role-information-space-dragon-description
-    rules: ghost-role-information-space-dragon-rules
+    name: ghost-role-information-clownothing-name
+    description: ghost-role-information-clownothing-description
+    rules: ghost-role-information-clownothing-rules
     raffle:
       settings: default
   - type: GhostTakeoverAvailable
@@ -48,30 +48,21 @@
     baseWalkSpeed: 3
     baseSprintSpeed: 5
     weightlessModifier: 1.5
-  - type: RandomSprite
-    available:
-    - enum.DamageStateVisualLayers.Base:
-        alive: Rainbow
   - type: Sprite
-    sprite: Mobs/Aliens/Carps/dragon.rsi
+    sprite: Mobs/Aliens/Clownothing.rsi
     noRot: true
     layers:
     - map: [ "enum.DamageStateVisualLayers.Base" ]
-      state: alive
-    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
-      state: alive-unshaded
-      shader: unshaded
+      state: clownothing
   - type: Appearance
   - type: DamageStateVisuals
     states:
       Alive:
-        Base: alive
-        BaseUnshaded: alive-unshaded
+        Base: clownothing
       Critical:
-        Base: crit
+        Base: clownothing_dead
       Dead:
-        Base: dead
-        BaseUnshaded: dead-unshaded
+        Base: clownothing_dead
   - type: Physics
     bodyType: KinematicController
   - type: Fixtures
@@ -94,8 +85,8 @@
   - type: MobThresholds
     thresholds:
       0: Alive
-      450: Critical
-      500: Dead
+      325: Critical
+      450: Dead
   - type: SlowOnDamage
     speedModifierThresholds:
       250: 0.7
@@ -137,17 +128,19 @@
     soundPerceivedByOthers: false # A 75% chance for a loud roar would get old fast.
   - type: MeleeWeapon
     altDisarm: false
+    angle: 0
+    animation: WeaponArcPunch
     soundHit:
-      path: /Audio/Weapons/Xeno/alien_claw_flesh3.ogg
+      collection: BikeHorn
     damage:
       types:
-        Piercing: 15
-        Slash: 15
+        Piercing: 12.5
+        Slash: 17.5
   - type: Devourer
     foodPreference: Humanoid
     shouldStoreDevoured: true
     chemical: Ichor
-    healRate: 15.0
+    healRate: 10.0
     whitelist:
       components:
       - MobState
@@ -160,6 +153,18 @@
     - DoorBumpOpener
   - type: Puller
     needsHands: false
+  - type: Prying
+    pryPowered: true
+    force: true
+    speedModifier: 1.5
+    useSound:
+      path: /Audio/Items/crowbar.ogg
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: FootstepClown
+      params:
+        variation: 0.17
+        volume: 3
 
 - type: entity
   parent: BaseMobDragon
@@ -177,8 +182,8 @@
 - type: entity
   categories: [ HideSpawnMenu ]
   id: DragonsBreathGun
-  name: dragon's lung
-  description: For dragon's breathing.
+  name: clownothing's spit
+  description: Ew
   components:
   - type: RechargeBasicEntityAmmo
     rechargeCooldown: 5

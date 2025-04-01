@@ -24,6 +24,7 @@
     - id: SpiderClownSpawn
     - id: SpiderSpawn
     - id: VentClog
+    - id: ClownoThing
 
 - type: entityTable
   id: BasicAntagEventsTable

@@ -69,7 +69,7 @@
   name: bee
   parent: [ SimpleMobBase, FlyingMobBase ]
   id: MobBee
-  description: Nice to have, but you can't build a civilization on a foundation of honey alone.
+  description: Ya like jazz?
   components:
   - type: CombatMode
   - type: MovementSpeedModifier
@@ -864,10 +864,10 @@
     price: 50
 
 - type: entity
-  name: cow
+  name: woc
   parent: SimpleMobBase
   id: MobCow
-  description: Moo.
+  description: .ooM
   components:
   - type: Sprite
     drawdepth: Mobs
@@ -1778,10 +1778,10 @@
     - type: GuidebookControlsTest
 
 - type: entity
-  name: mouse
+  name: Мышь
   parent: SimpleMobBase
   id: MobMouse
-  description: Squeak!
+  description: Писк!
   components:
   - type: Body
     prototype: Mouse
@@ -1908,8 +1908,7 @@
     spawned:
     - id: FoodMeatRat
       amount: 1
-  - type: ReplacementAccent
-    accent: mouse
+  - type: RussianAccent
   - type: Tag
     tags:
     - Trash

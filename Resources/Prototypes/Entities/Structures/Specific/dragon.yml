@@ -1,7 +1,7 @@
 - type: entity
   id: CarpRift
-  name: carp rift
-  description: A rift akin to the ones space carp use to travel long distances.
+  name: clown rift
+  description: A rift you must close at all cost. Honk.
   placement:
     mode: SnapgridCenter
   components:
@@ -16,18 +16,17 @@
     layers:
     - sprite: Structures/Specific/carp_rift.rsi
       state: icon
-      color: "#569fff"
       shader: unshaded
   - type: InteractionOutline
   - type: Clickable
   - type: PointLight
     enabled: true
-    color: "#366db5"
+    color: "#FFA500"
     radius: 10.0
     energy: 5.0
     netsync: false
   - type: NavMapBeacon
-    color: "#ff0000"
+    color: "#FFA500"
     text: carp rift
     # only show after making the announcement at 50%
     enabled: false
