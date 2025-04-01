@@ -34,4 +34,13 @@ public sealed partial class SliceableFoodComponent : Component
     /// </summary>
     [DataField]
     public float SpawnOffset = 0.5f;
+
+    /// <summary>
+    /// additional container that will be transferred over. "food" is still always transferred over.
+    /// </summary>
+    [DataField]
+    public string? ExtraSolution;
+
+    [DataField]
+    public bool TransferReagents = true;
 }
