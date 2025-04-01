@@ -198,9 +198,32 @@
       maxSpawns: 1
       minDelay: 1
       maxDelay: 5
+  - type: SupermatterAudio
+    normalLoop:
+      path: /Audio/Machines/Supermatter/loops/calm.ogg
+      params:
+        loop: true
+    delaminationLoop:
+      path: /Audio/Machines/Supermatter/loops/delamming.ogg
+      params:
+        loop: true
+    minPulseSoundDelay: 5
+    maxPulseSoundDelay: 10
+    normalPulse:
+      collection: SupermatterNormal
+    delaminationPulse:
+      collection: SupermatterDelamination
+  - type: AmbientSound
+    enabled: false
+    volume: -5
+    range: 8
+    sound:
+      path: /Audio/Machines/Supermatter/loops/calm.ogg
+      params:
+        loop: true
   - type: EventHorizon
-    radius: 0.3
     consumeTiles: false
+    consumeEntities: false
     colliderFixtureId: EventHorizonCollider
     consumerFixtureId: EventHorizonConsumer
   - type: Fixtures
@@ -254,3 +277,8 @@
     color: "#FD8335"
     radius: 3
     energy: 2.4
+  - type: AmbientSound
+    volume: -5
+    range: 8
+    sound:
+      path: /Audio/Effects/Weather/snowstorm.ogg

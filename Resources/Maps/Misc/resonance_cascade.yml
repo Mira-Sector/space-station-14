@@ -21,7 +21,7 @@ entities:
     - type: Parallax
       parallax: Blank
     - type: SupermatterDelaminationTeleportMapReturn
-      delay: 2.5
+      delay: 5
     - type: LoadedMap
   - uid: 2
     components:
