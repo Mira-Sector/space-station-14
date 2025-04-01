@@ -10,6 +10,7 @@ using Content.Shared.Atmos;
 using Content.Server.Atmos.EntitySystems;
 using Content.Shared.FixedPoint;
 using Content.Shared.Radiation.Components;
+using Content.Shared.Supermatter;
 using Content.Shared.Whitelist;
 using Robust.Server.GameObjects;
 using Robust.Shared.Audio;
@@ -25,6 +26,7 @@ namespace Content.Server.Supermatter;
 
 public sealed partial class SupermatterSystem : EntitySystem
 {
+    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedAmbientSoundSystem _ambientSound = default!;
     [Dependency] private readonly AtmosphereSystem _atmos = default!;
@@ -88,6 +90,7 @@ public sealed partial class SupermatterSystem : EntitySystem
         SubscribeLocalEvent<SupermatterAudioComponent, SupermatterActivatedEvent>(OnAudioActivated);
         SubscribeLocalEvent<SupermatterAudioComponent, SupermatterDeactivatedEvent>(OnAudioDeactivated);
         SubscribeLocalEvent<SupermatterAudioComponent, SupermatterBeforeDelaminatedEvent>(OnAudioBeforeDelamination);
+        SubscribeLocalEvent<SupermatterAudioComponent, SupermatterDelaminatedEvent>(OnAudioDelaminated);
         SubscribeLocalEvent<SupermatterAudioComponent, SupermatterIntegerityModifiedEvent>(OnAudioIntegerityModified);
     }
 
@@ -654,6 +657,7 @@ public sealed partial class SupermatterSystem : EntitySystem
 
             ent.Comp.Integerity = newIntegerity > ent.Comp.MaxIntegrity ? ent.Comp.MaxIntegrity : newIntegerity;
             ent.Comp.IsDelaminating = false;
+            _appearance.SetData(ent, SupermatterVisuals.Delaminating, false);
             return;
         }
 
@@ -661,6 +665,7 @@ public sealed partial class SupermatterSystem : EntitySystem
             return;
 
         ent.Comp.IsDelaminating = true;
+        _appearance.SetData(ent, SupermatterVisuals.Delaminating, true);
 
         var beforeDelaminateEv = new SupermatterBeforeDelaminatedEvent();
         RaiseLocalEvent(ent, beforeDelaminateEv);

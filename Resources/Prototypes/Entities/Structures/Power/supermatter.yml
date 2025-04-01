@@ -12,7 +12,33 @@
     offset: 0, 0.25
     noRot: true
     layers:
-    - state: sm
+    - map: [ "shard" ]
+      state: sm
+    - map: [ "xmas-hat" ]
+      state: santa_hat
+      visible: false
+    - map: [ "xmas-lights" ]
+      state: holiday_lights
+      visible: false
+    - map: [ "field" ]
+      state: causality_field
+      visible: false
+  - type: Appearance
+  - type: HolidayVisuals
+    holidays:
+      festive:
+      - FestiveSeason
+  - type: GenericVisualizer
+    visuals:
+      enum.SupermatterVisuals.Delaminating:
+        field:
+          True: { visible: true }
+          False: { visible: False }
+      enum.HolidayVisuals.Holiday:
+        xmas-hat:
+          festive: { visible: true }
+        xmas-lights:
+          festive: { visible: true }
   - type: PointLight
     color: "#FFFF00"
     radius: 3
