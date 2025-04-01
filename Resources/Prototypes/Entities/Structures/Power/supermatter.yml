@@ -144,6 +144,11 @@
         whitelist:
           components:
           - Body
+      - !type:ExplosionDelamination
+        type: Minibomb
+        maxIntensity: 150
+        intensitySlope: 3
+        totalIntensity: 50000
     - delaminations:
       - !type:SpawnDelamination
         count: 1
