@@ -164,11 +164,7 @@
         intensitySlope: 3
         maxIntensity: 75
   - type: SupermatterDelaminationTeleportMap
-    mapComponents:
-    - type: Parallax
-      parallax: Blank
-    - type: SupermatterDelaminationTeleportMapReturn
-      delay: 2.5
+    mapPath: /Maps/Misc/resonance_cascade.yml
   - type: SupermatterSpawnOnIntegerity
     spawns:
     - min: 300
@@ -233,3 +229,23 @@
         hard: false
         layer:
         - WallLayer
+
+- type: entity
+  id: SupermatterDummy
+  name: supermatter crystal
+  description: Get away from the beam Gordon!
+  suffix: Dummy
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: Structures/Power/Generation/supermatter.rsi
+    offset: 0, 0.25
+    noRot: true
+    layers:
+    - state: sm-psy
+    - state: causality_field
+  - type: PointLight
+    color: "#FD8335"
+    radius: 3
+    energy: 2.4

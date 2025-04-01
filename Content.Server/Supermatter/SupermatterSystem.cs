@@ -10,7 +10,9 @@ using Content.Server.Atmos.EntitySystems;
 using Content.Shared.FixedPoint;
 using Content.Shared.Radiation.Components;
 using Content.Shared.Whitelist;
+using Robust.Server.GameObjects;
 using Robust.Shared.Map;
+using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
@@ -22,6 +24,7 @@ public sealed partial class SupermatterSystem : EntitySystem
 {
     [Dependency] private readonly AtmosphereSystem _atmos = default!;
     [Dependency] private readonly SharedMapSystem _map = default!;
+    [Dependency] private readonly MapLoaderSystem _mapLoader = default!;
     [Dependency] private readonly RadioSystem _radio = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
@@ -170,20 +173,21 @@ public sealed partial class SupermatterSystem : EntitySystem
             if (mapReturnComp.NextTeleport > _timing.CurTime)
                 continue;
 
-            while (Transform(uid).ChildEnumerator.MoveNext(out var entity))
+            var grids = Transform(uid).ChildEnumerator;
+            while (grids.MoveNext(out var grid))
             {
-                if (TryComp<SupermatterDelaminationTeleportedComponent>(entity, out var teleportedComp))
+                var children = Transform(grid).ChildEnumerator;
+                while (children.MoveNext(out var entity))
                 {
-                    _transform.SetMapCoordinates(entity, teleportedComp.StartingCoords);
-                    RemCompDeferred<SupermatterDelaminationTeleportedComponent>(entity);
-                }
-                else
-                {
-                    Log.Warning($"Tried teleporting {ToPrettyString(entity)} from delamination map but does not have starting coords.");
+                    if (TryComp<SupermatterDelaminationTeleportedComponent>(entity, out var teleportedComp))
+                    {
+                        _transform.SetMapCoordinates(entity, teleportedComp.StartingCoords);
+                        RemCompDeferred<SupermatterDelaminationTeleportedComponent>(entity);
+                    }
                 }
             }
 
-            QueueDel(uid);
+            Del(uid);
         }
     }
 
@@ -192,7 +196,8 @@ public sealed partial class SupermatterSystem : EntitySystem
         foreach (var (entity, pos) in args.Entities)
         {
             var mapUid = _map.CreateMap(out var mapId);
-            EntityManager.AddComponents(mapUid, ent.Comp.MapComponents);
+            _mapLoader.Load(mapId, ent.Comp.MapPath.ToString());
+            _map.SetPaused(mapId, false);
             args.Entities[entity] = new MapCoordinates(ent.Comp.MapPosition, mapId);
         }
 

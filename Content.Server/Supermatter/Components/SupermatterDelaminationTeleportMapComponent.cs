@@ -1,4 +1,4 @@
-using Robust.Shared.Prototypes;
+using Robust.Shared.Utility;
 using System.Numerics;
 
 namespace Content.Server.Supermatter.Components;
@@ -7,7 +7,7 @@ namespace Content.Server.Supermatter.Components;
 public sealed partial class SupermatterDelaminationTeleportMapComponent: Component
 {
     [DataField]
-    public ComponentRegistry MapComponents = new();
+    public ResPath MapPath;
 
     [DataField]
     public Vector2 MapPosition = new();
