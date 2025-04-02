@@ -1,3 +1,4 @@
+using Content.Server.Supermatter.Components;
 using Content.Shared.Atmos;
 using Content.Shared.FixedPoint;
 
@@ -14,10 +15,13 @@ public sealed partial class ModifyIntegerity : SupermatterGasReaction
 
     public override bool React(EntityUid supermatter, Gas? gas, GasMixture air, TimeSpan lastReaction, IEntityManager entMan)
     {
+        if (!entMan.TryGetComponent<SupermatterIntegerityComponent>(supermatter, out var integerityComp))
+            return false;
+
         var integerity = gas == null ? Integerity : (air.GetMoles(gas.Value) / air.TotalMoles);
         integerity *= lastReaction.TotalSeconds;
         var supermatterSys = entMan.System<SupermatterSystem>();
-        supermatterSys.ModifyIntegerity(supermatter, integerity);
+        supermatterSys.ModifyIntegerity((supermatter integerityComp), integerity);
         return true;
     }
 }

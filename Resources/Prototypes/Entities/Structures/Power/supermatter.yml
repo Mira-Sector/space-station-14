@@ -103,6 +103,9 @@
         multiplier: -1.5
       - !type:HeatEnergyGain
         multiplier: -1
+      NitrousOxide:
+      - !type:ModifyHeatResistance
+        Multiplier: 5
       Oxygen:
       - !type:PowerTransmission
         multiplier: 1.15

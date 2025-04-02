@@ -23,15 +23,11 @@ public sealed partial class PowerTransmission : SupermatterGasReaction
         var power = 1f + Additional;
 
         if (gas != null)
-        {
-            power *= (air.GetMoles(gas.Value) / air.TotalMoles) * Multiplier;
-        }
-        else
-        {
-            power *= Multiplier;
-        }
+            power *= (air.GetMoles(gas.Value) / air.TotalMoles);
 
+        power *= Multiplier;
         power *= (float) lastReaction.TotalSeconds;
+
         arcShooter.ShootMinInterval -= supermatterArcShooterComp.MinInterval / power;
         arcShooter.ShootMaxInterval -= supermatterArcShooterComp.MaxInterval / power;
 
