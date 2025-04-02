@@ -4,9 +4,6 @@ namespace Content.Server.Supermatter.Components;
 public sealed partial class SupermatterModifyIntegerityOnHeatResistanceComponent : Component
 {
     [ViewVariables]
-    public bool Enabled;
-
-    [ViewVariables]
     public TimeSpan LastReaction;
 
     [DataField]

@@ -6,9 +6,6 @@ namespace Content.Server.Supermatter.Components;
 public sealed partial class SupermatterAudioComponent : Component
 {
     [ViewVariables]
-    public bool Enabled;
-
-    [ViewVariables]
     public bool DelaminationSounds;
 
     [DataField]

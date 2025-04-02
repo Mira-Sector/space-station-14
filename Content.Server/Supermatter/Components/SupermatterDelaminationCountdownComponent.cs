@@ -16,12 +16,6 @@ public sealed partial class SupermatterDelaminationCountdownComponent : Componen
     [ViewVariables]
     public bool Active;
 
-    /// <summary>
-    /// Can the timer tick down
-    /// </summary>
-    [ViewVariables]
-    public bool Enabled;
-
     [DataField]
     public TimeSpan TickDelay;
 

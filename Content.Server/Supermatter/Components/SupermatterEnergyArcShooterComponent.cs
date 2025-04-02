@@ -8,7 +8,4 @@ public sealed partial class SupermatterEnergyArcShooterComponent : Component
 
     [ViewVariables]
     public float MaxInterval;
-
-    [ViewVariables]
-    public bool Enabled;
 }

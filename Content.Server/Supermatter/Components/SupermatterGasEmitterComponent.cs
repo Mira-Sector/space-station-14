@@ -18,9 +18,6 @@ public sealed partial class SupermatterGasEmitterComponent : Component
 
     private float _currentRate;
 
-    [ViewVariables]
-    public bool Enabled;
-
     [DataField]
     public float MinRate;
 

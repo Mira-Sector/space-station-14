@@ -55,15 +55,11 @@ public sealed partial class SupermatterSystem : EntitySystem
         SubscribeLocalEvent<SupermatterRadioComponent, SupermatterIntegerityModifiedEvent>(OnRadioIntegerityModified);
         SubscribeLocalEvent<SupermatterRadioComponent, SupermatterCountdownTickEvent>(OnRadioCountdownTick);
         SubscribeLocalEvent<SupermatterDelaminationCountdownComponent, SupermatterBeforeDelaminatedEvent>(OnCountdownBeforeDelamination);
-        SubscribeLocalEvent<SupermatterDelaminationCountdownComponent, SupermatterActivatedEvent>(OnCountdownActivated);
-        SubscribeLocalEvent<SupermatterDelaminationCountdownComponent, SupermatterDeactivatedEvent>(OnCountdownDeactivated);
 
         SubscribeLocalEvent<SupermatterGasReactionComponent, AtmosExposedUpdateEvent>(OnGasReactionAtmosExposed);
         SubscribeLocalEvent<SupermatterGasAbsorberComponent, SupermatterGasReactedEvent>(OnGasAbsorberGasReacted);
 
         SubscribeLocalEvent<SupermatterGasEmitterComponent, ComponentInit>(OnGasEmitterInit);
-        SubscribeLocalEvent<SupermatterGasEmitterComponent, SupermatterActivatedEvent>(OnGasEmitterActivated);
-        SubscribeLocalEvent<SupermatterGasEmitterComponent, SupermatterDeactivatedEvent>(OnGasEmitterDeactivated);
         SubscribeLocalEvent<SupermatterGasEmitterComponent, SupermatterGasReactedEvent>(OnGasEmitterGasReact);
         SubscribeLocalEvent<SupermatterGasEmitterComponent, SupermatterSpaceGasReactedEvent>(OnGasEmitterSpaceReact);
 
@@ -97,7 +93,6 @@ public sealed partial class SupermatterSystem : EntitySystem
         SubscribeLocalEvent<SupermatterHeatResistanceComponent, AtmosExposedUpdateEvent>(OnHeatResistanceAtmosExposed);
 
         SubscribeLocalEvent<SupermatterModifyIntegerityOnHeatResistanceComponent, SupermatterActivatedEvent>(OnHeatResistanceIntegerityActivated);
-        SubscribeLocalEvent<SupermatterModifyIntegerityOnHeatResistanceComponent, SupermatterDeactivatedEvent>(OnHeatResistanceIntegerityDeactivated);
         SubscribeLocalEvent<SupermatterModifyIntegerityOnHeatResistanceComponent, AtmosExposedUpdateEvent>(OnHeatResistanceIntegerityAtmosExposed);
 
         SubscribeLocalEvent<SupermatterModifyIntegerityOnMolesComponent, SupermatterGasAbsorbedEvent>(OnMolesIntegerityGasAbsorbed);
@@ -112,7 +107,7 @@ public sealed partial class SupermatterSystem : EntitySystem
         var gasEmitterQuery = EntityQueryEnumerator<SupermatterGasEmitterComponent>();
         while (gasEmitterQuery.MoveNext(out var uid, out var gasEmitterComp))
         {
-            if (!gasEmitterComp.Enabled)
+            if (!IsActive(uid))
                 continue;
 
             if (gasEmitterComp.NextSpawn > _timing.CurTime)
@@ -134,7 +129,7 @@ public sealed partial class SupermatterSystem : EntitySystem
         var countdownQuery = EntityQueryEnumerator<SupermatterDelaminationCountdownComponent>();
         while (countdownQuery.MoveNext(out var uid, out var countdownComp))
         {
-            if (!countdownComp.Active || !countdownComp.Enabled)
+            if (!countdownComp.Active || !IsActive(uid))
                 continue;
 
             countdownComp.ElapsedTime += TimeSpan.FromSeconds(frameTime);
@@ -196,7 +191,7 @@ public sealed partial class SupermatterSystem : EntitySystem
         var audioQuery = EntityQueryEnumerator<SupermatterAudioComponent>();
         while (audioQuery.MoveNext(out var uid, out var audioComp))
         {
-            if (!audioComp.Enabled)
+            if (!IsActive(uid))
                 return;
 
             if (audioComp.NextPulseSound > _timing.CurTime)
@@ -282,9 +277,6 @@ public sealed partial class SupermatterSystem : EntitySystem
         ent.Comp.CurrentTemperature = ent.Comp.MinTemperature;
     }
 
-    private static void OnGasEmitterActivated(Entity<SupermatterGasEmitterComponent> ent, ref SupermatterActivatedEvent args) => ent.Comp.Enabled = true;
-    private static void OnGasEmitterDeactivated(Entity<SupermatterGasEmitterComponent> ent, ref SupermatterDeactivatedEvent args) => ent.Comp.Enabled = false;
-
     private void OnArcShooterInit(Entity<SupermatterEnergyArcShooterComponent> ent, ref ComponentInit args)
     {
         EnsureComp<LightningArcShooterComponent>(ent, out var arcShooterComp);
@@ -298,13 +290,11 @@ public sealed partial class SupermatterSystem : EntitySystem
         var arcShooterComp = EntityManager.GetComponent<LightningArcShooterComponent>(ent);
         arcShooterComp.Enabled = true;
         arcShooterComp.NextShootTime = _timing.CurTime;
-        ent.Comp.Enabled = true;
     }
 
     private void OnArcShooterDeactivated(Entity<SupermatterEnergyArcShooterComponent> ent, ref SupermatterDeactivatedEvent args)
     {
         EntityManager.GetComponent<LightningArcShooterComponent>(ent).Enabled = false;
-        ent.Comp.Enabled = false;
     }
 
     private void OnRadiationInit(Entity<SupermatterRadiationComponent> ent, ref ComponentInit args)
@@ -478,9 +468,6 @@ public sealed partial class SupermatterSystem : EntitySystem
         ent.Comp.Active = true;
     }
 
-    private static void OnCountdownActivated(Entity<SupermatterDelaminationCountdownComponent> ent, ref SupermatterActivatedEvent args) => ent.Comp.Enabled = true;
-    private static void OnCountdownDeactivated(Entity<SupermatterDelaminationCountdownComponent> ent, ref SupermatterDeactivatedEvent args) => ent.Comp.Enabled = false;
-
     private void OnGasEmitterGasReact(Entity<SupermatterGasEmitterComponent> ent, ref SupermatterGasReactedEvent args)
     {
         // clear up any gases that we didnt react with
@@ -608,14 +595,15 @@ public sealed partial class SupermatterSystem : EntitySystem
         }
     }
 
-    private void OnAudioActivated(Entity<SupermatterAudioComponent> ent, ref SupermatterActivatedEvent args) => AudioAmbient(ent, true);
-    private void OnAudioDeactivated(Entity<SupermatterAudioComponent> ent, ref SupermatterDeactivatedEvent args) => AudioAmbient(ent, false);
-
-    private void AudioAmbient(Entity<SupermatterAudioComponent> ent, bool value)
+    private void OnAudioActivated(Entity<SupermatterAudioComponent> ent, ref SupermatterActivatedEvent args)
     {
-        _ambientSound.SetAmbience(ent, value);
-        ent.Comp.Enabled = value;
+        _ambientSound.SetAmbience(ent, true);
         ent.Comp.NextPulseSound = _timing.CurTime;
+    }
+
+    private void OnAudioDeactivated(Entity<SupermatterAudioComponent> ent, ref SupermatterDeactivatedEvent args)
+    {
+        _ambientSound.SetAmbience(ent, false);
     }
 
     private void OnAudioBeforeDelamination(Entity<SupermatterAudioComponent> ent, ref SupermatterBeforeDelaminatedEvent args) => AudioDelaminationSounds(ent);
@@ -663,18 +651,12 @@ public sealed partial class SupermatterSystem : EntitySystem
 
     private void OnHeatResistanceIntegerityActivated(Entity<SupermatterModifyIntegerityOnHeatResistanceComponent> ent, ref SupermatterActivatedEvent args)
     {
-        ent.Comp.Enabled = true;
         ent.Comp.LastReaction = _timing.CurTime;
-    }
-
-    private static void OnHeatResistanceIntegerityDeactivated(Entity<SupermatterModifyIntegerityOnHeatResistanceComponent> ent, ref SupermatterDeactivatedEvent args)
-    {
-        ent.Comp.Enabled = false;
     }
 
     private void OnHeatResistanceIntegerityAtmosExposed(Entity<SupermatterModifyIntegerityOnHeatResistanceComponent> ent, ref AtmosExposedUpdateEvent args)
     {
-        if (!ent.Comp.Enabled)
+        if (!IsActive(ent.Owner))
             return;
 
         if (!TryComp<SupermatterHeatResistanceComponent>(ent, out var heatResistanceComp))
@@ -817,5 +799,13 @@ public sealed partial class SupermatterSystem : EntitySystem
         }
 
         ent.Comp.Active = enabled;
+    }
+
+    public bool IsActive(Entity<SupermatterActiveComponent?> ent)
+    {
+        if (!Resolve(ent, ref ent.Comp))
+            return true;
+
+        return ent.Comp.Active;
     }
 }
