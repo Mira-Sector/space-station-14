@@ -73,6 +73,9 @@
   - type: SupermatterGasAbsorber
     absorbedMultiplier: 0.7
   - type: SupermatterGasReaction
+    spaceReactions:
+    - !type:ModifyIntegerity
+      integerity: -10
     gasReactions:
       Noblium:
       - !type:PowerTransmission
@@ -235,9 +238,13 @@
       integerityDamage: 15
     - belowHeatResistance: false
       integerityDamage: -10
+  - type: SupermatterModifyHeatResistanceOnMoles
+    resistances:
+    - minMoles: 30
+      heatResistance: 1
   - type: SupermatterModifyIntegerityOnMoles
     damages:
-    - min: 1800
+    - minMoles: 1800
       integerityDamage: 20
   - type: SupermatterAudio
     normalLoop:

@@ -94,6 +94,8 @@ public sealed partial class SupermatterSystem : EntitySystem
         SubscribeLocalEvent<SupermatterAudioComponent, SupermatterDelaminatedEvent>(OnAudioDelaminated);
         SubscribeLocalEvent<SupermatterAudioComponent, SupermatterIntegerityModifiedEvent>(OnAudioIntegerityModified);
 
+        SubscribeLocalEvent<SupermatterHeatResistanceComponent, AtmosExposedUpdateEvent>(OnHeatResistanceAtmosExposed);
+
         SubscribeLocalEvent<SupermatterModifyIntegerityOnHeatResistanceComponent, SupermatterActivatedEvent>(OnHeatResistanceIntegerityActivated);
         SubscribeLocalEvent<SupermatterModifyIntegerityOnHeatResistanceComponent, SupermatterDeactivatedEvent>(OnHeatResistanceIntegerityDeactivated);
         SubscribeLocalEvent<SupermatterModifyIntegerityOnHeatResistanceComponent, AtmosExposedUpdateEvent>(OnHeatResistanceIntegerityAtmosExposed);
@@ -646,6 +648,11 @@ public sealed partial class SupermatterSystem : EntitySystem
 
         _ambientSound.SetSound(ent, ent.Comp.NormalLoop);
         _ambientSound.SetAmbience(ent, true);
+    }
+
+    private void OnHeatResistanceAtmosExposed(Entity<SupermatterHeatResistanceComponent> ent, ref AtmosExposedUpdateEvent args)
+    {
+        ent.Comp.HeatResistance = ent.Comp.BaseHeatResistance;
     }
 
     private void OnHeatResistanceIntegerityActivated(Entity<SupermatterModifyIntegerityOnHeatResistanceComponent> ent, ref SupermatterActivatedEvent args)
