@@ -66,9 +66,9 @@
     ratios:
       Plasma: 1
       Oxygen: 1
-    baseRate: 2
+    baseRate: 25
     minTemperature: 100
-    temperaturePerRate: 3
+    temperaturePerRate: 0.75
     delay: 1.5
   - type: SupermatterGasAbsorber
     absorbedMultiplier: 0.7
@@ -150,7 +150,6 @@
     slope: 0.7
   - type: SupermatterRadiation
     intensityPower: 0.00053
-  - type: SupermatterEnergyHeatGain
   - type: SupermatterRadio
     integerityMessages:
       30: supermatter-radio-integerity-caution
