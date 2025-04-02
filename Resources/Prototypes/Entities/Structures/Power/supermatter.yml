@@ -82,26 +82,26 @@
         multiplier: 0.3
       - !type:ModifyWaste
         multiplier: -14
-      - !type:HeatEnergyGain
+      - !type:ModifyHeatEnergy
         multiplier: -1
       Frezon:
       - !type:ModifyPowerTransmission
         multiplier: -3
       - !type:ModifyWaste
         multiplier: -9
-      - !type:HeatEnergyGain
+      - !type:ModifyHeatEnergy
         multiplier: -1
       Nitrogen:
       - !type:ModifyWaste
         multiplier: -2.5
-      - !type:HeatEnergyGain
+      - !type:ModifyHeatEnergy
         multiplier: -1
       Pluoxium:
       - !type:ModifyPowerTransmission
         multiplier: -0.5
       - !type:ModifyWaste
         multiplier: -1.5
-      - !type:HeatEnergyGain
+      - !type:ModifyHeatEnergy
         multiplier: -1
       NitrousOxide:
       - !type:ModifyHeatResistance
@@ -109,15 +109,15 @@
       Oxygen:
       - !type:ModifyPowerTransmission
         multiplier: 1.15
-      - !type:HeatEnergyGain
+      - !type:ModifyHeatEnergy
         multiplier: 1
       Ammonia:
-      - !type:HeatEnergyGain
+      - !type:ModifyHeatEnergy
         multiplier: 0.5
       CarbonDioxide:
       - !type:ModifyWaste
         multiplier: 1
-      - !type:HeatEnergyGain
+      - !type:ModifyHeatEnergy
         multiplier: 1
       - !type:EnergyRecoupling
       WaterVapor:
@@ -125,21 +125,21 @@
         multiplier: -0.25
       - !type:ModifyWaste
         multiplier: -1.5
-      - !type:HeatEnergyGain
+      - !type:ModifyHeatEnergy
         multiplier: 1
       Plasma:
       - !type:ModifyPowerTransmission
         multiplier: 0.4
       - !type:ModifyWaste
         multiplier: 14
-      - !type:HeatEnergyGain
+      - !type:ModifyHeatEnergy
         multiplier: 1
       Tritium:
       - !type:ModifyPowerTransmission
         multiplier: 3
       - !type:ModifyWaste
         multiplier: 9
-      - !type:HeatEnergyGain
+      - !type:ModifyHeatEnergy
         multiplier: 1
   - type: SupermatterIntegerity
   - type: SupermatterModifyIntegerityOnEnergy
@@ -243,6 +243,9 @@
       maxSpawns: 1
       minDelay: 1
       maxDelay: 5
+  - type: SupermatterHeatEnergy
+    baseEnergy: 0.8
+    minTemperature: 290
   - type: SupermatterHeatResistance
   - type: SupermatterModifyIntegerityOnHeatResistance
     damages:

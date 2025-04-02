@@ -65,6 +65,9 @@ public sealed partial class SupermatterSystem : EntitySystem
         SubscribeLocalEvent<SupermatterGasEmitterComponent, ComponentInit>(OnGasEmitterInit);
         SubscribeLocalEvent<SupermatterGasEmitterComponent, SupermatterBeforeGasReactionsEvent>(OnGasEmitterBeforeGasReaction);
 
+        SubscribeLocalEvent<SupermatterHeatEnergyComponent, ComponentInit>(OnHeatEnergyInit);
+        SubscribeLocalEvent<SupermatterHeatEnergyComponent, SupermatterBeforeGasReactionsEvent>(OnHeatEnergyBeforeGasReaction);
+
         SubscribeLocalEvent<SupermatterDelaminatableComponent, SupermatterDelaminatedEvent>(OnDelaminateableDelaminated);
         SubscribeLocalEvent<SupermatterDelaminationCountdownComponent, SupermatterBeforeDelaminatedEvent>(OnCountdownBeforeDelamination);
         SubscribeLocalEvent<SupermatterDelaminationTeleportMapComponent, SupermatterDelaminationTeleportGetPositionEvent>(OnDelaminationTeleportGetPos);
@@ -118,7 +121,10 @@ public sealed partial class SupermatterSystem : EntitySystem
             foreach (var (gas, ratio) in gasEmitterComp.Ratios)
                 air.AdjustMoles(gas, ratio * gasEmitterComp.CurrentRate);
 
-            air.Temperature = gasEmitterComp.CurrentRate * gasEmitterComp.TemperaturePerRate + gasEmitterComp.MinTemperature;
+            air.Temperature -= gasEmitterComp.LastTemperature;
+            var temp = gasEmitterComp.CurrentRate * gasEmitterComp.TemperaturePerRate + Math.Max(gasEmitterComp.MinTemperature - air.Temperature, 0f);
+            gasEmitterComp.LastTemperature = temp;
+            air.Temperature += temp;
         }
 
 #endregion
@@ -494,6 +500,29 @@ public sealed partial class SupermatterSystem : EntitySystem
 
 #endregion
 
+#region Heat Energy
+
+    private static void OnHeatEnergyInit(Entity<SupermatterHeatEnergyComponent> ent, ref ComponentInit args) => ent.Comp.CurrentEnergy = 0f;
+
+    private void OnHeatEnergyBeforeGasReaction(Entity<SupermatterHeatEnergyComponent> ent, ref SupermatterBeforeGasReactionsEvent args)
+    {
+        var oldEnergy = ent.Comp.CurrentEnergy;
+        ent.Comp.CurrentEnergy = 0f;
+
+        if (oldEnergy <= 0f)
+            return;
+
+        var air = _atmos.GetContainingMixture(ent.Owner, false, false);
+
+        if (air == null)
+            return;
+
+        var integerity = Math.Max((air.Temperature - ent.Comp.MinTemperature) * oldEnergy, 0f);
+        ModifyEnergy(ent.Owner, integerity);
+    }
+
+#endregion
+
 #region Delamination
 
     private void OnDelaminateableDelaminated(Entity<SupermatterDelaminatableComponent> ent, ref SupermatterDelaminatedEvent args)
@@ -841,6 +870,21 @@ public sealed partial class SupermatterSystem : EntitySystem
         ent.Comp.CurrentPower += power;
 
         var ev = new SupermatterPowerTransmissionModifiedEvent(ent.Comp.CurrentPower, oldPower);
+        RaiseLocalEvent(ent, ev);
+    }
+
+    public void ModifyHeatEnergy(Entity<SupermatterHeatEnergyComponent?> ent, float energy)
+    {
+        if (energy == 0f)
+            return;
+
+        if (!Resolve(ent.Owner, ref ent.Comp))
+            return;
+
+        var oldEnergy = ent.Comp.CurrentEnergy;
+        ent.Comp.CurrentEnergy += energy;
+
+        var ev = new SupermatterHeatEnergyModifiedEvent(ent.Comp.CurrentEnergy, oldEnergy);
         RaiseLocalEvent(ent, ev);
     }
 

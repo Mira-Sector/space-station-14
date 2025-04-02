@@ -20,6 +20,9 @@ public sealed partial class SupermatterGasEmitterComponent : Component
     [DataField]
     public float TemperaturePerRate;
 
+    [ViewVariables]
+    public float LastTemperature;
+
     [DataField]
     public TimeSpan Delay;
 
