@@ -70,6 +70,8 @@
       Oxygen: 1
     minRate: 10
     delay: 1.5
+  - type: SupermatterGasAbsorber
+    absorbedMultiplier: 0.7
   - type: SupermatterGasReaction
     gasReactions:
       Noblium:
@@ -226,6 +228,17 @@
       maxSpawns: 1
       minDelay: 1
       maxDelay: 5
+  - type: SupermatterHeatResistance
+  - type: SupermatterModifyIntegerityOnHeatResistance
+    damages:
+    - belowHeatResistance: true
+      integerityDamage: 15
+    - belowHeatResistance: false
+      integerityDamage: -10
+  - type: SupermatterModifyIntegerityOnMoles
+    damages:
+    - min: 1800
+      integerityDamage: 20
   - type: SupermatterAudio
     normalLoop:
       path: /Audio/Machines/Supermatter/loops/calm.ogg
