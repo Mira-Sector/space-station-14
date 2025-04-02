@@ -62,7 +62,8 @@
   - type: SupermatterEnergy
   - type: SupermatterEnergyDecay
     delay: 1
-    energyDecay: -10
+    decayPower: 0.00052
+    decayOffset: 2
   - type: SupermatterGasEmitter
     ratios:
       Plasma: 1
@@ -141,6 +142,7 @@
     slope: 0.7
   - type: SupermatterRadiation
     intensityPower: 0.00053
+  - type: SupermatterEnergyHeatGain
   - type: SupermatterRadio
     integerityMessages:
       30: supermatter-radio-integerity-caution

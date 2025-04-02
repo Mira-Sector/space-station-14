@@ -153,8 +153,10 @@ public sealed partial class SupermatterSystem : EntitySystem
 
             decayComp.NextDecay += decayComp.Delay;
 
-            ModifyEnergy((uid, energyComp), decayComp.EnergyDecay);
-            decayComp.LastLostEnergy += decayComp.EnergyDecay;
+            var decay = ((float) Math.Pow((1 + decayComp.DecayPower), energyComp.CurrentEnergy) + decayComp.DecayOffset - 1) * -1;
+
+            ModifyEnergy((uid, energyComp), decay);
+            decayComp.LastLostEnergy += decay;
         }
 
         var integeritySpawnQuery = EntityQueryEnumerator<SupermatterSpawnOnIntegerityComponent>();

@@ -11,7 +11,10 @@ public sealed partial class SupermatterEnergyDecayComponent : Component
     public TimeSpan NextDecay;
 
     [DataField]
-    public float EnergyDecay;
+    public float DecayPower;
+
+    [DataField]
+    public float DecayOffset;
 
     [ViewVariables]
     public float LastLostEnergy;
