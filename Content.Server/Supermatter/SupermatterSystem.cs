@@ -83,8 +83,6 @@ public sealed partial class SupermatterSystem : EntitySystem
         SubscribeLocalEvent<SupermatterRadiationComponent, SupermatterDeactivatedEvent>(OnRadiationDeactivated);
         SubscribeLocalEvent<SupermatterRadiationComponent, SupermatterEnergyModifiedEvent>(OnRadiationEnergyModified);
 
-        SubscribeLocalEvent<SupermatterEnergyHeatGainComponent, SupermatterBeforeGasReactionsEvent>(OnHeatGainBeforeGasReaction);
-
         SubscribeLocalEvent<SupermatterAudioComponent, SupermatterActivatedEvent>(OnAudioActivated);
         SubscribeLocalEvent<SupermatterAudioComponent, SupermatterDeactivatedEvent>(OnAudioDeactivated);
         SubscribeLocalEvent<SupermatterAudioComponent, SupermatterBeforeDelaminatedEvent>(OnAudioBeforeDelamination);
@@ -673,12 +671,6 @@ public sealed partial class SupermatterSystem : EntitySystem
     {
         EntityManager.GetComponent<RadiationSourceComponent>(ent).Intensity = ent.Comp.Intensity + (float) Math.Pow((1 + ent.Comp.IntensityPower), args.CurrentEnergy);
     }
-
-#endregion
-
-#region Heat Gain
-
-    private static void OnHeatGainBeforeGasReaction(Entity<SupermatterEnergyHeatGainComponent> ent, ref SupermatterBeforeGasReactionsEvent args) => ent.Comp.CurrentGain = 0f;
 
 #endregion
 
