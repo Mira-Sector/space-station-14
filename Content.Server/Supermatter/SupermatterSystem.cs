@@ -99,6 +99,8 @@ public sealed partial class SupermatterSystem : EntitySystem
         SubscribeLocalEvent<SupermatterModifyIntegerityOnHeatResistanceComponent, AtmosExposedUpdateEvent>(OnHeatResistanceIntegerityAtmosExposed);
 
         SubscribeLocalEvent<SupermatterModifyIntegerityOnMolesComponent, SupermatterGasAbsorbedEvent>(OnMolesIntegerityGasAbsorbed);
+
+        SubscribeLocalEvent<SupermatterModifyHeatResistanceOnMolesComponent, SupermatterGasAbsorbedEvent>(OnMolesHeatResistanceGasAbsorbed);
     }
 
     public override void Update(float frameTime)
@@ -694,6 +696,20 @@ public sealed partial class SupermatterSystem : EntitySystem
                 continue;
 
             ModifyIntegerity(ent.Owner, damages.IntegerityDamage);
+        }
+    }
+
+    private void OnMolesHeatResistanceGasAbsorbed(Entity<SupermatterModifyHeatResistanceOnMolesComponent> ent, ref SupermatterGasAbsorbedEvent args)
+    {
+        if (!TryComp<SupermatterHeatResistanceComponent>(ent, out var heatResistanceComp))
+            return;
+
+        foreach (var resistances in ent.Comp.Resistances)
+        {
+            if (resistances.MinMoles > args.TotalMoles || resistances.MaxMoles < args.TotalMoles)
+                continue;
+
+            ModifyHeatResistance((ent.Owner, heatResistanceComp), heatResistanceComp.BaseHeatResistance * resistances.HeatResistance);
         }
     }
 
