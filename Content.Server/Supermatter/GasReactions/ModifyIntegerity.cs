@@ -21,7 +21,7 @@ public sealed partial class ModifyIntegerity : SupermatterGasReaction
         var integerity = gas == null ? Integerity : (air.GetMoles(gas.Value) / air.TotalMoles);
         integerity *= lastReaction.TotalSeconds;
         var supermatterSys = entMan.System<SupermatterSystem>();
-        supermatterSys.ModifyIntegerity((supermatter integerityComp), integerity);
+        supermatterSys.ModifyIntegerity((supermatter, integerityComp), integerity);
         return true;
     }
 }
