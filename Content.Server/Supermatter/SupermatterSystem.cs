@@ -41,48 +41,49 @@ public sealed partial class SupermatterSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<SupermatterDelaminationTeleportMapComponent, SupermatterDelaminationTeleportGetPositionEvent>(OnDelaminationTeleportGetPos);
-        SubscribeLocalEvent<SupermatterDelaminationTeleportMapReturnComponent, ComponentInit>(OnMapReturnInit);
-
         SubscribeLocalEvent<SupermatterActiveComponent, MapInitEvent>(OnActiveInit);
         SubscribeLocalEvent<SupermatterActiveComponent, EntityConsumedByEventHorizonEvent>(OnActiveEventHorizon);
 
         SubscribeLocalEvent<SupermatterIntegerityComponent, ComponentInit>(OnIntegerityInit);
+        SubscribeLocalEvent<SupermatterSpawnOnIntegerityComponent, SupermatterActivatedEvent>(OnSpawnIntegerityActivated);
+        SubscribeLocalEvent<SupermatterSpawnOnIntegerityComponent, SupermatterDeactivatedEvent>(OnSpawnIntegerityDeactivated);
+        SubscribeLocalEvent<SupermatterSpawnOnIntegerityComponent, SupermatterIntegerityModifiedEvent>(OnSpawnIntegerityModified);
 
-        SubscribeLocalEvent<SupermatterDelaminatableComponent, SupermatterDelaminatedEvent>(OnDelaminateableDelaminated);
+        SubscribeLocalEvent<SupermatterPowerTransmissionComponent, ComponentInit>(OnPowerInit);
+        SubscribeLocalEvent<SupermatterPowerTransmissionComponent, SupermatterBeforeGasReactionsEvent>(OnPowerBeforeGasReaction);
+        SubscribeLocalEvent<SupermatterEnergyArcShooterComponent, ComponentInit>(OnArcShooterInit);
+        SubscribeLocalEvent<SupermatterEnergyArcShooterComponent, SupermatterActivatedEvent>(OnArcShooterActivated);
+        SubscribeLocalEvent<SupermatterEnergyArcShooterComponent, SupermatterDeactivatedEvent>(OnArcShooterDeactivated);
+        SubscribeLocalEvent<SupermatterEnergyArcShooterComponent, SupermatterPowerTransmissionModifiedEvent>(OnArcShooterPowerModified);
 
-        SubscribeLocalEvent<SupermatterRadioComponent, SupermatterIntegerityModifiedEvent>(OnRadioIntegerityModified);
-        SubscribeLocalEvent<SupermatterRadioComponent, SupermatterCountdownTickEvent>(OnRadioCountdownTick);
-        SubscribeLocalEvent<SupermatterDelaminationCountdownComponent, SupermatterBeforeDelaminatedEvent>(OnCountdownBeforeDelamination);
+        SubscribeLocalEvent<SupermatterHeatResistanceComponent, SupermatterBeforeGasReactionsEvent>(OnHeatResistanceBeforeGasReaction);
+        SubscribeLocalEvent<SupermatterModifyIntegerityOnHeatResistanceComponent, SupermatterActivatedEvent>(OnHeatResistanceIntegerityActivated);
+        SubscribeLocalEvent<SupermatterModifyIntegerityOnHeatResistanceComponent, AtmosExposedUpdateEvent>(OnHeatResistanceIntegerityAtmosExposed);
 
         SubscribeLocalEvent<SupermatterGasReactionComponent, AtmosExposedUpdateEvent>(OnGasReactionAtmosExposed);
         SubscribeLocalEvent<SupermatterGasAbsorberComponent, SupermatterGasReactedEvent>(OnGasAbsorberGasReacted);
         SubscribeLocalEvent<SupermatterGasEmitterComponent, ComponentInit>(OnGasEmitterInit);
         SubscribeLocalEvent<SupermatterGasEmitterComponent, SupermatterBeforeGasReactionsEvent>(OnGasEmitterBeforeGasReaction);
 
+        SubscribeLocalEvent<SupermatterDelaminatableComponent, SupermatterDelaminatedEvent>(OnDelaminateableDelaminated);
+        SubscribeLocalEvent<SupermatterDelaminationCountdownComponent, SupermatterBeforeDelaminatedEvent>(OnCountdownBeforeDelamination);
+        SubscribeLocalEvent<SupermatterDelaminationTeleportMapComponent, SupermatterDelaminationTeleportGetPositionEvent>(OnDelaminationTeleportGetPos);
+        SubscribeLocalEvent<SupermatterDelaminationTeleportMapReturnComponent, ComponentInit>(OnMapReturnInit);
+
+        SubscribeLocalEvent<SupermatterRadioComponent, SupermatterIntegerityModifiedEvent>(OnRadioIntegerityModified);
+        SubscribeLocalEvent<SupermatterRadioComponent, SupermatterCountdownTickEvent>(OnRadioCountdownTick);
+
         SubscribeLocalEvent<SupermatterEnergyCollideComponent, StartCollideEvent>(OnEnergyCollideCollide);
         SubscribeLocalEvent<SupermatterModifyEnergyOnCollideComponent, SupermatterEnergyCollidedEvent>(OnModifyEnergyCollide);
-
-        SubscribeLocalEvent<SupermatterPowerTransmissionComponent, ComponentInit>(OnPowerInit);
-        SubscribeLocalEvent<SupermatterPowerTransmissionComponent, SupermatterBeforeGasReactionsEvent>(OnPowerBeforeGasReaction);
-
-        SubscribeLocalEvent<SupermatterEnergyArcShooterComponent, ComponentInit>(OnArcShooterInit);
-        SubscribeLocalEvent<SupermatterEnergyArcShooterComponent, SupermatterActivatedEvent>(OnArcShooterActivated);
-        SubscribeLocalEvent<SupermatterEnergyArcShooterComponent, SupermatterDeactivatedEvent>(OnArcShooterDeactivated);
-        SubscribeLocalEvent<SupermatterEnergyArcShooterComponent, SupermatterPowerTransmissionModifiedEvent>(OnArcShooterPowerModified);
+        SubscribeLocalEvent<SupermatterEnergyDecayComponent, SupermatterBeforeGasReactionsEvent>(OnDecayBeforeGasReaction);
+        SubscribeLocalEvent<SupermatterModifyIntegerityOnEnergyComponent, SupermatterEnergyModifiedEvent>(OnEnergyIntegerityModifyEnergy);
 
         SubscribeLocalEvent<SupermatterRadiationComponent, ComponentInit>(OnRadiationInit);
         SubscribeLocalEvent<SupermatterRadiationComponent, SupermatterActivatedEvent>(OnRadiationActivated);
         SubscribeLocalEvent<SupermatterRadiationComponent, SupermatterDeactivatedEvent>(OnRadiationDeactivated);
         SubscribeLocalEvent<SupermatterRadiationComponent, SupermatterEnergyModifiedEvent>(OnRadiationEnergyModified);
 
-        SubscribeLocalEvent<SupermatterEnergyDecayComponent, SupermatterBeforeGasReactionsEvent>(OnDecayBeforeGasReaction);
         SubscribeLocalEvent<SupermatterEnergyHeatGainComponent, SupermatterBeforeGasReactionsEvent>(OnHeatGainBeforeGasReaction);
-        SubscribeLocalEvent<SupermatterModifyIntegerityOnEnergyComponent, SupermatterEnergyModifiedEvent>(OnEnergyIntegerityModifyEnergy);
-
-        SubscribeLocalEvent<SupermatterSpawnOnIntegerityComponent, SupermatterActivatedEvent>(OnSpawnIntegerityActivated);
-        SubscribeLocalEvent<SupermatterSpawnOnIntegerityComponent, SupermatterDeactivatedEvent>(OnSpawnIntegerityDeactivated);
-        SubscribeLocalEvent<SupermatterSpawnOnIntegerityComponent, SupermatterIntegerityModifiedEvent>(OnSpawnIntegerityModified);
 
         SubscribeLocalEvent<SupermatterAudioComponent, SupermatterActivatedEvent>(OnAudioActivated);
         SubscribeLocalEvent<SupermatterAudioComponent, SupermatterDeactivatedEvent>(OnAudioDeactivated);
@@ -90,19 +91,15 @@ public sealed partial class SupermatterSystem : EntitySystem
         SubscribeLocalEvent<SupermatterAudioComponent, SupermatterDelaminatedEvent>(OnAudioDelaminated);
         SubscribeLocalEvent<SupermatterAudioComponent, SupermatterIntegerityModifiedEvent>(OnAudioIntegerityModified);
 
-        SubscribeLocalEvent<SupermatterHeatResistanceComponent, SupermatterBeforeGasReactionsEvent>(OnHeatResistanceBeforeGasReaction);
-
-        SubscribeLocalEvent<SupermatterModifyIntegerityOnHeatResistanceComponent, SupermatterActivatedEvent>(OnHeatResistanceIntegerityActivated);
-        SubscribeLocalEvent<SupermatterModifyIntegerityOnHeatResistanceComponent, AtmosExposedUpdateEvent>(OnHeatResistanceIntegerityAtmosExposed);
-
         SubscribeLocalEvent<SupermatterModifyIntegerityOnMolesComponent, SupermatterGasAbsorbedEvent>(OnMolesIntegerityGasAbsorbed);
-
         SubscribeLocalEvent<SupermatterModifyHeatResistanceOnMolesComponent, SupermatterGasAbsorbedEvent>(OnMolesHeatResistanceGasAbsorbed);
     }
 
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
+
+#region Gas Emitter
 
         var gasEmitterQuery = EntityQueryEnumerator<SupermatterGasEmitterComponent>();
         while (gasEmitterQuery.MoveNext(out var uid, out var gasEmitterComp))
@@ -125,6 +122,10 @@ public sealed partial class SupermatterSystem : EntitySystem
 
             air.Temperature = gasEmitterComp.CurrentRate * gasEmitterComp.TemperaturePerRate + gasEmitterComp.MinTemperature;
         }
+
+#endregion
+
+#region Delamination
 
         var countdownQuery = EntityQueryEnumerator<SupermatterDelaminationCountdownComponent>();
         while (countdownQuery.MoveNext(out var uid, out var countdownComp))
@@ -151,6 +152,8 @@ public sealed partial class SupermatterSystem : EntitySystem
             countdownComp.NextTick += countdownComp.TickDelay;
         }
 
+#endregion
+
         var decayQuery = EntityQueryEnumerator<SupermatterEnergyDecayComponent, SupermatterEnergyComponent>();
         while (decayQuery.MoveNext(out var uid, out var decayComp, out var energyComp))
         {
@@ -164,6 +167,7 @@ public sealed partial class SupermatterSystem : EntitySystem
             ModifyEnergy((uid, energyComp), decay);
             decayComp.LastLostEnergy += decay;
         }
+
 
         var integeritySpawnQuery = EntityQueryEnumerator<SupermatterSpawnOnIntegerityComponent>();
         while (integeritySpawnQuery.MoveNext(out var uid, out var spawnComp))
@@ -187,6 +191,8 @@ public sealed partial class SupermatterSystem : EntitySystem
                 }
             }
         }
+
+#region Audio
 
         var audioQuery = EntityQueryEnumerator<SupermatterAudioComponent>();
         while (audioQuery.MoveNext(out var uid, out var audioComp))
@@ -218,6 +224,10 @@ public sealed partial class SupermatterSystem : EntitySystem
             _audio.PlayEntity(pulseSound, Filter.Pvs(uid), uid, true);
         }
 
+#endregion
+
+#region Delamination
+
         var mapReturnQuery = EntityQueryEnumerator<SupermatterDelaminationTeleportMapReturnComponent>();
         while (mapReturnQuery.MoveNext(out var uid, out var mapReturnComp))
         {
@@ -240,46 +250,81 @@ public sealed partial class SupermatterSystem : EntitySystem
 
             Del(uid);
         }
+
+#endregion
+
     }
 
-    private void OnDelaminationTeleportGetPos(Entity<SupermatterDelaminationTeleportMapComponent> ent, ref SupermatterDelaminationTeleportGetPositionEvent args)
-    {
-        foreach (var (entity, pos) in args.Entities)
-        {
-            var mapUid = _map.CreateMap(out var mapId);
-            _mapLoader.Load(mapId, ent.Comp.MapPath.ToString());
-            _map.SetPaused(mapId, false);
-            args.Entities[entity] = new MapCoordinates(ent.Comp.MapPosition, mapId);
-        }
-
-        args.Handled = true;
-    }
-
-    private void OnMapReturnInit(Entity<SupermatterDelaminationTeleportMapReturnComponent> ent, ref ComponentInit args)
-    {
-        ent.Comp.NextTeleport = _timing.CurTime + ent.Comp.Delay;
-    }
+#region Active
 
     private void OnActiveInit(Entity<SupermatterActiveComponent> ent, ref MapInitEvent args)
     {
         ActivateSupermatter((ent, ent.Comp), ent.Comp.Active);
     }
 
+    private void OnActiveEventHorizon(Entity<SupermatterActiveComponent> ent, ref EntityConsumedByEventHorizonEvent args)
+    {
+        if (_whitelist.IsBlacklistPass(ent.Comp.ActivationBlackList, args.Entity))
+            return;
+
+        ActivateSupermatter((ent, ent.Comp), true);
+    }
+
+#endregion
+
+#region Integerity
+
     private static void OnIntegerityInit(Entity<SupermatterIntegerityComponent> ent, ref ComponentInit args)
     {
         ent.Comp.Integerity = ent.Comp.MaxIntegrity;
     }
 
-    private void OnGasEmitterInit(Entity<SupermatterGasEmitterComponent> ent, ref ComponentInit args)
+    private void OnSpawnIntegerityActivated(Entity<SupermatterSpawnOnIntegerityComponent> ent, ref SupermatterActivatedEvent args)
     {
-        ent.Comp.NextSpawn = _timing.CurTime + ent.Comp.Delay;
-        ent.Comp.CurrentRate = ent.Comp.BaseRate;
+        SpawnIntegerityCheckSpawns(ent);
     }
+
+    private static void OnSpawnIntegerityDeactivated(Entity<SupermatterSpawnOnIntegerityComponent> ent, ref SupermatterDeactivatedEvent args)
+    {
+        foreach (var spawn in ent.Comp.Spawns)
+            spawn.CanSpawn = false;
+    }
+
+    private void OnSpawnIntegerityModified(Entity<SupermatterSpawnOnIntegerityComponent> ent, ref SupermatterIntegerityModifiedEvent args)
+    {
+        SpawnIntegerityCheckSpawns(ent, args.CurrentIntegerity);
+    }
+
+    private void SpawnIntegerityCheckSpawns(Entity<SupermatterSpawnOnIntegerityComponent> ent, FixedPoint2? integerity = null)
+    {
+        if (integerity == null)
+        {
+            if (!TryComp<SupermatterIntegerityComponent>(ent, out var integerityComp))
+                return;
+
+            integerity = integerityComp.Integerity;
+        }
+
+        foreach (var spawn in ent.Comp.Spawns)
+        {
+            spawn.CanSpawn = spawn.Min < integerity && spawn.Max >= integerity;
+
+            if (spawn.CanSpawn)
+                spawn.NextSpawn = _timing.CurTime + _random.Next(spawn.MinDelay, spawn.MaxDelay);
+        }
+    }
+
+
+#endregion
+
+#region Power Transmission
 
     private static void OnPowerInit(Entity<SupermatterPowerTransmissionComponent> ent, ref ComponentInit args)
     {
         ent.Comp.CurrentPower = ent.Comp.BasePower;
     }
+
+    private static void OnPowerBeforeGasReaction(Entity<SupermatterPowerTransmissionComponent> ent, ref SupermatterBeforeGasReactionsEvent args) => ent.Comp.CurrentPower = ent.Comp.BasePower;
 
     private void OnArcShooterInit(Entity<SupermatterEnergyArcShooterComponent> ent, ref ComponentInit args)
     {
@@ -302,22 +347,61 @@ public sealed partial class SupermatterSystem : EntitySystem
         EntityManager.GetComponent<LightningArcShooterComponent>(ent).Enabled = false;
     }
 
-    private void OnRadiationInit(Entity<SupermatterRadiationComponent> ent, ref ComponentInit args)
+    private void OnArcShooterPowerModified(Entity<SupermatterEnergyArcShooterComponent> ent, ref SupermatterPowerTransmissionModifiedEvent args)
     {
-        ent.Comp.Intensity = EnsureComp<RadiationSourceComponent>(ent).Intensity;
+        var arcComp = EntityManager.GetComponent<LightningArcShooterComponent>(ent);
+
+        var delta = args.CurrentPower - args.PreviousPower;
+        var delayScaled = delta * ent.Comp.DelayScale;
+
+        arcComp.MaxLightningArc += (int) Math.Max(Math.Floor(delta / ent.Comp.EnergyRequiredForArc), 0);
+        arcComp.ShootMinInterval = ent.Comp.MinDelay / delayScaled;
+        arcComp.ShootMinInterval = ent.Comp.MaxDelay / delayScaled;
     }
 
-    private void OnRadiationActivated(Entity<SupermatterRadiationComponent> ent, ref SupermatterActivatedEvent args)
+#endregion
+
+#region Heat Resistance
+
+    private static void OnHeatResistanceBeforeGasReaction(Entity<SupermatterHeatResistanceComponent> ent, ref SupermatterBeforeGasReactionsEvent args) => ent.Comp.HeatResistance = ent.Comp.BaseHeatResistance;
+
+    private void OnHeatResistanceIntegerityActivated(Entity<SupermatterModifyIntegerityOnHeatResistanceComponent> ent, ref SupermatterActivatedEvent args)
     {
-        EntityManager.GetComponent<RadiationSourceComponent>(ent).Enabled = true;
+        ent.Comp.LastReaction = _timing.CurTime;
     }
 
-    private void OnRadiationDeactivated(Entity<SupermatterRadiationComponent> ent, ref SupermatterDeactivatedEvent args)
+    private void OnHeatResistanceIntegerityAtmosExposed(Entity<SupermatterModifyIntegerityOnHeatResistanceComponent> ent, ref AtmosExposedUpdateEvent args)
     {
-        EntityManager.GetComponent<RadiationSourceComponent>(ent).Enabled = false;
+        if (!IsActive(ent.Owner))
+            return;
+
+        if (!TryComp<SupermatterHeatResistanceComponent>(ent, out var heatResistanceComp))
+            return;
+
+        var lastReaction = _timing.CurTime - ent.Comp.LastReaction;
+
+        foreach (var damages in ent.Comp.Damages)
+        {
+            if (damages.BelowHeatResistance)
+            {
+                if (args.GasMixture.Temperature < heatResistanceComp.HeatResistance)
+                    continue;
+            }
+            else
+            {
+                if (args.GasMixture.Temperature > heatResistanceComp.HeatResistance)
+                    continue;
+            }
+
+            ModifyIntegerity(ent.Owner, damages.IntegerityDamage * lastReaction.TotalSeconds);
+        }
+
+        ent.Comp.LastReaction = _timing.CurTime;
     }
 
-    private static void OnGasEmitterBeforeGasReaction(Entity<SupermatterGasEmitterComponent> ent, ref SupermatterBeforeGasReactionsEvent args) => ent.Comp.CurrentRate = ent.Comp.BaseRate;
+#endregion
+
+# region Gas
 
     private void OnGasReactionAtmosExposed(Entity<SupermatterGasReactionComponent> ent, ref AtmosExposedUpdateEvent args)
     {
@@ -402,6 +486,72 @@ public sealed partial class SupermatterSystem : EntitySystem
         RaiseLocalEvent(ent, ev);
     }
 
+    private void OnGasEmitterInit(Entity<SupermatterGasEmitterComponent> ent, ref ComponentInit args)
+    {
+        ent.Comp.NextSpawn = _timing.CurTime + ent.Comp.Delay;
+        ent.Comp.CurrentRate = ent.Comp.BaseRate;
+    }
+
+    private static void OnGasEmitterBeforeGasReaction(Entity<SupermatterGasEmitterComponent> ent, ref SupermatterBeforeGasReactionsEvent args) => ent.Comp.CurrentRate = ent.Comp.BaseRate;
+
+#endregion
+
+#region Delamination
+
+    private void OnDelaminateableDelaminated(Entity<SupermatterDelaminatableComponent> ent, ref SupermatterDelaminatedEvent args)
+    {
+        foreach (var data in ent.Comp.Delaminations)
+        {
+            if (!RequirementsMet(data.Requirements))
+                continue;
+
+            foreach (var delamination in data.Delaminations)
+                delamination.Delaminate(ent, EntityManager);
+
+            return;
+        }
+
+        bool RequirementsMet(HashSet<DelaminationRequirement> requirements)
+        {
+            foreach (var requirement in requirements)
+            {
+                if (!requirement.RequirementMet(ent, EntityManager))
+                    return false;
+            }
+
+            return true;
+        }
+    }
+
+    private static void OnCountdownBeforeDelamination(Entity<SupermatterDelaminationCountdownComponent> ent, ref SupermatterBeforeDelaminatedEvent args)
+    {
+        args.Handled = true;
+        ent.Comp.ElapsedTime = TimeSpan.Zero;
+        ent.Comp.Active = true;
+    }
+
+    private void OnDelaminationTeleportGetPos(Entity<SupermatterDelaminationTeleportMapComponent> ent, ref SupermatterDelaminationTeleportGetPositionEvent args)
+    {
+        foreach (var (entity, pos) in args.Entities)
+        {
+            var mapUid = _map.CreateMap(out var mapId);
+            _mapLoader.Load(mapId, ent.Comp.MapPath.ToString());
+            _map.SetPaused(mapId, false);
+            args.Entities[entity] = new MapCoordinates(ent.Comp.MapPosition, mapId);
+        }
+
+        args.Handled = true;
+    }
+
+    private void OnMapReturnInit(Entity<SupermatterDelaminationTeleportMapReturnComponent> ent, ref ComponentInit args)
+    {
+        ent.Comp.NextTeleport = _timing.CurTime + ent.Comp.Delay;
+    }
+
+#endregion
+
+#region Radio
+
     private void OnRadioIntegerityModified(Entity<SupermatterRadioComponent> ent, ref SupermatterIntegerityModifiedEvent args)
     {
         var positive = args.CurrentIntegerity - args.PreviousIntegerity > 0;
@@ -449,37 +599,9 @@ public sealed partial class SupermatterSystem : EntitySystem
         return match;
     }
 
-    private void OnDelaminateableDelaminated(Entity<SupermatterDelaminatableComponent> ent, ref SupermatterDelaminatedEvent args)
-    {
-        foreach (var data in ent.Comp.Delaminations)
-        {
-            if (!RequirementsMet(data.Requirements))
-                continue;
+#endregion
 
-            foreach (var delamination in data.Delaminations)
-                delamination.Delaminate(ent, EntityManager);
-
-            return;
-        }
-
-        bool RequirementsMet(HashSet<DelaminationRequirement> requirements)
-        {
-            foreach (var requirement in requirements)
-            {
-                if (!requirement.RequirementMet(ent, EntityManager))
-                    return false;
-            }
-
-            return true;
-        }
-    }
-
-    private static void OnCountdownBeforeDelamination(Entity<SupermatterDelaminationCountdownComponent> ent, ref SupermatterBeforeDelaminatedEvent args)
-    {
-        args.Handled = true;
-        ent.Comp.ElapsedTime = TimeSpan.Zero;
-        ent.Comp.Active = true;
-    }
+#region Energy
 
     private void OnEnergyCollideCollide(Entity<SupermatterEnergyCollideComponent> ent, ref StartCollideEvent args)
     {
@@ -503,35 +625,7 @@ public sealed partial class SupermatterSystem : EntitySystem
         args.Energy += ent.Comp.Additional;
     }
 
-    private void OnArcShooterPowerModified(Entity<SupermatterEnergyArcShooterComponent> ent, ref SupermatterPowerTransmissionModifiedEvent args)
-    {
-        var arcComp = EntityManager.GetComponent<LightningArcShooterComponent>(ent);
-
-        var delta = args.CurrentPower - args.PreviousPower;
-        var delayScaled = delta * ent.Comp.DelayScale;
-
-        arcComp.MaxLightningArc += (int) Math.Max(Math.Floor(delta / ent.Comp.EnergyRequiredForArc), 0);
-        arcComp.ShootMinInterval = ent.Comp.MinDelay / delayScaled;
-        arcComp.ShootMinInterval = ent.Comp.MaxDelay / delayScaled;
-    }
-
-    private static void OnPowerBeforeGasReaction(Entity<SupermatterPowerTransmissionComponent> ent, ref SupermatterBeforeGasReactionsEvent args) => ent.Comp.CurrentPower = ent.Comp.BasePower;
-
-    private void OnRadiationEnergyModified(Entity<SupermatterRadiationComponent> ent, ref SupermatterEnergyModifiedEvent args)
-    {
-        EntityManager.GetComponent<RadiationSourceComponent>(ent).Intensity = ent.Comp.Intensity + (float) Math.Pow((1 + ent.Comp.IntensityPower), args.CurrentEnergy);
-    }
-
     private static void OnDecayBeforeGasReaction(Entity<SupermatterEnergyDecayComponent> ent, ref SupermatterBeforeGasReactionsEvent args) => ent.Comp.LastLostEnergy = 0f;
-    private static void OnHeatGainBeforeGasReaction(Entity<SupermatterEnergyHeatGainComponent> ent, ref SupermatterBeforeGasReactionsEvent args) => ent.Comp.CurrentGain = 0f;
-
-    private void OnActiveEventHorizon(Entity<SupermatterActiveComponent> ent, ref EntityConsumedByEventHorizonEvent args)
-    {
-        if (_whitelist.IsBlacklistPass(ent.Comp.ActivationBlackList, args.Entity))
-            return;
-
-        ActivateSupermatter((ent, ent.Comp), true);
-    }
 
     private void OnEnergyIntegerityModifyEnergy(Entity<SupermatterModifyIntegerityOnEnergyComponent> ent, ref SupermatterEnergyModifiedEvent args)
     {
@@ -556,41 +650,39 @@ public sealed partial class SupermatterSystem : EntitySystem
         ModifyIntegerity(ent.Owner, ent.Comp.IntegerityPerEnergy * delta);
     }
 
+#endregion
 
-    private void OnSpawnIntegerityActivated(Entity<SupermatterSpawnOnIntegerityComponent> ent, ref SupermatterActivatedEvent args)
+#region Radiation
+
+    private void OnRadiationInit(Entity<SupermatterRadiationComponent> ent, ref ComponentInit args)
     {
-        SpawnIntegerityCheckSpawns(ent);
+        ent.Comp.Intensity = EnsureComp<RadiationSourceComponent>(ent).Intensity;
     }
 
-    private static void OnSpawnIntegerityDeactivated(Entity<SupermatterSpawnOnIntegerityComponent> ent, ref SupermatterDeactivatedEvent args)
+    private void OnRadiationActivated(Entity<SupermatterRadiationComponent> ent, ref SupermatterActivatedEvent args)
     {
-        foreach (var spawn in ent.Comp.Spawns)
-            spawn.CanSpawn = false;
+        EntityManager.GetComponent<RadiationSourceComponent>(ent).Enabled = true;
     }
 
-    private void OnSpawnIntegerityModified(Entity<SupermatterSpawnOnIntegerityComponent> ent, ref SupermatterIntegerityModifiedEvent args)
+    private void OnRadiationDeactivated(Entity<SupermatterRadiationComponent> ent, ref SupermatterDeactivatedEvent args)
     {
-        SpawnIntegerityCheckSpawns(ent, args.CurrentIntegerity);
+        EntityManager.GetComponent<RadiationSourceComponent>(ent).Enabled = false;
     }
 
-    private void SpawnIntegerityCheckSpawns(Entity<SupermatterSpawnOnIntegerityComponent> ent, FixedPoint2? integerity = null)
+    private void OnRadiationEnergyModified(Entity<SupermatterRadiationComponent> ent, ref SupermatterEnergyModifiedEvent args)
     {
-        if (integerity == null)
-        {
-            if (!TryComp<SupermatterIntegerityComponent>(ent, out var integerityComp))
-                return;
-
-            integerity = integerityComp.Integerity;
-        }
-
-        foreach (var spawn in ent.Comp.Spawns)
-        {
-            spawn.CanSpawn = spawn.Min < integerity && spawn.Max >= integerity;
-
-            if (spawn.CanSpawn)
-                spawn.NextSpawn = _timing.CurTime + _random.Next(spawn.MinDelay, spawn.MaxDelay);
-        }
+        EntityManager.GetComponent<RadiationSourceComponent>(ent).Intensity = ent.Comp.Intensity + (float) Math.Pow((1 + ent.Comp.IntensityPower), args.CurrentEnergy);
     }
+
+#endregion
+
+#region Heat Gain
+
+    private static void OnHeatGainBeforeGasReaction(Entity<SupermatterEnergyHeatGainComponent> ent, ref SupermatterBeforeGasReactionsEvent args) => ent.Comp.CurrentGain = 0f;
+
+#endregion
+
+#region Audio
 
     private void OnAudioActivated(Entity<SupermatterAudioComponent> ent, ref SupermatterActivatedEvent args)
     {
@@ -641,41 +733,9 @@ public sealed partial class SupermatterSystem : EntitySystem
         _ambientSound.SetAmbience(ent, true);
     }
 
-    private static void OnHeatResistanceBeforeGasReaction(Entity<SupermatterHeatResistanceComponent> ent, ref SupermatterBeforeGasReactionsEvent args) => ent.Comp.HeatResistance = ent.Comp.BaseHeatResistance;
+#endregion
 
-    private void OnHeatResistanceIntegerityActivated(Entity<SupermatterModifyIntegerityOnHeatResistanceComponent> ent, ref SupermatterActivatedEvent args)
-    {
-        ent.Comp.LastReaction = _timing.CurTime;
-    }
-
-    private void OnHeatResistanceIntegerityAtmosExposed(Entity<SupermatterModifyIntegerityOnHeatResistanceComponent> ent, ref AtmosExposedUpdateEvent args)
-    {
-        if (!IsActive(ent.Owner))
-            return;
-
-        if (!TryComp<SupermatterHeatResistanceComponent>(ent, out var heatResistanceComp))
-            return;
-
-        var lastReaction = _timing.CurTime - ent.Comp.LastReaction;
-
-        foreach (var damages in ent.Comp.Damages)
-        {
-            if (damages.BelowHeatResistance)
-            {
-                if (args.GasMixture.Temperature < heatResistanceComp.HeatResistance)
-                    continue;
-            }
-            else
-            {
-                if (args.GasMixture.Temperature > heatResistanceComp.HeatResistance)
-                    continue;
-            }
-
-            ModifyIntegerity(ent.Owner, damages.IntegerityDamage * lastReaction.TotalSeconds);
-        }
-
-        ent.Comp.LastReaction = _timing.CurTime;
-    }
+#region Moles
 
     private void OnMolesIntegerityGasAbsorbed(Entity<SupermatterModifyIntegerityOnMolesComponent> ent, ref SupermatterGasAbsorbedEvent args)
     {
@@ -701,6 +761,10 @@ public sealed partial class SupermatterSystem : EntitySystem
             ModifyHeatResistance((ent.Owner, heatResistanceComp), heatResistanceComp.BaseHeatResistance * resistances.HeatResistance);
         }
     }
+
+#endregion
+
+#region Public Methods
 
     public void ModifyIntegerity(Entity<SupermatterIntegerityComponent?> ent, FixedPoint2 integerity)
     {
@@ -817,4 +881,7 @@ public sealed partial class SupermatterSystem : EntitySystem
 
         return ent.Comp.Active;
     }
+
+#endregion
+
 }
