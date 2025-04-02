@@ -5,7 +5,7 @@ namespace Content.Server.Supermatter.Components;
 [RegisterComponent]
 public sealed partial class SupermatterActiveComponent : Component
 {
-    [DataField, ViewVariables(VVAccess.ReadOnly)]
+    [DataField, ViewVariables(VVAccess.ReadOnly), Access(typeof(SupermatterSystem), Other = AccessPermissions.Read)]
     public bool Active;
 
     [ViewVariables(VVAccess.ReadWrite)]
@@ -16,7 +16,7 @@ public sealed partial class SupermatterActiveComponent : Component
         {
             var entMan = IoCManager.Resolve<EntityManager>();
             var supermatterSystem = entMan.System<SupermatterSystem>();
-            supermatterSystem.ActivateSupermatter((this.Owner, this), value);
+            supermatterSystem.ActivateSupermatter((Owner, this), value);
         }
     }
 

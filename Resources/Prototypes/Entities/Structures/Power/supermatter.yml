@@ -52,8 +52,6 @@
   - type: SupermatterDelaminationCountdown
     length: 30
     tickDelay: 5
-  - type: SupermatterEnergyArcShooter
-    delayPerEnergy: 12
   - type: SupermatterEnergyCollide
     whitelist:
       tags:
@@ -80,14 +78,14 @@
       integerity: -10
     gasReactions:
       Noblium:
-      - !type:PowerTransmission
+      - !type:ModifyPowerTransmission
         multiplier: 0.3
       - !type:ModifyWaste
         multiplier: -14
       - !type:HeatEnergyGain
         multiplier: -1
       Frezon:
-      - !type:PowerTransmission
+      - !type:ModifyPowerTransmission
         multiplier: -3
       - !type:ModifyWaste
         multiplier: -9
@@ -99,7 +97,7 @@
       - !type:HeatEnergyGain
         multiplier: -1
       Pluoxium:
-      - !type:PowerTransmission
+      - !type:ModifyPowerTransmission
         multiplier: -0.5
       - !type:ModifyWaste
         multiplier: -1.5
@@ -109,7 +107,7 @@
       - !type:ModifyHeatResistance
         Multiplier: 5
       Oxygen:
-      - !type:PowerTransmission
+      - !type:ModifyPowerTransmission
         multiplier: 1.15
       - !type:HeatEnergyGain
         multiplier: 1
@@ -123,21 +121,21 @@
         multiplier: 1
       - !type:EnergyRecoupling
       WaterVapor:
-      - !type:PowerTransmission
+      - !type:ModifyPowerTransmission
         multiplier: -0.25
       - !type:ModifyWaste
         multiplier: -1.5
       - !type:HeatEnergyGain
         multiplier: 1
       Plasma:
-      - !type:PowerTransmission
+      - !type:ModifyPowerTransmission
         multiplier: 0.4
       - !type:ModifyWaste
         multiplier: 14
       - !type:HeatEnergyGain
         multiplier: 1
       Tritium:
-      - !type:PowerTransmission
+      - !type:ModifyPowerTransmission
         multiplier: 3
       - !type:ModifyWaste
         multiplier: 9
@@ -276,6 +274,11 @@
       collection: SupermatterNormal
     delaminationPulse:
       collection: SupermatterDelamination
+  - type: SupermatterPowerTransmission
+    basePower: 20
+  - type: SupermatterEnergyArcShooter
+    energyRequiredForArc: 20
+    delayScale: 0.5
   - type: AmbientSound
     enabled: false
     volume: -5

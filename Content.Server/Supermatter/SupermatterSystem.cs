@@ -63,10 +63,13 @@ public sealed partial class SupermatterSystem : EntitySystem
         SubscribeLocalEvent<SupermatterEnergyCollideComponent, StartCollideEvent>(OnEnergyCollideCollide);
         SubscribeLocalEvent<SupermatterModifyEnergyOnCollideComponent, SupermatterEnergyCollidedEvent>(OnModifyEnergyCollide);
 
+        SubscribeLocalEvent<SupermatterPowerTransmissionComponent, ComponentInit>(OnPowerInit);
+        SubscribeLocalEvent<SupermatterPowerTransmissionComponent, SupermatterBeforeGasReactionsEvent>(OnPowerBeforeGasReaction);
+
         SubscribeLocalEvent<SupermatterEnergyArcShooterComponent, ComponentInit>(OnArcShooterInit);
         SubscribeLocalEvent<SupermatterEnergyArcShooterComponent, SupermatterActivatedEvent>(OnArcShooterActivated);
         SubscribeLocalEvent<SupermatterEnergyArcShooterComponent, SupermatterDeactivatedEvent>(OnArcShooterDeactivated);
-        SubscribeLocalEvent<SupermatterEnergyArcShooterComponent, SupermatterBeforeGasReactionsEvent>(OnArcShooterBeforeGasReaction);
+        SubscribeLocalEvent<SupermatterEnergyArcShooterComponent, SupermatterPowerTransmissionModifiedEvent>(OnArcShooterPowerModified);
 
         SubscribeLocalEvent<SupermatterRadiationComponent, ComponentInit>(OnRadiationInit);
         SubscribeLocalEvent<SupermatterRadiationComponent, SupermatterActivatedEvent>(OnRadiationActivated);
@@ -273,11 +276,17 @@ public sealed partial class SupermatterSystem : EntitySystem
         ent.Comp.CurrentRate = ent.Comp.BaseRate;
     }
 
+    private static void OnPowerInit(Entity<SupermatterPowerTransmissionComponent> ent, ref ComponentInit args)
+    {
+        ent.Comp.CurrentPower = ent.Comp.BasePower;
+    }
+
     private void OnArcShooterInit(Entity<SupermatterEnergyArcShooterComponent> ent, ref ComponentInit args)
     {
         EnsureComp<LightningArcShooterComponent>(ent, out var arcShooterComp);
-        ent.Comp.MinInterval = arcShooterComp.ShootMinInterval;
-        ent.Comp.MaxInterval = arcShooterComp.ShootMaxInterval;
+        ent.Comp.Arcs = arcShooterComp.MaxLightningArc;
+        ent.Comp.MinDelay = arcShooterComp.ShootMinInterval;
+        ent.Comp.MaxDelay = arcShooterComp.ShootMaxInterval;
         arcShooterComp.Enabled = false;
     }
 
@@ -494,12 +503,19 @@ public sealed partial class SupermatterSystem : EntitySystem
         args.Energy += ent.Comp.Additional;
     }
 
-    private void OnArcShooterBeforeGasReaction(Entity<SupermatterEnergyArcShooterComponent> ent, ref SupermatterBeforeGasReactionsEvent args)
+    private void OnArcShooterPowerModified(Entity<SupermatterEnergyArcShooterComponent> ent, ref SupermatterPowerTransmissionModifiedEvent args)
     {
         var arcComp = EntityManager.GetComponent<LightningArcShooterComponent>(ent);
-        arcComp.ShootMinInterval = ent.Comp.MinInterval;
-        arcComp.ShootMaxInterval = ent.Comp.MaxInterval;
+
+        var delta = args.CurrentPower - args.PreviousPower;
+        var delayScaled = delta * ent.Comp.DelayScale;
+
+        arcComp.MaxLightningArc += (int) Math.Max(Math.Floor(delta / ent.Comp.EnergyRequiredForArc), 0);
+        arcComp.ShootMinInterval = ent.Comp.MinDelay / delayScaled;
+        arcComp.ShootMinInterval = ent.Comp.MaxDelay / delayScaled;
     }
+
+    private static void OnPowerBeforeGasReaction(Entity<SupermatterPowerTransmissionComponent> ent, ref SupermatterBeforeGasReactionsEvent args) => ent.Comp.CurrentPower = ent.Comp.BasePower;
 
     private void OnRadiationEnergyModified(Entity<SupermatterRadiationComponent> ent, ref SupermatterEnergyModifiedEvent args)
     {
@@ -754,6 +770,21 @@ public sealed partial class SupermatterSystem : EntitySystem
         ent.Comp.HeatResistance += resistance;
 
         var ev = new SupermatterHeatResistanceModifiedEvent(ent.Comp.HeatResistance, oldResistance);
+        RaiseLocalEvent(ent, ev);
+    }
+
+    public void ModifyPowerTransmission(Entity<SupermatterPowerTransmissionComponent?> ent, float power)
+    {
+        if (power == 0f)
+            return;
+
+        if (!Resolve(ent.Owner, ref ent.Comp))
+            return;
+
+        var oldPower = ent.Comp.CurrentPower;
+        ent.Comp.CurrentPower += power;
+
+        var ev = new SupermatterPowerTransmissionModifiedEvent(ent.Comp.CurrentPower, oldPower);
         RaiseLocalEvent(ent, ev);
     }
 

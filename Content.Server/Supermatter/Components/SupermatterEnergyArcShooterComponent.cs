@@ -4,8 +4,17 @@ namespace Content.Server.Supermatter.Components;
 public sealed partial class SupermatterEnergyArcShooterComponent : Component
 {
     [ViewVariables]
-    public float MinInterval;
+    public int Arcs;
+
+    [DataField]
+    public float EnergyRequiredForArc;
+
+    [DataField]
+    public float DelayScale;
 
     [ViewVariables]
-    public float MaxInterval;
+    public float MinDelay;
+
+    [ViewVariables]
+    public float MaxDelay;
 }
