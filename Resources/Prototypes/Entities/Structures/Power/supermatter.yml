@@ -68,7 +68,9 @@
     ratios:
       Plasma: 1
       Oxygen: 1
-    minRate: 10
+    baseRate: 2
+    minTemperature: 100
+    temperaturePerRate: 3
     delay: 1.5
   - type: SupermatterGasAbsorber
     absorbedMultiplier: 0.7

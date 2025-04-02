@@ -312,6 +312,9 @@ public sealed partial class SupermatterSystem : EntitySystem
 
     private void OnGasReactionAtmosExposed(Entity<SupermatterGasReactionComponent> ent, ref AtmosExposedUpdateEvent args)
     {
+        if (!IsActive(ent.Owner))
+            return;
+
         var beforeEv = new SupermatterBeforeGasReactionsEvent();
         RaiseLocalEvent(ent, beforeEv);
 
