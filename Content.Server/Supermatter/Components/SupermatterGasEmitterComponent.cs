@@ -1,58 +1,28 @@
-using Content.Server.Supermatter.GasReactions;
 using Content.Shared.Atmos;
 
 namespace Content.Server.Supermatter.Components;
 
-[RegisterComponent]
+[RegisterComponent, AutoGenerateComponentPause]
 public sealed partial class SupermatterGasEmitterComponent : Component
 {
     [DataField]
     public Dictionary<Gas, int> Ratios = new();
 
     [ViewVariables]
-    public float CurrentRate
-    {
-        get => _currentRate;
-        set => _currentRate = Math.Max(value, MinRate);
-    }
-
-    private float _currentRate;
+    public float CurrentRate;
 
     [DataField]
-    public float MinRate;
-
-    [ViewVariables]
-    public float CurrentTemperature
-    {
-        get => _currentTemperature;
-        set => _currentTemperature = Math.Max(value, MinTemperature);
-    }
-
-    private float _currentTemperature;
+    public float BaseRate;
 
     [DataField]
     public float MinTemperature;
 
     [DataField]
+    public float TemperaturePerRate;
+
+    [DataField]
     public TimeSpan Delay;
 
-    [ViewVariables]
+    [ViewVariables, AutoPausedField]
     public TimeSpan NextSpawn;
-
-    /// <summary>
-    /// How much of each gas from last time we emitted gas
-    /// </summary>
-    /// <remarks>
-    /// We need to keep track of this so we can reverse a gas prior reaction
-    /// </remarks>
-    [ViewVariables]
-    public Dictionary<Gas, float> PreviousPercentage = new();
-
-    /// <summary>
-    /// What reactions can modify our data
-    /// </summary>
-    /// <remarks>
-    /// Used to cleanup <see cref= PreviousPercentage>
-    /// </remarks>
-    public static readonly Type[] ModifiableReactions = [ typeof(ModifyWaste) ];
 }

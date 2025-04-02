@@ -20,7 +20,6 @@ using Robust.Shared.Physics.Events;
 using Robust.Shared.Player;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
-using System.Linq;
 
 namespace Content.Server.Supermatter;
 
@@ -58,10 +57,8 @@ public sealed partial class SupermatterSystem : EntitySystem
 
         SubscribeLocalEvent<SupermatterGasReactionComponent, AtmosExposedUpdateEvent>(OnGasReactionAtmosExposed);
         SubscribeLocalEvent<SupermatterGasAbsorberComponent, SupermatterGasReactedEvent>(OnGasAbsorberGasReacted);
-
         SubscribeLocalEvent<SupermatterGasEmitterComponent, ComponentInit>(OnGasEmitterInit);
-        SubscribeLocalEvent<SupermatterGasEmitterComponent, SupermatterGasReactedEvent>(OnGasEmitterGasReact);
-        SubscribeLocalEvent<SupermatterGasEmitterComponent, SupermatterSpaceGasReactedEvent>(OnGasEmitterSpaceReact);
+        SubscribeLocalEvent<SupermatterGasEmitterComponent, AtmosExposedUpdateEvent>(OnGasEmitterAtmosExposed);
 
         SubscribeLocalEvent<SupermatterEnergyCollideComponent, StartCollideEvent>(OnEnergyCollideCollide);
         SubscribeLocalEvent<SupermatterModifyEnergyOnCollideComponent, SupermatterEnergyCollidedEvent>(OnModifyEnergyCollide);
@@ -123,7 +120,7 @@ public sealed partial class SupermatterSystem : EntitySystem
             foreach (var (gas, ratio) in gasEmitterComp.Ratios)
                 air.AdjustMoles(gas, ratio * gasEmitterComp.CurrentRate);
 
-            air.Temperature += gasEmitterComp.CurrentTemperature;
+            air.Temperature = gasEmitterComp.CurrentRate * gasEmitterComp.TemperaturePerRate + gasEmitterComp.MinTemperature;
         }
 
         var countdownQuery = EntityQueryEnumerator<SupermatterDelaminationCountdownComponent>();
@@ -273,8 +270,7 @@ public sealed partial class SupermatterSystem : EntitySystem
     private void OnGasEmitterInit(Entity<SupermatterGasEmitterComponent> ent, ref ComponentInit args)
     {
         ent.Comp.NextSpawn = _timing.CurTime + ent.Comp.Delay;
-        ent.Comp.CurrentRate = ent.Comp.MinRate;
-        ent.Comp.CurrentTemperature = ent.Comp.MinTemperature;
+        ent.Comp.CurrentRate = ent.Comp.BaseRate;
     }
 
     private void OnArcShooterInit(Entity<SupermatterEnergyArcShooterComponent> ent, ref ComponentInit args)
@@ -310,6 +306,11 @@ public sealed partial class SupermatterSystem : EntitySystem
     private void OnRadiationDeactivated(Entity<SupermatterRadiationComponent> ent, ref SupermatterDeactivatedEvent args)
     {
         EntityManager.GetComponent<RadiationSourceComponent>(ent).Enabled = false;
+    }
+
+    private static void OnGasEmitterAtmosExposed(Entity<SupermatterGasEmitterComponent> ent, ref AtmosExposedUpdateEvent args)
+    {
+        ent.Comp.CurrentRate = ent.Comp.BaseRate;
     }
 
     private void OnGasReactionAtmosExposed(Entity<SupermatterGasReactionComponent> ent, ref AtmosExposedUpdateEvent args)
@@ -466,29 +467,6 @@ public sealed partial class SupermatterSystem : EntitySystem
         args.Handled = true;
         ent.Comp.ElapsedTime = TimeSpan.Zero;
         ent.Comp.Active = true;
-    }
-
-    private void OnGasEmitterGasReact(Entity<SupermatterGasEmitterComponent> ent, ref SupermatterGasReactedEvent args)
-    {
-        // clear up any gases that we didnt react with
-        foreach (var gas in ent.Comp.PreviousPercentage.Keys)
-        {
-            if (args.Reactions.TryGetValue(gas, out var reactions))
-            {
-                foreach (var reaction in reactions)
-                {
-                    if (SupermatterGasEmitterComponent.ModifiableReactions.Contains(reaction.GetType()))
-                        continue;
-                }
-            }
-
-            ent.Comp.PreviousPercentage.Remove(gas);
-        }
-    }
-
-    private static void OnGasEmitterSpaceReact(Entity<SupermatterGasEmitterComponent> ent, ref SupermatterSpaceGasReactedEvent args)
-    {
-        ent.Comp.PreviousPercentage.Clear();
     }
 
     private void OnEnergyCollideCollide(Entity<SupermatterEnergyCollideComponent> ent, ref StartCollideEvent args)
