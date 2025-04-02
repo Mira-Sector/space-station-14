@@ -1,4 +1,5 @@
 using Content.Server.Supermatter.Components;
+
 namespace Content.Server.Supermatter.Delaminations;
 
 [DataDefinition]

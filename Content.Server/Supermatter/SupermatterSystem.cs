@@ -371,6 +371,9 @@ public sealed partial class SupermatterSystem : EntitySystem
 
     private void OnGasAbsorberGasReacted(Entity<SupermatterGasAbsorberComponent> ent, ref SupermatterGasReactedEvent args)
     {
+        ent.Comp.AbsorbedMoles.Clear();
+        ent.Comp.TotalMoles = 0f;
+
         var air = _atmos.GetContainingMixture(ent.Owner, false, false);
 
         if (air == null)
@@ -388,6 +391,9 @@ public sealed partial class SupermatterSystem : EntitySystem
             absorbedMoles.Add(gas, newMoles);
             totalMoles += newMoles;
         }
+
+        ent.Comp.AbsorbedMoles = absorbedMoles;
+        ent.Comp.TotalMoles = totalMoles;
 
         var ev = new SupermatterGasAbsorbedEvent(absorbedMoles, totalMoles);
         RaiseLocalEvent(ent, ev);

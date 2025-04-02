@@ -185,11 +185,21 @@
         maxIntensity: 150
         intensitySlope: 3
         totalIntensity: 50000
+      requirements:
+      - !type:GasRequirement
+        requiredGas:
+          Noblium: 0.4
+          Tritium: 0.4
+      - !type:TotalMoleRequirement
+        min: 270
     - delaminations:
       - !type:SpawnDelamination
         count: 1
         prototypes:
         - Singularity
+      requirements:
+      - !type:TotalMoleRequirement
+        min: 1800
     - delaminations:
       - !type:SpawnDelamination
         count: 1
