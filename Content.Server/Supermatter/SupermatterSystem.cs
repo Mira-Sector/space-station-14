@@ -60,6 +60,7 @@ public sealed partial class SupermatterSystem : EntitySystem
         SubscribeLocalEvent<SupermatterModifyIntegerityOnHeatResistanceComponent, SupermatterActivatedEvent>(OnHeatResistanceIntegerityActivated);
         SubscribeLocalEvent<SupermatterModifyIntegerityOnHeatResistanceComponent, AtmosExposedUpdateEvent>(OnHeatResistanceIntegerityAtmosExposed);
 
+        SubscribeLocalEvent<SupermatterGasReactionComponent, SupermatterActivatedEvent>(OnGasReactionActivated);
         SubscribeLocalEvent<SupermatterGasReactionComponent, AtmosExposedUpdateEvent>(OnGasReactionAtmosExposed);
         SubscribeLocalEvent<SupermatterGasAbsorberComponent, SupermatterGasReactedEvent>(OnGasAbsorberGasReacted);
         SubscribeLocalEvent<SupermatterGasEmitterComponent, ComponentInit>(OnGasEmitterInit);
@@ -410,6 +411,11 @@ public sealed partial class SupermatterSystem : EntitySystem
 #endregion
 
 #region Gas
+
+    private void OnGasReactionActivated(Entity<SupermatterGasReactionComponent> ent, ref SupermatterActivatedEvent args)
+    {
+        ent.Comp.LastReaction = _timing.CurTime;
+    }
 
     private void OnGasReactionAtmosExposed(Entity<SupermatterGasReactionComponent> ent, ref AtmosExposedUpdateEvent args)
     {
