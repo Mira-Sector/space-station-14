@@ -67,6 +67,7 @@ public sealed partial class SupermatterSystem : EntitySystem
 
         SubscribeLocalEvent<SupermatterHeatEnergyComponent, ComponentInit>(OnHeatEnergyInit);
         SubscribeLocalEvent<SupermatterHeatEnergyComponent, SupermatterBeforeGasReactionsEvent>(OnHeatEnergyBeforeGasReaction);
+        SubscribeLocalEvent<SupermatterHeatEnergyComponent, SupermatterGasReactedEvent>(OnHeatEnergyGasReacted);
 
         SubscribeLocalEvent<SupermatterDelaminatableComponent, SupermatterDelaminatedEvent>(OnDelaminateableDelaminated);
         SubscribeLocalEvent<SupermatterDelaminationCountdownComponent, SupermatterBeforeDelaminatedEvent>(OnCountdownBeforeDelamination);
@@ -176,6 +177,9 @@ public sealed partial class SupermatterSystem : EntitySystem
         var integeritySpawnQuery = EntityQueryEnumerator<SupermatterSpawnOnIntegerityComponent>();
         while (integeritySpawnQuery.MoveNext(out var uid, out var spawnComp))
         {
+            if (IsActive(uid))
+                continue;
+
             var pos = _transform.GetMapCoordinates(uid);
 
             foreach (var spawn in spawnComp.Spawns)
@@ -202,7 +206,7 @@ public sealed partial class SupermatterSystem : EntitySystem
         while (audioQuery.MoveNext(out var uid, out var audioComp))
         {
             if (!IsActive(uid))
-                return;
+                continue;
 
             if (audioComp.NextPulseSound > _timing.CurTime)
                 continue;
@@ -311,13 +315,13 @@ public sealed partial class SupermatterSystem : EntitySystem
 
         foreach (var spawn in ent.Comp.Spawns)
         {
+            var oldCanSpawn = spawn.CanSpawn;
             spawn.CanSpawn = spawn.Min < integerity && spawn.Max >= integerity;
 
-            if (spawn.CanSpawn)
+            if (!oldCanSpawn && spawn.CanSpawn)
                 spawn.NextSpawn = _timing.CurTime + _random.Next(spawn.MinDelay, spawn.MaxDelay);
         }
     }
-
 
 #endregion
 
@@ -405,7 +409,7 @@ public sealed partial class SupermatterSystem : EntitySystem
 
 #endregion
 
-# region Gas
+#region Gas
 
     private void OnGasReactionAtmosExposed(Entity<SupermatterGasReactionComponent> ent, ref AtmosExposedUpdateEvent args)
     {
@@ -504,12 +508,11 @@ public sealed partial class SupermatterSystem : EntitySystem
 
     private static void OnHeatEnergyInit(Entity<SupermatterHeatEnergyComponent> ent, ref ComponentInit args) => ent.Comp.CurrentEnergy = 0f;
 
-    private void OnHeatEnergyBeforeGasReaction(Entity<SupermatterHeatEnergyComponent> ent, ref SupermatterBeforeGasReactionsEvent args)
-    {
-        var oldEnergy = ent.Comp.CurrentEnergy;
-        ent.Comp.CurrentEnergy = 0f;
+    private static void OnHeatEnergyBeforeGasReaction(Entity<SupermatterHeatEnergyComponent> ent, ref SupermatterBeforeGasReactionsEvent args) => ent.Comp.CurrentEnergy = 0f;
 
-        if (oldEnergy <= 0f)
+    private void OnHeatEnergyGasReacted(Entity<SupermatterHeatEnergyComponent> ent, ref SupermatterGasReactedEvent args)
+    {
+        if (ent.Comp.CurrentEnergy <= 0f)
             return;
 
         var air = _atmos.GetContainingMixture(ent.Owner, false, false);
@@ -517,8 +520,14 @@ public sealed partial class SupermatterSystem : EntitySystem
         if (air == null)
             return;
 
-        var integerity = Math.Max((air.Temperature - ent.Comp.MinTemperature) * oldEnergy, 0f);
-        ModifyEnergy(ent.Owner, integerity);
+        var delta = air.Temperature - ent.Comp.MinTemperature;
+
+        if (delta <= 0f)
+            return;
+
+        var energy = delta * (delta / (delta + ent.Comp.SaturationTemperature)) * ent.Comp.CurrentEnergy;
+
+        ModifyEnergy(ent.Owner, energy);
     }
 
 #endregion
@@ -593,7 +602,7 @@ public sealed partial class SupermatterSystem : EntitySystem
 
     private void OnRadioCountdownTick(Entity<SupermatterRadioComponent> ent, ref SupermatterCountdownTickEvent args)
     {
-        var match = GetRadioMessage<TimeSpan>(ent.Comp.CountdownMessages, args.Timer - args.ElapsedTime, true);
+        var match = GetRadioMessage<TimeSpan>(ent.Comp.CountdownMessages, args.Timer - args.ElapsedTime, false);
 
         if (match.Key == ent.Comp.LastCountdownMessage)
             return;

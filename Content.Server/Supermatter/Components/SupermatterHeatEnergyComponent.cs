@@ -11,4 +11,7 @@ public sealed partial class SupermatterHeatEnergyComponent : Component
 
     [DataField]
     public float MinTemperature;
+
+    [DataField]
+    public float SaturationTemperature;
 }
