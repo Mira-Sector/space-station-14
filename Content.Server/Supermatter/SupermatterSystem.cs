@@ -364,7 +364,7 @@ public sealed partial class SupermatterSystem : EntitySystem
 
         arcComp.MaxLightningArc += (int) Math.Max(Math.Floor(delta / ent.Comp.EnergyRequiredForArc), 0);
         arcComp.ShootMinInterval = ent.Comp.MinDelay / delayScaled;
-        arcComp.ShootMinInterval = ent.Comp.MaxDelay / delayScaled;
+        arcComp.ShootMaxInterval = ent.Comp.MaxDelay / delayScaled;
     }
 
 #endregion
