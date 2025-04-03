@@ -490,7 +490,7 @@ public sealed partial class SupermatterSystem : EntitySystem
         ent.Comp.AbsorbedMoles = absorbedMoles;
         ent.Comp.TotalMoles = totalMoles;
 
-        var ev = new SupermatterGasAbsorbedEvent(absorbedMoles, totalMoles);
+        var ev = new SupermatterGasAbsorbedEvent(absorbedMoles, totalMoles, args.LastReaction);
         RaiseLocalEvent(ent, ev);
     }
 
@@ -525,7 +525,7 @@ public sealed partial class SupermatterSystem : EntitySystem
         if (delta <= 0f)
             return;
 
-        var energy = delta * (delta / (delta + ent.Comp.SaturationTemperature)) * ent.Comp.CurrentEnergy;
+        var energy = (delta * ent.Comp.SaturationTemperature) * ent.Comp.CurrentEnergy * (float) args.LastReaction.TotalSeconds;
 
         ModifyEnergy(ent.Owner, energy);
     }
@@ -602,7 +602,7 @@ public sealed partial class SupermatterSystem : EntitySystem
 
     private void OnRadioCountdownTick(Entity<SupermatterRadioComponent> ent, ref SupermatterCountdownTickEvent args)
     {
-        var match = GetRadioMessage<TimeSpan>(ent.Comp.CountdownMessages, args.Timer - args.ElapsedTime, false);
+        var match = GetRadioMessage<TimeSpan>(ent.Comp.CountdownMessages, args.Timer - args.ElapsedTime, true);
 
         if (match.Key == ent.Comp.LastCountdownMessage)
             return;
@@ -774,7 +774,7 @@ public sealed partial class SupermatterSystem : EntitySystem
             if (damages.MinMoles > args.TotalMoles || damages.MaxMoles < args.TotalMoles)
                 continue;
 
-            ModifyIntegerity(ent.Owner, damages.IntegerityDamage);
+            ModifyIntegerity(ent.Owner, damages.IntegerityDamage * (float) args.LastReaction.TotalSeconds);
         }
     }
 
@@ -788,7 +788,7 @@ public sealed partial class SupermatterSystem : EntitySystem
             if (resistances.MinMoles > args.TotalMoles || resistances.MaxMoles < args.TotalMoles)
                 continue;
 
-            ModifyHeatResistance((ent.Owner, heatResistanceComp), heatResistanceComp.BaseHeatResistance * resistances.HeatResistance);
+            ModifyHeatResistance((ent.Owner, heatResistanceComp), heatResistanceComp.BaseHeatResistance * resistances.HeatResistance * (float) args.LastReaction.TotalSeconds);
         }
     }
 

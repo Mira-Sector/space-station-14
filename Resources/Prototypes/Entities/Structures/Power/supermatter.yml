@@ -244,16 +244,16 @@
       minDelay: 1
       maxDelay: 5
   - type: SupermatterHeatEnergy
-    baseEnergy: 4
+    baseEnergy: 2.3
     minTemperature: 280
-    saturationTemperature: 1100
+    saturationTemperature: 0.11
   - type: SupermatterHeatResistance
   - type: SupermatterModifyIntegerityOnHeatResistance
     damages:
     - belowHeatResistance: true
-      integerityDamage: 15
-    - belowHeatResistance: false
       integerityDamage: -10
+    - belowHeatResistance: false
+      integerityDamage: 15
   - type: SupermatterModifyHeatResistanceOnMoles
     resistances:
     - minMoles: 30
