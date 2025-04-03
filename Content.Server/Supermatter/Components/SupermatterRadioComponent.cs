@@ -8,10 +8,10 @@ namespace Content.Server.Supermatter.Components;
 public sealed partial class SupermatterRadioComponent : Component
 {
     [DataField]
-    public Dictionary<FixedPoint2, LocId> IntegerityMessages = new();
+    public SortedDictionary<FixedPoint2, LocId> IntegerityMessages = new();
 
     [DataField]
-    public Dictionary<TimeSpan, LocId> CountdownMessages = new();
+    public SortedDictionary<TimeSpan, LocId> CountdownMessages = new();
 
     [DataField]
     public ProtoId<RadioChannelPrototype> Channel;

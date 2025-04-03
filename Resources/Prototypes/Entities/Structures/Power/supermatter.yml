@@ -152,24 +152,24 @@
     intensityPower: 0.00053
   - type: SupermatterRadio
     integerityMessages:
-      30: supermatter-radio-integerity-caution
-      25: supermatter-radio-integerity-caution
-      20: supermatter-radio-integerity-warning
-      15: supermatter-radio-integerity-warning
-      10: supermatter-radio-integerity-danger
+      1: supermatter-radio-integerity-fucked
       5: supermatter-radio-integerity-danger
-      0: supermatter-radio-integerity-fucked
+      10: supermatter-radio-integerity-danger
+      15: supermatter-radio-integerity-warning
+      20: supermatter-radio-integerity-warning
+      25: supermatter-radio-integerity-caution
+      30: supermatter-radio-integerity-caution
     countdownMessages:
-      25: supermatter-radio-countdown
-      20: supermatter-radio-countdown
-      15: supermatter-radio-countdown
-      10: supermatter-radio-countdown
-      5: supermatter-radio-countdown
-      4: supermatter-radio-countdown
-      3: supermatter-radio-countdown
-      2: supermatter-radio-countdown
-      1: supermatter-radio-countdown
       0: supermatter-radio-countdown
+      1: supermatter-radio-countdown
+      2: supermatter-radio-countdown
+      3: supermatter-radio-countdown
+      4: supermatter-radio-countdown
+      5: supermatter-radio-countdown
+      10: supermatter-radio-countdown
+      15: supermatter-radio-countdown
+      20: supermatter-radio-countdown
+      25: supermatter-radio-countdown
     channel: Engineering
   - type: SupermatterDelaminatable
     delaminations:

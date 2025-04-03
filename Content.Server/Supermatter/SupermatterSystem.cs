@@ -75,6 +75,7 @@ public sealed partial class SupermatterSystem : EntitySystem
         SubscribeLocalEvent<SupermatterDelaminationTeleportMapComponent, SupermatterDelaminationTeleportGetPositionEvent>(OnDelaminationTeleportGetPos);
         SubscribeLocalEvent<SupermatterDelaminationTeleportMapReturnComponent, ComponentInit>(OnMapReturnInit);
 
+        SubscribeLocalEvent<SupermatterRadioComponent, ComponentInit>(OnRadioInit);
         SubscribeLocalEvent<SupermatterRadioComponent, SupermatterIntegerityModifiedEvent>(OnRadioIntegerityModified);
         SubscribeLocalEvent<SupermatterRadioComponent, SupermatterCountdownTickEvent>(OnRadioCountdownTick);
 
@@ -594,6 +595,15 @@ public sealed partial class SupermatterSystem : EntitySystem
 
 #region Radio
 
+    private void OnRadioInit(Entity<SupermatterRadioComponent> ent, ref ComponentInit args)
+    {
+        if (TryComp<SupermatterIntegerityComponent>(ent, out var integerityComp))
+            ent.Comp.LastIntegerityMessage = 100f; //dont at me
+
+        if (TryComp<SupermatterDelaminationCountdownComponent>(ent, out var countdownComp))
+            ent.Comp.LastCountdownMessage = countdownComp.Length;
+    }
+
     private void OnRadioIntegerityModified(Entity<SupermatterRadioComponent> ent, ref SupermatterIntegerityModifiedEvent args)
     {
         var positive = args.CurrentIntegerity - args.PreviousIntegerity > 0;
@@ -608,7 +618,7 @@ public sealed partial class SupermatterSystem : EntitySystem
 
     private void OnRadioCountdownTick(Entity<SupermatterRadioComponent> ent, ref SupermatterCountdownTickEvent args)
     {
-        var match = GetRadioMessage<TimeSpan>(ent.Comp.CountdownMessages, args.Timer - args.ElapsedTime, true);
+        var match = GetRadioMessage<TimeSpan>(ent.Comp.CountdownMessages, args.Timer - args.ElapsedTime, false);
 
         if (match.Key == ent.Comp.LastCountdownMessage)
             return;
@@ -617,7 +627,7 @@ public sealed partial class SupermatterSystem : EntitySystem
         _radio.SendRadioMessage(ent, Loc.GetString(match.Value, ("key", match.Key.TotalSeconds)), ent.Comp.Channel, ent);
     }
 
-    private static KeyValuePair<T, LocId> GetRadioMessage<T>(Dictionary<T, LocId> messages, T comparison, bool positive) where T : IComparable<T>
+    internal static KeyValuePair<T, LocId> GetRadioMessage<T>(SortedDictionary<T, LocId> messages, T comparison, bool positive) where T : IComparable<T>
     {
         KeyValuePair<T, LocId> match = new();
 
@@ -625,12 +635,12 @@ public sealed partial class SupermatterSystem : EntitySystem
         {
             if (positive)
             {
-                if (key.CompareTo(comparison) > 0)
+                if (key.CompareTo(comparison) < 0)
                     continue;
             }
             else
             {
-                if (key.CompareTo(comparison) < 0)
+                if (key.CompareTo(comparison) > 0)
                     continue;
             }
 
