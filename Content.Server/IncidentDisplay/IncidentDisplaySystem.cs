@@ -39,30 +39,38 @@ public sealed partial class IncidentDisplaySystem : EntitySystem
             if (component.Broken)
                 continue;
 
-            if (component.Advertising && component.AdvertisementEnd > _timing.CurTime)
-                continue;
+            var wasAdvertising = false;
 
-            component.Advertising = false;
+            if (component.Advertising)
+            {
+                if (component.AdvertisementEnd > _timing.CurTime)
+                    continue;
 
-            if (component.NextType > _timing.CurTime)
+                component.Advertising = false;
+                wasAdvertising = true;
+                component.NextType = _timing.CurTime;
+            }
+            else if (component.NextType > _timing.CurTime)
+            {
                 continue;
+            }
 
             component.NextType += component.TimePerType;
 
             var types = component.SelectableTypes.ToList();
-            var index = types.IndexOf(component.CurrentType);
+            var index = wasAdvertising ? 0 : types.IndexOf(component.CurrentType) + 1;
 
-            if (index > types.Count)
+            if (index < types.Count)
             {
-                component.Advertising = true;
-                component.AdvertisementEnd = _timing.CurTime + component.AdvertiseLength;
-                component.CurrentType = types.First();
-                component.NextType = _timing.CurTime;
-                _appearance.SetData(uid, IncidentDisplayVisuals.Screen, IncidentDisplayScreenVisuals.Advertisement);
+                component.CurrentType = types[index];
+                UpdateState((uid, component));
+                continue;
             }
 
-            component.CurrentType = types[index];
-            UpdateState((uid, component));
+            component.Advertising = true;
+            component.AdvertisementEnd = _timing.CurTime + component.AdvertiseLength;
+            component.CurrentType = types.First();
+            _appearance.SetData(uid, IncidentDisplayVisuals.Screen, IncidentDisplayScreenVisuals.Advertisement);
         }
     }
 
@@ -73,6 +81,8 @@ public sealed partial class IncidentDisplaySystem : EntitySystem
         var hundreds = (int) (kills / 100 % 10);
         var tens = (int) (kills / 10 % 10);
         var units = (int) (kills % 10);
+
+        _appearance.SetData(ent, IncidentDisplayVisuals.Screen, IncidentDisplayScreenVisuals.Normal);
 
         _appearance.SetData(ent, IncidentDisplayVisuals.Hundreds, hundreds);
         _appearance.SetData(ent, IncidentDisplayVisuals.Tens, tens);
