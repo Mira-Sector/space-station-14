@@ -18,5 +18,6 @@ public enum IncidentDisplayScreenVisuals : byte
 {
     Normal,
     Advertisement,
+    UnPowered,
     Broken
 }

@@ -2,6 +2,8 @@ using Content.Server.GameTicking.Events;
 using Content.Server.Singularity.Events;
 using Content.Shared.Destructible;
 using Content.Shared.IncidentDisplay;
+using Content.Shared.Power;
+using Content.Shared.Power.EntitySystems;
 using Content.Shared.Whitelist;
 using Robust.Shared.Timing;
 using System.Linq;
@@ -11,6 +13,7 @@ namespace Content.Server.IncidentDisplay;
 public sealed partial class IncidentDisplaySystem : EntitySystem
 {
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private readonly SharedPowerReceiverSystem _receiver = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
 
@@ -25,6 +28,7 @@ public sealed partial class IncidentDisplaySystem : EntitySystem
 
         SubscribeLocalEvent<IncidentDisplayComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<IncidentDisplayComponent, BreakageEventArgs>(OnBreak);
+        SubscribeLocalEvent<IncidentDisplayComponent, PowerChangedEvent>(OnPowerChanged);
 
         SubscribeLocalEvent<IncidentDisplayIncrementerComponent, EntityConsumedByEventHorizonEvent>(OnConsume);
     }
@@ -37,6 +41,9 @@ public sealed partial class IncidentDisplaySystem : EntitySystem
         while (query.MoveNext(out var uid, out var component))
         {
             if (component.Broken)
+                continue;
+
+            if (!_receiver.IsPowered(uid))
                 continue;
 
             var wasAdvertising = false;
@@ -119,8 +126,19 @@ public sealed partial class IncidentDisplaySystem : EntitySystem
 
             component.TypeRelative[args.Type] = relative;
 
-            if (component.CurrentType == args.Type)
-                UpdateState((uid, component));
+            if (component.Broken)
+                continue;
+
+            if (component.Advertising)
+                continue;
+
+            if (component.CurrentType != args.Type)
+                continue;
+
+            if (!_receiver.IsPowered(uid))
+                continue;
+
+            UpdateState((uid, component));
         }
     }
 
@@ -139,6 +157,21 @@ public sealed partial class IncidentDisplaySystem : EntitySystem
     {
         ent.Comp.Broken = true;
         _appearance.SetData(ent, IncidentDisplayVisuals.Screen, IncidentDisplayScreenVisuals.Broken);
+    }
+
+    private void OnPowerChanged(Entity<IncidentDisplayComponent> ent, ref PowerChangedEvent args)
+    {
+        if (!args.Powered)
+        {
+            _appearance.SetData(ent, IncidentDisplayVisuals.Screen, IncidentDisplayScreenVisuals.UnPowered);
+            return;
+        }
+
+        ent.Comp.Advertising = true;
+        ent.Comp.NextType = _timing.CurTime;
+        _appearance.SetData(ent, IncidentDisplayVisuals.Screen, IncidentDisplayScreenVisuals.Normal);
+
+        UpdateState(ent);
     }
 
     private void OnConsume(Entity<IncidentDisplayIncrementerComponent> ent, ref EntityConsumedByEventHorizonEvent args)

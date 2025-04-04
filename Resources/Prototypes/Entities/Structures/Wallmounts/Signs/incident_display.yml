@@ -39,22 +39,27 @@
         display:
           Normal: { state: display_normal }
           Advertisement: { state: advert_meson }
+          UnPowered: { state: display_normal }
           Broken: { state: display_broken }
         tens: # purposefully no hundreds as funny
           Normal: { visible: true }
           Advertisement: { visible: false }
+          UnPowered: { visible: false }
           Broken: { visible: false }
         units:
           Normal: { visible: true }
           Advertisement: { visible: false }
+          UnPowered: { visible: false }
           Broken: { visible: false }
         relative:
           Normal: { visible: false }
           Advertisement: { visible: false }
+          UnPowered: { visible: false }
           Broken: { visible: false }
         type:
           Normal: { visible: true }
           Advertisement: { visible: false }
+          UnPowered: { visible: false }
           Broken: { visible: false }
       enum.IncidentDisplayVisuals.Relative:
         relative:
