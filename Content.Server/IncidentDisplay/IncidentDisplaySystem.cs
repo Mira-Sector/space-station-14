@@ -1,3 +1,4 @@
+using Content.Server.GameTicking.Events;
 using Content.Server.Singularity.Events;
 using Content.Shared.Destructible;
 using Content.Shared.IncidentDisplay;
@@ -18,7 +19,8 @@ public sealed partial class IncidentDisplaySystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
-        InitializeKillCount();
+
+        SubscribeLocalEvent<RoundStartingEvent>(OnRoundStarting);
         SubscribeLocalEvent<IncidentDisplayKillModifiedEvent>(OnKillModified);
 
         SubscribeLocalEvent<IncidentDisplayComponent, ComponentInit>(OnInit);
@@ -64,12 +66,6 @@ public sealed partial class IncidentDisplaySystem : EntitySystem
         }
     }
 
-    internal void InitializeKillCount()
-    {
-        foreach (IncidentDisplayType type in Enum.GetValues(typeof(IncidentDisplayType)))
-            KillCount.Add(type, 0);
-    }
-
     internal void UpdateState(Entity<IncidentDisplayComponent> ent)
     {
         var kills = KillCount[ent.Comp.CurrentType];
@@ -84,6 +80,12 @@ public sealed partial class IncidentDisplaySystem : EntitySystem
 
         _appearance.SetData(ent, IncidentDisplayVisuals.Relative, ent.Comp.TypeRelative[ent.Comp.CurrentType]);
         ent.Comp.TypeRelative[ent.Comp.CurrentType] = IncidentDisplayRelative.None;
+    }
+
+    private void OnRoundStarting(RoundStartingEvent args)
+    {
+        foreach (IncidentDisplayType type in Enum.GetValues(typeof(IncidentDisplayType)))
+            KillCount.Add(type, 0);
     }
 
     private void OnKillModified(IncidentDisplayKillModifiedEvent args)
