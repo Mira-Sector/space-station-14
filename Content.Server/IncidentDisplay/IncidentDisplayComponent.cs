@@ -31,4 +31,7 @@ public sealed partial class IncidentDisplayComponent : Component
 
     [ViewVariables]
     public Dictionary<IncidentDisplayType, IncidentDisplayRelative> TypeRelative = new();
+
+    [DataField]
+    public Dictionary<IncidentDisplayScreenVisuals, Color?> ScreenColor = new();
 }

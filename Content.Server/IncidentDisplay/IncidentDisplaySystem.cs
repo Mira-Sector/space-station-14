@@ -13,6 +13,7 @@ namespace Content.Server.IncidentDisplay;
 public sealed partial class IncidentDisplaySystem : EntitySystem
 {
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private readonly SharedPointLightSystem _lights = default!;
     [Dependency] private readonly SharedPowerReceiverSystem _receiver = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
@@ -77,7 +78,7 @@ public sealed partial class IncidentDisplaySystem : EntitySystem
             component.Advertising = true;
             component.AdvertisementEnd = _timing.CurTime + component.AdvertiseLength;
             component.CurrentType = types.First();
-            _appearance.SetData(uid, IncidentDisplayVisuals.Screen, IncidentDisplayScreenVisuals.Advertisement);
+            UpdateScreen((uid, component), IncidentDisplayScreenVisuals.Advertisement);
         }
     }
 
@@ -89,7 +90,7 @@ public sealed partial class IncidentDisplaySystem : EntitySystem
         var tens = (int) (kills / 10 % 10);
         var units = (int) (kills % 10);
 
-        _appearance.SetData(ent, IncidentDisplayVisuals.Screen, IncidentDisplayScreenVisuals.Normal);
+        UpdateScreen(ent, IncidentDisplayScreenVisuals.Normal);
 
         _appearance.SetData(ent, IncidentDisplayVisuals.Hundreds, hundreds);
         _appearance.SetData(ent, IncidentDisplayVisuals.Tens, tens);
@@ -97,6 +98,20 @@ public sealed partial class IncidentDisplaySystem : EntitySystem
 
         _appearance.SetData(ent, IncidentDisplayVisuals.Relative, ent.Comp.TypeRelative[ent.Comp.CurrentType]);
         ent.Comp.TypeRelative[ent.Comp.CurrentType] = IncidentDisplayRelative.None;
+    }
+
+    internal void UpdateScreen(Entity<IncidentDisplayComponent> ent, IncidentDisplayScreenVisuals screen)
+    {
+        _appearance.SetData(ent, IncidentDisplayVisuals.Screen, screen);
+
+        if (!ent.Comp.ScreenColor.TryGetValue(screen, out var color) || color == null)
+        {
+            _lights.SetEnabled(ent, false);
+            return;
+        }
+
+        _lights.SetEnabled(ent, true);
+        _lights.SetColor(ent, color.Value);
     }
 
     private void OnRoundStarting(RoundStartingEvent args)
@@ -149,12 +164,12 @@ public sealed partial class IncidentDisplaySystem : EntitySystem
 
         if (!_receiver.IsPowered(ent.Owner))
         {
-            _appearance.SetData(ent, IncidentDisplayVisuals.Screen, IncidentDisplayScreenVisuals.UnPowered);
+            UpdateScreen(ent, IncidentDisplayScreenVisuals.UnPowered);
             return;
         }
 
         ent.Comp.NextType = _timing.CurTime;
-        _appearance.SetData(ent, IncidentDisplayVisuals.Screen, IncidentDisplayScreenVisuals.Normal);
+        UpdateScreen(ent, IncidentDisplayScreenVisuals.Normal);
 
         UpdateState(ent);
     }
@@ -162,20 +177,20 @@ public sealed partial class IncidentDisplaySystem : EntitySystem
     private void OnBreak(Entity<IncidentDisplayComponent> ent, ref BreakageEventArgs args)
     {
         ent.Comp.Broken = true;
-        _appearance.SetData(ent, IncidentDisplayVisuals.Screen, IncidentDisplayScreenVisuals.Broken);
+        UpdateScreen(ent, IncidentDisplayScreenVisuals.Broken);
     }
 
     private void OnPowerChanged(Entity<IncidentDisplayComponent> ent, ref PowerChangedEvent args)
     {
         if (!args.Powered)
         {
-            _appearance.SetData(ent, IncidentDisplayVisuals.Screen, IncidentDisplayScreenVisuals.UnPowered);
+            UpdateScreen(ent, IncidentDisplayScreenVisuals.UnPowered);
             return;
         }
 
         ent.Comp.Advertising = true;
         ent.Comp.NextType = _timing.CurTime;
-        _appearance.SetData(ent, IncidentDisplayVisuals.Screen, IncidentDisplayScreenVisuals.Normal);
+        UpdateScreen(ent, IncidentDisplayScreenVisuals.Normal);
 
         UpdateState(ent);
     }

@@ -125,6 +125,15 @@
     timePerType: 10
     selectableTypes:
     - Supermatter
+    screenColor:
+      Normal: "#3d3588"
+      Advertisement: "#657ca4"
+      UnPowered: null
+      Broken: "#1f86e4"
+  - type: PointLight
+    radius: 1.5
+    energy: 10
+    enabled: false
   - type: ApcPowerReceiver
   - type: ExtensionCableReceiver
   - type: InteractionOutline
