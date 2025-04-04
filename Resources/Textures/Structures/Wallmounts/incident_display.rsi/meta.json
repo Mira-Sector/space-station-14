@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "https://github.com/tgstation/tgstation/blob/8ac8fd086df2a487c1f3ae501a57ad4e221a0323/icons/obj/machines/incident_display.dmi",
+    "copyright": "https://github.com/tgstation/tgstation/blob/8ac8fd086df2a487c1f3ae501a57ad4e221a0323/icons/obj/machines/incident_display.dmi, split into display by Doctor-Cpu",
     "size":
     {
         "x": 64,
@@ -36,6 +36,9 @@
                 5
             ]
         ]
+    },
+    {
+        "name": "display"
     },
     {
         "name": "display_normal"
