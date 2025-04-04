@@ -1,0 +1,142 @@
+using Content.Server.Singularity.Events;
+using Content.Shared.Destructible;
+using Content.Shared.IncidentDisplay;
+using Content.Shared.Whitelist;
+using Robust.Shared.Timing;
+using System.Linq;
+
+namespace Content.Server.IncidentDisplay;
+
+public sealed partial class IncidentDisplaySystem : EntitySystem
+{
+    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
+
+    private Dictionary<IncidentDisplayType, int> KillCount = new();
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        InitializeKillCount();
+        SubscribeLocalEvent<IncidentDisplayKillModifiedEvent>(OnKillModified);
+
+        SubscribeLocalEvent<IncidentDisplayComponent, ComponentInit>(OnInit);
+        SubscribeLocalEvent<IncidentDisplayComponent, BreakageEventArgs>(OnBreak);
+
+        SubscribeLocalEvent<IncidentDisplayIncrementerComponent, EntityConsumedByEventHorizonEvent>(OnConsume);
+    }
+
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+
+        var query = EntityQueryEnumerator<IncidentDisplayComponent>();
+        while (query.MoveNext(out var uid, out var component))
+        {
+            if (component.Broken)
+                continue;
+
+            if (component.Advertising && component.AdvertisementEnd > _timing.CurTime)
+                continue;
+
+            component.Advertising = false;
+
+            if (component.NextType > _timing.CurTime)
+                continue;
+
+            component.NextType += component.TimePerType;
+
+            var types = component.SelectableTypes.ToList();
+            var index = types.IndexOf(component.CurrentType);
+
+            if (index > types.Count)
+            {
+                component.Advertising = true;
+                component.AdvertisementEnd = _timing.CurTime + component.AdvertiseLength;
+                component.CurrentType = types.First();
+                component.NextType = _timing.CurTime;
+                _appearance.SetData(uid, IncidentDisplayVisuals.Screen, IncidentDisplayScreenVisuals.Advertisement);
+            }
+
+            component.CurrentType = types[index];
+            UpdateState((uid, component));
+        }
+    }
+
+    internal void InitializeKillCount()
+    {
+        foreach (IncidentDisplayType type in Enum.GetValues(typeof(IncidentDisplayType)))
+            KillCount.Add(type, 0);
+    }
+
+    internal void UpdateState(Entity<IncidentDisplayComponent> ent)
+    {
+        var kills = KillCount[ent.Comp.CurrentType];
+
+        var hundreds = (int) (kills / 100 % 10);
+        var tens = (int) (kills / 10 % 10);
+        var units = (int) (kills % 10);
+
+        _appearance.SetData(ent, IncidentDisplayVisuals.Hundreds, hundreds);
+        _appearance.SetData(ent, IncidentDisplayVisuals.Tens, tens);
+        _appearance.SetData(ent, IncidentDisplayVisuals.Units, units);
+
+        _appearance.SetData(ent, IncidentDisplayVisuals.Relative, ent.Comp.TypeRelative[ent.Comp.CurrentType]);
+        ent.Comp.TypeRelative[ent.Comp.CurrentType] = IncidentDisplayRelative.None;
+    }
+
+    private void OnKillModified(IncidentDisplayKillModifiedEvent args)
+    {
+        var query = EntityQueryEnumerator<IncidentDisplayComponent>();
+        while (query.MoveNext(out var uid, out var component))
+        {
+            if (!component.SelectableTypes.Contains(args.Type))
+                continue;
+
+            var relative = IncidentDisplayRelative.None;
+
+            if (args.Modified > 0)
+            {
+                relative = IncidentDisplayRelative.Rising;
+            }
+            else
+            {
+                relative = IncidentDisplayRelative.Falling;
+            }
+
+            component.TypeRelative[args.Type] = relative;
+
+            if (component.CurrentType == args.Type)
+                UpdateState((uid, component));
+        }
+    }
+
+    private void OnInit(Entity<IncidentDisplayComponent> ent, ref ComponentInit args)
+    {
+        ent.Comp.NextType = _timing.CurTime;
+        _appearance.SetData(ent, IncidentDisplayVisuals.Screen, IncidentDisplayScreenVisuals.Normal);
+
+        foreach (var type in ent.Comp.SelectableTypes)
+            ent.Comp.TypeRelative.Add(type, IncidentDisplayRelative.None);
+
+        UpdateState(ent);
+    }
+
+    private void OnBreak(Entity<IncidentDisplayComponent> ent, ref BreakageEventArgs args)
+    {
+        ent.Comp.Broken = true;
+        _appearance.SetData(ent, IncidentDisplayVisuals.Screen, IncidentDisplayScreenVisuals.Broken);
+    }
+
+    private void OnConsume(Entity<IncidentDisplayIncrementerComponent> ent, ref EntityConsumedByEventHorizonEvent args)
+    {
+        if (_whitelist.IsWhitelistFail(ent.Comp.Whitelist, args.Entity))
+            return;
+
+        KillCount[ent.Comp.IncidentType] += 1;
+
+        var ev = new IncidentDisplayKillModifiedEvent(ent.Comp.IncidentType, 1, KillCount[ent.Comp.IncidentType]);
+        RaiseLocalEvent(ent, ev, true);
+    }
+}

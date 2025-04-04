@@ -295,6 +295,13 @@
     consumeEntities: false
     colliderFixtureId: EventHorizonCollider
     consumerFixtureId: EventHorizonConsumer
+  - type: IncidentDisplayIncrementer
+    incidentType: Supermatter
+    whitelist:
+      requireAll: true
+      components:
+      - HumanoidAppearance
+      - MobState
   - type: Fixtures
     fixtures:
       emitter:
