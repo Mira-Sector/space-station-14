@@ -104,10 +104,13 @@ public sealed partial class IncidentDisplaySystem : EntitySystem
     {
         _appearance.SetData(ent, IncidentDisplayVisuals.Screen, screen);
 
-        if (!ent.Comp.ScreenColor.TryGetValue(screen, out var color) || color == null)
+        if (!ent.Comp.RelativeColor.TryGetValue(ent.Comp.TypeRelative[ent.Comp.CurrentType], out var color) || color == null)
         {
-            _lights.SetEnabled(ent, false);
-            return;
+            if (!ent.Comp.ScreenColor.TryGetValue(screen, out color) || color == null)
+            {
+                _lights.SetEnabled(ent, false);
+                return;
+            }
         }
 
         _lights.SetEnabled(ent, true);

@@ -130,6 +130,10 @@
       Advertisement: "#657ca4"
       UnPowered: null
       Broken: "#1f86e4"
+    relativeColor:
+      None: null
+      Rising: "#721a27"
+      Falling: "#721a27"
   - type: PointLight
     radius: 1.5
     energy: 10
