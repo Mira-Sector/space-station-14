@@ -144,11 +144,17 @@ public sealed partial class IncidentDisplaySystem : EntitySystem
 
     private void OnInit(Entity<IncidentDisplayComponent> ent, ref ComponentInit args)
     {
-        ent.Comp.NextType = _timing.CurTime;
-        _appearance.SetData(ent, IncidentDisplayVisuals.Screen, IncidentDisplayScreenVisuals.Normal);
-
         foreach (var type in ent.Comp.SelectableTypes)
             ent.Comp.TypeRelative.Add(type, IncidentDisplayRelative.None);
+
+        if (!_receiver.IsPowered(ent.Owner))
+        {
+            _appearance.SetData(ent, IncidentDisplayVisuals.Screen, IncidentDisplayScreenVisuals.UnPowered);
+            return;
+        }
+
+        ent.Comp.NextType = _timing.CurTime;
+        _appearance.SetData(ent, IncidentDisplayVisuals.Screen, IncidentDisplayScreenVisuals.Normal);
 
         UpdateState(ent);
     }
