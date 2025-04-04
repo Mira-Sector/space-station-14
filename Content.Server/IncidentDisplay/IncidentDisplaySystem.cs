@@ -120,6 +120,8 @@ public sealed partial class IncidentDisplaySystem : EntitySystem
 
     private void OnRoundStarting(RoundStartingEvent args)
     {
+        KillCount.Clear();
+
         foreach (IncidentDisplayType type in Enum.GetValues(typeof(IncidentDisplayType)))
             KillCount.Add(type, 0);
     }
