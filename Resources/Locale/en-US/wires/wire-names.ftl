@@ -43,6 +43,7 @@ wires-board-name-jukebox = Jukebox
 wires-board-name-computer = Computer
 wires-board-name-holopad = Holopad
 wires-board-name-barsign = Bar Sign
+wires-board-name-incident-display = Incident Display
 
 # names that get displayed in the wire hacking hud & admin logs.
 
