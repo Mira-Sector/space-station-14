@@ -79,6 +79,7 @@ public sealed partial class IncidentDisplaySystem : EntitySystem
             component.AdvertisementEnd = _timing.CurTime + component.AdvertiseLength;
             component.CurrentType = types.First();
             UpdateScreen((uid, component), IncidentDisplayScreenVisuals.Advertisement);
+            _appearance.SetData(uid, IncidentDisplayVisuals.Relative, IncidentDisplayRelative.None);
         }
     }
 
@@ -156,6 +157,7 @@ public sealed partial class IncidentDisplaySystem : EntitySystem
             if (!_receiver.IsPowered(uid))
                 continue;
 
+            component.NextType += component.TimePerType; // rub it in further
             UpdateState((uid, component));
         }
     }
