@@ -926,3 +926,17 @@
   - type: ConditionalSpawner
     prototypes:
     - MobReindeerDoe
+
+- type: entity
+  name: Poly Spawner
+  id: SpawnMobParrotPoly
+  parent: MarkerBase
+  components:
+  - type: Sprite
+    layers:
+    - state: green
+    - state: parrot
+      sprite: Mobs/Animals/parrot.rsi
+  - type: ConditionalSpawner
+    prototypes:
+    - MobParrotPoly

@@ -769,6 +769,7 @@
     - FoamingAgent
     - BuzzochloricBees
     - RobustHarvest
+    - Voidoil
     usefulChemicals:
     - Cryptobiolin
     - Dylovene
@@ -802,6 +803,7 @@
     - Honk
     - Carpetium
     - JuiceThatMakesYouWeh
+    - Solaroil
   - type: Drink
     solution: anomaly
   - type: DrainableSolution

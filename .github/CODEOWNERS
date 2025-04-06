@@ -1,3 +1,20 @@
 # Last match in file takes precedence.
 
-* @Doctor-Cpu
+** @Doctor-Cpu
+/Resources/Maps/* @Thurtik
+/Resources/Prototypes/Maps/* @Thurtik
+/Resources/Maps/Shuttles/** @MatthrewH
+/Resources/Maps/mir.yml @spiffycodes
+/Resources/Prototypes/Maps/mir.yml @spiffycodes
+/Resources/Maps/cluster.yml @Anuraths
+/Resources/Prototypes/Maps/cluster.yml @Anuraths
+/Resources/Maps/packed.yml @SillyGabeSillies
+/Resources/Prototypes/Maps/packed.yml @SillyGabeSillies
+/Resources/Maps/atlas.yml @Doctor-Cpu
+/Resources/Prototypes/Maps/atlas.yml @Doctor-Cpu
+/Resources/Maps/saltern.yml @Doctor-Cpu
+/Resources/Prototypes/Maps/saltern.yml @Doctor-Cpu
+/Resources/Maps/omega.yml @Doctor-Cpu
+/Resources/Prototypes/Maps/omega.yml @Doctor-Cpu
+/Resources/Maps/centcomm.yml @Doctor-Cpu
+/Resources/Prototypes/Maps/centcomm.yml @Doctor-Cpu

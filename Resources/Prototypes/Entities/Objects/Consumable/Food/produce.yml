@@ -202,6 +202,25 @@
     spawnCount: 1
 
 - type: entity
+  name: plasteel-cap log
+  description: Plasteel also grows on mushrooms, as it turns out.
+  id: PlasteelLog
+  parent: ProduceBase
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/plasteelcap.rsi
+  - type: SolutionContainerManager
+  - type: MeleeWeapon
+    damage:
+      types:
+        Blunt: 15
+  - type: Produce
+    seedId: plasteelcap
+  - type: Log
+    spawnedPrototype: SheetPlasteel1
+    spawnCount: 1
+
+- type: entity
   name: nettle
   description: Stingy little prick.
   id: Nettle
@@ -345,6 +364,61 @@
     entries:
       Burger: Mimana
       Taco: Mimana
+
+- type: entity
+  name: unstable bananium
+  parent: FoodProduceBase
+  id: ProduceBananiumPlant
+  description: A rapidly decaying isotope of bananium. You probably shouldn't be standing so close.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/bananiumplant.rsi
+  - type: Produce
+    seedId: bananiumplant
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 14
+        reagents:
+        - ReagentId: UnstableMutagen #radiation risk and time limit for infinite mutation fuel.
+          Quantity: 12
+        - ReagentId: Nutriment
+          Quantity: 2
+  - type: RadiationSource
+    intensity: 0.75
+  - type: Food
+    trash:
+    - TrashBananiumPeel
+  - type: BadFood
+  - type: PointLight
+    radius: 1.5
+    color: "#3de72e"
+  - type: Perishable
+    # unstable isotope, rots quickily into regular bananium.
+    rotAfter: 20
+    molsPerSecondPerUnitMass: 0
+    forceRotProgression: true
+  - type: RotInto
+    entity: MaterialBananium1
+    # once it would say bloated, turn into the rotten prototype
+    stage: 1
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: JuiceBanana
+        Quantity: 5
+      - ReagentId: Radium
+        Quantity: 5
+  - type: Tag
+    tags:
+    - Fruit
+  - type: FlavorProfile
+    flavors:
+      - banana
+  - type: FoodSequenceElement
+    entries:
+      Burger: UnstableBananium
+      Taco: UnstableBananium
 
 - type: entity
   name: banana peel
@@ -787,6 +861,67 @@
       Burger: Potato
       Taco: Potato
 
+- type: entity
+  name: voltato
+  parent: FoodProduceBase
+  id: FoodVoltato
+  description: A favoured food of the Space IRA for its electronics charging utility and no other reasons.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/voltato.rsi
+    layers:
+    - map: [ "enum.PowerCellVisualLayers.Base" ]
+      state: produce
+    - map: [ "enum.PowerCellVisualLayers.Unshaded" ]
+      state: o2 #names are hardcoded to be o+number
+      shader: unshaded
+  - type: Appearance
+  - type: PowerCellVisuals
+  - type: Produce
+    seedId: voltato
+  - type: FlavorProfile
+    flavors:
+      - potatoes
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 14
+        reagents:
+        - ReagentId: SulfuricAcid
+          Quantity: 10
+        - ReagentId: Vitamin
+          Quantity: 4
+      battery:
+        maxVol: 5
+  - type: InjectableSolution
+    solution: battery
+  - type: DrawableSolution
+    solution: battery
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Zinc
+        Quantity: 5
+  - type: PowerCell
+  - type: Battery
+    maxCharge: 500 #somewhere between a small and medium battery
+    startingCharge: 500
+  - type: HitscanBatteryAmmoProvider
+    proto: RedLightLaser
+    fireCost: 50
+  - type: BatteryTransfer
+    canRecieve: true
+    canTransfer: true
+  - type: Explosive
+    explosionType: Default
+    maxIntensity: 200
+    intensitySlope: 1.5
+  - type: Riggable
+  - type: Tag
+    tags:
+    - Potato
+    - Vegetable
+    - PowerCell
 
 - type: entity
   name: tomato
@@ -1431,6 +1566,34 @@
     entries:
       Taco: Aloe
       Burger: Aloe
+
+- type: entity
+  name: spesoe
+  description: A fragrant plant with capitalistic properties.
+  id: ProduceSpesoe
+  parent: FoodProduceBase
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/spesoe.rsi
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 8
+        reagents:
+        - ReagentId: Happiness
+          Quantity: 8
+  - type: LogStack
+    spawnedPrototype: Credit
+    usePotency: true
+  - type: Produce
+    seedId: spesoe
+  - type: Tag
+    tags:
+    - ClothMade
+  - type: FoodSequenceElement
+    entries:
+      Burger: Spesoe
+      Taco: Spesoe
 
 - type: entity
   name: poppy
@@ -2203,6 +2366,70 @@
       Burger: BerriesBurger
 
 - type: entity
+  name: chaos berry pod
+  description: A durable pod that protects chaos berries from the outside world, or perhaps the other way around? Rip it open and find out.
+  id: ProduceChaosPod
+  parent: ProduceBase
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/chaosberries.rsi
+  - type: Produce
+    seedId: chaosberries
+  - type: SolutionContainerManager
+  - type: SpawnItemsOnUse
+    items:
+      - id: FoodChaosBerries
+    sound:
+      path: /Audio/Effects/packetrip.ogg
+  - type: Tag
+    tags:
+    - Fruit
+
+- type: entity      #due to a bug(?) chemical reaction effects don't occur when you harvest a grown plants. So can't use a chemical reaction to decide random chemical here.
+  name: chaos berry #best that can be done is a random weighted list, this has to be a seperate item or it gets overwritten. It doesn't scale with potency though :(
+  description: A handful of multicoloured berries, what could they contain?
+  id: FoodChaosBerries
+  parent: FoodProduceBase
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/chaosberries.rsi
+    layers:
+      - state: berry
+        map: ["enum.SolutionContainerLayers.Base"]
+      - state: chem-1
+        map: ["enum.SolutionContainerLayers.Fill"]
+        visible: true
+    state: berry
+  - type: Produce
+    seedId: chaosberries
+  - type: RandomFillSolution
+    solution: food
+    weightedRandomId: RandomPickBotanyReagent
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 15
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 3
+        - ReagentId: Vitamin
+          Quantity: 2
+  - type: SolutionContainerVisuals
+    solution: food
+    maxFillLevels: 3
+    fillBaseName: chem-
+  - type: Tag
+    tags:
+    - Fruit
+  - type: FoodSequenceElement
+    entries:
+      Taco: ChaosBerries
+      Burger: ChaosBerriesBurger
+  - type: FlavorProfile
+  flavors:
+    - berry
+
+- type: entity
   name: bungo fruit
   parent: FoodProduceBase
   id: FoodBungo
@@ -2593,3 +2820,453 @@
     entries:
       Taco: AnomalyBerry
       Burger: AnomalyBerryBurger
+
+- type: entity
+  name: sunflower
+  description: A bulky flower filled with natural oils.
+  id: ProduceSunflower
+  parent: FoodProduceBase
+  components:
+  - type: FlavorProfile
+    flavors:
+      - oily
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/sunflower.rsi
+    scale: 1.5,1.5
+  - type: Produce
+    seedId: sunflower
+  - type: Food
+    trash:
+    - ClothingHeadHatSunflowerRing
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 27
+        reagents:
+        - ReagentId: Oil
+          Quantity: 20
+        - ReagentId: Nutriment
+          Quantity: 2
+        - ReagentId: Vitamin
+          Quantity: 5
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: ClothingHeadHatSunflowerRing
+  - type: Tag
+    tags:
+    - Flower
+  - type: FoodSequenceElement
+    entries:
+      Taco: Sunflower
+      Burger: Sunflower
+
+- type: entity
+  name: lampflower
+  description: A bulky flower with a glistening glow.
+  id: ProduceLampflower
+  parent: FoodProduceBase
+  components:
+  - type: FlavorProfile
+    flavors:
+      - glowing
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/lampflower.rsi
+    scale: 1.5,1.5
+  - type: Produce
+    seedId: lampflower
+  - type: Food
+    trash:
+    - ClothingHeadHatLampflowerRing
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 27
+        reagents:
+        - ReagentId: Solaroil #solar oil
+          Quantity: 20
+        - ReagentId: Nutriment
+          Quantity: 2
+        - ReagentId: Vitamin
+          Quantity: 5
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: ClothingHeadHatLampflowerRing
+  - type: PointLight
+    radius: 6.0
+    color: "#fffb00"
+  - type: Perishable    # lots of point lights are laggy, so rot after 15 minutes to reduce that.
+    rotAfter: 900
+    molsPerSecondPerUnitMass: 0
+    forceRotProgression: true
+  - type: RotInto
+    entity: LampflowerCoreRot
+    # once it would say bloated, turn into the rotten prototype
+    stage: 1
+  - type: Tag
+    tags:
+    - Flower
+  - type: FoodSequenceElement
+    entries:
+      Taco: Lampflower
+      Burger: Lampflower
+
+- type: entity
+  name: empty lampflower core
+  parent: FoodInjectableBase
+  id: LampflowerCoreRot
+  description: The empty core of a lampflower, its light has gone out.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/lampflower.rsi
+    state: corerot
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 5
+        reagents:
+        - ReagentId: Vitamin
+          Quantity: 5
+  - type: Tag
+    tags:
+      - Trash
+      - Recyclable
+
+- type: entity
+  name: voidflower
+  description: A bulky flower with core of darkness.
+  id: ProduceVoidflower
+  parent: FoodProduceBase
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/voidflower.rsi
+    scale: 1.5,1.5
+  - type: Produce
+    seedId: voidflower
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 25
+        canReact: false #reduces chance of errors if mutated chemicals are added, as void oil can't convert them on harvest.
+        reagents:
+        - ReagentId: Voidoil #void oil ate everything else
+          Quantity: 25
+  - type: Tag
+    tags:
+    - Flower
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: ClothingHeadHatVoidflowerRing
+  - type: Food
+    trash:
+    - ClothingHeadHatVoidflowerRing
+  - type: FlavorProfile
+    flavors:
+      - inky
+  - type: FoodSequenceElement
+    entries:
+      Taco: Voidflower
+      Burger: Voidflower
+
+- type: entity
+  name: coconut
+  parent: ProduceBase
+  id: ProduceCoconut
+  description: Not actually a nut, but sure looks like one. You think you could cut it open to get at what's inside, or use a syringe.
+  components:
+  - type: Produce
+    seedId: coconut
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/coconut.rsi
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 15
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 5
+        - ReagentId: Vitamin
+          Quantity: 5
+        - ReagentId: Fiber
+          Quantity: 5
+      drink:
+        maxVol: 30
+        reagents:
+        - ReagentId: CoconutWater #gets lost if coconut is grinded as extractable only accepts one solution, so can only be food or drink >:(
+          Quantity: 20
+  - type: DrawableSolution
+    solution: drink
+  - type: InjectableSolution
+    solution: drink
+  - type: MeleeWeapon
+    damage:
+      types:
+        Blunt: 6
+  - type: DamageOtherOnHit
+    damage:
+      types:
+        Blunt: 5
+  - type: Damageable
+    damageContainer: Biological
+  - type: DamageOnHighSpeedImpact
+    minimumSpeed: 0.1
+    damage:
+      types:
+        Blunt: 5
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 15
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: desecration
+      - !type:SpillBehavior
+        solution: drink
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: SliceableFood
+    count: 1
+    slice: ProduceCoconutOpen
+    spawnOffset: 0
+    extraSolution: drink
+  - type: Extractable
+    juiceSolution:
+      reagents:
+        - ReagentId: Milk
+          Quantity: 10 #juicing the rind and coconut water produces a form of milk
+  - type: Tag
+    tags:
+    - Fruit
+
+- type: entity
+  name: sliced coconut
+  parent: ProduceBase
+  id: ProduceCoconutOpen
+  description: Now you just need one of those tiny umbrellas.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/coconut.rsi
+    state: open
+    layers:
+      - state: open
+      - state: open-1
+        map: ["enum.SolutionContainerLayers.Fill"]
+        visible: false
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 15
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 5
+        - ReagentId: Vitamin
+          Quantity: 5
+        - ReagentId: Fiber
+          Quantity: 5
+      drink:
+        maxVol: 30
+        reagents:
+        - ReagentId: CoconutWater
+          Quantity: 20
+  - type: SolutionContainerVisuals
+    solution: drink
+    maxFillLevels: 3
+    fillBaseName: open-
+  - type: Drink
+  - type: Spillable
+    solution: drink
+  - type: MixableSolution
+    solution: drink
+  - type: RefillableSolution
+    solution: drink
+  - type: DrainableSolution
+    solution: drink
+  - type: ExaminableSolution
+    solution: drink
+  - type: DrawableSolution
+    solution: drink
+  - type: SolutionTransfer
+    maxTransferAmount: 30
+    canChangeTransferAmount: true
+  - type: SolutionItemStatus
+    solution: drink
+  - type: UserInterface
+    interfaces:
+      enum.TransferAmountUiKey.Key:
+        type: TransferAmountBoundUserInterface
+  - type: Damageable
+    damageContainer: Biological
+  - type: DamageOnHighSpeedImpact
+    minimumSpeed: 0.1
+    damage:
+      types:
+        Blunt: 1
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 15
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: desecration
+      - !type:SpillBehavior
+        solution: drink
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: DnaSubstanceTrace
+
+- type: entity
+  name: cryoconut
+  parent: [FoodProduceBase, ItemHeftyBase]
+  id: ProduceCryoconut
+  description: Found only in the coldest of environments, its contents are seemingly kept in cryostasis.
+  components:
+  - type: Produce
+    seedId: cryoconut
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/cryoconut.rsi
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 12
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 5
+        - ReagentId: Fresium
+          Quantity: 2
+        - ReagentId: Fiber
+          Quantity: 5
+      drink:
+        temperature: 273
+        maxVol: 20
+        canReact: false
+        reagents:
+        - ReagentId: Cryoxadone
+          Quantity: 10
+  - type: DrawableSolution
+    solution: drink
+  - type: InjectableSolution
+    solution: drink
+  - type: MeleeWeapon
+    damage:
+      types:
+        Blunt: 6 #no thrown damage on cryoconut because it should break on impact with a person
+  - type: Damageable
+    damageContainer: Biological
+  - type: DamageOnHighSpeedImpact
+    minimumSpeed: 0.1
+    damage:
+      types:
+        Blunt: 1
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 1
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: desecration
+      - !type:SpillBehavior
+        solution: drink
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: SliceableFood
+    count: 1
+    slice: ProduceCryoconutOpen
+    spawnOffset: 0
+    extraSolution: drink
+  - type: Extractable
+    juiceSolution:
+      reagents:
+        - ReagentId: Cryoxadone
+          Quantity: 10
+  - type: Tag
+    tags:
+    - Fruit
+
+- type: entity
+  name: sliced cryoconut #doesn't change temperature currently
+  parent: ProduceBase
+  id: ProduceCryoconutOpen
+  description: Perfect to cool you down after a long shift.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/cryoconut.rsi
+    state: open
+    layers:
+      - state: open
+      - state: open-1
+        map: ["enum.SolutionContainerLayers.Fill"]
+        visible: false
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 12
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 5
+        - ReagentId: Fresium
+          Quantity: 2
+        - ReagentId: Fiber
+          Quantity: 5
+      drink:
+        temperature: 273
+        maxVol: 20
+        reagents:
+        - ReagentId: Cryoxadone
+          Quantity: 10
+  - type: SolutionContainerVisuals
+    solution: drink
+    maxFillLevels: 3
+    fillBaseName: open-
+  - type: Drink
+  - type: Spillable
+    solution: drink
+  - type: MixableSolution
+    solution: drink
+  - type: RefillableSolution
+    solution: drink
+  - type: DrainableSolution
+    solution: drink
+  - type: ExaminableSolution
+    solution: drink
+  - type: DrawableSolution
+    solution: drink
+  - type: SolutionTransfer
+    maxTransferAmount: 20
+    canChangeTransferAmount: true
+  - type: SolutionItemStatus
+    solution: drink
+  - type: UserInterface
+    interfaces:
+      enum.TransferAmountUiKey.Key:
+        type: TransferAmountBoundUserInterface
+  - type: Damageable
+    damageContainer: Biological
+  - type: DamageOnHighSpeedImpact
+    minimumSpeed: 0.1
+    damage:
+      types:
+        Blunt: 1
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 15
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: desecration
+      - !type:SpillBehavior
+        solution: drink
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: DnaSubstanceTrace
+
+

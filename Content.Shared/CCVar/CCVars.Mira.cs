@@ -9,4 +9,11 @@ public sealed partial class CCVars
     /// </summary>
     public static readonly CVarDef<int> ForceArrivals =
         CVarDef.Create("shuttle.force_arrivals", 0, CVar.SERVERONLY);
+
+    /// <summary>
+    ///     Time between mimic learned phrases autosaves, in seconds.
+    /// </summary>
+    public static readonly CVarDef<float>
+        MimicPhraseSaveInterval = CVarDef.Create("mimic.save_interval", 1200f, CVar.SERVERONLY);
+
 }

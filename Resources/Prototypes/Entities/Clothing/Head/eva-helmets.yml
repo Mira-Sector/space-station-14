@@ -67,7 +67,11 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] : { coefficients: { Heat: 0.90, Radiation: 0.75 } }
+      [ Head ] :
+        coefficients:
+          Heat: 0.90
+          Radiation: 0.75
+          Caustic: 0.5
 
 #Ancient Void Helmet
 - type: entity

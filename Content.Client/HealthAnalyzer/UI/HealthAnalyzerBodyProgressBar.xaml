@@ -1,0 +1,29 @@
+<PanelContainer
+    xmlns="https://spacestation14.io"
+    xmlns:cc="clr-namespace:Content.Client.UserInterface.Controls"
+    MinHeight="64"
+    HorizontalExpand="True">
+    <BoxContainer
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center">
+        <BoxContainer
+            Orientation="Vertical">
+            <Label
+                Name="ProgressLabel"
+                Access="Public"
+                Align="Center"
+                HorizontalExpand="True"/>
+            <cc:ProgressTextureRect
+                Name="ProgressTex"
+                Access="Public"
+                ProgressDirection="Right"
+                TexturePath="/Textures/Interface/health_analyzer_body.rsi/progress.png">
+                <Label
+                    Name="ProgressText"
+                    Access="Public"
+                    Align="Center"
+                    HorizontalExpand="True"/>
+            </cc:ProgressTextureRect>
+        </BoxContainer>
+    </BoxContainer>
+</PanelContainer>

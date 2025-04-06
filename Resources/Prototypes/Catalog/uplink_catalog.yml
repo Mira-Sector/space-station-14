@@ -1554,6 +1554,16 @@
   - UplinkWearables
 
 - type: listing
+  id: UplinkClothingHeadHelmetSwatSyndicate
+  name: uplink-clothing-head-helmet-swat-syndicate-name
+  description: uplink-clothing-head-helmet-swat-syndicate-desc
+  productEntity: ClothingHeadHelmetSwatSyndicate
+  cost:
+    Telecrystal: 1
+  categories:
+  - UplinkWearables
+
+- type: listing
   id: UplinkClothingShoesBootsMagSyndie
   name: uplink-clothing-shoes-boots-mag-syndie-name
   description: uplink-clothing-shoes-boots-mag-syndie-desc

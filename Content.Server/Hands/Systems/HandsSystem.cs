@@ -124,7 +124,8 @@ namespace Content.Server.Hands.Systems
             if (args.Part.Comp.PartType != BodyPartType.Hand)
                 return;
 
-            RemoveHand(uid, args.Slot);
+            if (!TerminatingOrDeleted(uid))
+                RemoveHand(uid, args.Slot);
         }
 
         #region pulling
