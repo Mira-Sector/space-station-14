@@ -155,6 +155,8 @@
     interfaces:
       enum.DamageSelectorUiKey.Key:
         type: DamageSelectorBoundUserInterface
+      enum.StrippingUiKey.Key:
+        type: StrippableBoundUserInterface
   - type: MeleeWeapon
     hidden: true
     soundHit:
