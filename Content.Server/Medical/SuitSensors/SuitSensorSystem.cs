@@ -8,6 +8,7 @@ using Content.Server.Medical.CrewMonitoring;
 using Content.Server.Popups;
 using Content.Server.Station.Systems;
 using Content.Shared.ActionBlocker;
+using Content.Shared.Body.Systems;
 using Content.Shared.Clothing;
 using Content.Shared.Damage;
 using Content.Shared.DeviceNetwork;
@@ -31,6 +32,7 @@ public sealed class SuitSensorSystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _gameTiming = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private readonly SharedBodySystem _body = default!;
     [Dependency] private readonly DeviceNetworkSystem _deviceNetworkSystem = default!;
     [Dependency] private readonly IdCardSystem _idCardSystem = default!;
     [Dependency] private readonly MobStateSystem _mobStateSystem = default!;
@@ -381,6 +383,8 @@ public sealed class SuitSensorSystem : EntitySystem
         var totalDamage = 0;
         if (TryComp<DamageableComponent>(sensor.User.Value, out var damageable))
             totalDamage = damageable.TotalDamage.Int();
+        else if (_body.GetBodyDamage(sensor.User.Value) is {} bodyDamage)
+            totalDamage = bodyDamage.GetTotal().Int();
 
         // Get mob total damage crit threshold
         int? totalDamageThreshold = null;
