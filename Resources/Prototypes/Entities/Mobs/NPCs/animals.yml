@@ -1560,7 +1560,7 @@
     clumsySound:
       path: /Audio/Animals/monkey_scream.ogg
   - type: Body
-    prototype: GeneticAncestor
+    prototype: Monkey
 
 
 - type: entity
