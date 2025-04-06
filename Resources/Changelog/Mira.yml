@@ -1429,3 +1429,9 @@ Entries:
     type: Fix
   id: 207
   time: '2024-04-06T15:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Reagents that require a health threshold (such as tric) now work on mobs
+    type: Fix
+  id: 208
+  time: '2024-04-06T15:10:00.0000000+00:00'
