@@ -22,6 +22,9 @@ public sealed class GhostVisualizerSystem : VisualizerSystem<GhostVisualsCompone
         if (AppearanceSystem.TryGetData<Color>(uid, GhostVisuals.Color, out var color, args.Component))
             SetColor(sprite, color);
 
+        foreach (var layer in component.RevealedLayers)
+            sprite.RemoveLayer(layer);
+
         foreach (var (layerId, displacement) in component.LayerDisplacements)
         {
             if (!_reflection.TryParseEnumReference(layerId, out var @enum))
