@@ -30,6 +30,7 @@ public abstract partial class SharedDoAfterSystem : EntitySystem
     {
         base.Initialize();
         SubscribeLocalEvent<DoAfterComponent, DamageChangedEvent>(OnDamage);
+        SubscribeLocalEvent<DoAfterComponent, LimbBodyRelayedEvent<DamageChangedEvent>>((u, c, a) => OnDamage(u, c, a.Args));
         SubscribeLocalEvent<DoAfterComponent, EntityUnpausedEvent>(OnUnpaused);
         SubscribeLocalEvent<DoAfterComponent, MobStateChangedEvent>(OnStateChanged);
         SubscribeLocalEvent<DoAfterComponent, StoodEvent>((u, c, a) => OnStandingStateChanged(u, c, true));
