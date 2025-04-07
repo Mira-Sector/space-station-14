@@ -1,4 +1,5 @@
 using Content.Server.NPC.HTN;
+using Content.Shared.Body.Part;
 using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
 using Content.Shared.Mobs;
@@ -17,6 +18,7 @@ public sealed class KillTrackingSystem : EntitySystem
     {
         // Add damage to LifetimeDamage before MobStateChangedEvent gets raised
         SubscribeLocalEvent<KillTrackerComponent, DamageChangedEvent>(OnDamageChanged, before: [ typeof(MobThresholdSystem) ]);
+        SubscribeLocalEvent<KillTrackerComponent, LimbBodyRelayedEvent<DamageChangedEvent>>((u, c, a) => OnDamageChanged(u, c, a.Args), before: [ typeof(MobThresholdSystem) ]);
         SubscribeLocalEvent<KillTrackerComponent, MobStateChangedEvent>(OnMobStateChanged);
     }
 
