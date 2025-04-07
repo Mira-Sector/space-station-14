@@ -1447,3 +1447,17 @@ Entries:
     type: Fix
   id: 210
   time: '2025-04-07T00:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Mobs now retaliate to damage again
+    type: Fix
+  - message: Diona now ignite on heat damage again
+    type: Fix
+  - message: Doafters now cancel on taking damage
+    type: Fix
+  - message: Damage slowdown works again
+    type: Fix
+  - message: Taking damage now forces you to speak again
+    type: Fix
+  id: 211
+  time: '2025-04-07T01:00:00.0000000+00:00'
