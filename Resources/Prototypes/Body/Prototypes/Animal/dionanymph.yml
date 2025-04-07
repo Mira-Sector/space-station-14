@@ -1,0 +1,37 @@
+﻿- type: body
+  id: Dionanymph
+  name: dionanymph
+  root: torso
+  slots:
+    head:
+      part: DionanymphHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: DionanymphTorso
+      connections:
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_leg:
+      part: DionanymphRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: DionanymphLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: DionanymphRightFoot
+    left_foot:
+      part: DionanymphLeftFoot
