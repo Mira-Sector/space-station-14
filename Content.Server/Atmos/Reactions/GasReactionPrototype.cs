@@ -1,4 +1,4 @@
-﻿using Content.Server.Atmos.EntitySystems;
+using Content.Server.Atmos.EntitySystems;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Reactions;
 using Robust.Shared.Prototypes;
@@ -31,6 +31,13 @@ namespace Content.Server.Atmos.Reactions
         public float MinimumTemperatureRequirement { get; private set; } = Atmospherics.TCMB;
 
         /// <summary>
+        /// If this is a generic gas reaction, multiply the initial rate by this. The default is reasonable for
+        /// synthesis reactions. Consider raising this for fires.
+        /// </summary>
+        [DataField("rateMultiplier")]
+        public float RateMultiplier = 1f;
+
+        /// <summary>
         ///     Minimum energy requirement.
         /// </summary>
         [DataField("minimumEnergy")]
@@ -47,6 +54,30 @@ namespace Content.Server.Atmos.Reactions
         ///     A list of effects this will produce.
         /// </summary>
         [DataField("effects")] private List<IGasReactionEffect> _effects = new();
+
+        [DataField("enthalpy")]
+        public float Enthalpy;
+
+        /// <summary>
+        /// Integer gas IDs and integer ratios required in the reaction.
+        /// </summary>
+        [DataField("reactants")]
+        public Dictionary<Gas, int> Reactants = new();
+
+        /// <summary>
+        /// Integer gas IDs and integer ratios of reaction products.
+        /// </summary>
+        [DataField("products")]
+        public Dictionary<Gas, int> Products = new();
+
+        /// <summary>
+        /// Integer gas IDs and how much they modify the activation energy (J/mol).
+        /// </summary>
+        [DataField("catalysts")]
+        public Dictionary<Gas, int> Catalysts = new();
+
+        [DataField]
+        public bool CancelReactions;
 
         /// <summary>
         /// Process all reaction effects.
