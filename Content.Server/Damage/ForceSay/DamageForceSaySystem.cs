@@ -1,4 +1,5 @@
 using Content.Shared.Bed.Sleep;
+using Content.Shared.Body.Part;
 using Content.Shared.Damage;
 using Content.Shared.Damage.ForceSay;
 using Content.Shared.FixedPoint;
@@ -30,6 +31,7 @@ public sealed class DamageForceSaySystem : EntitySystem
         // so that we don't accidentally raise one for damage before one for mobstate
         // (this won't double raise, because of the cooldown)
         SubscribeLocalEvent<DamageForceSayComponent, DamageChangedEvent>(OnDamageChanged, after: new []{ typeof(MobThresholdSystem)} );
+        SubscribeLocalEvent<DamageForceSayComponent, LimbBodyRelayedEvent<DamageChangedEvent>>((u, c, a) => OnDamageChanged(u, c, a.Args), after: new []{ typeof(MobThresholdSystem)} );
         SubscribeLocalEvent<DamageForceSayComponent, SleepStateChangedEvent>(OnSleep);
     }
 
