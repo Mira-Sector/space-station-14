@@ -1,4 +1,4 @@
-﻿- type: body
+- type: body
   id: Reindeer
   name: reindeer
   root: torso
@@ -15,8 +15,6 @@
     torso:
       part: ReindeerTorso
       connections:
-      - right_arm
-      - left_arm
       - right_leg
       - left_leg
       organs:
