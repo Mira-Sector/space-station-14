@@ -1,4 +1,3 @@
-using Content.Server.Tesla.EntitySystems;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server.Tesla.Components;
@@ -6,9 +5,12 @@ namespace Content.Server.Tesla.Components;
 /// <summary>
 /// Periodically fires electric arcs at surrounding objects.
 /// </summary>
-[RegisterComponent, Access(typeof(LightningArcShooterSystem)), AutoGenerateComponentPause]
+[RegisterComponent, AutoGenerateComponentPause]
 public sealed partial class LightningArcShooterComponent : Component
 {
+    [DataField]
+    public bool Enabled = true;
+
     /// <summary>
     /// The number of lightning bolts that are fired at the same time. From 0 to N
     /// Important balance value: if there aren't a N number of coils or grounders around the tesla,
