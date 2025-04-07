@@ -1,0 +1,43 @@
+﻿- type: body
+  id: Goose
+  name: goose
+  root: torso
+  slots:
+    head:
+      part: GooseHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: GooseTorso
+      connections:
+      - right_arm
+      - left_arm
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_arm:
+      part: GooseRightArm
+    left_arm:
+      part: GooseLeftArm
+    right_leg:
+      part: GooseRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: GooseLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: GooseRightFoot
+    left_foot:
+      part: GooseLeftFoot

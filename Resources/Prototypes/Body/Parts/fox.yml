@@ -1,0 +1,41 @@
+﻿- type: entity
+  id: BaseFoxPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: FoxTorso
+  name: fox torso
+  parent: [BaseFoxPart, BaseTorso]
+
+- type: entity
+  id: FoxHead
+  name: fox head
+  parent: [BaseFoxPart, BaseHead]
+
+- type: entity
+  id: FoxLeftLeg
+  name: left fox leg
+  parent: [BaseFoxPart, BaseLeftLeg]
+
+- type: entity
+  id: FoxRightLeg
+  name: fox leg
+  parent: [BaseFoxPart, BaseRightLeg]
+
+- type: entity
+  id: FoxLeftFoot
+  name: left fox foot
+  parent: [BaseFoxPart,BaseLeftFoot]
+
+- type: entity
+  id: FoxRightFoot
+  name: fox foot
+  parent: [BaseFoxPart, BaseRightFoot]

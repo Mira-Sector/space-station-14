@@ -1,0 +1,37 @@
+﻿- type: body
+  id: Goat
+  name: goat
+  root: torso
+  slots:
+    head:
+      part: GoatHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: GoatTorso
+      connections:
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_leg:
+      part: GoatRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: GoatLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: GoatRightFoot
+    left_foot:
+      part: GoatLeftFoot

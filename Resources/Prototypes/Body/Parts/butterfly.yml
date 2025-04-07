@@ -1,0 +1,41 @@
+﻿- type: entity
+  id: BaseButterflyPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 5
+      - ReagentId: Blood
+        Quantity: 10
+
+- type: entity
+  id: ButterflyTorso
+  name: butterfly torso
+  parent: [BaseButterflyPart, BaseTorso]
+
+- type: entity
+  id: ButterflyHead
+  name: butterfly head
+  parent: [BaseButterflyPart, BaseHead]
+
+- type: entity
+  id: ButterflyLeftLeg
+  name: left butterfly leg
+  parent: [BaseButterflyPart, BaseLeftLeg]
+
+- type: entity
+  id: ButterflyRightLeg
+  name: right butterfly leg
+  parent: [BaseButterflyPart, BaseRightLeg]
+
+- type: entity
+  id: ButterflyLeftFoot
+  name: left butterfly foot
+  parent: [BaseButterflyPart,BaseLeftFoot]
+
+- type: entity
+  id: ButterflyRightFoot
+  name: right butterfly foot
+  parent: [ BaseButterflyPart, BaseRightFoot]

@@ -1,0 +1,41 @@
+﻿- type: entity
+  id: BaseParrotPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: ParrotTorso
+  name: parrot torso
+  parent: [BaseParrotPart, BaseTorso]
+
+- type: entity
+  id: ParrotHead
+  name: parrot head
+  parent: [BaseParrotPart, BaseHead]
+
+- type: entity
+  id: ParrotLeftLeg
+  name: left parrot leg
+  parent: [BaseParrotPart, BaseLeftLeg]
+
+- type: entity
+  id: ParrotRightLeg
+  name: right parrot leg
+  parent: [BaseParrotPart, BaseRightLeg]
+
+- type: entity
+  id: ParrotLeftFoot
+  name: left parrot foot
+  parent: [BaseParrotPart,BaseLeftFoot]
+
+- type: entity
+  id: ParrotRightFoot
+  name: right parrot foot
+  parent: [ BaseParrotPart, BaseRightFoot]

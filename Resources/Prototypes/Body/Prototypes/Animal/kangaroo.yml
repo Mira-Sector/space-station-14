@@ -1,0 +1,43 @@
+﻿- type: body
+  id: Kangaroo
+  name: kangaroo
+  root: torso
+  slots:
+    head:
+      part: KangarooHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: KangarooTorso
+      connections:
+      - right_arm
+      - left_arm
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_arm:
+      part: KangarooRightArm
+    left_arm:
+      part: KangarooLeftArm
+    right_leg:
+      part: KangarooRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: KangarooLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: KangarooRightFoot
+    left_foot:
+      part: KangarooLeftFoot

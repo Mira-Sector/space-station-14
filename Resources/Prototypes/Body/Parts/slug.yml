@@ -1,0 +1,41 @@
+﻿- type: entity
+  id: BaseSlugPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 5
+      - ReagentId: Blood
+        Quantity: 10
+
+- type: entity
+  id: SlugTorso
+  name: slug torso
+  parent: [BaseSlugPart, BaseTorso]
+
+- type: entity
+  id: SlugHead
+  name: slug head
+  parent: [BaseSlugPart, BaseHead]
+
+- type: entity
+  id: SlugLeftLeg
+  name: left slug leg
+  parent: [BaseSlugPart, BaseLeftLeg]
+
+- type: entity
+  id: SlugRightLeg
+  name: right slug leg
+  parent: [BaseSlugPart, BaseRightLeg]
+
+- type: entity
+  id: SlugLeftFoot
+  name: left slug foot
+  parent: [BaseSlugPart,BaseLeftFoot]
+
+- type: entity
+  id: SlugRightFoot
+  name: right slug foot
+  parent: [ BaseSlugPart, BaseRightFoot]

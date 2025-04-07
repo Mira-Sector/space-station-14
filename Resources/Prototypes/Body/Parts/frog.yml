@@ -1,0 +1,51 @@
+﻿- type: entity
+  id: BaseFrogPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: FrogTorso
+  name: frog torso
+  parent: [BaseFrogPart, BaseTorso]
+
+- type: entity
+  id: FrogHead
+  name: frog head
+  parent: [BaseFrogPart, BaseHead]
+
+- type: entity
+  id: FrogLeftArm
+  name: left frog arm
+  parent: [BaseFrogPart, BaseLeftArm]
+
+- type: entity
+  id: FrogRightArm
+  name: right frog arm
+  parent: [BaseFrogPart, BaseRightArm]
+
+- type: entity
+  id: FrogLeftLeg
+  name: left frog leg
+  parent: [BaseFrogPart, BaseLeftLeg]
+
+- type: entity
+  id: FrogRightLeg
+  name: right frog leg
+  parent: [BaseFrogPart, BaseRightLeg]
+
+- type: entity
+  id: FrogLeftFoot
+  name: left frog foot
+  parent: [BaseFrogPart,BaseLeftFoot]
+
+- type: entity
+  id: FrogRightFoot
+  name: right frog foot
+  parent: [ BaseFrogPart, BaseRightFoot]

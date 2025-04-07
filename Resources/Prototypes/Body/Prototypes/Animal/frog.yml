@@ -1,0 +1,43 @@
+﻿- type: body
+  id: Frog
+  name: frog
+  root: torso
+  slots:
+    head:
+      part: FrogHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: FrogTorso
+      connections:
+      - right_arm
+      - left_arm
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_arm:
+      part: FrogRightArm
+    left_arm:
+      part: FrogLeftArm
+    right_leg:
+      part: FrogRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: FrogLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: FrogRightFoot
+    left_foot:
+      part: FrogLeftFoot

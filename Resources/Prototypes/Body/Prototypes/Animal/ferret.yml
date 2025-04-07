@@ -1,0 +1,43 @@
+﻿- type: body
+  id: Ferret
+  name: ferret
+  root: torso
+  slots:
+    head:
+      part: FerretHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: FerretTorso
+      connections:
+      - right_arm
+      - left_arm
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_arm:
+      part: FerretRightArm
+    left_arm:
+      part: FerretLeftArm
+    right_leg:
+      part: FerretRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: FerretLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: FerretRightFoot
+    left_foot:
+      part: FerretLeftFoot
