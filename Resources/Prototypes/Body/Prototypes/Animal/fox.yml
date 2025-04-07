@@ -1,0 +1,37 @@
+﻿- type: body
+  id: Fox
+  name: fox
+  root: torso
+  slots:
+    head:
+      part: FoxHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: FoxTorso
+      connections:
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_leg:
+      part: FoxRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: FoxLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: FoxRightFoot
+    left_foot:
+      part: FoxLeftFoot

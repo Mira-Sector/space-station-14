@@ -1,11 +1,12 @@
-namespace Content.Server.Chat.Systems;
-
+using Content.Shared.Body.Part;
 using Content.Shared.Chat.Prototypes;
 using Content.Shared.Damage;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+
+namespace Content.Server.Chat.Systems;
 
 public sealed class EmoteOnDamageSystem : EntitySystem
 {
@@ -19,6 +20,7 @@ public sealed class EmoteOnDamageSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<EmoteOnDamageComponent, DamageChangedEvent>(OnDamage);
+        SubscribeLocalEvent<EmoteOnDamageComponent, LimbBodyRelayedEvent<DamageChangedEvent>>((u, c, a) => OnDamage(u, c, a.Args));
     }
 
     private void OnDamage(EntityUid uid, EmoteOnDamageComponent emoteOnDamage, DamageChangedEvent args)

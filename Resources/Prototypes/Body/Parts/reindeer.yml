@@ -1,0 +1,41 @@
+﻿- type: entity
+  id: BaseReindeerPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: ReindeerTorso
+  name: reindeer torso
+  parent: [BaseReindeerPart, BaseTorso]
+
+- type: entity
+  id: ReindeerHead
+  name: reindeer head
+  parent: [BaseReindeerPart, BaseHead]
+
+- type: entity
+  id: ReindeerLeftLeg
+  name: left reindeer leg
+  parent: [BaseReindeerPart, BaseLeftLeg]
+
+- type: entity
+  id: ReindeerRightLeg
+  name: reindeer leg
+  parent: [BaseReindeerPart, BaseRightLeg]
+
+- type: entity
+  id: ReindeerLeftFoot
+  name: left reindeer foot
+  parent: [BaseReindeerPart,BaseLeftFoot]
+
+- type: entity
+  id: ReindeerRightFoot
+  name: reindeer foot
+  parent: [BaseReindeerPart, BaseRightFoot]

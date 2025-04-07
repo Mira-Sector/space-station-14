@@ -1,0 +1,37 @@
+﻿- type: body
+  id: Bee
+  name: bee
+  root: torso
+  slots:
+    head:
+      part: BeeHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: BeeTorso
+      connections:
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_leg:
+      part: BeeRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: BeeLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: BeeRightFoot
+    left_foot:
+      part: BeeLeftFoot

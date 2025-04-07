@@ -1,0 +1,43 @@
+﻿- type: entity
+  id: BaseCowPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 20
+      - ReagentId: Blood
+        Quantity: 30
+      - ReagentId: Nutrient
+        Quantity: 20
+
+- type: entity
+  id: CowTorso
+  name: cow torso
+  parent: [BaseCowPart, BaseTorso]
+
+- type: entity
+  id: CowHead
+  name: cow head
+  parent: [BaseCowPart, BaseHead]
+
+- type: entity
+  id: CowLeftLeg
+  name: left cow leg
+  parent: [BaseCowPart, BaseLeftLeg]
+
+- type: entity
+  id: CowRightLeg
+  name: right cow leg
+  parent: [BaseCowPart, BaseRightLeg]
+
+- type: entity
+  id: CowLeftFoot
+  name: left cow foot
+  parent: [BaseCowPart,BaseLeftFoot]
+
+- type: entity
+  id: CowRightFoot
+  name: right cow foot
+  parent: [BaseCowPart, BaseRightFoot]

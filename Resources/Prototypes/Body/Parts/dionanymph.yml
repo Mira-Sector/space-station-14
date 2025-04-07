@@ -1,0 +1,41 @@
+﻿- type: entity
+  id: BaseDionanymphPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: DionanymphTorso
+  name: dionanymph torso
+  parent: [BaseDionanymphPart, BaseTorso]
+
+- type: entity
+  id: DionanymphHead
+  name: dionanymph head
+  parent: [BaseDionanymphPart, BaseHead]
+
+- type: entity
+  id: DionanymphLeftLeg
+  name: left dionanymph leg
+  parent: [BaseDionanymphPart, BaseLeftLeg]
+
+- type: entity
+  id: DionanymphRightLeg
+  name: dionanymph leg
+  parent: [BaseDionanymphPart, BaseRightLeg]
+
+- type: entity
+  id: DionanymphLeftFoot
+  name: left dionanymph foot
+  parent: [BaseDionanymphPart,BaseLeftFoot]
+
+- type: entity
+  id: DionanymphRightFoot
+  name: dionanymph foot
+  parent: [BaseDionanymphPart, BaseRightFoot]

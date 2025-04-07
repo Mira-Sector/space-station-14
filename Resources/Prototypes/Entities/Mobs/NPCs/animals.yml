@@ -64,6 +64,8 @@
   - type: Tag
     tags:
     - VimPilot
+  - type: Body
+    prototype: Bat
 
 - type: entity
   name: bee
@@ -126,6 +128,8 @@
     rootTask:
       task: SimpleHostileCompound
   - type: ZombieImmune
+  - type: Body
+    prototype: Bee
 
 - type: entity
   name: bee
@@ -249,6 +253,8 @@
   - type: NpcFactionMember
     factions:
     - Passive
+  - type: Body
+    prototype: Chicken
 
 - type: entity
   parent: MobChicken
@@ -862,6 +868,8 @@
     bloodMaxVolume: 0.1
   - type: MobPrice
     price: 50
+  - type: Body
+    prototype: Butterfly
 
 - type: entity
   name: cow
@@ -950,8 +958,6 @@
   - type: NpcFactionMember
     factions:
     - Passive
-  - type: Body
-    prototype: AnimalRuminant
   - type: HTN
     rootTask:
       task: RuminantCompound
@@ -959,6 +965,8 @@
     guides:
     - Chef
     - FoodRecipes
+  - type: Body
+    prototype: Cow
 
 - type: entity
   name: crab
@@ -1039,7 +1047,7 @@
     rootTask:
       task: RuminantCompound
   - type: Body
-    prototype: AnimalHemocyanin
+    prototype: Crab
 
 - type: entity
   name: goat
@@ -1139,7 +1147,7 @@
     factions:
     - Passive
   - type: Body
-    prototype: AnimalRuminant
+    prototype: Goat
   - type: NPCRetaliation
     attackMemoryLength: 5
   - type: FactionException
@@ -1208,6 +1216,8 @@
   - type: NpcFactionMember
     factions:
     - Passive
+  - type: Body
+    prototype: Goose
 
 - type: entity
   name: gorilla
@@ -1275,6 +1285,8 @@
   - type: HTN
     rootTask:
       task: SimpleHostileCompound
+  - type: Body
+    prototype: Gorilla
 
 - type: entity
   name: kangaroo
@@ -1374,6 +1386,8 @@
   - type: HTN
     rootTask:
       task: SimpleHostileCompound
+  - type: Body
+    prototype: Kangaroo
 
 - type: entity
   name: boxing kangaroo
@@ -1456,8 +1470,6 @@
         clownedon:
           True: {visible: true}
           False: {visible: false}
-  - type: Body
-    prototype: Primate
   - type: CreamPied
   - type: FireVisuals
     sprite: Mobs/Effects/onfire.rsi
@@ -1547,6 +1559,8 @@
         Burn: 3
     clumsySound:
       path: /Audio/Animals/monkey_scream.ogg
+  - type: Body
+    prototype: Monkey
 
 
 - type: entity
@@ -1719,6 +1733,8 @@
     name: ghost-role-information-kobold-name
     description: ghost-role-information-kobold-description
     rules: ghost-role-information-nonantagonist-rules
+  - type: Body
+    prototype: Kobold
 
 - type: entity
   name: kobold
@@ -2155,6 +2171,8 @@
   - type: SpeciesLanguage
     understoodLanguages:
     - Draconic
+  - type: Body
+    prototype: Lizard
 
 
 - type: entity
@@ -2203,6 +2221,8 @@
     interactSuccessSpawn: EffectHearts
   - type: Bloodstream
     bloodMaxVolume: 50
+  - type: Body
+    prototype: Slug
 
 - type: entity
   name: frog
@@ -2262,6 +2282,8 @@
   - type: Tag
     tags:
     - VimPilot
+  - type: Body
+    prototype: Frog
 
 # Would be cool to have some functionality for the parrot to be able to sit on stuff
 - type: entity
@@ -2398,6 +2420,8 @@
     heatDamage:
       types:
         Heat : 0.2 #per second, scales with temperature & other constants
+  - type: Body
+    prototype: Penguin
 
 - type: entity
   name: grenade penguin
@@ -2517,6 +2541,8 @@
   - type: Damageable
     damageContainer: Biological
     damageModifierSet: Scale
+  - type: Body
+    prototype: Snake
 
 # Code unique spider prototypes or combine them all into one spider and get a
 # random sprite state when you spawn it.
@@ -2555,7 +2581,7 @@
       amount: 2
   - type: CombatMode
   - type: Body
-    prototype: AnimalHemocyanin
+    prototype: Spider
   - type: MobThresholds
     thresholds:
       0: Alive
@@ -2809,6 +2835,8 @@
   - type: Tag
     tags:
     - VimPilot
+  - type: Body
+    prototype: Possum
 
 - type: entity
   name: possum
@@ -2985,6 +3013,8 @@
   - type: Tag
     tags:
     - VimPilot
+  - type: Body
+    prototype: Fox
 
 - type: entity
   name: corgi
@@ -3057,6 +3087,8 @@
   - type: Tag
     tags:
     - VimPilot
+  - type: Body
+    prototype: Corgi
 
 - type: entity
   name: corrupted corgi
@@ -3226,6 +3258,8 @@
   - type: Tag
     tags:
     - VimPilot
+  - type: Body
+    prototype: Cat
 
 - type: entity
   name: calico cat
@@ -3297,6 +3331,8 @@
         Slash: 6
         Piercing: 6
         Structural: 15
+  - type: Body
+    prototype: Syndiecat
 
 - type: entity
   name: space cat
@@ -3456,6 +3492,8 @@
   - type: Tag
     tags:
     - VimPilot
+  - type: Body
+    prototype: Sloth
 
 - type: entity
   name: ferret
@@ -3522,6 +3560,8 @@
   - type: Tag
     tags:
     - VimPilot
+  - type: Body
+    prototype: Ferret
 
 - type: entity
   name: hamster
@@ -3677,6 +3717,8 @@
   - type: FireVisuals
     sprite: Mobs/Effects/onfire.rsi
     normalState: Mouse_burning
+  - type: Body
+    prototype: Hamster
 
 - type: entity
   name: pig
@@ -3760,6 +3802,8 @@
   - type: HTN
     rootTask:
       task: RuminantCompound
+  - type: Body
+    prototype: Pig
 
 - type: entity
   name: diona nymph
@@ -3853,6 +3897,8 @@
     reformTime: 10
     popupText: diona-reform-attempt
     reformPrototype: MobDionaReformed
+  - type: Body
+    prototype: Dionanymph
 
 - type: entity
   parent: MobDionaNymph
@@ -3923,6 +3969,8 @@
       task: SimpleHostileCompound
   - type: Puller
     needsHands: false
+  - type: Body
+    prototype: Reindeer
 
 - type: entity
   name: reindeer doe
