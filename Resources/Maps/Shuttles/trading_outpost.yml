@@ -4452,11 +4452,7 @@ entities:
   - uid: 546
     components:
     - type: Transform
-<<<<<<< HEAD
-      pos: 5.5,2.5
-=======
       pos: 4.5,2.5
->>>>>>> 50bbb1c1016c900d2e0637177519732cc2e13f4d
       parent: 2
 - proto: NewtonCradle
   entities:
