@@ -1,0 +1,37 @@
+- type: body
+  id: Reindeer
+  name: reindeer
+  root: torso
+  slots:
+    head:
+      part: ReindeerHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: ReindeerTorso
+      connections:
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_leg:
+      part: ReindeerRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: ReindeerLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: ReindeerRightFoot
+    left_foot:
+      part: ReindeerLeftFoot

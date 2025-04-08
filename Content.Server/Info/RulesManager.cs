@@ -36,7 +36,7 @@ public sealed class RulesManager
         {
             PopupTime = _cfg.GetCVar(CCVars.RulesWaitTime),
             CoreRules = _cfg.GetCVar(CCVars.RulesFile),
-            ShouldShowRules = !isLocalhost && !hasCooldown
+            ShouldShowRules = !isLocalhost && !hasCooldown,
         };
         _netManager.ServerSendMessage(showRulesMessage, e.Channel);
     }

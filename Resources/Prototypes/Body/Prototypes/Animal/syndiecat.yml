@@ -1,0 +1,37 @@
+﻿- type: body
+  id: Syndiecat
+  name: syndiecat
+  root: torso
+  slots:
+    head:
+      part: SyndiecatHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: SyndiecatTorso
+      connections:
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_leg:
+      part: SyndiecatRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: SyndiecatLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: SyndiecatRightFoot
+    left_foot:
+      part: SyndiecatLeftFoot

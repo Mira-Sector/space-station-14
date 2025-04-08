@@ -1,0 +1,45 @@
+﻿- type: entity
+  id: BaseGoatPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 5
+      - ReagentId: Blood
+        Quantity: 25
+      - ReagentId: nutrient
+        Quantity: 15
+      - ReagentId: protein
+        Quantity: 10
+
+- type: entity
+  id: GoatTorso
+  name: goat torso
+  parent: [BaseGoatPart, BaseTorso]
+
+- type: entity
+  id: GoatHead
+  name: goat head
+  parent: [BaseGoatPart, BaseHead]
+
+- type: entity
+  id: GoatLeftLeg
+  name: left goat leg
+  parent: [BaseGoatPart, BaseLeftLeg]
+
+- type: entity
+  id: GoatRightLeg
+  name: right goat leg
+  parent: [BaseGoatPart, BaseRightLeg]
+
+- type: entity
+  id: GoatLeftFoot
+  name: left goat foot
+  parent: [BaseGoatPart,BaseLeftFoot]
+
+- type: entity
+  id: GoatRightFoot
+  name: right goat foot
+  parent: [ BaseGoatPart, BaseRightFoot]

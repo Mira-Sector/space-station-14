@@ -1,0 +1,41 @@
+﻿- type: entity
+  id: BasePossumPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: PossumTorso
+  name: possum torso
+  parent: [BasePossumPart, BaseTorso]
+
+- type: entity
+  id: PossumHead
+  name: possum head
+  parent: [BasePossumPart, BaseHead]
+
+- type: entity
+  id: PossumLeftLeg
+  name: left possum leg
+  parent: [BasePossumPart, BaseLeftLeg]
+
+- type: entity
+  id: PossumRightLeg
+  name: possum leg
+  parent: [BasePossumPart, BaseRightLeg]
+
+- type: entity
+  id: PossumLeftFoot
+  name: left possum foot
+  parent: [BasePossumPart,BaseLeftFoot]
+
+- type: entity
+  id: PossumRightFoot
+  name: possum foot
+  parent: [BasePossumPart, BaseRightFoot]

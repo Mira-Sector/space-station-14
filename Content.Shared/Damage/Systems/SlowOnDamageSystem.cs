@@ -1,4 +1,5 @@
 using Content.Shared.Body.Systems;
+using Content.Shared.Body.Part;
 using Content.Shared.Clothing;
 using Content.Shared.Damage.Components;
 using Content.Shared.Examine;
@@ -18,6 +19,7 @@ namespace Content.Shared.Damage
             base.Initialize();
 
             SubscribeLocalEvent<SlowOnDamageComponent, DamageChangedEvent>(OnDamageChanged);
+            SubscribeLocalEvent<SlowOnDamageComponent, LimbBodyRelayedEvent<DamageChangedEvent>>((u, c, a) => OnDamageChanged(u, c, a.Args));
             SubscribeLocalEvent<SlowOnDamageComponent, RefreshMovementSpeedModifiersEvent>(OnRefreshMovespeed);
 
             SubscribeLocalEvent<ClothingSlowOnDamageModifierComponent, InventoryRelayedEvent<ModifySlowOnDamageSpeedEvent>>(OnModifySpeed);

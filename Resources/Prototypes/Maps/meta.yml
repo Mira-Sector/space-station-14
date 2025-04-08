@@ -3,6 +3,7 @@
   mapName: 'Meta Station'
   mapPath: /Maps/meta.yml
   minPlayers: 50
+  maxPlayers: 80
   stations:
     Meta:
       stationProto: StandardNanotrasenStation
@@ -16,7 +17,7 @@
           emergencyShuttlePath: /Maps/Shuttles/emergency_meta.yml
         - type: StationJobs
           availableJobs:
-            #service
+            #service (18)
             Captain: [ 1, 1 ]
             HeadOfPersonnel: [ 1, 1 ]
             Bartender: [ 2, 2 ]
@@ -40,9 +41,9 @@
             Paramedic: [ 1, 2 ]
             #science
             ResearchDirector: [ 1, 1 ]
-            Scientist: [ 5, 7 ]
-            ResearchAssistant: [ 3, 6 ]
-            #security
+            Scientist: [ 6, 8 ]
+            ResearchAssistant: [ 4, 4 ]
+            #security (12)
             HeadOfSecurity: [ 1, 1 ]
             Warden: [ 1, 1 ]
             SecurityOfficer: [ 6, 6 ]
@@ -59,6 +60,6 @@
             Clown: [ 1, 1 ]
             Mime: [ 1, 1 ]
             Musician: [ 1, 1 ]
-            #silicon
+            #silicon (5)
             StationAi: [ 1, 1 ]
             Borg: [ 4, 4 ]

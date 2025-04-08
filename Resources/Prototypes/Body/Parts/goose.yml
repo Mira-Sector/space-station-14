@@ -1,0 +1,51 @@
+﻿- type: entity
+  id: BaseGoosePart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: GooseTorso
+  name: goose torso
+  parent: [BaseGoosePart, BaseTorso]
+
+- type: entity
+  id: GooseHead
+  name: goose head
+  parent: [BaseGoosePart, BaseHead]
+
+- type: entity
+  id: GooseLeftArm
+  name: left goose arm
+  parent: [BaseGoosePart, BaseLeftArm]
+
+- type: entity
+  id: GooseRightArm
+  name: right goose arm
+  parent: [BaseGoosePart, BaseRightArm]
+
+- type: entity
+  id: GooseLeftLeg
+  name: left goose leg
+  parent: [BaseGoosePart, BaseLeftLeg]
+
+- type: entity
+  id: GooseRightLeg
+  name: right goose leg
+  parent: [BaseGoosePart, BaseRightLeg]
+
+- type: entity
+  id: GooseLeftFoot
+  name: left goose foot
+  parent: [BaseGoosePart,BaseLeftFoot]
+
+- type: entity
+  id: GooseRightFoot
+  name: right goose foot
+  parent: [ BaseGoosePart, BaseRightFoot]

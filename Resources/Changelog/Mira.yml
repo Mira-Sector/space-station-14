@@ -1422,4 +1422,48 @@ Entries:
   - message: Void oil now evaporates, removes less blood but metabolises slower
     type: Tweak
   id: 206
-  time: '2024-06-31T14:00:00.0000000+00:00'
+  time: '2025-03-31T14:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Crew monitoring console now properly reports the health of players
+    type: Fix
+  id: 207
+  time: '2025-04-06T15:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Reagents that require a health threshold (such as tric) now work on mobs
+    type: Fix
+  id: 208
+  time: '2025-04-06T15:10:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Limb damage can no longer go negative
+    type: Fix
+  id: 209
+  time: '2025-04-06T17:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Simple mobs can now be stripped
+    type: Fix
+  id: 210
+  time: '2025-04-07T00:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Mobs now retaliate to damage again
+    type: Fix
+  - message: Diona now ignite on heat damage again
+    type: Fix
+  - message: Doafters now cancel on taking damage
+    type: Fix
+  - message: Damage slowdown works again
+    type: Fix
+  - message: Taking damage now forces you to speak again
+    type: Fix
+  id: 211
+  time: '2025-04-07T01:00:00.0000000+00:00'
+- author: Anurath
+  changes:
+  - message: Most animals now have proper bodies to target and damage
+    type: Fix
+  id: 212
+  time: '2025-04-07T14:20:00.0000000+00:00'

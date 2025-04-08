@@ -1,0 +1,121 @@
+- type: entity
+  parent: BaseGameRule
+  id: Thief
+  components:
+  - type: ThiefRule
+  - type: AntagObjectives
+    objectives:
+    - EscapeThiefShuttleObjective
+  - type: AntagRandomObjectives
+    sets:
+    - groups: ThiefBigObjectiveGroups
+      prob: 0.7
+      maxPicks: 1
+    - groups: ThiefObjectiveGroups
+      maxPicks: 10
+    maxDifficulty: 2.5
+  - type: AntagSelection
+    agentName: thief-round-end-agent-name
+    selectionTime: IntraPlayerSpawn
+    definitions:
+    - prefRoles: [ Thief ]
+      max: 3
+      playerRatio: 15
+      lateJoinAdditional: true
+      allowNonHumans: true
+      multiAntagSetting: NotExclusive
+      startingGear: ThiefGear
+      components:
+      - type: Pacified
+      mindRoles:
+      - MindRoleThief
+      briefing:
+        sound: "/Audio/Misc/thief_greeting.ogg"
+
+- type: entity
+  id: Obsessed
+  parent: BaseGameRule
+  components:
+  - type: ObsessedRule
+  - type: AntagSelection
+    agentName: obsessed-round-end-agent-name
+    definitions:
+    - prefRoles: [ Obsessed ]
+      max: 1
+      playerRatio: 10
+      lateJoinAdditional: true
+      multiAntagSetting: NotExclusive
+      briefing:
+        text: obsessed-role-greeting
+        color: LightSalmon
+      mindRoles:
+      - MindRoleObsessed
+  - type: AntagObjectives
+    objectives:
+    - KillObsessionObjective
+    - HugObsessionObjective
+    - KillDepartmentObsessionObjective
+    - SpendTimeObsessionObjective
+
+- type: entity
+  parent: BaseGameRule
+  id: Malfunction
+  components:
+  - type: MalfunctionRule
+  - type: AntagRandomObjectives
+    sets:
+    - groups: MalfunctionObjectiveGroupKill
+      prob: 0.7
+      maxPicks: 4
+    maxDifficulty: 10
+  - type: AntagSelection
+    agentName: malfunction-round-end-agent-name
+    definitions:
+    - prefRoles: [ Malfunction ]
+      max: 1
+      playerRatio: 10
+      lateJoinAdditional: true
+      briefing:
+        text: malfunction-role-greeting
+        color: Crimson
+        sound: "/Audio/Misc/malf_greeting.ogg"
+      allowNonHumans: true
+      whitelist:
+        tags:
+        - StationAi
+      mindRoles:
+      - MindRoleMalfunction
+
+# Needs testing
+- type: entity
+  parent: BaseWizardRule
+  id: SubWizard
+  components:
+  - type: AntagSelection
+    agentName: wizard-round-end-name
+    selectionTime: PrePlayerSpawn
+    definitions:
+    - prefRoles: [ Wizard ]
+      max: 1
+      playerRatio: 1
+      spawnerPrototype: SpawnPointGhostWizard
+      roleLoadout:
+      - RoleSurvivalExtended
+      briefing:
+        text: wizard-role-greeting
+        color: Turquoise
+        # TODO: Need Wizard Start sound
+        #sound: "/Audio/Ambience/Antag/wizard_start.ogg"
+      startingGear: WizardBlueGear
+      # TODO: WizardComp as needed
+      components:
+      - type: NpcFactionMember
+        factions:
+        - Wizard
+      - type: RandomMetadata
+        nameSegments:
+        - NamesWizardFirst
+        - NamesWizardLast
+        nameFormat: name-format-wizard
+      mindRoles:
+      - MindRoleWizard

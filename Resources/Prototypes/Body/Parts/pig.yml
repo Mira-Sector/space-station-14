@@ -1,0 +1,41 @@
+﻿- type: entity
+  id: BasePigPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: PigTorso
+  name: pig torso
+  parent: [BasePigPart, BaseTorso]
+
+- type: entity
+  id: PigHead
+  name: pig head
+  parent: [BasePigPart, BaseHead]
+
+- type: entity
+  id: PigLeftLeg
+  name: left pig leg
+  parent: [BasePigPart, BaseLeftLeg]
+
+- type: entity
+  id: PigRightLeg
+  name: pig leg
+  parent: [BasePigPart, BaseRightLeg]
+
+- type: entity
+  id: PigLeftFoot
+  name: left pig foot
+  parent: [BasePigPart,BaseLeftFoot]
+
+- type: entity
+  id: PigRightFoot
+  name: pig foot
+  parent: [BasePigPart, BaseRightFoot]

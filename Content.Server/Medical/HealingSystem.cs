@@ -81,7 +81,10 @@ public sealed class HealingSystem : EntitySystem
             _bloodstreamSystem.TryModifyBleedAmount(uid, healing.BloodlossModifier);
             if (isBleeding != bloodstream.BleedAmount > 0)
             {
-                _popupSystem.PopupEntity(Loc.GetString("medical-item-stop-bleeding"), uid, args.User);
+                var popup = (args.User == uid)
+                    ? Loc.GetString("medical-item-stop-bleeding-self")
+                    : Loc.GetString("medical-item-stop-bleeding", ("target", Identity.Entity(uid, EntityManager)));
+                _popupSystem.PopupEntity(popup, uid, args.User);
             }
         }
 
@@ -89,7 +92,7 @@ public sealed class HealingSystem : EntitySystem
         if (healing.ModifyBloodLevel != 0)
             _bloodstreamSystem.TryModifyBloodLevel(uid, healing.ModifyBloodLevel);
 
-        var healed = _damageable.TryChangeDamage(limb, healing.Damage, true, origin: args.Args.User);
+        var healed = _damageable.TryChangeDamage(limb, healing.Damage * _damageable.UniversalTopicalsHealModifier, true, origin: args.Args.User);
 
         if (healed == null && healing.BloodlossModifier != 0)
             return;
@@ -144,12 +147,35 @@ public sealed class HealingSystem : EntitySystem
         return false;
     }
 
+    private bool CheckBloodloss(EntityUid uid, HealingComponent healing)
+    {
+
+        if (TryComp<BloodstreamComponent>(uid, out var bloodstream))
+        {
+            // Is ent missing blood that we can restore?
+            if (healing.ModifyBloodLevel > 0
+                && _solutionContainerSystem.ResolveSolution(uid, bloodstream.BloodSolutionName, ref bloodstream.BloodSolution, out var bloodSolution)
+                && bloodSolution.Volume < bloodSolution.MaxVolume)
+            {
+                return true;
+            }
+
+            // Is ent bleeding and can we stop it?
+            if (healing.BloodlossModifier < 0 && bloodstream.BleedAmount > 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private bool CheckPartAiming(EntityUid uid, EntityUid target, DamageSpecifier damage, HealingComponent healing, out EntityUid? part)
     {
         part = null;
 
         if (!TryComp<DamagePartSelectorComponent>(uid, out var damageSelectorComp) || !TryComp<BodyComponent>(target, out var bodyComp))
-            return HasDamage(damage, healing);
+            return HasDamage(damage, healing) || CheckBloodloss(target, healing);
 
         var parts = _body.GetBodyChildren(target, bodyComp);
 
@@ -171,7 +197,7 @@ public sealed class HealingSystem : EntitySystem
             }
         }
 
-        return false;
+        return CheckBloodloss(target, healing);
     }
 
     private void OnHealingUse(Entity<HealingComponent> entity, ref UseInHandEvent args)
@@ -231,14 +257,7 @@ public sealed class HealingSystem : EntitySystem
         if (TryComp<StackComponent>(uid, out var stack) && stack.Count < 1)
             return false;
 
-        var anythingToDo =
-            CheckPartAiming(user, target, damage, component, out var limb) ||
-            (component.ModifyBloodLevel > 0 // Special case if healing item can restore lost blood...
-                && TryComp<BloodstreamComponent>(target, out var bloodstream)
-                && _solutionContainerSystem.ResolveSolution(target, bloodstream.BloodSolutionName, ref bloodstream.BloodSolution, out var bloodSolution)
-                && bloodSolution.Volume < bloodSolution.MaxVolume); // ...and there is lost blood to restore.
-
-        if (!anythingToDo)
+        if (!CheckPartAiming(user, target, damage, component, out var limb))
         {
             _popupSystem.PopupEntity(Loc.GetString("medical-item-cant-use", ("item", uid)), uid, user);
             return false;
@@ -282,13 +301,28 @@ public sealed class HealingSystem : EntitySystem
     public float GetScaledHealingPenalty(EntityUid uid, HealingComponent component)
     {
         var output = component.Delay;
-        if (!TryComp<MobThresholdsComponent>(uid, out var mobThreshold) ||
-            !TryComp<DamageableComponent>(uid, out var damageable))
+        if (!TryComp<MobThresholdsComponent>(uid, out var mobThreshold))
             return output;
+
+        FixedPoint2 totalDamage = FixedPoint2.Zero;
+
+        if (TryComp<DamageableComponent>(uid, out var damageable))
+        {
+            totalDamage = damageable.TotalDamage;
+        }
+        else if (_body.GetBodyDamage(uid) is {} bodyDamage)
+        {
+            totalDamage = bodyDamage.GetTotal();
+        }
+        else
+        {
+            return output;
+        }
+
         if (!_mobThresholdSystem.TryGetThresholdForState(uid, MobState.Critical, out var amount, mobThreshold))
             return 1;
 
-        var percentDamage = (float) (damageable.TotalDamage / amount);
+        var percentDamage = (float) (totalDamage / amount);
         //basically make it scale from 1 to the multiplier.
         var modifier = percentDamage * (component.SelfHealPenaltyMultiplier - 1) + 1;
         return Math.Max(modifier, 1);

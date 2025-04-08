@@ -1,0 +1,41 @@
+﻿- type: entity
+  id: BaseBeePart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 5
+      - ReagentId: Blood
+        Quantity: 10
+
+- type: entity
+  id: BeeTorso
+  name: bee torso
+  parent: [BaseBeePart, BaseTorso]
+
+- type: entity
+  id: BeeHead
+  name: bee head
+  parent: [BaseBeePart, BaseHead]
+
+- type: entity
+  id: BeeLeftLeg
+  name: left bee leg
+  parent: [BaseBeePart, BaseLeftLeg]
+
+- type: entity
+  id: BeeRightLeg
+  name: right bee leg
+  parent: [BaseBeePart, BaseRightLeg]
+
+- type: entity
+  id: BeeLeftFoot
+  name: left bee foot
+  parent: [BaseBeePart,BaseLeftFoot]
+
+- type: entity
+  id: BeeRightFoot
+  name: right bee foot
+  parent: [ BaseBeePart, BaseRightFoot]

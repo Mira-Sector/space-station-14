@@ -28,6 +28,12 @@ public sealed partial class EntityTargetActionComponent : BaseTargetActionCompon
     [DataField] public bool ShowOutline = true;
 
     /// <summary>
+    /// Determines which entities are NOT valid targets for this action.
+    /// </summary>
+    /// <remarks>No blacklist check when null.</remarks>
+    [DataField] public EntityWhitelist? Blacklist;
+
+    /// <summary>
     /// Whether this action considers the user as a valid target entity when using this action.
     /// </summary>
     [DataField("canTargetSelf")] public bool CanTargetSelf = true;
@@ -38,12 +44,14 @@ public sealed class EntityTargetActionComponentState : BaseActionComponentState
 {
     public EntityWhitelist? Whitelist;
     public bool ShowOutline;
+    public EntityWhitelist? Blacklist;
     public bool CanTargetSelf;
 
     public EntityTargetActionComponentState(EntityTargetActionComponent component, IEntityManager entManager) : base(component, entManager)
     {
         Whitelist = component.Whitelist;
         ShowOutline = component.ShowOutline;
+        Blacklist = component.Blacklist;
         CanTargetSelf = component.CanTargetSelf;
     }
 }

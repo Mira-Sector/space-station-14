@@ -6,9 +6,15 @@ using Content.Shared.Database;
 using Content.Shared.Interaction;
 using Content.Shared.Inventory;
 using Content.Shared.Popups;
+using Robust.Shared.Random;
+using Content.Shared.Throwing;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Network;
 using Robust.Shared.Timing;
+using Content.Shared.Random;
+using Content.Shared.Movement.Pulling.Components;
+using Content.Shared.Effects;
+using Content.Shared.Stunnable;
 
 namespace Content.Shared.Damage.Systems;
 
@@ -20,6 +26,10 @@ public sealed class DamageOnInteractSystem : EntitySystem
     [Dependency] private readonly SharedDoAfterSystem _doAfterSystem = default!;
     [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
     [Dependency] private readonly InventorySystem _inventorySystem = default!;
+    [Dependency] private readonly ThrowingSystem _throwingSystem = default!;
+    [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private readonly IGameTiming _gameTiming = default!;
+    [Dependency] private readonly SharedStunSystem _stun = default!;
 
     public override void Initialize()
     {
@@ -39,6 +49,13 @@ public sealed class DamageOnInteractSystem : EntitySystem
     /// <param name="args">Contains the user that interacted with the entity</param>
     private void OnHandInteract(Entity<DamageOnInteractComponent> entity, ref InteractHandEvent args)
     {
+        // Stop the interaction if the user attempts to interact with the object before the timer is finished
+        if (_gameTiming.CurTime < entity.Comp.NextInteraction)
+        {
+            args.Handled = true;
+            return;
+        }
+
         if (!entity.Comp.IsDamageActive)
             return;
 
@@ -111,7 +128,6 @@ public sealed class DamageOnInteractSystem : EntitySystem
         return true;
     }
 
-
     private bool DealDamage(Entity<DamageOnInteractComponent> entity, EntityUid user, EntityUid target)
     {
         var totalDamage = entity.Comp.Damage;
@@ -123,9 +139,8 @@ public sealed class DamageOnInteractSystem : EntitySystem
 
             // or checking the entity for  the comp itself if the inventory didn't work
             if (protectiveEntity.Comp == null && TryComp<DamageOnInteractProtectionComponent>(user, out var protectiveComp))
-            {
                 protectiveEntity = (user, protectiveComp);
-            }
+
 
             // if protectiveComp isn't null after all that, it means the user has protection,
             // so let's calculate how much they resist
@@ -135,27 +150,31 @@ public sealed class DamageOnInteractSystem : EntitySystem
             }
         }
 
-        totalDamage = _damageableSystem.TryChangeDamage(user, totalDamage, true, origin: target);
-
-        var positiveDamage = false;
+        totalDamage = _damageableSystem.TryChangeDamage(user, totalDamage, origin: target);
 
         if (totalDamage != null && totalDamage.AnyPositive())
         {
-            _adminLogger.Add(LogType.Damaged, $"{ToPrettyString(user):user} injured their hand by interacting with {ToPrettyString(target):target} and received {totalDamage.GetTotal():damage} damage");
-            positiveDamage = true;
-        }
+            // Record this interaction and determine when a user is allowed to interact with this entity again
+            entity.Comp.LastInteraction = _gameTiming.CurTime;
+            entity.Comp.NextInteraction = _gameTiming.CurTime + TimeSpan.FromSeconds(entity.Comp.InteractTimer);
 
-        if (entity.Comp.IgnoreDamage || positiveDamage)
-        {
+            _adminLogger.Add(LogType.Damaged, $"{ToPrettyString(user):user} injured their hand by interacting with {ToPrettyString(target):target} and received {totalDamage.GetTotal():damage} damage");
             _audioSystem.PlayPredicted(entity.Comp.InteractSound, target, user);
 
-            if (!entity.Comp.UseDoAfter && entity.Comp.PopupText != null)
+            if (entity.Comp.PopupText != null)
                 _popupSystem.PopupClient(Loc.GetString(entity.Comp.PopupText), user, user);
 
-            return true;
+            // Attempt to paralyze the user after they have taken damage
+            if (_random.Prob(entity.Comp.StunChance))
+                _stun.TryParalyze(user, TimeSpan.FromSeconds(entity.Comp.StunSeconds), true);
         }
+        // Check if the entity's Throw bool is false, or if the entity has the PullableComponent, then if the entity is currently being pulled.
+        // BeingPulled must be checked because the entity will be spastically thrown around without this.
+        if (!entity.Comp.Throw || !TryComp<PullableComponent>(entity, out var pullComp) || pullComp.BeingPulled)
+            return false;
 
-        return false;
+        _throwingSystem.TryThrow(entity, _random.NextVector2(), entity.Comp.ThrowSpeed, doSpin: true);
+        return true;
     }
 
     public void SetIsDamageActiveTo(Entity<DamageOnInteractComponent> entity, bool mode)

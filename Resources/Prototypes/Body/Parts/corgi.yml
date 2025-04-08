@@ -1,0 +1,41 @@
+﻿- type: entity
+  id: BaseCorgiPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: CorgiTorso
+  name: corgi torso
+  parent: [BaseCorgiPart, BaseTorso]
+
+- type: entity
+  id: CorgiHead
+  name: corgi head
+  parent: [BaseCorgiPart, BaseHead]
+
+- type: entity
+  id: CorgiLeftLeg
+  name: left corgi leg
+  parent: [BaseCorgiPart, BaseLeftLeg]
+
+- type: entity
+  id: CorgiRightLeg
+  name: corgi leg
+  parent: [BaseCorgiPart, BaseRightLeg]
+
+- type: entity
+  id: CorgiLeftFoot
+  name: left corgi foot
+  parent: [BaseCorgiPart,BaseLeftFoot]
+
+- type: entity
+  id: CorgiRightFoot
+  name: corgi foot
+  parent: [BaseCorgiPart, BaseRightFoot]

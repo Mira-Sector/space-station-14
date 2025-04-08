@@ -1,0 +1,37 @@
+﻿- type: body
+  id: Corgi
+  name: corgi
+  root: torso
+  slots:
+    head:
+      part: CorgiHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: CorgiTorso
+      connections:
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_leg:
+      part: CorgiRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: CorgiLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: CorgiRightFoot
+    left_foot:
+      part: CorgiLeftFoot

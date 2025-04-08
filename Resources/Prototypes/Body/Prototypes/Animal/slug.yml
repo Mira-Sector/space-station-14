@@ -1,0 +1,37 @@
+﻿- type: body
+  id: Slug
+  name: slug
+  root: torso
+  slots:
+    head:
+      part: SlugHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: SlugTorso
+      connections:
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_leg:
+      part: SlugRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: SlugLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: SlugRightFoot
+    left_foot:
+      part: SlugLeftFoot

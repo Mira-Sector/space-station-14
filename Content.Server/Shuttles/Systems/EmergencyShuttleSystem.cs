@@ -30,11 +30,10 @@ using Content.Shared.Shuttles.Events;
 using Content.Shared.Tag;
 using Content.Shared.Tiles;
 using Robust.Server.GameObjects;
-using Robust.Server.Maps;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Configuration;
-using Robust.Shared.Map;
+using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Player;
 using Robust.Shared.Random;
@@ -64,7 +63,7 @@ public sealed partial class EmergencyShuttleSystem : EntitySystem
     [Dependency] private readonly GameTicker _gameTicker = default!;
     [Dependency] private readonly IdCardSystem _idSystem = default!;
     [Dependency] private readonly NavMapSystem _navMap = default!;
-    [Dependency] private readonly MapLoaderSystem _map = default!;
+    [Dependency] private readonly MapLoaderSystem _loader = default!;
     [Dependency] private readonly MetaDataSystem _metaData = default!;
     [Dependency] private readonly PopupSystem _popup = default!;
     [Dependency] private readonly RoundEndSystem _roundEnd = default!;
@@ -400,7 +399,6 @@ public sealed partial class EmergencyShuttleSystem : EntitySystem
             return;
         }
 
-
         TryComp<StationDataComponent>(targetXform.MapUid, out var stationComp);
         Filter allPlayersInGame = Filter.Empty().AddWhere(_gameTicker.UserHasJoinedGame);
 
@@ -554,10 +552,11 @@ public sealed partial class EmergencyShuttleSystem : EntitySystem
         }
 
         var map = _mapSystem.CreateMap(out var mapId);
-        var grid = _map.LoadGrid(mapId, component.Map.ToString(), new MapLoadOptions()
+        if (!_loader.TryLoadGrid(mapId, component.Map, out var grid))
         {
-            LoadMap = false,
-        });
+            Log.Error($"Failed to set up centcomm grid!");
+            return;
+        }
 
         if (!Exists(map))
         {
@@ -631,15 +630,11 @@ public sealed partial class EmergencyShuttleSystem : EntitySystem
 
         // Load escape shuttle
         var shuttlePath = ent.Comp1.EmergencyShuttlePath;
-        var shuttle = _map.LoadGrid(map.MapId, shuttlePath.ToString(), new MapLoadOptions()
-        {
+        if (!_loader.TryLoadGrid(map.MapId,
+            shuttlePath,
+            out var shuttle,
             // Should be far enough... right? I'm too lazy to bounds check CentCom rn.
-            Offset = new Vector2(500f + ent.Comp2.ShuttleIndex, 0f),
-            // fun fact: if you just fucking yeet centcomm into nullspace anytime you try to spawn the shuttle, then any distance is far enough. so lets not do that
-            LoadMap = false,
-        });
-
-        if (shuttle == null)
+            offset: new Vector2(500f + ent.Comp2.ShuttleIndex, 0f)))
         {
             Log.Error($"Unable to spawn emergency shuttle {shuttlePath} for {ToPrettyString(ent)}");
             return;
