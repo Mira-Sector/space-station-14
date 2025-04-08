@@ -297,6 +297,10 @@
   - type: Food
     trash:
     - TrashBananaPeel
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: TrashBananaPeel
   - type: SolutionContainerManager
     solutions:
       food:
@@ -337,6 +341,10 @@
   - type: Food
     trash:
     - TrashMimanaPeel
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: TrashMimanaPeel
   - type: SolutionContainerManager
     solutions:
       food:
@@ -389,6 +397,10 @@
   - type: Food
     trash:
     - TrashBananiumPeel
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: TrashBananiumPeel
   - type: BadFood
   - type: PointLight
     radius: 1.5
@@ -1227,6 +1239,10 @@
   - type: Food
     trash:
     - FoodCornTrash
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: FoodCornTrash #no idea why you'd ever do this, but it's just here for consistency
   - type: SolutionContainerManager
     solutions:
       food:
@@ -1931,6 +1947,10 @@
   - type: Food
     trash:
     - WeaponRevolverPython
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: WeaponRevolverPython
   - type: Tag
     tags:
     - Fruit # It's in the name
@@ -1964,6 +1984,10 @@
   - type: Food
     trash:
     - RevolverCapGun
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: RevolverCapGun
   - type: Tag
     tags:
     - Fruit
@@ -1983,6 +2007,10 @@
   - type: Food
     trash:
     - RevolverCapGunFake
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: RevolverCapGunFake
 
 - type: entity
   name: rice bushel
@@ -2441,6 +2469,10 @@
   - type: Food
     trash:
     - FoodBungoPit
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: FoodBungoPit
   - type: SolutionContainerManager
     solutions:
       food:
@@ -2730,6 +2762,10 @@
   - type: Food
     trash:
     - TrashCherryPit
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: TrashCherryPit
   - type: SolutionContainerManager
     solutions:
       food:
@@ -2801,7 +2837,7 @@
     seedId: anomalyBerry
   - type: Food
     trash:
-    - EffectAnomalyFloraBulb # Random loot
+    - EffectAnomalyFloraBulb # Random loot, can't replicate with butchering probably, oh well.
   - type: SolutionContainerManager
     solutions:
       food:
