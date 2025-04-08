@@ -206,7 +206,7 @@ SpawnVehicleMotobike: null
 #SpawnVehicleSecway: null
 #SpawnVehicleJanicart: null
 #VehicleJanicart: null
-#VehicleJanicartDestroyed: null
+VehicleJanicartDestroyed: null
 
 # 2024-02-01
 YellowOxygenTank: OxygenTank
