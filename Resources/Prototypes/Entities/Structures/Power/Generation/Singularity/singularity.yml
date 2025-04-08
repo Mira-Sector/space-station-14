@@ -53,8 +53,15 @@
   - type: RadiationSource
     slope: 0.2 # its emit really far away
     intensity: 2
-  - type: GuideHelp
-    guides: [ Singularity, Power ] # uhhh.. I would hoped they'd  have read the manual before ever getting in viewing distance...
+  - type: PointLight
+    enabled: true
+    radius: 10
+  - type: Appearance
+  - type: GuideHelp # Always strive to be helpful in trying times.
+    guides:
+    - SingularityEngine
+    - SingularityTeslaEngine
+    - Power
   - type: WarpPoint
     follow: true
     location: singularity

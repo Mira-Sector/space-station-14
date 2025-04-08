@@ -1,6 +1,7 @@
 using Content.Shared.Bed.Sleep;
 using Content.Shared.Body.Part;
 using Content.Shared.Damage;
+using Content.Shared.Damage.Events;
 using Content.Shared.Damage.ForceSay;
 using Content.Shared.FixedPoint;
 using Content.Shared.Mobs;
@@ -49,7 +50,7 @@ public sealed class DamageForceSaySystem : EntitySystem
         }
     }
 
-    private void TryForceSay(EntityUid uid, DamageForceSayComponent component, bool useSuffix=true, string? suffixOverride = null)
+    private void TryForceSay(EntityUid uid, DamageForceSayComponent component, bool useSuffix=true)
     {
         if (!TryComp<ActorComponent>(uid, out var actor))
             return;
@@ -59,7 +60,13 @@ public sealed class DamageForceSaySystem : EntitySystem
             _timing.CurTime < component.NextAllowedTime)
             return;
 
-        var suffix = Loc.GetString(suffixOverride ?? component.ForceSayStringPrefix + _random.Next(1, component.ForceSayStringCount));
+        var ev = new BeforeForceSayEvent(component.ForceSayStringDataset);
+        RaiseLocalEvent(uid, ev);
+
+        if (!_prototype.TryIndex(ev.Prefix, out var prefixList))
+            return;
+
+        var suffix = Loc.GetString(_random.Pick(prefixList.Values));
 
         // set cooldown & raise event
         component.NextAllowedTime = _timing.CurTime + component.Cooldown;
@@ -82,7 +89,7 @@ public sealed class DamageForceSaySystem : EntitySystem
         if (!args.FellAsleep)
             return;
 
-        TryForceSay(uid, component, true, "damage-force-say-sleep");
+        TryForceSay(uid, component);
         AllowNextSpeech(uid);
     }
 

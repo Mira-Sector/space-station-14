@@ -19,6 +19,7 @@ public sealed class TrayScannerSystem : SharedTrayScannerSystem
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
+    [Dependency] private readonly TrayScanRevealSystem _trayScanReveal = default!;
 
     private const string TRayAnimationKey = "trays";
     private const double AnimationLength = 0.3;
@@ -49,7 +50,7 @@ public sealed class TrayScannerSystem : SharedTrayScannerSystem
         // API is extremely skrungly. If this ever shows up on dottrace ping me and laugh.
         Entity<TrayScannerComponent>? scanner = null;
 
-        if (scannerQuery.TryGetComponent(player, out var playerScanner) && playerScanner.Enabled && playerScanner.EnabledEntity)
+        if (scannerQuery.TryGetComponent(player, out var playerScanner) && playerScanner.Enabled)
         {
             scanner = (player.Value, playerScanner);
             range = MathF.Max(range, playerScanner.Range);
@@ -89,6 +90,7 @@ public sealed class TrayScannerSystem : SharedTrayScannerSystem
             foreach (var (uid, comp) in inRange)
             {
                 if (!comp.IsUnderCover)
+                if (!comp.IsUnderCover && !_trayScanReveal.IsUnderRevealingEntity(uid))
                     continue;
 
                 var ev = new TrayCanRevealEvent(scanner.Value);

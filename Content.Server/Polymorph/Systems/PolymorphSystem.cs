@@ -81,8 +81,8 @@ public sealed partial class PolymorphSystem : EntitySystem
         SubscribeLocalEvent<PolymorphedEntityComponent, BeforeFullySlicedEvent>(OnBeforeFullySliced);
         SubscribeLocalEvent<PolymorphedEntityComponent, DestructionEventArgs>(OnDestruction);
 
-        InitializeCollide();
         InitializeMap();
+        InitializeTrigger();
     }
 
     public override void Update(float frameTime)
@@ -110,7 +110,7 @@ public sealed partial class PolymorphSystem : EntitySystem
             }
         }
 
-        UpdateCollide();
+        UpdateTrigger();
     }
 
     private void OnComponentStartup(Entity<PolymorphableComponent> ent, ref ComponentStartup args)
@@ -225,6 +225,12 @@ public sealed partial class PolymorphSystem : EntitySystem
 
         var child = Spawn(configuration.Entity, _transform.GetMapCoordinates(uid, targetTransformComp), rotation: _transform.GetWorldRotation(uid));
 
+        if (configuration.PolymorphPopup != null)
+            _popup.PopupEntity(Loc.GetString(configuration.PolymorphPopup,
+                ("parent", Identity.Entity(uid, EntityManager)),
+                ("child", Identity.Entity(child, EntityManager))),
+                child);
+
         MakeSentientCommand.MakeSentient(child, EntityManager);
 
         var polymorphedComp = _compFact.GetComponent<PolymorphedEntityComponent>();
@@ -322,8 +328,9 @@ public sealed partial class PolymorphSystem : EntitySystem
         if (PausedMap != null)
             _transform.SetParent(uid, targetTransformComp, PausedMap.Value);
 
-        var ev = new PolymorphedEvent(child);
-        RaiseLocalEvent(uid, ev);
+        // Raise an event to inform anything that wants to know about the entity swap
+        var ev = new PolymorphedEvent(uid, child, false);
+        RaiseLocalEvent(uid, ref ev);
 
         return child;
     }
@@ -426,13 +433,15 @@ public sealed partial class PolymorphSystem : EntitySystem
         // if an item polymorph was picked up, put it back down after reverting
         _transform.AttachToGridOrMap(parent, parentXform);
 
-        var ev = new PolymorphedEvent(parent, true);
-        RaiseLocalEvent(uid, ev);
+        // Raise an event to inform anything that wants to know about the entity swap
+        var ev = new PolymorphedEvent(uid, parent, true);
+        RaiseLocalEvent(uid, ref ev);
 
-        _popup.PopupEntity(Loc.GetString("polymorph-revert-popup-generic",
+        if (component.Configuration.ExitPolymorphPopup != null)
+            _popup.PopupEntity(Loc.GetString(component.Configuration.ExitPolymorphPopup,
                 ("parent", Identity.Entity(uid, EntityManager)),
                 ("child", Identity.Entity(parent, EntityManager))),
-            parent);
+                parent);
         QueueDel(uid);
 
         return parent;

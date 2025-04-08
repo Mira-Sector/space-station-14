@@ -18,12 +18,6 @@ public sealed partial class TrayScannerComponent : Component
     [DataField]
     public float Range = 4f;
 
-    /// <summary>
-    ///     If we should reveal it for the entity itself.
-    /// </summary>
-    [ViewVariables]
-    public bool EnabledEntity = false;
-
     [DataField]
     public bool CanToggleLayers = false;
 

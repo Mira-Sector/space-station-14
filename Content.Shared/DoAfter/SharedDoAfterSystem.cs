@@ -8,6 +8,7 @@ using Content.Shared.Mobs;
 using Content.Shared.Standing;
 using Content.Shared.Tag;
 using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
@@ -25,6 +26,8 @@ public abstract partial class SharedDoAfterSystem : EntitySystem
     ///     We'll use an excess time so stuff like finishing effects can show.
     /// </summary>
     private static readonly TimeSpan ExcessTime = TimeSpan.FromSeconds(0.5f);
+
+    private static readonly ProtoId<TagPrototype> InstantDoAftersTag = "InstantDoAfters";
 
     public override void Initialize()
     {
@@ -296,7 +299,7 @@ public abstract partial class SharedDoAfterSystem : EntitySystem
 
         // TODO DO AFTER
         // Why does this tag exist? Just make this a bool on the component?
-        if (args.Delay <= TimeSpan.Zero || _tag.HasTag(args.User, "InstantDoAfters"))
+        if (args.Delay <= TimeSpan.Zero || _tag.HasTag(args.User, InstantDoAftersTag))
         {
             RaiseDoAfterEvents(doAfter, comp);
             // We don't store instant do-afters. This is just a lazy way of hiding them from client-side visuals.
