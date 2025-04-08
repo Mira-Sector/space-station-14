@@ -16,7 +16,7 @@ public sealed class ProjectilePenetrationSystem : EntitySystem
         if (!TryComp<ProjectileComponent>(uid, out var projectileComp))
             return;
 
-        projectileComp.DamagedEntity = false;
+        projectileComp.ProjectileSpent = false;
         Dirty(uid, projectileComp);
 
         if (component.CollidedEntities.Contains(args.Target))

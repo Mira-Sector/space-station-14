@@ -17,7 +17,11 @@ entities:
   - uid: 1
     components:
     - type: MetaData
+<<<<<<< HEAD
       name: NT Evac Box
+=======
+      name: NT Evac Brick
+>>>>>>> 50bbb1c1016c900d2e0637177519732cc2e13f4d
     - type: Transform
       parent: invalid
     - type: MapGrid
@@ -48,13 +52,19 @@ entities:
     - type: Fixtures
       fixtures: {}
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 50bbb1c1016c900d2e0637177519732cc2e13f4d
     - type: DeviceNetwork
       configurators: []
       deviceLists: []
       transmitFrequencyId: ShuttleTimer
       deviceNetId: Wireless
+<<<<<<< HEAD
 >>>>>>> upstream/master
+=======
+>>>>>>> 50bbb1c1016c900d2e0637177519732cc2e13f4d
     - type: OccluderTree
     - type: SpreaderGrid
     - type: Shuttle

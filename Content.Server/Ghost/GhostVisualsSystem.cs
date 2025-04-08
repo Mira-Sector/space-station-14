@@ -106,7 +106,7 @@ public sealed class GhostVisualsSystem : EntitySystem
             if (ent.Comp.LayersModified.ContainsKey(layer))
                 continue;
 
-            ghostHumanoid.HiddenLayers.Add(layer);
+            ghostHumanoid.PermanentlyHidden.Add(layer);
             _appearance.RemoveData(ent, layer);
         }
 

@@ -8,9 +8,9 @@
   markingLimits: MobDionaMarkingLimits
   dollPrototype: MobDionaDummy
   skinColoration: Hues
-  maleFirstNames: DionaFirst
-  femaleFirstNames: DionaFirst
-  lastNames: DionaLast
+  maleFirstNames: NamesDionaFirst
+  femaleFirstNames: NamesDionaFirst
+  lastNames: NamesDionaLast
   naming: TheFirstofLast
 
 - type: speciesBaseSprites
@@ -19,8 +19,8 @@
     Head: MobDionaHead
     HeadTop: MobHumanoidAnyMarking
     HeadSide: MobHumanoidAnyMarking
-    Underwear: MobHumanoidAnyMarking
-    Undershirt: MobHumanoidAnyMarking
+    UndergarmentTop: MobHumanoidAnyMarking
+    UndergarmentBottom: MobHumanoidAnyMarking
     Chest: MobDionaTorso
     Eyes: MobDionaEyes
     LArm: MobDionaLArm
@@ -45,17 +45,17 @@
     HeadSide:
       points: 1
       required: false
+    UndergarmentTop:
+      points: 1
+      required: false
+    UndergarmentBottom:
+      points: 1
+      required: false
     Chest:
       points: 1
       required: false
     Legs:
       points: 2
-      required: false
-    Underwear:
-      points: 1
-      required: false
-    Undershirt:
-      points: 1
       required: false
     Arms:
       points: 2

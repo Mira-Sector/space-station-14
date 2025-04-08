@@ -35,6 +35,7 @@
                 <Control HorizontalExpand="True" />
                 <Button MinSize="80 0" Name="BufferStorageButton" Access="Public" Text="{Loc 'chem-master-window-storage-button'}" ToggleMode="True" StyleClasses="OpenRight" />
                 <Button MinSize="80 0" Name="BufferOutputButton" Access="Public" Text="{Loc 'chem-master-window-output-button'}" ToggleMode="True" StyleClasses="ButtonSquare" />
+                <Button MinSize="80 0" Name="BufferSortButton" Access="Public" Text="{Loc 'chem-master-window-sort-type-none'}" StyleClasses="OpenBoth" />
                 <Button MinSize="80 0" Name="BufferDiscardButton" Access="Public" Text="{Loc 'chem-master-window-discard-button'}" ToggleMode="True" StyleClasses="OpenLeft" />
             </BoxContainer>
 

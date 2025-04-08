@@ -109,6 +109,17 @@
         Base: dead
       Dead:
         Base: dead
+  - type: Extractable
+    grindableSolutionName: food
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: GroundBee
+          Quantity: 1
+  - type: Butcherable
+    spawned:
+    - id: null # Should give nothing when you butcher it so we set the item id it needs to spawn to null
   - type: Item
     size: Tiny
   - type: Tag
@@ -116,6 +127,7 @@
     - Bee
     - Trash
   - type: Bloodstream
+    bloodReagent: InsectBlood
     bloodMaxVolume: 0.1
   - type: MobPrice
     price: 50
@@ -246,6 +258,7 @@
   - type: EggLayer
     eggSpawn:
     - id: FoodEgg
+  - type: ExaminableHunger
   - type: ReplacementAccent
     accent: chicken
   - type: SentienceTarget
@@ -488,6 +501,8 @@
     name: ghost-role-information-mothroach-name
     description: ghost-role-information-mothroach-description
     rules: ghost-role-information-freeagent-rules
+    mindRoles:
+    - MindRoleGhostRoleFreeAgentHarmless
   - type: Fixtures
     fixtures:
       fix1:
@@ -758,6 +773,7 @@
   - type: EggLayer
     eggSpawn:
     - id: FoodEgg
+  - type: ExaminableHunger
   - type: ReplacementAccent
     accent: duck
   - type: SentienceTarget
@@ -864,7 +880,24 @@
         Base: dead
       Dead:
         Base: dead
+  - type: Extractable
+    grindableSolutionName: food
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 1
+  - type: Butcherable
+    spawned:
+    - id: null # Should give nothing when you butcher it so we set the item id it needs to spawn to null
+  - type: Item
+    size: Tiny
+  - type: Tag
+    tags:
+    - Trash
   - type: Bloodstream
+    bloodReagent: InsectBlood
     bloodMaxVolume: 0.1
   - type: MobPrice
     price: 50
@@ -938,6 +971,7 @@
     reagentId: Milk
     quantityPerUpdate: 25
     growthDelay: 30
+  - type: ExaminableHunger
   - type: Butcherable
     spawned:
     - id: FoodMeat
@@ -1120,6 +1154,7 @@
     reagentId: MilkGoat
     quantityPerUpdate: 25
     growthDelay: 20
+  - type: ExaminableHunger
   - type: Wooly
   - type: Food
     solution: wool
@@ -1136,6 +1171,15 @@
   - type: Grammar
     attributes:
       gender: female # Here because of UdderComponent
+  - type: Speech
+    speechSounds: Goat
+    speechVerb: Goat
+  - type: Vocal
+    sounds:
+      Female: Goat
+      Male: Goat
+      Unsexed: Goat
+  - type: BleatingAccent
   - type: InteractionPopup
     successChance: 0.2
     interactSuccessString: petting-success-goat
@@ -1454,8 +1498,8 @@
       state: body-overlay-2
       visible: false
     - map: [ "ears" ]
-    - map: [ "outerClothing" ]
     - map: [ "id" ]
+    - map: [ "outerClothing" ]
     - map: [ "mask" ]
     - map: [ "head" ]
     - map: [ "clownedon" ]
@@ -1587,6 +1631,9 @@
     name: ghost-role-information-monkey-name
     description: ghost-role-information-monkey-description
     rules: ghost-role-information-syndicate-reinforcement-rules
+    mindRoles:
+    # This is for syndicate monkeys that randomly gain sentience, thus have no summoner to team with
+    - MindRoleGhostRoleSoloAntagonist
     raffle:
       settings: default
   - type: GhostTakeoverAvailable
@@ -1760,7 +1807,7 @@
   - type: MobThresholds
     thresholds:
       0: Alive
-      75: Critical
+      100: Critical
       200: Dead
   - type: NpcFactionMember
     factions:
@@ -1808,6 +1855,8 @@
     name: ghost-role-information-mouse-name
     description: ghost-role-information-mouse-description
     rules: ghost-role-information-freeagent-rules
+    mindRoles:
+    - MindRoleGhostRoleFreeAgentHarmless
   - type: GhostTakeoverAvailable
   - type: Speech
     speechSounds: Squeak
@@ -2665,6 +2714,8 @@
     name: ghost-role-information-giant-spider-name
     description: ghost-role-information-giant-spider-description
     rules: ghost-role-information-giant-spider-rules
+    mindRoles:
+    - MindRoleGhostRoleTeamAntagonist
     raffle:
       settings: short
   - type: GhostTakeoverAvailable
@@ -2708,8 +2759,8 @@
 
 - type: entity
   parent:
-  - MobGiantSpider
   - MobSpiderAngryBase
+  - MobGiantSpider
   id: MobGiantSpiderAngry
 
 - type: entity
@@ -3031,6 +3082,7 @@
   - type: Physics
   - type: Speech
     speechVerb: Canine
+    speechSounds: Dog
   - type: Fixtures
     fixtures:
       fix1:
@@ -3318,6 +3370,8 @@
     allowMovement: true
     description: ghost-role-information-SyndiCat-description
     rules: ghost-role-information-SyndiCat-rules
+    mindRoles:
+    - MindRoleGhostRoleTeamAntagonist
     raffle:
       settings: default
   - type: MeleeWeapon

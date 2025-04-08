@@ -22,6 +22,9 @@ using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.GameObjects;
+using Robust.Shared.Audio;
+using Robust.Shared.Audio.Systems;
+using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Network;
@@ -295,7 +298,7 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         if (ev.Cancelled)
             return;
 
-        if (TryGetHeldFromHolder((args.Target.Value, targetHolder), out var held) && _timing.CurTime > intelliComp.NextWarningAllowed)
+        if (TryGetHeld((args.Target.Value, targetHolder), out var held) && _timing.CurTime > intelliComp.NextWarningAllowed)
         {
             RaiseLocalEvent(held, ev);
 
@@ -367,10 +370,12 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         AttachEye(ent);
     }
 
-    public void SwitchRemoteEntityMode(Entity<StationAiCoreComponent> ent, bool isRemote)
+    public void SwitchRemoteEntityMode(Entity<StationAiCoreComponent?> entity, bool isRemote)
     {
-        if (isRemote == ent.Comp.Remote)
+        if (entity.Comp?.Remote == null || entity.Comp.Remote == isRemote)
             return;
+
+        var ent = new Entity<StationAiCoreComponent>(entity.Owner, entity.Comp);
 
         ent.Comp.Remote = isRemote;
 
@@ -701,6 +706,9 @@ public sealed partial class IntellicardedToCoreEvent : EntityEventArgs
         User = user;
     }
 }
+
+public sealed partial class IntellicardDoAfterEvent : SimpleDoAfterEvent;
+
 
 [Serializable, NetSerializable]
 public enum StationAiVisualState : byte
