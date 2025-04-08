@@ -4,8 +4,8 @@ meta:
   engineVersion: 250.0.0
   forkId: ""
   forkVersion: ""
-  time: 04/08/2025 16:43:45
-  entityCount: 13347
+  time: 04/08/2025 19:01:07
+  entityCount: 13343
 maps:
 - 473
 grids:
@@ -139,7 +139,7 @@ entities:
           version: 6
         1,1:
           ind: 1,1
-          tiles: eQAAAAAAeQAAAAAAeQAAAAAAHQAAAAAAeQAAAAAAeQAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeAAAAAAAeAAAAAAAAAAAAAAAIQAAAAAAIQAAAAAAIQAAAAAAIQAAAAAAIQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeAAAAAAAeAAAAAAAeAAAAAAAeAAAAAAAeAAAAAAAAAAAAAAADAAAAAAADAAAAAAADAAAAAAADAAAAAAAIQAAAAAAAwAAAAAAAwAAAAAAAwAAAAAAeQAAAAAAeAAAAAAAeAAAAAAAeAAAAAAAAAAAAAAAAAAAAAAAeAAAAAAAAAAAAAAACQAAAAAACQAAAAAACQAAAAAADAAAAAAAIQAAAAAACgAAAAAACgAAAAAACgAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAADAAAAAAADAAAAAAADAAAAAAAIQAAAAAAAwAAAAAAAwAAAAAAAwAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIQAAAAAAIQAAAAAAIQAAAAAAIQAAAAAAIQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHQAAAAAAeQAAAAAAHQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAAAAAACQAAAAAACQAAAAAACQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAAAAAACQAAAAAACQAAAAAACQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAAAAAACQAAAAAACQAAAAAACQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAAAAAACQAAAAAACQAAAAAACQAAAAAAIgAAAAAAeQAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAAAAAAAGAAAAAAAeQAAAAAABwAAAAAABwAAAAAABwAAAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwAAAAAAGAAAAAAAeQAAAAAABwAAAAAABwAAAAAABwAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          tiles: eQAAAAAAeQAAAAAAeQAAAAAAHQAAAAAAeQAAAAAAeQAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeAAAAAAAeAAAAAAAAAAAAAAAIQAAAAAAIQAAAAAAIQAAAAAAIQAAAAAAIQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeAAAAAAAeAAAAAAAeAAAAAAAeAAAAAAAeAAAAAAAAAAAAAAADAAAAAAADAAAAAAADAAAAAAADAAAAAAAIQAAAAAAAwAAAAAAAwAAAAAAeQAAAAAAeAAAAAAAeAAAAAAAeAAAAAAAeAAAAAAAAAAAAAAAAAAAAAAAeAAAAAAAAAAAAAAACQAAAAAACQAAAAAACQAAAAAADAAAAAAAIQAAAAAACgAAAAAACgAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAADAAAAAAADAAAAAAADAAAAAAAIQAAAAAAAwAAAAAAAwAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIQAAAAAAIQAAAAAAIQAAAAAAIQAAAAAAIQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHQAAAAAAeQAAAAAAHQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAAAAAACQAAAAAACQAAAAAACQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAAAAAACQAAAAAACQAAAAAACQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAAAAAACQAAAAAACQAAAAAACQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAAAAAACQAAAAAACQAAAAAACQAAAAAAIgAAAAAAeQAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAAAAAAAGAAAAAAAeQAAAAAABwAAAAAABwAAAAAABwAAAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwAAAAAAGAAAAAAAeQAAAAAABwAAAAAABwAAAAAABwAAAAAAeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
           version: 6
         1,0:
           ind: 1,0
@@ -450,6 +450,7 @@ entities:
             4086: 15,25
             4087: 15,27
             4866: -6,31
+            5203: 15.412834,22.753656
         - node:
             color: '#FFFFFFFF'
             id: BrickTileDarkEndE
@@ -1101,8 +1102,7 @@ entities:
             3605: 29,-10
             3606: 30,-10
             5199: 21,18
-            5200: 22,18
-            5201: 23,18
+            5211: 22,18
         - node:
             color: '#808080FF'
             id: BrickTileSteelLineS
@@ -1208,8 +1208,7 @@ entities:
             3602: 29,-8
             3603: 30,-8
             5196: 21,20
-            5197: 22,20
-            5198: 23,20
+            5210: 22,20
         - node:
             color: '#808080FF'
             id: BrickTileSteelLineW
@@ -3457,7 +3456,6 @@ entities:
           decals:
             5165: 21,19
             5166: 22,19
-            5167: 23,19
         - node:
             color: '#52B4E9FF'
             id: MiniTileCheckerAOverlay
@@ -3575,7 +3573,6 @@ entities:
             5180: 21,19
             5181: 21,19
             5182: 22,19
-            5183: 23,19
         - node:
             color: '#334E6DFF'
             id: MiniTileCornerOverlayNE
@@ -3599,7 +3596,7 @@ entities:
             2149: -22,0
             3984: 19,20
             4219: -8,-7
-            5191: 23,20
+            5209: 22,20
         - node:
             color: '#FFFFFFFF'
             id: MiniTileDarkCornerNw
@@ -3615,7 +3612,7 @@ entities:
             3986: 19,18
             4239: -10,-9
             4240: -8,-8
-            5193: 23,18
+            5208: 22,18
         - node:
             color: '#FFFFFFFF'
             id: MiniTileDarkCornerSw
@@ -3721,8 +3718,6 @@ entities:
             4234: -16,-9
             5187: 21,19
             5188: 22,19
-            5189: 23,19
-            5195: 22,20
         - node:
             color: '#FFFFFFFF'
             id: MiniTileDarkLineS
@@ -3751,8 +3746,6 @@ entities:
             4241: -9,-8
             5184: 21,19
             5185: 22,19
-            5186: 23,19
-            5194: 22,18
         - node:
             color: '#FFFFFFFF'
             id: MiniTileDarkLineW
@@ -4345,8 +4338,7 @@ entities:
             id: PavementCheckerAOverlay
           decals:
             5168: 21,20
-            5169: 22,18
-            5170: 23,20
+            5207: 22,18
         - node:
             color: '#808080FF'
             id: PavementCheckerAOverlay
@@ -4393,8 +4385,7 @@ entities:
             id: PavementCheckerAOverlay
           decals:
             5177: 21,18
-            5178: 23,18
-            5179: 22,20
+            5204: 22,20
         - node:
             color: '#E6E6E6FF'
             id: PavementCheckerAOverlay
@@ -4433,9 +4424,8 @@ entities:
             color: '#37789BFF'
             id: PavementCheckerBOverlay
           decals:
-            5171: 22,20
-            5172: 23,18
             5173: 21,18
+            5206: 22,20
         - node:
             color: '#808080FF'
             id: PavementCheckerBOverlay
@@ -4476,9 +4466,8 @@ entities:
             color: '#BC863FFF'
             id: PavementCheckerBOverlay
           decals:
-            5174: 22,18
             5175: 21,20
-            5176: 23,20
+            5205: 22,18
         - node:
             color: '#E6E6E6FF'
             id: PavementCheckerBOverlay
@@ -29362,10 +29351,10 @@ entities:
         whitelist: null
 - proto: CargoMailTeleporter
   entities:
-  - uid: 6194
+  - uid: 13078
     components:
     - type: Transform
-      pos: 23.5,20.5
+      pos: 22.5,20.5
       parent: 4812
 - proto: Carpet
   entities:
@@ -39386,12 +39375,6 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 21.5,18.5
       parent: 4812
-  - uid: 13323
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 22.5,18.5
-      parent: 4812
   - uid: 13324
     components:
     - type: Transform
@@ -39585,12 +39568,6 @@ entities:
     - type: Transform
       pos: -13.5,25.5
       parent: 4812
-  - uid: 1114
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 23.5,18.5
-      parent: 4812
   - uid: 1121
     components:
     - type: Transform
@@ -39677,6 +39654,12 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 7.5,-14.5
+      parent: 4812
+  - uid: 6194
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 22.5,18.5
       parent: 4812
   - uid: 6291
     components:
@@ -57104,6 +57087,12 @@ entities:
     - type: Transform
       pos: -24.5,0.5
       parent: 4812
+  - uid: 1114
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 23.5,18.5
+      parent: 4812
   - uid: 1242
     components:
     - type: Transform
@@ -58392,11 +58381,6 @@ entities:
     components:
     - type: Transform
       pos: 34.5,-22.5
-      parent: 4812
-  - uid: 6211
-    components:
-    - type: Transform
-      pos: 24.5,19.5
       parent: 4812
   - uid: 6315
     components:
@@ -59731,6 +59715,12 @@ entities:
     - type: Transform
       pos: -57.5,-14.5
       parent: 4812
+  - uid: 12830
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 23.5,19.5
+      parent: 4812
   - uid: 12834
     components:
     - type: Transform
@@ -59805,17 +59795,8 @@ entities:
   - uid: 13077
     components:
     - type: Transform
-      pos: 24.5,20.5
-      parent: 4812
-  - uid: 13079
-    components:
-    - type: Transform
-      pos: 24.5,18.5
-      parent: 4812
-  - uid: 13080
-    components:
-    - type: Transform
-      pos: 23.5,21.5
+      rot: -1.5707963267948966 rad
+      pos: 23.5,20.5
       parent: 4812
   - uid: 13081
     components:
@@ -62311,16 +62292,6 @@ entities:
     - type: Configuration
       config:
         tag: Security
-  - uid: 12089
-    components:
-    - type: Transform
-      pos: 23.5,18.5
-      parent: 4812
-    - type: MailingUnit
-      tag: Cargo
-    - type: Configuration
-      config:
-        tag: Cargo
   - uid: 13061
     components:
     - type: Transform
@@ -62331,6 +62302,16 @@ entities:
     - type: Configuration
       config:
         tag: Chef
+  - uid: 13079
+    components:
+    - type: Transform
+      pos: 22.5,18.5
+      parent: 4812
+    - type: MailingUnit
+      tag: Cargo
+    - type: Configuration
+      config:
+        tag: Cargo
   - uid: 13097
     components:
     - type: Transform
@@ -69403,6 +69384,12 @@ entities:
     - type: Transform
       pos: 12.5,-19.5
       parent: 4812
+  - uid: 6211
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 23.5,20.5
+      parent: 4812
   - uid: 6311
     components:
     - type: Transform
@@ -70155,6 +70142,12 @@ entities:
     - type: Transform
       pos: -41.5,7.5
       parent: 4812
+  - uid: 13080
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 23.5,19.5
+      parent: 4812
   - uid: 13082
     components:
     - type: Transform
@@ -70163,22 +70156,8 @@ entities:
   - uid: 13083
     components:
     - type: Transform
-      pos: 23.5,21.5
-      parent: 4812
-  - uid: 13084
-    components:
-    - type: Transform
-      pos: 24.5,20.5
-      parent: 4812
-  - uid: 13085
-    components:
-    - type: Transform
-      pos: 24.5,19.5
-      parent: 4812
-  - uid: 13086
-    components:
-    - type: Transform
-      pos: 24.5,18.5
+      rot: -1.5707963267948966 rad
+      pos: 23.5,18.5
       parent: 4812
 - proto: ResearchAndDevelopmentServer
   entities:
@@ -74160,17 +74139,6 @@ entities:
       - SurveillanceCameraSupply
       nameSet: True
       id: Salvagers
-  - uid: 12830
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 20.5,17.5
-      parent: 4812
-    - type: SurveillanceCamera
-      setupAvailableNetworks:
-      - SurveillanceCameraSupply
-      nameSet: True
-      id: Cargo Lobby
 - proto: Syringe
   entities:
   - uid: 6248
@@ -82397,6 +82365,12 @@ entities:
       rot: 3.141592653589793 rad
       pos: -59.5,-1.5
       parent: 4812
+  - uid: 12089
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 23.5,21.5
+      parent: 4812
   - uid: 12091
     components:
     - type: Transform
@@ -82666,11 +82640,6 @@ entities:
     components:
     - type: Transform
       pos: -41.5,9.5
-      parent: 4812
-  - uid: 13078
-    components:
-    - type: Transform
-      pos: 24.5,21.5
       parent: 4812
 - proto: WallSolid
   entities:
