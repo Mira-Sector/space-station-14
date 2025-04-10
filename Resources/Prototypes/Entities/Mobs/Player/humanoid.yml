@@ -12,6 +12,8 @@
           Asphyxiation: 20
           Slash: 13
           Blunt: 8
+    - type: Unrevivable
+      cloneable: false
 
 - type: randomHumanoidSettings
   id: EventHumanoid
