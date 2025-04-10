@@ -72,7 +72,7 @@
   description: It's not small... its average... *(no refunds!)
   icon:
     sprite: Objects/Specific/Janitorial/trashbag.rsi
-    state: icon
+    state: icon-3
   shuttle: /Maps/Shuttles/shittle.yml
   cost: 6149
   category: cargoproduct-category-name-shuttle
