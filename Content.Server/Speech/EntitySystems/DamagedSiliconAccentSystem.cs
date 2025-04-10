@@ -17,8 +17,8 @@ public sealed class DamagedSiliconAccentSystem : EntitySystem
     {
         base.Initialize();
         SubscribeLocalEvent<DamagedSiliconAccentComponent, AccentGetEvent>(OnAccent, after: [typeof(ReplacementAccentSystem)]);
-        SubscribeLocalEvent<DamagedSiliconAccentComponent, BodyLimbRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent(u, c, a.Args), after: [typeof(ReplacementAccentSystem)]);
-        SubscribeLocalEvent<DamagedSiliconAccentComponent, BodyOrganRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent(u, c, a.Args), after: [typeof(ReplacementAccentSystem)]);
+        SubscribeLocalEvent<DamagedSiliconAccentComponent, BodyLimbRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent((u, c), ref a.Args), after: [typeof(ReplacementAccentSystem)]);
+        SubscribeLocalEvent<DamagedSiliconAccentComponent, BodyOrganRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent((u, c), ref a.Args), after: [typeof(ReplacementAccentSystem)]);
     }
 
     private void OnAccent(Entity<DamagedSiliconAccentComponent> ent, ref AccentGetEvent args)
