@@ -241,6 +241,17 @@
   - type: PressureProtection
     highPressureMultiplier: 0.72
     lowPressureMultiplier: 1000
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Blunt: 0.7
+          Slash: 0.7
+          Piercing: 0.5
+          Heat: 0.7
+          Radiation: 0.3
+          Caustic: 0.8
 
 - type: entity
   parent: ClothingHeadHardsuitBase
