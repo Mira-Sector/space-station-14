@@ -19,7 +19,7 @@ using System.Numerics;
 
 namespace Content.Server.Body.Systems;
 
-public abstract partial class BodySystem : SharedBodySystem
+public sealed partial class BodySystem : SharedBodySystem
 {
     [Dependency] private readonly GhostSystem _ghostSystem = default!;
     [Dependency] private readonly IGameTiming _gameTiming = default!;

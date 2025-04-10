@@ -68,7 +68,7 @@
     organ: Tongue
     components:
     - type: ReplacementAccent
-    accent: cowboy
+      accent: cowboy
 
 - type: trait
   id: GermanAccent
