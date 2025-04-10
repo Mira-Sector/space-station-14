@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using Content.Server.Speech.Components;
+using Content.Shared.Body.Part;
 using Robust.Shared.Random;
 
 namespace Content.Server.Speech.EntitySystems;
@@ -23,6 +24,8 @@ public sealed class MobsterAccentSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<MobsterAccentComponent, AccentGetEvent>(OnAccentGet);
+        SubscribeLocalEvent<MobsterAccentComponent, BodyLimbRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccentGet(u, c, a.Args));
+        SubscribeLocalEvent<MobsterAccentComponent, BodyOrganRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccentGet(u, c, a.Args));
     }
 
     public string Accentuate(string message, MobsterAccentComponent component)

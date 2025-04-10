@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using Content.Server.Speech.Components;
+using Content.Shared.Body.Part;
 using Robust.Shared.Random;
 
 namespace Content.Server.Speech.EntitySystems
@@ -14,6 +15,8 @@ namespace Content.Server.Speech.EntitySystems
         public override void Initialize()
         {
             SubscribeLocalEvent<ScrambledAccentComponent, AccentGetEvent>(OnAccent);
+            SubscribeLocalEvent<ScrambledAccentComponent, BodyLimbRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent(u, c, a.Args));
+            SubscribeLocalEvent<ScrambledAccentComponent, BodyOrganRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent(u, c, a.Args));
         }
 
         public string Accentuate(string message)

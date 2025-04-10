@@ -1,5 +1,6 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using Content.Server.Speech.Components;
+using Content.Shared.Body.Part;
 
 namespace Content.Server.Speech.EntitySystems;
 
@@ -12,6 +13,8 @@ public sealed class MothAccentSystem : EntitySystem
     {
         base.Initialize();
         SubscribeLocalEvent<MothAccentComponent, AccentGetEvent>(OnAccent);
+        SubscribeLocalEvent<MothAccentComponent, BodyLimbRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent(u, c, a.Args));
+        SubscribeLocalEvent<MothAccentComponent, BodyOrganRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent(u, c, a.Args));
     }
 
     private void OnAccent(EntityUid uid, MothAccentComponent component, AccentGetEvent args)

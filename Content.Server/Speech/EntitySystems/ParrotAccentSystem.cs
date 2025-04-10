@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using Content.Server.Speech.Components;
+using Content.Shared.Body.Part;
 using Robust.Shared.Random;
 
 namespace Content.Server.Speech.EntitySystems;
@@ -16,6 +17,8 @@ public sealed partial class ParrotAccentSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<ParrotAccentComponent, AccentGetEvent>(OnAccentGet);
+        SubscribeLocalEvent<ParrotAccentComponent, BodyLimbRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccentGet((u, c), ref a.Args));
+        SubscribeLocalEvent<ParrotAccentComponent, BodyOrganRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccentGet((u, c), ref a.Args));
     }
 
     private void OnAccentGet(Entity<ParrotAccentComponent> entity, ref AccentGetEvent args)

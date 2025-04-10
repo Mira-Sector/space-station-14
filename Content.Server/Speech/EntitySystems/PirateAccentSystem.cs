@@ -2,6 +2,7 @@ using System.Linq;
 using Content.Server.Speech.Components;
 using Robust.Shared.Random;
 using System.Text.RegularExpressions;
+using Content.Shared.Body.Part;
 
 namespace Content.Server.Speech.EntitySystems;
 
@@ -17,6 +18,8 @@ public sealed class PirateAccentSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<PirateAccentComponent, AccentGetEvent>(OnAccentGet);
+        SubscribeLocalEvent<PirateAccentComponent, BodyLimbRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccentGet(u, c, a.Args));
+        SubscribeLocalEvent<PirateAccentComponent, BodyOrganRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccentGet(u, c, a.Args));
     }
 
     // converts left word when typed into the right word. For example typing you becomes ye.

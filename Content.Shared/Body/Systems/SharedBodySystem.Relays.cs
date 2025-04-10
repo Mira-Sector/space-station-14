@@ -18,7 +18,6 @@ public partial class SharedBodySystem
 
         SubscribeLocalEvent<BodyPartComponent, DamageModifyEvent>(RelayToBody);
         SubscribeLocalEvent<BodyPartComponent, DamageChangedEvent>(RelayToBody);
-
     }
 
     public void RelayToBody<T>(EntityUid uid, BodyPartComponent component, T args) where T : class

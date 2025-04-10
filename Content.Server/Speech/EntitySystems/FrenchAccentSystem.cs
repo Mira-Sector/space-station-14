@@ -1,4 +1,5 @@
 using Content.Server.Speech.Components;
+using Content.Shared.Body.Part;
 using System.Text.RegularExpressions;
 
 namespace Content.Server.Speech.EntitySystems;
@@ -19,6 +20,8 @@ public sealed class FrenchAccentSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<FrenchAccentComponent, AccentGetEvent>(OnAccentGet);
+        SubscribeLocalEvent<FrenchAccentComponent, BodyLimbRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccentGet(u, c, a.Args));
+        SubscribeLocalEvent<FrenchAccentComponent, BodyOrganRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccentGet(u, c, a.Args));
     }
 
     public string Accentuate(string message, FrenchAccentComponent component)

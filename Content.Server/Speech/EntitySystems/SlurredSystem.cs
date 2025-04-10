@@ -1,5 +1,6 @@
 using System.Text;
 using Content.Server.Speech.Components;
+using Content.Shared.Body.Part;
 using Content.Shared.Drunk;
 using Content.Shared.Speech.EntitySystems;
 using Content.Shared.StatusEffect;
@@ -22,6 +23,8 @@ public sealed class SlurredSystem : SharedSlurredSystem
     public override void Initialize()
     {
         SubscribeLocalEvent<SlurredAccentComponent, AccentGetEvent>(OnAccent);
+        SubscribeLocalEvent<SlurredAccentComponent, BodyLimbRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent(u, c, a.Args));
+        SubscribeLocalEvent<SlurredAccentComponent, BodyOrganRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent(u, c, a.Args));
     }
 
     public override void DoSlur(EntityUid uid, TimeSpan time, StatusEffectsComponent? status = null)

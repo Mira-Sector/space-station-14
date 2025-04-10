@@ -1,4 +1,5 @@
 using Content.Server.Speech.Components;
+using Content.Shared.Body.Part;
 
 namespace Content.Server.Speech.EntitySystems;
 
@@ -11,6 +12,8 @@ public sealed class MumbleAccentSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<MumbleAccentComponent, AccentGetEvent>(OnAccentGet);
+        SubscribeLocalEvent<MumbleAccentComponent, BodyLimbRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccentGet(u, c, a.Args));
+        SubscribeLocalEvent<MumbleAccentComponent, BodyOrganRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccentGet(u, c, a.Args));
     }
 
     public string Accentuate(string message, MumbleAccentComponent component)

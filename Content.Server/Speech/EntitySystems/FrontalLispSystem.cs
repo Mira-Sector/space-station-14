@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using Content.Server.Speech.Components;
+using Content.Shared.Body.Part;
 
 namespace Content.Server.Speech.EntitySystems;
 
@@ -16,6 +17,8 @@ public sealed class FrontalLispSystem : EntitySystem
     {
         base.Initialize();
         SubscribeLocalEvent<FrontalLispComponent, AccentGetEvent>(OnAccent);
+        SubscribeLocalEvent<FrontalLispComponent, BodyLimbRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent(u, c, a.Args));
+        SubscribeLocalEvent<FrontalLispComponent, BodyOrganRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent(u, c, a.Args));
     }
 
     private void OnAccent(EntityUid uid, FrontalLispComponent component, AccentGetEvent args)

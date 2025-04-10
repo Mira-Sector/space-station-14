@@ -1,5 +1,6 @@
 using System.Text;
 using Content.Server.Speech.Components;
+using Content.Shared.Body.Part;
 using Robust.Shared.Random;
 
 namespace Content.Server.Speech.EntitySystems;
@@ -11,6 +12,8 @@ public sealed class MonkeyAccentSystem : EntitySystem
     public override void Initialize()
     {
         SubscribeLocalEvent<MonkeyAccentComponent, AccentGetEvent>(OnAccent);
+        SubscribeLocalEvent<MonkeyAccentComponent, BodyLimbRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent(u, c, a.Args));
+        SubscribeLocalEvent<MonkeyAccentComponent, BodyOrganRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent(u, c, a.Args));
     }
 
     public string Accentuate(string message)
