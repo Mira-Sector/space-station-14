@@ -1,4 +1,4 @@
-﻿- type: body
+- type: body
   id: Crab
   name: crab
   root: torso
@@ -11,7 +11,7 @@
         brain: OrganHumanBrain
         eyes: OrganHumanEyes
         ears: OrganHumanEars
-        tongue: OrganHumanTongue
+        tongue: OrganCrabTongue
     torso:
       part: CrabTorso
       connections:

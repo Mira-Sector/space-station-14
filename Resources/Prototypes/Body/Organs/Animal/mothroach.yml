@@ -1,0 +1,6 @@
+- type: entity
+  id: OrganMothroachTongue
+  parent: OrganMothTongue
+  components:
+  - type: ReplacementAccent
+    accent: mothroach

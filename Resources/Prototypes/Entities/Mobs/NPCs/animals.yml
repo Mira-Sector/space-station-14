@@ -51,8 +51,6 @@
     flavorKind: station-event-random-sentience-flavor-organic
   - type: Bloodstream
     bloodMaxVolume: 50
-  - type: ReplacementAccent
-    accent: mouse
   - type: MeleeWeapon
     soundHit:
         path: /Audio/Effects/bite.ogg
@@ -259,8 +257,6 @@
     eggSpawn:
     - id: FoodEgg
   - type: ExaminableHunger
-  - type: ReplacementAccent
-    accent: chicken
   - type: SentienceTarget
     flavorKind: station-event-random-sentience-flavor-organic
   - type: NpcFactionMember
@@ -521,7 +517,6 @@
     allowedEmotes: ['Chitter', 'Squeak']
   - type: FaxableObject
     insertingState: inserting_mothroach
-  - type: MothAccent
   - type: Sprite
     drawdepth: SmallMobs
     sprite: Mobs/Animals/mothroach/mothroach.rsi
@@ -580,10 +575,6 @@
       amount: 2
   - type: Extractable
     grindableSolutionName: food
-  - type: ReplacementAccent
-    accent: mothroach
-  - type: ZombieAccentOverride
-    accent: zombieMoth
   - type: Vocal
     sounds:
       Male: UnisexMoth
@@ -774,13 +765,13 @@
     eggSpawn:
     - id: FoodEgg
   - type: ExaminableHunger
-  - type: ReplacementAccent
-    accent: duck
   - type: SentienceTarget
     flavorKind: station-event-random-sentience-flavor-organic
   - type: NpcFactionMember
     factions:
     - Passive
+  - type: Body
+    prototype: DuckMallard
 
 - type: entity
   name: white duck #Quack
@@ -800,6 +791,8 @@
         Base: dead-1
       Dead:
         Base: dead-1
+  - type: Body
+    prototype: DuckWhite
 
 - type: entity
   name: brown duck #Quack
@@ -819,6 +812,8 @@
         Base: dead-2
       Dead:
         Base: dead-2
+  - type: Body
+    prototype: DuckBrown
 
 - type: entity
   id: FoodEggDuckFertilized
@@ -1069,8 +1064,6 @@
     interactSuccessSpawn: EffectHearts
     interactSuccessSound:
       path: /Audio/Voice/Arachnid/arachnid_chitter.ogg
-  - type: ReplacementAccent
-    accent: crab
   - type: Bloodstream
     bloodMaxVolume: 50
     bloodReagent: CopperBlood
@@ -1179,7 +1172,6 @@
       Female: Goat
       Male: Goat
       Unsexed: Goat
-  - type: BleatingAccent
   - type: InteractionPopup
     successChance: 0.2
     interactSuccessString: petting-success-goat
@@ -1377,8 +1369,6 @@
   - type: Inventory
     speciesId: kangaroo
     templateId: kangaroo
-  - type: ReplacementAccent
-    accent: kangaroo
   - type: Butcherable
     spawned:
     - id: FoodMeat
@@ -1583,7 +1573,6 @@
   - type: Speech
     speechSounds: Monkey
     speechVerb: Monkey
-  - type: MonkeyAccent
   - type: SentienceTarget
     flavorKind: station-event-random-sentience-flavor-primate
   - type: AlwaysRevolutionaryConvertible
@@ -1621,7 +1610,6 @@
   - type: Speech
     speechSounds: Monkey
     speechVerb: Monkey
-  - type: MonkeyAccent
   - type: NpcFactionMember
     factions:
     - Syndicate
@@ -1639,6 +1627,8 @@
   - type: GhostTakeoverAvailable
   - type: Loadout
     prototypes: [SyndicateOperativeGearMonkey]
+  - type: Body
+    prototype: Monkey
 
 - type: entity
   id: MobMonkeySyndicateAgent
@@ -1665,9 +1655,6 @@
   components:
   - type: NameIdentifier
     group: Kobold
-  - type: LizardAccent
-  - type: ReplacementAccent
-    accent: kobold
   - type: Speech
     speechSounds: Lizard
     speechVerb: Reptilian
@@ -1973,8 +1960,6 @@
     spawned:
     - id: FoodMeatRat
       amount: 1
-  - type: ReplacementAccent
-    accent: mouse
   - type: Tag
     tags:
     - Trash
@@ -2382,7 +2367,6 @@
   - type: Vocal
     sounds:
       Unsexed: Parrot
-  - type: ParrotAccent
   - type: InteractionPopup
     successChance: 0.6
     interactSuccessString: petting-success-bird
@@ -2394,8 +2378,8 @@
     bloodMaxVolume: 50
   - type: MimicLearner
   - type: MimicSpeaker
-    minDelay: 5
-    maxDelay: 30
+    minDelay: 90
+    maxDelay: 150
 
 - type: entity
   name: penguin
@@ -2648,8 +2632,6 @@
   - type: MeleeChemicalInjector
     transferAmount: 0.75
     solution: melee
-  - type: ReplacementAccent
-    accent: xeno
   - type: InteractionPopup
     successChance: 0.5
     interactSuccessString: petting-success-tarantula
@@ -3121,8 +3103,6 @@
     spawned:
     - id: FoodMeat
       amount: 2
-  - type: ReplacementAccent
-    accent: dog
   - type: InteractionPopup
     interactSuccessString: petting-success-dog
     interactFailureString: petting-failure-generic
@@ -3284,8 +3264,6 @@
     spawned:
     - id: FoodMeat
       amount: 3
-  - type: ReplacementAccent
-    accent: cat
   - type: InteractionPopup
     successChance: 0.7
     interactSuccessString: petting-success-cat
@@ -3725,8 +3703,6 @@
     spawned:
     - id: FoodMeat
       amount: 1
-  - type: ReplacementAccent
-    accent: mouse
   - type: Tag
     tags:
     - VimPilot
@@ -3846,8 +3822,6 @@
     interactSuccessSpawn: EffectHearts
     interactSuccessSound:
       path: /Audio/Animals/pig_oink.ogg
-  - type: ReplacementAccent
-    accent: pig
   - type: SentienceTarget
     flavorKind: station-event-random-sentience-flavor-organic
   - type: NpcFactionMember

@@ -1,19 +1,19 @@
 - type: body
-  id: Cat
-  name: cat
+  id: DuckWhite
+  name: white duck
   root: torso
   slots:
     head:
-      part: CatHead
+      part: DuckWhiteHead
       connections:
       - torso
       organs:
         brain: OrganHumanBrain
         eyes: OrganHumanEyes
         ears: OrganHumanEars
-        tongue: OrganCatTongue
+        tongue: OrganDuckTongue
     torso:
-      part: CatTorso
+      part: DuckWhiteTorso
       connections:
       - right_leg
       - left_leg
@@ -24,14 +24,14 @@
         heart: OrganAnimalHeart
         kidneys: OrganAnimalKidneys
     right_leg:
-      part: CatRightLeg
+      part: DuckWhiteRightLeg
       connections:
       - right_foot
     left_leg:
-      part: CatLeftLeg
+      part: DuckWhiteLeftLeg
       connections:
       - left_foot
     right_foot:
-      part: CatRightFoot
+      part: DuckWhiteRightFoot
     left_foot:
-      part: CatLeftFoot
+      part: DuckWhiteLeftFoot

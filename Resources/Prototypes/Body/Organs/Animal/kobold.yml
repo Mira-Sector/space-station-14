@@ -1,0 +1,6 @@
+- type: entity
+  id: OrganKoboldTongue
+  parent: OrganReptilianTongue
+  components:
+  - type: ReplacementAccent
+    accent: kobold

@@ -1,37 +1,39 @@
 - type: body
-  id: Cat
-  name: cat
+  id: Mothroach
+  name: mothroach
   root: torso
   slots:
     head:
-      part: CatHead
+      part: MothroachHead
       connections:
       - torso
       organs:
         brain: OrganHumanBrain
         eyes: OrganHumanEyes
         ears: OrganHumanEars
-        tongue: OrganCatTongue
+        tongue: OrganMothroachTongue
     torso:
-      part: CatTorso
+      part: MothroachTorso
       connections:
+      - right_arm
+      - left_arm
       - right_leg
       - left_leg
       organs:
         lungs: OrganAnimalLungs
-        stomach: OrganAnimalStomach
+        stomach: OrganMothStomach
         liver: OrganAnimalLiver
         heart: OrganAnimalHeart
         kidneys: OrganAnimalKidneys
     right_leg:
-      part: CatRightLeg
+      part: MothroachRightLeg
       connections:
       - right_foot
     left_leg:
-      part: CatLeftLeg
+      part: MothroachLeftLeg
       connections:
       - left_foot
     right_foot:
-      part: CatRightFoot
+      part: MothroachRightFoot
     left_foot:
-      part: CatLeftFoot
+      part: MothroachLeftFoot

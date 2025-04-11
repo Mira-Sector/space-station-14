@@ -1,0 +1,5 @@
+- type: entity
+  id: OrganParrotTongue
+  parent: OrganHumanTongue
+  components:
+  - type: ParrotAccent
