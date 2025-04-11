@@ -102,6 +102,8 @@
     organType: Tongue
   - type: Sprite
     state: tongue
+  - type: TypingIndicatorOrgan
+    proto: default
 
 - type: entity
   id: OrganHumanAppendix

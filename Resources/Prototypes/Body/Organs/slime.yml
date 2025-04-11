@@ -97,3 +97,10 @@
     molsPerSecondPerUnitMass: 0
   - type: CoughOnRespire
   - type: CoughRotChangeModify
+
+- type: entity
+  id: OrganSlimeTongue
+  parent: OrganHumanTongue
+  components:
+  - type: TypingIndicatorOrgan
+    proto: slime

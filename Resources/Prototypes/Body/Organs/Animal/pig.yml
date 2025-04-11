@@ -1,5 +1,5 @@
 - type: entity
-  id: OrganParrotTongue
+  id: OrganPigTongue
   parent: OrganHumanTongue
   components:
   - type: ReplacementAccent

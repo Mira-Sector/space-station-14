@@ -31,8 +31,6 @@
     speechSounds: Lizard
     speechVerb: Reptilian
     allowedEmotes: ['Thump']
-  - type: TypingIndicator
-    proto: lizard
   - type: Vocal
     sounds:
       Male: MaleReptilian

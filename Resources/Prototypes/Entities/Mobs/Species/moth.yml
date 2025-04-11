@@ -20,8 +20,6 @@
   - type: Speech
     speechVerb: Moth
     allowedEmotes: ['Chitter', 'Squeak']
-  - type: TypingIndicator
-    proto: moth
   - type: Butcherable
     butcheringType: Spike
     spawned:

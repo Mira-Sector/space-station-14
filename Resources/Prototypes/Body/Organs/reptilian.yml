@@ -26,3 +26,5 @@
   parent: OrganHumanTongue
   components:
   - type: LizardAccent
+  - type: TypingIndicatorOrgan
+    proto: lizard
