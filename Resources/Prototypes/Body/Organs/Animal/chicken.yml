@@ -1,0 +1,6 @@
+- type: entity
+  id: OrganChickenTongue
+  parent: OrganHumanTongue
+  components:
+  - type: ReplacementAccent
+    accent: chicken

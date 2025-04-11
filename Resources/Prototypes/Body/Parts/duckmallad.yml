@@ -1,0 +1,41 @@
+- type: entity
+  id: BaseDuckMalladPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: DuckMalladTorso
+  name: mallad duck torso
+  parent: [BaseDuckMalladPart, BaseTorso]
+
+- type: entity
+  id: DuckMalladHead
+  name: mallad duck head
+  parent: [BaseDuckMalladPart, BaseHead]
+
+- type: entity
+  id: DuckMalladLeftLeg
+  name: left mallad duck leg
+  parent: [BaseDuckMalladPart, BaseLeftLeg]
+
+- type: entity
+  id: DuckMalladRightLeg
+  name: mallad duck leg
+  parent: [BaseDuckMalladPart, BaseRightLeg]
+
+- type: entity
+  id: DuckMalladLeftFoot
+  name: left mallad duck foot
+  parent: [BaseDuckMalladPart,BaseLeftFoot]
+
+- type: entity
+  id: DuckMalladRightFoot
+  name: mallad duck foot
+  parent: [BaseDuckMalladPart, BaseRightFoot]

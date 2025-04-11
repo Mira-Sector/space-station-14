@@ -1,0 +1,41 @@
+- type: entity
+  id: BaseMothroachPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 2
+      - ReagentId: Blood
+        Quantity: 10
+
+- type: entity
+  id: MothroachTorso
+  name: mothroach torso
+  parent: [BaseMothroachPart, BaseTorso]
+
+- type: entity
+  id: MothroachHead
+  name: mothroach head
+  parent: [BaseMothroachPart, BaseHead]
+
+- type: entity
+  id: MothroachLeftLeg
+  name: left mothroach leg
+  parent: [BaseMothroachPart, BaseLeftLeg]
+
+- type: entity
+  id: MothroachRightLeg
+  name: right mothroach leg
+  parent: [BaseMothroachPart, BaseRightLeg]
+
+- type: entity
+  id: MothroachLeftFoot
+  name: left mothroach foot
+  parent: [BaseMothroachPart,BaseLeftFoot]
+
+- type: entity
+  id: MothroachRightFoot
+  name: right mothroach foot
+  parent: [ BaseMothroachPart, BaseRightFoot]

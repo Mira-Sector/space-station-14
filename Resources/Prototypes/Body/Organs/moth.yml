@@ -24,3 +24,13 @@
     groups:
       - id: Food
       - id: Drink
+
+- type: entity
+  id: OrganMothTongue
+  parent: OrganHumanTongue
+  components:
+  - type: MothAccent
+  - type: ZombieAccentOverride
+    accent: zombieMoth
+  - type: TypingIndicatorOrgan
+    proto: moth

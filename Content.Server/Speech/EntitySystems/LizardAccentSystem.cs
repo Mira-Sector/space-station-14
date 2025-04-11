@@ -1,5 +1,6 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using Content.Server.Speech.Components;
+using Content.Shared.Body.Part;
 
 namespace Content.Server.Speech.EntitySystems;
 
@@ -15,6 +16,8 @@ public sealed class LizardAccentSystem : EntitySystem
     {
         base.Initialize();
         SubscribeLocalEvent<LizardAccentComponent, AccentGetEvent>(OnAccent);
+        SubscribeLocalEvent<LizardAccentComponent, BodyLimbRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent(u, c, a.Args));
+        SubscribeLocalEvent<LizardAccentComponent, BodyOrganRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent(u, c, a.Args));
     }
 
     private void OnAccent(EntityUid uid, LizardAccentComponent component, AccentGetEvent args)

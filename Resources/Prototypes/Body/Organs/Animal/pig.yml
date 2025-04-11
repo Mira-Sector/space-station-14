@@ -1,0 +1,6 @@
+- type: entity
+  id: OrganPigTongue
+  parent: OrganHumanTongue
+  components:
+  - type: ReplacementAccent
+    accent: pig

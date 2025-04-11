@@ -1,0 +1,6 @@
+- type: entity
+  id: OrganMouseTongue
+  parent: OrganHumanTongue
+  components:
+  - type: ReplacementAccent
+    accent: mouse

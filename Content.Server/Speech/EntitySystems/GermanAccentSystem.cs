@@ -2,6 +2,7 @@ using System.Text;
 using Content.Server.Speech.Components;
 using Robust.Shared.Random;
 using System.Text.RegularExpressions;
+using Content.Shared.Body.Part;
 
 namespace Content.Server.Speech.EntitySystems;
 
@@ -16,6 +17,8 @@ public sealed class GermanAccentSystem : EntitySystem
     public override void Initialize()
     {
         SubscribeLocalEvent<GermanAccentComponent, AccentGetEvent>(OnAccent);
+        SubscribeLocalEvent<GermanAccentComponent, BodyLimbRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent((u, c), ref a.Args));
+        SubscribeLocalEvent<GermanAccentComponent, BodyOrganRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent((u, c), ref a.Args));
     }
 
     public string Accentuate(string message)

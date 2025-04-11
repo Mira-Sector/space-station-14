@@ -1,0 +1,37 @@
+- type: body
+  id: DuckMallad
+  name: mallad duck
+  root: torso
+  slots:
+    head:
+      part: DuckMalladHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganDuckTongue
+    torso:
+      part: DuckMalladTorso
+      connections:
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_leg:
+      part: DuckMalladRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: DuckMalladLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: DuckMalladRightFoot
+    left_foot:
+      part: DuckMalladLeftFoot

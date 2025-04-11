@@ -1,0 +1,6 @@
+- type: entity
+  id: OrganKangarooTongue
+  parent: OrganHumanTongue
+  components:
+  - type: ReplacementAccent
+    accent: kangaroo

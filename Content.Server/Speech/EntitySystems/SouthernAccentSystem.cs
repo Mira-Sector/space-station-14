@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using Content.Server.Speech.Components;
+using Content.Shared.Body.Part;
 
 namespace Content.Server.Speech.EntitySystems;
 
@@ -18,6 +19,8 @@ public sealed class SouthernAccentSystem : EntitySystem
     {
         base.Initialize();
         SubscribeLocalEvent<SouthernAccentComponent, AccentGetEvent>(OnAccent);
+        SubscribeLocalEvent<SouthernAccentComponent, BodyLimbRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent(u, c, a.Args));
+        SubscribeLocalEvent<SouthernAccentComponent, BodyOrganRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent(u, c, a.Args));
     }
 
     private void OnAccent(EntityUid uid, SouthernAccentComponent component, AccentGetEvent args)

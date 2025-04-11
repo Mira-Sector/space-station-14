@@ -1,4 +1,5 @@
 using Content.Server.Speech.Components;
+using Content.Shared.Body.Part;
 using Robust.Shared.Random;
 
 namespace Content.Server.Speech.EntitySystems
@@ -19,6 +20,8 @@ namespace Content.Server.Speech.EntitySystems
         public override void Initialize()
         {
             SubscribeLocalEvent<OwOAccentComponent, AccentGetEvent>(OnAccent);
+            SubscribeLocalEvent<OwOAccentComponent, BodyLimbRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent(u, c, a.Args));
+            SubscribeLocalEvent<OwOAccentComponent, BodyOrganRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent(u, c, a.Args));
         }
 
         public string Accentuate(string message)

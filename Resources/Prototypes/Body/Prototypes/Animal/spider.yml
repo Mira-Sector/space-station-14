@@ -1,4 +1,4 @@
-﻿- type: body
+- type: body
   id: Spider
   name: Spider
   root: torso
@@ -11,7 +11,7 @@
         brain: OrganHumanBrain
         eyes: OrganHumanEyes
         ears: OrganHumanEars
-        tongue: OrganHumanTongue
+        tongue: OrganSpiderTongue
     torso:
       part: SpiderTorso
       connections:

@@ -1,4 +1,4 @@
-﻿- type: body
+- type: body
   id: Kobold
   name: kobold
   root: torso
@@ -11,7 +11,7 @@
         brain: OrganHumanBrain
         eyes: OrganHumanEyes
         ears: OrganHumanEars
-        tongue: OrganHumanTongue
+        tongue: OrganKoboldTongue
     torso:
       part: KoboldTorso
       connections:

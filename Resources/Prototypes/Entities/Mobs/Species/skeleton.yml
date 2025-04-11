@@ -49,7 +49,6 @@
       Male: Skeleton
       Female: Skeleton
       Unsexed: Skeleton
-  - type: SkeletonAccent
   - type: Fixtures
     fixtures:
       fix1:

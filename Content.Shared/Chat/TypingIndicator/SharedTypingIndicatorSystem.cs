@@ -1,4 +1,5 @@
 using Content.Shared.ActionBlocker;
+using Content.Shared.Body.Part;
 using Content.Shared.Clothing;
 using Content.Shared.Inventory;
 using Robust.Shared.Player;
@@ -31,6 +32,8 @@ public abstract class SharedTypingIndicatorSystem : EntitySystem
         SubscribeLocalEvent<TypingIndicatorClothingComponent, ClothingGotUnequippedEvent>(OnGotUnequipped);
         SubscribeLocalEvent<TypingIndicatorClothingComponent, InventoryRelayedEvent<BeforeShowTypingIndicatorEvent>>(BeforeShow);
 
+        SubscribeLocalEvent<TypingIndicatorOrganComponent, BodyOrganRelayedEvent<BeforeShowTypingIndicatorEvent>>(OrganBeforeShow);
+
         SubscribeAllEvent<TypingChangedEvent>(OnTypingChanged);
     }
 
@@ -61,6 +64,11 @@ public abstract class SharedTypingIndicatorSystem : EntitySystem
     private void BeforeShow(Entity<TypingIndicatorClothingComponent> entity, ref InventoryRelayedEvent<BeforeShowTypingIndicatorEvent> args)
     {
         args.Args.TryUpdateTimeAndIndicator(entity.Comp.TypingIndicatorPrototype, entity.Comp.GotEquippedTime);
+    }
+
+    private void OrganBeforeShow(Entity<TypingIndicatorOrganComponent> entity, ref BodyOrganRelayedEvent<BeforeShowTypingIndicatorEvent> args)
+    {
+        args.Args.TryUpdateTimeAndIndicator(entity.Comp.TypingIndicatorPrototype, _timing.CurTime);
     }
 
     private void OnTypingChanged(TypingChangedEvent ev, EntitySessionEventArgs args)

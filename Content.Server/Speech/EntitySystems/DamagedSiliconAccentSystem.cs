@@ -1,9 +1,10 @@
-﻿using System.Text;
+using System.Text;
 using Content.Server.PowerCell;
 using Content.Shared.Speech.Components;
 using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
 using Robust.Shared.Random;
+using Content.Shared.Body.Part;
 
 namespace Content.Server.Speech.EntitySystems;
 
@@ -16,6 +17,8 @@ public sealed class DamagedSiliconAccentSystem : EntitySystem
     {
         base.Initialize();
         SubscribeLocalEvent<DamagedSiliconAccentComponent, AccentGetEvent>(OnAccent, after: [typeof(ReplacementAccentSystem)]);
+        SubscribeLocalEvent<DamagedSiliconAccentComponent, BodyLimbRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent((u, c), ref a.Args), after: [typeof(ReplacementAccentSystem)]);
+        SubscribeLocalEvent<DamagedSiliconAccentComponent, BodyOrganRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent((u, c), ref a.Args), after: [typeof(ReplacementAccentSystem)]);
     }
 
     private void OnAccent(Entity<DamagedSiliconAccentComponent> ent, ref AccentGetEvent args)
