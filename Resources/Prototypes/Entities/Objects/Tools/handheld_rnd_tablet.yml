@@ -1,0 +1,44 @@
+﻿- type: entity
+  name: handheld rnd tablet
+  parent: BaseHandheldComputer
+  id: HandHeldRnDTablet
+  description: A hand-held RnD tablet made by the RD using 14G data
+  components:
+  - type: Item
+    sprite: Objects/Tools/handheld_rnd_tablet.rsi
+  - type: Sprite
+    sprite: Objects/Tools/handheld_rnd_tablet.rsi
+    state: icon
+    layers:
+    - state: icon
+  - type: ResearchClient
+  - type: ResearchConsole
+  - type: ActiveRadio
+    channels:
+    - Science
+  - type: TechnologyDatabase
+  - type: UserInterface
+    interfaces:
+      enum.ResearchConsoleUiKey.Key:
+        type: ResearchConsoleBoundUserInterface
+      enum.ResearchClientUiKey.Key:
+        type: ResearchClientBoundUserInterface
+  - type: AccessReader
+    access: [ [ "Research" ] ]
+  - type: PowerCellDraw
+    drawRate: 1.5
+  - type: ToggleCellDraw
+  - type: ActivatableUI
+    key: enum.ResearchConsoleUiKey.Key
+    inHandsOnly: true
+    singleUser: true
+
+- type: entity
+  id: HandHeldRnDTabletEmpty
+  parent: HandHeldRnDTablet
+  suffix: Empty
+  components:
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
