@@ -41,6 +41,138 @@
     state: satin
 
 - type: marking
+  id: UndergarmentBottomLowriders
+  bodyPart: UndergarmentBottom
+  markingCategory: UndergarmentBottom
+  speciesRestriction: [Arachnid, Diona, Human, Dwarf, Moth, SlimePerson]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  sprites:
+  - sprite: Mobs/Customization/underwear.rsi
+    state: lowriders
+
+- type: marking
+  id: UndergarmentBottomTanga
+  bodyPart: UndergarmentBottom
+  markingCategory: UndergarmentBottom
+  speciesRestriction: [Arachnid, Diona, Human, Dwarf, Moth, SlimePerson]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  sprites:
+  - sprite: Mobs/Customization/underwear.rsi
+    state: tanga
+
+- type: marking
+  id: UndergarmentTopLongUndershirt
+  bodyPart: UndergarmentTop
+  markingCategory: UndergarmentTop
+  speciesRestriction: [Arachnid, Diona, Human, Dwarf, Moth, Reptilian, SlimePerson]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  sprites:
+  - sprite: Mobs/Customization/undershirt.rsi
+    state: long_undershirt
+
+- type: marking
+  id: UndergarmentTopNanotrasen
+  bodyPart: UndergarmentTop
+  markingCategory: UndergarmentTop
+  forcedColoring: true
+  speciesRestriction: [Arachnid, Diona, Human, Dwarf, Moth, Reptilian, SlimePerson]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  sprites:
+  - sprite: Mobs/Customization/undershirt.rsi
+    state: nanotrasen
+
+- type: marking
+  id: UndergarmentTopRolledUndershirt
+  bodyPart: UndergarmentTop
+  markingCategory: UndergarmentTop
+  speciesRestriction: [Arachnid, Diona, Human, Dwarf, Moth, Reptilian, SlimePerson]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  sprites:
+  - sprite: Mobs/Customization/undershirt.rsi
+    state: rolled_undershirt
+
+- type: marking
+  id: UndergarmentTopRolledUndershirtSleeveless
+  bodyPart: UndergarmentTop
+  markingCategory: UndergarmentTop
+  speciesRestriction: [Arachnid, Diona, Human, Dwarf, Moth, Reptilian, SlimePerson]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  sprites:
+  - sprite: Mobs/Customization/undershirt.rsi
+    state: rolled_undershirt_sleeveless
+
+- type: marking
+  id: UndergarmentTopSleeveless
+  bodyPart: UndergarmentTop
+  markingCategory: UndergarmentTop
+  speciesRestriction: [Arachnid, Diona, Human, Dwarf, Moth, Reptilian, SlimePerson]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  sprites:
+  - sprite: Mobs/Customization/undershirt.rsi
+    state: sleeveless
+
+- type: marking
+  id: UndergarmentTopStrapless
+  bodyPart: UndergarmentTop
+  markingCategory: UndergarmentTop
+  speciesRestriction: [Arachnid, Diona, Human, Dwarf, Moth, Reptilian, SlimePerson]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  sprites:
+  - sprite: Mobs/Customization/undershirt.rsi
+    state: strapless
+
+- type: marking
+  id: UndergarmentTopUndershirt
+  bodyPart: UndergarmentTop
+  markingCategory: UndergarmentTop
+  speciesRestriction: [Arachnid, Diona, Human, Dwarf, Moth, Reptilian, SlimePerson]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  sprites:
+  - sprite: Mobs/Customization/undershirt.rsi
+    state: undershirt
+
+- type: marking
+  id: UndergarmentTopClown
+  bodyPart: UndergarmentTop
+  markingCategory: UndergarmentTop
+  forcedColoring: true
+  speciesRestriction: [Arachnid, Diona, Human, Dwarf, Moth, Reptilian, SlimePerson]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  sprites:
+  - sprite: Mobs/Customization/undershirt.rsi
+    state: clown
+
+- type: marking
   id: UndergarmentTopBra
   bodyPart: UndergarmentTop
   markingCategory: UndergarmentTop
