@@ -12,6 +12,10 @@
             "directions": 1
         },
         {
+            "name": "powered",
+            "directions": 1
+        },
+        {
             "name": "inhand-left",
             "directions": 4
         },

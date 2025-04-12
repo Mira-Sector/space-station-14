@@ -5,12 +5,15 @@
   description: A hand-held RnD tablet made by the RD using 14G data
   components:
   - type: Item
-    sprite: Objects/Tools/handheld_rnd_tablet.rsi
   - type: Sprite
-    sprite: Objects/Tools/handheld_rnd_tablet.rsi
+    sprite: Objects/Tools/handheld_rnd_Tablet.rsi
     state: icon
     layers:
     - state: icon
+    - state: powered
+      shader: unshaded
+      visible: true
+      map: [ "enum.PowerDeviceVisualLayers.Powered" ]
   - type: ResearchClient
   - type: ResearchConsole
   - type: ActiveRadio
@@ -32,6 +35,13 @@
     key: enum.ResearchConsoleUiKey.Key
     inHandsOnly: true
     singleUser: true
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+       enum.PowerCellSlotVisuals.Enabled:
+         enum.PowerDeviceVisualLayers.Powered:
+          True: { visible: true }
+          False: { visible: false }
 
 - type: entity
   id: HandHeldRnDTabletEmpty
@@ -42,3 +52,10 @@
     slots:
       cell_slot:
         name: power-cell-slot-component-slot-name-default
+  - type: Sprite
+    layers:
+    - state: icon
+    - state: powered
+      shader: unshaded
+      visible: false
+      map: [ "enum.PowerDeviceVisualLayers.Powered" ]
