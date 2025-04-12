@@ -14,6 +14,7 @@
     CMOHyposprayStealObjective: 1
     CMOCrewMonitorStealObjective: 1
     RDHardsuitStealObjective: 1
+    RDTabletStealObjective: 1
     NukeDiskStealObjective: 1
     MagbootsStealObjective: 1
     CorgiMeatStealObjective: 1
@@ -23,6 +24,7 @@
     HandTeleporterStealObjective: 0.5
     SecretDocumentsStealObjective: 0.5
     EnergyShotgunStealObjective: 0.5
+
 
 - type: weightedRandom
   id: TraitorObjectiveGroupKill

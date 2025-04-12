@@ -1,8 +1,8 @@
 ﻿- type: entity
-  name: handheld rnd tablet
-  parent: BaseHandheldComputer
+  name: handheld R&D tablet
+  parent: [BaseHandheldComputer, BaseGrandTheftContraband]
   id: HandHeldRnDTablet
-  description: A hand-held RnD tablet made by the RD using 14G data
+  description: A hand-held R&D tablet made by the RD utilising 14G data.
   components:
   - type: Item
   - type: Sprite
@@ -42,6 +42,11 @@
          enum.PowerDeviceVisualLayers.Powered:
           True: { visible: true }
           False: { visible: false }
+  - type: Tag
+    tags:
+    - HighRiskItem
+  - type: StealTarget
+    stealGroup: RDTablet
 
 - type: entity
   id: HandHeldRnDTabletEmpty
