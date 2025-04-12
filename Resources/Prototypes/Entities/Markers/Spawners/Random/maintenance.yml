@@ -97,6 +97,7 @@
       - id: PlushieSolusHuman
       - id: PlushieSolusSlime
       - id: PlushieAnurath
+      - id: PlushieGwen
       # Cloaks
       - !type:GroupSelector
         children:

@@ -77,3 +77,13 @@
     wideAnimationRotation: 180
     soundHit:
       collection: MaleScreams
+
+- type: entity
+  parent: PlushieSolusSlime
+  id: PlushieGwen
+  name: gwen riley plushie
+  description: A cute stuffed toy that resembles a certain nerd.
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/mira_plushies.rsi
+    state: plushie_gwen
