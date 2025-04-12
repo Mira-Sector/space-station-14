@@ -94,6 +94,7 @@
       children:
       - id: ClothingNeckCloakHerald
       - id: ClothingHeadHelmetTemplar
+      - id: PlushieSolusHuman
       # Cloaks
       - !type:GroupSelector
         children:

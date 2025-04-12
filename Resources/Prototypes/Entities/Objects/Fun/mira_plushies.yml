@@ -30,3 +30,36 @@
     wideAnimationRotation: 180
     soundHit:
       collection: FemaleScreams
+
+- type: entity
+  parent: BasePlushie
+  id: PlushieAnurath
+  name: anurath veiler plushie
+  description: A cute stuffed toy that resembles a maintenance pill addict.
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/mira_plushies.rsi
+    state: plushie_anurath
+  - type: EmitSoundOnUse
+    sound:
+      collection: FemaleScreams
+  - type: EmitSoundOnLand
+    sound:
+      collection: FemaleScreams
+  - type: EmitSoundOnActivate
+    sound:
+      collection: FemaleScreams
+  - type: EmitSoundOnTrigger
+    sound:
+      collection: FemaleScreams
+  - type: EmitSoundOnCollide
+    sound:
+      collection: FemaleScreams
+  - type: Food
+    requiresSpecialDigestion: true
+    useSound:
+      collection: FemaleScreams
+  - type: MeleeWeapon
+    wideAnimationRotation: 180
+    soundHit:
+      collection: FemaleScreams
