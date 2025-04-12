@@ -2,7 +2,7 @@
   parent: BasePlushie
   id: PlushieSolusHuman
   name: gabriela solus plushie
-  description: A cute stuffed toy that resembles a certain person.
+  description: A cute stuffed toy that resembles a certain troublemaker.
   components:
   - type: Sprite
     sprite: Objects/Fun/mira_plushies.rsi
@@ -32,6 +32,20 @@
       collection: FemaleScreams
 
 - type: entity
+  parent: PlushieSolusHuman
+  id: PlushieSolusSlime
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/mira_plushies.rsi
+    state: plushie_sillyamy_slime
+  - type: EmitSoundOnUse
+    sound:
+      path: /Audio/Voice/Slime/slime_squish.ogg
+  - type: EmitSoundOnCollide
+    sound:
+      path: /Audio/Voice/Slime/slime_squish.ogg
+
+- type: entity
   parent: BasePlushie
   id: PlushieAnurath
   name: anurath veiler plushie
@@ -42,24 +56,24 @@
     state: plushie_anurath
   - type: EmitSoundOnUse
     sound:
-      collection: FemaleScreams
+      collection: MaleScreams
   - type: EmitSoundOnLand
     sound:
-      collection: FemaleScreams
+      collection: MaleScreams
   - type: EmitSoundOnActivate
     sound:
-      collection: FemaleScreams
+      collection: MaleScreams
   - type: EmitSoundOnTrigger
     sound:
-      collection: FemaleScreams
+      collection: MaleScreams
   - type: EmitSoundOnCollide
     sound:
-      collection: FemaleScreams
+      collection: MaleScreams
   - type: Food
     requiresSpecialDigestion: true
     useSound:
-      collection: FemaleScreams
+      collection: MaleScreams
   - type: MeleeWeapon
     wideAnimationRotation: 180
     soundHit:
-      collection: FemaleScreams
+      collection: MaleScreams
