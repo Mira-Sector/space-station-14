@@ -40,6 +40,9 @@ public sealed class SliceableFoodSystem : EntitySystem
         if (args.Handled)
             return;
 
+        if (!TryComp<UtensilComponent>(args.Used, out var utensil) || (utensil.Types & UtensilType.Knife) == 0) //if used item isn't a knife untensil, do nothing.
+            return;
+
         var doAfterArgs = new DoAfterArgs(EntityManager,
             args.User,
             entity.Comp.SliceTime,
@@ -76,9 +79,6 @@ public sealed class SliceableFoodSystem : EntitySystem
             return false;
 
         if (!_solutionContainer.TryGetSolution(uid, food.Solution, out var soln, out var solution))
-            return false;
-
-        if (!TryComp<UtensilComponent>(usedItem, out var utensil) || (utensil.Types & UtensilType.Knife) == 0)
             return false;
 
         var isExtraSolution = false;

@@ -1,6 +1,7 @@
 using Content.Server.Nutrition.EntitySystems;
 using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
+using Content.Shared.Stacks;
 
 namespace Content.Server.Nutrition.Components;
 
@@ -13,6 +14,9 @@ public sealed partial class SliceableFoodComponent : Component
     /// </summary>
     [DataField]
     public EntProtoId? Slice;
+
+    [DataField]
+    public ProtoId<StackPrototype>? SliceStack;
 
     [DataField]
     public SoundSpecifier Sound = new SoundPathSpecifier("/Audio/Items/Culinary/chop.ogg");
@@ -41,6 +45,17 @@ public sealed partial class SliceableFoodComponent : Component
     [DataField]
     public string? ExtraSolution;
 
+    /// <summary>
+    /// should reagents be transferred from food to slice
+    /// </summary>
     [DataField]
     public bool TransferReagents = true;
+
+    /// <summary>
+    /// should the number of slices be dependant on the potency of the produce. If there is no potency found, does nothing.
+    /// for most plants this won't be relevent, as potency will only effect reagent amount which is already accounted for
+    /// would instead be relevent for plants like cotton where the sliced object itself matters more than the reagent.
+    /// </summary>
+    [DataField]
+    public bool PotencyEffectsCount = false;
 }
