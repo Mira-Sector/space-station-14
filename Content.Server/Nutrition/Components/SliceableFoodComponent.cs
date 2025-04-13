@@ -64,7 +64,7 @@ public sealed partial class SliceableFoodComponent : Component
     /// <remarks>
     /// for most plants this won't be relevent, as potency will only effect reagent amount which is already accounted for as long as reagents are transferred.
     /// would instead be relevent for plants like cotton or towercap where the sliced object itself matters more than the reagent.
-    /// </summary>
+    /// </remarks>
     [DataField]
     public bool PotencyEffectsCount = false;
 
