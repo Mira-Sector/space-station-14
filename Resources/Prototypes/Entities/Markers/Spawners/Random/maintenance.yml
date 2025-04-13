@@ -90,7 +90,7 @@
       - id: ClothingHeadHatCowboyRed
     # Uncommon Group
     - !type:GroupSelector
-      weight: 23
+      weight: 30
       children:
       - id: ClothingNeckCloakHerald
       - id: ClothingHeadHelmetTemplar
