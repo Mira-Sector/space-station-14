@@ -138,7 +138,7 @@
     seedId: papercane
   - type: SliceableFood
     count: 6
-    sliceStack: Paper
+    slice: Paper
     transferReagents: false
     potencyEffectsCount: true
     spawnStack: true
@@ -198,7 +198,7 @@
     seedId: towercap
   - type: SliceableFood
     count: 5
-    sliceStack: WoodPlank
+    slice: WoodPlank
     transferReagents: false
     potencyEffectsCount: true
     spawnStack: true
@@ -223,7 +223,7 @@
     seedId: steelcap
   - type: SliceableFood
     count: 4
-    sliceStack: Steel
+    slice: Steel
     transferReagents: false
     potencyEffectsCount: true
     spawnStack: true
@@ -246,7 +246,7 @@
     seedId: plasteelcap
   - type: SliceableFood
     count: 3
-    sliceStack: Plasteel
+    slice: Plasteel
     transferReagents: false
     potencyEffectsCount: true
     spawnStack: true
@@ -3214,6 +3214,7 @@
     slice: ProduceCoconutOpen
     spawnOffset: 0
     extraSolution: drink
+    anySharp: true
   - type: Extractable
     juiceSolution:
       reagents:
@@ -3362,6 +3363,7 @@
     slice: ProduceCryoconutOpen
     spawnOffset: 0
     extraSolution: drink
+    anySharp: true
   - type: Extractable
     juiceSolution:
       reagents:

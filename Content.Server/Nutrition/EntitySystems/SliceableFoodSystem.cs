@@ -47,7 +47,8 @@ public sealed class SliceableFoodSystem : EntitySystem
         if (args.Handled)
             return;
 
-        if (!TryComp<UtensilComponent>(args.Used, out var utensil) || (utensil.Types & UtensilType.Knife) == 0 || !HasComp<SharpComponent>(args.Used) && entity.Comp.AnySharp == true) //if used item isn't a knife untensil, do nothing.
+        if ((!TryComp<UtensilComponent>(args.Used, out var utensil) || (utensil.Types & UtensilType.Knife) == 0) && entity.Comp.AnySharp == false//if used item isn't a knife untensil, do nothing.
+            || !HasComp<SharpComponent>(args.Used) && entity.Comp.AnySharp == true) //alternatively, if any sharp item is allowed, if it doesn't have a sharpcomponent do nothing
             return;
 
         var doAfterArgs = new DoAfterArgs(EntityManager,
