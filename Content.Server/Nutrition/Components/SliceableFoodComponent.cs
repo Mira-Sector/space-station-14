@@ -11,12 +11,10 @@ public sealed partial class SliceableFoodComponent : Component
     /// <summary>
     /// Prototype to spawn after slicing.
     /// If null then it can't be sliced.
+    /// If the name isn't a valid prototype, crashes the game.
     /// </summary>
     [DataField]
-    public EntProtoId? Slice;
-
-    [DataField]
-    public ProtoId<StackPrototype> SliceStack = "Credit";
+    public string? Slice;
 
     [DataField]
     public SoundSpecifier Sound = new SoundPathSpecifier("/Audio/Items/Culinary/chop.ogg");

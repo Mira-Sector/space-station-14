@@ -10,6 +10,7 @@ using Content.Shared.Chemistry.Components;
 using Content.Shared.DoAfter;
 using Content.Shared.FixedPoint;
 using Content.Shared.Interaction;
+using Content.Shared.Stacks;
 using Robust.Server.GameObjects;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
@@ -17,6 +18,8 @@ using Robust.Shared.Random;
 using Robust.Shared.Containers;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
+using Robust.Shared.Prototypes;
+
 
 namespace Content.Server.Nutrition.EntitySystems;
 
@@ -78,7 +81,7 @@ public sealed class SliceableFoodSystem : EntitySystem
         TransformComponent? transform = null)
     {
         if (!Resolve(uid, ref component, ref food, ref transform) ||
-            string.IsNullOrEmpty(component.Slice) && string.IsNullOrEmpty(component.SliceStack))
+            string.IsNullOrEmpty(component.Slice))
             return false;
 
         if (!_solutionContainer.TryGetSolution(uid, food.Solution, out var soln, out var solution))
@@ -86,7 +89,7 @@ public sealed class SliceableFoodSystem : EntitySystem
 
         var isExtraSolution = false;
         Entity<SolutionComponent>? solnEx = null; //define here, replace with real values if needed.
-        Solution? solutionEx = solution;
+        Solution? solutionEx = solution; //on the one hand, this implementation isn't great. On the other hand, when are you going to need three solution containers transferred?
         string? extraSolution = null;
         if (!string.IsNullOrEmpty(component.ExtraSolution))//check to see if extra solution is defined. If it isn't it should be ignored.
         {
@@ -168,7 +171,9 @@ public sealed class SliceableFoodSystem : EntitySystem
         if (!Resolve(uid, ref comp, ref transform))
             return EntityUid.Invalid;
 
-        var sliceUid = Spawn(comp.Slice, _transform.GetMapCoordinates(uid));
+        EntProtoId? slice = comp.Slice;
+
+        var sliceUid = Spawn(slice, _transform.GetMapCoordinates(uid));
 
         // try putting the slice into the container if the food being sliced is in a container!
         // this lets you do things like slice a pizza up inside of a hot food cart without making a food-everywhere mess
@@ -190,7 +195,12 @@ public sealed class SliceableFoodSystem : EntitySystem
         if (!Resolve(uid, ref comp, ref transform))
             return EntityUid.Invalid;
 
-        var sliceUid = _stack.Spawn(count, comp.SliceStack, Transform(uid).Coordinates);
+        if (string.IsNullOrEmpty(comp.Slice))
+            return EntityUid.Invalid;
+
+        ProtoId<StackPrototype> slice = comp.Slice;
+
+        var sliceUid = _stack.Spawn(count, slice, Transform(uid).Coordinates);
 
         _transform.DropNextTo(sliceUid, (uid, transform));
         _transform.SetLocalRotation(sliceUid, 0);

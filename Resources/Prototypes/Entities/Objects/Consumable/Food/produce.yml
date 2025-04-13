@@ -1707,7 +1707,7 @@
         - ReagentId: Happiness
           Quantity: 8
   - type: SliceableFood
-    sliceStack: "Credit"
+    slice: Credit
     count: 100
     transferReagents: false
     potencyEffectsCount: true
@@ -2848,9 +2848,8 @@
           Quantity: 10
   - type: SliceableFood
     count: 6
-    sliceStack: Cotton
+    slice: MaterialCotton1
     potencyEffectsCount: true
-    spawnStack: true
     anySharp: true
   - type: Produce
     seedId: cotton
@@ -2882,9 +2881,8 @@
           Quantity: 5
   - type: SliceableFood
     count: 6
-    sliceStack: Pyrotton
+    slice: MaterialPyrotton1
     potencyEffectsCount: true
-    spawnStack: true
     anySharp: true
   - type: Produce
     seedId: pyrotton
