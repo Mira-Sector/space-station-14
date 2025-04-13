@@ -20,7 +20,7 @@ public sealed partial class SliceableFoodComponent : Component
     /// Prototype to spawn for a stack of items
     /// </summary>
     [DataField]
-    public ProtoId<StackPrototype> SliceStack = "Credit";
+    public ProtoId<StackPrototype>? SliceStack;
 
     [DataField]
     public SoundSpecifier Sound = new SoundPathSpecifier("/Audio/Items/Culinary/chop.ogg");

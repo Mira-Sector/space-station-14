@@ -46,9 +46,10 @@ public sealed class SliceableFoodSystem : EntitySystem
             return;
 
         if (!TryComp<UtensilComponent>(args.Used, out var utensil) || (utensil.Types & UtensilType.Knife) == 0) //if used item isn't a knife untensil, deny.
-            if (!HasComp<SharpComponent>(args.Used) && entity.Comp.AnySharp == true) //alternatively, if any sharp item is allowed and doesn't have a sharpcomponent, deny.
+        {
+            if (entity.Comp.AnySharp == true && !HasComp<SharpComponent>(args.Used)) //alternatively, if any sharp item is allowed and doesn't have a sharpcomponent, deny.
                 return;
-
+        }
         var doAfterArgs = new DoAfterArgs(EntityManager,
             args.User,
             entity.Comp.SliceTime,
@@ -83,12 +84,6 @@ public sealed class SliceableFoodSystem : EntitySystem
             string.IsNullOrEmpty(component.Slice) && string.IsNullOrEmpty(component.SliceStack))
             return false;
 
-        var spawnStack = false;
-        if (string.IsNullOrEmpty(component.Slice))//check whether a Slice Prototype is present, if it isn't, assume a stack is being spawned instead.
-            spawnStack = true;
-        else
-            spawnStack = false;
-
         if (!_solutionContainer.TryGetSolution(uid, food.Solution, out var soln, out var solution))
             return false;
 
@@ -121,7 +116,7 @@ public sealed class SliceableFoodSystem : EntitySystem
                     sliceNumber = (ushort)Math.Ceiling(sliceNumber * prod.Seed.Potency / 100); //divide by potency as a percentage, round up to nearest whole number
             }
         }
-        if (spawnStack == false)
+        if (!string.IsNullOrEmpty(component.Slice))
         {
             for (int i = 0; i < sliceNumber; i++) //if value given for Slice, spawn slices
             {
@@ -190,7 +185,10 @@ public sealed class SliceableFoodSystem : EntitySystem
         if (!Resolve(uid, ref comp, ref transform))
             return EntityUid.Invalid;
 
-        var sliceUid = _stack.Spawn(count, comp.SliceStack, Transform(uid).Coordinates);
+        if (comp.SliceStack == null)
+            return EntityUid.Invalid;
+
+        var sliceUid = _stack.Spawn(count, comp.SliceStack.Value, Transform(uid).Coordinates);
 
         _transform.DropNextTo(sliceUid, (uid, transform));
         _transform.SetLocalRotation(sliceUid, Angle.Zero);
