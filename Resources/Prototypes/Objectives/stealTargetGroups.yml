@@ -25,7 +25,7 @@
   id: RDTablet
   name: steal-target-groups-rd-tablet
   sprite:
-    sprite: Objects/Tools/handheld_rnd_Tablet.rsi
+    sprite: Objects/Tools/handheld_rnd_tablet.rsi
     state: icon
 
 - type: stealTargetGroup

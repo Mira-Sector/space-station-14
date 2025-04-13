@@ -1,4 +1,4 @@
-﻿- type: entity
+- type: entity
   name: handheld R&D tablet
   parent: [BaseHandheldComputer, BaseGrandTheftContraband]
   id: HandHeldRnDTablet
@@ -6,7 +6,7 @@
   components:
   - type: Item
   - type: Sprite
-    sprite: Objects/Tools/handheld_rnd_Tablet.rsi
+    sprite: Objects/Tools/handheld_rnd_tablet.rsi
     state: icon
     layers:
     - state: icon
