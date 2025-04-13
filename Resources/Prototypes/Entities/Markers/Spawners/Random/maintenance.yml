@@ -98,6 +98,7 @@
       - id: PlushieSolusSlime
       - id: PlushieAnurath
       - id: PlushieGwen
+      - id: PlushieSalad
       # Cloaks
       - !type:GroupSelector
         children:

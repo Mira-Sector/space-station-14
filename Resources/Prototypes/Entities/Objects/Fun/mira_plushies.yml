@@ -87,3 +87,13 @@
   - type: Sprite
     sprite: Objects/Fun/mira_plushies.rsi
     state: plushie_gwen
+
+- type: entity
+  parent: PlushieSolusSlime
+  id: PlushieSalad
+  name: ashley jelly plushie
+  description: Your best googa (friend).
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/mira_plushies.rsi
+    state: plushie_salad
