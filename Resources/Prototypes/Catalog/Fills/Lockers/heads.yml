@@ -273,6 +273,7 @@
     - id: ResearchComputerCircuitboard
     - id: RubberStampRd
     - id: EncryptionKeyBinary
+    - id: HandHeldRnDTablet
 
 # Hardsuit table, used for suit storage as well
 - type: entityTable
