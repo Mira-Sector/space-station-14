@@ -141,7 +141,7 @@ public sealed class SliceableFoodSystem : EntitySystem
         {
             var sliceUid = SliceStack(uid, user, (int)sliceNumber, component, transform);
             //Transferring reagents to stacks only does it for the first item in the stack. The rest are generic prototypes.
-            //Probably a way to do this properly....
+            //Probably a way to do this properly but stacks just seem to be stored as a number of generic prototypes, so not sure if good idea.
         }
 
         _audio.PlayPvs(component.Sound, transform.Coordinates, AudioParams.Default.WithVolume(-2));

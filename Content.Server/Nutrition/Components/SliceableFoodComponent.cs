@@ -45,6 +45,7 @@ public sealed partial class SliceableFoodComponent : Component
 
     /// <summary>
     /// should reagents be transferred from food to slice (true) or not (false)
+    /// note that stacked items do not transfer reagents as it doesn't work properly.
     /// </summary>
     [DataField]
     public bool TransferReagents = true;
