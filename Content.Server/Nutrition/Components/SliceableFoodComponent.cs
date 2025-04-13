@@ -14,7 +14,13 @@ public sealed partial class SliceableFoodComponent : Component
     /// If the name isn't a valid prototype, crashes the game.
     /// </summary>
     [DataField]
-    public string? Slice;
+    public EntProtoId? Slice;
+
+    /// <summary>
+    /// Prototype to spawn for a stack of items
+    /// </summary>
+    [DataField]
+    public ProtoId<StackPrototype> SliceStack = "Credit";
 
     [DataField]
     public SoundSpecifier Sound = new SoundPathSpecifier("/Audio/Items/Culinary/chop.ogg");
@@ -35,7 +41,7 @@ public sealed partial class SliceableFoodComponent : Component
     /// all the pieces will be shifted in random directions.
     /// </summary>
     [DataField]
-    public float SpawnOffset = 0.5f;
+    public float SpawnOffset = 2.0f;
 
     /// <summary>
     /// additional container that will be transferred over. "food" is still always transferred over.
@@ -45,24 +51,22 @@ public sealed partial class SliceableFoodComponent : Component
 
     /// <summary>
     /// should reagents be transferred from food to slice (true) or not (false)
-    /// note that stacked items do not transfer reagents as it doesn't work properly.
     /// </summary>
+    /// <remarks>
+    /// note that stacked items do not transfer reagents as it doesn't work properly.
+    /// </remarks>
     [DataField]
     public bool TransferReagents = true;
 
     /// <summary>
     /// should the number of slices be dependant on the potency of the produce (true), or static (false). If there is no potency found, defaults to false outcome.
+    /// </summary>
+    /// <remarks>
     /// for most plants this won't be relevent, as potency will only effect reagent amount which is already accounted for as long as reagents are transferred.
     /// would instead be relevent for plants like cotton or towercap where the sliced object itself matters more than the reagent.
     /// </summary>
     [DataField]
     public bool PotencyEffectsCount = false;
-    /// <summary>
-    /// determines whether the system will attempt to spawn a stack of entities (true) or several independant entities (false).
-    /// if using a series of entities, Slice must be provided a value, if a stack, SliceStack must be provided a value.
-    /// </summary>
-    [DataField]
-    public bool SpawnStack = false;
 
     /// <summary>
     /// whether or not any sharp object can be used to cut this (true), or only a knife utensil (false)

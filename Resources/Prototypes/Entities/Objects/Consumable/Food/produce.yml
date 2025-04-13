@@ -138,10 +138,9 @@
     seedId: papercane
   - type: SliceableFood
     count: 6
-    slice: Paper
+    sliceStack: Paper
     transferReagents: false
     potencyEffectsCount: true
-    spawnStack: true
     anySharp: true
 
 - type: entity
@@ -198,10 +197,9 @@
     seedId: towercap
   - type: SliceableFood
     count: 5
-    slice: WoodPlank
+    sliceStack: WoodPlank
     transferReagents: false
     potencyEffectsCount: true
-    spawnStack: true
     anySharp: true
 
 - type: entity
@@ -223,10 +221,9 @@
     seedId: steelcap
   - type: SliceableFood
     count: 4
-    slice: Steel
+    sliceStack: Steel
     transferReagents: false
     potencyEffectsCount: true
-    spawnStack: true
     anySharp: true
 
 - type: entity
@@ -246,10 +243,9 @@
     seedId: plasteelcap
   - type: SliceableFood
     count: 3
-    slice: Plasteel
+    sliceStack: Plasteel
     transferReagents: false
     potencyEffectsCount: true
-    spawnStack: true
     anySharp: true
 
 - type: entity
@@ -1707,11 +1703,10 @@
         - ReagentId: Happiness
           Quantity: 8
   - type: SliceableFood
-    slice: Credit
+    sliceStack: Credit
     count: 100
     transferReagents: false
     potencyEffectsCount: true
-    spawnStack: true
   - type: Produce
     seedId: spesoe
   - type: Tag
@@ -2848,8 +2843,9 @@
           Quantity: 10
   - type: SliceableFood
     count: 6
-    slice: MaterialCotton1
+    sliceStack: Cotton
     potencyEffectsCount: true
+    transferReagents: false
     anySharp: true
   - type: Produce
     seedId: cotton
@@ -2881,8 +2877,9 @@
           Quantity: 5
   - type: SliceableFood
     count: 6
-    slice: MaterialPyrotton1
+    sliceStack: Pyrotton
     potencyEffectsCount: true
+    transferReagents: false
     anySharp: true
   - type: Produce
     seedId: pyrotton

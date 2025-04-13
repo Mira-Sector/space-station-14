@@ -10,7 +10,6 @@ using Content.Shared.Chemistry.Components;
 using Content.Shared.DoAfter;
 using Content.Shared.FixedPoint;
 using Content.Shared.Interaction;
-using Content.Shared.Stacks;
 using Robust.Server.GameObjects;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
@@ -18,7 +17,6 @@ using Robust.Shared.Random;
 using Robust.Shared.Containers;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
-using Robust.Shared.Prototypes;
 
 
 namespace Content.Server.Nutrition.EntitySystems;
@@ -47,9 +45,9 @@ public sealed class SliceableFoodSystem : EntitySystem
         if (args.Handled)
             return;
 
-        if ((!TryComp<UtensilComponent>(args.Used, out var utensil) || (utensil.Types & UtensilType.Knife) == 0) && entity.Comp.AnySharp == false//if used item isn't a knife untensil, do nothing.
-            || !HasComp<SharpComponent>(args.Used) && entity.Comp.AnySharp == true) //alternatively, if any sharp item is allowed, if it doesn't have a sharpcomponent do nothing
-            return;
+        if (!TryComp<UtensilComponent>(args.Used, out var utensil) || (utensil.Types & UtensilType.Knife) == 0) //if used item isn't a knife untensil, deny.
+            if (!HasComp<SharpComponent>(args.Used) && entity.Comp.AnySharp == true) //alternatively, if any sharp item is allowed and doesn't have a sharpcomponent, deny.
+                return;
 
         var doAfterArgs = new DoAfterArgs(EntityManager,
             args.User,
@@ -82,8 +80,14 @@ public sealed class SliceableFoodSystem : EntitySystem
         TransformComponent? transform = null)
     {
         if (!Resolve(uid, ref component, ref food, ref transform) ||
-            string.IsNullOrEmpty(component.Slice))
+            string.IsNullOrEmpty(component.Slice) && string.IsNullOrEmpty(component.SliceStack))
             return false;
+
+        var spawnStack = false;
+        if (string.IsNullOrEmpty(component.Slice))//check whether a Slice Prototype is present, if it isn't, assume a stack is being spawned instead.
+            spawnStack = true;
+        else
+            spawnStack = false;
 
         if (!_solutionContainer.TryGetSolution(uid, food.Solution, out var soln, out var solution))
             return false;
@@ -107,19 +111,19 @@ public sealed class SliceableFoodSystem : EntitySystem
 
         var sliceVolume = solution.Volume / FixedPoint2.New(component.TotalCount);
         var sliceVolumeExtra = solutionEx.Volume / FixedPoint2.New(component.TotalCount);
-        var sliceNumber = (float)component.TotalCount;
+        var sliceNumber = component.TotalCount;
 
         if (component.PotencyEffectsCount == true) //will potency effect the number of slices
         {
             if (TryComp<ProduceComponent>(uid, out var prod)) //if so, is there a produce component?
             {
                 if (prod.Seed != null) //Is seed data defined? Wouldn't be for spawned produce.
-                    sliceNumber = (float)Math.Ceiling(sliceNumber * prod.Seed.Potency / 100); //set to potency value if it exists
+                    sliceNumber = (ushort)Math.Ceiling(sliceNumber * prod.Seed.Potency / 100); //divide by potency as a percentage, round up to nearest whole number
             }
         }
-        if (component.SpawnStack == false)
+        if (spawnStack == false)
         {
-            for (int i = 0; i < sliceNumber; i++)
+            for (int i = 0; i < sliceNumber; i++) //if value given for Slice, spawn slices
             {
                 var sliceUid = Slice(uid, user, component, transform);
                 if (component.TransferReagents != false)
@@ -137,9 +141,9 @@ public sealed class SliceableFoodSystem : EntitySystem
                 }
             }
         }
-        else
+        else //otherwise, spawn single stack
         {
-            var sliceUid = SliceStack(uid, user, (int)sliceNumber, component, transform);
+            SliceStack(uid, user, sliceNumber, component, transform);
             //Transferring reagents to stacks only does it for the first item in the stack. The rest are generic prototypes.
             //Probably a way to do this properly but stacks just seem to be stored as a number of generic prototypes, so not sure if good idea.
         }
@@ -164,18 +168,16 @@ public sealed class SliceableFoodSystem : EntitySystem
         if (!Resolve(uid, ref comp, ref transform))
             return EntityUid.Invalid;
 
-        EntProtoId? slice = comp.Slice;
-
-        var sliceUid = Spawn(slice, _transform.GetMapCoordinates(uid));
+        var sliceUid = Spawn(comp.Slice, _transform.GetMapCoordinates(uid));
 
         // try putting the slice into the container if the food being sliced is in a container!
         // this lets you do things like slice a pizza up inside of a hot food cart without making a food-everywhere mess
         _transform.DropNextTo(sliceUid, (uid, transform));
-        _transform.SetLocalRotation(sliceUid, 0);
+        _transform.SetLocalRotation(sliceUid, Angle.Zero);
 
         if (!_container.IsEntityOrParentInContainer(sliceUid))
         {
-            var randVect = _random.NextVector2(2.0f, 2.5f);
+            var randVect = _random.NextVector2(comp.SpawnOffset, comp.SpawnOffset);
             if (TryComp<PhysicsComponent>(sliceUid, out var physics))
                 _physics.SetLinearVelocity(sliceUid, randVect, body: physics);
         }
@@ -188,19 +190,14 @@ public sealed class SliceableFoodSystem : EntitySystem
         if (!Resolve(uid, ref comp, ref transform))
             return EntityUid.Invalid;
 
-        if (string.IsNullOrEmpty(comp.Slice))
-            return EntityUid.Invalid;
-
-        ProtoId<StackPrototype> slice = comp.Slice;
-
-        var sliceUid = _stack.Spawn(count, slice, Transform(uid).Coordinates);
+        var sliceUid = _stack.Spawn(count, comp.SliceStack, Transform(uid).Coordinates);
 
         _transform.DropNextTo(sliceUid, (uid, transform));
-        _transform.SetLocalRotation(sliceUid, 0);
+        _transform.SetLocalRotation(sliceUid, Angle.Zero);
 
         if (!_container.IsEntityOrParentInContainer(sliceUid))
         {
-            var randVect = _random.NextVector2(2.0f, 2.5f);
+            var randVect = _random.NextVector2(comp.SpawnOffset, comp.SpawnOffset);
             if (TryComp<PhysicsComponent>(sliceUid, out var physics))
                 _physics.SetLinearVelocity(sliceUid, randVect, body: physics);
         }
@@ -225,7 +222,7 @@ public sealed class SliceableFoodSystem : EntitySystem
 
             // try putting the trash in the food's container too, to be consistent with slice spawning?
             _transform.DropNextTo(trashUid, uid);
-            _transform.SetLocalRotation(trashUid, 0);
+            _transform.SetLocalRotation(trashUid, Angle.Zero);
         }
 
         QueueDel(uid);
