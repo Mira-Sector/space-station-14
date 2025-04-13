@@ -1485,3 +1485,25 @@ Entries:
     type: Add
   id: 215
   time: '2025-04-07T14:30:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: Solar oil's glowing effect is shortened by charcoal, and blows up if it reacts with void oil
+    type: Add
+  - message: Frost oil can now solidify plasma
+    type: Add
+  - message: Plants that could be eaten for an item can now be butchered for the same item
+    type: Tweak
+  - message: Swabbing takes 1 second rather than 2.
+    type: Tweak
+  - message: Agrichem can now make up to 30u of Unstable Mutagen rather than 15u
+    type: Tweak
+  - message: Towercap, Steelcap, Plasteelcap, Cotton, Pyrotton, and Papercane chopped product numbers scale with the potency of the produce to make up for them not having any reagents that would have scaled instead.
+    type: Tweak
+  - message: Towercap, Steelcap, Plasteelcap, and Papercane now automatically stack on being chopped
+    type: Tweak
+  - message: The Botanist's Scythe is now sharper
+    type: Tweak
+  - message: You can no longer attempt to use any item on a sliceable food.
+    type: Fix
+  id: 216
+  time: '2025-04-07T21:00:00.0000000+00:00'
