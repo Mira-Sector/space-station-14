@@ -140,16 +140,8 @@ public sealed class SliceableFoodSystem : EntitySystem
         else
         {
             var sliceUid = SliceStack(uid, user, (int)sliceNumber, component, transform);
-            if (component.TransferReagents != false)
-            {
-                var lostSolution =
-                    _solutionContainer.SplitSolution(soln.Value, sliceVolume);
-                FillSlice(sliceUid, lostSolution);
-                if (isExtraSolution == true && solnEx != null) //if there is an extra solution, add that one too
-                {
-                    FillSliceExtra(sliceUid, solnEx.Value, sliceVolumeExtra, extraSolution);
-                }
-            }
+            //Transferring reagents to stacks only does it for the first item in the stack. The rest are generic prototypes.
+            //Probably a way to do this properly....
         }
 
         _audio.PlayPvs(component.Sound, transform.Coordinates, AudioParams.Default.WithVolume(-2));
