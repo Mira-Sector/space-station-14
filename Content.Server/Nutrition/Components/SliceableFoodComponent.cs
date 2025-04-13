@@ -16,7 +16,7 @@ public sealed partial class SliceableFoodComponent : Component
     public EntProtoId? Slice;
 
     [DataField]
-    public ProtoId<StackPrototype>? SliceStack;
+    public ProtoId<StackPrototype> SliceStack = "Credit";
 
     [DataField]
     public SoundSpecifier Sound = new SoundPathSpecifier("/Audio/Items/Culinary/chop.ogg");
@@ -46,16 +46,28 @@ public sealed partial class SliceableFoodComponent : Component
     public string? ExtraSolution;
 
     /// <summary>
-    /// should reagents be transferred from food to slice
+    /// should reagents be transferred from food to slice (true) or not (false)
     /// </summary>
     [DataField]
     public bool TransferReagents = true;
 
     /// <summary>
-    /// should the number of slices be dependant on the potency of the produce. If there is no potency found, does nothing.
-    /// for most plants this won't be relevent, as potency will only effect reagent amount which is already accounted for
-    /// would instead be relevent for plants like cotton where the sliced object itself matters more than the reagent.
+    /// should the number of slices be dependant on the potency of the produce (true), or static (false). If there is no potency found, defaults to false outcome.
+    /// for most plants this won't be relevent, as potency will only effect reagent amount which is already accounted for as long as reagents are transferred.
+    /// would instead be relevent for plants like cotton or towercap where the sliced object itself matters more than the reagent.
     /// </summary>
     [DataField]
     public bool PotencyEffectsCount = false;
+    /// <summary>
+    /// determines whether the system will attempt to spawn a stack of entities (true) or several independant entities (false).
+    /// if using a series of entities, Slice must be provided a value, if a stack, SliceStack must be provided a value.
+    /// </summary>
+    [DataField]
+    public bool SpawnStack = false;
+
+    /// <summary>
+    /// whether or not any sharp object can be used to cut this (true), or only a knife utensil (false)
+    /// </summary>
+    [DataField]
+    public bool AnySharp = false;
 }

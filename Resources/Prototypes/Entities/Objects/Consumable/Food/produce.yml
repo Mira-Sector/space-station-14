@@ -136,9 +136,13 @@
   - type: SolutionContainerManager
   - type: Produce
     seedId: papercane
-  - type: Log
-    spawnedPrototype: SheetPaper1
-    spawnCount: 2
+  - type: SliceableFood
+    count: 6
+    sliceStack: Paper
+    transferReagents: false
+    potencyEffectsCount: true
+    spawnStack: true
+    anySharp: true
 
 - type: entity
   parent: FoodProduceBase
@@ -192,7 +196,13 @@
         Blunt: 10
   - type: Produce
     seedId: towercap
-  - type: Log
+  - type: SliceableFood
+    count: 5
+    sliceStack: WoodPlank
+    transferReagents: false
+    potencyEffectsCount: true
+    spawnStack: true
+    anySharp: true
 
 - type: entity
   name: steel-cap log
@@ -211,9 +221,13 @@
         Blunt: 12
   - type: Produce
     seedId: steelcap
-  - type: Log
-    spawnedPrototype: SheetSteel1
-    spawnCount: 1
+  - type: SliceableFood
+    count: 4
+    sliceStack: Steel
+    transferReagents: false
+    potencyEffectsCount: true
+    spawnStack: true
+    anySharp: true
 
 - type: entity
   name: plasteel-cap log
@@ -230,9 +244,13 @@
         Blunt: 15
   - type: Produce
     seedId: plasteelcap
-  - type: Log
-    spawnedPrototype: SheetPlasteel1
-    spawnCount: 1
+  - type: SliceableFood
+    count: 3
+    sliceStack: Plasteel
+    transferReagents: false
+    potencyEffectsCount: true
+    spawnStack: true
+    anySharp: true
 
 - type: entity
   name: nettle
@@ -1688,9 +1706,12 @@
         reagents:
         - ReagentId: Happiness
           Quantity: 8
-  - type: LogStack
-    spawnedPrototype: Credit
-    usePotency: true
+  - type: SliceableFood
+    sliceStack: "Credit"
+    count: 100
+    transferReagents: false
+    potencyEffectsCount: true
+    spawnStack: true
   - type: Produce
     seedId: spesoe
   - type: Tag
@@ -2825,9 +2846,12 @@
         reagents:
         - ReagentId: Fiber
           Quantity: 10
-  - type: Log
-    spawnedPrototype: MaterialCotton1
-    spawnCount: 2
+  - type: SliceableFood
+    count: 6
+    sliceStack: Cotton
+    potencyEffectsCount: true
+    spawnStack: true
+    anySharp: true
   - type: Produce
     seedId: cotton
   - type: Tag
@@ -2856,9 +2880,12 @@
           Quantity: 5
         - ReagentId: Phlogiston
           Quantity: 5
-  - type: Log
-    spawnedPrototype: MaterialPyrotton1
-    spawnCount: 2
+  - type: SliceableFood
+    count: 6
+    sliceStack: Pyrotton
+    potencyEffectsCount: true
+    spawnStack: true
+    anySharp: true
   - type: Produce
     seedId: pyrotton
   - type: Tag

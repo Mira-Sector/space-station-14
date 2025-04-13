@@ -1,5 +1,8 @@
 using Content.Server.DoAfter;
+using Content.Server.Botany.Components;
 using Content.Server.Nutrition.Components;
+using Content.Server.Kitchen.Components;
+using Content.Server.Stack;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Nutrition;
 using Content.Shared.Nutrition.Components;
@@ -26,6 +29,7 @@ public sealed class SliceableFoodSystem : EntitySystem
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
+    [Dependency] private readonly StackSystem _stack = default!;
     public override void Initialize()
     {
         base.Initialize();
@@ -40,7 +44,7 @@ public sealed class SliceableFoodSystem : EntitySystem
         if (args.Handled)
             return;
 
-        if (!TryComp<UtensilComponent>(args.Used, out var utensil) || (utensil.Types & UtensilType.Knife) == 0) //if used item isn't a knife untensil, do nothing.
+        if (!TryComp<UtensilComponent>(args.Used, out var utensil) || (utensil.Types & UtensilType.Knife) == 0 || !HasComp<SharpComponent>(args.Used) && entity.Comp.AnySharp == true) //if used item isn't a knife untensil, do nothing.
             return;
 
         var doAfterArgs = new DoAfterArgs(EntityManager,
@@ -63,19 +67,18 @@ public sealed class SliceableFoodSystem : EntitySystem
         if (args.Cancelled || args.Handled || args.Args.Target == null)
             return;
 
-        if (TrySliceFood(entity, args.User, args.Used, entity.Comp))
+        if (TrySliceFood(entity, args.User, entity.Comp))
             args.Handled = true;
     }
 
     private bool TrySliceFood(EntityUid uid,
         EntityUid user,
-        EntityUid? usedItem,
         SliceableFoodComponent? component = null,
         FoodComponent? food = null,
         TransformComponent? transform = null)
     {
         if (!Resolve(uid, ref component, ref food, ref transform) ||
-            string.IsNullOrEmpty(component.Slice))
+            string.IsNullOrEmpty(component.Slice) && string.IsNullOrEmpty(component.SliceStack))
             return false;
 
         if (!_solutionContainer.TryGetSolution(uid, food.Solution, out var soln, out var solution))
@@ -100,18 +103,44 @@ public sealed class SliceableFoodSystem : EntitySystem
 
         var sliceVolume = solution.Volume / FixedPoint2.New(component.TotalCount);
         var sliceVolumeExtra = solutionEx.Volume / FixedPoint2.New(component.TotalCount);
+        var sliceNumber = (float)component.TotalCount;
 
-        for (int i = 0; i < component.TotalCount; i++)
+        if (component.PotencyEffectsCount == true) //will potency effect the number of slices
         {
-            var sliceUid = Slice(uid, user, component, transform);
-            if (component.TransferReagents == true)
+            if (TryComp<ProduceComponent>(uid, out var prod)) //if so, is there a produce component?
+            {
+                if (prod.Seed != null) //Is seed data defined? Wouldn't be for spawned produce.
+                    sliceNumber = (float)Math.Ceiling(sliceNumber * prod.Seed.Potency / 100); //set to potency value if it exists
+            }
+        }
+        if (component.SpawnStack == false)
+        {
+            for (int i = 0; i < sliceNumber; i++)
+            {
+                var sliceUid = Slice(uid, user, component, transform);
+                if (component.TransferReagents != false)
+                {
+                    var lostSolution =
+                        _solutionContainer.SplitSolution(soln.Value, sliceVolume);
+
+                    // Fill new slice
+                    FillSlice(sliceUid, lostSolution);
+
+                    if (isExtraSolution == true && solnEx != null) //if there is an extra solution, add that one too
+                    {
+                        FillSliceExtra(sliceUid, solnEx.Value, sliceVolumeExtra, extraSolution);
+                    }
+                }
+            }
+        }
+        else
+        {
+            var sliceUid = SliceStack(uid, user, (int)sliceNumber, component, transform);
+            if (component.TransferReagents != false)
             {
                 var lostSolution =
                     _solutionContainer.SplitSolution(soln.Value, sliceVolume);
-
-                // Fill new slice
                 FillSlice(sliceUid, lostSolution);
-
                 if (isExtraSolution == true && solnEx != null) //if there is an extra solution, add that one too
                 {
                     FillSliceExtra(sliceUid, solnEx.Value, sliceVolumeExtra, extraSolution);
@@ -143,6 +172,26 @@ public sealed class SliceableFoodSystem : EntitySystem
 
         // try putting the slice into the container if the food being sliced is in a container!
         // this lets you do things like slice a pizza up inside of a hot food cart without making a food-everywhere mess
+        _transform.DropNextTo(sliceUid, (uid, transform));
+        _transform.SetLocalRotation(sliceUid, 0);
+
+        if (!_container.IsEntityOrParentInContainer(sliceUid))
+        {
+            var randVect = _random.NextVector2(2.0f, 2.5f);
+            if (TryComp<PhysicsComponent>(sliceUid, out var physics))
+                _physics.SetLinearVelocity(sliceUid, randVect, body: physics);
+        }
+
+        return sliceUid;
+    }
+
+    public EntityUid SliceStack(EntityUid uid, EntityUid user, int count, SliceableFoodComponent? comp = null, TransformComponent? transform = null)
+    {
+        if (!Resolve(uid, ref comp, ref transform))
+            return EntityUid.Invalid;
+
+        var sliceUid = _stack.Spawn(count, comp.SliceStack, Transform(uid).Coordinates);
+
         _transform.DropNextTo(sliceUid, (uid, transform));
         _transform.SetLocalRotation(sliceUid, 0);
 
