@@ -97,3 +97,13 @@
   - type: Sprite
     sprite: Objects/Fun/mira_plushies.rsi
     state: plushie_salad
+
+- type: entity
+  parent: PlushieMoth
+  id: PlushieWudanty
+  name: mariusz czulek plushie
+  description: A cute stuffed toy that resembles a certain moth.
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/mira_plushies.rsi
+    state: plushie_wudanty

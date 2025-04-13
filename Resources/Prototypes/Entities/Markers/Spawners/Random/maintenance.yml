@@ -99,6 +99,7 @@
       - id: PlushieAnurath
       - id: PlushieGwen
       - id: PlushieSalad
+      - id: PlushieWudanty
       # Cloaks
       - !type:GroupSelector
         children:
