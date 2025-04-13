@@ -102,7 +102,7 @@
   parent: PlushieMoth
   id: PlushieWudanty
   name: mariusz czulek plushie
-  description: A cute stuffed toy that resembles someone a moth that probably has AA somehow.
+  description: A cute stuffed toy that resembles a moth that probably has AA somehow.
   components:
   - type: Sprite
     sprite: Objects/Fun/mira_plushies.rsi
