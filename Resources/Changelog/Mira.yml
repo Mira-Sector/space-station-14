@@ -1473,3 +1473,9 @@ Entries:
     type: Add
   id: 213
   time: '2025-04-13T14:20:00.0000000+00:00'
+- author: Anurath
+  changes:
+  - message: The handheld R&D tablet has been added to the RDs locker
+    type: Add
+  id: 214
+  time: '2025-04-07T14:30:00.0000000+00:00'
