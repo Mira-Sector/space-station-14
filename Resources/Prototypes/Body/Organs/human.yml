@@ -104,6 +104,7 @@
     state: tongue
   - type: TypingIndicatorOrgan
     proto: default
+  - type: Tongue
 
 - type: entity
   id: OrganHumanAppendix
