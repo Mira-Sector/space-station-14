@@ -229,6 +229,19 @@
     entity: IngotSilver1
 
 - type: reaction
+  id: SolidifyPlasma
+  impact: Low
+  quantized: true
+  reactants:
+    Plasma:
+      amount: 10
+    FrostOil:
+      amount: 5
+  effects:
+  - !type:CreateEntityReactionEffect
+    entity: SheetPlasma1
+
+- type: reaction
   id: WehHewExplosion
   impact: High
   priority: 20
