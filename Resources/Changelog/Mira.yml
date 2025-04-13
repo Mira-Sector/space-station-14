@@ -1479,3 +1479,9 @@ Entries:
     type: Add
   id: 214
   time: '2025-04-07T14:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: New medkit sprites
+    type: Add
+  id: 215
+  time: '2025-04-07T14:30:00.0000000+00:00'
