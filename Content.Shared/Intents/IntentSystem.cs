@@ -41,6 +41,9 @@ public sealed partial class IntentSystem : EntitySystem
 
     private void OnIntentChange(Entity<IntentsComponent> ent, ref IntentChangeMessage args)
     {
+        if (ent.Comp.SelectedIntent == args.Intent)
+            return;
+
         var ev = new IntentChangedEvent(args.Intent, ent.Comp.SelectedIntent);
         RaiseLocalEvent(ent, ev);
 
