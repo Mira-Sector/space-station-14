@@ -1,0 +1,53 @@
+﻿- type: body
+  id: Kobold
+  name: kobold
+  root: torso
+  slots:
+    head:
+      part: KoboldHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: KoboldTorso
+      connections:
+      - right_arm
+      - left_arm
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_arm:
+      part: KoboldRightArm
+      connections:
+      - right_hand
+    left_arm:
+      part: KoboldLeftArm
+      connections:
+      - left_hand
+    right_hand:
+      part: KoboldRightHand
+
+    left_hand:
+      part: KoboldLeftHand
+
+    right_leg:
+      part: KoboldRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: KoboldLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: KoboldRightFoot
+    left_foot:
+      part: KoboldLeftFoot

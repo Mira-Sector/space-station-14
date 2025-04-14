@@ -20,9 +20,29 @@ public abstract class SharedArmorSystem : EntitySystem
     {
         base.Initialize();
 
+        SubscribeLocalEvent<ArmorComponent, InventoryRelayedEvent<CoefficientQueryEvent>>(OnCoefficientQuery);
         SubscribeLocalEvent<ArmorComponent, InventoryRelayedEvent<DamageModifyEvent>>(OnDamageModify);
         SubscribeLocalEvent<ArmorComponent, BorgModuleRelayedEvent<DamageModifyEvent>>(OnBorgDamageModify);
         SubscribeLocalEvent<ArmorComponent, GetVerbsEvent<ExamineVerb>>(OnArmorVerbExamine);
+    }
+
+    /// <summary>
+    /// Get the total Damage reduction value of all equipment caught by the relay.
+    /// </summary>
+    /// <param name="ent">The item that's being relayed to</param>
+    /// <param name="args">The event, contains the running count of armor percentage as a coefficient</param>
+    private void OnCoefficientQuery(Entity<ArmorComponent> ent, ref InventoryRelayedEvent<CoefficientQueryEvent> args)
+    {
+        foreach (var parts in ent.Comp.Modifiers.Keys)
+        {
+            if (!parts.Contains(ent.Comp.BasePart))
+                continue;
+
+            foreach (var armorCoefficient in ent.Comp.Modifiers[parts].Coefficients)
+            {
+                args.Args.DamageModifiers.Coefficients[armorCoefficient.Key] = args.Args.DamageModifiers.Coefficients.TryGetValue(armorCoefficient.Key, out var coefficient) ? coefficient * armorCoefficient.Value : armorCoefficient.Value;
+            }
+        }
     }
 
     private void OnDamageModify(EntityUid uid, ArmorComponent component, InventoryRelayedEvent<DamageModifyEvent> args)
@@ -72,7 +92,7 @@ public abstract class SharedArmorSystem : EntitySystem
 
     private void OnArmorVerbExamine(EntityUid uid, ArmorComponent component, GetVerbsEvent<ExamineVerb> args)
     {
-        if (!args.CanInteract || !args.CanAccess)
+        if (!args.CanInteract || !args.CanAccess || !component.ShowArmorOnExamine)
             return;
 
         var examineMarkup = GetArmorExamine(component.Modifiers);

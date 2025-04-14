@@ -215,10 +215,28 @@
     - SiliconEmotes
   chatMessages: ["chat-emote-msg-clap"]
   chatTriggers:
-    - clap
     - claps
     - clapping
     - clapped
+
+- type: emote
+  id: ClapSingle
+  name: chat-emote-name-clap-single
+  category: Hands
+  icon: Interface/Emotes/clap.png #TODO: Needs a sprite that distinguishes it better from clap
+  whitelist:
+    components:
+    - Hands
+  blacklist:
+    components:
+    - BorgChassis
+  chatMessages: [ "chat-emote-msg-clap-single" ]
+  chatTriggers:
+    - clap
+    - claps their hands together
+    - claps her hands together
+    - claps his hands together
+    - claps its hands together
 
 - type: emote
   id: Snap
@@ -229,9 +247,9 @@
     components:
     - Hands
   blacklist:
-    tags:
-    - SiliconEmotes
-  chatMessages: ["chat-emote-msg-snap"] # snaps <{THEIR($ent)}> fingers?
+    components:
+    - BorgChassis
+  chatMessages: ["chat-emote-msg-snap"]
   chatTriggers:
     - snap
     - snaps
@@ -240,6 +258,9 @@
     - snap fingers
     - snaps fingers
     - snaps their fingers
+    - snaps her fingers
+    - snaps his fingers
+    - snaps its fingers
     - snapping fingers
     - snapped fingers
 

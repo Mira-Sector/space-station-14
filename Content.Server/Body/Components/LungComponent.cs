@@ -29,7 +29,7 @@ public sealed partial class LungComponent : Component
     /// <summary>
     /// The solution on this entity that these lungs act on.
     /// </summary>
-    [DataField]
+    [ViewVariables]
     public Entity<SolutionComponent>? Solution = null;
 
     /// <summary>

@@ -68,3 +68,6 @@ trait-bilingual-desc = You learned a random language. Maybe those mothic classes
 
 trait-glowing-name = Glowing
 trait-glowing-desc = You glow in the dark.
+
+trait-painnumbness-name = Numb
+trait-painnumbness-desc = You lack any sense of feeling pain, being unaware of how hurt you may be.

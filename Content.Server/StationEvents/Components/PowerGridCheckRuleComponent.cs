@@ -1,11 +1,18 @@
 using System.Threading;
 using Content.Server.StationEvents.Events;
+using Robust.Shared.Audio;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.StationEvents.Components;
 
 [RegisterComponent, Access(typeof(PowerGridCheckRule))]
 public sealed partial class PowerGridCheckRuleComponent : Component
 {
+    /// <summary>
+    /// Default sound of the announcement when power is back on.
+    /// </summary>
+    private static readonly ProtoId<SoundCollectionPrototype> DefaultPowerOn = new("PowerOn");
+
     public CancellationTokenSource? AnnounceCancelToken;
 
     public EntityUid AffectedStation;

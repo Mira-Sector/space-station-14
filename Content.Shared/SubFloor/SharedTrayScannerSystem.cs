@@ -1,14 +1,22 @@
+using Content.Shared.Eye;
+using Content.Shared.Hands;
 using Content.Shared.Interaction;
 using Content.Shared.Verbs;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
+using Content.Shared.Inventory.Events;
+using Robust.Shared.GameStates;
+using Robust.Shared.Network;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared.SubFloor;
 
 public abstract class SharedTrayScannerSystem : EntitySystem
 {
+    [Dependency] private readonly INetManager _netMan = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private readonly SharedEyeSystem _eye = default!;
 
     public const float SubfloorRevealAlpha = 0.8f;
 
@@ -21,17 +29,19 @@ public abstract class SharedTrayScannerSystem : EntitySystem
         SubscribeLocalEvent<TrayScannerComponent, ActivateInWorldEvent>(OnTrayScannerActivate);
         SubscribeLocalEvent<TrayScannerComponent, ComponentInit>(OnTrayScannerInit);
         SubscribeLocalEvent<TrayScannerComponent, GetVerbsEvent<Verb>>(OnGetVerbs);
+
+        SubscribeLocalEvent<TrayScannerComponent, GotEquippedHandEvent>(OnTrayHandEquipped);
+        SubscribeLocalEvent<TrayScannerComponent, GotUnequippedHandEvent>(OnTrayHandUnequipped);
+        SubscribeLocalEvent<TrayScannerComponent, GotEquippedEvent>(OnTrayEquipped);
+        SubscribeLocalEvent<TrayScannerComponent, GotUnequippedEvent>(OnTrayUnequipped);
+
+        SubscribeLocalEvent<TrayScannerUserComponent, GetVisMaskEvent>(OnUserGetVis);
     }
 
     private void OnTrayScannerInit(EntityUid uid, TrayScannerComponent scanner, ref ComponentInit args)
     {
-        if (scanner.EnabledEntity)
-            SetScannerEnabled(uid, scanner.Enabled, scanner);
-
         foreach (var layer in scanner.ToggleableLayers)
             scanner.RevealedLayers.Add(layer);
-
-        Dirty(uid, scanner);
     }
 
     private void OnGetVerbs(EntityUid uid, TrayScannerComponent scanner, GetVerbsEvent<Verb> args)
@@ -74,6 +84,63 @@ public abstract class SharedTrayScannerSystem : EntitySystem
 
             args.Verbs.Add(verb);
         }
+    }
+
+
+    private void OnUserGetVis(Entity<TrayScannerUserComponent> ent, ref GetVisMaskEvent args)
+    {
+        args.VisibilityMask |= (int)VisibilityFlags.Subfloor;
+    }
+
+    public void AddUser(EntityUid user)
+    {
+        if (_netMan.IsClient)
+            return;
+
+        var comp = EnsureComp<TrayScannerUserComponent>(user);
+        comp.Count++;
+
+        if (comp.Count > 1)
+            return;
+
+        _eye.RefreshVisibilityMask(user);
+    }
+
+    public void RemoveUser(EntityUid user)
+    {
+        if (_netMan.IsClient)
+            return;
+
+        if (!TryComp(user, out TrayScannerUserComponent? comp))
+            return;
+
+        comp.Count--;
+
+        if (comp.Count > 0)
+            return;
+
+        RemComp<TrayScannerUserComponent>(user);
+        _eye.RefreshVisibilityMask(user);
+    }
+
+    private void OnTrayHandUnequipped(Entity<TrayScannerComponent> ent, ref GotUnequippedHandEvent args)
+    {
+        RemoveUser(args.User);
+    }
+
+    private void OnTrayHandEquipped(Entity<TrayScannerComponent> ent, ref GotEquippedHandEvent args)
+    {
+        AddUser(args.User);
+    }
+
+    private void OnTrayUnequipped(Entity<TrayScannerComponent> ent, ref GotUnequippedEvent args)
+    {
+        RemoveUser(args.Equipee);
+    }
+
+    private void OnTrayEquipped(Entity<TrayScannerComponent> ent, ref GotEquippedEvent args)
+    {
+        AddUser(args.Equipee);
     }
 
     private void OnTrayScannerActivate(EntityUid uid, TrayScannerComponent scanner, ActivateInWorldEvent args)

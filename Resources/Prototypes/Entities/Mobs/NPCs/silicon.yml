@@ -15,6 +15,9 @@
   - type: NpcFactionMember
     factions:
     - SimpleNeutral
+  - type: Access
+    tags:
+    - BasicSilicon
   - type: IntrinsicRadioReceiver
   - type: IntrinsicRadioTransmitter
     channels:
@@ -52,6 +55,7 @@
     - DoorBumpOpener
     - SiliconEmotes
     - Bot
+    - Unimplantable
   - type: MobState
     allowedStates:
       - Alive
@@ -196,6 +200,8 @@
     name: ghost-role-information-honkbot-name
     description: ghost-role-information-honkbot-description
     rules: ghost-role-information-freeagent-rules
+    mindRoles:
+    - MindRoleGhostRoleFreeAgentHarmless
     raffle:
       settings: default
   - type: GhostTakeoverAvailable
@@ -228,6 +234,8 @@
     name: ghost-role-information-jonkbot-name
     description: ghost-role-information-jonkbot-description
     rules: ghost-role-information-freeagent-rules
+    mindRoles:
+    - MindRoleGhostRoleFreeAgentHarmless
     raffle:
       settings: default
   - type: InteractionPopup
@@ -365,6 +373,8 @@
     name: ghost-role-information-mimebot-name
     description: ghost-role-information-mimebot-description
     rules: ghost-role-information-freeagent-rules
+    mindRoles:
+    - MindRoleGhostRoleFreeAgentHarmless
     raffle:
       settings: default
   - type: GhostTakeoverAvailable
@@ -437,6 +447,7 @@
     - FootstepSound
     - SiliconEmotes
     - Bot
+    - Unimplantable
   - type: ActiveRadio
     channels:
     - Hexadecimal

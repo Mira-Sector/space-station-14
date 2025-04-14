@@ -1,0 +1,37 @@
+﻿- type: body
+  id: Butterfly
+  name: butterfly
+  root: torso
+  slots:
+    head:
+      part: ButterflyHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: ButterflyTorso
+      connections:
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_leg:
+      part: ButterflyRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: ButterflyLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: ButterflyRightFoot
+    left_foot:
+      part: ButterflyLeftFoot

@@ -1,0 +1,51 @@
+﻿- type: entity
+  id: BaseGorillaPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: GorillaTorso
+  name: gorilla torso
+  parent: [BaseGorillaPart, BaseTorso]
+
+- type: entity
+  id: GorillaHead
+  name: gorilla head
+  parent: [BaseGorillaPart, BaseHead]
+
+- type: entity
+  id: GorillaLeftArm
+  name: left gorilla arm
+  parent: [BaseGorillaPart, BaseLeftArm]
+
+- type: entity
+  id: GorillaRightArm
+  name: right gorilla arm
+  parent: [BaseGorillaPart, BaseRightArm]
+
+- type: entity
+  id: GorillaLeftLeg
+  name: left gorilla leg
+  parent: [BaseGorillaPart, BaseLeftLeg]
+
+- type: entity
+  id: GorillaRightLeg
+  name: right gorilla leg
+  parent: [BaseGorillaPart, BaseRightLeg]
+
+- type: entity
+  id: GorillaLeftFoot
+  name: left gorilla foot
+  parent: [BaseGorillaPart,BaseLeftFoot]
+
+- type: entity
+  id: GorillaRightFoot
+  name: right gorilla foot
+  parent: [ BaseGorillaPart, BaseRightFoot]

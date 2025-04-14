@@ -207,6 +207,15 @@
   - type: AccessReader
     access: [ [ "Kitchen" ] ]
 
+- type: entity
+  id: LockerFreezerMedical
+  parent: LockerFreezerBase
+  name: freezer
+  suffix: Medical, Locked
+  components:
+  - type: AccessReader
+    access: [ [ "Medical" ] ]
+
 # Botanist
 - type: entity
   id: LockerBotanist

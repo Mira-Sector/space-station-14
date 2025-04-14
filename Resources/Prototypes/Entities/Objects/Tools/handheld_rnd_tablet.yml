@@ -1,0 +1,66 @@
+- type: entity
+  name: handheld R&D tablet
+  parent: [BaseHandheldComputer, BaseGrandTheftContraband]
+  id: HandHeldRnDTablet
+  description: A hand-held R&D tablet made by the RD utilising 14G data.
+  components:
+  - type: Item
+  - type: Sprite
+    sprite: Objects/Tools/handheld_rnd_tablet.rsi
+    state: icon
+    layers:
+    - state: icon
+    - state: powered
+      shader: unshaded
+      visible: true
+      map: [ "enum.PowerDeviceVisualLayers.Powered" ]
+  - type: ResearchClient
+  - type: ResearchConsole
+  - type: ActiveRadio
+    channels:
+    - Science
+  - type: TechnologyDatabase
+  - type: UserInterface
+    interfaces:
+      enum.ResearchConsoleUiKey.Key:
+        type: ResearchConsoleBoundUserInterface
+      enum.ResearchClientUiKey.Key:
+        type: ResearchClientBoundUserInterface
+  - type: AccessReader
+    access: [ [ "Research" ] ]
+  - type: PowerCellDraw
+    drawRate: 1.5
+  - type: ToggleCellDraw
+  - type: ActivatableUI
+    key: enum.ResearchConsoleUiKey.Key
+    inHandsOnly: true
+    singleUser: true
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+       enum.PowerCellSlotVisuals.Enabled:
+         enum.PowerDeviceVisualLayers.Powered:
+          True: { visible: true }
+          False: { visible: false }
+  - type: Tag
+    tags:
+    - HighRiskItem
+  - type: StealTarget
+    stealGroup: RDTablet
+
+- type: entity
+  id: HandHeldRnDTabletEmpty
+  parent: HandHeldRnDTablet
+  suffix: Empty
+  components:
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+  - type: Sprite
+    layers:
+    - state: icon
+    - state: powered
+      shader: unshaded
+      visible: false
+      map: [ "enum.PowerDeviceVisualLayers.Powered" ]

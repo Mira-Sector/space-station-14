@@ -168,6 +168,7 @@
   - type: StationEvent
     startAnnouncement: null #dont nark on antags
     weight: 2 # lower because antags
+    minimumPlayers: 20
   - type: LoadMapRule
     preloadedGrid: Drone
 
@@ -228,6 +229,7 @@
     startAnnouncement: null #dont nark on antags
     weight: 1 #  lower because antags.
     earliestStart: 50 # late to hopefully have enough ghosts to fill all roles quickly (3) and because antags
+    minimumPlayers: 20
   - type: LoadMapRule
     preloadedGrid: Instigator
 
@@ -257,6 +259,7 @@
     startAnnouncement: station-event-unknown-shuttle-incoming #Leaving this one because theyre like primitives and its funnier
     weight: 1 # lower because antags
     earliestStart: 50 # late to hopefully have enough ghosts to fill all roles quickly. (4) & antags
+    minimumPlayers: 20
   - type: LoadMapRule
     preloadedGrid: ManOWar
 
@@ -288,6 +291,7 @@
     startAnnouncement: null #dont nark on antags
     weight: 1 # lower because antags & because its the Drone but better
     earliestStart: 45 # late to hopefully have enough ghosts to fill all roles quickly.
+    minimumPlayers: 20
   - type: LoadMapRule
     preloadedGrid: Raider
 
@@ -299,6 +303,7 @@
     startAnnouncement: null #dont nark on antags, it might be worth giving this one some generic "There be pirates" announement. idk.
     weight: 2 # lower because antags
     earliestStart: 35 # late to hopefully have enough ghosts to fill all roles quickly. (3)
+    minimumPlayers: 20
   - type: LoadMapRule
     preloadedGrid: Scooner
 

@@ -1,0 +1,37 @@
+﻿- type: body
+  id: Pig
+  name: pig
+  root: torso
+  slots:
+    head:
+      part: PigHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: PigTorso
+      connections:
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_leg:
+      part: PigRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: PigLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: PigRightFoot
+    left_foot:
+      part: PigLeftFoot

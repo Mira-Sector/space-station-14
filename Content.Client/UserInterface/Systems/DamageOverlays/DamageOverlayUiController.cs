@@ -1,8 +1,10 @@
+using Content.Shared.Body.Systems;
 using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
+using Content.Shared.Traits.Assorted;
 using JetBrains.Annotations;
 using Robust.Client.Graphics;
 using Robust.Client.Player;
@@ -20,6 +22,7 @@ public sealed class DamageOverlayUiController : UIController
     [Dependency] private readonly IPlayerManager _playerManager = default!;
     [Dependency] private readonly IPrototypeManager _protoManager = default!;
 
+    [UISystemDependency] private readonly SharedBodySystem _body = default!;
     [UISystemDependency] private readonly MobThresholdSystem _mobThresholdSystem = default!;
     private Overlays.DamageOverlay _overlay = default!;
 
@@ -68,7 +71,7 @@ public sealed class DamageOverlayUiController : UIController
     {
         _overlay.DeadLevel = 0f;
         _overlay.CritLevel = 0f;
-        _overlay.BruteLevel = 0f;
+        _overlay.PainLevel = 0f;
         _overlay.OxygenLevel = 0f;
     }
 
@@ -98,21 +101,29 @@ public sealed class DamageOverlayUiController : UIController
         {
             case MobState.Alive:
             {
+                FixedPoint2 painLevel = 0;
+                _overlay.PainLevel = 0;
+
                 var damagePerGroup = damage.GetDamagePerGroup(_protoManager);
 
-                if (damagePerGroup.ContainsKey("Brute"))
+                if (!EntityManager.HasComponent<PainNumbnessComponent>(entity) && _body != null)
                 {
-                    _overlay.BruteLevel = FixedPoint2.Min(1f, damagePerGroup["Brute"] / critThreshold).Float();
+                    foreach (var painDamageType in _body.GetPainDamageGroups(entity))
+                    {
+                        damagePerGroup.TryGetValue(painDamageType, out var painDamage);
+                        painLevel += painDamage;
+                    }
+                    _overlay.PainLevel = FixedPoint2.Min(1f, painLevel / critThreshold).Float();
+
+                    if (_overlay.PainLevel < 0.05f) // Don't show damage overlay if they're near enough to max.
+                    {
+                        _overlay.PainLevel = 0;
+                    }
                 }
 
                 if (damagePerGroup.ContainsKey("Airloss"))
                 {
                     _overlay.OxygenLevel = FixedPoint2.Min(1f, damagePerGroup["Airloss"] / critThreshold).Float();
-                }
-
-                if (_overlay.BruteLevel < 0.05f) // Don't show damage overlay if they're near enough to max.
-                {
-                    _overlay.BruteLevel = 0;
                 }
 
                 _overlay.CritLevel = 0;
@@ -128,13 +139,13 @@ public sealed class DamageOverlayUiController : UIController
                     return;
                 _overlay.CritLevel = critLevel.Value.Float();
 
-                _overlay.BruteLevel = 0;
+                _overlay.PainLevel = 0;
                 _overlay.DeadLevel = 0;
                 break;
             }
             case MobState.Dead:
             {
-                _overlay.BruteLevel = 0;
+                _overlay.PainLevel = 0;
                 _overlay.CritLevel = 0;
                 break;
             }

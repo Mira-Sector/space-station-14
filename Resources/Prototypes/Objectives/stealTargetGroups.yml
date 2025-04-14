@@ -22,6 +22,13 @@
     state: icon
 
 - type: stealTargetGroup
+  id: RDTablet
+  name: steal-target-groups-rd-tablet
+  sprite:
+    sprite: Objects/Tools/handheld_rnd_tablet.rsi
+    state: icon
+
+- type: stealTargetGroup
   id: ClothingShoesBootsMagAdv
   name: steal-target-groups-clothing-shoes-boots-mag-adv
   sprite:
@@ -120,6 +127,13 @@
   sprite:
     sprite: Objects/Misc/module.rsi
     state: datadisk_base
+
+- type: stealTargetGroup
+  id: Mail
+  name: steal-target-groups-mail
+  sprite:
+    sprite: Objects/Specific/Cargo/mail.rsi
+    state: icon
 
 - type: stealTargetGroup
   id: IDCard

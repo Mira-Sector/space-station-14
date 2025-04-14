@@ -1,0 +1,37 @@
+﻿- type: body
+  id: Possum
+  name: possum
+  root: torso
+  slots:
+    head:
+      part: PossumHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: PossumTorso
+      connections:
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_leg:
+      part: PossumRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: PossumLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: PossumRightFoot
+    left_foot:
+      part: PossumLeftFoot

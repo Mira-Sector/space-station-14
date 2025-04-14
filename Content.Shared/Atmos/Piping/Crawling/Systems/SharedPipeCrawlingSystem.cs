@@ -19,6 +19,7 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
     [Dependency] private readonly SharedContainerSystem _containers = default!;
     [Dependency] private readonly SharedMoverController _movement = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
+    [Dependency] private readonly SharedTrayScannerSystem _tray = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!;
 
@@ -123,13 +124,13 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
 
         if (enabled)
         {
-            var trayComp = EnsureComp<TrayScannerComponent>(uid);
-            trayComp.EnabledEntity = true;
-            trayComp.Enabled = true;
+            EnsureComp<TrayScannerComponent>(uid).Enabled = true;
+            _tray.AddUser(uid);
         }
-        else if (HasComp<TrayScannerComponent>(uid))
+        else
         {
             RemComp<TrayScannerComponent>(uid);
+            _tray.RemoveUser(uid);
         }
 
         if (!TryComp<InputMoverComponent>(uid, out var inputComp))

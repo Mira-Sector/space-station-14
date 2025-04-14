@@ -104,6 +104,11 @@
   - type: HeldSpeedModifier
   - type: ToggleableClothing
     clothingPrototype: ClothingHeadHelmetHardsuitSpatio
+  - type: Tag
+    tags:
+    - Hardsuit
+    - WhitelistChameleon
+    - HardsuitSpatio
 
 #Salvage Hardsuit
 - type: entity
@@ -131,6 +136,36 @@
   - type: ToggleableClothing
     clothingPrototype: ClothingHeadHelmetHardsuitSalvage
 
+#Goliath Hardsuit
+- type: entity
+  parent: [ClothingOuterHardsuitBase, BaseCargoContraband]
+  id: ClothingOuterHardsuitGoliath
+  name: goliath hardsuit
+  description: A lightweight hardsuit, adorned with a patchwork of thick, chitinous goliath hide.
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/Hardsuits/goliath.rsi
+  - type: Clothing
+    sprite: Clothing/OuterClothing/Hardsuits/goliath.rsi
+  - type: PressureProtection
+    highPressureMultiplier: 0.5
+    lowPressureMultiplier: 1000
+  - type: ExplosionResistance
+    damageCoefficient: 0.3
+  - type: Armor
+    modifiers:
+      [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.7, Slash: 0.7, Piercing: 0.5, Heat: 0.7, Radiation: 0.3, Caustic: 0.8 } }
+  - type: ClothingSpeedModifier
+    walkModifier: 0.8
+    sprintModifier: 0.8
+  - type: HeldSpeedModifier
+  - type: ToggleableClothing
+    clothingPrototype: ClothingHeadHelmetHardsuitGoliath
+  - type: Construction
+    graph: HardsuitGoliath
+    node: hardsuitGoliath
+
+#Maxim Hardsuit
 - type: entity
   parent: [ClothingOuterHardsuitBase, BaseCargoContraband]
   id: ClothingOuterHardsuitMaxim
@@ -160,7 +195,7 @@
 
 #Security Hardsuit
 - type: entity
-  parent: [ClothingOuterHardsuitBase, BaseRestrictedContraband]
+  parent: [ClothingOuterHardsuitBase, BaseSecurityContraband]
   id: ClothingOuterHardsuitSecurity
   name: security hardsuit
   description: A special suit that protects against hazardous, low pressure environments. Has an additional layer of armor.
@@ -186,7 +221,7 @@
 
 #Brigmedic Hardsuit
 - type: entity
-  parent: [ClothingOuterHardsuitBase, BaseRestrictedContraband]
+  parent: [ClothingOuterHardsuitBase, BaseSecurityContraband]
   id: ClothingOuterHardsuitBrigmedic
   name: brigmedic hardsuit
   description: Special hardsuit of the guardian angel of the brig. It is the medical version of the security hardsuit.
@@ -200,7 +235,7 @@
     lowPressureMultiplier: 1000
   - type: Armor
     modifiers:
-      [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.8, Slash: 0.8, Piercing: 0.7 } }
+      [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.8, Slash: 0.8, Piercing: 0.7, Radiation: 0.9 } }
   - type: ClothingSpeedModifier
     walkModifier: 0.65
     sprintModifier: 0.65
@@ -210,7 +245,7 @@
 
 #Warden's Hardsuit
 - type: entity
-  parent: [ClothingOuterHardsuitBase, BaseRestrictedContraband]
+  parent: [ClothingOuterHardsuitBase, BaseSecurityContraband]
   id: ClothingOuterHardsuitWarden
   name: warden's hardsuit
   description: A specialized riot suit geared to combat low pressure environments.
@@ -228,8 +263,8 @@
     modifiers:
       [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.5, Slash: 0.6, Piercing: 0.6, Caustic: 0.7 } }
   - type: ClothingSpeedModifier
-    walkModifier: 0.7
-    sprintModifier: 0.7
+    walkModifier: 0.85
+    sprintModifier: 0.85
   - type: HeldSpeedModifier
   - type: ToggleableClothing
     clothingPrototype: ClothingHeadHelmetHardsuitWarden
@@ -383,6 +418,7 @@
   id: ClothingOuterHardsuitLuxury #DO NOT MAP - https://github.com/space-wizards/space-station-14/pull/19738#issuecomment-1703486738
   name: luxury mining hardsuit
   description: A refurbished mining hardsuit, fashioned after the Quartermaster's colors. Graphene lining provides less protection, but is much easier to move.
+  categories: [ DoNotMap ]
   components:
   - type: Sprite
     sprite: Clothing/OuterClothing/Hardsuits/luxury.rsi
@@ -542,7 +578,7 @@
 
 #Wizard Hardsuit
 - type: entity
-  parent: ClothingOuterHardsuitBase
+  parent: [ ClothingOuterHardsuitBase, BaseMagicalContraband ]
   id: ClothingOuterHardsuitWizard
   name: wizard hardsuit
   description: A bizarre gem-encrusted suit that radiates magical energies.

@@ -1,0 +1,51 @@
+﻿- type: entity
+  id: BasePenguinPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: PenguinTorso
+  name: penguin torso
+  parent: [BasePenguinPart, BaseTorso]
+
+- type: entity
+  id: PenguinHead
+  name: penguin head
+  parent: [BasePenguinPart, BaseHead]
+
+- type: entity
+  id: PenguinLeftArm
+  name: left penguin arm
+  parent: [BasePenguinPart, BaseLeftArm]
+
+- type: entity
+  id: PenguinRightArm
+  name: right penguin arm
+  parent: [BasePenguinPart, BaseRightArm]
+
+- type: entity
+  id: PenguinLeftLeg
+  name: left penguin leg
+  parent: [BasePenguinPart, BaseLeftLeg]
+
+- type: entity
+  id: PenguinRightLeg
+  name: right penguin leg
+  parent: [BasePenguinPart, BaseRightLeg]
+
+- type: entity
+  id: PenguinLeftFoot
+  name: left penguin foot
+  parent: [BasePenguinPart,BaseLeftFoot]
+
+- type: entity
+  id: PenguinRightFoot
+  name: right penguin foot
+  parent: [ BasePenguinPart, BaseRightFoot]

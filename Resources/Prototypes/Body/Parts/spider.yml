@@ -1,0 +1,41 @@
+﻿- type: entity
+  id: BaseSpiderPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: SpiderTorso
+  name: spider torso
+  parent: [BaseSpiderPart, BaseTorso]
+
+- type: entity
+  id: SpiderHead
+  name: spider head
+  parent: [BaseSpiderPart, BaseHead]
+
+- type: entity
+  id: SpiderLeftLeg
+  name: left genetic ancestor leg
+  parent: [BaseSpiderPart, BaseLeftLeg]
+
+- type: entity
+  id: SpiderRightLeg
+  name: right genetic ancestor leg
+  parent: [BaseSpiderPart, BaseRightLeg]
+
+- type: entity
+  id: SpiderLeftFoot
+  name: left genetic ancestor foot
+  parent: [BaseSpiderPart,BaseLeftFoot]
+
+- type: entity
+  id: SpiderRightFoot
+  name: right genetic ancestor foot
+  parent: [ BaseSpiderPart, BaseRightFoot]

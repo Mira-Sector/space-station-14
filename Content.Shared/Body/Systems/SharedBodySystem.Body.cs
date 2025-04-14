@@ -470,6 +470,16 @@ public partial class SharedBodySystem
             : throw new InvalidOperationException($"Unexpected error during processing {data}.");
     }
 
+    public HashSet<ProtoId<DamageGroupPrototype>> GetPainDamageGroups(EntityUid? bodyId, BodyComponent? body = null)
+    {
+        HashSet<ProtoId<DamageGroupPrototype>> groups = new();
+
+        foreach (var damageable in GetBodyDamageable(bodyId, body).Values)
+            groups.UnionWith(damageable.PainDamageGroups);
+
+        return groups;
+    }
+
     public virtual HashSet<EntityUid> GibBody(
         EntityUid bodyId,
         bool gibOrgans = false,

@@ -1,4 +1,4 @@
-﻿# ScatteringGrenade is intended for grenades that spawn entities, especially those with timers
+# ScatteringGrenade is intended for grenades that spawn entities, especially those with timers
 - type: entity
   abstract: true
   parent: BaseItem
@@ -20,7 +20,7 @@
   - type: ScatteringGrenade
 
 - type: entity
-  parent: [ScatteringGrenadeBase, BaseRestrictedContraband]
+  parent: [ScatteringGrenadeBase, BaseSecurityContraband]
   id: ClusterBang
   name: clusterbang
   description: Can be used only with flashbangs. Explodes several times.

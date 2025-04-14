@@ -1,0 +1,51 @@
+﻿- type: entity
+  id: BaseHamsterPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: HamsterTorso
+  name: hamster torso
+  parent: [BaseHamsterPart, BaseTorso]
+
+- type: entity
+  id: HamsterHead
+  name: hamster head
+  parent: [BaseHamsterPart, BaseHead]
+
+- type: entity
+  id: HamsterLeftArm
+  name: left hamster arm
+  parent: [BaseHamsterPart, BaseLeftArm]
+
+- type: entity
+  id: HamsterRightArm
+  name: right hamster arm
+  parent: [BaseHamsterPart, BaseRightArm]
+
+- type: entity
+  id: HamsterLeftLeg
+  name: left hamster leg
+  parent: [BaseHamsterPart, BaseLeftLeg]
+
+- type: entity
+  id: HamsterRightLeg
+  name: hamster leg
+  parent: [BaseHamsterPart, BaseRightLeg]
+
+- type: entity
+  id: HamsterLeftFoot
+  name: left hamster foot
+  parent: [BaseHamsterPart,BaseLeftFoot]
+
+- type: entity
+  id: HamsterRightFoot
+  name: hamster foot
+  parent: [BaseHamsterPart, BaseRightFoot]

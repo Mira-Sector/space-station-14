@@ -19,8 +19,8 @@
     - map: [ "enum.HumanoidVisualLayers.LArm" ]
     - map: [ "enum.HumanoidVisualLayers.RLeg" ]
     - map: [ "enum.HumanoidVisualLayers.LLeg" ]
-    - map: [ "enum.HumanoidVisualLayers.Underwear" ]
-    - map: [ "enum.HumanoidVisualLayers.Undershirt" ]
+    - map: [ "enum.HumanoidVisualLayers.UndergarmentBottom" ]
+    - map: [ "enum.HumanoidVisualLayers.UndergarmentTop" ]
     - map: ["jumpsuit"]
     - map: ["enum.HumanoidVisualLayers.LFoot"]
     - map: ["enum.HumanoidVisualLayers.RFoot"]
@@ -29,12 +29,12 @@
     - map: [ "gloves" ]
     - map: [ "shoes" ]
     - map: [ "ears" ]
-    - map: [ "outerClothing" ]
     - map: [ "eyes" ]
     - map: [ "belt" ]
     - map: [ "id" ]
-    - map: [ "neck" ]
+    - map: [ "outerClothing" ]
     - map: [ "back" ]
+    - map: [ "neck" ]
     - map: [ "enum.HumanoidVisualLayers.FacialHair" ]
     - map: [ "enum.HumanoidVisualLayers.Hair" ]
     - map: [ "enum.HumanoidVisualLayers.HeadSide" ]
@@ -319,7 +319,7 @@
     sweatHeatRegulation: 2000
     shiveringHeatRegulation: 2000
     normalBodyTemperature: 310.15
-    thermalRegulationTemperatureThreshold: 25
+    thermalRegulationTemperatureThreshold: 2
   - type: Perishable
   - type: Butcherable
     butcheringType: Spike # TODO human.
@@ -335,6 +335,50 @@
         Asphyxiation: -1.0
   - type: FireVisuals
     alternateState: Standing
+  - type: HealthAnalyzerBody
+    limbs:
+      !type:BodyPart { type: Head, side: None }:
+        hoverSprite:
+          sprite: /Textures/Interface/health_analyzer_body.rsi
+          state: head-hover
+        selectedSprite:
+          sprite: /Textures/Interface/health_analyzer_body.rsi
+          state: head
+      !type:BodyPart { type: Torso, side: None }:
+        hoverSprite:
+          sprite: /Textures/Interface/health_analyzer_body.rsi
+          state: torso-hover
+        selectedSprite:
+          sprite: /Textures/Interface/health_analyzer_body.rsi
+          state: torso
+      !type:BodyPart { type: Arm, side: Left }:
+        hoverSprite:
+          sprite: /Textures/Interface/health_analyzer_body.rsi
+          state: l_arm-hover
+        selectedSprite:
+          sprite: /Textures/Interface/health_analyzer_body.rsi
+          state: l_arm
+      !type:BodyPart { type: Arm, side: Right }:
+        hoverSprite:
+          sprite: /Textures/Interface/health_analyzer_body.rsi
+          state: r_arm-hover
+        selectedSprite:
+          sprite: /Textures/Interface/health_analyzer_body.rsi
+          state: r_arm
+      !type:BodyPart { type: Leg, side: Left }:
+        hoverSprite:
+          sprite: /Textures/Interface/health_analyzer_body.rsi
+          state: l_leg-hover
+        selectedSprite:
+          sprite: /Textures/Interface/health_analyzer_body.rsi
+          state: l_leg
+      !type:BodyPart { type: Leg, side: Right }:
+        hoverSprite:
+          sprite: /Textures/Interface/health_analyzer_body.rsi
+          state: r_leg-hover
+        selectedSprite:
+          sprite: /Textures/Interface/health_analyzer_body.rsi
+          state: r_leg
   - type: SurgeryRecieverBody
     surgeries:
       - bodyPart: !type:BodyPart { type: Head, side: None }
@@ -383,8 +427,8 @@
     - map: [ "enum.HumanoidVisualLayers.LArm" ]
     - map: [ "enum.HumanoidVisualLayers.RLeg" ]
     - map: [ "enum.HumanoidVisualLayers.LLeg" ]
-    - map: [ "enum.HumanoidVisualLayers.Underwear" ]
-    - map: [ "enum.HumanoidVisualLayers.Undershirt" ]
+    - map: [ "enum.HumanoidVisualLayers.UndergarmentBottom" ]
+    - map: [ "enum.HumanoidVisualLayers.UndergarmentTop" ]
     - map: ["jumpsuit"]
     - map: ["enum.HumanoidVisualLayers.LFoot"]
     - map: ["enum.HumanoidVisualLayers.RFoot"]
@@ -398,12 +442,12 @@
     - map: [ "gloves" ]
     - map: [ "shoes" ]
     - map: [ "ears" ]
-    - map: [ "outerClothing" ]
     - map: [ "eyes" ]
     - map: [ "belt" ]
     - map: [ "id" ]
-    - map: [ "neck" ]
+    - map: [ "outerClothing" ]
     - map: [ "back" ]
+    - map: [ "neck" ]
     - map: [ "enum.HumanoidVisualLayers.FacialHair" ]
     - map: [ "enum.HumanoidVisualLayers.Hair" ]
     - map: [ "enum.HumanoidVisualLayers.HeadSide" ]
