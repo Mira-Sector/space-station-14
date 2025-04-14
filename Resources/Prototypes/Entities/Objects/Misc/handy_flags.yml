@@ -77,10 +77,10 @@
   description: "Holding this, you feel some kind of power... And need for pickles?"
   components:
   - type: Sprite
-    sprite: Objects/Misc/Handy_Flags/LGBTQ_Flags/transexual_handy_flag_rsi
+    sprite: Objects/Misc/Handy_Flags/LGBTQ_Flags/transexual_handy_flag.rsi
     state: icon
   - type: Item
-    sprite: Objects/Misc/Handy_Flags/LGBTQ_Flags/transexual_handy_flag_rsi
+    sprite: Objects/Misc/Handy_Flags/LGBTQ_Flags/transexual_handy_flag.rsi
 
 - type: entity
   parent: BaseItem
