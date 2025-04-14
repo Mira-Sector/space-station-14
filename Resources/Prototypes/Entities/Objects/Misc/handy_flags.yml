@@ -201,3 +201,15 @@
     state: icon
   - type: Item
     sprite: Objects/Misc/Handy_Flags/LGBTQ_Flags/omnisexual_handy_flag.rsi
+
+- type: entity
+  parent: BaseItem
+  id: GenderqueerHandyFlag
+  name: genderqueer handheld flag
+  description: "Show everyone who you are!"
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/Handy_Flags/LGBTQ_Flags/genderqueer_handy_flag.rsi
+    state: icon
+  - type: Item
+    sprite: Objects/Misc/Handy_Flags/LGBTQ_Flags/genderqueer_handy_flag.rsi
