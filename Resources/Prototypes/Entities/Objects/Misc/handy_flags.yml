@@ -177,3 +177,15 @@
     state: icon
   - type: Item
     sprite: Objects/Misc/Handy_Flags/ally_handy_flag.rsi
+
+- type: entity
+  parent: BaseItem
+  id: AroAceHandyFlag
+  name: aroace handheld flag
+  description: "Show how platonic you are!"
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/Handy_Flags/aroace_handy_flag.rsi
+    state: icon
+  - type: Item
+    sprite: Objects/Misc/Handy_Flags/aroace_handy_flag.rsi
