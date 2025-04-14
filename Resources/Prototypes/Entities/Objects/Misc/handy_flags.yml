@@ -158,10 +158,22 @@
   parent: BaseItem
   id: GayHandyFlag
   name: gay handheld flag
-  description: "Come on, show these people how much you love MEN!"
+  description: "Come on... Kiss your homies goodnight."
   components:
   - type: Sprite
     sprite: Objects/Misc/Handy_Flags/gay_handy_flag.rsi
     state: icon
   - type: Item
     sprite: Objects/Misc/Handy_Flags/gay_handy_flag.rsi
+
+- type: entity
+  parent: BaseItem
+  id: AllyHandyFlag
+  name: ally handheld flag
+  description: "Woo-hoo! Allyship!"
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/Handy_Flags/ally_handy_flag.rsi
+    state: icon
+  - type: Item
+    sprite: Objects/Misc/Handy_Flags/ally_handy_flag.rsi
