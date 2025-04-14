@@ -1,7 +1,6 @@
 using Content.Shared.Actions;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Utility;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Content.Shared.Intents;
@@ -11,8 +10,6 @@ public sealed partial class IntentSystem : EntitySystem
     [Dependency] private readonly SharedActionsSystem _actions = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly SharedUserInterfaceSystem _userInterface = default!;
-
-    private static EntProtoId SelectionActionId = "ActionIntentSelection";
 
     public override void Initialize()
     {
@@ -25,7 +22,7 @@ public sealed partial class IntentSystem : EntitySystem
 
     private void OnMapInit(Entity<IntentsComponent> ent, ref MapInitEvent args)
     {
-        _actions.AddAction(ent, ref ent.Comp.SelectionAction, SelectionActionId);
+        _actions.AddAction(ent, ref ent.Comp.SelectionAction, ent.Comp.SelectionActionId);
         DirtyField(ent.Owner, ent.Comp, nameof(IntentsComponent.SelectionAction));
         UpdateAction(ent);
     }
@@ -56,7 +53,7 @@ public sealed partial class IntentSystem : EntitySystem
         UpdateAction(ent);
     }
 
-    public bool TryGetIntent(Entity<IntentsComponent?> ent, [NotNullWhen(true)] out Intent? intentId)
+    public bool TryGetIntent(Entity<IntentsComponent?> ent, [NotNullWhen(true)] out ProtoId<IntentPrototype>? intentId)
     {
         intentId = null;
 
@@ -69,19 +66,12 @@ public sealed partial class IntentSystem : EntitySystem
 
     private void UpdateAction(Entity<IntentsComponent> ent)
     {
+        if (!_prototype.TryIndex(ent.Comp.SelectedIntent, out var intent))
+            return;
+
         if (!_actions.TryGetActionData(ent.Comp.SelectionAction, out var action))
             return;
 
-        action.Icon = GetIntentIcon(ent, ent.Comp.SelectedIntent);
-    }
-
-    public SpriteSpecifier GetIntentIcon(Entity<IntentsComponent> ent, Intent intent)
-    {
-        return new SpriteSpecifier.Rsi(ent.Comp.Sprites, intent.ToString().ToLower());
-    }
-
-    public string GetIntentName(Intent intent)
-    {
-        return Loc.GetString($"intent-{intent.ToString().ToLower()}-name");
+        action.Icon = intent.Icon;
     }
 }

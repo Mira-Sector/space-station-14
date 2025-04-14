@@ -1,5 +1,5 @@
+using Robust.Shared.Prototypes;
 using Robust.Shared.GameStates;
-using Robust.Shared.Utility;
 
 namespace Content.Shared.Intents;
 
@@ -7,14 +7,14 @@ namespace Content.Shared.Intents;
 public sealed partial class IntentsComponent : Component
 {
     [DataField, AutoNetworkedField]
-    public HashSet<Intent> SelectableIntents = new();
+    public HashSet<ProtoId<IntentPrototype>> SelectableIntents = new();
 
     [DataField("defaultIntent"), AutoNetworkedField]
-    public Intent SelectedIntent;
+    public ProtoId<IntentPrototype> SelectedIntent;
+
+    [DataField, AutoNetworkedField]
+    public EntProtoId SelectionActionId = "ActionIntentSelection";
 
     [ViewVariables, AutoNetworkedField]
     public EntityUid? SelectionAction;
-
-    [DataField, AutoNetworkedField]
-    public ResPath Sprites = new ResPath("/Textures/Interface/intents.rsi");
 }

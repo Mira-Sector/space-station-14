@@ -1,12 +1,14 @@
+using Robust.Shared.Prototypes;
+
 namespace Content.Shared.Intents;
 
 public sealed partial class IntentChangedEvent : EntityEventArgs
 {
-    public Intent SelectedIntent;
+    public ProtoId<IntentPrototype> SelectedIntent;
 
-    public Intent OldIntent;
+    public ProtoId<IntentPrototype> OldIntent;
 
-    public IntentChangedEvent(Intent selectedIntent, Intent oldIntent)
+    public IntentChangedEvent(ProtoId<IntentPrototype> selectedIntent, ProtoId<IntentPrototype> oldIntent)
     {
         SelectedIntent = selectedIntent;
         OldIntent = oldIntent;

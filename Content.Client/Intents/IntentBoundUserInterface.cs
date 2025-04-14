@@ -10,7 +10,6 @@ namespace Content.Client.Intents;
 public sealed class IntentBoundUserInterface : BoundUserInterface
 {
     [Dependency] private readonly IPrototypeManager _prototype = default!;
-    [Dependency] private readonly IntentSystem _intent = default!;
 
     private SimpleRadialMenu? _menu;
 
@@ -28,25 +27,30 @@ public sealed class IntentBoundUserInterface : BoundUserInterface
 
         _menu = this.CreateWindow<SimpleRadialMenu>();
         _menu.Track(Owner);
-        var models = ConvertToButtons(intents.SelectableIntents, intents);
+        var models = ConvertToButtons(intents.SelectableIntents);
         _menu.SetButtons(models);
 
         _menu.OpenOverMouseScreenPosition();
     }
 
-    private IEnumerable<RadialMenuActionOption> ConvertToButtons(HashSet<Intent> intents, IntentsComponent intentComp)
+    private IEnumerable<RadialMenuActionOption> ConvertToButtons(HashSet<ProtoId<IntentPrototype>> intents)
     {
-        foreach (var intent in intents)
+        foreach (var intentId in intents)
         {
-            yield return new RadialMenuActionOption<Intent>(HandleButtonClick, intent)
+            if (!_prototype.TryIndex(intentId, out var intent))
+                continue;
+
+            yield return new RadialMenuActionOption<ProtoId<IntentPrototype>>(HandleButtonClick, intentId)
             {
-                Sprite = _intent.GetIntentIcon((Owner, intentComp), intent),
-                ToolTip = _intent.GetIntentName(intent)
+                Sprite = intent.Icon,
+                ToolTip = Loc.GetString(intent.Name),
+                BackgroundColor = intent.BackgroundColor,
+                HoverBackgroundColor = intent.HoverColor
             };
         }
     }
 
-    private void HandleButtonClick(Intent intent)
+    private void HandleButtonClick(ProtoId<IntentPrototype> intent)
     {
         var msg = new IntentChangeMessage(intent);
         SendPredictedMessage(msg);
