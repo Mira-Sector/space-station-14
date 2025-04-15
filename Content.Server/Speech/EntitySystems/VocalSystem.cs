@@ -34,13 +34,13 @@ public sealed class VocalSystem : EntitySystem
 
         SubscribeLocalEvent<VocalOrganComponent, OrganAddedEvent>(OnOrganAdded);
         SubscribeLocalEvent<VocalOrganComponent, OrganRemovedEvent>(OnOrganRemoved);
-        SubscribeLocalEvent<VocalOrganComponent, GetEmoteSoundsEvent>(OnOrganGetEmotes);
+        SubscribeLocalEvent<VocalOrganComponent, BodyOrganRelayedEvent<GetEmoteSoundsEvent>>(OnOrganGetEmotes);
         SubscribeLocalEvent<VocalOrganBodyPartComponent, BodyPartAddedEvent>(OnOrganBodyPartAdded);
         SubscribeLocalEvent<VocalOrganBodyPartComponent, BodyPartRemovedEvent>(OnOrganBodyPartRemoved);
 
         SubscribeLocalEvent<VocalBodyPartComponent, BodyPartAddedEvent>(OnBodyPartAdded);
         SubscribeLocalEvent<VocalBodyPartComponent, BodyPartRemovedEvent>(OnBodyPartRemoved);
-        SubscribeLocalEvent<VocalBodyPartComponent, GetEmoteSoundsEvent>(OnBodyPartGetEmotes);
+        SubscribeLocalEvent<VocalBodyPartComponent, BodyLimbRelayedEvent<GetEmoteSoundsEvent>>(OnBodyPartGetEmotes);
     }
 
     private void OnMapInit(EntityUid uid, VocalComponent component, MapInitEvent args)
@@ -106,7 +106,8 @@ public sealed class VocalSystem : EntitySystem
             return;
 
         EnsureComp<VocalOrganBodyPartComponent>(args.Part).Organs += 1;
-        UpdateSounds(body);
+        EnsureComp<VocalComponent>(body, out var vocalComp);
+        UpdateSounds((body, vocalComp));
     }
 
     private void OnOrganRemoved(Entity<VocalOrganComponent> ent, ref OrganRemovedEvent args)
@@ -127,7 +128,8 @@ public sealed class VocalSystem : EntitySystem
         if (!TryComp<BodyPartComponent>(ent, out var bodyPartComp) || bodyPartComp.Body is not {} body)
             return;
 
-        UpdateSounds(body);
+        EnsureComp<VocalComponent>(body, out var vocalComp);
+        UpdateSounds((body, vocalComp));
     }
 
     private void OnOrganBodyPartRemoved(Entity<VocalOrganBodyPartComponent> ent, ref BodyPartRemovedEvent args)
@@ -138,12 +140,12 @@ public sealed class VocalSystem : EntitySystem
         UpdateSounds(body);
     }
 
-    private void OnOrganGetEmotes(Entity<VocalOrganComponent> ent, ref GetEmoteSoundsEvent args)
+    private void OnOrganGetEmotes(Entity<VocalOrganComponent> ent, ref BodyOrganRelayedEvent<GetEmoteSoundsEvent> args)
     {
-        if (!ent.Comp.Sounds.TryGetValue(GetSex(ent), out var sounds))
+        if (!ent.Comp.Sounds.TryGetValue(GetSex(args.Body), out var sounds))
             return;
 
-        MergeSounds(sounds, args.Sounds);
+        MergeSounds(sounds, args.Args.Sounds);
     }
 
     private void OnBodyPartAdded(Entity<VocalBodyPartComponent> ent, ref BodyPartAddedEvent args)
@@ -151,7 +153,8 @@ public sealed class VocalSystem : EntitySystem
         if (!TryComp<BodyPartComponent>(ent, out var bodyPartComp) || bodyPartComp.Body is not {} body)
             return;
 
-        UpdateSounds(body);
+        EnsureComp<VocalComponent>(body, out var vocalComp);
+        UpdateSounds((body, vocalComp));
     }
 
     private void OnBodyPartRemoved(Entity<VocalBodyPartComponent> ent, ref BodyPartRemovedEvent args)
@@ -162,12 +165,12 @@ public sealed class VocalSystem : EntitySystem
         UpdateSounds(body);
     }
 
-    private void OnBodyPartGetEmotes(Entity<VocalBodyPartComponent> ent, ref GetEmoteSoundsEvent args)
+    private void OnBodyPartGetEmotes(Entity<VocalBodyPartComponent> ent, ref BodyLimbRelayedEvent<GetEmoteSoundsEvent> args)
     {
-        if (!ent.Comp.Sounds.TryGetValue(GetSex(ent), out var sounds))
+        if (!ent.Comp.Sounds.TryGetValue(GetSex(args.Body), out var sounds))
             return;
 
-        MergeSounds(sounds, args.Sounds);
+        MergeSounds(sounds, args.Args.Sounds);
     }
 
     public void UpdateSounds(Entity<VocalComponent?> ent)

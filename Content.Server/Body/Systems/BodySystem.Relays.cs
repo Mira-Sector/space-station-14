@@ -8,5 +8,6 @@ public sealed partial class BodySystem
     private void InitializeRelays()
     {
         SubscribeLocalEvent<BodyComponent, AccentGetEvent>(RelayToLimbsAndOrgans);
+        SubscribeLocalEvent<BodyComponent, GetEmoteSoundsEvent>(RelayToLimbsAndOrgans);
     }
 }

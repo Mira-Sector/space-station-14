@@ -1,10 +1,10 @@
 using Content.Shared.Chat.Prototypes;
 
-namespace Content.Shared.Speech;
+namespace Content.Server.Speech;
 
 public sealed partial class GetEmoteSoundsEvent : EntityEventArgs
 {
-    public EmoteSounds Sounds = new();
+    public EmoteSounds Sounds;
 
     public GetEmoteSoundsEvent(EmoteSounds sounds)
     {
