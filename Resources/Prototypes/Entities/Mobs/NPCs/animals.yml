@@ -575,11 +575,6 @@
       amount: 2
   - type: Extractable
     grindableSolutionName: food
-  - type: Vocal
-    sounds:
-      Male: UnisexMoth
-      Female: UnisexMoth
-      Unsexed: UnisexMoth
     wilhelmProbability: 0.001
   - type: MobPrice
     price: 150
@@ -1167,11 +1162,6 @@
   - type: Speech
     speechSounds: Goat
     speechVerb: Goat
-  - type: Vocal
-    sounds:
-      Female: Goat
-      Male: Goat
-      Unsexed: Goat
   - type: InteractionPopup
     successChance: 0.2
     interactSuccessString: petting-success-goat
@@ -1391,9 +1381,6 @@
     description: ghost-role-information-kangaroo-description
     rules: ghost-role-information-nonantagonist-rules
   - type: GhostTakeoverAvailable
-  - type: Vocal
-    sounds:
-      Unsexed: Kangaroo
   - type: FootstepModifier
     footstepSoundCollection:
       collection: FootstepBounce
@@ -1659,11 +1646,6 @@
     speechSounds: Lizard
     speechVerb: Reptilian
     allowedEmotes: ['Thump']
-  - type: Vocal
-    sounds:
-      Male: MaleReptilian
-      Female: FemaleReptilian
-      Unsexed: MaleReptilian
   - type: BodyEmotes
     soundsId: ReptilianBodyEmotes
   - type: TypingIndicator
@@ -1978,12 +1960,6 @@
     damage:
       types:
         Blunt: 0.1
-  - type: Vocal
-    sounds:
-      Male: Mouse
-      Female: Mouse
-      Unsexed: Mouse
-    wilhelmProbability: 0.001
   # TODO: Remove CombatMode when Prototype Composition is added
   - type: CombatMode
   - type: MeleeWeapon
@@ -2364,9 +2340,6 @@
   - type: Speech
     speechSounds: Parrot
     speechVerb: Parrot
-  - type: Vocal
-    sounds:
-      Unsexed: Parrot
   - type: InteractionPopup
     successChance: 0.6
     interactSuccessString: petting-success-bird
@@ -2649,13 +2622,6 @@
     speechVerb: Arachnid
     speechSounds: Arachnid
     allowedEmotes: ['Click', 'Chitter']
-  - type: Vocal
-    sounds:
-      Male: UnisexArachnid
-      Female: UnisexArachnid
-      Unsexed: UnisexArachnid
-  - type: TypingIndicator
-    proto: spider
   - type: Tag
     tags:
     - DoorBumpOpener
@@ -3908,11 +3874,6 @@
     speechVerb: Plant
     speechSounds: Alto
     allowedEmotes: ['Chirp']
-  - type: Vocal
-    sounds:
-      Male: UnisexDiona
-      Female: UnisexDiona
-      Unsexed: UnisexDiona
   - type: Tag
     tags:
     - DoorBumpOpener

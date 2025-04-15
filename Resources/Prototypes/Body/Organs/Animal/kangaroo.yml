@@ -4,3 +4,6 @@
   components:
   - type: ReplacementAccent
     accent: kangaroo
+  - type: VocalOrgan
+    sounds:
+      Unsexed: Kangaroo

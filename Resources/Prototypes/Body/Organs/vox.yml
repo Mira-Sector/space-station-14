@@ -20,3 +20,8 @@
   components:
   - type: TypingIndicatorOrgan
     proto: vox
+  - type: VocalOrgan
+    sounds:
+      Male: UnisexVox
+      Female: UnisexVox
+      Unsexed: UnisexVox

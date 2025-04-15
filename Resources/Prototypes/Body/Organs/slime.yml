@@ -104,3 +104,8 @@
   components:
   - type: TypingIndicatorOrgan
     proto: slime
+  - type: VocalOrgan
+    sounds:
+      Male: MaleSlime
+      Female: FemaleSlime
+      Unsexed: MaleSlime

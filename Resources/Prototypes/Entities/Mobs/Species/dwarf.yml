@@ -42,11 +42,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: Vocal
-    sounds:
-      Male: UnisexDwarf
-      Female: FemaleDwarf
-      Unsexed: UnisexDwarf
   - type: Speech
     speechSounds: Bass
   - type: HumanoidAppearance

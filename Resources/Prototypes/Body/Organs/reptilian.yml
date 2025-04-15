@@ -28,3 +28,8 @@
   - type: LizardAccent
   - type: TypingIndicatorOrgan
     proto: lizard
+  - type: VocalOrgan
+    sounds:
+      Male: MaleReptilian
+      Female: FemaleReptilian
+      Unsexed: MaleReptilian

@@ -43,3 +43,8 @@
   components:
   - type: ReplacementAccent
     accent: dwarf
+  - type: VocalOrgan
+    sounds:
+      Male: UnisexDwarf
+      Female: FemaleDwarf
+      Unsexed: UnisexDwarf

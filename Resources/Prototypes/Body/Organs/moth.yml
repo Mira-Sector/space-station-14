@@ -34,3 +34,8 @@
     accent: zombieMoth
   - type: TypingIndicatorOrgan
     proto: moth
+  - type: VocalOrgan
+    sounds:
+      Male: UnisexMoth
+      Female: UnisexMoth
+      Unsexed: UnisexMoth

@@ -11,7 +11,7 @@
         brain: OrganDionaBrainNymph
         eyes: OrganDionaEyes
         ears: OrganHumanEars
-        tongue: OrganHumanTongue
+        tongue: OrganDionaTongue
     torso:
       part: TorsoDiona
       connections:

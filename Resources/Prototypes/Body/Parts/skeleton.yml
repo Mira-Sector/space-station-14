@@ -67,7 +67,7 @@
     - type: Speech
       speechVerb: Skeleton
     - type: Actions
-    - type: Vocal
+    - type: VocalBodyPart
       sounds:
         Male: Skeleton
         Female: Skeleton

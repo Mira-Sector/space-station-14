@@ -34,11 +34,6 @@
         color: "#808A51"
       Burn:
         sprite: Mobs/Effects/burn_damage.rsi
-  - type: Vocal
-    sounds:
-      Male: UnisexMoth
-      Female: UnisexMoth
-      Unsexed: UnisexMoth
   - type: MovementSpeedModifier
     weightlessAcceleration: 1.5 # Move around more easily in space.
     weightlessFriction: 1

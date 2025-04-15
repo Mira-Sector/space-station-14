@@ -44,11 +44,6 @@
     speechVerb: Slime
     speechSounds: Slime
     allowedEmotes: ['Squish']
-  - type: Vocal
-    sounds:
-      Male: MaleSlime
-      Female: FemaleSlime
-      Unsexed: MaleSlime
   - type: MeleeWeapon
     soundHit:
       collection: Punch
