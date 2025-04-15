@@ -4,20 +4,20 @@ meta:
   engineVersion: 250.0.0
   forkId: ""
   forkVersion: ""
-  time: 04/14/2025 22:28:54
-  entityCount: 13940
+  time: 04/15/2025 14:21:34
+  entityCount: 13944
 maps:
 - 1
 grids:
 - 2
-- 13916
-- 13917
-- 13930
-- 13931
-- 13933
+- 13920
+- 13921
+- 13934
 - 13935
 - 13937
 - 13939
+- 13941
+- 13943
 orphans: []
 nullspace: []
 tilemap:
@@ -96,7 +96,7 @@ entities:
       chunks:
         -1,-1:
           ind: -1,-1
-          tiles: ewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAAAWwAAAAABWwAAAAAAWwAAAAACWwAAAAADWwAAAAABWwAAAAADWwAAAAACWwAAAAACWwAAAAAAWwAAAAAAewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAAAWwAAAAACWwAAAAADWwAAAAAAWwAAAAAAWwAAAAAAWwAAAAABWwAAAAABWwAAAAACWwAAAAAAWwAAAAACewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAWwAAAAABWwAAAAADWwAAAAAAWwAAAAACWwAAAAAAWwAAAAACWwAAAAABWwAAAAADWwAAAAADWwAAAAACWwAAAAACewAAAAAAPgAAAAAAPgAAAAAAPgAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAWwAAAAADewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAWwAAAAAAWwAAAAADewAAAAAAPgAAAAAAPgAAAAAAPgAAAAAAewAAAAAAAAAAAAAAAAAAAAAAewAAAAAAIgAAAAADewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAACWwAAAAAAewAAAAAAPgAAAAAAPgAAAAAAPgAAAAAAawAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAABWwAAAAAAewAAAAAAeAAAAAADeAAAAAABeAAAAAACewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAAAWwAAAAACewAAAAAAeAAAAAADeAAAAAAAeAAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAADWwAAAAABHQAAAAACeAAAAAADeAAAAAABeAAAAAABeAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAAAWwAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAAAWwAAAAAAewAAAAAAWwAAAAADWwAAAAAAWwAAAAADWwAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAABWwAAAAADewAAAAAAWwAAAAAAWwAAAAAAWwAAAAADWwAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAABWwAAAAADewAAAAAAWwAAAAACWwAAAAACWwAAAAACWwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAAAWwAAAAADewAAAAAAewAAAAAAewAAAAAAewAAAAAAWwAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAADWwAAAAAAWwAAAAADWwAAAAACWwAAAAADWwAAAAABWwAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAABWwAAAAAAWwAAAAADWwAAAAADWwAAAAADWwAAAAACWwAAAAAC
+          tiles: ewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAAAWwAAAAABWwAAAAAAWwAAAAACWwAAAAADWwAAAAABWwAAAAADWwAAAAACWwAAAAACWwAAAAAAWwAAAAAAewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAAAWwAAAAACWwAAAAADWwAAAAAAWwAAAAAAWwAAAAAAWwAAAAABWwAAAAABWwAAAAACWwAAAAAAWwAAAAACewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAWwAAAAABWwAAAAADWwAAAAAAWwAAAAACWwAAAAAAWwAAAAACWwAAAAABWwAAAAADWwAAAAADWwAAAAACWwAAAAACewAAAAAAPgAAAAAAPgAAAAAAPgAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAWwAAAAADewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAWwAAAAAAWwAAAAADewAAAAAAPgAAAAAAPgAAAAAAPgAAAAAAewAAAAAAAAAAAAAAAAAAAAAAewAAAAAAIgAAAAADewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAACWwAAAAAAewAAAAAAPgAAAAAAPgAAAAAAPgAAAAAAawAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAABWwAAAAAAewAAAAAACAAAAAAACAAAAAAACAAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAAAWwAAAAACewAAAAAACAAAAAAACAAAAAAACAAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAADWwAAAAABCAAAAAAACAAAAAAACAAAAAAACAAAAAAAeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAAAWwAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAAAWwAAAAAAewAAAAAAWwAAAAADWwAAAAAAWwAAAAADWwAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAABWwAAAAADewAAAAAAWwAAAAAAWwAAAAAAWwAAAAADWwAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAABWwAAAAADewAAAAAAWwAAAAACWwAAAAACWwAAAAACWwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAAAWwAAAAADewAAAAAAewAAAAAAewAAAAAAewAAAAAAWwAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAADWwAAAAAAWwAAAAADWwAAAAACWwAAAAADWwAAAAABWwAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAWwAAAAABWwAAAAAAWwAAAAADWwAAAAADWwAAAAADWwAAAAACWwAAAAAC
           version: 6
         -1,0:
           ind: -1,0
@@ -132,7 +132,7 @@ entities:
           version: 6
         1,-2:
           ind: 1,-2
-          tiles: awAAAAAAWwAAAAABWwAAAAADewAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAewAAAAAAWwAAAAAAWwAAAAABewAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAewAAAAAAWwAAAAAAWwAAAAAAewAAAAAAewAAAAAAWwAAAAAAewAAAAAAewAAAAAAewAAAAAAWwAAAAAAWwAAAAACWwAAAAACewAAAAAAewAAAAAAewAAAAAAWwAAAAADWwAAAAABWwAAAAADWwAAAAACWwAAAAACWwAAAAABWwAAAAAAWwAAAAAAWwAAAAACWwAAAAACWwAAAAABWwAAAAACWwAAAAACWwAAAAACWwAAAAAAWwAAAAAAWwAAAAAAWwAAAAAAWwAAAAADWwAAAAADWwAAAAADWwAAAAACWwAAAAACWwAAAAACWwAAAAAAewAAAAAAWwAAAAABWwAAAAADWwAAAAADewAAAAAAWwAAAAAAWwAAAAAAWwAAAAAAWwAAAAABWwAAAAACWwAAAAADWwAAAAADWwAAAAABWwAAAAABWwAAAAABWwAAAAADewAAAAAAewAAAAAAWwAAAAACewAAAAAAewAAAAAAWwAAAAAAWwAAAAAAWwAAAAAAWwAAAAACWwAAAAADWwAAAAADWwAAAAADWwAAAAAAWwAAAAAAWwAAAAADewAAAAAAewAAAAAAWwAAAAABWwAAAAAAWwAAAAACewAAAAAAewAAAAAAWwAAAAAAWwAAAAAAWwAAAAABWwAAAAAAWwAAAAADWwAAAAABWwAAAAACWwAAAAAAWwAAAAAAewAAAAAAWwAAAAADWwAAAAACWwAAAAAAWwAAAAADWwAAAAACewAAAAAAWwAAAAAAWwAAAAAAWwAAAAAAWwAAAAABWwAAAAAAWwAAAAACWwAAAAADWwAAAAACWwAAAAACewAAAAAAWwAAAAABWwAAAAAAWwAAAAAAWwAAAAADWwAAAAADewAAAAAAWwAAAAAAWwAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAWwAAAAABWwAAAAAAWwAAAAACewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAawAAAAAAWwAAAAACWwAAAAAAWwAAAAACawAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAWwAAAAAAWwAAAAAAWwAAAAACewAAAAAAewAAAAAAewAAAAAAagAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAWwAAAAAAWwAAAAABWwAAAAAAHQAAAAACewAAAAAAWwAAAAAAWwAAAAAAWwAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAEQAAAAAAewAAAAAAewAAAAAAewAAAAAAWwAAAAABWwAAAAAAWwAAAAADHQAAAAAAewAAAAAAWwAAAAAAWwAAAAAAWwAAAAADewAAAAAAewAAAAAAewAAAAAAewAAAAAAEQAAAAAAawAAAAAAHQAAAAADewAAAAAAWwAAAAAAWwAAAAACWwAAAAACHQAAAAACHQAAAAAAWwAAAAADWwAAAAAAWwAAAAABewAAAAAAWwAAAAACWwAAAAACWwAAAAADEQAAAAAAewAAAAAAHQAAAAAAewAAAAAAWwAAAAACWwAAAAABWwAAAAACHQAAAAADewAAAAAAWwAAAAADWwAAAAAAWwAAAAAAWwAAAAACWwAAAAABWwAAAAACWwAAAAAA
+          tiles: awAAAAAAWwAAAAABWwAAAAADewAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAewAAAAAAWwAAAAAAWwAAAAABewAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAZAAAAAAAZAAAAAAAZAAAAAAAewAAAAAAWwAAAAAAWwAAAAAAewAAAAAAewAAAAAAWwAAAAAAewAAAAAAewAAAAAAewAAAAAAWwAAAAAAWwAAAAACWwAAAAACewAAAAAAewAAAAAAewAAAAAAWwAAAAADWwAAAAABWwAAAAADWwAAAAACWwAAAAACWwAAAAABWwAAAAAAWwAAAAAAWwAAAAACWwAAAAACWwAAAAABWwAAAAACWwAAAAACWwAAAAACWwAAAAAAWwAAAAAAWwAAAAAAEgAAAAAAEgAAAAAAEgAAAAAAEgAAAAAAWwAAAAACWwAAAAACWwAAAAACWwAAAAAAewAAAAAAWwAAAAABWwAAAAADWwAAAAADewAAAAAAWwAAAAAAWwAAAAAAWwAAAAAATAAAAAAATAAAAAAATAAAAAAATAAAAAAAWwAAAAABWwAAAAABWwAAAAABWwAAAAADewAAAAAAewAAAAAAWwAAAAACewAAAAAAewAAAAAAWwAAAAAAWwAAAAAAWwAAAAAAEgAAAAAAEgAAAAAAEgAAAAAAEgAAAAAAWwAAAAAAWwAAAAAAWwAAAAADewAAAAAAewAAAAAAWwAAAAABWwAAAAAAWwAAAAACewAAAAAAewAAAAAAWwAAAAAAWwAAAAAAWwAAAAABWwAAAAAAWwAAAAADWwAAAAABWwAAAAACWwAAAAAAWwAAAAAAewAAAAAAWwAAAAADWwAAAAACWwAAAAAAWwAAAAADWwAAAAACewAAAAAAWwAAAAAAWwAAAAAAWwAAAAAAWwAAAAABWwAAAAAAWwAAAAACWwAAAAADWwAAAAACWwAAAAACewAAAAAAWwAAAAABWwAAAAAAWwAAAAAAWwAAAAADWwAAAAADewAAAAAAWwAAAAAAWwAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAWwAAAAABWwAAAAAAWwAAAAACewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAawAAAAAAWwAAAAACWwAAAAAAWwAAAAACawAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAWwAAAAAAWwAAAAAAWwAAAAACewAAAAAAewAAAAAAewAAAAAAagAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAWwAAAAAAWwAAAAABWwAAAAAAHQAAAAACewAAAAAAWwAAAAAAWwAAAAAAWwAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAEQAAAAAAewAAAAAAewAAAAAAewAAAAAAWwAAAAABWwAAAAAAWwAAAAADHQAAAAAAewAAAAAAWwAAAAAAWwAAAAAAWwAAAAADewAAAAAAewAAAAAAewAAAAAAewAAAAAAEQAAAAAAawAAAAAAHQAAAAADewAAAAAAWwAAAAAAWwAAAAACWwAAAAACHQAAAAACHQAAAAAAWwAAAAADWwAAAAAAWwAAAAABewAAAAAAWwAAAAACWwAAAAACWwAAAAADEQAAAAAAewAAAAAAHQAAAAAAewAAAAAAWwAAAAACWwAAAAABWwAAAAACHQAAAAADewAAAAAAWwAAAAADWwAAAAAAWwAAAAAAWwAAAAACWwAAAAABWwAAAAACWwAAAAAA
           version: 6
         0,-3:
           ind: 0,-3
@@ -236,7 +236,7 @@ entities:
           version: 6
         3,1:
           ind: 3,1
-          tiles: ewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAbgAAAAABbgAAAAADbgAAAAABewAAAAAAbgAAAAAAbgAAAAABewAAAAAAbgAAAAABbgAAAAADEQAAAAAAHQAAAAADEQAAAAAAbgAAAAAAbgAAAAADbgAAAAADbgAAAAAAbgAAAAABbgAAAAADbgAAAAAAewAAAAAAewAAAAAAewAAAAAAWwAAAAABbgAAAAACbgAAAAAAEQAAAAAAHQAAAAAAEQAAAAAAbgAAAAADbgAAAAABbgAAAAADbgAAAAADbgAAAAABbgAAAAACbgAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAbgAAAAADbgAAAAAAbgAAAAACbgAAAAAAbgAAAAABbgAAAAACbgAAAAADbgAAAAABbgAAAAAAbgAAAAAAbgAAAAABbgAAAAACewAAAAAAewAAAAAAewAAAAAAewAAAAAAbgAAAAAAbgAAAAACbgAAAAAAbgAAAAAAbgAAAAABbgAAAAAAbgAAAAACbgAAAAAAbgAAAAAAbgAAAAACbgAAAAAAbgAAAAABewAAAAAAewAAAAAAewAAAAAAawAAAAAAbgAAAAABbgAAAAACbgAAAAAAEQAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAbgAAAAAAbgAAAAABbgAAAAABewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAbgAAAAACbgAAAAAAbgAAAAABbgAAAAADbgAAAAAAbgAAAAADbgAAAAAAewAAAAAAbgAAAAADbgAAAAACewAAAAAAEQAAAAAAEQAAAAAAEQAAAAAAewAAAAAAbgAAAAADbgAAAAAAbgAAAAAAbgAAAAAAbgAAAAADbgAAAAACbgAAAAABbgAAAAADbgAAAAACbgAAAAACbgAAAAACewAAAAAAHQAAAAADHQAAAAADHQAAAAAAHQAAAAADbgAAAAACbgAAAAACbgAAAAACbgAAAAABbgAAAAAAbgAAAAADbgAAAAADbgAAAAACbgAAAAADbgAAAAADbgAAAAADewAAAAAAEQAAAAAAEQAAAAAAEQAAAAAAewAAAAAAbgAAAAADbgAAAAABbgAAAAAAbgAAAAAAbgAAAAADbgAAAAADbgAAAAAAbgAAAAABbgAAAAAAbgAAAAABbgAAAAACewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAHQAAAAADewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAHQAAAAACewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAegAAAAAAewAAAAAAHQAAAAADewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAewAAAAAATQAAAAAATQAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAHQAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAATQAAAAAATQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAANgAAAAAANgAAAAAAEQAAAAAATQAAAAAAEQAAAAAATQAAAAAAEQAAAAAANgAAAAAANgAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAANgAAAAAANgAAAAAATQAAAAAAEQAAAAAAEQAAAAAAEQAAAAAATQAAAAAANgAAAAAANgAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAANgAAAAAANgAAAAAAEQAAAAAATQAAAAAAEQAAAAAATQAAAAAAEQAAAAAANgAAAAAANgAAAAAAewAAAAAAAAAAAAAAAAAAAAAA
+          tiles: ewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAbgAAAAABbgAAAAADbgAAAAABewAAAAAAbgAAAAAAbgAAAAABewAAAAAAbgAAAAABbgAAAAADEQAAAAAAHQAAAAADEQAAAAAAbgAAAAAAbgAAAAADbgAAAAADbgAAAAAAbgAAAAABbgAAAAADbgAAAAAAewAAAAAAewAAAAAAewAAAAAAWwAAAAABbgAAAAACbgAAAAAAEQAAAAAAHQAAAAAAEQAAAAAAbgAAAAADbgAAAAABbgAAAAADbgAAAAADbgAAAAABbgAAAAACbgAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAbgAAAAADbgAAAAAAbgAAAAACbgAAAAAAbgAAAAABbgAAAAACbgAAAAADbgAAAAABbgAAAAAAbgAAAAAAbgAAAAABbgAAAAACewAAAAAAewAAAAAAewAAAAAAewAAAAAAbgAAAAAAbgAAAAACbgAAAAAAbgAAAAAAbgAAAAABbgAAAAAAbgAAAAACbgAAAAAAbgAAAAAAbgAAAAACbgAAAAAAbgAAAAABewAAAAAAewAAAAAAewAAAAAAawAAAAAAbgAAAAABbgAAAAACbgAAAAAAEQAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAbgAAAAAAbgAAAAABbgAAAAABewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAbgAAAAACbgAAAAAAbgAAAAABbgAAAAADbgAAAAAAbgAAAAADbgAAAAAAewAAAAAAIgAAAAAAIgAAAAAAewAAAAAAEQAAAAAAEQAAAAAAEQAAAAAAewAAAAAAbgAAAAADbgAAAAAAbgAAAAAAbgAAAAAAbgAAAAADbgAAAAACbgAAAAABbgAAAAADCwAAAAAACwAAAAAACwAAAAAAewAAAAAAHQAAAAADHQAAAAADHQAAAAAAHQAAAAADbgAAAAACbgAAAAACbgAAAAACbgAAAAABbgAAAAAAbgAAAAADbgAAAAADbgAAAAACCwAAAAAACwAAAAAACwAAAAAAewAAAAAAEQAAAAAAEQAAAAAAEQAAAAAAewAAAAAAbgAAAAADbgAAAAABbgAAAAAAbgAAAAAAbgAAAAADbgAAAAADbgAAAAAAbgAAAAABCwAAAAAACwAAAAAACwAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAHQAAAAADewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAIgAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAegAAAAAAewAAAAAAHQAAAAADewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAewAAAAAATQAAAAAATQAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAHQAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAATQAAAAAATQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAANgAAAAAANgAAAAAAEQAAAAAATQAAAAAAEQAAAAAATQAAAAAAEQAAAAAANgAAAAAANgAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAANgAAAAAANgAAAAAATQAAAAAAEQAAAAAAEQAAAAAAEQAAAAAATQAAAAAANgAAAAAANgAAAAAAewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAANgAAAAAANgAAAAAAEQAAAAAATQAAAAAAEQAAAAAATQAAAAAAEQAAAAAANgAAAAAANgAAAAAAewAAAAAAAAAAAAAAAAAAAAAA
           version: 6
         3,3:
           ind: 3,3
@@ -248,7 +248,7 @@ entities:
           version: 6
         4,1:
           ind: 4,1
-          tiles: bgAAAAABewAAAAAAWwAAAAABWwAAAAACWwAAAAADHQAAAAADHQAAAAAAHQAAAAADewAAAAAAewAAAAAABwAAAAAAewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAegAAAAAAawAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAegAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAegAAAAAAegAAAAAAegAAAAAAewAAAAAABwAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAegAAAAAAegAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAATQAAAAAATQAAAAAATQAAAAAATQAAAAAAewAAAAAAegAAAAAAegAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAATQAAAAAATQAAAAAATQAAAAAATQAAAAAAewAAAAAAegAAAAAAAAAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbgAAAAACewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAATQAAAAAAewAAAAAAewAAAAAAegAAAAAAAAAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbgAAAAABewAAAAAAewAAAAAABwAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbgAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAegAAAAAAegAAAAAAegAAAAAAegAAAAAAegAAAAAAegAAAAAAbgAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAegAAAAAAegAAAAAAegAAAAAAegAAAAAAegAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATQAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAeAAAAAABewAAAAAAeAAAAAADewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATQAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAeAAAAAAAeAAAAAABewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAeAAAAAADeAAAAAADewAAAAAAewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAeAAAAAACewAAAAAAeAAAAAAAewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAagAAAAAAewAAAAAAewAAAAAAewAAAAAAeAAAAAAAeAAAAAAAewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          tiles: bgAAAAABewAAAAAAWwAAAAABWwAAAAACWwAAAAADHQAAAAADHQAAAAAAHQAAAAADewAAAAAAewAAAAAABwAAAAAAewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAegAAAAAAawAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAegAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAegAAAAAAegAAAAAAegAAAAAAewAAAAAABwAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAegAAAAAAegAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAATQAAAAAATQAAAAAATQAAAAAATQAAAAAAewAAAAAAegAAAAAAegAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAATQAAAAAATQAAAAAATQAAAAAATQAAAAAAewAAAAAAegAAAAAAAAAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIgAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAATQAAAAAAewAAAAAAewAAAAAAegAAAAAAAAAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAAewAAAAAAewAAAAAABwAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAAAAAAAAAAAAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAegAAAAAAegAAAAAAegAAAAAAegAAAAAAegAAAAAAegAAAAAAIgAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAegAAAAAAegAAAAAAegAAAAAAegAAAAAAegAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATQAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAeAAAAAABewAAAAAAeAAAAAADewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATQAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAeAAAAAAAeAAAAAABewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAeAAAAAADeAAAAAADewAAAAAAewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAewAAAAAAewAAAAAAewAAAAAAeAAAAAACewAAAAAAeAAAAAAAewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAewAAAAAAagAAAAAAewAAAAAAewAAAAAAewAAAAAAeAAAAAAAeAAAAAAAewAAAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
           version: 6
         4,2:
           ind: 4,2
@@ -3254,6 +3254,17 @@ entities:
             3487: 33,30
             3489: 35,28
             3492: 33,25
+            3800: 20,-39
+            3801: 22,-41
+            3802: 19,-44
+            3992: 13,-24
+            3993: 17,-26
+            3994: 21,-28
+            3995: 16,-29
+            3996: 14,-28
+            3997: 23,-27
+            3998: 22,-26
+            3999: 17,-37
         - node:
             color: '#FF9821FF'
             id: DirtHeavy
@@ -3303,7 +3314,6 @@ entities:
             483: 30,-37
             484: 31,-36
             618: 18,-31
-            619: 19,-29
             1239: 8,29
             1240: 8,31
             1324: 12,22
@@ -3333,6 +3343,15 @@ entities:
             3708: 38,36
             3709: 41,30
             3710: 41,30
+            3940: 15,-25
+            3941: 21,-27
+            3942: 21,-26
+            3943: 14,-29
+            3944: 14,-26
+            3945: 13,-26
+            3946: 22,-29
+            3947: 20,-27
+            3948: 16,-25
         - node:
             color: '#FF9821FF'
             id: DirtHeavyMonotile
@@ -3365,6 +3384,29 @@ entities:
             3701: 38,33
             3702: 36,33
             3703: 36,33
+            3803: 21,-39
+            3804: 19,-40
+            3805: 19,-42
+            3806: 23,-43
+            3807: 22,-42
+            3808: 20,-40
+            3809: 22,-40
+            3810: 23,-41
+            3811: 23,-41
+            3812: 23,-42
+            3813: 26,-42
+            3814: 25,-40
+            3815: 25,-41
+            3816: 26,-40
+            3817: 17,-42
+            3818: 16,-40
+            3819: 17,-40
+            3820: 16,-42
+            3949: 17,-26
+            3950: 17,-26
+            3951: 18,-27
+            3952: 18,-27
+            3953: 18,-28
         - node:
             color: '#FF9821FF'
             id: DirtLight
@@ -3769,24 +3811,11 @@ entities:
             502: 18,-35
             503: 18,-34
             504: 16,-42
-            620: 18,-29
             621: 19,-28
-            622: 20,-29
-            623: 22,-29
             624: 21,-29
             625: 22,-28
-            626: 20,-27
-            627: 21,-26
             628: 21,-27
-            629: 20,-26
             630: 14,-27
-            631: 15,-26
-            632: 13,-25
-            633: 15,-27
-            634: 15,-28
-            635: 15,-28
-            636: 16,-29
-            637: 16,-25
             638: 26,-29
             639: 26,-28
             640: 27,-29
@@ -3911,6 +3940,14 @@ entities:
             3605: 30,20
             3606: 29,20
             3607: 29,20
+            3954: 20,-25
+            3955: 21,-25
+            3956: 17,-25
+            3957: 15,-29
+            3958: 14,-28
+            3959: 17,-28
+            3960: 16,-28
+            3961: 18,-28
         - node:
             color: '#FF9821FF'
             id: DirtMedium
@@ -3933,8 +3970,6 @@ entities:
             487: 30,-36
             488: 28,-37
             614: 21,-28
-            615: 14,-26
-            616: 13,-25
             617: 25,-29
             1241: 8,30
             1242: 7,30
@@ -3968,6 +4003,9 @@ entities:
             3611: 29,17
             3612: 30,18
             3613: 30,17
+            3962: 14,-25
+            3963: 13,-28
+            3964: 12,-28
         - node:
             color: '#FFFFFFFF'
             id: FlowersBRThree
@@ -4155,10 +4193,20 @@ entities:
             3539: 28,-45
         - node:
             color: '#FFFFFFFF'
+            id: GrayConcreteTrimInnerNe
+          decals:
+            3791: 63,24
+        - node:
+            color: '#FFFFFFFF'
             id: GrayConcreteTrimInnerNw
           decals:
             3262: 25,31
             3263: 25,28
+        - node:
+            color: '#FFFFFFFF'
+            id: GrayConcreteTrimInnerSe
+          decals:
+            3796: 61,23
         - node:
             color: '#FFFFFFFF'
             id: GrayConcreteTrimInnerSw
@@ -4177,6 +4225,7 @@ entities:
             3551: 32,-43
             3552: 32,-44
             3553: 32,-39
+            3790: 63,25
         - node:
             color: '#FFFFFFFF'
             id: GrayConcreteTrimLineN
@@ -4186,6 +4235,7 @@ entities:
             3339: 33,21
             3546: 29,-39
             3547: 30,-39
+            3792: 64,24
         - node:
             color: '#FFFFFFFF'
             id: GrayConcreteTrimLineS
@@ -4196,6 +4246,9 @@ entities:
             3536: 31,-45
             3537: 30,-45
             3538: 29,-45
+            3793: 64,23
+            3794: 63,23
+            3795: 62,23
         - node:
             color: '#FFFFFFFF'
             id: GrayConcreteTrimLineW
@@ -4211,6 +4264,9 @@ entities:
             3542: 28,-42
             3543: 28,-41
             3544: 28,-40
+            3787: 61,24
+            3788: 61,23
+            3789: 61,25
         - node:
             color: '#334E6DC8'
             id: HalfTileOverlayGreyscale
@@ -4276,9 +4332,6 @@ entities:
             color: '#D381C996'
             id: HalfTileOverlayGreyscale
           decals:
-            26: 62,25
-            27: 63,25
-            28: 64,25
             2066: 53,11
             2067: 52,11
             2068: 51,11
@@ -4286,7 +4339,6 @@ entities:
             2070: 48,11
             2071: 49,11
             2072: 55,11
-            2615: 61,25
             2616: 54,20
             2617: 55,20
             2618: 56,20
@@ -4315,20 +4367,31 @@ entities:
             316: 20,-35
             317: 19,-35
             329: 16,-34
-            350: 14,-24
-            351: 15,-24
-            352: 16,-24
-            353: 17,-24
-            354: 18,-24
-            355: 19,-24
-            356: 20,-24
-            357: 21,-24
         - node:
             color: '#FA750096'
             id: HalfTileOverlayGreyscale
           decals:
             2602: 49,-11
             2603: 50,-11
+        - node:
+            color: '#FFB66EFF'
+            id: HalfTileOverlayGreyscale
+          decals:
+            3917: 23,-27
+        - node:
+            cleanable: True
+            color: '#FFB66EFF'
+            id: HalfTileOverlayGreyscale
+          decals:
+            3880: 14,-24
+            3881: 15,-24
+            3882: 16,-24
+            3883: 17,-24
+            3884: 18,-24
+            3885: 19,-24
+            3886: 20,-24
+            3887: 21,-24
+            3888: 22,-24
         - node:
             color: '#334E6DC8'
             id: HalfTileOverlayGreyscale180
@@ -4432,12 +4495,6 @@ entities:
             338: 28,-37
             339: 29,-37
             340: 30,-37
-            343: 16,-29
-            344: 15,-29
-            345: 14,-29
-            364: 19,-29
-            365: 20,-29
-            366: 22,-29
         - node:
             color: '#FF9821FF'
             id: HalfTileOverlayGreyscale180
@@ -4445,6 +4502,18 @@ entities:
             2754: 12,-37
             2755: 10,-37
             2756: 11,-37
+        - node:
+            color: '#FFB66EFF'
+            id: HalfTileOverlayGreyscale180
+          decals:
+            3905: 13,-29
+            3906: 14,-29
+            3909: 15,-29
+            3910: 16,-29
+            3911: 19,-29
+            3912: 20,-29
+            3913: 22,-29
+            3914: 23,-29
         - node:
             color: '#52B4E996'
             id: HalfTileOverlayGreyscale270
@@ -4534,14 +4603,20 @@ entities:
             326: 17,-32
             327: 17,-33
             332: 15,-36
-            347: 13,-26
-            348: 13,-25
         - node:
             color: '#FF5C5CFF'
             id: HalfTileOverlayGreyscale270
           decals:
             2731: 35,23
             2732: 35,22
+        - node:
+            color: '#FFB66EFF'
+            id: HalfTileOverlayGreyscale270
+          decals:
+            3904: 13,-29
+            3918: 13,-26
+            3919: 13,-25
+            3921: 13,-24
         - node:
             color: '#52B4E94D'
             id: HalfTileOverlayGreyscale90
@@ -4627,9 +4702,6 @@ entities:
             321: 18,-32
             322: 18,-31
             323: 18,-30
-            360: 22,-26
-            361: 22,-25
-            362: 23,-28
         - node:
             color: '#FF5C5CFF'
             id: HalfTileOverlayGreyscale90
@@ -4642,6 +4714,12 @@ entities:
           decals:
             2752: 13,-36
             2753: 13,-34
+        - node:
+            color: '#FFB66EFF'
+            id: HalfTileOverlayGreyscale90
+          decals:
+            3915: 23,-28
+            3916: 23,-27
         - node:
             angle: -3.141592653589793 rad
             color: '#FFFFFFFF'
@@ -4724,25 +4802,59 @@ entities:
             3167: 26,46
         - node:
             color: '#FFFFFFFF'
+            id: MiniTileDarkInnerNe
+          decals:
+            3925: 15,-29
+        - node:
+            color: '#FFFFFFFF'
+            id: MiniTileDarkInnerNw
+          decals:
+            3930: 20,-29
+        - node:
+            color: '#FFFFFFFF'
+            id: MiniTileDarkInnerSe
+          decals:
+            3939: 15,-25
+        - node:
+            color: '#FFFFFFFF'
             id: MiniTileDarkInnerSw
           decals:
             3747: 31,-6
+            3934: 20,-25
+        - node:
+            color: '#FFFFFFFF'
+            id: MiniTileDarkLineE
+          decals:
+            3922: 15,-26
+            3923: 15,-27
+            3924: 15,-28
         - node:
             color: '#FFFFFFFF'
             id: MiniTileDarkLineN
           decals:
             3165: 27,46
+            3926: 16,-29
+            3927: 17,-29
+            3928: 18,-29
+            3929: 19,-29
         - node:
             color: '#FFFFFFFF'
             id: MiniTileDarkLineS
           decals:
             3166: 27,46
+            3935: 19,-25
+            3936: 18,-25
+            3937: 17,-25
+            3938: 16,-25
         - node:
             color: '#FFFFFFFF'
             id: MiniTileDarkLineW
           decals:
             3639: 22,-41
             3640: 22,-40
+            3931: 20,-28
+            3932: 20,-27
+            3933: 20,-26
         - node:
             color: '#FFFFFFFF'
             id: MiniTileSteelCornerNe
@@ -5435,11 +5547,6 @@ entities:
             733: 27,-24
             734: 27,-25
         - node:
-            color: '#EFCC4193'
-            id: QuarterTileOverlayGreyscale180
-          decals:
-            342: 18,-29
-        - node:
             color: '#EFCC4593'
             id: QuarterTileOverlayGreyscale180
           decals:
@@ -5667,11 +5774,6 @@ entities:
             721: 25,-15
             722: 25,-14
         - node:
-            color: '#EFCC4193'
-            id: QuarterTileOverlayGreyscale270
-          decals:
-            341: 17,-29
-        - node:
             color: '#EFCC4593'
             id: QuarterTileOverlayGreyscale270
           decals:
@@ -5877,7 +5979,6 @@ entities:
           decals:
             314: 22,-36
             318: 18,-35
-            359: 22,-27
         - node:
             color: '#FF5C5CFF'
             id: QuarterTileOverlayGreyscale90
@@ -5979,7 +6080,6 @@ entities:
           decals:
             312: 30,-35
             330: 15,-34
-            349: 13,-24
         - node:
             color: '#52B4E996'
             id: ThreeQuarterTileOverlayGreyscale180
@@ -6015,11 +6115,6 @@ entities:
             id: ThreeQuarterTileOverlayGreyscale180
           decals:
             710: 27,-26
-        - node:
-            color: '#EFCC4193'
-            id: ThreeQuarterTileOverlayGreyscale180
-          decals:
-            367: 23,-29
         - node:
             color: '#FF9821FF'
             id: ThreeQuarterTileOverlayGreyscale180
@@ -6066,7 +6161,6 @@ entities:
             id: ThreeQuarterTileOverlayGreyscale270
           decals:
             331: 15,-37
-            346: 13,-29
         - node:
             color: '#52B4E996'
             id: ThreeQuarterTileOverlayGreyscale90
@@ -6103,8 +6197,6 @@ entities:
             id: ThreeQuarterTileOverlayGreyscale90
           decals:
             315: 22,-35
-            358: 22,-24
-            363: 23,-27
         - node:
             color: '#FFFFFFFF'
             id: VentSmall
@@ -6397,6 +6489,7 @@ entities:
             2645: 32,-54
             2646: 31,-54
             3531: 30,-39
+            3784: 62,26
         - node:
             color: '#FFFFFFFF'
             id: WarnLineS
@@ -6468,6 +6561,7 @@ entities:
             3511: 31,-45
             3512: 30,-45
             3513: 29,-45
+            3785: 62,26
         - node:
             color: '#FED83DFF'
             id: WarningLine
@@ -6532,6 +6626,7 @@ entities:
           decals:
             3222: 34,40
             3672: 39,-10
+            3799: -2,-9
         - node:
             color: '#FFFFFFFF'
             id: WoodTrimThinInnerNw
@@ -6569,6 +6664,7 @@ entities:
             3220: 34,41
             3235: 37,42
             3237: 37,41
+            3798: -2,-8
         - node:
             color: '#FFFFFFFF'
             id: WoodTrimThinLineN
@@ -6649,6 +6745,68 @@ entities:
             2684: 48,-47
             2685: 48,-46
             2686: 47,-48
+        - node:
+            cleanable: True
+            color: '#00000028'
+            id: footprint
+          decals:
+            3989: 17.570795,-29.354925
+            3990: 17.779129,-29.115343
+            3991: 17.331213,-28.84451
+        - node:
+            cleanable: True
+            color: '#00000041'
+            id: footprint
+          decals:
+            3821: 20.705141,-39.254898
+            3822: 20.965559,-39.067398
+            3823: 20.788475,-38.869484
+            3824: 21.080141,-38.567398
+            3825: 20.819725,-38.254898
+            3826: 21.194725,-38.067398
+            3827: 20.913475,-37.765316
+            3828: 21.236391,-37.473648
+            3829: 25.228775,-41.7637
+            3830: 25.457943,-41.5762
+            3831: 25.249609,-41.2012
+            3832: 25.582943,-40.815784
+            3833: 25.291275,-40.555367
+        - node:
+            cleanable: True
+            angle: 1.5707963267948966 rad
+            color: '#00000041'
+            id: footprint
+          decals:
+            3965: 22.973186,-28.68826
+            3966: 22.671103,-28.93826
+            3967: 22.431519,-28.636175
+            3968: 21.952353,-28.90701
+            3969: 21.869019,-28.75076
+            3970: 21.191936,-28.990343
+            3971: 21.077353,-28.709093
+            3972: 20.441936,-28.959093
+            3973: 20.431519,-28.62576
+            3974: 20.233603,-28.71951
+            3975: 20.244019,-28.198675
+            3976: 19.973186,-28.427843
+            3977: 14.826334,-27.771593
+            3978: 14.482584,-27.396593
+            3979: 14.086751,-27.823675
+            3980: 13.701334,-27.386175
+            3981: 13.27425,-27.865343
+            3982: 12.951334,-27.334093
+        - node:
+            cleanable: True
+            angle: 3.141592653589793 rad
+            color: '#00000041'
+            id: footprint
+          decals:
+            3983: 17.060379,-28.96951
+            3984: 17.362463,-29.292425
+            3985: 17.091629,-29.636175
+            3986: 17.799963,-29.06326
+            3987: 18.029129,-29.25076
+            3988: 17.570795,-29.53201
         - node:
             cleanable: True
             angle: -4.71238898038469 rad
@@ -6893,15 +7051,6 @@ entities:
             569: 20.997774,-31.825336
         - node:
             cleanable: True
-            angle: -3.141592653589793 rad
-            color: '#47422E3E'
-            id: footprint
-          decals:
-            598: 18.380388,-29.024849
-            599: 18.271013,-28.618599
-            600: 19.052263,-28.993599
-        - node:
-            cleanable: True
             angle: -1.5707963267948966 rad
             color: '#47422E3E'
             id: footprint
@@ -6913,19 +7062,8 @@ entities:
             558: 29.922844,-32.93471
             559: 29.204094,-32.37221
             560: 29.235344,-33.044086
-            601: 19.366499,-28.623808
-            602: 18.387333,-29.09603
-            603: 18.706778,-28.734919
-            604: 19.366499,-29.075195
-            605: 19.838722,-28.554363
-            606: 20.41511,-28.866863
-            607: 20.310944,-28.255753
             608: 21.019278,-28.776585
             609: 21.470667,-28.387695
-            610: 21.998444,-28.922419
-            611: 22.352612,-28.540474
-            612: 22.92456,-29.193253
-            613: 23.306505,-28.811308
             644: 14.771467,-35.430984
             645: 15.127949,-35.1208
             646: 15.553875,-35.36617
@@ -7012,9 +7150,6 @@ entities:
             592: 21.083513,-29.290474
             593: 20.739763,-28.759224
             594: 21.536638,-27.946724
-            595: 20.599138,-27.556099
-            596: 21.349138,-26.587349
-            597: 20.724138,-25.931099
         - node:
             angle: 1.5707963267948966 rad
             color: '#47422E3E'
@@ -7136,7 +7271,7 @@ entities:
     - type: GasTileOverlay
     - type: RadiationGridResistance
     - type: SpreaderGrid
-  - uid: 13916
+  - uid: 13920
     components:
     - type: MetaData
       name: grid
@@ -7176,7 +7311,7 @@ entities:
     - type: GasTileOverlay
     - type: IFF
       flags: HideLabel
-  - uid: 13917
+  - uid: 13921
     components:
     - type: MetaData
       name: grid
@@ -7220,7 +7355,7 @@ entities:
     - type: GasTileOverlay
     - type: IFF
       flags: HideLabel
-  - uid: 13930
+  - uid: 13934
     components:
     - type: MetaData
       name: grid
@@ -7260,7 +7395,7 @@ entities:
     - type: GasTileOverlay
     - type: IFF
       flags: HideLabel
-  - uid: 13931
+  - uid: 13935
     components:
     - type: MetaData
       name: grid
@@ -7300,7 +7435,7 @@ entities:
     - type: GasTileOverlay
     - type: IFF
       flags: HideLabel
-  - uid: 13933
+  - uid: 13937
     components:
     - type: MetaData
       name: grid
@@ -7340,7 +7475,7 @@ entities:
     - type: GasTileOverlay
     - type: IFF
       flags: HideLabel
-  - uid: 13935
+  - uid: 13939
     components:
     - type: MetaData
       name: grid
@@ -7380,7 +7515,7 @@ entities:
     - type: GasTileOverlay
     - type: IFF
       flags: HideLabel
-  - uid: 13937
+  - uid: 13941
     components:
     - type: MetaData
       name: grid
@@ -7420,7 +7555,7 @@ entities:
     - type: GasTileOverlay
     - type: IFF
       flags: HideLabel
-  - uid: 13939
+  - uid: 13943
     components:
     - type: MetaData
       name: grid
@@ -8902,7 +9037,7 @@ entities:
       pos: 32.5,-49.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -12556.658
+      secondsUntilStateChange: -13498.201
       state: Opening
     - type: DeviceLinkSink
       invokeCounter: 1
@@ -41117,12 +41252,26 @@ entities:
     - type: Transform
       pos: 71.508354,37.570084
       parent: 2
+- proto: DrinkHotCoffee
+  entities:
+  - uid: 13918
+    components:
+    - type: Transform
+      pos: 18.838076,-26.271004
+      parent: 2
 - proto: DrinkLemonadeGlass
   entities:
   - uid: 6121
     components:
     - type: Transform
       pos: 71.477104,40.663834
+      parent: 2
+- proto: DrinkMug
+  entities:
+  - uid: 13919
+    components:
+    - type: Transform
+      pos: 19.285994,-26.489754
       parent: 2
 - proto: DrinkMugDog
   entities:
@@ -60935,106 +61084,106 @@ entities:
     - type: Transform
       pos: 64.5,-11.5
       parent: 2
-  - uid: 13918
-    components:
-    - type: Transform
-      anchored: False
-      pos: -30.5,5.5
-      parent: 13917
-  - uid: 13919
-    components:
-    - type: Transform
-      anchored: False
-      pos: -30.5,6.5
-      parent: 13917
-  - uid: 13920
-    components:
-    - type: Transform
-      anchored: False
-      pos: -30.5,7.5
-      parent: 13917
-  - uid: 13921
-    components:
-    - type: Transform
-      anchored: False
-      pos: -30.5,8.5
-      parent: 13917
   - uid: 13922
     components:
     - type: Transform
       anchored: False
-      pos: -30.5,9.5
-      parent: 13917
+      pos: -30.5,5.5
+      parent: 13921
   - uid: 13923
     components:
     - type: Transform
       anchored: False
-      pos: -30.5,10.5
-      parent: 13917
+      pos: -30.5,6.5
+      parent: 13921
   - uid: 13924
     components:
     - type: Transform
       anchored: False
-      pos: -30.5,12.5
-      parent: 13917
+      pos: -30.5,7.5
+      parent: 13921
   - uid: 13925
     components:
     - type: Transform
       anchored: False
-      pos: -30.5,13.5
-      parent: 13917
+      pos: -30.5,8.5
+      parent: 13921
   - uid: 13926
     components:
     - type: Transform
       anchored: False
-      pos: -30.5,14.5
-      parent: 13917
+      pos: -30.5,9.5
+      parent: 13921
   - uid: 13927
     components:
     - type: Transform
       anchored: False
-      pos: -30.5,11.5
-      parent: 13917
+      pos: -30.5,10.5
+      parent: 13921
   - uid: 13928
     components:
     - type: Transform
-      pos: -32.5,14.5
-      parent: 13917
+      anchored: False
+      pos: -30.5,12.5
+      parent: 13921
   - uid: 13929
     components:
     - type: Transform
       anchored: False
-      pos: -34.5,14.5
-      parent: 13917
+      pos: -30.5,13.5
+      parent: 13921
+  - uid: 13930
+    components:
+    - type: Transform
+      anchored: False
+      pos: -30.5,14.5
+      parent: 13921
+  - uid: 13931
+    components:
+    - type: Transform
+      anchored: False
+      pos: -30.5,11.5
+      parent: 13921
   - uid: 13932
     components:
     - type: Transform
-      anchored: False
-      pos: -32.5,5.5
-      parent: 13931
-  - uid: 13934
+      pos: -32.5,14.5
+      parent: 13921
+  - uid: 13933
     components:
     - type: Transform
       anchored: False
-      pos: -30.5,4.5
-      parent: 13933
+      pos: -34.5,14.5
+      parent: 13921
   - uid: 13936
     components:
     - type: Transform
       anchored: False
-      pos: -30.5,3.5
+      pos: -32.5,5.5
       parent: 13935
   - uid: 13938
     components:
     - type: Transform
       anchored: False
-      pos: -30.5,2.5
+      pos: -30.5,4.5
       parent: 13937
   - uid: 13940
     components:
     - type: Transform
-      pos: -30.5,1.5
+      anchored: False
+      pos: -30.5,3.5
       parent: 13939
+  - uid: 13942
+    components:
+    - type: Transform
+      anchored: False
+      pos: -30.5,2.5
+      parent: 13941
+  - uid: 13944
+    components:
+    - type: Transform
+      pos: -30.5,1.5
+      parent: 13943
 - proto: GrilleBroken
   entities:
   - uid: 9120
@@ -62598,6 +62747,16 @@ entities:
     components:
     - type: Transform
       pos: 105.5,-22.5
+      parent: 2
+  - uid: 13916
+    components:
+    - type: Transform
+      pos: 69.5,34.5
+      parent: 2
+  - uid: 13917
+    components:
+    - type: Transform
+      pos: 3.5,-32.5
       parent: 2
 - proto: MaintenancePlantSpawner
   entities:
