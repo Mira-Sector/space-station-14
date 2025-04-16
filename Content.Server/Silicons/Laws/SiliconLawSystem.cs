@@ -51,6 +51,8 @@ public sealed class SiliconLawSystem : SharedSiliconLawSystem
         SubscribeLocalEvent<SiliconLawProviderComponent, MindAddedMessage>(OnLawProviderMindAdded);
         SubscribeLocalEvent<SiliconLawProviderComponent, MindRemovedMessage>(OnLawProviderMindRemoved);
         SubscribeLocalEvent<SiliconLawProviderComponent, SiliconEmaggedEvent>(OnEmagLawsAdded);
+
+        SubscribeNetworkEvent<SiliconGetLawsEvent>(OnGetLaws);
     }
 
     private void OnMapInit(EntityUid uid, SiliconLawBoundComponent component, MapInitEvent args)
@@ -185,7 +187,12 @@ public sealed class SiliconLawSystem : SharedSiliconLawSystem
             _roles.MindTryRemoveRole<SubvertedSiliconRoleComponent>(mindId);
     }
 
-    public SiliconLawset GetLaws(EntityUid uid, SiliconLawBoundComponent? component = null)
+    private void OnGetLaws(SiliconGetLawsEvent args)
+    {
+        args.Laws = GetLaws(GetEntity(args.Target));
+    }
+
+    public override SiliconLawset GetLaws(EntityUid uid, SiliconLawBoundComponent? component = null)
     {
         if (!Resolve(uid, ref component))
             return new SiliconLawset();

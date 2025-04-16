@@ -2,6 +2,7 @@ using Content.Shared.Silicons.Laws;
 using Content.Shared.Silicons.Laws.Components;
 using Content.Shared.Silicons.Sync.Components;
 using Content.Shared.Silicons.Sync.Events;
+using Robust.Shared.Graphics.RSI;
 using Robust.Shared.Player;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -177,5 +178,24 @@ public sealed partial class SiliconSyncSystem : EntitySystem
 
         ent.Comp.Master = master;
         Dirty(ent);
+    }
+
+    public void UpdateSlaveLaws(Entity<SiliconSyncableSlaveComponent?, SiliconSyncableSlaveLawComponent?> ent)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp1, ref ent.Comp2))
+            return;
+
+        if (ent.Comp1.Master is not {} master)
+            return;
+
+        var masterLaws = _siliconLaw.GetLaws(master);
+
+        var ev = new SiliconSyncSlaveLawCanUpdateEvent(master, masterLaws);
+        RaiseLocalEvent(ent.Owner, ev);
+
+        if (ev.Cancelled)
+            return;
+
+        _siliconLaw.SetLaws(ev.Laws.Laws, ent.Owner);
     }
 }
