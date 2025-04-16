@@ -333,6 +333,8 @@
         type: BorgSelectTypeUserInterface
       enum.WiresUiKey.Key:
         type: WiresBoundUserInterface
+      enum.SiliconSyncUiKey.Key:
+        type: SiliconSyncSelectorBoundUserInterface
   - type: ActivatableUI
     key: enum.BorgUiKey.Key
   - type: IntrinsicUI
@@ -348,6 +350,7 @@
   - type: PresetIdCard
     job: Borg
   - type: StationAiVision
+  - type: SiliconSyncableSlave
   - type: Wires
     layoutId: Cyborg
   - type: InteractionPopup
