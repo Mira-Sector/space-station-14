@@ -1523,3 +1523,11 @@ Entries:
     type: Remove
   id: 218
   time: '2025-04-16T06:45:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Pusling the sync wire skips the radial menu if there is only one AI
+    type: Add
+  - message: Pulsing the law wire automatically syncs the slaves laws with its master
+    type: Add
+  id: 219
+  time: '2025-04-16T21:30:00.0000000+00:00'
