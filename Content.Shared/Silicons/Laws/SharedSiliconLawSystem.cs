@@ -61,6 +61,8 @@ public abstract partial class SharedSiliconLawSystem : EntitySystem
         args.Handled = true;
     }
 
+    public abstract SiliconLawset GetLaws(EntityUid uid, SiliconLawBoundComponent? component = null);
+
     /// <summary>
     /// Set the laws of a silicon entity while notifying the player.
     /// </summary>
