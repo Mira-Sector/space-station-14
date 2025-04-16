@@ -50,6 +50,16 @@ public record struct UpdatedSiliconLawsEvent(EntityUid Entity)
     public bool Handled = false;
 }
 
+public sealed partial class SiliconLawsUpdatedEvent : EntityEventArgs
+{
+    public SiliconLawset Laws;
+
+    public SiliconLawsUpdatedEvent(SiliconLawset laws)
+    {
+        Laws = laws;
+    }
+}
+
 public sealed partial class ToggleLawsScreenEvent : InstantActionEvent
 {
 
