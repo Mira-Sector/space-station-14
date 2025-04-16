@@ -1513,3 +1513,13 @@ Entries:
     type: Add
   id: 217
   time: '2025-04-16T06:40:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Cyborgs can now sync to an AI
+    type: Add
+  - message: Cyborgs laws can be synced to its linked ai
+    type: Add
+  - message: Removed resetting laws from the cyborg module ui
+    type: Remove
+  id: 218
+  time: '2025-04-16T06:45:00.0000000+00:00'
