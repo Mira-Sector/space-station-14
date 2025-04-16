@@ -100,6 +100,13 @@
   - type: ProtectedFromStepTriggers
   - type: NoSlip
   - type: Insulated
+  - type: StationAiWhitelist
+  - type: SiliconSyncableSlave
+  - type: SiliconSyncableSlaveAiRadial
+  - type: UserInterface
+    interfaces:
+      enum.AiUi.Key:
+        type: StationAiBoundUserInterface
   - type: SpeciesLanguage
     spokenLanguages:
     - Binary
@@ -352,6 +359,12 @@
   - type: Inventory
     templateId: medibot
   - type: DoAfter
+  - type: UserInterface
+    interfaces:
+      enum.StrippingUiKey.Key:
+        type: StrippableBoundUserInterface
+      enum.AiUi.Key:
+        type: StationAiBoundUserInterface
 
 - type: entity
   parent:
@@ -383,6 +396,12 @@
     interactFailureString: petting-failure-mimebot
   - type: Inventory
     templateId: head
+  - type: UserInterface
+    interfaces:
+      enum.StrippingUiKey.Key:
+        type: StrippableBoundUserInterface
+      enum.AiUi.Key:
+        type: StationAiBoundUserInterface
 
 - type: entity
   parent: MobSiliconBase
@@ -427,6 +446,8 @@
     interfaces:
       enum.StorageUiKey.Key:
         type: StorageBoundUserInterface
+      enum.AiUi.Key:
+        type: StationAiBoundUserInterface
   - type: ContainerContainer
     containers:
       storagebase: !type:Container
@@ -478,6 +499,12 @@
         - SmallMobMask
         layer:
         - SmallMobLayer
+  - type: UserInterface
+    interfaces:
+      enum.StrippingUiKey.Key:
+        type: StrippableBoundUserInterface
+      enum.AiUi.Key:
+        type: StationAiBoundUserInterface
   - type: HTN
     rootTask:
       task: SecbotCompound

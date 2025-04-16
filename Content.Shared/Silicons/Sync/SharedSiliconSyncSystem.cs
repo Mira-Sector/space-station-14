@@ -2,14 +2,13 @@ using Content.Shared.Silicons.Laws;
 using Content.Shared.Silicons.Laws.Components;
 using Content.Shared.Silicons.Sync.Components;
 using Content.Shared.Silicons.Sync.Events;
-using Robust.Shared.Graphics.RSI;
 using Robust.Shared.Player;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Content.Shared.Silicons.Sync;
 
-public sealed partial class SiliconSyncSystem : EntitySystem
+public abstract partial class SharedSiliconSyncSystem : EntitySystem
 {
     [Dependency] private readonly SharedUserInterfaceSystem _userInterface = default!;
     [Dependency] private readonly SharedSiliconLawSystem _siliconLaw = default!;
@@ -26,6 +25,8 @@ public sealed partial class SiliconSyncSystem : EntitySystem
 
         SubscribeLocalEvent<SiliconSyncableMasterLawComponent, SiliconLawsUpdatedEvent>(OnMasterLawsUpdated);
         SubscribeLocalEvent<SiliconSyncableSlaveLawComponent, SiliconSyncSlaveLawCanUpdateEvent>(OnSlaveLawsCanUpdate);
+
+        SubscribeLocalEvent<SiliconSyncableSlaveAiRadialComponent, StationAiSyncSlaveEvent>(OnAiSlave);
     }
 
     private void OnSlaveAdded(Entity<SiliconSyncableMasterComponent> ent, ref SiliconSyncMasterSlaveAddedEvent args)
@@ -78,6 +79,11 @@ public sealed partial class SiliconSyncSystem : EntitySystem
     {
         if (!ent.Comp.Enabled)
             args.Cancel();
+    }
+
+    private void OnAiSlave(Entity<SiliconSyncableSlaveAiRadialComponent> ent, ref StationAiSyncSlaveEvent args)
+    {
+        SetMaster(ent.Owner, args.User);
     }
 
     public void ShowAvailableMasters(Entity<SiliconSyncableSlaveComponent?> ent, EntityUid user)
