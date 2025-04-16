@@ -133,10 +133,7 @@ public sealed class SiliconLawSystem : SharedSiliconLawSystem
         // Emagged borgs are immune to ion storm
         if (!_emag.CheckFlag(uid, EmagType.Interaction))
         {
-            component.Lawset = args.Lawset;
-
-            // gotta tell player to check their laws
-            NotifyLawsChanged(uid, component.LawUploadSound);
+            SetLaws(args.Lawset.Laws, uid);
 
             // Show the silicon has been subverted.
             component.Subverted = true;
@@ -150,25 +147,26 @@ public sealed class SiliconLawSystem : SharedSiliconLawSystem
 
     private void OnEmagLawsAdded(EntityUid uid, SiliconLawProviderComponent component, ref SiliconEmaggedEvent args)
     {
-        if (component.Lawset == null)
-            component.Lawset = GetLawset(component.Laws);
+        var lawset = component.Lawset ?? GetLawset(component.Laws);
 
         // Show the silicon has been subverted.
         component.Subverted = true;
 
         // Add the first emag law before the others
-        component.Lawset?.Laws.Insert(0, new SiliconLaw
+        lawset.Laws.Insert(0, new SiliconLaw
         {
-            LawString = Loc.GetString("law-emag-custom", ("name", Name(args.user)), ("title", Loc.GetString(component.Lawset.ObeysTo))),
+            LawString = Loc.GetString("law-emag-custom", ("name", Name(args.user)), ("title", Loc.GetString(lawset.ObeysTo))),
             Order = 0
         });
 
         //Add the secrecy law after the others
-        component.Lawset?.Laws.Add(new SiliconLaw
+        lawset.Laws.Add(new SiliconLaw
         {
-            LawString = Loc.GetString("law-emag-secrecy", ("faction", Loc.GetString(component.Lawset.ObeysTo))),
-            Order = component.Lawset.Laws.Max(law => law.Order) + 1
+            LawString = Loc.GetString("law-emag-secrecy", ("faction", Loc.GetString(lawset.ObeysTo))),
+            Order = lawset.Laws.Max(law => law.Order) + 1
         });
+
+        SetLaws(lawset.Laws, uid);
     }
 
     protected override void EnsureSubvertedSiliconRole(EntityUid mindId)
@@ -303,21 +301,6 @@ public sealed class SiliconLawSystem : SharedSiliconLawSystem
         laws.ObeysTo = proto.ObeysTo;
 
         return laws;
-    }
-
-    /// <summary>
-    /// Set the laws of a silicon entity while notifying the player.
-    /// </summary>
-    public void SetLaws(List<SiliconLaw> newLaws, EntityUid target, SoundSpecifier? cue = null)
-    {
-        if (!TryComp<SiliconLawProviderComponent>(target, out var component))
-            return;
-
-        if (component.Lawset == null)
-            component.Lawset = new SiliconLawset();
-
-        component.Lawset.Laws = newLaws;
-        NotifyLawsChanged(target, cue);
     }
 
     protected override void OnUpdaterInsert(Entity<SiliconLawUpdaterComponent> ent, ref EntInsertedIntoContainerMessage args)

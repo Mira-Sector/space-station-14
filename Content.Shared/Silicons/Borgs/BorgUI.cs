@@ -1,4 +1,4 @@
-using Robust.Shared.Serialization;
+﻿using Robust.Shared.Serialization;
 
 namespace Content.Shared.Silicons.Borgs;
 
@@ -24,12 +24,6 @@ public sealed class BorgBuiState : BoundUserInterfaceState
 
 [Serializable, NetSerializable]
 public sealed class BorgEjectBrainBuiMessage : BoundUserInterfaceMessage
-{
-
-}
-
-[Serializable, NetSerializable]
-public sealed class BorgResetLawsBuiMessage : BoundUserInterfaceMessage
 {
 
 }
