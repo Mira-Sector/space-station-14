@@ -1507,3 +1507,9 @@ Entries:
     type: Fix
   id: 216
   time: '2025-04-07T21:00:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Packed has started to have its decals overhauled
+    type: Add
+  id: 217
+  time: '2025-04-16T06:40:00.0000000+00:00'
