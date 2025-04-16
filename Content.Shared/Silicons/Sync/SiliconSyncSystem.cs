@@ -4,6 +4,7 @@ using Content.Shared.Silicons.Sync.Components;
 using Content.Shared.Silicons.Sync.Events;
 using Robust.Shared.Player;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace Content.Shared.Silicons.Sync;
 
@@ -86,9 +87,20 @@ public sealed partial class SiliconSyncSystem : EntitySystem
         if (!TryComp<ActorComponent>(user, out var actorComp))
             return;
 
+        var masters = GetAvailableMasters((ent.Owner, ent.Comp));
+
+        if (!masters.Any())
+            return;
+
+        if (masters.Count() == 1)
+        {
+            SetMaster(ent, masters.First());
+            return;
+        }
+
         var state = new SiliconSlaveRadialBoundUserInterfaceState();
 
-        foreach (var master in GetAvailableMasters((ent.Owner, ent.Comp)))
+        foreach (var master in masters)
         {
             var ev = new SiliconSyncMasterGetIconEvent();
             RaiseLocalEvent(master, ev);
