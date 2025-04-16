@@ -17,6 +17,9 @@ public sealed partial class SiliconSyncSystem : EntitySystem
         SubscribeLocalEvent<SiliconSyncableMasterComponent, SiliconSyncMasterSlaveAddedEvent>(OnSlaveAdded);
         SubscribeLocalEvent<SiliconSyncableMasterComponent, SiliconSyncMasterSlaveLostEvent>(OnSlaveLost);
 
+        SubscribeLocalEvent<SiliconSyncableSlaveComponent, IonStormLawsEvent>(OnSlaveIonStormed);
+        SubscribeLocalEvent<SiliconSyncableSlaveComponent, SiliconEmaggedEvent>(OnSlaveEmagged);
+
         SubscribeLocalEvent<SiliconSyncSlaveMasterMessage>(OnRadialSlaveMaster);
 
         SubscribeLocalEvent<SiliconSyncableMasterLawComponent, SiliconLawsUpdatedEvent>(OnMasterLawsUpdated);
@@ -33,6 +36,18 @@ public sealed partial class SiliconSyncSystem : EntitySystem
     {
         if (ent.Comp.Slaves.Remove(args.Slave))
             Dirty(ent);
+    }
+
+    private void OnSlaveIonStormed(Entity<SiliconSyncableSlaveComponent> ent, ref IonStormLawsEvent args)
+    {
+        SetMaster(ent.Owner, null); // give them a bit more fun
+    }
+
+    private void OnSlaveEmagged(Entity<SiliconSyncableSlaveComponent> ent, ref SiliconEmaggedEvent args)
+    {
+        SetMaster(ent.Owner, null); // so we dont bulldoze our work
+        ent.Comp.Enabled = false;
+        Dirty(ent);
     }
 
     private void OnRadialSlaveMaster(SiliconSyncSlaveMasterMessage args)
@@ -128,6 +143,9 @@ public sealed partial class SiliconSyncSystem : EntitySystem
     public void SetMaster(Entity<SiliconSyncableSlaveComponent?> ent, EntityUid? master)
     {
         if (!Resolve(ent.Owner, ref ent.Comp))
+            return;
+
+        if (!ent.Comp.Enabled)
             return;
 
         var slaveEv = new SiliconSyncSlaveMasterUpdatedEvent(master, ent.Comp.Master);

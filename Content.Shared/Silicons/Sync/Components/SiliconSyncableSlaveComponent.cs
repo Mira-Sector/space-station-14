@@ -6,5 +6,8 @@ namespace Content.Shared.Silicons.Sync.Components;
 public sealed partial class SiliconSyncableSlaveComponent : Component
 {
     [ViewVariables, AutoNetworkedField]
+    public bool Enabled = true;
+
+    [ViewVariables, AutoNetworkedField]
     public EntityUid? Master;
 }
