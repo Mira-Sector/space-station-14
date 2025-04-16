@@ -38,7 +38,7 @@ public sealed class SiliconSyncSelectorBoundUserInterface : BoundUserInterface
         _menu.Open();
     }
 
-    private IEnumerable<RadialMenuActionOption> ConvertToButtons(Dictionary<NetEntity, SpriteSpecifier> masters)
+    private IEnumerable<RadialMenuActionOption> ConvertToButtons(Dictionary<NetEntity, SpriteSpecifier?> masters)
     {
         foreach (var (master, icon) in masters)
         {

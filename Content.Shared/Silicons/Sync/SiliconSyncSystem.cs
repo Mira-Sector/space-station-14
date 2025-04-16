@@ -1,3 +1,5 @@
+using Content.Shared.Silicons.Laws;
+using Content.Shared.Silicons.Laws.Components;
 using Content.Shared.Silicons.Sync.Components;
 using Content.Shared.Silicons.Sync.Events;
 using Robust.Shared.Player;
@@ -8,6 +10,7 @@ namespace Content.Shared.Silicons.Sync;
 public sealed partial class SiliconSyncSystem : EntitySystem
 {
     [Dependency] private readonly SharedUserInterfaceSystem _userInterface = default!;
+    [Dependency] private readonly SharedSiliconLawSystem _siliconLaw = default!;
 
     public override void Initialize()
     {
@@ -15,6 +18,9 @@ public sealed partial class SiliconSyncSystem : EntitySystem
         SubscribeLocalEvent<SiliconSyncableMasterComponent, SiliconSyncMasterSlaveLostEvent>(OnSlaveLost);
 
         SubscribeLocalEvent<SiliconSyncSlaveMasterMessage>(OnRadialSlaveMaster);
+
+        SubscribeLocalEvent<SiliconSyncableMasterLawComponent, SiliconLawsUpdatedEvent>(OnMasterLawsUpdated);
+        SubscribeLocalEvent<SiliconSyncableSlaveLawComponent, SiliconSyncSlaveLawCanUpdateEvent>(OnSlaveLawsCanUpdate);
     }
 
     private void OnSlaveAdded(Entity<SiliconSyncableMasterComponent> ent, ref SiliconSyncMasterSlaveAddedEvent args)
@@ -34,6 +40,29 @@ public sealed partial class SiliconSyncSystem : EntitySystem
         SetMaster(GetEntity(args.Entity), GetEntity(args.Master));
     }
 
+    private void OnMasterLawsUpdated(Entity<SiliconSyncableMasterLawComponent> ent, ref SiliconLawsUpdatedEvent args)
+    {
+        if (!TryGetSlaves(ent.Owner, out var slaves))
+            return;
+
+        foreach (var slave in slaves)
+        {
+            var ev = new SiliconSyncSlaveLawCanUpdateEvent(ent, args.Laws);
+            RaiseLocalEvent(slave, ev);
+
+            if (ev.Cancelled)
+                continue;
+
+            _siliconLaw.SetLaws(ev.Laws.Laws, slave);
+        }
+    }
+
+    private void OnSlaveLawsCanUpdate(Entity<SiliconSyncableSlaveLawComponent> ent, ref SiliconSyncSlaveLawCanUpdateEvent args)
+    {
+        if (!ent.Comp.Enabled)
+            args.Cancel();
+    }
+
     public void ShowAvailableMasters(Entity<SiliconSyncableSlaveComponent?> ent, EntityUid user)
     {
         if (!Resolve(ent.Owner, ref ent.Comp))
@@ -49,7 +78,7 @@ public sealed partial class SiliconSyncSystem : EntitySystem
             var ev = new SiliconSyncMasterGetIconEvent();
             RaiseLocalEvent(master, ev);
 
-            if (ev.Cancelled || ev.Icon == null)
+            if (ev.Cancelled)
                 continue;
 
             state.Masters.Add(GetNetEntity(master), ev.Icon);

@@ -82,6 +82,7 @@
   - type: ShowJobIcons
   - type: StationAiCanHack
   - type: SiliconSyncableMaster
+  - type: SiliconSyncableMasterLaw
 
 - type: entity
   id: AiHeldIntellicard

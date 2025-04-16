@@ -5,5 +5,6 @@ namespace Content.Shared.Silicons.Sync;
 [Serializable, NetSerializable]
 public enum SiliconSyncWireStatus
 {
-    Sync
+    Sync,
+    Law
 }

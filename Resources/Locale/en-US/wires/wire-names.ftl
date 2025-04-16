@@ -74,3 +74,4 @@ wire-name-speech = SPKR
 wire-name-listen = MIC
 wire-name-log = LOG
 wire-name-silicon-sync = SYNC
+wire-name-silicon-law = LAW

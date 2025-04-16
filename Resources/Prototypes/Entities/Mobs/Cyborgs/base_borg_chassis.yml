@@ -351,6 +351,7 @@
     job: Borg
   - type: StationAiVision
   - type: SiliconSyncableSlave
+  - type: SiliconSyncableSlaveLaw
   - type: Wires
     layoutId: Cyborg
   - type: InteractionPopup
