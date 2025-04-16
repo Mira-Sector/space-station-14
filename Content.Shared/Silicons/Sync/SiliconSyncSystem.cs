@@ -1,6 +1,7 @@
 using Content.Shared.Silicons.Sync.Components;
 using Content.Shared.Silicons.Sync.Events;
 using Robust.Shared.Player;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Content.Shared.Silicons.Sync;
 
@@ -48,7 +49,7 @@ public sealed partial class SiliconSyncSystem : EntitySystem
             var ev = new SiliconSyncMasterGetIconEvent();
             RaiseLocalEvent(master, ev);
 
-            if (ev.Icon == null)
+            if (ev.Cancelled || ev.Icon == null)
                 continue;
 
             state.Masters.Add(GetNetEntity(master), ev.Icon);
@@ -70,6 +71,29 @@ public sealed partial class SiliconSyncSystem : EntitySystem
 
             yield return (uid, component);
         }
+    }
+
+    public bool TryGetMaster(Entity<SiliconSyncableSlaveComponent?> ent, [NotNullWhen(true)] out EntityUid? master)
+    {
+        master = null;
+
+        if (!Resolve(ent.Owner, ref ent.Comp))
+            return false;
+
+        master = ent.Comp.Master;
+        return master != null;
+    }
+
+    public bool TryGetSlaves(Entity<SiliconSyncableMasterComponent?> ent, out HashSet<EntityUid> slaves)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp))
+        {
+            slaves = new();
+            return false;
+        }
+
+        slaves = ent.Comp.Slaves;
+        return true;
     }
 
     public void SetMaster(Entity<SiliconSyncableSlaveComponent?> ent, EntityUid? master)

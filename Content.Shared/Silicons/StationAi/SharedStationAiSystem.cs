@@ -105,6 +105,7 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         SubscribeLocalEvent<StationAiHolderComponent, EntInsertedIntoContainerMessage>(OnHolderConInsert);
         SubscribeLocalEvent<StationAiHolderComponent, EntRemovedFromContainerMessage>(OnHolderConRemove);
         SubscribeLocalEvent<StationAiHolderComponent, IntellicardDoAfterEvent>(OnIntellicardDoAfter);
+        SubscribeLocalEvent<StationAiHolderComponent, SiliconSyncMasterGetIconEvent>(OnHolderGetMasterIcon);
 
         SubscribeLocalEvent<StationAiCoreComponent, EntInsertedIntoContainerMessage>(OnAiInsert);
         SubscribeLocalEvent<StationAiCoreComponent, EntRemovedFromContainerMessage>(OnAiRemove);
@@ -350,6 +351,12 @@ public abstract partial class SharedStationAiSystem : EntitySystem
     private void OnHolderMapInit(Entity<StationAiHolderComponent> ent, ref MapInitEvent args)
     {
         UpdateAppearance(ent.Owner);
+    }
+
+    private void OnHolderGetMasterIcon(Entity<StationAiHolderComponent> ent, ref SiliconSyncMasterGetIconEvent args)
+    {
+        if (ent.Comp.AiDied)
+            args.Cancel();
     }
 
     private void OnAiShutdown(Entity<StationAiCoreComponent> ent, ref ComponentShutdown args)
