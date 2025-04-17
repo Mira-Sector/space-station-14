@@ -3,9 +3,11 @@ using Content.Shared.Silicons.StationAi;
 using Content.Shared.Silicons.Sync;
 using Content.Shared.Silicons.Sync.Components;
 using Content.Shared.Silicons.Sync.Events;
+using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Client.Player;
 using Robust.Client.Input;
+using Robust.Shared.Input;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
 
@@ -13,10 +15,11 @@ namespace Content.Client.Silicons.Sync;
 
 public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
 {
-    [Dependency] private readonly IEyeManager _eye = default!;
-    [Dependency] private readonly IInputManager _input = default!;
-    [Dependency] private readonly IOverlayManager _overlay = default!;
-    [Dependency] private readonly IPlayerManager _player = default!;
+    [Dependency] private readonly IEyeManager _eyeMan = default!;
+    [Dependency] private readonly InputSystem _input = default!;
+    [Dependency] private readonly IInputManager _inputMan = default!;
+    [Dependency] private readonly IOverlayManager _overlayMan = default!;
+    [Dependency] private readonly IPlayerManager _playerMan = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
 
     private SiliconSyncCommanderOverlay? _syncOverlay;
@@ -40,7 +43,7 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
 
     public override void Update(float frameTime)
     {
-        if (_player.LocalEntity is not {} entity)
+        if (_playerMan.LocalEntity is not {} entity)
             return;
 
         if (!TryComp<SiliconSyncableMasterCommanderComponent>(entity, out var commandingComp) || commandingComp.Commanding is not {} commanding)
@@ -51,14 +54,16 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
 
         commandingComp.NextCommand += CommandUpdateRate;
 
-        var mousePos = _eye.PixelToMap(_input.MouseScreenPosition);
+        var mousePos = _eyeMan.PixelToMap(_inputMan.MouseScreenPosition);
 
         if (mousePos.MapId == MapId.Nullspace)
             return;
 
         var coordinates = _transform.ToCoordinates(entity, mousePos);
 
-        var ev = new SiliconSyncMoveSlaveToPositionEvent(GetNetCoordinates(coordinates), GetNetEntity(commanding), GetNetEntity(entity));
+        var move = _input.CmdStates.GetState(EngineKeyFunctions.Use) == BoundKeyState.Down;
+
+        var ev = new SiliconSyncMoveSlaveToPositionEvent(GetNetCoordinates(coordinates), GetNetEntity(commanding), GetNetEntity(entity), move);
         RaiseNetworkEvent(ev);
     }
 
@@ -103,7 +108,7 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
             return;
 
         _syncOverlay = new SiliconSyncCommanderOverlay();
-        _overlay.AddOverlay(_syncOverlay);
+        _overlayMan.AddOverlay(_syncOverlay);
     }
 
     private void RemoveOverlay()
@@ -111,7 +116,7 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
         if (_syncOverlay == null)
             return;
 
-        _overlay.RemoveOverlay(_syncOverlay);
+        _overlayMan.RemoveOverlay(_syncOverlay);
         _syncOverlay = null;
     }
 
@@ -134,7 +139,7 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
 
     private void OnGetPath(SiliconSyncMoveSlavePathEvent args)
     {
-        if (_player.LocalEntity is not {} entity)
+        if (_playerMan.LocalEntity is not {} entity)
             return;
 
         var master = GetEntity(args.Master);
@@ -153,17 +158,17 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
         if (ev.Icon == null)
             return;
 
-        if (args.PathType == SiliconSyncCommandingPathType.PathFound)
-        {
-            if (!_syncOverlay.Paths.TryAdd(slave, (args.Path, ev.Icon)))
-                _syncOverlay.Paths[slave] = (args.Path, ev.Icon);
-        }
-        else
+        if (args.PathType == SiliconSyncCommandingPathType.NoPath)
         {
             if (!_syncOverlay.Paths.TryGetValue(slave, out var path))
                 return;
 
             _syncOverlay.Paths[slave] = (path.Item1, ev.Icon);
+        }
+        else
+        {
+            if (!_syncOverlay.Paths.TryAdd(slave, (args.Path, ev.Icon)))
+                _syncOverlay.Paths[slave] = (args.Path, ev.Icon);
         }
     }
 }

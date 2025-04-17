@@ -11,10 +11,13 @@ public sealed class SiliconSyncMoveSlaveToPositionEvent : EntityEventArgs
     public readonly NetEntity Slave;
     public readonly NetEntity Master;
 
-    public SiliconSyncMoveSlaveToPositionEvent(NetCoordinates coordinates, NetEntity slave, NetEntity master)
+    public readonly bool MoveSlave;
+
+    public SiliconSyncMoveSlaveToPositionEvent(NetCoordinates coordinates, NetEntity slave, NetEntity master, bool moveSlave)
     {
         Coordinates = coordinates;
         Slave = slave;
         Master = master;
+        MoveSlave = moveSlave;
     }
 }

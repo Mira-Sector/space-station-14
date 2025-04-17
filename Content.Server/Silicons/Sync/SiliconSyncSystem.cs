@@ -1,4 +1,5 @@
 using Content.Server.NPC.Pathfinding;
+using Content.Server.NPC.Systems;
 using Content.Shared.Silicons.Sync;
 using Content.Shared.Silicons.Sync.Components;
 using Content.Shared.Silicons.Sync.Events;
@@ -13,8 +14,9 @@ namespace Content.Server.Silicons.Sync;
 public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
 {
     [Dependency] private readonly PathfindingSystem _pathfinding = default!;
+    [Dependency] private readonly NPCSteeringSystem _steering = default!;
 
-    private Dictionary<EntityUid, Dictionary<EntityUid, (Task<PathResultEvent> Task, CancellationTokenSource Token)>> _paths = new();
+    private Dictionary<EntityUid, Dictionary<EntityUid, (Task<PathResultEvent> Task, CancellationTokenSource Token, bool Move)>> _paths = new();
 
     private const float PathRange = 0.5f;
 
@@ -31,13 +33,13 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
 
         foreach (var (master, tasks) in _paths)
         {
-            foreach (var (slave, (task, token)) in tasks)
+            foreach (var (slave, (task, token, move)) in tasks)
             {
                 if (!task.IsCompleted)
                     continue;
 
                 if (!task.IsCanceled)
-                    TaskCompleted(master, slave, task);
+                    TaskCompleted(master, slave, task, move);
 
                 if (toRemove.TryGetValue(master, out var removeSlaves))
                 {
@@ -64,7 +66,7 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
         }
     }
 
-    private void TaskCompleted(EntityUid master, EntityUid slave, Task<PathResultEvent> task)
+    private void TaskCompleted(EntityUid master, EntityUid slave, Task<PathResultEvent> task, bool moveSlave)
     {
 #pragma warning disable RA0004
         var result = task.Result;
@@ -92,9 +94,16 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
 
         tiles.Remove(tiles.First());
 
-        var ev = new SiliconSyncMoveSlavePathEvent(GetNetEntity(master), GetNetEntity(slave), SiliconSyncCommandingPathType.PathFound, tiles.ToArray());
+        var ev = new SiliconSyncMoveSlavePathEvent(GetNetEntity(master), GetNetEntity(slave), moveSlave ? SiliconSyncCommandingPathType.Moving : SiliconSyncCommandingPathType.PathFound, tiles.ToArray());
         RaiseNetworkEvent(ev, master);
         RaiseLocalEvent(ev);
+
+        if (!moveSlave)
+            return;
+
+        var targetCoords = GetCoordinates(tiles.Last().Key);
+        var steeringComp = _steering.Register(slave, targetCoords);
+        steeringComp.CurrentPath = new Queue<PathPoly>(result.Path);
     }
 
     private void OnSlaveCommanded(SiliconSyncMoveSlaveToPositionEvent args)
@@ -117,12 +126,12 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
         if (_paths.TryGetValue(master, out var paths))
         {
             if (!paths.ContainsKey(slave))
-                paths.Add(slave, (task, token));
+                paths.Add(slave, (task, token, args.MoveSlave));
         }
         else
         {
             paths = new();
-            paths.Add(slave, (task, token));
+            paths.Add(slave, (task, token, args.MoveSlave));
             _paths.Add(master, paths);
         }
     }
