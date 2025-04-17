@@ -122,6 +122,9 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
 
     private void OnCommandableGetRadial(Entity<SiliconSyncableSlaveCommandableComponent> ent, ref GetStationAiRadialEvent args)
     {
+        if (!TryComp<SiliconSyncableSlaveComponent>(ent, out var slaveComp) || !slaveComp.Enabled || slaveComp.Master == null)
+            return;
+
         var radial = new StationAiRadial()
         {
             Sprite = ent.Comp.Icon,
