@@ -1,3 +1,5 @@
+using Content.Client.Silicons.Sync.Components;
+using Content.Client.Silicons.Sync.Events;
 using Content.Shared.Silicons.StationAi;
 using Content.Shared.Silicons.Sync;
 using Content.Shared.Silicons.Sync.Components;
@@ -6,21 +8,32 @@ using Robust.Client.Graphics;
 using Robust.Client.Player;
 using Robust.Client.Input;
 using Robust.Shared.Map;
+using Robust.Shared.Player;
 
 namespace Content.Client.Silicons.Sync;
 
 public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
 {
     [Dependency] private readonly IEyeManager _eye = default!;
-    [Dependency] private readonly IPlayerManager _player = default!;
     [Dependency] private readonly IInputManager _input = default!;
+    [Dependency] private readonly IOverlayManager _overlay = default!;
+    [Dependency] private readonly IPlayerManager _player = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
+
+    private SiliconSyncCommanderOverlay? _syncOverlay;
 
     public override void Initialize()
     {
         base.Initialize();
 
-        SubscribeLocalEvent<SiliconSyncableSlaveAiRadialComponent, GetStationAiRadialEvent>(OnGetRadial);
+        SubscribeLocalEvent<SiliconSyncableSlaveAiRadialComponent, GetStationAiRadialEvent>(OnSlaveGetRadial);
+
+        SubscribeLocalEvent<SiliconSyncableMasterCommanderComponent, ComponentInit>(OnCommanderInit);
+        SubscribeLocalEvent<SiliconSyncableMasterCommanderComponent, ComponentRemove>(OnCommanderRemoved);
+        SubscribeLocalEvent<SiliconSyncableMasterCommanderComponent, LocalPlayerAttachedEvent>(OnCommanderAttached);
+        SubscribeLocalEvent<SiliconSyncableMasterCommanderComponent, LocalPlayerDetachedEvent>(OnCommanderDetached);
+
+        SubscribeLocalEvent<SiliconSyncableSlaveCommandedVisualsComponent, SiliconSyncMoveSlaveGetPathSpriteEvent>(OnCommandedSprite);
 
         SubscribeLocalEvent<SiliconSyncMoveSlavePathEvent>(OnGetPath);
     }
@@ -44,7 +57,7 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
         RaiseNetworkEvent(ev);
     }
 
-    private void OnGetRadial(Entity<SiliconSyncableSlaveAiRadialComponent> ent, ref GetStationAiRadialEvent args)
+    private void OnSlaveGetRadial(Entity<SiliconSyncableSlaveAiRadialComponent> ent, ref GetStationAiRadialEvent args)
     {
         if (!TryComp<SiliconSyncableSlaveComponent>(ent, out var slaveComp) || !slaveComp.Enabled || slaveComp.Master != null)
             return;
@@ -59,15 +72,71 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
         args.Actions.Add(radial);
     }
 
+    private void OnCommanderInit(Entity<SiliconSyncableMasterCommanderComponent> ent, ref ComponentInit args)
+    {
+        AddOverlay();
+    }
+
+    private void OnCommanderRemoved(Entity<SiliconSyncableMasterCommanderComponent> ent, ref ComponentRemove args)
+    {
+        RemoveOverlay();
+    }
+
+    private void OnCommanderAttached(Entity<SiliconSyncableMasterCommanderComponent> ent, ref LocalPlayerAttachedEvent args)
+    {
+        AddOverlay();
+    }
+
+    private void OnCommanderDetached(Entity<SiliconSyncableMasterCommanderComponent> ent, ref LocalPlayerDetachedEvent args)
+    {
+        RemoveOverlay();
+    }
+
+    private void AddOverlay()
+    {
+        if (_syncOverlay != null)
+            return;
+
+        _syncOverlay = new SiliconSyncCommanderOverlay();
+        _overlay.AddOverlay(_syncOverlay);
+    }
+
+    private void RemoveOverlay()
+    {
+        if (_syncOverlay == null)
+            return;
+
+        _overlay.RemoveOverlay(_syncOverlay);
+        _syncOverlay = null;
+    }
+
+    private void OnCommandedSprite(Entity<SiliconSyncableSlaveCommandedVisualsComponent> ent, ref SiliconSyncMoveSlaveGetPathSpriteEvent args)
+    {
+        args.Icon = ent.Comp.PlanningSprite;
+    }
+
     private void OnGetPath(SiliconSyncMoveSlavePathEvent args)
     {
         if (_player.LocalEntity is not {} entity)
             return;
 
         var master = GetEntity(args.Master);
-        var slave = GetEntity(args.Slave);
 
         if (entity != master)
             return;
+
+        if (_syncOverlay == null)
+            return;
+
+        var slave = GetEntity(args.Slave);
+
+        var ev = new SiliconSyncMoveSlaveGetPathSpriteEvent();
+        RaiseLocalEvent(slave, ev);
+
+        if (ev.Icon == null)
+            return;
+
+        if (!_syncOverlay.Paths.TryAdd(args.Path, ev.Icon))
+            _syncOverlay.Paths[args.Path] = ev.Icon;
     }
 }

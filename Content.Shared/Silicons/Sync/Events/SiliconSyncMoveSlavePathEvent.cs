@@ -8,9 +8,9 @@ public sealed class SiliconSyncMoveSlavePathEvent : EntityEventArgs
 {
     public NetEntity Master;
     public NetEntity Slave;
-    public SortedDictionary<EntityCoordinates, Direction> Path;
+    public KeyValuePair<NetCoordinates, Direction>[] Path;
 
-    public SiliconSyncMoveSlavePathEvent(NetEntity master, NetEntity slave, SortedDictionary<EntityCoordinates, Direction> path)
+    public SiliconSyncMoveSlavePathEvent(NetEntity master, NetEntity slave, KeyValuePair<NetCoordinates, Direction>[] path)
     {
         Master = master;
         Slave = slave;

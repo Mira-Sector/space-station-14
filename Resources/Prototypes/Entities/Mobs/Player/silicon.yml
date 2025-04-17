@@ -83,6 +83,7 @@
   - type: StationAiCanHack
   - type: SiliconSyncableMaster
   - type: SiliconSyncableMasterLaw
+  - type: SiliconSyncableMasterCommander
 
 - type: entity
   id: AiHeldIntellicard

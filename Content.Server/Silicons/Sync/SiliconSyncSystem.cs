@@ -73,8 +73,8 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
         if (result.Result != PathResult.Path)
             return;
 
-        SortedDictionary<EntityCoordinates, Direction> tiles = new();
-        tiles.Add(Transform(slave).Coordinates, Direction.Invalid);
+        SortedDictionary<NetCoordinates, Direction> tiles = new();
+        tiles.Add(GetNetCoordinates(Transform(slave).Coordinates), Direction.Invalid);
 
         foreach (var node in result.Path)
         {
@@ -83,10 +83,10 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
             var offset = Vector2.Subtract(lastTile.Position, node.Coordinates.Position);
             var offsetDir = DirectionExtensions.AsDirection(new Vector2i((int)Math.Floor(offset.X), (int)Math.Floor(offset.Y)));
 
-            tiles.Add(node.Coordinates, offsetDir);
+            tiles.Add(GetNetCoordinates(node.Coordinates), offsetDir);
         }
 
-        var ev = new SiliconSyncMoveSlavePathEvent(GetNetEntity(master), GetNetEntity(slave), tiles);
+        var ev = new SiliconSyncMoveSlavePathEvent(GetNetEntity(master), GetNetEntity(slave), tiles.ToArray());
         RaiseNetworkEvent(ev, master);
         RaiseLocalEvent(ev);
     }
