@@ -73,17 +73,17 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
         if (result.Result != PathResult.Path)
             return;
 
-        SortedDictionary<NetCoordinates, Direction> tiles = new();
-        tiles.Add(GetNetCoordinates(Transform(slave).Coordinates), Direction.Invalid);
+        List<KeyValuePair<NetCoordinates, Direction>> tiles = new();
+        tiles.Add(new KeyValuePair<NetCoordinates, Direction>(GetNetCoordinates(Transform(slave).Coordinates), Direction.Invalid));
 
         foreach (var node in result.Path)
         {
             var (lastTile, _) = tiles.Last();
 
             var offset = Vector2.Subtract(lastTile.Position, node.Coordinates.Position);
-            var offsetDir = DirectionExtensions.AsDirection(new Vector2i((int)Math.Floor(offset.X), (int)Math.Floor(offset.Y)));
+            var offsetDir = DirectionExtensions.GetDir(offset);
 
-            tiles.Add(GetNetCoordinates(node.Coordinates), offsetDir);
+            tiles.Add(new KeyValuePair<NetCoordinates, Direction>(GetNetCoordinates(node.Coordinates), offsetDir));
         }
 
         var ev = new SiliconSyncMoveSlavePathEvent(GetNetEntity(master), GetNetEntity(slave), tiles.ToArray());
@@ -99,21 +99,19 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
         if (!TryComp<SiliconSyncableMasterCommanderComponent>(master, out var commanderComp) || commanderComp.Commanding != slave)
             return;
 
+        if (commanderComp.NextCommand > _timing.CurTime)
+            return;
+
+        commanderComp.NextCommand += CommandUpdateRate;
+        DirtyField(master, commanderComp, nameof(SiliconSyncableMasterCommanderComponent.NextCommand));
+
         var token = new CancellationTokenSource();
         var task = _pathfinding.GetPathSafe(slave, Transform(slave).Coordinates, GetCoordinates(args.Coordinates), PathRange, token.Token);
-        task.Start();
 
         if (_paths.TryGetValue(master, out var paths))
         {
-            if (paths.TryGetValue(slave, out var ongoingTask))
-            {
-                ongoingTask.Token.Cancel();
-                paths[slave] = (task, token);
-            }
-            else
-            {
+            if (!paths.ContainsKey(slave))
                 paths.Add(slave, (task, token));
-            }
         }
         else
         {

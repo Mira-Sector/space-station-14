@@ -3,6 +3,7 @@ using Content.Shared.Silicons.Laws.Components;
 using Content.Shared.Silicons.Sync.Components;
 using Content.Shared.Silicons.Sync.Events;
 using Robust.Shared.Player;
+using Robust.Shared.Timing;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
@@ -12,6 +13,9 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
 {
     [Dependency] private readonly SharedUserInterfaceSystem _userInterface = default!;
     [Dependency] private readonly SharedSiliconLawSystem _siliconLaw = default!;
+    [Dependency] protected readonly IGameTiming _timing = default!;
+
+    public static readonly TimeSpan CommandUpdateRate = TimeSpan.FromSeconds(1 / 2);
 
     public override void Initialize()
     {
@@ -27,6 +31,8 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
         SubscribeLocalEvent<SiliconSyncableSlaveLawComponent, SiliconSyncSlaveLawCanUpdateEvent>(OnSlaveLawsCanUpdate);
 
         SubscribeLocalEvent<SiliconSyncableSlaveAiRadialComponent, StationAiSyncSlaveEvent>(OnAiSlave);
+
+        SubscribeLocalEvent<SiliconSyncableSlaveCommandableComponent, StationAiSyncCommandEvent>(OnAiCommand);
     }
 
     private void OnSlaveAdded(Entity<SiliconSyncableMasterComponent> ent, ref SiliconSyncMasterSlaveAddedEvent args)
@@ -84,6 +90,24 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
     private void OnAiSlave(Entity<SiliconSyncableSlaveAiRadialComponent> ent, ref StationAiSyncSlaveEvent args)
     {
         SetMaster(ent.Owner, args.User);
+    }
+
+    private void OnAiCommand(Entity<SiliconSyncableSlaveCommandableComponent> ent, ref StationAiSyncCommandEvent args)
+    {
+        if (!TryComp<SiliconSyncableMasterCommanderComponent>(args.User, out var commanderComp))
+            return;
+
+        if (!TryGetSlaves(args.User, out var slaves) || !slaves.Contains(ent))
+            return;
+
+        if (commanderComp.Commanding == ent)
+            commanderComp.Commanding = null;
+        else
+            commanderComp.Commanding = ent;
+
+        commanderComp.NextCommand = _timing.CurTime + CommandUpdateRate;
+
+        Dirty(args.User, commanderComp);
     }
 
     public void ShowAvailableMasters(Entity<SiliconSyncableSlaveComponent?> ent, EntityUid user)

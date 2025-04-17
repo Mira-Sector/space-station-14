@@ -1,4 +1,3 @@
-using Content.Client.Silicons.Sync.Components;
 using Content.Client.Silicons.Sync.Events;
 using Content.Shared.Silicons.StationAi;
 using Content.Shared.Silicons.Sync;
@@ -33,9 +32,10 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
         SubscribeLocalEvent<SiliconSyncableMasterCommanderComponent, LocalPlayerAttachedEvent>(OnCommanderAttached);
         SubscribeLocalEvent<SiliconSyncableMasterCommanderComponent, LocalPlayerDetachedEvent>(OnCommanderDetached);
 
-        SubscribeLocalEvent<SiliconSyncableSlaveCommandedVisualsComponent, SiliconSyncMoveSlaveGetPathSpriteEvent>(OnCommandedSprite);
+        SubscribeLocalEvent<SiliconSyncableSlaveCommandableComponent, GetStationAiRadialEvent>(OnCommandableGetRadial);
+        SubscribeLocalEvent<SiliconSyncableSlaveCommandableComponent, SiliconSyncMoveSlaveGetPathSpriteEvent>(OnCommandedSprite);
 
-        SubscribeLocalEvent<SiliconSyncMoveSlavePathEvent>(OnGetPath);
+        SubscribeNetworkEvent<SiliconSyncMoveSlavePathEvent>(OnGetPath);
     }
 
     public override void Update(float frameTime)
@@ -45,6 +45,11 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
 
         if (!TryComp<SiliconSyncableMasterCommanderComponent>(entity, out var commandingComp) || commandingComp.Commanding is not {} commanding)
             return;
+
+        if (commandingComp.NextCommand > _timing.CurTime)
+            return;
+
+        commandingComp.NextCommand += CommandUpdateRate;
 
         var mousePos = _eye.PixelToMap(_input.MouseScreenPosition);
 
@@ -110,7 +115,19 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
         _syncOverlay = null;
     }
 
-    private void OnCommandedSprite(Entity<SiliconSyncableSlaveCommandedVisualsComponent> ent, ref SiliconSyncMoveSlaveGetPathSpriteEvent args)
+    private void OnCommandableGetRadial(Entity<SiliconSyncableSlaveCommandableComponent> ent, ref GetStationAiRadialEvent args)
+    {
+        var radial = new StationAiRadial()
+        {
+            Sprite = ent.Comp.Icon,
+            Tooltip = Loc.GetString(ent.Comp.Tooltip),
+            Event = new StationAiSyncCommandEvent()
+        };
+
+        args.Actions.Add(radial);
+    }
+
+    private void OnCommandedSprite(Entity<SiliconSyncableSlaveCommandableComponent> ent, ref SiliconSyncMoveSlaveGetPathSpriteEvent args)
     {
         args.Icon = ent.Comp.PlanningSprite;
     }
@@ -136,7 +153,7 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
         if (ev.Icon == null)
             return;
 
-        if (!_syncOverlay.Paths.TryAdd(args.Path, ev.Icon))
-            _syncOverlay.Paths[args.Path] = ev.Icon;
+        if (!_syncOverlay.Paths.TryAdd(slave, (args.Path, ev.Icon)))
+            _syncOverlay.Paths[slave] = (args.Path, ev.Icon);
     }
 }
