@@ -1531,3 +1531,9 @@ Entries:
     type: Add
   id: 219
   time: '2025-04-16T21:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Beepsky now speaks when arresting someone
+    type: Add
+  id: 220
+  time: '2025-04-17T01:30:00.0000000+00:00'
