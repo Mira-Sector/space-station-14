@@ -15,5 +15,9 @@
     {
         "name": "moving",
         "directions": 4
+    },
+    {
+        "name": "no_path",
+        "directions": 4
     }]
 }

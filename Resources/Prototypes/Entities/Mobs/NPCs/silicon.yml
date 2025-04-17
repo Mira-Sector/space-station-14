@@ -108,12 +108,16 @@
       enum.AiUi.Key:
         type: StationAiBoundUserInterface
   - type: SiliconSyncableSlaveCommandable
-    planningSprite:
-      sprite: Markers/ai_commanding.rsi
-      state: planning
-    movingSprite:
-      sprite: Markers/ai_commanding.rsi
-      state: moving
+    pathSprites:
+      PathFound:
+        sprite: Markers/ai_commanding.rsi
+        state: planning
+      Moving:
+        sprite: Markers/ai_commanding.rsi
+        state: moving
+      NoPath:
+        sprite: Markers/ai_commanding.rsi
+        state: no_path
   - type: SpeciesLanguage
     spokenLanguages:
     - Binary

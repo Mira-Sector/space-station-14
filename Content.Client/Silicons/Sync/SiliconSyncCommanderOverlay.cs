@@ -62,9 +62,6 @@ public sealed class SiliconSyncCommanderOverlay : Overlay
 
             foreach (var (netPos, direction) in path)
             {
-                if (direction == Direction.Invalid)
-                    continue;
-
                 var pos = _entityManager.GetCoordinates(netPos);
                 if (!_entityManager.TryGetComponent<MapGridComponent>(pos.EntityId, out var mapGridComp))
                     continue;

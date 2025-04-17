@@ -129,7 +129,7 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
 
     private void OnCommandedSprite(Entity<SiliconSyncableSlaveCommandableComponent> ent, ref SiliconSyncMoveSlaveGetPathSpriteEvent args)
     {
-        args.Icon = ent.Comp.PlanningSprite;
+        args.Icon = ent.Comp.PathSprites[args.PathType];
     }
 
     private void OnGetPath(SiliconSyncMoveSlavePathEvent args)
@@ -147,13 +147,23 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
 
         var slave = GetEntity(args.Slave);
 
-        var ev = new SiliconSyncMoveSlaveGetPathSpriteEvent();
+        var ev = new SiliconSyncMoveSlaveGetPathSpriteEvent(args.PathType);
         RaiseLocalEvent(slave, ev);
 
         if (ev.Icon == null)
             return;
 
-        if (!_syncOverlay.Paths.TryAdd(slave, (args.Path, ev.Icon)))
-            _syncOverlay.Paths[slave] = (args.Path, ev.Icon);
+        if (args.PathType == SiliconSyncCommandingPathType.PathFound)
+        {
+            if (!_syncOverlay.Paths.TryAdd(slave, (args.Path, ev.Icon)))
+                _syncOverlay.Paths[slave] = (args.Path, ev.Icon);
+        }
+        else
+        {
+            if (!_syncOverlay.Paths.TryGetValue(slave, out var path))
+                return;
+
+            _syncOverlay.Paths[slave] = (path.Item1, ev.Icon);
+        }
     }
 }

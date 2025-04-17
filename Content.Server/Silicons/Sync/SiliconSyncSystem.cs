@@ -71,7 +71,11 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
 #pragma warning restore RA0004
 
         if (result.Result != PathResult.Path)
+        {
+            var noPathEv = new SiliconSyncMoveSlavePathEvent(GetNetEntity(master), GetNetEntity(slave), SiliconSyncCommandingPathType.NoPath);
+            RaiseNetworkEvent(noPathEv, master);
             return;
+        }
 
         List<KeyValuePair<NetCoordinates, Direction>> tiles = new();
         tiles.Add(new KeyValuePair<NetCoordinates, Direction>(GetNetCoordinates(Transform(slave).Coordinates), Direction.Invalid));
@@ -86,7 +90,9 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
             tiles.Add(new KeyValuePair<NetCoordinates, Direction>(GetNetCoordinates(node.Coordinates), offsetDir));
         }
 
-        var ev = new SiliconSyncMoveSlavePathEvent(GetNetEntity(master), GetNetEntity(slave), tiles.ToArray());
+        tiles.Remove(tiles.First());
+
+        var ev = new SiliconSyncMoveSlavePathEvent(GetNetEntity(master), GetNetEntity(slave), SiliconSyncCommandingPathType.PathFound, tiles.ToArray());
         RaiseNetworkEvent(ev, master);
         RaiseLocalEvent(ev);
     }
