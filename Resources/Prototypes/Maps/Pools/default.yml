@@ -7,8 +7,10 @@
   - Bagel
   - Box
   - Cluster
-  - Cog
+  #- Cog
+  #- Convex
   - Core
+  #- Elkridge
   - Fland
   #- Gate
   - Gemini
@@ -20,5 +22,7 @@
   - Omega
   - Saltern
   - Packed
+  #- Plasma
   #- Reach
+  - Reach
   #- Train

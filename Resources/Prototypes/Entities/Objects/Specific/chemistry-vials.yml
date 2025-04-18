@@ -130,10 +130,10 @@
   - type: SolutionContainerManager
     solutions:
       beaker:
-        maxVol: 5
+        maxVol: 10
         reagents:
           - ReagentId: Radium
-            Quantity: 5
+            Quantity: 10
 
 - type: entity
   id: ChlorineChemistryVial
@@ -145,7 +145,22 @@
   - type: SolutionContainerManager
     solutions:
       beaker:
-        maxVol: 5
+        maxVol: 10
         reagents:
           - ReagentId: Chlorine
-            Quantity: 5
+            Quantity: 10
+
+- type: entity
+  id: PlasmaChemistryVial
+  parent: BaseChemistryEmptyVial
+  suffix: plasma
+  components:
+  - type: Label
+    currentLabel: reagent-name-plasma
+  - type: SolutionContainerManager
+    solutions:
+      beaker:
+        maxVol: 10
+        reagents:
+          - ReagentId: Plasma
+            Quantity: 10

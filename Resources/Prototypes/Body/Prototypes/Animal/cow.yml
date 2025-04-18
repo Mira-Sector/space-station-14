@@ -1,0 +1,37 @@
+﻿- type: body
+  id: Cow
+  name: cow
+  root: torso
+  slots:
+    head:
+      part: CowHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: CowTorso
+      connections:
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_leg:
+      part: CowRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: CowLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: CowRightFoot
+    left_foot:
+      part: CowLeftFoot

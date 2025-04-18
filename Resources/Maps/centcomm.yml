@@ -1,6 +1,17 @@
 meta:
-  format: 6
-  postmapinit: false
+  format: 7
+  category: Grid
+  engineVersion: 250.0.0
+  forkId: ""
+  forkVersion: ""
+  time: 04/08/2025 16:51:04
+  entityCount: 7624
+maps: []
+grids:
+- 2
+orphans:
+- 2
+nullspace: []
 tilemap:
   0: Space
   55: FloorArcadeBlue
@@ -6086,7 +6097,7 @@ entities:
       pos: -20.5,-0.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -4924.099
+      secondsUntilStateChange: -5047.8223
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -6157,7 +6168,7 @@ entities:
       pos: -8.5,19.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -20282.783
+      secondsUntilStateChange: -20406.506
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -6279,7 +6290,7 @@ entities:
       pos: -6.5,31.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -32315.46
+      secondsUntilStateChange: -32439.184
       state: Opening
     - type: DeviceLinkSource
       linkedPorts:
@@ -6312,30 +6323,6 @@ entities:
       parent: 2
 - proto: AirlockExternal
   entities:
-  - uid: 9
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 0.5,5.5
-      parent: 2
-  - uid: 54
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 0.5,-4.5
-      parent: 2
-  - uid: 202
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 0.5,-2.5
-      parent: 2
-  - uid: 2334
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 0.5,3.5
-      parent: 2
   - uid: 7515
     components:
     - type: Transform
@@ -6374,6 +6361,28 @@ entities:
       linkedPorts:
         2115:
         - DoorStatus: DoorBolt
+- proto: AirlockExternalGlass
+  entities:
+  - uid: 9
+    components:
+    - type: Transform
+      pos: 0.5,5.5
+      parent: 2
+  - uid: 54
+    components:
+    - type: Transform
+      pos: 0.5,-2.5
+      parent: 2
+  - uid: 202
+    components:
+    - type: Transform
+      pos: 0.5,-4.5
+      parent: 2
+  - uid: 1187
+    components:
+    - type: Transform
+      pos: 0.5,3.5
+      parent: 2
 - proto: AirlockExternalGlassCargoLocked
   entities:
   - uid: 2534
@@ -6413,7 +6422,7 @@ entities:
       pos: 2.5,-4.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -4520.6997
+      secondsUntilStateChange: -4644.423
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -6469,7 +6478,7 @@ entities:
       pos: -0.5,-17.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -14289.122
+      secondsUntilStateChange: -14412.845
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -6482,7 +6491,7 @@ entities:
       pos: -21.5,-7.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -4900.666
+      secondsUntilStateChange: -5024.389
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -18913,6 +18922,20 @@ entities:
     - type: Transform
       pos: -33.462547,19.659586
       parent: 2
+- proto: CentcommComputerComms
+  entities:
+  - uid: 1188
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -53.5,0.5
+      parent: 2
+  - uid: 1189
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -53.5,0.5
+      parent: 2
 - proto: Chair
   entities:
   - uid: 24
@@ -19375,6 +19398,23 @@ entities:
     components:
     - type: Transform
       pos: -17.5,-23.5
+      parent: 2
+- proto: ChemistryBottleOmnizine
+  entities:
+  - uid: 1714
+    components:
+    - type: Transform
+      pos: -33.234894,20.187452
+      parent: 2
+  - uid: 1715
+    components:
+    - type: Transform
+      pos: -33.484894,20.187452
+      parent: 2
+  - uid: 1716
+    components:
+    - type: Transform
+      pos: -33.703644,20.203077
       parent: 2
 - proto: ChemMaster
   entities:
@@ -20055,6 +20095,87 @@ entities:
     - type: Physics
       canCollide: False
     - type: InsideEntityStorage
+- proto: ClothingMaskBlushingClown
+  entities:
+  - uid: 7093
+    components:
+    - type: Transform
+      parent: 7092
+    - type: Physics
+      canCollide: False
+    - type: InsideEntityStorage
+  - uid: 7094
+    components:
+    - type: Transform
+      parent: 7092
+    - type: Physics
+      canCollide: False
+    - type: InsideEntityStorage
+  - uid: 7095
+    components:
+    - type: Transform
+      parent: 7092
+    - type: Physics
+      canCollide: False
+    - type: InsideEntityStorage
+  - uid: 7096
+    components:
+    - type: Transform
+      parent: 7092
+    - type: Physics
+      canCollide: False
+    - type: InsideEntityStorage
+  - uid: 7106
+    components:
+    - type: Transform
+      parent: 7092
+    - type: Physics
+      canCollide: False
+    - type: InsideEntityStorage
+- proto: ClothingMaskBlushingMime
+  entities:
+  - uid: 7152
+    components:
+    - type: Transform
+      parent: 7151
+    - type: Physics
+      canCollide: False
+    - type: InsideEntityStorage
+  - uid: 7154
+    components:
+    - type: Transform
+      parent: 7151
+    - type: Physics
+      canCollide: False
+    - type: InsideEntityStorage
+  - uid: 7158
+    components:
+    - type: Transform
+      parent: 7151
+    - type: Physics
+      canCollide: False
+    - type: InsideEntityStorage
+  - uid: 7159
+    components:
+    - type: Transform
+      parent: 7151
+    - type: Physics
+      canCollide: False
+    - type: InsideEntityStorage
+  - uid: 7160
+    components:
+    - type: Transform
+      parent: 7151
+    - type: Physics
+      canCollide: False
+    - type: InsideEntityStorage
+  - uid: 7161
+    components:
+    - type: Transform
+      parent: 7151
+    - type: Physics
+      canCollide: False
+    - type: InsideEntityStorage
 - proto: ClothingMaskClownSecurity
   entities:
   - uid: 7077
@@ -20143,87 +20264,6 @@ entities:
     components:
     - type: Transform
       parent: 344
-    - type: Physics
-      canCollide: False
-    - type: InsideEntityStorage
-- proto: ClothingMaskSexyClown
-  entities:
-  - uid: 7093
-    components:
-    - type: Transform
-      parent: 7092
-    - type: Physics
-      canCollide: False
-    - type: InsideEntityStorage
-  - uid: 7094
-    components:
-    - type: Transform
-      parent: 7092
-    - type: Physics
-      canCollide: False
-    - type: InsideEntityStorage
-  - uid: 7095
-    components:
-    - type: Transform
-      parent: 7092
-    - type: Physics
-      canCollide: False
-    - type: InsideEntityStorage
-  - uid: 7096
-    components:
-    - type: Transform
-      parent: 7092
-    - type: Physics
-      canCollide: False
-    - type: InsideEntityStorage
-  - uid: 7106
-    components:
-    - type: Transform
-      parent: 7092
-    - type: Physics
-      canCollide: False
-    - type: InsideEntityStorage
-- proto: ClothingMaskSexyMime
-  entities:
-  - uid: 7152
-    components:
-    - type: Transform
-      parent: 7151
-    - type: Physics
-      canCollide: False
-    - type: InsideEntityStorage
-  - uid: 7154
-    components:
-    - type: Transform
-      parent: 7151
-    - type: Physics
-      canCollide: False
-    - type: InsideEntityStorage
-  - uid: 7158
-    components:
-    - type: Transform
-      parent: 7151
-    - type: Physics
-      canCollide: False
-    - type: InsideEntityStorage
-  - uid: 7159
-    components:
-    - type: Transform
-      parent: 7151
-    - type: Physics
-      canCollide: False
-    - type: InsideEntityStorage
-  - uid: 7160
-    components:
-    - type: Transform
-      parent: 7151
-    - type: Physics
-      canCollide: False
-    - type: InsideEntityStorage
-  - uid: 7161
-    components:
-    - type: Transform
-      parent: 7151
     - type: Physics
       canCollide: False
     - type: InsideEntityStorage
@@ -20799,12 +20839,6 @@ entities:
         - MedicalScannerSender: MedicalScannerReceiver
 - proto: ComputerComms
   entities:
-  - uid: 3646
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: -53.5,0.5
-      parent: 2
   - uid: 3664
     components:
     - type: Transform
@@ -21246,6 +21280,7 @@ entities:
     - type: Transform
       pos: -20.5,-31.5
       parent: 2
+    - type: Conveyed
 - proto: CrateTrashCartFilled
   entities:
   - uid: 2971
@@ -25515,7 +25550,7 @@ entities:
       pos: -25.5,7.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -1542.3358
+      secondsUntilStateChange: -1666.0588
       state: Opening
   - uid: 2789
     components:
@@ -25524,7 +25559,7 @@ entities:
       pos: -26.5,8.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -1540.3691
+      secondsUntilStateChange: -1664.0922
       state: Opening
 - proto: FenceWoodSmallStraight
   entities:
@@ -26516,7 +26551,7 @@ entities:
       pos: -48.5,1.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -2285.5015
+      secondsUntilStateChange: -2409.2244
       state: Closing
     - type: DeviceNetwork
       deviceLists:
@@ -38932,12 +38967,13 @@ entities:
       pos: -26.5,6.5
       parent: 2
     - type: PlantHolder
-      lastProduce: 1
       age: 1
+      lastProduce: 1
       health: 100
       seed:
         mutations: []
-        heatTolerance: 10
+        splatPrototype: null
+        endurance: 100
         weedHighLevelThreshold: 10
         weedTolerance: 5
         pestTolerance: 5
@@ -38946,8 +38982,8 @@ entities:
         toxinsTolerance: 4
         lightTolerance: 3
         idealLight: 7
+        heatTolerance: 10
         idealHeat: 298
-        splatPrototype: null
         waterConsumption: 1
         nutrientConsumption: 0.8
         exudeGasses: {}
@@ -38967,18 +39003,20 @@ entities:
         - FoodCocoaPod
         packetPrototype: CocoaSeeds
         immutable: False
-        endurance: 100
         yield: 6
         lifespan: 50
         maturation: 6
+        turnIntoKudzu: False
         plantIconState: produce
         plantRsi: Objects/Specific/Hydroponics/cocoa.rsi
         displayName: seeds-cocoa-display-name
         noun: seeds-noun-seeds
         name: seeds-cocoa-name
+        harvestLogImpact: null
+        plantLogImpact: null
         mutationPrototypes: []
-        turnIntoKudzu: False
         kudzuPrototype: WeakKudzu
+        production: 6
         screaming: False
         screamSound: !type:SoundCollectionSpecifier
           params:
@@ -38997,7 +39035,6 @@ entities:
         potency: 1
         harvestRepeat: Repeat
         growthStages: 6
-        production: 6
         mysterious: False
     - type: Godmode
       oldDamage: {}
@@ -40032,23 +40069,6 @@ entities:
     components:
     - type: Transform
       pos: -36.81409,21.98911
-      parent: 2
-- proto: OmnizineChemistryBottle
-  entities:
-  - uid: 1714
-    components:
-    - type: Transform
-      pos: -33.234894,20.187452
-      parent: 2
-  - uid: 1715
-    components:
-    - type: Transform
-      pos: -33.484894,20.187452
-      parent: 2
-  - uid: 1716
-    components:
-    - type: Transform
-      pos: -33.703644,20.203077
       parent: 2
 - proto: OperatingTable
   entities:
@@ -41672,29 +41692,25 @@ entities:
       parent: 2
 - proto: PoweredLightPostSmall
   entities:
-  - uid: 1187
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -14.5,3.5
-      parent: 2
-  - uid: 1188
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -2.5,3.5
-      parent: 2
-  - uid: 1189
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -2.5,-2.5
-      parent: 2
   - uid: 1190
     components:
     - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -14.5,-2.5
+      pos: -3.5,2.5
+      parent: 2
+  - uid: 2334
+    components:
+    - type: Transform
+      pos: -3.5,-1.5
+      parent: 2
+  - uid: 2842
+    components:
+    - type: Transform
+      pos: -13.5,2.5
+      parent: 2
+  - uid: 2846
+    components:
+    - type: Transform
+      pos: -13.5,-1.5
       parent: 2
 - proto: PoweredlightSodium
   entities:
@@ -45089,16 +45105,6 @@ entities:
       rot: 1.5707963267948966 rad
       pos: -29.5,-13.5
       parent: 2
-- proto: SpawnPointObserver
-  entities:
-  - uid: 3712
-    components:
-    - type: Transform
-      pos: -55.5,0.5
-      parent: 2
-    - type: WarpPoint
-      follow: True
-      location: Central Command
 - proto: SpawnVehicleATV
   entities:
   - uid: 2488
@@ -53620,7 +53626,7 @@ entities:
       pos: -17.5,18.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -32771.66
+      secondsUntilStateChange: -32895.383
       state: Opening
   - uid: 2882
     components:

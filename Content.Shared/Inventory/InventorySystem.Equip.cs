@@ -449,11 +449,11 @@ public abstract partial class InventorySystem
                 TryUnequip(actor, target, slotDef.Name, out _, ref itemsDropped, true, true, predicted, inventory, reparent: reparent);
             }
 
-            if (!TryGetSlotEntity(actor, slotDef.Name, out var slotItem, inventory))
+            if (!TryGetSlotEntity(target, slotDef.Name, out var slotItem, inventory))
                 continue;
 
-            if (!WhitelistCheck(slotItem.Value, actor, slotDef.Name, inventory))
-                TryUnequip(actor, target, slotDef.Name, out _, ref itemsDropped, true, true, predicted, inventory, reparent: reparent);
+            if (!WhitelistCheck(slotItem.Value, target, slotDef.Name, inventory))
+                TryUnequip(target, target, slotDef.Name, out _, ref itemsDropped, true, true, predicted, inventory, reparent: reparent);
         }
 
         // we check if any items were dropped, and make a popup if they were.

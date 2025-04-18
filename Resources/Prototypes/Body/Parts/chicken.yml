@@ -1,0 +1,53 @@
+﻿- type: entity
+  id: BaseChickenPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 5
+      - ReagentId: Blood
+        Quantity: 25
+      - ReagentId: Nutrient
+        Quantity: 20
+
+- type: entity
+  id: ChickenTorso
+  name: chicken torso
+  parent: [BaseChickenPart, BaseTorso]
+
+- type: entity
+  id: ChickenHead
+  name: chicken head
+  parent: [BaseChickenPart, BaseHead]
+
+- type: entity
+  id: ChickenLeftArm
+  name: left chicken arm
+  parent: [BaseChickenPart, BaseLeftArm]
+
+- type: entity
+  id: ChickenRightArm
+  name: right chicken arm
+  parent: [BaseChickenPart, BaseRightArm]
+
+- type: entity
+  id: ChickenLeftLeg
+  name: left chicken leg
+  parent: [BaseChickenPart, BaseLeftLeg]
+
+- type: entity
+  id: ChickenRightLeg
+  name: right chicken leg
+  parent: [BaseChickenPart, BaseRightLeg]
+
+- type: entity
+  id: ChickenLeftFoot
+  name: left chicken foot
+  parent: [BaseChickenPart,BaseLeftFoot]
+
+- type: entity
+  id: ChickenRightFoot
+  name: right chicken foot
+  parent: [ BaseChickenPart, BaseRightFoot]

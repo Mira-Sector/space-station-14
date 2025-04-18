@@ -11,7 +11,7 @@ namespace Content.Shared.Chemistry.Reaction
     /// <summary>
     /// Prototype for chemical reaction definitions
     /// </summary>
-    [Prototype("reaction")]
+    [Prototype]
     public sealed partial class ReactionPrototype : IPrototype, IComparable<ReactionPrototype>
     {
         [ViewVariables]
@@ -94,6 +94,13 @@ namespace Content.Shared.Chemistry.Reaction
         /// </example>
         [DataField]
         public bool Source;
+
+        /// <summary>
+        /// Prevents reaction occurring if container has less than this many reagents
+        /// EG: Would be higher than zero for a chemical that would react with anything in the container with it, but should be prevented from reacting with just itself.
+        /// </summary>
+        [DataField]
+        public int RequiredReagentCount = 0;
 
         /// <summary>
         ///     Comparison for creating a sorted set of reactions. Determines the order in which reactions occur.

@@ -1,0 +1,41 @@
+﻿- type: entity
+  id: BaseSnakePart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: SnakeTorso
+  name: snake torso
+  parent: [BaseSnakePart, BaseTorso]
+
+- type: entity
+  id: SnakeHead
+  name: snake head
+  parent: [BaseSnakePart, BaseHead]
+
+- type: entity
+  id: SnakeLeftLeg
+  name: left snake leg
+  parent: [BaseSnakePart, BaseLeftLeg]
+
+- type: entity
+  id: SnakeRightLeg
+  name: right snake leg
+  parent: [BaseSnakePart, BaseRightLeg]
+
+- type: entity
+  id: SnakeLeftFoot
+  name: left snake foot
+  parent: [BaseSnakePart,BaseLeftFoot]
+
+- type: entity
+  id: SnakeRightFoot
+  name: right snake foot
+  parent: [ BaseSnakePart, BaseRightFoot]

@@ -1,3 +1,4 @@
+using Content.Shared.Body.Systems;
 using Content.Shared.EntityEffects;
 using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
@@ -15,12 +16,15 @@ public sealed partial class TotalDamage : EntityEffectCondition
 
     public override bool Condition(EntityEffectBaseArgs args)
     {
+        FixedPoint2? total = null;
+
         if (args.EntityManager.TryGetComponent(args.TargetEntity, out DamageableComponent? damage))
-        {
-            var total = damage.TotalDamage;
-            if (total > Min && total < Max)
-                return true;
-        }
+            total = damage.TotalDamage;
+        else if (args.EntityManager.System<SharedBodySystem>().GetBodyDamage(args.TargetEntity) is {} bodyDamage)
+            total = bodyDamage.GetTotal();
+
+        if (total > Min && total < Max)
+            return true;
 
         return false;
     }

@@ -1,0 +1,41 @@
+﻿- type: entity
+  id: BaseCatPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: CatTorso
+  name: cat torso
+  parent: [BaseCatPart, BaseTorso]
+
+- type: entity
+  id: CatHead
+  name: cat head
+  parent: [BaseCatPart, BaseHead]
+
+- type: entity
+  id: CatLeftLeg
+  name: left cat leg
+  parent: [BaseCatPart, BaseLeftLeg]
+
+- type: entity
+  id: CatRightLeg
+  name: cat leg
+  parent: [BaseCatPart, BaseRightLeg]
+
+- type: entity
+  id: CatLeftFoot
+  name: left cat foot
+  parent: [BaseCatPart,BaseLeftFoot]
+
+- type: entity
+  id: CatRightFoot
+  name: cat foot
+  parent: [BaseCatPart, BaseRightFoot]

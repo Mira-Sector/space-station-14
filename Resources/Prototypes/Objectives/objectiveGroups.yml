@@ -14,6 +14,7 @@
     CMOHyposprayStealObjective: 1
     CMOCrewMonitorStealObjective: 1
     RDHardsuitStealObjective: 1
+    RDTabletStealObjective: 1
     NukeDiskStealObjective: 1
     MagbootsStealObjective: 1
     CorgiMeatStealObjective: 1
@@ -23,6 +24,7 @@
     HandTeleporterStealObjective: 0.5
     SecretDocumentsStealObjective: 0.5
     EnergyShotgunStealObjective: 0.5
+
 
 - type: weightedRandom
   id: TraitorObjectiveGroupKill
@@ -59,13 +61,14 @@
 - type: weightedRandom
   id: ThiefObjectiveGroupCollection
   weights:
-    HeadCloakStealCollectionObjective: 1           #command
+    HeadCloakStealCollectionObjective: 1                #command
     HeadBedsheetStealCollectionObjective: 1
     StampStealCollectionObjective: 1
     DoorRemoteStealCollectionObjective: 1
-    TechnologyDiskStealCollectionObjective: 1        #rnd
+    TechnologyDiskStealCollectionObjective: 1           #sci
+    MailStealCollectionObjective: 1                     #cargo
     IDCardsStealCollectionObjective: 1
-    LAMPStealCollectionObjective: 2 #only for moth
+    LAMPStealCollectionObjective: 2                     #only for moth
 
 - type: weightedRandom
   id: ThiefObjectiveGroupItem

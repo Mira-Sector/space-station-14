@@ -1,0 +1,51 @@
+﻿- type: entity
+  id: BaseSlothPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: SlothTorso
+  name: sloth torso
+  parent: [BaseSlothPart, BaseTorso]
+
+- type: entity
+  id: SlothHead
+  name: sloth head
+  parent: [BaseSlothPart, BaseHead]
+
+- type: entity
+  id: SlothLeftArm
+  name: left sloth arm
+  parent: [BaseSlothPart, BaseLeftArm]
+
+- type: entity
+  id: SlothRightArm
+  name: right sloth arm
+  parent: [BaseSlothPart, BaseRightArm]
+
+- type: entity
+  id: SlothLeftLeg
+  name: left sloth leg
+  parent: [BaseSlothPart, BaseLeftLeg]
+
+- type: entity
+  id: SlothRightLeg
+  name: sloth leg
+  parent: [BaseSlothPart, BaseRightLeg]
+
+- type: entity
+  id: SlothLeftFoot
+  name: left sloth foot
+  parent: [BaseSlothPart,BaseLeftFoot]
+
+- type: entity
+  id: SlothRightFoot
+  name: sloth foot
+  parent: [BaseSlothPart, BaseRightFoot]

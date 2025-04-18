@@ -13,4 +13,4 @@
   - type: ProjectilePenetration
     ammount: 2
   - type: StaminaDamageOnCollide
-    damage: 35
+    damage: 60

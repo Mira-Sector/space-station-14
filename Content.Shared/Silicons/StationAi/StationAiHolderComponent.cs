@@ -7,7 +7,7 @@ namespace Content.Shared.Silicons.StationAi;
 /// <summary>
 /// Allows moving a <see cref="StationAiCoreComponent"/> contained entity to and from this component.
 /// </summary>
-[RegisterComponent, NetworkedComponent]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class StationAiHolderComponent : Component
 {
     public const string Container = StationAiCoreComponent.Container;
@@ -21,9 +21,9 @@ public sealed partial class StationAiHolderComponent : Component
     /// <summary>
     /// Are we empty because the AI died.
     /// </summary>
-    [DataField]
+    [DataField, AutoNetworkedField]
     public bool AiDied = false;
 
-    [DataField]
+    [DataField, AutoNetworkedField]
     public Dictionary<StationAiState, Dictionary<StationAiVisualLayers, SpriteSpecifier>> Visuals = new();
 }

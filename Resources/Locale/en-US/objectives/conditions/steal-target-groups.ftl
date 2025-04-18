@@ -3,6 +3,7 @@ steal-target-groups-hypospray = hypospray
 steal-target-groups-handheld-crew-monitor = handheld crew monitor
 steal-target-groups-clothing-outer-hardsuit-rd = experimental research hardsuit
 steal-target-groups-hand-teleporter = hand teleporter
+steal-target-groups-rd-tablet = handheld R&D tablet
 steal-target-groups-clothing-shoes-boots-mag-adv = advanced magboots
 steal-target-groups-box-folder-qm-clipboard = requisition digi-board
 steal-target-groups-food-meat-corgi = prime-cut corgi meat
@@ -20,6 +21,7 @@ steal-target-groups-stamps = stamp
 steal-target-groups-door-remotes = door remote
 steal-target-groups-encryption-keys = encryption key
 steal-target-groups-technology-disks = technology disk
+steal-target-groups-mail = mail
 steal-target-groups-id-cards = ID Card
 steal-target-groups-lamps = LAMP
 

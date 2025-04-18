@@ -26,13 +26,9 @@ public sealed class GhostVisualsSystem : EntitySystem
         // we use the last body they were in first
         // if that fails we then use what they selected in the lobby
         var lastBody = args.Mind.Comp.CurrentEntity;
+        var usingProfile = false;
 
         if (!TryComp<HumanoidAppearanceComponent>(lastBody, out var humanoidComp))
-            return;
-
-        var usingProfile = humanoidComp == null;
-
-        if (humanoidComp == null)
         {
             if (args.Mind.Comp.Session is not {} session)
                 return;
@@ -47,6 +43,8 @@ public sealed class GhostVisualsSystem : EntitySystem
 
             if (!TryComp<HumanoidAppearanceComponent>(lastBody, out humanoidComp))
                 return;
+
+            usingProfile = true;
         }
 
         // cant immediately add it else we crash
@@ -108,7 +106,7 @@ public sealed class GhostVisualsSystem : EntitySystem
             if (ent.Comp.LayersModified.ContainsKey(layer))
                 continue;
 
-            ghostHumanoid.HiddenLayers.Add(layer);
+            ghostHumanoid.PermanentlyHidden.Add(layer);
             _appearance.RemoveData(ent, layer);
         }
 
