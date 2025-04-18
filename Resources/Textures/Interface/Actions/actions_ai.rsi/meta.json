@@ -59,7 +59,10 @@
 			"name": "sync"
 		},
         {
-			"name": "command"
+			"name": "command_on"
+		},
+        {
+			"name": "command_off"
 		}
 	]
 }

@@ -116,7 +116,7 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
 
         if (commanderComp.Commanding.Contains(ent))
         {
-            StopCommanding((args.User, commanderComp), ent);
+            StopCommanding((args.User, commanderComp), (ent.Owner, ent.Comp));
             return;
         }
 
@@ -124,6 +124,9 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
         commanderComp.NextCommand = _timing.CurTime + CommandUpdateRate;
 
         Dirty(args.User, commanderComp);
+
+        ent.Comp.Master = args.User;
+        DirtyField(ent.Owner, ent.Comp, nameof(SiliconSyncableSlaveCommandableComponent.Master));
     }
 
     private void OnCommanderSlaveLost(Entity<SiliconSyncableMasterCommanderComponent> ent, ref SiliconSyncMasterSlaveLostEvent args)
@@ -137,10 +140,16 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
         StopCommanding(ent, args.Slave);
     }
 
-    private void StopCommanding(Entity<SiliconSyncableMasterCommanderComponent> ent, EntityUid slave)
+    private void StopCommanding(Entity<SiliconSyncableMasterCommanderComponent> ent, Entity<SiliconSyncableSlaveCommandableComponent?> slave)
     {
         if (!ent.Comp.Commanding.Contains(slave))
             return;
+
+        if (!Resolve(slave.Owner, ref slave.Comp))
+            return;
+
+        slave.Comp.Master = null;
+        DirtyField(slave.Owner, slave.Comp, nameof(SiliconSyncableSlaveCommandableComponent.Master));
 
         var ev = new SiliconSyncMoveSlaveLostEvent(GetNetEntity(ent.Owner), GetNetEntity(slave));
 

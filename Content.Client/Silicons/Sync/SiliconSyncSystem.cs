@@ -128,8 +128,8 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
 
         var radial = new StationAiRadial()
         {
-            Sprite = ent.Comp.Icon,
-            Tooltip = Loc.GetString(ent.Comp.Tooltip),
+            Sprite = ent.Comp.Master == null ? ent.Comp.EnableIcon : ent.Comp.DisableIcon,
+            Tooltip = Loc.GetString(ent.Comp.Master == null ? ent.Comp.EnableTooltip : ent.Comp.DisableTooltip),
             Event = new StationAiSyncCommandEvent()
         };
 
