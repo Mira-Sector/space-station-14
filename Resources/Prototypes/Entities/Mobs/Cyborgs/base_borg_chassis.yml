@@ -299,13 +299,10 @@
     canCreateVacuum: false # its for killing the borg not the station
 
 - type: entity
-  id: BaseBorgChassisNT
-  parent: [BaseBorgChassis, BaseBorgTransponder]
+  id: BaseBorgNT
+  parent: BaseBorgChassis
   abstract: true
   components:
-  - type: RandomMetadata
-    nameSegments:
-    - NamesBorg
   - type: NpcFactionMember
     factions:
     - NanoTrasen
@@ -317,6 +314,30 @@
     - Borg
   - type: AccessReader
     access: [["Command"], ["Research"]]
+  - type: ShowJobIcons
+  - type: StatusIcon
+  - type: IdCard
+    accessOverride: false
+    updateName: false
+  - type: PresetIdCard
+    job: Borg
+  - type: StationAiVision
+  - type: SiliconSyncableSlave
+  - type: SiliconSyncableSlaveLaw
+  - type: Wires
+    layoutId: Cyborg
+  - type: InteractionPopup
+    interactSuccessSound:
+      path: /Audio/Ambience/Objects/periodic_beep.ogg
+
+- type: entity
+  id: BaseBorgChassisNT
+  parent: [BaseBorgNT, BaseBorgTransponder]
+  abstract: true
+  components:
+  - type: RandomMetadata
+    nameSegments:
+    - NamesBorg
   - type: UserInterface
     interfaces:
       enum.SiliconLawsUiKey.Key:
@@ -333,6 +354,8 @@
         type: BorgSelectTypeUserInterface
       enum.WiresUiKey.Key:
         type: WiresBoundUserInterface
+      enum.SiliconSyncUiKey.Key:
+        type: SiliconSyncSelectorBoundUserInterface
   - type: ActivatableUI
     key: enum.BorgUiKey.Key
   - type: IntrinsicUI
@@ -340,19 +363,6 @@
       enum.GeneralStationRecordConsoleKey.Key:
         toggleAction: ActionAGhostShowStationRecords
   - type: GeneralStationRecordConsole
-  - type: ShowJobIcons
-  - type: StatusIcon
-  - type: IdCard
-    accessOverride: false
-    updateName: false
-  - type: PresetIdCard
-    job: Borg
-  - type: StationAiVision
-  - type: Wires
-    layoutId: Cyborg
-  - type: InteractionPopup
-    interactSuccessSound:
-      path: /Audio/Ambience/Objects/periodic_beep.ogg
 
 - type: entity
   id: BaseBorgChassisSyndicate
@@ -393,20 +403,24 @@
 
 - type: entity
   id: BaseBorgChassisDerelict
-  parent: BaseBorgChassis
+  parent: BaseBorgNT
   abstract: true
   components:
-  - type: NpcFactionMember
-    factions:
-    - NanoTrasen #The seemingly best fit. It was a regular NT cyborg once, after all.
-  - type: Access
-    enabled: false
-    groups:
-    - AllAccess #Randomized access would be fun. AllAccess is the best i can think of right now that does make it too hard for it to enter the station or navigate it..
-  - type: AccessReader
-    access: [["Command"], ["Research"]]
+  - type: UserInterface
+    interfaces:
+      enum.SiliconLawsUiKey.Key:
+        type: SiliconLawBoundUserInterface
+      enum.BorgUiKey.Key:
+        type: BorgBoundUserInterface
+      enum.StrippingUiKey.Key:
+        type: StrippableBoundUserInterface
+      enum.DamageSelectorUiKey.Key:
+        type: DamageSelectorBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+      enum.SiliconSyncUiKey.Key:
+        type: SiliconSyncSelectorBoundUserInterface
   - type: StartIonStormed
     ionStormAmount: 3
   - type: IonStormTarget
     chance: 1
-  - type: ShowJobIcons

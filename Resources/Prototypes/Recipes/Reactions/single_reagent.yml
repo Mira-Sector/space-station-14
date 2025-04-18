@@ -61,6 +61,7 @@
   id: VoidConsume
   impact: Medium
   requiredReagentCount: 2 #reaction will only occur if there's something in the container along with the void oil, meaning it won't react with itself.
+  priority: -1
   reactants:
     Voidoil:
       amount: 1
@@ -70,4 +71,5 @@
     replaceWith: Voidoil
   sound:
     path: /Audio/Items/hiss.ogg
+
 

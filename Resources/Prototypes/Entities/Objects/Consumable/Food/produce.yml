@@ -136,9 +136,12 @@
   - type: SolutionContainerManager
   - type: Produce
     seedId: papercane
-  - type: Log
-    spawnedPrototype: SheetPaper1
-    spawnCount: 2
+  - type: SliceableFood
+    count: 6
+    sliceStack: Paper
+    transferReagents: false
+    potencyEffectsCount: true
+    anySharp: true
 
 - type: entity
   parent: FoodProduceBase
@@ -192,7 +195,12 @@
         Blunt: 10
   - type: Produce
     seedId: towercap
-  - type: Log
+  - type: SliceableFood
+    count: 5
+    sliceStack: WoodPlank
+    transferReagents: false
+    potencyEffectsCount: true
+    anySharp: true
 
 - type: entity
   name: steel-cap log
@@ -211,9 +219,12 @@
         Blunt: 12
   - type: Produce
     seedId: steelcap
-  - type: Log
-    spawnedPrototype: SheetSteel1
-    spawnCount: 1
+  - type: SliceableFood
+    count: 4
+    sliceStack: Steel
+    transferReagents: false
+    potencyEffectsCount: true
+    anySharp: true
 
 - type: entity
   name: plasteel-cap log
@@ -230,9 +241,12 @@
         Blunt: 15
   - type: Produce
     seedId: plasteelcap
-  - type: Log
-    spawnedPrototype: SheetPlasteel1
-    spawnCount: 1
+  - type: SliceableFood
+    count: 3
+    sliceStack: Plasteel
+    transferReagents: false
+    potencyEffectsCount: true
+    anySharp: true
 
 - type: entity
   name: nettle
@@ -343,6 +357,10 @@
   - type: Food
     trash:
     - TrashBananaPeel
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: TrashBananaPeel
   - type: SolutionContainerManager
     solutions:
       food:
@@ -385,6 +403,10 @@
   - type: Food
     trash:
     - TrashMimanaPeel
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: TrashMimanaPeel
   - type: SolutionContainerManager
     solutions:
       food:
@@ -439,6 +461,10 @@
   - type: Food
     trash:
     - TrashBananiumPeel
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: TrashBananiumPeel
   - type: BadFood
   - type: PointLight
     radius: 1.5
@@ -1305,6 +1331,10 @@
   - type: Food
     trash:
     - FoodCornTrash
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: FoodCornTrash #no idea why you'd ever do this, but it's just here for consistency
   - type: SolutionContainerManager
     solutions:
       food:
@@ -1672,9 +1702,11 @@
         reagents:
         - ReagentId: Happiness
           Quantity: 8
-  - type: LogStack
-    spawnedPrototype: Credit
-    usePotency: true
+  - type: SliceableFood
+    sliceStack: Credit
+    count: 100
+    transferReagents: false
+    potencyEffectsCount: true
   - type: Produce
     seedId: spesoe
   - type: Tag
@@ -2031,6 +2063,10 @@
   - type: Food
     trash:
     - WeaponRevolverPython
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: WeaponRevolverPython
   - type: Tag
     tags:
     - Fruit # It's in the name
@@ -2066,6 +2102,10 @@
   - type: Food
     trash:
     - RevolverCapGun
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: RevolverCapGun
   - type: Tag
     tags:
     - Fruit
@@ -2085,6 +2125,10 @@
   - type: Food
     trash:
     - RevolverCapGunFake
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: RevolverCapGunFake
 
 - type: entity
   name: rice bushel
@@ -2553,6 +2597,10 @@
   - type: Food
     trash:
     - FoodBungoPit
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: FoodBungoPit
   - type: SolutionContainerManager
     solutions:
       food:
@@ -2793,9 +2841,12 @@
         reagents:
         - ReagentId: Fiber
           Quantity: 10
-  - type: Log
-    spawnedPrototype: MaterialCotton1
-    spawnCount: 2
+  - type: SliceableFood
+    count: 6
+    sliceStack: Cotton
+    potencyEffectsCount: true
+    transferReagents: false
+    anySharp: true
   - type: Produce
     seedId: cotton
   - type: Tag
@@ -2824,9 +2875,12 @@
           Quantity: 5
         - ReagentId: Phlogiston
           Quantity: 5
-  - type: Log
-    spawnedPrototype: MaterialPyrotton1
-    spawnCount: 2
+  - type: SliceableFood
+    count: 6
+    sliceStack: Pyrotton
+    potencyEffectsCount: true
+    transferReagents: false
+    anySharp: true
   - type: Produce
     seedId: pyrotton
   - type: Tag
@@ -2848,6 +2902,10 @@
   - type: Food
     trash:
     - TrashCherryPit
+  - type: Butcherable
+    butcheringType: Knife
+    spawned:
+    - id: TrashCherryPit
   - type: SolutionContainerManager
     solutions:
       food:
@@ -2921,7 +2979,7 @@
     seedId: anomalyBerry
   - type: Food
     trash:
-    - EffectAnomalyFloraBulb # Random loot
+    - EffectAnomalyFloraBulb # Random loot, can't replicate with butchering probably, oh well.
   - type: SolutionContainerManager
     solutions:
       food:
@@ -3153,6 +3211,7 @@
     slice: ProduceCoconutOpen
     spawnOffset: 0
     extraSolution: drink
+    anySharp: true
   - type: Extractable
     juiceSolution:
       reagents:
@@ -3301,6 +3360,7 @@
     slice: ProduceCryoconutOpen
     spawnOffset: 0
     extraSolution: drink
+    anySharp: true
   - type: Extractable
     juiceSolution:
       reagents:

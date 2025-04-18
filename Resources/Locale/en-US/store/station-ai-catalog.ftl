@@ -15,3 +15,6 @@ ai-power-blackout-desc = Overload the stations APCs for a 30% chance to blow up 
 
 ai-power-atmos-name = Atmospherics Upgrade
 ai-power-atmos-desc = Allows you to interact with atmospherics valves and mixers.
+
+ai-power-command-name = Commander Upgrade
+ai-power-command-desc = Allows you to command other silicon to a designated place.
