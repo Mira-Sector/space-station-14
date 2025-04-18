@@ -45,13 +45,6 @@ public sealed partial class LoadoutContainer : BoxContainer
             if (ent == null)
                 return;
 
-            _entity = _entManager.SpawnEntity(ent, MapCoordinates.Nullspace);
-            Sprite.SetEntity(_entity);
-
-            var spriteTooltip = new Tooltip();
-            spriteTooltip.SetMessage(FormattedMessage.FromUnformatted(_entManager.GetComponent<MetaDataComponent>(_entity.Value).EntityDescription));
-
-            TooltipSupplier = _ => spriteTooltip;
             LoadoutSprite(_entManager.System<LoadoutSystem>().GetFirstOrNull(loadProto), _entity);
         }
 

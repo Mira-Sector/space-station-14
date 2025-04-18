@@ -71,6 +71,7 @@
       tags:
       - Wall
       - Structure
+      - Window
     healRate: 60.0
   - type: Metabolizer
     solutionOnBody: false

@@ -33,3 +33,6 @@ reagent-desc-nya = Wow! This is just like one of those Japanese animes.
 
 reagent-name-hew = juice that makes you Hew
 reagent-desc-hew = Pure essence of inversed lizard plush. Makes you Hew!
+
+reagent-name-solaroil = solar oil
+reagent-desc-solaroil = an anomalous liquid that produces a powerful golden glow. Those that consume the chemical find they too glow for a time.

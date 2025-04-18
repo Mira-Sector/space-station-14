@@ -1,0 +1,51 @@
+﻿- type: entity
+  id: BaseCrabPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: CrabTorso
+  name: crab torso
+  parent: [BaseCrabPart, BaseTorso]
+
+- type: entity
+  id: CrabHead
+  name: crab head
+  parent: [BaseCrabPart, BaseHead]
+
+- type: entity
+  id: CrabLeftArm
+  name: left crab arm
+  parent: [BaseCrabPart, BaseLeftArm]
+
+- type: entity
+  id: CrabRightArm
+  name: right crab arm
+  parent: [BaseCrabPart, BaseRightArm]
+
+- type: entity
+  id: CrabLeftLeg
+  name: left crab leg
+  parent: [BaseCrabPart, BaseLeftLeg]
+
+- type: entity
+  id: CrabRightLeg
+  name: right crab leg
+  parent: [BaseCrabPart, BaseRightLeg]
+
+- type: entity
+  id: CrabLeftFoot
+  name: left crab foot
+  parent: [BaseCrabPart,BaseLeftFoot]
+
+- type: entity
+  id: CrabRightFoot
+  name: right crab foot
+  parent: [ BaseCrabPart, BaseRightFoot]

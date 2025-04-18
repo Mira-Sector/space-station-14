@@ -1,0 +1,61 @@
+﻿- type: entity
+  id: BaseMonkeyPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: MonkeyTorso
+  name: monkey torso
+  parent: [BaseMonkeyPart, BaseTorso]
+
+- type: entity
+  id: MonkeyHead
+  name: monkey head
+  parent: [BaseMonkeyPart, BaseHead]
+
+- type: entity
+  id: MonkeyLeftArm
+  name: left geneti cancestor arm
+  parent: [BaseMonkeyPart, BaseLeftArm]
+
+- type: entity
+  id: MonkeyLeftHand
+  name: left genetic ancestor hand
+  parent: [BaseMonkeyPart, BaseLeftHand]
+
+- type: entity
+  id: MonkeyRightArm
+  name: right geneti cancestor arm
+  parent: [BaseMonkeyPart, BaseRightArm]
+
+- type: entity
+  id: MonkeyRightHand
+  name: right genetic ancestor hand
+  parent: [BaseMonkeyPart, BaseRightHand]
+
+- type: entity
+  id: MonkeyLeftLeg
+  name: left genetic ancestor leg
+  parent: [BaseMonkeyPart, BaseLeftLeg]
+
+- type: entity
+  id: MonkeyRightLeg
+  name: right genetic ancestor leg
+  parent: [BaseMonkeyPart, BaseRightLeg]
+
+- type: entity
+  id: MonkeyLeftFoot
+  name: left genetic ancestor foot
+  parent: [BaseMonkeyPart,BaseLeftFoot]
+
+- type: entity
+  id: MonkeyRightFoot
+  name: right genetic ancestor foot
+  parent: [ BaseMonkeyPart, BaseRightFoot]

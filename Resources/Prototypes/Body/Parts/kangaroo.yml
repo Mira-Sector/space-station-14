@@ -1,0 +1,51 @@
+﻿- type: entity
+  id: BaseKangarooPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: KangarooTorso
+  name: kangaroo torso
+  parent: [BaseKangarooPart, BaseTorso]
+
+- type: entity
+  id: KangarooHead
+  name: kangaroo head
+  parent: [BaseKangarooPart, BaseHead]
+
+- type: entity
+  id: KangarooLeftArm
+  name: left kangaroo arm
+  parent: [BaseKangarooPart, BaseLeftArm]
+
+- type: entity
+  id: KangarooRightArm
+  name: right kangaroo arm
+  parent: [BaseKangarooPart, BaseRightArm]
+
+- type: entity
+  id: KangarooLeftLeg
+  name: left kangaroo leg
+  parent: [BaseKangarooPart, BaseLeftLeg]
+
+- type: entity
+  id: KangarooRightLeg
+  name: right kangaroo leg
+  parent: [BaseKangarooPart, BaseRightLeg]
+
+- type: entity
+  id: KangarooLeftFoot
+  name: left kangaroo foot
+  parent: [BaseKangarooPart,BaseLeftFoot]
+
+- type: entity
+  id: KangarooRightFoot
+  name: right kangaroo foot
+  parent: [ BaseKangarooPart, BaseRightFoot]

@@ -1,0 +1,37 @@
+﻿- type: body
+  id: Cat
+  name: cat
+  root: torso
+  slots:
+    head:
+      part: CatHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: CatTorso
+      connections:
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_leg:
+      part: CatRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: CatLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: CatRightFoot
+    left_foot:
+      part: CatLeftFoot

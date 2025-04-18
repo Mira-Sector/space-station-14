@@ -26,12 +26,12 @@
   minTemp: 377
   reactants:
     Sap:
-      amount: 1.2
+      amount: 1
   effects:
   - !type:CreateGas
     gas: WaterVapor
   products:
-    Syrup: 0.1 #12:1 sap to syruop
+    Syrup: 0.5 #2:1 sap to syrup, killing diona for pancakes isn't really fun
 
 # Holy - TODO: make it so only the chaplain can use the bible to start these reactions, not anyone with a bible
 
@@ -56,3 +56,20 @@
       amount: 1
   products:
     Holywater: 1
+
+- type: reaction
+  id: VoidConsume
+  impact: Medium
+  requiredReagentCount: 2 #reaction will only occur if there's something in the container along with the void oil, meaning it won't react with itself.
+  priority: -1
+  reactants:
+    Voidoil:
+      amount: 1
+      catalyst: true
+  effects:
+  - !type:ReplaceChem
+    replaceWith: Voidoil
+  sound:
+    path: /Audio/Items/hiss.ogg
+
+

@@ -1,0 +1,43 @@
+﻿- type: body
+  id: Penguin
+  name: penguin
+  root: torso
+  slots:
+    head:
+      part: PenguinHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: PenguinTorso
+      connections:
+      - right_arm
+      - left_arm
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_arm:
+      part: PenguinRightArm
+    left_arm:
+      part: PenguinLeftArm
+    right_leg:
+      part: PenguinRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: PenguinLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: PenguinRightFoot
+    left_foot:
+      part: PenguinLeftFoot

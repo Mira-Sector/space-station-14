@@ -15,6 +15,7 @@ using Content.Shared.Movement.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Power;
 using Content.Shared.Power.EntitySystems;
+using Content.Shared.Silicons.Sync.Events;
 using Content.Shared.StationAi;
 using Content.Shared.Verbs;
 using Content.Shared.Whitelist;
@@ -22,6 +23,9 @@ using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.GameObjects;
+using Robust.Shared.Audio;
+using Robust.Shared.Audio.Systems;
+using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Network;
@@ -101,6 +105,7 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         SubscribeLocalEvent<StationAiHolderComponent, EntInsertedIntoContainerMessage>(OnHolderConInsert);
         SubscribeLocalEvent<StationAiHolderComponent, EntRemovedFromContainerMessage>(OnHolderConRemove);
         SubscribeLocalEvent<StationAiHolderComponent, IntellicardDoAfterEvent>(OnIntellicardDoAfter);
+        SubscribeLocalEvent<StationAiHolderComponent, SiliconSyncMasterGetIconEvent>(OnHolderGetMasterIcon);
 
         SubscribeLocalEvent<StationAiCoreComponent, EntInsertedIntoContainerMessage>(OnAiInsert);
         SubscribeLocalEvent<StationAiCoreComponent, EntRemovedFromContainerMessage>(OnAiRemove);
@@ -111,6 +116,7 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         SubscribeLocalEvent<StationAiCoreSpriteComponent, ComponentInit>(OnCoreSpriteInit);
         SubscribeLocalEvent<StationAiCoreSpriteComponent, EntGotInsertedIntoContainerMessage>((u, c, e) => OnInsert((u, c), e.Container.Owner));
         SubscribeLocalEvent<StationAiCoreSpriteComponent, EntGotRemovedFromContainerMessage>((u, c, e) => OnRemoved((u, c), e.Container.Owner));
+        SubscribeLocalEvent<StationAiCoreSpriteComponent, SiliconSyncMasterGetIconEvent>(OnCoreSpriteGetMasterIcon);
     }
 
     private void OnCoreVerbs(Entity<StationAiCoreComponent> ent, ref GetVerbsEvent<Verb> args)
@@ -295,7 +301,7 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         if (ev.Cancelled)
             return;
 
-        if (TryGetHeldFromHolder((args.Target.Value, targetHolder), out var held) && _timing.CurTime > intelliComp.NextWarningAllowed)
+        if (TryGetHeld((args.Target.Value, targetHolder), out var held) && _timing.CurTime > intelliComp.NextWarningAllowed)
         {
             RaiseLocalEvent(held, ev);
 
@@ -347,6 +353,12 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         UpdateAppearance(ent.Owner);
     }
 
+    private void OnHolderGetMasterIcon(Entity<StationAiHolderComponent> ent, ref SiliconSyncMasterGetIconEvent args)
+    {
+        if (ent.Comp.AiDied)
+            args.Cancel();
+    }
+
     private void OnAiShutdown(Entity<StationAiCoreComponent> ent, ref ComponentShutdown args)
     {
         // TODO: Tryqueuedel
@@ -367,10 +379,12 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         AttachEye(ent);
     }
 
-    public void SwitchRemoteEntityMode(Entity<StationAiCoreComponent> ent, bool isRemote)
+    public void SwitchRemoteEntityMode(Entity<StationAiCoreComponent?> entity, bool isRemote)
     {
-        if (isRemote == ent.Comp.Remote)
+        if (entity.Comp?.Remote == null || entity.Comp.Remote == isRemote)
             return;
+
+        var ent = new Entity<StationAiCoreComponent>(entity.Owner, entity.Comp);
 
         ent.Comp.Remote = isRemote;
 
@@ -500,12 +514,12 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         ClearEye(ent);
     }
 
-    private void OnCoreSpriteInit(EntityUid uid, StationAiCoreSpriteComponent component, ComponentInit args)
+    private void OnCoreSpriteInit(Entity<StationAiCoreSpriteComponent> ent, ref ComponentInit args)
     {
-        if (!_containers.TryGetContainingContainer(uid, out var container))
+        if (!_containers.TryGetContainingContainer(ent, out var container))
             return;
 
-        OnInsert((uid, component), container.Owner);
+        OnInsert(ent, container.Owner);
     }
 
     private void OnInsert(Entity<StationAiCoreSpriteComponent> ent, EntityUid container)
@@ -578,6 +592,14 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         }
 
         _appearance.SetData(entity.Owner, StationAiVisualState.Key, StationAiState.Occupied);
+    }
+
+    private void OnCoreSpriteGetMasterIcon(Entity<StationAiCoreSpriteComponent> ent, ref SiliconSyncMasterGetIconEvent args)
+    {
+        if (!ent.Comp.Visuals.TryGetValue(StationAiState.Occupied, out var visuals))
+            return;
+
+        visuals.TryGetValue(StationAiVisualLayers.Screen, out args.Icon);
     }
 
     public virtual void AnnounceAi(EntityUid uid, string msg, SoundSpecifier? cue = null) { }
@@ -701,6 +723,9 @@ public sealed partial class IntellicardedToCoreEvent : EntityEventArgs
         User = user;
     }
 }
+
+public sealed partial class IntellicardDoAfterEvent : SimpleDoAfterEvent;
+
 
 [Serializable, NetSerializable]
 public enum StationAiVisualState : byte

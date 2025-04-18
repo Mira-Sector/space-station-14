@@ -112,6 +112,11 @@ namespace Content.Shared.Chemistry.Reaction
                 return false;
             }
 
+            if (solution.Contents.Count < reaction.RequiredReagentCount)
+            {
+                return false;
+            }
+
             var attempt = new ReactionAttemptEvent(reaction, soln);
             RaiseLocalEvent(soln, ref attempt);
             if (attempt.Cancelled)

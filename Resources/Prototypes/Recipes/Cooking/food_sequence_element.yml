@@ -471,6 +471,17 @@
   tags:
   - Fruit
 
+# Unstable Bananium
+
+- type: foodSequenceElement
+  id: UnstableBananium
+  name: food-sequence-content-bananium
+  sprites:
+  - sprite: Objects/Specific/Hydroponics/bananium.rsi
+    state: produce
+  tags:
+  - Fruit
+
 # Carrot
 
 - type: foodSequenceElement
@@ -604,6 +615,17 @@
   name: food-sequence-content-potato
   sprites:
   - sprite: Objects/Specific/Hydroponics/potato.rsi
+    state: produce
+  tags:
+    - Vegetable
+
+# Voltato
+
+- type: foodSequenceElement
+  id: Voltato
+  name: food-sequence-content-voltato
+  sprites:
+  - sprite: Objects/Specific/Hydroponics/voltato.rsi
     state: produce
   tags:
     - Vegetable
@@ -872,6 +894,17 @@
   name: food-sequence-content-aloe
   sprites:
   - sprite: Objects/Specific/Hydroponics/aloe.rsi
+    state: produce
+  tags:
+  - Vegetable
+
+# Spesoe
+
+- type: foodSequenceElement
+  id: Spesoe
+  name: food-sequence-content-spesoe
+  sprites:
+  - sprite: Objects/Specific/Hydroponics/spesoe.rsi
     state: produce
   tags:
   - Vegetable
@@ -1161,6 +1194,26 @@
   tags:
   - Fruit
 
+# Chaos Berries
+
+- type: foodSequenceElement
+  id: ChaosBerries
+  name: food-sequence-content-chaosberries
+  sprites:
+  - sprite: Objects/Specific/Hydroponics/chaosberries.rsi
+    state: berry
+  tags:
+  - Fruit
+
+- type: foodSequenceElement
+  id: ChaosBerriesBurger
+  name: food-sequence-burger-content-chaosberries
+  sprites:
+  - sprite: Objects/Specific/Hydroponics/chaosberries.rsi
+    state: berry
+  tags:
+  - Fruit
+
 # Suppermatter
 
 - type: foodSequenceElement
@@ -1177,7 +1230,6 @@
   - sprite: Objects/Consumable/Food/Baked/cake.rsi
     state: suppermatter-shard
 
-
 # Anomaly berries
 
 - type: foodSequenceElement
@@ -1193,3 +1245,45 @@
   sprites:
   - sprite: Objects/Specific/Hydroponics/anomaly_berry.rsi
     state: produce
+
+# Sunflower
+
+- type: foodSequenceElement
+  id: Sunflower
+  name: food-sequence-content-sunflower
+  sprites:
+  - sprite: Objects/Specific/Hydroponics/sunflower.rsi
+    state: produce
+  tags:
+  - Flower
+
+# Lampflower
+
+- type: foodSequenceElement
+  id: Lampflower
+  name: food-sequence-content-lampflower
+  sprites:
+  - sprite: Objects/Specific/Hydroponics/lampflower.rsi
+    state: produce
+  tags:
+  - Flower
+
+# Voidflower
+
+- type: foodSequenceElement
+  id: Voidflower
+  name: food-sequence-content-voidflower
+  sprites:
+  - sprite: Objects/Specific/Hydroponics/voidflower.rsi
+    state: produce
+  tags:
+  - Flower
+
+- type: foodSequenceElement
+  id: VoidflowerBurger
+  name: food-sequence-burger-content-voidflower
+  sprites:
+  - sprite: Objects/Specific/Hydroponics/voidflower.rsi
+    state: produce
+  tags:
+  - Flower

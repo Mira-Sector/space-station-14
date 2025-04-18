@@ -51,7 +51,6 @@
       molsPerSecondPerUnitMass: 0
     - type: VomitOnRot
 
-
 - type: entity
   id: OrganSlimeLungs
   parent: BaseHumanOrgan

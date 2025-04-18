@@ -8,7 +8,7 @@ public abstract partial class SharedPuddleSystem
     [ValidatePrototypeId<ReagentPrototype>]
     private const string Water = "Water";
 
-    public static readonly string[] EvaporationReagents = [Water];
+    public static readonly string[] EvaporationReagents = [Water, "Voidoil"];
 
     public bool CanFullyEvaporate(Solution solution)
     {

@@ -1,0 +1,37 @@
+﻿- type: body
+  id: Parrot
+  name: parrot
+  root: torso
+  slots:
+    head:
+      part: ParrotHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: ParrotTorso
+      connections:
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_leg:
+      part: ParrotRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: ParrotLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: ParrotRightFoot
+    left_foot:
+      part: ParrotLeftFoot

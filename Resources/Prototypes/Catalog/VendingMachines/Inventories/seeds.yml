@@ -34,10 +34,14 @@
     RiceSeeds: 5
     SoybeanSeeds: 5
     SugarcaneSeeds: 5
+    SunflowerSeeds: 5
     TeaPlantSeeds: 5
     TomatoSeeds: 5
     TowercapSeeds: 5
     WheatSeeds: 5
     WatermelonSeeds: 5
+  contrabandInventory:
+    TobaccoSeeds: 2
+    FoodSnackSemki: 2
   emaggedInventory:
     FlyAmanitaSeeds: 1

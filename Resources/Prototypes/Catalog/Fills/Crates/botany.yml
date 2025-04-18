@@ -20,6 +20,8 @@
         amount: 2
       - id: BungoSeeds
         amount: 2
+      - id: CoconutSeeds
+        amount: 2
 
 - type: entity
   id: CrateHydroponicsSeedsMedicinal
@@ -58,14 +60,14 @@
       - id: HydroponicsToolHatchet
       - id: ClothingOuterApronBotanist
       - id: ClothingHandsGlovesLeather
-      - id: EZNutrientChemistryBottle
+      - id: ChemistryBottleEZNutrient
         amount: 2
 
 - type: entity
   id: CrateHydroponicsSeeds
   parent: CrateHydroponics
   name: seeds crate
-  description: Big things have small beginnings. Contains twelve different seeds.
+  description: Big things have small beginnings. Contains plenty of different seeds.
   components:
   - type: StorageFill
     contents:
@@ -88,6 +90,7 @@
       - id: OnionRedSeeds
       - id: RiceSeeds
       - id: SoybeanSeeds
+      - id: SunflowerSeeds
       - id: GrapeSeeds
       - id: WatermelonSeeds
       - id: PeaSeeds
