@@ -2,17 +2,22 @@ using Content.Shared.Silicons.Laws;
 using Content.Shared.Silicons.Laws.Components;
 using Content.Shared.Silicons.Sync.Components;
 using Content.Shared.Silicons.Sync.Events;
-using Robust.Shared.Graphics.RSI;
+using Robust.Shared.Network;
 using Robust.Shared.Player;
+using Robust.Shared.Timing;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Content.Shared.Silicons.Sync;
 
-public sealed partial class SiliconSyncSystem : EntitySystem
+public abstract partial class SharedSiliconSyncSystem : EntitySystem
 {
-    [Dependency] private readonly SharedUserInterfaceSystem _userInterface = default!;
+    [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly SharedSiliconLawSystem _siliconLaw = default!;
+    [Dependency] protected readonly IGameTiming _timing = default!;
+    [Dependency] private readonly SharedUserInterfaceSystem _userInterface = default!;
+
+    public static readonly TimeSpan CommandUpdateRate = TimeSpan.FromSeconds(1 / 2);
 
     public override void Initialize()
     {
@@ -21,11 +26,18 @@ public sealed partial class SiliconSyncSystem : EntitySystem
 
         SubscribeLocalEvent<SiliconSyncableSlaveComponent, IonStormLawsEvent>(OnSlaveIonStormed);
         SubscribeLocalEvent<SiliconSyncableSlaveComponent, SiliconEmaggedEvent>(OnSlaveEmagged);
+        SubscribeLocalEvent<SiliconSyncableSlaveComponent, ComponentRemove>(OnSlaveRemoved);
 
         SubscribeLocalEvent<SiliconSyncSlaveMasterMessage>(OnRadialSlaveMaster);
 
         SubscribeLocalEvent<SiliconSyncableMasterLawComponent, SiliconLawsUpdatedEvent>(OnMasterLawsUpdated);
         SubscribeLocalEvent<SiliconSyncableSlaveLawComponent, SiliconSyncSlaveLawCanUpdateEvent>(OnSlaveLawsCanUpdate);
+
+        SubscribeLocalEvent<SiliconSyncableSlaveAiRadialComponent, StationAiSyncSlaveEvent>(OnAiSlave);
+
+        SubscribeLocalEvent<SiliconSyncableSlaveCommandableComponent, StationAiSyncCommandEvent>(OnAiCommand);
+
+        SubscribeLocalEvent<SiliconSyncableMasterCommanderComponent, SiliconSyncMasterSlaveLostEvent>(OnCommanderSlaveLost);
     }
 
     private void OnSlaveAdded(Entity<SiliconSyncableMasterComponent> ent, ref SiliconSyncMasterSlaveAddedEvent args)
@@ -50,6 +62,15 @@ public sealed partial class SiliconSyncSystem : EntitySystem
         SetMaster(ent.Owner, null); // so we dont bulldoze our work
         ent.Comp.Enabled = false;
         Dirty(ent);
+    }
+
+    private void OnSlaveRemoved(Entity<SiliconSyncableSlaveComponent> ent, ref ComponentRemove args)
+    {
+        if (ent.Comp.Master is not {} master)
+            return;
+
+        var ev = new SiliconSyncMasterSlaveLostEvent(ent);
+        RaiseLocalEvent(master, ev);
     }
 
     private void OnRadialSlaveMaster(SiliconSyncSlaveMasterMessage args)
@@ -78,6 +99,67 @@ public sealed partial class SiliconSyncSystem : EntitySystem
     {
         if (!ent.Comp.Enabled)
             args.Cancel();
+    }
+
+    private void OnAiSlave(Entity<SiliconSyncableSlaveAiRadialComponent> ent, ref StationAiSyncSlaveEvent args)
+    {
+        SetMaster(ent.Owner, args.User);
+    }
+
+    private void OnAiCommand(Entity<SiliconSyncableSlaveCommandableComponent> ent, ref StationAiSyncCommandEvent args)
+    {
+        if (!TryComp<SiliconSyncableMasterCommanderComponent>(args.User, out var commanderComp))
+            return;
+
+        if (!TryGetSlaves(args.User, out var slaves) || !slaves.Contains(ent))
+            return;
+
+        if (commanderComp.Commanding.Contains(ent))
+        {
+            StopCommanding((args.User, commanderComp), (ent.Owner, ent.Comp));
+            return;
+        }
+
+        commanderComp.Commanding.Add(ent.Owner);
+        commanderComp.NextCommand = _timing.CurTime + CommandUpdateRate;
+
+        Dirty(args.User, commanderComp);
+
+        ent.Comp.Master = args.User;
+        DirtyField(ent.Owner, ent.Comp, nameof(SiliconSyncableSlaveCommandableComponent.Master));
+    }
+
+    private void OnCommanderSlaveLost(Entity<SiliconSyncableMasterCommanderComponent> ent, ref SiliconSyncMasterSlaveLostEvent args)
+    {
+        if (!TryGetSlaves(ent.Owner, out var slaves))
+            return;
+
+        if (!slaves.Contains(args.Slave))
+            return;
+
+        StopCommanding(ent, args.Slave);
+    }
+
+    private void StopCommanding(Entity<SiliconSyncableMasterCommanderComponent> ent, Entity<SiliconSyncableSlaveCommandableComponent?> slave)
+    {
+        if (!ent.Comp.Commanding.Contains(slave))
+            return;
+
+        if (!Resolve(slave.Owner, ref slave.Comp))
+            return;
+
+        slave.Comp.Master = null;
+        DirtyField(slave.Owner, slave.Comp, nameof(SiliconSyncableSlaveCommandableComponent.Master));
+
+        var ev = new SiliconSyncMoveSlaveLostEvent(GetNetEntity(ent.Owner), GetNetEntity(slave));
+
+        if (_net.IsClient)
+            RaiseLocalEvent(ent, ev);
+        else
+            RaiseNetworkEvent(ev, ent);
+
+        ent.Comp.Commanding.Remove(slave);
+        DirtyField(ent.Owner, ent.Comp, nameof(SiliconSyncableMasterCommanderComponent.Commanding));
     }
 
     public void ShowAvailableMasters(Entity<SiliconSyncableSlaveComponent?> ent, EntityUid user)
