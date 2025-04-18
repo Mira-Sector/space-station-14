@@ -64,6 +64,12 @@
     - back
   - type: StaticPrice
     price: 40
+  - type: Utensil
+    types:
+      - Knife
+  - type: Tool
+    qualities:
+      - Slicing
 
 - type: entity
   name: hatchet

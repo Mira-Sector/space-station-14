@@ -5,7 +5,7 @@ using Robust.Shared.Prototypes;
 namespace Content.Shared.Ghost;
 
 [RegisterComponent, NetworkedComponent, Access(typeof(SharedGhostSystem))]
-[AutoGenerateComponentState(true)]
+[AutoGenerateComponentState(true), AutoGenerateComponentPause]
 public sealed partial class GhostComponent : Component
 {
     // Actions
@@ -41,7 +41,7 @@ public sealed partial class GhostComponent : Component
 
     // End actions
 
-    [ViewVariables(VVAccess.ReadWrite), DataField]
+    [ViewVariables(VVAccess.ReadWrite), DataField, AutoPausedField]
     public TimeSpan TimeOfDeath = TimeSpan.Zero;
 
     [DataField("booRadius"), ViewVariables(VVAccess.ReadWrite)]
@@ -81,13 +81,6 @@ public sealed partial class GhostComponent : Component
             Dirty();
         }
     }
-
-    /// <summary>
-    /// Ghost color
-    /// </summary>
-    /// <remarks>Used to allow admins to change ghost colors. Should be removed if the capability to edit existing sprite colors is ever added back.</remarks>
-    [DataField("color"), ViewVariables(VVAccess.ReadWrite), AutoNetworkedField]
-    public Color color = Color.White;
 
     [DataField("canReturnToBody"), AutoNetworkedField]
     private bool _canReturnToBody;

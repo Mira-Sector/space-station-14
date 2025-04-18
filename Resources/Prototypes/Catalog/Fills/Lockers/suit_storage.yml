@@ -292,3 +292,4 @@
         - id: OxygenTankFilled
         - id: ClothingOuterHardsuitWizard
         - id: ClothingMaskBreath
+        - id: JetpackVoidFilled

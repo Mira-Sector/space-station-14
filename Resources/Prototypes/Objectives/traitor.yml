@@ -160,6 +160,13 @@
 
 - type: entity
   parent: BaseRDStealObjective
+  id: RDTabletStealObjective
+  components:
+  - type: StealCondition
+    stealGroup: RDTablet
+
+- type: entity
+  parent: BaseRDStealObjective
   id: HandTeleporterStealObjective
   components:
   - type: StealCondition

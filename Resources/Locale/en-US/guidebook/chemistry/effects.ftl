@@ -404,3 +404,9 @@ reagent-effect-guidebook-plant-seeds-remove =
         [1] Removes the
         *[other] remove the
     } seeds of the plant
+
+reagent-effect-guidebook-glowing =
+    { $chance ->
+        [1] Makes the
+        *[other] makes the
+    } individual emit a powerful glow

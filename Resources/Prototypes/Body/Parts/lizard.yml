@@ -1,0 +1,41 @@
+﻿- type: entity
+  id: BaseLizardPart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 20
+
+- type: entity
+  id: LizardTorso
+  name: lizard torso
+  parent: [BaseLizardPart, BaseTorso]
+
+- type: entity
+  id: LizardHead
+  name: lizard head
+  parent: [BaseLizardPart, BaseHead]
+
+- type: entity
+  id: LizardLeftLeg
+  name: left lizard leg
+  parent: [BaseLizardPart, BaseLeftLeg]
+
+- type: entity
+  id: LizardRightLeg
+  name: right lizard leg
+  parent: [BaseLizardPart, BaseRightLeg]
+
+- type: entity
+  id: LizardLeftFoot
+  name: left lizard foot
+  parent: [BaseLizardPart,BaseLeftFoot]
+
+- type: entity
+  id: LizardRightFoot
+  name: right lizard foot
+  parent: [ BaseLizardPart, BaseRightFoot]

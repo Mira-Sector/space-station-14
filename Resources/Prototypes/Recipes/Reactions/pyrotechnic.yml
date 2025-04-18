@@ -73,3 +73,23 @@
     Ethanol: 5
     Hydrogen: 3
     Sulfur: 2
+
+- type: reaction
+  id: SolarVoidAnnihilation
+  priority: 20
+  reactants:
+    Solaroil:
+      amount: 1
+    Voidoil:
+      amount: 1
+  effects:
+  - !type:ExplosionReactionEffect
+    explosionType: Default # 15 damage per intensity.
+    maxIntensity: 50
+    intensityPerUnit: 1
+    intensitySlope: 5
+    maxTotalIntensity: 50
+  - !type:PopupMessage
+    messages: [ "void-explosion" ]
+    type: Pvs
+    visualType: LargeCaution

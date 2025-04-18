@@ -1,0 +1,43 @@
+﻿- type: body
+  id: Sloth
+  name: sloth
+  root: torso
+  slots:
+    head:
+      part: SlothHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: SlothTorso
+      connections:
+      - right_arm
+      - left_arm
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_arm:
+      part: SlothRightArm
+    left_arm:
+      part: SlothLeftArm
+    right_leg:
+      part: SlothRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: SlothLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: SlothRightFoot
+    left_foot:
+      part: SlothLeftFoot

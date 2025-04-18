@@ -27,11 +27,6 @@ public sealed class BorgBoundUserInterface : BoundUserInterface
             SendMessage(new BorgEjectBrainBuiMessage());
         };
 
-        _menu.ResetLawsButtonPressed += () =>
-        {
-            SendMessage(new BorgResetLawsBuiMessage());
-        };
-
         _menu.EjectBatteryButtonPressed += () =>
         {
             SendMessage(new BorgEjectBatteryBuiMessage());

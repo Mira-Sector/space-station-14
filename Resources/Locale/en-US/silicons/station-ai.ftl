@@ -23,6 +23,9 @@ ai-device-not-responding = Device is not responding
 
 ai-hack = Hack
 ai-shunt = Shunt into an APC
+ai-sync = Sync to your core
+ai-command-on = Command
+ai-command-off = Stop commanding
 
 ai-consciousness-download-warning = Your consciousness is being downloaded.
 ai-power-warning = Your core is losing power.

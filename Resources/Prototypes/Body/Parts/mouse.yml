@@ -1,0 +1,51 @@
+﻿- type: entity
+  id: BaseMousePart
+  abstract: true
+  components:
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Fat
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 10
+
+- type: entity
+  id: MouseTorso
+  name: mouse torso
+  parent: [BaseMousePart, BaseTorso]
+
+- type: entity
+  id: MouseHead
+  name: mouse head
+  parent: [BaseMousePart, BaseHead]
+
+- type: entity
+  id: MouseLeftArm
+  name: left mouse arm
+  parent: [BaseMousePart, BaseLeftArm]
+
+- type: entity
+  id: MouseRightArm
+  name: right mouse arm
+  parent: [BaseMousePart, BaseRightArm]
+
+- type: entity
+  id: MouseLeftLeg
+  name: left mouse leg
+  parent: [BaseMousePart, BaseLeftLeg]
+
+- type: entity
+  id: MouseRightLeg
+  name: right mouse leg
+  parent: [BaseMousePart, BaseRightLeg]
+
+- type: entity
+  id: MouseLeftFoot
+  name: left mouse foot
+  parent: [BaseMousePart,BaseLeftFoot]
+
+- type: entity
+  id: MouseRightFoot
+  name: right mouse foot
+  parent: [ BaseMousePart, BaseRightFoot]

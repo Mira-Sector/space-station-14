@@ -1,0 +1,37 @@
+﻿- type: body
+  id: Spider
+  name: Spider
+  root: torso
+  slots:
+    head:
+      part: SpiderHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: SpiderTorso
+      connections:
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_leg:
+      part: SpiderRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: SpiderLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: SpiderRightFoot
+    left_foot:
+      part: SpiderLeftFoot

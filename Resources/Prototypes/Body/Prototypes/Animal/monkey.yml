@@ -1,0 +1,53 @@
+﻿- type: body
+  id: Monkey
+  name: Monkey
+  root: torso
+  slots:
+    head:
+      part: MonkeyHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganHumanTongue
+    torso:
+      part: MonkeyTorso
+      connections:
+      - right_arm
+      - left_arm
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_arm:
+      part: MonkeyRightArm
+      connections:
+      - right_hand
+    left_arm:
+      part: MonkeyLeftArm
+      connections:
+      - left_hand
+    right_hand:
+      part: MonkeyRightHand
+
+    left_hand:
+      part: MonkeyLeftHand
+
+    right_leg:
+      part: MonkeyRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: MonkeyLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: MonkeyRightFoot
+    left_foot:
+      part: MonkeyLeftFoot

@@ -4,7 +4,6 @@ using Content.Shared.Damage;
 using Content.Shared.Effects;
 using Content.Shared.FixedPoint;
 using Robust.Shared.Player;
-using System.Linq;
 
 namespace Content.Shared.Body.Systems;
 
@@ -18,44 +17,77 @@ public partial class SharedBodySystem
         SubscribeLocalEvent<BodyPartThresholdsComponent, BeforeDamageChangedEvent>(OnBeforeDamaged);
     }
 
-    private void OnBeforeDamaged(EntityUid uid, BodyPartThresholdsComponent component, ref BeforeDamageChangedEvent args)
+    private void OnBeforeDamaged(Entity<BodyPartThresholdsComponent> ent, ref BeforeDamageChangedEvent args)
     {
         if (args.Cancelled)
             return;
 
-        if (!args.Damage.AnyPositive() || component.CurrentState != WoundState.Dead)
+        if (!args.Damage.AnyPositive())
             return;
 
-        args.Cancelled = true;
+        if (ent.Comp.CurrentState == WoundState.Dead)
+        {
+            args.Cancelled = true;
 
-        if (!TryComp<BodyPartComponent>(uid, out var partComp) || partComp.Body == null)
+            if (args.Origin == null)
+                return;
+
+            TryComp<BodyPartComponent>(ent, out var partComp);
+
+            var flashUid = partComp?.Body ?? ent;
+            _color.RaiseEffect(Color.BetterViolet, new List<EntityUid>() { flashUid }, Filter.Pvs(flashUid, entityManager: EntityManager));
+
+            return;
+        }
+
+        if (!ent.Comp.Thresholds.TryGetValue(WoundState.Dead, out var deadThreshold))
             return;
 
-        if (args.Origin != null)
-            _color.RaiseEffect(Color.BetterViolet, new List<EntityUid>() { partComp.Body.Value }, Filter.Pvs(partComp.Body.Value, entityManager: EntityManager));
+        var damageable = EntityManager.GetComponent<DamageableComponent>(ent);
+
+        var delta = deadThreshold - damageable.Damage.GetTotal();
+
+        if (delta > args.Damage.GetTotal())
+            return;
+
+        // cap it
+        // we take away from every damage group that deals damage that deals damage equally
+        Dictionary<string, FixedPoint2> damagingGroups = new();
+
+        foreach (var (group, damage) in args.Damage.DamageDict)
+        {
+            if (damage <= FixedPoint2.Zero)
+                continue;
+
+            damagingGroups.Add(group, damage);
+        }
+
+        var damageToRemovePerGroup = (args.Damage.GetTotal() - delta) / damagingGroups.Count;
+
+        foreach (var (group, damage) in damagingGroups)
+            args.Damage.DamageDict[group] -= damageToRemovePerGroup;
     }
 
-    private void OnDamaged(EntityUid uid, BodyPartThresholdsComponent component, DamageChangedEvent args)
+    private void OnDamaged(Entity<BodyPartThresholdsComponent> ent, ref DamageChangedEvent args)
     {
-        if (!TryComp<BodyPartComponent>(uid, out var partComp) || partComp.Body is not {} body)
+        if (!TryComp<BodyPartComponent>(ent, out var partComp) || partComp.Body is not {} body)
             return;
 
         if (!TryComp<BodyComponent>(body, out var bodyComp))
             return;
 
-        CheckThresholds(uid, body, component, args.Damageable);
+        CheckThresholds((ent.Owner, ent.Comp, args.Damageable), body);
         _alerts.ShowAlert(body, bodyComp.Alert);
     }
 
-
-    internal void CheckThresholds(EntityUid limb, EntityUid body, BodyPartThresholdsComponent thresholds, DamageableComponent damage)
+    internal void CheckThresholds(Entity<BodyPartThresholdsComponent, DamageableComponent> limb, EntityUid body)
     {
         WoundState? highestPossibleState = null;
         FixedPoint2 highestPossibleThreshold = new();
 
-        foreach (var (limbState, limbThreshold) in thresholds.Thresholds)
+        foreach (var (limbState, limbThreshold) in limb.Comp1.Thresholds)
         {
-            if (damage.TotalDamage < limbThreshold)
+            if (limb.Comp2.TotalDamage < limbThreshold)
                 continue;
 
             if (limbThreshold < highestPossibleThreshold)
@@ -68,20 +100,20 @@ public partial class SharedBodySystem
         if (highestPossibleState == null)
             return;
 
-        if (highestPossibleState.Value == thresholds.CurrentState)
+        if (highestPossibleState.Value == limb.Comp1.CurrentState)
             return;
 
-        DoThreshold(limb, body, thresholds, highestPossibleState.Value);
+        DoThreshold(limb, body, highestPossibleState.Value);
     }
 
-    internal void DoThreshold(EntityUid limb, EntityUid body, BodyPartThresholdsComponent thresholds, WoundState state)
+    internal void DoThreshold(Entity<BodyPartThresholdsComponent> limb, EntityUid body, WoundState state)
     {
-        var ev = new LimbStateChangedEvent(body, thresholds.CurrentState, state);
+        var ev = new LimbStateChangedEvent(body, limb.Comp.CurrentState, state);
         RaiseLocalEvent(limb, ev);
 
         // TODO: do something on state change
 
-        thresholds.CurrentState = state;
-        Dirty(limb, thresholds);
+        limb.Comp.CurrentState = state;
+        Dirty(limb);
     }
 }
