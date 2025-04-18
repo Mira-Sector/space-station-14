@@ -16,7 +16,7 @@
 - type: entity
   id: DuckBrownRightLeg
   name: brown duck leg
-  parent: [BaseDuckMalladRightLeg
+  parent: BaseDuckMalladRightLeg
 
 - type: entity
   id: DuckBrownLeftFoot
