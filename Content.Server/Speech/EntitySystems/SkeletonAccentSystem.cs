@@ -1,5 +1,6 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using Content.Server.Speech.Components;
+using Content.Shared.Body.Part;
 using Robust.Shared.Random;
 
 namespace Content.Server.Speech.EntitySystems;
@@ -17,6 +18,8 @@ public sealed partial class SkeletonAccentSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<SkeletonAccentComponent, AccentGetEvent>(OnAccentGet);
+        SubscribeLocalEvent<SkeletonAccentComponent, BodyLimbRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccentGet(u, c, a.Args));
+        SubscribeLocalEvent<SkeletonAccentComponent, BodyOrganRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccentGet(u, c, a.Args));
     }
 
     public string Accentuate(string message, SkeletonAccentComponent component)

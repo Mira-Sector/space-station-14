@@ -1,0 +1,6 @@
+- type: entity
+  id: OrganCrabTongue
+  parent: OrganHumanTongue
+  components:
+  - type: ReplacementAccent
+    accent: crab

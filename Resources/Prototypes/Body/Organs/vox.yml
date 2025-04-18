@@ -13,3 +13,15 @@
   - type: Item
     size: Small
     heldPrefix: lungs
+
+- type: entity
+  id: OrganVoxTongue
+  parent: OrganHumanTongue
+  components:
+  - type: TypingIndicatorOrgan
+    proto: vox
+  - type: VocalOrgan
+    sounds:
+      Male: UnisexVox
+      Female: UnisexVox
+      Unsexed: UnisexVox

@@ -1,7 +1,6 @@
-﻿- type: entity
+- type: entity
   id: OrganReptilianStomach
   parent: OrganAnimalStomach
-  categories: [ HideSpawnMenu ]
   components:
   - type: Stomach
     specialDigestible:
@@ -21,3 +20,16 @@
         reagents:
         - ReagentId: UncookedAnimalProteins
           Quantity: 5
+
+- type: entity
+  id: OrganReptilianTongue
+  parent: OrganHumanTongue
+  components:
+  - type: LizardAccent
+  - type: TypingIndicatorOrgan
+    proto: lizard
+  - type: VocalOrgan
+    sounds:
+      Male: MaleReptilian
+      Female: FemaleReptilian
+      Unsexed: MaleReptilian

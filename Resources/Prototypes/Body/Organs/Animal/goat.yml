@@ -1,0 +1,10 @@
+- type: entity
+  id: OrganGoatTongue
+  parent: OrganHumanTongue
+  components:
+  - type: BleatingAccent
+  - type: VocalOrgan
+    sounds:
+      Female: Goat
+      Male: Goat
+      Unsexed: Goat

@@ -19,13 +19,6 @@
   - type: Speech
     speechVerb: Vox
     speechSounds: Vox
-  - type: TypingIndicator
-    proto: vox
-  - type: Vocal
-    sounds:
-      Male: UnisexVox
-      Female: UnisexVox
-      Unsexed: UnisexVox
   - type: Butcherable
     butcheringType: Spike
     spawned:

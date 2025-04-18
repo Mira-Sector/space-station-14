@@ -1,0 +1,37 @@
+- type: body
+  id: Mothroach
+  name: mothroach
+  root: torso
+  slots:
+    head:
+      part: MothroachHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganMothroachTongue
+    torso:
+      part: MothroachTorso
+      connections:
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganMothStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_leg:
+      part: MothroachRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: MothroachLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: MothroachRightFoot
+    left_foot:
+      part: MothroachLeftFoot
