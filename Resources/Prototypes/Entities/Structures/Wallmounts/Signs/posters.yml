@@ -1227,3 +1227,12 @@
   components:
   - type: Sprite
     state: miraposter1_legit
+
+- type: entity
+  parent: MiraPosterBase
+  id: MiraPosterLegitPortals
+  name: "Now you're thinking..."
+  description: "A poster made by Nanotrasen to advertise their hand teleporter."
+  components:
+  - type: Sprite
+    state: miraposter2_legit
