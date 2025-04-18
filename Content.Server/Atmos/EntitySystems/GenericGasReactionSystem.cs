@@ -96,7 +96,7 @@ public sealed class GenericGasReactionSystem : EntitySystem
             _atmosphere.AddHeat(mix, reaction.Enthalpy/_atmosphere.HeatScale * rate);
             if (reaction.Enthalpy > 0)
             {
-                mix.ReactionResults[GasReaction.Fire] += rate;
+                mix.ReactionResults[(byte)GasReaction.Fire] += rate;
                 var location = holder as TileAtmosphere;
                 if (location != null)
                 {
