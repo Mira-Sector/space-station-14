@@ -112,9 +112,9 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
     private void OnSlaveCommanded(SiliconSyncMoveSlaveToPositionEvent args)
     {
         var master = GetEntity(args.Master);
-        var slave = GetEntity(args.Slave);
+        var slaves = GetEntitySet(args.Slaves);
 
-        if (!TryComp<SiliconSyncableMasterCommanderComponent>(master, out var commanderComp) || commanderComp.Commanding != slave)
+        if (!TryComp<SiliconSyncableMasterCommanderComponent>(master, out var commanderComp) || !commanderComp.Commanding.IsSupersetOf(slaves))
             return;
 
         if (commanderComp.NextCommand > _timing.CurTime)
@@ -123,19 +123,22 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
         commanderComp.NextCommand += CommandUpdateRate;
         DirtyField(master, commanderComp, nameof(SiliconSyncableMasterCommanderComponent.NextCommand));
 
-        var token = new CancellationTokenSource();
-        var task = _pathfinding.GetPathSafe(slave, Transform(slave).Coordinates, GetCoordinates(args.Coordinates), PathRange, token.Token);
+        foreach (var slave in slaves)
+        {
+            var token = new CancellationTokenSource();
+            var task = _pathfinding.GetPathSafe(slave, Transform(slave).Coordinates, GetCoordinates(args.Coordinates), PathRange, token.Token);
 
-        if (_paths.TryGetValue(master, out var paths))
-        {
-            if (!paths.ContainsKey(slave))
+            if (_paths.TryGetValue(master, out var paths))
+            {
+                if (!paths.ContainsKey(slave))
+                    paths.Add(slave, (task, token, args.MoveSlave));
+            }
+            else
+            {
+                paths = new();
                 paths.Add(slave, (task, token, args.MoveSlave));
-        }
-        else
-        {
-            paths = new();
-            paths.Add(slave, (task, token, args.MoveSlave));
-            _paths.Add(master, paths);
+                _paths.Add(master, paths);
+            }
         }
     }
 }

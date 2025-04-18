@@ -6,7 +6,7 @@ namespace Content.Shared.Silicons.Sync.Components;
 public sealed partial class SiliconSyncableMasterCommanderComponent : Component
 {
     [ViewVariables, AutoNetworkedField]
-    public EntityUid? Commanding;
+    public HashSet<EntityUid> Commanding = new();
 
     [ViewVariables, AutoNetworkedField, AutoPausedField]
     public TimeSpan NextCommand;

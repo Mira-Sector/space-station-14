@@ -114,15 +114,13 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
         if (!TryGetSlaves(args.User, out var slaves) || !slaves.Contains(ent))
             return;
 
-        if (commanderComp.Commanding == ent)
+        if (commanderComp.Commanding.Contains(ent))
         {
-            StopCommanding((args.User, commanderComp));
+            StopCommanding((args.User, commanderComp), ent);
             return;
         }
 
-        StopCommanding((args.User, commanderComp));
-
-        commanderComp.Commanding = ent.Owner;
+        commanderComp.Commanding.Add(ent.Owner);
         commanderComp.NextCommand = _timing.CurTime + CommandUpdateRate;
 
         Dirty(args.User, commanderComp);
@@ -136,22 +134,22 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
         if (!slaves.Contains(args.Slave))
             return;
 
-        StopCommanding(ent);
+        StopCommanding(ent, args.Slave);
     }
 
-    private void StopCommanding(Entity<SiliconSyncableMasterCommanderComponent> ent)
+    private void StopCommanding(Entity<SiliconSyncableMasterCommanderComponent> ent, EntityUid slave)
     {
-        if (ent.Comp.Commanding == null)
+        if (!ent.Comp.Commanding.Contains(slave))
             return;
 
-        var ev = new SiliconSyncMoveSlaveLostEvent(GetNetEntity(ent.Owner), GetNetEntity(ent.Comp.Commanding.Value));
+        var ev = new SiliconSyncMoveSlaveLostEvent(GetNetEntity(ent.Owner), GetNetEntity(slave));
 
         if (_net.IsClient)
             RaiseLocalEvent(ent, ev);
         else
             RaiseNetworkEvent(ev, ent);
 
-        ent.Comp.Commanding = null;
+        ent.Comp.Commanding.Remove(slave);
         DirtyField(ent.Owner, ent.Comp, nameof(SiliconSyncableMasterCommanderComponent.Commanding));
     }
 

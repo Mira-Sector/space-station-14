@@ -8,15 +8,15 @@ public sealed class SiliconSyncMoveSlaveToPositionEvent : EntityEventArgs
 {
     public readonly NetCoordinates Coordinates;
 
-    public readonly NetEntity Slave;
+    public readonly HashSet<NetEntity> Slaves;
     public readonly NetEntity Master;
 
     public readonly bool MoveSlave;
 
-    public SiliconSyncMoveSlaveToPositionEvent(NetCoordinates coordinates, NetEntity slave, NetEntity master, bool moveSlave)
+    public SiliconSyncMoveSlaveToPositionEvent(NetCoordinates coordinates, HashSet<NetEntity> slaves, NetEntity master, bool moveSlave)
     {
         Coordinates = coordinates;
-        Slave = slave;
+        Slaves = slaves;
         Master = master;
         MoveSlave = moveSlave;
     }

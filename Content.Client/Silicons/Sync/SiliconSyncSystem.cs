@@ -10,6 +10,7 @@ using Robust.Client.Input;
 using Robust.Shared.Input;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
+using System.Linq;
 
 namespace Content.Client.Silicons.Sync;
 
@@ -48,7 +49,7 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
         if (_playerMan.LocalEntity is not {} entity)
             return;
 
-        if (!TryComp<SiliconSyncableMasterCommanderComponent>(entity, out var commandingComp) || commandingComp.Commanding is not {} commanding)
+        if (!TryComp<SiliconSyncableMasterCommanderComponent>(entity, out var commandingComp) || !commandingComp.Commanding.Any())
             return;
 
         if (commandingComp.NextCommand > _timing.CurTime)
@@ -62,10 +63,8 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
             return;
 
         var coordinates = _transform.ToCoordinates(entity, mousePos);
-
         var move = _input.CmdStates.GetState(EngineKeyFunctions.Use) == BoundKeyState.Down;
-
-        var ev = new SiliconSyncMoveSlaveToPositionEvent(GetNetCoordinates(coordinates), GetNetEntity(commanding), GetNetEntity(entity), move);
+        var ev = new SiliconSyncMoveSlaveToPositionEvent(GetNetCoordinates(coordinates), GetNetEntitySet(commandingComp.Commanding), GetNetEntity(entity), move);
         RaiseNetworkEvent(ev);
     }
 
@@ -160,7 +159,7 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
 
         var slave = GetEntity(args.Slave);
 
-        if (commanderComp.Commanding != slave)
+        if (!commanderComp.Commanding.Contains(slave))
             return;
 
         var ev = new SiliconSyncMoveSlaveGetPathSpriteEvent(args.PathType);
