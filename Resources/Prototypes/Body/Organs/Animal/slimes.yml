@@ -77,7 +77,7 @@
       molsPerSecondPerUnitMass: 0
 
 - type: entity
-  id: OrganSpiderTongue
+  id: OrganSlimesTongue
   parent: OrganHumanTongue
   components:
   - type: ReplacementAccent
