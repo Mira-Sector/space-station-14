@@ -39,6 +39,8 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
         SubscribeLocalEvent<SiliconSyncableSlaveCommandableComponent, SiliconSyncMoveSlaveGetPathSpriteEvent>(OnCommandedSprite);
 
         SubscribeNetworkEvent<SiliconSyncMoveSlavePathEvent>(OnGetPath);
+
+        SubscribeAllEvent<SiliconSyncMoveSlaveLostEvent>(OnSlaveCommandedLost);
     }
 
     public override void Update(float frameTime)
@@ -153,7 +155,13 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
         if (_syncOverlay == null)
             return;
 
+        if (!TryComp<SiliconSyncableMasterCommanderComponent>(master, out var commanderComp))
+            return;
+
         var slave = GetEntity(args.Slave);
+
+        if (commanderComp.Commanding != slave)
+            return;
 
         var ev = new SiliconSyncMoveSlaveGetPathSpriteEvent(args.PathType);
         RaiseLocalEvent(slave, ev);
@@ -173,5 +181,22 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
             if (!_syncOverlay.Paths.TryAdd(slave, (args.Path, ev.Icon)))
                 _syncOverlay.Paths[slave] = (args.Path, ev.Icon);
         }
+    }
+
+    private void OnSlaveCommandedLost(SiliconSyncMoveSlaveLostEvent args)
+    {
+        if (_playerMan.LocalEntity is not {} entity)
+            return;
+
+        var master = GetEntity(args.Master);
+
+        if (entity != master)
+            return;
+
+        if (_syncOverlay == null)
+            return;
+
+        var slave = GetEntity(args.Slave);
+        _syncOverlay.Paths.Remove(slave);
     }
 }

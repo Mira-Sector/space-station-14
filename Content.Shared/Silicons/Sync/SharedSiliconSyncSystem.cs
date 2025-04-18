@@ -2,6 +2,7 @@ using Content.Shared.Silicons.Laws;
 using Content.Shared.Silicons.Laws.Components;
 using Content.Shared.Silicons.Sync.Components;
 using Content.Shared.Silicons.Sync.Events;
+using Robust.Shared.Network;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
 using System.Diagnostics.CodeAnalysis;
@@ -11,9 +12,10 @@ namespace Content.Shared.Silicons.Sync;
 
 public abstract partial class SharedSiliconSyncSystem : EntitySystem
 {
-    [Dependency] private readonly SharedUserInterfaceSystem _userInterface = default!;
+    [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly SharedSiliconLawSystem _siliconLaw = default!;
     [Dependency] protected readonly IGameTiming _timing = default!;
+    [Dependency] private readonly SharedUserInterfaceSystem _userInterface = default!;
 
     public static readonly TimeSpan CommandUpdateRate = TimeSpan.FromSeconds(1 / 2);
 
@@ -24,6 +26,7 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
 
         SubscribeLocalEvent<SiliconSyncableSlaveComponent, IonStormLawsEvent>(OnSlaveIonStormed);
         SubscribeLocalEvent<SiliconSyncableSlaveComponent, SiliconEmaggedEvent>(OnSlaveEmagged);
+        SubscribeLocalEvent<SiliconSyncableSlaveComponent, ComponentRemove>(OnSlaveRemoved);
 
         SubscribeLocalEvent<SiliconSyncSlaveMasterMessage>(OnRadialSlaveMaster);
 
@@ -33,6 +36,8 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
         SubscribeLocalEvent<SiliconSyncableSlaveAiRadialComponent, StationAiSyncSlaveEvent>(OnAiSlave);
 
         SubscribeLocalEvent<SiliconSyncableSlaveCommandableComponent, StationAiSyncCommandEvent>(OnAiCommand);
+
+        SubscribeLocalEvent<SiliconSyncableMasterCommanderComponent, SiliconSyncMasterSlaveLostEvent>(OnCommanderSlaveLost);
     }
 
     private void OnSlaveAdded(Entity<SiliconSyncableMasterComponent> ent, ref SiliconSyncMasterSlaveAddedEvent args)
@@ -57,6 +62,15 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
         SetMaster(ent.Owner, null); // so we dont bulldoze our work
         ent.Comp.Enabled = false;
         Dirty(ent);
+    }
+
+    private void OnSlaveRemoved(Entity<SiliconSyncableSlaveComponent> ent, ref ComponentRemove args)
+    {
+        if (ent.Comp.Master is not {} master)
+            return;
+
+        var ev = new SiliconSyncMasterSlaveLostEvent(ent);
+        RaiseLocalEvent(master, ev);
     }
 
     private void OnRadialSlaveMaster(SiliconSyncSlaveMasterMessage args)
@@ -101,13 +115,44 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
             return;
 
         if (commanderComp.Commanding == ent)
-            commanderComp.Commanding = null;
-        else
-            commanderComp.Commanding = ent;
+        {
+            StopCommanding((args.User, commanderComp));
+            return;
+        }
 
+        StopCommanding((args.User, commanderComp));
+
+        commanderComp.Commanding = ent.Owner;
         commanderComp.NextCommand = _timing.CurTime + CommandUpdateRate;
 
         Dirty(args.User, commanderComp);
+    }
+
+    private void OnCommanderSlaveLost(Entity<SiliconSyncableMasterCommanderComponent> ent, ref SiliconSyncMasterSlaveLostEvent args)
+    {
+        if (!TryGetSlaves(ent.Owner, out var slaves))
+            return;
+
+        if (!slaves.Contains(args.Slave))
+            return;
+
+        StopCommanding(ent);
+    }
+
+    private void StopCommanding(Entity<SiliconSyncableMasterCommanderComponent> ent)
+    {
+        if (ent.Comp.Commanding == null)
+            return;
+
+        var ev = new SiliconSyncMoveSlaveLostEvent(GetNetEntity(ent.Owner), GetNetEntity(ent.Comp.Commanding.Value));
+
+        if (_net.IsClient)
+            RaiseLocalEvent(ent, ev);
+        else
+            RaiseNetworkEvent(ev, ent);
+
+        ent.Comp.Commanding = null;
+        DirtyField(ent.Owner, ent.Comp, nameof(SiliconSyncableMasterCommanderComponent.Commanding));
     }
 
     public void ShowAvailableMasters(Entity<SiliconSyncableSlaveComponent?> ent, EntityUid user)

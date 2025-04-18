@@ -68,6 +68,9 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
 
     private void TaskCompleted(EntityUid master, EntityUid slave, Task<PathResultEvent> task, bool moveSlave)
     {
+        if (TerminatingOrDeleted(slave))
+            return;
+
 #pragma warning disable RA0004
         var result = task.Result;
 #pragma warning restore RA0004
