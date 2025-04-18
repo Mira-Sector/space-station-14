@@ -6,24 +6,24 @@
 - type: entity
   id: DuckWhiteHead
   name: white duck head
-  parent: BaseDuckMalladHead
+  parent: DuckMalladHead
 
 - type: entity
   id: DuckWhiteLeftLeg
   name: left white duck leg
-  parent: BaseDuckMalladLeftLeg
+  parent: DuckMalladLeftLeg
 
 - type: entity
   id: DuckWhiteRightLeg
   name: white duck leg
-  parent: BaseDuckMalladRightLeg
+  parent: DuckMalladRightLeg
 
 - type: entity
   id: DuckWhiteLeftFoot
   name: left white duck foot
-  parent: BaseDuckMalladLeftFoot
+  parent: DuckMalladLeftFoot
 
 - type: entity
   id: DuckWhiteRightFoot
   name: white duck foot
-  parent: BaseDuckMalladRightFoot
+  parent: DuckMalladRightFoot

@@ -6,24 +6,24 @@
 - type: entity
   id: DuckBrownHead
   name: brown duck head
-  parent: BaseDuckMalladHead
+  parent: DuckMalladHead
 
 - type: entity
   id: DuckBrownLeftLeg
   name: left brown duck leg
-  parent: BaseDuckMalladLeftLeg
+  parent: DuckMalladLeftLeg
 
 - type: entity
   id: DuckBrownRightLeg
   name: brown duck leg
-  parent: BaseDuckMalladRightLeg
+  parent: DuckMalladRightLeg
 
 - type: entity
   id: DuckBrownLeftFoot
   name: left brown duck foot
-  parent: BaseDuckMalladLeftFoot
+  parent: DuckMalladLeftFoot
 
 - type: entity
   id: DuckBrownRightFoot
   name: brown duck foot
-  parent: BaseDuckMalladRightFoot
+  parent: DuckMalladRightFoot
