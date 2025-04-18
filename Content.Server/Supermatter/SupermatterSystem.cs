@@ -12,9 +12,9 @@ using Content.Shared.FixedPoint;
 using Content.Shared.Radiation.Components;
 using Content.Shared.Supermatter;
 using Content.Shared.Whitelist;
-using Robust.Server.GameObjects;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
+using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Player;
@@ -577,10 +577,12 @@ public sealed partial class SupermatterSystem : EntitySystem
     {
         foreach (var (entity, pos) in args.Entities)
         {
-            var mapUid = _map.CreateMap(out var mapId);
-            _mapLoader.Load(mapId, ent.Comp.MapPath.ToString());
-            _map.SetPaused(mapId, false);
-            args.Entities[entity] = new MapCoordinates(ent.Comp.MapPosition, mapId);
+            if (!_mapLoader.TryLoadMap(ent.Comp.MapPath, out var map, out _))
+                continue;
+
+            _map.InitializeMap(map.Value.Comp.MapId);
+            _map.SetPaused(map.Value.Comp.MapId, false);
+            args.Entities[entity] = new MapCoordinates(ent.Comp.MapPosition, map.Value.Comp.MapId);
         }
 
         args.Handled = true;
