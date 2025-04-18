@@ -50,6 +50,8 @@ public sealed class SiliconSyncCommanderOverlay : Overlay
         var worldHandle = args.WorldHandle;
         worldHandle.UseShader(_shader);
 
+        HashSet<TileRef> drawnTiles = new();
+
         foreach (var (_, (path, sprite)) in Paths)
         {
             var state = _sprite.RsiStateLike(sprite);
@@ -72,6 +74,11 @@ public sealed class SiliconSyncCommanderOverlay : Overlay
                 var texture = state.GetFrame(DirExt.Convert(direction, state.RsiDirections), durations.Frame);
 
                 var tile = _map.GetTileRef((pos.EntityId, mapGridComp), pos);
+
+                // dont draw multiple on the same tile
+                if (!drawnTiles.Add(tile))
+                    continue;
+
                 var bounds = _lookups.GetLocalBounds(tile, mapGridComp.TileSize);
                 worldHandle.DrawTextureRect(texture, bounds);
             }
