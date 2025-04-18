@@ -1236,3 +1236,12 @@
   components:
   - type: Sprite
     state: miraposter2_legit
+
+- type: entity
+  parent: MiraPosterBase
+  id: MiraPosterKeepCalm
+  name: "Keep Calm"
+  description: "Keep calm, and pet the station pets. Everything's fine."
+  components:
+  - type: Sprite
+    state: miraposter3_legit
