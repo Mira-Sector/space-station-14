@@ -123,6 +123,9 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
 
     private void OnCommandableGetRadial(Entity<SiliconSyncableSlaveCommandableComponent> ent, ref GetStationAiRadialEvent args)
     {
+        if (!HasComp<SiliconSyncableMasterCommanderComponent>(_playerMan.LocalEntity))
+            return;
+
         if (!TryComp<SiliconSyncableSlaveComponent>(ent, out var slaveComp) || !slaveComp.Enabled || slaveComp.Master == null)
             return;
 
