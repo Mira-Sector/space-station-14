@@ -32,7 +32,7 @@ public sealed class PlantAnalyzerTrayData(float waterLevel, float nutritionLevel
 
 /// <summary>
 /// All the information to keep the plant alive.
-/// Which is most of the "Tolerances" reagion plus the gases it may need.
+/// Which is most of the "Tolerances" region plus the gases it may need.
 /// </summary>
 [Serializable, NetSerializable]
 public sealed class PlantAnalyzerTolerancesData(float nutrientConsumption, float waterConsumption, float idealHeat, float heatTolerance, float idealLight, float lightTolerance, float toxinsTolerance, float lowPressureTolerance, float highPressureTolerance, float pestTolerance, float weedTolerance, List<Gas> consumeGasses)

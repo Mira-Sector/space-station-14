@@ -147,7 +147,8 @@ public sealed class PlantAnalyzerSystem : AbstractAnalyzerSystem<PlantAnalyzerCo
         var seedName = data.PlantData is not null ? Loc.GetString(data.PlantData.SeedDisplayName) : null;
         (string, object)[] parameters = [
             ("seedName", seedName ?? missingData),
-            ("produce", data.ProduceData is not null ? PlantAnalyzerLocalizationHelper.ProduceToLocalizedStrings(data.ProduceData.Produce, _prototypeManager).Plural : missingData),
+            ("produce", data.ProduceData is not null ? PlantAnalyzerLocalizationHelper.ProduceToLocalizedStrings(data.ProduceData.Produce, _prototypeManager).Singular : missingData),
+            ("producePlural", data.ProduceData is not null ? PlantAnalyzerLocalizationHelper.ProduceToLocalizedStrings(data.ProduceData.Produce, _prototypeManager).Plural : missingData),
             ("water", data.TolerancesData?.WaterConsumption.ToString("0.00") ?? missingData),
             ("nutrients", data.TolerancesData?.NutrientConsumption.ToString("0.00") ?? missingData),
             ("toxins", data.TolerancesData?.ToxinsTolerance.ToString("0.00") ?? missingData),
@@ -164,7 +165,9 @@ public sealed class PlantAnalyzerSystem : AbstractAnalyzerSystem<PlantAnalyzerCo
             ("potency", data.ProduceData is not null ? data.ProduceData.Potency : missingData),
             ("potencyDesc", data.ProduceData is not null ? Loc.GetString(data.ProduceData.PotencyDesc) : missingData),
             ("chemicals", data.ProduceData is not null ? PlantAnalyzerLocalizationHelper.ChemicalsToLocalizedStrings(data.ProduceData.Chemicals, _prototypeManager) : missingData),
+            ("chemCount", data.ProduceData?.Chemicals.Count.ToString("0.00") ?? missingData),
             ("gasesOut", data.ProduceData is not null ? PlantAnalyzerLocalizationHelper.GasesToLocalizedStrings(data.ProduceData.ExudeGasses, _prototypeManager) : missingData),
+            ("gasCount", data.ProduceData?.ExudeGasses.Count.ToString("0.00") ?? missingData),
             ("endurance", data.PlantData?.Endurance.ToString("0.00") ?? missingData),
             ("lifespan", data.PlantData?.Lifespan.ToString("0.00") ?? missingData),
             ("seeds", data.ProduceData is not null ? (data.ProduceData.Seedless ? "no" : "yes") : "other"),
