@@ -109,3 +109,16 @@
   id: Hologram
   kind: source
   path: "/Textures/Shaders/hologram.swsl"
+
+- type: shader
+  id: Goggles
+  kind: source
+  path: "/Textures/Shaders/goggles.swsl"
+  params:
+    lineCount: 75
+    scanlineIntensity: 0.8
+    alpha: 0.4
+    distortionStrength: 0.45
+    flicker: 0.9
+    beamLength: 0.5
+    beamSpeed: 0.5

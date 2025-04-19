@@ -65,6 +65,9 @@
   - type: EyeProtection
   - type: IdentityBlocker
     coverage: EYES
+  - type: GlassesOverlay
+    shader: Goggles
+    color: '#5AB43CCC'
 
 - type: entity
   parent: ClothingEyesBase
