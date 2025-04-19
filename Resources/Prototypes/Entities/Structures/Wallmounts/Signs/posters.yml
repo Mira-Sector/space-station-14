@@ -1245,3 +1245,14 @@
   components:
   - type: Sprite
     state: miraposter3_legit
+
+# mira contraband posters
+
+- type: entity
+  parent: MiraPosterBase
+  id: MiraPosterContrabandHonkmother
+  name: "Join."
+  description: "Be one with the honk."
+  components:
+  - type: Sprite
+    state: miraposter1_contraband

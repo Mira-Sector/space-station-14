@@ -92,6 +92,7 @@
       - PosterContrabandInterdyne
       - PosterContrabandWaffleCorp
       - PosterContrabandMissingSpacepen
+      - MiraPosterContrabandHonkmother
     chance: 1
 
 - type: entity
