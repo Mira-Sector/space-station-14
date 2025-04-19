@@ -165,8 +165,8 @@ public sealed partial class PlantAnalyzerWindow : FancyWindow
                 ("nl", "\n")
             ];
             EnvironmentLabel.Text = Loc.GetString("plant-analyzer-component-environment", [.. parameters]);
-            EnvironmentLabel.Text += Loc.GetString("plant-analyzer-component-temperature", [.. parameters]);
             EnvironmentLabel.Text += Loc.GetString("plant-analyzer-component-light", [.. parameters]);
+            EnvironmentLabel.Text += Loc.GetString("plant-analyzer-component-temperature", [.. parameters]);
             EnvironmentLabel.Text += Loc.GetString("plant-analyzer-component-pressure", [.. parameters]);
             if (msg.TolerancesData.ConsumeGasses.Count > 0)
                 EnvironmentLabel.Text += Loc.GetString("plant-analyzer-component-requiredgas", [.. parameters]);

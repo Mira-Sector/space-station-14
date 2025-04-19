@@ -18,9 +18,9 @@ plant-analyzer-soil = Unabsorbed Reagents: [color=white]{$chemicals}[/color]
 plant-analyzer-soil-empty = Unabsorbed Reagents: [color=gray]None[/color]
 
 plant-analyzer-component-environment = [bold]Desired Environment Analysis[/bold] {$nl}
-plant-analyzer-component-temperature = Temperature: [color=lightsalmon]{$temp}°k ± {$tempTolerance}°k[/color]{$nl}
-
 plant-analyzer-component-light = Light Level: [color=white]{$lightLevel} ± {$lightTolerance}[/color]{$nl}
+
+plant-analyzer-component-temperature = Temperature: [color=lightsalmon]{$temp}°k ± {$tempTolerance}°k[/color]{$nl}
 
 plant-analyzer-component-pressure = Pressure: [color=lightblue]{$kpa}kPa ± {$kpaTolerance}kPa[/color]{$nl}
 plant-analyzer-component-requiredgas = Required Gases: [color=lightgray]{$gases}[/color]
@@ -79,6 +79,11 @@ plant-analyzer-printout = [color=#9FED58][head=2]Plant Analyzer Report[/head][/c
         [yes][color=green]Yes[/color]
         *[other]{LOC("plant-analyzer-printout-missing")}
     }{$nl
+    }{$indent}[bullet/] Kudzu: {$kudzu ->
+    [no][color=green]No[/color]
+    [yes][color=red]Yes[/color]
+    *[other]{LOC("plant-analyzer-printout-missing")}
+    }{$nl
     }{$indent}[bullet/] Endurance: {$endurance}{$nl
     }{$indent}[bullet/] Lifespan: {$lifespan}{$nl
     }{$indent}[bullet/] Produce: {$yield ->
@@ -90,16 +95,11 @@ plant-analyzer-printout = [color=#9FED58][head=2]Plant Analyzer Report[/head][/c
     }{$indent}[bullet/] Potency: {$yield ->
         [-1]{LOC("plant-analyzer-printout-missing")}
         [0][color=red]0[/color]
-        *[other][color=lightgreen]{$potency} {"("}{$potencyDesc}{")"}[/color]
+        *[other][color=lightgreen][bold]{$potency}[/bold] {"("}{$potencyDesc}{")"}[/color]
         }{$nl
-    }[bullet/] Seedless: {$seeds ->
+    }{$indent}[bullet/] Seedless: {$seeds ->
         [no][color=red]Yes[/color]
         [yes][color=green]No[/color]
-        *[other]{LOC("plant-analyzer-printout-missing")}
-        }{$nl
-    }{$indent}[bullet/] Kudzu: {$kudzu ->
-        [no][color=green]No[/color]
-        [yes][color=red]Yes[/color]
         *[other]{LOC("plant-analyzer-printout-missing")}
         }{$nl
     }[bullet/] Growth profile:{$nl
@@ -109,10 +109,10 @@ plant-analyzer-printout = [color=#9FED58][head=2]Plant Analyzer Report[/head][/c
     }{$indent}[bullet/] Pests: [color=magenta]{$pests}[/color]{$nl
     }{$indent}[bullet/] Weeds: [color=red]{$weeds}[/color]{$nl
     }[bullet/] Desired Environment:{$nl
-    }{$indent}[bullet/] Composition: [color=lightgray]{$gasesIn}[/color]{$nl
-    }{$indent}[bullet/] Pressure: [color=lightblue]{$kpa}kPa ± {$kpaTolerance}kPa[/color]{$nl
+    }{$indent}[bullet/] Light Level: [color=gray][bold]{$lightLevel} ± {$lightTolerance}[/bold][/color]{$nl
     }{$indent}[bullet/] Temperature: [color=lightsalmon]{$temp}°k ± {$tempTolerance}°k[/color]{$nl
-    }{$indent}[bullet/] Light: [color=gray][bold]{$lightLevel} ± {$lightTolerance}[/bold][/color]{$nl
+    }{$indent}[bullet/] Pressure: [color=lightblue]{$kpa}kPa ± {$kpaTolerance}kPa[/color]{$nl
+    }{$indent}[bullet/] Required Gases [color=lightgray]{$gasesIn}[/color]{$nl
     }[bullet/] Emitted Gases: {$gasCount ->
         [0][color=gray]None[/color]
         *[other][color=lightgray]{$gasesOut}[/color]
