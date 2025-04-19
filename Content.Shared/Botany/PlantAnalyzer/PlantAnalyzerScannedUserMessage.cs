@@ -75,7 +75,8 @@ public sealed class PlantAnalyzerPlantData(string seedDisplayName, float health,
 public sealed class PlantAnalyzerProduceData(int yield, float potency, List<string> chemicals, List<string> produce, List<Gas> exudeGasses, bool seedless)
 {
     public int Yield = yield;
-    public string Potency = ObscurePotency(potency);
+    public float Potency = potency;
+    public string PotencyDesc = ObscurePotency(potency);
     public List<string> Chemicals = chemicals;
     public List<string> Produce = produce;
     public List<Gas> ExudeGasses = exudeGasses;
@@ -84,26 +85,24 @@ public sealed class PlantAnalyzerProduceData(int yield, float potency, List<stri
     private static string ObscurePotency(float potency)
     {
         var potencyFtl = "plant-analyzer-potency-";
-        if (potency <= 5)      // 5 should still be tiny
+        if (potency <= 10)
             potencyFtl += "tiny";
-        else if (potency < 10) // 10 should be below-average
-            potencyFtl += "small";
-        else if (potency < 15)
-            potencyFtl += "below-average";
         else if (potency < 20)
-            potencyFtl += "average";
-        else if (potency <= 25) // 25 is the highest starting value
-            potencyFtl += "above-average";
+            potencyFtl += "small";
         else if (potency < 30)
-            potencyFtl += "large";
+            potencyFtl += "medium";
         else if (potency < 40)
+            potencyFtl += "large";
+        else if (potency <= 50) //biggest you can get with robust harvest alone.
             potencyFtl += "huge";
-        else if (potency < 50)
+        else if (potency < 65)
             potencyFtl += "gigantic";
-        else if (potency < 60)
+        else if (potency < 80)
             potencyFtl += "ludicrous";
-        else
+        else if (potency < 99)
             potencyFtl += "immeasurable";
+        else
+            potencyFtl += "perfect"; //you've earned this, king.
 
         return potencyFtl;
     }

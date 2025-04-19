@@ -161,13 +161,17 @@ public sealed partial class PlantAnalyzerWindow : FancyWindow
                 ("temp", msg.TolerancesData.IdealHeat.ToString("0.00")),
                 ("tempTolerance", msg.TolerancesData.HeatTolerance.ToString("0.00")),
                 ("lightLevel", msg.TolerancesData.IdealLight.ToString("0.00")),
-                ("lightTolerance", msg.TolerancesData.LightTolerance.ToString("0.00"))
+                ("lightTolerance", msg.TolerancesData.LightTolerance.ToString("0.00")),
+                ("nl", "\n")
             ];
-            EnvironmentLabel.Text = msg.TolerancesData.ConsumeGasses.Count == 0
-                ? msg.TolerancesData.IdealHeat - msg.TolerancesData.HeatTolerance <= 0f && msg.TolerancesData.IdealPressure - msg.TolerancesData.PressureTolerance <= 0f
-                    ? Loc.GetString("plant-analyzer-component-environemt-void", [.. parameters])
-                    : Loc.GetString("plant-analyzer-component-environemt", [.. parameters])
-                : Loc.GetString("plant-analyzer-component-environemt-gas", [.. parameters]);
+            EnvironmentLabel.Text = Loc.GetString("plant-analyzer-component-environment", [.. parameters]);
+            EnvironmentLabel.Text += Loc.GetString("plant-analyzer-component-temperature", [.. parameters]);
+            EnvironmentLabel.Text += Loc.GetString("plant-analyzer-component-light", [.. parameters]);
+            EnvironmentLabel.Text += Loc.GetString("plant-analyzer-component-pressure", [.. parameters]);
+            if (msg.TolerancesData.ConsumeGasses.Count > 0)
+                EnvironmentLabel.Text += Loc.GetString("plant-analyzer-component-requiredgas", [.. parameters]);
+            else
+                EnvironmentLabel.Text += Loc.GetString("plant-analyzer-component-nogas", [.. parameters]);
 
             EnvironmentBox.Visible = true;
         }
@@ -188,17 +192,24 @@ public sealed partial class PlantAnalyzerWindow : FancyWindow
                 ("yield", msg.ProduceData.Yield),
                 ("gasCount", msg.ProduceData.ExudeGasses.Count),
                 ("gases", gases),
-                ("potency", Loc.GetString(msg.ProduceData.Potency)),
+                ("potency", msg.ProduceData.Potency),
+                ("potencyDesc", Loc.GetString(msg.ProduceData.PotencyDesc)),
                 ("seedless", msg.ProduceData.Seedless),
                 ("firstProduce", msg.ProduceData.Produce.FirstOrDefault() ?? ""),
                 ("produce", produce),
                 ("producePlural", producePlural),
                 ("chemCount", msg.ProduceData.Chemicals.Count),
                 ("chemicals", chemicals),
-                ("nothing", "")
+                ("nothing", ""),
+                ("nl", "\n")
             ];
+            ProduceLabel.Text = Loc.GetString("plant-analyzer-produce-title", [.. parameters]);
+            ProduceLabel.Text += Loc.GetString("plant-analyzer-produce-amount", [.. parameters]);
+            ProduceLabel.Text += Loc.GetString("plant-analyzer-produce-size", [.. parameters]);
+            ProduceLabel.Text += Loc.GetString("plant-analyzer-produce-seedless", [.. parameters]);
+            ProduceLabel.Text += Loc.GetString("plant-analyzer-produce-gases", [.. parameters]);
+            ProduceLabel.Text += Loc.GetString("plant-analyzer-produce-reagents", [.. parameters]);
 
-            ProduceLabel.Text = Loc.GetString("plant-analyzer-output", [.. parameters]);
             ProduceBox.Visible = true;
         }
         else

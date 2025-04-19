@@ -14,53 +14,60 @@ plant-analyzer-component-unviable = [color=red]UNVIABLE[color]
 plant-analyzer-component-mutating = [color=#00ff5f]MUTATING[color]
 plant-analyzer-component-kudzu = [color=red]KUDZU[color]
 
-plant-analyzer-soil = There is some [color=white]{$chemicals}[/color] in this {$holder} that {$count ->
-    [one]has
-    *[other]have
-} not been absorbed.
-plant-analyzer-soil-empty = There are no unabsorbed chemicals in this {$holder}.
+plant-analyzer-soil = Unabsorbed Reagents: [color=white]{$chemicals}[/color]
+plant-analyzer-soil-empty = Unabsorbed Reagents: [color=gray]None[/color]
 
-plant-analyzer-component-environemt = This [color=green]{$seedName}[/color] requires an atmosphere at a pressure level of [color=lightblue]{$kpa}kPa ± {$kpaTolerance}kPa[/color], temperature of [color=lightsalmon]{$temp}°k ± {$tempTolerance}°k[/color] and a light level of [color=white]{$lightLevel} ± {$lightTolerance}[/color].
-plant-analyzer-component-environemt-void = This [color=green]{$seedName}[/color] has to be grown [bolditalic]in the vacuum of space[/bolditalic] at a light level of [color=white]{$lightLevel} ± {$lightTolerance}[/color].
-plant-analyzer-component-environemt-gas = This [color=green]{$seedName}[/color] requires an atmosphere containing [bold]{$gases}[/bold] at a pressure level of [color=lightblue]{$kpa}kPa ± {$kpaTolerance}kPa[/color], temperature of [color=lightsalmon]{$temp}°k ± {$tempTolerance}°k[/color] and a light level of [color=white]{$lightLevel} ± {$lightTolerance}[/color].
+plant-analyzer-component-environment = [bold]Desired Environment Analysis[/bold] {$nl}
+plant-analyzer-component-temperature = Temperature: [color=lightsalmon]{$temp}°k ± {$tempTolerance}°k[/color]{$nl}
+
+plant-analyzer-component-light = Light Level: [color=white]{$lightLevel} ± {$lightTolerance}[/color]{$nl}
+
+plant-analyzer-component-pressure = Pressure: [color=lightblue]{$kpa}kPa ± {$kpaTolerance}kPa[/color]{$nl}
+plant-analyzer-component-requiredgas = Required Gases: [bold]{$gases}[/bold]
+plant-analyzer-component-nogas = Required Gases: [color=gray]None[/color]
+
+
+plant-analyzer-produce-title = [bold]Plant Produce Analysis[/bold] {$nl}
+plant-analyzer-produce-amount = Produce: {$yield ->
+        [0][color=gray]None[/color]$nl
+        [one][color=#a4885c][bold]{$yield}[/bold] {$produce}[/color]
+        *[other][color=#a4885c][bold]{$yield}[/bold] {$producePlural}[/color]
+        }{$nl}
+
+plant-analyzer-produce-size = Potency: {$yield ->
+        [0][color=gray]N/A[/color]
+        *[other][color=lightgreen][bold]{$potency}[/bold] {"("}{$potencyDesc}{")"}[/color]
+        }{$nl}
+
+plant-analyzer-produce-seedless = Seedless: {$seedless ->
+        [true]{" "}[color=red]Yes[/color]
+        *[false]{" "}[color=green]No[/color]
+        }{$nl}
+
+plant-analyzer-produce-gases = Emitted Gases: {$gasCount ->
+        [0][color=gray]None[/color]
+        *[other][color=lightgray]{$gases}[/color]
+        }{$nl}
+
+plant-analyzer-produce-reagents = Reagents: {$yield ->
+        [0][color=gray]None[/color]
+        *[other]{$chemCount ->
+                [0][color=gray]None[/color]
+                *[other][color=white]{$chemicals}[/color]
+                }
+        }
 
 plant-analyzer-produce-plural = {MAKEPLURAL($thing)}
-plant-analyzer-output = {$yield ->
-    [0]{$gasCount ->
-        [0]The only thing it seems to do is consume water and nutrients.
-        *[other]The only thing it seems to do is turn water and nutrients into [bold]{$gases}[/bold].
-    }
-    *[other]It has [color=lightgreen]{$yield} {$potency}[/color]{$seedless ->
-        [true]{" "}but [color=red]seedless[/color]
-        *[false]{$nothing}
-    }{" "}{$yield ->
-        [one]flower
-        *[other]flowers
-    }{" "}that{$gasCount ->
-        [0]{$nothing}
-        *[other]{$yield ->
-            [one]{" "}emits
-            *[other]{" "}emit
-        }{" "}[bold]{$gases}[/bold] and
-    }{" "}will turn into{$yield ->
-        [one]{" "}{INDEFINITE($firstProduce)} [color=#a4885c]{$produce}[/color]
-        *[other]{" "}[color=#a4885c]{$producePlural}[/color]
-    }.{$chemCount ->
-        [0]{$nothing}
-        *[other]{" "}There are trace amounts of [color=white]{$chemicals}[/color] in its stem.
-    }
-}
 
-plant-analyzer-potency-tiny = tiny
-plant-analyzer-potency-small = small
-plant-analyzer-potency-below-average = below-average sized
-plant-analyzer-potency-average = average sized
-plant-analyzer-potency-above-average = above-average sized
-plant-analyzer-potency-large = rather large
-plant-analyzer-potency-huge = huge
-plant-analyzer-potency-gigantic = gigantic
-plant-analyzer-potency-ludicrous = ludicrously large
-plant-analyzer-potency-immeasurable = immeasurably large
+plant-analyzer-potency-tiny = Tiny
+plant-analyzer-potency-small = Small
+plant-analyzer-potency-medium = Medium
+plant-analyzer-potency-large = Large
+plant-analyzer-potency-huge = Huge
+plant-analyzer-potency-gigantic = Gigantic
+plant-analyzer-potency-ludicrous = Ludicrous
+plant-analyzer-potency-immeasurable = [italic]Immeasurable[/italic]
+plant-analyzer-potency-perfect = [color=yellow][bold]Perfect[/bold][/color]
 
 plant-analyzer-print = Print
 plant-analyzer-printout-missing = N/A
