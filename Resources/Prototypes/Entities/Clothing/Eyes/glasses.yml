@@ -68,6 +68,16 @@
   - type: GlassesOverlay
     shader: Goggles
     color: '#5AB43CCC'
+  - type: ShowXRay
+    shader: MesonXRay
+    whitelist:
+      components:
+      - Door
+      - EntityStorage
+      tags:
+      - Wall
+      - Structure
+      - Window
 
 - type: entity
   parent: ClothingEyesBase

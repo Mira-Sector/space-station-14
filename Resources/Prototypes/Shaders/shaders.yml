@@ -122,3 +122,8 @@
     flicker: 0.9
     beamLength: 0.5
     beamSpeed: 0.5
+
+- type: shader
+  id: MesonXRay
+  kind: source
+  path: "/Textures/Shaders/meson_xray.swsl"
