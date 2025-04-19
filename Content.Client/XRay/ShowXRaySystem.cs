@@ -10,7 +10,6 @@ using Robust.Shared.Physics.Systems;
 using Robust.Shared.Timing;
 using System.Linq;
 using Robust.Client.GameObjects;
-using Robust.Shared.Prototypes;
 
 namespace Content.Client.XRay;
 
@@ -19,18 +18,19 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
     [Dependency] private readonly IOverlayManager _overlayMan = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
 
-    private HashSet<EntityUid> _modified = new();
+    private XRayOverlay _overlay = default!;
 
     public override void Initialize()
     {
         base.Initialize();
 
         SubscribeLocalEvent<ShowXRayComponent, ComponentInit>(OnInit);
+
+        _overlay = new();
     }
 
     public override void Update(float frameTime)
@@ -47,6 +47,9 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
                 continue;
             }
 
+            if (_overlay.Entities.TryGetValue((uid, component), out var entities))
+                entities.Clear();
+
             UpdateEntities((uid, component));
         }
     }
@@ -60,19 +63,15 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
     {
         base.UpdateInternal(args);
 
-        var oldModified = new HashSet<EntityUid>(_modified);
-        _modified.Clear();
+        if (!_overlayMan.HasOverlay<XRayOverlay>())
+            _overlayMan.AddOverlay(_overlay);
+
+        _overlay.Entities.Clear();
 
         foreach (var component in args.Components)
-            UpdateEntities((component.Owner, component), oldModified);
-
-        foreach (var entity in oldModified)
         {
-            if (!TryComp<SpriteComponent>(entity, out var sprite))
-                continue;
-
-            sprite.PostShader = null;
-            sprite.RaiseShaderEvent = false;
+            _overlay.Entities.Add((component.Owner, component), new HashSet<EntityUid>());
+            UpdateEntities((component.Owner, component));
         }
     }
 
@@ -80,19 +79,10 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
     {
         base.DeactivateInternal();
 
-        foreach (var entity in _modified)
-        {
-            if (!TryComp<SpriteComponent>(entity, out var sprite))
-                continue;
-
-            sprite.PostShader = null;
-            sprite.RaiseShaderEvent = false;
-        }
-
-        _modified.Clear();
+        _overlayMan.RemoveOverlay(_overlay);
     }
 
-    private void UpdateEntities(Entity<ShowXRayComponent> ent, HashSet<EntityUid>? oldModified = null)
+    private void UpdateEntities(Entity<ShowXRayComponent> ent)
     {
         var entities = _lookup.GetEntitiesInRange(ent.Owner, ent.Comp.Range);
 
@@ -119,16 +109,7 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
             if (!rayCastResults.Any())
                 continue;
 
-            _modified.Add(entity);
-
-            if (oldModified != null)
-                oldModified.Remove(entity);
-
-            var shader = _prototype.Index<ShaderPrototype>(ent.Comp.Shader).InstanceUnique();
-            shader.SetParameter("distance", distance);
-
-            sprite.PostShader = shader;
-            sprite.RaiseShaderEvent = true;
+            _overlay.Entities[ent].Add(entity);
         }
 
         ent.Comp.NextRefresh += ent.Comp.RefreshTime;
