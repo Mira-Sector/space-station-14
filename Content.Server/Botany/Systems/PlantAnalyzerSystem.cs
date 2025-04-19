@@ -36,11 +36,13 @@ public sealed class PlantAnalyzerSystem : AbstractAnalyzerSystem<PlantAnalyzerCo
         base.Initialize();
 
         SubscribeLocalEvent<PlantAnalyzerComponent, PlantAnalyzerPrintMessage>(OnPrint);
+
     }
 
     /// <inheritdoc/>
     public override void UpdateScannedUser(EntityUid analyzer, EntityUid target, bool scanMode)
     {
+
         if (!_uiSystem.HasUi(analyzer, PlantAnalyzerUiKey.Key))
             return;
 

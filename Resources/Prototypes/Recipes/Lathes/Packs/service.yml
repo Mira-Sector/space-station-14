@@ -61,6 +61,11 @@
   - SynthesizerInstrument
 
 - type: latheRecipePack
+  id: Cartridge
+  recipes:
+  - PlantScanCartridge
+
+- type: latheRecipePack
   id: ServiceBoards
   recipes:
   - BiofabricatorMachineCircuitboard

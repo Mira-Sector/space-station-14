@@ -208,6 +208,7 @@
     - Instruments
     - Equipment
     - FauxTiles
+    - Cartridge
   - type: EmagLatheRecipes
     emagDynamicPacks:
     - SecurityAmmo
