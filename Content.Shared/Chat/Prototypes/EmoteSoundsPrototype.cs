@@ -1,7 +1,6 @@
-using Robust.Shared.Audio;
+using Content.Shared.Surgery;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Dictionary;
 
 namespace Content.Shared.Chat.Prototypes;
 
@@ -10,28 +9,8 @@ namespace Content.Shared.Chat.Prototypes;
 ///     Different entities may use different sounds collections.
 /// </summary>
 [Prototype, Serializable, NetSerializable]
-public sealed partial class EmoteSoundsPrototype : IPrototype
+public sealed partial class EmoteSoundsPrototype : EmoteSounds, IPrototype
 {
     [IdDataField]
     public string ID { get; private set; } = default!;
-
-    /// <summary>
-    ///     Optional fallback sound that will play if collection
-    ///     doesn't have specific sound for this emote id.
-    /// </summary>
-    [DataField("sound")]
-    public SoundSpecifier? FallbackSound;
-
-    /// <summary>
-    ///     Optional audio params that will be applied to ALL sounds.
-    ///     This will overwrite any params that may be set in sound specifiers.
-    /// </summary>
-    [DataField("params")]
-    public AudioParams? GeneralParams;
-
-    /// <summary>
-    ///     Collection of emote prototypes and their sounds.
-    /// </summary>
-    [DataField("sounds", customTypeSerializer: typeof(PrototypeIdDictionarySerializer<SoundSpecifier, EmotePrototype>))]
-    public Dictionary<string, SoundSpecifier> Sounds = new();
 }

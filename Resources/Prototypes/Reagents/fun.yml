@@ -413,7 +413,7 @@
       effects:
       - !type:Glowing
   metabolisms:
-    Drink:
+    Poison:
       metabolismRate: 1
       effects:
       - !type:Glowing

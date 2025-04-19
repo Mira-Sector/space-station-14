@@ -1,4 +1,4 @@
-﻿using Content.Shared.Emag.Systems;
+using Content.Shared.Emag.Systems;
 using Content.Shared.Mind;
 using Content.Shared.Popups;
 using Content.Shared.Silicons.Laws.Components;
@@ -53,7 +53,6 @@ public abstract partial class SharedSiliconLawSystem : EntitySystem
 
         component.OwnerName = Name(args.UserUid);
 
-        NotifyLawsChanged(uid, component.EmaggedSound);
         if(_mind.TryGetMind(uid, out var mindId, out _))
             EnsureSubvertedSiliconRole(mindId);
 
@@ -61,6 +60,27 @@ public abstract partial class SharedSiliconLawSystem : EntitySystem
 
         args.Handled = true;
     }
+
+    public abstract SiliconLawset GetLaws(EntityUid uid, SiliconLawBoundComponent? component = null);
+
+    /// <summary>
+    /// Set the laws of a silicon entity while notifying the player.
+    /// </summary>
+    public void SetLaws(List<SiliconLaw> newLaws, EntityUid target, SoundSpecifier? cue = null)
+    {
+        if (!TryComp<SiliconLawProviderComponent>(target, out var component))
+            return;
+
+        if (component.Lawset == null)
+            component.Lawset = new SiliconLawset();
+
+        component.Lawset.Laws = newLaws;
+        NotifyLawsChanged(target, cue);
+
+        var ev = new SiliconLawsUpdatedEvent(component.Lawset);
+        RaiseLocalEvent(target, ev);
+    }
+
 
     public virtual void NotifyLawsChanged(EntityUid uid, SoundSpecifier? cue = null)
     {

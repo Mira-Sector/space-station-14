@@ -43,6 +43,10 @@
             Poison: -1
       - !type:ChemCleanBloodstream
         cleanseRate: 3
+      - !type:GenericStatusEffect
+          key: Glowing
+          time: 90
+          type: Remove
 
 - type: reagent
   id: Ash

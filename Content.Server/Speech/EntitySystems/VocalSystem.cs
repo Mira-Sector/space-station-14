@@ -1,6 +1,8 @@
 using Content.Server.Actions;
 using Content.Server.Chat.Systems;
 using Content.Server.Speech.Components;
+using Content.Shared.Body.Events;
+using Content.Shared.Body.Part;
 using Content.Shared.Chat.Prototypes;
 using Content.Shared.Humanoid;
 using Content.Shared.Speech;
@@ -29,13 +31,23 @@ public sealed class VocalSystem : EntitySystem
         SubscribeLocalEvent<VocalComponent, SexChangedEvent>(OnSexChanged);
         SubscribeLocalEvent<VocalComponent, EmoteEvent>(OnEmote);
         SubscribeLocalEvent<VocalComponent, ScreamActionEvent>(OnScreamAction);
+
+        SubscribeLocalEvent<VocalOrganComponent, OrganAddedEvent>(OnOrganAdded);
+        SubscribeLocalEvent<VocalOrganComponent, OrganRemovedEvent>(OnOrganRemoved);
+        SubscribeLocalEvent<VocalOrganComponent, BodyOrganRelayedEvent<GetEmoteSoundsEvent>>(OnOrganGetEmotes);
+        SubscribeLocalEvent<VocalOrganBodyPartComponent, BodyPartAddedEvent>(OnOrganBodyPartAdded);
+        SubscribeLocalEvent<VocalOrganBodyPartComponent, BodyPartRemovedEvent>(OnOrganBodyPartRemoved);
+
+        SubscribeLocalEvent<VocalBodyPartComponent, BodyPartAddedEvent>(OnBodyPartAdded);
+        SubscribeLocalEvent<VocalBodyPartComponent, BodyPartRemovedEvent>(OnBodyPartRemoved);
+        SubscribeLocalEvent<VocalBodyPartComponent, BodyLimbRelayedEvent<GetEmoteSoundsEvent>>(OnBodyPartGetEmotes);
     }
 
     private void OnMapInit(EntityUid uid, VocalComponent component, MapInitEvent args)
     {
         // try to add scream action when vocal comp added
         _actions.AddAction(uid, ref component.ScreamActionEntity, component.ScreamAction);
-        LoadSounds(uid, component);
+        UpdateSounds((uid, component));
     }
 
     private void OnShutdown(EntityUid uid, VocalComponent component, ComponentShutdown args)
@@ -49,7 +61,7 @@ public sealed class VocalSystem : EntitySystem
 
     private void OnSexChanged(EntityUid uid, VocalComponent component, SexChangedEvent args)
     {
-        LoadSounds(uid, component);
+        UpdateSounds((uid, component));
     }
 
     private void OnEmote(EntityUid uid, VocalComponent component, ref EmoteEvent args)
@@ -88,15 +100,123 @@ public sealed class VocalSystem : EntitySystem
         return _chat.TryPlayEmoteSound(uid, component.EmoteSounds, component.ScreamId);
     }
 
-    private void LoadSounds(EntityUid uid, VocalComponent component, Sex? sex = null)
+    private void OnOrganAdded(Entity<VocalOrganComponent> ent, ref OrganAddedEvent args)
     {
-        if (component.Sounds == null)
+        if (!TryComp<BodyPartComponent>(args.Part, out var bodyPartComp) || bodyPartComp.Body is not {} body)
             return;
 
-        sex ??= CompOrNull<HumanoidAppearanceComponent>(uid)?.Sex ?? Sex.Unsexed;
+        EnsureComp<VocalOrganBodyPartComponent>(args.Part).Organs += 1;
+        EnsureComp<VocalComponent>(body, out var vocalComp);
+        UpdateSounds((body, vocalComp));
+    }
 
-        if (!component.Sounds.TryGetValue(sex.Value, out var protoId))
+    private void OnOrganRemoved(Entity<VocalOrganComponent> ent, ref OrganRemovedEvent args)
+    {
+        if (!TryComp<BodyPartComponent>(args.OldPart, out var bodyPartComp) || bodyPartComp.Body is not {} body)
             return;
-        _proto.TryIndex(protoId, out component.EmoteSounds);
+
+        var organs = EntityManager.GetComponent<VocalOrganBodyPartComponent>(args.OldPart).Organs -= 1;
+
+        if (organs <= 0)
+            RemComp<VocalOrganBodyPartComponent>(args.OldPart);
+
+        UpdateSounds(body);
+    }
+
+    private void OnOrganBodyPartAdded(Entity<VocalOrganBodyPartComponent> ent, ref BodyPartAddedEvent args)
+    {
+        if (!TryComp<BodyPartComponent>(ent, out var bodyPartComp) || bodyPartComp.Body is not {} body)
+            return;
+
+        EnsureComp<VocalComponent>(body, out var vocalComp);
+        UpdateSounds((body, vocalComp));
+    }
+
+    private void OnOrganBodyPartRemoved(Entity<VocalOrganBodyPartComponent> ent, ref BodyPartRemovedEvent args)
+    {
+        if (!TryComp<BodyPartComponent>(ent, out var bodyPartComp) || bodyPartComp.Body is not {} body)
+            return;
+
+        UpdateSounds(body);
+    }
+
+    private void OnOrganGetEmotes(Entity<VocalOrganComponent> ent, ref BodyOrganRelayedEvent<GetEmoteSoundsEvent> args)
+    {
+        if (!ent.Comp.Sounds.TryGetValue(GetSex(args.Body), out var sounds))
+            return;
+
+        MergeSounds(sounds, args.Args.Sounds);
+    }
+
+    private void OnBodyPartAdded(Entity<VocalBodyPartComponent> ent, ref BodyPartAddedEvent args)
+    {
+        if (!TryComp<BodyPartComponent>(ent, out var bodyPartComp) || bodyPartComp.Body is not {} body)
+            return;
+
+        EnsureComp<VocalComponent>(body, out var vocalComp);
+        UpdateSounds((body, vocalComp));
+    }
+
+    private void OnBodyPartRemoved(Entity<VocalBodyPartComponent> ent, ref BodyPartRemovedEvent args)
+    {
+        if (!TryComp<BodyPartComponent>(ent, out var bodyPartComp) || bodyPartComp.Body is not {} body)
+            return;
+
+        UpdateSounds(body);
+    }
+
+    private void OnBodyPartGetEmotes(Entity<VocalBodyPartComponent> ent, ref BodyLimbRelayedEvent<GetEmoteSoundsEvent> args)
+    {
+        if (!ent.Comp.Sounds.TryGetValue(GetSex(args.Body), out var sounds))
+            return;
+
+        MergeSounds(sounds, args.Args.Sounds);
+    }
+
+    public void UpdateSounds(Entity<VocalComponent?> ent)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp))
+            return;
+
+        ent.Comp.EmoteSounds = new();
+
+        var sex = GetSex(ent);
+
+        if (ent.Comp.Sounds != null)
+        {
+            if (!ent.Comp.Sounds.TryGetValue(sex, out var protoId))
+                return;
+
+            if (!_proto.TryIndex(protoId, out var sexSounds))
+                return;
+
+            ent.Comp.EmoteSounds = sexSounds;
+        }
+
+        var ev = new GetEmoteSoundsEvent(ent.Comp.EmoteSounds);
+        RaiseLocalEvent(ent, ev);
+
+        ent.Comp.EmoteSounds = ev.Sounds;
+        Dirty(ent);
+    }
+
+    private Sex GetSex(EntityUid uid)
+    {
+        return CompOrNull<HumanoidAppearanceComponent>(uid)?.Sex ?? Sex.Unsexed;
+    }
+
+    internal void MergeSounds(ProtoId<EmoteSoundsPrototype> emoteSoundsId, EmoteSounds existingSounds)
+    {
+        if (!_proto.TryIndex(emoteSoundsId, out var emoteSounds))
+            return;
+
+        if (emoteSounds.FallbackSound != null)
+            existingSounds.FallbackSound = emoteSounds.FallbackSound;
+
+        foreach (var (emote, sound) in emoteSounds.Sounds)
+        {
+            if (!existingSounds.Sounds.TryAdd(emote, sound))
+                existingSounds.Sounds[emote] = sound;
+        }
     }
 }

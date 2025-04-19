@@ -19,7 +19,7 @@ using System.Numerics;
 
 namespace Content.Server.Body.Systems;
 
-public sealed class BodySystem : SharedBodySystem
+public sealed partial class BodySystem : SharedBodySystem
 {
     [Dependency] private readonly GhostSystem _ghostSystem = default!;
     [Dependency] private readonly IGameTiming _gameTiming = default!;
@@ -33,6 +33,8 @@ public sealed class BodySystem : SharedBodySystem
     public override void Initialize()
     {
         base.Initialize();
+
+        InitializeRelays();
 
         SubscribeLocalEvent<BodyComponent, MoveInputEvent>(OnRelayMoveInput);
         SubscribeLocalEvent<BodyComponent, ApplyMetabolicMultiplierEvent>(OnApplyMetabolicMultiplier);

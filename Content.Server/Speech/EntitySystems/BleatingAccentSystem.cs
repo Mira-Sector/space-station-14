@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using Content.Server.Speech.Components;
+using Content.Shared.Body.Part;
 
 namespace Content.Server.Speech.EntitySystems;
 
@@ -12,6 +13,8 @@ public sealed partial class BleatingAccentSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<BleatingAccentComponent, AccentGetEvent>(OnAccentGet);
+        SubscribeLocalEvent<BleatingAccentComponent, BodyLimbRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccentGet((u, c), ref a.Args));
+        SubscribeLocalEvent<BleatingAccentComponent, BodyOrganRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccentGet((u, c), ref a.Args));
     }
 
     private void OnAccentGet(Entity<BleatingAccentComponent> entity, ref AccentGetEvent args)

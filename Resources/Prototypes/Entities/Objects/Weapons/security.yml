@@ -103,7 +103,7 @@
   name: telescopic baton
   parent: [BaseItem, BaseCommandContraband]
   id: Telescopicbaton
-  description: A self-defense weapon designed for the head staff of NanoTrasen's many stations. It's easier to handle and carry but less robust than the standart-issue stun batons.
+  description: A self-defense weapon designed for the head staff of NanoTrasen's many stations. It's easier to handle and carry but less robust than the standard-issue stun batons.
   components:
   - type: Sprite
     sprite: Objects/Weapons/Melee/telebaton.rsi

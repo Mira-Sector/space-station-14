@@ -67,3 +67,20 @@
   conditions:
   - !type:ListingLimitedStockCondition
     stock: 1
+
+- type: listing
+  id: AiCommand
+  name: ai-power-command-name
+  description: ai-power-command-desc
+  icon:
+    sprite: Interface/Actions/actions_ai.rsi
+    state: command_on
+  components:
+    - type: SiliconSyncableMasterCommander
+  cost:
+    Power: 50
+  categories:
+  - AiUpgrade
+  conditions:
+  - !type:ListingLimitedStockCondition
+    stock: 1

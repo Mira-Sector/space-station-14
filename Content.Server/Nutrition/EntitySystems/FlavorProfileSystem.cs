@@ -1,4 +1,7 @@
 using Content.Server.Nutrition.Components;
+using Content.Shared.Body.Components;
+using Content.Shared.Body.Prototypes;
+using Content.Shared.Body.Systems;
 using Content.Shared.CCVar;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Nutrition;
@@ -13,10 +16,15 @@ namespace Content.Server.Nutrition.EntitySystems;
 /// </summary>
 public sealed class FlavorProfileSystem : EntitySystem
 {
+    [Dependency] private readonly SharedBodySystem _bodySystem = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly IConfigurationManager _configManager = default!;
 
     private const string BackupFlavorMessage = "flavor-profile-unknown";
+    private const string NoTasteFlavorMessage = "flavor-profile-no-taste";
+
+    [ValidatePrototypeId<OrganPrototype>]
+    private const string FlavorOrgan = "Tongue";
 
     private int FlavorLimit => _configManager.GetCVar(CCVars.FlavorLimit);
 
@@ -27,6 +35,9 @@ public sealed class FlavorProfileSystem : EntitySystem
         {
             return Loc.GetString(BackupFlavorMessage);
         }
+
+        if (!CanTasteFlavor(user))
+            return Loc.GetString(NoTasteFlavorMessage);
 
         var flavors = new HashSet<string>(flavorProfile.Flavors);
         flavors.UnionWith(GetFlavorsFromReagents(solution, FlavorLimit - flavors.Count, flavorProfile.IgnoreReagents));
@@ -41,11 +52,30 @@ public sealed class FlavorProfileSystem : EntitySystem
 
     public string GetLocalizedFlavorsMessage(EntityUid user, Solution solution)
     {
+        if (!CanTasteFlavor(user))
+            return Loc.GetString(NoTasteFlavorMessage);
+
         var flavors = GetFlavorsFromReagents(solution, FlavorLimit);
         var ev = new FlavorProfileModificationEvent(user, flavors);
         RaiseLocalEvent(user, ev, true);
 
         return FlavorsToFlavorMessage(flavors);
+    }
+
+    private bool CanTasteFlavor(Entity<BodyComponent?> ent)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp, false))
+            return true;
+
+        var organs = _bodySystem.GetBodyOrgans(ent.Owner, ent.Comp);
+
+        foreach (var (_, organComp) in organs)
+        {
+            if (organComp.OrganType == FlavorOrgan)
+                return true;
+        }
+
+        return false;
     }
 
     private string FlavorsToFlavorMessage(HashSet<string> flavorSet)

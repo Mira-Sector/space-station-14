@@ -11,13 +11,16 @@
   icon:
     sprite: Interface/Traits/speech.rsi
     state: accentless
-  components:
-  - type: Accentless
-    removes:
-    - type: LizardAccent
-    - type: MothAccent
-    - type: ReplacementAccent
-      accent: dwarf
+  special:
+  - !type:AddComponentOrgan
+    organ: Tongue
+    components:
+    - type: Accentless
+      removes:
+      - type: LizardAccent
+      - type: MothAccent
+      - type: ReplacementAccent
+        accent: dwarf
 
 # 1 Cost
 
@@ -30,8 +33,11 @@
   icon:
     sprite: Interface/Traits/speech.rsi
     state: southern
-  components:
-  - type: SouthernAccent
+  special:
+  - !type:AddComponentOrgan
+    organ: Tongue
+    components:
+    - type: SouthernAccent
 
 - type: trait
   id: PirateAccent
@@ -42,8 +48,11 @@
   icon:
     sprite: Interface/Traits/speech.rsi
     state: pirate
-  components:
-  - type: PirateAccent
+  special:
+  - !type:AddComponentOrgan
+    organ: Tongue
+    components:
+    - type: PirateAccent
 
 - type: trait
   id: CowboyAccent
@@ -54,9 +63,12 @@
   icon:
     sprite: Interface/Traits/speech.rsi
     state: cowboy
-  components:
-  - type: ReplacementAccent
-    accent: cowboy
+  special:
+  - !type:AddComponentOrgan
+    organ: Tongue
+    components:
+    - type: ReplacementAccent
+      accent: cowboy
 
 - type: trait
   id: GermanAccent
@@ -67,8 +79,11 @@
   icon:
     sprite: Interface/Traits/speech.rsi
     state: german
-  components:
-  - type: GermanAccent
+  special:
+  - !type:AddComponentOrgan
+    organ: Tongue
+    components:
+    - type: GermanAccent
 
 - type: trait
   id: ItalianAccent
@@ -79,9 +94,12 @@
   icon:
     sprite: Interface/Traits/speech.rsi
     state: italian
-  components:
-  - type: ReplacementAccent
-    accent: italian
+  special:
+  - !type:AddComponentOrgan
+    organ: Tongue
+    components:
+    - type: ReplacementAccent
+      accent: italian
 
 - type: trait
   id: FrenchAccent
@@ -92,8 +110,11 @@
   icon:
     sprite: Interface/Traits/speech.rsi
     state: french
-  components:
-  - type: FrenchAccent
+  special:
+  - !type:AddComponentOrgan
+    organ: Tongue
+    components:
+    - type: FrenchAccent
 
 - type: trait
   id: SpanishAccent
@@ -104,8 +125,11 @@
   icon:
     sprite: Interface/Traits/speech.rsi
     state: spanish
-  components:
-  - type: SpanishAccent
+  special:
+  - !type:AddComponentOrgan
+    organ: Tongue
+    components:
+    - type: SpanishAccent
 
 - type: trait
   id: Liar
@@ -116,9 +140,12 @@
   icon:
     sprite: Interface/Traits/speech.rsi
     state: liar
-  components:
-  - type: ReplacementAccent
-    accent: liar
+  special:
+  - !type:AddComponentOrgan
+    organ: Tongue
+    components:
+    - type: ReplacementAccent
+      accent: liar
 
 # 2 Cost
 
@@ -131,12 +158,15 @@
   icon:
     sprite: Interface/Traits/speech.rsi
     state: stutter
-  components:
-  - type: StutteringAccent
-    matchRandomProb: 0.1
-    fourRandomProb: 0
-    threeRandomProb: 0
-    cutRandomProb: 0
+  special:
+  - !type:AddComponentOrgan
+    organ: Tongue
+    components:
+    - type: StutteringAccent
+      matchRandomProb: 0.1
+      fourRandomProb: 0
+      threeRandomProb: 0
+      cutRandomProb: 0
 
 - type: trait
   id: FrontalLisp
@@ -147,8 +177,11 @@
   icon:
     sprite: Interface/Traits/speech.rsi
     state: lisp
-  components:
-  - type: FrontalLisp
+  special:
+  - !type:AddComponentOrgan
+    organ: Tongue
+    components:
+    - type: FrontalLisp
 
 # Positive
 

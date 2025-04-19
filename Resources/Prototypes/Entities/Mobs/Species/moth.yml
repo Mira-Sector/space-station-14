@@ -17,13 +17,9 @@
   - type: Body
     prototype: Moth
     requiredLegs: 2
-  - type: ZombieAccentOverride
-    accent: zombieMoth
   - type: Speech
     speechVerb: Moth
     allowedEmotes: ['Chitter', 'Squeak']
-  - type: TypingIndicator
-    proto: moth
   - type: Butcherable
     butcheringType: Spike
     spawned:
@@ -38,12 +34,6 @@
         color: "#808A51"
       Burn:
         sprite: Mobs/Effects/burn_damage.rsi
-  - type: MothAccent
-  - type: Vocal
-    sounds:
-      Male: UnisexMoth
-      Female: UnisexMoth
-      Unsexed: UnisexMoth
   - type: MovementSpeedModifier
     weightlessAcceleration: 1.5 # Move around more easily in space.
     weightlessFriction: 1
