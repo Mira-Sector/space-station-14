@@ -2,7 +2,7 @@
   id: PlantAnalyzerUnpowered
   parent: BaseItem
   name: plant analyzer
-  description: A scanner used to evaluate a plant's various areas of growth, genetic traits and reagents.
+  description: A scanner used to evaluate a plant's various areas of growth, genetic traits, and reagents.
   components:
   - type: Sprite
     sprite: Objects/Specific/Hydroponics/plant_analyzer.rsi
