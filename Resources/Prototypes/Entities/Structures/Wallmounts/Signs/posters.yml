@@ -1256,3 +1256,12 @@
   components:
   - type: Sprite
     state: miraposter1_contraband
+
+- type: entity
+  parent: MiraPosterBase
+  id: MiraPosterContrabandBangstick
+  name: "They are watching."
+  description: "What is that even supposed to be?"
+  components:
+  - type: Sprite
+    state: miraposter2_contraband
