@@ -16,10 +16,10 @@ public sealed partial class ShowXRayComponent : Component
     public string Shader = string.Empty;
 
     [DataField, AutoNetworkedField]
-    public float Range = 12f;
+    public float Range = 15;
 
     [DataField, AutoNetworkedField]
-    public TimeSpan RefreshTime = TimeSpan.FromSeconds(0.5f);
+    public TimeSpan RefreshTime = TimeSpan.FromSeconds(0.125f);
 
     /// <remarks>
     /// Not networked as this is done client side

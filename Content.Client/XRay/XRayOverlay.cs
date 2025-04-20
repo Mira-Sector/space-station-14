@@ -24,6 +24,9 @@ public sealed class XRayOverlay : Overlay
     {
         IoCManager.InjectDependencies(this);
         _transform = _entityManager.System<SharedTransformSystem>();
+
+        // needs to be drawn after the meson goggles screen overlay
+        ZIndex = 1;
     }
 
     protected override bool BeforeDraw(in OverlayDrawArgs args)
@@ -47,15 +50,12 @@ public sealed class XRayOverlay : Overlay
                 if (!_entityManager.TryGetComponent<SpriteComponent>(entity, out var sprite))
                     continue;
 
-                var oldShader = sprite.PostShader;
                 sprite.PostShader = shader;
 
                 var (entPos, entRot) = _transform.GetWorldPositionRotation(entity);
 
                 var rot = args.Viewport.Eye?.Rotation ?? default;
                 sprite.Render(worldHandle, rot, entRot, null, entPos);
-
-                sprite.PostShader = oldShader;
             }
         }
 

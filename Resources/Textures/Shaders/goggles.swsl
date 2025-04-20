@@ -24,7 +24,7 @@ void fragment() {
     texColor.a *= alpha;
     lowp vec3 tinted = texColor.rgb * color.rgb;
 
-    highp float scanline = abs(sin(uv.y * float(lineCount) * PI));
+    highp float scanline = step(0.5, abs(sin(uv.y * float(lineCount) * PI)));
     scanline = 1.0 - (scanline * scanlineIntensity);
 
     lowp vec3 finalColor = tinted * scanline;

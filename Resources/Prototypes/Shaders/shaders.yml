@@ -124,6 +124,13 @@
     beamSpeed: 0.5
 
 - type: shader
-  id: MesonXRay
+  id: XRay
   kind: source
-  path: "/Textures/Shaders/meson_xray.swsl"
+  path: "/Textures/Shaders/xray.swsl"
+  params:
+    color: "#82cfff"
+    scanlineColor: "#6bc6ff"
+    lineCount: 10
+    scanlineIntensity: 1
+    scanlineSpeed: 1.2
+    alpha: 0.9
