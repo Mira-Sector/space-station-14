@@ -29,6 +29,8 @@ public sealed class XRayOverlay : Overlay
     public Dictionary<Entity<ShowXRayComponent>, HashSet<TileRef>> Tiles = new();
     public Dictionary<Entity<ShowXRayComponent>, HashSet<EntityUid>> Entities = new();
 
+    private Dictionary<EntityUid, MapGridComponent> _mapGrids = new();
+
     public XRayOverlay()
     {
         IoCManager.InjectDependencies(this);
@@ -46,7 +48,6 @@ public sealed class XRayOverlay : Overlay
     {
         var eyeRot = args.Viewport.Eye?.Rotation ?? Angle.Zero;
 
-        Dictionary<EntityUid, MapGridComponent> mapGrids = new();
         Dictionary<EntityUid, Matrix3x2> mapMatrix = new();
 
         foreach (var (xray, tiles) in Tiles)
@@ -56,12 +57,12 @@ public sealed class XRayOverlay : Overlay
 
             foreach (var tileRef in tiles)
             {
-                if (!mapGrids.TryGetValue(tileRef.GridUid, out var mapGrid))
+                if (!_mapGrids.TryGetValue(tileRef.GridUid, out var mapGrid))
                 {
                     if (!_entityManager.TryGetComponent(tileRef.GridUid, out mapGrid))
                         continue;
 
-                    mapGrids.Add(tileRef.GridUid, mapGrid);
+                    _mapGrids.Add(tileRef.GridUid, mapGrid);
                 }
 
                 var tile = _tileDef[tileRef.Tile.TypeId];
@@ -78,7 +79,21 @@ public sealed class XRayOverlay : Overlay
                 args.DrawingHandle.SetTransform(transform);
 
                 var bounds = _lookups.GetLocalBounds(tileRef, mapGrid.TileSize);
-                var texture = _resource.GetResource<TextureResource>(sprite);
+                var atlasTexture = _resource.GetResource<TextureResource>(sprite);
+
+                Texture texture;
+                if (tile.Variants == 1)
+                {
+                    texture = atlasTexture;
+                }
+                else
+                {
+                    var variant = tileRef.Tile.Variant + 1;
+                    var size = atlasTexture.Texture.Size.X / tile.Variants;
+
+                    var variantBounds = UIBox2.FromDimensions(variant * size - size, 0, size, atlasTexture.Texture.Size.Y);
+                    texture = new AtlasTexture(atlasTexture, variantBounds);
+                }
 
                 // TODO: maybe get decals too?
                 args.WorldHandle.DrawTextureRect(texture, bounds);
