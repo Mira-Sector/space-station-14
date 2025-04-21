@@ -121,7 +121,7 @@ public sealed class PlantAnalyzerSystem : BaseAnalyzerSystem<PlantAnalyzerCompon
     private void OnPrint(EntityUid uid, PlantAnalyzerComponent component, PlantAnalyzerPrintMessage args)
     {
         var user = args.Actor;
-        const string dp = "0.00";
+        const string dp = PlantAnalyzerLocalizationHelper.DP; //not strictly neccessary, but makes things cleaner
 
         if (_gameTiming.CurTime < component.PrintReadyAt)
         {

@@ -29,7 +29,7 @@ public sealed partial class PlantAnalyzerWindow : FancyWindow
 
     public void Populate(PlantAnalyzerScannedUserMessage msg)
     {
-        const string dp = "0.00";
+        const string dp = PlantAnalyzerLocalizationHelper.DP;
         Print.Disabled = !msg.ScanMode.GetValueOrDefault(false)
             || msg.PrintReadyAt.GetValueOrDefault(TimeSpan.MaxValue) > _gameTiming.CurTime
             || msg.PlantData is null;
