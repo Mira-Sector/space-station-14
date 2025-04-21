@@ -103,23 +103,30 @@ public sealed class VocalSystem : EntitySystem
 
     private void OnOrganAdded(Entity<VocalOrganComponent> ent, ref OrganAddedEvent args)
     {
-        if (!TryComp<BodyPartComponent>(args.Part, out var bodyPartComp) || bodyPartComp.Body is not {} body)
+        if (!TryComp<BodyPartComponent>(args.Part, out var bodyPartComp))
             return;
 
         EnsureComp<VocalOrganBodyPartComponent>(args.Part).Organs += 1;
+
+        if (bodyPartComp.Body is not {} body)
+            return;
+
         EnsureComp<VocalComponent>(body, out var vocalComp);
         UpdateSounds((body, vocalComp));
     }
 
     private void OnOrganRemoved(Entity<VocalOrganComponent> ent, ref OrganRemovedEvent args)
     {
-        if (!TryComp<BodyPartComponent>(args.OldPart, out var bodyPartComp) || bodyPartComp.Body is not {} body)
+        if (!TryComp<BodyPartComponent>(args.OldPart, out var bodyPartComp))
             return;
 
         var organs = EntityManager.GetComponent<VocalOrganBodyPartComponent>(args.OldPart).Organs -= 1;
 
         if (organs <= 0)
             RemComp<VocalOrganBodyPartComponent>(args.OldPart);
+
+        if (bodyPartComp.Body is not {} body)
+            return;
 
         UpdateSounds(body);
     }
