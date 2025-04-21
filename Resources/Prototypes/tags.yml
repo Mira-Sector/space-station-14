@@ -1405,4 +1405,7 @@
 - type: Tag
   id: WriteIgnoreStamps
 
+- type: Tag
+  id: XrayVisible
+
 # ALPHABETICAL

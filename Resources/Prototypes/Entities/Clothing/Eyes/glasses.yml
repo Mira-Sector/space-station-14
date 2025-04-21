@@ -74,10 +74,13 @@
       components:
       - Door
       - EntityStorage
+      - Chasm
       tags:
       - Wall
       - Structure
       - Window
+      - Catwalk
+      - XrayVisible
 
 - type: entity
   parent: ClothingEyesBase

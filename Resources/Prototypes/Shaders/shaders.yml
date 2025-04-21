@@ -133,4 +133,4 @@
     lineCount: 10
     scanlineIntensity: 1
     scanlineSpeed: 1.2
-    alpha: 0.9
+    alpha: 0.5
