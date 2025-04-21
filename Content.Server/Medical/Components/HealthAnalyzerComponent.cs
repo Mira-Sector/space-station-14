@@ -1,4 +1,4 @@
-using Content.Server.AbstractAnalyzer;
+using Content.Server.BaseAnalyzer;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
 namespace Content.Server.Medical.Components;
@@ -6,7 +6,7 @@ namespace Content.Server.Medical.Components;
 /// <inheritdoc/>
 [RegisterComponent, AutoGenerateComponentPause]
 [Access(typeof(HealthAnalyzerSystem), typeof(CryoPodSystem))]
-public sealed partial class HealthAnalyzerComponent : AbstractAnalyzerComponent
+public sealed partial class HealthAnalyzerComponent : BaseAnalyzerComponent
 {
     /// <inheritdoc/>
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer))]

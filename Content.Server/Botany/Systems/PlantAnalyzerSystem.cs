@@ -1,11 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
-using Content.Server.AbstractAnalyzer;
+using Content.Server.BaseAnalyzer;
 using Content.Server.Botany.Components;
 using Content.Server.Popups;
 using Content.Shared.Botany.PlantAnalyzer;
-using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Interaction;
 using Content.Shared.Labels.EntitySystems;
@@ -18,7 +16,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Server.Botany.Systems;
 
-public sealed class PlantAnalyzerSystem : AbstractAnalyzerSystem<PlantAnalyzerComponent, PlantAnalyzerDoAfterEvent>
+public sealed class PlantAnalyzerSystem : BaseAnalyzerSystem<PlantAnalyzerComponent, PlantAnalyzerDoAfterEvent>
 {
     [Dependency] private readonly UserInterfaceSystem _uiSystem = default!;
     [Dependency] private readonly IEntityManager _entityManager = default!;
@@ -29,7 +27,6 @@ public sealed class PlantAnalyzerSystem : AbstractAnalyzerSystem<PlantAnalyzerCo
     [Dependency] private readonly PaperSystem _paperSystem = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly SharedLabelSystem _labelSystem = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
 
     public override void Initialize()
     {
@@ -124,6 +121,7 @@ public sealed class PlantAnalyzerSystem : AbstractAnalyzerSystem<PlantAnalyzerCo
     private void OnPrint(EntityUid uid, PlantAnalyzerComponent component, PlantAnalyzerPrintMessage args)
     {
         var user = args.Actor;
+        const string dp = "0.00";
 
         if (_gameTiming.CurTime < component.PrintReadyAt)
         {
@@ -151,42 +149,37 @@ public sealed class PlantAnalyzerSystem : AbstractAnalyzerSystem<PlantAnalyzerCo
             ("seedName", seedName ?? missingData),
             ("produce", data.ProduceData is not null ? PlantAnalyzerLocalizationHelper.ProduceToLocalizedStrings(data.ProduceData.Produce, _prototypeManager).Singular : missingData),
             ("producePlural", data.ProduceData is not null ? PlantAnalyzerLocalizationHelper.ProduceToLocalizedStrings(data.ProduceData.Produce, _prototypeManager).Plural : missingData),
-            ("water", data.TolerancesData?.WaterConsumption.ToString("0.00") ?? missingData),
-            ("nutrients", data.TolerancesData?.NutrientConsumption.ToString("0.00") ?? missingData),
-            ("toxins", data.TolerancesData?.ToxinsTolerance.ToString("0.00") ?? missingData),
-            ("pests", data.TolerancesData?.PestTolerance.ToString("0.00") ?? missingData),
-            ("weeds", data.TolerancesData?.WeedTolerance.ToString("0.00") ?? missingData),
+            ("water", data.TolerancesData?.WaterConsumption.ToString(dp) ?? missingData),
+            ("nutrients", data.TolerancesData?.NutrientConsumption.ToString(dp) ?? missingData),
+            ("toxins", data.TolerancesData?.ToxinsTolerance.ToString(dp) ?? missingData),
+            ("pests", data.TolerancesData?.PestTolerance.ToString(dp) ?? missingData),
+            ("weeds", data.TolerancesData?.WeedTolerance.ToString(dp) ?? missingData),
             ("gasesIn", data.TolerancesData is not null ? PlantAnalyzerLocalizationHelper.GasesToLocalizedStrings(data.TolerancesData.ConsumeGasses, _prototypeManager) : missingData),
-            ("kpa", data.TolerancesData?.IdealPressure.ToString("0.00") ?? missingData),
-            ("kpaTolerance", data.TolerancesData?.PressureTolerance.ToString("0.00") ?? missingData),
-            ("temp", data.TolerancesData?.IdealHeat.ToString("0.00") ?? missingData),
-            ("tempTolerance", data.TolerancesData?.HeatTolerance.ToString("0.00") ?? missingData),
-            ("lightLevel", data.TolerancesData?.IdealLight.ToString("0.00") ?? missingData),
-            ("lightTolerance", data.TolerancesData?.LightTolerance.ToString("0.00") ?? missingData),
+            ("kpa", data.TolerancesData?.IdealPressure.ToString(dp) ?? missingData),
+            ("kpaTolerance", data.TolerancesData?.PressureTolerance.ToString(dp) ?? missingData),
+            ("temp", data.TolerancesData?.IdealHeat.ToString(dp) ?? missingData),
+            ("tempTolerance", data.TolerancesData?.HeatTolerance.ToString(dp) ?? missingData),
+            ("lightLevel", data.TolerancesData?.IdealLight.ToString(dp) ?? missingData),
+            ("lightTolerance", data.TolerancesData?.LightTolerance.ToString(dp) ?? missingData),
             ("yield", data.ProduceData?.Yield ?? -1),
             ("potency", data.ProduceData is not null ? data.ProduceData.Potency : missingData),
             ("potencyDesc", data.ProduceData is not null ? Loc.GetString(data.ProduceData.PotencyDesc) : missingData),
             ("chemicals", data.ProduceData is not null ? PlantAnalyzerLocalizationHelper.ChemicalsToLocalizedStrings(data.ProduceData.Chemicals, _prototypeManager) : missingData),
-            ("chemCount", data.ProduceData?.Chemicals.Count.ToString("0.00") ?? missingData),
+            ("chemCount", data.ProduceData?.Chemicals.Count.ToString(dp) ?? missingData),
             ("gasesOut", data.ProduceData is not null ? PlantAnalyzerLocalizationHelper.GasesToLocalizedStrings(data.ProduceData.ExudeGasses, _prototypeManager) : missingData),
-            ("gasCount", data.ProduceData?.ExudeGasses.Count.ToString("0.00") ?? missingData),
-            ("endurance", data.PlantData?.Endurance.ToString("0.00") ?? missingData),
-            ("lifespan", data.PlantData?.Lifespan.ToString("0.00") ?? missingData),
-            ("seeds", data.ProduceData is not null ? (data.ProduceData.Seedless ? "no" : "yes") : "other"),
-            ("viable", data.PlantData is not null ? (data.PlantData.Viable ? "yes" : "no") : "other"),
-            ("kudzu", data.PlantData is not null ? (data.PlantData.Kudzu ? "yes" : "no") : "other"),
+            ("gasCount", data.ProduceData?.ExudeGasses.Count.ToString(dp) ?? missingData),
+            ("endurance", data.PlantData?.Endurance.ToString(dp) ?? missingData),
+            ("lifespan", data.PlantData?.Lifespan.ToString(dp) ?? missingData),
+            ("seeds", data.ProduceData is not null ? PlantAnalyzerLocalizationHelper.BooleanToLocalizedStrings(data.ProduceData.Seedless ? true : false, _prototypeManager) : missingData),
+            ("viable", data.PlantData is not null ? PlantAnalyzerLocalizationHelper.BooleanToLocalizedStrings(data.PlantData.Viable ? true : false, _prototypeManager) : missingData),
+            ("kudzu", data.PlantData is not null ? PlantAnalyzerLocalizationHelper.BooleanToLocalizedStrings(data.PlantData.Kudzu ? true : false, _prototypeManager) : missingData),
             ("indent", "    "),
             ("nl", "\n")
         ];
 
         _paperSystem.SetContent((printed, paperComp), Loc.GetString($"plant-analyzer-printout", [.. parameters]));
         _labelSystem.Label(printed, seedName);
-        _audioSystem.PlayPvs(component.SoundPrint, uid,
-            AudioParams.Default
-            .WithVariation(0.25f)
-            .WithVolume(3f)
-            .WithRolloffFactor(2.8f)
-            .WithMaxDistance(4.5f));
+        _audioSystem.PlayPvs(component.SoundPrint, uid, AudioParams.Default);
 
         component.PrintReadyAt = _gameTiming.CurTime + component.PrintCooldown;
     }

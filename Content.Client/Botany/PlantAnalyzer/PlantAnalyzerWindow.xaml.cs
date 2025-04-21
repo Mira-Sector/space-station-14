@@ -29,6 +29,7 @@ public sealed partial class PlantAnalyzerWindow : FancyWindow
 
     public void Populate(PlantAnalyzerScannedUserMessage msg)
     {
+        const string dp = "0.00";
         Print.Disabled = !msg.ScanMode.GetValueOrDefault(false)
             || msg.PrintReadyAt.GetValueOrDefault(TimeSpan.MaxValue) > _gameTiming.CurTime
             || msg.PlantData is null;
@@ -62,10 +63,10 @@ public sealed partial class PlantAnalyzerWindow : FancyWindow
         // Section 2: Information regarding the plant.
         if (msg.PlantData is not null)
         {
-            Health.Text = msg.PlantData.Health.ToString("0.00");
-            Endurance.Text = msg.PlantData.Endurance.ToString("0.00");
-            Age.Text = msg.PlantData.Age.ToString("0.00");
-            Lifespan.Text = msg.PlantData.Lifespan.ToString("0.00");
+            Health.Text = msg.PlantData.Health.ToString(dp);
+            Endurance.Text = msg.PlantData.Endurance.ToString(dp);
+            Age.Text = msg.PlantData.Age.ToString(dp);
+            Lifespan.Text = msg.PlantData.Lifespan.ToString(dp);
 
             // These mostly exists to prevent shifting of the text.
             Dead.Visible = msg.PlantData.Dead;
@@ -87,11 +88,11 @@ public sealed partial class PlantAnalyzerWindow : FancyWindow
         // Section 3: Input
         if (msg.TrayData is not null)
         {
-            WaterLevelLabel.Text = msg.TrayData.WaterLevel.ToString("0.00");
-            NutritionLevelLabel.Text = msg.TrayData.NutritionLevel.ToString("0.00");
-            ToxinsLabel.Text = msg.TrayData.Toxins.ToString("0.00");
-            PestLevelLabel.Text = msg.TrayData.PestLevel.ToString("0.00");
-            WeedLevelLabel.Text = msg.TrayData.WeedLevel.ToString("0.00");
+            WaterLevelLabel.Text = msg.TrayData.WaterLevel.ToString(dp);
+            NutritionLevelLabel.Text = msg.TrayData.NutritionLevel.ToString(dp);
+            ToxinsLabel.Text = msg.TrayData.Toxins.ToString(dp);
+            PestLevelLabel.Text = msg.TrayData.PestLevel.ToString(dp);
+            WeedLevelLabel.Text = msg.TrayData.WeedLevel.ToString(dp);
 
             // Section 3.1: Tolerances part 1.
             if (msg.TolerancesData is not null)
@@ -99,24 +100,24 @@ public sealed partial class PlantAnalyzerWindow : FancyWindow
                 GtFieldIfTolerances1.Text = ">";
                 LtFieldIfTolerances1.Text = "<";
 
-                WaterConsumptionLabel.Text = msg.TolerancesData.WaterConsumption.ToString("0.00");
-                NutritionConsumptionLabel.Text = msg.TolerancesData.NutrientConsumption.ToString("0.00");
+                WaterConsumptionLabel.Text = msg.TolerancesData.WaterConsumption.ToString(dp);
+                NutritionConsumptionLabel.Text = msg.TolerancesData.NutrientConsumption.ToString(dp);
                 // Technically would be "x + epsilon" for toxin and pest.
                 // But it makes no difference here since I only display two digits.
-                ToxinsResistanceLabel.Text = msg.TolerancesData.ToxinsTolerance.ToString("0.00");
-                PestResistanceLabel.Text = msg.TolerancesData.PestTolerance.ToString("0.00");
-                WeedResistanceLabel.Text = msg.TolerancesData.WeedTolerance.ToString("0.00");
+                ToxinsResistanceLabel.Text = msg.TolerancesData.ToxinsTolerance.ToString(dp);
+                PestResistanceLabel.Text = msg.TolerancesData.PestTolerance.ToString(dp);
+                WeedResistanceLabel.Text = msg.TolerancesData.WeedTolerance.ToString(dp);
             }
             else
             {
-                GtFieldIfTolerances1.Text = "";
-                LtFieldIfTolerances1.Text = "";
+                GtFieldIfTolerances1.Text = string.Empty;
+                LtFieldIfTolerances1.Text = string.Empty;
 
-                WaterConsumptionLabel.Text = "";
-                NutritionConsumptionLabel.Text = "";
-                ToxinsResistanceLabel.Text = "";
-                PestResistanceLabel.Text = "";
-                WeedResistanceLabel.Text = "";
+                WaterConsumptionLabel.Text = string.Empty;
+                NutritionConsumptionLabel.Text = string.Empty;
+                ToxinsResistanceLabel.Text = string.Empty;
+                PestResistanceLabel.Text = string.Empty;
+                WeedResistanceLabel.Text = string.Empty;
             }
             GtFieldIfTolerances2.Text = GtFieldIfTolerances1.Text;
             LtFieldIfTolerances2.Text = LtFieldIfTolerances1.Text;
@@ -156,12 +157,12 @@ public sealed partial class PlantAnalyzerWindow : FancyWindow
             (string, string)[] parameters = [
                 ("seedName", SeedLabel.Text),
                 ("gases", PlantAnalyzerLocalizationHelper.GasesToLocalizedStrings(msg.TolerancesData.ConsumeGasses, _prototypeManager)),
-                ("kpa", msg.TolerancesData.IdealPressure.ToString("0.00")),
-                ("kpaTolerance", msg.TolerancesData.PressureTolerance.ToString("0.00")),
-                ("temp", msg.TolerancesData.IdealHeat.ToString("0.00")),
-                ("tempTolerance", msg.TolerancesData.HeatTolerance.ToString("0.00")),
-                ("lightLevel", msg.TolerancesData.IdealLight.ToString("0.00")),
-                ("lightTolerance", msg.TolerancesData.LightTolerance.ToString("0.00")),
+                ("kpa", msg.TolerancesData.IdealPressure.ToString(dp)),
+                ("kpaTolerance", msg.TolerancesData.PressureTolerance.ToString(dp)),
+                ("temp", msg.TolerancesData.IdealHeat.ToString(dp)),
+                ("tempTolerance", msg.TolerancesData.HeatTolerance.ToString(dp)),
+                ("lightLevel", msg.TolerancesData.IdealLight.ToString(dp)),
+                ("lightTolerance", msg.TolerancesData.LightTolerance.ToString(dp)),
                 ("nl", "\n")
             ];
             EnvironmentLabel.Text = Loc.GetString("plant-analyzer-component-environment", [.. parameters]);

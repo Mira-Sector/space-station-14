@@ -11,10 +11,10 @@ using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Timing;
 
-namespace Content.Server.AbstractAnalyzer;
+namespace Content.Server.BaseAnalyzer;
 
-public abstract class AbstractAnalyzerSystem<TAnalyzerComponent, TAnalyzerDoAfterEvent> : EntitySystem
-    where TAnalyzerComponent : AbstractAnalyzerComponent
+public abstract class BaseAnalyzerSystem<TAnalyzerComponent, TAnalyzerDoAfterEvent> : EntitySystem
+    where TAnalyzerComponent : BaseAnalyzerComponent
     where TAnalyzerDoAfterEvent : SimpleDoAfterEvent, new()
 {
     [Dependency] private readonly IGameTiming _timing = default!;

@@ -1,5 +1,8 @@
 plant-analyzer-component-no-seed = no plant found
 
+plant-analyzer-component-yes = Yes
+plant-analyzer-component-no = No
+
 plant-analyzer-component-health = Health:
 plant-analyzer-component-age = Age:
 plant-analyzer-component-water = Water:

@@ -58,4 +58,12 @@ public sealed class PlantAnalyzerLocalizationHelper
             ContentLocalizationManager.FormatListToOr(pluralStrings)
         );
     }
+
+    public static string BooleanToLocalizedStrings(bool choice, IPrototypeManager protMan)
+    {
+        if (choice == true)
+            return Loc.GetString("plant-analyzer-produce-yes");
+        else
+            return Loc.GetString("plant-analyzer-produce-no");
+    }
 }

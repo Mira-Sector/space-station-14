@@ -1,6 +1,6 @@
 using Robust.Shared.Audio;
 
-namespace Content.Server.AbstractAnalyzer;
+namespace Content.Server.BaseAnalyzer;
 
 /// <summary>
 /// After scanning, retrieves the target Uid to use with its related UI.
@@ -8,7 +8,7 @@ namespace Content.Server.AbstractAnalyzer;
 /// <remarks>
 /// Requires <c>ItemToggleComponent</c>.
 /// </remarks>
-public abstract partial class AbstractAnalyzerComponent : Component
+public abstract partial class BaseAnalyzerComponent : Component
 {
     /// <summary>
     /// When should the next update be sent for the patient
