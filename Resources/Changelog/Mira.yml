@@ -1557,3 +1557,9 @@ Entries:
     type: Add
   id: 223
   time: '2025-04-21T10:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Emote sounds now properly update for adding a body part that contains a tongue
+    type: Fix
+  id: 224
+  time: '2025-04-21T11:20:00.0000000+00:00'
