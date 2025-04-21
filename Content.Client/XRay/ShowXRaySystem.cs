@@ -1,5 +1,4 @@
 using Content.Client.Overlays;
-using Content.Shared.Clothing.Components;
 using Content.Shared.Inventory.Events;
 using Content.Shared.Physics;
 using Content.Shared.XRay;
@@ -10,7 +9,6 @@ using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Systems;
-using Robust.Shared.Timing;
 using System.Linq;
 using System.Numerics;
 
@@ -22,7 +20,6 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
     [Dependency] private readonly SharedMapSystem _map = default!;
     [Dependency] private readonly IOverlayManager _overlayMan = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
 
@@ -32,34 +29,7 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
     {
         base.Initialize();
 
-        SubscribeLocalEvent<ShowXRayComponent, ComponentInit>(OnInit);
-
         _overlay = new();
-    }
-
-    public override void Update(float frameTime)
-    {
-        var query = EntityQueryEnumerator<ShowXRayComponent>();
-        while (query.MoveNext(out var uid, out var component))
-        {
-            if (component.NextRefresh > _timing.CurTime)
-                continue;
-
-            if (TryComp<ClothingComponent>(uid, out var clothing) && clothing.InSlot == null)
-            {
-                component.NextRefresh += component.RefreshTime;
-                continue;
-            }
-
-            _overlay.Entities.Remove((uid, component));
-            _overlay.Tiles.Remove((uid, component));
-            UpdateEntities((uid, component));
-        }
-    }
-
-    private void OnInit(Entity<ShowXRayComponent> ent, ref ComponentInit args)
-    {
-        ent.Comp.NextRefresh = _timing.CurTime + ent.Comp.RefreshTime;
     }
 
     protected override void UpdateInternal(RefreshEquipmentHudEvent<ShowXRayComponent> args)
@@ -69,13 +39,11 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
         if (!_overlayMan.HasOverlay<XRayOverlay>())
             _overlayMan.AddOverlay(_overlay);
 
-        _overlay.Entities.Clear();
-        _overlay.Tiles.Clear();
+        _overlay.Providers.Clear();
 
+        _overlay.Providers.Clear();
         foreach (var component in args.Components)
-        {
-            UpdateEntities((component.Owner, component));
-        }
+            _overlay.Providers.Add((component.Owner, component));
     }
 
     protected override void DeactivateInternal()
@@ -85,9 +53,8 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
         _overlayMan.RemoveOverlay(_overlay);
     }
 
-    private void UpdateEntities(Entity<ShowXRayComponent> ent)
+    public IEnumerable<EntityUid> GetEntities(Entity<ShowXRayComponent> ent)
     {
-        _overlay.Entities.Add(ent, new());
         var entities = _lookup.GetEntitiesInRange(ent.Owner, ent.Comp.Range);
 
         var xrayTransform = Transform(ent.Owner);
@@ -108,10 +75,15 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
             if (!EntitiesBlocking(xrayPos, xrayMapId, entityPos))
                 continue;
 
-            _overlay.Entities[ent].Add(entity);
+            yield return entity;
         }
+    }
 
-        _overlay.Tiles.Add(ent, new());
+    public IEnumerable<TileRef> GetTiles(Entity<ShowXRayComponent> ent)
+    {
+        var xrayTransform = Transform(ent.Owner);
+        var xrayPos = _transform.GetWorldPosition(xrayTransform);
+        var xrayMapId = xrayTransform.MapID;
 
         var radius = new Circle(xrayPos, ent.Comp.Range);
         var grids = _lookup.GetEntitiesInRange<MapGridComponent>(xrayTransform.Coordinates, ent.Comp.Range);
@@ -130,11 +102,9 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
                 if (!EntitiesBlocking(xrayPos, xrayMapId, tilePos))
                     continue;
 
-                _overlay.Tiles[ent].Add(tile);
+                yield return tile;
             }
         }
-
-        ent.Comp.NextRefresh += ent.Comp.RefreshTime;
     }
 
     private bool EntitiesBlocking(Vector2 xrayPos, MapId xrayMapId, Vector2 targetPos)
@@ -143,6 +113,6 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
         var distance = delta.Length();
 
         var ray = new CollisionRay(xrayPos, delta.Normalized(), (int)CollisionGroup.SingularityLayer);
-        return _physics.IntersectRayWithPredicate(xrayMapId, ray, distance, e => !HasComp<OccluderComponent>(e)).Any();
+        return _physics.IntersectRayWithPredicate(xrayMapId, ray, distance, e => !TryComp<OccluderComponent>(e, out var occluder) || !occluder.Enabled).Any();
     }
 }

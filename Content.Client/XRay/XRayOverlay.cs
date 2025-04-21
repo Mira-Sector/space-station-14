@@ -7,7 +7,6 @@ using Robust.Shared.Enums;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Prototypes;
-using System.Linq;
 using System.Numerics;
 
 namespace Content.Client.XRay;
@@ -22,12 +21,12 @@ public sealed class XRayOverlay : Overlay
     private readonly EntityLookupSystem _lookups;
     private readonly SpriteSystem _sprite;
     private readonly SharedTransformSystem _transform;
+    private readonly ShowXRaySystem _xray;
 
     public override OverlaySpace Space => OverlaySpace.WorldSpace;
     public override bool RequestScreenTexture => true;
 
-    public Dictionary<Entity<ShowXRayComponent>, HashSet<TileRef>> Tiles = new();
-    public Dictionary<Entity<ShowXRayComponent>, HashSet<EntityUid>> Entities = new();
+    public HashSet<Entity<ShowXRayComponent>> Providers = new();
 
     private Dictionary<EntityUid, MapGridComponent> _mapGrids = new();
 
@@ -37,11 +36,7 @@ public sealed class XRayOverlay : Overlay
         _lookups = _entityManager.System<EntityLookupSystem>();
         _sprite = _entityManager.System<SpriteSystem>();
         _transform = _entityManager.System<SharedTransformSystem>();
-    }
-
-    protected override bool BeforeDraw(in OverlayDrawArgs args)
-    {
-        return Tiles.Any() || Entities.Any();
+        _xray = _entityManager.System<ShowXRaySystem>();
     }
 
     protected override void Draw(in OverlayDrawArgs args)
@@ -50,12 +45,12 @@ public sealed class XRayOverlay : Overlay
 
         Dictionary<EntityUid, Matrix3x2> mapMatrix = new();
 
-        foreach (var (xray, tiles) in Tiles)
+        foreach (var xray in Providers)
         {
             var shader = _prototype.Index<ShaderPrototype>(xray.Comp.Shader).InstanceUnique();
             args.WorldHandle.UseShader(shader);
 
-            foreach (var tileRef in tiles)
+            foreach (var tileRef in _xray.GetTiles(xray))
             {
                 if (!_mapGrids.TryGetValue(tileRef.GridUid, out var mapGrid))
                 {
@@ -98,14 +93,8 @@ public sealed class XRayOverlay : Overlay
                 // TODO: maybe get decals too?
                 args.WorldHandle.DrawTextureRect(texture, bounds);
             }
-        }
 
-        foreach (var (xray, entities) in Entities)
-        {
-            var shader = _prototype.Index<ShaderPrototype>(xray.Comp.Shader).InstanceUnique();
-            args.WorldHandle.UseShader(shader);
-
-            foreach (var entity in entities)
+            foreach (var entity in _xray.GetEntities(xray))
             {
                 var sprite = _entityManager.GetComponent<SpriteComponent>(entity);
 
