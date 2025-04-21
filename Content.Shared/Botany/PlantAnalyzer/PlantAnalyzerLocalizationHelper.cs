@@ -7,7 +7,7 @@ using Robust.Shared.Prototypes;
 namespace Content.Shared.Botany.PlantAnalyzer;
 public sealed class PlantAnalyzerLocalizationHelper
 {
-    public const string DP = "0.00";
+    public const string DP = "0.00"; //number of decimal points to use in toString() printing
     public static string GasesToLocalizedStrings(List<Gas> gases, IPrototypeManager protMan)
     {
         if (gases.Count == 0)

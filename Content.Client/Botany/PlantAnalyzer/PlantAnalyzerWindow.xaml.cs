@@ -29,7 +29,6 @@ public sealed partial class PlantAnalyzerWindow : FancyWindow
 
     public void Populate(PlantAnalyzerScannedUserMessage msg)
     {
-        const string dp = PlantAnalyzerLocalizationHelper.DP;
         Print.Disabled = !msg.ScanMode.GetValueOrDefault(false)
             || msg.PrintReadyAt.GetValueOrDefault(TimeSpan.MaxValue) > _gameTiming.CurTime
             || msg.PlantData is null;
@@ -63,10 +62,10 @@ public sealed partial class PlantAnalyzerWindow : FancyWindow
         // Section 2: Information regarding the plant.
         if (msg.PlantData is not null)
         {
-            Health.Text = msg.PlantData.Health.ToString(dp);
-            Endurance.Text = msg.PlantData.Endurance.ToString(dp);
-            Age.Text = msg.PlantData.Age.ToString(dp);
-            Lifespan.Text = msg.PlantData.Lifespan.ToString(dp);
+            Health.Text = msg.PlantData.Health.ToString(PlantAnalyzerLocalizationHelper.DP);
+            Endurance.Text = msg.PlantData.Endurance.ToString(PlantAnalyzerLocalizationHelper.DP);
+            Age.Text = msg.PlantData.Age.ToString(PlantAnalyzerLocalizationHelper.DP);
+            Lifespan.Text = msg.PlantData.Lifespan.ToString(PlantAnalyzerLocalizationHelper.DP);
 
             // These mostly exists to prevent shifting of the text.
             Dead.Visible = msg.PlantData.Dead;
@@ -88,11 +87,11 @@ public sealed partial class PlantAnalyzerWindow : FancyWindow
         // Section 3: Input
         if (msg.TrayData is not null)
         {
-            WaterLevelLabel.Text = msg.TrayData.WaterLevel.ToString(dp);
-            NutritionLevelLabel.Text = msg.TrayData.NutritionLevel.ToString(dp);
-            ToxinsLabel.Text = msg.TrayData.Toxins.ToString(dp);
-            PestLevelLabel.Text = msg.TrayData.PestLevel.ToString(dp);
-            WeedLevelLabel.Text = msg.TrayData.WeedLevel.ToString(dp);
+            WaterLevelLabel.Text = msg.TrayData.WaterLevel.ToString(PlantAnalyzerLocalizationHelper.DP);
+            NutritionLevelLabel.Text = msg.TrayData.NutritionLevel.ToString(PlantAnalyzerLocalizationHelper.DP);
+            ToxinsLabel.Text = msg.TrayData.Toxins.ToString(PlantAnalyzerLocalizationHelper.DP);
+            PestLevelLabel.Text = msg.TrayData.PestLevel.ToString(PlantAnalyzerLocalizationHelper.DP);
+            WeedLevelLabel.Text = msg.TrayData.WeedLevel.ToString(PlantAnalyzerLocalizationHelper.DP);
 
             // Section 3.1: Tolerances part 1.
             if (msg.TolerancesData is not null)
@@ -100,13 +99,13 @@ public sealed partial class PlantAnalyzerWindow : FancyWindow
                 GtFieldIfTolerances1.Text = ">";
                 LtFieldIfTolerances1.Text = "<";
 
-                WaterConsumptionLabel.Text = msg.TolerancesData.WaterConsumption.ToString(dp);
-                NutritionConsumptionLabel.Text = msg.TolerancesData.NutrientConsumption.ToString(dp);
+                WaterConsumptionLabel.Text = msg.TolerancesData.WaterConsumption.ToString(PlantAnalyzerLocalizationHelper.DP);
+                NutritionConsumptionLabel.Text = msg.TolerancesData.NutrientConsumption.ToString(PlantAnalyzerLocalizationHelper.DP);
                 // Technically would be "x + epsilon" for toxin and pest.
                 // But it makes no difference here since I only display two digits.
-                ToxinsResistanceLabel.Text = msg.TolerancesData.ToxinsTolerance.ToString(dp);
-                PestResistanceLabel.Text = msg.TolerancesData.PestTolerance.ToString(dp);
-                WeedResistanceLabel.Text = msg.TolerancesData.WeedTolerance.ToString(dp);
+                ToxinsResistanceLabel.Text = msg.TolerancesData.ToxinsTolerance.ToString(PlantAnalyzerLocalizationHelper.DP);
+                PestResistanceLabel.Text = msg.TolerancesData.PestTolerance.ToString(PlantAnalyzerLocalizationHelper.DP);
+                WeedResistanceLabel.Text = msg.TolerancesData.WeedTolerance.ToString(PlantAnalyzerLocalizationHelper.DP);
             }
             else
             {
@@ -157,12 +156,12 @@ public sealed partial class PlantAnalyzerWindow : FancyWindow
             (string, string)[] parameters = [
                 ("seedName", SeedLabel.Text),
                 ("gases", PlantAnalyzerLocalizationHelper.GasesToLocalizedStrings(msg.TolerancesData.ConsumeGasses, _prototypeManager)),
-                ("kpa", msg.TolerancesData.IdealPressure.ToString(dp)),
-                ("kpaTolerance", msg.TolerancesData.PressureTolerance.ToString(dp)),
-                ("temp", msg.TolerancesData.IdealHeat.ToString(dp)),
-                ("tempTolerance", msg.TolerancesData.HeatTolerance.ToString(dp)),
-                ("lightLevel", msg.TolerancesData.IdealLight.ToString(dp)),
-                ("lightTolerance", msg.TolerancesData.LightTolerance.ToString(dp)),
+                ("kpa", msg.TolerancesData.IdealPressure.ToString(PlantAnalyzerLocalizationHelper.DP)),
+                ("kpaTolerance", msg.TolerancesData.PressureTolerance.ToString(PlantAnalyzerLocalizationHelper.DP)),
+                ("temp", msg.TolerancesData.IdealHeat.ToString(PlantAnalyzerLocalizationHelper.DP)),
+                ("tempTolerance", msg.TolerancesData.HeatTolerance.ToString(PlantAnalyzerLocalizationHelper.DP)),
+                ("lightLevel", msg.TolerancesData.IdealLight.ToString(PlantAnalyzerLocalizationHelper.DP)),
+                ("lightTolerance", msg.TolerancesData.LightTolerance.ToString(PlantAnalyzerLocalizationHelper.DP)),
                 ("nl", "\n")
             ];
             EnvironmentLabel.Text = Loc.GetString("plant-analyzer-component-environment", [.. parameters]);
