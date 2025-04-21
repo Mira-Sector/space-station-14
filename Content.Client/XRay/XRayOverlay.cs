@@ -2,6 +2,7 @@ using Content.Shared.XRay;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Client.ResourceManagement;
+using Robust.Client.Utility;
 using Robust.Shared.Enums;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
@@ -117,6 +118,12 @@ public sealed class XRayOverlay : Overlay
                         continue;
 
                     var dir = SpriteComponent.Layer.GetDirection(rsiState.RsiDirections, relativeRot);
+
+                    if (sprite.EnableDirectionOverride)
+                        dir = sprite.DirectionOverride.Convert(rsiState.RsiDirections);
+
+                    dir = dir.OffsetRsiDir(layer.DirOffset);
+
                     var texture = rsiState.GetFrame(dir, layer.AnimationFrame);
 
                     var textureSize = texture.Size / (float)EyeManager.PixelsPerMeter;
