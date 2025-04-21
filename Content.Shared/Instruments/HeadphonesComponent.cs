@@ -4,7 +4,7 @@ using Robust.Shared.GameStates;
 namespace Content.Shared.Instruments;
 
 [RegisterComponent, NetworkedComponent]
-public partial class HeadphonesComponent : Component
+public sealed partial class HeadphonesComponent : Component
 {
     [DataField("action")]
     public EntProtoId ActionId = "ActionInstrument";

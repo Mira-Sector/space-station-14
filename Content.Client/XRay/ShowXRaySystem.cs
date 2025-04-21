@@ -47,9 +47,7 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
                 continue;
             }
 
-            if (_overlay.Entities.TryGetValue((uid, component), out var entities))
-                entities.Clear();
-
+            _overlay.Entities.Remove((uid, component));
             UpdateEntities((uid, component));
         }
     }
@@ -70,7 +68,6 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
 
         foreach (var component in args.Components)
         {
-            _overlay.Entities.Add((component.Owner, component), new HashSet<EntityUid>());
             UpdateEntities((component.Owner, component));
         }
     }
@@ -84,6 +81,7 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
 
     private void UpdateEntities(Entity<ShowXRayComponent> ent)
     {
+        _overlay.Entities.Add(ent, new HashSet<EntityUid>());
         var entities = _lookup.GetEntitiesInRange(ent.Owner, ent.Comp.Range);
 
         var xrayTransform = Transform(ent.Owner);

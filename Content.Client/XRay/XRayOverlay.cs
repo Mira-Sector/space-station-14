@@ -35,6 +35,8 @@ public sealed class XRayOverlay : Overlay
 
     protected override void Draw(in OverlayDrawArgs args)
     {
+        var eyeRot = args.Viewport.Eye?.Rotation ?? Angle.Zero;
+
         foreach (var (xray, entities) in Entities)
         {
             var shader = _prototype.Index<ShaderPrototype>(xray.Comp.Shader).InstanceUnique();
@@ -46,32 +48,36 @@ public sealed class XRayOverlay : Overlay
                     continue;
 
                 var entityXform = _entityManager.GetComponent<TransformComponent>(entity);
-                var (entPos, entRot, worldMatrix) = _transform.GetWorldPositionRotationMatrix(entityXform);
+                var (entPos, entRot) = _transform.GetWorldPositionRotation(entityXform);
 
-                var eyeRot = args.Viewport.Eye?.Rotation ?? default;
-                var spriteRot = eyeRot - entRot;
+                var relativeRot = (entRot + eyeRot).Reduced().FlipPositive();
 
-                var entityMatrix = Matrix3Helpers.CreateTransform(entPos, spriteRot);
-                args.DrawingHandle.SetTransform(worldMatrix);
+                var transform = Matrix3Helpers.CreateTransform(entPos, entityXform.LocalRotation - eyeRot);
+                args.DrawingHandle.SetTransform(transform);
 
-                var layerRot = sprite.NoRotation || sprite.SnapCardinals ? eyeRot : spriteRot;
+                var spriteRot = entityXform.LocalRotation;
+                if (sprite.SnapCardinals)
+                    spriteRot = entityXform.LocalRotation.GetCardinalDir().ToAngle();
+                else if (sprite.NoRotation)
+                    spriteRot = Angle.Zero;
 
+                // pray to the gods sprite rendering never changes
                 foreach (var spriteLayer in sprite.AllLayers)
                 {
                     if (spriteLayer is not SpriteComponent.Layer layer || !_sprite.IsVisible(layer))
                         continue;
 
-                    if (layer.ActualRsi is not { } rsi || !rsi.TryGetState(layer.State, out var rsiState))
+                    if (layer.ActualRsi is not {} rsi || !rsi.TryGetState(layer.State, out var rsiState))
                         continue;
 
-                    var dir = SpriteComponent.Layer.GetDirection(rsiState.RsiDirections, spriteRot);
-                    var texture = rsiState.GetFrame(dir, 0);
+                    var dir = SpriteComponent.Layer.GetDirection(rsiState.RsiDirections, relativeRot);
+                    var texture = rsiState.GetFrame(dir, layer.AnimationFrame);
 
                     var textureSize = texture.Size / (float)EyeManager.PixelsPerMeter;
                     var quad = Box2.FromDimensions(textureSize / -2, textureSize);
-                    var quadRotated = new Box2Rotated(quad, layerRot);
+                    var quadRotated = new Box2Rotated(quad, spriteRot + layer.Rotation);
 
-                    args.WorldHandle.DrawTextureRect(texture, quadRotated);
+                    args.WorldHandle.DrawTextureRect(texture, quadRotated, layer.Color);
                 }
             }
         }
