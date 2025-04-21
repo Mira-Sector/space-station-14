@@ -35,7 +35,7 @@ public sealed class VocalSystem : EntitySystem
         SubscribeLocalEvent<VocalOrganComponent, OrganAddedEvent>(OnOrganAdded);
         SubscribeLocalEvent<VocalOrganComponent, OrganRemovedEvent>(OnOrganRemoved);
         SubscribeLocalEvent<VocalOrganComponent, BodyOrganRelayedEvent<GetEmoteSoundsEvent>>(OnOrganGetEmotes);
-        SubscribeLocalEvent<VocalOrganBodyPartComponent, ComponentInit>((u, c, a) => OnOrganBodyPartAdded((u, c)));
+        SubscribeLocalEvent<VocalOrganBodyPartComponent, MapInitEvent>((u, c, a) => OnOrganBodyPartAdded((u, c)));
         SubscribeLocalEvent<VocalOrganBodyPartComponent, BodyPartAddedEvent>((u, c, a) => OnOrganBodyPartAdded((u, c)));
         SubscribeLocalEvent<VocalOrganBodyPartComponent, BodyPartRemovedEvent>(OnOrganBodyPartRemoved);
 
