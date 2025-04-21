@@ -35,7 +35,8 @@ public sealed class VocalSystem : EntitySystem
         SubscribeLocalEvent<VocalOrganComponent, OrganAddedEvent>(OnOrganAdded);
         SubscribeLocalEvent<VocalOrganComponent, OrganRemovedEvent>(OnOrganRemoved);
         SubscribeLocalEvent<VocalOrganComponent, BodyOrganRelayedEvent<GetEmoteSoundsEvent>>(OnOrganGetEmotes);
-        SubscribeLocalEvent<VocalOrganBodyPartComponent, BodyPartAddedEvent>(OnOrganBodyPartAdded);
+        SubscribeLocalEvent<VocalOrganBodyPartComponent, ComponentInit>((u, c, a) => OnOrganBodyPartAdded((u, c)));
+        SubscribeLocalEvent<VocalOrganBodyPartComponent, BodyPartAddedEvent>((u, c, a) => OnOrganBodyPartAdded((u, c)));
         SubscribeLocalEvent<VocalOrganBodyPartComponent, BodyPartRemovedEvent>(OnOrganBodyPartRemoved);
 
         SubscribeLocalEvent<VocalBodyPartComponent, BodyPartAddedEvent>(OnBodyPartAdded);
@@ -123,7 +124,7 @@ public sealed class VocalSystem : EntitySystem
         UpdateSounds(body);
     }
 
-    private void OnOrganBodyPartAdded(Entity<VocalOrganBodyPartComponent> ent, ref BodyPartAddedEvent args)
+    private void OnOrganBodyPartAdded(Entity<VocalOrganBodyPartComponent> ent)
     {
         if (!TryComp<BodyPartComponent>(ent, out var bodyPartComp) || bodyPartComp.Body is not {} body)
             return;
