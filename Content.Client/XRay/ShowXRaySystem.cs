@@ -11,6 +11,8 @@ using Robust.Shared.Physics;
 using Robust.Shared.Physics.Systems;
 using System.Linq;
 using System.Numerics;
+using Robust.Shared.Physics.Collision.Shapes;
+using Linguini.Shared.Types;
 
 namespace Content.Client.XRay;
 
@@ -18,6 +20,7 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
 {
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
     [Dependency] private readonly SharedMapSystem _map = default!;
+    [Dependency] private readonly IMapManager _mapManager = default!;
     [Dependency] private readonly IOverlayManager _overlayMan = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
@@ -57,6 +60,9 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
 
     public IEnumerable<EntityUid> GetEntities(Entity<ShowXRayComponent> ent)
     {
+        if (!Initialized(ent))
+            yield break;
+
         var entities = _lookup.GetEntitiesInRange(ent.Owner, ent.Comp.Range);
 
         var xrayTransform = Transform(ent.Owner);
@@ -83,12 +89,18 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
 
     public IEnumerable<TileRef> GetTiles(Entity<ShowXRayComponent> ent)
     {
+        if (!Initialized(ent))
+            yield break;
+
         var xrayTransform = Transform(ent.Owner);
         var xrayPos = _transform.GetWorldPosition(xrayTransform);
         var xrayMapId = xrayTransform.MapID;
 
         var radius = new Circle(xrayPos, ent.Comp.Range);
-        var grids = _lookup.GetEntitiesInRange<MapGridComponent>(xrayTransform.Coordinates, ent.Comp.Range);
+        var circle = new PhysShapeCircle(ent.Comp.Range, xrayPos);
+
+        List<Entity<MapGridComponent>> grids = new();
+        _mapManager.FindGridsIntersecting(xrayMapId, circle, Robust.Shared.Physics.Transform.Empty, ref grids, includeMap: false);
 
         foreach (var (gridUid, gridComp) in grids)
         {
@@ -114,7 +126,12 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
         var delta = targetPos - xrayPos;
         var distance = delta.Length();
 
-        var ray = new CollisionRay(xrayPos, delta.Normalized(), (int)CollisionGroup.SingularityLayer);
+        if (distance <= float.Epsilon)
+            return false;
+
+        var direction = delta.Normalized();
+
+        var ray = new CollisionRay(xrayPos, direction, (int)CollisionGroup.SingularityLayer);
         return _physics.IntersectRayWithPredicate(xrayMapId, ray, distance, e => !TryComp<OccluderComponent>(e, out var occluder) || !occluder.Enabled).Any();
     }
 }
