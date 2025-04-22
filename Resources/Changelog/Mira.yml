@@ -1573,3 +1573,11 @@ Entries:
     type: Add
   id: 225
   time: '2025-04-21T16:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Engineering goggles now have a screen shader when worn
+    type: Add
+  - message: Engineering goggles can see structures and tiles behind walls
+    type: Add
+  id: 226
+  time: '2025-04-22T15:20:00.0000000+00:00'
