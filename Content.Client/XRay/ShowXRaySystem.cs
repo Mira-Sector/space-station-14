@@ -62,7 +62,7 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
         if (!Initialized(ent))
             yield break;
 
-        var entities = _lookup.GetEntitiesInRange(ent.Owner, ent.Comp.Range);
+        var entities = _lookup.GetEntitiesInRange(ent.Owner, ent.Comp.EntityRange);
 
         var xrayTransform = Transform(ent.Owner);
         var xrayPos = _transform.GetWorldPosition(xrayTransform);
@@ -95,8 +95,8 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
         var xrayPos = _transform.GetWorldPosition(xrayTransform);
         var xrayMapId = xrayTransform.MapID;
 
-        var radius = new Circle(xrayPos, ent.Comp.Range);
-        var circle = new PhysShapeCircle(ent.Comp.Range, xrayPos);
+        var radius = new Circle(xrayPos, ent.Comp.TileRange);
+        var circle = new PhysShapeCircle(ent.Comp.TileRange, xrayPos);
 
         List<Entity<MapGridComponent>> grids = new();
         _mapManager.FindGridsIntersecting(xrayMapId, circle, Robust.Shared.Physics.Transform.Empty, ref grids, includeMap: false);

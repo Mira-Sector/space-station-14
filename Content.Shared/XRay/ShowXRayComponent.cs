@@ -17,5 +17,8 @@ public sealed partial class ShowXRayComponent : Component
 
     // this can kill performance if too high
     [DataField, AutoNetworkedField]
-    public float Range = 8;
+    public float EntityRange = 8;
+
+    [DataField, AutoNetworkedField]
+    public float TileRange = 9; // higher as it works from the center
 }
