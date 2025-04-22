@@ -65,6 +65,22 @@
   - type: EyeProtection
   - type: IdentityBlocker
     coverage: EYES
+  - type: GlassesOverlay
+    shader: Goggles
+    color: '#5AB43CCC'
+  - type: ShowXRay
+    shader: XRay
+    whitelist:
+      components:
+      - Door
+      - EntityStorage
+      - Chasm
+      tags:
+      - Wall
+      - Structure
+      - Window
+      - Catwalk
+      - XrayVisible
 
 - type: entity
   parent: ClothingEyesBase
