@@ -8,11 +8,10 @@ using Robust.Client.Graphics;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics;
+using Robust.Shared.Physics.Collision.Shapes;
 using Robust.Shared.Physics.Systems;
 using System.Linq;
 using System.Numerics;
-using Robust.Shared.Physics.Collision.Shapes;
-using Linguini.Shared.Types;
 
 namespace Content.Client.XRay;
 

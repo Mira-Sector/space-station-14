@@ -128,9 +128,9 @@
   kind: source
   path: "/Textures/Shaders/xray.swsl"
   params:
-    color: "#82cfff"
-    scanlineColor: "#6bc6ff"
+    color: "#3d8599"
+    scanlineColor: "#5f93ba"
     lineCount: 10
-    scanlineIntensity: 1
+    scanlineIntensity: 0.9
     scanlineSpeed: 1.2
-    alpha: 0.5
+    alpha: 1
