@@ -7,6 +7,8 @@ using Robust.Shared.Enums;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Timing;
+using System.Linq;
 using System.Numerics;
 
 namespace Content.Client.XRay;
@@ -15,6 +17,7 @@ public sealed class XRayOverlay : Overlay
 {
     [Dependency] private readonly IEntityManager _entityManager = default!;
     [Dependency] private readonly ITileDefinitionManager _tileDef = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly IResourceCache _resource = default!;
 
@@ -24,9 +27,14 @@ public sealed class XRayOverlay : Overlay
     private readonly ShowXRaySystem _xray;
 
     public override OverlaySpace Space => OverlaySpace.WorldSpace;
-    public override bool RequestScreenTexture => true;
 
     public HashSet<Entity<ShowXRayComponent>> Providers = new();
+
+    private const float UpdateRate = 1f / 30f;
+    private float _accumulator;
+
+    private Dictionary<EntityUid, HashSet<TileRef>> _tiles = new();
+    private Dictionary<EntityUid, HashSet<EntityUid>> _entities = new();
 
     private Dictionary<EntityUid, MapGridComponent> _mapGrids = new();
 
@@ -45,12 +53,28 @@ public sealed class XRayOverlay : Overlay
 
         Dictionary<EntityUid, Matrix3x2> mapMatrix = new();
 
+        _accumulator -= (float)_timing.FrameTime.TotalSeconds;
+
+        if (_accumulator <= 0f)
+        {
+            _accumulator = MathF.Max(0f, _accumulator + UpdateRate);
+
+            _tiles.Clear();
+            _entities.Clear();
+
+            foreach (var xray in Providers)
+            {
+                _tiles.Add(xray, value: _xray.GetTiles(xray).ToHashSet());
+                _entities.Add(xray, _xray.GetEntities(xray).ToHashSet());
+            }
+        }
+
         foreach (var xray in Providers)
         {
             var shader = _prototype.Index<ShaderPrototype>(xray.Comp.Shader).InstanceUnique();
             args.WorldHandle.UseShader(shader);
 
-            foreach (var tileRef in _xray.GetTiles(xray))
+            foreach (var tileRef in _tiles[xray])
             {
                 if (!_mapGrids.TryGetValue(tileRef.GridUid, out var mapGrid))
                 {
@@ -94,7 +118,7 @@ public sealed class XRayOverlay : Overlay
                 args.WorldHandle.DrawTextureRect(texture, bounds);
             }
 
-            foreach (var entity in _xray.GetEntities(xray))
+            foreach (var entity in _entities[xray])
             {
                 var sprite = _entityManager.GetComponent<SpriteComponent>(entity);
 
@@ -141,5 +165,10 @@ public sealed class XRayOverlay : Overlay
 
         args.DrawingHandle.SetTransform(Matrix3x2.Identity);
         args.WorldHandle.UseShader(null);
+    }
+
+    public void Refresh()
+    {
+        _accumulator = 0f;
     }
 }

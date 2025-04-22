@@ -44,6 +44,8 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
         _overlay.Providers.Clear();
         foreach (var component in args.Components)
             _overlay.Providers.Add((component.Owner, component));
+
+        _overlay.Refresh();
     }
 
     protected override void DeactivateInternal()
