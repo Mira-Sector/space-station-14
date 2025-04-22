@@ -12,6 +12,7 @@ using Robust.Shared.Physics.Systems;
 using System.Linq;
 using System.Numerics;
 using Robust.Shared.Physics.Collision.Shapes;
+using Linguini.Shared.Types;
 
 namespace Content.Client.XRay;
 
@@ -57,7 +58,7 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
         _overlayMan.RemoveOverlay(_overlay);
     }
 
-    public IEnumerable<(EntityUid, float)> GetEntities(Entity<ShowXRayComponent> ent)
+    public IEnumerable<EntityUid> GetEntities(Entity<ShowXRayComponent> ent)
     {
         if (!Initialized(ent))
             yield break;
@@ -79,14 +80,14 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
             var entityPos = _transform.GetWorldPosition(entity);
 
             // must be hidden
-            if (!EntitiesBlocking(xrayPos, xrayMapId, entityPos, out var distance))
+            if (!EntitiesBlocking(xrayPos, xrayMapId, entityPos))
                 continue;
 
-            yield return (entity, distance);
+            yield return entity;
         }
     }
 
-    public IEnumerable<(TileRef, float)> GetTiles(Entity<ShowXRayComponent> ent)
+    public IEnumerable<TileRef> GetTiles(Entity<ShowXRayComponent> ent)
     {
         if (!Initialized(ent))
             yield break;
@@ -112,18 +113,18 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
                 var tileLocalPos = _map.ToCenterCoordinates(tile, gridComp);
                 var tilePos = gridPos + gridRot.RotateVec(tileLocalPos.Position);
 
-                if (!EntitiesBlocking(xrayPos, xrayMapId, tilePos, out var distance))
+                if (!EntitiesBlocking(xrayPos, xrayMapId, tilePos))
                     continue;
 
-                yield return (tile, distance);
+                yield return tile;
             }
         }
     }
 
-    private bool EntitiesBlocking(Vector2 xrayPos, MapId xrayMapId, Vector2 targetPos, out float distance)
+    private bool EntitiesBlocking(Vector2 xrayPos, MapId xrayMapId, Vector2 targetPos)
     {
-        var delta = xrayPos - targetPos;
-        distance = delta.Length();
+        var delta = targetPos - xrayPos;
+        var distance = delta.Length();
 
         if (distance <= float.Epsilon)
             return false;

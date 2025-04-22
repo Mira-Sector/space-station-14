@@ -33,8 +33,8 @@ public sealed class XRayOverlay : Overlay
     private const float UpdateRate = 1f / 30f;
     private float _accumulator;
 
-    private Dictionary<EntityUid, HashSet<(TileRef, float)>> _tiles = new();
-    private Dictionary<EntityUid, HashSet<(EntityUid, float)>> _entities = new();
+    private Dictionary<EntityUid, HashSet<TileRef>> _tiles = new();
+    private Dictionary<EntityUid, HashSet<EntityUid>> _entities = new();
 
     private Dictionary<EntityUid, MapGridComponent> _mapGrids = new();
 
@@ -64,8 +64,9 @@ public sealed class XRayOverlay : Overlay
         foreach (var xray in Providers)
         {
             var shader = _prototype.Index<ShaderPrototype>(xray.Comp.Shader).InstanceUnique();
+            args.WorldHandle.UseShader(shader);
 
-            foreach (var (tileRef, distance) in _tiles[xray])
+            foreach (var tileRef in _tiles[xray])
             {
                 if (!_mapGrids.TryGetValue(tileRef.GridUid, out var mapGrid))
                 {
@@ -91,9 +92,6 @@ public sealed class XRayOverlay : Overlay
                 var bounds = _lookups.GetLocalBounds(tileRef, mapGrid.TileSize);
                 var atlasTexture = _resource.GetResource<TextureResource>(sprite);
 
-                shader.SetParameter("distance", distance);
-                args.WorldHandle.UseShader(shader);
-
                 Texture texture;
                 if (tile.Variants == 1)
                 {
@@ -112,7 +110,7 @@ public sealed class XRayOverlay : Overlay
                 args.WorldHandle.DrawTextureRect(texture, bounds);
             }
 
-            foreach (var (entity, distance) in _entities[xray])
+            foreach (var entity in _entities[xray])
             {
                 var sprite = _entityManager.GetComponent<SpriteComponent>(entity);
 
@@ -129,9 +127,6 @@ public sealed class XRayOverlay : Overlay
                     spriteRot = entityXform.LocalRotation.GetCardinalDir().ToAngle();
                 else if (sprite.NoRotation)
                     spriteRot = Angle.Zero;
-
-                shader.SetParameter("distance", distance);
-                args.WorldHandle.UseShader(shader);
 
                 // pray to the gods sprite rendering never changes
                 foreach (var spriteLayer in sprite.AllLayers)
