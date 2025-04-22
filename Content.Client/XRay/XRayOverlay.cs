@@ -38,6 +38,8 @@ public sealed class XRayOverlay : Overlay
 
     private Dictionary<EntityUid, MapGridComponent> _mapGrids = new();
 
+    private Dictionary<Tile, Dictionary<byte, Texture>> _tileVariations = new();
+
     public XRayOverlay()
     {
         IoCManager.InjectDependencies(this);
@@ -90,20 +92,29 @@ public sealed class XRayOverlay : Overlay
                 args.DrawingHandle.SetTransform(transform);
 
                 var bounds = _lookups.GetLocalBounds(tileRef, mapGrid.TileSize);
-                var atlasTexture = _resource.GetResource<TextureResource>(sprite);
 
-                Texture texture;
-                if (tile.Variants == 1)
-                {
-                    texture = atlasTexture;
-                }
-                else
-                {
-                    var variant = tileRef.Tile.Variant + 1;
-                    var size = atlasTexture.Texture.Size.X / tile.Variants;
 
-                    var variantBounds = UIBox2.FromDimensions(variant * size - size, 0, size, atlasTexture.Texture.Size.Y);
-                    texture = new AtlasTexture(atlasTexture, variantBounds);
+                if (!_tileVariations.TryGetValue(tileRef.Tile, out var variants) || !variants.TryGetValue(tileRef.Tile.Variant, out var texture))
+                {
+                    var atlasTexture = _resource.GetResource<TextureResource>(sprite);
+
+                    if (tile.Variants == 1)
+                    {
+                        texture = atlasTexture;
+                    }
+                    else
+                    {
+                        var variant = tileRef.Tile.Variant + 1;
+                        var size = atlasTexture.Texture.Size.X / tile.Variants;
+
+                        var variantBounds = UIBox2.FromDimensions(variant * size - size, 0, size, atlasTexture.Texture.Size.Y);
+                        texture = new AtlasTexture(atlasTexture, variantBounds);
+                    }
+
+                    if (!_tileVariations.ContainsKey(tileRef.Tile))
+                        _tileVariations.Add(tileRef.Tile, new());
+
+                    _tileVariations[tileRef.Tile].Add(tileRef.Tile.Variant, texture);
                 }
 
                 // TODO: maybe get decals too?
