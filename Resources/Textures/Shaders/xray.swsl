@@ -1,9 +1,10 @@
 uniform lowp vec4 color;
 uniform lowp vec4 scanlineColor;
-uniform lowp int  lineCount;
+uniform lowp int lineCount;
 uniform lowp float scanlineIntensity; // 0 - 1
 uniform lowp float scanlineSpeed;
 uniform lowp float alpha;
+uniform lowp float distance;
 
 void fragment() {
     lowp vec4 tex = texture2D(TEXTURE, UV);
