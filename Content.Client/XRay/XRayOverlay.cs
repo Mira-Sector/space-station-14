@@ -58,15 +58,7 @@ public sealed class XRayOverlay : Overlay
         if (_accumulator <= 0f)
         {
             _accumulator = MathF.Max(0f, _accumulator + UpdateRate);
-
-            _tiles.Clear();
-            _entities.Clear();
-
-            foreach (var xray in Providers)
-            {
-                _tiles.Add(xray, value: _xray.GetTiles(xray).ToHashSet());
-                _entities.Add(xray, _xray.GetEntities(xray).ToHashSet());
-            }
+            Refresh();
         }
 
         foreach (var xray in Providers)
@@ -169,6 +161,13 @@ public sealed class XRayOverlay : Overlay
 
     public void Refresh()
     {
-        _accumulator = 0f;
+        _tiles.Clear();
+        _entities.Clear();
+
+        foreach (var xray in Providers)
+        {
+            _tiles.Add(xray, value: _xray.GetTiles(xray).ToHashSet());
+            _entities.Add(xray, _xray.GetEntities(xray).ToHashSet());
+        }
     }
 }
