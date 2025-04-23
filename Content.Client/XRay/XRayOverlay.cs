@@ -93,7 +93,6 @@ public sealed class XRayOverlay : Overlay
 
                 var bounds = _lookups.GetLocalBounds(tileRef, mapGrid.TileSize);
 
-
                 if (!_tileVariations.TryGetValue(tileRef.Tile, out var variants) || !variants.TryGetValue(tileRef.Tile.Variant, out var texture))
                 {
                     var atlasTexture = _resource.GetResource<TextureResource>(sprite);
@@ -159,7 +158,7 @@ public sealed class XRayOverlay : Overlay
 
                     var textureSize = texture.Size / (float)EyeManager.PixelsPerMeter;
                     var quad = Box2.FromDimensions(textureSize / -2, textureSize);
-                    var quadRotated = new Box2Rotated(quad, spriteRot + layer.Rotation);
+                    var quadRotated = new Box2Rotated(quad, -spriteRot + layer.Rotation);
 
                     args.WorldHandle.DrawTextureRect(texture, quadRotated, layer.Color);
                 }
