@@ -79,7 +79,7 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
             var entityPos = _transform.GetWorldPosition(entity);
 
             // must be hidden
-            if (!EntitiesBlocking(xrayPos, xrayMapId, entityPos))
+            if (!EntitiesBlocking(xrayPos, xrayMapId, entityPos, x => CanHitEntity(x, entity)))
                 continue;
 
             yield return entity;
@@ -112,7 +112,7 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
                 var tileLocalPos = _map.ToCenterCoordinates(tile, gridComp);
                 var tilePos = gridPos + gridRot.RotateVec(tileLocalPos.Position);
 
-                if (!EntitiesBlocking(xrayPos, xrayMapId, tilePos))
+                if (!EntitiesBlocking(xrayPos, xrayMapId, tilePos, x => CanHitTile(x, tilePos)))
                     continue;
 
                 yield return tile;
@@ -120,7 +120,7 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
         }
     }
 
-    private bool EntitiesBlocking(Vector2 xrayPos, MapId xrayMapId, Vector2 targetPos)
+    private bool EntitiesBlocking(Vector2 xrayPos, MapId xrayMapId, Vector2 targetPos, Func<EntityUid, bool> predicate)
     {
         var delta = targetPos - xrayPos;
         var distance = delta.Length();
@@ -131,6 +131,30 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
         var direction = delta.Normalized();
 
         var ray = new CollisionRay(xrayPos, direction, (int)CollisionGroup.SingularityLayer);
-        return _physics.IntersectRayWithPredicate(xrayMapId, ray, distance, e => !TryComp<OccluderComponent>(e, out var occluder) || !occluder.Enabled).Any();
+        return _physics.IntersectRayWithPredicate(xrayMapId, ray, distance, e => !predicate(e)).Any();
+    }
+
+    private bool CanHitEntity(EntityUid target, EntityUid goal)
+    {
+        if (!TryComp<OccluderComponent>(target, out var occluder) || !occluder.Enabled)
+            return false;
+
+        if (target == goal)
+            return false;
+
+        return true;
+    }
+
+    private bool CanHitTile(EntityUid target, Vector2 tilePos)
+    {
+        if (!TryComp<OccluderComponent>(target, out var occluder) || !occluder.Enabled)
+            return false;
+
+        var targetPos = _transform.GetWorldPosition(target);
+
+        if (targetPos.EqualsApprox(tilePos))
+            return false;
+
+        return true;
     }
 }
