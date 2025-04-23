@@ -1581,3 +1581,15 @@ Entries:
     type: Add
   id: 226
   time: '2025-04-22T15:20:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Engineering goggles now properly render based on drawdepth
+    type: Fix
+  - message: Engineering goggles shows sprite rotations correctly
+    type: Fix
+  - message: Engineering goggles no longer hide wall mounted objects
+    type: Fix
+  - message: Engineering goggles only show the xray in the direction the user is facing
+    type: Tweak
+  id: 227
+  time: '2025-04-22T14:50:00.0000000+00:00'
