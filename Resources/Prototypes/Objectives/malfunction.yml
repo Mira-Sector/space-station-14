@@ -11,7 +11,7 @@
       - MalfunctionRole
 
 - type: entity
-  parent: [BaseObsessedObjective, BaseKillRandomPersonObjective ]
+  parent: [BaseMalfunctionObjective, BaseKillRandomPersonObjective ]
   id: MalfunctionKillRandomPersonObjective
   description: 0011 0101 1000 KILL 0011 0101 1000
 

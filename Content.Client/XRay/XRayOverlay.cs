@@ -34,7 +34,7 @@ public sealed class XRayOverlay : Overlay
     private float _accumulator;
 
     private Dictionary<EntityUid, HashSet<TileRef>> _tiles = new();
-    private Dictionary<EntityUid, HashSet<EntityUid>> _entities = new();
+    private Dictionary<EntityUid, List<EntityUid>> _entities = new();
 
     private Dictionary<EntityUid, MapGridComponent> _mapGrids = new();
 
@@ -178,7 +178,7 @@ public sealed class XRayOverlay : Overlay
         foreach (var xray in Providers)
         {
             _tiles.Add(xray, value: _xray.GetTiles(xray).ToHashSet());
-            _entities.Add(xray, _xray.GetEntities(xray).ToHashSet());
+            _entities.Add(xray, _xray.GetEntities(xray).OrderBy(x => _entityManager.GetComponent<SpriteComponent>(x).DrawDepth).ToList());
         }
     }
 }
