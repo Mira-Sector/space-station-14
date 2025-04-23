@@ -27,6 +27,10 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
 
     private XRayOverlay _overlay = default!;
 
+    // used as in reality your eyes focus point is behind you due to having 2 eyes
+    // this is meant to simulate this for walls and wallmounts
+    private static readonly Vector2 RayOffset = new(0, 1.3f);
+
     public override void Initialize()
     {
         base.Initialize();
@@ -65,8 +69,10 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
         var entities = _lookup.GetEntitiesInRange(ent.Owner, ent.Comp.EntityRange);
 
         var xrayTransform = Transform(ent.Owner);
-        var xrayPos = _transform.GetWorldPosition(xrayTransform);
+        var (xrayPos, xrayRot) = _transform.GetWorldPositionRotation(xrayTransform);
         var xrayMapId = xrayTransform.MapID;
+
+        var rayPos = GetRayPos(xrayPos, xrayRot);
 
         foreach (var entity in entities)
         {
@@ -79,7 +85,7 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
             var entityPos = _transform.GetWorldPosition(entity);
 
             // must be hidden
-            if (!EntitiesBlocking(xrayPos, xrayMapId, entityPos, x => CanHitEntity(x, entity)))
+            if (!EntitiesBlocking(rayPos, xrayMapId, entityPos, x => CanHitEntity(x, entity, xrayPos, xrayRot)))
                 continue;
 
             yield return entity;
@@ -92,7 +98,7 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
             yield break;
 
         var xrayTransform = Transform(ent.Owner);
-        var xrayPos = _transform.GetWorldPosition(xrayTransform);
+        var (xrayPos, xrayRot) = _transform.GetWorldPositionRotation(xrayTransform);
         var xrayMapId = xrayTransform.MapID;
 
         var radius = new Circle(xrayPos, ent.Comp.TileRange);
@@ -100,6 +106,8 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
 
         List<Entity<MapGridComponent>> grids = new();
         _mapManager.FindGridsIntersecting(xrayMapId, circle, Robust.Shared.Physics.Transform.Empty, ref grids, includeMap: false);
+
+        var rayPos = GetRayPos(xrayPos, xrayRot);
 
         foreach (var (gridUid, gridComp) in grids)
         {
@@ -112,7 +120,7 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
                 var tileLocalPos = _map.ToCenterCoordinates(tile, gridComp);
                 var tilePos = gridPos + gridRot.RotateVec(tileLocalPos.Position);
 
-                if (!EntitiesBlocking(xrayPos, xrayMapId, tilePos, x => CanHitTile(x, tilePos)))
+                if (!EntitiesBlocking(rayPos, xrayMapId, tilePos, x => CanHitTile(x, tilePos, xrayPos, xrayRot)))
                     continue;
 
                 yield return tile;
@@ -134,27 +142,54 @@ public sealed class ShowXRaySystem : EquipmentHudSystem<ShowXRayComponent>
         return _physics.IntersectRayWithPredicate(xrayMapId, ray, distance, e => !predicate(e)).Any();
     }
 
-    private bool CanHitEntity(EntityUid target, EntityUid goal)
+    private bool CanHitEntity(EntityUid target, EntityUid goal, Vector2 xrayPos, Angle xrayRot)
     {
-        if (!TryComp<OccluderComponent>(target, out var occluder) || !occluder.Enabled)
+        if (!IsOcluding(target))
             return false;
 
         if (target == goal)
             return false;
 
+        var targetPos = _transform.GetWorldPosition(target);
+
+        if (IsBehind(xrayPos, xrayRot, targetPos))
+            return false;
+
         return true;
     }
 
-    private bool CanHitTile(EntityUid target, Vector2 tilePos)
+    private bool CanHitTile(EntityUid target, Vector2 tilePos, Vector2 xrayPos, Angle xrayRot)
     {
-        if (!TryComp<OccluderComponent>(target, out var occluder) || !occluder.Enabled)
+        if (!IsOcluding(target))
             return false;
 
         var targetPos = _transform.GetWorldPosition(target);
 
+        // prevent rendering below the occluder
         if (targetPos.EqualsApprox(tilePos))
             return false;
 
+        if (IsBehind(xrayPos, xrayRot, targetPos))
+            return false;
+
         return true;
+    }
+
+    private bool IsOcluding(EntityUid target)
+    {
+        return TryComp<OccluderComponent>(target, out var occluder) && occluder.Enabled;
+    }
+
+    private static bool IsBehind(Vector2 xrayPos, Angle xrayRot, Vector2 targetPos)
+    {
+        var direction = (targetPos - xrayPos).Normalized();
+        var dotProduct = Vector2.Dot(xrayRot.ToWorldVec(), direction);
+
+        return dotProduct < 0;
+    }
+
+    private static Vector2 GetRayPos(Vector2 xrayPos, Angle xrayRot)
+    {
+        return xrayPos + xrayRot.RotateVec(RayOffset);
     }
 }
