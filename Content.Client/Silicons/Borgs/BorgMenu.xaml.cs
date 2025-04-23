@@ -17,7 +17,6 @@ public sealed partial class BorgMenu : FancyWindow
     [Dependency] private readonly IEntityManager _entity = default!;
 
     public Action? BrainButtonPressed;
-    public Action? ResetLawsButtonPressed;
     public Action? EjectBatteryButtonPressed;
     public Action<string>? NameChanged;
     public Action<EntityUid>? RemoveModuleButtonPressed;
@@ -35,7 +34,6 @@ public sealed partial class BorgMenu : FancyWindow
 
         _lastValidName = NameLineEdit.Text;
 
-        ResetLawsButton.OnPressed += _ => ResetLawsButtonPressed?.Invoke();
         EjectBatteryButton.OnPressed += _ => EjectBatteryButtonPressed?.Invoke();
         BrainButton.OnPressed += _ => BrainButtonPressed?.Invoke();
 

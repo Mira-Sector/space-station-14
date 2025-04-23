@@ -1,5 +1,6 @@
 using System.Text;
 using Content.Server.Speech.Components;
+using Content.Shared.Body.Part;
 
 namespace Content.Server.Speech.EntitySystems;
 
@@ -9,6 +10,8 @@ public sealed class RussianAccentSystem : EntitySystem
     public override void Initialize()
     {
         SubscribeLocalEvent<RussianAccentComponent, AccentGetEvent>(OnAccent);
+        SubscribeLocalEvent<RussianAccentComponent, BodyLimbRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent(u, c, a.Args));
+        SubscribeLocalEvent<RussianAccentComponent, BodyOrganRelayedEvent<AccentGetEvent>>((u, c, a) => OnAccent(u, c, a.Args));
     }
 
     public string Accentuate(string message)

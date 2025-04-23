@@ -224,3 +224,13 @@
   - type: IsDeadIC
   - type: Body
     prototype: AnimalNymphLungs
+
+- type: entity
+  id: OrganDionaTongue
+  parent: OrganHumanTongue
+  components:
+  - type: VocalOrgan
+    sounds:
+      Male: UnisexDiona
+      Female: UnisexDiona
+      Unsexed: UnisexDiona

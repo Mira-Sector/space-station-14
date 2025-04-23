@@ -211,6 +211,8 @@
   dummyWires: 2
   wires:
   - !type:AiVisionWireAction
+  - !type:SiliconSyncWireAction
+  - !type:SiliconSyncLawWireAction
 
 - type: wireLayout
   id: WeaponEnergyTurret

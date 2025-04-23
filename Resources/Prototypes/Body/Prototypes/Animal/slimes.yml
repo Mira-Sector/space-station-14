@@ -11,6 +11,7 @@
       organs:
         core: SentientSlimesCore
         lungs: OrganSlimesLungs
+        tongue: OrganSlimesTongue
     left leg:
       part: LeftLegSlimes
       connections:

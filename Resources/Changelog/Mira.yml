@@ -1485,3 +1485,111 @@ Entries:
     type: Add
   id: 215
   time: '2025-04-07T14:30:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: Solar oil's glowing effect is shortened by charcoal, and blows up if it reacts with void oil
+    type: Add
+  - message: Frost oil can now solidify plasma
+    type: Add
+  - message: Plants that could be eaten for an item can now be butchered for the same item
+    type: Tweak
+  - message: Swabbing takes 1 second rather than 2.
+    type: Tweak
+  - message: Agrichem can now make up to 30u of Unstable Mutagen rather than 15u
+    type: Tweak
+  - message: Towercap, Steelcap, Plasteelcap, Cotton, Pyrotton, and Papercane chopped product numbers scale with the potency of the produce to make up for them not having any reagents that would have scaled instead.
+    type: Tweak
+  - message: Towercap, Steelcap, Plasteelcap, and Papercane now automatically stack on being chopped
+    type: Tweak
+  - message: The Botanist's Scythe is now sharper
+    type: Tweak
+  - message: You can no longer attempt to use any item on a sliceable food.
+    type: Fix
+  id: 216
+  time: '2025-04-07T21:00:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Packed has started to have its decals overhauled
+    type: Add
+  id: 217
+  time: '2025-04-16T06:40:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Cyborgs can now sync to an AI
+    type: Add
+  - message: Cyborgs laws can be synced to its linked ai
+    type: Add
+  - message: Removed resetting laws from the cyborg module ui
+    type: Remove
+  id: 218
+  time: '2025-04-16T06:45:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Pusling the sync wire skips the radial menu if there is only one AI
+    type: Add
+  - message: Pulsing the law wire automatically syncs the slaves laws with its master
+    type: Add
+  id: 219
+  time: '2025-04-16T21:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Beepsky now speaks when arresting someone
+    type: Add
+  id: 220
+  time: '2025-04-17T01:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added the Ai command module to remotely control bots
+    type: Add
+  id: 221
+  time: '2025-04-18T05:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Accents are stored on the tongue
+    type: Add
+  - message: You need a tongue to taste and speak
+    type: Add
+  id: 222
+  time: '2025-04-18T23:00:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Added 4 new posters
+    type: Add
+  id: 223
+  time: '2025-04-21T10:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Emote sounds now properly update for adding a body part that contains a tongue
+    type: Fix
+  id: 224
+  time: '2025-04-21T11:20:00.0000000+00:00'
+- author: Ian321, Mehnix
+  changes:
+  - message: Plant Analyser, available roundstart in nutrivendor and botanist lockers, and at an autolathe. Rejoice.
+    type: Add
+  - message: Researchable PlantScan Cartridge, to bring plant-scanning to the PDA
+    type: Add
+  - message: Botany tools now available at an autolathe
+    type: Add
+  id: 225
+  time: '2025-04-21T16:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Engineering goggles now have a screen shader when worn
+    type: Add
+  - message: Engineering goggles can see structures and tiles behind walls
+    type: Add
+  id: 226
+  time: '2025-04-22T15:20:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Engineering goggles now properly render based on drawdepth
+    type: Fix
+  - message: Engineering goggles shows sprite rotations correctly
+    type: Fix
+  - message: Engineering goggles no longer hide wall mounted objects
+    type: Fix
+  - message: Engineering goggles only show the xray in the direction the user is facing
+    type: Tweak
+  id: 227
+  time: '2025-04-22T14:50:00.0000000+00:00'

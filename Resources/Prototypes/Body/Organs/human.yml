@@ -102,6 +102,14 @@
     organType: Tongue
   - type: Sprite
     state: tongue
+  - type: TypingIndicatorOrgan
+    proto: default
+  - type: Tongue
+  - type: VocalOrgan
+    sounds:
+      Male: MaleHuman
+      Female: FemaleHuman
+      Unsexed: MaleHuman
 
 - type: entity
   id: OrganHumanAppendix

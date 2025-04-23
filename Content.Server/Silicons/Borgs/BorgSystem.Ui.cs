@@ -1,5 +1,4 @@
 using System.Linq;
-using Content.Server.Silicons.Laws;
 using Content.Shared.UserInterface;
 using Content.Shared.Database;
 using Content.Shared.NameIdentifier;
@@ -7,20 +6,16 @@ using Content.Shared.PowerCell.Components;
 using Content.Shared.Preferences;
 using Content.Shared.Silicons.Borgs;
 using Content.Shared.Silicons.Borgs.Components;
-using Content.Shared.Silicons.Laws.Components;
 
 namespace Content.Server.Silicons.Borgs;
 
 /// <inheritdoc/>
 public sealed partial class BorgSystem
 {
-    [Dependency] private readonly SiliconLawSystem _siliconLaw = default!;
-
     public void InitializeUI()
     {
         SubscribeLocalEvent<BorgChassisComponent, BeforeActivatableUIOpenEvent>(OnBeforeBorgUiOpen);
         SubscribeLocalEvent<BorgChassisComponent, BorgEjectBrainBuiMessage>(OnEjectBrainBuiMessage);
-        SubscribeLocalEvent<BorgChassisComponent, BorgResetLawsBuiMessage>(OnResetLawsBuiMessage);
         SubscribeLocalEvent<BorgChassisComponent, BorgEjectBatteryBuiMessage>(OnEjectBatteryBuiMessage);
         SubscribeLocalEvent<BorgChassisComponent, BorgSetNameBuiMessage>(OnSetNameBuiMessage);
         SubscribeLocalEvent<BorgChassisComponent, BorgRemoveModuleBuiMessage>(OnRemoveModuleBuiMessage);
@@ -41,15 +36,6 @@ public sealed partial class BorgSystem
         _container.Remove(brain, component.BrainContainer);
         _hands.TryPickupAnyHand(args.Actor, brain);
         UpdateUI(uid, component);
-    }
-
-    private void OnResetLawsBuiMessage(EntityUid uid, BorgChassisComponent component, BorgResetLawsBuiMessage args)
-    {
-        if (!TryComp<SiliconLawProviderComponent>(uid, out var lawProto))
-            return;
-
-        var laws = _siliconLaw.GetLawset(lawProto.Laws).Laws;
-        _siliconLaw.SetLaws(laws, uid);
     }
 
     private void OnEjectBatteryBuiMessage(EntityUid uid, BorgChassisComponent component, BorgEjectBatteryBuiMessage args)

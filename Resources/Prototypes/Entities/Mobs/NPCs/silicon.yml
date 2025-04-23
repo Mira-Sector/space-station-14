@@ -100,6 +100,24 @@
   - type: ProtectedFromStepTriggers
   - type: NoSlip
   - type: Insulated
+  - type: StationAiWhitelist
+  - type: SiliconSyncableSlave
+  - type: SiliconSyncableSlaveAiRadial
+  - type: UserInterface
+    interfaces:
+      enum.AiUi.Key:
+        type: StationAiBoundUserInterface
+  - type: SiliconSyncableSlaveCommandable
+    pathSprites:
+      PathFound:
+        sprite: Markers/ai_commanding.rsi
+        state: planning
+      Moving:
+        sprite: Markers/ai_commanding.rsi
+        state: moving
+      NoPath:
+        sprite: Markers/ai_commanding.rsi
+        state: no_path
   - type: SpeciesLanguage
     spokenLanguages:
     - Binary
@@ -352,6 +370,12 @@
   - type: Inventory
     templateId: medibot
   - type: DoAfter
+  - type: UserInterface
+    interfaces:
+      enum.StrippingUiKey.Key:
+        type: StrippableBoundUserInterface
+      enum.AiUi.Key:
+        type: StationAiBoundUserInterface
 
 - type: entity
   parent:
@@ -383,6 +407,12 @@
     interactFailureString: petting-failure-mimebot
   - type: Inventory
     templateId: head
+  - type: UserInterface
+    interfaces:
+      enum.StrippingUiKey.Key:
+        type: StrippableBoundUserInterface
+      enum.AiUi.Key:
+        type: StationAiBoundUserInterface
 
 - type: entity
   parent: MobSiliconBase
@@ -427,6 +457,8 @@
     interfaces:
       enum.StorageUiKey.Key:
         type: StorageBoundUserInterface
+      enum.AiUi.Key:
+        type: StationAiBoundUserInterface
   - type: ContainerContainer
     containers:
       storagebase: !type:Container
@@ -478,6 +510,12 @@
         - SmallMobMask
         layer:
         - SmallMobLayer
+  - type: UserInterface
+    interfaces:
+      enum.StrippingUiKey.Key:
+        type: StrippableBoundUserInterface
+      enum.AiUi.Key:
+        type: StationAiBoundUserInterface
   - type: HTN
     rootTask:
       task: SecbotCompound
@@ -507,8 +545,27 @@
       path: /Audio/Ambience/Objects/periodic_beep.ogg
   - type: Inventory
     templateId: medibot
+  - type: IntrinsicRadioTransmitter
+    channels:
+    - Hexadecimal
+    - Security
   - type: ActiveRadio
     channels:
     - Hexadecimal
     - Common
     - Security
+
+- type: entity
+  parent: MobSecuritron
+  id: MobBeepsky
+  name: Officer Beepsky
+  description: It's Commander Beep O'sky! Officially the superior officer of all bots on station, Beepsky remains as humble and dedicated to the law as the day he was first fabricated.
+  components:
+  - type: HTN
+    rootTask:
+      task: SecbotCompound
+    blackboard:
+      TargetFoundSound: !type:SoundCollectionSpecifier
+        collection: BeepskyTargetFound
+      TargetArrestedSound: !type:SoundCollectionSpecifier
+        collection: BeepskyTargetArrested

@@ -1,0 +1,29 @@
+- type: entity
+  id: DuckBrownTorso
+  name: brown duck torso
+  parent: DuckMalladTorso
+
+- type: entity
+  id: DuckBrownHead
+  name: brown duck head
+  parent: DuckMalladHead
+
+- type: entity
+  id: DuckBrownLeftLeg
+  name: left brown duck leg
+  parent: DuckMalladLeftLeg
+
+- type: entity
+  id: DuckBrownRightLeg
+  name: brown duck leg
+  parent: DuckMalladRightLeg
+
+- type: entity
+  id: DuckBrownLeftFoot
+  name: left brown duck foot
+  parent: DuckMalladLeftFoot
+
+- type: entity
+  id: DuckBrownRightFoot
+  name: brown duck foot
+  parent: DuckMalladRightFoot

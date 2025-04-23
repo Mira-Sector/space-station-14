@@ -75,3 +75,10 @@
     - type: Perishable
       rotAfter: 990
       molsPerSecondPerUnitMass: 0
+
+- type: entity
+  id: OrganSlimesTongue
+  parent: OrganHumanTongue
+  components:
+  - type: ReplacementAccent
+    accent: slimes

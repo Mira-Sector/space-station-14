@@ -17,6 +17,20 @@
     ClothingNeckTransPin: 3
     ClothingNeckAutismPin: 3
     ClothingNeckGoldAutismPin: 3
+    LGBTQHandyFlag: 3
+    AllyHandyFlag: 3
+    AromanticismHandyFlag: 3
+    AsexualityHandyFlag: 3
+    AroAceHandyFlag: 3
+    BisexualHandyFlag: 3
+    GayHandyFlag: 3
+    IntersexHandyFlag: 3
+    LesbianHandyFlag: 3
+    NonbinaryHandyFlag: 3
+    PansexualityHandyFlag: 3
+    OmnisexualHandyFlag: 3
+    GenderqueerHandyFlag: 3
+    TransexualHandyFlag: 3
     PlushieSharkBlue: 2
     PlushieSharkPink: 2
     PlushieSharkGrey: 2
