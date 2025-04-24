@@ -1,16 +1,17 @@
 using System.Linq;
 using System.Numerics;
-using Content.Client.CombatMode;
 using Content.Client.ContextMenu.UI;
 using Content.Client.Gameplay;
 using Content.Client.Mapping;
 using Content.Shared.Input;
+using Content.Shared.Intents;
 using Content.Shared.Verbs;
 using Robust.Client.Player;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controllers;
 using Robust.Shared.Collections;
 using Robust.Shared.Input;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 
 namespace Content.Client.Verbs.UI
@@ -30,7 +31,7 @@ namespace Content.Client.Verbs.UI
         [Dependency] private readonly IPlayerManager _playerManager = default!;
         [Dependency] private readonly ContextMenuUIController _context = default!;
 
-        [UISystemDependency] private readonly CombatModeSystem _combatMode = default!;
+        [UISystemDependency] private readonly IntentSystem _intentSystem = default!;
         [UISystemDependency] private readonly VerbSystem _verbSystem = default!;
 
         public NetEntity CurrentTarget;
@@ -42,6 +43,8 @@ namespace Content.Client.Verbs.UI
         ///     of an entity menu element. If that happens, we need to be aware and close it properly.
         /// </summary>
         public ContextMenuPopup? OpenMenu = null;
+
+        private static readonly ProtoId<IntentPrototype> HarmIntent = "Harm";
 
         public void OnStateEntered(GameplayState state)
         {
@@ -103,7 +106,7 @@ namespace Content.Client.Verbs.UI
             if (_playerManager.LocalEntity is not {Valid: true} user)
                 return;
 
-            if (!force && _combatMode.IsInCombatMode(user))
+            if (!force && _intentSystem.TryGetIntent(user, out var intent) && intent == HarmIntent)
                 return;
 
             Close();

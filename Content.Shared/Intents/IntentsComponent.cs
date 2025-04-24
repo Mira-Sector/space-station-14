@@ -9,7 +9,7 @@ public sealed partial class IntentsComponent : Component
     [DataField, AutoNetworkedField]
     public HashSet<ProtoId<IntentPrototype>> SelectableIntents = new();
 
-    [DataField("defaultIntent"), AutoNetworkedField]
+    [DataField("defaultIntent"), AutoNetworkedField, Access(typeof(IntentSystem))]
     public ProtoId<IntentPrototype> SelectedIntent;
 
     [DataField, AutoNetworkedField]

@@ -4,7 +4,6 @@ using Content.Shared.ActionBlocker;
 using Content.Shared.Actions;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Audio;
-using Content.Shared.CombatMode;
 using Content.Shared.CombatMode.Pacification;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Damage;
@@ -12,6 +11,7 @@ using Content.Shared.Examine;
 using Content.Shared.Gravity;
 using Content.Shared.Hands;
 using Content.Shared.Hands.Components;
+using Content.Shared.Intents;
 using Content.Shared.Popups;
 using Content.Shared.Projectiles;
 using Content.Shared.Security.Components;
@@ -55,9 +55,9 @@ public abstract partial class SharedGunSystem : EntitySystem
     [Dependency] protected readonly SharedActionsSystem Actions = default!;
     [Dependency] protected readonly SharedAppearanceSystem Appearance = default!;
     [Dependency] protected readonly SharedAudioSystem Audio = default!;
-    [Dependency] private   readonly SharedCombatModeSystem _combatMode = default!;
     [Dependency] protected readonly SharedContainerSystem Containers = default!;
     [Dependency] private   readonly SharedGravitySystem _gravity = default!;
+    [Dependency] protected readonly IntentSystem Intent = default!;
     [Dependency] protected readonly SharedPointLightSystem Lights = default!;
     [Dependency] protected readonly SharedPopupSystem PopupSystem = default!;
     [Dependency] protected readonly SharedPhysicsSystem Physics = default!;
@@ -73,6 +73,7 @@ public abstract partial class SharedGunSystem : EntitySystem
     private const float EjectOffset = 0.4f;
     protected const string AmmoExamineColor = "yellow";
     protected const string FireRateExamineColor = "yellow";
+    protected static readonly ProtoId<IntentPrototype> HarmIntent = "Harm";
     public const string ModeExamineColor = "cyan";
 
     public override void Initialize()
@@ -131,7 +132,8 @@ public abstract partial class SharedGunSystem : EntitySystem
         var user = args.SenderSession.AttachedEntity;
 
         if (user == null ||
-            !_combatMode.IsInCombatMode(user) ||
+            !Intent.TryGetIntent(user.Value, out var intent) ||
+            intent != HarmIntent ||
             !TryGetGuns(user.Value, out var ents))
         {
             return;

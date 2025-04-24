@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Numerics;
-using Content.Client.CombatMode;
 using Content.Client.Examine;
 using Content.Client.Gameplay;
 using Content.Client.Verbs;
@@ -9,6 +8,7 @@ using Content.Shared.CCVar;
 using Content.Shared.Examine;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Input;
+using Content.Shared.Intents;
 using Content.Shared.Verbs;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
@@ -21,6 +21,7 @@ using Robust.Shared.Configuration;
 using Robust.Shared.Input;
 using Robust.Shared.Input.Binding;
 using Robust.Shared.Map;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
 namespace Content.Client.ContextMenu.UI
@@ -50,7 +51,9 @@ namespace Content.Client.ContextMenu.UI
         [UISystemDependency] private readonly VerbSystem _verbSystem = default!;
         [UISystemDependency] private readonly ExamineSystem _examineSystem = default!;
         [UISystemDependency] private readonly TransformSystem _xform = default!;
-        [UISystemDependency] private readonly CombatModeSystem _combatMode = default!;
+        [UISystemDependency] private readonly IntentSystem _intent = default!;
+
+        private static readonly ProtoId<IntentPrototype> HarmIntent = "Harm";
 
         private bool _updating;
 
@@ -168,7 +171,10 @@ namespace Content.Client.ContextMenu.UI
             if (_stateManager.CurrentState is not GameplayStateBase)
                 return false;
 
-            if (_combatMode.IsInCombatMode(args.Session?.AttachedEntity))
+            if (args.Session?.AttachedEntity is not {} attachedEntity)
+                return false;
+
+            if (_intent.TryGetIntent(attachedEntity, out var intent) && intent == HarmIntent)
                 return false;
 
             var coords = _xform.ToMapCoordinates(args.Coordinates);
