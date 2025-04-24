@@ -1,5 +1,6 @@
 using Content.Client.UserInterface.Controls;
 using Content.Shared.Intents;
+using Content.Shared.Intents.Events;
 using JetBrains.Annotations;
 using Robust.Client.UserInterface;
 using Robust.Shared.Prototypes;

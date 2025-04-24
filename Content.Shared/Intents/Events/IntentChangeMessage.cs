@@ -1,7 +1,7 @@
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 
-namespace Content.Shared.Intents;
+namespace Content.Shared.Intents.Events;
 
 [Serializable, NetSerializable]
 public sealed class IntentChangeMessage : BoundUserInterfaceMessage

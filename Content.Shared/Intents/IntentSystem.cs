@@ -1,4 +1,5 @@
 using Content.Shared.Actions;
+using Content.Shared.Intents.Events;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using System.Diagnostics.CodeAnalysis;
@@ -44,8 +45,17 @@ public sealed partial class IntentSystem : EntitySystem
         if (ent.Comp.SelectedIntent == args.Intent)
             return;
 
-        var ev = new IntentChangedEvent(args.Intent, ent.Comp.SelectedIntent);
-        RaiseLocalEvent(ent, ev);
+        var changedEv = new IntentChangedEvent(args.Intent, ent.Comp.SelectedIntent);
+        RaiseLocalEvent(ent, changedEv);
+
+        var newIntent = _prototype.Index(args.Intent);
+        var oldIntent = _prototype.Index(ent.Comp.SelectedIntent);
+
+        var activatedEv = newIntent.ActivatedEvent;
+        RaiseLocalEvent(ent, activatedEv);
+
+        var deactivatedEv = oldIntent.DeactivatedEvent;
+        RaiseLocalEvent(ent, deactivatedEv);
 
         ent.Comp.SelectedIntent = args.Intent;
         DirtyField(ent.Owner, ent.Comp, nameof(IntentsComponent.SelectedIntent));

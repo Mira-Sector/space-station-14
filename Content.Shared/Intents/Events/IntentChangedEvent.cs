@@ -1,6 +1,6 @@
 using Robust.Shared.Prototypes;
 
-namespace Content.Shared.Intents;
+namespace Content.Shared.Intents.Events;
 
 public sealed partial class IntentChangedEvent : EntityEventArgs
 {

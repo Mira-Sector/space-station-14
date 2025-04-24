@@ -6,6 +6,8 @@
     state: help
   backgroundColor: #297000
   hoverColor: #3da600
+  activatedEvent: !type:HelpIntentActivatedEvent
+  deactivatedEvent: !type:HelpIntentDeactivatedEvent
 
 - type: intent
   id: Disarm
@@ -15,6 +17,8 @@
     state: disarm
   backgroundColor: #002b87
   hoverColor: #0036ab
+  activatedEvent: !type:DisarmIntentActivatedEvent
+  deactivatedEvent: !type:DisarmIntentDeactivatedEvent
 
 - type: intent
   id: Grab
@@ -24,6 +28,8 @@
     state: grab
   backgroundColor: #b0b000
   hoverColor: #d4d400
+  activatedEvent: !type:GrabIntentActivatedEvent
+  deactivatedEvent: !type:GrabIntentDeactivatedEvent
 
 - type: intent
   id: Harm
@@ -33,3 +39,5 @@
     state: harm
   backgroundColor: #a62900
   hoverColor: #d43500
+  activatedEvent: !type:HarmIntentActivatedEvent
+  deactivatedEvent: !type:HarmIntentDeactivatedEvent
