@@ -132,5 +132,4 @@
     scanlineColor: "#5f93ba"
     lineCount: 10
     scanlineIntensity: 0.9
-    scanlineSpeed: 1.2
     alpha: 1
