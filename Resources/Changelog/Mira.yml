@@ -1592,4 +1592,10 @@ Entries:
   - message: Engineering goggles only show the xray in the direction the user is facing
     type: Tweak
   id: 227
-  time: '2025-04-22T14:50:00.0000000+00:00'
+  time: '2025-04-23T14:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: The engineering goggles xray no longer has a scrolling effect
+    type: Tweak
+  id: 228
+  time: '2025-04-24T16:40:00.0000000+00:00'
