@@ -9,6 +9,7 @@ namespace Content.Shared.Intents;
 public sealed partial class IntentSystem : EntitySystem
 {
     [Dependency] private readonly SharedActionsSystem _actions = default!;
+    [Dependency] private readonly MetaDataSystem _metaData = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly SharedUserInterfaceSystem _userInterface = default!;
 
@@ -83,5 +84,6 @@ public sealed partial class IntentSystem : EntitySystem
             return;
 
         action.Icon = intent.Icon;
+        _metaData.SetEntityName(ent.Comp.SelectionAction.Value, Loc.GetString(intent.Name));
     }
 }

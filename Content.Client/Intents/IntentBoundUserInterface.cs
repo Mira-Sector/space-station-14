@@ -14,6 +14,11 @@ public sealed class IntentBoundUserInterface : BoundUserInterface
 
     private SimpleRadialMenu? _menu;
 
+    private static readonly SimpleRadialMenuSettings Settings = new()
+    {
+        DefaultContainerRadius = 75,
+    };
+
     public IntentBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
         IoCManager.InjectDependencies(this);
@@ -27,9 +32,8 @@ public sealed class IntentBoundUserInterface : BoundUserInterface
             return;
 
         _menu = this.CreateWindow<SimpleRadialMenu>();
-        _menu.Track(Owner);
         var models = ConvertToButtons(intents.SelectableIntents);
-        _menu.SetButtons(models);
+        _menu.SetButtons(models, Settings);
 
         _menu.OpenOverMouseScreenPosition();
     }
