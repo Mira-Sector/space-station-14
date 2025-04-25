@@ -1,5 +1,4 @@
 using Robust.Shared.Prototypes;
-using System.Linq;
 
 namespace Content.Shared.Surgery.Systems;
 
@@ -34,7 +33,7 @@ public sealed partial class SurgerySystem
 
         foreach (var prototypeId in prototypeIds)
         {
-            if (!_prototype.TryIndex<SurgeryPrototype>(prototypeId, out var prototype))
+            if (!_prototype.TryIndex(prototypeId, out var prototype))
                 continue;
 
             MergeGraphs(prototype, mergedGraph);
@@ -104,7 +103,7 @@ public sealed partial class SurgerySystem
         mergedGraph.Nodes.Add(newId, newNode);
         mergedGraph.StartingNode = newId;
 
-        newNode.Special = new HashSet<SurgerySpecial>(targetStartingNode.Special);
+        newNode.Special = new(targetStartingNode.Special);
 
         foreach (var edge in targetStartingNode.Edges)
             ContinueGraph(edge, targetStartingNode, newNode, targetGraph, mergedGraph);
@@ -115,7 +114,7 @@ public sealed partial class SurgerySystem
         matchingEdges = new();
         missingEdges = new();
 
-        if (targetNode.Special.Count() != mergedNode.Special.Count())
+        if (targetNode.Special.Count != mergedNode.Special.Count)
             return;
 
         foreach (var targetSpecial in targetNode.Special)
@@ -176,9 +175,9 @@ public sealed partial class SurgerySystem
 
             var id = mergedGraph.GetNextId();
 
-            SurgeryNode newNode = new SurgeryNode()
+            var newNode = new SurgeryNode()
             {
-                Special = new HashSet<SurgerySpecial>(targetNode.Special)
+                Special = new(targetNode.Special)
             };
 
             nodeMap.Add(targetNode, newNode);
