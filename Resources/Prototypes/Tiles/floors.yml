@@ -1960,8 +1960,9 @@
   heatCapacity: 10000
 
 - type: tile
-  id: FloorInvisible
+  id: FloorInvisible # Will be used with the invisible wall to make rooms that look like space but are not.
   name: tiles-invisible-floor
+  sprite: /Textures/Tiles/invisible.png # inputting no texture gives a checkered purple and black texture.
   baseTurf: Space
   isSubfloor: true
   deconstructTools: [ Plating ]
