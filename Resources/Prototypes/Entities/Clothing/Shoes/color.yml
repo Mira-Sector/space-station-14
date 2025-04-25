@@ -37,6 +37,7 @@
 - type: entity
   parent: ClothingShoesColorable
   id: ClothingShoesColorBlack
+  suffix: Black
   components:
   - type: Dyable
     color: "#1d1d1d"
@@ -45,6 +46,7 @@
 - type: entity
   parent: ClothingShoesColorable
   id: ClothingShoesColorWhite
+  suffix: White
   components:
   - type: Dyable
     color: "#EAE8E8" #Deliberately NOT pure white
@@ -53,6 +55,7 @@
 - type: entity
   parent: ClothingShoesColorable
   id: ClothingShoesColorBlue
+  suffix: Blue
   components:
   - type: Dyable
     color: "#0089EF"
@@ -61,6 +64,7 @@
 - type: entity
   parent: ClothingShoesColorable
   id: ClothingShoesColorBrown
+  suffix: Brown
   components:
   - type: Dyable
     color: "#592D01"
@@ -69,6 +73,7 @@
 - type: entity
   parent: ClothingShoesColorable
   id: ClothingShoesColorGreen
+  suffix: Green
   components:
   - type: Dyable
     color: "#5ABF2F"
@@ -77,6 +82,7 @@
 - type: entity
   parent: ClothingShoesColorable
   id: ClothingShoesColorOrange
+  suffix: Orange
   components:
   - type: Dyable
     color: "#EF8100"
@@ -85,6 +91,7 @@
 - type: entity
   parent: ClothingShoesColorable
   id: ClothingShoesColorRed
+  suffix: Red
   components:
   - type: Dyable
     color: "#940000"
@@ -93,6 +100,7 @@
 - type: entity
   parent: ClothingShoesColorable
   id: ClothingShoesColorYellow
+  suffix: Yellow
   components:
   - type: Dyable
     color: "#EBE216"
@@ -101,6 +109,7 @@
 - type: entity
   parent: ClothingShoesColorable
   id: ClothingShoesColorPurple
+  suffix: Purple
   components:
   - type: Dyable
     color: "#9C0DE1"
