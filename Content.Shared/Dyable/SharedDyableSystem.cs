@@ -25,6 +25,7 @@ public abstract partial class SharedDyableSystem : EntitySystem
         Appearance.SetData(ent.Owner, DyableVisuals.Color, ent.Comp.Color);
         UpdateClothing(ent);
         UpdateItem(ent);
+        UpdateForensics(ent);
     }
 
     private void UpdateClothing(Entity<DyableComponent> ent)
@@ -49,6 +50,10 @@ public abstract partial class SharedDyableSystem : EntitySystem
             _item.SetLayerColor(ent.Owner, hand, key, ent.Comp.Color, item);
     }
 
+    protected virtual void UpdateForensics(Entity<DyableComponent> ent)
+    {
+    }
+
     [PublicAPI]
     public void SetColor(Entity<DyableComponent?> ent, Color color)
     {
@@ -60,5 +65,6 @@ public abstract partial class SharedDyableSystem : EntitySystem
         Appearance.SetData(ent.Owner, DyableVisuals.Color, ent.Comp.Color);
         UpdateClothing((ent.Owner, ent.Comp));
         UpdateItem((ent.Owner, ent.Comp));
+        UpdateForensics((ent.Owner, ent.Comp));
     }
 }
