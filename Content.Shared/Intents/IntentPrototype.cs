@@ -32,6 +32,12 @@ public sealed partial class IntentPrototype : IPrototype
     [DataField(required: true)]
     public required BaseIntentEvent DeactivatedEvent;
 
+    /// <summary>
+    /// Components to add to the user when this intent is selected
+    /// </summary>
+    [DataField]
+    public ComponentRegistry? Components;
+
     [DataField]
     public Color? BackgroundColor;
 

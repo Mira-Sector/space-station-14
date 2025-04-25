@@ -28,6 +28,11 @@ public sealed partial class IntentSystem : EntitySystem
         _actions.AddAction(ent, ref ent.Comp.SelectionAction, ent.Comp.SelectionActionId);
         DirtyField(ent.Owner, ent.Comp, nameof(IntentsComponent.SelectionAction));
         UpdateAction(ent);
+
+        if (!_prototype.TryIndex(ent.Comp.SelectedIntent, out var intent) || intent.Components == null)
+            return;
+
+        EntityManager.AddComponents(ent.Owner, intent.Components);
     }
 
     private void OnAction(Entity<IntentsComponent> ent, ref IntentActionEvent args)
@@ -58,6 +63,12 @@ public sealed partial class IntentSystem : EntitySystem
 
         var deactivatedEv = oldIntent.DeactivatedEvent;
         RaiseLocalEvent(ent, (object)deactivatedEv);
+
+        if (oldIntent.Components != null)
+            EntityManager.RemoveComponents(ent.Owner, oldIntent.Components);
+
+        if (newIntent.Components != null)
+            EntityManager.AddComponents(ent.Owner, newIntent.Components, true);
 
         ent.Comp.SelectedIntent = args.Intent;
         DirtyField(ent.Owner, ent.Comp, nameof(IntentsComponent.SelectedIntent));
