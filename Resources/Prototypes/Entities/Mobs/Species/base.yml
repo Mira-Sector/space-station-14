@@ -374,7 +374,7 @@
         selectedSprite:
           sprite: /Textures/Interface/health_analyzer_body.rsi
           state: r_leg
-  - type: SurgeryRecieverBody
+  - type: SurgeryReceiverBody
     surgeries:
       - bodyPart: !type:BodyPart { type: Head, side: None }
         surgeries:

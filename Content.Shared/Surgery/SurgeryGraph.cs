@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Content.Shared.Surgery;
 
-[DataDefinition, Serializable, NetSerializable]
+[DataDefinition, Virtual, Serializable, NetSerializable]
 public partial class SurgeryGraph
 {
     [DataField("nodes")]

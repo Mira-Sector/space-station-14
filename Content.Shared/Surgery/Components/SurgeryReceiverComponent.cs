@@ -5,7 +5,7 @@ using Robust.Shared.Prototypes;
 namespace Content.Shared.Surgery.Components;
 
 [RegisterComponent, NetworkedComponent]
-public sealed partial class SurgeryRecieverComponent : Component, ISurgeryReciever
+public sealed partial class SurgeryReceiverComponent : Component, ISurgeryReceiver
 {
     [DataField]
     public List<ProtoId<SurgeryPrototype>> AvailableSurgeries { get; set; } = new();

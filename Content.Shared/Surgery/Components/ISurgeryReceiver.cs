@@ -3,10 +3,10 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Surgery.Components;
 
-public interface ISurgeryReciever
+public interface ISurgeryReceiver
 {
     /// <summary>
-    /// List of surgery graphs that will get merged into one <see cref=SurgeryRecieverComponent.Graph>
+    /// List of surgery graphs that will get merged into one <see cref=SurgeryReceiverComponent.Graph>
     /// </summary>
     [DataField]
     public List<ProtoId<SurgeryPrototype>> AvailableSurgeries { get; set; }
