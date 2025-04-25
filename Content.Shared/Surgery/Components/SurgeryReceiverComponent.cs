@@ -4,21 +4,21 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Surgery.Components;
 
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState(fieldDeltas: true)]
+[RegisterComponent, NetworkedComponent]
 public sealed partial class SurgeryReceiverComponent : Component, ISurgeryReceiver
 {
-    [DataField, AutoNetworkedField]
+    [DataField]
     public List<ProtoId<SurgeryPrototype>> AvailableSurgeries { get; set; } = new();
 
-    [ViewVariables, AutoNetworkedField]
+    [ViewVariables]
     public SurgeryGraph Graph { get; set; } = new();
 
-    [ViewVariables, AutoNetworkedField]
+    [ViewVariables]
     public SurgeryNode? CurrentNode { get; set; }
 
-    [ViewVariables, AutoNetworkedField]
+    [ViewVariables]
     public Dictionary<DoAfterId, (EntityUid, SurgeryEdgeRequirement)> DoAfters { get; set; } = new();
 
-    [ViewVariables, AutoNetworkedField]
+    [ViewVariables]
     public HashSet<Enum> UserInterfaces { get; set; } = new();
 }
