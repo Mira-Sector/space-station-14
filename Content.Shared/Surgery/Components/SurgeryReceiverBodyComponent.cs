@@ -12,13 +12,13 @@ namespace Content.Shared.Surgery.Components;
 /// Exists as the limbs are in a container within the body. We can never actually interact with them directly as a player.
 /// </remarks>
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
-public sealed partial class SurgeryRecieverBodyComponent : Component
+public sealed partial class SurgeryReceiverBodyComponent : Component
 {
     /// <summary>
     /// Used for surgeries that need to be targeted but on a limb that doesn't exist
     /// </summary>
     [DataField]
-    public HashSet<SurgeryBodyReciever> Surgeries = new();
+    public HashSet<SurgeryBodyReceiver> Surgeries = new();
 
     [ViewVariables, AutoNetworkedField]
     public Dictionary<BodyPart, NetEntity> Limbs = new();
@@ -27,17 +27,17 @@ public sealed partial class SurgeryRecieverBodyComponent : Component
     /// My sanity requires me to do this
     /// </summary>
     [ViewVariables]
-    public Dictionary<NetEntity, SurgeryRecieverComponent> LimbsVV
+    public Dictionary<NetEntity, SurgeryReceiverComponent> LimbsVV
     {
         get
         {
-            Dictionary<NetEntity, SurgeryRecieverComponent> dict = new();
+            Dictionary<NetEntity, SurgeryReceiverComponent> dict = new();
 
             var entMan = IoCManager.Resolve<EntityManager>();
 
             foreach (var limb in Limbs.Values)
             {
-                if (!entMan.TryGetComponent<SurgeryRecieverComponent>(entMan.GetEntity(limb), out var limbComp))
+                if (!entMan.TryGetComponent<SurgeryReceiverComponent>(entMan.GetEntity(limb), out var limbComp))
                     continue;
 
                 dict.Add(limb, limbComp);
@@ -50,17 +50,17 @@ public sealed partial class SurgeryRecieverBodyComponent : Component
 
 
 [DataDefinition, Serializable]
-public sealed partial class SurgeryBodyReciever
+public sealed partial class SurgeryBodyReceiver
 {
     [DataField(required: true)]
     public BodyPart BodyPart = default!;
 
     [DataField(required: true)]
-    public SurgeryBodyPartReciever Surgeries = new();
+    public SurgeryBodyPartReceiver Surgeries = new();
 }
 
 [DataDefinition, Serializable]
-public sealed partial class SurgeryBodyPartReciever : ISurgeryReciever
+public sealed partial class SurgeryBodyPartReceiver : ISurgeryReceiver
 {
     [DataField]
     public List<ProtoId<SurgeryPrototype>> AvailableSurgeries { get; set; } = new();
