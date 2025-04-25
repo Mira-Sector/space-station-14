@@ -20,7 +20,7 @@ public sealed partial class DyableSystem : SharedDyableSystem
         if (!Appearance.TryGetData<Color>(ent.Owner, DyableVisuals.Color, out var color, args.Component))
             return;
 
-        if (sprite.LayerMapTryGet(DyableVisualsLayers.Layer, out var layer))
+        if (!sprite.LayerMapTryGet(DyableVisualsLayers.Layer, out var layer))
             return;
 
         sprite.LayerSetColor(layer, color);
