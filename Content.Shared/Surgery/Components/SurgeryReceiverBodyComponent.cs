@@ -11,13 +11,13 @@ namespace Content.Shared.Surgery.Components;
 /// <remarks>
 /// Exists as the limbs are in a container within the body. We can never actually interact with them directly as a player.
 /// </remarks>
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState(fieldDeltas: true)]
 public sealed partial class SurgeryReceiverBodyComponent : Component
 {
     /// <summary>
     /// Used for surgeries that need to be targeted but on a limb that doesn't exist
     /// </summary>
-    [DataField]
+    [DataField, AutoNetworkedField]
     public HashSet<SurgeryBodyReceiver> Surgeries = new();
 
     [ViewVariables, AutoNetworkedField]

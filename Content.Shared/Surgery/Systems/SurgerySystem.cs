@@ -47,7 +47,7 @@ public sealed partial class SurgerySystem : EntitySystem
         component.Graph.TryGetStaringNode(out var startingNode);
         component.CurrentNode = startingNode;
 
-        Dirty(uid, component);
+        DirtyFields(uid, component, null, nameof(SurgeryReceiverComponent.Graph), nameof(SurgeryReceiverComponent.CurrentNode));
     }
 
     private void OnBodyInit(EntityUid uid, SurgeryReceiverBodyComponent component)
@@ -59,7 +59,7 @@ public sealed partial class SurgerySystem : EntitySystem
             surgeries.Surgeries.CurrentNode = startingNode;
         }
 
-        Dirty(uid, component);
+        DirtyField(uid, component, nameof(SurgeryReceiverBodyComponent.Surgeries));
     }
 
     private void OnBodyPartAdded(EntityUid uid, SurgeryReceiverBodyComponent component, ref BodyPartAddedEvent args)
@@ -76,6 +76,7 @@ public sealed partial class SurgerySystem : EntitySystem
         }
 
         component.Limbs.Add(new BodyPart(args.Part.Comp.PartType, args.Part.Comp.Symmetry), netId);
+        DirtyField(uid, component, nameof(SurgeryReceiverBodyComponent.Limbs));
     }
 
     private void OnBodyPartRemoved(EntityUid uid, SurgeryReceiverBodyComponent component, ref BodyPartRemovedEvent args)
@@ -87,6 +88,8 @@ public sealed partial class SurgerySystem : EntitySystem
 
             component.Limbs.Remove(limb);
         }
+
+        DirtyField(uid, component, nameof(SurgeryReceiverBodyComponent.Limbs));
     }
 
     private void OnLimbInteract(EntityUid uid, SurgeryReceiverComponent component, EntityUid user, EntityUid? used, HandledEntityEventArgs args)
@@ -100,7 +103,7 @@ public sealed partial class SurgerySystem : EntitySystem
         BodyPart bodyPart = new(bodyPartComp.PartType, bodyPartComp.Symmetry);
 
         args.Handled = TryTraverseGraph(uid, component, bodyPartComp.Body, user, used, bodyPart);
-        Dirty(uid, component);
+        DirtyField(uid, component, nameof(SurgeryReceiverComponent.CurrentNode));
     }
 
     private void OnBodyInteract(EntityUid uid, SurgeryReceiverBodyComponent component, EntityUid user, EntityUid? used, HandledEntityEventArgs args)
@@ -113,8 +116,6 @@ public sealed partial class SurgerySystem : EntitySystem
 
         if (!PreCheck(uid))
             return;
-
-        var limbFound = false;
 
         foreach (var (bodyPart, netLimb) in component.Limbs)
         {
@@ -132,19 +133,22 @@ public sealed partial class SurgerySystem : EntitySystem
             if (bodyPart.Side != damageSelectorComp.SelectedPart.Side)
                 continue;
 
-            // we have a limb we can do surgery on
-            limbFound = true;
-
             // may have multiple limbs so dont exit early
-            args.Handled |= TryTraverseGraph(limb, surgeryComp, uid, user, used, bodyPart);
+            if (!TryTraverseGraph(limb, surgeryComp, uid, user, used, bodyPart))
+                continue;
+
+            args.Handled = true;
         }
 
         // if we have a possible limb they may have nothing do do
         // so we dont logically or with the TryTraverseGraph
-        if (limbFound)
+        if (args.Handled)
+        {
+            Dirty(uid, component); //ive tried to use field deltas but this is an interface
             return;
+        }
 
-        // the body may have a surgery to persue instead
+        // the body may have a surgery to pursue instead
         foreach (var surgeries in component.Surgeries)
         {
             if (surgeries.BodyPart.Type != damageSelectorComp.SelectedPart.Type)
@@ -156,6 +160,9 @@ public sealed partial class SurgerySystem : EntitySystem
             if (TryTraverseGraph(null, surgeries.Surgeries, uid, user, used, surgeries.BodyPart))
             {
                 args.Handled = true;
+                // ive tried to use field deltas
+                // this is an interface so no luck
+                Dirty(uid, component);
                 return;
             }
         }
@@ -187,6 +194,8 @@ public sealed partial class SurgerySystem : EntitySystem
 
             OnDoAfter(null, uid, surgeries.Surgeries, args);
         }
+
+        DirtyField(uid, component, nameof(SurgeryReceiverComponent.DoAfters));
     }
 
     private void OnLimbDoAfter(EntityUid uid, SurgeryReceiverComponent component, SurgeryDoAfterEvent args)
@@ -196,9 +205,8 @@ public sealed partial class SurgerySystem : EntitySystem
 
         if (args.Cancelled)
         {
-            if (component.DoAfters.ContainsKey(args.DoAfter.Id))
-                component.DoAfters.Remove(args.DoAfter.Id);
-
+            component.DoAfters.Remove(args.DoAfter.Id);
+            DirtyField(uid, component, nameof(SurgeryReceiverComponent.DoAfters));
             return;
         }
 
@@ -209,6 +217,7 @@ public sealed partial class SurgerySystem : EntitySystem
             return;
 
         OnDoAfter(uid, bodyPartComp.Body, component, args);
+        DirtyField(uid, component, nameof(SurgeryReceiverComponent.DoAfters));
     }
 
     private void OnDoAfter(EntityUid? limb, EntityUid? body, ISurgeryReceiver surgeryReceiver, SurgeryDoAfterEvent args)
