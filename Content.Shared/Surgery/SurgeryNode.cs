@@ -3,7 +3,7 @@ using Robust.Shared.Serialization;
 namespace Content.Shared.Surgery;
 
 [DataDefinition, Serializable, NetSerializable]
-public partial class SurgeryNode
+public sealed partial class SurgeryNode
 {
     [DataField]
     public string? Id { get; protected set; } = default!;
