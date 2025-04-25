@@ -29,7 +29,7 @@
       - state: equipped-HAND
         color: "#9C0DE1"
   - type: Fiber
-    fiberColor: fibers-purple
+    fiberColor: "#9C0DE1"
 
 # Red Gloves
 - type: entity
@@ -58,7 +58,7 @@
       - state: equipped-HAND
         color: "#940000"
   - type: Fiber
-    fiberColor: fibers-red
+    fiberColor: "#940000"
 
 # Blue Gloves
 - type: entity
@@ -87,7 +87,7 @@
       - state: equipped-HAND
         color: "#0089EF"
   - type: Fiber
-    fiberColor: fibers-blue
+    fiberColor: "#0089EF"
 
 # Teal Gloves
 - type: entity
@@ -116,7 +116,7 @@
       - state: equipped-HAND
         color: "#3CB57C"
   - type: Fiber
-    fiberColor: fibers-teal
+    fiberColor: "#3CB57C"
 
 # Brown Gloves
 - type: entity
@@ -145,7 +145,7 @@
       - state: equipped-HAND
         color: "#723A02"
   - type: Fiber
-    fiberColor: fibers-brown
+    fiberColor: "#723A02"
 
 # Grey Gloves
 - type: entity
@@ -174,7 +174,7 @@
       - state: equipped-HAND
         color: "#999999"
   - type: Fiber
-    fiberColor: fibers-grey
+    fiberColor: "#999999"
 
 # Green Gloves
 - type: entity
@@ -203,7 +203,7 @@
       - state: equipped-HAND
         color: "#5ABF2F"
   - type: Fiber
-    fiberColor: fibers-green
+    fiberColor: "#5ABF2F"
 
 # Light Brown Gloves
 - type: entity
@@ -232,7 +232,7 @@
       - state: equipped-HAND
         color: "#C09F72"
   - type: Fiber
-    fiberColor: fibers-light-brown
+    fiberColor: "#C09F72"
 
 # Orange Gloves
 - type: entity
@@ -261,7 +261,7 @@
       - state: equipped-HAND
         color: "#EF8100"
   - type: Fiber
-    fiberColor: fibers-orange
+    fiberColor: "#EF8100"
 
 # White Gloves
 - type: entity
@@ -290,7 +290,7 @@
       - state: equipped-HAND
         color: "#EAE8E8"
   - type: Fiber
-    fiberColor: fibers-white
+    fiberColor: "#EAE8E8"
 
 # Black Gloves
 # TECHNICALLY, if you ported the worn state to the RSI, this could be greyscaled, but I do not really feel like doing that.
@@ -317,7 +317,7 @@
     spawned:
     - id: ClothingHandsGlovesFingerless
   - type: Fiber
-    fiberColor: fibers-black
+    fiberColor: "#535353"
 
 # Insulated Gloves (Yellow Gloves)
 # Currently can not be greyscaled without looking like shit.
@@ -339,7 +339,7 @@
   - type: Insulated
   - type: Fiber
     fiberMaterial: fibers-insulative
-    fiberColor: fibers-yellow
+    fiberColor: "#ffe14d"
 
 # Budget Insulated Gloves
 - type: entity
@@ -366,7 +366,7 @@
       - 4
   - type: Fiber
     fiberMaterial: fibers-insulative-frayed
-    fiberColor: fibers-yellow
+    fiberColor: "#ffe14d"
 
 # Conductive Insulated Gloves
 - type: entity
