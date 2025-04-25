@@ -1,5 +1,6 @@
 using Content.Shared.Actions;
 using Content.Shared.Intents.Events;
+using JetBrains.Annotations;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using System.Diagnostics.CodeAnalysis;
@@ -53,26 +54,15 @@ public sealed partial class IntentSystem : EntitySystem
         var oldIntent = _prototype.Index(ent.Comp.SelectedIntent);
 
         var activatedEv = newIntent.ActivatedEvent;
-        RaiseLocalEvent(ent, activatedEv);
+        RaiseLocalEvent(ent, (object)activatedEv);
 
         var deactivatedEv = oldIntent.DeactivatedEvent;
-        RaiseLocalEvent(ent, deactivatedEv);
+        RaiseLocalEvent(ent, (object)deactivatedEv);
 
         ent.Comp.SelectedIntent = args.Intent;
         DirtyField(ent.Owner, ent.Comp, nameof(IntentsComponent.SelectedIntent));
 
         UpdateAction(ent);
-    }
-
-    public bool TryGetIntent(Entity<IntentsComponent?> ent, [NotNullWhen(true)] out ProtoId<IntentPrototype>? intentId)
-    {
-        intentId = null;
-
-        if (!Resolve(ent.Owner, ref ent.Comp))
-            return false;
-
-        intentId = ent.Comp.SelectedIntent;
-        return true;
     }
 
     private void UpdateAction(Entity<IntentsComponent> ent)
@@ -85,5 +75,17 @@ public sealed partial class IntentSystem : EntitySystem
 
         action.Icon = intent.Icon;
         _metaData.SetEntityName(ent.Comp.SelectionAction.Value, Loc.GetString(intent.Name));
+    }
+
+    [PublicAPI]
+    public bool TryGetIntent(Entity<IntentsComponent?> ent, [NotNullWhen(true)] out ProtoId<IntentPrototype>? intentId)
+    {
+        intentId = null;
+
+        if (!Resolve(ent.Owner, ref ent.Comp))
+            return false;
+
+        intentId = ent.Comp.SelectedIntent;
+        return true;
     }
 }

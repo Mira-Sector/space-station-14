@@ -11,15 +11,24 @@ public sealed partial class IntentPrototype : IPrototype
     [IdDataField]
     public string ID { get; private set; } = default!;
 
+    /// <summary>
+    /// Name to show in the menu and action
+    /// </summary>
     [DataField(required: true)]
     public LocId Name;
 
     [DataField(required: true)]
     public required SpriteSpecifier Icon;
 
+    /// <summary>
+    /// Event to raise when the user selects this intent in the menu
+    /// </summary>
     [DataField(required: true)]
     public required BaseIntentEvent ActivatedEvent;
 
+    /// <summary>
+    /// Event to raise when the user has selected a new intent that replaces this one
+    /// </summary>
     [DataField(required: true)]
     public required BaseIntentEvent DeactivatedEvent;
 
