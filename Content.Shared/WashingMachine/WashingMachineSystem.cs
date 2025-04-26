@@ -3,6 +3,7 @@ using Content.Shared.Destructible;
 using Content.Shared.Interaction;
 using Content.Shared.Power.EntitySystems;
 using Content.Shared.Verbs;
+using Content.Shared.WashingMachine.Events;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
@@ -47,10 +48,16 @@ public sealed partial class WashingMachineSystem : EntitySystem
             component.WashingMachineState = WashingMachineState.Idle;
             DirtyField(uid, component, nameof(WashingMachineComponent.WashingMachineState));
 
+            HashSet<EntityUid> items = new();
             foreach (var (slotId, slot) in component.Slots)
             {
-                _slots.TryEject(uid, slot, null, out _);
+                _slots.TryEject(uid, slot, null, out var item);
                 _slots.SetLock(uid, slotId, false);
+
+                if (item == null)
+                    continue;
+
+                items.Add(item.Value);
             }
 
             if (component.WashingSoundEntity != null)
@@ -61,6 +68,13 @@ public sealed partial class WashingMachineSystem : EntitySystem
             }
 
             _audio.PlayPvs(component.FinishedSound, uid);
+
+            var machineEv = new WashingMachineFinishedWashingEvent(items);
+            RaiseLocalEvent(uid, machineEv);
+
+            var itemEv = new WashingMachineWashedEvent(uid, items);
+            foreach (var item in items)
+                RaiseLocalEvent(item, itemEv);
         }
     }
 
@@ -156,11 +170,25 @@ public sealed partial class WashingMachineSystem : EntitySystem
         ent.Comp.WashingMachineState = WashingMachineState.Washing;
         DirtyField(ent.Owner, ent.Comp, nameof(WashingMachineComponent.WashingMachineState));
 
+        HashSet<EntityUid> items = new();
         foreach (var slot in ent.Comp.Slots.Values)
+        {
             _slots.SetLock(ent.Owner, slot, true);
+            if (slot.Item == null)
+                continue;
+
+            items.Add(slot.Item.Value);
+        }
 
         var audio = _audio.PlayPvs(ent.Comp.WashingSound, ent.Owner);
         ent.Comp.WashingSoundEntity = audio?.Entity;
         DirtyField(ent.Owner, ent.Comp, nameof(WashingMachineComponent.WashingSoundEntity));
+
+        var machineEv = new WashingMachineStartedWashingEvent(items);
+        RaiseLocalEvent(ent.Owner, machineEv);
+
+        var itemEv = new WashingMachineIsBeingWashed(ent.Owner, items);
+        foreach (var item in items)
+            RaiseLocalEvent(item, itemEv);
     }
 }
