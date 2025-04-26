@@ -131,3 +131,4 @@ tiles-astro-snow = astro-snow
 tiles-astro-asteroid-sand = asteroid astro-sand
 tiles-wood-large = large wood
 tiles-cheese-floor = cheese floor
+tiles-invisible-floor = invisible floor
