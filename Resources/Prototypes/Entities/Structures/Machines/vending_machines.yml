@@ -2231,3 +2231,33 @@
   - type: AccessReader
     access: [["SyndicateAgent"]]
 
+- type: entity
+  parent: VendingMachine
+  id: VendingMachineDonk
+  name: DONK CO.
+  description: A vending machine selling various DONK CO. products. Not recommended with a weak stomach.
+  components:
+  - type: VendingMachine
+    pack: DonkCoInventory
+    offState: off
+    brokenState: broken
+    normalState: normal-unshaded
+  - type: Advertise
+    pack: DonkCoAds
+  - type: SpeakOnUIClosed
+    pack: DonkCoGoodbyes
+  - type: Speech
+  - type: PointLight
+    radius: 1.5
+    energy: 1.3 # reduced energy since the color is pure white
+    color: "#FFFFFF"
+  - type: Sprite
+    sprite: Structures/Machines/VendingMachines/donkco.rsi
+    layers:
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.Base"]
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
+      shader: unshaded
+    - state: panel
+      map: ["enum.WiresVisualLayers.MaintenancePanel"]

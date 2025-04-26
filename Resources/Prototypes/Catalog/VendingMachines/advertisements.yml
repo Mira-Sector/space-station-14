@@ -291,3 +291,9 @@
   values:
     prefix: advertisement-pride-
     count: 4
+
+- type: localizedDataset
+  id: DonkCoAds
+  values:
+    prefix: advertisement-donkco-
+    count: 4
