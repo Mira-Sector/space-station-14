@@ -2,6 +2,6 @@
 advertisement-donkco-2 = 100% organic!
 advertisement-donkco-3 = Healthier than you'd think!
 advertisement-donkco-4 = warm in 30 seconds!
-thankyou-donkco-1 = Slay!
-thankyou-donkco-2 = Knock 'em dead!
-thankyou-donkco-3 = What a glow up!
+thankyou-donkco-1 = Thank you for your patronage!
+thankyou-donkco-2 = No refunds!
+thankyou-donkco-3 = Don't sue us!
