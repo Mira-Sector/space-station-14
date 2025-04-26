@@ -3,6 +3,7 @@ using Content.Shared.Destructible;
 using Content.Shared.Interaction;
 using Content.Shared.Power.EntitySystems;
 using Content.Shared.Verbs;
+using Robust.Shared.Audio.Systems;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
@@ -10,6 +11,7 @@ namespace Content.Shared.WashingMachine;
 
 public sealed partial class WashingMachineSystem : EntitySystem
 {
+    [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly ItemSlotsSystem _slots = default!;
     [Dependency] private readonly SharedPowerReceiverSystem _power = default!;
@@ -50,6 +52,15 @@ public sealed partial class WashingMachineSystem : EntitySystem
                 _slots.TryEject(uid, slot, null, out _);
                 _slots.SetLock(uid, slotId, false);
             }
+
+            if (component.WashingSoundEntity != null)
+            {
+                EntityManager.DeleteEntity(component.WashingSoundEntity);
+                component.WashingSoundEntity = null;
+                DirtyField(uid, component, nameof(WashingMachineComponent.WashingSoundEntity));
+            }
+
+            _audio.PlayPvs(component.FinishedSound, uid);
         }
     }
 
@@ -74,7 +85,9 @@ public sealed partial class WashingMachineSystem : EntitySystem
             _slots.RemoveItemSlot(ent.Owner, slot);
 
         ent.Comp.Slots.Clear();
-        DirtyField(ent.Owner, ent.Comp, nameof(WashingMachineComponent.Slots));
+
+        if (ent.Comp.WashingSoundEntity != null)
+            EntityManager.DeleteEntity(ent.Comp.WashingSoundEntity);
     }
 
     private static string GetSlotId(int i)
@@ -145,5 +158,9 @@ public sealed partial class WashingMachineSystem : EntitySystem
 
         foreach (var slot in ent.Comp.Slots.Values)
             _slots.SetLock(ent.Owner, slot, true);
+
+        var audio = _audio.PlayPvs(ent.Comp.WashingSound, ent.Owner);
+        ent.Comp.WashingSoundEntity = audio?.Entity;
+        DirtyField(ent.Owner, ent.Comp, nameof(WashingMachineComponent.WashingSoundEntity));
     }
 }
