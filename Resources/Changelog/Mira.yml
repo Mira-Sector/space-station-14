@@ -1599,3 +1599,9 @@ Entries:
     type: Tweak
   id: 228
   time: '2025-04-24T16:40:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Donk Co vending machine can spawn as a random vending machine
+    type: Add
+  id: 229
+  time: '2025-04-24T23:30:00.0000000+00:00'
