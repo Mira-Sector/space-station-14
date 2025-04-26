@@ -1,0 +1,15 @@
+- type: vendingMachineInventory
+  id: DonkCoInventory
+  startingInventory:
+    FoodDonkpocket: 5
+    FoodDonkpocketSpicy: 5
+    FoodDonkpocketDank: 5
+    FoodDonkpocketTeriyaki: 5
+    FoodDonkpocketPizza: 5
+    FoodDonkpocketBerry: 5
+    FoodDonkpocketStonk: 5
+  contrabandInventory:
+    FoodDonkpocketHonk: 5
+    FoodDonkpocketCarp: 5
+  emaggedInventory:
+    FoodDonkpocketDink: 5
