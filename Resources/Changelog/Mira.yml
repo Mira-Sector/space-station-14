@@ -1613,3 +1613,9 @@ Entries:
     type: Add
   id: 230
   time: '2025-04-27T19:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Beepsky will no longer arrest you for having job specific contraband
+    type: Fix
+  id: 231
+  time: '2025-04-27T22:00:00.0000000+00:00'
