@@ -139,6 +139,9 @@ public sealed partial class WashingMachineSystem : EntitySystem
         if (!_power.IsPowered(ent.Owner))
             return false;
 
+        if (_storage.IsOpen(ent.Owner))
+            return false;
+
         return true;
     }
 
