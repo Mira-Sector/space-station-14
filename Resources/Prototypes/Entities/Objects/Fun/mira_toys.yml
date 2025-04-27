@@ -107,3 +107,76 @@
   - type: Sprite
     sprite: Objects/Fun/mira_plushies.rsi
     state: plushie_wudanty
+
+- type: entity
+  parent: BaseItem
+  id: ToyDSword
+  name: double toy sword
+  description: New Sandy-Cat plastic double sword! Soooo realistic, you'll get shot INSTANTLY!
+  components:
+  - type: EnergySword
+    colorOptions:
+    - DodgerBlue
+  - type: ItemToggleActiveSound
+    activeSound:
+      path: /Audio/Weapons/ebladehum.ogg
+  - type: Sprite
+    sprite: Objects/Fun/toy_d_sword.rsi
+    layers:
+    - state: e_double_sword
+    - state: e_double_sword_blade
+      color: "#FFFFFF"
+      visible: false
+      shader: unshaded
+      map: [ "blade" ]
+  - type: Item
+    size: Small
+    sprite: Objects/Fun/toy_d_sword.rsi
+  - type: UseDelay
+    delay: 1.0
+  - type: Wieldable
+    wieldSound: null
+  - type: PointLight
+    enabled: false
+    radius: 2
+    energy: 2
+    color: white
+    netsync: false
+  - type: Appearance
+  - type: ToggleableLightVisuals
+    spriteLayer: blade
+    inhandVisuals:
+      left:
+      - state: inhand-left-blade
+        shader: unshaded
+      right:
+      - state: inhand-right-blade
+        shader: unshaded
+  - type: ItemTogglePointLight
+  - type: DisarmMalus
+    malus: 0
+  - type: StaminaDamageOnHit
+    damage: 12
+  - type: MeleeWeapon
+    wideAnimationRotation: -135
+    attackRate: 1
+    damage:
+      types:
+        Blunt: 0
+  - type: ItemToggle
+    onUse: false
+    onActivate: false
+    soundActivate:
+      path: /Audio/Weapons/ebladeon.ogg
+      params:
+        volume: 3
+    soundDeactivate:
+      path: /Audio/Weapons/ebladeoff.ogg
+      params:
+        volume: 3
+  - type: ItemToggleMeleeWeapon
+    activatedSoundOnSwing:
+      path: /Audio/Weapons/eblademiss.ogg
+      params:
+        volume: 3
+        variation: 0.250

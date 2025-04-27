@@ -2234,8 +2234,8 @@
 - type: entity
   parent: VendingMachine
   id: VendingMachineDonk
-  name: DONK CO.
-  description: A vending machine selling various DONK CO. products. Not recommended with a weak stomach.
+  name: DONK CO. Vendor
+  description: A vending machine selling various DONK CO products. Not recommended for those with a weak stomach.
   components:
   - type: VendingMachine
     pack: DonkCoInventory
@@ -2261,3 +2261,52 @@
       shader: unshaded
     - state: panel
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
+
+- type: entity
+  parent: VendingMachine
+  id: VendingMachineDonksoft
+  name: Donksoft Toy Vendor
+  description: A vending machine selling various DONK CO toys.
+  components:
+  - type: VendingMachine
+    pack: DonkSoftInventory
+    offState: off
+    brokenState: broken
+    normalState: normal-unshaded
+  - type: Advertise
+    pack: DonksoftAds
+  - type: SpeakOnUIClosed
+    pack: DonksoftGoodbyes
+  - type: Speech
+  - type: PointLight
+    radius: 1.5
+    energy: 1.3 # reduced energy since the color is pure white
+    color: "#FFFFFF"
+  - type: Sprite
+    sprite: Structures/Machines/VendingMachines/donksoft.rsi
+    layers:
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.Base"]
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
+      shader: unshaded
+    - state: panel
+      map: ["enum.WiresVisualLayers.MaintenancePanel"]
+
+- type: entity
+  parent: VendingMachineDonksoft
+  id: VendingMachineSyndicateDonksoft
+  name: Syndicate Donksoft Toy Vendor
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/VendingMachines/donksoftsyndicate.rsi
+    layers:
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.Base"]
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
+      shader: unshaded
+    - state: panel
+      map: ["enum.WiresVisualLayers.MaintenancePanel"]
+  - type: AccessReader
+    access: [["SyndicateAgent"]]

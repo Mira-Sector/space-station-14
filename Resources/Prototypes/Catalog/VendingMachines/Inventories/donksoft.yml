@@ -1,0 +1,15 @@
+- type: vendingMachineInventory
+  id: DonkSoftInventory
+  startingInventory:
+    ToySword: 2
+    FoamCutlass: 2
+    FoamCrossbow: 2
+    WeaponRifleFoam: 2
+    GrenadeFoamDart: 5
+    BoxDonkSoftBox: 4 # What the hell is that id.
+  contrabandInventory:
+    ToyDSword: 1
+    SingularityToy: 1
+    TeslaToy: 1
+  emaggedInventory:
+    SyndicateMicrowaveMachineCircuitboard: 1
