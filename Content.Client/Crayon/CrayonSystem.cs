@@ -2,6 +2,7 @@ using Content.Client.Items;
 using Content.Client.Message;
 using Content.Client.Stylesheets;
 using Content.Shared.Crayon;
+using Content.Shared.Dyable;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.GameObjects;
@@ -18,6 +19,7 @@ public sealed class CrayonSystem : SharedCrayonSystem
     {
         base.Initialize();
         SubscribeLocalEvent<CrayonComponent, ComponentHandleState>(OnCrayonHandleState);
+        SubscribeLocalEvent<CrayonComponent, GetDyableColorsEvent>(OnDyeGetColor);
         Subs.ItemStatus<CrayonComponent>(ent => new StatusControl(ent));
     }
 

@@ -34,6 +34,7 @@
   - ElectricGrillMachineCircuitboard
   - BoozeDispenserMachineCircuitboard
   - SodaDispenserMachineCircuitboard
+  - WashingMachineCircuitboard
 
 - type: latheRecipePack
   id: HydroponicsStatic
