@@ -2211,3 +2211,23 @@
     Telecrystal: 2
   categories:
   - UplinkDeception
+
+- type: listing
+  id: UplinkToySword
+  name: uplink-toy-sword-name
+  description: uplink-toy-sword-desc
+  productEntity: ToySword
+  cost:
+    Telecrystal: 3
+  categories:
+  - UplinkPointless
+
+- type: listing
+  id: UplinkToyDSword
+  name: uplink-toy-double-sword-name
+  description: uplink-toy-double-sword-desc
+  productEntity: ToyDSword
+  cost:
+    Telecrystal: 6
+  categories:
+  - UplinkPointless
