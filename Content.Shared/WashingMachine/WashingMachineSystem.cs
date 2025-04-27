@@ -71,6 +71,8 @@ public sealed partial class WashingMachineSystem : EntitySystem
             var itemEv = new WashingMachineWashedEvent(uid, items);
             foreach (var item in items)
                 RaiseLocalEvent(item, itemEv);
+
+            _storage.OpenStorage(uid);
         }
     }
 

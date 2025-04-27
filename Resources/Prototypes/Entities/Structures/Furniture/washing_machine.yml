@@ -26,6 +26,8 @@
     finishedSound:
       path: /Audio/Machines/washing_open.ogg
   - type: EntityStorage
+    isCollidableWhenOpen: true
+    open: true
     capacity: 8
     whitelist:
       components:
