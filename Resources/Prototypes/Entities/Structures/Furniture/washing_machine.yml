@@ -12,8 +12,12 @@
     layers:
     - state: base
       map: [ "enum.StorageVisualLayers.Base" ]
-    - state: closed-empty
+    - state: empty
+      map: [ "content" ]
+    - state: door-open
       map: [ "enum.StorageVisualLayers.Door" ]
+    - state: running
+      map: [ "washing" ]
     - state: panel
       map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
       visible: false
@@ -37,12 +41,16 @@
   - type: GenericVisualizer
     visuals:
       enum.WashingMachineVisuals.State:
-        enum.StorageVisualLayers.Door:
-          Idle: { state: open-empty }
-          Washing: { state: running }
-          Broken: { state: open-empty }
+        washing:
+          Idle: { visible: false }
+          Washing: { visible: true }
+          Broken: { visible: false }
+      enum.StorageVisuals.HasContents:
+        content:
+          True: { state: full }
+          False: { state: empty }
   - type: EntityStorageVisuals
-    stateDoorOpen: open-empty
-    stateDoorClosed: closed-empty
+    stateDoorOpen: door-open
+    stateDoorClosed: door-closed
   - type: Machine
     board: WashingMachineCircuitboard

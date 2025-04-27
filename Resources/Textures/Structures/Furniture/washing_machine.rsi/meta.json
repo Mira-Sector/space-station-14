@@ -12,16 +12,16 @@
         "name": "base"
     },
     {
-        "name": "closed-empty"
+        "name": "door-open"
     },
     {
-        "name": "closed-full"
+        "name": "door-closed"
     },
     {
-        "name": "open-empty"
+        "name": "empty"
     },
     {
-        "name": "open-full"
+        "name": "full"
     },
     {
         "name": "panel"
