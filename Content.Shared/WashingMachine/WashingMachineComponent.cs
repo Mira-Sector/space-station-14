@@ -15,8 +15,7 @@ public sealed partial class WashingMachineComponent : Component
     [DataField, AutoNetworkedField]
     public SoundSpecifier? WashingSound;
 
-    [ViewVariables, AutoNetworkedField]
-    public EntityUid? WashingSoundEntity;
+    public EntityUid? WashingSoundStream;
 
     [DataField, AutoNetworkedField]
     public SoundSpecifier? FinishedSound;

@@ -6,6 +6,7 @@ using Content.Shared.Storage.EntitySystems;
 using Content.Shared.Verbs;
 using Content.Shared.WashingMachine.Events;
 using Robust.Shared.Audio.Systems;
+using Robust.Shared.Network;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using System.Linq;
@@ -18,6 +19,7 @@ public sealed partial class WashingMachineSystem : EntitySystem
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedPowerReceiverSystem _power = default!;
     [Dependency] private readonly SharedEntityStorageSystem _storage = default!;
+    [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
 
     public override void Initialize()
@@ -57,14 +59,11 @@ public sealed partial class WashingMachineSystem : EntitySystem
             if (_storage.ResolveStorage(uid, ref entityStorageComp))
                 items = entityStorageComp.Contents.ContainedEntities.ToHashSet();
 
-            if (component.WashingSoundEntity != null)
-            {
-                EntityManager.DeleteEntity(component.WashingSoundEntity);
-                component.WashingSoundEntity = null;
-                DirtyField(uid, component, nameof(WashingMachineComponent.WashingSoundEntity));
-            }
+            if (component.WashingSoundStream != null)
+                component.WashingSoundStream = _audio.Stop(component.WashingSoundStream);
 
-            _audio.PlayPvs(component.FinishedSound, uid);
+            if (_net.IsServer)
+                _audio.PlayPvs(component.FinishedSound, uid);
 
             var machineEv = new WashingMachineFinishedWashingEvent(items);
             RaiseLocalEvent(uid, machineEv);
@@ -82,8 +81,7 @@ public sealed partial class WashingMachineSystem : EntitySystem
 
     private void OnRemoved(Entity<WashingMachineComponent> ent, ref ComponentRemove args)
     {
-        if (ent.Comp.WashingSoundEntity != null)
-            EntityManager.DeleteEntity(ent.Comp.WashingSoundEntity);
+        _audio.Stop(ent.Comp.WashingSoundStream);
     }
 
     private void OnBreak(Entity<WashingMachineComponent> ent, ref BreakageEventArgs args)
@@ -160,9 +158,11 @@ public sealed partial class WashingMachineSystem : EntitySystem
         if (_storage.ResolveStorage(ent.Owner, ref entityStorageComp))
             items = entityStorageComp.Contents.ContainedEntities.ToHashSet();
 
-        var audio = _audio.PlayPvs(ent.Comp.WashingSound, ent.Owner);
-        ent.Comp.WashingSoundEntity = audio?.Entity;
-        DirtyField(ent.Owner, ent.Comp, nameof(WashingMachineComponent.WashingSoundEntity));
+        if (_net.IsServer)
+        {
+            var audio = _audio.PlayPvs(ent.Comp.WashingSound, ent.Owner);
+            ent.Comp.WashingSoundStream = audio?.Entity;
+        }
 
         var machineEv = new WashingMachineStartedWashingEvent(items);
         RaiseLocalEvent(ent.Owner, machineEv);
