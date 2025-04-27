@@ -1,4 +1,3 @@
-using Content.Shared.Containers.ItemSlots;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 
@@ -14,20 +13,14 @@ public sealed partial class WashingMachineComponent : Component
     public TimeSpan WashingFinished;
 
     [DataField, AutoNetworkedField]
-    public SoundSpecifier WashingSound;
+    public SoundSpecifier? WashingSound;
 
     [ViewVariables, AutoNetworkedField]
     public EntityUid? WashingSoundEntity;
 
     [DataField, AutoNetworkedField]
-    public SoundSpecifier FinishedSound;
+    public SoundSpecifier? FinishedSound;
 
     [ViewVariables, AutoNetworkedField, Access(typeof(WashingMachineSystem))]
     public WashingMachineState WashingMachineState;
-
-    [DataField("slots")]
-    public uint SlotCount = 8;
-
-    [ViewVariables, AutoNetworkedField, Access(typeof(WashingMachineSystem))]
-    public Dictionary<string, ItemSlot> Slots = new();
 }
