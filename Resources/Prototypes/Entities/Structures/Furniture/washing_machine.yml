@@ -37,6 +37,8 @@
       components:
       - Clothing
       - Dyable
+      sizes:
+      - Tiny
   - type: Appearance
   - type: GenericVisualizer
     visuals:

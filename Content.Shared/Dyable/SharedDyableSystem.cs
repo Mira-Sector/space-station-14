@@ -1,8 +1,11 @@
+using System.Linq;
 using Content.Shared.Clothing.Components;
 using Content.Shared.Clothing.EntitySystems;
 using Content.Shared.Item;
+using Content.Shared.WashingMachine.Events;
 using JetBrains.Annotations;
 using Robust.Shared.Reflection;
+using Vector4 = System.Numerics.Vector4;
 
 namespace Content.Shared.Dyable;
 
@@ -18,6 +21,7 @@ public abstract partial class SharedDyableSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<DyableComponent, ComponentInit>(OnInit);
+        SubscribeLocalEvent<DyableComponent, WashingMachineIsBeingWashed>(OnWashed);
     }
 
     private void OnInit(Entity<DyableComponent> ent, ref ComponentInit args)
@@ -26,6 +30,44 @@ public abstract partial class SharedDyableSystem : EntitySystem
         UpdateClothing(ent);
         UpdateItem(ent);
         UpdateForensics(ent);
+    }
+
+    private void OnWashed(Entity<DyableComponent> ent, ref WashingMachineIsBeingWashed args)
+    {
+        HashSet<Color> colors = new();
+
+        foreach (var item in args.Items)
+        {
+            var ev = new GetDyableColorsEvent();
+            RaiseLocalEvent(item, ev);
+
+            if (!ev.Handled)
+                continue;
+
+            colors.Add(ev.Color);
+        }
+
+        if (!colors.Any())
+            return;
+
+        SetColor((ent.Owner, ent.Comp), MixColors(colors));
+    }
+
+    private static Color MixColors(HashSet<Color> colors)
+    {
+        if (colors.Count == 1)
+            return colors.First();
+
+        float r = 1f, g = 1f, b = 1f;
+
+        foreach (var color in colors)
+        {
+            r *= 1f - color.R;
+            g *= 1f - color.G;
+            b *= 1f - color.B;
+        }
+
+        return new Color(1f - r, 1f - g, 1f - b);
     }
 
     private void UpdateClothing(Entity<DyableComponent> ent)
