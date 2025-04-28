@@ -30,7 +30,7 @@
 
 - type: entity
   parent: BaseMob
-  id: MobGodBase
+  id: MobEldergodBase
   components:
   - type: CargoSellBlacklist
   - type: ContentEye
@@ -88,7 +88,7 @@
     maxRange: 8
 
 - type: entity
-  parent: [MobNarsieBase, BaseMob, MobGodBase]
+  parent: [MobNarsieBase, MobEldergodBase, BaseMob]
   id: MobNarsie
   components:
   - type: AnnounceOnSpawn
@@ -130,7 +130,7 @@
     prototype: MobRatvar
 
 - type: entity
-  parent: [MobRatvarBase, BaseMob, MobGodBase]
+  parent: [MobRatvarBase, MobEldergodBase, BaseMob]
   id: MobRatvar
   components:
   - type: AnnounceOnSpawn
@@ -174,7 +174,7 @@
     prototype: MobHonkmother
 
 - type: entity
-  parent: [MobHonkmotherBase, BaseMob, MobGodBase]
+  parent: [MobHonkmotherBase, MobEldergodBase, BaseMob]
   id: MobHonkmother
   components:
   - type: AnnounceOnSpawn
