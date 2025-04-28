@@ -5,7 +5,6 @@ using Content.Shared.Item;
 using Content.Shared.WashingMachine.Events;
 using JetBrains.Annotations;
 using Robust.Shared.Reflection;
-using Vector4 = System.Numerics.Vector4;
 
 namespace Content.Shared.Dyable;
 
