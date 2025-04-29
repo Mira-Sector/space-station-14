@@ -1,7 +1,9 @@
+using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Inventory;
 using Content.Shared.Item;
 using Content.Shared.Slippery;
+using Content.Shared.WashingMachine.Events;
 
 namespace Content.Shared.Stains;
 
@@ -17,6 +19,7 @@ public abstract partial class SharedStainableSystem : EntitySystem
 
         SubscribeLocalEvent<StainableComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<StainableComponent, InventoryRelayedEvent<SlippedEvent>>(OnSlipped);
+        SubscribeLocalEvent<StainableComponent, WashingMachineIsBeingWashed>(OnWashed);
     }
 
     private void OnInit(Entity<StainableComponent> ent, ref ComponentInit args)
@@ -32,6 +35,20 @@ public abstract partial class SharedStainableSystem : EntitySystem
     private void OnSlipped(Entity<StainableComponent> ent, ref InventoryRelayedEvent<SlippedEvent> args)
     {
         TransferStain(ent, args.Args.Slipper);
+    }
+
+    private void OnWashed(Entity<StainableComponent> ent, ref WashingMachineIsBeingWashed args)
+    {
+        if (!Solution.TryGetSolution(ent.Owner, ent.Comp.SolutionId, out var solution))
+            return;
+
+        WashingForensics(ent, solution.Value, args.WashingMachine);
+
+        Solution.RemoveAllSolution(solution.Value);
+    }
+
+    protected virtual void WashingForensics(Entity<StainableComponent> ent, Entity<SolutionComponent> solution, EntityUid washingMachine)
+    {
     }
 
     private void TransferStain(Entity<StainableComponent> ent, EntityUid sourceUid)

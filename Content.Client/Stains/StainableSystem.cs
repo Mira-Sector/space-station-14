@@ -66,14 +66,14 @@ public sealed partial class StainableSystem : SharedStainableSystem
         if (!Solution.TryGetSolution(ent.Owner, ent.Comp.SolutionId, out var solution))
             yield break;
 
-        if (solution.Value.Comp.Solution.Volume < FixedPoint2.Zero)
+        if (solution.Value.Comp.Solution.Volume <= FixedPoint2.Zero)
             yield break;
 
         var color = solution.Value.Comp.Solution.GetColor(null);
 
         var prefix = identifier == null
             ? $"{_layerPrefix}-"
-            : $"{_layerPrefix}-{identifier}-";
+            : $"{identifier}-{_layerPrefix}-";
 
         for (var i = 0; i < layers.Count; i++)
         {
