@@ -1619,3 +1619,11 @@ Entries:
     type: Fix
   id: 231
   time: '2025-04-27T22:00:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Added the double bladed toy sword
+    type: Add
+  - message: Toy sword can be purchased in the uplink for 3tc and the double bladed toy sword for 6tc
+    type: Add
+  id: 232
+  time: '2025-04-29T16:10:00.0000000+00:00'
