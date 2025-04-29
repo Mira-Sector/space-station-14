@@ -1,6 +1,7 @@
 flavor-profile = Tastes {$flavor}.
 flavor-profile-multiple = Tastes {$flavors} and {$lastFlavor}.
 flavor-profile-unknown = Tastes indescribable.
+flavor-profile-no-taste = It probably tastes amazing if you had a tongue.
 
 # Base flavors. Use these when you can't think of anything.
 # These are specifically flavors that are placed in front

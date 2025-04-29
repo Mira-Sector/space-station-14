@@ -1,3 +1,4 @@
+using Content.Shared.Access;
 using Content.Shared.Access.Systems;
 using Content.Shared.Contraband;
 using Content.Shared.Clothing;
@@ -14,7 +15,9 @@ namespace Content.Shared.Security.Systems;
 
 public sealed class CriminalStatusSystem : EntitySystem
 {
+    [Dependency] private readonly SharedAccessSystem _access = default!;
     [Dependency] private readonly SharedIdCardSystem _id = default!;
+    [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
 
     public override void Initialize()
@@ -112,19 +115,41 @@ public sealed class CriminalStatusSystem : EntitySystem
 
     private bool CheckIdCard(EntityUid uid, ContrabandComponent contraband)
     {
-        HashSet<ProtoId<DepartmentPrototype>> departments = new();
+        var departments = new HashSet<ProtoId<DepartmentPrototype>>(contraband.AllowedDepartments);
+
+        HashSet<ProtoId<AccessLevelPrototype>> jobs = new();
+        foreach (var jobId in contraband.AllowedJobs)
+        {
+            if (!_prototype.TryIndex(jobId, out var job))
+                continue;
+
+            jobs.UnionWith(job.Access);
+        }
+
         if (_id.TryFindIdCards(uid, out var ids))
         {
             foreach (var id in ids)
             {
                 foreach (var department in id.Comp.JobDepartments)
                 {
-                    departments.Add(department);
+                    if (departments.Contains(department))
+                        return true;
+                }
+
+                var access = _access.TryGetTags(id.Owner);
+
+                if (access == null)
+                    continue;
+
+                foreach (var job in access)
+                {
+                    if (jobs.Contains(job))
+                        return true;
                 }
             }
         }
 
-        return contraband.AllowedDepartments != null && departments.Intersect(contraband.AllowedDepartments).Any();
+        return false;
     }
 
     private bool UpdateIdCard(Entity<CriminalRecordComponent> ent, EntityUid item)

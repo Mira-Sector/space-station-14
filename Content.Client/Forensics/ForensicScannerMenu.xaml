@@ -20,7 +20,7 @@
         <Label
             Name="NameLabel"
             Align="Center" />
-        <Label
+        <RichTextLabel
             Name="Diagnostics"
             Text="{Loc forensic-scanner-interface-no-data}"/>
     </BoxContainer>

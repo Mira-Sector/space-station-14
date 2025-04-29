@@ -126,31 +126,31 @@ public partial class ChatSystem
     ///     Tries to find and play relevant emote sound in emote sounds collection.
     /// </summary>
     /// <returns>True if emote sound was played.</returns>
-    public bool TryPlayEmoteSound(EntityUid uid, EmoteSoundsPrototype? proto, EmotePrototype emote)
+    public bool TryPlayEmoteSound(EntityUid uid, EmoteSounds? sounds, EmotePrototype emote)
     {
-        return TryPlayEmoteSound(uid, proto, emote.ID);
+        return TryPlayEmoteSound(uid, sounds, emote.ID);
     }
 
     /// <summary>
     ///     Tries to find and play relevant emote sound in emote sounds collection.
     /// </summary>
     /// <returns>True if emote sound was played.</returns>
-    public bool TryPlayEmoteSound(EntityUid uid, EmoteSoundsPrototype? proto, string emoteId)
+    public bool TryPlayEmoteSound(EntityUid uid, EmoteSounds? sounds, string emoteId)
     {
-        if (proto == null)
+        if (sounds == null)
             return false;
 
         // try to get specific sound for this emote
-        if (!proto.Sounds.TryGetValue(emoteId, out var sound))
+        if (!sounds.Sounds.TryGetValue(emoteId, out var sound))
         {
             // no specific sound - check fallback
-            sound = proto.FallbackSound;
+            sound = sounds.FallbackSound;
             if (sound == null)
                 return false;
         }
 
         // if general params for all sounds set - use them
-        var param = proto.GeneralParams ?? sound.Params;
+        var param = sounds.GeneralParams ?? sound.Params;
         _audio.PlayPvs(sound, uid, param);
         return true;
     }

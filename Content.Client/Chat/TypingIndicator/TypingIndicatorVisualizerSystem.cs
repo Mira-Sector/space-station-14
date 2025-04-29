@@ -1,14 +1,17 @@
-﻿using Content.Shared.Chat.TypingIndicator;
+using Content.Shared.Chat.TypingIndicator;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Shared.Prototypes;
 using Content.Shared.Inventory;
+using Content.Shared.Body.Components;
+using Content.Shared.Body.Systems;
 
 namespace Content.Client.Chat.TypingIndicator;
 
 public sealed class TypingIndicatorVisualizerSystem : VisualizerSystem<TypingIndicatorComponent>
 {
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+    [Dependency] private readonly SharedBodySystem _body = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
 
 
@@ -23,6 +26,9 @@ public sealed class TypingIndicatorVisualizerSystem : VisualizerSystem<TypingInd
 
         if (TryComp<InventoryComponent>(uid, out var inventoryComp))
             _inventory.RelayEvent((uid, inventoryComp), ref evt);
+
+        if (TryComp<BodyComponent>(uid, out var bodyComp))
+            _body.RelayToOrgans(uid, bodyComp, evt);
 
         var overrideIndicator = evt.GetMostRecentIndicator();
 

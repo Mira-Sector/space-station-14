@@ -34,6 +34,17 @@
   - ElectricGrillMachineCircuitboard
   - BoozeDispenserMachineCircuitboard
   - SodaDispenserMachineCircuitboard
+  - WashingMachineCircuitboard
+
+- type: latheRecipePack
+  id: HydroponicsStatic
+  recipes:
+  - HydroponicsToolMiniHoe
+  - HydroponicsToolScythe
+  - HydroponicsToolHatchet
+  - HydroponicsToolSpade
+  - HydroponicsToolClippers
+  - PlantAnalyzer
 
 ## Dynamic
 
@@ -49,6 +60,11 @@
   id: Instruments
   recipes:
   - SynthesizerInstrument
+
+- type: latheRecipePack
+  id: Cartridge
+  recipes:
+  - PlantScanCartridge
 
 - type: latheRecipePack
   id: ServiceBoards

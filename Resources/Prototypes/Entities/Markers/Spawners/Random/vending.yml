@@ -32,6 +32,7 @@
     - VendingMachineSovietSoda #Boda
     - VendingMachineSpaceUp
     - VendingMachineStarkist
+    - VendingMachineDonk
     chance: 1
 
 
@@ -40,12 +41,14 @@
   table: !type:GroupSelector
     children:
     - id: VendingMachineClothing
-      weight: 40
+      weight: 35
     - id: VendingMachineWinter
-      weight: 40
+      weight: 35
     - id: VendingMachinePride
       weight: 10
     - id: VendingMachineTheater
+      weight: 10
+    - id: VendingMachineDonksoft
       weight: 10
 
 - type: entity

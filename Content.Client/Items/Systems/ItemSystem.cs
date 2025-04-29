@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Shared.Hands;
 using Content.Shared.Inventory.Events;
@@ -70,6 +70,11 @@ public sealed class ItemSystem : SharedItemSystem
             {
                 key = i == 0 ? defaultKey : $"{defaultKey}-{i}";
                 i++;
+            }
+            else
+            {
+                key = $"{args.Location}-{key}";
+                layer.MapKeys = [key];
             }
 
             args.Layers.Add((key, layer));

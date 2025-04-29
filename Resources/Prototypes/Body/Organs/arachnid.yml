@@ -211,3 +211,10 @@
     state: tongue
   - type: Organ
     organType: Tongue
+  - type: TypingIndicatorOrgan
+    proto: spider
+  - type: VocalOrgan
+    sounds:
+      Male: UnisexArachnid
+      Female: UnisexArachnid
+      Unsexed: UnisexArachnid

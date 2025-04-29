@@ -23,7 +23,7 @@
     mustBeEquippedToUse: true
   - type: Fiber
     fiberMaterial: fibers-leather
-    fiberColor: fibers-red
+    fiberColor: "#940000"
   - type: FingerprintMask
   - type: Tag
     tags:
@@ -43,7 +43,7 @@
     sprite: Clothing/Hands/Gloves/Boxing/boxingblue.rsi
   - type: Fiber
     fiberMaterial: fibers-leather
-    fiberColor: fibers-blue
+    fiberColor: "#0089EF"
   - type: FingerprintMask
 
 - type: entity
@@ -59,7 +59,7 @@
     sprite: Clothing/Hands/Gloves/Boxing/boxinggreen.rsi
   - type: Fiber
     fiberMaterial: fibers-leather
-    fiberColor: fibers-green
+    fiberColor: "#5ABF2F"
   - type: FingerprintMask
 
 - type: entity
@@ -75,7 +75,7 @@
     sprite: Clothing/Hands/Gloves/Boxing/boxingyellow.rsi
   - type: Fiber
     fiberMaterial: fibers-leather
-    fiberColor: fibers-yellow
+    fiberColor: "#ffe14d"
   - type: FingerprintMask
 
 - type: entity
@@ -106,7 +106,7 @@
   - type: Insulated
   - type: Fiber
     fiberMaterial: fibers-durathread
-    fiberColor: fibers-regal-blue
+    fiberColor: "#2d4c53"
   - type: FingerprintMask
 
 - type: entity
@@ -121,7 +121,7 @@
     sprite: Clothing/Hands/Gloves/hop.rsi
   - type: Fiber
     fiberMaterial: fibers-durathread
-    fiberColor: fibers-black
+    fiberColor: "#535353"
   - type: Armor
     basePart: Arm
     modifiers:
@@ -169,7 +169,7 @@
     sprite: Clothing/Hands/Gloves/leather.rsi
   - type: Fiber
     fiberMaterial: fibers-leather
-    fiberColor: fibers-brown
+    fiberColor: "#723A02"
   - type: FingerprintMask
   - type: DamageOnInteractProtection
     damageProtection:
@@ -203,7 +203,7 @@
     sprite: Clothing/Hands/Gloves/robohands.rsi
   - type: Fiber
     fiberMaterial: fibers-leather
-    fiberColor: fibers-black
+    fiberColor: "#535353"
   - type: FingerprintMask
 
 - type: entity
@@ -287,7 +287,7 @@
     sprite: Clothing/Hands/Gloves/tacticalmaidgloves.rsi
   - type: Insulated
   - type: Fiber
-    fiberColor: fibers-black
+    fiberColor: "#535353"
 
 - type: entity
   parent: [ BaseSecurityCargoContraband, ClothingHandsGlovesCombat ]
@@ -305,7 +305,7 @@
     - id: ClothingHandsGlovesMercFingerless
   - type: Fiber
     fiberMaterial: fibers-insulative
-    fiberColor: fibers-olive
+    fiberColor: "#818155"
 
 - type: entity
   parent: ClothingHandsButcherable
@@ -319,7 +319,7 @@
     sprite: Clothing/Hands/Gloves/fingerless.rsi
   - type: Fiber
     fiberMaterial: fibers-synthetic
-    fiberColor: fibers-black
+    fiberColor: "#535353"
   - type: DamageOnInteractProtection
     damageProtection:
       flatReductions:
@@ -337,7 +337,7 @@
     sprite: Clothing/Hands/Gloves/fingerlessinsuls.rsi
   - type: Fiber
     fiberMaterial: fibers-insulative
-    fiberColor: fibers-yellow
+    fiberColor: "#ffe14d"
   - type: DamageOnInteractProtection
     damageProtection:
       flatReductions:
@@ -355,7 +355,7 @@
     sprite: Clothing/Hands/Gloves/mercfingerless.rsi
   - type: Fiber
     fiberMaterial: fibers-insulative
-    fiberColor: fibers-olive
+    fiberColor: "#818155"
   - type: DamageOnInteractProtection
     damageProtection:
       flatReductions:
@@ -405,7 +405,7 @@
     mustBeEquippedToUse: true
   - type: Fiber
     fiberMaterial: fibers-leather
-    fiberColor: fibers-blue
+    fiberColor: "#0089EF"
   - type: FingerprintMask
   - type: MeleeSpeech
   - type: ActivatableUI
@@ -447,5 +447,5 @@
     sprite: Clothing/Hands/Gloves/janitor.rsi
   - type: Fiber
     fiberMaterial: fibers-rubber
-    fiberColor: fibers-yellow
+    fiberColor: "#ffe14d"
   - type: FingerprintMask

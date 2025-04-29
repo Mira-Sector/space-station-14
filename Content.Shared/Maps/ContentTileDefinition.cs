@@ -17,6 +17,8 @@ namespace Content.Shared.Maps
     {
         [ValidatePrototypeId<ToolQualityPrototype>]
         public const string PryingToolQualityCrowbar = "Prying";
+
+        [ValidatePrototypeId<ToolQualityPrototype>]
         public const string PryingToolQualityPlating = "Plating";
 
         public const string SpaceID = "Space";

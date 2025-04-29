@@ -1,0 +1,37 @@
+- type: body
+  id: DuckWhite
+  name: white duck
+  root: torso
+  slots:
+    head:
+      part: DuckWhiteHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganDuckTongue
+    torso:
+      part: DuckWhiteTorso
+      connections:
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_leg:
+      part: DuckWhiteRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: DuckWhiteLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: DuckWhiteRightFoot
+    left_foot:
+      part: DuckWhiteLeftFoot

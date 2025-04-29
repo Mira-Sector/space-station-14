@@ -1,0 +1,8 @@
+- type: entity
+  id: OrganParrotTongue
+  parent: OrganHumanTongue
+  components:
+  - type: ParrotAccent
+  - type: VocalOrgan
+    sounds:
+      Unsexed: Parrot

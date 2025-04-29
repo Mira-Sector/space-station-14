@@ -201,6 +201,7 @@ public abstract class ClothingSystem : EntitySystem
             layer.Color = color;
         }
     }
+
     public void SetLayerState(ClothingComponent clothing, string slot, string mapKey, string state)
     {
         foreach (var layer in clothing.ClothingVisuals[slot])

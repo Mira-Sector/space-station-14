@@ -32,7 +32,7 @@
   - type: UseDelay
     delay: 1
   - type: Fiber
-    fiberColor: fibers-white
+    fiberColor: "#EAE8E8"
   - type: DnaSubstanceTrace
   - type: Item
     size: Small
@@ -66,7 +66,7 @@
       - state: equipped-BELT
         color: "#EAE8E8"
   - type: Fiber
-    fiberColor: fibers-white
+    fiberColor: "#EAE8E8"
 
 - type: entity
   id: TowelColorPurple
@@ -97,7 +97,7 @@
       - state: equipped-BELT
         color: "#9C0DE1"
   - type: Fiber
-    fiberColor: fibers-purple
+    fiberColor: "#940000"
 
 - type: entity
   id: TowelColorRed
@@ -128,7 +128,7 @@
       - state: equipped-BELT
         color: "#940000"
   - type: Fiber
-    fiberColor: fibers-red
+    fiberColor: "#940000"
 
 - type: entity
   id: TowelColorBlue
@@ -159,7 +159,7 @@
       - state: equipped-BELT
         color: "#0089EF"
   - type: Fiber
-    fiberColor: fibers-blue
+    fiberColor: "#0089EF"
 
 - type: entity
   id: TowelColorDarkBlue
@@ -190,7 +190,7 @@
       - state: equipped-BELT
         color: "#3285ba"
   - type: Fiber
-    fiberColor: fibers-blue
+    fiberColor: "#0089EF"
 
 - type: entity
   id: TowelColorLightBlue
@@ -221,7 +221,7 @@
       - state: equipped-BELT
         color: "#58abcc"
   - type: Fiber
-    fiberColor: fibers-blue
+    fiberColor: "#0089EF"
 
 - type: entity
   id: TowelColorTeal
@@ -252,7 +252,7 @@
       - state: equipped-BELT
         color: "#3CB57C"
   - type: Fiber
-    fiberColor: fibers-teal
+    fiberColor: "#3CB57C"
 
 - type: entity
   id: TowelColorBrown
@@ -283,7 +283,7 @@
       - state: equipped-BELT
         color: "#723A02"
   - type: Fiber
-    fiberColor: fibers-light-brown
+    fiberColor: "#C09F72"
 
 - type: entity
   id: TowelColorLightBrown
@@ -314,7 +314,7 @@
       - state: equipped-BELT
         color: "#c59431"
   - type: Fiber
-    fiberColor: fibers-brown
+    fiberColor: "#723A02"
 
 - type: entity
   id: TowelColorGray
@@ -345,7 +345,7 @@
       - state: equipped-BELT
         color: "#999999"
   - type: Fiber
-    fiberColor: fibers-grey
+    fiberColor: "#999999"
 
 - type: entity
   id: TowelColorGreen
@@ -376,7 +376,7 @@
       - state: equipped-BELT
         color: "#5ABF2F"
   - type: Fiber
-    fiberColor: fibers-green
+    fiberColor: "#5ABF2F"
 
 - type: entity
   id: TowelColorDarkGreen
@@ -407,7 +407,7 @@
       - state: equipped-BELT
         color: "#79CC26"
   - type: Fiber
-    fiberColor: fibers-green
+    fiberColor: "#5ABF2F"
 
 - type: entity
   id: TowelColorGold
@@ -440,7 +440,7 @@
       - state: equipped-BELT
         color: "#F7C430"
   - type: Fiber
-    fiberColor: fibers-gold
+    fiberColor: "#F7C430"
 
 - type: entity
   id: TowelColorOrange
@@ -471,7 +471,7 @@
       - state: equipped-BELT
         color: "#EF8100"
   - type: Fiber
-    fiberColor: fibers-orange
+    fiberColor: "#EF8100"
 
 - type: entity
   id: TowelColorBlack
@@ -502,7 +502,7 @@
       - state: equipped-BELT
         color: "#535353"
   - type: Fiber
-    fiberColor: fibers-black
+    fiberColor: "#535353"
 
 - type: entity
   id: TowelColorPink
@@ -533,7 +533,7 @@
       - state: equipped-BELT
         color: "#ffa69b"
   - type: Fiber
-    fiberColor: fibers-pink
+    fiberColor: "#ffa69b"
 
 - type: entity
   id: TowelColorYellow
@@ -564,7 +564,7 @@
       - state: equipped-BELT
         color: "#ffe14d"
   - type: Fiber
-    fiberColor: fibers-yellow
+    fiberColor: "#ffe14d"
 
 - type: entity
   id: TowelColorMaroon
@@ -595,7 +595,7 @@
       - state: equipped-BELT
         color: "#cc295f"
   - type: Fiber
-    fiberColor: fibers-maroon
+    fiberColor: "#cc295f"
 
 - type: entity
   id: TowelColorSilver
@@ -628,7 +628,7 @@
       - state: equipped-BELT
         color: "#d0d0d0"
   - type: Fiber
-    fiberColor: fibers-silver
+    fiberColor: "#d0d0d0"
 
 - type: entity
   id: TowelColorMime
@@ -661,7 +661,7 @@
       - state: equipped-BELT
         color: "#EAE8E8"
   - type: Fiber
-    fiberColor: fibers-white
+    fiberColor: "#EAE8E8"
 
 - type: entity
   id: TowelColorNT
@@ -696,7 +696,7 @@
       - state: equipped-BELT
         color: "#004787"
   - type: Fiber
-    fiberColor: fibers-regal-blue
+    fiberColor: "#2d4c53"
 
 - type: entity
   id: TowelColorCentcom
@@ -729,7 +729,7 @@
       - state: equipped-BELT
         color: "#29722e"
   - type: Fiber
-    fiberColor: fibers-green
+    fiberColor: "#5ABF2F"
 
 - type: entity
   id: TowelColorSyndicate
@@ -762,5 +762,5 @@
       - state: equipped-BELT
         color: "#535353"
   - type: Fiber
-    fiberColor: fibers-black
+    fiberColor: "#535353"
 

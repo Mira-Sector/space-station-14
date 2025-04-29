@@ -1543,3 +1543,87 @@ Entries:
     type: Add
   id: 221
   time: '2025-04-18T05:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Accents are stored on the tongue
+    type: Add
+  - message: You need a tongue to taste and speak
+    type: Add
+  id: 222
+  time: '2025-04-18T23:00:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Added 4 new posters
+    type: Add
+  id: 223
+  time: '2025-04-21T10:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Emote sounds now properly update for adding a body part that contains a tongue
+    type: Fix
+  id: 224
+  time: '2025-04-21T11:20:00.0000000+00:00'
+- author: Ian321, Mehnix
+  changes:
+  - message: Plant Analyser, available roundstart in nutrivendor and botanist lockers, and at an autolathe. Rejoice.
+    type: Add
+  - message: Researchable PlantScan Cartridge, to bring plant-scanning to the PDA
+    type: Add
+  - message: Botany tools now available at an autolathe
+    type: Add
+  id: 225
+  time: '2025-04-21T16:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Engineering goggles now have a screen shader when worn
+    type: Add
+  - message: Engineering goggles can see structures and tiles behind walls
+    type: Add
+  id: 226
+  time: '2025-04-22T15:20:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Engineering goggles now properly render based on drawdepth
+    type: Fix
+  - message: Engineering goggles shows sprite rotations correctly
+    type: Fix
+  - message: Engineering goggles no longer hide wall mounted objects
+    type: Fix
+  - message: Engineering goggles only show the xray in the direction the user is facing
+    type: Tweak
+  id: 227
+  time: '2025-04-23T14:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: The engineering goggles xray no longer has a scrolling effect
+    type: Tweak
+  id: 228
+  time: '2025-04-24T16:40:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Donk Co vending machine can spawn as a random vending machine
+    type: Add
+  id: 229
+  time: '2025-04-24T23:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added washing machines
+    type: Add
+  - message: You can wash crayons with basic clothing to dye it
+    type: Add
+  id: 230
+  time: '2025-04-27T19:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Beepsky will no longer arrest you for having job specific contraband
+    type: Fix
+  id: 231
+  time: '2025-04-27T22:00:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Added the double bladed toy sword
+    type: Add
+  - message: Toy sword can be purchased in the uplink for 3tc and the double bladed toy sword for 6tc
+    type: Add
+  id: 232
+  time: '2025-04-29T16:10:00.0000000+00:00'
