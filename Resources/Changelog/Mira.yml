@@ -1627,3 +1627,15 @@ Entries:
     type: Add
   id: 232
   time: '2025-04-29T16:10:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Added googly eyes as maints loot
+    type: Add
+  id: 233
+  time: '2025-04-30T15:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Washing machines now leave forensics for stuff being washed
+    type: Add
+  id: 234
+  time: '2025-04-30T16:00:00.0000000+00:00'
