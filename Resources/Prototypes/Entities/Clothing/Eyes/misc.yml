@@ -33,3 +33,45 @@
   parent: [ClothingEyesEyepatch, ClothingHeadEyeBaseFlipped]
   id: ClothingEyesEyepatchFlipped
   suffix: flipped
+
+- type: entity
+  parent: ClothingEyesBase
+  id: ClothingEyesGooglyEyesNormal
+  name: googly eyes
+  description: 2 googly eyes that are still sticky enough to stick onto your, or anyone else's eyes.
+  components:
+  - type: Sprite
+    sprite: Clothing/Eyes/Misc/GooglyEyes/googly_eyes_normal.rsi
+  - type: Clothing
+    sprite: Clothing/Eyes/Misc/GooglyEyes/googly_eyes_normal.rsi
+  - type: Tag
+    tags:
+    - HamsterWearable
+    - WhitelistChameleon
+
+- type: entity
+  parent: ClothingEyesGooglyEyesNormal
+  id: ClothingEyesGooglyEyesAngry
+  components:
+  - type: Sprite
+    sprite: Clothing/Eyes/Misc/GooglyEyes/googly_eyes_angry.rsi
+  - type: Clothing
+    sprite: Clothing/Eyes/Misc/GooglyEyes/googly_eyes_angry.rsi
+
+- type: entity
+  parent: ClothingEyesGooglyEyesNormal
+  id: ClothingEyesGooglyEyesNormalCrazy
+  components:
+  - type: Sprite
+    sprite: Clothing/Eyes/Misc/GooglyEyes/googly_eyes_normal_crazy.rsi
+  - type: Clothing
+    sprite: Clothing/Eyes/Misc/GooglyEyes/googly_eyes_normal_crazy.rsi
+
+- type: entity
+  parent: ClothingEyesGooglyEyesNormal
+  id: ClothingEyesGooglyEyesAngryCrazy
+  components:
+  - type: Sprite
+    sprite: Clothing/Eyes/Misc/GooglyEyes/googly_eyes_angry_crazy.rsi
+  - type: Clothing
+    sprite: Clothing/Eyes/Misc/GooglyEyes/googly_eyes_angry_crazy.rsi
