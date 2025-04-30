@@ -17,6 +17,8 @@
         - id: ClothingEyesGooglyEyesNormal
         - id: ClothingEyesGooglyEyesAngry
         - id: ClothingEyesGooglyEyesNormalCrazy
+        - id: ClothingEyesGooglyEyesAngryCrazy
+        weight: 0.5
       # Gar glasses
       - !type:GroupSelector
         children:

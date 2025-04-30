@@ -66,3 +66,12 @@
     sprite: Clothing/Eyes/Misc/GooglyEyes/googly_eyes_normal_crazy.rsi
   - type: Clothing
     sprite: Clothing/Eyes/Misc/GooglyEyes/googly_eyes_normal_crazy.rsi
+
+- type: entity
+  parent: ClothingEyesGooglyEyesNormal
+  id: ClothingEyesGooglyEyesAngryCrazy
+  components:
+  - type: Sprite
+    sprite: Clothing/Eyes/Misc/GooglyEyes/googly_eyes_angry_crazy.rsi
+  - type: Clothing
+    sprite: Clothing/Eyes/Misc/GooglyEyes/googly_eyes_angry_crazy.rsi
