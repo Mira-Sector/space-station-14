@@ -14,7 +14,7 @@ public sealed partial class StainableComponent : Component
     public FixedPoint2 MaxVolume = 5f;
 
     [DataField]
-    public FixedPoint2 StainVolume = 0.2f;
+    public FixedPoint2 StainVolume = 0.02f;
 
     [DataField]
     public Dictionary<string, List<PrototypeLayerData>> ClothingVisuals = new();
