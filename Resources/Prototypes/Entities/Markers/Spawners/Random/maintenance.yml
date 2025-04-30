@@ -16,6 +16,7 @@
         children:
         - id: ClothingEyesGooglyEyesNormal
         - id: ClothingEyesGooglyEyesAngry
+        - id: ClothingEyesGooglyEyesNormalCrazy
       # Gar glasses
       - !type:GroupSelector
         children:
