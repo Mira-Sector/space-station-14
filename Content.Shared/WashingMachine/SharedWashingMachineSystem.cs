@@ -59,8 +59,7 @@ public abstract partial class SharedWashingMachineSystem : EntitySystem
             if (_storage.ResolveStorage(uid, ref entityStorageComp))
                 items = entityStorageComp.Contents.ContainedEntities.ToHashSet();
 
-            if (component.WashingSoundStream != null)
-                component.WashingSoundStream = _audio.Stop(component.WashingSoundStream);
+            component.WashingSoundStream = _audio.Stop(component.WashingSoundStream);
 
             if (_net.IsServer)
                 _audio.PlayPvs(component.FinishedSound, uid);
