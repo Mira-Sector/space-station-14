@@ -472,3 +472,9 @@ uplink-fake-mindshield-desc = A togglable implant capable of mimicking the same 
 
 uplink-smuggler-satchel-name = Smuggler's Satchel
 uplink-smuggler-satchel-desc = A handy, suspicious looking satchel. Just flat enough to fit underneath floor tiles.
+
+uplink-toy-sword-name = Toy Sword
+uplink-toy-sword-desc = A plastic toy sword, best for tricking the crew into thinking you have a super-dangerous weapon! But why buy this instead of the real deal?
+
+uplink-toy-double-sword-name = Double-Bladed Toy Sword
+uplink-toy-double-sword-desc = The plastic version of one of the most dangerous weapons of our times, deemed "too much" and removed from the uplink. Now this is some real tomfoolery.

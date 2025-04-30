@@ -297,3 +297,9 @@
   values:
     prefix: advertisement-donkco-
     count: 4
+
+- type: localizedDataset
+  id: DonksoftAds
+  values:
+    prefix: advertisement-donksoft-
+    count: 4
