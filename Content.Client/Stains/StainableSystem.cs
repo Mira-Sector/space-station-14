@@ -20,8 +20,8 @@ public sealed partial class StainableSystem : SharedStainableSystem
         base.Initialize();
 
         SubscribeLocalEvent<StainableComponent, AppearanceChangeEvent>(OnAppearanceChanged);
-        SubscribeLocalEvent<StainableComponent, GetEquipmentVisualsEvent>(OnClothingVisuals, before: [typeof(ClientClothingSystem)]);
-        SubscribeLocalEvent<StainableComponent, GetInhandVisualsEvent>(OnItemVisuals, before: [typeof(ItemSystem)]);
+        SubscribeLocalEvent<StainableComponent, GetEquipmentVisualsEvent>(OnClothingVisuals, after: [typeof(ClientClothingSystem)]);
+        SubscribeLocalEvent<StainableComponent, GetInhandVisualsEvent>(OnItemVisuals, after: [typeof(ItemSystem)]);
 
         _layerPrefix = _reflection.GetEnumReference(StainVisualLayers.Layer);
     }
@@ -72,8 +72,8 @@ public sealed partial class StainableSystem : SharedStainableSystem
         var color = solution.Value.Comp.Solution.GetColor(null);
 
         var prefix = identifier == null
-            ? $"{_layerPrefix}-"
-            : $"{identifier}-{_layerPrefix}-";
+            ? $"{_layerPrefix}"
+            : $"{identifier}-{_layerPrefix}";
 
         for (var i = 0; i < layers.Count; i++)
         {
