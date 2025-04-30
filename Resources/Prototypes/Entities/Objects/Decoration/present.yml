@@ -457,4 +457,16 @@
   - type: Sprite
     sprite: Objects/Decoration/easter_egg.rsi
     layers:
-    - state: easter_egg
+    - state: egg
+    - state: layer1
+      map: [ "EasterColors1" ]
+    - state: layer2
+      map: [ "EasterColors2" ]
+  - type: Item
+    size: Tiny
+  - type: RandomSprite
+    available:
+    - EasterColors2:
+        layer2: Rainbow
+    - EasterColors1:
+        layer1: Rainbow

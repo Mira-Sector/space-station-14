@@ -8,7 +8,13 @@
   },
   "states": [
     {
-      "name": "easter_egg"
+      "name": "egg"
+    },
+    {
+      "name": "layer1"
+    },
+    {
+      "name": "layer2"
     }
   ]
 }
