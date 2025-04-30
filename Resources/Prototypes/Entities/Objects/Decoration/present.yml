@@ -447,3 +447,14 @@
     tags:
     - Trash
   - type: SpaceGarbage
+
+- type: entity
+  id: EasterEgg
+  parent: PresentRandom
+  name: easter egg
+  description: An egg decorated with paint... What's inside, if not chocolate?
+  components:
+  - type: Sprite
+    sprite: Objects/Decoration/easter_egg.rsi
+    layers:
+    - state: easter_egg
