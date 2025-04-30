@@ -43,8 +43,8 @@ public abstract partial class SharedStainableSystem : EntitySystem
             return;
 
         WashingForensics(ent, solution.Value, args.WashingMachine);
-
         Solution.RemoveAllSolution(solution.Value);
+        UpdateVisuals(ent);
     }
 
     protected virtual void WashingForensics(Entity<StainableComponent> ent, Entity<SolutionComponent> solution, EntityUid washingMachine)
