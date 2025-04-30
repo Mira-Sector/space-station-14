@@ -103,6 +103,15 @@
   - type: Dyable
     color: "#C09F72"
 
+# Orange Gloves
+- type: entity
+  parent: ClothingHandsGlovesColorable
+  id: ClothingHandsGlovesColorOrange
+  suffix: Orange
+  components:
+  - type: Dyable
+    color: "#EF8100"
+
 # White Gloves
 - type: entity
   parent: ClothingHandsGlovesColorable
