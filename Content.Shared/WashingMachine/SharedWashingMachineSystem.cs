@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace Content.Shared.WashingMachine;
 
-public sealed partial class WashingMachineSystem : EntitySystem
+public abstract partial class SharedWashingMachineSystem : EntitySystem
 {
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
@@ -71,6 +71,10 @@ public sealed partial class WashingMachineSystem : EntitySystem
             var itemEv = new WashingMachineWashedEvent(uid, items);
             foreach (var item in items)
                 RaiseLocalEvent(item, itemEv);
+
+            // update again incase forensics changed
+            // such as dyeing
+            UpdateForensics((uid, component), items);
 
             _storage.OpenStorage(uid);
         }
@@ -169,8 +173,14 @@ public sealed partial class WashingMachineSystem : EntitySystem
         var machineEv = new WashingMachineStartedWashingEvent(items);
         RaiseLocalEvent(ent.Owner, machineEv);
 
+        UpdateForensics(ent, items);
+
         var itemEv = new WashingMachineIsBeingWashed(ent.Owner, items);
         foreach (var item in items)
             RaiseLocalEvent(item, itemEv);
+    }
+
+    protected virtual void UpdateForensics(Entity<WashingMachineComponent> ent, HashSet<EntityUid> items)
+    {
     }
 }
