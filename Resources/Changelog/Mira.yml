@@ -1627,3 +1627,9 @@ Entries:
     type: Add
   id: 232
   time: '2025-04-29T16:10:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Added googly eyes as maints loot
+    type: Add
+  id: 233
+  time: '2025-04-30T15:00:00.0000000+00:00'
