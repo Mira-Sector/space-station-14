@@ -29,6 +29,7 @@
     prototype: MobNarsie
 
 - type: entity
+  abstract: true
   parent: BaseMob
   id: MobEldergodBase
   components:
