@@ -11,6 +11,11 @@
         children:
         - id: Lighter
         - id: CigCartonBlue
+      # googly eyes
+      - !type:GroupSelector
+        children:
+        - id: ClothingEyesGooglyEyesNormal
+        - id: ClothingEyesGooglyEyesAngry
       # Gar glasses
       - !type:GroupSelector
         children:
