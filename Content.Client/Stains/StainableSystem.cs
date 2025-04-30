@@ -32,14 +32,14 @@ public sealed partial class StainableSystem : SharedStainableSystem
             return;
 
         foreach (var layer in ent.Comp.RevealedIconVisuals)
-            sprite.LayerMapRemove(layer);
+            sprite.RemoveLayer(layer);
 
         ent.Comp.RevealedIconVisuals.Clear();
 
-        foreach (var (key, layer) in UpdateVisuals(ent, ent.Comp.IconVisuals))
+        foreach (var (_, layer) in UpdateVisuals(ent, ent.Comp.IconVisuals))
         {
-            ent.Comp.RevealedIconVisuals.Add(key);
-            sprite.AddLayer(layer);
+            var layerId = sprite.AddLayer(layer);
+            ent.Comp.RevealedIconVisuals.Add(layerId);
         }
     }
 

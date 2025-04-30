@@ -26,5 +26,5 @@ public sealed partial class StainableComponent : Component
     public List<PrototypeLayerData> IconVisuals = new();
 
     [ViewVariables]
-    public List<object> RevealedIconVisuals = new();
+    public HashSet<int> RevealedIconVisuals = new();
 }
