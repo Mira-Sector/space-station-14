@@ -274,7 +274,7 @@ namespace Content.Server.Forensics
                 if (fiber.FiberColor == null)
                     targetComp.Fibers.Add(Loc.GetString("forensic-fibers", ("material", fiber.FiberMaterial)));
                 else
-                    Loc.GetString("forensic-fibers-colored", ("color", fiber.FiberColor), ("material", fiber.FiberMaterial));
+                    targetComp.Fibers.Add(Loc.GetString("forensic-fibers-colored", ("color", fiber.FiberColor), ("material", fiber.FiberMaterial)));
             }
 
             if (TryComp<ResidueComponent>(args.Used, out var residue))
