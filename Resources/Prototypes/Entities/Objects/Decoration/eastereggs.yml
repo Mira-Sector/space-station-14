@@ -342,6 +342,30 @@
       orGroup: GiftPool
     - id: AltarCheese
       orGroup: GiftPool
+    - id: ClothingNeckScarfStripedLesbianLong
+      orGroup: GiftPool
+    - id: ClothingNeckScarfStripedTrans
+      orGroup: GiftPool
+    - id: ClothingNeckScarfStripedRainbow
+      orGroup: GiftPool
+    - id: ClothingNeckScarfStripedAce
+      orGroup: GiftPool
+    - id: ClothingNeckScarfStripedAro
+      orGroup: GiftPool
+    - id: ClothingNeckScarfStripedBiSexual
+      orGroup: GiftPool
+    - id: ClothingNeckScarfStripedGay
+      orGroup: GiftPool
+    - id: ClothingNeckScarfStripedNonBinary
+      orGroup: GiftPool
+    - id: ClothingNeckScarfStripedPan
+      orGroup: GiftPool
+    - id: ClothingNeckScarfStripedInter
+      orGroup: GiftPool
+    - id:   ClothingMaskSadMime
+      orGroup: GiftPool
+    - id: ClothingMaskScaredMime
+      orGroup: GiftPool
     sound:
       collection: desecration
 
