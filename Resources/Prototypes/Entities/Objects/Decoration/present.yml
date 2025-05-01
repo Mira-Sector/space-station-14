@@ -452,6 +452,7 @@
   id: EasterEgg
   parent: BaseItem
   name: easter egg
+  suffix: not chocolate
   description: An egg decorated with paint... What's inside, if not chocolate? Too hard to break it on your own, how about throwing it?
   components:
   - type: Sprite
@@ -784,7 +785,7 @@
       collection: desecration
 
 - type: entity
-  id: EggBasket
+  id: EasterEggBasket
   suffix: easter egg giver
   name: egg basket
   components:
@@ -794,6 +795,92 @@
   - type: LimitedItemGiver
     spawnEntries:
     - id: EasterEgg
+      orGroup: present
+    receivedPopup: egg-basket-got-egg
+    deniedPopup: egg-basket-no-egg
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.35,-0.4,0.35,0.4"
+        density: 1000
+        layer:
+        - WallLayer
+  - type: Clickable
+
+- type: entity
+  id: WrappedChocolateEgg
+  name: easter egg
+  parent: BaseItem
+  suffix: chocolate
+  description: A chocolate egg covered in a colored wrapper.
+  components:
+  - type: Sprite
+    sprite: Objects/Decoration/easter_egg.rsi
+    layers:
+    - state: egg
+    - state: layer1
+      map: [ "EasterColors1" ]
+    - state: layer2
+      map: [ "EasterColors2" ]
+  - type: Item
+    size: Tiny
+  - type: RandomSprite
+    available:
+    - EasterColors2:
+        layer2: Sixteen
+    - EasterColors1:
+        layer1: Sixteen
+  - type: SpawnItemsOnUse
+    items:
+    - id: FoodSnackChocolateEgg
+    sound:
+      path: /Audio/Effects/unwrap.ogg
+
+- type: entity
+  id: FoodSnackChocolateEgg
+  name: chocolate egg
+  parent: FoodSnackBase
+  description: A surprisingly well-made chocolate egg.
+  components:
+  - type: FlavorProfile
+    flavors:
+    - chocolate
+  - type: Sprite
+    sprite: Objects/Decoration/easter_egg.rsi
+    state: chocolate_egg
+  - type: Item
+    size: Tiny
+  - type: Tag
+    tags:
+    - FoodSnack
+    - ReptilianFood
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 30
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 5
+        - ReagentId: Theobromine
+          Quantity: 3
+        - ReagentId: CocoaPowder
+          Quantity: 1
+
+- type: entity
+  id: ChocolateEggBasket
+  suffix: chocolate egg giver
+  name: egg basket
+  components:
+  - type: Sprite
+    sprite: Objects/Decoration/easter_egg.rsi
+    state: egg_basket
+  - type: LimitedItemGiver
+    spawnEntries:
+    - id: WrappedChocolateEgg
       orGroup: present
     receivedPopup: egg-basket-got-egg
     deniedPopup: egg-basket-no-egg
