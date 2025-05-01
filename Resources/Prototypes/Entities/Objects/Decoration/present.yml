@@ -452,7 +452,7 @@
   id: EasterEgg
   parent: BaseItem
   name: easter egg
-  description: An egg decorated with paint... What's inside, if not chocolate?
+  description: An egg decorated with paint... What's inside, if not chocolate? Too hard to break it on your own, how about throwing it?
   components:
   - type: Sprite
     sprite: Objects/Decoration/easter_egg.rsi
