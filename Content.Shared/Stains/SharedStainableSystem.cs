@@ -1,5 +1,6 @@
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.EntitySystems;
+using Content.Shared.Fluids;
 using Content.Shared.Inventory;
 using Content.Shared.Item;
 using Content.Shared.Slippery;
@@ -18,7 +19,10 @@ public abstract partial class SharedStainableSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<StainableComponent, ComponentInit>(OnInit);
+
         SubscribeLocalEvent<StainableComponent, InventoryRelayedEvent<SlippedEvent>>(OnSlipped);
+        SubscribeLocalEvent<StainableComponent, InventoryRelayedEvent<SpilledOnEvent>>(OnSpilledOn);
+
         SubscribeLocalEvent<StainableComponent, WashingMachineIsBeingWashed>(OnWashed);
     }
 
@@ -28,13 +32,22 @@ public abstract partial class SharedStainableSystem : EntitySystem
             return;
 
         solution.CanReact = false;
-
         UpdateVisuals(ent);
     }
 
     private void OnSlipped(Entity<StainableComponent> ent, ref InventoryRelayedEvent<SlippedEvent> args)
     {
         TransferStain(ent, args.Args.Slipper);
+    }
+
+    private void OnSpilledOn(Entity<StainableComponent> ent, ref InventoryRelayedEvent<SpilledOnEvent> args)
+    {
+        if (!Solution.TryGetSolution(ent.Owner, ent.Comp.SolutionId, out var target))
+            return;
+
+        Solution.TryTransferSolution(target.Value, args.Args.Solution, ent.Comp.StainVolume);
+
+        UpdateVisuals(ent);
     }
 
     private void OnWashed(Entity<StainableComponent> ent, ref WashingMachineIsBeingWashed args)

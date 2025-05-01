@@ -7,6 +7,7 @@ using Content.Shared.Damage;
 using Content.Shared.Electrocution;
 using Content.Shared.Explosion;
 using Content.Shared.Eye.Blinding.Systems;
+using Content.Shared.Fluids;
 using Content.Shared.Glasses;
 using Content.Shared.Gravity;
 using Content.Shared.IdentityManagement.Components;
@@ -45,6 +46,7 @@ public partial class InventorySystem
         SubscribeLocalEvent<InventoryComponent, SelfBeforeClimbEvent>(RelayInventoryEvent);
         SubscribeLocalEvent<InventoryComponent, CoefficientQueryEvent>(RelayInventoryEvent);
         SubscribeLocalEvent<InventoryComponent, SlippedEvent>(RelayInventoryEvent);
+        SubscribeLocalEvent<InventoryComponent, SpilledOnEvent>(RelayInventoryEvent);
 
         // by-ref events
         SubscribeLocalEvent<InventoryComponent, GetExplosionResistanceEvent>(RefRelayInventoryEvent);
