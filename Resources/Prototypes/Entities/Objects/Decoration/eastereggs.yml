@@ -332,6 +332,16 @@
       orGroup: GiftPool
     - id: RGBStaff
       orGroup: GiftPool
+    - id: FoodSnackChocolateEgg
+      orGroup: GiftPool
+    - id: CheeseCrowbar
+      orGroup: GiftPool
+    - id: ChairCheese
+      orGroup: GiftPool
+    - id: TableCheese
+      orGroup: GiftPool
+    - id: AltarCheese
+      orGroup: GiftPool
     sound:
       collection: desecration
 
