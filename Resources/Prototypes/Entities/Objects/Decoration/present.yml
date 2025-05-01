@@ -780,3 +780,32 @@
       orGroup: GiftPool
     - id: RGBStaff
       orGroup: GiftPool
+    sound:
+      collection: desecration
+
+- type: entity
+  id: EggBasket
+  suffix: easter egg giver
+  name: egg basket
+  components:
+  - type: Sprite
+    sprite: Objects/Decoration/easter_egg.rsi
+    state: egg_basket
+  - type: LimitedItemGiver
+    spawnEntries:
+    - id: EasterEgg
+      orGroup: present
+    receivedPopup: egg-basket-got-egg
+    deniedPopup: egg-basket-no-egg
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.35,-0.4,0.35,0.4"
+        density: 1000
+        layer:
+        - WallLayer
+  - type: Clickable
