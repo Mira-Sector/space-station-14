@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Drawn by SillyAmy",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "egg"
+    },
+    {
+      "name": "layer1"
+    },
+    {
+      "name": "layer2"
+    },
+    {
+      "name": "egg_basket"
+    },
+    {
+      "name": "chocolate_egg"
+    }
+  ]
+}
