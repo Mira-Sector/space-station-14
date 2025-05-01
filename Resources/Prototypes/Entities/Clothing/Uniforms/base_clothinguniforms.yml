@@ -23,6 +23,22 @@
         reagents:
         - ReagentId: Fiber
           Quantity: 30
+  - type: Appearance
+  - type: Stainable
+    clothingVisuals:
+      jumpsuit:
+      - sprite: Effects/Stains/jumpsuit.rsi
+        state: equipped
+    itemVisuals:
+      left:
+      - sprite: Effects/Stains/jumpsuit.rsi
+        state: inhand-left
+      right:
+      - sprite: Effects/Stains/jumpsuit.rsi
+        state: inhand-left
+    iconVisuals:
+    - sprite: Effects/Stains/jumpsuit.rsi
+      state: icon
   - type: Tag
     tags:
     - ClothMade
@@ -36,6 +52,21 @@
   - type: Clothing
     slots: [innerclothing]
     femaleMask: UniformTop
+  - type: Stainable
+    clothingVisuals:
+      jumpsuit:
+      - sprite: Effects/Stains/jumpskirt.rsi
+        state: equipped
+    itemVisuals:
+      left:
+      - sprite: Effects/Stains/jumpskirt.rsi
+        state: inhand-left
+      right:
+      - sprite: Effects/Stains/jumppskirt.rsi
+        state: inhand-left
+    iconVisuals:
+    - sprite: Effects/Stains/jumpskirt.rsi
+      state: icon
 
 
 - type: entity
@@ -60,3 +91,18 @@
   - type: Clothing
     slots: [innerclothing]
     femaleMask: UniformTop
+  - type: Stainable
+    clothingVisuals:
+      jumpsuit:
+      - sprite: Effects/Stains/jumpskirt.rsi
+        state: equipped
+    itemVisuals:
+      left:
+      - sprite: Effects/Stains/jumpskirt.rsi
+        state: inhand-left
+      right:
+      - sprite: Effects/Stains/jumpskirt.rsi
+        state: inhand-left
+    iconVisuals:
+    - sprite: Effects/Stains/jumpskirt.rsi
+      state: icon
