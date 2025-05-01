@@ -37,7 +37,19 @@ public abstract partial class SharedStainableSystem : EntitySystem
 
     private void OnSlipped(Entity<StainableComponent> ent, ref InventoryRelayedEvent<SlippedEvent> args)
     {
-        TransferStain(ent, args.Args.Slipper);
+        if (!Solution.TryGetSolution(ent.Owner, ent.Comp.SolutionId, out var target))
+            return;
+
+        var ev = new GetStainableSolutionEvent(ent.Owner);
+        RaiseLocalEvent(args.Args.Slipper, ev);
+
+        if (!ev.Handled || ev.Solution == null)
+            return;
+
+        Solution.TryTransferSolution(target.Value, ev.Solution, ent.Comp.StainVolume);
+
+        UpdateVisuals(ent);
+        StainForensics(ent, target.Value);
     }
 
     private void OnSpilledOn(Entity<StainableComponent> ent, ref InventoryRelayedEvent<SpilledOnEvent> args)
@@ -48,6 +60,7 @@ public abstract partial class SharedStainableSystem : EntitySystem
         Solution.TryTransferSolution(target.Value, args.Args.Solution, ent.Comp.StainVolume);
 
         UpdateVisuals(ent);
+        StainForensics(ent, target.Value);
     }
 
     private void OnWashed(Entity<StainableComponent> ent, ref WashingMachineIsBeingWashed args)
@@ -60,24 +73,12 @@ public abstract partial class SharedStainableSystem : EntitySystem
         UpdateVisuals(ent);
     }
 
-    protected virtual void WashingForensics(Entity<StainableComponent> ent, Entity<SolutionComponent> solution, EntityUid washingMachine)
+    protected virtual void StainForensics(Entity<StainableComponent> ent, Entity<SolutionComponent> solution)
     {
     }
 
-    private void TransferStain(Entity<StainableComponent> ent, EntityUid sourceUid)
+    protected virtual void WashingForensics(Entity<StainableComponent> ent, Entity<SolutionComponent> solution, EntityUid washingMachine)
     {
-        if (!Solution.TryGetSolution(ent.Owner, ent.Comp.SolutionId, out var target))
-            return;
-
-        var ev = new GetStainableSolutionEvent(ent.Owner);
-        RaiseLocalEvent(sourceUid, ev);
-
-        if (!ev.Handled || ev.Solution == null)
-            return;
-
-        Solution.TryTransferSolution(target.Value, ev.Solution, ent.Comp.StainVolume);
-
-        UpdateVisuals(ent);
     }
 
     private void UpdateVisuals(Entity<StainableComponent> ent)
