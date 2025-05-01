@@ -159,3 +159,49 @@
       params:
         volume: 3
         variation: 0.250
+
+- type: entity
+  parent: [BaseItem, ItemHeftyBase]
+  id: waterballoon
+  name: water balloon
+  description: Throw it at the wall, throw it at furniture, throw it at the captain. The possibilities are endless!
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/water_balloon.rsi
+    state: icon
+    map: [ "BalloonColors" ]
+  - type: RandomSprite
+    available:
+    - BalloonColors:
+        icon: Sixteen
+  - type: Item
+    size: Small
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 20
+        reagents:
+        - ReagentId: Water
+          Quantity: 20
+  - type: DrawableSolution
+    solution: food
+  - type: DamageOnHighSpeedImpact
+    minimumSpeed: 0.01
+    damage:
+      types:
+        Blunt: 1
+  - type: Damageable
+    damageContainer: Biological
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 1
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: desecration
+      - !type:SpillBehavior
+        solution: food
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]

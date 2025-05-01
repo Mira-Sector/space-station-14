@@ -352,6 +352,8 @@
       - id: BeachBall
       - id: ClothingShoesSkates
       - id: RubberChicken
+      - id: waterballoon
+        amount: 5
 
 - type: entity
   id: CrateFunBikeHornImplants
