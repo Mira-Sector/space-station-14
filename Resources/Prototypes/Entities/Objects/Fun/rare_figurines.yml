@@ -28,6 +28,8 @@
       orGroup: RareSpacemenFig
     - id: ToyRareFigurineMime
       orGroup: RareSpacemenFig
+    - id: ToyRareFigurineHamlet
+      orGroup: RareSpacemenFig
 
 - type: entity
   parent: BaseFigurine
@@ -72,3 +74,14 @@
     state: mime
   - type: SpeakOnTrigger
     pack: FigurinesMime
+
+- type: entity
+  parent: BaseRareFigurine
+  id: ToyRareFigurineHamlet
+  name: rare hamlet figure
+  description: They didn't have any ideas for what this could be, so they glued googly eyes on.
+  components:
+  - type: Sprite
+    state: hamlet
+  - type: SpeakOnTrigger
+    pack: FigurinesHamlet

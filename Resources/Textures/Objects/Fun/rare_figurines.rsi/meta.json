@@ -14,10 +14,24 @@
             "name": "fig_box"
         },
         {
+            "name": "fig_box_unfolded"
+        },
+        {
             "name": "clown"
         },
         {
             "name": "mime"
+        },
+        {
+            "name": "hamlet",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         }
     ]
 }
