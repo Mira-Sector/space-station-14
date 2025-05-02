@@ -162,7 +162,7 @@
 
 - type: entity
   parent: [BaseItem, ItemHeftyBase]
-  id: waterballoon
+  id: WaterBalloon
   name: water balloon
   description: Throw it at the wall, throw it at furniture, throw it at the captain. The possibilities are endless!
   components:
