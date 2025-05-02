@@ -26,6 +26,8 @@
       orGroup: RareSpacemenFig
     - id: ToyRareFigurineClown
       orGroup: RareSpacemenFig
+    - id: ToyRareFigurineMime
+      orGroup: RareSpacemenFig
 
 - type: entity
   parent: BaseFigurine
@@ -59,3 +61,14 @@
     state: clown
   - type: SpeakOnTrigger
     pack: FigurinesClown
+
+- type: entity
+  parent: BaseRareFigurine
+  id: ToyRareFigurineMime
+  name: rare mime figure
+  description: A rare figurine depicting a... Weird mime.
+  components:
+  - type: Sprite
+    state: mime
+  - type: SpeakOnTrigger
+    pack: FigurinesMime
