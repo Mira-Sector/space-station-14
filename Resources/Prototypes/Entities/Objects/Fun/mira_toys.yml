@@ -169,7 +169,6 @@
   - type: Sprite
     sprite: Objects/Fun/water_balloon.rsi
     layers:
-    - state: icon
     - state: icon    # random colors don't work unless I do this.
       map: [ "BalloonColors" ]
   - type: RandomSprite
