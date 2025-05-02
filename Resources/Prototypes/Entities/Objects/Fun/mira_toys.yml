@@ -206,3 +206,20 @@
         solution: balloon
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
+
+- type: entity
+  parent: BoxCardboard
+  name: water balloon box
+  id: WaterBalloonBox
+  description: A box of filled water balloons. Just throw em'!
+  components:
+  - type: StorageFill
+    contents:
+    - id: WaterBalloon
+      amount: 8
+  - type: Sprite
+    sprite: Objects/Storage/boxicons.rsi
+    state: water_balloon
+  - type: Storage
+    grid:
+    - 0,0,3,3
