@@ -1,0 +1,61 @@
+#HUMANOID FIGURINES
+
+- type: entity
+  id: RareMysteryFigureBoxTrash
+  parent: MysteryFigureBoxTrash
+  description: A small, unfolded gold cardboard toy box.
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/rare_figurines.rsi
+    state: fig_box_unfolded
+
+- type: entity
+  parent: PresentRandom
+  id: RareMysteryFigureBox
+  name: rare mystery spacemen minifigure box
+  description: A box containing a rare mystery minifigure.
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/rare_figurines.rsi
+    layers:
+    - state: fig_box
+  - type: SpawnItemsOnUse
+    items:
+    - id: RareMysteryFigureBoxTrash
+    - id: ToyRareFigurinePassenger
+      orGroup: RareSpacemenFig
+    - id: ToyRareFigurineClown
+      orGroup: RareSpacemenFig
+
+- type: entity
+  parent: BaseFigurine
+  id: BaseRareFigurine
+  name: rare figurine
+  description: A small miniature. You feel lucky.
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/rare_figurines.rsi
+  - type: StaticPrice
+    price: 150
+
+- type: entity
+  parent: BaseRareFigurine
+  id: ToyRareFigurinePassenger
+  name: rare greytider figure
+  description: A rare figurine depicting a skilled greytider.
+  components:
+  - type: Sprite
+    state: passenger_greytide
+  - type: SpeakOnTrigger
+    pack: FigurinesPassenger
+
+- type: entity
+  parent: BaseRareFigurine
+  id: ToyRareFigurineClown
+  name: rare clown figure
+  description: A rare figurine depicting a... Weird clown.
+  components:
+  - type: Sprite
+    state: clown
+  - type: SpeakOnTrigger
+    pack: FigurinesClown
