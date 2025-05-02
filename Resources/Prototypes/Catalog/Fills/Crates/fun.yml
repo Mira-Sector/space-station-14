@@ -353,7 +353,7 @@
       - id: ClothingShoesSkates
       - id: RubberChicken
       - id: waterballoon
-        amount: 5
+        amount: 10
 
 - type: entity
   id: CrateFunBikeHornImplants

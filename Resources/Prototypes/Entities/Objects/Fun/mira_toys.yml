@@ -168,23 +168,25 @@
   components:
   - type: Sprite
     sprite: Objects/Fun/water_balloon.rsi
-    state: icon
-    map: [ "BalloonColors" ]
+    layers:
+    - state: icon
+    - state: icon    # random colors don't work unless I do this.
+      map: [ "BalloonColors" ]
   - type: RandomSprite
     available:
     - BalloonColors:
-        icon: Sixteen
+        icon: Rainbow
   - type: Item
     size: Small
   - type: SolutionContainerManager
     solutions:
-      food:
+      balloon:
         maxVol: 20
         reagents:
         - ReagentId: Water
           Quantity: 20
   - type: DrawableSolution
-    solution: food
+    solution: balloon
   - type: DamageOnHighSpeedImpact
     minimumSpeed: 0.01
     damage:
@@ -202,6 +204,6 @@
         sound:
           collection: desecration
       - !type:SpillBehavior
-        solution: food
+        solution: balloon
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
