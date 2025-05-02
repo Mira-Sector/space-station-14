@@ -30,6 +30,8 @@
       orGroup: RareSpacemenFig
     - id: ToyRareFigurineHamlet
       orGroup: RareSpacemenFig
+    - id: ToyRareFigurineSalvage
+      orGroup: RareSpacemenFig
 
 - type: entity
   parent: BaseFigurine
@@ -85,3 +87,14 @@
     state: hamlet
   - type: SpeakOnTrigger
     pack: FigurinesHamlet
+
+- type: entity
+  parent: BaseRareFigurine
+  id: ToyRareFigurineSalvage
+  name: rare salvage technician figure
+  description: A rare figurine depicting a salvage technician in a deluxe mining hardsuit.
+  components:
+  - type: Sprite
+    state: salvage
+  - type: SpeakOnTrigger
+    pack: FigurinesSalvage
