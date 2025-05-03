@@ -48,7 +48,7 @@ public partial class ModuleSystem
         var ev = new GetModulePowerDrawEvent();
         RaiseEventToModules((ent.Owner, ent.Comp2), ev);
 
-        var draw = ev.Additional;
+        var draw = ent.Comp1.BaseRate + ev.Additional;
         draw *= ev.Multiplier;
 
         return draw;
