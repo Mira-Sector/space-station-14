@@ -21,3 +21,9 @@
   values:
     prefix: rare-figurines-salvage-
     count: 3
+
+- type: localizedDataset
+  id: RareFigurinesJanitor
+  values:
+    prefix: rare-figurines-janitor-
+    count: 5

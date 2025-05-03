@@ -1,5 +1,5 @@
 rare-figurines-passenger-1 = I am the Tider. And this, is my multitool.
-rare-figurines-passenger-2 = That door? Yeah, that was me.
+rare-figurines-passenger-2 = That airlock? Yeah, that was me.
 rare-figurines-passenger-3 = Contraband? You silly officer. This vest I'm wearing is proof that I am superior to all of you, for I am John Tider, and I will strike you down!
 rare-figurines-passenger-4 = Respectfully, no, you cannot search me.
 rare-figurines-passenger-5 = Tider jockey!
@@ -19,4 +19,10 @@ rare-figurines-mime-5 = ?!!
 rare-figurines-salvage-1 = Situation's looking a bit grim.
 rare-figurines-salvage-2 = This hardsuit is way too slow!
 rare-figurines-salvage-3 = These xenos don't know what's coming.
+
+rare-figurines-janitor-1 = Clean, clean...
+rare-figurines-janitor-2 = Can someone please make a mess? I'm bored.
+rare-figurines-janitor-3 = That's a big puddle... Nothing new.
+rare-figurines-janitor-4 = Clean her? I barely know her.
+rare-figurines-janitor-5 = Clown please no. Please don't do this. Please. Not the lube bomb. PLEASE.
 

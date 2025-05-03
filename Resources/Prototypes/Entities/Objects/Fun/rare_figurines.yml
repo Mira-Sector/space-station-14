@@ -34,6 +34,8 @@
       orGroup: RareSpacemenFig
     - id: ToyRareFigurineSlime
       orGroup: RareSpacemenFig
+    - id: ToyRareFigurineJanitor
+      orGroup: RareSpacemenFig
 
 - type: entity
   parent: BaseFigurine
@@ -111,3 +113,14 @@
     state: slime
   - type: SpeakOnTrigger
     pack: FigurinesSlime
+
+- type: entity
+  parent: BaseRareFigurine
+  id: ToyRareFigurineJanitor
+  name: rare janitor figure
+  description: A rare figurine depicting an experienced janitor, wearing a trusty golden plunger.
+  components:
+    - type: Sprite
+      state: janitor
+    - type: SpeakOnTrigger
+      pack: RareFigurinesJanitor
