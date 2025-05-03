@@ -1,0 +1,11 @@
+- type: localizedDataset
+  id: RareFigurinesPassenger
+  values:
+    prefix: rare-figurines-passenger-
+    count: 5
+
+- type: localizedDataset
+  id: RareFigurinesClown
+  values:
+    prefix: rare-figurines-clown-
+    count: 5
