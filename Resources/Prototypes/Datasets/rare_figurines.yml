@@ -15,3 +15,9 @@
   values:
     prefix: rare-figurines-mime-
     count: 5
+
+- type: localizedDataset
+  id: RareFigurinesSalvage
+  values:
+    prefix: rare-figurines-salvage-
+    count: 3

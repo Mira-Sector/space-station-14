@@ -99,7 +99,7 @@
   - type: Sprite
     state: salvage
   - type: SpeakOnTrigger
-    pack: FigurinesSalvage
+    pack: RareFigurinesSalvage
 
 - type: entity
   parent: BaseRareFigurine

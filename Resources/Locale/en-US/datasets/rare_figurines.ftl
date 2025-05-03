@@ -16,3 +16,7 @@ rare-figurines-mime-3 = ???
 rare-figurines-mime-4 = ?!?
 rare-figurines-mime-5 = ?!!
 
+rare-figurines-salvage-1 = Situation's looking a bit grim.
+rare-figurines-salvage-2 = This hardsuit is way too slow!
+rare-figurines-salvage-3 = These xenos don't know what's coming.
+
