@@ -19,6 +19,9 @@ public abstract partial class ModuleSystem : EntitySystem
         InitializeRelay();
 
         SubscribeLocalEvent<ModuleContainerComponent, ComponentInit>(OnContainerInit);
+
+        SubscribeLocalEvent<ModuleContainerComponent, ContainerIsInsertingAttemptEvent>(OnContainerAttempt);
+
         SubscribeLocalEvent<ModuleContainerComponent, EntInsertedIntoContainerMessage>(OnContainerInserted);
         SubscribeLocalEvent<ModuleContainerComponent, EntRemovedFromContainerMessage>(OnContainerRemoved);
     }
@@ -31,6 +34,24 @@ public abstract partial class ModuleSystem : EntitySystem
     private void OnContainerInit(Entity<ModuleContainerComponent> ent, ref ComponentInit args)
     {
         ent.Comp.Modules = _container.EnsureContainer<Container>(ent.Owner, ent.Comp.ModuleContainerId);
+    }
+
+    private void OnContainerAttempt(Entity<ModuleContainerComponent> ent, ref ContainerIsInsertingAttemptEvent args)
+    {
+        if (args.Cancelled)
+            return;
+
+        if (args.Container.ID != ent.Comp.ModuleContainerId)
+            return;
+
+        var containerEv = new ModuleContainerModuleAddingAttemptEvent(args.EntityUid);
+        RaiseLocalEvent(ent.Owner, containerEv);
+
+        var moduleEv = new ModuleAddingAttemptContainerEvent(ent.Owner);
+        RaiseLocalEvent(args.EntityUid, moduleEv);
+
+        if (moduleEv.Cancelled || containerEv.Cancelled)
+            args.Cancel();
     }
 
     private void OnContainerInserted(Entity<ModuleContainerComponent> ent, ref EntInsertedIntoContainerMessage args)
