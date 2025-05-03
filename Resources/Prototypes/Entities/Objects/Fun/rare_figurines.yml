@@ -77,7 +77,7 @@
   - type: Sprite
     state: mime
   - type: SpeakOnTrigger
-    pack: FigurinesMime
+    pack: RareFigurinesMime
 
 - type: entity
   parent: BaseRareFigurine

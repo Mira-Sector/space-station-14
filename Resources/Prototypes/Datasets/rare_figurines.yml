@@ -9,3 +9,9 @@
   values:
     prefix: rare-figurines-clown-
     count: 5
+
+- type: localizedDataset
+  id: RareFigurinesMime
+  values:
+    prefix: rare-figurines-mime-
+    count: 5

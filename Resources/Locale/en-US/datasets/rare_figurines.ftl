@@ -9,3 +9,10 @@ rare-figurines-clown-2 = Dorms 4!
 rare-figurines-clown-3 = Think, sec, think! Why would I ever stop slipping the crew?
 rare-figurines-clown-4 = Lube her? I barely know her!
 rare-figurines-clown-5 = Your stuns are nothing against my intellectuals, sir.
+
+rare-figurines-mime-1 = !!!
+rare-figurines-mime-2 = ..!
+rare-figurines-mime-3 = ???
+rare-figurines-mime-4 = ?!?
+rare-figurines-mime-5 = ?!!
+
