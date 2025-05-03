@@ -32,6 +32,8 @@
       orGroup: RareSpacemenFig
     - id: ToyRareFigurineSalvage
       orGroup: RareSpacemenFig
+    - id: ToyRareFigurineSlime
+      orGroup: RareSpacemenFig
 
 - type: entity
   parent: BaseFigurine
@@ -91,10 +93,21 @@
 - type: entity
   parent: BaseRareFigurine
   id: ToyRareFigurineSalvage
-  name: rare salvage technician figure
-  description: A rare figurine depicting a salvage technician in a deluxe mining hardsuit.
+  name: rare salvage specialist figure
+  description: A rare figurine depicting a salvage specialist in a deluxe mining hardsuit.
   components:
   - type: Sprite
     state: salvage
   - type: SpeakOnTrigger
     pack: FigurinesSalvage
+
+- type: entity
+  parent: BaseRareFigurine
+  id: ToyRareFigurineSlime
+  name: rare slime figure
+  description: A rare figurine depicting a slime born from an anomaly.
+  components:
+  - type: Sprite
+    state: slime
+  - type: SpeakOnTrigger
+    pack: FigurinesSlime
