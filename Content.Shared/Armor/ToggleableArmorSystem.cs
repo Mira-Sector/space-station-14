@@ -58,4 +58,16 @@ public sealed partial class ToggleableArmorSystem : EntitySystem
             Dirty(ent.Owner, ent.Comp1);
         }
     }
+
+    [PublicAPI]
+    public void ToggleArmorPart(Entity<ArmorComponent?, ToggleableArmorComponent?> ent, BodyPartType part)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp2))
+            return;
+
+        if (ent.Comp2.DisabledModifiers.ContainsKey(part))
+            EnableArmorPart((ent.Owner, null, ent.Comp2), part);
+        else
+            DisableArmorPart((ent.Owner, null, ent.Comp2), part);
+    }
 }
