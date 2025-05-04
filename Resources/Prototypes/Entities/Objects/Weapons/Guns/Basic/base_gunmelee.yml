@@ -7,7 +7,7 @@
   - type: MeleeWeapon
     damage:
       types:
-        Blunt: 8
+        Blunt: 6
     angle: 60
     attackRate: 1.25
     animationRotation: -90
