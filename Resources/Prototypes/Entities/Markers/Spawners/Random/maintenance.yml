@@ -312,6 +312,7 @@
       - id: DrinkMopwataBottleRandom
       - id: SpectralLocator
       - id: LidSalami
+      - id: FigurineCase
         weight: 0.05
 
 - type: entity
