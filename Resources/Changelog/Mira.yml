@@ -1651,3 +1651,9 @@ Entries:
     type: Add
   id: 236
   time: '2025-05-02T16:10:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: Alt firing with guns causes melee attacks
+    type: Add
+  id: 237
+  time: '2025-05-04T20:00:00.0000000+00:00'
