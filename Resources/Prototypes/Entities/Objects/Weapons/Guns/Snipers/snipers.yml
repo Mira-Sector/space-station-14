@@ -1,6 +1,6 @@
 - type: entity
   name: BaseWeaponSniper
-  parent: BaseItem
+  parent: [BaseItem, BaseGunMeleeLarge]
   id: BaseWeaponSniper
   description: A rooty tooty point and shooty.
   abstract: true
@@ -46,6 +46,23 @@
   components:
   - type: Sprite
     sprite: Objects/Weapons/Guns/Snipers/bolt_gun_wood.rsi
+  - type: Item
+    size: Large
+    storedRotation: 45
+  - type: Gun
+    fireRate: 1
+  - type: MeleeWeapon
+    damage:
+      types:
+        Piercing: 9
+        Slash: 6
+    angle: 0
+    animationRotation: -135
+    wideAnimationRotation: -135
+    animation: WeaponArcThrust
+    soundHit:
+      path: /Audio/Weapons/bladeslice.ogg
+  - type: MeleeRequiresWield
 
 - type: entity
   name: Hristov
@@ -111,7 +128,7 @@
     damage:
       types:
         Piercing: 15 #you fucking stab em
-        Bloodloss: 2 #no way to apply bleed, triangular bayonet wounds are hard to fix(source:that one copypasta)
+        Slash: 2 #triangular bayonet wounds are hard to fix(source:that one copypasta)
     angle: 0
     animation: WeaponArcThrust
     soundHit:
@@ -119,7 +136,7 @@
 
 - type: entity
   name: flintlock pistol
-  parent: [BaseWeaponSniper, BaseMinorContraband]
+  parent: [ BaseGunMeleeSmall, BaseWeaponSniper, BaseMinorContraband]
   id: WeaponPistolFlintlock
   description: A pirate's companion. Yarrr! Uses .60 anti-materiel ammo.
   components:
