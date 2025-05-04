@@ -1,6 +1,5 @@
 using Content.Shared.Body.Part;
 using JetBrains.Annotations;
-using System.Linq;
 
 namespace Content.Shared.Armor;
 
@@ -15,22 +14,27 @@ public sealed partial class ToggleableArmorSystem : EntitySystem
         if (!ent.Comp2.DisabledModifiers.TryGetValue(part, out var disabledModifier))
             return;
 
-        foreach (var (parts, _) in ent.Comp1.Modifiers)
+        ent.Comp2.DisabledModifiers.Remove(part);
+        Dirty(ent.Owner, ent.Comp2);
+
+        foreach (var (parts, modifier) in ent.Comp1.Modifiers)
         {
-            if (!parts.Contains(part))
+            // do we already have the modifier
+            if (modifier != disabledModifier)
                 continue;
 
-            parts.Remove(part);
+            // does the parts list already affect the target limb
+            if (parts.Contains(part))
+                return;
 
-            if (parts.Any())
-                continue;
-
-            ent.Comp1.Modifiers.Remove(parts);
+            parts.Add(part);
+            Dirty(ent.Owner, ent.Comp1);
+            return;
         }
 
+        // no matching modifier found
+        // add a new one
         ent.Comp1.Modifiers.Add([part], disabledModifier);
-        ent.Comp2.DisabledModifiers.Remove(part);
-        Dirty(ent.Owner, ent.Comp1);
         Dirty(ent.Owner, ent.Comp1);
     }
 
