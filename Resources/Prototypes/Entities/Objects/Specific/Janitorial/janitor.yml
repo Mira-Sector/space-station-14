@@ -331,5 +331,5 @@
         - Mop
     - type: CleansForensics
     - type: Fiber
-      fiberColor: fibers-white
+      fiberColor: "#EAE8E8"
     - type: DnaSubstanceTrace

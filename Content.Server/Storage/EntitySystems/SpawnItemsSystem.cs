@@ -4,6 +4,7 @@ using Content.Server.Storage.Components;
 using Content.Shared.Database;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Interaction.Events;
+using Content.Shared.Throwing;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Random;
@@ -11,7 +12,7 @@ using static Content.Shared.Storage.EntitySpawnCollection;
 
 namespace Content.Server.Storage.EntitySystems
 {
-    public sealed class SpawnItemsOnUseSystem : EntitySystem
+    public sealed class SpawnItemsSystem : EntitySystem
     {
         [Dependency] private readonly IRobustRandom _random = default!;
         [Dependency] private readonly IAdminLogManager _adminLogger = default!;
@@ -26,9 +27,12 @@ namespace Content.Server.Storage.EntitySystems
 
             SubscribeLocalEvent<SpawnItemsOnUseComponent, UseInHandEvent>(OnUseInHand);
             SubscribeLocalEvent<SpawnItemsOnUseComponent, PriceCalculationEvent>(CalculatePrice, before: new[] { typeof(PricingSystem) });
+
+            SubscribeLocalEvent<SpawnItemsOnLandComponent, LandEvent>(OnLand);
+            SubscribeLocalEvent<SpawnItemsOnLandComponent, PriceCalculationEvent>(CalculatePrice, before: new[] { typeof(PricingSystem) });
         }
 
-        private void CalculatePrice(EntityUid uid, SpawnItemsOnUseComponent component, ref PriceCalculationEvent args)
+        private void CalculatePrice(EntityUid uid, ISpawnItems component, ref PriceCalculationEvent args)
         {
             var ungrouped = CollectOrGroups(component.Items, out var orGroups);
 
@@ -60,23 +64,37 @@ namespace Content.Server.Storage.EntitySystems
             args.Handled = true;
         }
 
-        private void OnUseInHand(EntityUid uid, SpawnItemsOnUseComponent component, UseInHandEvent args)
+        private void OnUseInHand(EntityUid uid, ISpawnItems component, UseInHandEvent args)
         {
             if (args.Handled)
                 return;
 
-            // If starting with zero or less uses, this component is a no-op
-            if (component.Uses <= 0)
+            var entity = SpawnItems(uid, component, Transform(args.User).Coordinates);
+            if (entity == null)
                 return;
 
-            var coords = Transform(args.User).Coordinates;
+            args.Handled = true;
+            _hands.PickupOrDrop(args.User, entity.Value);
+
+        }
+
+        private void OnLand(EntityUid uid, ISpawnItems component, LandEvent args)
+        {
+            SpawnItems(uid, component, Transform(uid).Coordinates);
+        }
+
+        private EntityUid? SpawnItems(EntityUid uid, ISpawnItems component, EntityCoordinates coords)
+        {
+            // If starting with zero or less uses, this component is a no-op
+            if (component.Uses <= 0)
+                return null;
+
             var spawnEntities = GetSpawns(component.Items, _random);
             EntityUid? entityToPlaceInHands = null;
 
             foreach (var proto in spawnEntities)
             {
                 entityToPlaceInHands = Spawn(proto, coords);
-                _adminLogger.Add(LogType.EntitySpawn, LogImpact.Low, $"{ToPrettyString(args.User)} used {ToPrettyString(uid)} which spawned {ToPrettyString(entityToPlaceInHands.Value)}");
             }
 
             // The entity is often deleted, so play the sound at its position rather than parenting
@@ -94,10 +112,7 @@ namespace Content.Server.Storage.EntitySystems
                 QueueDel(uid);
             }
 
-            if (entityToPlaceInHands != null)
-                _hands.PickupOrDrop(args.User, entityToPlaceInHands.Value);
-
-            args.Handled = true;
+            return entityToPlaceInHands;
         }
     }
 }
