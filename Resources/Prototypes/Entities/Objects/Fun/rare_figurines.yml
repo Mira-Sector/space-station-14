@@ -38,6 +38,8 @@
       orGroup: RareSpacemenFig
     - id: ToyRareFigurineChiefEngineer
       orGroup: RareSpacemenFig
+    - id: ToyRareFigurineEngineer
+      orGroup: RareSpacemenFig
 
 - type: entity
   parent: BaseFigurine
@@ -138,3 +140,14 @@
     state: ce
   - type: SpeakOnTrigger
     pack: RareFigurinesChiefEngineer
+
+- type: entity
+  parent: BaseRareFigurine
+  id: ToyRareFigurineEngineer
+  name: rare engineer figure
+  description: A rare figurine depicting an engineer wearing their hardsuit.
+  components:
+  - type: Sprite
+    state: engineer
+  - type: SpeakOnTrigger
+    pack: RareFigurinesEngineer

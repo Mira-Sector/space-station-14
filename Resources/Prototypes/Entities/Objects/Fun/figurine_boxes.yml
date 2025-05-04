@@ -157,3 +157,6 @@
       - id: ToyRareFigurineChiefEngineer
         prob: 0.10
         orGroup: SpacemenFig
+      - id: ToyRareFigurineEngineer
+        prob: 0.10
+        orGroup: SpacemenFig

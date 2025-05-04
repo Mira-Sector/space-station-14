@@ -30,3 +30,8 @@ rare-figurines-chief-engineer-1 = POLY, PLEASE SHUT UP!
 rare-figurines-chief-engineer-2 = "Teslaloose?" Pfft, as if.
 rare-figurines-chief-engineer-3 = PLEASE order some AME fuel, damnit!
 rare-figurines-chief-engineer-4 = How do you make the TEG again?
+
+rare-figurines-engineer-1 = CE please stop huffing frezon.
+rare-figurines-engineer-2 = Where is the steel, William?
+rare-figurines-engineer-3 = WHO PUT THE SINGULARITY ON 3?!
+rare-figurines-engineer-4 = False alarm. No singuloose.

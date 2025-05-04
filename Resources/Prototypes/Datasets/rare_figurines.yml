@@ -33,3 +33,9 @@
   values:
     prefix: rare-figurines-chief-engineer-
     count: 4
+
+- type: localizedDataset
+  id: RareFigurinesEngineer
+  values:
+    prefix: rare-figurines-engineer-
+    count: 4
