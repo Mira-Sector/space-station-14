@@ -26,3 +26,7 @@ rare-figurines-janitor-3 = That's a big puddle... Nothing new.
 rare-figurines-janitor-4 = Clean her? I barely know her.
 rare-figurines-janitor-5 = Clown please no. Please don't do this. Please. Not the lube bomb. PLEASE.
 
+rare-figurines-chief-engineer-1 = POLY, PLEASE SHUT UP!
+rare-figurines-chief-engineer-2 = "Teslaloose?" Pfft, as if.
+rare-figurines-chief-engineer-3 = PLEASE order some AME fuel, damnit!
+rare-figurines-chief-engineer-4 = How do you make the TEG again?

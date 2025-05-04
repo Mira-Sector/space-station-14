@@ -41,6 +41,9 @@
         },
         {
             "name": "janitor"
+        },
+        {
+            "name": "ce"
         }
     ]
 }

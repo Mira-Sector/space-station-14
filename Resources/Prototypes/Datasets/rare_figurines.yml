@@ -27,3 +27,9 @@
   values:
     prefix: rare-figurines-janitor-
     count: 5
+
+- type: localizedDataset
+  id: RareFigurinesChiefEngineer
+  values:
+    prefix: rare-figurines-chief-engineer-
+    count: 4

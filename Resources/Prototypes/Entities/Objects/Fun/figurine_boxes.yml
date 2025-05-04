@@ -154,3 +154,6 @@
       - id: ToyRareFigurineJanitor
         prob: 0.10
         orGroup: SpacemenFig
+      - id: ToyRareFigurineChiefEngineer
+        prob: 0.10
+        orGroup: SpacemenFig

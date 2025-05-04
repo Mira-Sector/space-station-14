@@ -36,9 +36,12 @@
       orGroup: RareSpacemenFig
     - id: ToyRareFigurineJanitor
       orGroup: RareSpacemenFig
+    - id: ToyRareFigurineChiefEngineer
+      orGroup: RareSpacemenFig
 
 - type: entity
   parent: BaseFigurine
+  abstract: true
   id: BaseRareFigurine
   name: rare figurine
   description: A small miniature. You feel lucky.
@@ -124,3 +127,14 @@
       state: janitor
     - type: SpeakOnTrigger
       pack: RareFigurinesJanitor
+
+- type: entity
+  parent: BaseRareFigurine
+  id: ToyRareFigurineChiefEngineer
+  name: rare chief engineer figure
+  description: A rare figurine depicting a chief engineer wearing their hardsuit.
+  components:
+  - type: Sprite
+    state: ce
+  - type: SpeakOnTrigger
+    pack: RareFigurinesChiefEngineer
