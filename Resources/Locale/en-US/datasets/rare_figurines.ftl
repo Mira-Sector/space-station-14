@@ -41,3 +41,9 @@ rare-figurines-cmo-2 = I'm the fancier CMO
 rare-figurines-cmo-3 = How do you make dex again?
 rare-figurines-cmo-4 = STOP MAKING METH!
 rare-figurines-cmo-5 = KEEP MAKING METH!
+
+rare-figurines-warden-1 = What's a wardenloose? I'm just on break.
+rare-figurines-warden-2 = "Watch the armory"? That sounds boring.
+rare-figurines-warden-3 = PLEASE get me some coffee.
+rare-figurines-warden-4 = Please promote me.
+rare-figurines-warden-5 = Why is my hardsuit so terrible.

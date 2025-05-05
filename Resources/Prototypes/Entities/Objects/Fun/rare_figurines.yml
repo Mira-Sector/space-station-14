@@ -42,6 +42,8 @@
       orGroup: RareSpacemenFig
     - id: ToyRareFigurineChiefMedicalOfficer
       orGroup: RareSpacemenFig
+    - id: ToyRareFigurineWarden
+      orGroup: RareSpacemenFig
 - type: entity
   parent: BaseFigurine
   abstract: true
@@ -163,3 +165,14 @@
     state: cmo
   - type: SpeakOnTrigger
     pack: RareFigurinesCMO
+
+- type: entity
+  parent: BaseRareFigurine
+  id: ToyRareFigurineWarden
+  name: rare warden figure
+  description: A rare figurine depicting a warden wearing their crappy hardsuit.
+  components:
+  - type: Sprite
+    state: warden
+  - type: SpeakOnTrigger
+    pack: RareFigurinesWarden

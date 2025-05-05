@@ -45,3 +45,9 @@
   values:
     prefix: rare-figurines-cmo-
     count: 5
+
+- type: localizedDataset
+  id: RareFigurinesWarden
+  values:
+    prefix: rare-figurines-warden-
+    count: 5
