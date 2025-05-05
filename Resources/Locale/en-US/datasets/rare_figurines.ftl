@@ -32,11 +32,11 @@ rare-figurines-janitor-4 = Clean her? I barely know her.
 rare-figurines-janitor-5 = Clown please no. Please don't do this. Please. Not the lube bomb. PLEASE.
 rare-figurines-janitor-6 = That lube spill? Oh, don't worry, I've seen bigger.
 
-rare-figurines-chief-engineer-1 = POLY, PLEASE SHUT UP!
-rare-figurines-chief-engineer-2 = "Tesloose?" Pfft, as if.
-rare-figurines-chief-engineer-3 = PLEASE order some AME fuel, damnit!
-rare-figurines-chief-engineer-4 = How do you make the TEG again?
-rare-figurines-chief-engineer-5 = Can someone else fix the power? I'm busy speaking with Poly.
+rare-figurines-ce-1 = POLY, PLEASE SHUT UP!
+rare-figurines-ce-2 = "Tesloose?" Pfft, as if.
+rare-figurines-ce-3 = PLEASE order some AME fuel, damnit!
+rare-figurines-ce-4 = How do you make the TEG again?
+rare-figurines-ce-5 = Can someone else fix the power? I'm busy speaking with Poly.
 
 rare-figurines-engineer-1 = CE please stop huffing frezon.
 rare-figurines-engineer-2 = Where is the steel, William?

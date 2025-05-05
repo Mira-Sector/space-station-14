@@ -31,7 +31,7 @@
 - type: localizedDataset
   id: RareFigurinesChiefEngineer
   values:
-    prefix: rare-figurines-chief-engineer-
+    prefix: rare-figurines-ce-
     count: 5
 
 - type: localizedDataset

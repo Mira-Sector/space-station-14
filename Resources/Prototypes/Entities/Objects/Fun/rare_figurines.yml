@@ -142,7 +142,7 @@
   - type: Sprite
     state: ce
   - type: SpeakOnTrigger
-    pack: RareFigurinesChiefEngineer
+    pack: RareFigurinesCE
 
 - type: entity
   parent: BaseRareFigurine
