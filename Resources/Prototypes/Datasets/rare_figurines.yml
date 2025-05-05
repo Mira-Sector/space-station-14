@@ -29,7 +29,7 @@
     count: 6
 
 - type: localizedDataset
-  id: RareFigurinesChiefEngineer
+  id: RareFigurinesCE
   values:
     prefix: rare-figurines-ce-
     count: 5
@@ -56,4 +56,16 @@
   id: RareFigurinesHOS
   values:
     prefix: rare-figurines-hos-
+    count: 5
+
+- type: localizedDataset
+  id: RareFigurinesCaptain
+  values:
+    prefix: rare-figurines-captain-
+    count: 5
+
+- type: localizedDataset
+  id: RareFigurinesSecurity
+  values:
+    prefix: rare-figurines-security-
     count: 5

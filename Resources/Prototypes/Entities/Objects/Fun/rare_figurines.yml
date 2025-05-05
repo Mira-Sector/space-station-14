@@ -44,6 +44,13 @@
       orGroup: RareSpacemenFig
     - id: ToyRareFigurineWarden
       orGroup: RareSpacemenFig
+    - id: ToyRareFigurineHeadOfSecurity
+      orGroup: RareSpacemenFig
+    - id: ToyRareFigurineCaptain
+      orGroup: RareSpacemenFig
+    - id: ToyRareFigurineSecurity
+      orGroup: RareSpacemenFig
+
 - type: entity
   parent: BaseFigurine
   abstract: true
@@ -93,7 +100,7 @@
   parent: BaseRareFigurine
   id: ToyRareFigurineHamlet
   name: rare hamlet figure
-  description: They didn't have any ideas for what this could be, so they glued googly eyes on.
+  description: Aw, he has a little hat and everything!
   components:
   - type: Sprite
     state: hamlet
@@ -187,3 +194,25 @@
     state: hos
   - type: SpeakOnTrigger
     pack: RareFigurinesHOS
+
+- type: entity
+  parent: BaseRareFigurine
+  id: ToyRareFigurineCaptain
+  name: rare captain figure
+  description: A rare figurine depicting a captain wearing their hardsuit.
+  components:
+  - type: Sprite
+    state: captain
+  - type: SpeakOnTrigger
+    pack: RareFigurinesCaptain
+
+- type: entity
+  parent: BaseRareFigurine
+  id: ToyRareFigurineSecurity
+  name: rare security officer figure
+  description: A rare figurine depicting an officer wearing their hardsuit.
+  components:
+  - type: Sprite
+    state: security
+  - type: SpeakOnTrigger
+    pack: RareFigurinesSecurity

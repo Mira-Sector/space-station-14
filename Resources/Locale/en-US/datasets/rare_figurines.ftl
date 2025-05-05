@@ -62,3 +62,15 @@ rare-figurines-hos-2 = Put the clown on wanted, he lubed the hallway.
 rare-figurines-hos-3 = Ward, I'm here now, give me my hardsuit.
 rare-figurines-hos-4 = I forgot my copy of space law, so you're getting 30 minutes.
 rare-figurines-hos-5 = What do you mean I shouldn't shoot the clown?
+
+rare-figurines-captain-1 = I left the disk in my toilet.
+rare-figurines-captain-2 = What do you mean I shouldn't be doing salvage work?
+rare-figurines-captain-3 = Everything is fine. Except for the crew. They're not fine.
+rare-figurines-captain-4 = Has anyone seen my ID?
+rare-figurines-captain-5 = I didn't actually go to college.
+
+rare-figurines-security-1 = What the FUCK is a harmbatong
+rare-figurines-security-2 = I threw my space law copy away.
+rare-figurines-security-3 = Oh yeah, I killed the clown, why?
+rare-figurines-security-4 = Wait, how long has the mime been in the cell?
+rare-figurines-security-5 = What the hell is a rubber bullet?

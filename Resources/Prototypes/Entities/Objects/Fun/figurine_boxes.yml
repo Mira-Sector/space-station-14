@@ -165,4 +165,13 @@
         orGroup: SpacemenFig
       - id: ToyRareFigurineWarden
         prob: 0.10
-        orGroup: RareSpacemenFig
+        orGroup: SpacemenFig
+      - id: ToyRareFigurineHeadOfSecurity
+        prob: 0.10
+        orGroup: SpacemenFig
+      - id: ToyRareFigurineCaptain
+        prob: 0.10
+        orGroup: SpacemenFig
+      - id: ToyRareFigurineSecurity
+        prob: 0.10
+        orGroup: SpacemenFig

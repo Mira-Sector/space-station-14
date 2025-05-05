@@ -23,15 +23,7 @@
             "name": "mime"
         },
         {
-            "name": "hamlet",
-            "delays": [
-                [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ]
-            ]
+            "name": "hamlet"
         },
         {
             "name": "salvage"
@@ -56,6 +48,12 @@
         },
         {
             "name": "hos"
+        },
+        {
+            "name": "captain"
+        },
+        {
+            "name": "security"
         }
     ]
 }
