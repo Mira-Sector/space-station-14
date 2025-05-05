@@ -40,7 +40,8 @@
       orGroup: RareSpacemenFig
     - id: ToyRareFigurineEngineer
       orGroup: RareSpacemenFig
-
+    - id: ToyRareFigurineChiefMedicalOfficer
+      orGroup: RareSpacemenFig
 - type: entity
   parent: BaseFigurine
   abstract: true
@@ -151,3 +152,14 @@
     state: engineer
   - type: SpeakOnTrigger
     pack: RareFigurinesEngineer
+
+- type: entity
+  parent: BaseRareFigurine
+  id: ToyRareFigurineChiefMedicalOfficer
+  name: rare chief medical officer figure
+  description: A rare figurine depicting the chief medical officer wearing their hardsuit.
+  components:
+  - type: Sprite
+    state: cmo
+  - type: SpeakOnTrigger
+    pack: RareFigurinesCMO

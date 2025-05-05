@@ -35,3 +35,9 @@ rare-figurines-engineer-1 = CE please stop huffing frezon.
 rare-figurines-engineer-2 = Where is the steel, William?
 rare-figurines-engineer-3 = WHO PUT THE SINGULARITY ON 3?!
 rare-figurines-engineer-4 = False alarm. No singuloose.
+
+rare-figurines-cmo-1 = Shoot I made liquid razor blades in his body.
+rare-figurines-cmo-2 = I'm the fancier CMO
+rare-figurines-cmo-3 = How do you make dex again?
+rare-figurines-cmo-4 = STOP MAKING METH!
+rare-figurines-cmo-5 = KEEP MAKING METH!

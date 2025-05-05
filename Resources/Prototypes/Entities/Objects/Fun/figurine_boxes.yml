@@ -160,3 +160,6 @@
       - id: ToyRareFigurineEngineer
         prob: 0.10
         orGroup: SpacemenFig
+      - id:   ToyRareFigurineChiefMedicalOfficer
+        prob: 0.10
+        orGroup: SpacemenFig

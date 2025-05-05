@@ -39,3 +39,9 @@
   values:
     prefix: rare-figurines-engineer-
     count: 4
+
+- type: localizedDataset
+  id: RareFigurinesCMO
+  values:
+    prefix: rare-figurines-cmo-
+    count: 5
