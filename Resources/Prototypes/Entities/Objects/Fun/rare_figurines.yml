@@ -176,3 +176,14 @@
     state: warden
   - type: SpeakOnTrigger
     pack: RareFigurinesWarden
+
+- type: entity
+  parent: BaseRareFigurine
+  id: ToyRareFigurineHeadOfSecurity
+  name: rare head of security figure
+  description: A rare figurine depicting a head of security wearing their hardsuit.
+  components:
+  - type: Sprite
+    state: hos
+  - type: SpeakOnTrigger
+    pack: RareFigurinesHOS

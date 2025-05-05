@@ -53,6 +53,9 @@
         },
         {
             "name": "warden"
+        },
+        {
+            "name": "hos"
         }
     ]
 }

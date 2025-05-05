@@ -2,43 +2,43 @@
   id: RareFigurinesPassenger
   values:
     prefix: rare-figurines-passenger-
-    count: 5
+    count: 6
 
 - type: localizedDataset
   id: RareFigurinesClown
   values:
     prefix: rare-figurines-clown-
-    count: 5
+    count: 6
 
 - type: localizedDataset
   id: RareFigurinesMime
   values:
     prefix: rare-figurines-mime-
-    count: 5
+    count: 6
 
 - type: localizedDataset
   id: RareFigurinesSalvage
   values:
     prefix: rare-figurines-salvage-
-    count: 3
+    count: 4
 
 - type: localizedDataset
   id: RareFigurinesJanitor
   values:
     prefix: rare-figurines-janitor-
-    count: 5
+    count: 6
 
 - type: localizedDataset
   id: RareFigurinesChiefEngineer
   values:
     prefix: rare-figurines-chief-engineer-
-    count: 4
+    count: 5
 
 - type: localizedDataset
   id: RareFigurinesEngineer
   values:
     prefix: rare-figurines-engineer-
-    count: 4
+    count: 5
 
 - type: localizedDataset
   id: RareFigurinesCMO
@@ -50,4 +50,10 @@
   id: RareFigurinesWarden
   values:
     prefix: rare-figurines-warden-
+    count: 6
+
+- type: localizedDataset
+  id: RareFigurinesHOS
+  values:
+    prefix: rare-figurines-hos-
     count: 5
