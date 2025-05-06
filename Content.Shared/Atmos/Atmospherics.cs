@@ -174,6 +174,10 @@ namespace Content.Shared.Atmos
             [Gas.Plasma] = Loc.GetString("gas-plasma-abbreviation"),
             [Gas.Tritium] = Loc.GetString("gas-tritium-abbreviation"),
             [Gas.WaterVapor] = Loc.GetString("gas-water-vapor-abbreviation"),
+            [Gas.Pluoxium] = Loc.GetString("gas-pluoxium-abbreviation"),
+            [Gas.Nitrium] = Loc.GetString("gas-nitrium-abbreviation"),
+            [Gas.Noblium] = Loc.GetString("gas-noblium-abbreviation"),
+            [Gas.Halon] = Loc.GetString("gas-halon-abbreviation"),
         };
 
         #region Excited Groups
@@ -203,7 +207,7 @@ namespace Content.Shared.Atmos
         /// <summary>
         ///     Total number of gases. Increase this if you want to add more!
         /// </summary>
-        public const int TotalNumberOfGases = 9;
+        public const int TotalNumberOfGases = 13;
 
         /// <summary>
         ///     This is the actual length of the gases arrays in mixtures.
@@ -270,16 +274,6 @@ namespace Content.Shared.Atmos
         ///     1 / X of the tritium is converted into Frezon each tick
         /// </summary>
         public const float FrezonProductionConversionRate = 50f;
-
-        /// <summary>
-        ///     The maximum portion of the N2O that can decompose each reaction tick. (50%)
-        /// </summary>
-        public const float N2ODecompositionRate = 2f;
-
-        /// <summary>
-        ///     Divisor for Ammonia Oxygen reaction so that it doesn't happen instantaneously.
-        /// </summary>
-        public const float AmmoniaOxygenReactionRate = 10f;
 
         /// <summary>
         ///     Determines at what pressure the ultra-high pressure red icon is displayed.
@@ -366,6 +360,10 @@ namespace Content.Shared.Atmos
         WaterVapor = 5,
         Ammonia = 6,
         NitrousOxide = 7,
-        Frezon = 8
+        Frezon = 8,
+        Pluoxium = 9,
+        Nitrium = 10,
+        Noblium = 11,
+        Halon = 12
     }
 }
