@@ -34,7 +34,7 @@
 
 - type: entity
   id: MobGoliath
-  parent: [ BaseMobAsteroid, MobBloodstream ]
+  parent: [ BaseMobAsteroid, SimpleSpaceMobBase ]
   name: goliath
   description: A massive beast that uses long tentacles to ensnare its prey, threatening them is not advised under any conditions.
   components:
@@ -56,6 +56,9 @@
     thresholds:
       0: Alive
       250: Dead
+  - type: SlowOnDamage
+    speedModifierThresholds:
+      200: 0.75
   - type: MeleeWeapon
     soundHit:
       path: "/Audio/Weapons/smash.ogg"
