@@ -15,6 +15,7 @@ using Content.Shared.IdentityManagement;
 using Content.Shared.Interaction;
 using Content.Shared.Interaction.Components;
 using Content.Shared.Interaction.Events;
+using Content.Shared.Intents;
 using Content.Shared.Inventory.Events;
 using Content.Shared.Inventory.VirtualItem;
 using Content.Shared.Item;
@@ -31,6 +32,7 @@ using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Network;
 using Robust.Shared.Player;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
 using PullableComponent = Content.Shared.Movement.Pulling.Components.PullableComponent;
@@ -54,7 +56,13 @@ namespace Content.Shared.Cuffs
         [Dependency] private readonly SharedPopupSystem _popup = default!;
         [Dependency] private readonly SharedTransformSystem _transform = default!;
         [Dependency] private readonly UseDelaySystem _delay = default!;
-        [Dependency] private readonly SharedCombatModeSystem _combatMode = default!;
+        [Dependency] private readonly IntentSystem _intent = default!;
+
+        private static readonly HashSet<ProtoId<IntentPrototype>> ShoveIntents = new()
+        {
+            "Harm",
+            "Shove"
+        };
 
         public override void Initialize()
         {
@@ -792,7 +800,7 @@ namespace Content.Shared.Cuffs
 
             var shoved = false;
             // if combat mode is on, shove the person.
-            if (_combatMode.IsInCombatMode(user) && target != user && user != null)
+            if (user != null && _intent.TryGetIntent(user.Value, out var intent) && ShoveIntents.Contains(intent.Value) && target != user)
             {
                 var eventArgs = new DisarmedEvent { Target = target, Source = user.Value, PushProbability = 1};
                 RaiseLocalEvent(target, eventArgs);

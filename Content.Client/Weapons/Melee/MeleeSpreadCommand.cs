@@ -1,4 +1,4 @@
-using Content.Shared.CombatMode;
+using Content.Shared.Intents;
 using Robust.Client.Graphics;
 using Robust.Client.Input;
 using Robust.Client.Player;
@@ -35,7 +35,7 @@ public sealed class MeleeSpreadCommand : IConsoleCommand
             collection.Resolve<IInputManager>(),
             collection.Resolve<IPlayerManager>(),
             sysManager.GetEntitySystem<MeleeWeaponSystem>(),
-            sysManager.GetEntitySystem<SharedCombatModeSystem>(),
+            sysManager.GetEntitySystem<IntentSystem>(),
             sysManager.GetEntitySystem<SharedTransformSystem>()));
     }
 }

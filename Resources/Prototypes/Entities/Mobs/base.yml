@@ -143,7 +143,6 @@
   id: MobCombat
   abstract: true
   components:
-  - type: CombatMode
   - type: DamagePartSelector
     selectableParts:
       !type:BodyPart { type: Head, side: None }: { sprite: Interface/Actions/zone_sel.rsi, state: head }
@@ -152,10 +151,19 @@
       !type:BodyPart { type: Torso, side: None }: { sprite: Interface/Actions/zone_sel.rsi, state: torso }
       !type:BodyPart { type: Leg, side: Right }: { sprite: Interface/Actions/zone_sel.rsi, state: rleg }
       !type:BodyPart { type: Arm, side: Right }: { sprite: Interface/Actions/zone_sel.rsi, state: rarm }
+  - type: Intents
+    selectableIntents:
+    - Help
+    - Disarm
+    - Grab
+    - Harm
+    defaultIntent: Help
   - type: UserInterface
     interfaces:
       enum.DamageSelectorUiKey.Key:
         type: DamageSelectorBoundUserInterface
+      enum.IntentUiKey.Key:
+        type: IntentBoundUserInterface
       enum.StrippingUiKey.Key:
         type: StrippableBoundUserInterface
   - type: MeleeWeapon

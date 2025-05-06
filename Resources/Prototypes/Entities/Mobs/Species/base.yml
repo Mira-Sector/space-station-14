@@ -204,6 +204,8 @@
         type: StrippableBoundUserInterface
       enum.DamageSelectorUiKey.Key:
         type: DamageSelectorBoundUserInterface
+      enum.IntentUiKey.Key:
+        type: IntentBoundUserInterface
   - type: Puller
   - type: Speech
     speechSounds: Alto

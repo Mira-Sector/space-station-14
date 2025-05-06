@@ -1,6 +1,5 @@
 using Content.Shared.ActionBlocker;
 using Content.Shared.Chat;
-using Content.Shared.CombatMode;
 using Content.Shared.Damage;
 using Content.Shared.Database;
 using Content.Shared.DoAfter;
@@ -29,7 +28,6 @@ public sealed class SharedExecutionSystem : EntitySystem
     [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedSuicideSystem _suicide = default!;
-    [Dependency] private readonly SharedCombatModeSystem _combat = default!;
     [Dependency] private readonly SharedExecutionSystem _execution = default!;
     [Dependency] private readonly SharedMeleeWeaponSystem _melee = default!;
 
@@ -199,9 +197,6 @@ public sealed class SharedExecutionSystem : EntitySystem
         if (!_execution.CanBeExecuted(victim, attacker))
             return;
 
-        // This is needed so the melee system does not stop it.
-        var prev = _combat.IsInCombatMode(attacker);
-        _combat.SetInCombatMode(attacker, true);
         entity.Comp.Executing = true;
 
         var internalMsg = entity.Comp.CompleteInternalMeleeExecutionMessage;
@@ -220,7 +215,6 @@ public sealed class SharedExecutionSystem : EntitySystem
             _melee.AttemptLightAttack(attacker, weapon, meleeWeaponComp, victim);
         }
 
-        _combat.SetInCombatMode(attacker, prev);
         entity.Comp.Executing = false;
         args.Handled = true;
 
