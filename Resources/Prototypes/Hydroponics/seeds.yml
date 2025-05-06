@@ -2252,9 +2252,9 @@
   yield: 2
   potency: 20
   harvestRepeat: Repeat
-  idealHeat: 3 #can survive the cold vacuum of space, it's got cryoxadone after all
-  heatTolerance: 300
-  lowPressureTolerance: 100
+  idealHeat: 0 #can survive the cold vacuum of space, it's got cryoxadone after all
+  heatTolerance: 298
+  lowPressureTolerance: 0
   chemicals:
     Fresium:
       Min: 1
