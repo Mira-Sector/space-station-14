@@ -100,3 +100,50 @@
   color: 3a758c
   reagent: Frezon
   pricePerMole: 3
+
+- type: gas
+  id: 9
+  name: gases-pluoxium
+  specificHeat: 80
+  heatCapacityRatio: 1.4
+  molarMass: 2
+  color: 164A80
+  reagent: Pluoxium
+  pricePerMole: 1.5
+
+- type: gas
+  id: 10
+  name: gases-nitrium
+  specificHeat: 10
+  heatCapacityRatio: 1.5
+  molarMass: 44
+  gasOverlaySprite: /Textures/Effects/atmospherics.rsi
+  gasOverlayState: nitryl
+  gasMolesVisible: 0.6
+  color: 4D271B
+  reagent: Nitrium
+  pricePerMole: 4
+
+- type: gas
+  id: 11
+  name: gases-noblium
+  specificHeat: 2000
+  heatCapacityRatio: 2
+  molarMass: 35
+  gasOverlaySprite: /Textures/Effects/atmospherics.rsi
+  gasOverlayState: noblium
+  color: 00FFD0
+  reagent: Noblium
+  pricePerMole: 1.75
+
+- type: gas
+  id: 12
+  name: gases-halon
+  specificHeat: 175
+  heatCapacityRatio: 1.5
+  molarMass: 128
+  gasOverlaySprite: /Textures/Effects/atmospherics.rsi
+  gasOverlayState: halon
+  color: 99CCFF
+  reagent: Halon
+  pricePerMole: 2.5
