@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "icons from https://github.com/tgstation/tgstation/blob/3c20ecc5ae7580f731930b881bd1b1dfa46b5824/icons/obj/clothing/head/plasmaman_hats.dmi, equiped sprites from https://github.com/tgstation/tgstation/blob/3c20ecc5ae7580f731930b881bd1b1dfa46b5824/icons/mob/clothing/head/plasmaman_head.dmi, recoloured by Doctor-Cpu",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "icon"
+    },
+    {
+      "name": "icon-flash"
+    },
+    {
+      "name": "off-equipped-HELMET",
+      "directions": 4
+    },
+    {
+      "name": "on-equipped-HELMET",
+      "directions": 4
+    }
+  ]
+}
