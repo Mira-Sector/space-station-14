@@ -39,20 +39,13 @@ public abstract class SharedDamageMarkerSystem : EntitySystem
 
         if (TryComp<LeechOnMarkerComponent>(args.Used, out var leech))
         {
-            //_damageable.TryChangeDamage(args.User, leech.Leech, true, false, origin: args.Used, splitLimbDamage: false);
+            var userargs = new EntityEffectBaseArgs(args.User, EntityManager); //apply effects to the user
+            foreach (var effect in leech.UserEffects)
+                effect.Effect(userargs);
 
-            EntityUid target = args.User;
-            if (leech.TargetSelf == false)
-                target = uid;
-
-            Log.Debug(target.Id.ToString());
-            var effargs = new EntityEffectBaseArgs(target, EntityManager);
-            Log.Debug(leech.Effects.Count.ToString());
-            foreach (var effect in leech.Effects)
-            {
-                Log.Debug("Bonk");
-                effect.Effect(effargs);
-            }
+            var targetargs = new EntityEffectBaseArgs(uid, EntityManager); //apply effects to the target
+            foreach (var effect in leech.TargetEffects)
+                effect.Effect(targetargs);
         }
     }
 

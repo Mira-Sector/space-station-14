@@ -124,11 +124,15 @@
   - type: UseDelay
     delay: 0.9
   - type: LeechOnMarker
-    leechEffects:
+    userEffects:
     - !type:HealthChange
       damage:
         groups:
           Brute: -10
+    targetEffects:
+    - !type:HealthChange
+      damage:
+        Blunt: 10
   - type: Gun
     soundGunshot: /Audio/Weapons/plasma_cutter.ogg
     fireRate: 1
@@ -212,11 +216,15 @@
   - type: UseDelay
     delay: 1.9
   - type: LeechOnMarker
-    leechEffects:
+    userEffects:
       - !type:HealthChange
         damage:
           groups:
             Brute: -21
+    targetEffects:
+    - !type:HealthChange
+      damage:
+        Blunt: 10
   - type: MeleeWeapon
   - type: Tag
     tags:

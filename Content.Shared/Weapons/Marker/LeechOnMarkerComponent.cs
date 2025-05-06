@@ -12,9 +12,9 @@ public sealed partial class LeechOnMarkerComponent : Component
 {
     // TODO: Can't network damagespecifiers yet last I checked.
     //[ViewVariables(VVAccess.ReadWrite)]
-    [DataField("leechEffects", required: true, serverOnly: true)]
-    public List<EntityEffect> Effects = new(0);
+    [DataField("userEffects", serverOnly: true)]
+    public List<EntityEffect> UserEffects = new(0);
 
-    [DataField("targetSelf")]
-    public bool TargetSelf = true;
+    [DataField("targetEffects", serverOnly: true)]
+    public List<EntityEffect> TargetEffects = new(0);
 }
