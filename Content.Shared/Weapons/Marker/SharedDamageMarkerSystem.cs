@@ -1,3 +1,4 @@
+using Content.Shared.EntityEffects;
 using Content.Shared.Damage;
 using Content.Shared.Projectiles;
 using Content.Shared.Weapons.Melee.Events;
@@ -7,6 +8,8 @@ using Robust.Shared.Audio.Systems;
 using Robust.Shared.Network;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Timing;
+using System.Xml;
+
 
 namespace Content.Shared.Weapons.Marker;
 
@@ -15,7 +18,7 @@ public abstract class SharedDamageMarkerSystem : EntitySystem
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly INetManager _netManager = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly DamageableSystem _damageable = default!;
+    //[Dependency] private readonly DamageableSystem _damageable = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
 
     public override void Initialize()
@@ -36,7 +39,13 @@ public abstract class SharedDamageMarkerSystem : EntitySystem
 
         if (TryComp<LeechOnMarkerComponent>(args.Used, out var leech))
         {
-            _damageable.TryChangeDamage(args.User, leech.Leech, true, false, origin: args.Used);
+            var userargs = new EntityEffectBaseArgs(args.User, EntityManager); //apply effects to the user
+            foreach (var effect in leech.UserEffects)
+                effect.Effect(userargs);
+
+            var targetargs = new EntityEffectBaseArgs(uid, EntityManager); //apply effects to the target
+            foreach (var effect in leech.TargetEffects)
+                effect.Effect(targetargs);
         }
     }
 
