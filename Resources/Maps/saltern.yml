@@ -4,7 +4,7 @@ meta:
   engineVersion: 250.0.0
   forkId: ""
   forkVersion: ""
-  time: 05/09/2025 14:40:51
+  time: 05/09/2025 14:57:28
   entityCount: 12220
 maps:
 - 658
@@ -6550,13 +6550,6 @@ entities:
       rot: 3.141592653589793 rad
       pos: -26.5,-5.5
       parent: 31
-  - uid: 4082
-    components:
-    - type: MetaData
-      name: Dorms 1
-    - type: Transform
-      pos: -26.5,0.5
-      parent: 31
   - uid: 4083
     components:
     - type: MetaData
@@ -8003,6 +7996,11 @@ entities:
       parent: 31
 - proto: AirlockTheatreLocked
   entities:
+  - uid: 4082
+    components:
+    - type: Transform
+      pos: -26.5,0.5
+      parent: 31
   - uid: 10252
     components:
     - type: Transform
@@ -60811,10 +60809,6 @@ entities:
     - type: Transform
       pos: -27.5,2.5
       parent: 31
-    - type: DeviceLinkSource
-      linkedPorts:
-        4082:
-        - Pressed: DoorBolt
   - uid: 11380
     components:
     - type: MetaData
