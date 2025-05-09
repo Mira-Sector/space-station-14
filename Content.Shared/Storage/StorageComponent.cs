@@ -47,7 +47,6 @@ namespace Content.Shared.Storage
         /// The maximum size item that can be inserted into this storage,
         /// </summary>
         [DataField, ViewVariables(VVAccess.ReadWrite)]
-        [Access(typeof(SharedStorageSystem))]
         public ProtoId<ItemSizePrototype>? MaxItemSize;
 
         // TODO: Make area insert its own component.
