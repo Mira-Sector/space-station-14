@@ -1,0 +1,45 @@
+- type: entity
+  id: ClothingBaseModSuitBackpack
+  parent:
+  - Clothing
+  - PowerCellSlotMediumItem
+  abstract: true
+  components:
+  - type: ModSuitComplexityLimit
+    maxComplexity: 15
+  - type: ModSuitSealable
+  - type: ModuleContainer
+  - type: ModuleContainerPower
+    baseRate: 5
+  - type: PowerCellDraw
+  - type: PowerCellSlot
+    fitsInCharger: false
+  - type: Item
+    size: Ginormous
+  - type: Clothing
+    slots:
+    - back
+  - type: Appearance
+
+- type: entity
+  id: ClothingModSuitBackpackAdvanced
+  parent: ClothingBaseModSuitBackpack
+  components:
+  - type: Sprite
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/advanced.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/advanced.rsi
+        state: icon
+    clothingLayers:
+      true:
+        back:
+        - sprite: Clothing/Back/ModSuits/advanced.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        back:
+        - sprite: Clothing/Back/ModSuits/advanced.rsi
+          state: equipped-BACKPACK
