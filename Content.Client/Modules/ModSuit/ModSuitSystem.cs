@@ -67,7 +67,6 @@ public sealed partial class ModSuitSystem : SharedModSuitSystem
             if (key == null)
             {
                 key = $"{_layerPrefix}-{args.Slot}-{i}";
-                i++;
             }
             else
             {
