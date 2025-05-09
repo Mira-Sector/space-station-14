@@ -8,6 +8,6 @@ public sealed partial class ModSuitComplexityLimitComponent : Component
     [DataField, AutoNetworkedField]
     public int MaxComplexity;
 
-    [ViewVariables, AutoNetworkedField]
+    [ViewVariables, AutoNetworkedField, Access(typeof(SharedModSuitSystem))]
     public int Complexity;
 }

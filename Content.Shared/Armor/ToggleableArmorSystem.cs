@@ -1,10 +1,32 @@
 using Content.Shared.Body.Part;
+using Content.Shared.Modules.ModSuit.Events;
 using JetBrains.Annotations;
 
 namespace Content.Shared.Armor;
 
 public sealed partial class ToggleableArmorSystem : EntitySystem
 {
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        SubscribeLocalEvent<ToggleableArmorComponent, ModSuitSealedEvent>((u, c, a) => EnableArmor((u, null, c)));
+        SubscribeLocalEvent<ToggleableArmorComponent, ModSuitUnsealedEvent>((u, c, a) => DisableArmor((u, null, c)));
+    }
+
+    [PublicAPI]
+    public void EnableArmor(Entity<ArmorComponent?, ToggleableArmorComponent?> ent)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp1, ref ent.Comp2))
+            return;
+
+        foreach (var parts in ent.Comp1.Modifiers.Keys)
+        {
+            foreach (var part in parts)
+                EnableArmorPart(ent, part);
+        }
+    }
+
     [PublicAPI]
     public void EnableArmorPart(Entity<ArmorComponent?, ToggleableArmorComponent?> ent, BodyPartType part)
     {
@@ -39,6 +61,19 @@ public sealed partial class ToggleableArmorSystem : EntitySystem
     }
 
     [PublicAPI]
+    public void DisableArmor(Entity<ArmorComponent?, ToggleableArmorComponent?> ent)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp1, ref ent.Comp2))
+            return;
+
+        foreach (var parts in ent.Comp1.Modifiers.Keys)
+        {
+            foreach (var part in parts)
+                DisableArmorPart(ent, part);
+        }
+    }
+
+    [PublicAPI]
     public void DisableArmorPart(Entity<ArmorComponent?, ToggleableArmorComponent?> ent, BodyPartType part)
     {
         if (!Resolve(ent.Owner, ref ent.Comp1, ref ent.Comp2))
@@ -56,6 +91,19 @@ public sealed partial class ToggleableArmorSystem : EntitySystem
             ent.Comp1.Modifiers.Remove(parts);
             Dirty(ent.Owner, ent.Comp1);
             Dirty(ent.Owner, ent.Comp1);
+        }
+    }
+
+    [PublicAPI]
+    public void ToggleArmor(Entity<ArmorComponent?, ToggleableArmorComponent?> ent)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp1, ref ent.Comp2))
+            return;
+
+        foreach (var parts in ent.Comp1.Modifiers.Keys)
+        {
+            foreach (var part in parts)
+                ToggleArmorPart(ent, part);
         }
     }
 
