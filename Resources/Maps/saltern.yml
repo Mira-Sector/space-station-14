@@ -4,8 +4,8 @@ meta:
   engineVersion: 250.0.0
   forkId: ""
   forkVersion: ""
-  time: 05/09/2025 15:51:49
-  entityCount: 12221
+  time: 05/10/2025 12:37:04
+  entityCount: 12224
 maps:
 - 658
 grids:
@@ -55785,6 +55785,16 @@ entities:
     - type: ContainerContainer
       containers:
         stash: !type:ContainerSlot {}
+  - uid: 8913
+    components:
+    - type: Transform
+      pos: -22.5,-6.5
+      parent: 31
+  - uid: 8914
+    components:
+    - type: Transform
+      pos: -22.5,-7.5
+      parent: 31
   - uid: 9915
     components:
     - type: Transform
@@ -56562,11 +56572,6 @@ entities:
       rot: 3.141592653589793 rad
       pos: -21.5,-3.5
       parent: 31
-  - uid: 2473
-    components:
-    - type: Transform
-      pos: -22.5,-5.5
-      parent: 31
   - uid: 2483
     components:
     - type: Transform
@@ -57081,6 +57086,12 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 50.5,8.5
+      parent: 31
+  - uid: 8920
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -22.5,-5.5
       parent: 31
   - uid: 9094
     components:
@@ -62683,6 +62694,11 @@ entities:
     - type: Transform
       pos: -28.5,9.5
       parent: 31
+  - uid: 2473
+    components:
+    - type: Transform
+      pos: -25.5,-6.5
+      parent: 31
   - uid: 4229
     components:
     - type: Transform
@@ -62692,11 +62708,6 @@ entities:
     components:
     - type: Transform
       pos: -25.5,-7.5
-      parent: 31
-  - uid: 10141
-    components:
-    - type: Transform
-      pos: -22.5,-5.5
       parent: 31
 - proto: SpawnPointQuartermaster
   entities:
@@ -62974,6 +62985,11 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: -34.5,-9.5
+      parent: 31
+  - uid: 8919
+    components:
+    - type: Transform
+      pos: -22.5,-4.5
       parent: 31
   - uid: 10535
     components:
