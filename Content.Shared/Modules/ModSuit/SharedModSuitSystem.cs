@@ -17,7 +17,7 @@ public abstract partial class SharedModSuitSystem : EntitySystem
     {
         base.Initialize();
 
-        DeployableInitialize();
+        InitializeDeployable();
 
         SubscribeLocalEvent<ModSuitComplexityLimitComponent, ModuleContainerModuleAddedEvent>(OnComplexityModuleAdded);
         SubscribeLocalEvent<ModSuitComplexityLimitComponent, ModuleContainerModuleRemovedEvent>(OnComplexityModuleRemoved);

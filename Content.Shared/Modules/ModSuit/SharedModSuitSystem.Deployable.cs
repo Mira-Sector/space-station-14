@@ -9,7 +9,7 @@ public partial class SharedModSuitSystem
 {
     [Dependency] private readonly InventorySystem _inventory = default!;
 
-    private void DeployableInitialize()
+    private void InitializeDeployable()
     {
         SubscribeLocalEvent<ModSuitModulePartDeployableComponent, ClothingGotEquippedEvent>(OnDeployableEquipped);
         SubscribeLocalEvent<ModSuitModulePartDeployableComponent, ClothingGotUnequippedEvent>(OnDeployableUnequipped);
@@ -20,18 +20,21 @@ public partial class SharedModSuitSystem
         // cleanup any mess we forgot to do
         UndeployAll(ent, args.Wearer);
 
+        if (!TryComp<InventoryComponent>(args.Wearer, out var inventoryComp))
+            return;
+
         foreach (var (partId, slot) in ent.Comp.DeployableParts)
         {
-            if (!_inventory.HasSlot(args.Wearer, slot))
+            if (!_inventory.HasSlot(args.Wearer, slot, inventoryComp))
                 continue;
 
             var part = Spawn(partId);
             var beforeEv = new ModSuitDeployablePartBeforeEquippedEvent(ent.Owner, args.Wearer, slot);
             RaiseLocalEvent(part, beforeEv);
 
-            _inventory.TryUnequip(args.Wearer, slot, true, true, true);
+            _inventory.TryUnequip(args.Wearer, slot, true, true, true, inventoryComp);
 
-            if (!_inventory.TryEquip(args.Wearer, part, slot, true, true, true))
+            if (!_inventory.TryEquip(args.Wearer, part, slot, true, true, true, inventoryComp))
             {
                 var failedEv = new ModSuitDeployablePartUndeployedEvent(ent.Owner, args.Wearer);
                 RaiseLocalEvent(part, failedEv);
