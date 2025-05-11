@@ -10,5 +10,5 @@ public sealed partial class ModSuitModulePartDeployableComponent : Component
     public Dictionary<string, EntProtoId> DeployableParts = [];
 
     [ViewVariables, AutoNetworkedField, Access(typeof(SharedModSuitSystem))]
-    public HashSet<EntityUid> DeployedParts = [];
+    public Dictionary<string, EntityUid> DeployedParts = [];
 }

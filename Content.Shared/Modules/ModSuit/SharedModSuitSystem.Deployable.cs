@@ -17,13 +17,15 @@ public partial class SharedModSuitSystem
 
     private void OnDeployableEquipped(Entity<ModSuitModulePartDeployableComponent> ent, ref ClothingGotEquippedEvent args)
     {
-        // cleanup any mess we forgot to do
-        UndeployAll(ent, args.Wearer);
+        var inventoryComp = CompOrNull<InventoryComponent>(args.Wearer);
 
-        if (!TryComp<InventoryComponent>(args.Wearer, out var inventoryComp))
+        // cleanup any mess we forgot to do
+        UndeployAll((ent.Owner, ent.Comp, inventoryComp), args.Wearer);
+
+        if (inventoryComp == null)
             return;
 
-        foreach (var (partId, slot) in ent.Comp.DeployableParts)
+        foreach (var (slot, partId) in ent.Comp.DeployableParts)
         {
             if (!_inventory.HasSlot(args.Wearer, slot, inventoryComp))
                 continue;
@@ -45,7 +47,11 @@ public partial class SharedModSuitSystem
 
             var afterEv = new ModSuitDeployablePartDeployed(ent.Owner, args.Wearer, slot);
             RaiseLocalEvent(part, afterEv);
+
+            ent.Comp.DeployedParts.Add(slot, part);
         }
+
+        Dirty(ent);
     }
 
     private void OnDeployableUnequipped(Entity<ModSuitModulePartDeployableComponent> ent, ref ClothingGotUnequippedEvent args)
@@ -53,16 +59,17 @@ public partial class SharedModSuitSystem
         UndeployAll(ent, args.Wearer);
     }
 
-    internal void UndeployAll(Entity<ModSuitModulePartDeployableComponent> ent, EntityUid wearer)
+    internal void UndeployAll(Entity<ModSuitModulePartDeployableComponent, InventoryComponent?> ent, EntityUid wearer)
     {
         var ev = new ModSuitDeployablePartUndeployedEvent(ent.Owner, wearer);
 
-        foreach (var part in ent.Comp.DeployedParts)
+        foreach (var (slot, part) in ent.Comp1.DeployedParts)
         {
+            _inventory.TryUnequip(wearer, slot, true, true, true, ent.Comp2);
             RaiseLocalEvent(part, ev);
             QueueDel(part);
         }
 
-        ent.Comp.DeployedParts.Clear();
+        ent.Comp1.DeployedParts.Clear();
     }
 }
