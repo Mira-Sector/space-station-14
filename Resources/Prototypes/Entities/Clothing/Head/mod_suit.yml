@@ -1,6 +1,5 @@
 - type: entity
   id: ClothingHeadModSuitBase
-  parent: Clothing
   abstract: true
   categories: [ HideSpawnMenu ]
   components:
@@ -9,7 +8,11 @@
   - type: Clothing
     slots:
     - head
+  - type: Unremoveable
   - type: Appearance
+  - type: Tag
+    tags:
+      - WhitelistChameleon
 
 - type: entity
   id: ClothingHeadModSuitAdvanced
