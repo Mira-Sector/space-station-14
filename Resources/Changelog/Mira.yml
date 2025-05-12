@@ -1667,3 +1667,17 @@ Entries:
     type: Tweak
   id: 238
   time: '2025-05-12T16:40:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: Cryoconuts can survive in space
+    type: Tweak
+  - message: Spesoes can be cut by anything sharp
+    type: Tweak
+  - message: Lampflowers rot faster
+    type: Tweak
+  - message: Non-Food produce can be cut faster
+    type: Tweak
+  - message: Non-Food Produce can't be cut with any item
+    type: Fix
+  id: 239
+  time: '2025-05-12T16:45:00.0000000+00:00'
