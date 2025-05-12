@@ -7,5 +7,8 @@ public sealed partial class ModSuitSystem : SharedModSuitSystem
     public override void Initialize()
     {
         base.Initialize();
+
+        InitializeDeployable();
     }
+
 }

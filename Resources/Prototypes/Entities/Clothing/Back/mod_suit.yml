@@ -43,7 +43,7 @@
         back:
         - sprite: Clothing/Back/ModSuits/advanced.rsi
           state: equipped-BACKPACK
-  - type: ModSuitModulePartDeployable
+  - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitAdvanced
       gloves: ClothingHandsModSuitAdvanced

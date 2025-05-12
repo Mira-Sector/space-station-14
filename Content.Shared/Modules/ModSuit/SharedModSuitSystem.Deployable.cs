@@ -2,22 +2,29 @@ using Content.Shared.Clothing;
 using Content.Shared.Inventory;
 using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
+using Robust.Shared.Network;
+using Robust.Shared.Timing;
 using System.Linq;
 
 namespace Content.Shared.Modules.ModSuit;
 
 public partial class SharedModSuitSystem
 {
-    [Dependency] private readonly InventorySystem _inventory = default!;
+    [Dependency] protected readonly InventorySystem Inventory = default!;
+    [Dependency] private readonly INetManager _net = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
 
     private void InitializeDeployable()
     {
-        SubscribeLocalEvent<ModSuitModulePartDeployableComponent, ClothingGotEquippedEvent>(OnDeployableEquipped);
-        SubscribeLocalEvent<ModSuitModulePartDeployableComponent, ClothingGotUnequippedEvent>(OnDeployableUnequipped);
+        SubscribeLocalEvent<ModSuitPartDeployableComponent, ClothingGotEquippedEvent>(OnDeployableEquipped);
+        SubscribeLocalEvent<ModSuitPartDeployableComponent, ClothingGotUnequippedEvent>(OnDeployableUnequipped);
     }
 
-    private void OnDeployableEquipped(Entity<ModSuitModulePartDeployableComponent> ent, ref ClothingGotEquippedEvent args)
+    private void OnDeployableEquipped(Entity<ModSuitPartDeployableComponent> ent, ref ClothingGotEquippedEvent args)
     {
+        if (!_timing.IsFirstTimePredicted)
+            return;
+
         var inventoryComp = CompOrNull<InventoryComponent>(args.Wearer);
 
         // cleanup any mess we forgot to do
@@ -26,30 +33,41 @@ public partial class SharedModSuitSystem
         if (inventoryComp == null)
             return;
 
-        foreach (var (slot, partId) in ent.Comp.DeployableParts)
+        foreach (var (slot, _) in ent.Comp.DeployableParts)
         {
-            if (!_inventory.HasSlot(args.Wearer, slot, inventoryComp))
+            if (!Inventory.HasSlot(args.Wearer, slot, inventoryComp))
                 continue;
 
-            var part = Spawn(partId);
+            var getPartEv = new ModSuitDeployableGetPartEvent(GetNetEntity(ent.Owner), slot);
+
+            if (_net.IsServer)
+                RaiseLocalEvent(getPartEv);
+            else
+                RaiseNetworkEvent(getPartEv);
+
+            if (!getPartEv.Handled)
+                continue;
+
+            var part = GetEntity(getPartEv.Part);
+
             var beforeEv = new ModSuitDeployablePartBeforeEquippedEvent(ent.Owner, args.Wearer, slot);
             RaiseLocalEvent(part, beforeEv);
 
-            _inventory.TryUnequip(args.Wearer, slot, true, true, true, inventoryComp);
+            Inventory.TryUnequip(args.Wearer, slot, true, true, true, inventoryComp);
 
-            if (!_inventory.TryEquip(args.Wearer, part, slot, true, true, true, inventoryComp))
+            if (!Inventory.TryEquip(args.Wearer, part, slot, true, true, true, inventoryComp))
             {
-                var failedEv = new ModSuitDeployablePartUndeployedEvent(ent.Owner, args.Wearer);
+                var failedEv = new ModSuitDeployablePartUnequippedEvent(ent.Owner, args.Wearer, slot);
                 RaiseLocalEvent(part, failedEv);
 
-                QueueDel(part);
+                if (_net.IsServer)
+                    QueueDel(part);
+
                 continue;
             }
 
             var afterEv = new ModSuitDeployablePartDeployed(ent.Owner, args.Wearer, slot);
             RaiseLocalEvent(part, afterEv);
-
-            ent.Comp.DeployedParts.Add(slot, part);
         }
 
         // safe to check as this gets reset when undeploying any remaining parts
@@ -57,7 +75,7 @@ public partial class SharedModSuitSystem
             Dirty(ent);
     }
 
-    private void OnDeployableUnequipped(Entity<ModSuitModulePartDeployableComponent> ent, ref ClothingGotUnequippedEvent args)
+    private void OnDeployableUnequipped(Entity<ModSuitPartDeployableComponent> ent, ref ClothingGotUnequippedEvent args)
     {
         if (!ent.Comp.DeployedParts.Any())
             return;
@@ -66,15 +84,17 @@ public partial class SharedModSuitSystem
         Dirty(ent);
     }
 
-    internal void UndeployAll(Entity<ModSuitModulePartDeployableComponent> ent, Entity<InventoryComponent?> wearer)
+    internal void UndeployAll(Entity<ModSuitPartDeployableComponent> ent, Entity<InventoryComponent?> wearer)
     {
-        var ev = new ModSuitDeployablePartUndeployedEvent(ent.Owner, wearer);
-
         foreach (var (slot, part) in ent.Comp.DeployedParts)
         {
-            _inventory.TryUnequip(wearer.Owner, slot, true, true, true, wearer.Comp);
+            var ev = new ModSuitDeployablePartUnequippedEvent(ent.Owner, wearer.Owner, slot);
+
+            Inventory.TryUnequip(wearer.Owner, slot, true, true, true, wearer.Comp);
             RaiseLocalEvent(part, ev);
-            QueueDel(part);
+
+            if (_net.IsServer)
+                QueueDel(part);
         }
 
         ent.Comp.DeployedParts.Clear();

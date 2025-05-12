@@ -4,7 +4,7 @@ using Robust.Shared.Prototypes;
 namespace Content.Shared.Modules.ModSuit.Components;
 
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
-public sealed partial class ModSuitModulePartDeployableComponent : Component
+public sealed partial class ModSuitPartDeployableComponent : Component
 {
     [DataField, AutoNetworkedField]
     public Dictionary<string, EntProtoId> DeployableParts = [];
