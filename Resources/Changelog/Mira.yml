@@ -1681,3 +1681,9 @@ Entries:
     type: Fix
   id: 239
   time: '2025-05-12T16:45:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Added figurine case to maints loot
+    type: Add
+  id: 240
+  time: '2025-05-12T16:50:00.0000000+00:00'
