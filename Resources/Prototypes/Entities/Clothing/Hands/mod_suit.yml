@@ -1,0 +1,35 @@
+- type: entity
+  id: ClothingHandsModSuitBase
+  parent: Clothing
+  abstract: true
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: ModSuitSealable
+  - type: Clothing
+    slots:
+    - gloves
+  - type: Appearance
+
+- type: entity
+  id: ClothingHandsModSuitAdvanced
+  parent: ClothingHandsModSuitBase
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Hands/ModSuits/advanced.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Hands/ModSuits/advanced.rsi
+        state: icon
+    clothingLayers:
+      true:
+        gloves:
+        - sprite: Clothing/Hands/ModSuits/advanced.rsi
+          state: equipped-HAND-sealed
+      false:
+        gloves:
+        - sprite: Clothing/Hands/ModSuits/advanced.rsi
+          state: equipped-HAND

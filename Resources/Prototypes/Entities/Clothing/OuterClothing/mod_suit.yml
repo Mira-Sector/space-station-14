@@ -1,0 +1,35 @@
+- type: entity
+  id: ClothingOuterModSuitBase
+  parent: Clothing
+  abstract: true
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: ModSuitSealable
+  - type: Clothing
+    slots:
+    - outerClothing
+  - type: Appearance
+
+- type: entity
+  id: ClothingOuterModSuitAdvanced
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/advanced.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/advanced.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/advanced.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/advanced.rsi
+          state: equipped-OUTERCLOTHING

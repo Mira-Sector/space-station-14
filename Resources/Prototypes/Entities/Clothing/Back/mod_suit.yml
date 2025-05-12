@@ -1,5 +1,5 @@
 - type: entity
-  id: ClothingBaseModSuitBackpack
+  id: ClothingBackpackModSuitBase
   parent:
   - Clothing
   - PowerCellSlotMediumItem
@@ -22,8 +22,8 @@
   - type: Appearance
 
 - type: entity
-  id: ClothingModSuitBackpackAdvanced
-  parent: ClothingBaseModSuitBackpack
+  id: ClothingBackpackModSuitAdvanced
+  parent: ClothingBackpackModSuitBase
   components:
   - type: Sprite
   - type: ModSuitSealable
@@ -43,3 +43,9 @@
         back:
         - sprite: Clothing/Back/ModSuits/advanced.rsi
           state: equipped-BACKPACK
+  - type: ModSuitModulePartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitAdvanced
+      gloves: ClothingHandsModSuitAdvanced
+      head: ClothingHeadModSuitAdvanced
+      shoes: ClothingShoesModSuitAdvanced

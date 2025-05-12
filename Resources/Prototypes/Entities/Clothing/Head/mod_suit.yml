@@ -1,0 +1,35 @@
+- type: entity
+  id: ClothingHeadModSuitBase
+  parent: Clothing
+  abstract: true
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: ModSuitSealable
+  - type: Clothing
+    slots:
+    - head
+  - type: Appearance
+
+- type: entity
+  id: ClothingHeadModSuitAdvanced
+  parent: ClothingHeadModSuitBase
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Head/ModSuits/advanced.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Head/ModSuits/advanced.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Head/ModSuits/advanced.rsi
+          state: equipped-HELMET-sealed
+      false:
+        head:
+        - sprite: Clothing/Head/ModSuits/advanced.rsi
+          state: equipped-HELMET
