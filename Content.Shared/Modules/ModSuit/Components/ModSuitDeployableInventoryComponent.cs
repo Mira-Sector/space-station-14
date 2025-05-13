@@ -1,13 +1,14 @@
 using Robust.Shared.Containers;
+using Robust.Shared.GameStates;
 
-namespace Content.Server.Modules.ModSuit.Components;
+namespace Content.Shared.Modules.ModSuit.Components;
 
-[RegisterComponent]
+[RegisterComponent, NetworkedComponent]
 public sealed partial class ModSuitDeployableInventoryComponent : Component
 {
     [DataField]
     public string ContainerId = "mod_suit_inventory";
 
     [ViewVariables]
-    public ContainerSlot? StoredItem;
+    public ContainerSlot StoredItem;
 }
