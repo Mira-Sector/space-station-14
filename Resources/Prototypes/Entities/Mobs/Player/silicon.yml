@@ -439,6 +439,18 @@
           type: HolopadBoundUserInterface
         enum.HolopadUiKey.AiActionWindow:
           type: HolopadBoundUserInterface
+  - type: TriggerOnProximity
+    enabled: true
+    cooldown: 5
+    shape:
+      !type:PhysShapeCircle
+        radius: 10
+    repeating: true
+  - type: StationAiAnnounceOnTrigger
+    announceDelay: 5
+    message: ai-trespass-warning
+    sound:
+      path: /Audio/Misc/adminlarm.ogg
 
 # The job-ready version of an AI spawn.
 - type: entity
