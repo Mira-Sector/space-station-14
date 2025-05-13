@@ -90,9 +90,12 @@ public partial class SharedModSuitSystem
             return;
         }
 
-        foreach (var (slot, part) in ent.Comp.DeployableParts)
+        foreach (var (slot, container) in ent.Comp.DeployableContainers)
         {
             if (!Inventory.HasSlot(args.Wearer, slot, inventoryComp))
+                continue;
+
+            if (container.ContainedEntity is not { } part)
                 continue;
 
             var beforeEv = new ModSuitDeployablePartBeforeEquippedEvent(ent.Owner, args.Wearer, slot);
@@ -105,7 +108,6 @@ public partial class SharedModSuitSystem
                 var failedEv = new ModSuitDeployablePartUnequippedEvent(ent.Owner, args.Wearer, slot);
                 RaiseLocalEvent(part, failedEv);
 
-                var container = Container.EnsureContainer<ContainerSlot>(ent.Owner, GetDeployableSlotId(slot));
                 Container.Insert(part, container);
                 continue;
             }

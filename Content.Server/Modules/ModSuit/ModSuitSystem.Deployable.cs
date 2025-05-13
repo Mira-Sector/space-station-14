@@ -27,7 +27,7 @@ public partial class ModSuitSystem
         if (!TryComp<ModSuitPartDeployableComponent>(modSuit, out var deployableComp))
             return;
 
-        if (deployableComp.DeployableParts.TryGetValue(args.Slot, out var part))
+        if (deployableComp.DeployableContainers.TryGetValue(args.Slot, out var container) && container.ContainedEntity is { } part)
         {
             args.Handled = true;
             args.Part = GetNetEntity(part);
