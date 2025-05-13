@@ -9,5 +9,5 @@ public sealed partial class ModSuitDeployableInventoryComponent : Component
     public string ContainerId = "mod_suit_inventory";
 
     [ViewVariables]
-    public Container? StoredItem;
+    public ContainerSlot? StoredItem;
 }

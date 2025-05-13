@@ -1,3 +1,4 @@
+using Robust.Shared.Containers;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
@@ -6,9 +7,32 @@ namespace Content.Shared.Modules.ModSuit.Components;
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class ModSuitPartDeployableComponent : Component
 {
-    [DataField, AutoNetworkedField]
-    public Dictionary<string, EntProtoId> DeployableParts = [];
+    [DataField("deployableParts"), AutoNetworkedField, Access(typeof(SharedModSuitSystem))]
+    public Dictionary<string, EntProtoId> DeployablePartIds = [];
 
-    [ViewVariables, AutoNetworkedField, Access(typeof(SharedModSuitSystem))]
+    [ViewVariables, Access(typeof(SharedModSuitSystem))]
+    public Dictionary<string, ContainerSlot> DeployableContainers = [];
+
+    [ViewVariables]
+    public Dictionary<string, EntityUid> DeployableParts
+    {
+        get
+        {
+            Dictionary<string, EntityUid> parts = [];
+
+            foreach (var (slot, container) in DeployableContainers)
+            {
+                if (container.ContainedEntity != null)
+                    parts.Add(slot, container.ContainedEntity.Value);
+            }
+
+            return parts;
+        }
+    }
+
+    [ViewVariables]
     public Dictionary<string, EntityUid> DeployedParts = [];
+
+    [ViewVariables, AutoNetworkedField]
+    public EntityUid? Wearer;
 }

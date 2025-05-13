@@ -2,17 +2,14 @@ using Content.Server.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
 using Robust.Shared.Containers;
-using System.Linq;
 
 namespace Content.Server.Modules.ModSuit;
 
 public partial class ModSuitSystem
 {
-    [Dependency] private readonly SharedContainerSystem _container = default!;
-
     private void InitializeDeployable()
     {
-        SubscribeAllEvent<ModSuitDeployableGetPartEvent>(OnDeployableGetEntity);
+        SubscribeAllEvent<ModSuitDeployableGetPartEvent>(OnDeployableGetPart);
 
         SubscribeLocalEvent<ModSuitDeployableInventoryComponent, ModSuitDeployablePartBeforeEquippedEvent>(OnDeployableInventoryBeforeEquipped);
         SubscribeLocalEvent<ModSuitDeployableInventoryComponent, ModSuitDeployablePartUnequippedEvent>(OnDeployableInventoryUnequipped);
@@ -20,7 +17,7 @@ public partial class ModSuitSystem
 
     #region Deployable
 
-    private void OnDeployableGetEntity(ModSuitDeployableGetPartEvent args)
+    private void OnDeployableGetPart(ModSuitDeployableGetPartEvent args)
     {
         if (args.Handled)
             return;
@@ -30,20 +27,19 @@ public partial class ModSuitSystem
         if (!TryComp<ModSuitPartDeployableComponent>(modSuit, out var deployableComp))
             return;
 
-        if (deployableComp.DeployedParts.TryGetValue(args.Slot, out var part))
+        if (deployableComp.DeployableParts.TryGetValue(args.Slot, out var part))
         {
-            args.Part = GetNetEntity(part);
             args.Handled = true;
+            args.Part = GetNetEntity(part);
             return;
         }
 
-        if (!deployableComp.DeployableParts.TryGetValue(args.Slot, out var partId))
+        if (!deployableComp.DeployablePartIds.TryGetValue(args.Slot, out var partId))
             return;
 
         part = Spawn(partId);
-        deployableComp.DeployedParts.Add(args.Slot, part);
-        args.Part = GetNetEntity(part);
         args.Handled = true;
+        args.Part = GetNetEntity(part);
     }
 
     #endregion
@@ -52,25 +48,28 @@ public partial class ModSuitSystem
 
     private void OnDeployableInventoryBeforeEquipped(Entity<ModSuitDeployableInventoryComponent> ent, ref ModSuitDeployablePartBeforeEquippedEvent args)
     {
-        ent.Comp.StoredItem = _container.EnsureContainer<Container>(ent.Owner, ent.Comp.ContainerId);
-        _container.EmptyContainer(ent.Comp.StoredItem, true);
+        ent.Comp.StoredItem = Container.EnsureContainer<ContainerSlot>(ent.Owner, ent.Comp.ContainerId);
+        Container.EmptyContainer(ent.Comp.StoredItem, true);
 
         if (!Inventory.TryGetSlotEntity(args.Wearer, args.Slot, out var slotEntity))
             return;
 
-        Inventory.TryUnequip(args.Wearer, args.Slot, true, false, true);
-
-        _container.Insert(slotEntity.Value, ent.Comp.StoredItem);
+        Inventory.TryUnequip(args.Wearer, args.Slot, true, true);
+        Container.Insert(slotEntity.Value, ent.Comp.StoredItem);
     }
 
     private void OnDeployableInventoryUnequipped(Entity<ModSuitDeployableInventoryComponent> ent, ref ModSuitDeployablePartUnequippedEvent args)
     {
-        if (ent.Comp.StoredItem?.ContainedEntities.Any() != true)
+        if (ent.Comp.StoredItem?.ContainedEntity is not { } containedEntity)
             return;
 
-        var items = _container.EmptyContainer(ent.Comp.StoredItem, true);
+        if (args.Wearer is not { } wearer)
+        {
+            Container.Remove(containedEntity, ent.Comp.StoredItem);
+            return;
+        }
 
-        Inventory.TryEquip(args.Wearer, items[0], args.Slot, true, true, true);
+        Inventory.TryEquip(wearer, containedEntity, args.Slot, true, true);
     }
 
     #endregion
