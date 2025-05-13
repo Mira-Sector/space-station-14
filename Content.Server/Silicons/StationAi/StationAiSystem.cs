@@ -2,6 +2,7 @@ using System.Linq;
 using Content.Server.Chat.Managers;
 using Content.Server.Electrocution;
 using Content.Server.Chat.Systems;
+using Content.Server.Explosion.EntitySystems;
 using Content.Shared.Chat;
 using Content.Shared.Mind;
 using Content.Shared.Roles;
@@ -31,6 +32,7 @@ public sealed partial class StationAiSystem : SharedStationAiSystem
         InitializePower();
         InitializeShunting();
 
+        SubscribeLocalEvent<StationAiAnnounceOnTriggerComponent, TriggerEvent>(OnAnnounceTrigger);
         SubscribeLocalEvent<ElectrifiedComponent, StationAiElectrifiedEvent>(OnElectrified);
         SubscribeLocalEvent<ExpandICChatRecipientsEvent>(OnExpandICChatRecipients);
     }
@@ -71,6 +73,22 @@ public sealed partial class StationAiSystem : SharedStationAiSystem
         }
     }
 
+    private void OnAnnounceTrigger(Entity<StationAiAnnounceOnTriggerComponent> ent, ref TriggerEvent args)
+    {
+        if (_timing.CurTime > ent.Comp.LastAnnouncement + ent.Comp.AnnounceDelay)
+            return;
+
+        ent.Comp.LastAnnouncement = _timing.CurTime;
+
+        if (!TryComp<StationAiCoreComponent>(ent.Owner, out var stationAiCore))
+            return;
+
+        if (!TryGetInsertedAI((ent.Owner, stationAiCore), out var insertedAi))
+            return;
+
+        AnnounceAi(insertedAi.Value, Loc.GetString(ent.Comp.Message), ent.Comp.Sound);
+
+    }
     public override bool SetVisionEnabled(Entity<StationAiVisionComponent> entity, bool enabled, bool announce = false)
     {
         if (!base.SetVisionEnabled(entity, enabled, announce))
