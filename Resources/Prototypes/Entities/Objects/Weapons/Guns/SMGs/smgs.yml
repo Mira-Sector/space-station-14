@@ -1,6 +1,6 @@
 - type: entity
   name: BaseSMG
-  parent: BaseItem
+  parent: [BaseItem, BaseGunMeleeSmall]
   id: BaseWeaponSubMachineGun
   description: A rooty tooty point and shooty.
   abstract: true
@@ -57,10 +57,15 @@
       gun_chamber: !type:ContainerSlot
   - type: StaticPrice
     price: 500
+  - type: MeleeWeapon #SMG's are light enough to be swung about but too heavy to do so easily with one hand, so kind of worst of both worlds
+    attackRate: 1
+    animationRotation: 45
+    wideAnimationRotation: 45
+  - type: MeleeRequiresWield  #can still one hand melee if gun can't be wielded).
 
 - type: entity
   name: Atreides
-  parent: [BaseWeaponSubMachineGun, BaseMajorContraband]
+  parent: [BaseGunMeleeSmall, BaseWeaponSubMachineGun, BaseMajorContraband]
   id: WeaponSubMachineGunAtreides
   description: Pla-ket-ket-ket-ket! Uses .35 auto ammo.
   components:

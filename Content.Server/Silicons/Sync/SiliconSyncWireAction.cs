@@ -28,7 +28,7 @@ public sealed partial class SiliconSyncWireAction : ComponentWireAction<SiliconS
 
     public override bool Cut(EntityUid user, Wire wire, SiliconSyncableSlaveComponent component)
     {
-        EntityManager.System<SiliconSyncSystem>().SetMaster((wire.Owner, component), null);
+        EntityManager.System<SharedSiliconSyncSystem>().SetMaster((wire.Owner, component), null);
         return true;
     }
 
@@ -39,6 +39,6 @@ public sealed partial class SiliconSyncWireAction : ComponentWireAction<SiliconS
 
     public override void Pulse(EntityUid user, Wire wire, SiliconSyncableSlaveComponent component)
     {
-        EntityManager.System<SiliconSyncSystem>().ShowAvailableMasters((wire.Owner, component), user);
+        EntityManager.System<SharedSiliconSyncSystem>().ShowAvailableMasters((wire.Owner, component), user);
     }
 }

@@ -1,4 +1,4 @@
-﻿- type: body
+- type: body
   id: Chicken
   name: chicken
   root: torso
@@ -11,7 +11,7 @@
         brain: OrganHumanBrain
         eyes: OrganHumanEyes
         ears: OrganHumanEars
-        tongue: OrganHumanTongue
+        tongue: OrganChickenTongue
     torso:
       part: ChickenTorso
       connections:

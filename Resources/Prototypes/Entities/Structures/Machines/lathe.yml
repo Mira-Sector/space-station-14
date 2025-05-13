@@ -130,6 +130,7 @@
     - ServiceStatic
     - PowerCellsStatic
     - ElectronicsStatic
+    - HydroponicsStatic
   - type: EmagLatheRecipes
     emagStaticPacks:
     - SecurityAmmoStatic
@@ -207,6 +208,7 @@
     - Instruments
     - Equipment
     - FauxTiles
+    - Cartridge
   - type: EmagLatheRecipes
     emagDynamicPacks:
     - SecurityAmmo

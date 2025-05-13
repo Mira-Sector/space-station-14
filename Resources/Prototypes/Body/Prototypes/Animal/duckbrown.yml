@@ -1,0 +1,37 @@
+- type: body
+  id: DuckBrown
+  name: brown duck
+  root: torso
+  slots:
+    head:
+      part: DuckBrownHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganDuckTongue
+    torso:
+      part: DuckBrownTorso
+      connections:
+      - right_leg
+      - left_leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganAnimalStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    right_leg:
+      part: DuckBrownRightLeg
+      connections:
+      - right_foot
+    left_leg:
+      part: DuckBrownLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: DuckBrownRightFoot
+    left_foot:
+      part: DuckBrownLeftFoot

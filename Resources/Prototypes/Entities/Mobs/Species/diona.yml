@@ -96,11 +96,6 @@
     toggleActionId: null
     enabled: true
     canSlip: false
-  - type: Vocal
-    sounds:
-      Male: UnisexDiona
-      Female: UnisexDiona
-      Unsexed: UnisexDiona
   - type: BodyEmotes
     soundsId: DionaBodyEmotes
   - type: IgnoreKudzu

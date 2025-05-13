@@ -39,6 +39,7 @@ using Robust.Shared.Audio.Systems;
 using Content.Shared.Ghost.Roles.Components;
 using Content.Shared.Tag;
 using Robust.Shared.Prototypes;
+using System.Linq;
 
 namespace Content.Server.Zombies;
 
@@ -117,7 +118,16 @@ public sealed partial class ZombieSystem
         //funny voice
         var accentType = "zombie";
         if (TryComp<ZombieAccentOverrideComponent>(target, out var accent))
+        {
             accentType = accent.Accent;
+        }
+        else
+        {
+            var organs = _body.GetBodyOrganEntityComps<ZombieAccentOverrideComponent>(target);
+
+            if (organs.Any())
+                accentType = organs[0].Comp1.Accent;
+        }
 
         EnsureComp<ReplacementAccentComponent>(target).Accent = accentType;
 

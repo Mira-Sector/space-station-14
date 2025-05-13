@@ -128,6 +128,11 @@ public sealed class ClientClothingSystem : ClothingSystem
                 key = $"{args.Slot}-{i}";
                 i++;
             }
+            else
+            {
+                key = $"{args.Slot}-{key}";
+                layer.MapKeys = [key];
+            }
 
             item.MappedLayer = key;
             args.Layers.Add((key, layer));

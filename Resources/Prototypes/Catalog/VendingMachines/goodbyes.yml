@@ -123,3 +123,15 @@
   values:
     prefix: thankyou-pride-
     count: 3
+
+- type: localizedDataset
+  id: DonkCoGoodbyes
+  values:
+    prefix: thankyou-donkco-
+    count: 3
+
+- type: localizedDataset
+  id: DonksoftGoodbyes
+  values:
+    prefix: thankyou-donksoft-
+    count: 3

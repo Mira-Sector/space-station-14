@@ -17,6 +17,9 @@
     components:
     - type: MimePowers
       preventWriting: true
+  - !type:AddComponentOrganSpecial
+    organ: Tongue
+    components:
     - type: FrenchAccent
 
 - type: startingGear

@@ -1,0 +1,12 @@
+- type: entity
+  id: OrganMouseTongue
+  parent: OrganHumanTongue
+  components:
+  - type: ReplacementAccent
+    accent: mouse
+  - type: VocalOrgan
+    sounds:
+      Male: Mouse
+      Female: Mouse
+      Unsexed: Mouse
+    wilhelmProbability: 0.001

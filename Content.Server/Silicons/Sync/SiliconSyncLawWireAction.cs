@@ -32,6 +32,6 @@ public sealed partial class SiliconSyncLawWireAction : ComponentWireAction<Silic
 
     public override void Pulse(EntityUid user, Wire wire, SiliconSyncableSlaveLawComponent component)
     {
-        EntityManager.System<SiliconSyncSystem>().UpdateSlaveLaws((wire.Owner, null, component));
+        EntityManager.System<SharedSiliconSyncSystem>().UpdateSlaveLaws((wire.Owner, null, component));
     }
 }

@@ -35,7 +35,7 @@
       Damaged: 15
       Dead: 100
   - type: OrganReplaceable
-  - type: SurgeryReciever
+  - type: SurgeryReceiver
     availableSurgeries:
     - OrganManipulation
   - type: UserInterface
@@ -60,7 +60,7 @@
       Damaged: 10
       Dead: 75
   - type: OrganReplaceable
-  - type: SurgeryReciever
+  - type: SurgeryReceiver
     availableSurgeries:
     - LimbAmputation
     - OrganManipulation
@@ -94,7 +94,7 @@
       Dead: 50
   - type: Damageable
     damageContainer: Biological
-  - type: SurgeryReciever
+  - type: SurgeryReceiver
     availableSurgeries:
     - LimbAmputation
 
@@ -116,7 +116,7 @@
       Dead: 50
   - type: Damageable
     damageContainer: Biological
-  - type: SurgeryReciever
+  - type: SurgeryReceiver
     availableSurgeries:
     - LimbAmputation
 
@@ -166,7 +166,7 @@
       Dead: 65
   - type: Damageable
     damageContainer: Biological
-  - type: SurgeryReciever
+  - type: SurgeryReceiver
     availableSurgeries:
     - LimbAmputation
 
@@ -196,7 +196,7 @@
       Dead: 65
   - type: Damageable
     damageContainer: Biological
-  - type: SurgeryReciever
+  - type: SurgeryReceiver
     availableSurgeries:
     - LimbAmputation
 

@@ -7,25 +7,18 @@ namespace Content.Server.Storage.Components
     ///     Spawns items when used in hand.
     /// </summary>
     [RegisterComponent]
-    public sealed partial class SpawnItemsOnUseComponent : Component
+    public sealed partial class SpawnItemsOnUseComponent : Component, ISpawnItems
     {
-        /// <summary>
-        ///     The list of entities to spawn, with amounts and orGroups.
-        /// </summary>
-        [DataField("items", required: true)]
-        public List<EntitySpawnEntry> Items = new();
+        /// <inheritdoc/>
+        [DataField(required: true)]
+        public List<EntitySpawnEntry> Items { get; set; }
 
-        /// <summary>
-        ///     A sound to play when the items are spawned. For example, gift boxes being unwrapped.
-        /// </summary>
-        [DataField("sound")]
-        public SoundSpecifier? Sound = null;
+        /// <inheritdoc/>
+        [DataField]
+        public SoundSpecifier? Sound { get; set; }
 
-        /// <summary>
-        ///     How many uses before the item should delete itself.
-        /// </summary>
-        [ViewVariables(VVAccess.ReadWrite)]
-        [DataField("uses")]
-        public int Uses = 1;
+        /// <inheritdoc/>
+        [DataField]
+        public int Uses { get; set; } = 1;
     }
 }

@@ -1,0 +1,225 @@
+- type: entity
+  parent: BasePlushie
+  id: PlushieSolusHuman
+  name: gabriela solus plushie
+  description: A cute stuffed toy that resembles a certain troublemaker.
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/mira_plushies.rsi
+    state: plushie_sillyamy_human
+  - type: EmitSoundOnUse
+    sound:
+      collection: FemaleScreams
+  - type: EmitSoundOnLand
+    sound:
+      collection: FemaleScreams
+  - type: EmitSoundOnActivate
+    sound:
+      collection: FemaleScreams
+  - type: EmitSoundOnTrigger
+    sound:
+      collection: FemaleScreams
+  - type: EmitSoundOnCollide
+    sound:
+      collection: FemaleScreams
+  - type: Food
+    requiresSpecialDigestion: true
+    useSound:
+      collection: FemaleScreams
+  - type: MeleeWeapon
+    wideAnimationRotation: 180
+    soundHit:
+      collection: FemaleScreams
+
+- type: entity
+  parent: PlushieSolusHuman
+  id: PlushieSolusSlime
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/mira_plushies.rsi
+    state: plushie_sillyamy_slime
+  - type: EmitSoundOnUse
+    sound:
+      path: /Audio/Voice/Slime/slime_squish.ogg
+  - type: EmitSoundOnCollide
+    sound:
+      path: /Audio/Voice/Slime/slime_squish.ogg
+
+- type: entity
+  parent: BasePlushie
+  id: PlushieAnurath
+  name: anurath veiler plushie
+  description: A cute stuffed toy that resembles a maintenance pill addict.
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/mira_plushies.rsi
+    state: plushie_anurath
+  - type: EmitSoundOnUse
+    sound:
+      collection: MaleScreams
+  - type: EmitSoundOnLand
+    sound:
+      collection: MaleScreams
+  - type: EmitSoundOnActivate
+    sound:
+      collection: MaleScreams
+  - type: EmitSoundOnTrigger
+    sound:
+      collection: MaleScreams
+  - type: EmitSoundOnCollide
+    sound:
+      collection: MaleScreams
+  - type: Food
+    requiresSpecialDigestion: true
+    useSound:
+      collection: MaleScreams
+  - type: MeleeWeapon
+    wideAnimationRotation: 180
+    soundHit:
+      collection: MaleScreams
+
+- type: entity
+  parent: PlushieSolusSlime
+  id: PlushieGwen
+  name: gwen riley plushie
+  description: A cute stuffed toy that resembles a certain nerd.
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/mira_plushies.rsi
+    state: plushie_gwen
+
+- type: entity
+  parent: PlushieSolusSlime
+  id: PlushieSalad
+  name: ashley jelly plushie
+  description: Your best googa (friend).
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/mira_plushies.rsi
+    state: plushie_salad
+
+- type: entity
+  parent: PlushieMoth
+  id: PlushieWudanty
+  name: mariusz czulek plushie
+  description: A cute stuffed toy that resembles a moth that probably has AA somehow.
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/mira_plushies.rsi
+    state: plushie_wudanty
+
+- type: entity
+  parent: ToySword
+  id: ToyDSword
+  name: double-bladed toy sword
+  description: New Sandy-Cat plastic double sword! Soooo realistic, you'll get shot INSTANTLY!
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/toy_d_sword.rsi
+    layers:
+    - state: e_double_sword
+    - state: e_double_sword_blade
+      color: "#FFFFFF"
+      visible: false
+      shader: unshaded
+      map: [ "blade" ]
+  - type: Item
+    size: Small
+    sprite: Objects/Fun/toy_d_sword.rsi
+  - type: Wieldable
+    wieldSound: null
+  - type: PointLight
+    enabled: false
+    radius: 2.5
+    energy: 2
+    color: white
+    netsync: false
+  - type: StaminaDamageOnHit
+    damage: 12
+  - type: MeleeWeapon
+    wideAnimationRotation: -135
+    attackRate: 1.5
+    damage:
+      types:
+        Blunt: 0
+  - type: ItemToggle
+    onUse: false
+    onActivate: false
+    soundActivate:
+      path: /Audio/Weapons/ebladeon.ogg
+      params:
+        volume: 3
+    soundDeactivate:
+      path: /Audio/Weapons/ebladeoff.ogg
+      params:
+        volume: 3
+  - type: ItemToggleMeleeWeapon
+    activatedSoundOnSwing:
+      path: /Audio/Weapons/eblademiss.ogg
+      params:
+        volume: 3
+        variation: 0.250
+
+- type: entity
+  parent: [BaseItem, ItemHeftyBase]
+  id: WaterBalloon
+  name: water balloon
+  description: Throw it at the wall, throw it at furniture, throw it at the captain. The possibilities are endless!
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/water_balloon.rsi
+    layers:
+    - state: icon    # random colors don't work unless I do this.
+      map: [ "BalloonColors" ]
+  - type: RandomSprite
+    available:
+    - BalloonColors:
+        icon: Rainbow
+  - type: Item
+    size: Small
+  - type: SolutionContainerManager
+    solutions:
+      balloon:
+        maxVol: 20
+        reagents:
+        - ReagentId: Water
+          Quantity: 20
+  - type: DrawableSolution
+    solution: balloon
+  - type: DamageOnHighSpeedImpact
+    minimumSpeed: 0.01
+    damage:
+      types:
+        Blunt: 1
+  - type: Damageable
+    damageContainer: Biological
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 1
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: desecration
+      - !type:SpillBehavior
+        solution: balloon
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
+  parent: BoxCardboard
+  name: water balloon box
+  id: WaterBalloonBox
+  description: A box of filled water balloons. Just throw em'!
+  components:
+  - type: StorageFill
+    contents:
+    - id: WaterBalloon
+      amount: 8
+  - type: Sprite
+    sprite: Objects/Storage/boxicons.rsi
+    state: water_balloon
+  - type: Storage
+    grid:
+    - 0,0,3,3

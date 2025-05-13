@@ -1,0 +1,6 @@
+- type: entity
+  id: OrganCorgiTongue
+  parent: OrganHumanTongue
+  components:
+  - type: ReplacementAccent
+    accent: dog

@@ -1,0 +1,3 @@
+﻿
+egg-basket-got-egg = You grab an easter egg.
+egg-basket-no-egg = You are not worthy enough for an egg...

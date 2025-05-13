@@ -26,7 +26,7 @@ public enum SurgeryEdgeState
 }
 
 [Serializable, NetSerializable]
-public partial class SurgeryDoAfterEvent : DoAfterEvent
+public sealed partial class SurgeryDoAfterEvent : DoAfterEvent
 {
     public SurgeryEdge TargetEdge { get; private set; }
 

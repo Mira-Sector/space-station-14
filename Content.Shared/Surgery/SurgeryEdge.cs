@@ -3,7 +3,7 @@ using Robust.Shared.Serialization;
 namespace Content.Shared.Surgery;
 
 [DataDefinition, Serializable, NetSerializable]
-public partial class SurgeryEdge
+public sealed partial class SurgeryEdge
 {
     /// <summary>
     /// Requirements that must be met for this edge to be taken.

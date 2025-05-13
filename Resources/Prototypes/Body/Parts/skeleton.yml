@@ -66,14 +66,14 @@
       context: "human"
     - type: Speech
       speechVerb: Skeleton
-    - type: SkeletonAccent
     - type: Actions
-    - type: Vocal
+    - type: VocalBodyPart
       sounds:
         Male: Skeleton
         Female: Skeleton
         Unsexed: Skeleton
     - type: Emoting
+    - type: SkeletonAccent
     - type: Grammar
       attributes:
         proper: true
