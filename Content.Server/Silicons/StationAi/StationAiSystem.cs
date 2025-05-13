@@ -75,7 +75,7 @@ public sealed partial class StationAiSystem : SharedStationAiSystem
 
     private void OnAnnounceTrigger(Entity<StationAiAnnounceOnTriggerComponent> ent, ref TriggerEvent args)
     {
-        if (_timing.CurTime > ent.Comp.LastAnnouncement + ent.Comp.AnnounceDelay)
+        if (_timing.CurTime < ent.Comp.LastAnnouncement + ent.Comp.AnnounceDelay)
             return;
 
         ent.Comp.LastAnnouncement = _timing.CurTime;
@@ -87,8 +87,9 @@ public sealed partial class StationAiSystem : SharedStationAiSystem
             return;
 
         AnnounceAi(insertedAi.Value, Loc.GetString(ent.Comp.Message), ent.Comp.Sound);
-
+        args.Handled = true;
     }
+
     public override bool SetVisionEnabled(Entity<StationAiVisionComponent> entity, bool enabled, bool announce = false)
     {
         if (!base.SetVisionEnabled(entity, enabled, announce))

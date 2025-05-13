@@ -202,7 +202,7 @@
     transferReagents: false
     potencyEffectsCount: true
     anySharp: true
-    sliceTime: 0.5f
+    sliceTime: 0.5
 
 - type: entity
   name: steel-cap log
@@ -227,7 +227,7 @@
     transferReagents: false
     potencyEffectsCount: true
     anySharp: true
-    sliceTime: 0.5f
+    sliceTime: 0.5
 
 - type: entity
   name: plasteel-cap log
