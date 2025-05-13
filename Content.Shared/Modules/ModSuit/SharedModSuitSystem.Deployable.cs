@@ -26,42 +26,7 @@ public partial class SharedModSuitSystem
         SubscribeLocalEvent<ModSuitPartDeployableComponent, ClothingGotUnequippedEvent>(OnDeployableUnequipped);
     }
 
-    private void OnDeployableInit(Entity<ModSuitPartDeployableComponent> ent, ref ComponentInit args)
-    {
-        foreach (var (slot, partId) in ent.Comp.DeployablePartIds)
-        {
-            var ev = new ModSuitDeployableGetPartEvent(GetNetEntity(ent.Owner), slot);
-
-            if (_net.IsServer)
-                RaiseLocalEvent(ev);
-            else if (_net.IsClient)
-                RaiseNetworkEvent(ev);
-            else
-                continue;
-
-            if (!ev.Handled && _net.IsServer)
-            {
-                Log.Warning($"Unable to create deployable part {partId} for {ToPrettyString(ent.Owner)}.");
-                continue;
-            }
-
-            var part = GetEntity(ev.Part);
-
-            var container = Container.EnsureContainer<ContainerSlot>(ent.Owner, GetDeployableSlotId(slot));
-
-            if (!Container.Insert(part, container))
-            {
-                if (_net.IsServer)
-                    Del(part);
-
-                continue;
-            }
-
-            ent.Comp.DeployableContainers.Add(slot, container);
-        }
-
-        Dirty(ent);
-    }
+    protected abstract void OnDeployableInit(Entity<ModSuitPartDeployableComponent> ent, ref ComponentInit args);
 
     private void OnDeployableRemoved(Entity<ModSuitPartDeployableComponent> ent, ref ComponentRemove args)
     {

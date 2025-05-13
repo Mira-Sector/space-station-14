@@ -9,37 +9,30 @@ public partial class ModSuitSystem
 {
     private void InitializeDeployable()
     {
-        SubscribeAllEvent<ModSuitDeployableGetPartEvent>(OnDeployableGetPart);
-
         SubscribeLocalEvent<ModSuitDeployableInventoryComponent, ModSuitDeployablePartBeforeEquippedEvent>(OnDeployableInventoryBeforeEquipped);
         SubscribeLocalEvent<ModSuitDeployableInventoryComponent, ModSuitDeployablePartUnequippedEvent>(OnDeployableInventoryUnequipped);
     }
 
     #region Deployable
 
-    private void OnDeployableGetPart(ModSuitDeployableGetPartEvent args)
+    protected override void OnDeployableInit(Entity<ModSuitPartDeployableComponent> ent, ref ComponentInit args)
     {
-        if (args.Handled)
-            return;
-
-        var modSuit = GetEntity(args.ModSuit);
-
-        if (!TryComp<ModSuitPartDeployableComponent>(modSuit, out var deployableComp))
-            return;
-
-        if (deployableComp.DeployableContainers.TryGetValue(args.Slot, out var container) && container.ContainedEntity is { } part)
+        foreach (var (slot, partId) in ent.Comp.DeployablePartIds)
         {
-            args.Handled = true;
-            args.Part = GetNetEntity(part);
-            return;
+            var container = Container.EnsureContainer<ContainerSlot>(ent.Owner, GetDeployableSlotId(slot));
+
+            var part = Spawn(partId);
+
+            if (!Container.Insert(part, container))
+            {
+                Del(part);
+                continue;
+            }
+
+            ent.Comp.DeployableContainers.Add(slot, container);
         }
 
-        if (!deployableComp.DeployablePartIds.TryGetValue(args.Slot, out var partId))
-            return;
-
-        part = Spawn(partId);
-        args.Handled = true;
-        args.Part = GetNetEntity(part);
+        Dirty(ent);
     }
 
     #endregion
