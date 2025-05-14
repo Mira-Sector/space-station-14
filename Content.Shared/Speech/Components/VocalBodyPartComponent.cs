@@ -7,7 +7,7 @@ using Robust.Shared.Prototypes;
 namespace Content.Shared.Speech.Components;
 
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
-public sealed partial class VocalComponent : Component, IVocalComponent
+public sealed partial class VocalBodyPartComponent : Component, IVocalComponent
 {
     [DataField, AutoNetworkedField]
     public Dictionary<Sex, ProtoId<EmoteSoundsPrototype>>? Sounds { get; set; }

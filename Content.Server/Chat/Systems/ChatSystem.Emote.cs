@@ -126,31 +126,31 @@ public partial class ChatSystem
     ///     Tries to find and play relevant emote sound in emote sounds collection.
     /// </summary>
     /// <returns>True if emote sound was played.</returns>
-    public bool TryPlayEmoteSound(EntityUid uid, EmoteSounds? sounds, EmotePrototype emote)
+    public bool TryPlayEmoteSound(EntityUid uid, EmoteSoundsPrototype? proto, EmotePrototype emote)
     {
-        return TryPlayEmoteSound(uid, sounds, emote.ID);
+        return TryPlayEmoteSound(uid, proto, emote.ID);
     }
 
     /// <summary>
     ///     Tries to find and play relevant emote sound in emote sounds collection.
     /// </summary>
     /// <returns>True if emote sound was played.</returns>
-    public bool TryPlayEmoteSound(EntityUid uid, EmoteSounds? sounds, string emoteId)
+    public bool TryPlayEmoteSound(EntityUid uid, EmoteSoundsPrototype? proto, string emoteId)
     {
-        if (sounds == null)
+        if (proto == null)
             return false;
 
         // try to get specific sound for this emote
-        if (!sounds.Sounds.TryGetValue(emoteId, out var sound))
+        if (!proto.Sounds.TryGetValue(emoteId, out var sound))
         {
             // no specific sound - check fallback
-            sound = sounds.FallbackSound;
+            sound = proto.FallbackSound;
             if (sound == null)
                 return false;
         }
 
         // if general params for all sounds set - use them
-        var param = sounds.GeneralParams ?? sound.Params;
+        var param = proto.GeneralParams ?? sound.Params;
         _audio.PlayPvs(sound, uid, param);
         return true;
     }
@@ -204,11 +204,8 @@ public partial class ChatSystem
         }
 
         // Check the whitelist and blacklist
-        if (_whitelistSystem.IsWhitelistFail(emote.Whitelist, source) ||
-            _whitelistSystem.IsBlacklistPass(emote.Blacklist, source))
-        {
+        if (!EmoteWhitelistCheck(source, emote))
             return false;
-        }
 
         // Check if the emote is available for all
         if (!emote.Available)

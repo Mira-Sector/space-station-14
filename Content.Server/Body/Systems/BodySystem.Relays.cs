@@ -1,3 +1,4 @@
+using Content.Server.Chat.Systems;
 using Content.Server.Speech;
 using Content.Shared.Body.Components;
 
@@ -8,6 +9,6 @@ public sealed partial class BodySystem
     private void InitializeRelays()
     {
         SubscribeLocalEvent<BodyComponent, AccentGetEvent>(RelayToLimbsAndOrgans);
-        SubscribeLocalEvent<BodyComponent, GetEmoteSoundsEvent>(RelayToLimbsAndOrgans);
+        SubscribeLocalEvent<BodyComponent, EmoteEvent>(RelayToLimbsAndOrgans);
     }
 }

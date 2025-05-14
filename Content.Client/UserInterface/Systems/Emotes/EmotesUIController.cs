@@ -21,7 +21,7 @@ public sealed class EmotesUIController : UIController, IOnStateChanged<GameplayS
     [Dependency] private readonly IEntityManager _entityManager = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly IPlayerManager _playerManager = default!;
-    
+
     private MenuButton? EmotesButton => UIManager.GetActiveUIWidgetOrNull<MenuBar.Widgets.GameTopMenuBar>()?.EmotesButton;
     private SimpleRadialMenu? _menu;
 
@@ -132,20 +132,20 @@ public sealed class EmotesUIController : UIController, IOnStateChanged<GameplayS
 
     private IEnumerable<RadialMenuOption> ConvertToButtons(IEnumerable<EmotePrototype> emotePrototypes)
     {
-        var whitelistSystem = EntitySystemManager.GetEntitySystem<EntityWhitelistSystem>();
+        var chatSystem = EntitySystemManager.GetEntitySystem<SharedChatSystem>();
         var player = _playerManager.LocalSession?.AttachedEntity;
 
-        Dictionary<EmoteCategory, List<RadialMenuOption>> emotesByCategory = new(); 
+        Dictionary<EmoteCategory, List<RadialMenuOption>> emotesByCategory = new();
         foreach (var emote in emotePrototypes)
         {
             if(emote.Category == EmoteCategory.Invalid)
                 continue;
 
             // only valid emotes that have ways to be triggered by chat and player have access / no restriction on
-            if (emote.Category == EmoteCategory.Invalid
-                || emote.ChatTriggers.Count == 0
-                || !(player.HasValue && whitelistSystem.IsWhitelistPassOrNull(emote.Whitelist, player.Value))
-                || whitelistSystem.IsBlacklistPass(emote.Blacklist, player.Value))
+            if (emote.Category == EmoteCategory.Invalid || emote.ChatTriggers.Count == 0 || !player.HasValue)
+                continue;
+
+            if (!chatSystem.EmoteWhitelistCheck(player.Value, emote))
                 continue;
 
             if (!emote.Available
