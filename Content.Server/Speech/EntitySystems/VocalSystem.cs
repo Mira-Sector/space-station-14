@@ -37,7 +37,7 @@ public sealed class VocalSystem : EntitySystem
         SubscribeLocalEvent<VocalOrganComponent, OrganRemovedFromBodyEvent>(OnOrganRemoved);
         SubscribeLocalEvent<VocalOrganComponent, BodyOrganRelayedEvent<SexChangedEvent>>(OnOrganSexChanged);
         SubscribeLocalEvent<VocalOrganComponent, BodyOrganRelayedEvent<EmoteEvent>>(OnOrganEmote);
-        //SubscribeLocalEvent<VocalOrganComponent, ScreamActionEvent>(OnOrganScreamAction);
+        SubscribeLocalEvent<VocalOrganComponent, BodyOrganRelayedEvent<ScreamActionEvent>>((u, c, a) => OnScreamAction(u, c, a.Args));
 
         SubscribeLocalEvent<VocalBodyPartComponent, MapInitEvent>(OnPartMapInit);
         SubscribeLocalEvent<VocalBodyPartComponent, ComponentShutdown>(OnPartShutdown);
@@ -45,7 +45,7 @@ public sealed class VocalSystem : EntitySystem
         SubscribeLocalEvent<VocalBodyPartComponent, BodyPartRemovedFromBodyEvent>(OnPartRemoved);
         SubscribeLocalEvent<VocalBodyPartComponent, BodyLimbRelayedEvent<SexChangedEvent>>(OnPartSexChanged);
         SubscribeLocalEvent<VocalBodyPartComponent, BodyLimbRelayedEvent<EmoteEvent>>(OnPartEmote);
-        //SubscribeLocalEvent<VocalBodyPartComponent, ScreamActionEvent>(OnPartScreamAction);
+        SubscribeLocalEvent<VocalBodyPartComponent, BodyOrganRelayedEvent<ScreamActionEvent>>((u, c, a) => OnScreamAction(u, c, a.Args));
     }
 
     #region Generic
@@ -80,12 +80,12 @@ public sealed class VocalSystem : EntitySystem
         PlayEmote(ent.Comp, ent.Owner, ref args);
     }
 
-    private void OnScreamAction(Entity<VocalComponent> ent, ref ScreamActionEvent args)
+    private void OnScreamAction(EntityUid uid, IVocalComponent component, ScreamActionEvent args)
     {
         if (args.Handled)
             return;
 
-        _chat.TryEmoteWithChat(ent.Owner, ent.Comp.ScreamId);
+        _chat.TryEmoteWithChat(args.Performer, component.ScreamId);
         args.Handled = true;
     }
 
