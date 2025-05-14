@@ -1,4 +1,5 @@
 using Content.Server.Explosion.Components;
+using Content.Shared.Physics;
 using Content.Shared.Trigger;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Events;
@@ -7,8 +8,6 @@ using Robust.Shared.Timing;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Physics;
 using System.Linq;
-using Robust.Shared.Physics.Dynamics;
-using Content.Shared.Physics;
 
 namespace Content.Server.Explosion.EntitySystems;
 
@@ -75,35 +74,7 @@ public sealed partial class TriggerSystem
         if (args.OurFixtureId != TriggerOnProximityComponent.FixtureID)
             return;
 
-        if (component.CheckLineOfSight)
-        {
-            var ourXform = Transform(uid);
-            var ourPos = _transformSystem.GetWorldPosition(ourXform);
-            var otherPos = _transformSystem.GetWorldPosition(args.OtherEntity);
-
-            var delta = otherPos - ourPos;
-            var distance = delta.Length();
-
-            if (distance <= float.Epsilon)
-                return;
-
-            var direction = delta.Normalized();
-            var mapId = ourXform.MapID;
-
-            var ray = new CollisionRay(ourPos, direction, (int)CollisionGroup.SingularityLayer);
-            if (_physics.IntersectRayWithPredicate(mapId, ray, distance, x => LineOfSightCheck(uid, component, x)).Any())
-                return;
-        }
-
         component.Colliding[args.OtherEntity] = args.OtherBody;
-    }
-
-    internal bool LineOfSightCheck(EntityUid uid, TriggerOnProximityComponent component, EntityUid target)
-    {
-        if (uid == target)
-            return true;
-
-        return CompOrNull<OccluderComponent>(target)?.Enabled != true;
     }
 
     private static void OnProximityEndCollide(EntityUid uid, TriggerOnProximityComponent component, ref EndCollideEvent args)
@@ -170,8 +141,37 @@ public sealed partial class TriggerSystem
                 // The trigger's on cooldown.
                 continue;
 
+            Dictionary<EntityUid, PhysicsComponent> collidingEntities = new(trigger.Colliding);
+
+            if (trigger.CheckLineOfSight)
+            {
+                var ourXform = Transform(uid);
+                var ourPos = _transformSystem.GetWorldPosition(ourXform);
+                var mapId = ourXform.MapID;
+
+                foreach (var (collidingUid, colliding) in trigger.Colliding)
+                {
+                    var otherPos = _transformSystem.GetWorldPosition(collidingUid);
+
+                    var delta = otherPos - ourPos;
+                    var distance = delta.Length();
+
+                    if (distance <= float.Epsilon)
+                    {
+                        collidingEntities.Remove(collidingUid);
+                        continue;
+                    }
+
+                    var direction = delta.Normalized();
+
+                    var ray = new CollisionRay(ourPos, direction, (int)CollisionGroup.SingularityLayer);
+                    if (_physics.IntersectRayWithPredicate(mapId, ray, distance, x => LineOfSightCheck(uid, trigger, x)).Any())
+                        collidingEntities.Remove(collidingUid);
+                }
+            }
+
             // Check for anything colliding and moving fast enough.
-            foreach (var (collidingUid, colliding) in trigger.Colliding)
+            foreach (var (collidingUid, colliding) in collidingEntities)
             {
                 if (Deleted(collidingUid))
                     continue;
@@ -184,5 +184,13 @@ public sealed partial class TriggerSystem
                 break;
             }
         }
+    }
+
+    internal bool LineOfSightCheck(EntityUid uid, TriggerOnProximityComponent component, EntityUid target)
+    {
+        if (uid == target)
+            return true;
+
+        return CompOrNull<OccluderComponent>(target)?.Enabled != true;
     }
 }
