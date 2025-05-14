@@ -1699,3 +1699,9 @@ Entries:
     type: Add
   id: 242
   time: '2025-05-14T16:45:00.0000000+00:00'
+- author: SentientSalad
+  changes:
+  - message: AI now gets alerted to movement inside its core
+    type: Add
+  id: 243
+  time: '2025-05-14T16:50:00.0000000+00:00'
