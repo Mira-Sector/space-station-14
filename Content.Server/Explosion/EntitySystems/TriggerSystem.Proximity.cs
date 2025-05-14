@@ -141,15 +141,21 @@ public sealed partial class TriggerSystem
                 // The trigger's on cooldown.
                 continue;
 
-            Dictionary<EntityUid, PhysicsComponent> collidingEntities = new(trigger.Colliding);
+            var ourXform = Transform(uid);
+            var ourPos = _transformSystem.GetWorldPosition(ourXform);
+            var mapId = ourXform.MapID;
 
-            if (trigger.CheckLineOfSight)
+
+            // Check for anything colliding and moving fast enough.
+            foreach (var (collidingUid, colliding) in trigger.Colliding)
             {
-                var ourXform = Transform(uid);
-                var ourPos = _transformSystem.GetWorldPosition(ourXform);
-                var mapId = ourXform.MapID;
+                if (Deleted(collidingUid))
+                    continue;
 
-                foreach (var (collidingUid, colliding) in trigger.Colliding)
+                if (colliding.LinearVelocity.Length() < trigger.TriggerSpeed)
+                    continue;
+
+                if (trigger.CheckLineOfSight)
                 {
                     var otherPos = _transformSystem.GetWorldPosition(collidingUid);
 
@@ -157,27 +163,14 @@ public sealed partial class TriggerSystem
                     var distance = delta.Length();
 
                     if (distance <= float.Epsilon)
-                    {
-                        collidingEntities.Remove(collidingUid);
                         continue;
-                    }
 
                     var direction = delta.Normalized();
 
                     var ray = new CollisionRay(ourPos, direction, (int)CollisionGroup.SingularityLayer);
                     if (_physics.IntersectRayWithPredicate(mapId, ray, distance, x => LineOfSightCheck(uid, trigger, x)).Any())
-                        collidingEntities.Remove(collidingUid);
+                        continue;
                 }
-            }
-
-            // Check for anything colliding and moving fast enough.
-            foreach (var (collidingUid, colliding) in collidingEntities)
-            {
-                if (Deleted(collidingUid))
-                    continue;
-
-                if (colliding.LinearVelocity.Length() < trigger.TriggerSpeed)
-                    continue;
 
                 // Trigger!
                 Activate(uid, collidingUid, trigger);
