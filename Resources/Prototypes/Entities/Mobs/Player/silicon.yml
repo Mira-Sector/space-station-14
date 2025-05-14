@@ -444,7 +444,7 @@
     cooldown: 5
     shape:
       !type:PhysShapeCircle
-        radius: 10
+        radius: 15
     repeating: true
     checkLineOfSight: true
     triggerOncePerCollision: true
