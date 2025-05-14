@@ -1,13 +1,12 @@
 using Content.Server.Actions;
 using Content.Server.Chat.Systems;
-using Content.Server.Speech.Components;
 using Content.Shared.Body.Events;
+using Content.Shared.Body.Organ;
 using Content.Shared.Body.Part;
 using Content.Shared.Chat.Prototypes;
 using Content.Shared.Humanoid;
 using Content.Shared.Speech;
 using Content.Shared.Speech.Components;
-using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
@@ -32,199 +31,205 @@ public sealed class VocalSystem : EntitySystem
         SubscribeLocalEvent<VocalComponent, EmoteEvent>(OnEmote);
         SubscribeLocalEvent<VocalComponent, ScreamActionEvent>(OnScreamAction);
 
-        SubscribeLocalEvent<VocalOrganComponent, OrganAddedEvent>(OnOrganAdded);
-        SubscribeLocalEvent<VocalOrganComponent, OrganRemovedEvent>(OnOrganRemoved);
-        SubscribeLocalEvent<VocalOrganComponent, BodyOrganRelayedEvent<GetEmoteSoundsEvent>>(OnOrganGetEmotes);
-        SubscribeLocalEvent<VocalOrganBodyPartComponent, MapInitEvent>((u, c, a) => OnOrganBodyPartAdded((u, c)));
-        SubscribeLocalEvent<VocalOrganBodyPartComponent, BodyPartAddedEvent>((u, c, a) => OnOrganBodyPartAdded((u, c)));
-        SubscribeLocalEvent<VocalOrganBodyPartComponent, BodyPartRemovedEvent>(OnOrganBodyPartRemoved);
+        SubscribeLocalEvent<VocalOrganComponent, MapInitEvent>(OnOrganMapInit);
+        SubscribeLocalEvent<VocalOrganComponent, ComponentShutdown>(OnOrganShutdown);
+        SubscribeLocalEvent<VocalOrganComponent, OrganAddedToBodyEvent>(OnOrganAdded);
+        SubscribeLocalEvent<VocalOrganComponent, OrganRemovedFromBodyEvent>(OnOrganRemoved);
+        SubscribeLocalEvent<VocalOrganComponent, BodyOrganRelayedEvent<SexChangedEvent>>(OnOrganSexChanged);
+        SubscribeLocalEvent<VocalOrganComponent, BodyOrganRelayedEvent<EmoteEvent>>(OnOrganEmote);
+        SubscribeLocalEvent<VocalOrganComponent, BodyOrganRelayedEvent<ScreamActionEvent>>((u, c, a) => OnScreamAction(u, c, a.Args));
 
-        SubscribeLocalEvent<VocalBodyPartComponent, BodyPartAddedEvent>(OnBodyPartAdded);
-        SubscribeLocalEvent<VocalBodyPartComponent, BodyPartRemovedEvent>(OnBodyPartRemoved);
-        SubscribeLocalEvent<VocalBodyPartComponent, BodyLimbRelayedEvent<GetEmoteSoundsEvent>>(OnBodyPartGetEmotes);
+        SubscribeLocalEvent<VocalBodyPartComponent, MapInitEvent>(OnPartMapInit);
+        SubscribeLocalEvent<VocalBodyPartComponent, ComponentShutdown>(OnPartShutdown);
+        SubscribeLocalEvent<VocalBodyPartComponent, BodyPartAddedToBodyEvent>(OnPartAdded);
+        SubscribeLocalEvent<VocalBodyPartComponent, BodyPartRemovedFromBodyEvent>(OnPartRemoved);
+        SubscribeLocalEvent<VocalBodyPartComponent, BodyLimbRelayedEvent<SexChangedEvent>>(OnPartSexChanged);
+        SubscribeLocalEvent<VocalBodyPartComponent, BodyLimbRelayedEvent<EmoteEvent>>(OnPartEmote);
+        SubscribeLocalEvent<VocalBodyPartComponent, BodyOrganRelayedEvent<ScreamActionEvent>>((u, c, a) => OnScreamAction(u, c, a.Args));
     }
 
-    private void OnMapInit(EntityUid uid, VocalComponent component, MapInitEvent args)
+    #region Generic
+
+    private void OnMapInit(Entity<VocalComponent> ent, ref MapInitEvent args)
     {
         // try to add scream action when vocal comp added
-        _actions.AddAction(uid, ref component.ScreamActionEntity, component.ScreamAction);
-        UpdateSounds((uid, component));
+        var screamAction = ent.Comp.ScreamActionEntity;
+        _actions.AddAction(ent.Owner, ref screamAction, ent.Comp.ScreamAction);
+        ent.Comp.ScreamActionEntity = screamAction;
+
+        LoadSounds(ent.Comp, GetSex(ent.Owner));
     }
 
-    private void OnShutdown(EntityUid uid, VocalComponent component, ComponentShutdown args)
+    private void OnShutdown(Entity<VocalComponent> ent, ref ComponentShutdown args)
     {
         // remove scream action when component removed
-        if (component.ScreamActionEntity != null)
-        {
-            _actions.RemoveAction(uid, component.ScreamActionEntity);
-        }
+        if (ent.Comp.ScreamActionEntity != null)
+            _actions.RemoveAction(ent.Owner, ent.Comp.ScreamActionEntity);
     }
 
-    private void OnSexChanged(EntityUid uid, VocalComponent component, SexChangedEvent args)
+    private void OnSexChanged(Entity<VocalComponent> ent, ref SexChangedEvent args)
     {
-        UpdateSounds((uid, component));
+        LoadSounds(ent.Comp, GetSex(ent.Owner));
     }
 
-    private void OnEmote(EntityUid uid, VocalComponent component, ref EmoteEvent args)
+    private void OnEmote(Entity<VocalComponent> ent, ref EmoteEvent args)
     {
-        if (args.Handled || !args.Emote.Category.HasFlag(EmoteCategory.Vocal))
+        if (args.Handled)
+            return;
+
+        PlayEmote(ent.Comp, ent.Owner, ref args);
+    }
+
+    private void OnScreamAction(EntityUid uid, IVocalComponent component, ScreamActionEvent args)
+    {
+        if (args.Handled)
+            return;
+
+        _chat.TryEmoteWithChat(args.Performer, component.ScreamId);
+        args.Handled = true;
+    }
+
+    #endregion
+
+    #region Organ
+
+    private void OnOrganMapInit(Entity<VocalOrganComponent> ent, ref MapInitEvent args)
+    {
+        if (!TryComp<OrganComponent>(ent.Owner, out var organComp) || organComp.Body is not { } body)
+            return;
+
+        LoadSounds(ent.Comp, GetSex(body));
+    }
+
+    private void OnOrganShutdown(Entity<VocalOrganComponent> ent, ref ComponentShutdown args)
+    {
+        if (!TryComp<OrganComponent>(ent.Owner, out var organComp) || organComp.Body is not { } body)
+            return;
+
+        if (ent.Comp.ScreamActionEntity != null)
+            _actions.RemoveAction(body, ent.Comp.ScreamActionEntity);
+    }
+
+    private void OnOrganAdded(Entity<VocalOrganComponent> ent, ref OrganAddedToBodyEvent args)
+    {
+        var screamAction = ent.Comp.ScreamActionEntity;
+        _actions.AddAction(args.Body, ref screamAction, ent.Comp.ScreamAction);
+        ent.Comp.ScreamActionEntity = screamAction;
+
+        LoadSounds(ent.Comp, GetSex(args.Body));
+    }
+
+    private void OnOrganRemoved(Entity<VocalOrganComponent> ent, ref OrganRemovedFromBodyEvent args)
+    {
+        if (ent.Comp.ScreamActionEntity != null)
+            _actions.RemoveAction(args.OldBody, ent.Comp.ScreamActionEntity);
+    }
+
+    private void OnOrganSexChanged(Entity<VocalOrganComponent> ent, ref BodyOrganRelayedEvent<SexChangedEvent> args)
+    {
+        LoadSounds(ent.Comp, GetSex(args.Body));
+    }
+
+    private void OnOrganEmote(Entity<VocalOrganComponent> ent, ref BodyOrganRelayedEvent<EmoteEvent> args)
+    {
+        if (args.Args.Handled)
+            return;
+
+        PlayEmote(ent.Comp, args.Body, ref args.Args);
+    }
+
+    #endregion
+
+    #region Body Part
+
+    private void OnPartMapInit(Entity<VocalBodyPartComponent> ent, ref MapInitEvent args)
+    {
+        if (!TryComp<BodyPartComponent>(ent.Owner, out var partComp) || partComp.Body is not { } body)
+            return;
+
+        LoadSounds(ent.Comp, GetSex(body));
+    }
+
+    private void OnPartShutdown(Entity<VocalBodyPartComponent> ent, ref ComponentShutdown args)
+    {
+        if (!TryComp<BodyPartComponent>(ent.Owner, out var partComp) || partComp.Body is not { } body)
+            return;
+
+        if (ent.Comp.ScreamActionEntity != null)
+            _actions.RemoveAction(body, ent.Comp.ScreamActionEntity);
+    }
+
+    private void OnPartAdded(Entity<VocalBodyPartComponent> ent, ref BodyPartAddedToBodyEvent args)
+    {
+        var screamAction = ent.Comp.ScreamActionEntity;
+        _actions.AddAction(args.Body, ref screamAction, ent.Comp.ScreamAction);
+        ent.Comp.ScreamActionEntity = screamAction;
+
+        LoadSounds(ent.Comp, GetSex(args.Body));
+    }
+
+    private void OnPartRemoved(Entity<VocalBodyPartComponent> ent, ref BodyPartRemovedFromBodyEvent args)
+    {
+        if (ent.Comp.ScreamActionEntity != null)
+            _actions.RemoveAction(args.Body, ent.Comp.ScreamActionEntity);
+    }
+
+    private void OnPartSexChanged(Entity<VocalBodyPartComponent> ent, ref BodyLimbRelayedEvent<SexChangedEvent> args)
+    {
+        LoadSounds(ent.Comp, GetSex(args.Body));
+    }
+
+    private void OnPartEmote(Entity<VocalBodyPartComponent> ent, ref BodyLimbRelayedEvent<EmoteEvent> args)
+    {
+        if (args.Args.Handled)
+            return;
+
+        PlayEmote(ent.Comp, args.Body, ref args.Args);
+    }
+
+    #endregion
+
+    private void PlayEmote(IVocalComponent component, EntityUid performer, ref EmoteEvent args)
+    {
+        if (!args.Emote.Category.HasFlag(EmoteCategory.Vocal))
             return;
 
         // snowflake case for wilhelm scream easter egg
         if (args.Emote.ID == component.ScreamId)
         {
-            args.Handled = TryPlayScreamSound(uid, component);
+            args.Handled = TryPlayScreamSound(component, performer);
             return;
         }
 
         // just play regular sound based on emote proto
-        args.Handled = _chat.TryPlayEmoteSound(uid, component.EmoteSounds, args.Emote);
+        args.Handled = _chat.TryPlayEmoteSound(performer, component.EmoteSounds, args.Emote);
     }
 
-    private void OnScreamAction(EntityUid uid, VocalComponent component, ScreamActionEvent args)
-    {
-        if (args.Handled)
-            return;
-
-        _chat.TryEmoteWithChat(uid, component.ScreamId);
-        args.Handled = true;
-    }
-
-    private bool TryPlayScreamSound(EntityUid uid, VocalComponent component)
+    private bool TryPlayScreamSound(IVocalComponent component, EntityUid performer)
     {
         if (_random.Prob(component.WilhelmProbability))
         {
-            _audio.PlayPvs(component.Wilhelm, uid, component.Wilhelm.Params);
+            _audio.PlayPvs(component.Wilhelm, performer, component.Wilhelm.Params);
             return true;
         }
 
-        return _chat.TryPlayEmoteSound(uid, component.EmoteSounds, component.ScreamId);
+        return _chat.TryPlayEmoteSound(performer, component.EmoteSounds, component.ScreamId);
     }
 
-    private void OnOrganAdded(Entity<VocalOrganComponent> ent, ref OrganAddedEvent args)
+    public void LoadSounds(IVocalComponent component, Sex sex)
     {
-        if (!TryComp<BodyPartComponent>(args.Part, out var bodyPartComp))
+        if (component.Sounds == null)
             return;
 
-        EnsureComp<VocalOrganBodyPartComponent>(args.Part).Organs += 1;
-
-        if (bodyPartComp.Body is not {} body)
+        if (!component.Sounds.TryGetValue(sex, out var protoId))
             return;
 
-        EnsureComp<VocalComponent>(body, out var vocalComp);
-        UpdateSounds((body, vocalComp));
-    }
-
-    private void OnOrganRemoved(Entity<VocalOrganComponent> ent, ref OrganRemovedEvent args)
-    {
-        if (!TryComp<BodyPartComponent>(args.OldPart, out var bodyPartComp))
-            return;
-
-        var organs = EntityManager.GetComponent<VocalOrganBodyPartComponent>(args.OldPart).Organs -= 1;
-
-        if (organs <= 0)
-            RemComp<VocalOrganBodyPartComponent>(args.OldPart);
-
-        if (bodyPartComp.Body is not {} body)
-            return;
-
-        UpdateSounds(body);
-    }
-
-    private void OnOrganBodyPartAdded(Entity<VocalOrganBodyPartComponent> ent)
-    {
-        if (!TryComp<BodyPartComponent>(ent, out var bodyPartComp) || bodyPartComp.Body is not {} body)
-            return;
-
-        EnsureComp<VocalComponent>(body, out var vocalComp);
-        UpdateSounds((body, vocalComp));
-    }
-
-    private void OnOrganBodyPartRemoved(Entity<VocalOrganBodyPartComponent> ent, ref BodyPartRemovedEvent args)
-    {
-        if (!TryComp<BodyPartComponent>(ent, out var bodyPartComp) || bodyPartComp.Body is not {} body)
-            return;
-
-        UpdateSounds(body);
-    }
-
-    private void OnOrganGetEmotes(Entity<VocalOrganComponent> ent, ref BodyOrganRelayedEvent<GetEmoteSoundsEvent> args)
-    {
-        if (!ent.Comp.Sounds.TryGetValue(GetSex(args.Body), out var sounds))
-            return;
-
-        MergeSounds(sounds, args.Args.Sounds);
-    }
-
-    private void OnBodyPartAdded(Entity<VocalBodyPartComponent> ent, ref BodyPartAddedEvent args)
-    {
-        if (!TryComp<BodyPartComponent>(ent, out var bodyPartComp) || bodyPartComp.Body is not {} body)
-            return;
-
-        EnsureComp<VocalComponent>(body, out var vocalComp);
-        UpdateSounds((body, vocalComp));
-    }
-
-    private void OnBodyPartRemoved(Entity<VocalBodyPartComponent> ent, ref BodyPartRemovedEvent args)
-    {
-        if (!TryComp<BodyPartComponent>(ent, out var bodyPartComp) || bodyPartComp.Body is not {} body)
-            return;
-
-        UpdateSounds(body);
-    }
-
-    private void OnBodyPartGetEmotes(Entity<VocalBodyPartComponent> ent, ref BodyLimbRelayedEvent<GetEmoteSoundsEvent> args)
-    {
-        if (!ent.Comp.Sounds.TryGetValue(GetSex(args.Body), out var sounds))
-            return;
-
-        MergeSounds(sounds, args.Args.Sounds);
-    }
-
-    public void UpdateSounds(Entity<VocalComponent?> ent)
-    {
-        if (!Resolve(ent.Owner, ref ent.Comp))
-            return;
-
-        ent.Comp.EmoteSounds = new();
-
-        var sex = GetSex(ent);
-
-        if (ent.Comp.Sounds != null)
-        {
-            if (!ent.Comp.Sounds.TryGetValue(sex, out var protoId))
-                return;
-
-            if (!_proto.TryIndex(protoId, out var sexSounds))
-                return;
-
-            ent.Comp.EmoteSounds = sexSounds;
-        }
-
-        var ev = new GetEmoteSoundsEvent(ent.Comp.EmoteSounds);
-        RaiseLocalEvent(ent, ev);
-
-        ent.Comp.EmoteSounds = ev.Sounds;
-        Dirty(ent);
+        _proto.TryIndex(protoId, out var sounds);
+        component.EmoteSounds = sounds;
     }
 
     private Sex GetSex(EntityUid uid)
     {
         return CompOrNull<HumanoidAppearanceComponent>(uid)?.Sex ?? Sex.Unsexed;
-    }
-
-    internal void MergeSounds(ProtoId<EmoteSoundsPrototype> emoteSoundsId, EmoteSounds existingSounds)
-    {
-        if (!_proto.TryIndex(emoteSoundsId, out var emoteSounds))
-            return;
-
-        if (emoteSounds.FallbackSound != null)
-            existingSounds.FallbackSound = emoteSounds.FallbackSound;
-
-        foreach (var (emote, sound) in emoteSounds.Sounds)
-        {
-            if (!existingSounds.Sounds.TryAdd(emote, sound))
-                existingSounds.Sounds[emote] = sound;
-        }
     }
 }

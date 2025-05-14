@@ -12,6 +12,8 @@
   whitelist:
     components:
     - Vocal
+    - VocalOrgan
+    - VocalBodyPart
   blacklist:
     tags:
     - SiliconEmotes
@@ -19,7 +21,7 @@
   chatTriggers:
     - cough
     - coughs
-    - coughed 
+    - coughed
     - cough.
     - coughs.
     - coughed.
@@ -59,6 +61,8 @@
   whitelist:
     components:
     - Vocal
+    - VocalOrgan
+    - VocalBodyPart
   blacklist:
     tags:
     - SiliconEmotes

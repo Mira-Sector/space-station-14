@@ -1,9 +1,13 @@
 using System.Collections.Frozen;
 using System.Text.RegularExpressions;
+using Content.Shared.Body.Components;
+using Content.Shared.Body.Systems;
+using Content.Shared.Chat.Prototypes;
 using Content.Shared.Popups;
 using Content.Shared.Radio;
 using Content.Shared.SpeciesChat;
 using Content.Shared.Speech;
+using Content.Shared.Whitelist;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 
@@ -37,8 +41,10 @@ public abstract class SharedChatSystem : EntitySystem
     [ValidatePrototypeId<SpeechVerbPrototype>]
     public const string DefaultSpeechVerb = "Default";
 
+    [Dependency] private readonly SharedBodySystem _body = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
+    [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
 
     /// <summary>
     /// Cache of the keycodes for faster lookup.
@@ -351,5 +357,28 @@ public abstract class SharedChatSystem : EntitySystem
             return "";
         tagStart += tag.Length + 2;
         return rawmsg.Substring(tagStart, tagEnd - tagStart);
+    }
+
+    public bool EmoteWhitelistCheck(EntityUid source, EmotePrototype emote)
+    {
+        if (_whitelist.CheckBoth(source, emote.Blacklist, emote.Whitelist))
+            return true;
+
+        if (!TryComp<BodyComponent>(source, out var bodyComp))
+            return false;
+
+        foreach (var (limbUid, limbComp) in _body.GetBodyChildren(source, bodyComp))
+        {
+            if (_whitelist.CheckBoth(limbUid, emote.Blacklist, emote.Whitelist))
+                return true;
+
+            foreach (var (organ, _) in _body.GetPartOrgans(limbUid, limbComp))
+            {
+                if (_whitelist.CheckBoth(organ, emote.Blacklist, emote.Whitelist))
+                    return true;
+            }
+        }
+
+        return false;
     }
 }
