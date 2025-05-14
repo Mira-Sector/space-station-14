@@ -1,15 +1,20 @@
 using Content.Server.Explosion.Components;
+using Content.Shared.Physics;
 using Content.Shared.Trigger;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Utility;
 using Robust.Shared.Timing;
+using Robust.Shared.Physics.Systems;
+using Robust.Shared.Physics;
+using System.Linq;
 
 namespace Content.Server.Explosion.EntitySystems;
 
 public sealed partial class TriggerSystem
 {
     [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
 
     private void InitializeProximity()
@@ -32,6 +37,7 @@ public sealed partial class TriggerSystem
         if (!component.Enabled)
         {
             component.Colliding.Clear();
+            component.Activators.Clear();
         }
         // Re-check for contacts as we cleared them.
         else if (TryComp<PhysicsComponent>(uid, out var body))
@@ -43,6 +49,7 @@ public sealed partial class TriggerSystem
     private void OnProximityShutdown(EntityUid uid, TriggerOnProximityComponent component, ComponentShutdown args)
     {
         component.Colliding.Clear();
+        component.Activators.Clear();
     }
 
     private void OnMapInit(EntityUid uid, TriggerOnProximityComponent component, MapInitEvent args)
@@ -78,6 +85,7 @@ public sealed partial class TriggerSystem
             return;
 
         component.Colliding.Remove(args.OtherEntity);
+        component.Activators.Remove(args.OtherEntity);
     }
 
     private void SetProximityAppearance(EntityUid uid, TriggerOnProximityComponent component)
@@ -98,6 +106,7 @@ public sealed partial class TriggerSystem
         {
             component.Enabled = false;
             component.Colliding.Clear();
+            component.Activators.Clear();
         }
         else
         {
@@ -136,6 +145,12 @@ public sealed partial class TriggerSystem
                 // The trigger's on cooldown.
                 continue;
 
+            var ourXform = Transform(uid);
+            var ourPos = _transformSystem.GetWorldPosition(ourXform);
+            var mapId = ourXform.MapID;
+
+            var activated = false;
+
             // Check for anything colliding and moving fast enough.
             foreach (var (collidingUid, colliding) in trigger.Colliding)
             {
@@ -145,10 +160,44 @@ public sealed partial class TriggerSystem
                 if (colliding.LinearVelocity.Length() < trigger.TriggerSpeed)
                     continue;
 
+                if (trigger.TriggerOncePerCollision && trigger.Activators.Contains(collidingUid))
+                    continue;
+
+                if (trigger.CheckLineOfSight)
+                {
+                    var otherPos = _transformSystem.GetWorldPosition(collidingUid);
+
+                    var delta = otherPos - ourPos;
+                    var distance = delta.Length();
+
+                    if (distance <= float.Epsilon)
+                        continue;
+
+                    var direction = delta.Normalized();
+
+                    var ray = new CollisionRay(ourPos, direction, (int)CollisionGroup.SingularityLayer);
+                    if (_physics.IntersectRayWithPredicate(mapId, ray, distance, x => LineOfSightCheck(uid, trigger, x)).Any())
+                        continue;
+                }
+
                 // Trigger!
-                Activate(uid, collidingUid, trigger);
-                break;
+                if (!activated)
+                    Activate(uid, collidingUid, trigger);
+
+                if (!trigger.TriggerOncePerCollision)
+                    break;
+
+                activated = true;
+                trigger.Activators.Add(collidingUid);
             }
         }
+    }
+
+    internal bool LineOfSightCheck(EntityUid uid, TriggerOnProximityComponent component, EntityUid target)
+    {
+        if (uid == target)
+            return true;
+
+        return CompOrNull<OccluderComponent>(target)?.Enabled != true;
     }
 }
