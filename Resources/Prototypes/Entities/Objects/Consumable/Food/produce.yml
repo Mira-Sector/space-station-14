@@ -142,7 +142,7 @@
     transferReagents: false
     potencyEffectsCount: true
     anySharp: true
-    sliceTime: 0.5f
+    sliceTime: 0.5
 
 - type: entity
   parent: FoodProduceBase
@@ -202,7 +202,7 @@
     transferReagents: false
     potencyEffectsCount: true
     anySharp: true
-    sliceTime: 0.5f
+    sliceTime: 0.5
 
 - type: entity
   name: steel-cap log
@@ -227,7 +227,7 @@
     transferReagents: false
     potencyEffectsCount: true
     anySharp: true
-    sliceTime: 0.5f
+    sliceTime: 0.5
 
 - type: entity
   name: plasteel-cap log
@@ -250,7 +250,7 @@
     transferReagents: false
     potencyEffectsCount: true
     anySharp: true
-    sliceTime: 0.5f
+    sliceTime: 0.5
 
 - type: entity
   name: nettle
@@ -1712,7 +1712,7 @@
     transferReagents: false
     potencyEffectsCount: true
     anySharp: true
-    sliceTime: 0.5f
+    sliceTime: 0.5
   - type: Produce
     seedId: spesoe
   - type: Tag
@@ -2853,7 +2853,7 @@
     potencyEffectsCount: true
     transferReagents: false
     anySharp: true
-    sliceTime: 0.5f
+    sliceTime: 0.5
   - type: Produce
     seedId: cotton
   - type: Tag
@@ -2888,7 +2888,7 @@
     potencyEffectsCount: true
     transferReagents: false
     anySharp: true
-    sliceTime: 0.5f
+    sliceTime: 0.5
   - type: Produce
     seedId: pyrotton
   - type: Tag

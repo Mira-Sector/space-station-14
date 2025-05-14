@@ -384,6 +384,13 @@
         - ReagentSlimeNorepinephricAcid
         - ReagentSlimeEphedrine
         - ReagentSlimeRobustHarvest
+        - ReagentSlimeJuiceThatMakesYouWeh
+        - ReagentSlimeJuiceThatMakesYouNyah
+        - ReagentSlimePhlogiston
+        - ReagentSlimeBananadine
+        - ReagentSlimeLaughter
+        - ReagentSlimeArtifexium
+        - ReagentSlimeBleach
       chance: 1
 
 - type: entity
@@ -595,3 +602,125 @@
       - map: [ "enum.DamageStateVisualLayers.Base" ]
         state: alive
         color: "#3e901c"
+
+- type: entity
+  id: ReagentSlimeJuiceThatMakesYouWeh
+  parent: ReagentSlime
+  suffix: Juice That Makes You Weh
+  components:
+  - type: Bloodstream
+    bloodReagent: JuiceThatMakesYouWeh
+  - type: PointLight
+    color: "#59b23a"
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: Mobs/Aliens/elemental.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: alive
+      color: "#59b23a"
+
+- type: entity
+  id: ReagentSlimeJuiceThatMakesYouNyah
+  parent: ReagentSlime
+  suffix: Juice That Makes You Nyah
+  components:
+  - type: Bloodstream
+    bloodReagent: JuiceThatMakesYouNya
+  - type: PointLight
+    color: "#747FF2"
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: Mobs/Aliens/elemental.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: alive
+      color: "#747FF2"
+
+- type: entity
+  id: ReagentSlimePhlogiston
+  parent: ReagentSlime
+  suffix: Phlogiston
+  components:
+  - type: Bloodstream
+    bloodReagent: Phlogiston
+  - type: PointLight
+    color: "#D4872A"
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: Mobs/Aliens/elemental.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: alive
+      color: "#D4872A"
+  - type: MeleeChemicalInjector
+    solution: bloodstream
+    transferAmount: 4
+
+- type: entity
+  id: ReagentSlimeBananadine
+  parent: ReagentSlime
+  suffix: Bananadine
+  components:
+  - type: Bloodstream
+    bloodReagent: Bananadine
+  - type: PointLight
+    color: "#ffff00"
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: Mobs/Aliens/elemental.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: alive
+      color: "#ffff00"
+
+- type: entity
+  id: ReagentSlimeLaughter
+  parent: ReagentSlime
+  suffix: Laughter
+  components:
+  - type: Bloodstream
+    bloodReagent: Laughter
+  - type: PointLight
+    color: "#FF4DD2"
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: Mobs/Aliens/elemental.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: alive
+      color: "#FF4DD2"
+
+- type: entity
+  id: ReagentSlimeArtifexium
+  parent: ReagentSlime
+  suffix: Artifexium
+  components:
+  - type: Bloodstream
+    bloodReagent: Artifexium
+  - type: PointLight
+    color: "#776291"
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: Mobs/Aliens/elemental.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: alive
+      color: "#776291"
+
+- type: entity
+  id: ReagentSlimeBleach
+  parent: ReagentSlime
+  suffix: Bleach
+  components:
+  - type: Bloodstream
+    bloodReagent: Bleach
+  - type: PointLight
+    color: "#a1000b"
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: Mobs/Aliens/elemental.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: alive
+      color: "#a1000b"
