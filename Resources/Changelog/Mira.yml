@@ -1705,3 +1705,9 @@ Entries:
     type: Add
   id: 243
   time: '2025-05-14T16:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Rewritten how emotes stored on tongues and body parts work
+    type: Fix
+  id: 244
+  time: '2025-05-14T23:00:00.0000000+00:00'
