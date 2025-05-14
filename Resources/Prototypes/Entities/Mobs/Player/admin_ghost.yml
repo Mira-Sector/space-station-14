@@ -172,6 +172,22 @@
     event: !type:ToggleIntrinsicUIEvent { key: enum.CrewMonitoringUIKey.Key }
 
 - type: entity
+  id: ActionAGhostShowSiliconSyncMonitoring
+  name: Silicon Slave Interface
+  description: View your controlled slaves.
+  components:
+  - type: InstantAction
+    icon:
+      sprite: Interface/Actions/actions_ai.rsi
+      state: sync_monitor
+    iconOn:
+      sprite: Interface/Actions/actions_ai.rsi
+      state: sync_monitor
+    keywords: [ "AI", "console", "interface" ]
+    priority: -8
+    event: !type:ToggleIntrinsicUIEvent { key: enum.SiliconSyncMonitoringUiKey.Key }
+
+- type: entity
   id: ActionAGhostShowStationRecords
   name: Station Records Interface
   description: View a Station Records Interface.
@@ -180,5 +196,5 @@
     icon: { sprite: Interface/Actions/actions_ai.rsi, state: station_records }
     iconOn: Interface/Actions/actions_ai.rsi/station_records.png
     keywords: [ "AI", "console", "interface" ]
-    priority: -7
+    priority: -6
     event: !type:ToggleIntrinsicUIEvent { key: enum.GeneralStationRecordConsoleKey.Key }
