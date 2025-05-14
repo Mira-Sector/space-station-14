@@ -89,5 +89,8 @@ namespace Content.Server.Explosion.Components
         [ViewVariables]
         [DataField("layer", customTypeSerializer: typeof(FlagSerializer<CollisionLayer>))]
         public int Layer = (int) (CollisionGroup.MidImpassable | CollisionGroup.LowImpassable | CollisionGroup.HighImpassable);
+
+        [DataField]
+        public bool CheckLineOfSight;
     }
 }

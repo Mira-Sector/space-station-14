@@ -446,6 +446,7 @@
       !type:PhysShapeCircle
         radius: 10
     repeating: true
+    checkLineOfSight: true
   - type: StationAiAnnounceOnTrigger
     announceDelay: 5
     message: ai-trespass-warning
