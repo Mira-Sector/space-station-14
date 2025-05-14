@@ -75,11 +75,6 @@ public sealed partial class StationAiSystem : SharedStationAiSystem
 
     private void OnAnnounceTrigger(Entity<StationAiAnnounceOnTriggerComponent> ent, ref TriggerEvent args)
     {
-        if (_timing.CurTime < ent.Comp.LastAnnouncement + ent.Comp.AnnounceDelay)
-            return;
-
-        ent.Comp.LastAnnouncement = _timing.CurTime;
-
         if (!TryComp<StationAiCoreComponent>(ent.Owner, out var stationAiCore))
             return;
 

@@ -448,7 +448,6 @@
     repeating: true
     checkLineOfSight: true
   - type: StationAiAnnounceOnTrigger
-    announceDelay: 5
     message: ai-trespass-warning
     sound:
       path: /Audio/Misc/adminlarm.ogg

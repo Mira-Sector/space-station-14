@@ -29,3 +29,4 @@ ai-command-off = Stop commanding
 
 ai-consciousness-download-warning = Your consciousness is being downloaded.
 ai-power-warning = Your core is losing power.
+ai-trespass-warning = Movement detected within your core.
