@@ -447,6 +447,7 @@
         radius: 10
     repeating: true
     checkLineOfSight: true
+    triggerOncePerCollision: true
   - type: StationAiAnnounceOnTrigger
     message: ai-trespass-warning
     sound:

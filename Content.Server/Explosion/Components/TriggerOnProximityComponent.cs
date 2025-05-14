@@ -21,6 +21,9 @@ namespace Content.Server.Explosion.Components
         [ViewVariables]
         public readonly Dictionary<EntityUid, PhysicsComponent> Colliding = new();
 
+        [ViewVariables]
+        public readonly HashSet<EntityUid> Activators = new();
+
         /// <summary>
         /// What is the shape of the proximity fixture?
         /// </summary>
@@ -92,5 +95,8 @@ namespace Content.Server.Explosion.Components
 
         [DataField]
         public bool CheckLineOfSight;
+
+        [DataField]
+        public bool TriggerOncePerCollision;
     }
 }
