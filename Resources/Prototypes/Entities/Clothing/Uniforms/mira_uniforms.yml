@@ -1,0 +1,15 @@
+- type: entity
+  parent: ClothingUniformBase
+  id: ClothingUniformJumpskirtRainbow
+  name: rainbow jumpskirt
+  description: A multi-colored jumpskirt!
+  components:
+  - type: Sprite
+    sprite: Clothing/Uniforms/Jumpskirt/rainbow.rsi
+    shader: unshaded
+  - type: Clothing
+    sprite: Clothing/Uniforms/Jumpskirt/rainbow.rsi
+    shader: unshaded
+  - type: Tag
+    tags:
+    - WhitelistChameleon
