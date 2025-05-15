@@ -12,7 +12,7 @@
 - type: entity
   parent: PresentRandom
   id: RareMysteryFigureBox
-  name: rare mystery spacemen minifigure box
+  name: gold mystery spacemen minifigure box
   description: A box containing a rare mystery minifigure.
   components:
   - type: Sprite
@@ -66,7 +66,7 @@
 - type: entity
   parent: BaseRareFigurine
   id: ToyRareFigurinePassenger
-  name: rare greytider figure
+  name: armored greytider figure
   description: A rare figurine depicting a skilled greytider.
   components:
   - type: Sprite
@@ -77,7 +77,7 @@
 - type: entity
   parent: BaseRareFigurine
   id: ToyRareFigurineClown
-  name: rare clown figure
+  name: blushing clown figure
   description: A rare figurine depicting a... Weird clown.
   components:
   - type: Sprite
@@ -88,7 +88,7 @@
 - type: entity
   parent: BaseRareFigurine
   id: ToyRareFigurineMime
-  name: rare mime figure
+  name: blushing mime figure
   description: A rare figurine depicting a... Weird mime.
   components:
   - type: Sprite
@@ -99,7 +99,7 @@
 - type: entity
   parent: BaseRareFigurine
   id: ToyRareFigurineHamlet
-  name: rare hamlet figure
+  name: captain hamlet figure
   description: Aw, he has a little hat and everything!
   components:
   - type: Sprite
@@ -110,7 +110,7 @@
 - type: entity
   parent: BaseRareFigurine
   id: ToyRareFigurineSalvage
-  name: rare salvage specialist figure
+  name: salvage specialist hardsuit figure
   description: A rare figurine depicting a salvage specialist in a deluxe mining hardsuit.
   components:
   - type: Sprite
@@ -121,7 +121,7 @@
 - type: entity
   parent: BaseRareFigurine
   id: ToyRareFigurineSlime
-  name: rare slime figure
+  name: anomaly slime figure
   description: A rare figurine depicting a slime born from an anomaly.
   components:
   - type: Sprite
@@ -132,7 +132,7 @@
 - type: entity
   parent: BaseRareFigurine
   id: ToyRareFigurineJanitor
-  name: rare janitor figure
+  name: experienced janitor figure
   description: A rare figurine depicting an experienced janitor, wearing a trusty golden plunger.
   components:
     - type: Sprite
@@ -143,7 +143,7 @@
 - type: entity
   parent: BaseRareFigurine
   id: ToyRareFigurineChiefEngineer
-  name: rare chief engineer figure
+  name: chief engineer hardsuit figure
   description: A rare figurine depicting a chief engineer wearing their hardsuit.
   components:
   - type: Sprite
@@ -154,7 +154,7 @@
 - type: entity
   parent: BaseRareFigurine
   id: ToyRareFigurineEngineer
-  name: rare engineer figure
+  name: engineer hardsuit figure
   description: A rare figurine depicting an engineer wearing their hardsuit.
   components:
   - type: Sprite
@@ -165,7 +165,7 @@
 - type: entity
   parent: BaseRareFigurine
   id: ToyRareFigurineChiefMedicalOfficer
-  name: rare chief medical officer figure
+  name: chief medical officer hardsuit figure
   description: A rare figurine depicting the chief medical officer wearing their hardsuit.
   components:
   - type: Sprite
@@ -176,7 +176,7 @@
 - type: entity
   parent: BaseRareFigurine
   id: ToyRareFigurineWarden
-  name: rare warden figure
+  name: warden hardsuit figure
   description: A rare figurine depicting a warden wearing their crappy hardsuit.
   components:
   - type: Sprite
@@ -187,7 +187,7 @@
 - type: entity
   parent: BaseRareFigurine
   id: ToyRareFigurineHeadOfSecurity
-  name: rare head of security figure
+  name: head of security hardsuit figure
   description: A rare figurine depicting a head of security wearing their hardsuit.
   components:
   - type: Sprite
@@ -198,7 +198,7 @@
 - type: entity
   parent: BaseRareFigurine
   id: ToyRareFigurineCaptain
-  name: rare captain figure
+  name: captain hardsuit figure
   description: A rare figurine depicting a captain wearing their hardsuit.
   components:
   - type: Sprite
@@ -209,7 +209,7 @@
 - type: entity
   parent: BaseRareFigurine
   id: ToyRareFigurineSecurity
-  name: rare security officer figure
+  name: security officer hardsuit figure
   description: A rare figurine depicting an officer wearing their hardsuit.
   components:
   - type: Sprite
