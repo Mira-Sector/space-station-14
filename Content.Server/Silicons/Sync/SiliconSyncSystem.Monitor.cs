@@ -88,7 +88,7 @@ public partial class SiliconSyncSystem
             return masterSlaves;
         }
 
-        if (_station.GetOwningStation(console) is not { } station)
+        if ((_station.GetOwningStation(console) ?? Transform(console).GridUid) is not { } station)
             return masterSlaves;
 
         var query = EntityQueryEnumerator<SiliconSyncableMasterComponent>();

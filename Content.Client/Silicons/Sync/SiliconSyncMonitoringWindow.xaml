@@ -36,35 +36,44 @@
             <PanelContainer StyleClasses="LowDivider" />
         </BoxContainer>
 
-
-        <BoxContainer
-            Margin="16"
-            HorizontalExpand="True"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top">
+        <PanelContainer HorizontalExpand="True">
             <BoxContainer
-                Name="MasterList"
-                Orientation="Vertical"
-                MinWidth="256"
+                HorizontalExpand="True"
+                VerticalExpand="True"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <RichTextLabel
+                    Name="NoMasterLabel"
+                    Text="{Loc 'ai-sync-monitoring-no-masters'}"
+                    HorizontalAlignment="Center"
+                    Access="Public"/>
+            </BoxContainer>
+
+            <BoxContainer
+                Margin="16"
                 HorizontalExpand="True"
                 HorizontalAlignment="Center"
-                Access="Public">
+                VerticalAlignment="Top">
                 <BoxContainer
-                    Name="MasterListTopDivider"
+                    Name="MasterList"
                     Orientation="Vertical"
-                    Margin="8, 16"
-                    Visible="False"
-                    VerticalAlignment="Top"
+                    MinWidth="256"
                     HorizontalExpand="True"
+                    HorizontalAlignment="Center"
                     Access="Public">
-                    <PanelContainer StyleClasses="LowDivider" />
+                    <BoxContainer
+                        Name="MasterListTopDivider"
+                        Orientation="Vertical"
+                        Margin="8, 16"
+                        Visible="False"
+                        VerticalAlignment="Top"
+                        HorizontalExpand="True"
+                        Access="Public">
+                        <PanelContainer StyleClasses="LowDivider" />
+                    </BoxContainer>
                 </BoxContainer>
-                    <RichTextLabel
-                        Name="NoMasterLabel"
-                        Text="{Loc 'ai-sync-monitoring-no-masters'}"
-                        HorizontalAlignment="Center"
-                        Access="Public"/>
             </BoxContainer>
-        </BoxContainer>
+        </PanelContainer>
+
     </BoxContainer>
 </controls:FancyWindow>
