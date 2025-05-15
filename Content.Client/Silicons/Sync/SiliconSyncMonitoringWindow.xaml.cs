@@ -16,6 +16,9 @@ public sealed partial class SiliconSyncMonitoringWindow : FancyWindow
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     private readonly SpriteSystem _sprite = default!;
 
+    [ViewVariables]
+    public List<SiliconSyncMonitoringMasterList> MasterLists = [];
+
     public SiliconSyncMonitoringWindow()
     {
         RobustXamlLoader.Load(this);
@@ -27,13 +30,12 @@ public sealed partial class SiliconSyncMonitoringWindow : FancyWindow
     public void ShowSlaves(Dictionary<NetEntity, HashSet<NetEntity>> masterSlaves, Dictionary<NetEntity, ProtoId<NavMapBlipPrototype>> slaveBlips, EntityUid console)
     {
         MasterList.RemoveAllChildren();
+        MasterLists.Clear();
         NavMap.TrackedEntities.Clear();
         NavMap.Owner = console;
         NavMap.MapUid = _entity.GetComponent<TransformComponent>(console).GridUid;
 
         var anyMasters = false;
-
-        List<SiliconSyncMonitoringMasterList> masterLists = [];
 
         foreach (var (masterNet, slavesNet) in masterSlaves)
         {
@@ -67,14 +69,17 @@ public sealed partial class SiliconSyncMonitoringWindow : FancyWindow
             }
 
             var list = new SiliconSyncMonitoringMasterList(master, slaves);
-            masterLists.Add(list);
+            MasterLists.Add(list);
             MasterList.AddChild(list);
+
+            list.OnSlavePressed += (slave, coords) => NavMap.CenterToCoordinates(coords);
 
             anyMasters = true;
         }
 
         NoMasterLabel.Visible = !anyMasters;
 
-        masterLists.Last().MasterDivider.Visible = false;
+        MasterLists.Last().MasterDivider.Visible = false;
     }
+
 }
