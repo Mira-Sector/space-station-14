@@ -1,6 +1,6 @@
 - type: navMapBlip
   id: SyncDefault
   scale: 1
-  color: ForestGreen
+  color: Cyan
   texturePaths:
   - "/Textures/Interface/NavMap/beveled_circle.png"
