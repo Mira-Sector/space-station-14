@@ -58,6 +58,8 @@
         type: CargoOrderConsoleBoundUserInterface
       enum.CrewMonitoringUIKey.Key:
         type: CrewMonitoringBoundUserInterface
+      enum.SiliconSyncMonitoringUiKey.Key:
+        type: SiliconSyncMonitoringBoundUserInterface
       enum.GeneralStationRecordConsoleKey.Key:
       # who the fuck named this bruh
         type: GeneralStationRecordConsoleBoundUserInterface
@@ -75,6 +77,8 @@
         toggleAction: ActionAGhostShowCargo
       enum.CrewMonitoringUIKey.Key:
         toggleAction: ActionAGhostShowCrewMonitoring
+      enum.SiliconSyncMonitoringUiKey.Key:
+        toggleAction: ActionAGhostShowSiliconSyncMonitoring
       enum.GeneralStationRecordConsoleKey.Key:
         toggleAction: ActionAGhostShowStationRecords
   - type: SolarControlConsole # look ma i AM the computer!
@@ -89,6 +93,7 @@
   - type: CargoOrderConsole
   - type: BankClient
   - type: CrewMonitoringConsole
+  - type: SiliconSyncableMonitoringConsole
   - type: GeneralStationRecordConsole
     canDeleteEntries: true
   - type: DeviceNetwork
