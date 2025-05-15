@@ -1,12 +1,15 @@
 <PanelContainer
     xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
     HorizontalExpand="True"
     HorizontalAlignment="Center"
     VerticalAlignment="Center">
     <BoxContainer
+        HorizontalExpand="True"
         Margin="0 2">
         <Button
             Name="SlaveButton"
+            HorizontalExpand="True"
             Access="Public"
             StyleClasses="ButtonSquare">
             <BoxContainer
@@ -14,19 +17,27 @@
                 HorizontalExpand="True"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
-                <BoxContainer Margin="4 0">
-                    <SpriteView
-                        Name="SlaveIcon"
-                        Access="Public"
-                        Stretch="Fill"
-                        Scale="1.5 1.5"
-                        MinSize="48, 48"
-                        OverrideDirection="South"/>
+                    <BoxContainer Margin="4 0">
+                        <SpriteView
+                            Name="SlaveIcon"
+                            Access="Public"
+                            Stretch="Fill"
+                            Scale="2 2"
+                            MinSize="64, 64"
+                            OverrideDirection="South">
+                            <PanelContainer StyleClasses="PdaBorderRect"/>
+                        </SpriteView>
+                    </BoxContainer>
+                <BoxContainer
+                    Orientation="Vertical"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="16 0">
+                    <Label
+                        Name="SlaveLabel"
+                        Align="Fill"
+                        Access="Public"/>
                 </BoxContainer>
-                <Label
-                    Name="SlaveLabel"
-                    HorizontalAlignment="Right"
-                    Access="Public"/>
             </BoxContainer>
         </Button>
     </BoxContainer>

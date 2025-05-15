@@ -30,3 +30,7 @@ ai-command-off = Stop commanding
 ai-consciousness-download-warning = Your consciousness is being downloaded.
 ai-power-warning = Your core is losing power.
 ai-trespass-warning = Movement detected within your core.
+
+ai-sync-monitoring-title = Silicon Slave Monitoring Console
+ai-sync-monitoring-no-slaves = [font size=24]No slaves[/font]
+ai-sync-monitoring-master-wrap = [font size=16][color=White][Bold]{$name}[/Bold][/color][/font]

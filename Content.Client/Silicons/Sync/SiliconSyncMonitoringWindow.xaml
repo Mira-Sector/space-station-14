@@ -4,12 +4,12 @@
     xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
     Title="{Loc 'ai-sync-monitoring-title'}"
     Resizable="False"
+    HorizontalExpand="True"
     SetSize="1024 768"
     MinSize="1024 768">
     <BoxContainer
         Orientation="Horizontal"
-        HorizontalExpand="True"
-        VerticalExpand="True">
+        HorizontalExpand="True">
         <controls:StripeBack
             HasTopEdge="False"
             HasBottomEdge="False"
@@ -36,19 +36,18 @@
             <PanelContainer StyleClasses="LowDivider" />
         </BoxContainer>
 
+
         <BoxContainer
-            Margin="16 8"
+            Margin="16"
             HorizontalExpand="True"
-            HorizontalAlignment="Center">
-            <PanelContainer StyleClasses="BackgroundDark">
-                    <BoxContainer
-                        Name="MasterList"
-                        Orientation="Vertical"
-                        MinWidth="256"
-                        VerticalExpand="True"
-                        HorizontalExpand="True"
-                        HorizontalAlignment="Center"/>
-            </PanelContainer>
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top">
+            <BoxContainer
+                Name="MasterList"
+                Orientation="Vertical"
+                MinWidth="256"
+                HorizontalExpand="True"
+                HorizontalAlignment="Center"/>
         </BoxContainer>
     </BoxContainer>
 </controls:FancyWindow>
