@@ -126,8 +126,11 @@ public partial class SharedBodySystem
         Dirty(partEnt, partEnt.Comp);
         partEnt.Comp.Body = bodyEnt;
 
-        var ev = new BodyPartAddedEvent(slotId, partEnt);
-        RaiseLocalEvent(bodyEnt, ref ev);
+        var bodyEv = new BodyPartAddedEvent(slotId, partEnt);
+        RaiseLocalEvent(bodyEnt, ref bodyEv);
+
+        var partEv = new BodyPartAddedToBodyEvent(bodyEnt);
+        RaiseLocalEvent(partEnt, ref partEv);
 
         AddLeg(partEnt, bodyEnt);
 
@@ -160,8 +163,11 @@ public partial class SharedBodySystem
         Dirty(partEnt, partEnt.Comp);
         partEnt.Comp.Body = null;
 
-        var ev = new BodyPartRemovedEvent(slotId, partEnt);
-        RaiseLocalEvent(bodyEnt, ref ev);
+        var bodyEv = new BodyPartRemovedEvent(slotId, partEnt);
+        RaiseLocalEvent(bodyEnt, ref bodyEv);
+
+        var partEv = new BodyPartRemovedFromBodyEvent(bodyEnt);
+        RaiseLocalEvent(partEnt, ref partEv);
 
         RemoveLeg(partEnt, bodyEnt);
         PartRemoveDamage(bodyEnt, partEnt);

@@ -2,6 +2,7 @@ using Content.Shared.Silicons.Laws;
 using Content.Shared.Silicons.Laws.Components;
 using Content.Shared.Silicons.Sync.Components;
 using Content.Shared.Silicons.Sync.Events;
+using JetBrains.Annotations;
 using Robust.Shared.Network;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
@@ -14,7 +15,7 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
 {
     [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly SharedSiliconLawSystem _siliconLaw = default!;
-    [Dependency] protected readonly IGameTiming _timing = default!;
+    [Dependency] protected readonly IGameTiming Timing = default!;
     [Dependency] private readonly SharedUserInterfaceSystem _userInterface = default!;
 
     public static readonly TimeSpan CommandUpdateRate = TimeSpan.FromSeconds(1 / 2);
@@ -66,7 +67,7 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
 
     private void OnSlaveRemoved(Entity<SiliconSyncableSlaveComponent> ent, ref ComponentRemove args)
     {
-        if (ent.Comp.Master is not {} master)
+        if (ent.Comp.Master is not { } master)
             return;
 
         var ev = new SiliconSyncMasterSlaveLostEvent(ent);
@@ -121,7 +122,7 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
         }
 
         commanderComp.Commanding.Add(ent.Owner);
-        commanderComp.NextCommand = _timing.CurTime + CommandUpdateRate;
+        commanderComp.NextCommand = Timing.CurTime + CommandUpdateRate;
 
         Dirty(args.User, commanderComp);
 
@@ -162,9 +163,10 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
         DirtyField(ent.Owner, ent.Comp, nameof(SiliconSyncableMasterCommanderComponent.Commanding));
     }
 
+    [PublicAPI]
     public void ShowAvailableMasters(Entity<SiliconSyncableSlaveComponent?> ent, EntityUid user)
     {
-        if (!Resolve(ent.Owner, ref ent.Comp))
+        if (!Resolve(ent.Owner, ref ent.Comp, false))
             return;
 
         if (!TryComp<ActorComponent>(user, out var actorComp))
@@ -198,6 +200,7 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
         _userInterface.SetUiState(ent.Owner, SiliconSyncUiKey.Key, state);
     }
 
+    [PublicAPI]
     public IEnumerable<Entity<SiliconSyncableMasterComponent>> GetAvailableMasters(Entity<SiliconSyncableSlaveComponent> ent)
     {
         var slaveMap = Transform(ent).MapUid;
@@ -212,22 +215,24 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
         }
     }
 
+    [PublicAPI]
     public bool TryGetMaster(Entity<SiliconSyncableSlaveComponent?> ent, [NotNullWhen(true)] out EntityUid? master)
     {
         master = null;
 
-        if (!Resolve(ent.Owner, ref ent.Comp))
+        if (!Resolve(ent.Owner, ref ent.Comp, false))
             return false;
 
         master = ent.Comp.Master;
         return master != null;
     }
 
+    [PublicAPI]
     public bool TryGetSlaves(Entity<SiliconSyncableMasterComponent?> ent, out HashSet<EntityUid> slaves)
     {
-        if (!Resolve(ent.Owner, ref ent.Comp))
+        if (!Resolve(ent.Owner, ref ent.Comp, false))
         {
-            slaves = new();
+            slaves = [];
             return false;
         }
 
@@ -235,6 +240,7 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
         return true;
     }
 
+    [PublicAPI]
     public void SetMaster(Entity<SiliconSyncableSlaveComponent?> ent, EntityUid? master)
     {
         if (!Resolve(ent.Owner, ref ent.Comp))
@@ -246,13 +252,13 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
         var slaveEv = new SiliconSyncSlaveMasterUpdatedEvent(master, ent.Comp.Master);
         RaiseLocalEvent(ent, slaveEv);
 
-        if (ent.Comp.Master is {} oldMaster)
+        if (ent.Comp.Master is { } oldMaster)
         {
             var oldMasterEv = new SiliconSyncMasterSlaveLostEvent(ent);
             RaiseLocalEvent(oldMaster, oldMasterEv);
         }
 
-        if (master is {} newMaster)
+        if (master is { } newMaster)
         {
             var newMasterEv = new SiliconSyncMasterSlaveAddedEvent(ent);
             RaiseLocalEvent(newMaster, newMasterEv);
@@ -262,12 +268,13 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
         Dirty(ent);
     }
 
+    [PublicAPI]
     public void UpdateSlaveLaws(Entity<SiliconSyncableSlaveComponent?, SiliconSyncableSlaveLawComponent?> ent)
     {
         if (!Resolve(ent.Owner, ref ent.Comp1, ref ent.Comp2))
             return;
 
-        if (ent.Comp1.Master is not {} master)
+        if (ent.Comp1.Master is not { } master)
             return;
 
         var masterLaws = _siliconLaw.GetLaws(master);

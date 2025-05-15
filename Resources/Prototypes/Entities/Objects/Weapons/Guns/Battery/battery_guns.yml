@@ -1,6 +1,6 @@
 - type: entity
   id: BaseWeaponBattery
-  parent: BaseItem
+  parent: [BaseItem, BaseGunMeleeLarge]
   abstract: true
   components:
   - type: Sprite
@@ -28,7 +28,7 @@
 
 - type: entity
   id: BaseWeaponPowerCell
-  parent: BaseItem
+  parent: [BaseItem, BaseGunMeleeLarge]
   abstract: true
   components:
   - type: Sprite
@@ -63,7 +63,7 @@
 
 - type: entity
   id: BaseWeaponBatterySmall
-  parent: BaseWeaponBattery
+  parent: [BaseGunMeleeSmall, BaseWeaponBattery]
   abstract: true
   components:
   - type: Item
@@ -83,7 +83,7 @@
 
 - type: entity
   id: BaseWeaponPowerCellSmall
-  parent: BaseWeaponPowerCell
+  parent: [BaseGunMeleeSmall, BaseWeaponPowerCell]
   abstract: true
   components:
   - type: Item
@@ -285,7 +285,7 @@
 
 - type: entity
   name: pulse carbine
-  parent: [BaseWeaponBattery, BaseWeaponBatteryTransfer, BaseGunWieldable, BaseCentcommContraband]
+  parent: [BaseGunMeleeDisarm, BaseWeaponBattery, BaseWeaponBatteryTransfer, BaseGunWieldable, BaseCentcommContraband]
   id: WeaponPulseCarbine
   description: A high tech energy carbine favoured by the NT-ERT operatives.
   components:
@@ -321,7 +321,7 @@
 
 - type: entity
   name: pulse rifle
-  parent: [BaseWeaponBattery, BaseWeaponBatteryTransfer, BaseGunWieldable]
+  parent: [BaseGunMeleeDisarm, BaseWeaponBattery, BaseWeaponBatteryTransfer, BaseGunWieldable]
   id: WeaponPulseRifle
   description: A weapon that is almost as infamous as its users.
   components:
@@ -385,7 +385,7 @@
 
 - type: entity
   name: portable particle decelerator
-  parent: BaseWeaponBattery
+  parent: [ BaseGunMeleeHeavy, BaseWeaponBattery]
   id: WeaponParticleDecelerator
   description: A portable particle decelerator capable of decomposing a tesla or singularity.
   components:
@@ -511,7 +511,7 @@
 
 - type: entity
   name: disabler SMG
-  parent: [ BaseWeaponBattery, BaseWeaponBatteryTransfer, BaseSecurityContraband ]
+  parent: [ BaseGunMeleeSmall, BaseWeaponBattery, BaseWeaponBatteryTransfer, BaseSecurityContraband ]
   id: WeaponDisablerSMG
   description: Advanced weapon that exhausts organic targets, weakening them until they collapse.
   components:

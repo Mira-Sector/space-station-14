@@ -1,3 +1,5 @@
+using Content.Shared.Body.Components;
+
 namespace Content.Shared.Body.Part;
 
 [ByRefEvent]
@@ -6,6 +8,11 @@ public readonly record struct BodyPartAddedEvent(string Slot, Entity<BodyPartCom
 [ByRefEvent]
 public readonly record struct BodyPartRemovedEvent(string Slot, Entity<BodyPartComponent> Part);
 
+[ByRefEvent]
+public readonly record struct BodyPartAddedToBodyEvent(EntityUid Body);
+
+[ByRefEvent]
+public readonly record struct BodyPartRemovedFromBodyEvent(EntityUid Body);
 
 [ByRefEvent]
 public record struct LimbBodyRelayedEvent<TEvent>(TEvent Args, EntityUid Limb)

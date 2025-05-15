@@ -2,7 +2,8 @@ using Content.Shared.Body.Components;
 using Content.Shared.Body.Organ;
 using Content.Shared.Body.Part;
 using Content.Shared.Damage;
-using Content.Shared.Medical;
+using Content.Shared.Humanoid;
+using Content.Shared.Speech;
 using Content.Shared.Standing;
 
 namespace Content.Shared.Body.Systems;
@@ -15,6 +16,9 @@ public partial class SharedBodySystem
         SubscribeLocalEvent<BodyComponent, StoodEvent>(RelayToLimbs);
         SubscribeLocalEvent<BodyComponent, DownAttemptEvent>(RelayToLimbs);
         SubscribeLocalEvent<BodyComponent, DownedEvent>(RelayToLimbs);
+
+        SubscribeLocalEvent<BodyComponent, SexChangedEvent>(RelayToLimbsAndOrgans);
+        SubscribeLocalEvent<BodyComponent, ScreamActionEvent>(RelayToLimbsAndOrgans);
 
         SubscribeLocalEvent<BodyPartComponent, DamageModifyEvent>(RelayToBody);
         SubscribeLocalEvent<BodyPartComponent, DamageChangedEvent>(RelayToBody);
