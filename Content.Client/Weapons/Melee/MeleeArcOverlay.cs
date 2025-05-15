@@ -1,11 +1,12 @@
 using System.Numerics;
-using Content.Shared.CombatMode;
+using Content.Shared.Intents;
 using Content.Shared.Weapons.Melee;
 using Robust.Client.Graphics;
 using Robust.Client.Input;
 using Robust.Client.Player;
 using Robust.Shared.Enums;
 using Robust.Shared.Map;
+using Robust.Shared.Prototypes;
 
 namespace Content.Client.Weapons.Melee;
 
@@ -19,19 +20,21 @@ public sealed class MeleeArcOverlay : Overlay
     private readonly IInputManager _inputManager;
     private readonly IPlayerManager _playerManager;
     private readonly MeleeWeaponSystem _melee;
-    private readonly SharedCombatModeSystem _combatMode;
+    private readonly IntentSystem _intent;
     private readonly SharedTransformSystem _transform = default!;
 
     public override OverlaySpace Space => OverlaySpace.WorldSpaceBelowFOV;
 
-    public MeleeArcOverlay(IEntityManager entManager, IEyeManager eyeManager, IInputManager inputManager, IPlayerManager playerManager, MeleeWeaponSystem melee, SharedCombatModeSystem combatMode, SharedTransformSystem transform)
+    private static readonly ProtoId<IntentPrototype> HarmIntent = "Harm";
+
+    public MeleeArcOverlay(IEntityManager entManager, IEyeManager eyeManager, IInputManager inputManager, IPlayerManager playerManager, MeleeWeaponSystem melee, IntentSystem intent, SharedTransformSystem transform)
     {
         _entManager = entManager;
         _eyeManager = eyeManager;
         _inputManager = inputManager;
         _playerManager = playerManager;
         _melee = melee;
-        _combatMode = combatMode;
+        _intent = intent;
         _transform = transform;
     }
 
@@ -40,7 +43,8 @@ public sealed class MeleeArcOverlay : Overlay
         var player = _playerManager.LocalEntity;
 
         if (!_entManager.TryGetComponent<TransformComponent>(player, out var xform) ||
-            !_combatMode.IsInCombatMode(player))
+            !_intent.TryGetIntent(player.Value, out var intent)
+            || intent != HarmIntent)
         {
             return;
         }
