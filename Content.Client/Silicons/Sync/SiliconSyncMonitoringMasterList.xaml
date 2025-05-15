@@ -2,7 +2,7 @@
     xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
     xmlns:graphics="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
     HorizontalExpand="True"
-    HorizontalAlignment="Center"
+    HorizontalAlignment="Stretch"
     VerticalAlignment="Center">
     <BoxContainer
         Orientation="Vertical"
@@ -61,9 +61,11 @@
             </BoxContainer>
         </PanelContainer>
         <BoxContainer
+            Name="MasterDivider"
             Orientation="Vertical"
             Margin="8, 16"
-            HorizontalExpand="True">
+            HorizontalExpand="True"
+            Access="Public">
             <PanelContainer StyleClasses="LowDivider" />
         </BoxContainer>
     </BoxContainer>

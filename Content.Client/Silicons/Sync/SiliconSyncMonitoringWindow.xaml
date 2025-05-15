@@ -53,25 +53,20 @@
                 Margin="16"
                 Orientation="Vertical"
                 HorizontalExpand="True"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top">
-                <BoxContainer
-                    Orientation="Vertical"
-                    Margin="8, 0, 8, 16"
-                    HorizontalExpand="True">
-                    <PanelContainer
-                        Name="MasterListTopDivider"
-                        Visible="False"
-                        Access="Public"
-                        StyleClasses="LowDivider"/>
-                </BoxContainer>
-                <BoxContainer
-                    Name="MasterList"
-                    Orientation="Vertical"
-                    MinWidth="256"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
+                <ScrollContainer
                     HorizontalExpand="True"
-                    HorizontalAlignment="Center"
-                Access="Public"/>
+                    VerticalExpand="True"
+                    HScrollEnabled="False">
+                    <BoxContainer
+                        Name="MasterList"
+                        Margin="0, 0, 16, 0"
+                        Orientation="Vertical"
+                        HorizontalExpand="True"
+                        HorizontalAlignment="Center"
+                        Access="Public"/>
+                </ScrollContainer>
             </BoxContainer>
         </PanelContainer>
 

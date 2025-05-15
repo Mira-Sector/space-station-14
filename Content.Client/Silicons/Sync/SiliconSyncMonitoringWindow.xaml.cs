@@ -33,6 +33,8 @@ public sealed partial class SiliconSyncMonitoringWindow : FancyWindow
 
         var anyMasters = false;
 
+        List<SiliconSyncMonitoringMasterList> masterLists = [];
+
         foreach (var (masterNet, slavesNet) in masterSlaves)
         {
             var master = _entity.GetEntity(masterNet);
@@ -65,12 +67,14 @@ public sealed partial class SiliconSyncMonitoringWindow : FancyWindow
             }
 
             var list = new SiliconSyncMonitoringMasterList(master, slaves);
+            masterLists.Add(list);
             MasterList.AddChild(list);
 
             anyMasters = true;
         }
 
-        MasterListTopDivider.Visible = anyMasters;
         NoMasterLabel.Visible = !anyMasters;
+
+        masterLists.Last().MasterDivider.Visible = false;
     }
 }
