@@ -26,26 +26,28 @@ public sealed partial class SiliconSyncMonitoringWindow : FancyWindow
 
     public void ShowSlaves(Dictionary<NetEntity, HashSet<NetEntity>> masterSlaves, Dictionary<NetEntity, ProtoId<NavMapBlipPrototype>> slaveBlips, EntityUid console)
     {
+        MasterList.RemoveAllChildren();
         NavMap.TrackedEntities.Clear();
         NavMap.Owner = console;
         NavMap.MapUid = _entity.GetComponent<TransformComponent>(console).GridUid;
 
-        Dictionary<EntityUid, HashSet<EntityUid>> slaveMasters = [];
-
-        foreach (var (masterNet, slaves) in masterSlaves)
+        foreach (var (masterNet, slavesNet) in masterSlaves)
         {
             var master = _entity.GetEntity(masterNet);
 
-            foreach (var slaveNet in slaves)
+            if (_entity.GetComponentOrNull<MetaDataComponent>(master)?.Deleted != false)
+                return;
+
+            HashSet<EntityUid> slaves = [];
+
+            foreach (var slaveNet in slavesNet)
             {
                 var slave = _entity.GetEntity(slaveNet);
-                if (slaveMasters.ContainsKey(slave))
-                    continue;
-
-                slaveMasters.Add(slave, [master]);
-
                 if (!slaveBlips.TryGetValue(slaveNet, out var blipId))
                     continue;
+
+                if (_entity.GetComponentOrNull<MetaDataComponent>(slave)?.Deleted != false)
+                    return;
 
                 if (!_prototype.TryIndex(blipId, out var blip))
                     continue;
@@ -57,11 +59,11 @@ public sealed partial class SiliconSyncMonitoringWindow : FancyWindow
                 var blipTexture = _sprite.Frame0(new SpriteSpecifier.Texture(blip.TexturePaths[0]));
 
                 NavMap.TrackedEntities.Add(slaveNet, new(slavePos, blipTexture, blip.Color, blip.Blinks, true, blip.Scale));
+                slaves.Add(slave);
             }
-        }
 
-        foreach (var (slave, masters) in slaveMasters)
-        {
+            var list = new SiliconSyncMonitoringMasterList(master, slaves);
+            MasterList.AddChild(list);
         }
     }
 }

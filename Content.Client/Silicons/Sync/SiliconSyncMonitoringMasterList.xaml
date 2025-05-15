@@ -1,0 +1,52 @@
+<PanelContainer xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+    xmlns:graphics="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    HorizontalAlignment="Center"
+    VerticalAlignment="Center">
+    <BoxContainer
+        Orientation="Vertical"
+        HorizontalExpand="True"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Margin="4">
+        <!--Master name-->
+        <controls:StripeBack>
+            <BoxContainer
+                Orientation="Vertical"
+                HorizontalExpand="True"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Margin="8">
+                <Label
+                    Name="MasterName"
+                    HorizontalAlignment="Center"
+                    Access="Public"/>
+            </BoxContainer>
+        </controls:StripeBack>
+        <PanelContainer
+            HorizontalExpand="True">
+            <BoxContainer
+                Orientation="Vertical">
+                <BoxContainer
+                    Name="SlaveList"
+                    Access="Public"
+                    Orientation="Vertical"
+                    HorizontalExpand="True"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="4">
+                    <RichTextLabel
+                        Name="NoSlaveLabel"
+                        Text="{Loc 'ai-sync-monitoring-no-slaves'}"
+                        HorizontalAlignment="Center"
+                        Access="Public"/>
+                </BoxContainer>
+                <BoxContainer
+                    Orientation="Vertical"
+                    Margin="0 4">
+                    <PanelContainer StyleClasses="LowDivider" />
+                </BoxContainer>
+            </BoxContainer>
+        </PanelContainer>
+    </BoxContainer>
+</PanelContainer>

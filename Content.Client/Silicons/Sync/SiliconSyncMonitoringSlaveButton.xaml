@@ -1,0 +1,33 @@
+<PanelContainer
+    xmlns="https://spacestation14.io"
+    HorizontalExpand="True"
+    HorizontalAlignment="Center"
+    VerticalAlignment="Center">
+    <BoxContainer
+        Margin="0 2">
+        <Button
+            Name="SlaveButton"
+            Access="Public"
+            StyleClasses="ButtonSquare">
+            <BoxContainer
+                Margin="0 4"
+                HorizontalExpand="True"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <BoxContainer Margin="4 0">
+                    <SpriteView
+                        Name="SlaveIcon"
+                        Access="Public"
+                        Stretch="Fill"
+                        Scale="1.5 1.5"
+                        MinSize="48, 48"
+                        OverrideDirection="South"/>
+                </BoxContainer>
+                <Label
+                    Name="SlaveLabel"
+                    HorizontalAlignment="Right"
+                    Access="Public"/>
+            </BoxContainer>
+        </Button>
+    </BoxContainer>
+</PanelContainer>
