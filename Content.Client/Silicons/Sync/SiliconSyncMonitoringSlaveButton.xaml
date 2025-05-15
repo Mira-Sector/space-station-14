@@ -35,7 +35,8 @@
                     Margin="16 0">
                     <Label
                         Name="SlaveLabel"
-                        Align="Fill"
+                        Align="Center"
+                        HorizontalExpand="True"
                         Access="Public"/>
                 </BoxContainer>
             </BoxContainer>

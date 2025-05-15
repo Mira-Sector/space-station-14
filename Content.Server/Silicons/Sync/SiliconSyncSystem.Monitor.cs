@@ -54,6 +54,7 @@ public partial class SiliconSyncSystem
     private void OnConsoleOpened(Entity<SiliconSyncableMonitoringConsoleComponent> ent, ref BoundUIOpenedEvent args)
     {
         ent.Comp.Users.Add(args.Actor);
+        ent.Comp.NextUpdate = Timing.CurTime;
         UpdateUserInterface(ent);
     }
 

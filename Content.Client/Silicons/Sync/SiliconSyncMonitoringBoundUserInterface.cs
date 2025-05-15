@@ -23,12 +23,9 @@ public sealed class SiliconSyncMonitoringBoundUserInterface : BoundUserInterface
     {
         base.UpdateState(state);
 
-        if (_menu == null)
-            return;
-
         if (state is not SiliconSyncMonitoringState monitorState)
             return;
 
-        _menu.ShowSlaves(monitorState.MasterSlaves, monitorState.SlaveBlips, Owner);
+        _menu?.ShowSlaves(monitorState.MasterSlaves, monitorState.SlaveBlips, Owner);
     }
 }

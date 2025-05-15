@@ -79,7 +79,8 @@ public sealed partial class SiliconSyncMonitoringWindow : FancyWindow
 
         NoMasterLabel.Visible = !anyMasters;
 
-        MasterLists.Last().MasterDivider.Visible = false;
+        if (MasterLists.Any())
+            MasterLists.Last().MasterDivider.Visible = false;
     }
 
 }
