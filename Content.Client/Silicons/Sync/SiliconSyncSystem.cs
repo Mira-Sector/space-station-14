@@ -46,13 +46,13 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
 
     public override void Update(float frameTime)
     {
-        if (_playerMan.LocalEntity is not {} entity)
+        if (_playerMan.LocalEntity is not { } entity)
             return;
 
         if (!TryComp<SiliconSyncableMasterCommanderComponent>(entity, out var commandingComp) || !commandingComp.Commanding.Any())
             return;
 
-        if (commandingComp.NextCommand > _timing.CurTime)
+        if (commandingComp.NextCommand > Timing.CurTime)
             return;
 
         commandingComp.NextCommand += CommandUpdateRate;
@@ -146,7 +146,7 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
 
     private void OnGetPath(SiliconSyncMoveSlavePathEvent args)
     {
-        if (_playerMan.LocalEntity is not {} entity)
+        if (_playerMan.LocalEntity is not { } entity)
             return;
 
         var master = GetEntity(args.Master);
@@ -187,7 +187,7 @@ public sealed partial class SiliconSyncSystem : SharedSiliconSyncSystem
 
     private void OnSlaveCommandedLost(SiliconSyncMoveSlaveLostEvent args)
     {
-        if (_playerMan.LocalEntity is not {} entity)
+        if (_playerMan.LocalEntity is not { } entity)
             return;
 
         var master = GetEntity(args.Master);

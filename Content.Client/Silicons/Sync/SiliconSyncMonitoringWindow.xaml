@@ -1,0 +1,74 @@
+<controls:FancyWindow xmlns="https://spacestation14.io"
+    xmlns:ui="clr-namespace:Content.Client.Pinpointer.UI"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+    Title="{Loc 'ai-sync-monitoring-title'}"
+    Resizable="False"
+    HorizontalExpand="True"
+    SetSize="1024 768"
+    MinSize="1024 768">
+    <BoxContainer
+        Orientation="Horizontal"
+        HorizontalExpand="True">
+        <controls:StripeBack
+            HasTopEdge="False"
+            HasBottomEdge="False"
+            HasMargins="False">
+            <BoxContainer
+                Orientation="Vertical"
+                HorizontalExpand="True"
+                VerticalExpand="True"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+
+                <PanelContainer StyleClasses="LowDivider" />
+
+                <PanelContainer StyleClasses="WindowHeadingBackground">
+                    <ui:NavMapControl Name="NavMap" HorizontalExpand="True" VerticalExpand="True"/>
+                </PanelContainer>
+
+                <PanelContainer StyleClasses="LowDivider" />
+
+            </BoxContainer>
+        </controls:StripeBack>
+
+        <BoxContainer>
+            <PanelContainer StyleClasses="LowDivider" />
+        </BoxContainer>
+
+        <PanelContainer HorizontalExpand="True">
+            <BoxContainer
+                HorizontalExpand="True"
+                VerticalExpand="True"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <RichTextLabel
+                    Name="NoMasterLabel"
+                    Text="{Loc 'ai-sync-monitoring-no-masters'}"
+                    HorizontalAlignment="Center"
+                    Access="Public"/>
+            </BoxContainer>
+
+            <BoxContainer
+                Margin="16"
+                Orientation="Vertical"
+                HorizontalExpand="True"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
+                <ScrollContainer
+                    HorizontalExpand="True"
+                    VerticalExpand="True"
+                    HScrollEnabled="False">
+                    <BoxContainer
+                        Name="MasterList"
+                        Margin="0, 0, 16, 0"
+                        Orientation="Vertical"
+                        HorizontalExpand="True"
+                        HorizontalAlignment="Center"
+                        Access="Public"/>
+                </ScrollContainer>
+            </BoxContainer>
+        </PanelContainer>
+
+    </BoxContainer>
+</controls:FancyWindow>

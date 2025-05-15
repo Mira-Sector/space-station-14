@@ -1,0 +1,48 @@
+<PanelContainer
+    xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+    HorizontalExpand="True"
+    HorizontalAlignment="Stretch"
+    VerticalAlignment="Center">
+    <BoxContainer
+        HorizontalExpand="True"
+        Margin="0 2">
+        <Button
+            Name="SlaveButton"
+            HorizontalExpand="True"
+            Access="Public"
+            StyleClasses="ButtonSquare">
+            <BoxContainer
+                Margin="0 4"
+                HorizontalExpand="True"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center">
+                    <BoxContainer
+                    Margin="4 0"
+                    HorizontalAlignment="Left">
+                        <SpriteView
+                            Name="SlaveIcon"
+                            Access="Public"
+                            Stretch="Fill"
+                            Scale="2 2"
+                            MinSize="64, 64"
+                            OverrideDirection="South">
+                            <PanelContainer StyleClasses="PdaBorderRect"/>
+                        </SpriteView>
+                    </BoxContainer>
+                <BoxContainer
+                    Orientation="Vertical"
+                    HorizontalExpand="True"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    Margin="16 0">
+                    <Label
+                        Name="SlaveLabel"
+                        Align="Center"
+                        HorizontalExpand="True"
+                        Access="Public"/>
+                </BoxContainer>
+            </BoxContainer>
+        </Button>
+    </BoxContainer>
+</PanelContainer>
