@@ -14,7 +14,7 @@ public sealed partial class SiliconSyncMonitoringMasterList : PanelContainer
 
     public event Action<EntityUid, EntityCoordinates>? OnSlavePressed;
 
-    public SiliconSyncMonitoringMasterList(EntityUid master, HashSet<EntityUid> slaves)
+    public SiliconSyncMonitoringMasterList(EntityUid master, Dictionary<EntityUid, EntityCoordinates> slaves)
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
@@ -24,12 +24,11 @@ public sealed partial class SiliconSyncMonitoringMasterList : PanelContainer
         message.AddMarkupOrThrow(Loc.GetString("ai-sync-monitoring-master-wrap", ("name", name)));
         MasterName.SetMessage(message);
 
-        foreach (var slave in slaves)
+        foreach (var (slave, coords) in slaves)
         {
             var button = new SiliconSyncMonitoringSlaveButton(slave);
             SlaveList.AddChild(button);
 
-            var coords = _entity.GetComponent<TransformComponent>(slave).Coordinates;
             button.SlaveButton.OnPressed += _ => OnSlavePressed?.Invoke(slave, coords);
         }
 

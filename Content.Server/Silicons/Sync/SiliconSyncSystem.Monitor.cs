@@ -6,6 +6,7 @@ using Content.Shared.Prototypes;
 using Content.Shared.Silicons.Sync;
 using Content.Shared.Silicons.Sync.Components;
 using Robust.Server.GameObjects;
+using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using System.Linq;
 
@@ -16,7 +17,7 @@ public partial class SiliconSyncSystem
     [Dependency] private readonly StationSystem _station = default!;
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
 
-    internal Dictionary<EntityUid, Dictionary<NetEntity, HashSet<NetEntity>>> ConsoleSlaves = [];
+    internal Dictionary<EntityUid, Dictionary<NetEntity, Dictionary<NetEntity, NetCoordinates>>> ConsoleSlaves = [];
     internal Dictionary<NetEntity, ProtoId<NavMapBlipPrototype>> SlaveBlips = [];
 
     internal static readonly ProtoId<NavMapBlipPrototype> DefaultBlip = "SyncDefault";
@@ -68,19 +69,19 @@ public partial class SiliconSyncSystem
         args.Blip = ent.Comp.Blip;
     }
 
-    internal Dictionary<NetEntity, HashSet<NetEntity>> GetSlaves(EntityUid console)
+    internal Dictionary<NetEntity, Dictionary<NetEntity, NetCoordinates>> GetSlaves(EntityUid console)
     {
-        Dictionary<NetEntity, HashSet<NetEntity>> masterSlaves = [];
+        Dictionary<NetEntity, Dictionary<NetEntity, NetCoordinates>> masterSlaves = [];
 
         // so the ai only shows its own slaves
         // no spying on other ais
         if (TryGetSlaves(console, out var slaves))
         {
-            HashSet<NetEntity> netSlaves = [];
+            Dictionary<NetEntity, NetCoordinates> netSlaves = [];
             foreach (var slave in slaves)
             {
                 var netSlave = GetNetEntity(slave);
-                netSlaves.Add(netSlave);
+                netSlaves.Add(netSlave, GetNetCoordinates(Transform(slave).Coordinates));
 
                 SlaveBlips[netSlave] = GetNavMapBlip(slave);
             }
@@ -101,11 +102,11 @@ public partial class SiliconSyncSystem
             if (!TryGetSlaves((masterUid, masterComp), out slaves))
                 continue;
 
-            HashSet<NetEntity> netSlaves = [];
+            Dictionary<NetEntity, NetCoordinates> netSlaves = [];
             foreach (var slave in slaves)
             {
                 var netSlave = GetNetEntity(slave);
-                netSlaves.Add(netSlave);
+                netSlaves.Add(netSlave, GetNetCoordinates(Transform(slave).Coordinates));
 
                 SlaveBlips[netSlave] = GetNavMapBlip(slave);
             }
