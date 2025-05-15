@@ -1711,3 +1711,9 @@ Entries:
     type: Fix
   id: 244
   time: '2025-05-14T23:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: The AI now has a UI to see where its synced slaves are located
+    type: Add
+  id: 245
+  time: '2025-05-15T10:45:00.0000000+00:00'
