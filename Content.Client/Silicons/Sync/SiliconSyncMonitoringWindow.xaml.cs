@@ -31,6 +31,8 @@ public sealed partial class SiliconSyncMonitoringWindow : FancyWindow
         NavMap.Owner = console;
         NavMap.MapUid = _entity.GetComponent<TransformComponent>(console).GridUid;
 
+        var anyMasters = false;
+
         foreach (var (masterNet, slavesNet) in masterSlaves)
         {
             var master = _entity.GetEntity(masterNet);
@@ -64,6 +66,11 @@ public sealed partial class SiliconSyncMonitoringWindow : FancyWindow
 
             var list = new SiliconSyncMonitoringMasterList(master, slaves);
             MasterList.AddChild(list);
+
+            anyMasters = true;
         }
+
+        MasterListTopDivider.Visible = anyMasters;
+        NoMasterLabel.Visible = !anyMasters;
     }
 }

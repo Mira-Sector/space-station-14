@@ -47,7 +47,24 @@
                 Orientation="Vertical"
                 MinWidth="256"
                 HorizontalExpand="True"
-                HorizontalAlignment="Center"/>
+                HorizontalAlignment="Center"
+                Access="Public">
+                <BoxContainer
+                    Name="MasterListTopDivider"
+                    Orientation="Vertical"
+                    Margin="8, 16"
+                    Visible="False"
+                    VerticalAlignment="Top"
+                    HorizontalExpand="True"
+                    Access="Public">
+                    <PanelContainer StyleClasses="LowDivider" />
+                </BoxContainer>
+                    <RichTextLabel
+                        Name="NoMasterLabel"
+                        Text="{Loc 'ai-sync-monitoring-no-masters'}"
+                        HorizontalAlignment="Center"
+                        Access="Public"/>
+            </BoxContainer>
         </BoxContainer>
     </BoxContainer>
 </controls:FancyWindow>

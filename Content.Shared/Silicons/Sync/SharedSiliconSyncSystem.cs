@@ -166,7 +166,7 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
     [PublicAPI]
     public void ShowAvailableMasters(Entity<SiliconSyncableSlaveComponent?> ent, EntityUid user)
     {
-        if (!Resolve(ent.Owner, ref ent.Comp))
+        if (!Resolve(ent.Owner, ref ent.Comp, false))
             return;
 
         if (!TryComp<ActorComponent>(user, out var actorComp))
@@ -220,7 +220,7 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
     {
         master = null;
 
-        if (!Resolve(ent.Owner, ref ent.Comp))
+        if (!Resolve(ent.Owner, ref ent.Comp, false))
             return false;
 
         master = ent.Comp.Master;
@@ -230,7 +230,7 @@ public abstract partial class SharedSiliconSyncSystem : EntitySystem
     [PublicAPI]
     public bool TryGetSlaves(Entity<SiliconSyncableMasterComponent?> ent, out HashSet<EntityUid> slaves)
     {
-        if (!Resolve(ent.Owner, ref ent.Comp))
+        if (!Resolve(ent.Owner, ref ent.Comp, false))
         {
             slaves = [];
             return false;
