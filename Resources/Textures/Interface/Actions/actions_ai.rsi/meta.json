@@ -1,7 +1,7 @@
 {
 	"version": 1,
 	"license": "CC-BY-SA-3.0",
-	"copyright": "Taken from tgstation at commit https://github.com/tgstation/tgstation/blob/c473a8bcc28fbd80827dfca5660d81ca6e833e2c/icons/hud/screen_ai.dmi , some sprites updated by ScarKy0(Discord), door actions by ScarKy0(Discord) and @Max_tanuki(Twitter), hack by Doctor-Cpu using tool sprites in this repo, shunting made by Doctor_Cpu(Github), sync, command and sync_monitor by Doctor-Cpu with securitron and janibot sprites from tgstation",
+	"copyright": "Taken from tgstation at commit https://github.com/tgstation/tgstation/blob/c473a8bcc28fbd80827dfca5660d81ca6e833e2c/icons/hud/screen_ai.dmi , some sprites updated by ScarKy0(Discord), door actions by ScarKy0(Discord) and @Max_tanuki(Twitter), hack by Doctor-Cpu using tool sprites in this repo, shunting made by Doctor_Cpu(Github), sync, command and sync_monitor by Doctor-Cpu with securitron and janibot sprites from tgstation, store, nuke, lockdown, thermal_sensors, overload, blackout by Doctor-Cpu",
 	"size": {
 		"x": 32,
 		"y": 32
@@ -66,6 +66,24 @@
 		},
         {
 			"name": "sync_monitor"
+		},
+        {
+			"name": "store"
+		},
+        {
+			"name": "nuke"
+		},
+        {
+			"name": "lockdown"
+		},
+        {
+			"name": "thermal_sensors"
+		},
+        {
+			"name": "overload"
+		},
+        {
+			"name": "blackout"
 		}
 	]
 }
