@@ -1,6 +1,6 @@
 using Content.Shared.Clothing;
-using Content.Shared.Interaction.Components;
 using Content.Shared.Inventory;
+using Content.Shared.Inventory.Events;
 using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
 using Robust.Shared.Containers;
@@ -24,6 +24,8 @@ public partial class SharedModSuitSystem
         SubscribeLocalEvent<ModSuitPartDeployableComponent, ComponentRemove>(OnDeployableRemoved);
         SubscribeLocalEvent<ModSuitPartDeployableComponent, ClothingGotEquippedEvent>(OnDeployableEquipped);
         SubscribeLocalEvent<ModSuitPartDeployableComponent, ClothingGotUnequippedEvent>(OnDeployableUnequipped);
+
+        SubscribeLocalEvent<ModSuitDeployedPartComponent, BeingUnequippedAttemptEvent>(OnDeployedUnequipAttempt);
 
         SubscribeLocalEvent<ModSuitDeployableInventoryComponent, ComponentInit>(OnDeployableInventoryInit);
         SubscribeLocalEvent<ModSuitDeployableInventoryComponent, ComponentRemove>(OnDeployableInventoryRemoved);
@@ -82,8 +84,6 @@ public partial class SharedModSuitSystem
             var beforeEv = new ModSuitDeployablePartBeforeEquippedEvent(ent.Owner, args.Wearer, slot);
             RaiseLocalEvent(part, beforeEv);
 
-            var hadUnremovable = RemComp<UnremoveableComponent>(part);
-
             if (!_inventory.TryEquip(args.Wearer, part, slot, true, true, true, inventoryComp))
             {
                 var failedEv = new ModSuitDeployablePartUnequippedEvent(ent.Owner, args.Wearer, slot);
@@ -92,9 +92,6 @@ public partial class SharedModSuitSystem
                 Container.Insert(part, container);
                 continue;
             }
-
-            if (hadUnremovable)
-                EnsureComp<UnremoveableComponent>(part);
 
             ent.Comp.DeployedParts.Add(slot, part);
 
@@ -111,6 +108,11 @@ public partial class SharedModSuitSystem
         ent.Comp.Wearer = null;
         UndeployAll(ent, args.Wearer);
         Dirty(ent);
+    }
+
+    private void OnDeployedUnequipAttempt(Entity<ModSuitDeployedPartComponent> ent, ref BeingUnequippedAttemptEvent args)
+    {
+        args.Cancel();
     }
 
     internal void UndeployAll(Entity<ModSuitPartDeployableComponent> ent, Entity<InventoryComponent?> wearer)

@@ -10,6 +10,7 @@ public partial class ModSuitSystem
         foreach (var (slot, partId) in ent.Comp.DeployablePartIds)
         {
             var container = Container.EnsureContainer<ContainerSlot>(ent.Owner, GetDeployableSlotId(slot));
+            ent.Comp.DeployableContainers.Add(slot, container);
 
             var part = Spawn(partId);
 
@@ -19,7 +20,10 @@ public partial class ModSuitSystem
                 continue;
             }
 
-            ent.Comp.DeployableContainers.Add(slot, container);
+            var deployedComp = new ModSuitDeployedPartComponent();
+            deployedComp.Suit = ent.Owner;
+            deployedComp.Slot = slot;
+            AddComp(part, deployedComp, true);
         }
 
         Dirty(ent);
