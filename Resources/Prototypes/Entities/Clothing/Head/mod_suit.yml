@@ -36,3 +36,10 @@
         head:
         - sprite: Clothing/Head/ModSuits/advanced.rsi
           state: equipped-HELMET
+    uiLayer:
+      true:
+        sprite: Clothing/Head/ModSuits/advanced.rsi
+        state: equipped-HELMET-sealed
+      false:
+        sprite: Clothing/Head/ModSuits/advanced.rsi
+        state: equipped-HELMET

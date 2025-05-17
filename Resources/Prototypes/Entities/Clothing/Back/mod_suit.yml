@@ -48,6 +48,13 @@
         back:
         - sprite: Clothing/Back/ModSuits/advanced.rsi
           state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/advanced.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/advanced.rsi
+        state: equipped-BACKPACK
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitAdvanced

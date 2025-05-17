@@ -36,3 +36,10 @@
         gloves:
         - sprite: Clothing/Hands/ModSuits/advanced.rsi
           state: equipped-HAND
+    uiLayer:
+      true:
+        sprite: Clothing/Hands/ModSuits/advanced.rsi
+        state: equipped-HAND-sealed
+      false:
+        sprite: Clothing/Hands/ModSuits/advanced.rsi
+        state: equipped-HAND

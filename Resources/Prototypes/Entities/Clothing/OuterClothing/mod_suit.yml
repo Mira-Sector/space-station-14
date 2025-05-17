@@ -36,3 +36,10 @@
         outerClothing:
         - sprite: Clothing/OuterClothing/ModSuits/advanced.rsi
           state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/advanced.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/advanced.rsi
+        state: equipped-OUTERCLOTHING

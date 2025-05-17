@@ -30,8 +30,22 @@ public partial class SharedModSuitSystem
 
     private void OnSealableGetUiStates(Entity<ModSuitSealableComponent> ent, ref ModSuitDeployableRelayedEvent<ModSuitGetUiStatesEvent> args)
     {
-        var state = new ModSuitSealableBoundUserInterfaceState(GetNetEntity(ent.Owner), ent.Comp.Sealed);
-        args.Args.States.Add(state);
+        var toAdd = new ModSuitSealableBuiEntry(ent.Comp.UiLayer, ent.Comp.Sealed);
+
+        foreach (var state in args.Args.States)
+        {
+            if (state is not ModSuitSealableBoundUserInterfaceState sealableState)
+                continue;
+
+            sealableState.Parts.Add(GetNetEntity(ent.Owner), toAdd);
+            return;
+        }
+
+        Dictionary<NetEntity, ModSuitSealableBuiEntry> parts = [];
+        parts.Add(GetNetEntity(ent.Owner), toAdd);
+
+        var newState = new ModSuitSealableBoundUserInterfaceState(parts);
+        args.Args.States.Add(newState);
     }
 
     [PublicAPI]

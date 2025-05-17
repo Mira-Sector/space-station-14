@@ -1,4 +1,5 @@
 using Robust.Shared.GameStates;
+using Robust.Shared.Utility;
 
 namespace Content.Shared.Modules.ModSuit.Components;
 
@@ -13,6 +14,9 @@ public sealed partial class ModSuitSealableComponent : Component
 
     [DataField, AutoNetworkedField]
     public Dictionary<bool, Dictionary<string, List<PrototypeLayerData>>> ClothingLayers = [];
+
+    [DataField, AutoNetworkedField]
+    public Dictionary<bool, SpriteSpecifier> UiLayer = [];
 
     public HashSet<int> RevealedLayers = [];
 }

@@ -36,3 +36,10 @@
         shoes:
         - sprite: Clothing/Shoes/ModSuits/advanced.rsi
           state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/advanced.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/advanced.rsi
+        state: equipped-FEET

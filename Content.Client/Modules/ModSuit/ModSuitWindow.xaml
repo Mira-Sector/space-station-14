@@ -1,10 +1,20 @@
 <DefaultWindow xmlns="https://spacestation14.io"
             Title="{Loc 'modsuit-interface-title'}"
-            MinSize="384 512">
+            MinSize="512 768">
     <BoxContainer
         Orientation="Vertical"
         HorizontalAlignment="Center"
         VerticalAlignment="Center"
         Margin="4">
+        <BoxContainer
+            Name="SealContainer"
+            Visible="False"
+            Margin="4"
+            Access="Public">
+            <PanelContainer
+                Name="SealPanel"
+                Access="Public">
+            </PanelContainer>
+        </BoxContainer>
     </BoxContainer>
 </DefaultWindow>

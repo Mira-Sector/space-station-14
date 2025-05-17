@@ -34,7 +34,11 @@ public partial class SharedModSuitSystem
 
     private void OnUiViewUi(Entity<ModSuitUserInterfaceComponent> ent, ref ModSuitViewUiEvent args)
     {
-        Ui.OpenUi(ent.Owner, ModSuitUiKey.Key, true);
+        if (args.Handled)
+            return;
+
+        Ui.TryToggleUi(ent.Owner, ModSuitUiKey.Key, args.Performer);
+        args.Handled = true;
     }
 
     private void OnUiOpened(Entity<ModSuitUserInterfaceComponent> ent, ref BoundUIOpenedEvent args)
