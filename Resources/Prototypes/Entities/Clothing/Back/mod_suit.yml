@@ -14,6 +14,11 @@
   - type: PowerCellDraw
   - type: PowerCellSlot
     fitsInCharger: false
+  - type: ModSuitUserInterface
+  - type: UserInterface
+    interfaces:
+      enum.ModSuitUiKey.Key:
+        type: ModSuitBoundUserInterface
   - type: Item
     size: Ginormous
   - type: Clothing

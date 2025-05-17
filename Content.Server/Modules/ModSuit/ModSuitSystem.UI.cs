@@ -6,20 +6,18 @@ namespace Content.Server.Modules.ModSuit;
 
 public partial class ModSuitSystem
 {
-    [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
-
     public override void UpdateUI(Entity<ModSuitUserInterfaceComponent?> ent)
     {
         if (!Resolve(ent.Owner, ref ent.Comp, false))
             return;
 
-        if (!_ui.IsUiOpen(ent.Owner, ModSuitUiKey.Key))
+        if (!Ui.IsUiOpen(ent.Owner, ModSuitUiKey.Key))
             return;
 
         var ev = new ModSuitGetUiStatesEvent();
         RaiseLocalEvent(ev);
 
         foreach (var state in ev.States)
-            _ui.SetUiState(ent.Owner, ModSuitUiKey.Key, state);
+            Ui.SetUiState(ent.Owner, ModSuitUiKey.Key, state);
     }
 }
