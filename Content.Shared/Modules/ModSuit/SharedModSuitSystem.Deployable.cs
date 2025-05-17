@@ -3,6 +3,7 @@ using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;
 using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
+using JetBrains.Annotations;
 using Robust.Shared.Containers;
 using Robust.Shared.Network;
 using Robust.Shared.Timing;
@@ -20,6 +21,8 @@ public partial class SharedModSuitSystem
 
     private void InitializeDeployable()
     {
+        InitializeDeployableRelay();
+
         SubscribeLocalEvent<ModSuitPartDeployableComponent, ComponentInit>(OnDeployableInit);
         SubscribeLocalEvent<ModSuitPartDeployableComponent, ComponentRemove>(OnDeployableRemoved);
         SubscribeLocalEvent<ModSuitPartDeployableComponent, ClothingGotEquippedEvent>(OnDeployableEquipped);
@@ -134,6 +137,26 @@ public partial class SharedModSuitSystem
     protected static string GetDeployableSlotId(string slot)
     {
         return DeployableSlotPrefix + slot;
+    }
+
+    [PublicAPI]
+    public IEnumerable<EntityUid> GetDeployedParts(Entity<ModSuitPartDeployableComponent?> ent)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp))
+            yield break;
+
+        foreach (var (_, part) in ent.Comp.DeployedParts)
+            yield return part;
+    }
+
+    [PublicAPI]
+    public IEnumerable<EntityUid> GetDeployableParts(Entity<ModSuitPartDeployableComponent?> ent)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp))
+            yield break;
+
+        foreach (var (_, part) in ent.Comp.DeployableParts)
+            yield return part;
     }
 
     #endregion

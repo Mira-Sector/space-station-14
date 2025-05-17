@@ -13,7 +13,7 @@ public sealed partial class ModSuitWindow : DefaultWindow
         RobustXamlLoader.Load(this);
     }
 
-    public void UpdateState(ModSuitBoundUserInterfaceState state)
+    public void UpdateSealed(ModSuitSealableBoundUserInterfaceState state)
     {
     }
 }

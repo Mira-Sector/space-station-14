@@ -24,9 +24,13 @@ public sealed partial class ModSuitBoundUserInterface : BoundUserInterface
     {
         base.UpdateState(state);
 
-        if (state is not ModSuitBoundUserInterfaceState modsuit)
-            return;
-
-        _window?.UpdateState(modsuit);
+        switch (state)
+        {
+            case ModSuitSealableBoundUserInterfaceState sealable:
+            {
+                _window?.UpdateSealed(sealable);
+                break;
+            }
+        }
     }
 }
