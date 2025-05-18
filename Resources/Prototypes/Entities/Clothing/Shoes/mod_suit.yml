@@ -17,6 +17,7 @@
   id: ClothingShoesModSuitAdvanced
   parent: ClothingShoesModSuitBase
   categories: [ HideSpawnMenu ]
+  name: advanced MOD boots
   components:
   - type: Sprite
   - type: ModSuitSealable

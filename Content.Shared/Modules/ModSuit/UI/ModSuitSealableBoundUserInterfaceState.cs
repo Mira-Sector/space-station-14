@@ -1,7 +1,7 @@
 using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
 
-namespace Content.Shared.Modules.ModSuit;
+namespace Content.Shared.Modules.ModSuit.UI;
 
 [Serializable, NetSerializable]
 public sealed class ModSuitSealableBoundUserInterfaceState : BoundUserInterfaceState

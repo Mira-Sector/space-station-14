@@ -13,7 +13,7 @@ public sealed partial class ModSuitSealableSprite : PanelContainer
     [Dependency] private readonly IEntityManager _entity = default!;
     private readonly SpriteSystem _sprite;
 
-    public ModSuitSealableSprite(NetEntity sealable, SpriteSpecifier sprite)
+    public ModSuitSealableSprite(SpriteSpecifier sprite)
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);

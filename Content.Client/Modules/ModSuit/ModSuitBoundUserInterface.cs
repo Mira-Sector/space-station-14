@@ -1,4 +1,4 @@
-using Content.Shared.Modules.ModSuit;
+using Content.Shared.Modules.ModSuit.UI;
 using Robust.Client.UserInterface;
 using JetBrains.Annotations;
 
@@ -27,10 +27,13 @@ public sealed partial class ModSuitBoundUserInterface : BoundUserInterface
         switch (state)
         {
             case ModSuitSealableBoundUserInterfaceState sealable:
-            {
                 _window?.UpdateSealed(sealable);
                 break;
-            }
         }
+
+        if (_window == null)
+            return;
+
+        _window.OnSealButtonPressed += (part, shouldSeal) => SendPredictedMessage(new ModSuitSealButtonMessage(part, shouldSeal));
     }
 }

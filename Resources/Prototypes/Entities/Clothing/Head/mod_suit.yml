@@ -17,6 +17,7 @@
   id: ClothingHeadModSuitAdvanced
   parent: ClothingHeadModSuitBase
   categories: [ HideSpawnMenu ]
+  name: advanced MOD helmet
   components:
   - type: Sprite
   - type: ModSuitSealable

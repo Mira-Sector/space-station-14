@@ -1,6 +1,6 @@
-using Content.Shared.Modules.ModSuit;
 using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
+using Content.Shared.Modules.ModSuit.UI;
 using JetBrains.Annotations;
 
 namespace Content.Server.Modules.ModSuit;

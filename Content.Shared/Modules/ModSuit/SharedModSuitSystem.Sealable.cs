@@ -2,6 +2,7 @@ using Content.Shared.Clothing;
 using Content.Shared.Item;
 using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
+using Content.Shared.Modules.ModSuit.UI;
 using JetBrains.Annotations;
 
 namespace Content.Shared.Modules.ModSuit;
@@ -15,6 +16,8 @@ public partial class SharedModSuitSystem
         SubscribeLocalEvent<ModSuitSealableComponent, ComponentInit>(OnSealableInit);
         SubscribeLocalEvent<ModSuitSealableComponent, ClothingGotUnequippedEvent>(OnSealableUnequipped);
         SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployableRelayedEvent<ModSuitGetUiStatesEvent>>(OnSealableGetUiStates);
+
+        SubscribeLocalEvent<ModSuitUserInterfaceComponent, ModSuitSealButtonMessage>(OnSealableUiButton);
     }
 
     private void OnSealableInit(Entity<ModSuitSealableComponent> ent, ref ComponentInit args)
@@ -46,6 +49,11 @@ public partial class SharedModSuitSystem
 
         var newState = new ModSuitSealableBoundUserInterfaceState(parts);
         args.Args.States.Add(newState);
+    }
+
+    private void OnSealableUiButton(Entity<ModSuitUserInterfaceComponent> ent, ref ModSuitSealButtonMessage args)
+    {
+        SetSeal(GetEntity(args.Part), args.ShouldSeal);
     }
 
     [PublicAPI]

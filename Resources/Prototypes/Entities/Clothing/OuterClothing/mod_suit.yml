@@ -17,6 +17,7 @@
   id: ClothingOuterModSuitAdvanced
   parent: ClothingOuterModSuitBase
   categories: [ HideSpawnMenu ]
+  name: advanced MOD chestplate
   components:
   - type: Sprite
   - type: ModSuitSealable

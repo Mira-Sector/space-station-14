@@ -15,6 +15,13 @@
                 Name="SealPanel"
                 Access="Public">
             </PanelContainer>
+            <BoxContainer
+                Name="SealButtons"
+                Margin="2"
+                Orientation="Vertical"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Access="Public"/>
         </BoxContainer>
     </BoxContainer>
 </DefaultWindow>

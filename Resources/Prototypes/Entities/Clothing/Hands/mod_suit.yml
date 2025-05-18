@@ -17,6 +17,7 @@
   id: ClothingHandsModSuitAdvanced
   parent: ClothingHandsModSuitBase
   categories: [ HideSpawnMenu ]
+  name: advanced MOD gauntlets
   components:
   - type: Sprite
   - type: ModSuitSealable

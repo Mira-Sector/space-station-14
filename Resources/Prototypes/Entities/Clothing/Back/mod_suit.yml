@@ -29,6 +29,7 @@
 - type: entity
   id: ClothingBackpackModSuitAdvanced
   parent: ClothingBackpackModSuitBase
+  name: advanced MOD control unit
   components:
   - type: Sprite
   - type: ModSuitSealable
