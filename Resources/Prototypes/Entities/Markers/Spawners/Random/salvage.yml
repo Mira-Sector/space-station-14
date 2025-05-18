@@ -203,5 +203,6 @@
       - MobFleshClampSalvage
       - MobFleshLoverSalvage
       - MobFleshLoverSalvage
+      - MobFleshMessSalvage
       chance: 1
       offset: 0.2

@@ -228,6 +228,7 @@
       - MobFleshGolem
       - MobFleshClamp
       - MobFleshLover
+      - MobFleshMess
     - settings:
         spawnOnSuperCritical: true
         minAmount: 10
@@ -246,6 +247,7 @@
       - MobFleshGolem
       - MobFleshClamp
       - MobFleshLover
+      - MobFleshMess
     - settings:
         spawnOnSuperCritical: true
         minAmount: 5
@@ -262,6 +264,7 @@
       - MobFleshGolem
       - MobFleshClamp
       - MobFleshLover
+      - MobFleshMess
       - FleshKudzu
 
 - type: entity

@@ -201,6 +201,42 @@
         Blunt: 10
 
 - type: entity
+  parent: BaseMobFlesh
+  id: MobFleshMess
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: Mobs/Aliens/flesh.rsi
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      state: mess
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: mess
+      Dead:
+        Base: dead
+  - type: MobState
+    allowedStates:
+    - Alive
+    - Dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      75: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 0.75
+    baseSprintSpeed: 1.1
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/Xeno/alien_claw_flesh3.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Blunt: 6
+
+- type: entity
   parent: [ SimpleSpaceMobBase, MobCombat ]
   id: BaseMobFleshSalvage #This one is immune to space!
   name: aberrant flesh
@@ -360,3 +396,39 @@
   - type: MovementSpeedModifier
     baseWalkSpeed: 2
     baseSprintSpeed: 2.5
+
+- type: entity
+  parent: BaseMobFleshSalvage
+  id: MobFleshMessSalvage
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: Mobs/Aliens/flesh.rsi
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      state: mess
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: mess
+      Dead:
+        Base: dead
+  - type: MobState
+    allowedStates:
+    - Alive
+    - Dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      75: Dead
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 0.75
+    baseSprintSpeed: 1.1
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/Xeno/alien_claw_flesh2.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Blunt: 6
