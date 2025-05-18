@@ -13,7 +13,7 @@ public partial class ModSuitSystem
 
     private string _layerPrefix = string.Empty;
 
-    private void InitializeComplexity()
+    private void InitializeSealable()
     {
         SubscribeLocalEvent<ModSuitSealableComponent, AppearanceChangeEvent>(OnSealableAppearanceChange);
         SubscribeLocalEvent<ModSuitSealableComponent, GetEquipmentVisualsEvent>(OnSealableClothingVisuals);

@@ -8,6 +8,6 @@ public sealed partial class ModSuitSystem : SharedModSuitSystem
     {
         base.Initialize();
 
-        InitializeComplexity();
+        InitializeSealable();
     }
 }
