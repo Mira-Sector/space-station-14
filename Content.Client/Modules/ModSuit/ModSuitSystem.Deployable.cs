@@ -12,5 +12,7 @@ public partial class ModSuitSystem
             var container = Container.EnsureContainer<ContainerSlot>(ent.Owner, GetDeployableSlotId(slot));
             ent.Comp.DeployableContainers.Add(slot, container);
         }
+
+        base.OnDeployableInit(ent, ref args);
     }
 }

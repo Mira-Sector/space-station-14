@@ -38,7 +38,14 @@ public partial class SharedModSuitSystem
 
     #region Deployable
 
-    protected abstract void OnDeployableInit(Entity<ModSuitPartDeployableComponent> ent, ref ComponentInit args);
+    protected virtual void OnDeployableInit(Entity<ModSuitPartDeployableComponent> ent, ref ComponentInit args)
+    {
+        foreach (var (slot, part) in ent.Comp.DeployableParts)
+        {
+            var ev = new ModSuitDeployablePartUnequippedEvent(ent.Owner, null, slot);
+            RaiseLocalEvent(part, ev);
+        }
+    }
 
     private void OnDeployableRemoved(Entity<ModSuitPartDeployableComponent> ent, ref ComponentRemove args)
     {
@@ -186,7 +193,7 @@ public partial class SharedModSuitSystem
 
     private void OnDeployableInventoryUnequipped(Entity<ModSuitDeployableInventoryComponent> ent, ref ModSuitDeployablePartUnequippedEvent args)
     {
-        if (ent.Comp.StoredItem.ContainedEntity is not { } containedEntity)
+        if (ent.Comp.StoredItem?.ContainedEntity is not { } containedEntity)
             return;
 
         if (args.Wearer is not { } wearer)

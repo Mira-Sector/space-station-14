@@ -62,3 +62,7 @@
       gloves: ClothingHandsModSuitAdvanced
       head: ClothingHeadModSuitAdvanced
       shoes: ClothingShoesModSuitAdvanced
+  - type: ClothingSpeedModifier
+    walkModifier: 0.75
+    sprintModifier: 0.8
+  - type: HeldSpeedModifier
