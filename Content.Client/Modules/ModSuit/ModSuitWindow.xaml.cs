@@ -9,7 +9,7 @@ namespace Content.Client.Modules.ModSuit;
 [GenerateTypedNameReferences]
 public sealed partial class ModSuitWindow : DefaultWindow
 {
-    private Dictionary<NetEntity, ModSuitSealableBuiEntry> _sealableParts = [];
+    private KeyValuePair<NetEntity, ModSuitSealableBuiEntry>[] _sealableParts = [];
 
     public event Action<NetEntity, bool>? OnSealButtonPressed;
 

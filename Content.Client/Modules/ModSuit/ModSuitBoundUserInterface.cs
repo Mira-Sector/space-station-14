@@ -18,6 +18,7 @@ public sealed partial class ModSuitBoundUserInterface : BoundUserInterface
         base.Open();
 
         _window = this.CreateWindow<ModSuitWindow>();
+        _window.Refresh();
     }
 
     protected override void UpdateState(BoundUserInterfaceState state)

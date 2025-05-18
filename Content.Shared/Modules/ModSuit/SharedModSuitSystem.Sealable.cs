@@ -4,6 +4,8 @@ using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
 using Content.Shared.Modules.ModSuit.UI;
 using JetBrains.Annotations;
+using System.Linq;
+using YamlDotNet.Core.Tokens;
 
 namespace Content.Shared.Modules.ModSuit;
 
@@ -33,22 +35,53 @@ public partial class SharedModSuitSystem
 
     private void OnSealableGetUiStates(Entity<ModSuitSealableComponent> ent, ref ModSuitDeployableRelayedEvent<ModSuitGetUiStatesEvent> args)
     {
-        var toAdd = new ModSuitSealableBuiEntry(ent.Comp.UiLayer, ent.Comp.Sealed);
+        var type = CompOrNull<ModSuitPartTypeComponent>(ent.Owner)?.Type ?? ModSuitPartType.Other;
+        var toAdd = new ModSuitSealableBuiEntry(ent.Comp.UiLayer, type, ent.Comp.Sealed);
 
+        ModSuitSealableBoundUserInterfaceState? foundState = null;
+
+        // find any state that another part may have added
         foreach (var state in args.Args.States)
         {
             if (state is not ModSuitSealableBoundUserInterfaceState sealableState)
                 continue;
 
-            sealableState.Parts.Add(GetNetEntity(ent.Owner), toAdd);
+            foundState = sealableState;
+            break;
+        }
+
+        var length = (foundState?.Parts.Length ?? 0) + 1;
+        var parts = new KeyValuePair<NetEntity, ModSuitSealableBuiEntry>[length];
+
+        if (foundState == null)
+        {
+            parts = [KeyValuePair.Create(GetNetEntity(ent.Owner), toAdd)];
+            var newState = new ModSuitSealableBoundUserInterfaceState(parts);
+            args.Args.States.Add(newState);
             return;
         }
 
-        Dictionary<NetEntity, ModSuitSealableBuiEntry> parts = [];
-        parts.Add(GetNetEntity(ent.Owner), toAdd);
+        var inserted = false;
+        var newIndex = 0;
 
-        var newState = new ModSuitSealableBoundUserInterfaceState(parts);
-        args.Args.States.Add(newState);
+        for (var i = 0; i < foundState.Parts.Length; i++)
+        {
+            var existing = foundState.Parts[i];
+            var (_, data) = existing;
+
+            if (!inserted && data.Type > type)
+            {
+                parts[newIndex++] = KeyValuePair.Create(GetNetEntity(ent.Owner), toAdd);
+                inserted = true;
+            }
+
+            parts[newIndex++] = existing;
+        }
+
+        if (!inserted)
+            parts[newIndex] = KeyValuePair.Create(GetNetEntity(ent.Owner), toAdd);
+
+        foundState.Parts = parts;
     }
 
     private void OnSealableUiButton(Entity<ModSuitUserInterfaceComponent> ent, ref ModSuitSealButtonMessage args)

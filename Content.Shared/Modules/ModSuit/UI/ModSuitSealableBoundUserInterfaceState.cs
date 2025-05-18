@@ -6,9 +6,9 @@ namespace Content.Shared.Modules.ModSuit.UI;
 [Serializable, NetSerializable]
 public sealed class ModSuitSealableBoundUserInterfaceState : BoundUserInterfaceState
 {
-    public readonly Dictionary<NetEntity, ModSuitSealableBuiEntry> Parts;
+    public KeyValuePair<NetEntity, ModSuitSealableBuiEntry>[] Parts;
 
-    public ModSuitSealableBoundUserInterfaceState(Dictionary<NetEntity, ModSuitSealableBuiEntry> parts)
+    public ModSuitSealableBoundUserInterfaceState(KeyValuePair<NetEntity, ModSuitSealableBuiEntry>[] parts)
     {
         Parts = parts;
     }
@@ -18,11 +18,13 @@ public sealed class ModSuitSealableBoundUserInterfaceState : BoundUserInterfaceS
 public sealed class ModSuitSealableBuiEntry
 {
     public readonly Dictionary<bool, SpriteSpecifier> Sprite;
+    public readonly ModSuitPartType Type;
     public readonly bool IsSealed;
 
-    public ModSuitSealableBuiEntry(Dictionary<bool, SpriteSpecifier> sprite, bool isSealed)
+    public ModSuitSealableBuiEntry(Dictionary<bool, SpriteSpecifier> sprite, ModSuitPartType type, bool isSealed)
     {
         Sprite = sprite;
+        Type = type;
         IsSealed = isSealed;
     }
 }

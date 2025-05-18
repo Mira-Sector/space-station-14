@@ -1,3 +1,4 @@
+using Content.Shared.Modules.ModSuit;
 using Content.Shared.Modules.ModSuit.Components;
 using Robust.Shared.Containers;
 
@@ -24,6 +25,10 @@ public partial class ModSuitSystem
             deployedComp.Suit = ent.Owner;
             deployedComp.Slot = slot;
             AddComp(part, deployedComp, true);
+
+            var typeComp = new ModSuitPartTypeComponent();
+            typeComp.Type = ModSuitPartTypeHelpers.SlotToPart(slot);
+            AddComp(part, typeComp, true);
         }
 
         Dirty(ent);
