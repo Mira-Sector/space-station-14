@@ -3,36 +3,19 @@ using Content.Shared.Modules.Events;
 using Content.Shared.Storage;
 using Content.Shared.Storage.EntitySystems;
 
-namespace Content.Shared.Modules;
+namespace Content.Shared.Modules.Modules;
 
-public partial class ModuleSystem
+public sealed partial class StorageModuleSystem : EntitySystem
 {
     [Dependency] private readonly SharedStorageSystem _storage = default!;
 
-    private void InitializeModules()
+    public override void Initialize()
     {
-        SubscribeLocalEvent<AddComponentContainerModuleComponent, ModuleAddedContainerEvent>(OnContainerCompAdded);
-        SubscribeLocalEvent<AddComponentContainerModuleComponent, ModuleRemovedContainerEvent>(OnContainerCompRemoved);
+        base.Initialize();
 
         SubscribeLocalEvent<StorageModuleComponent, ModuleAddedContainerEvent>(OnStorageAdded);
         SubscribeLocalEvent<StorageModuleComponent, ModuleRemovedContainerEvent>(OnStorageRemoved);
     }
-
-    #region ContainerComponent
-
-    private void OnContainerCompAdded(Entity<AddComponentContainerModuleComponent> ent, ref ModuleAddedContainerEvent args)
-    {
-        EntityManager.AddComponents(args.Container, ent.Comp.Components, true);
-    }
-
-    private void OnContainerCompRemoved(Entity<AddComponentContainerModuleComponent> ent, ref ModuleRemovedContainerEvent args)
-    {
-        EntityManager.RemoveComponents(args.Container, ent.Comp.Components);
-    }
-
-    #endregion
-
-    #region Storage
 
     private void OnStorageAdded(Entity<StorageModuleComponent> ent, ref ModuleAddedContainerEvent args)
     {
@@ -69,6 +52,4 @@ public partial class ModuleSystem
         target.Comp.SavedLocations = source.Comp.SavedLocations;
         RemComp(source.Owner, source.Comp);
     }
-
-    #endregion
 }

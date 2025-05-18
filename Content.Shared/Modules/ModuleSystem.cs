@@ -14,7 +14,6 @@ public abstract partial class ModuleSystem : EntitySystem
     {
         base.Initialize();
 
-        InitializeModules();
         InitializePower();
         InitializeRelay();
 
