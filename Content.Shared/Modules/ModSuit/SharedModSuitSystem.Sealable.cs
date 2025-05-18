@@ -4,8 +4,6 @@ using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
 using Content.Shared.Modules.ModSuit.UI;
 using JetBrains.Annotations;
-using System.Linq;
-using YamlDotNet.Core.Tokens;
 
 namespace Content.Shared.Modules.ModSuit;
 
@@ -36,7 +34,8 @@ public partial class SharedModSuitSystem
     private void OnSealableGetUiStates(Entity<ModSuitSealableComponent> ent, ref ModSuitDeployableRelayedEvent<ModSuitGetUiStatesEvent> args)
     {
         var type = CompOrNull<ModSuitPartTypeComponent>(ent.Owner)?.Type ?? ModSuitPartType.Other;
-        var toAdd = new ModSuitSealableBuiEntry(ent.Comp.UiLayer, type, ent.Comp.Sealed);
+        var newData = new ModSuitSealableBuiEntry(ent.Comp.UiLayer, type, ent.Comp.Sealed);
+        var toAdd = KeyValuePair.Create(GetNetEntity(ent.Owner), newData);
 
         ModSuitSealableBoundUserInterfaceState? foundState = null;
 
@@ -55,7 +54,7 @@ public partial class SharedModSuitSystem
 
         if (foundState == null)
         {
-            parts = [KeyValuePair.Create(GetNetEntity(ent.Owner), toAdd)];
+            parts = [toAdd];
             var newState = new ModSuitSealableBoundUserInterfaceState(parts);
             args.Args.States.Add(newState);
             return;
@@ -71,7 +70,7 @@ public partial class SharedModSuitSystem
 
             if (!inserted && data.Type > type)
             {
-                parts[newIndex++] = KeyValuePair.Create(GetNetEntity(ent.Owner), toAdd);
+                parts[newIndex++] = toAdd;
                 inserted = true;
             }
 
@@ -79,7 +78,7 @@ public partial class SharedModSuitSystem
         }
 
         if (!inserted)
-            parts[newIndex] = KeyValuePair.Create(GetNetEntity(ent.Owner), toAdd);
+            parts[newIndex] = toAdd;
 
         foundState.Parts = parts;
     }
