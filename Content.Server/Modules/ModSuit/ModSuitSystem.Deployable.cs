@@ -31,8 +31,6 @@ public partial class ModSuitSystem
             AddComp(part, typeComp, true);
         }
 
-        base.OnDeployableInit(ent, ref args);
-
         Dirty(ent);
     }
 }

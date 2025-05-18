@@ -38,14 +38,7 @@ public partial class SharedModSuitSystem
 
     #region Deployable
 
-    protected virtual void OnDeployableInit(Entity<ModSuitPartDeployableComponent> ent, ref ComponentInit args)
-    {
-        foreach (var (slot, part) in ent.Comp.DeployableParts)
-        {
-            var ev = new ModSuitDeployablePartUnequippedEvent(ent.Owner, null, slot);
-            RaiseLocalEvent(part, ev);
-        }
-    }
+    protected abstract void OnDeployableInit(Entity<ModSuitPartDeployableComponent> ent, ref ComponentInit args);
 
     private void OnDeployableRemoved(Entity<ModSuitPartDeployableComponent> ent, ref ComponentRemove args)
     {

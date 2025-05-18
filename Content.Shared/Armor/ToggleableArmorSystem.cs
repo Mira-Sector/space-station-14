@@ -20,10 +20,9 @@ public sealed partial class ToggleableArmorSystem : EntitySystem
         if (!Resolve(ent.Owner, ref ent.Comp1, ref ent.Comp2))
             return;
 
-        foreach (var parts in ent.Comp1.Modifiers.Keys)
+        foreach (var part in ent.Comp2.DisabledModifiers.Keys)
         {
-            foreach (var part in parts)
-                EnableArmorPart(ent, part);
+            EnableArmorPart(ent, part);
         }
     }
 
