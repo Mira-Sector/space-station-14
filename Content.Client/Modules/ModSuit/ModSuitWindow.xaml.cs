@@ -28,6 +28,9 @@ public sealed partial class ModSuitWindow : DefaultWindow
 
     public void UpdateSealed(ModSuitSealableBoundUserInterfaceState state)
     {
+        if (_sealableParts == state.Parts)
+            return;
+
         _sealableParts = state.Parts;
         RefreshSealableIcons();
     }
