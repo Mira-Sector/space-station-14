@@ -9,7 +9,7 @@ namespace Content.Shared.Modules.ModSuit;
 public partial class SharedModSuitSystem
 {
     [Dependency] private readonly SharedActionsSystem _action = default!;
-    [Dependency] protected readonly SharedUserInterfaceSystem Ui = default!;
+    [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
 
     private void InitializeUI()
     {
@@ -37,7 +37,7 @@ public partial class SharedModSuitSystem
         if (args.Handled)
             return;
 
-        Ui.TryToggleUi(ent.Owner, ModSuitUiKey.Key, args.Performer);
+        _ui.TryToggleUi(ent.Owner, ModSuitUiKey.Key, args.Performer);
         args.Handled = true;
     }
 
@@ -47,7 +47,18 @@ public partial class SharedModSuitSystem
     }
 
     [PublicAPI]
-    public virtual void UpdateUI(Entity<ModSuitUserInterfaceComponent?> ent)
+    public void UpdateUI(Entity<ModSuitUserInterfaceComponent?> ent)
     {
+        if (!Resolve(ent.Owner, ref ent.Comp, false))
+            return;
+
+        if (!_ui.IsUiOpen(ent.Owner, ModSuitUiKey.Key))
+            return;
+
+        var ev = new ModSuitGetUiStatesEvent();
+        RaiseLocalEvent(ent.Owner, ev);
+
+        foreach (var state in ev.States)
+            _ui.SetUiState(ent.Owner, ModSuitUiKey.Key, state);
     }
 }

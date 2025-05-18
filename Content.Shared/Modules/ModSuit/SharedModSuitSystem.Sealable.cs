@@ -17,7 +17,7 @@ public partial class SharedModSuitSystem
         SubscribeLocalEvent<ModSuitSealableComponent, ClothingGotUnequippedEvent>(OnSealableUnequipped);
         SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployableRelayedEvent<ModSuitGetUiStatesEvent>>(OnSealableGetUiStates);
 
-        SubscribeLocalEvent<ModSuitUserInterfaceComponent, ModSuitSealButtonMessage>(OnSealableUiButton);
+        SubscribeAllEvent<ModSuitSealButtonMessage>(OnSealableUiButton);
     }
 
     private void OnSealableInit(Entity<ModSuitSealableComponent> ent, ref ComponentInit args)
@@ -83,7 +83,7 @@ public partial class SharedModSuitSystem
         foundState.Parts = parts;
     }
 
-    private void OnSealableUiButton(Entity<ModSuitUserInterfaceComponent> ent, ref ModSuitSealButtonMessage args)
+    private void OnSealableUiButton(ModSuitSealButtonMessage args)
     {
         SetSeal(GetEntity(args.Part), args.ShouldSeal);
     }
