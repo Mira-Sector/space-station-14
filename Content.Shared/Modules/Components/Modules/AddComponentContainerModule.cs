@@ -4,7 +4,7 @@ using Robust.Shared.Prototypes;
 namespace Content.Shared.Modules.Components.Modules;
 
 [RegisterComponent, NetworkedComponent]
-public sealed partial class AddComponentContainerModuleComponent : Component
+public sealed partial class AddComponentContainerModuleComponent : BaseModuleComponent
 {
     [DataField]
     public ComponentRegistry Components;

@@ -5,12 +5,12 @@ using Robust.Shared.GameStates;
 namespace Content.Shared.Modules.Components.Modules;
 
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
-public sealed partial class StorageModuleComponent : Component
+public sealed partial class StorageModuleComponent : BaseModuleComponent
 {
     public const string ContainerId = "modsuit-storage-module";
 
     [ViewVariables]
-    public Container Container;
+    public Container Items;
 
     [ViewVariables, AutoNetworkedField]
     public Dictionary<EntityUid, ItemStorageLocation> Locations = [];

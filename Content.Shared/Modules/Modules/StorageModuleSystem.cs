@@ -7,7 +7,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Shared.Modules.Modules;
 
-public sealed partial class StorageModuleSystem : EntitySystem
+public sealed partial class StorageModuleSystem : BaseModuleSystem<StorageModuleComponent>
 {
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly SharedStorageSystem _storage = default!;
@@ -17,24 +17,21 @@ public sealed partial class StorageModuleSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<StorageModuleComponent, ComponentInit>(OnStorageInit);
-        SubscribeLocalEvent<StorageModuleComponent, ComponentRemove>(OnStorageRemove);
+        SubscribeLocalEvent<StorageModuleComponent, ComponentInit>(OnInit);
+        SubscribeLocalEvent<StorageModuleComponent, ComponentRemove>(OnRemove);
 
         SubscribeLocalEvent<StorageModuleComponent, StorageInteractUsingAttemptEvent>(OnStorageUsingAttempt);
         SubscribeLocalEvent<StorageModuleComponent, StorageInteractAttemptEvent>(OnStorageAttempt);
-
-        SubscribeLocalEvent<StorageModuleComponent, ModuleAddedContainerEvent>(OnStorageAdded);
-        SubscribeLocalEvent<StorageModuleComponent, ModuleRemovedContainerEvent>(OnStorageRemoved);
     }
 
-    private void OnStorageInit(Entity<StorageModuleComponent> ent, ref ComponentInit args)
+    private void OnInit(Entity<StorageModuleComponent> ent, ref ComponentInit args)
     {
-        ent.Comp.Container = _container.EnsureContainer<Container>(ent.Owner, StorageModuleComponent.ContainerId);
+        ent.Comp.Items = _container.EnsureContainer<Container>(ent.Owner, StorageModuleComponent.ContainerId);
     }
 
-    private void OnStorageRemove(Entity<StorageModuleComponent> ent, ref ComponentRemove args)
+    private void OnRemove(Entity<StorageModuleComponent> ent, ref ComponentRemove args)
     {
-        _container.ShutdownContainer(ent.Comp.Container);
+        _container.ShutdownContainer(ent.Comp.Items);
     }
 
     private void OnStorageUsingAttempt(Entity<StorageModuleComponent> ent, ref StorageInteractUsingAttemptEvent args)
@@ -48,8 +45,10 @@ public sealed partial class StorageModuleSystem : EntitySystem
         args.Cancelled = true;
     }
 
-    private void OnStorageAdded(Entity<StorageModuleComponent> ent, ref ModuleAddedContainerEvent args)
+    protected override void OnAdded(Entity<StorageModuleComponent> ent, ref ModuleAddedContainerEvent args)
     {
+        base.OnAdded(ent, ref args);
+
         if (!_timing.IsFirstTimePredicted)
             return;
 
@@ -67,7 +66,7 @@ public sealed partial class StorageModuleSystem : EntitySystem
         containerStorage.StorageCloseSound = moduleStorage.StorageOpenSound;
         containerStorage.SavedLocations = moduleStorage.SavedLocations;
 
-        foreach (var item in ent.Comp.Container.ContainedEntities)
+        foreach (var item in ent.Comp.Items.ContainedEntities)
         {
             var location = ent.Comp.Locations[item];
 
@@ -77,8 +76,10 @@ public sealed partial class StorageModuleSystem : EntitySystem
         Dirty(args.Container, containerStorage);
     }
 
-    private void OnStorageRemoved(Entity<StorageModuleComponent> ent, ref ModuleRemovedContainerEvent args)
+    protected override void OnRemoved(Entity<StorageModuleComponent> ent, ref ModuleRemovedContainerEvent args)
     {
+        base.OnRemoved(ent, ref args);
+
         if (!_timing.IsFirstTimePredicted)
             return;
 
@@ -88,7 +89,7 @@ public sealed partial class StorageModuleSystem : EntitySystem
         ent.Comp.Locations.Clear();
         foreach (var (item, location) in containerStorage.StoredItems)
         {
-            if (_container.Insert(item, ent.Comp.Container))
+            if (_container.Insert(item, ent.Comp.Items))
                 ent.Comp.Locations[item] = location;
         }
 
