@@ -2,9 +2,9 @@ using Robust.Shared.GameStates;
 
 namespace Content.Shared.Modules.Components;
 
-[RegisterComponent, NetworkedComponent]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class ModuleContainerPowerComponent : Component
 {
-    [DataField]
+    [DataField, AutoNetworkedField]
     public float BaseRate;
 }

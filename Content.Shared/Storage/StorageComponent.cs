@@ -289,7 +289,7 @@ namespace Content.Shared.Storage
     public record struct StorageInteractAttemptEvent(bool Silent, bool Cancelled = false);
 
     [ByRefEvent]
-    public record struct StorageInteractUsingAttemptEvent(bool Cancelled = false);
+    public record struct StorageInteractUsingAttemptEvent(EntityUid Using, bool Cancelled = false);
 
     [ByRefEvent]
     public record struct StorageRemovedItemEvent(EntityUid User, EntityUid Storage);

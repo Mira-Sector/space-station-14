@@ -1,14 +1,19 @@
 using Content.Shared.Modules.Components;
 using Content.Shared.Modules.Events;
+using Content.Shared.Popups;
+using Content.Shared.Storage;
 using Content.Shared.Whitelist;
 using JetBrains.Annotations;
 using Robust.Shared.Containers;
+using Robust.Shared.Network;
 
 namespace Content.Shared.Modules;
 
 public sealed partial class ModuleSystem : EntitySystem
 {
     [Dependency] private readonly SharedContainerSystem _container = default!;
+    [Dependency] private readonly SharedPopupSystem _popup = default!;
+    [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
 
     /// <inheritdoc/>
@@ -18,12 +23,14 @@ public sealed partial class ModuleSystem : EntitySystem
 
         InitializePower();
         InitializeRelay();
+        InitializeRequirements();
         InitializeSlot();
 
         SubscribeLocalEvent<ModuleContainerComponent, ComponentInit>(OnContainerInit);
         SubscribeLocalEvent<ModuleContainerComponent, ContainerIsInsertingAttemptEvent>(OnContainerAttempt);
         SubscribeLocalEvent<ModuleContainerComponent, EntInsertedIntoContainerMessage>(OnContainerInserted);
         SubscribeLocalEvent<ModuleContainerComponent, EntRemovedFromContainerMessage>(OnContainerRemoved);
+        SubscribeLocalEvent<ModuleContainerComponent, StorageInteractUsingAttemptEvent>(OnContainerStorageInteract);
     }
 
     /// <inheritdoc/>
@@ -54,11 +61,26 @@ public sealed partial class ModuleSystem : EntitySystem
         var containerEv = new ModuleContainerModuleAddingAttemptEvent(args.EntityUid);
         RaiseLocalEvent(ent.Owner, containerEv);
 
+        if (containerEv.Cancelled)
+        {
+            if (_net.IsServer && containerEv.Reason != null)
+                _popup.PopupEntity(Loc.GetString(containerEv.Reason), ent.Owner);
+
+            args.Cancel();
+            return;
+        }
+
         var moduleEv = new ModuleAddingAttemptContainerEvent(ent.Owner);
         RaiseLocalEvent(args.EntityUid, moduleEv);
 
-        if (moduleEv.Cancelled || containerEv.Cancelled)
+        if (moduleEv.Cancelled)
+        {
+            if (_net.IsServer && moduleEv.Reason != null)
+                _popup.PopupEntity(Loc.GetString(moduleEv.Reason), ent.Owner);
+
             args.Cancel();
+            return;
+        }
     }
 
     private void OnContainerInserted(Entity<ModuleContainerComponent> ent, ref EntInsertedIntoContainerMessage args)
@@ -83,6 +105,15 @@ public sealed partial class ModuleSystem : EntitySystem
 
         var moduleEv = new ModuleRemovedContainerEvent(ent.Owner);
         RaiseLocalEvent(args.Entity, moduleEv);
+    }
+
+    private void OnContainerStorageInteract(Entity<ModuleContainerComponent> ent, ref StorageInteractUsingAttemptEvent args)
+    {
+        if (args.Cancelled)
+            return;
+
+        if (_whitelist.CheckBoth(args.Using, ent.Comp.Blacklist, ent.Comp.Whitelist))
+            args.Cancelled = true;
     }
 
     [PublicAPI]
