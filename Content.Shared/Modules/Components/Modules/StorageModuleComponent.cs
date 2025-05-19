@@ -1,8 +1,17 @@
+using Content.Shared.Storage;
+using Robust.Shared.Containers;
 using Robust.Shared.GameStates;
 
 namespace Content.Shared.Modules.Components.Modules;
 
-[RegisterComponent, NetworkedComponent]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class StorageModuleComponent : Component
 {
+    public const string ContainerId = "modsuit-storage-module";
+
+    [ViewVariables]
+    public Container Container;
+
+    [ViewVariables, AutoNetworkedField]
+    public Dictionary<EntityUid, ItemStorageLocation> Locations = [];
 }

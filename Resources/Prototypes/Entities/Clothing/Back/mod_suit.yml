@@ -9,6 +9,8 @@
     maxComplexity: 15
   - type: ModSuitSealable
   - type: ModuleContainer
+  - type: ModuleContainerAddOnInteract
+  - type: ModuleContainerRequireWirePanel
   - type: ModuleContainerPower
     baseRate: 5
   - type: PowerCellDraw
@@ -19,6 +21,8 @@
     interfaces:
       enum.ModSuitUiKey.Key:
         type: ModSuitBoundUserInterface
+      enum.StorageUiKey.Key: # needed for storage modules
+        type: StorageBoundUserInterface
   - type: Item
     size: Ginormous
   - type: Clothing

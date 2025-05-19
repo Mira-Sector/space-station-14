@@ -1,13 +1,15 @@
 using Content.Shared.Modules.Components;
 using Content.Shared.Modules.Events;
+using Content.Shared.Whitelist;
 using JetBrains.Annotations;
 using Robust.Shared.Containers;
 
 namespace Content.Shared.Modules;
 
-public abstract partial class ModuleSystem : EntitySystem
+public sealed partial class ModuleSystem : EntitySystem
 {
     [Dependency] private readonly SharedContainerSystem _container = default!;
+    [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -16,11 +18,10 @@ public abstract partial class ModuleSystem : EntitySystem
 
         InitializePower();
         InitializeRelay();
+        InitializeSlot();
 
         SubscribeLocalEvent<ModuleContainerComponent, ComponentInit>(OnContainerInit);
-
         SubscribeLocalEvent<ModuleContainerComponent, ContainerIsInsertingAttemptEvent>(OnContainerAttempt);
-
         SubscribeLocalEvent<ModuleContainerComponent, EntInsertedIntoContainerMessage>(OnContainerInserted);
         SubscribeLocalEvent<ModuleContainerComponent, EntRemovedFromContainerMessage>(OnContainerRemoved);
     }
@@ -43,6 +44,12 @@ public abstract partial class ModuleSystem : EntitySystem
 
         if (args.Container.ID != ent.Comp.ModuleContainerId)
             return;
+
+        if (!_whitelist.CheckBoth(args.EntityUid, ent.Comp.Blacklist, ent.Comp.Whitelist))
+        {
+            args.Cancel();
+            return;
+        }
 
         var containerEv = new ModuleContainerModuleAddingAttemptEvent(args.EntityUid);
         RaiseLocalEvent(ent.Owner, containerEv);

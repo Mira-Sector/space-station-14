@@ -883,6 +883,9 @@
   id: Mineshaft
 
 - type: Tag
+  id: ModSuitModule
+
+- type: Tag
   id: ModularReceiver
 
 - type: Tag
