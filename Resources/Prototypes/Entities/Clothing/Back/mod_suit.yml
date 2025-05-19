@@ -9,6 +9,10 @@
     maxComplexity: 15
   - type: ModSuitSealable
   - type: ModuleContainer
+    whitelist:
+      tags:
+      - ModSuitModule
+
   - type: ModuleContainerAddOnInteract
   - type: ModuleContainerRequireWirePanel
   - type: ModuleContainerPower
