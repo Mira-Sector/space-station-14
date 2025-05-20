@@ -15,11 +15,13 @@ public sealed partial class RequireSealedModuleSystem : BaseToggleableModuleSyst
     {
         base.Initialize();
 
+        SubscribeLocalEvent<RequireSealedModuleComponent, ModuleToggleAttemptEvent>(OnToggleAttempt);
+
         SubscribeLocalEvent<RequireSealedModuleComponent, ModuleRelayedEvent<ModSuitContainerPartSealedEvent>>(OnSealed);
         SubscribeLocalEvent<RequireSealedModuleComponent, ModuleRelayedEvent<ModSuitContainerPartUnsealedEvent>>(OnUnsealed);
     }
 
-    protected override void OnToggleAttempt(Entity<RequireSealedModuleComponent> ent, ref ModuleToggleAttemptEvent args)
+    private void OnToggleAttempt(Entity<RequireSealedModuleComponent> ent, ref ModuleToggleAttemptEvent args)
     {
         if (args.Cancelled)
             return;
@@ -36,7 +38,7 @@ public sealed partial class RequireSealedModuleSystem : BaseToggleableModuleSyst
         if (CanEnable(ent, args.ModuleOwner))
             return;
 
-        var ev = new ModuleDisabledEvent(args.ModuleOwner, null);
+        var ev = new ModuleEnabledEvent(args.ModuleOwner, null);
         RaiseLocalEvent(ent.Owner, ev);
     }
 
@@ -45,7 +47,7 @@ public sealed partial class RequireSealedModuleSystem : BaseToggleableModuleSyst
         if (!CanEnable(ent, args.ModuleOwner))
             return;
 
-        var ev = new ModuleEnabledEvent(args.ModuleOwner, null);
+        var ev = new ModuleDisabledEvent(args.ModuleOwner, null);
         RaiseLocalEvent(ent.Owner, ev);
     }
 
@@ -57,8 +59,13 @@ public sealed partial class RequireSealedModuleSystem : BaseToggleableModuleSyst
         foreach (var part in parts)
         {
             var type = Comp<ModSuitPartTypeComponent>(part).Type;
-            if (!remainingTypes.Remove(type))
+            if (!remainingTypes.Contains(type))
                 continue;
+
+            if (CompOrNull<ModSuitSealableComponent>(part)?.Sealed != true)
+                continue;
+
+            remainingTypes.Remove(type);
 
             if (!ent.Comp.RequireAll)
                 return true;

@@ -4,9 +4,11 @@ public sealed partial class ModuleToggleAttemptEvent : CancellableEntityEventArg
 {
     public readonly EntityUid Container;
     public readonly EntityUid? User;
+    public readonly bool Toggle;
 
-    public ModuleToggleAttemptEvent(EntityUid container, EntityUid? user)
+    public ModuleToggleAttemptEvent(bool toggle, EntityUid container, EntityUid? user)
     {
+        Toggle = toggle;
         Container = container;
         User = user;
     }

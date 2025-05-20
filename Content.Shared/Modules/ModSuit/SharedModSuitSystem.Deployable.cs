@@ -1,6 +1,7 @@
 using Content.Shared.Clothing;
 using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;
+using Content.Shared.Modules.Events;
 using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
 using JetBrains.Annotations;
@@ -27,6 +28,7 @@ public partial class SharedModSuitSystem
         SubscribeLocalEvent<ModSuitPartDeployableComponent, ComponentRemove>(OnDeployableRemoved);
         SubscribeLocalEvent<ModSuitPartDeployableComponent, ClothingGotEquippedEvent>(OnDeployableEquipped);
         SubscribeLocalEvent<ModSuitPartDeployableComponent, ClothingGotUnequippedEvent>(OnDeployableUnequipped);
+        SubscribeLocalEvent<ModSuitPartDeployableComponent, ModuleGetUserEvent>(OnDeployableGetUser);
 
         SubscribeLocalEvent<ModSuitDeployedPartComponent, BeingUnequippedAttemptEvent>(OnDeployedUnequipAttempt);
 
@@ -111,6 +113,11 @@ public partial class SharedModSuitSystem
         ent.Comp.Wearer = null;
         UndeployAll(ent, args.Wearer);
         Dirty(ent);
+    }
+
+    private void OnDeployableGetUser(Entity<ModSuitPartDeployableComponent> ent, ref ModuleGetUserEvent args)
+    {
+        args.User = ent.Comp.Wearer;
     }
 
     private void OnDeployedUnequipAttempt(Entity<ModSuitDeployedPartComponent> ent, ref BeingUnequippedAttemptEvent args)
