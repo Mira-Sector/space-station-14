@@ -23,7 +23,6 @@ public partial class SharedModSuitSystem
     private void OnSealableInit(Entity<ModSuitSealableComponent> ent, ref ComponentInit args)
     {
         Appearance.SetData(ent.Owner, ModSuitSealedVisuals.Sealed, ent.Comp.Sealed);
-        RaiseSealableEvent(ent.Owner, ent.Comp.Sealed);
     }
 
     private void OnSealableUnequipped(Entity<ModSuitSealableComponent> ent, ref ClothingGotUnequippedEvent args)
@@ -99,7 +98,8 @@ public partial class SharedModSuitSystem
         if (ent.Comp.Sealed == isSealed)
             return true;
 
-        RaiseSealableEvent(ent.Owner, isSealed);
+        var container = Comp<ModSuitDeployedPartComponent>(ent.Owner).Suit;
+        RaiseSealableEvent(ent.Owner, container, isSealed);
 
         ent.Comp.Sealed = isSealed;
         Dirty(ent);
@@ -107,23 +107,28 @@ public partial class SharedModSuitSystem
         Appearance.SetData(ent.Owner, ModSuitSealedVisuals.Sealed, isSealed);
         _item.VisualsChanged(ent.Owner);
 
-        if (TryComp<ModSuitDeployedPartComponent>(ent.Owner, out var deployedPart))
-            UpdateUI(deployedPart.Suit);
+        UpdateUI(container);
 
         return true;
     }
 
-    internal void RaiseSealableEvent(EntityUid uid, bool isSealed)
+    internal void RaiseSealableEvent(EntityUid part, EntityUid suit, bool isSealed)
     {
         if (isSealed)
         {
-            var ev = new ModSuitSealedEvent();
-            RaiseLocalEvent(uid, ev);
+            var partEv = new ModSuitSealedEvent();
+            RaiseLocalEvent(part, partEv);
+
+            var suitEv = new ModSuitContainerPartSealedEvent(part);
+            RaiseLocalEvent(suit, suitEv);
         }
         else
         {
-            var ev = new ModSuitUnsealedEvent();
-            RaiseLocalEvent(uid, ev);
+            var partEv = new ModSuitUnsealedEvent();
+            RaiseLocalEvent(part, partEv);
+
+            var suitEv = new ModSuitContainerPartUnsealedEvent(part);
+            RaiseLocalEvent(suit, suitEv);
         }
 
     }

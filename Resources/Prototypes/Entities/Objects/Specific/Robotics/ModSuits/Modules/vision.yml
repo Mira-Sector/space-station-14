@@ -1,0 +1,116 @@
+- type: entity
+  id: BaseModSuitModuleVison
+  parent: BaseModSuitModule
+  abstract: true
+  components:
+  - type: ModSuitModuleComplexity
+    complexity: 2
+  - type: RequireSealedModule
+    parts:
+    - Helmet
+  - type: PowerDrainModule
+    enabledDraw:
+      additional: 1.5
+
+- type: entity
+  id: ModSuitModuleVisonMed
+  parent: BaseModSuitModuleVison
+  name: MOD medical visor module
+  description: This cross-references suit sensor data with a modern biological scanning suite, allowing the user to visualize the current health of organic lifeforms. They say these also let you see behind you.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/Modules/vision.rsi
+    state: med
+  - type: ToggleableComponentContainerModule
+    components:
+    - type: ShowHealthBars
+    - type: ShowHealthIcons
+
+- type: entity
+  id: ModSuitModuleVisonDiagnostic
+  parent: BaseModSuitModuleVison
+  name: MOD diagnostic visor module
+  description: This uses a series of advanced sensors to access data from advanced machinery, exosuits, and other devices, allowing the user to visualize current power levels and integrity of such. They say these also let you see behind you.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/Modules/vision.rsi
+    state: diagnostic
+  - type: ToggleableComponentContainerModule
+    components:
+    - type: ShowHealthBars
+      damageContainers:
+      - Inorganic
+      - Silicon
+
+- type: entity
+  id: ModSuitModuleVisonSec
+  parent: BaseModSuitModuleVison
+  name: MOD security visor module
+  description: This module is a heavily-retrofitted targeting system, plugged into various criminal databases to be able to view arrest records, command simple security-oriented robots, and generally know who to shoot. They say these also let you see behind you.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/Modules/vision.rsi
+    state: sec
+  - type: ToggleableComponentContainerModule
+    components:
+    - type: ShowJobIcons
+    - type: ShowMindShieldIcons
+    - type: ShowCriminalRecordIcons
+
+- type: entity
+  id: ModSuitModuleVisonMeson
+  parent: BaseModSuitModuleVison
+  name: MOD meson visor module
+  description: This module is based off well-loved meson scanner technology, used by construction workers across the galaxy to see basic structural and terrain layouts through walls, regardless of lighting conditions. They say these also let you see behind you.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/Modules/vision.rsi
+    state: meson
+  - type: ToggleableComponentContainerModule
+    components:
+    - type: GlassesOverlay
+      shader: Goggles
+      color: '#5AB43CCC'
+    - type: ShowXRay
+      shader: XRay
+      whitelist:
+        components:
+        - Door
+        - EntityStorage
+        - Chasm
+        tags:
+        - Wall
+        - Structure
+        - Window
+        - Catwalk
+        - XrayVisible
+
+- type: entity
+  id: ModSuitModuleVisonThermal
+  parent: BaseModSuitModuleVison
+  name: MOD thermal visor module
+  description: This uses a small IR scanner to detect and identify the thermal radiation output of objects near the user. While it can detect the heat output of even something as small as a rodent, it still produces irritating red overlay. They say these also let you see behind you.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/Modules/vision.rsi
+    state: thermal
+
+- type: entity
+  id: ModSuitModuleVisonWelding
+  parent: BaseModSuitModule
+  name: MOD Welding Protection Module
+  description: Projects a polarized, holographic overlay in front of the user's eyes. It's rated high enough for immunity against extremities such as spot and arc welding, solar eclipses, and handheld flashlights.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/Modules/vision.rsi
+    state: welding
+  - type: ModSuitModuleComplexity
+    complexity: 1
+  - type: ToggleableComponentContainerModule
+    components:
+    - type: EyeProtection
+    - type: FlashImmunity
+  - type: RequireSealedModule
+    enableOnSealed: true
+    parts:
+    - Helmet
