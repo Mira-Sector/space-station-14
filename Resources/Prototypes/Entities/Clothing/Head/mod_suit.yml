@@ -1,0 +1,63 @@
+- type: entity
+  id: ClothingHeadModSuitBase
+  abstract: true
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: ModSuitSealable
+  - type: ModSuitDeployableInventory
+  - type: ToggleableArmor
+  - type: Clothing
+    slots:
+    - head
+  - type: Appearance
+  - type: Tag
+    tags:
+      - WhitelistChameleon
+
+- type: entity
+  id: ClothingHeadModSuitAdvanced
+  parent: ClothingHeadModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: advanced MOD helmet
+  components:
+  - type: Sprite
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Head/ModSuits/advanced.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Head/ModSuits/advanced.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Head/ModSuits/advanced.rsi
+          state: equipped-HELMET-sealed
+      false:
+        head:
+        - sprite: Clothing/Head/ModSuits/advanced.rsi
+          state: equipped-HELMET
+    uiLayer:
+      true:
+        sprite: Clothing/Head/ModSuits/advanced.rsi
+        state: equipped-HELMET-sealed
+      false:
+        sprite: Clothing/Head/ModSuits/advanced.rsi
+        state: equipped-HELMET
+  - type: PressureProtection
+    highPressureMultiplier: 0.08
+    lowPressureMultiplier: 1000
+  - type: FireProtection
+    reduction: 0.2
+  - type: Armor
+    basePart: Head
+    modifiers:
+      [ Head ] :
+        coefficients:
+          Blunt: 0.8
+          Slash: 0.8
+          Piercing: 0.8
+          Heat: 0.4
+          Radiation: 0.0
+          Caustic: 0.7

@@ -1,0 +1,7 @@
+- type: entity
+  id: ActionModuleToggle
+  name: Toggle module
+  description: View the MOD suits user interface
+  components:
+  - type: InstantAction
+    event: !type:ModuleToggleActionEvent

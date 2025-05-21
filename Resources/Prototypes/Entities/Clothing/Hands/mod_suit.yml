@@ -1,0 +1,47 @@
+- type: entity
+  id: ClothingHandsModSuitBase
+  abstract: true
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: ModSuitSealable
+  - type: ModSuitDeployableInventory
+  - type: Clothing
+    slots:
+    - gloves
+  - type: Appearance
+  - type: Tag
+    tags:
+      - WhitelistChameleon
+
+- type: entity
+  id: ClothingHandsModSuitAdvanced
+  parent: ClothingHandsModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: advanced MOD gauntlets
+  components:
+  - type: Sprite
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Hands/ModSuits/advanced.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Hands/ModSuits/advanced.rsi
+        state: icon
+    clothingLayers:
+      true:
+        gloves:
+        - sprite: Clothing/Hands/ModSuits/advanced.rsi
+          state: equipped-HAND-sealed
+      false:
+        gloves:
+        - sprite: Clothing/Hands/ModSuits/advanced.rsi
+          state: equipped-HAND
+    uiLayer:
+      true:
+        sprite: Clothing/Hands/ModSuits/advanced.rsi
+        state: equipped-HAND-sealed
+      false:
+        sprite: Clothing/Hands/ModSuits/advanced.rsi
+        state: equipped-HAND
+  - type: Insulated
