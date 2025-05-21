@@ -4,6 +4,7 @@
   - BaseMob
   - MobAtmosExposed
   - MobCombat
+  - MobDamageableBody
   abstract: true
   components:
   - type: Reactive
@@ -33,7 +34,7 @@
 
 - type: entity
   id: MobGoliath
-  parent: BaseMobAsteroid
+  parent: [ BaseMobAsteroid, SimpleSpaceMobBase ]
   name: goliath
   description: A massive beast that uses long tentacles to ensnare its prey, threatening them is not advised under any conditions.
   components:
@@ -55,6 +56,9 @@
     thresholds:
       0: Alive
       250: Dead
+  - type: SlowOnDamage
+    speedModifierThresholds:
+      200: 0.75
   - type: MeleeWeapon
     soundHit:
       path: "/Audio/Weapons/smash.ogg"
@@ -159,7 +163,7 @@
     sprite: Mobs/Aliens/Asteroid/goliath.rsi
   - type: InteractionOutline
   - type: TimedDespawn
-    lifetime: 0.7
+    lifetime: 1
 
 - type: entity
   id: EffectGoliathTentacleSpawn
@@ -239,6 +243,7 @@
   - type: Butcherable
     spawned:
     - id: FoodHivelordRemains
+  - type: NoSlip
 
 - type: entity
   id: MobHivelordBrood
@@ -290,6 +295,7 @@
         15
   - type: TimedDespawn
     lifetime: 100
+  - type: NoSlip
 
 - type: entity
   id: FoodHivelordRemains

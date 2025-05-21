@@ -1651,3 +1651,69 @@ Entries:
     type: Add
   id: 236
   time: '2025-05-02T16:10:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: Alt firing with guns causes melee attacks
+    type: Add
+  id: 237
+  time: '2025-05-04T20:00:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: Crushers and Crusher Glaives now heal their full amount again.
+    type: Fix
+  - message: Goliaths are no longer immortal, but you also can't butcher them alive.
+    type: Fix
+  - message: Goliaths can bleed, and their tentacles stun slightly slower.
+    type: Tweak
+  id: 238
+  time: '2025-05-12T16:40:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: Cryoconuts can survive in space
+    type: Tweak
+  - message: Spesoes can be cut by anything sharp
+    type: Tweak
+  - message: Lampflowers rot faster
+    type: Tweak
+  - message: Non-Food produce can be cut faster
+    type: Tweak
+  - message: Non-Food Produce can't be cut with any item
+    type: Fix
+  id: 239
+  time: '2025-05-12T16:45:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Added figurine case to maints loot
+    type: Add
+  id: 240
+  time: '2025-05-12T16:50:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Added 15 valuable rare minifigures
+    type: Add
+  id: 241
+  time: '2025-05-12T16:55:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Added more reagent slimes
+    type: Add
+  id: 242
+  time: '2025-05-14T16:45:00.0000000+00:00'
+- author: SentientSalad
+  changes:
+  - message: AI now gets alerted to movement inside its core
+    type: Add
+  id: 243
+  time: '2025-05-14T16:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Rewritten how emotes stored on tongues and body parts work
+    type: Fix
+  id: 244
+  time: '2025-05-14T23:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: The AI now has a UI to see where its synced slaves are located
+    type: Add
+  id: 245
+  time: '2025-05-15T10:45:00.0000000+00:00'

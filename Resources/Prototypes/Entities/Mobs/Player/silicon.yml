@@ -45,6 +45,8 @@
         type: RadarConsoleBoundUserInterface
       enum.CrewMonitoringUIKey.Key:
         type: CrewMonitoringBoundUserInterface
+      enum.SiliconSyncMonitoringUiKey.Key:
+        type: SiliconSyncMonitoringBoundUserInterface
       enum.GeneralStationRecordConsoleKey.Key:
         type: GeneralStationRecordConsoleBoundUserInterface
       enum.SiliconLawsUiKey.Key:
@@ -59,11 +61,14 @@
         toggleAction: ActionAGhostShowRadar
       enum.CrewMonitoringUIKey.Key:
         toggleAction: ActionAGhostShowCrewMonitoring
+      enum.SiliconSyncMonitoringUiKey.Key:
+        toggleAction: ActionAGhostShowSiliconSyncMonitoring
       enum.GeneralStationRecordConsoleKey.Key:
         toggleAction: ActionAGhostShowStationRecords
       enum.CommunicationsConsoleUiKey.Key:
         toggleAction: ActionAGhostShowCommunications
   - type: CrewMonitoringConsole
+  - type: SiliconSyncableMonitoringConsole
   - type: GeneralStationRecordConsole
   - type: DeviceNetwork
     deviceNetId: Wireless
@@ -439,6 +444,19 @@
           type: HolopadBoundUserInterface
         enum.HolopadUiKey.AiActionWindow:
           type: HolopadBoundUserInterface
+  - type: TriggerOnProximity
+    enabled: true
+    cooldown: 5
+    shape:
+      !type:PhysShapeCircle
+        radius: 15
+    repeating: true
+    checkLineOfSight: true
+    triggerOncePerCollision: true
+  - type: StationAiAnnounceOnTrigger
+    message: ai-trespass-warning
+    sound:
+      path: /Audio/Misc/adminlarm.ogg
 
 # The job-ready version of an AI spawn.
 - type: entity

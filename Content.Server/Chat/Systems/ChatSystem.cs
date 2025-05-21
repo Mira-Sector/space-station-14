@@ -25,7 +25,6 @@ using Content.Shared.Players.RateLimiting;
 using Content.Shared.Radio;
 using Content.Shared.SpeciesChat;
 using Content.Shared.Speech;
-using Content.Shared.Whitelist;
 using Robust.Server.Player;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
@@ -63,7 +62,6 @@ public sealed partial class ChatSystem : SharedChatSystem
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly ReplacementAccentSystem _wordreplacement = default!;
-    [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
     [Dependency] private readonly ExamineSystemShared _examineSystem = default!;
 
     public const int VoiceRange = 10; // how far voice goes in world units

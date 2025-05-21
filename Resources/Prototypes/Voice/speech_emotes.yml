@@ -7,6 +7,8 @@
   whitelist:
     components:
     - Vocal
+    - VocalOrgan
+    - VocalBodyPart
   blacklist:
     tags:
     - SiliconEmotes
@@ -37,6 +39,8 @@
   whitelist:
     components:
     - Vocal
+    - VocalOrgan
+    - VocalBodyPart
   blacklist:
     tags:
     - SiliconEmotes
@@ -84,6 +88,8 @@
   whitelist:
     components:
     - Vocal
+    - VocalOrgan
+    - VocalBodyPart
   blacklist:
     tags:
     - SiliconEmotes
@@ -101,6 +107,8 @@
   whitelist:
     components:
     - Vocal
+    - VocalOrgan
+    - VocalBodyPart
   blacklist:
     tags:
     - SiliconEmotes
@@ -118,6 +126,8 @@
   whitelist:
     components:
     - Vocal
+    - VocalOrgan
+    - VocalBodyPart
   blacklist:
     tags:
     - SiliconEmotes
@@ -139,6 +149,8 @@
   whitelist:
     components:
     - Vocal
+    - VocalOrgan
+    - VocalBodyPart
   blacklist:
     tags:
     - SiliconEmotes
@@ -157,6 +169,8 @@
   whitelist:
     components:
     - Vocal
+    - VocalOrgan
+    - VocalBodyPart
   blacklist:
     tags:
     - SiliconEmotes
@@ -175,6 +189,8 @@
   whitelist:
     components:
       - Vocal
+      - VocalOrgan
+      - VocalBodyPart
   blacklist:
     tags:
     - SiliconEmotes
@@ -193,6 +209,8 @@
   whitelist:
     components:
     - Vocal
+    - VocalOrgan
+    - VocalBodyPart
   blacklist:
     tags:
     - SiliconEmotes
@@ -376,6 +394,8 @@
     components:
     - Nymph
     - Vocal
+    - VocalOrgan
+    - VocalBodyPart
   blacklist:
     components:
     - BorgChassis
