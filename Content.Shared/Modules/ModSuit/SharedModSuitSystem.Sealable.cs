@@ -15,7 +15,9 @@ public partial class SharedModSuitSystem
     {
         SubscribeLocalEvent<ModSuitSealableComponent, ComponentInit>(OnSealableInit);
         SubscribeLocalEvent<ModSuitSealableComponent, ClothingGotUnequippedEvent>(OnSealableUnequipped);
-        SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployableRelayedEvent<ModSuitGetUiStatesEvent>>(OnSealableGetUiStates);
+
+        SubscribeLocalEvent<ModSuitSealableComponent, ModSuitGetUiStatesEvent>(OnSealableGetUiStates);
+        SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployableRelayedEvent<ModSuitGetUiStatesEvent>>((u, c, a) => OnSealableGetUiStates((u, c), ref a.Args));
 
         SubscribeAllEvent<ModSuitSealButtonMessage>(OnSealableUiButton);
     }
@@ -31,7 +33,7 @@ public partial class SharedModSuitSystem
         SetSeal((ent.Owner, ent.Comp), false);
     }
 
-    private void OnSealableGetUiStates(Entity<ModSuitSealableComponent> ent, ref ModSuitDeployableRelayedEvent<ModSuitGetUiStatesEvent> args)
+    private void OnSealableGetUiStates(Entity<ModSuitSealableComponent> ent, ref ModSuitGetUiStatesEvent args)
     {
         var type = CompOrNull<ModSuitPartTypeComponent>(ent.Owner)?.Type ?? ModSuitPartType.Other;
         var newData = new ModSuitSealableBuiEntry(ent.Comp.UiLayer, type, ent.Comp.Sealed);
@@ -40,7 +42,7 @@ public partial class SharedModSuitSystem
         ModSuitSealableBoundUserInterfaceState? foundState = null;
 
         // find any state that another part may have added
-        foreach (var state in args.Args.States)
+        foreach (var state in args.States)
         {
             if (state is not ModSuitSealableBoundUserInterfaceState sealableState)
                 continue;
@@ -56,7 +58,7 @@ public partial class SharedModSuitSystem
         {
             parts = [toAdd];
             var newState = new ModSuitSealableBoundUserInterfaceState(parts);
-            args.Args.States.Add(newState);
+            args.States.Add(newState);
             return;
         }
 
@@ -98,7 +100,7 @@ public partial class SharedModSuitSystem
         if (ent.Comp.Sealed == isSealed)
             return true;
 
-        var container = Comp<ModSuitDeployedPartComponent>(ent.Owner).Suit;
+        var container = CompOrNull<ModSuitDeployedPartComponent>(ent.Owner)?.Suit ?? ent.Owner;
         RaiseSealableEvent(ent.Owner, container, isSealed);
 
         ent.Comp.Sealed = isSealed;

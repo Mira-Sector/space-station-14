@@ -3,6 +3,7 @@ using Content.Shared.Modules.Events;
 using Content.Shared.Modules.ModSuit;
 using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Content.Shared.Modules.Modules;
@@ -26,8 +27,11 @@ public sealed partial class RequireSealedModuleSystem : BaseToggleableModuleSyst
         if (args.Cancelled)
             return;
 
-        if (!CanEnable(ent, args.Container))
-            args.Cancel();
+        if (CanEnable(ent, args.Container))
+            return;
+
+        args.Cancel();
+        args.Reason = "module-toggle-failed-sealed";
     }
 
     private void OnSealed(Entity<RequireSealedModuleComponent> ent, ref ModuleRelayedEvent<ModSuitContainerPartSealedEvent> args)
@@ -35,7 +39,7 @@ public sealed partial class RequireSealedModuleSystem : BaseToggleableModuleSyst
         if (!ent.Comp.EnableOnSealed)
             return;
 
-        if (CanEnable(ent, args.ModuleOwner))
+        if (!CanEnable(ent, args.ModuleOwner))
             return;
 
         var ev = new ModuleEnabledEvent(args.ModuleOwner, null);
@@ -54,23 +58,32 @@ public sealed partial class RequireSealedModuleSystem : BaseToggleableModuleSyst
     private bool CanEnable(Entity<RequireSealedModuleComponent> ent, EntityUid container)
     {
         var parts = _modSuit.GetDeployedParts(container);
-        var remainingTypes = ent.Comp.Parts;
+        HashSet<ModSuitPartType> relevantParts = [];
+
+        if (IsEnabled(container, ent.Comp.Parts, out var type))
+            relevantParts.Add(type);
 
         foreach (var part in parts)
         {
-            var type = Comp<ModSuitPartTypeComponent>(part).Type;
-            if (!remainingTypes.Contains(type))
-                continue;
-
-            if (CompOrNull<ModSuitSealableComponent>(part)?.Sealed != true)
-                continue;
-
-            remainingTypes.Remove(type);
-
-            if (!ent.Comp.RequireAll)
-                return true;
+            if (IsEnabled(part, ent.Comp.Parts, out type))
+                relevantParts.Add(type);
         }
 
-        return !remainingTypes.Any();
+        if (ent.Comp.RequireAll)
+            return relevantParts.Count == ent.Comp.Parts.Count;
+        else
+            return relevantParts.Any();
+    }
+
+    internal bool IsEnabled(EntityUid part, HashSet<ModSuitPartType> requiredParts, out ModSuitPartType type)
+    {
+        type = CompOrNull<ModSuitPartTypeComponent>(part)?.Type ?? ModSuitPartType.Other;
+        if (!requiredParts.Contains(type))
+            return false;
+
+        if (CompOrNull<ModSuitSealableComponent>(part)?.Sealed != true)
+            return false;
+
+        return true;
     }
 }

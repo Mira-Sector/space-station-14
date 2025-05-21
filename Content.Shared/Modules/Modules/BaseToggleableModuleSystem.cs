@@ -1,11 +1,14 @@
 using Content.Shared.Modules.Components.Modules;
 using Content.Shared.Modules.Events;
+using Content.Shared.Popups;
 using JetBrains.Annotations;
 
 namespace Content.Shared.Modules.Modules;
 
 public abstract partial class BaseToggleableModuleSystem<T> : BaseModuleSystem<T> where T : BaseToggleableModuleComponent
 {
+    [Dependency] private readonly SharedPopupSystem _popup = default!;
+
     [MustCallBase]
     public override void Initialize()
     {
@@ -37,7 +40,12 @@ public abstract partial class BaseToggleableModuleSystem<T> : BaseModuleSystem<T
         RaiseLocalEvent(ent.Owner, beforeEv);
 
         if (beforeEv.Cancelled)
+        {
+            if (user != null)
+                _popup.PopupPredicted(Loc.GetString(beforeEv.Reason), ent.Owner, user);
+
             return;
+        }
 
         if (ent.Comp.Toggled)
         {

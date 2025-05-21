@@ -1,5 +1,6 @@
 using Content.Shared.Modules.Components.Modules;
 using Content.Shared.Modules.Events;
+using Content.Shared.PowerCell;
 
 namespace Content.Shared.Modules.Modules;
 
@@ -18,6 +19,18 @@ public sealed partial class PowerDrainModuleSystem : BaseToggleableModuleSystem<
     {
         base.OnEnabled(ent, ref args);
         _module.UpdatePowerDraw(args.Container);
+
+        if (ent.Comp.OnUseDraw == null)
+            return;
+
+        if (!TryComp<PowerCellDrawComponent>(args.Container, out var powerDraw))
+            return;
+
+        var rate = _module.GetBaseRate(args.Container);
+        rate += ent.Comp.OnUseDraw.Additional;
+        rate *= ent.Comp.OnUseDraw.Multiplier;
+
+        powerDraw.DrawRate = rate;
     }
 
     protected override void OnDisabled(Entity<PowerDrainModuleComponent> ent, ref ModuleDisabledEvent args)

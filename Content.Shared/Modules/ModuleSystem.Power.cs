@@ -53,4 +53,13 @@ public partial class ModuleSystem
 
         return draw;
     }
+
+    [PublicAPI]
+    public float GetBaseRate(Entity<ModuleContainerPowerComponent?> ent)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp))
+            return 0f;
+
+        return ent.Comp.BaseRate;
+    }
 }

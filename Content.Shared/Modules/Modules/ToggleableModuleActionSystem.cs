@@ -25,13 +25,10 @@ public sealed partial class ToggleableModuleActionSystem : BaseToggleableModuleS
     {
         base.OnAdded(ent, ref args);
 
-        var ev = new ModuleGetUserEvent();
-        RaiseLocalEvent(args.Container, ev);
-
-        if (ev.User is not { } user)
+        if (!TryGetUser(ent, out var user))
             return;
 
-        if (!_actions.AddAction(user, ref ent.Comp.Action, ent.Comp.ActionId, ent.Owner))
+        if (!_actions.AddAction(user.Value, ref ent.Comp.Action, ent.Comp.ActionId, ent.Owner))
             return;
 
         Dirty(ent);

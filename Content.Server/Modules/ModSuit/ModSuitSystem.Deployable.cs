@@ -31,6 +31,10 @@ public partial class ModSuitSystem
             AddComp(part, typeComp, true);
         }
 
+        var controlComp = new ModSuitPartTypeComponent();
+        controlComp.Type = ModSuitPartType.Control;
+        AddComp(ent.Owner, controlComp, true);
+
         Dirty(ent);
     }
 }

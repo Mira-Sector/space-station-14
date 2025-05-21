@@ -11,6 +11,9 @@ public sealed partial class PowerDrainModuleComponent : BaseToggleableModuleComp
 
     [DataField, AutoNetworkedField]
     public PowerDrainEntry? DisabledDraw;
+
+    [DataField, AutoNetworkedField]
+    public PowerDrainEntry? OnUseDraw;
 }
 
 [DataDefinition, Serializable, NetSerializable]
