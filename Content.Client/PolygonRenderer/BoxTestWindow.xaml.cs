@@ -17,6 +17,9 @@ public sealed partial class BoxTestWindow : FancyWindow
     internal static readonly ProtoId<PolygonModelPrototype> BoxId = "TestBox";
     internal PolygonModel Box;
 
+    internal const uint BoxCount = 3;
+    internal const float SpacePerBox = 0.25f;
+
     internal const float UpdateRate = 1f / 30f;
     internal float Accumulator;
 
@@ -48,14 +51,32 @@ public sealed partial class BoxTestWindow : FancyWindow
         Accumulator = MathF.Max(0f, Accumulator + UpdateRate);
         Rotation += UpdateRate;
 
-        var newBox = new PolygonModel();
-        newBox.Polygons = Box.Polygons;
-        newBox.Rotation = new(Rotation, 0f, Rotation * 0.5f);
-        newBox.Scale = new(Accumulator * 32f);
+        var modelArray = new PolygonModel[BoxCount];
+        for (var i = 0; i < BoxCount; i++)
+            modelArray[i] = NewBox(i);
 
-        var modelArray = new PolygonModel[1];
-        modelArray[0] = newBox;
         Renderer.Models = modelArray;
         Renderer.Camera = Camera;
+    }
+
+    internal PolygonModel NewBox(int index)
+    {
+        var newBox = new PolygonModel();
+        newBox.Polygons = Box.Polygons;
+
+        var offset = index;
+        if ((index & 1) == 1)
+            offset += 1;
+
+        var rotation = new Vector3(Rotation * offset, index, Rotation * offset * 0.5f);
+        var position = new Vector3(SpacePerBox * offset, 0f, 0f);
+
+        if ((index & 1) == 1)
+            position *= -1;
+
+        newBox.Rotation = rotation;
+        newBox.Position = position;
+
+        return newBox;
     }
 }
