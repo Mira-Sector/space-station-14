@@ -221,3 +221,19 @@
     maximumWait: 240
   - type: SpeakOnUIClosed
     pack: BlockGameGoodbyes
+
+- type: entity
+  id: RaceArcade
+  parent: ArcadeBase
+  components:
+  - type: RaceArcade
+  - type: ActivatableUI
+    key: enum.RaceArcadeUiKey.Key
+  - type: ActivatableUIRequiresPower
+  - type: StationAiWhitelist
+  - type: UserInterface
+    interfaces:
+      enum.RaceArcadeUiKey.Key:
+        type: RaceGameBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface

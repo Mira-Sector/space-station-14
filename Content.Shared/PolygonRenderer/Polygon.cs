@@ -36,7 +36,7 @@ public sealed partial class Polygon
         Vertices = vertices;
     }
 
-    public Polygon(Vector3[] vertices, Color color)
+    public Polygon(Vector3[] vertices, Color? color)
     {
         ValidateVertices(vertices);
         Vertices = vertices;

@@ -20,6 +20,15 @@ public sealed partial class BoxTestWindow : FancyWindow
     internal const float UpdateRate = 1f / 30f;
     internal float Accumulator;
 
+    internal float Rotation = 0f;
+
+    internal static readonly Vector3 Camera = new()
+    {
+        X = -1,
+        Y = -1,
+        Z = -2
+    };
+
     public BoxTestWindow()
     {
         RobustXamlLoader.Load(this);
@@ -39,6 +48,10 @@ public sealed partial class BoxTestWindow : FancyWindow
         Accumulator = MathF.Max(0f, Accumulator + UpdateRate);
 
         var newBox = new PolygonModel();
+        newBox.Polygons = [];
+
+        Rotation += UpdateRate;
+        var rotation = Matrix4.CreateRotationX(Rotation) * Matrix4.CreateRotationY(Rotation * 0.5f);
 
         foreach (var polygon in Box.Polygons)
         {
@@ -48,13 +61,14 @@ public sealed partial class BoxTestWindow : FancyWindow
             var newVertices = new Vector3[3];
 
             for (var i = 0; i < 3; i++)
-                newVertices[i] = Vector3.Transform(polygon.Vertices[i], Matrix4.CreateRotationX(UpdateRate));
+                newVertices[i] = Vector3.Transform(polygon.Vertices[i], rotation);
 
-            newBox.Polygons.Add(new Polygon(newVertices));
+            newBox.Polygons.Add(new Polygon(newVertices, polygon.Color));
         }
 
         var modelArray = new PolygonModel[1];
         modelArray[0] = newBox;
         Renderer.Models = modelArray;
+        Renderer.Camera = Camera;
     }
 }
