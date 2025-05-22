@@ -1,67 +1,79 @@
 - type: polygonModel
   id: TestBox
   polygons:
-    - vertices:
+    - !type:FlatShadedPolygon
+      vertices:
         - -0.125, -0.125, 0.125
         - 0.125, -0.125, 0.125
         - 0.125, 0.125, 0.125
       color: "#ff0000"
-    - vertices:
+    - !type:FlatShadedPolygon
+      vertices:
         - -0.125, -0.125, 0.125
         - 0.125, 0.125, 0.125
         - -0.125, 0.125, 0.125
       color: "#ff0000"
 
-    - vertices:
+    - !type:FlatShadedPolygon
+      vertices:
         - -0.125, -0.125, -0.125
         - 0.125, -0.125, -0.125
         - 0.125, 0.125, -0.125
       color: "#00ff00"
-    - vertices:
+    - !type:FlatShadedPolygon
+      vertices:
         - -0.125, -0.125, -0.125
         - 0.125, 0.125, -0.125
         - -0.125, 0.125, -0.125
       color: "#00ff00"
 
-    - vertices:
+    - !type:FlatShadedPolygon
+      vertices:
         - -0.125, 0.125, -0.125
         - 0.125, 0.125, -0.125
         - 0.125, 0.125, 0.125
       color: "#ffff00"
-    - vertices:
+    - !type:FlatShadedPolygon
+      vertices:
         - -0.125, 0.125, -0.125
         - 0.125, 0.125, 0.125
         - -0.125, 0.125, 0.125
       color: "#ffff00"
 
-    - vertices:
+    - !type:FlatShadedPolygon
+      vertices:
         - -0.125, -0.125, -0.125
         - 0.125, -0.125, -0.125
         - 0.125, -0.125, 0.125
       color: "#0000ff"
-    - vertices:
+    - !type:FlatShadedPolygon
+      vertices:
         - -0.125, -0.125, -0.125
         - 0.125, -0.125, 0.125
         - -0.125, -0.125, 0.125
       color: "#0000ff"
 
-    - vertices:
+    - !type:FlatShadedPolygon
+      vertices:
         - -0.125, -0.125, -0.125
         - -0.125, 0.125, -0.125
         - -0.125, 0.125, 0.125
       color: "#ff00ff"
-    - vertices:
+    - !type:FlatShadedPolygon
+      vertices:
         - -0.125, -0.125, -0.125
         - -0.125, 0.125, 0.125
         - -0.125, -0.125, 0.125
       color: "#ff00ff"
 
-    - vertices:
+    - !type:FlatShadedPolygon
+      vertices:
         - 0.125, -0.125, -0.125
         - 0.125, 0.125, -0.125
         - 0.125, 0.125, 0.125
       color: "#00ffff"
-    - vertices:
+    - !type:FlatShadedPolygon
+      vertices:
         - 0.125, -0.125, -0.125
         - 0.125, 0.125, 0.125
         - 0.125, -0.125, 0.125

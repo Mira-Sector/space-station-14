@@ -17,13 +17,15 @@ public sealed partial class PolygonRendererControl : Control
     [ViewVariables]
     public Vector3 Camera = new();
 
+    public record TransformedPolygon(Polygon Polygon, Vector3[] TransformedVertices, float AvgDepth);
+
     protected override void Draw(DrawingHandleScreen handle)
     {
         base.Draw(handle);
 
         // painters algorithm
         // should prob replace with a depth buffer
-        var polygonsWithDepth = new List<(Polygon Polygon, float Depth)>();
+        var transformedPolygons = new List<TransformedPolygon>();
 
         foreach (var model in Models)
         {
@@ -36,29 +38,29 @@ public sealed partial class PolygonRendererControl : Control
 
             foreach (var polygon in model.Polygons)
             {
-                if (polygon.Color == null)
-                    continue;
-
                 var transformedVertices = new Vector3[3];
                 for (var i = 0; i < 3; i++)
                     transformedVertices[i] = Vector3.Transform(polygon.Vertices[i], modelMatrix);
 
+                polygon.Vertices = transformedVertices;
+
                 var avgDepth = (transformedVertices[0].Z + transformedVertices[1].Z + transformedVertices[2].Z) / 3f;
-                polygonsWithDepth.Add((new Polygon(transformedVertices, polygon.Color), avgDepth));
+                transformedPolygons.Add(new TransformedPolygon(polygon, transformedVertices, avgDepth));
             }
         }
 
-        var sortedPolygons = polygonsWithDepth.OrderByDescending(x => x.Depth).ToList();
+        var sortedPolygons = transformedPolygons.OrderByDescending(x => x.AvgDepth).ToList();
 
-        foreach (var (polygon, _) in sortedPolygons)
+        foreach (var (polygon, transformedVertices, _) in sortedPolygons)
         {
-            var vertices = PolygonRenderer.PolygonTo2D(polygon, Camera);
+            polygon.Vertices = transformedVertices;
+            var (vertices, color) = polygon.PolygonTo2D(Camera);
 
             List<Vector2> scaledVertices = [];
             foreach (var vertex in vertices)
                 scaledVertices.Add(vertex * PixelSize);
 
-            handle.DrawPrimitives(DrawPrimitiveTopology.TriangleList, scaledVertices, polygon.Color!.Value);
+            handle.DrawPrimitives(DrawPrimitiveTopology.TriangleList, scaledVertices, color!.Value);
         }
     }
 }
