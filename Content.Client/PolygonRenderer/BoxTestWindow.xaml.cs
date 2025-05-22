@@ -46,25 +46,12 @@ public sealed partial class BoxTestWindow : FancyWindow
             return;
 
         Accumulator = MathF.Max(0f, Accumulator + UpdateRate);
+        Rotation += UpdateRate;
 
         var newBox = new PolygonModel();
-        newBox.Polygons = [];
-
-        Rotation += UpdateRate;
-        var rotation = Matrix4.CreateRotationX(Rotation) * Matrix4.CreateRotationY(Rotation * 0.5f);
-
-        foreach (var polygon in Box.Polygons)
-        {
-            if (polygon.Color == null)
-                continue;
-
-            var newVertices = new Vector3[3];
-
-            for (var i = 0; i < 3; i++)
-                newVertices[i] = Vector3.Transform(polygon.Vertices[i], rotation);
-
-            newBox.Polygons.Add(new Polygon(newVertices, polygon.Color));
-        }
+        newBox.Polygons = Box.Polygons;
+        newBox.Rotation = new(Rotation, 0f, Rotation * 0.5f);
+        newBox.Scale = new(Accumulator * 32f);
 
         var modelArray = new PolygonModel[1];
         modelArray[0] = newBox;

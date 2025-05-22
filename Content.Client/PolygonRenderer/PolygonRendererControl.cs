@@ -27,13 +27,24 @@ public sealed partial class PolygonRendererControl : Control
 
         foreach (var model in Models)
         {
+            var modelMatrix = Matrix4.Identity;
+            modelMatrix *= Matrix4.Scale(model.Scale);
+            modelMatrix *= Matrix4.CreateRotationX(model.Rotation.X)
+                * Matrix4.CreateRotationY(model.Rotation.Y)
+                * Matrix4.CreateRotationZ(model.Rotation.Z);
+            modelMatrix *= Matrix4.CreateTranslation(model.Position);
+
             foreach (var polygon in model.Polygons)
             {
                 if (polygon.Color == null)
                     continue;
 
-                var avgDepth = (polygon.Vertices[0].Z + polygon.Vertices[1].Z + polygon.Vertices[2].Z) / 3f;
-                polygonsWithDepth.Add((polygon, avgDepth));
+                var transformedVertices = new Vector3[3];
+                for (var i = 0; i < 3; i++)
+                    transformedVertices[i] = Vector3.Transform(polygon.Vertices[i], modelMatrix);
+
+                var avgDepth = (transformedVertices[0].Z + transformedVertices[1].Z + transformedVertices[2].Z) / 3f;
+                polygonsWithDepth.Add((new Polygon(transformedVertices, polygon.Color), avgDepth));
             }
         }
 
