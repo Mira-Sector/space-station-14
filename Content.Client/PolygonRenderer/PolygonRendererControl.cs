@@ -2,13 +2,14 @@ using Content.Shared.PolygonRenderer;
 using JetBrains.Annotations;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
+using Vector3 = Robust.Shared.Maths.Vector3;
 
 namespace Content.Client.PolygonRenderer;
 
 [UsedImplicitly]
 public sealed partial class PolygonRendererControl : Control
 {
-    public List<PolygonModel> Models = [];
+    public PolygonModel[] Models = [];
     public Vector3 Camera = new();
 
     protected override void Draw(DrawingHandleScreen handle)

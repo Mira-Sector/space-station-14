@@ -6,7 +6,7 @@ namespace Content.Shared.PolygonRenderer;
 public partial class PolygonModel
 {
     [DataField]
-    public List<Polygon> Polygons = [];
+    public List<Polygon> Polygons;
 
     public PolygonModel(List<Polygon> polygons)
     {

@@ -8,7 +8,7 @@ public sealed class PolygonRenderer
 {
     public static List<Vector2> PolygonTo2D(Polygon polygon, Vector3 camera)
     {
-        var projectedPoints = new List<Vector2>(3);
+        List<Vector2> projectedPoints = [];
 
         foreach (var vertex in polygon.Vertices)
         {
