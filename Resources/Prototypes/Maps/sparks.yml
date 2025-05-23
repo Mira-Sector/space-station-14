@@ -13,7 +13,7 @@
           mapNameTemplate: '{0} Sparks {1}'
           nameGenerator:
             !type:NanotrasenNameGenerator
-            prefixCreator: 'WS'
+            prefixCreator: 'SC'
         - type: StationEmergencyShuttle
           emergencyShuttlePath: /Maps/Shuttles/emergency.yml
         - type: StationJobs
