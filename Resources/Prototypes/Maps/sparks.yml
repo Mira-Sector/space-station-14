@@ -1,6 +1,6 @@
 - type: gameMap
   id: Sparks
-  mapName: Sparks
+  mapName: 'Sparks'
   mapPath: /Maps/sparks.yml
   minPlayers: 0
   maxPlayers: 20
