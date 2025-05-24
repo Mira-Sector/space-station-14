@@ -270,6 +270,15 @@
     access: [["HeadOfPersonnel"]]
 
 - type: entity
+  parent: VendingMachineCart
+  id: VendingMachineCartQM
+  suffix: QM & HOP
+  description: PTech vending! Providing a ROBUST selection of PDAs, cartridges, and anything else a dull paper pusher or professional capitalist needs!
+  components:
+  - type: AccessReader
+    access: [["HeadOfPersonnel","Quartermaster"]]
+
+- type: entity
   parent: VendingMachine
   id: VendingMachineChefvend
   name: ChefVend
