@@ -4,7 +4,7 @@ meta:
   engineVersion: 250.0.0
   forkId: ""
   forkVersion: ""
-  time: 05/24/2025 00:17:33
+  time: 05/24/2025 00:29:51
   entityCount: 8845
 maps:
 - 119
@@ -127,7 +127,7 @@ entities:
           version: 6
         3,5:
           ind: 3,5
-          tiles: IAAAAAADIAAAAAADIAAAAAABIAAAAAACIAAAAAABIAAAAAAAEAAAAAACEAAAAAAAEAAAAAADEAAAAAACEAAAAAABEAAAAAAAggAAAAAAAQAAAAAAAQAAAAABggAAAAAAIAAAAAADIAAAAAABIAAAAAADIAAAAAADIAAAAAADIAAAAAACEAAAAAACEAAAAAABEAAAAAADEAAAAAACEAAAAAABEAAAAAABEAAAAAADAQAAAAAAAQAAAAABAQAAAAACggAAAAAAggAAAAAAggAAAAAAggAAAAAAIAAAAAADggAAAAAAEAAAAAACEAAAAAACEAAAAAACEAAAAAACEAAAAAAAggAAAAAAggAAAAAAAQAAAAAAIQAAAAAAAQAAAAAAEwAAAAAAEwAAAAAAEwAAAAAAEwAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAAQAAAAADAQAAAAADAQAAAAADAQAAAAABggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAAQAAAAAAAQAAAAABggAAAAAAggAAAAAAAQAAAAADggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAADwAAAAADggAAAAAAggAAAAAAggAAAAAAggAAAAAADwAAAAADDwAAAAABDwAAAAACggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAADwAAAAAADwAAAAADDwAAAAACeQAAAAABDwAAAAAADwAAAAAADwAAAAADDwAAAAAADwAAAAADggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAADwAAAAAADwAAAAABDwAAAAABeQAAAAACDwAAAAAADwAAAAAADwAAAAACeQAAAAABeQAAAAAAggAAAAAADwAAAAACDwAAAAAADwAAAAABAQAAAAAAggAAAAAAggAAAAAADwAAAAAADwAAAAABDwAAAAABeQAAAAAADwAAAAADDwAAAAACDwAAAAACeQAAAAADeQAAAAAAggAAAAAADwAAAAADDwAAAAAADwAAAAACggAAAAAAggAAAAAAggAAAAAADwAAAAADDwAAAAAADwAAAAACeQAAAAAADwAAAAACDwAAAAAADwAAAAACDwAAAAABDwAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAADwAAAAABDwAAAAACDwAAAAABeQAAAAAADwAAAAAADwAAAAABDwAAAAAADwAAAAABDwAAAAADggAAAAAAAwAAAAAAAwAAAAAAAwAAAAAAggAAAAAAggAAAAAAggAAAAAABAAAAAAABAAAAAAABAAAAAAABAAAAAAAggAAAAAABQAAAAAAggAAAAAABgAAAAADggAAAAAAggAAAAAAAwAAAAAAAwAAAAAAAwAAAAAAAQAAAAABggAAAAAABAAAAAAABAAAAAAABAAAAAAABAAAAAAABAAAAAAABAAAAAAABQAAAAACggAAAAAABgAAAAABggAAAAAAggAAAAAAAwAAAAAAAwAAAAAAAwAAAAAAggAAAAAAggAAAAAAggAAAAAABAAAAAAABAAAAAAABAAAAAAABAAAAAAABAAAAAAABQAAAAACggAAAAAABgAAAAADBgAAAAACggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAACwAAAAADggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAABQAAAAABggAAAAAABgAAAAAAggAAAAAAhwAAAAAAggAAAAAAFgAAAAAAFgAAAAAAFgAAAAABFgAAAAAAFgAAAAAAFgAAAAAAFgAAAAACFgAAAAAAFgAAAAADBQAAAAADBQAAAAADggAAAAAABgAAAAAAggAAAAAA
+          tiles: IAAAAAADIAAAAAADIAAAAAABIAAAAAACIAAAAAABIAAAAAAAEAAAAAACEAAAAAAAEAAAAAADEAAAAAACEAAAAAABEAAAAAAAggAAAAAAAQAAAAAAAQAAAAABggAAAAAAIAAAAAADIAAAAAABIAAAAAADIAAAAAADIAAAAAADIAAAAAACEAAAAAACEAAAAAABEAAAAAADEAAAAAACEAAAAAABEAAAAAABEAAAAAADAQAAAAAAAQAAAAABAQAAAAACggAAAAAAggAAAAAAggAAAAAAggAAAAAAIAAAAAADggAAAAAAEAAAAAACEAAAAAACEAAAAAACEAAAAAACEAAAAAAAggAAAAAAggAAAAAAAQAAAAAAIQAAAAAAAQAAAAAAEwAAAAAAEwAAAAAAEwAAAAAAEwAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAAQAAAAADAQAAAAADAQAAAAADAQAAAAABggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAAQAAAAAAAQAAAAABggAAAAAAggAAAAAAAQAAAAADggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAADwAAAAADggAAAAAAggAAAAAAggAAAAAAggAAAAAADwAAAAADDwAAAAABDwAAAAACggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAADwAAAAAADwAAAAADDwAAAAACeQAAAAABDwAAAAAADwAAAAAADwAAAAADDwAAAAAADwAAAAADggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAADwAAAAAADwAAAAABDwAAAAABeQAAAAACDwAAAAAADwAAAAAADwAAAAACeQAAAAABeQAAAAAAggAAAAAADwAAAAACDwAAAAAADwAAAAABAQAAAAAAggAAAAAAggAAAAAADwAAAAAADwAAAAABDwAAAAABeQAAAAAADwAAAAADDwAAAAACDwAAAAACeQAAAAADeQAAAAAAggAAAAAADwAAAAADDwAAAAAADwAAAAACggAAAAAAggAAAAAAggAAAAAADwAAAAADDwAAAAAADwAAAAACeQAAAAAADwAAAAACDwAAAAAADwAAAAACDwAAAAABDwAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAADwAAAAABDwAAAAACDwAAAAABeQAAAAAADwAAAAAADwAAAAABDwAAAAAADwAAAAABDwAAAAADggAAAAAAAwAAAAAAAwAAAAAAAwAAAAAAggAAAAAAggAAAAAAggAAAAAABAAAAAAABAAAAAAABAAAAAAABAAAAAAAggAAAAAABQAAAAAAggAAAAAABgAAAAADggAAAAAAggAAAAAAAwAAAAAAAwAAAAAAAwAAAAAAAQAAAAABggAAAAAABAAAAAAABAAAAAAABAAAAAAABAAAAAAABAAAAAAABAAAAAAABQAAAAACggAAAAAABgAAAAABggAAAAAAggAAAAAAAwAAAAAAAwAAAAAAAwAAAAAAggAAAAAAggAAAAAAggAAAAAABAAAAAAABAAAAAAABAAAAAAABAAAAAAABAAAAAAABQAAAAACggAAAAAABgAAAAADBgAAAAACggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAACwAAAAADggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAAggAAAAAABQAAAAABggAAAAAABgAAAAAAggAAAAAAhwAAAAAAggAAAAAAFgAAAAAAFgAAAAAAFgAAAAABFgAAAAAAFgAAAAAAFgAAAAAAFgAAAAACFgAAAAAAFgAAAAADBQAAAAADBQAAAAADggAAAAAABgAAAAAABgAAAAAA
           version: 6
         3,6:
           ind: 3,6
@@ -466,7 +466,9 @@ entities:
             color: '#4B709CFF'
             id: BrickTileWhiteBox
           decals:
-            914: 64,99
+            1913: 65,99
+            1914: 66,99
+            1915: 64,99
         - node:
             color: '#D381C9FF'
             id: BrickTileWhiteBox
@@ -486,7 +488,6 @@ entities:
             id: BrickTileWhiteCornerNe
           decals:
             928: 66,102
-            934: 66,98
             1612: 69,63
         - node:
             color: '#639137FF'
@@ -705,6 +706,7 @@ entities:
             id: BrickTileWhiteEndE
           decals:
             923: 67,101
+            1912: 66,98
         - node:
             color: '#FFFFFFFF'
             id: BrickTileWhiteEndE
@@ -764,6 +766,8 @@ entities:
             501: 81,29
             926: 66,101
             938: 64,98
+            1918: 62,95
+            1919: 62,93
         - node:
             color: '#765428FF'
             id: BrickTileWhiteInnerNe
@@ -913,7 +917,9 @@ entities:
             472: 81,32
             924: 66,101
             940: 64,100
-            945: 62,97
+            1908: 62,98
+            1920: 62,95
+            1921: 62,93
         - node:
             color: '#9A54BFFF'
             id: BrickTileWhiteInnerSe
@@ -1039,14 +1045,13 @@ entities:
           decals:
             470: 81,31
             500: 81,30
-            943: 62,95
             944: 62,96
             951: 62,94
-            952: 62,93
             953: 62,92
             954: 62,91
             1610: 69,61
             1611: 69,62
+            1906: 62,97
         - node:
             color: '#639137FF'
             id: BrickTileWhiteLineE
@@ -1167,6 +1172,8 @@ entities:
             936: 63,98
             1617: 67,63
             1618: 68,63
+            1923: 63,93
+            1924: 63,95
         - node:
             color: '#765428FF'
             id: BrickTileWhiteLineN
@@ -1297,10 +1304,14 @@ entities:
             id: BrickTileWhiteLineS
           decals:
             918: 63,100
-            946: 63,97
             959: 65,100
             1615: 67,61
             1616: 68,61
+            1909: 63,98
+            1910: 64,98
+            1911: 65,98
+            1922: 63,93
+            1925: 63,95
         - node:
             zIndex: 1
             color: '#639137FF'
@@ -1436,13 +1447,13 @@ entities:
             color: '#4B709CFF'
             id: BrickTileWhiteLineW
           decals:
-            907: 62,95
             908: 62,96
-            909: 62,97
             955: 62,91
             956: 62,92
-            957: 62,93
             958: 62,94
+            1907: 62,97
+            1916: 62,93
+            1917: 62,95
         - node:
             color: '#639137FF'
             id: BrickTileWhiteLineW
@@ -3056,13 +3067,12 @@ entities:
             0: 35471
             1: 17520
           12,20:
-            1: 61687
-            2: 8
+            1: 61695
           12,21:
             1: 3663
           12,23:
             0: 4096
-            3: 238
+            5: 238
             1: 49152
           10,25:
             0: 34824
@@ -3125,10 +3135,10 @@ entities:
             0: 275
             1: 19976
           14,6:
-            4: 224
-            5: 57344
+            2: 224
+            3: 57344
           14,7:
-            6: 224
+            4: 224
           14,8:
             1: 61166
           15,5:
@@ -3214,7 +3224,7 @@ entities:
           13,17:
             1: 53007
           13,18:
-            1: 19953
+            1: 20465
           13,19:
             1: 40445
           13,20:
@@ -3244,8 +3254,8 @@ entities:
           16,19:
             1: 65520
           12,22:
-            1: 16622
-            3: 40960
+            1: 238
+            5: 57344
           13,21:
             1: 43567
           13,22:
@@ -3267,9 +3277,9 @@ entities:
           15,22:
             1: 20479
           15,23:
-            1: 21973
+            1: 54741
           15,24:
-            1: 56789
+            1: 56661
           16,20:
             1: 65520
           16,21:
@@ -3304,7 +3314,7 @@ entities:
           15,27:
             0: 35023
           16,24:
-            1: 30578
+            1: 30479
           16,25:
             1: 2039
           16,26:
@@ -3344,9 +3354,9 @@ entities:
             1: 24339
             0: 8
           17,6:
-            4: 57568
+            2: 57568
           17,7:
-            4: 224
+            2: 224
           17,8:
             1: 28927
           18,5:
@@ -3485,7 +3495,7 @@ entities:
           17,23:
             1: 35498
           17,24:
-            1: 65534
+            1: 65518
           18,21:
             1: 18272
           18,22:
@@ -3700,8 +3710,38 @@ entities:
         - volume: 2500
           temperature: 293.15
           moles:
-          - 21.6852
-          - 81.57766
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+        - volume: 2500
+          temperature: 293.15
+          moles:
+          - 0
+          - 6666.982
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+        - volume: 2500
+          temperature: 293.15
+          moles:
+          - 6666.982
+          - 0
           - 0
           - 0
           - 0
@@ -3717,51 +3757,6 @@ entities:
           moles:
           - 27.225372
           - 102.419266
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-        - volume: 2500
-          temperature: 293.15
-          moles:
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-        - volume: 2500
-          temperature: 293.15
-          moles:
-          - 0
-          - 6666.982
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-        - volume: 2500
-          temperature: 293.15
-          moles:
-          - 6666.982
-          - 0
           - 0
           - 0
           - 0
@@ -4036,7 +4031,6 @@ entities:
       devices:
       - 2908
       - 8910
-      - 5979
       - 5958
       - 2904
       - 968
@@ -4135,6 +4129,7 @@ entities:
       - 2900
       - 2901
       - 2902
+      - 436
   - uid: 2890
     components:
     - type: Transform
@@ -5783,16 +5778,6 @@ entities:
     - type: Transform
       pos: 62.5,98.5
       parent: 1
-  - uid: 5979
-    components:
-    - type: Transform
-      pos: 62.5,100.5
-      parent: 1
-    - type: DeviceNetwork
-      configurators:
-      - invalid
-      deviceLists:
-      - 1272
   - uid: 7504
     components:
     - type: Transform
@@ -26331,6 +26316,7 @@ entities:
       deviceLists:
       - 1453
       - 7834
+      - 2883
   - uid: 968
     components:
     - type: Transform
@@ -58003,7 +57989,7 @@ entities:
       pos: 55.5,56.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -39582.125
+      secondsUntilStateChange: -40018.266
       state: Opening
 - proto: WoodenBench
   entities:
