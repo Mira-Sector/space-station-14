@@ -60,7 +60,9 @@
   description: Purchace modules with your gained power.
   components:
   - type: InstantAction
-    icon: Interface/Actions/shop.png
+    icon:
+      sprite: Interface/Actions/actions_ai.rsi
+      state: store
     event: !type:StationAiShopActionEvent
 
 - type: entity
@@ -72,8 +74,8 @@
     charges: 1
     itemIconStyle: BigAction
     icon:
-      sprite: Objects/Devices/nuke.rsi
-      state: nuclearbomb_base
+      sprite: Interface/Actions/actions_ai.rsi
+      state: nuke
     event: !type:StationAiNukeEvent
       additionalDelay: 60
 
@@ -87,7 +89,7 @@
     itemIconStyle: BigAction
     icon:
       sprite: Interface/Actions/actions_ai.rsi
-      state: bolt_door
+      state: lockdown
     event: !type:StationAiLockdownEvent
       resetDelay: 90
 
@@ -100,8 +102,8 @@
     charges: 1
     itemIconStyle: BigAction
     icon:
-      sprite: Structures/Doors/Airlocks/Standard/firelock.rsi
-      state: closed
+      sprite: Interface/Actions/actions_ai.rsi
+      state: thermal_sensors
     event: !type:StationAiFirelockEvent
 
 - type: entity
@@ -117,8 +119,8 @@
     charges: 2
     itemIconStyle: BigAction
     icon:
-      sprite: Objects/Power/powersink.rsi
-      state: powersink
+      sprite: Interface/Actions/actions_ai.rsi
+      state: overload
     event: !type:StationAiOverloadEvent
       delay: 5
       beepInterval: 1
@@ -134,7 +136,7 @@
     charges: 3
     itemIconStyle: BigAction
     icon:
-      sprite: Structures/Power/apc.rsi
-      state: broken
+      sprite: Interface/Actions/actions_ai.rsi
+      state: blackout
     event: !type:StationAiBlackoutEvent
       chance: 0.3
