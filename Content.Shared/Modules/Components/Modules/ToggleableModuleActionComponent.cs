@@ -11,5 +11,4 @@ public sealed partial class ToggleableModuleActionComponent : BaseToggleableModu
 
     [ViewVariables, AutoNetworkedField]
     public EntityUid? Action;
-
 }

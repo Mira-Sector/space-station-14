@@ -41,7 +41,7 @@ public abstract partial class BaseToggleableModuleSystem<T> : BaseModuleSystem<T
 
         if (beforeEv.Cancelled)
         {
-            if (user != null)
+            if (user != null && beforeEv.Reason != null)
                 _popup.PopupPredicted(Loc.GetString(beforeEv.Reason), ent.Owner, user);
 
             return;

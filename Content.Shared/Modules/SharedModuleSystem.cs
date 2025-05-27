@@ -1,4 +1,5 @@
 using Content.Shared.Modules.Components;
+using Content.Shared.Modules.Components.Modules;
 using Content.Shared.Modules.Events;
 using Content.Shared.Popups;
 using Content.Shared.Storage;
@@ -131,5 +132,14 @@ public abstract partial class SharedModuleSystem : EntitySystem
     {
         foreach (var module in GetModules(ent))
             RaiseLocalEvent(module, ev);
+    }
+
+    [PublicAPI]
+    public void RaiseEventToContainer<T>(Entity<BaseModuleComponent> ent, T ev) where T : notnull
+    {
+        if (ent.Comp.Container is not { } container)
+            return;
+
+        RaiseLocalEvent(container, ev);
     }
 }

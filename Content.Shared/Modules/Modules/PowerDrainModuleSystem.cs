@@ -13,6 +13,7 @@ public sealed partial class PowerDrainModuleSystem : BaseToggleableModuleSystem<
         base.Initialize();
 
         SubscribeLocalEvent<PowerDrainModuleComponent, GetModulePowerDrawEvent>(OnGetPower);
+        SubscribeLocalEvent<PowerDrainModuleComponent, ModuleRelayedEvent<PowerCellSlotEmptyEvent>>(OnEmpty);
     }
 
     protected override void OnEnabled(Entity<PowerDrainModuleComponent> ent, ref ModuleEnabledEvent args)
@@ -53,5 +54,11 @@ public sealed partial class PowerDrainModuleSystem : BaseToggleableModuleSystem<
 
         args.Additional += entry.Additional;
         args.Multiplier += entry.Multiplier;
+    }
+
+    private void OnEmpty(Entity<PowerDrainModuleComponent> ent, ref ModuleRelayedEvent<PowerCellSlotEmptyEvent> args)
+    {
+        var ev = new ModuleDisabledEvent(args.ModuleOwner, null);
+        RaiseLocalEvent(ent.Owner, ev);
     }
 }
