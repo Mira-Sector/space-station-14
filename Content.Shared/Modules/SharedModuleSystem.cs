@@ -9,7 +9,7 @@ using Robust.Shared.Network;
 
 namespace Content.Shared.Modules;
 
-public sealed partial class ModuleSystem : EntitySystem
+public abstract partial class SharedModuleSystem : EntitySystem
 {
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;

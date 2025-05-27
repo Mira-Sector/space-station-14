@@ -8,6 +8,7 @@ public sealed partial class ModSuitSystem : SharedModSuitSystem
     {
         base.Initialize();
 
+        InitializeDeployable();
         InitializeSealable();
     }
 }

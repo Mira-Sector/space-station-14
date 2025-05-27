@@ -5,6 +5,11 @@ namespace Content.Client.Modules.ModSuit;
 
 public partial class ModSuitSystem
 {
+    private void InitializeDeployable()
+    {
+        InitializeDeployableRelay();
+    }
+
     protected override void OnDeployableInit(Entity<ModSuitPartDeployableComponent> ent, ref ComponentInit args)
     {
         foreach (var (slot, _) in ent.Comp.DeployablePartIds)

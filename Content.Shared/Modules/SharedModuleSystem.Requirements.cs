@@ -3,7 +3,7 @@ using Content.Shared.Modules.Events;
 
 namespace Content.Shared.Modules;
 
-public partial class ModuleSystem
+public partial class SharedModuleSystem
 {
     private void InitializeRequirements()
     {

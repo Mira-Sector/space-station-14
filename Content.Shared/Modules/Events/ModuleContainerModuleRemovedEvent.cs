@@ -9,4 +9,3 @@ public sealed partial class ModuleContainerModuleRemovedEvent : EntityEventArgs
         Module = module;
     }
 }
-

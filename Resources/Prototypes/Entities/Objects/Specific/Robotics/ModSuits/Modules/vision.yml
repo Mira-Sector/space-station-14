@@ -99,7 +99,7 @@
 - type: entity
   id: ModSuitModuleVisonWelding
   parent: BaseModSuitModule
-  name: MOD Welding Protection Module
+  name: MOD welding protection module
   description: Projects a polarized, holographic overlay in front of the user's eyes. It's rated high enough for immunity against extremities such as spot and arc welding, solar eclipses, and handheld flashlights.
   components:
   - type: Sprite
@@ -115,3 +115,11 @@
     enableOnSealed: true
     parts:
     - Helmet
+  - type: ModSuitDeployableContainerVisuals
+    partType: Helmet
+  - type: ModuleContainerVisuals
+    clothingLayers:
+      true:
+        head:
+        - sprite: Objects/Specific/Robotics/ModSuits/Modules/vision.rsi
+          state: welding-worn

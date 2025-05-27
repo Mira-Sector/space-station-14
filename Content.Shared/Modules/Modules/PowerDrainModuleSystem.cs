@@ -6,7 +6,7 @@ namespace Content.Shared.Modules.Modules;
 
 public sealed partial class PowerDrainModuleSystem : BaseToggleableModuleSystem<PowerDrainModuleComponent>
 {
-    [Dependency] private readonly ModuleSystem _module = default!;
+    [Dependency] private readonly SharedModuleSystem _module = default!;
 
     public override void Initialize()
     {

@@ -91,6 +91,15 @@ public partial class SharedModSuitSystem
     }
 
     [PublicAPI]
+    public bool IsSealed(Entity<ModSuitSealableComponent?> ent)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp))
+            return false;
+
+        return ent.Comp.Sealed;
+    }
+
+    [PublicAPI]
     public bool SetSeal(Entity<ModSuitSealableComponent?> ent, bool isSealed)
     {
         if (!Resolve(ent.Owner, ref ent.Comp))
@@ -100,11 +109,11 @@ public partial class SharedModSuitSystem
         if (ent.Comp.Sealed == isSealed)
             return true;
 
-        var container = CompOrNull<ModSuitDeployedPartComponent>(ent.Owner)?.Suit ?? ent.Owner;
-        RaiseSealableEvent(ent.Owner, container, isSealed);
-
         ent.Comp.Sealed = isSealed;
         Dirty(ent);
+
+        var container = CompOrNull<ModSuitDeployedPartComponent>(ent.Owner)?.Suit ?? ent.Owner;
+        RaiseSealableEvent(ent.Owner, container, isSealed);
 
         Appearance.SetData(ent.Owner, ModSuitSealedVisuals.Sealed, isSealed);
         _item.VisualsChanged(ent.Owner);

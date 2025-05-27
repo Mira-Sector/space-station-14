@@ -3,7 +3,6 @@ using Content.Shared.Modules.Events;
 using Content.Shared.Modules.ModSuit;
 using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Content.Shared.Modules.Modules;
@@ -81,9 +80,6 @@ public sealed partial class RequireSealedModuleSystem : BaseToggleableModuleSyst
         if (!requiredParts.Contains(type))
             return false;
 
-        if (CompOrNull<ModSuitSealableComponent>(part)?.Sealed != true)
-            return false;
-
-        return true;
+        return _modSuit.IsSealed(part);
     }
 }

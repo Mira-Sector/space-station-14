@@ -1,3 +1,4 @@
+using Content.Client.Modules.ModSuit.Events;
 using Content.Shared.Clothing;
 using Content.Shared.Modules.ModSuit;
 using Content.Shared.Modules.ModSuit.Components;
@@ -26,7 +27,7 @@ public partial class ModSuitSystem
         if (!Appearance.TryGetData<bool>(ent.Owner, ModSuitSealedVisuals.Sealed, out var isSealed))
             return;
 
-        if (args.Sprite is not {} sprite)
+        if (args.Sprite is not { } sprite)
             return;
 
         foreach (var layer in ent.Comp.RevealedLayers)
@@ -36,6 +37,11 @@ public partial class ModSuitSystem
 
         if (!ent.Comp.IconLayers.TryGetValue(isSealed, out var layers))
             return;
+
+        var ev = new ModSuitSealedGetIconLayersEvent();
+        RaiseLocalEvent(ent.Owner, ev);
+
+        layers.AddRange(ev.Layers);
 
         foreach (var layer in layers)
         {
@@ -56,6 +62,11 @@ public partial class ModSuitSystem
 
         if (!clothingLayers.TryGetValue(args.Slot, out var layers))
             return;
+
+        var ev = new ModSuitSealedGetClothingLayersEvent(args.Slot);
+        RaiseLocalEvent(ent.Owner, ev);
+
+        layers.AddRange(ev.Layers);
 
         for (var i = 0; i < layers.Count; i++)
         {

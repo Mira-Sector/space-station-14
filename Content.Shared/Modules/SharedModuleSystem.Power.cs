@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 
 namespace Content.Shared.Modules;
 
-public partial class ModuleSystem
+public partial class SharedModuleSystem
 {
     [Dependency] private readonly SharedPowerCellSystem _powerCell = default!;
 

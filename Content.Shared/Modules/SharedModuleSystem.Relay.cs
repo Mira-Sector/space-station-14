@@ -5,7 +5,7 @@ using Content.Shared.Modules.ModSuit.Events;
 
 namespace Content.Shared.Modules;
 
-public partial class ModuleSystem
+public partial class SharedModuleSystem
 {
     private void InitializeRelay()
     {

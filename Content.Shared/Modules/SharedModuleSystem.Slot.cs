@@ -5,7 +5,7 @@ using Content.Shared.Wires;
 
 namespace Content.Shared.Modules;
 
-public partial class ModuleSystem
+public partial class SharedModuleSystem
 {
     private void InitializeSlot()
     {

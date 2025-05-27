@@ -11,16 +11,22 @@ public partial class SharedModSuitSystem
         SubscribeLocalEvent<ModSuitPartDeployableComponent, ModSuitGetUiStatesEvent>(RelayToDeployableParts);
     }
 
-    private void RelayToDeployedParts<T>(Entity<ModSuitPartDeployableComponent> ent, ref T args)
+    protected void RelayToDeployedParts<T>(Entity<ModSuitPartDeployableComponent> ent, ref T args)
     {
         var ev = new ModSuitDeployableRelayedEvent<T>(args, ent.Owner);
         RaiseEventToDeployedParts((ent.Owner, ent.Comp), ev);
     }
 
-    private void RelayToDeployableParts<T>(Entity<ModSuitPartDeployableComponent> ent, ref T args)
+    protected void RelayToDeployableParts<T>(Entity<ModSuitPartDeployableComponent> ent, ref T args)
     {
         var ev = new ModSuitDeployableRelayedEvent<T>(args, ent.Owner);
         RaiseEventToDeployedParts((ent.Owner, ent.Comp), ev);
+    }
+
+    protected void RelayToSuit<T>(Entity<ModSuitDeployedPartComponent> ent, ref T args)
+    {
+        var ev = new ModSuitDeployedPartRelayedEvent<T>(args, ent.Owner);
+        RaiseEventToSuit((ent.Owner, ent.Comp), ev);
     }
 
     [PublicAPI]
@@ -49,5 +55,23 @@ public partial class SharedModSuitSystem
     {
         foreach (var part in GetDeployableParts(ent))
             RaiseLocalEvent(part, ref ev);
+    }
+
+    [PublicAPI]
+    public void RaiseEventToSuit<T>(Entity<ModSuitDeployedPartComponent?> ent, T ev) where T : class
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp))
+            return;
+
+        RaiseLocalEvent(ent.Comp.Suit, ref ev);
+    }
+
+    [PublicAPI]
+    public void RaiseEventToSuit<T>(Entity<ModSuitDeployedPartComponent?> ent, ref T ev) where T : struct
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp))
+            return;
+
+        RaiseLocalEvent(ent.Comp.Suit, ref ev);
     }
 }

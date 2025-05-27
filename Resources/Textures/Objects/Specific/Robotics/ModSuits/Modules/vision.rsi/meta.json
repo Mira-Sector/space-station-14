@@ -31,7 +31,8 @@
             "name": "welding"
         },
         {
-            "name": "welding-worn"
+            "name": "welding-worn",
+            "directions": 4
         }
     ]
 }
