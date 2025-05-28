@@ -1,3 +1,4 @@
+using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 using Robust.Shared.Utility;
 
@@ -8,6 +9,12 @@ public sealed partial class ModSuitSealableComponent : Component
 {
     [DataField, AutoNetworkedField, Access(typeof(SharedModSuitSystem))]
     public bool Sealed;
+
+    [DataField, AutoNetworkedField]
+    public SoundSpecifier? SealSound = new SoundPathSpecifier("/Audio/Mecha/mechmove03.ogg");
+
+    [DataField, AutoNetworkedField]
+    public SoundSpecifier? UnsealSound = new SoundPathSpecifier("/Audio/Mecha/mechmove03.ogg");
 
     [DataField, AutoNetworkedField]
     public Dictionary<bool, List<PrototypeLayerData>> IconLayers = [];

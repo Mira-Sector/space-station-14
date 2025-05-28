@@ -4,11 +4,13 @@ using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
 using Content.Shared.Modules.ModSuit.UI;
 using JetBrains.Annotations;
+using Robust.Shared.Audio.Systems;
 
 namespace Content.Shared.Modules.ModSuit;
 
 public partial class SharedModSuitSystem
 {
+    [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedItemSystem _item = default!;
 
     private void InitializeSealable()
@@ -113,7 +115,29 @@ public partial class SharedModSuitSystem
         Dirty(ent);
 
         var container = CompOrNull<ModSuitDeployedPartComponent>(ent.Owner)?.Suit ?? ent.Owner;
-        RaiseSealableEvent(ent.Owner, container, isSealed);
+
+        if (isSealed)
+        {
+            var partEv = new ModSuitSealedEvent();
+            RaiseLocalEvent(ent.Owner, partEv);
+
+            var suitEv = new ModSuitContainerPartSealedEvent(ent.Owner);
+            RaiseLocalEvent(container, suitEv);
+
+            if (_net.IsServer)
+                _audio.PlayPvs(ent.Comp.SealSound, ent.Owner);
+        }
+        else
+        {
+            var partEv = new ModSuitUnsealedEvent();
+            RaiseLocalEvent(ent.Owner, partEv);
+
+            var suitEv = new ModSuitContainerPartUnsealedEvent(ent.Owner);
+            RaiseLocalEvent(container, suitEv);
+
+            if (_net.IsServer)
+                _audio.PlayPvs(ent.Comp.UnsealSound, ent.Owner);
+        }
 
         Appearance.SetData(ent.Owner, ModSuitSealedVisuals.Sealed, isSealed);
         _item.VisualsChanged(ent.Owner);
@@ -121,26 +145,5 @@ public partial class SharedModSuitSystem
         UpdateUI(container);
 
         return true;
-    }
-
-    internal void RaiseSealableEvent(EntityUid part, EntityUid suit, bool isSealed)
-    {
-        if (isSealed)
-        {
-            var partEv = new ModSuitSealedEvent();
-            RaiseLocalEvent(part, partEv);
-
-            var suitEv = new ModSuitContainerPartSealedEvent(part);
-            RaiseLocalEvent(suit, suitEv);
-        }
-        else
-        {
-            var partEv = new ModSuitUnsealedEvent();
-            RaiseLocalEvent(part, partEv);
-
-            var suitEv = new ModSuitContainerPartUnsealedEvent(part);
-            RaiseLocalEvent(suit, suitEv);
-        }
-
     }
 }
