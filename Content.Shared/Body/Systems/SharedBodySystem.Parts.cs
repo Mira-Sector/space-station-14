@@ -76,7 +76,10 @@ public partial class SharedBodySystem
 
     private void OnBodyPartInit(Entity<BodyPartComponent> ent, ref MapInitEvent args)
     {
+        if (ent.Comp.LimbChildren == null)
+            return;
 
+        MapInitParts(ent.Owner, ent.Comp.LimbChildren);
     }
 
     private void RecursiveBodyUpdate(Entity<BodyPartComponent> ent, EntityUid? bodyUid)

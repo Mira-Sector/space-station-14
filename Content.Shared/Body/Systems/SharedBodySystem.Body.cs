@@ -200,8 +200,14 @@ public partial class SharedBodySystem
         _damageable.Irradiate(uid, args.RadsPerSecond, radiation.RadiationDamageTypeIDs);
     }
 
-    private void MapInitParts(EntityUid rootPartId, BodyPrototype prototype)
+    /// <summary>
+    /// Sets up all of the relevant body parts for a particular body entity and root part.
+    /// </summary>
+    private void MapInitParts(EntityUid rootPartId, BodyLimbChildren prototype)
     {
+        // Start at the root part and traverse the body graph, setting up parts as we go.
+        // Basic BFS pathfind.
+
         var rootSlot = prototype.Root;
         var frontier = new Queue<string>();
         frontier.Enqueue(rootSlot);
@@ -212,37 +218,6 @@ public partial class SharedBodySystem
         // Maps slot to its relevant entity.
         var cameFromEntities = new Dictionary<string, EntityUid>();
         cameFromEntities[rootSlot] = rootPartId;
-
-        MapInitParts(rootPartId, prototype, frontier, cameFrom, cameFromEntities);
-    }
-
-    private void MapInitParts(EntityUid rootPartId, BodyLimbChildren prototype)
-    {
-        var frontier = new Queue<string>();
-        frontier.Enqueue(rootPartId);
-
-        // Child -> Parent connection.
-        var cameFrom = new Dictionary<string, string>();
-        cameFrom[rootSlot] = rootSlot;
-        // Maps slot to its relevant entity.
-        var cameFromEntities = new Dictionary<string, EntityUid>();
-        cameFromEntities[rootSlot] = rootPartId;
-
-        MapInitParts(rootPartId, prototype, frontier, cameFrom, cameFromEntities);
-    }
-
-    /// <summary>
-    /// Sets up all of the relevant body parts for a particular body entity and root part.
-    /// </summary>
-    private void MapInitParts(
-        EntityUid rootPartId,
-        BodyLimbChildren prototype,
-        Queue<string> frontier,
-        Dictionary<string, string> cameFrom,
-        Dictionary<string, EntityUid> cameFromEntities)
-    {
-        // Start at the root part and traverse the body graph, setting up parts as we go.
-        // Basic BFS pathfind.
 
         while (frontier.TryDequeue(out var currentSlotId))
         {
