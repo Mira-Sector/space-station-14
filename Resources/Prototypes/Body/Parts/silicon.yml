@@ -12,7 +12,6 @@
   - type: BodyPart
     limbChildren:
       root: torso
-      name: "anything"
       slots:
         head:
           part: HeadHuman

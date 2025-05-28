@@ -1,4 +1,4 @@
-﻿using Robust.Shared.Prototypes;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 
 namespace Content.Shared.Body.Prototypes;
@@ -7,9 +7,6 @@ namespace Content.Shared.Body.Prototypes;
 [DataDefinition, Virtual]
 public partial class BodyLimbChildren
 {
-    [DataField]
-    public string Name { get; protected set; } = string.Empty;
-
     [DataField]
     public Dictionary<string, BodyPrototypeSlot> Slots { get; protected set; } = new();
 

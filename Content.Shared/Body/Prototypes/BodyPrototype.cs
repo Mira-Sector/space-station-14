@@ -8,6 +8,9 @@ public sealed partial class BodyPrototype : BodyLimbChildren, IPrototype
     [IdDataField]
     public string ID { get; } = default!;
 
+    [DataField]
+    public string Name { get; protected set; } = string.Empty;
+
     private BodyPrototype() { }
 
     public BodyPrototype(string id, string name, string root, Dictionary<string, BodyPrototypeSlot> slots)
