@@ -3,16 +3,13 @@ using Robust.Shared.Prototypes;
 namespace Content.Shared.Body.Prototypes;
 
 [Prototype]
-public sealed partial class BodyPrototype : IPrototype
+public sealed partial class BodyPrototype : BodyLimbChildren, IPrototype
 {
-    [IdDataField] public string ID { get; private set; } = default!;
+    [IdDataField]
+    public string ID { get; } = default!;
 
-    [DataField("name")]
-    public string Name { get; private set; } = "";
-
-    [DataField("root")] public string Root { get; private set; } = string.Empty;
-
-    [DataField("slots")] public Dictionary<string, BodyPrototypeSlot> Slots { get; private set; } = new();
+    [DataField]
+    public string Root { get; private set; } = string.Empty;
 
     private BodyPrototype() { }
 
@@ -24,6 +21,3 @@ public sealed partial class BodyPrototype : IPrototype
         Slots = slots;
     }
 }
-
-[DataRecord]
-public sealed partial record BodyPrototypeSlot(EntProtoId? Part, HashSet<string> Connections, Dictionary<string, string> Organs);

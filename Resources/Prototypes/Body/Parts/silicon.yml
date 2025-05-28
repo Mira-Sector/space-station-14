@@ -29,7 +29,7 @@
 
 - type: entity
   id: LeftArmBorg
-  parent: PartSilicon
+  parent: [PartSilicon, BaseLeftArm]
   name: cyborg left arm
   components:
   - type: BodyPart
@@ -52,7 +52,7 @@
 
 - type: entity
   id: RightArmBorg
-  parent: PartSilicon
+  parent: [PartSilicon, BaseRightArm]
   name: cyborg right arm
   components:
   - type: BodyPart
@@ -72,6 +72,22 @@
     - BorgRArm
   - type: Item
     heldPrefix: borg-arm
+
+- type: entity
+  id: LeftHandBorg
+  parent: [PartSilicon, BaseLeftHand]
+  components:
+    - type: BodyPart
+      partType: Hand
+      symmetry: Left
+
+- type: entity
+  id: RightHandBorg
+  parent: [PartSilicon, BaseLeftHand]
+  components:
+    - type: BodyPart
+      partType: Hand
+      symmetry: right
 
 - type: entity
   id: LeftLegBorg
