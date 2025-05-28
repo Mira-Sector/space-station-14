@@ -6,7 +6,7 @@ namespace Content.Shared.Modules.Modules;
 
 public abstract partial class SharedPowerDrainModuleSystem : BaseToggleableModuleSystem<PowerDrainModuleComponent>
 {
-    [Dependency] protected readonly SharedModuleSystem Module = default!;
+    [Dependency] private readonly SharedModuleSystem _module = default!;
 
     public override void Initialize()
     {
@@ -19,13 +19,13 @@ public abstract partial class SharedPowerDrainModuleSystem : BaseToggleableModul
     protected override void OnEnabled(Entity<PowerDrainModuleComponent> ent, ref ModuleEnabledEvent args)
     {
         base.OnEnabled(ent, ref args);
-        Module.UpdatePowerDraw(args.Container);
+        _module.UpdatePowerDraw(args.Container);
     }
 
     protected override void OnDisabled(Entity<PowerDrainModuleComponent> ent, ref ModuleDisabledEvent args)
     {
         base.OnDisabled(ent, ref args);
-        Module.UpdatePowerDraw(args.Container);
+        _module.UpdatePowerDraw(args.Container);
     }
 
     private void OnGetPower(Entity<PowerDrainModuleComponent> ent, ref GetModulePowerDrawEvent args)

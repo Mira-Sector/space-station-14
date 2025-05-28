@@ -41,6 +41,8 @@ public sealed partial class ModSuitWindow : DefaultWindow
         SealPanel.RemoveAllChildren();
         SealButtons.RemoveAllChildren();
 
+        var anyUnsealed = false;
+
         foreach (var (part, data) in _sealableParts)
         {
             var spriteView = new ModSuitSealableSprite(data.Sprite[data.IsSealed]);
@@ -50,6 +52,21 @@ public sealed partial class ModSuitWindow : DefaultWindow
             SealButtons.AddChild(button);
 
             button.ButtonButton.OnPressed += _ => OnSealButtonPressed?.Invoke(part, !data.IsSealed);
+
+            if (!data.IsSealed)
+                anyUnsealed = true;
+        }
+
+        if (_sealableParts.Any())
+        {
+            var allButton = new ModSuitSealableAllButton(!anyUnsealed);
+            SealButtons.AddChild(allButton);
+
+            allButton.ButtonButton.OnPressed += _ =>
+            {
+                foreach (var (part, _) in _sealableParts)
+                    OnSealButtonPressed?.Invoke(part, anyUnsealed);
+            };
         }
     }
 
