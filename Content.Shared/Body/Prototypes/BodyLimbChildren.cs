@@ -13,6 +13,8 @@ public partial class BodyLimbChildren
     [DataField]
     public Dictionary<string, BodyPrototypeSlot> Slots { get; protected set; } = new();
 
+    [DataField]
+    public string Root { get; protected set; } = string.Empty;
 }
 
 [DataRecord, Serializable, NetSerializable]
