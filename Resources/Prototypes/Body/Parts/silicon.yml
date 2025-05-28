@@ -85,7 +85,7 @@
   - type: BodyPart
     partType: Arm
     symmetry: Left
-  - type: SurgeryReciever
+  - type: SurgeryReceiver
     availableSurgeries:
     - ProstheticsAmputation
   - type: Sprite
@@ -108,7 +108,7 @@
   - type: BodyPart
     partType: Arm
     symmetry: Right
-  - type: SurgeryReciever
+  - type: SurgeryReceiver
     availableSurgeries:
     - ProstheticsAmputation
   - type: Sprite
@@ -137,23 +137,23 @@
   components:
     - type: BodyPart
       partType: Hand
-      symmetry: right
+      symmetry: Right
 
 - type: entity
-  id: LeftHandBorg
-  parent: [PartSilicon, BaseLeftHand]
+  id: LeftFootBorg
+  parent: [PartSilicon, BaseLeftFoot]
   components:
     - type: BodyPart
-      partType: Hand
+      partType: Foot
       symmetry: Left
 
 - type: entity
-  id: RightHandBorg
-  parent: [PartSilicon, BaseLeftHand]
+  id: RightFootBorg
+  parent: [PartSilicon, BaseLeftFoot]
   components:
     - type: BodyPart
-      partType: Hand
-      symmetry: right
+      partType: Foot
+      symmetry: Right
 
 - type: entity
   id: LeftLegBorg
@@ -163,7 +163,7 @@
   - type: BodyPart
     partType: Leg
     symmetry: Left
-  - type: SurgeryReciever
+  - type: SurgeryReceiver
     availableSurgeries:
      - ProstheticsAmputation
   - type: Sprite
@@ -186,7 +186,7 @@
   - type: BodyPart
     partType: Leg
     symmetry: Right
-  - type: SurgeryReciever
+  - type: SurgeryReceiver
     availableSurgeries:
     - ProstheticsAmputation
   - type: Sprite
@@ -208,7 +208,7 @@
   components:
   - type: BodyPart
     partType: Head
-  - type: SurgeryReciever
+  - type: SurgeryReceiver
     availableSurgeries:
      - ProstheticsAmputation
   - type: Sprite

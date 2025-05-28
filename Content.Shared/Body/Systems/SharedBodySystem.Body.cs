@@ -167,7 +167,9 @@ public partial class SharedBodySystem
         Dirty(rootPartUid, rootPart);
 
         // Setup the rest of the body entities.
-        SetupOrgans((rootPartUid, rootPart), protoRoot.Organs);
+        if (protoRoot.Organs != null)
+            SetupOrgans((rootPartUid, rootPart), protoRoot.Organs);
+
         MapInitParts(rootPartUid, prototype);
     }
 
@@ -223,6 +225,9 @@ public partial class SharedBodySystem
         {
             var currentSlot = prototype.Slots[currentSlotId];
 
+            if (currentSlot.Connections == null)
+                continue;
+
             foreach (var connection in currentSlot.Connections)
             {
                 // Already been handled
@@ -252,7 +257,8 @@ public partial class SharedBodySystem
                 }
 
                 // Add organs
-                SetupOrgans((childPart, childPartComponent), connectionSlot.Organs);
+                if (connectionSlot.Organs != null)
+                    SetupOrgans((childPart, childPartComponent), connectionSlot.Organs);
 
                 // Enqueue it so we can also get its neighbors.
                 frontier.Enqueue(connection);

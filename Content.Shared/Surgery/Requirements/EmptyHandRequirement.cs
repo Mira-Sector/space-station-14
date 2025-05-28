@@ -1,6 +1,5 @@
-﻿using Content.Shared.Body.Part;
+using Content.Shared.Body.Part;
 using Content.Shared.DoAfter;
-using Content.Shared.Whitelist;
 using JetBrains.Annotations;
 using Robust.Shared.Serialization;
 using System.Diagnostics.CodeAnalysis;
@@ -72,7 +71,7 @@ public sealed partial class EmptyHandRequirement : SurgeryEdgeRequirement
         var logMan = IoCManager.Resolve<ILogManager>();
         var log = logMan.RootSawmill;
 
-        if (Delay != otherEmptyHandt.Delay)
+        if (Delay != otherEmptyHand.Delay)
             log.Warning($"Surgery EmptyHandRequirement has mismatching delays of {Delay} and {otherEmptyHand.Delay}.");
 # endif
 

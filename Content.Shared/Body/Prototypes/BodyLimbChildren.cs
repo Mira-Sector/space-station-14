@@ -15,4 +15,4 @@ public partial class BodyLimbChildren
 }
 
 [DataRecord, Serializable, NetSerializable]
-public sealed record BodyPrototypeSlot(EntProtoId? Part, HashSet<string> Connections, Dictionary<string, string> Organs);
+public sealed record BodyPrototypeSlot(EntProtoId? Part, HashSet<string>? Connections, Dictionary<string, string>? Organs);
