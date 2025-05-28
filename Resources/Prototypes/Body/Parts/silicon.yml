@@ -140,6 +140,22 @@
       symmetry: right
 
 - type: entity
+  id: LeftHandBorg
+  parent: [PartSilicon, BaseLeftHand]
+  components:
+    - type: BodyPart
+      partType: Hand
+      symmetry: Left
+
+- type: entity
+  id: RightHandBorg
+  parent: [PartSilicon, BaseLeftHand]
+  components:
+    - type: BodyPart
+      partType: Hand
+      symmetry: right
+
+- type: entity
   id: LeftLegBorg
   parent: PartSilicon
   name: cyborg left leg
