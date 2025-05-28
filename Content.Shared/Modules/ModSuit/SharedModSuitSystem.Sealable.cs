@@ -89,7 +89,8 @@ public partial class SharedModSuitSystem
 
     private void OnSealableUiButton(ModSuitSealButtonMessage args)
     {
-        SetSeal(GetEntity(args.Part), args.ShouldSeal);
+        foreach (var (part, shouldSeal) in args.Parts)
+            SetSeal(GetEntity(part), shouldSeal);
     }
 
     [PublicAPI]

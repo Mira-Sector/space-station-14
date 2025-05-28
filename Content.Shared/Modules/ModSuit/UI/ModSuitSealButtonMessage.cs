@@ -5,12 +5,10 @@ namespace Content.Shared.Modules.ModSuit.UI;
 [Serializable, NetSerializable]
 public sealed partial class ModSuitSealButtonMessage : BoundUserInterfaceMessage
 {
-    public readonly NetEntity Part;
-    public readonly bool ShouldSeal;
+    public readonly Dictionary<NetEntity, bool> Parts;
 
-    public ModSuitSealButtonMessage(NetEntity part, bool shouldSeal)
+    public ModSuitSealButtonMessage(Dictionary<NetEntity, bool> parts)
     {
-        Part = part;
-        ShouldSeal = shouldSeal;
+        Parts = parts;
     }
 }

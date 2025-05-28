@@ -11,7 +11,7 @@ public sealed partial class ModSuitWindow : DefaultWindow
 {
     private KeyValuePair<NetEntity, ModSuitSealableBuiEntry>[] _sealableParts = [];
 
-    public event Action<NetEntity, bool>? OnSealButtonPressed;
+    public event Action<Dictionary<NetEntity, bool>>? OnSealButtonPressed;
 
     public ModSuitWindow()
     {
@@ -51,7 +51,9 @@ public sealed partial class ModSuitWindow : DefaultWindow
             var button = new ModSuitSealableButton(part, data.IsSealed);
             SealButtons.AddChild(button);
 
-            button.ButtonButton.OnPressed += _ => OnSealButtonPressed?.Invoke(part, !data.IsSealed);
+            Dictionary<NetEntity, bool> sealedButtonState = [];
+            sealedButtonState.Add(part, !data.IsSealed);
+            button.ButtonButton.OnPressed += _ => OnSealButtonPressed?.Invoke(sealedButtonState);
 
             if (!data.IsSealed)
                 anyUnsealed = true;
@@ -62,11 +64,16 @@ public sealed partial class ModSuitWindow : DefaultWindow
             var allButton = new ModSuitSealableAllButton(!anyUnsealed);
             SealButtons.AddChild(allButton);
 
-            allButton.ButtonButton.OnPressed += _ =>
+            Dictionary<NetEntity, bool> sealedButtonState = [];
+            foreach (var (part, data) in _sealableParts)
             {
-                foreach (var (part, _) in _sealableParts)
-                    OnSealButtonPressed?.Invoke(part, anyUnsealed);
-            };
+                if (data.IsSealed == anyUnsealed)
+                    continue;
+
+                sealedButtonState.Add(part, !data.IsSealed);
+            }
+
+            allButton.ButtonButton.OnPressed += _ => OnSealButtonPressed?.Invoke(sealedButtonState);
         }
     }
 

@@ -35,6 +35,6 @@ public sealed partial class ModSuitBoundUserInterface : BoundUserInterface
         if (_window == null)
             return;
 
-        _window.OnSealButtonPressed += (part, shouldSeal) => SendPredictedMessage(new ModSuitSealButtonMessage(part, shouldSeal));
+        _window.OnSealButtonPressed += (parts) => SendPredictedMessage(new ModSuitSealButtonMessage(parts));
     }
 }
