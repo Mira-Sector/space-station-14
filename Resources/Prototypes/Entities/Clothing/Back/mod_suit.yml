@@ -3,6 +3,7 @@
   parent:
   - Clothing
   - PowerCellSlotMediumItem
+  - BaseJetpackNoClothing # needed for jetpack module
   abstract: true
   components:
   - type: ModSuitComplexityLimit
@@ -12,7 +13,6 @@
     whitelist:
       tags:
       - ModSuitModule
-
   - type: ModuleContainerAddOnInteract
   - type: ModuleContainerRequireWirePanel
   - type: ModuleContainerPower
@@ -33,6 +33,8 @@
     slots:
     - back
   - type: Appearance
+  - type: Jetpack # needed for jetpack module
+    toggleAction: null # action is handled by generic module action
 
 - type: entity
   id: ClothingBackpackModSuitAdvanced

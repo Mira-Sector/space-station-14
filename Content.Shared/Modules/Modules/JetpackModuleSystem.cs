@@ -29,14 +29,15 @@ public sealed partial class JetpackModuleSystem : BaseToggleableModuleSystem<Jet
         if (!_jetpack.CanEnableOnGrid(Transform(args.Container).GridUid))
             return;
 
-        _jetpack.SetEnabled(ent.Owner, Comp<JetpackComponent>(ent.Owner), true, args.User);
+        EnsureComp<JetpackComponent>(args.Container, out var jetpack);
+        _jetpack.SetEnabled(args.Container, jetpack, true, args.User);
     }
 
     protected override void OnDisabled(Entity<JetpackModuleComponent> ent, ref ModuleDisabledEvent args)
     {
         base.OnDisabled(ent, ref args);
 
-        _jetpack.SetEnabled(ent.Owner, Comp<JetpackComponent>(ent.Owner), false, args.User);
+        _jetpack.SetEnabled(args.Container, Comp<JetpackComponent>(args.Container), false, args.User);
     }
 
     private void OnToggleAttempt(Entity<JetpackModuleComponent> ent, ref ModuleToggleAttemptEvent args)

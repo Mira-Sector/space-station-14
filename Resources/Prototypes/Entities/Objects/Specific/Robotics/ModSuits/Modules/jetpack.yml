@@ -1,6 +1,6 @@
 - type: entity
   id: BaseModSuitModuleJetpack
-  parent: [ BaseJetpackNoClothing, BaseModSuitModule ]
+  parent: BaseModSuitModule
   abstract: true
   components:
   - type: ModSuitModuleComplexity
@@ -16,8 +16,6 @@
     onUseDraw:
       additional: 5
   - type: JetpackModule
-  - type: Jetpack
-    toggleAction: null # action is handled by generic module action
 
 - type: entity
   id: ModSuitModuleJetpackNormal
@@ -35,5 +33,9 @@
     clothingLayers:
       true:
         outerClothing:
-        - sprite: Objects/Specific/Robotics/ModSuits/Modules/vision.rsi
+        - sprite: Objects/Specific/Robotics/ModSuits/Modules/jetpack.rsi
+          state: normal-worn-on
+      false:
+        outerClothing:
+        - sprite: Objects/Specific/Robotics/ModSuits/Modules/jetpack.rsi
           state: normal-worn
