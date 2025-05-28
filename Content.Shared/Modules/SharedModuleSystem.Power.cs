@@ -49,8 +49,6 @@ public partial class SharedModuleSystem
         RaiseEventToModules((ent.Owner, ent.Comp2), ev);
 
         var draw = ent.Comp1.BaseRate + ev.Additional;
-        draw *= ev.Multiplier;
-
         return draw;
     }
 

@@ -11,10 +11,8 @@
     - Control
   - type: ToggleableModuleAction
   - type: PowerDrainModule
-    enabledDraw:
-      additional: 2.5
-    onUseDraw:
-      additional: 5
+    enabledDraw: 2.5
+    onUseDraw: 5
   - type: JetpackModule
 
 - type: entity

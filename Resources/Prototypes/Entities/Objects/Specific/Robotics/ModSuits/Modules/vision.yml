@@ -10,8 +10,7 @@
     - Helmet
   - type: ToggleableModuleAction
   - type: PowerDrainModule
-    enabledDraw:
-      additional: 1.5
+    enabledDraw: 1.5
 
 - type: entity
   id: ModSuitModuleVisonMed

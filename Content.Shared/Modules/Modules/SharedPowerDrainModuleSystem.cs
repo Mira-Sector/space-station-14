@@ -4,9 +4,9 @@ using Content.Shared.PowerCell;
 
 namespace Content.Shared.Modules.Modules;
 
-public sealed partial class PowerDrainModuleSystem : BaseToggleableModuleSystem<PowerDrainModuleComponent>
+public abstract partial class SharedPowerDrainModuleSystem : BaseToggleableModuleSystem<PowerDrainModuleComponent>
 {
-    [Dependency] private readonly SharedModuleSystem _module = default!;
+    [Dependency] protected readonly SharedModuleSystem Module = default!;
 
     public override void Initialize()
     {
@@ -19,30 +19,18 @@ public sealed partial class PowerDrainModuleSystem : BaseToggleableModuleSystem<
     protected override void OnEnabled(Entity<PowerDrainModuleComponent> ent, ref ModuleEnabledEvent args)
     {
         base.OnEnabled(ent, ref args);
-        _module.UpdatePowerDraw(args.Container);
-
-        if (ent.Comp.OnUseDraw == null)
-            return;
-
-        if (!TryComp<PowerCellDrawComponent>(args.Container, out var powerDraw))
-            return;
-
-        var rate = _module.GetBaseRate(args.Container);
-        rate += ent.Comp.OnUseDraw.Additional;
-        rate *= ent.Comp.OnUseDraw.Multiplier;
-
-        powerDraw.DrawRate = rate;
+        Module.UpdatePowerDraw(args.Container);
     }
 
     protected override void OnDisabled(Entity<PowerDrainModuleComponent> ent, ref ModuleDisabledEvent args)
     {
         base.OnDisabled(ent, ref args);
-        _module.UpdatePowerDraw(args.Container);
+        Module.UpdatePowerDraw(args.Container);
     }
 
     private void OnGetPower(Entity<PowerDrainModuleComponent> ent, ref GetModulePowerDrawEvent args)
     {
-        PowerDrainEntry? entry;
+        float? entry;
 
         if (ent.Comp.Toggled)
             entry = ent.Comp.EnabledDraw;
@@ -52,8 +40,7 @@ public sealed partial class PowerDrainModuleSystem : BaseToggleableModuleSystem<
         if (entry == null)
             return;
 
-        args.Additional += entry.Additional;
-        args.Multiplier += entry.Multiplier;
+        args.Additional += entry.Value;
     }
 
     private void OnEmpty(Entity<PowerDrainModuleComponent> ent, ref ModuleRelayedEvent<PowerCellSlotEmptyEvent> args)

@@ -7,21 +7,11 @@ namespace Content.Shared.Modules.Components.Modules;
 public sealed partial class PowerDrainModuleComponent : BaseToggleableModuleComponent
 {
     [DataField, AutoNetworkedField]
-    public PowerDrainEntry? EnabledDraw;
+    public float? EnabledDraw;
 
     [DataField, AutoNetworkedField]
-    public PowerDrainEntry? DisabledDraw;
+    public float? DisabledDraw;
 
     [DataField, AutoNetworkedField]
-    public PowerDrainEntry? OnUseDraw;
-}
-
-[DataDefinition, Serializable, NetSerializable]
-public sealed partial class PowerDrainEntry
-{
-    [DataField]
-    public float Additional;
-
-    [DataField]
-    public float Multiplier;
+    public float? OnUseDraw;
 }

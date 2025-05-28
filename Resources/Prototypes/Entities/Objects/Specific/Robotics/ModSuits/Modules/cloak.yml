@@ -15,10 +15,8 @@
     - Boots
   - type: ToggleableModuleAction
   - type: PowerDrainModule
-    enabledDraw:
-      additional: 10
-    onUseDraw:
-      additional: 50
+    enabledDraw: 10
+    onUseDraw: 50
   - type: ToggleableComponentUserModule
     components:
     - type: Stealth
@@ -47,7 +45,5 @@
     sprite: Objects/Specific/Robotics/ModSuits/Modules/cloaking.rsi
     state: ninja
   - type: PowerDrainModule
-    enabledDraw:
-      additional: 5
-    onUseDraw:
-      additional: 25
+    enabledDraw: 5
+    onUseDraw: 25
