@@ -3,25 +3,45 @@
             MinSize="512 768">
     <BoxContainer
         Orientation="Vertical"
-        HorizontalAlignment="Center"
-        VerticalAlignment="Center"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
         Margin="4">
-        <BoxContainer
-            Name="SealContainer"
-            Visible="False"
-            Margin="4"
-            Access="Public">
-            <PanelContainer
-                Name="SealPanel"
-                Access="Public">
+        <PanelContainer StyleClasses="WindowHeadingBackground">
+            <PanelContainer StyleClasses="PdaBorderRect">
+                <BoxContainer
+                    Name="SealContainer"
+                    Visible="False"
+                    Margin="16"
+                    VerticalAlignment="Top"
+                    Access="Public">
+                    <PanelContainer
+                        Name="SealPanel"
+                        Access="Public">
+                    </PanelContainer>
+                    <BoxContainer
+                        Name="SealButtons"
+                        Margin="2"
+                        Orientation="Vertical"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Access="Public"/>
+                </BoxContainer>
             </PanelContainer>
-            <BoxContainer
-                Name="SealButtons"
-                Margin="2"
-                Orientation="Vertical"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Access="Public"/>
+        </PanelContainer>
+        <BoxContainer>
+            <PanelContainer StyleClasses="LowDivider" />
         </BoxContainer>
+        <ScrollContainer
+            HorizontalExpand="True"
+            VerticalExpand="True"
+            HScrollEnabled="False">
+            <BoxContainer
+                Name="ModuleList"
+                Margin="0, 0, 16, 0"
+                Orientation="Vertical"
+                HorizontalExpand="True"
+                HorizontalAlignment="Center"
+                Access="Public"/>
+        </ScrollContainer>
     </BoxContainer>
 </DefaultWindow>

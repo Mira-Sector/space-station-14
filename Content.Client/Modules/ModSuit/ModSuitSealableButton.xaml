@@ -1,5 +1,6 @@
 <PanelContainer xmlns="https://spacestation14.io">
-    <BoxContainer>
+    <BoxContainer
+        Margin="2">
         <Button
             Name="ButtonButton"
             Text="{Loc 'modsuit-interface-seal'}"
