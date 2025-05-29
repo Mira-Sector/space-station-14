@@ -22,6 +22,7 @@ public partial class SharedModSuitSystem
             return;
 
         ent.Comp.Complexity += moduleComp.Complexity;
+        UpdateUI(ent.Owner);
     }
 
     private void OnComplexityModuleRemoved(Entity<ModSuitComplexityLimitComponent> ent, ref ModuleContainerModuleRemovedEvent args)
@@ -30,6 +31,7 @@ public partial class SharedModSuitSystem
             return;
 
         ent.Comp.Complexity -= moduleComp.Complexity;
+        UpdateUI(ent.Owner);
     }
 
     private void OnComplexityModuleAttempt(Entity<ModSuitComplexityLimitComponent> ent, ref ModuleContainerModuleAddingAttemptEvent args)
