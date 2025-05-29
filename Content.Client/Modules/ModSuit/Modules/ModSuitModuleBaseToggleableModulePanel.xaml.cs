@@ -19,5 +19,15 @@ public partial class ModSuitModuleBaseToggleableModulePanel : PanelContainer
         ModuleIcon.SetEntity(module);
         ModuleName.Text = _entity.GetComponent<MetaDataComponent>(module).EntityName;
         ToggleButton.Pressed = buiEntry.Toggled;
+
+        if (buiEntry.Complexity == null)
+        {
+            Complexity.Visible = false;
+        }
+        else
+        {
+            Complexity.Visible = true;
+            Complexity.Text = buiEntry.Complexity.Value.ToString();
+        }
     }
 }

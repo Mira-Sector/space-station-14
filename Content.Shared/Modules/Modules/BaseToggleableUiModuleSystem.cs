@@ -1,5 +1,6 @@
 using Content.Shared.Modules.Components.Modules;
 using Content.Shared.Modules.ModSuit;
+using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.UI;
 using Content.Shared.Modules.ModSuit.UI.Modules;
 
@@ -22,7 +23,7 @@ public abstract partial class BaseToggleableUiModuleSystem<T> : BaseToggleableMo
 
     protected override ModSuitModuleBaseModuleBuiEntry GetModSuitModuleBuiEntry(Entity<T> ent)
     {
-        return new ModSuitModuleBaseToggleableModuleBuiEntry(ent.Comp.Toggled);
+        return new ModSuitModuleBaseToggleableModuleBuiEntry(ent.Comp.Toggled, CompOrNull<ModSuitModuleComplexityComponent>(ent.Owner)?.Complexity);
     }
 
     protected override void RaiseToggleEvents(Entity<T> ent, bool toggle, EntityUid? user)

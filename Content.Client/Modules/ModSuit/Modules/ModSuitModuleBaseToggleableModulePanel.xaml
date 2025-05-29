@@ -37,6 +37,12 @@
                             Align="Center"
                             HorizontalExpand="True"
                             Access="Public"/>
+                        <Label
+                            Name="Complexity"
+                            Align="Right"
+                            HorizontalExpand="True"
+                            Visible="False"
+                            Access="Public"/>
                     </BoxContainer>
                     <BoxContainer
                         VerticalAlignment="Bottom"

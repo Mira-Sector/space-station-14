@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Modules.Components.Modules;
 using Content.Shared.Modules.Events;
+using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
 using Content.Shared.Modules.ModSuit.UI;
 using Content.Shared.Modules.ModSuit.UI.Modules;
@@ -34,7 +35,7 @@ public abstract partial class BaseModuleSystem<T> : EntitySystem where T : BaseM
 
     protected virtual ModSuitModuleBaseModuleBuiEntry GetModSuitModuleBuiEntry(Entity<T> ent)
     {
-        return new ModSuitModuleBaseModuleBuiEntry();
+        return new ModSuitModuleBaseModuleBuiEntry(CompOrNull<ModSuitModuleComplexityComponent>(ent.Owner)?.Complexity);
     }
 
     private void OnGetModSuitUiState(Entity<T> ent, ref ModuleRelayedEvent<ModSuitGetUiStatesEvent> args)
@@ -43,11 +44,11 @@ public abstract partial class BaseModuleSystem<T> : EntitySystem where T : BaseM
         var newData = GetModSuitModuleBuiEntry(ent);
         var toAdd = KeyValuePair.Create(netEntity, newData);
 
-        ModSuitModuleBoundtUserInterfaceState? foundState = null;
+        ModSuitModuleBoundUserInterfaceState? foundState = null;
 
         foreach (var state in args.Args.States)
         {
-            if (state is not ModSuitModuleBoundtUserInterfaceState moduleState)
+            if (state is not ModSuitModuleBoundUserInterfaceState moduleState)
                 continue;
 
             foundState = moduleState;
@@ -57,7 +58,7 @@ public abstract partial class BaseModuleSystem<T> : EntitySystem where T : BaseM
         if (foundState == null)
         {
             KeyValuePair<NetEntity, ModSuitModuleBaseModuleBuiEntry>[] modules = [toAdd];
-            var newState = new ModSuitModuleBoundtUserInterfaceState(modules);
+            var newState = new ModSuitModuleBoundUserInterfaceState(modules);
             args.Args.States.Add(newState);
             return;
         }

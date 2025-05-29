@@ -4,11 +4,11 @@ using Robust.Shared.Serialization;
 namespace Content.Shared.Modules.ModSuit.UI;
 
 [Serializable, NetSerializable]
-public sealed class ModSuitModuleBoundtUserInterfaceState : BoundUserInterfaceState
+public sealed class ModSuitModuleBoundUserInterfaceState : BoundUserInterfaceState
 {
     public KeyValuePair<NetEntity, ModSuitModuleBaseModuleBuiEntry>[] Modules;
 
-    public ModSuitModuleBoundtUserInterfaceState(KeyValuePair<NetEntity, ModSuitModuleBaseModuleBuiEntry>[] modules)
+    public ModSuitModuleBoundUserInterfaceState(KeyValuePair<NetEntity, ModSuitModuleBaseModuleBuiEntry>[] modules)
     {
         Modules = modules;
     }

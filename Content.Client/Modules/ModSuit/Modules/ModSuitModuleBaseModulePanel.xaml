@@ -28,14 +28,20 @@
                     HorizontalAlignment="Stretch"
                     HorizontalExpand="True">
                     <BoxContainer
-                        VerticalAlignment="Stretch"
+                        Margin="8, 8, 0, 8"
+                        VerticalAlignment="Top"
                         VerticalExpand="True"
                         HorizontalAlignment="Stretch"
                         HorizontalExpand="True">
                         <Label
                             Name="ModuleName"
-                            Align="Center"
+                            Align="Left"
                             HorizontalExpand="True"
+                            Access="Public"/>
+                        <Label
+                            Name="Complexity"
+                            Align="Right"
+                            Visible="False"
                             Access="Public"/>
                     </BoxContainer>
                 </BoxContainer>

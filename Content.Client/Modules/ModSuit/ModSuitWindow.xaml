@@ -39,12 +39,37 @@
                 </BoxContainer>
             </PanelContainer>
         </controls:StripeBack>
+
         <BoxContainer
             Orientation="Vertical"
             HorizontalExpand="True"
             Margin="0, 8">
-            <PanelContainer StyleClasses="LowDivider" />
+            <PanelContainer StyleClasses="LowDivider"/>
         </BoxContainer>
+
+        <BoxContainer
+            Name="ComplexityContainer"
+            Visible="False"
+            Orientation="Vertical"
+            Access="Public">
+            <BoxContainer
+                Orientation="Vertical"
+                HorizontalExpand="True"
+                Margin="32, 0">
+                <Label
+                    Name="ComplexityLabel"
+                    Align="Left"
+                    HorizontalExpand="True"
+                    Access="Public"/>
+            </BoxContainer>
+            <BoxContainer
+                Orientation="Vertical"
+                HorizontalExpand="True"
+                Margin="0, 8">
+                <PanelContainer StyleClasses="LowDivider"/>
+            </BoxContainer>
+        </BoxContainer>
+
         <ScrollContainer
             Margin="16, 0, 8, 8"
             HorizontalExpand="True"

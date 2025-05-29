@@ -34,8 +34,12 @@ public sealed partial class ModSuitBoundUserInterface : BoundUserInterface
                 _window?.UpdateSealed(sealable);
                 break;
 
-            case ModSuitModuleBoundtUserInterfaceState module:
+            case ModSuitModuleBoundUserInterfaceState module:
                 _window?.UpdateModules(module);
+                break;
+
+            case ModSuitComplexityBoundUserInterfaceState complexity:
+                _window?.UpdateComplexity(complexity);
                 break;
         }
 

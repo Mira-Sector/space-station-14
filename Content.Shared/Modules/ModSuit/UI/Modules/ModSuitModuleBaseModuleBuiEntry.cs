@@ -7,4 +7,11 @@ namespace Content.Shared.Modules.ModSuit.UI.Modules;
 public partial class ModSuitModuleBaseModuleBuiEntry
 {
     public virtual int Priority => 0;
+
+    public readonly int? Complexity;
+
+    public ModSuitModuleBaseModuleBuiEntry(int? complexity)
+    {
+        Complexity = complexity;
+    }
 }

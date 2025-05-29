@@ -10,7 +10,7 @@ public partial class ModSuitModuleBaseToggleableModuleBuiEntry : ModSuitModuleBa
 
     public readonly bool Toggled;
 
-    public ModSuitModuleBaseToggleableModuleBuiEntry(bool toggled)
+    public ModSuitModuleBaseToggleableModuleBuiEntry(bool toggled, int? complexity) : base(complexity)
     {
         Toggled = toggled;
     }

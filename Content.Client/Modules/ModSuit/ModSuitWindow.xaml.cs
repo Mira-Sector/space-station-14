@@ -13,6 +13,7 @@ public sealed partial class ModSuitWindow : DefaultWindow
 {
     private KeyValuePair<NetEntity, ModSuitSealableBuiEntry>[] _sealableParts = [];
     private KeyValuePair<NetEntity, ModSuitModuleBaseModuleBuiEntry>[] _modules = [];
+    private (int, int)? _complexity = null;
 
     public event Action<Dictionary<NetEntity, bool>>? OnSealButtonPressed;
 
@@ -86,9 +87,33 @@ public sealed partial class ModSuitWindow : DefaultWindow
 
     #endregion
 
+    #region Complexity
+
+    public void UpdateComplexity(ModSuitComplexityBoundUserInterfaceState state)
+    {
+        _complexity = state.Complexity;
+        RefreshComplexity();
+    }
+
+    internal void RefreshComplexity()
+    {
+        if (_complexity == null)
+        {
+            ComplexityContainer.Visible = false;
+            return;
+        }
+
+        var (complexity, max) = _complexity.Value;
+
+        ComplexityContainer.Visible = true;
+        ComplexityLabel.Text = Loc.GetString("modsuit-interface-complexity", ("complexity", complexity), ("max", max));
+    }
+
+    #endregion
+
     #region Modules
 
-    public void UpdateModules(ModSuitModuleBoundtUserInterfaceState state)
+    public void UpdateModules(ModSuitModuleBoundUserInterfaceState state)
     {
         if (_modules == state.Modules)
             return;
