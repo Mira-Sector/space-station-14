@@ -19,6 +19,7 @@ public sealed partial class ModSuitWindow : DefaultWindow
 
     // Module buttons
     public event Action<NetEntity, bool>? OnToggleButtonPressed;
+    public event Action<NetEntity>? OnEjectButtonPressed;
 
     public ModSuitWindow()
     {
@@ -136,11 +137,13 @@ public sealed partial class ModSuitWindow : DefaultWindow
                     var toggleablePanel = new ModSuitModuleBaseToggleableModulePanel(module, toggleableEntry);
                     ModuleList.AddChild(toggleablePanel);
                     toggleablePanel.ToggleButton.OnPressed += _ => OnToggleButtonPressed?.Invoke(module, toggleablePanel.ToggleButton.Pressed);
+                    toggleablePanel.EjectButton.OnPressed += _ => OnEjectButtonPressed?.Invoke(module);
                     break;
 
                 case ModSuitModuleBaseModuleBuiEntry baseEntry:
                     var basePanel = new ModSuitModuleBaseModulePanel(module, baseEntry);
                     ModuleList.AddChild(basePanel);
+                    basePanel.EjectButton.OnPressed += _ => OnEjectButtonPressed?.Invoke(module);
                     break;
 
                 default:

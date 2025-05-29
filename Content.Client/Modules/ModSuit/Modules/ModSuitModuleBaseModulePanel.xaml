@@ -28,21 +28,41 @@
                     HorizontalAlignment="Stretch"
                     HorizontalExpand="True">
                     <BoxContainer
-                        Margin="8, 8, 0, 8"
-                        VerticalAlignment="Top"
+                        VerticalAlignment="Stretch"
                         VerticalExpand="True"
                         HorizontalAlignment="Stretch"
                         HorizontalExpand="True">
                         <Label
                             Name="ModuleName"
-                            Align="Left"
+                            Align="Center"
                             HorizontalExpand="True"
                             Access="Public"/>
                         <Label
                             Name="Complexity"
                             Align="Right"
+                            HorizontalExpand="True"
                             Visible="False"
                             Access="Public"/>
+                    </BoxContainer>
+                    <BoxContainer
+                        VerticalAlignment="Bottom"
+                        HorizontalAlignment="Stretch"
+                        HorizontalExpand="True"
+                        Margin="8">
+                        <BoxContainer
+                            Name="EjectContainer"
+                            Margin="8, 0, 0, 0"
+                            HorizontalAlignment="Right"
+                            HorizontalExpand="True"
+                            Access="Public">
+                            <Button
+                                Name="EjectButton"
+                                Text="{Loc 'modsuit-interface-eject'}"
+                                HorizontalAlignment="Right"
+                                HorizontalExpand="True"
+                                TextAlign="Center"
+                                Access="Public"/>
+                        </BoxContainer>
                     </BoxContainer>
                 </BoxContainer>
             </BoxContainer>

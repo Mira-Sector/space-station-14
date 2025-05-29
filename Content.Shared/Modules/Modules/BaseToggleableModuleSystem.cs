@@ -24,6 +24,12 @@ public abstract partial class BaseToggleableModuleSystem<T> : BaseModuleSystem<T
         SubscribeLocalEvent<T, ModuleDisabledEvent>(OnDisabled);
     }
 
+    protected override void OnRemoved(Entity<T> ent, ref ModuleRemovedContainerEvent args)
+    {
+        base.OnRemoved(ent, ref args);
+        RaiseToggleEvents(ent, false, null);
+    }
+
     [MustCallBase]
     protected virtual void OnEnabled(Entity<T> ent, ref ModuleEnabledEvent args)
     {
@@ -86,15 +92,18 @@ public abstract partial class BaseToggleableModuleSystem<T> : BaseModuleSystem<T
     [MustCallBase]
     protected virtual void RaiseToggleEvents(Entity<T> ent, bool toggle, EntityUid? user)
     {
+        if (ent.Comp.Container == null)
+            return;
+
         if (toggle)
         {
-            var ev = new ModuleEnabledEvent(ent.Comp.Container!.Value, user);
+            var ev = new ModuleEnabledEvent(ent.Comp.Container.Value, user);
             RaiseLocalEvent(ent.Owner, ev);
         }
         else
         {
 
-            var ev = new ModuleDisabledEvent(ent.Comp.Container!.Value, user);
+            var ev = new ModuleDisabledEvent(ent.Comp.Container.Value, user);
             RaiseLocalEvent(ent.Owner, ev);
         }
     }

@@ -41,8 +41,7 @@ public sealed partial class RequireSealedModuleSystem : BaseToggleableModuleSyst
         if (!CanEnable(ent, args.ModuleOwner))
             return;
 
-        var ev = new ModuleEnabledEvent(args.ModuleOwner, null);
-        RaiseLocalEvent(ent.Owner, ev);
+        RaiseToggleEvents(ent, true, null);
     }
 
     private void OnUnsealed(Entity<RequireSealedModuleComponent> ent, ref ModuleRelayedEvent<ModSuitContainerPartUnsealedEvent> args)
@@ -50,8 +49,7 @@ public sealed partial class RequireSealedModuleSystem : BaseToggleableModuleSyst
         if (!CanEnable(ent, args.ModuleOwner))
             return;
 
-        var ev = new ModuleDisabledEvent(args.ModuleOwner, null);
-        RaiseLocalEvent(ent.Owner, ev);
+        RaiseToggleEvents(ent, false, null);
     }
 
     private bool CanEnable(Entity<RequireSealedModuleComponent> ent, EntityUid container)

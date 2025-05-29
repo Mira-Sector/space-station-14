@@ -57,6 +57,19 @@
                             HorizontalExpand="True"
                             TextAlign="Center"
                             Access="Public"/>
+                        <BoxContainer
+                            Name="EjectContainer"
+                            Margin="8, 0, 0, 0"
+                            HorizontalAlignment="Right"
+                            Access="Public">
+                            <Button
+                                Name="EjectButton"
+                                Text="{Loc 'modsuit-interface-eject'}"
+                                HorizontalAlignment="Right"
+                                HorizontalExpand="True"
+                                TextAlign="Center"
+                                Access="Public"/>
+                        </BoxContainer>
                     </BoxContainer>
                 </BoxContainer>
             </BoxContainer>

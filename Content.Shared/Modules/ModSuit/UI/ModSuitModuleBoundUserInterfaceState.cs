@@ -8,6 +8,11 @@ public sealed class ModSuitModuleBoundUserInterfaceState : BoundUserInterfaceSta
 {
     public KeyValuePair<NetEntity, ModSuitModuleBaseModuleBuiEntry>[] Modules;
 
+    public ModSuitModuleBoundUserInterfaceState()
+    {
+        Modules = [];
+    }
+
     public ModSuitModuleBoundUserInterfaceState(KeyValuePair<NetEntity, ModSuitModuleBaseModuleBuiEntry>[] modules)
     {
         Modules = modules;

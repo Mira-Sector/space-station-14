@@ -19,8 +19,8 @@ public partial class SharedModSuitSystem
         SubscribeLocalEvent<ModSuitUserInterfaceComponent, ModSuitViewUiEvent>(OnUiViewUi);
         SubscribeLocalEvent<ModSuitUserInterfaceComponent, BoundUIOpenedEvent>(OnUiOpened);
 
-        SubscribeLocalEvent<ModSuitUserInterfaceComponent, ModuleContainerModuleRemovedEvent>((u, c, _) => UpdateUI((u, c)));
         SubscribeLocalEvent<ModSuitUserInterfaceComponent, ModuleContainerModuleAddedEvent>((u, c, _) => UpdateUI((u, c)));
+        SubscribeLocalEvent<ModSuitUserInterfaceComponent, ModuleContainerModuleRemovedEvent>((u, c, _) => UpdateUI((u, c)));
     }
 
     private void OnUiGetActions(Entity<ModSuitUserInterfaceComponent> ent, ref GetItemActionsEvent args)

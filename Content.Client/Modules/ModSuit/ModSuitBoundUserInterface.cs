@@ -55,8 +55,24 @@ public sealed partial class ModSuitBoundUserInterface : BoundUserInterface
         // Module buttons
         _window.OnToggleButtonPressed += (module, toggle) =>
         {
-            var message = new ModSuitToggleButtonMessage(module, _entity.GetNetEntity(PlayerManager.LocalEntity!.Value), toggle);
+            var message = new ModSuitToggleButtonMessage(module, GetLocalEntity(), toggle);
             SendPredictedMessage(message);
         };
+
+        _window.OnEjectButtonPressed += (module) =>
+        {
+            var message = new ModSuitEjectButtonMessage(module, GetLocalEntity(), GetContainer());
+            SendPredictedMessage(message);
+        };
+    }
+
+    internal NetEntity GetLocalEntity()
+    {
+        return _entity.GetNetEntity(PlayerManager.LocalEntity!.Value);
+    }
+
+    internal NetEntity GetContainer()
+    {
+        return _entity.GetNetEntity(Owner);
     }
 }

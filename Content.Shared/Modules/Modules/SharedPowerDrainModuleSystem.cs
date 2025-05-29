@@ -45,7 +45,6 @@ public abstract partial class SharedPowerDrainModuleSystem : BaseToggleableModul
 
     private void OnEmpty(Entity<PowerDrainModuleComponent> ent, ref ModuleRelayedEvent<PowerCellSlotEmptyEvent> args)
     {
-        var ev = new ModuleDisabledEvent(args.ModuleOwner, null);
-        RaiseLocalEvent(ent.Owner, ev);
+        RaiseToggleEvents(ent, false, null);
     }
 }

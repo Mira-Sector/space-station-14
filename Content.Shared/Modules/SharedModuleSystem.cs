@@ -1,8 +1,10 @@
+using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Modules.Components;
 using Content.Shared.Modules.Components.Modules;
 using Content.Shared.Modules.Events;
+using Content.Shared.Modules.ModSuit.Events;
+using Content.Shared.Modules.ModSuit.UI;
 using Content.Shared.Popups;
-using Content.Shared.Storage;
 using Content.Shared.Whitelist;
 using JetBrains.Annotations;
 using Robust.Shared.Containers;
@@ -13,6 +15,7 @@ namespace Content.Shared.Modules;
 public abstract partial class SharedModuleSystem : EntitySystem
 {
     [Dependency] private readonly SharedContainerSystem _container = default!;
+    [Dependency] private readonly SharedHandsSystem _hands = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
@@ -31,7 +34,10 @@ public abstract partial class SharedModuleSystem : EntitySystem
         SubscribeLocalEvent<ModuleContainerComponent, ContainerIsInsertingAttemptEvent>(OnContainerAttempt);
         SubscribeLocalEvent<ModuleContainerComponent, EntInsertedIntoContainerMessage>(OnContainerInserted);
         SubscribeLocalEvent<ModuleContainerComponent, EntRemovedFromContainerMessage>(OnContainerRemoved);
-        SubscribeLocalEvent<ModuleContainerComponent, StorageInteractUsingAttemptEvent>(OnContainerStorageInteract);
+
+        SubscribeLocalEvent<ModuleContainerComponent, ModSuitGetUiStatesEvent>(OnGetModSuitUiState);
+
+        SubscribeAllEvent<ModSuitEjectButtonMessage>(OnModSuitEjectButton);
     }
 
     /// <inheritdoc/>
@@ -108,13 +114,28 @@ public abstract partial class SharedModuleSystem : EntitySystem
         RaiseLocalEvent(args.Entity, moduleEv);
     }
 
-    private void OnContainerStorageInteract(Entity<ModuleContainerComponent> ent, ref StorageInteractUsingAttemptEvent args)
+    private void OnGetModSuitUiState(Entity<ModuleContainerComponent> ent, ref ModSuitGetUiStatesEvent args)
     {
-        if (args.Cancelled)
+        // add a blank one so we override incase there is no more modules
+        foreach (var state in args.States)
+        {
+            if (state is ModSuitModuleBoundUserInterfaceState)
+                return;
+        }
+
+        args.States.Add(new ModSuitModuleBoundUserInterfaceState());
+        RelayToModules(ent, ref args);
+    }
+
+    private void OnModSuitEjectButton(ModSuitEjectButtonMessage args)
+    {
+        var container = GetEntity(args.Container);
+        if (!TryComp<ModuleContainerComponent>(container, out var moduleContainer))
             return;
 
-        if (_whitelist.CheckBoth(args.Using, ent.Comp.Blacklist, ent.Comp.Whitelist))
-            args.Cancelled = true;
+        var module = GetEntity(args.Module);
+        _container.Remove(module, moduleContainer.Modules);
+        _hands.TryPickup(GetEntity(args.User), module);
     }
 
     [PublicAPI]

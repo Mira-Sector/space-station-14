@@ -56,35 +56,28 @@ public abstract partial class BaseModuleSystem<T> : EntitySystem where T : BaseM
         }
 
         if (foundState == null)
+            return; // should never happen
+
+        for (var i = 0; i < foundState.Modules.Length; i++)
         {
-            KeyValuePair<NetEntity, ModSuitModuleBaseModuleBuiEntry>[] modules = [toAdd];
-            var newState = new ModSuitModuleBoundUserInterfaceState(modules);
-            args.Args.States.Add(newState);
+            var existing = foundState.Modules[i];
+            var (existingModule, existingData) = existing;
+
+            if (existingModule != netEntity)
+                continue;
+
+            // they override us
+            if (existingData.Priority > newData.Priority)
+                return;
+
+            foundState.Modules[i] = toAdd;
             return;
         }
-        else
-        {
-            for (var i = 0; i < foundState.Modules.Length; i++)
-            {
-                var existing = foundState.Modules[i];
-                var (existingModule, existingData) = existing;
 
-                if (existingModule != netEntity)
-                    continue;
-
-                // they override us
-                if (existingData.Priority > newData.Priority)
-                    return;
-
-                foundState.Modules[i] = toAdd;
-                return;
-            }
-
-            var newModules = new KeyValuePair<NetEntity, ModSuitModuleBaseModuleBuiEntry>[foundState.Modules.Length + 1];
-            Array.Copy(foundState.Modules, newModules, foundState.Modules.Length);
-            newModules[^1] = toAdd;
-            foundState.Modules = newModules;
-        }
+        var newModules = new KeyValuePair<NetEntity, ModSuitModuleBaseModuleBuiEntry>[foundState.Modules.Length + 1];
+        Array.Copy(foundState.Modules, newModules, foundState.Modules.Length);
+        newModules[^1] = toAdd;
+        foundState.Modules = newModules;
     }
 
     [PublicAPI]
