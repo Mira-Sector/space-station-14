@@ -64,25 +64,23 @@ public partial class SharedModSuitSystem
             return;
         }
 
-        var inserted = false;
-        var newIndex = 0;
-
+        var insertIndex = foundState.Parts.Length;
         for (var i = 0; i < foundState.Parts.Length; i++)
         {
-            var existing = foundState.Parts[i];
-            var (_, data) = existing;
-
-            if (!inserted && data.Type > type)
+            if (foundState.Parts[i].Value.Type > type)
             {
-                parts[newIndex++] = toAdd;
-                inserted = true;
+                insertIndex = i;
+                break;
             }
-
-            parts[newIndex++] = existing;
         }
 
-        if (!inserted)
-            parts[newIndex] = toAdd;
+        if (insertIndex > 0)
+            Array.Copy(foundState.Parts, parts, insertIndex);
+
+        parts[insertIndex] = toAdd;
+
+        if (insertIndex < foundState.Parts.Length)
+            Array.Copy(foundState.Parts, insertIndex, parts, insertIndex + 1, foundState.Parts.Length - insertIndex);
 
         foundState.Parts = parts;
     }

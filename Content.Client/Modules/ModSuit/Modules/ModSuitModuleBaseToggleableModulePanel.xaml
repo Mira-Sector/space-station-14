@@ -38,6 +38,20 @@
                             HorizontalExpand="True"
                             Access="Public"/>
                     </BoxContainer>
+                    <BoxContainer
+                        VerticalAlignment="Bottom"
+                        HorizontalAlignment="Stretch"
+                        HorizontalExpand="True"
+                        Margin="8">
+                        <Button
+                            Name="ToggleButton"
+                            Text="{Loc 'modsuit-interface-toggle'}"
+                            ToggleMode="True"
+                            HorizontalAlignment="Stretch"
+                            HorizontalExpand="True"
+                            TextAlign="Center"
+                            Access="Public"/>
+                    </BoxContainer>
                 </BoxContainer>
             </BoxContainer>
         </PanelContainer>

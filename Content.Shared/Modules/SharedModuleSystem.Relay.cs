@@ -18,6 +18,8 @@ public partial class SharedModuleSystem
         SubscribeLocalEvent<ModuleContainerComponent, ModSuitContainerPartUnsealedEvent>(RelayToModules);
 
         SubscribeLocalEvent<ModuleContainerComponent, PowerCellSlotEmptyEvent>(RelayToModules);
+
+        SubscribeLocalEvent<ModuleContainerComponent, ModSuitGetUiStatesEvent>(RelayToModules);
     }
 
     public void RelayToModules<T>(Entity<ModuleContainerComponent> ent, ref T args)

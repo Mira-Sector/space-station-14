@@ -1,4 +1,5 @@
 using Content.Shared.Actions;
+using Content.Shared.Modules.Events;
 using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
 using Content.Shared.Modules.ModSuit.UI;
@@ -17,6 +18,9 @@ public partial class SharedModSuitSystem
         SubscribeLocalEvent<ModSuitUserInterfaceComponent, ComponentRemove>(OnUiRemoved);
         SubscribeLocalEvent<ModSuitUserInterfaceComponent, ModSuitViewUiEvent>(OnUiViewUi);
         SubscribeLocalEvent<ModSuitUserInterfaceComponent, BoundUIOpenedEvent>(OnUiOpened);
+
+        SubscribeLocalEvent<ModSuitUserInterfaceComponent, ModuleContainerModuleRemovedEvent>((u, c, _) => UpdateUI((u, c)));
+        SubscribeLocalEvent<ModSuitUserInterfaceComponent, ModuleContainerModuleAddedEvent>((u, c, _) => UpdateUI((u, c)));
     }
 
     private void OnUiGetActions(Entity<ModSuitUserInterfaceComponent> ent, ref GetItemActionsEvent args)

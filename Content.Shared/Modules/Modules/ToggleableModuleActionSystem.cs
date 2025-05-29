@@ -5,7 +5,7 @@ using Content.Shared.Modules.Events;
 
 namespace Content.Shared.Modules.Modules;
 
-public sealed partial class ToggleableModuleActionSystem : BaseToggleableModuleSystem<ToggleableModuleActionComponent>
+public sealed partial class ToggleableModuleActionSystem : BaseToggleableUiModuleSystem<ToggleableModuleActionComponent>
 {
     [Dependency] private readonly SharedActionsSystem _actions = default!;
 
@@ -40,6 +40,20 @@ public sealed partial class ToggleableModuleActionSystem : BaseToggleableModuleS
         _actions.RemoveAction(ent.Comp.Action);
     }
 
+    protected override void OnEnabled(Entity<ToggleableModuleActionComponent> ent, ref ModuleEnabledEvent args)
+    {
+        base.OnEnabled(ent, ref args);
+
+        _actions.SetToggled(ent.Comp.Action, true);
+    }
+
+    protected override void OnDisabled(Entity<ToggleableModuleActionComponent> ent, ref ModuleDisabledEvent args)
+    {
+        base.OnDisabled(ent, ref args);
+
+        _actions.SetToggled(ent.Comp.Action, false);
+    }
+
     private void OnEquipped(Entity<ToggleableModuleActionComponent> ent, ref ModuleRelayedEvent<ClothingGotEquippedEvent> args)
     {
         if (!_actions.AddAction(args.Args.Wearer, ref ent.Comp.Action, ent.Comp.ActionId, ent.Owner))
@@ -64,7 +78,7 @@ public sealed partial class ToggleableModuleActionSystem : BaseToggleableModuleS
         if (args.Handled)
             return;
 
-        Toggle(ent, args.Performer);
+        Toggle(ent.AsNullable(), args.Performer);
         args.Handled = true;
     }
 }

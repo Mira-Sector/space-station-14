@@ -16,6 +16,9 @@ public sealed partial class ModSuitWindow : DefaultWindow
 
     public event Action<Dictionary<NetEntity, bool>>? OnSealButtonPressed;
 
+    // Module buttons
+    public event Action<NetEntity, bool>? OnToggleButtonPressed;
+
     public ModSuitWindow()
     {
         RobustXamlLoader.Load(this);
@@ -99,7 +102,26 @@ public sealed partial class ModSuitWindow : DefaultWindow
         ModuleList.RemoveAllChildren();
 
         foreach (var (module, data) in _modules)
-            ModuleList.AddChild(ModSuitModuleBuiHelper.BuiEntryToPanel(module, data));
+        {
+            // order matters
+            // more likely to be parented goes at the bottom
+            switch (data)
+            {
+                case ModSuitModuleBaseToggleableModuleBuiEntry toggleableEntry:
+                    var toggleablePanel = new ModSuitModuleBaseToggleableModulePanel(module, toggleableEntry);
+                    ModuleList.AddChild(toggleablePanel);
+                    toggleablePanel.ToggleButton.OnPressed += _ => OnToggleButtonPressed?.Invoke(module, toggleablePanel.ToggleButton.Pressed);
+                    break;
+
+                case ModSuitModuleBaseModuleBuiEntry baseEntry:
+                    var basePanel = new ModSuitModuleBaseModulePanel(module, baseEntry);
+                    ModuleList.AddChild(basePanel);
+                    break;
+
+                default:
+                    throw new NotImplementedException($"Tried to convert {data.GetType()} to a panel which does not exist.");
+            }
+        }
     }
 
     #endregion

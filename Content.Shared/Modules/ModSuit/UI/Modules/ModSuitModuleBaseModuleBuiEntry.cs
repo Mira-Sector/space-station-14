@@ -4,4 +4,7 @@ namespace Content.Shared.Modules.ModSuit.UI.Modules;
 
 [Serializable, NetSerializable]
 [Virtual]
-public partial class ModSuitModuleBaseModuleBuiEntry;
+public partial class ModSuitModuleBaseModuleBuiEntry
+{
+    public virtual int Priority => 0;
+}

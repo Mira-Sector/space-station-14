@@ -7,10 +7,13 @@ namespace Content.Client.Modules.ModSuit;
 [UsedImplicitly]
 public sealed partial class ModSuitBoundUserInterface : BoundUserInterface
 {
+    [Dependency] private readonly IEntityManager _entity = default!;
+
     private ModSuitWindow? _window;
 
     public ModSuitBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
+        IoCManager.InjectDependencies(this);
     }
 
     protected override void Open()
@@ -39,6 +42,17 @@ public sealed partial class ModSuitBoundUserInterface : BoundUserInterface
         if (_window == null)
             return;
 
-        _window.OnSealButtonPressed += (parts) => SendPredictedMessage(new ModSuitSealButtonMessage(parts));
+        _window.OnSealButtonPressed += (parts) =>
+        {
+            var message = new ModSuitSealButtonMessage(parts);
+            SendPredictedMessage(message);
+        };
+
+        // Module buttons
+        _window.OnToggleButtonPressed += (module, toggle) =>
+        {
+            var message = new ModSuitToggleButtonMessage(module, _entity.GetNetEntity(PlayerManager.LocalEntity!.Value), toggle);
+            SendPredictedMessage(message);
+        };
     }
 }

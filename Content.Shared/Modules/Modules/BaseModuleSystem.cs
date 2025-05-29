@@ -54,30 +54,36 @@ public abstract partial class BaseModuleSystem<T> : EntitySystem where T : BaseM
             break;
         }
 
-        var index = foundState?.Modules.Length ?? 0;
-        var length = index + 1;
-        var modules = new KeyValuePair<NetEntity, ModSuitModuleBaseModuleBuiEntry>[length];
-
         if (foundState == null)
         {
-            modules = [toAdd];
+            KeyValuePair<NetEntity, ModSuitModuleBaseModuleBuiEntry>[] modules = [toAdd];
             var newState = new ModSuitModuleBoundtUserInterfaceState(modules);
             args.Args.States.Add(newState);
             return;
         }
-
-        //check we havent been added already
-        foreach (var (module, _) in foundState.Modules)
+        else
         {
-            if (module == netEntity)
+            for (var i = 0; i < foundState.Modules.Length; i++)
+            {
+                var existing = foundState.Modules[i];
+                var (existingModule, existingData) = existing;
+
+                if (existingModule != netEntity)
+                    continue;
+
+                // they override us
+                if (existingData.Priority > newData.Priority)
+                    return;
+
+                foundState.Modules[i] = toAdd;
                 return;
+            }
+
+            var newModules = new KeyValuePair<NetEntity, ModSuitModuleBaseModuleBuiEntry>[foundState.Modules.Length + 1];
+            Array.Copy(foundState.Modules, newModules, foundState.Modules.Length);
+            newModules[^1] = toAdd;
+            foundState.Modules = newModules;
         }
-
-        for (var i = 0; i < index; i++)
-            modules[i] = foundState.Modules[i];
-
-        modules[index] = toAdd;
-        foundState.Modules = modules;
     }
 
     [PublicAPI]
