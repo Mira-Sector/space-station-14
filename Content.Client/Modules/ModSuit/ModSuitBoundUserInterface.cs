@@ -30,6 +30,10 @@ public sealed partial class ModSuitBoundUserInterface : BoundUserInterface
             case ModSuitSealableBoundUserInterfaceState sealable:
                 _window?.UpdateSealed(sealable);
                 break;
+
+            case ModSuitModuleBoundtUserInterfaceState module:
+                _window?.UpdateModules(module);
+                break;
         }
 
         if (_window == null)

@@ -1,0 +1,42 @@
+<PanelContainer xmlns="https://spacestation14.io">
+    <BoxContainer
+        HorizontalAlignment="Stretch"
+        HorizontalExpand="True"
+        Margin="4">
+        <PanelContainer
+            HorizontalAlignment="Stretch"
+            HorizontalExpand="True"
+            StyleClasses="PanelBackgroundLight">
+            <BoxContainer
+                HorizontalAlignment="Stretch"
+                HorizontalExpand="True">
+                <BoxContainer
+                    HorizontalAlignment="Left">
+                    <PanelContainer StyleClasses="PdaBorderRect">
+                        <SpriteView
+                            Name="ModuleIcon"
+                            Access="Public"
+                            Stretch="Fill"
+                            Scale="2 2"
+                            MinSize="64, 64"
+                            OverrideDirection="South"/>
+                    </PanelContainer>
+                </BoxContainer>
+                <BoxContainer
+                    Margin="4 0"
+                    HorizontalAlignment="Stretch"
+                    HorizontalExpand="True">
+                    <BoxContainer
+                        HorizontalAlignment="Stretch"
+                        HorizontalExpand="True">
+                        <Label
+                            Name="ModuleName"
+                            Align="Center"
+                            HorizontalExpand="True"
+                            Access="Public"/>
+                    </BoxContainer>
+                </BoxContainer>
+            </BoxContainer>
+        </PanelContainer>
+    </BoxContainer>
+</PanelContainer>

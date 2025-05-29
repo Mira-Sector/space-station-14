@@ -21,5 +21,7 @@ public partial class ModuleSystem
 
         SubscribeLocalEvent<ModuleContainerComponent, ModSuitDeployedPartRelayedEvent<ModSuitSealedGetClothingLayersEvent>>(RelayToModules);
         SubscribeLocalEvent<ModuleContainerComponent, ModSuitDeployedPartRelayedEvent<ModSuitSealedGetIconLayersEvent>>(RelayToModules);
+
+        SubscribeLocalEvent<ModuleContainerComponent, ModSuitGetUiStatesEvent>(RelayToModules);
     }
 }
