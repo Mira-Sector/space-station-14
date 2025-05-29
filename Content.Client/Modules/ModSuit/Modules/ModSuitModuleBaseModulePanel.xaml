@@ -2,7 +2,7 @@
     <BoxContainer
         HorizontalAlignment="Stretch"
         HorizontalExpand="True"
-        Margin="4">
+        Margin="4, 8">
         <PanelContainer
             HorizontalAlignment="Stretch"
             HorizontalExpand="True"

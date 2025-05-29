@@ -30,7 +30,7 @@
                     <PanelContainer StyleClasses="PanelBackgroundLight">
                         <BoxContainer
                             Name="SealButtons"
-                            Margin="16, 4"
+                            Margin="16, 8"
                             Orientation="Vertical"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
@@ -39,18 +39,20 @@
                 </BoxContainer>
             </PanelContainer>
         </controls:StripeBack>
-        <BoxContainer>
+        <BoxContainer
+            Orientation="Vertical"
+            HorizontalExpand="True"
+            Margin="0, 8">
             <PanelContainer StyleClasses="LowDivider" />
         </BoxContainer>
         <ScrollContainer
-            Margin="16, 8, 0, 8"
+            Margin="16, 0, 8, 8"
             HorizontalExpand="True"
             VerticalExpand="True"
             HScrollEnabled="False">
             <PanelContainer StyleClasses="PanelBackgroundBaseDark">
                 <BoxContainer
                     Name="ModuleList"
-                    Margin="0, 0, 16, 0"
                     Orientation="Vertical"
                     HorizontalExpand="True"
                     HorizontalAlignment="Stretch"

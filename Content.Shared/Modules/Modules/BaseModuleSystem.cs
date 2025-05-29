@@ -73,6 +73,9 @@ public abstract partial class BaseModuleSystem<T> : EntitySystem where T : BaseM
                 return;
         }
 
+        for (var i = 0; i < index; i++)
+            modules[i] = foundState.Modules[i];
+
         modules[index] = toAdd;
         foundState.Modules = modules;
     }
