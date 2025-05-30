@@ -42,6 +42,7 @@
   name: advanced MOD control unit
   components:
   - type: Sprite
+    sprite: Clothing/Back/ModSuits/advanced.rsi
   - type: ModSuitSealable
     iconLayers:
       true:

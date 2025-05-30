@@ -21,6 +21,7 @@
   name: advanced MOD helmet
   components:
   - type: Sprite
+    sprite: Clothing/Head/ModSuits/advanced.rsi
   - type: ModSuitSealable
     iconLayers:
       true:

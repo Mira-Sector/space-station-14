@@ -20,6 +20,7 @@
   name: advanced MOD gauntlets
   components:
   - type: Sprite
+    sprite: Clothing/Hands/ModSuits/advanced.rsi
   - type: ModSuitSealable
     iconLayers:
       true:

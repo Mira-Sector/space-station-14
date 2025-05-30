@@ -8,7 +8,7 @@ public partial class SharedModSuitSystem
 {
     private void InitializeDeployableRelay()
     {
-        SubscribeLocalEvent<ModSuitPartDeployableComponent, ModSuitGetUiStatesEvent>(RelayToDeployableParts);
+        SubscribeLocalEvent<ModSuitPartDeployableComponent, ModSuitGetUiStatesEvent>(RelayToAllParts);
     }
 
     protected void RelayToDeployedParts<T>(Entity<ModSuitPartDeployableComponent> ent, ref T args)
@@ -21,6 +21,12 @@ public partial class SharedModSuitSystem
     {
         var ev = new ModSuitDeployableRelayedEvent<T>(args, ent.Owner);
         RaiseEventToDeployedParts((ent.Owner, ent.Comp), ev);
+    }
+
+    protected void RelayToAllParts<T>(Entity<ModSuitPartDeployableComponent> ent, ref T args)
+    {
+        var ev = new ModSuitDeployableRelayedEvent<T>(args, ent.Owner);
+        RaiseEventToAllParts((ent.Owner, ent.Comp), ev);
     }
 
     protected void RelayToSuit<T>(Entity<ModSuitDeployedPartComponent> ent, ref T args)
@@ -54,6 +60,20 @@ public partial class SharedModSuitSystem
     public void RaiseEventToDeployableParts<T>(Entity<ModSuitPartDeployableComponent?> ent, ref T ev) where T : struct
     {
         foreach (var part in GetDeployableParts(ent))
+            RaiseLocalEvent(part, ref ev);
+    }
+
+    [PublicAPI]
+    public void RaiseEventToAllParts<T>(Entity<ModSuitPartDeployableComponent?> ent, T ev) where T : class
+    {
+        foreach (var part in GetAllParts(ent))
+            RaiseLocalEvent(part, ref ev);
+    }
+
+    [PublicAPI]
+    public void RaiseEventToAllParts<T>(Entity<ModSuitPartDeployableComponent?> ent, ref T ev) where T : struct
+    {
+        foreach (var part in GetAllParts(ent))
             RaiseLocalEvent(part, ref ev);
     }
 

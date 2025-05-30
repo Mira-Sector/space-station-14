@@ -10,6 +10,7 @@ namespace Content.Shared.Modules.Modules;
 public sealed partial class FlashlightModuleSystem : BaseToggleableUiModuleSystem<FlashlightModuleComponent>
 {
     [Dependency] private readonly SharedPointLightSystem _pointLight = default!;
+    [Dependency] private readonly SharedModuleContainerVisualsSystem _moduleContainerVisuals = default!;
 
     internal Dictionary<NetEntity, TimeSpan> ColorUpdates = [];
     internal static readonly TimeSpan ColorDelay = TimeSpan.FromSeconds(0.125f);
@@ -75,5 +76,35 @@ public sealed partial class FlashlightModuleSystem : BaseToggleableUiModuleSyste
             return;
 
         _pointLight.SetColor(container, color);
+
+        if (TryComp<ModuleContainerVisualsComponent>(ent.Owner, out var containerVisuals))
+        {
+            foreach (var (_, slotsLayers) in containerVisuals.ClothingLayers)
+            {
+                foreach (var (_, slotLayers) in slotsLayers)
+                {
+                    foreach (var layer in slotLayers)
+                        layer.Color = color;
+                }
+            }
+
+            foreach (var (_, itemLayers) in containerVisuals.ItemLayers)
+            {
+                foreach (var layer in itemLayers)
+                    layer.Color = color;
+            }
+
+            foreach (var (_, handsLayers) in containerVisuals.InHandLayers)
+            {
+                foreach (var (_, handLayers) in handsLayers)
+                {
+                    foreach (var layer in handLayers)
+                        layer.Color = color;
+                }
+            }
+
+            Dirty(ent.Owner, containerVisuals);
+            _moduleContainerVisuals.UpdateVisuals((ent.Owner, containerVisuals));
+        }
     }
 }

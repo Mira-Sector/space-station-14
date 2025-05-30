@@ -17,6 +17,13 @@
   - type: PowerDrainModule
     enabledDraw: 1.5
   - type: FlashlightModule
+  - type: ModSuitDeployableContainerVisuals
+    partType: Helmet
+  - type: ModuleContainerVisuals
+    clothingLayers:
+      true:
+        head:
+        - state: equipped-HELMET-visor
   - type: AddComponentContainerModule
     components:
     - type: PointLight

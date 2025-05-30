@@ -20,6 +20,7 @@
   name: advanced MOD boots
   components:
   - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/advanced.rsi
   - type: ModSuitSealable
     iconLayers:
       true:

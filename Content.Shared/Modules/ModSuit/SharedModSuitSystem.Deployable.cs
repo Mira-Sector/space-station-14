@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Shared.Clothing;
 using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;
@@ -162,8 +163,17 @@ public partial class SharedModSuitSystem
         if (!Resolve(ent.Owner, ref ent.Comp))
             yield break;
 
-        foreach (var (_, part) in ent.Comp.DeployableParts)
-            yield return part;
+        foreach (var (_, container) in ent.Comp.DeployableContainers)
+        {
+            if (container.ContainedEntity != null)
+                yield return container.ContainedEntity.Value;
+        }
+    }
+
+    [PublicAPI]
+    public IEnumerable<EntityUid> GetAllParts(Entity<ModSuitPartDeployableComponent?> ent)
+    {
+        return GetDeployedParts(ent).Concat(GetDeployableParts(ent));
     }
 
     #endregion

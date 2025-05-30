@@ -27,7 +27,7 @@ public sealed partial class ModSuitDeployableContainerVisualsSystem : BaseToggle
             return;
         }
 
-        foreach (var part in _modSuit.GetDeployableParts(container))
+        foreach (var part in _modSuit.GetAllParts(container))
         {
             if (!IsPart(ent, part))
                 continue;
