@@ -8,7 +8,7 @@ public sealed partial class AddComponentContainerModuleSystem : BaseModuleSystem
     protected override void OnAdded(Entity<AddComponentContainerModuleComponent> ent, ref ModuleAddedContainerEvent args)
     {
         base.OnAdded(ent, ref args);
-        EntityManager.AddComponents(args.Container, ent.Comp.Components, true);
+        EntityManager.AddComponents(args.Container, ent.Comp.Components);
     }
 
     protected override void OnRemoved(Entity<AddComponentContainerModuleComponent> ent, ref ModuleRemovedContainerEvent args)

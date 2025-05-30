@@ -8,7 +8,7 @@ public sealed partial class ToggleableComponentContainerModuleSystem : BaseToggl
     protected override void OnEnabled(Entity<ToggleableComponentContainerModuleComponent> ent, ref ModuleEnabledEvent args)
     {
         base.OnEnabled(ent, ref args);
-        EntityManager.AddComponents(args.Container, ent.Comp.Components, true);
+        EntityManager.AddComponents(args.Container, ent.Comp.Components);
     }
 
     protected override void OnDisabled(Entity<ToggleableComponentContainerModuleComponent> ent, ref ModuleDisabledEvent args)

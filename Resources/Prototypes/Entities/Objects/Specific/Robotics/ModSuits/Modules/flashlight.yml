@@ -1,0 +1,32 @@
+- type: entity
+  id: ModSuitModuleFlashlight
+  parent: BaseModSuitModule
+  name: MOD flashlight module
+  description: A simple pair of flashlights installed on the left and right sides of the helmet, useful for providing light in a variety of ranges and colors. Some survivalists prefer the color green for their illumination, for reasons unknown.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/Modules/flashlight.rsi
+    layers:
+    - state: flashlight
+  - type: ModSuitModuleComplexity
+    complexity: 1
+  - type: RequireSealedModule
+    parts:
+    - Helmet
+  - type: ToggleableModuleAction
+  - type: PowerDrainModule
+    enabledDraw: 1.5
+  - type: FlashlightModule
+  - type: AddComponentContainerModule
+    components:
+    - type: PointLight
+      enabled: false
+      radius: 3
+      energy: 2
+      mask: /Textures/Effects/LightMasks/cone.png
+      autoRot: true
+  - type: ModuleExclusivity
+    maximum: 1
+    blacklist:
+      components:
+      - FlashlightModule

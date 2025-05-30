@@ -1,6 +1,7 @@
 using Content.Shared.Modules.ModSuit.UI;
 using Robust.Client.UserInterface;
 using JetBrains.Annotations;
+using Robust.Shared.Timing;
 
 namespace Content.Client.Modules.ModSuit;
 
@@ -8,8 +9,12 @@ namespace Content.Client.Modules.ModSuit;
 public sealed partial class ModSuitBoundUserInterface : BoundUserInterface
 {
     [Dependency] private readonly IEntityManager _entity = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
 
     private ModSuitWindow? _window;
+
+    private TimeSpan _nextFlashlightUpdate;
+    private static readonly TimeSpan FlashlightUpdateRate = TimeSpan.FromSeconds(0.25f);
 
     public ModSuitBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
@@ -63,6 +68,17 @@ public sealed partial class ModSuitBoundUserInterface : BoundUserInterface
         {
             var message = new ModSuitEjectButtonMessage(module, GetLocalEntity(), GetContainer());
             SendPredictedMessage(message);
+        };
+
+        _window.OnFlashlightColorChanged += (module, color) =>
+        {
+            if (_nextFlashlightUpdate > _timing.RealTime)
+                return;
+
+            var message = new ModSuitFlashlightColorChangedMessage(module, color);
+            SendPredictedMessage(message);
+
+            _nextFlashlightUpdate = _timing.RealTime + FlashlightUpdateRate;
         };
     }
 

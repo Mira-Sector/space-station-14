@@ -12,7 +12,7 @@ public sealed partial class ToggleableComponentUserModuleSystem : BaseToggleable
         if (!TryGetUser(ent, out var user))
             return;
 
-        EntityManager.AddComponents(user.Value, ent.Comp.Components, true);
+        EntityManager.AddComponents(user.Value, ent.Comp.Components);
     }
 
     protected override void OnDisabled(Entity<ToggleableComponentUserModuleComponent> ent, ref ModuleDisabledEvent args)

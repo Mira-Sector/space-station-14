@@ -7,11 +7,11 @@ using Robust.Client.UserInterface.XAML;
 namespace Content.Client.Modules.ModSuit.Modules;
 
 [GenerateTypedNameReferences, Virtual]
-public partial class ModSuitModuleBaseToggleableModulePanel : PanelContainer
+public partial class ModSuitFlashlightModulePanel : PanelContainer
 {
     [Dependency] private readonly IEntityManager _entity = default!;
 
-    public ModSuitModuleBaseToggleableModulePanel(NetEntity netModule, ModSuitModuleBaseToggleableModuleBuiEntry buiEntry)
+    public ModSuitFlashlightModulePanel(NetEntity netModule, ModSuitFlashlightModuleBuiEntry buiEntry)
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
@@ -20,6 +20,7 @@ public partial class ModSuitModuleBaseToggleableModulePanel : PanelContainer
         ModuleIcon.SetEntity(module);
         ModuleName.Text = _entity.GetComponent<MetaDataComponent>(module).EntityName;
         ToggleButton.Pressed = buiEntry.Toggled;
+        ColorSelector.Color = buiEntry.Color;
 
         if (buiEntry.Complexity == null)
         {

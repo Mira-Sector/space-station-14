@@ -4,13 +4,13 @@ namespace Content.Shared.Modules.ModSuit.UI.Modules;
 
 [Serializable, NetSerializable]
 [Virtual]
-public partial class ModSuitModuleBaseModuleBuiEntry
+public partial class ModSuitBaseModuleBuiEntry
 {
     public virtual int Priority => 0;
 
     public readonly int? Complexity;
 
-    public ModSuitModuleBaseModuleBuiEntry(int? complexity)
+    public ModSuitBaseModuleBuiEntry(int? complexity)
     {
         Complexity = complexity;
     }

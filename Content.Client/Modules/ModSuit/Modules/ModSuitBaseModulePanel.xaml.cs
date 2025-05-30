@@ -7,11 +7,11 @@ using Robust.Client.UserInterface.XAML;
 namespace Content.Client.Modules.ModSuit.Modules;
 
 [GenerateTypedNameReferences, Virtual]
-public partial class ModSuitModuleBaseModulePanel : PanelContainer
+public partial class ModSuitBaseModulePanel : PanelContainer
 {
     [Dependency] private readonly IEntityManager _entity = default!;
 
-    public ModSuitModuleBaseModulePanel(NetEntity netModule, ModSuitModuleBaseModuleBuiEntry buiEntry)
+    public ModSuitBaseModulePanel(NetEntity netModule, ModSuitBaseModuleBuiEntry buiEntry)
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);

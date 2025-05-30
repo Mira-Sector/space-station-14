@@ -6,14 +6,14 @@ namespace Content.Shared.Modules.ModSuit.UI;
 [Serializable, NetSerializable]
 public sealed class ModSuitModuleBoundUserInterfaceState : BoundUserInterfaceState
 {
-    public KeyValuePair<NetEntity, ModSuitModuleBaseModuleBuiEntry>[] Modules;
+    public KeyValuePair<NetEntity, ModSuitBaseModuleBuiEntry>[] Modules;
 
     public ModSuitModuleBoundUserInterfaceState()
     {
         Modules = [];
     }
 
-    public ModSuitModuleBoundUserInterfaceState(KeyValuePair<NetEntity, ModSuitModuleBaseModuleBuiEntry>[] modules)
+    public ModSuitModuleBoundUserInterfaceState(KeyValuePair<NetEntity, ModSuitBaseModuleBuiEntry>[] modules)
     {
         Modules = modules;
     }

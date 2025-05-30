@@ -12,7 +12,7 @@ namespace Content.Client.Modules.ModSuit;
 public sealed partial class ModSuitWindow : DefaultWindow
 {
     private KeyValuePair<NetEntity, ModSuitSealableBuiEntry>[] _sealableParts = [];
-    private KeyValuePair<NetEntity, ModSuitModuleBaseModuleBuiEntry>[] _modules = [];
+    private KeyValuePair<NetEntity, ModSuitBaseModuleBuiEntry>[] _modules = [];
     private (int, int)? _complexity = null;
 
     public event Action<Dictionary<NetEntity, bool>>? OnSealButtonPressed;
@@ -20,6 +20,7 @@ public sealed partial class ModSuitWindow : DefaultWindow
     // Module buttons
     public event Action<NetEntity, bool>? OnToggleButtonPressed;
     public event Action<NetEntity>? OnEjectButtonPressed;
+    public event Action<NetEntity, Color>? OnFlashlightColorChanged;
 
     public ModSuitWindow()
     {
@@ -133,15 +134,23 @@ public sealed partial class ModSuitWindow : DefaultWindow
             // more likely to be parented goes at the bottom
             switch (data)
             {
-                case ModSuitModuleBaseToggleableModuleBuiEntry toggleableEntry:
-                    var toggleablePanel = new ModSuitModuleBaseToggleableModulePanel(module, toggleableEntry);
+                case ModSuitFlashlightModuleBuiEntry flashlightEntry:
+                    var flashlightPanel = new ModSuitFlashlightModulePanel(module, flashlightEntry);
+                    ModuleList.AddChild(flashlightPanel);
+                    flashlightPanel.ToggleButton.OnPressed += _ => OnToggleButtonPressed?.Invoke(module, flashlightPanel.ToggleButton.Pressed);
+                    flashlightPanel.EjectButton.OnPressed += _ => OnEjectButtonPressed?.Invoke(module);
+                    flashlightPanel.ColorSelector.OnColorChanged += (color) => OnFlashlightColorChanged?.Invoke(module, color);
+                    break;
+
+                case ModSuitBaseToggleableModuleBuiEntry toggleableEntry:
+                    var toggleablePanel = new ModSuitBaseToggleableModulePanel(module, toggleableEntry);
                     ModuleList.AddChild(toggleablePanel);
                     toggleablePanel.ToggleButton.OnPressed += _ => OnToggleButtonPressed?.Invoke(module, toggleablePanel.ToggleButton.Pressed);
                     toggleablePanel.EjectButton.OnPressed += _ => OnEjectButtonPressed?.Invoke(module);
                     break;
 
-                case ModSuitModuleBaseModuleBuiEntry baseEntry:
-                    var basePanel = new ModSuitModuleBaseModulePanel(module, baseEntry);
+                case ModSuitBaseModuleBuiEntry baseEntry:
+                    var basePanel = new ModSuitBaseModulePanel(module, baseEntry);
                     ModuleList.AddChild(basePanel);
                     basePanel.EjectButton.OnPressed += _ => OnEjectButtonPressed?.Invoke(module);
                     break;

@@ -11,7 +11,7 @@ public abstract partial class BaseToggleableUiModuleSystem<T> : BaseToggleableMo
     [Dependency] protected readonly SharedModSuitSystem ModSuit = default!;
 
     // not stored on the component as its an abstract component
-    internal Dictionary<NetEntity, TimeSpan> NextUpdate = [];
+    internal readonly Dictionary<NetEntity, TimeSpan> NextUpdate = [];
     internal static readonly TimeSpan UpdateDelay = TimeSpan.FromSeconds(0.25f);
 
     public override void Initialize()
@@ -21,9 +21,9 @@ public abstract partial class BaseToggleableUiModuleSystem<T> : BaseToggleableMo
         SubscribeAllEvent<ModSuitToggleButtonMessage>(OnToggleButton);
     }
 
-    protected override ModSuitModuleBaseModuleBuiEntry GetModSuitModuleBuiEntry(Entity<T> ent)
+    protected override ModSuitBaseModuleBuiEntry GetModSuitModuleBuiEntry(Entity<T> ent)
     {
-        return new ModSuitModuleBaseToggleableModuleBuiEntry(ent.Comp.Toggled, CompOrNull<ModSuitModuleComplexityComponent>(ent.Owner)?.Complexity);
+        return new ModSuitBaseToggleableModuleBuiEntry(ent.Comp.Toggled, CompOrNull<ModSuitModuleComplexityComponent>(ent.Owner)?.Complexity);
     }
 
     protected override void RaiseToggleEvents(Entity<T> ent, bool toggle, EntityUid? user)

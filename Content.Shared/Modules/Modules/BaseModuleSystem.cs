@@ -33,9 +33,9 @@ public abstract partial class BaseModuleSystem<T> : EntitySystem where T : BaseM
         ent.Comp.Container = null;
     }
 
-    protected virtual ModSuitModuleBaseModuleBuiEntry GetModSuitModuleBuiEntry(Entity<T> ent)
+    protected virtual ModSuitBaseModuleBuiEntry GetModSuitModuleBuiEntry(Entity<T> ent)
     {
-        return new ModSuitModuleBaseModuleBuiEntry(CompOrNull<ModSuitModuleComplexityComponent>(ent.Owner)?.Complexity);
+        return new ModSuitBaseModuleBuiEntry(CompOrNull<ModSuitModuleComplexityComponent>(ent.Owner)?.Complexity);
     }
 
     private void OnGetModSuitUiState(Entity<T> ent, ref ModuleRelayedEvent<ModSuitGetUiStatesEvent> args)
@@ -74,7 +74,7 @@ public abstract partial class BaseModuleSystem<T> : EntitySystem where T : BaseM
             return;
         }
 
-        var newModules = new KeyValuePair<NetEntity, ModSuitModuleBaseModuleBuiEntry>[foundState.Modules.Length + 1];
+        var newModules = new KeyValuePair<NetEntity, ModSuitBaseModuleBuiEntry>[foundState.Modules.Length + 1];
         Array.Copy(foundState.Modules, newModules, foundState.Modules.Length);
         newModules[^1] = toAdd;
         foundState.Modules = newModules;

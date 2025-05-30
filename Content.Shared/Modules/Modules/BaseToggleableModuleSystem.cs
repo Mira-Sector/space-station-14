@@ -26,8 +26,8 @@ public abstract partial class BaseToggleableModuleSystem<T> : BaseModuleSystem<T
 
     protected override void OnRemoved(Entity<T> ent, ref ModuleRemovedContainerEvent args)
     {
-        base.OnRemoved(ent, ref args);
         RaiseToggleEvents(ent, false, null);
+        base.OnRemoved(ent, ref args);
     }
 
     [MustCallBase]
