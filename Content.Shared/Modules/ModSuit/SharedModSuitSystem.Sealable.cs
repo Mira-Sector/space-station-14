@@ -1,5 +1,4 @@
 using Content.Shared.Clothing;
-using Content.Shared.Item;
 using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
 using Content.Shared.Modules.ModSuit.UI;
@@ -11,7 +10,6 @@ namespace Content.Shared.Modules.ModSuit;
 public partial class SharedModSuitSystem
 {
     [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly SharedItemSystem _item = default!;
 
     private void InitializeSealable()
     {
@@ -139,8 +137,6 @@ public partial class SharedModSuitSystem
         }
 
         Appearance.SetData(ent.Owner, ModSuitSealedVisuals.Sealed, isSealed);
-        _item.VisualsChanged(ent.Owner);
-
         UpdateUI(container);
 
         return true;

@@ -150,6 +150,9 @@ public sealed class ClientClothingSystem : ClothingSystem
     {
         layers = null;
 
+        if (!clothing.AutoGenerateVisuals)
+            return false;
+
         RSI? rsi = null;
 
         if (clothing.RsiPath != null)

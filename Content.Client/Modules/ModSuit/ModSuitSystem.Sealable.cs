@@ -1,5 +1,6 @@
 using Content.Client.Modules.ModSuit.Events;
 using Content.Shared.Clothing;
+using Content.Shared.Item;
 using Content.Shared.Modules.ModSuit;
 using Content.Shared.Modules.ModSuit.Components;
 using Robust.Client.GameObjects;
@@ -10,6 +11,7 @@ namespace Content.Client.Modules.ModSuit;
 
 public partial class ModSuitSystem
 {
+    [Dependency] private readonly SharedItemSystem _item = default!;
     [Dependency] private readonly IReflectionManager _reflection = default!;
 
     private string _layerPrefix = string.Empty;
@@ -26,6 +28,8 @@ public partial class ModSuitSystem
     {
         if (!Appearance.TryGetData<bool>(ent.Owner, ModSuitSealedVisuals.Sealed, out var isSealed))
             return;
+
+        _item.VisualsChanged(ent.Owner);
 
         if (args.Sprite is not { } sprite)
             return;

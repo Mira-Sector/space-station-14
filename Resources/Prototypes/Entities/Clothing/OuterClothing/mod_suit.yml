@@ -6,6 +6,7 @@
   - type: ModSuitSealable
   - type: ModSuitDeployableInventory
   - type: Clothing
+    autoGenerateVisuals: false
     slots:
     - outerClothing
   - type: Appearance

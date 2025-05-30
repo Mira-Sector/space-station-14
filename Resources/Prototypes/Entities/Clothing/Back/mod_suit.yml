@@ -30,6 +30,7 @@
   - type: Item
     size: Ginormous
   - type: Clothing
+    autoGenerateVisuals: false
     slots:
     - back
   - type: Appearance
