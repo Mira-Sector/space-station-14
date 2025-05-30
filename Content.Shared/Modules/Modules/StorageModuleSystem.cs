@@ -66,7 +66,7 @@ public sealed partial class StorageModuleSystem : BaseModuleSystem<StorageModule
         containerStorage.StorageCloseSound = moduleStorage.StorageOpenSound;
         containerStorage.SavedLocations = moduleStorage.SavedLocations;
 
-        foreach (var item in ent.Comp.Items.ContainedEntities)
+        foreach (var item in new List<EntityUid>(ent.Comp.Items.ContainedEntities))
         {
             var location = ent.Comp.Locations[item];
 
