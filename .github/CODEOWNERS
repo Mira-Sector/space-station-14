@@ -4,6 +4,8 @@
 /Resources/Maps/* @Thurtik
 /Resources/Prototypes/Maps/* @Thurtik
 /Resources/Maps/Shuttles/** @MatthrewH
+/Resources/Maps/sparks.yml @Mehnix
+/Resources/Prototypes/Maps/sparks.yml @Mehnix
 /Resources/Maps/mir.yml @spiffycodes
 /Resources/Prototypes/Maps/mir.yml @spiffycodes
 /Resources/Maps/cluster.yml @Anuraths
