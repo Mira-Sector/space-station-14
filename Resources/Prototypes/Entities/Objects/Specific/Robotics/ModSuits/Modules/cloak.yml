@@ -1,0 +1,53 @@
+- type: entity
+  id: BaseModSuitModuleCloak
+  parent: BaseModSuitModule
+  abstract: true
+  components:
+  - type: ModSuitModuleComplexity
+    complexity: 4
+  - type: RequireSealedModule
+    requireAll: true
+    parts:
+    - Helmet
+    - Chestplate
+    - Control
+    - Gauntlets
+    - Boots
+  - type: ToggleableModuleAction
+  - type: PowerDrainModule
+    enabledDraw:
+      additional: 10
+    onUseDraw:
+      additional: 50
+  - type: ToggleableComponentUserModule
+    components:
+    - type: Stealth
+      hadOutline: true
+    - type: StealthOnMove
+      passiveVisibilityRate: -0.37
+      movementVisibilityRate: 0.20
+
+- type: entity
+  id: ModSuitModuleCloakPrototype
+  parent: BaseModSuitModuleCloak
+  name: MOD prototype cloaking module
+  description: A complete retrofitting of the suit, this is a form of visual concealment tech employing esoteric technology to bend light around the user, as well as mimetic materials to make the surface of the suit match the surroundings based off sensor data. For some reason, this tech is rarely seen.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/Modules/cloaking.rsi
+    state: prototype
+
+- type: entity
+  id: ModSuitModuleCloakNinja
+  parent: [ BaseModSuitModuleCloak, BaseMajorContraband ]
+  name: MOD advanced cloaking module
+  description: The latest in stealth technology, this module is a definite upgrade over previous versions. The field has been tuned to be even more responsive and fast-acting, with enough stability to continue operation of the field even if the user bumps into others. The draw on the power cell has been reduced drastically, making this perfect for activities like standing near sentry turrets for extended periods of time.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/Modules/cloaking.rsi
+    state: ninja
+  - type: PowerDrainModule
+    enabledDraw:
+      additional: 5
+    onUseDraw:
+      additional: 25

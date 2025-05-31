@@ -1,0 +1,76 @@
+- type: entity
+  id: ClothingBackpackModSuitBase
+  parent:
+  - Clothing
+  - PowerCellSlotMediumItem
+  abstract: true
+  components:
+  - type: ModSuitComplexityLimit
+    maxComplexity: 15
+  - type: ModSuitSealable
+  - type: ModuleContainer
+    whitelist:
+      tags:
+      - ModSuitModule
+
+  - type: ModuleContainerAddOnInteract
+  - type: ModuleContainerRequireWirePanel
+  - type: ModuleContainerPower
+    baseRate: 5
+  - type: PowerCellDraw
+  - type: PowerCellSlot
+    fitsInCharger: false
+  - type: ModSuitUserInterface
+  - type: UserInterface
+    interfaces:
+      enum.ModSuitUiKey.Key:
+        type: ModSuitBoundUserInterface
+      enum.StorageUiKey.Key: # needed for storage modules
+        type: StorageBoundUserInterface
+  - type: Item
+    size: Ginormous
+  - type: Clothing
+    slots:
+    - back
+  - type: Appearance
+
+- type: entity
+  id: ClothingBackpackModSuitAdvanced
+  parent: ClothingBackpackModSuitBase
+  name: advanced MOD control unit
+  components:
+  - type: Sprite
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/advanced.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/advanced.rsi
+        state: icon
+    clothingLayers:
+      true:
+        back:
+        - sprite: Clothing/Back/ModSuits/advanced.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        back:
+        - sprite: Clothing/Back/ModSuits/advanced.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/advanced.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/advanced.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitAdvanced
+      gloves: ClothingHandsModSuitAdvanced
+      head: ClothingHeadModSuitAdvanced
+      shoes: ClothingShoesModSuitAdvanced
+  - type: ClothingSpeedModifier
+    walkModifier: 0.75
+    sprintModifier: 0.8
+  - type: HeldSpeedModifier

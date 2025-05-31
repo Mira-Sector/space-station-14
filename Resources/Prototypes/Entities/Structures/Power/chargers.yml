@@ -245,6 +245,8 @@
     whitelist:
       components:
       - BorgChassis
+      - ModuleContainerPower
+    slots: WITHOUT_POCKET
   - type: Construction
     containers:
     - machine_parts
@@ -288,6 +290,7 @@
     whitelist:
       components:
       - BorgChassis
+      - Inventory
   - type: ContainerContainer
     containers:
       entity_storage: !type:Container

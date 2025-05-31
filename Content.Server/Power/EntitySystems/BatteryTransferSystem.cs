@@ -21,43 +21,42 @@ public sealed class BatteryTransferSystem : EntitySystem
         if (args.Handled)
             return;
 
-        if (!TryComp<BatteryComponent>(uid, out var recieverBattery) || !TryComp<BatteryTransferComponent>(uid, out var revieverTransfer))
+        if (!TryComp<BatteryComponent>(uid, out var receiverBattery) || !TryComp<BatteryTransferComponent>(uid, out var revieverTransfer))
             return;
 
         if (!TryComp<BatteryComponent>(args.Used, out var senderBattery) || !TryComp<BatteryTransferComponent>(args.Used, out var senderTransfer))
             return;
 
-        if (!revieverTransfer.CanRecieve || !senderTransfer.CanTransfer)
+        if (!revieverTransfer.CanReceive || !senderTransfer.CanTransfer)
             return;
 
         var targetEnt = Identity.Entity(uid, EntityManager);
         var sourceEnt = Identity.Entity(args.Used, EntityManager);
 
-        if (_battery.IsFull(uid, recieverBattery))
+        if (_battery.IsFull(uid, receiverBattery))
         {
             _popup.PopupEntity(Loc.GetString("battery-transfer-full", ("target", targetEnt)), args.User, args.User);
             args.Handled = true;
             return;
         }
 
-        // checks if it has no power with a 1% margin
-        if (senderBattery.CurrentCharge / senderBattery.MaxCharge < 0.01f)
+        if (MathHelper.CloseToPercent(senderBattery.CurrentCharge / senderBattery.MaxCharge, 0f))
         {
             _popup.PopupEntity(Loc.GetString("battery-transfer-empty", ("source", sourceEnt)), args.User, args.User);
             args.Handled = true;
             return;
         }
 
-        float recieverDelta = recieverBattery.MaxCharge - recieverBattery.CurrentCharge;
+        var receiverDelta = receiverBattery.MaxCharge - receiverBattery.CurrentCharge;
 
-        if (senderBattery.CurrentCharge > recieverDelta)
+        if (senderBattery.CurrentCharge > receiverDelta)
         {
-            _battery.SetCharge(uid, recieverBattery.MaxCharge, recieverBattery);
-            _battery.SetCharge(args.Used, senderBattery.CurrentCharge - recieverDelta, senderBattery);
+            _battery.SetCharge(uid, receiverBattery.MaxCharge, receiverBattery);
+            _battery.SetCharge(args.Used, senderBattery.CurrentCharge - receiverDelta, senderBattery);
         }
         else
         {
-            _battery.SetCharge(uid, recieverBattery.CurrentCharge + senderBattery.CurrentCharge, recieverBattery);
+            _battery.SetCharge(uid, receiverBattery.CurrentCharge + senderBattery.CurrentCharge, receiverBattery);
             _battery.SetCharge(args.Used, 0f, senderBattery);
         }
 

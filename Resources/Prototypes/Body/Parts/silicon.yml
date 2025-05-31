@@ -8,8 +8,58 @@
   - type: Icon
     sprite: Objects/Specific/Robotics/cyborg_parts.rsi
   - type: Damageable
-    damageContainer: Inorganic
+    damageContainer: Silicon
   - type: BodyPart
+    limbChildren:
+      root: torso
+      slots:
+        head:
+          part: HeadHuman
+          connections:
+          - torso
+          organs:
+            brain: OrganHumanBrain
+            eyes: OrganHumanEyes
+            ears: OrganHumanEars
+            tongue: OrganHumanTongue
+        torso:
+          part: TorsoHuman
+          connections:
+          - right_arm
+          - left_arm
+          - right_leg
+          - left_leg
+          organs:
+            heart: OrganHumanHeart
+            lungs: OrganHumanLungs
+            stomach: OrganHumanStomach
+            liver: OrganHumanLiver
+            kidneys: OrganHumanKidneys
+            appendix: OrganHumanAppendix
+        right_arm:
+          part: RightArmHuman
+          connections:
+          - right_hand
+        left_arm:
+          part: LeftArmHuman
+          connections:
+          - left_hand
+        right_hand:
+          part: RightHandHuman
+        left_hand:
+          part: LeftHandHuman
+        right_leg:
+          part: RightLegHuman
+          connections:
+          - right_foot
+        left_leg:
+          part: LeftLegHuman
+          connections:
+          - left_foot
+        right_foot:
+          part: RightFootHuman
+        left_foot:
+          part: LeftFootHuman
   - type: ContainerContainer
     containers:
       bodypart: !type:Container
@@ -29,12 +79,15 @@
 
 - type: entity
   id: LeftArmBorg
-  parent: PartSilicon
+  parent: [PartSilicon, BaseLeftArm]
   name: cyborg left arm
   components:
   - type: BodyPart
-    partType: Hand
+    partType: Arm
     symmetry: Left
+  - type: SurgeryReceiver
+    availableSurgeries:
+    - ProstheticsAmputation
   - type: Sprite
     state: borg_l_arm
   - type: Icon
@@ -49,12 +102,15 @@
 
 - type: entity
   id: RightArmBorg
-  parent: PartSilicon
+  parent: [PartSilicon, BaseRightArm]
   name: cyborg right arm
   components:
   - type: BodyPart
-    partType: Hand
+    partType: Arm
     symmetry: Right
+  - type: SurgeryReceiver
+    availableSurgeries:
+    - ProstheticsAmputation
   - type: Sprite
     state: borg_r_arm
   - type: Icon
@@ -68,6 +124,38 @@
     heldPrefix: borg-arm
 
 - type: entity
+  id: LeftHandBorg
+  parent: [PartSilicon, BaseLeftHand]
+  components:
+    - type: BodyPart
+      partType: Hand
+      symmetry: Left
+
+- type: entity
+  id: RightHandBorg
+  parent: [PartSilicon, BaseLeftHand]
+  components:
+    - type: BodyPart
+      partType: Hand
+      symmetry: Right
+
+- type: entity
+  id: LeftFootBorg
+  parent: [PartSilicon, BaseLeftFoot]
+  components:
+    - type: BodyPart
+      partType: Foot
+      symmetry: Left
+
+- type: entity
+  id: RightFootBorg
+  parent: [PartSilicon, BaseLeftFoot]
+  components:
+    - type: BodyPart
+      partType: Foot
+      symmetry: Right
+
+- type: entity
   id: LeftLegBorg
   parent: PartSilicon
   name: cyborg left leg
@@ -75,6 +163,9 @@
   - type: BodyPart
     partType: Leg
     symmetry: Left
+  - type: SurgeryReceiver
+    availableSurgeries:
+     - ProstheticsAmputation
   - type: Sprite
     state: borg_l_leg
   - type: Icon
@@ -95,6 +186,9 @@
   - type: BodyPart
     partType: Leg
     symmetry: Right
+  - type: SurgeryReceiver
+    availableSurgeries:
+    - ProstheticsAmputation
   - type: Sprite
     state: borg_r_leg
   - type: Icon
@@ -114,6 +208,9 @@
   components:
   - type: BodyPart
     partType: Head
+  - type: SurgeryReceiver
+    availableSurgeries:
+     - ProstheticsAmputation
   - type: Sprite
     state: borg_head
   - type: Icon

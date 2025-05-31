@@ -1,0 +1,36 @@
+- type: entity
+  id: ModSuitShell
+  name: MOD Shell
+  description: The ground work for a MOD suit.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/construction_shell.rsi
+    layers:
+    - state: start
+      map: [ "enum.ConstructionVisuals.Layer" ]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ConstructionVisuals.Key:
+        enum.ConstructionVisuals.Layer:
+          assembly: { state: alarm_b1 }
+          electronics: { state: alarm_b1 }
+  - type: Construction
+    graph: ModSuit
+    node: start
+  - type: Clickable
+  - type: Physics
+    bodyType: Dynamic
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 60
+        mask:
+        - MachineMask
+        layer:
+        - MidImpassable
+        - LowImpassable
+  - type: Pullable
