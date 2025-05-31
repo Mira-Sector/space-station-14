@@ -67,6 +67,9 @@ public sealed partial class ClothingComponent : Component
     [DataField("sprite")]
     public string? RsiPath;
 
+    [DataField]
+    public bool AutoGenerateVisuals = true;
+
     /// <summary>
     /// Name of the inventory slot the clothing is currently in.
     /// Note that this being non-null does not mean the clothing is considered "worn" or "equipped" unless the slot

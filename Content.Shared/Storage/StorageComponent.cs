@@ -47,7 +47,6 @@ namespace Content.Shared.Storage
         /// The maximum size item that can be inserted into this storage,
         /// </summary>
         [DataField, ViewVariables(VVAccess.ReadWrite)]
-        [Access(typeof(SharedStorageSystem))]
         public ProtoId<ItemSizePrototype>? MaxItemSize;
 
         // TODO: Make area insert its own component.
@@ -290,7 +289,7 @@ namespace Content.Shared.Storage
     public record struct StorageInteractAttemptEvent(bool Silent, bool Cancelled = false);
 
     [ByRefEvent]
-    public record struct StorageInteractUsingAttemptEvent(bool Cancelled = false);
+    public record struct StorageInteractUsingAttemptEvent(EntityUid Using, bool Cancelled = false);
 
     [ByRefEvent]
     public record struct StorageRemovedItemEvent(EntityUid User, EntityUid Storage);

@@ -38,6 +38,9 @@ public abstract class SharedJetpackSystem : EntitySystem
 
     private void OnMapInit(EntityUid uid, JetpackComponent component, MapInitEvent args)
     {
+        if (component.ToggleAction == null)
+            return;
+
         _actionContainer.EnsureAction(uid, ref component.ToggleActionEntity, component.ToggleAction);
         Dirty(uid, component);
     }
@@ -123,17 +126,17 @@ public abstract class SharedJetpackSystem : EntitySystem
         SetEnabled(uid, component, !IsEnabled(uid));
     }
 
-    private bool CanEnableOnGrid(EntityUid? gridUid)
+    public bool CanEnableOnGrid(EntityUid? gridUid)
     {
         // No and no again! Do not attempt to activate the jetpack on a grid with gravity disabled. You will not be the first or the last to try this.
         // https://discord.com/channels/310555209753690112/310555209753690112/1270067921682694234
-        return gridUid == null ||
-               (!HasComp<GravityComponent>(gridUid));
+        return gridUid == null || !HasComp<GravityComponent>(gridUid);
     }
 
     private void OnJetpackGetAction(EntityUid uid, JetpackComponent component, GetItemActionsEvent args)
     {
-        args.AddAction(ref component.ToggleActionEntity, component.ToggleAction);
+        if (component.ToggleAction != null)
+            args.AddAction(ref component.ToggleActionEntity, component.ToggleAction);
     }
 
     private bool IsEnabled(EntityUid uid)
@@ -144,7 +147,7 @@ public abstract class SharedJetpackSystem : EntitySystem
     public void SetEnabled(EntityUid uid, JetpackComponent component, bool enabled, EntityUid? user = null)
     {
         if (IsEnabled(uid) == enabled ||
-            enabled && !CanEnable(uid, component))
+            enabled && !CanEnable(uid))
         {
             return;
         }
@@ -191,9 +194,12 @@ public abstract class SharedJetpackSystem : EntitySystem
         return HasComp<JetpackUserComponent>(uid);
     }
 
-    protected virtual bool CanEnable(EntityUid uid, JetpackComponent component)
+    private bool CanEnable(EntityUid uid)
     {
-        return true;
+        var ev = new EnableJetpackAttemptEvent();
+        RaiseLocalEvent(uid, ev);
+
+        return !ev.Cancelled;
     }
 }
 

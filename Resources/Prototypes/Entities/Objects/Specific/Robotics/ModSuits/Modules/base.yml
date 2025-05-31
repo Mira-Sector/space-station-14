@@ -1,0 +1,26 @@
+- type: entity
+  id: BaseModSuitModule
+  parent: BaseItem
+  abstract: true
+  components:
+  - type: ModuleContained
+  - type: Item
+  - type: Sprite
+  - type: Tag
+    tags:
+    - ModSuitModule
+
+- type: entity
+  id: BaseModSuitModuleToggle
+  parent: BaseModSuitModule
+  abstract: true
+  components:
+  - type: ToggleableModule
+
+- type: entity
+  id: BaseModSuitModuleAction
+  parent: BaseModSuitModuleToggle
+  abstract: true
+  components:
+  - type: ToggleableModuleAction
+  - type: ToggleableUiModule
