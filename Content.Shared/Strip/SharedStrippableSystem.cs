@@ -1,6 +1,5 @@
 using System.Linq;
 using Content.Shared.Administration.Logs;
-using Content.Shared.CombatMode;
 using Content.Shared.Cuffs;
 using Content.Shared.Cuffs.Components;
 using Content.Shared.Database;
@@ -9,6 +8,7 @@ using Content.Shared.DragDrop;
 using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.IdentityManagement;
+using Content.Shared.Intents;
 using Content.Shared.Interaction;
 using Content.Shared.Interaction.Components;
 using Content.Shared.Interaction.Events;
@@ -17,6 +17,7 @@ using Content.Shared.Inventory.VirtualItem;
 using Content.Shared.Popups;
 using Content.Shared.Strip.Components;
 using Content.Shared.Verbs;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 
 namespace Content.Shared.Strip;
@@ -30,9 +31,16 @@ public abstract class SharedStrippableSystem : EntitySystem
     [Dependency] private readonly SharedCuffableSystem _cuffableSystem = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfterSystem = default!;
     [Dependency] private readonly SharedHandsSystem _handsSystem = default!;
+    [Dependency] private readonly IntentSystem _intentSystem = default!;
     [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
 
     [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
+
+    private static readonly HashSet<ProtoId<IntentPrototype>> CombatIntents = new()
+    {
+        "Harm",
+        "Disarm"
+    };
 
     public override void Initialize()
     {
@@ -634,7 +642,7 @@ public abstract class SharedStrippableSystem : EntitySystem
 
     public bool TryOpenStrippingUi(EntityUid user, Entity<StrippableComponent> target, bool openInCombat = false)
     {
-        if (!openInCombat && TryComp<CombatModeComponent>(user, out var mode) && mode.IsInCombatMode)
+        if (!openInCombat && _intentSystem.TryGetIntent(user, out var intent) && CombatIntents.Contains(intent.Value))
             return false;
 
         if (!HasComp<StrippingComponent>(user))

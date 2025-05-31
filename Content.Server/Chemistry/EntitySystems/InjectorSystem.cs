@@ -11,9 +11,11 @@ using Content.Shared.FixedPoint;
 using Content.Shared.Forensics;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Interaction;
+using Content.Shared.Intents;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Stacks;
 using Content.Shared.Nutrition.EntitySystems;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Chemistry.EntitySystems;
 
@@ -22,6 +24,8 @@ public sealed class InjectorSystem : SharedInjectorSystem
     [Dependency] private readonly BloodstreamSystem _blood = default!;
     [Dependency] private readonly ReactiveSystem _reactiveSystem = default!;
     [Dependency] private readonly OpenableSystem _openable = default!;
+
+    private static readonly ProtoId<IntentPrototype> HarmIntent = "Harm";
 
     public override void Initialize()
     {
@@ -165,7 +169,7 @@ public sealed class InjectorSystem : SharedInjectorSystem
             {
                 actualDelay /= 2.5f;
             }
-            else if (Combat.IsInCombatMode(target))
+            else if (Intent.TryGetIntent(target, out var intent) && intent == HarmIntent)
             {
                 // Slightly increase the delay when the target is in combat mode. Helps prevents cheese injections in
                 // combat with fast syringes & lag.

@@ -4,7 +4,6 @@ using Content.Client.Gameplay;
 using Content.Client.Items;
 using Content.Client.Weapons.Ranged.Components;
 using Content.Shared.Camera;
-using Content.Shared.CombatMode;
 using Content.Shared.Weapons.Ranged;
 using Content.Shared.Weapons.Ranged.Components;
 using Content.Shared.Weapons.Ranged.Events;
@@ -161,7 +160,7 @@ public sealed partial class GunSystem : SharedGunSystem
 
         var entityNull = _player.LocalEntity;
 
-        if (entityNull == null || !TryComp<CombatModeComponent>(entityNull, out var combat) || !combat.IsInCombatMode)
+        if (entityNull == null || !Intent.TryGetIntent(entityNull.Value, out var intent) || intent != HarmIntent)
         {
             return;
         }
