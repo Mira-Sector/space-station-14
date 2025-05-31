@@ -1717,3 +1717,9 @@ Entries:
     type: Add
   id: 245
   time: '2025-05-15T10:45:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: AI modules now have unique icons
+    type: Add
+  id: 246
+  time: '2025-05-27T16:25:00.0000000+00:00'
