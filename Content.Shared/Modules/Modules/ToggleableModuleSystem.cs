@@ -36,14 +36,12 @@ public sealed partial class ToggleableModuleSystem : EntitySystem
     {
         ent.Comp.Toggled = true;
         Dirty(ent);
-        RaiseToggleEvents(ent, null);
     }
 
     private void OnDisabled(Entity<ToggleableModuleComponent> ent, ref ModuleDisabledEvent args)
     {
         ent.Comp.Toggled = false;
         Dirty(ent);
-        RaiseToggleEvents(ent, null);
     }
 
     [PublicAPI]
