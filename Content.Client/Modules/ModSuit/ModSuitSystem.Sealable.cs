@@ -45,8 +45,12 @@ public partial class ModSuitSystem
         var ev = new ModSuitSealedGetIconLayersEvent();
         RaiseLocalEvent(ent.Owner, ev);
 
-        layers.AddRange(ev.Layers);
+        AddIconLayers(ent, layers, sprite);
+        AddIconLayers(ent, ev.Layers, sprite);
+    }
 
+    private void AddIconLayers(Entity<ModSuitSealableComponent> ent, List<PrototypeLayerData> layers, SpriteComponent sprite)
+    {
         foreach (var layer in layers)
         {
             layer.MapKeys ??= [];
@@ -70,7 +74,13 @@ public partial class ModSuitSystem
         var ev = new ModSuitSealedGetClothingLayersEvent(args.Slot);
         RaiseLocalEvent(ent.Owner, ev);
 
-        layers.AddRange(ev.Layers);
+        AddClothingLayers(layers, ref args);
+        AddClothingLayers(ev.Layers, ref args);
+    }
+
+    private void AddClothingLayers(List<PrototypeLayerData> layers, ref GetEquipmentVisualsEvent args)
+    {
+        List<(string, PrototypeLayerData)> toAdd = [];
 
         for (var i = 0; i < layers.Count; i++)
         {
@@ -79,7 +89,7 @@ public partial class ModSuitSystem
             var key = layer.MapKeys?.FirstOrDefault();
             if (key == null)
             {
-                key = $"{_layerPrefix}-{args.Slot}-{i}";
+                key = $"{_layerPrefix}-{args.Slot}-{i + args.Layers.Count}";
             }
             else
             {
@@ -87,7 +97,9 @@ public partial class ModSuitSystem
                 layer.MapKeys = [key];
             }
 
-            args.Layers.Add((key, layer));
+            toAdd.Add((key, layer));
         }
+
+        args.Layers.AddRange(toAdd);
     }
 }

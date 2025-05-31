@@ -7,22 +7,24 @@ using Content.Shared.PowerCell;
 
 namespace Content.Shared.Modules.Modules;
 
-public sealed partial class JetpackModuleSystem : BaseToggleableModuleSystem<JetpackModuleComponent>
+public sealed partial class JetpackModuleSystem : EntitySystem
 {
     [Dependency] private readonly SharedJetpackSystem _jetpack = default!;
+    [Dependency] private readonly ModuleContainedSystem _moduleContained = default!;
 
     public override void Initialize()
     {
         base.Initialize();
 
+        SubscribeLocalEvent<JetpackModuleComponent, ModuleEnabledEvent>(OnEnabled);
+        SubscribeLocalEvent<JetpackModuleComponent, ModuleDisabledEvent>(OnDisabled);
+
         SubscribeLocalEvent<JetpackModuleComponent, ModuleToggleAttemptEvent>(OnToggleAttempt);
         SubscribeLocalEvent<JetpackModuleComponent, EnableJetpackAttemptEvent>(OnJetpackAttempt);
     }
 
-    protected override void OnEnabled(Entity<JetpackModuleComponent> ent, ref ModuleEnabledEvent args)
+    private void OnEnabled(Entity<JetpackModuleComponent> ent, ref ModuleEnabledEvent args)
     {
-        base.OnEnabled(ent, ref args);
-
         if (!CanEnable(ent))
             return;
 
@@ -33,10 +35,8 @@ public sealed partial class JetpackModuleSystem : BaseToggleableModuleSystem<Jet
         _jetpack.SetEnabled(args.Container, jetpack, true, args.User);
     }
 
-    protected override void OnDisabled(Entity<JetpackModuleComponent> ent, ref ModuleDisabledEvent args)
+    private void OnDisabled(Entity<JetpackModuleComponent> ent, ref ModuleDisabledEvent args)
     {
-        base.OnDisabled(ent, ref args);
-
         _jetpack.SetEnabled(args.Container, Comp<JetpackComponent>(args.Container), false, args.User);
     }
 
@@ -68,10 +68,10 @@ public sealed partial class JetpackModuleSystem : BaseToggleableModuleSystem<Jet
         if (!HasComp<PowerDrainModuleComponent>(ent.Owner))
             return true;
 
-        if (ent.Comp.Container == null)
+        if (!_moduleContained.TryGetContainer(ent.Owner, out var container))
             return false;
 
-        if (!TryComp<PowerCellDrawComponent>(ent.Comp.Container.Value, out var drawComp))
+        if (!TryComp<PowerCellDrawComponent>(container.Value, out var drawComp))
             return false;
 
         return drawComp.CanDraw;

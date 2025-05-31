@@ -4,27 +4,29 @@ using Content.Shared.PowerCell;
 
 namespace Content.Shared.Modules.Modules;
 
-public abstract partial class SharedPowerDrainModuleSystem : BaseToggleableModuleSystem<PowerDrainModuleComponent>
+public abstract partial class SharedPowerDrainModuleSystem : EntitySystem
 {
     [Dependency] private readonly SharedModuleSystem _module = default!;
+    [Dependency] private readonly ToggleableModuleSystem _toggleableModule = default!;
 
     public override void Initialize()
     {
         base.Initialize();
 
+        SubscribeLocalEvent<PowerDrainModuleComponent, ModuleEnabledEvent>(OnEnabled);
+        SubscribeLocalEvent<PowerDrainModuleComponent, ModuleDisabledEvent>(OnDisabled);
+
         SubscribeLocalEvent<PowerDrainModuleComponent, GetModulePowerDrawEvent>(OnGetPower);
         SubscribeLocalEvent<PowerDrainModuleComponent, ModuleRelayedEvent<PowerCellSlotEmptyEvent>>(OnEmpty);
     }
 
-    protected override void OnEnabled(Entity<PowerDrainModuleComponent> ent, ref ModuleEnabledEvent args)
+    protected virtual void OnEnabled(Entity<PowerDrainModuleComponent> ent, ref ModuleEnabledEvent args)
     {
-        base.OnEnabled(ent, ref args);
         _module.UpdatePowerDraw(args.Container);
     }
 
-    protected override void OnDisabled(Entity<PowerDrainModuleComponent> ent, ref ModuleDisabledEvent args)
+    private void OnDisabled(Entity<PowerDrainModuleComponent> ent, ref ModuleDisabledEvent args)
     {
-        base.OnDisabled(ent, ref args);
         _module.UpdatePowerDraw(args.Container);
     }
 
@@ -32,7 +34,7 @@ public abstract partial class SharedPowerDrainModuleSystem : BaseToggleableModul
     {
         float? entry;
 
-        if (ent.Comp.Toggled)
+        if (_toggleableModule.IsToggled(ent.Owner))
             entry = ent.Comp.EnabledDraw;
         else
             entry = ent.Comp.DisabledDraw;
@@ -45,6 +47,6 @@ public abstract partial class SharedPowerDrainModuleSystem : BaseToggleableModul
 
     private void OnEmpty(Entity<PowerDrainModuleComponent> ent, ref ModuleRelayedEvent<PowerCellSlotEmptyEvent> args)
     {
-        RaiseToggleEvents(ent, false, null);
+        _toggleableModule.RaiseToggleEvents(ent.Owner, false, null);
     }
 }

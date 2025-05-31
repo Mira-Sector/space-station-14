@@ -26,9 +26,9 @@ public partial class SharedModuleSystem
         RaiseEventToModules((ent.Owner, ent.Comp), ev);
     }
 
-    public void RelayToContainer<T1, T2>(Entity<T2> ent, ref T1 args) where T2 : BaseModuleComponent
+    public void RelayToContainer<T>(Entity<ModuleContainedComponent> ent, ref T args)
     {
-        var ev = new ModuleContainerRelayedEvent<T1>(args, ent.Owner);
+        var ev = new ModuleContainerRelayedEvent<T>(args, ent.Owner);
         RaiseEventToContainer((ent.Owner, ent.Comp), ev);
     }
 }

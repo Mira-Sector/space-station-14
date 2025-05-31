@@ -5,8 +5,9 @@ using Content.Shared.Modules.ModSuit.Components;
 
 namespace Content.Shared.Modules.Modules;
 
-public sealed partial class ModSuitDeployableContainerVisualsSystem : BaseToggleableModuleSystem<ModSuitDeployableContainerVisualsComponent>
+public sealed partial class ModSuitDeployableContainerVisualsSystem : EntitySystem
 {
+    [Dependency] private readonly ModuleContainedSystem _moduleContained = default!;
     [Dependency] private readonly SharedModSuitSystem _modSuit = default!;
 
     public override void Initialize()
@@ -18,16 +19,16 @@ public sealed partial class ModSuitDeployableContainerVisualsSystem : BaseToggle
 
     private void OnGetVisualEntity(Entity<ModSuitDeployableContainerVisualsComponent> ent, ref ModuleContainerVisualsGetVisualEntityEvent args)
     {
-        if (ent.Comp.Container is not { } container)
+        if (!_moduleContained.TryGetContainer(ent.Owner, out var container))
             return;
 
-        if (IsPart(ent, container))
+        if (IsPart(ent, container.Value))
         {
             args.Entity = container;
             return;
         }
 
-        foreach (var part in _modSuit.GetAllParts(container))
+        foreach (var part in _modSuit.GetAllParts(container.Value))
         {
             if (!IsPart(ent, part))
                 continue;

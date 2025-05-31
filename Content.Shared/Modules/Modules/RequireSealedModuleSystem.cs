@@ -7,8 +7,9 @@ using System.Linq;
 
 namespace Content.Shared.Modules.Modules;
 
-public sealed partial class RequireSealedModuleSystem : BaseToggleableModuleSystem<RequireSealedModuleComponent>
+public sealed partial class RequireSealedModuleSystem : EntitySystem
 {
+    [Dependency] private readonly ToggleableModuleSystem _toggleableModule = default!;
     [Dependency] private readonly SharedModSuitSystem _modSuit = default!;
 
     public override void Initialize()
@@ -41,7 +42,7 @@ public sealed partial class RequireSealedModuleSystem : BaseToggleableModuleSyst
         if (!CanEnable(ent, args.ModuleOwner))
             return;
 
-        RaiseToggleEvents(ent, true, null);
+        _toggleableModule.RaiseToggleEvents(ent.Owner, true, null);
     }
 
     private void OnUnsealed(Entity<RequireSealedModuleComponent> ent, ref ModuleRelayedEvent<ModSuitContainerPartUnsealedEvent> args)
@@ -49,7 +50,7 @@ public sealed partial class RequireSealedModuleSystem : BaseToggleableModuleSyst
         if (!CanEnable(ent, args.ModuleOwner))
             return;
 
-        RaiseToggleEvents(ent, false, null);
+        _toggleableModule.RaiseToggleEvents(ent.Owner, false, null);
     }
 
     private bool CanEnable(Entity<RequireSealedModuleComponent> ent, EntityUid container)

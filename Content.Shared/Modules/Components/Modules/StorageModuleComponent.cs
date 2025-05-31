@@ -5,7 +5,7 @@ using Robust.Shared.GameStates;
 namespace Content.Shared.Modules.Components.Modules;
 
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
-public sealed partial class StorageModuleComponent : BaseModuleComponent
+public sealed partial class StorageModuleComponent : Component
 {
     public const string ContainerId = "modsuit-storage-module";
 

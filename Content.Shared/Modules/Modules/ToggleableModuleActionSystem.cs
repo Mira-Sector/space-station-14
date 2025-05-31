@@ -5,13 +5,21 @@ using Content.Shared.Modules.Events;
 
 namespace Content.Shared.Modules.Modules;
 
-public sealed partial class ToggleableModuleActionSystem : BaseToggleableUiModuleSystem<ToggleableModuleActionComponent>
+public sealed partial class ToggleableModuleActionSystem : EntitySystem
 {
+    [Dependency] private readonly ModuleContainedSystem _moduleContained = default!;
+    [Dependency] private readonly ToggleableModuleSystem _toggleableModule = default!;
     [Dependency] private readonly SharedActionsSystem _actions = default!;
 
     public override void Initialize()
     {
         base.Initialize();
+
+        SubscribeLocalEvent<ToggleableModuleActionComponent, ModuleAddedContainerEvent>(OnAdded);
+        SubscribeLocalEvent<ToggleableModuleActionComponent, ModuleRemovedContainerEvent>(OnRemoved);
+
+        SubscribeLocalEvent<ToggleableModuleActionComponent, ModuleEnabledEvent>(OnEnabled);
+        SubscribeLocalEvent<ToggleableModuleActionComponent, ModuleDisabledEvent>(OnDisabled);
 
         SubscribeLocalEvent<ToggleableModuleActionComponent, ModuleRelayedEvent<ClothingGotEquippedEvent>>(OnEquipped);
         SubscribeLocalEvent<ToggleableModuleActionComponent, ModuleRelayedEvent<ClothingGotUnequippedEvent>>(OnUnequipped);
@@ -21,11 +29,9 @@ public sealed partial class ToggleableModuleActionSystem : BaseToggleableUiModul
         SubscribeLocalEvent<ToggleableModuleActionComponent, ModuleToggleActionEvent>(OnAction);
     }
 
-    protected override void OnAdded(Entity<ToggleableModuleActionComponent> ent, ref ModuleAddedContainerEvent args)
+    private void OnAdded(Entity<ToggleableModuleActionComponent> ent, ref ModuleAddedContainerEvent args)
     {
-        base.OnAdded(ent, ref args);
-
-        if (!TryGetUser(ent, out var user))
+        if (!_moduleContained.TryGetUser(ent.Owner, out var user))
             return;
 
         if (!_actions.AddAction(user.Value, ref ent.Comp.Action, ent.Comp.ActionId, ent.Owner))
@@ -34,23 +40,18 @@ public sealed partial class ToggleableModuleActionSystem : BaseToggleableUiModul
         Dirty(ent);
     }
 
-    protected override void OnRemoved(Entity<ToggleableModuleActionComponent> ent, ref ModuleRemovedContainerEvent args)
+    private void OnRemoved(Entity<ToggleableModuleActionComponent> ent, ref ModuleRemovedContainerEvent args)
     {
-        base.OnRemoved(ent, ref args);
         _actions.RemoveAction(ent.Comp.Action);
     }
 
-    protected override void OnEnabled(Entity<ToggleableModuleActionComponent> ent, ref ModuleEnabledEvent args)
+    private void OnEnabled(Entity<ToggleableModuleActionComponent> ent, ref ModuleEnabledEvent args)
     {
-        base.OnEnabled(ent, ref args);
-
         _actions.SetToggled(ent.Comp.Action, true);
     }
 
-    protected override void OnDisabled(Entity<ToggleableModuleActionComponent> ent, ref ModuleDisabledEvent args)
+    private void OnDisabled(Entity<ToggleableModuleActionComponent> ent, ref ModuleDisabledEvent args)
     {
-        base.OnDisabled(ent, ref args);
-
         _actions.SetToggled(ent.Comp.Action, false);
     }
 
@@ -78,7 +79,7 @@ public sealed partial class ToggleableModuleActionSystem : BaseToggleableUiModul
         if (args.Handled)
             return;
 
-        Toggle(ent.AsNullable(), args.Performer);
+        _toggleableModule.Toggle(ent.Owner, args.Performer);
         args.Handled = true;
     }
 }

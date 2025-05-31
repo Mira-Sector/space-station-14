@@ -3,17 +3,23 @@ using Content.Shared.Modules.Events;
 
 namespace Content.Shared.Modules.Modules;
 
-public sealed partial class AddComponentContainerModuleSystem : BaseModuleSystem<AddComponentContainerModuleComponent>
+public sealed partial class AddComponentContainerModuleSystem : EntitySystem
 {
-    protected override void OnAdded(Entity<AddComponentContainerModuleComponent> ent, ref ModuleAddedContainerEvent args)
+    public override void Initialize()
     {
-        base.OnAdded(ent, ref args);
+        base.Initialize();
+
+        SubscribeLocalEvent<AddComponentContainerModuleComponent, ModuleAddedContainerEvent>(OnAdded);
+        SubscribeLocalEvent<AddComponentContainerModuleComponent, ModuleRemovedContainerEvent>(OnRemoved);
+    }
+
+    private void OnAdded(Entity<AddComponentContainerModuleComponent> ent, ref ModuleAddedContainerEvent args)
+    {
         EntityManager.AddComponents(args.Container, ent.Comp.Components);
     }
 
-    protected override void OnRemoved(Entity<AddComponentContainerModuleComponent> ent, ref ModuleRemovedContainerEvent args)
+    private void OnRemoved(Entity<AddComponentContainerModuleComponent> ent, ref ModuleRemovedContainerEvent args)
     {
-        base.OnRemoved(ent, ref args);
         EntityManager.RemoveComponents(args.Container, ent.Comp.Components);
     }
 }

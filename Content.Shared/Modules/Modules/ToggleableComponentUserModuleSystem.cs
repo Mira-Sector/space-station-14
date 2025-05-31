@@ -3,23 +3,29 @@ using Content.Shared.Modules.Events;
 
 namespace Content.Shared.Modules.Modules;
 
-public sealed partial class ToggleableComponentUserModuleSystem : BaseToggleableModuleSystem<ToggleableComponentUserModuleComponent>
+public sealed partial class ToggleableComponentUserModuleSystem : EntitySystem
 {
-    protected override void OnEnabled(Entity<ToggleableComponentUserModuleComponent> ent, ref ModuleEnabledEvent args)
-    {
-        base.OnEnabled(ent, ref args);
+    [Dependency] private readonly ModuleContainedSystem _moduleContained = default!;
 
-        if (!TryGetUser(ent, out var user))
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        SubscribeLocalEvent<ToggleableComponentUserModuleComponent, ModuleEnabledEvent>(OnEnabled);
+        SubscribeLocalEvent<ToggleableComponentUserModuleComponent, ModuleDisabledEvent>(OnDisabled);
+    }
+
+    private void OnEnabled(Entity<ToggleableComponentUserModuleComponent> ent, ref ModuleEnabledEvent args)
+    {
+        if (!_moduleContained.TryGetUser(ent.Owner, out var user))
             return;
 
         EntityManager.AddComponents(user.Value, ent.Comp.Components);
     }
 
-    protected override void OnDisabled(Entity<ToggleableComponentUserModuleComponent> ent, ref ModuleDisabledEvent args)
+    private void OnDisabled(Entity<ToggleableComponentUserModuleComponent> ent, ref ModuleDisabledEvent args)
     {
-        base.OnDisabled(ent, ref args);
-
-        if (!TryGetUser(ent, out var user))
+        if (!_moduleContained.TryGetUser(ent.Owner, out var user))
             return;
 
         EntityManager.RemoveComponents(user.Value, ent.Comp.Components);

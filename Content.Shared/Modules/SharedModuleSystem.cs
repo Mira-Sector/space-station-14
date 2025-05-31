@@ -4,6 +4,7 @@ using Content.Shared.Modules.Components.Modules;
 using Content.Shared.Modules.Events;
 using Content.Shared.Modules.ModSuit.Events;
 using Content.Shared.Modules.ModSuit.UI;
+using Content.Shared.Modules.Modules;
 using Content.Shared.Popups;
 using Content.Shared.Whitelist;
 using JetBrains.Annotations;
@@ -16,6 +17,7 @@ public abstract partial class SharedModuleSystem : EntitySystem
 {
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
+    [Dependency] private readonly ModuleContainedSystem _moduleContained = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
@@ -156,11 +158,9 @@ public abstract partial class SharedModuleSystem : EntitySystem
     }
 
     [PublicAPI]
-    public void RaiseEventToContainer<T>(Entity<BaseModuleComponent> ent, T ev) where T : notnull
+    public void RaiseEventToContainer<T>(Entity<ModuleContainedComponent?> ent, T ev) where T : notnull
     {
-        if (ent.Comp.Container is not { } container)
-            return;
-
-        RaiseLocalEvent(container, ev);
+        if (_moduleContained.TryGetContainer(ent, out var container))
+            RaiseLocalEvent(container.Value, ev);
     }
 }

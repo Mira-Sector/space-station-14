@@ -4,7 +4,7 @@ using Robust.Shared.GameStates;
 namespace Content.Shared.Modules.Components.Modules;
 
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
-public sealed partial class ModuleContainerVisualsComponent : BaseToggleableModuleComponent
+public sealed partial class ModuleContainerVisualsComponent : Component
 {
     [DataField, AutoNetworkedField]
     public Dictionary<bool, Dictionary<string, List<PrototypeLayerData>>> ClothingLayers = [];

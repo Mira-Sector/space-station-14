@@ -1,6 +1,7 @@
 using Content.Client.Modules.ModSuit.Events;
 using Content.Shared.Clothing;
 using Content.Shared.Hands;
+using Content.Shared.Item;
 using Content.Shared.Modules;
 using Content.Shared.Modules.Components.Modules;
 using Content.Shared.Modules.Events;
@@ -14,6 +15,7 @@ namespace Content.Client.Modules.Modules;
 
 public sealed partial class ModuleContainerVisualsSystem : SharedModuleContainerVisualsSystem
 {
+    [Dependency] private readonly SharedItemSystem _item = default!;
     [Dependency] private readonly IReflectionManager _reflection = default!;
 
     internal string LayerPrefix = string.Empty;
@@ -47,6 +49,9 @@ public sealed partial class ModuleContainerVisualsSystem : SharedModuleContainer
 
     private void OnAppearanceChange(Entity<ModuleContainerVisualsComponent> ent, ref AppearanceChangeEvent args)
     {
+        if (GetVisualEntity(ent.AsNullable()) is { } visual)
+            _item.VisualsChanged(visual);
+
         if (args.Sprite is not { } sprite)
             return;
 
@@ -56,7 +61,7 @@ public sealed partial class ModuleContainerVisualsSystem : SharedModuleContainer
         ent.Comp.RevealedIconVisuals.Clear();
 
         // gotta cleanup our prior mess before leaving
-        if (!ent.Comp.ItemLayers.TryGetValue(ent.Comp.Toggled, out var layers))
+        if (!ent.Comp.ItemLayers.TryGetValue(ToggleableModule.IsToggled(ent.Owner), out var layers))
             return;
 
         foreach (var (_, layer) in UpdateVisuals(layers))
@@ -77,7 +82,7 @@ public sealed partial class ModuleContainerVisualsSystem : SharedModuleContainer
 
     private void OnGetVisuals(Entity<ModuleContainerVisualsComponent> ent, ref GetEquipmentVisualsEvent args)
     {
-        if (!ent.Comp.ClothingLayers.TryGetValue(ent.Comp.Toggled, out var layers))
+        if (!ent.Comp.ClothingLayers.TryGetValue(ToggleableModule.IsToggled(ent.Owner), out var layers))
             return;
 
         if (!layers.TryGetValue(args.Slot, out var layerData))
@@ -89,7 +94,7 @@ public sealed partial class ModuleContainerVisualsSystem : SharedModuleContainer
 
     private void OnItemVisuals(Entity<ModuleContainerVisualsComponent> ent, ref GetInhandVisualsEvent args)
     {
-        if (!ent.Comp.InHandLayers.TryGetValue(ent.Comp.Toggled, out var layers))
+        if (!ent.Comp.InHandLayers.TryGetValue(ToggleableModule.IsToggled(ent.Owner), out var layers))
             return;
 
         if (!layers.TryGetValue(args.Location, out var layerData))
@@ -101,7 +106,7 @@ public sealed partial class ModuleContainerVisualsSystem : SharedModuleContainer
 
     private void OnSealedGetVisuals(Entity<ModuleContainerVisualsComponent> ent, ref ModSuitSealedGetClothingLayersEvent args)
     {
-        if (!ent.Comp.ClothingLayers.TryGetValue(ent.Comp.Toggled, out var layers))
+        if (!ent.Comp.ClothingLayers.TryGetValue(ToggleableModule.IsToggled(ent.Owner), out var layers))
             return;
 
         if (!layers.TryGetValue(args.Slot, out var layerData))
@@ -113,7 +118,7 @@ public sealed partial class ModuleContainerVisualsSystem : SharedModuleContainer
 
     private void OnSealedGetIconVisuals(Entity<ModuleContainerVisualsComponent> ent, ref ModSuitSealedGetIconLayersEvent args)
     {
-        if (!ent.Comp.ItemLayers.TryGetValue(ent.Comp.Toggled, out var layers))
+        if (!ent.Comp.ItemLayers.TryGetValue(ToggleableModule.IsToggled(ent.Owner), out var layers))
             return;
 
         foreach (var (_, layer) in UpdateVisuals(layers))

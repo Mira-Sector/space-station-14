@@ -80,7 +80,7 @@ public sealed partial class ModSuitWindow : DefaultWindow
                 if (data.IsSealed == anyUnsealed)
                     continue;
 
-                sealedButtonState.Add(part, !data.IsSealed);
+                sealedButtonState[part] = !data.IsSealed;
             }
 
             allButton.ButtonButton.OnPressed += _ => OnSealButtonPressed?.Invoke(sealedButtonState);

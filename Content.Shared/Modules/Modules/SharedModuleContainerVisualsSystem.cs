@@ -1,37 +1,31 @@
-using Content.Shared.Item;
 using Content.Shared.Modules.Components.Modules;
 using Content.Shared.Modules.Events;
 using JetBrains.Annotations;
 
 namespace Content.Shared.Modules.Modules;
 
-public abstract partial class SharedModuleContainerVisualsSystem : BaseToggleableModuleSystem<ModuleContainerVisualsComponent>
+public abstract partial class SharedModuleContainerVisualsSystem : EntitySystem
 {
-    [Dependency] private readonly SharedItemSystem _item = default!;
+    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private readonly ModuleContainedSystem _moduleContained = default!;
+    [Dependency] protected readonly ToggleableModuleSystem ToggleableModule = default!;
 
     public override void Initialize()
     {
         base.Initialize();
+
+        SubscribeLocalEvent<ModuleContainerVisualsComponent, ModuleEnabledEvent>(OnEnabled);
+        SubscribeLocalEvent<ModuleContainerVisualsComponent, ModuleDisabledEvent>(OnDisabled);
     }
 
-    protected override void OnEnabled(Entity<ModuleContainerVisualsComponent> ent, ref ModuleEnabledEvent args)
+    private void OnEnabled(Entity<ModuleContainerVisualsComponent> ent, ref ModuleEnabledEvent args)
     {
-        base.OnEnabled(ent, ref args);
-
-        if (GetVisualEntity(ent) is not { } visual)
-            return;
-
-        _item.VisualsChanged(visual);
+        UpdateVisuals(ent.AsNullable());
     }
 
-    protected override void OnDisabled(Entity<ModuleContainerVisualsComponent> ent, ref ModuleDisabledEvent args)
+    private void OnDisabled(Entity<ModuleContainerVisualsComponent> ent, ref ModuleDisabledEvent args)
     {
-        base.OnDisabled(ent, ref args);
-
-        if (GetVisualEntity(ent) is not { } visual)
-            return;
-
-        _item.VisualsChanged(visual);
+        UpdateVisuals(ent.AsNullable());
     }
 
     [PublicAPI]
@@ -40,17 +34,18 @@ public abstract partial class SharedModuleContainerVisualsSystem : BaseToggleabl
         if (!Resolve(ent.Owner, ref ent.Comp))
             return;
 
-        if (GetVisualEntity((ent.Owner, ent.Comp)) is not { } visual)
+        if (GetVisualEntity(ent.Owner) is not { } visual)
             return;
 
-        _item.VisualsChanged(visual);
+        _appearance.SetData(visual, ModuleContainerVisualState.Toggled, ToggleableModule.IsToggled(ent.Owner));
     }
 
-    internal EntityUid? GetVisualEntity(Entity<ModuleContainerVisualsComponent> ent)
+    [PublicAPI]
+    public EntityUid? GetVisualEntity(EntityUid uid)
     {
         var ev = new ModuleContainerVisualsGetVisualEntityEvent();
-        RaiseLocalEvent(ent.Owner, ev);
+        RaiseLocalEvent(uid, ev);
 
-        return ev.Entity ?? ent.Comp.Container;
+        return ev.Entity ?? _moduleContained.GetContainer(uid);
     }
 }

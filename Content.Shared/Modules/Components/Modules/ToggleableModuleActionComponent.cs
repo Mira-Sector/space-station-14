@@ -4,7 +4,7 @@ using Robust.Shared.Prototypes;
 namespace Content.Shared.Modules.Components.Modules;
 
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
-public sealed partial class ToggleableModuleActionComponent : BaseToggleableUiModuleComponent
+public sealed partial class ToggleableModuleActionComponent : Component
 {
     [DataField, AutoNetworkedField]
     public EntProtoId ActionId = "ActionModuleToggle";

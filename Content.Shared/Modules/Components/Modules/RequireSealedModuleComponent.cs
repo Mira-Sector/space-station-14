@@ -4,7 +4,7 @@ using Robust.Shared.GameStates;
 namespace Content.Shared.Modules.Components.Modules;
 
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
-public sealed partial class RequireSealedModuleComponent : BaseToggleableModuleComponent
+public sealed partial class RequireSealedModuleComponent : Component
 {
     [DataField, AutoNetworkedField]
     public HashSet<ModSuitPartType> Parts = [];

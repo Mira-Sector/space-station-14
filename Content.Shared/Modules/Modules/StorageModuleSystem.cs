@@ -7,7 +7,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Shared.Modules.Modules;
 
-public sealed partial class StorageModuleSystem : BaseModuleSystem<StorageModuleComponent>
+public sealed partial class StorageModuleSystem : EntitySystem
 {
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly SharedStorageSystem _storage = default!;
@@ -19,6 +19,9 @@ public sealed partial class StorageModuleSystem : BaseModuleSystem<StorageModule
 
         SubscribeLocalEvent<StorageModuleComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<StorageModuleComponent, ComponentRemove>(OnRemove);
+
+        SubscribeLocalEvent<StorageModuleComponent, ModuleAddedContainerEvent>(OnAdded);
+        SubscribeLocalEvent<StorageModuleComponent, ModuleRemovedContainerEvent>(OnRemoved);
 
         SubscribeLocalEvent<StorageModuleComponent, StorageInteractUsingAttemptEvent>(OnStorageUsingAttempt);
         SubscribeLocalEvent<StorageModuleComponent, StorageInteractAttemptEvent>(OnStorageAttempt);
@@ -34,21 +37,8 @@ public sealed partial class StorageModuleSystem : BaseModuleSystem<StorageModule
         _container.ShutdownContainer(ent.Comp.Items);
     }
 
-    private void OnStorageUsingAttempt(Entity<StorageModuleComponent> ent, ref StorageInteractUsingAttemptEvent args)
+    private void OnAdded(Entity<StorageModuleComponent> ent, ref ModuleAddedContainerEvent args)
     {
-        args.Cancelled = true;
-    }
-
-    private void OnStorageAttempt(Entity<StorageModuleComponent> ent, ref StorageInteractAttemptEvent args)
-    {
-        args.Silent = true;
-        args.Cancelled = true;
-    }
-
-    protected override void OnAdded(Entity<StorageModuleComponent> ent, ref ModuleAddedContainerEvent args)
-    {
-        base.OnAdded(ent, ref args);
-
         if (!_timing.IsFirstTimePredicted)
             return;
 
@@ -76,10 +66,8 @@ public sealed partial class StorageModuleSystem : BaseModuleSystem<StorageModule
         Dirty(args.Container, containerStorage);
     }
 
-    protected override void OnRemoved(Entity<StorageModuleComponent> ent, ref ModuleRemovedContainerEvent args)
+    private void OnRemoved(Entity<StorageModuleComponent> ent, ref ModuleRemovedContainerEvent args)
     {
-        base.OnRemoved(ent, ref args);
-
         if (!_timing.IsFirstTimePredicted)
             return;
 
@@ -95,4 +83,16 @@ public sealed partial class StorageModuleSystem : BaseModuleSystem<StorageModule
 
         Dirty(ent);
     }
+
+    private void OnStorageUsingAttempt(Entity<StorageModuleComponent> ent, ref StorageInteractUsingAttemptEvent args)
+    {
+        args.Cancelled = true;
+    }
+
+    private void OnStorageAttempt(Entity<StorageModuleComponent> ent, ref StorageInteractAttemptEvent args)
+    {
+        args.Silent = true;
+        args.Cancelled = true;
+    }
+
 }

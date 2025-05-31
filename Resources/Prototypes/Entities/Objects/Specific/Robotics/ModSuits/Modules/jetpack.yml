@@ -1,6 +1,6 @@
 - type: entity
   id: BaseModSuitModuleJetpack
-  parent: BaseModSuitModule
+  parent: BaseModSuitModuleAction
   abstract: true
   components:
   - type: ModSuitModuleComplexity
@@ -9,7 +9,6 @@
     parts:
     - Chestplate
     - Control
-  - type: ToggleableModuleAction
   - type: PowerDrainModule
     enabledDraw: 2.5
     onUseDraw: 5

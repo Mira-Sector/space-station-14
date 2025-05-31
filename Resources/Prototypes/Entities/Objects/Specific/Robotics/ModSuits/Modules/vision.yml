@@ -1,6 +1,6 @@
 - type: entity
   id: BaseModSuitModuleVison
-  parent: BaseModSuitModule
+  parent: BaseModSuitModuleAction
   abstract: true
   components:
   - type: ModSuitModuleComplexity
@@ -8,7 +8,6 @@
   - type: RequireSealedModule
     parts:
     - Helmet
-  - type: ToggleableModuleAction
   - type: PowerDrainModule
     enabledDraw: 1.5
 
@@ -97,7 +96,7 @@
 
 - type: entity
   id: ModSuitModuleVisonWelding
-  parent: BaseModSuitModule
+  parent: BaseModSuitModuleToggle
   name: MOD welding protection module
   description: Projects a polarized, holographic overlay in front of the user's eyes. It's rated high enough for immunity against extremities such as spot and arc welding, solar eclipses, and handheld flashlights.
   components:
