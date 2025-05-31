@@ -18,3 +18,15 @@ reagent-desc-nitrous-oxide = You know how everything seems funnier when you're t
 
 reagent-name-frezon = frezon
 reagent-desc-frezon = A highly effective coolant.. and hallucinogenic.
+
+reagent-name-pluoxium = Pluoxium
+reagent-desc-pluoxium = Highly effective oxygen replacement. Non flammable!
+
+reagent-name-nitrium = Nitrium
+reagent-desc-nitrium = Better than steroids.
+
+reagent-name-noblium = Noblium
+reagent-desc-noblium = Most boring gas in space.
+
+reagent-name-halon = Halon
+reagent-desc-halon = The chemists fire extinguisher. Trusted since 1994.
