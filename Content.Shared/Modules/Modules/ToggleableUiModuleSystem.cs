@@ -16,10 +16,6 @@ public sealed partial class ToggleableUiModuleSystem : EntitySystem
     [Dependency] private readonly ToggleableModuleSystem _toggleableModule = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
 
-    // not stored on the component as its an abstract component
-    internal readonly Dictionary<NetEntity, TimeSpan> NextUpdate = [];
-    internal static readonly TimeSpan UpdateDelay = TimeSpan.FromSeconds(0.25f);
-
     public override void Initialize()
     {
         base.Initialize();
@@ -39,7 +35,7 @@ public sealed partial class ToggleableUiModuleSystem : EntitySystem
         if (!_moduleContained.TryGetContainer(module, out var container))
             return;
 
-        if (!CanUpdate(container.Value))
+        if (!CanUpdate(module))
             return;
 
         _toggleableModule.Toggle(module, args.Toggle, GetEntity(args.User));
@@ -67,17 +63,16 @@ public sealed partial class ToggleableUiModuleSystem : EntitySystem
         );
     }
 
-    internal bool CanUpdate(EntityUid container)
+    private bool CanUpdate(Entity<ToggleableUiModuleComponent?> ent)
     {
-        var netContainer = GetNetEntity(container);
-        if (NextUpdate.TryGetValue(netContainer, out var nextUpdate))
-        {
-            if (nextUpdate > _timing.CurTime)
-                return false;
-        }
+        if (!Resolve(ent.Owner, ref ent.Comp, false))
+            return false;
 
-        nextUpdate = _timing.CurTime + UpdateDelay;
-        NextUpdate[netContainer] = nextUpdate;
+        if (ent.Comp.NextButtonPress > _timing.RealTime)
+            return false;
+
+        ent.Comp.NextButtonPress = _timing.RealTime + ent.Comp.ButtonDelay;
+        Dirty(ent);
         return true;
     }
 }

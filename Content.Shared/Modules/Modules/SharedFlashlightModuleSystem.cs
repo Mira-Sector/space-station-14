@@ -18,9 +18,6 @@ public abstract partial class SharedFlashlightModuleSystem : EntitySystem
     [Dependency] private readonly ToggleableModuleSystem _toggleableModule = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
 
-    internal Dictionary<NetEntity, TimeSpan> ColorUpdates = [];
-    internal static readonly TimeSpan ColorDelay = TimeSpan.FromSeconds(0.125f);
-
     public override void Initialize()
     {
         base.Initialize();
@@ -65,14 +62,15 @@ public abstract partial class SharedFlashlightModuleSystem : EntitySystem
 
     private void OnFlashlightColorChanged(ModSuitFlashlightColorChangedMessage args)
     {
-        if (ColorUpdates.TryGetValue(args.Module, out var nextUpdate))
-        {
-            if (nextUpdate > _timing.CurTime)
-                return;
-        }
+        var module = GetEntity(args.Module);
 
-        nextUpdate = _timing.CurTime + ColorDelay;
-        ColorUpdates[args.Module] = nextUpdate;
+        if (!TryComp<FlashlightModuleComponent>(module, out var flashlightModule))
+            return;
+
+        if (flashlightModule.NextUpdate > _timing.RealTime)
+            return;
+
+        flashlightModule.NextUpdate = _timing.RealTime + flashlightModule.UpdateRate; // no need to dirty as setting color does it
 
         SetColor(GetEntity(args.Module), args.Color);
     }
