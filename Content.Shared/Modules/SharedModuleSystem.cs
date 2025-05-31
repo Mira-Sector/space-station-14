@@ -131,11 +131,15 @@ public abstract partial class SharedModuleSystem : EntitySystem
 
     private void OnModSuitEjectButton(ModSuitEjectButtonMessage args)
     {
+        var module = GetEntity(args.Module);
         var container = GetEntity(args.Container);
+
+        if (_moduleContained.GetContainer(module) != container)
+            return;
+
         if (!TryComp<ModuleContainerComponent>(container, out var moduleContainer))
             return;
 
-        var module = GetEntity(args.Module);
         _container.Remove(module, moduleContainer.Modules);
         _hands.TryPickup(GetEntity(args.User), module);
     }

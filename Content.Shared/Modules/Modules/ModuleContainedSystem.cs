@@ -88,7 +88,7 @@ public sealed partial class ModuleContainedSystem : EntitySystem
     [PublicAPI]
     public EntityUid? GetContainer(Entity<ModuleContainedComponent?> ent)
     {
-        if (!Resolve(ent.Owner, ref ent.Comp))
+        if (!Resolve(ent.Owner, ref ent.Comp, false))
             return null;
 
         return ent.Comp.Container;
