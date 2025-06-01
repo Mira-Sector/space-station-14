@@ -9,14 +9,14 @@ namespace Content.Shared.Armor;
 /// <summary>
 /// Used for clothing that reduces damage when worn.
 /// </summary>
-[RegisterComponent, NetworkedComponent]
+[RegisterComponent, NetworkedComponent, Access(typeof(SharedArmorSystem))]
 public sealed partial class ArmorComponent : Component
 {
     /// <summary>
     /// The damage reduction
     /// </summary>
     [DataField(required: true)]
-    public Dictionary<HashSet<BodyPartType>, DamageModifierSet> Modifiers = default!;
+    public Dictionary<List<BodyPartType>, DamageModifierSet> Modifiers = default!;
 
     /// <summary>
     /// If the damagereciever has no body component which damage modifier to use
