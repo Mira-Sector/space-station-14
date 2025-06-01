@@ -16,7 +16,7 @@
   - type: ModuleContainerAddOnInteract
   - type: ModuleContainerRequireWirePanel
   - type: ModuleContainerPower
-    baseRate: 5
+    baseRate: 0.5
   - type: PowerCellDraw
   - type: PowerCellSlot
     fitsInCharger: false

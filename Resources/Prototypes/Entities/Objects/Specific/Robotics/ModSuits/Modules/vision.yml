@@ -9,7 +9,7 @@
     parts:
     - Helmet
   - type: PowerDrainModule
-    enabledDraw: 1.5
+    enabledDraw: 0.15
 
 - type: entity
   id: ModSuitModuleVisonMed

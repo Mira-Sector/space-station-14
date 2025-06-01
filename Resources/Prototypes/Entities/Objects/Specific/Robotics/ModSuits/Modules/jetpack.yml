@@ -10,8 +10,8 @@
     - Chestplate
     - Control
   - type: PowerDrainModule
-    enabledDraw: 2.5
-    onUseDraw: 5
+    enabledDraw: 0.25
+    onUseDraw: 0.5
   - type: JetpackModule
 
 - type: entity
