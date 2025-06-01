@@ -15,7 +15,10 @@ public partial class SharedModSuitSystem
     private void InitializeSealable()
     {
         SubscribeLocalEvent<ModSuitSealableComponent, ComponentInit>(OnSealableInit);
+
+        SubscribeLocalEvent<ModSuitSealableComponent, ClothingGotEquippedEvent>(OnSealableEquipped);
         SubscribeLocalEvent<ModSuitSealableComponent, ClothingGotUnequippedEvent>(OnSealableUnequipped);
+
         SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployablePartUnequippedEvent>(OnSealableDeployablePartUnequipped);
 
         SubscribeLocalEvent<ModSuitSealableComponent, ModSuitGetUiEntriesEvent>(OnSealableGetUiEntries);
@@ -42,11 +45,21 @@ public partial class SharedModSuitSystem
         Appearance.SetData(ent.Owner, ModSuitSealedVisuals.Sealed, ent.Comp.Sealed);
     }
 
+    private void OnSealableEquipped(Entity<ModSuitSealableComponent> ent, ref ClothingGotEquippedEvent args)
+    {
+        ent.Comp.Wearer = args.Wearer;
+        Dirty(ent);
+    }
+
     private void OnSealableUnequipped(Entity<ModSuitSealableComponent> ent, ref ClothingGotUnequippedEvent args)
     {
+        ent.Comp.Wearer = args.Wearer;
+        Dirty(ent);
+
         // handled in a separate event
         if (HasComp<ModSuitDeployedPartComponent>(ent.Owner))
             return;
+
 
         // cant be sealed when not worn
         SetSeal((ent.Owner, ent.Comp), false);
@@ -162,19 +175,25 @@ public partial class SharedModSuitSystem
 
         if (shouldSeal)
         {
-            var partEv = new ModSuitSealedEvent();
+            var partEv = new ModSuitSealedEvent(ent.Comp.Wearer);
             RaiseLocalEvent(ent.Owner, partEv);
 
             var suitEv = new ModSuitContainerPartSealedEvent(ent.Owner);
             RaiseLocalEvent(container, suitEv);
+
+            if (ent.Comp.SealedComponents != null)
+                EntityManager.AddComponents(ent.Owner, ent.Comp.SealedComponents, true);
         }
         else
         {
-            var partEv = new ModSuitUnsealedEvent();
+            var partEv = new ModSuitUnsealedEvent(ent.Comp.Wearer);
             RaiseLocalEvent(ent.Owner, partEv);
 
             var suitEv = new ModSuitContainerPartUnsealedEvent(ent.Owner);
             RaiseLocalEvent(container, suitEv);
+
+            if (ent.Comp.SealedComponents != null)
+                EntityManager.RemoveComponents(ent.Owner, ent.Comp.SealedComponents);
         }
 
         PlaySound((ent.Owner, ent.Comp), shouldSeal);

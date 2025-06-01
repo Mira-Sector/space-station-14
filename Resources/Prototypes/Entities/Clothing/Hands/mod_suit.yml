@@ -46,4 +46,5 @@
       false:
         sprite: Clothing/Hands/ModSuits/advanced.rsi
         state: equipped-HAND
-  - type: Insulated
+    sealedComponents:
+    - type: Insulated

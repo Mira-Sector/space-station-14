@@ -46,20 +46,27 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/advanced.rsi
         state: equipped-OUTERCLOTHING
-  - type: PressureProtection
-    highPressureMultiplier: 0.02
-    lowPressureMultiplier: 1000
-  - type: FireProtection
-    reduction: 0.8
-  - type: ExplosionResistance
-    damageCoefficient: 0.2
-  - type: Armor
-    modifiers:
-      [ Torso, Arm, Leg ] :
-        coefficients:
-          Blunt: 0.8
-          Slash: 0.8
-          Piercing: 0.8
-          Heat: 0.4
-          Radiation: 0.0
-          Caustic: 0.7
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
+    - type: FireProtection
+      reduction: 0.8
+    - type: ExplosionResistance
+      damageCoefficient: 0.2
+    - type: Armor
+      modifiers:
+        [ Torso, Arm, Leg ] :
+          coefficients:
+            Blunt: 0.8
+            Slash: 0.8
+            Piercing: 0.8
+            Heat: 0.4
+            Radiation: 0.0
+            Caustic: 0.7
+  - type: HideLayerClothing
+    hideOnToggle: true
+    layers:
+      Hair: HEAD
+      HeadTop : HEAD
+      HeadSide : HEAD
