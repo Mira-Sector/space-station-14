@@ -16,6 +16,7 @@ public partial class SharedModSuitSystem
     {
         SubscribeLocalEvent<ModSuitSealableComponent, ComponentInit>(OnSealableInit);
         SubscribeLocalEvent<ModSuitSealableComponent, ClothingGotUnequippedEvent>(OnSealableUnequipped);
+        SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployablePartUnequippedEvent>(OnSealableDeployablePartUnequipped);
 
         SubscribeLocalEvent<ModSuitSealableComponent, ModSuitGetUiEntriesEvent>(OnSealableGetUiEntries);
         SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployableRelayedEvent<ModSuitGetUiEntriesEvent>>((u, c, a) => OnSealableGetUiEntries((u, c), ref a.Args));
@@ -43,8 +44,18 @@ public partial class SharedModSuitSystem
 
     private void OnSealableUnequipped(Entity<ModSuitSealableComponent> ent, ref ClothingGotUnequippedEvent args)
     {
+        // handled in a separate event
+        if (HasComp<ModSuitDeployedPartComponent>(ent.Owner))
+            return;
+
         // cant be sealed when not worn
         SetSeal((ent.Owner, ent.Comp), false);
+    }
+
+
+    private void OnSealableDeployablePartUnequipped(Entity<ModSuitSealableComponent> ent, ref ModSuitDeployablePartUnequippedEvent args)
+    {
+        SetSeal((ent.Owner, ent.Comp), false, args.PartNumber);
     }
 
     private void OnSealableGetUiEntries(Entity<ModSuitSealableComponent> ent, ref ModSuitGetUiEntriesEvent args)
