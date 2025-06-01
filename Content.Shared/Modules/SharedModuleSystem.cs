@@ -2,6 +2,7 @@ using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Modules.Components;
 using Content.Shared.Modules.Components.Modules;
 using Content.Shared.Modules.Events;
+using Content.Shared.Modules.ModSuit;
 using Content.Shared.Modules.ModSuit.Events;
 using Content.Shared.Modules.ModSuit.UI;
 using Content.Shared.Modules.Modules;
@@ -17,6 +18,7 @@ public abstract partial class SharedModuleSystem : EntitySystem
 {
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
+    [Dependency] private readonly SharedModSuitSystem _modSuit = default!;
     [Dependency] private readonly ModuleContainedSystem _moduleContained = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly INetManager _net = default!;
@@ -166,5 +168,11 @@ public abstract partial class SharedModuleSystem : EntitySystem
     {
         if (_moduleContained.TryGetContainer(ent, out var container))
             RaiseLocalEvent(container.Value, ev);
+    }
+
+    [PublicAPI]
+    public void UpdateUis(EntityUid uid)
+    {
+        _modSuit.UpdateUI(uid);
     }
 }

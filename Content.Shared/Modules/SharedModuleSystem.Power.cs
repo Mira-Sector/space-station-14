@@ -2,6 +2,7 @@ using Content.Shared.Clothing;
 using Content.Shared.Modules.Components;
 using Content.Shared.Modules.Events;
 using Content.Shared.PowerCell;
+using Content.Shared.PowerCell.Components;
 using JetBrains.Annotations;
 
 namespace Content.Shared.Modules;
@@ -17,6 +18,8 @@ public partial class SharedModuleSystem
 
         SubscribeLocalEvent<ModuleContainerPowerComponent, ModuleContainerModuleAddedEvent>((u, c, a) => UpdatePowerDraw((u, c)));
         SubscribeLocalEvent<ModuleContainerPowerComponent, ModuleContainerModuleRemovedEvent>((u, c, a) => UpdatePowerDraw((u, c)));
+
+        SubscribeLocalEvent<ModuleContainerPowerComponent, PowerCellChangedEvent>((u, c, a) => UpdateUis(u));
     }
 
     private void OnPowerEquipped(Entity<ModuleContainerPowerComponent> ent, ref ClothingGotEquippedEvent args)
