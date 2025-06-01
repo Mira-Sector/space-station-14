@@ -14,4 +14,12 @@ public abstract partial class SharedModSuitSystem : EntitySystem
         InitializeSealable();
         InitializeUI();
     }
+
+    /// <inheritdoc/>
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+
+        UpdateSealable(frameTime);
+    }
 }

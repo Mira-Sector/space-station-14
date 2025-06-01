@@ -11,6 +11,9 @@ public sealed partial class ModSuitSealableComponent : Component
     public bool Sealed;
 
     [DataField, AutoNetworkedField]
+    public TimeSpan? DelayPerPart = TimeSpan.FromSeconds(0.25f);
+
+    [DataField, AutoNetworkedField]
     public SoundSpecifier? SealSound = new SoundPathSpecifier("/Audio/Mecha/mechmove03.ogg");
 
     [DataField, AutoNetworkedField]

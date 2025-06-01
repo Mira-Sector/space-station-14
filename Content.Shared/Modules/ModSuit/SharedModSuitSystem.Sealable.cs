@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Clothing;
 using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
@@ -20,6 +21,19 @@ public partial class SharedModSuitSystem
         SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployableRelayedEvent<ModSuitGetUiEntriesEvent>>((u, c, a) => OnSealableGetUiEntries((u, c), ref a.Args));
 
         SubscribeAllEvent<ModSuitSealButtonMessage>(OnSealableUiButton);
+    }
+
+    private void UpdateSealable(float frameTime)
+    {
+        var query = EntityQueryEnumerator<ModSuitSealableComponent, ModSuitSealablePendingComponent>();
+        while (query.MoveNext(out var uid, out var sealable, out var pending))
+        {
+            if (pending.NextUpdate > _timing.CurTime)
+                continue;
+
+            SetSeal((uid, sealable), pending.ShouldSeal);
+            RemCompDeferred<ModSuitSealablePendingComponent>(uid);
+        }
     }
 
     private void OnSealableInit(Entity<ModSuitSealableComponent> ent, ref ComponentInit args)
@@ -85,8 +99,9 @@ public partial class SharedModSuitSystem
 
     private void OnSealableUiButton(ModSuitSealButtonMessage args)
     {
+        var i = 0;
         foreach (var (part, shouldSeal) in args.Parts)
-            SetSeal(GetEntity(part), shouldSeal);
+            SetSeal(GetEntity(part), shouldSeal, i++);
     }
 
     [PublicAPI]
@@ -99,30 +114,48 @@ public partial class SharedModSuitSystem
     }
 
     [PublicAPI]
-    public bool SetSeal(Entity<ModSuitSealableComponent?> ent, bool isSealed)
+    public bool SetSeal(Entity<ModSuitSealableComponent?> ent, bool shouldSeal, int sealedPartCount)
     {
         if (!Resolve(ent.Owner, ref ent.Comp))
             return false;
 
         // prevent sending events and excessive dirtying
-        if (ent.Comp.Sealed == isSealed)
+        if (ent.Comp.Sealed == shouldSeal)
             return true;
 
-        ent.Comp.Sealed = isSealed;
+        if (!IsDelayed((ent.Owner, ent.Comp), sealedPartCount, out var delay))
+            return SetSeal(ent, shouldSeal);
+
+        EnsureComp<ModSuitSealablePendingComponent>(ent.Owner, out var pendingComp);
+        pendingComp.NextUpdate = _timing.CurTime + delay.Value;
+        pendingComp.ShouldSeal = shouldSeal;
+        Dirty(ent.Owner, pendingComp);
+        return true;
+    }
+
+    [PublicAPI]
+    public bool SetSeal(Entity<ModSuitSealableComponent?> ent, bool shouldSeal)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp))
+            return false;
+
+        // prevent sending events and excessive dirtying
+        if (ent.Comp.Sealed == shouldSeal)
+            return true;
+
+        ent.Comp.Sealed = shouldSeal;
+        RemCompDeferred<ModSuitSealablePendingComponent>(ent.Owner); // stop any pending updates overwriting us
         Dirty(ent);
 
         var container = CompOrNull<ModSuitDeployedPartComponent>(ent.Owner)?.Suit ?? ent.Owner;
 
-        if (isSealed)
+        if (shouldSeal)
         {
             var partEv = new ModSuitSealedEvent();
             RaiseLocalEvent(ent.Owner, partEv);
 
             var suitEv = new ModSuitContainerPartSealedEvent(ent.Owner);
             RaiseLocalEvent(container, suitEv);
-
-            if (_net.IsServer)
-                _audio.PlayPvs(ent.Comp.SealSound, ent.Owner);
         }
         else
         {
@@ -131,14 +164,40 @@ public partial class SharedModSuitSystem
 
             var suitEv = new ModSuitContainerPartUnsealedEvent(ent.Owner);
             RaiseLocalEvent(container, suitEv);
-
-            if (_net.IsServer)
-                _audio.PlayPvs(ent.Comp.UnsealSound, ent.Owner);
         }
 
-        Appearance.SetData(ent.Owner, ModSuitSealedVisuals.Sealed, isSealed);
+        PlaySound((ent.Owner, ent.Comp), shouldSeal);
+
+        Appearance.SetData(ent.Owner, ModSuitSealedVisuals.Sealed, shouldSeal);
         UpdateUI(container);
 
         return true;
+    }
+
+    private void PlaySound(Entity<ModSuitSealableComponent> ent, bool shouldSeal)
+    {
+        if (!_net.IsServer)
+            return;
+
+        if (shouldSeal)
+            _audio.PlayPvs(ent.Comp.SealSound, ent.Owner);
+        else
+            _audio.PlayPvs(ent.Comp.UnsealSound, ent.Owner);
+    }
+
+    private static bool IsDelayed(Entity<ModSuitSealableComponent> ent, int sealedPartCount, [NotNullWhen(true)] out TimeSpan? delay)
+    {
+        delay = null;
+
+        if (ent.Comp.DelayPerPart is not { } delayPerPart)
+            return false;
+
+        if (sealedPartCount > 0)
+        {
+            delay = delayPerPart * sealedPartCount;
+            return true;
+        }
+
+        return false;
     }
 }
