@@ -33,19 +33,32 @@ public sealed partial class ModSuitBoundUserInterface : BoundUserInterface
     {
         base.UpdateState(state);
 
-        switch (state)
+        if (state is not ModSuitBoundUserInterfaceState modSuitState)
+            return;
+
+        foreach (var entry in modSuitState.Entries)
         {
-            case ModSuitSealableBoundUserInterfaceState sealable:
-                _window?.UpdateSealed(sealable);
-                break;
+            switch (entry)
+            {
+                case ModSuitSealableBuiEntry sealable:
+                    _window?.UpdateSealed(sealable);
+                    break;
 
-            case ModSuitModuleBoundUserInterfaceState module:
-                _window?.UpdateModules(module);
-                break;
+                case ModSuitModuleBuiEntry module:
+                    _window?.UpdateModules(module);
+                    break;
 
-            case ModSuitComplexityBoundUserInterfaceState complexity:
-                _window?.UpdateComplexity(complexity);
-                break;
+                case ModSuitComplexityBuiEntry complexity:
+                    _window?.UpdateComplexity(complexity);
+                    break;
+
+                case BaseModSuitPowerBuiEntry power:
+                    _window?.UpdatePower(power);
+                    break;
+
+                default:
+                    return;
+            }
         }
 
         if (_window == null)

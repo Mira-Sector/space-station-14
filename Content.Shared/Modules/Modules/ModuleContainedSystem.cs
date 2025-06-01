@@ -17,7 +17,7 @@ public sealed partial class ModuleContainedSystem : EntitySystem
 
         SubscribeLocalEvent<ModuleContainedComponent, ModuleAddedContainerEvent>(OnContainedAdded);
         SubscribeLocalEvent<ModuleContainedComponent, ModuleRemovedContainerEvent>(OnContainedRemoved);
-        SubscribeLocalEvent<ModuleContainedComponent, ModuleRelayedEvent<ModSuitGetUiStatesEvent>>(OnGetModSuitUiState);
+        SubscribeLocalEvent<ModuleContainedComponent, ModuleRelayedEvent<ModSuitGetUiEntriesEvent>>(OnGetModSuitUiState);
     }
 
     private void OnContainedAdded(Entity<ModuleContainedComponent> ent, ref ModuleAddedContainerEvent args)
@@ -37,20 +37,20 @@ public sealed partial class ModuleContainedSystem : EntitySystem
         return new ModSuitBaseModuleBuiEntry(CompOrNull<ModSuitModuleComplexityComponent>(ent.Owner)?.Complexity);
     }
 
-    private void OnGetModSuitUiState(Entity<ModuleContainedComponent> ent, ref ModuleRelayedEvent<ModSuitGetUiStatesEvent> args)
+    private void OnGetModSuitUiState(Entity<ModuleContainedComponent> ent, ref ModuleRelayedEvent<ModSuitGetUiEntriesEvent> args)
     {
-        ModSuitModuleBoundUserInterfaceState? foundState = null;
+        ModSuitModuleBuiEntry? foundEntry = null;
 
-        foreach (var state in args.Args.States)
+        foreach (var entry in args.Args.Entries)
         {
-            if (state is not ModSuitModuleBoundUserInterfaceState moduleState)
+            if (entry is not ModSuitModuleBuiEntry moduleEntry)
                 continue;
 
-            foundState = moduleState;
+            foundEntry = moduleEntry;
             break;
         }
 
-        if (foundState == null)
+        if (foundEntry == null)
             return; // should never happen as the modsuit adds a blank one to reset any lingering modules
 
         var ev = new ModSuitGetModuleUiEvent();
@@ -67,10 +67,10 @@ public sealed partial class ModuleContainedSystem : EntitySystem
             buiEntry = entry;
         }
 
-        var newModules = new KeyValuePair<NetEntity, ModSuitBaseModuleBuiEntry>[foundState.Modules.Length + 1];
-        Array.Copy(foundState.Modules, newModules, foundState.Modules.Length);
+        var newModules = new KeyValuePair<NetEntity, ModSuitBaseModuleBuiEntry>[foundEntry.Modules.Length + 1];
+        Array.Copy(foundEntry.Modules, newModules, foundEntry.Modules.Length);
         newModules[^1] = KeyValuePair.Create(netEntity, buiEntry);
-        foundState.Modules = newModules;
+        foundEntry.Modules = newModules;
     }
 
     [PublicAPI]

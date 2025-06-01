@@ -59,10 +59,10 @@ public partial class SharedModSuitSystem
         if (!_ui.IsUiOpen(ent.Owner, ModSuitUiKey.Key))
             return;
 
-        var ev = new ModSuitGetUiStatesEvent();
+        var ev = new ModSuitGetUiEntriesEvent();
         RaiseLocalEvent(ent.Owner, ev);
 
-        foreach (var state in ev.States)
-            _ui.SetUiState(ent.Owner, ModSuitUiKey.Key, state);
+        var state = new ModSuitBoundUserInterfaceState(ev.Entries);
+        _ui.SetUiState(ent.Owner, ModSuitUiKey.Key, state);
     }
 }

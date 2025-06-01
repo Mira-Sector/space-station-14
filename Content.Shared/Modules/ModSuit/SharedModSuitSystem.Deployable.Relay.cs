@@ -8,7 +8,7 @@ public partial class SharedModSuitSystem
 {
     private void InitializeDeployableRelay()
     {
-        SubscribeLocalEvent<ModSuitPartDeployableComponent, ModSuitGetUiStatesEvent>(RelayToAllParts);
+        SubscribeLocalEvent<ModSuitPartDeployableComponent, ModSuitGetUiEntriesEvent>(RelayToAllParts);
     }
 
     protected void RelayToDeployedParts<T>(Entity<ModSuitPartDeployableComponent> ent, ref T args)

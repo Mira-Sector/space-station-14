@@ -11,9 +11,17 @@ namespace Content.Client.Modules.ModSuit;
 [GenerateTypedNameReferences]
 public sealed partial class ModSuitWindow : DefaultWindow
 {
-    private KeyValuePair<NetEntity, ModSuitSealableBuiEntry>[] _sealableParts = [];
+
+    #region BuiData
+
+    private KeyValuePair<NetEntity, ModSuitSealablePartBuiEntry>[] _sealableParts = [];
     private KeyValuePair<NetEntity, ModSuitBaseModuleBuiEntry>[] _modules = [];
     private (int, int)? _complexity = null;
+    private BaseModSuitPowerBuiEntry? _power = null;
+
+    #endregion
+
+    #region ButtonEvents
 
     public event Action<Dictionary<NetEntity, bool>>? OnSealButtonPressed;
 
@@ -21,6 +29,8 @@ public sealed partial class ModSuitWindow : DefaultWindow
     public event Action<NetEntity, bool>? OnToggleButtonPressed;
     public event Action<NetEntity>? OnEjectButtonPressed;
     public event Action<NetEntity, Color>? OnFlashlightColorChanged;
+
+    #endregion
 
     public ModSuitWindow()
     {
@@ -32,20 +42,41 @@ public sealed partial class ModSuitWindow : DefaultWindow
     {
         RefreshSealableIcons();
         RefreshModules();
+
+        RefreshComplexity();
+        RefreshPower();
+
+        RefreshCenterContainer();
+    }
+
+    private void RefreshCenterContainer()
+    {
+        CenterContainer.Visible = ShowCenterContainer();
+    }
+
+    private bool ShowCenterContainer()
+    {
+        if (_complexity != null)
+            return true;
+
+        if (_power != null)
+            return true;
+
+        return false;
     }
 
     #region Sealable
 
-    public void UpdateSealed(ModSuitSealableBoundUserInterfaceState state)
+    public void UpdateSealed(ModSuitSealableBuiEntry entry)
     {
-        if (_sealableParts == state.Parts)
+        if (_sealableParts == entry.Parts)
             return;
 
-        _sealableParts = state.Parts;
+        _sealableParts = entry.Parts;
         RefreshSealableIcons();
     }
 
-    internal void RefreshSealableIcons()
+    private void RefreshSealableIcons()
     {
         SealContainer.Visible = _sealableParts.Any();
         SealPanel.RemoveAllChildren();
@@ -91,40 +122,82 @@ public sealed partial class ModSuitWindow : DefaultWindow
 
     #region Complexity
 
-    public void UpdateComplexity(ModSuitComplexityBoundUserInterfaceState state)
+    public void UpdateComplexity(ModSuitComplexityBuiEntry entry)
     {
-        _complexity = state.Complexity;
+        if (_complexity == entry.Complexity)
+            return;
+
+        _complexity = entry.Complexity;
         RefreshComplexity();
+        CenterContainer.Visible = true;
     }
 
-    internal void RefreshComplexity()
+    private void RefreshComplexity()
     {
         if (_complexity == null)
         {
-            ComplexityContainer.Visible = false;
+            ComplexityLabel.Visible = false;
             return;
         }
 
         var (complexity, max) = _complexity.Value;
-
-        ComplexityContainer.Visible = true;
         ComplexityLabel.Text = Loc.GetString("modsuit-interface-complexity", ("complexity", complexity), ("max", max));
+        ComplexityLabel.Visible = true;
+    }
+
+    #endregion
+
+    #region Power
+
+    public void UpdatePower(BaseModSuitPowerBuiEntry entry)
+    {
+        if (_power == entry)
+            return;
+
+        _power = entry;
+        RefreshPower();
+        CenterContainer.Visible = true;
+    }
+
+    private void RefreshPower()
+    {
+        ChargeBar.Visible = false;
+        NoCellLabel.Visible = false;
+
+        if (_power == null)
+            return;
+
+        switch (_power)
+        {
+            case ModSuitPowerBuiEntry power:
+                ChargeBar.MaxValue = power.MaxCharge;
+                ChargeBar.Value = power.CurrentCharge;
+                ChargeBar.Visible = true;
+
+                ChargeLabel.Text = Loc.GetString("modsuit-interface-charge", ("charge", power.CurrentCharge / power.MaxCharge));
+                break;
+            case ModSuitPowerNoCellBuiEntry:
+                NoCellLabel.Visible = true;
+                break;
+            default:
+                throw new NotImplementedException($"Tried to render {_power.GetType()}.");
+        }
     }
 
     #endregion
 
     #region Modules
 
-    public void UpdateModules(ModSuitModuleBoundUserInterfaceState state)
+    public void UpdateModules(ModSuitModuleBuiEntry entry)
     {
-        if (_modules == state.Modules)
+        if (_modules == entry.Modules)
             return;
 
-        _modules = state.Modules;
+        _modules = entry.Modules;
         RefreshModules();
     }
 
-    internal void RefreshModules()
+    private void RefreshModules()
     {
         ModuleList.RemoveAllChildren();
 

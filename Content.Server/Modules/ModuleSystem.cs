@@ -7,5 +7,7 @@ public sealed partial class ModuleSystem : SharedModuleSystem
     public override void Initialize()
     {
         base.Initialize();
+
+        InitializePower();
     }
 }

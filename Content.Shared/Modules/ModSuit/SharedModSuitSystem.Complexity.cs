@@ -13,7 +13,7 @@ public partial class SharedModSuitSystem
         SubscribeLocalEvent<ModSuitComplexityLimitComponent, ModuleContainerModuleRemovedEvent>(OnComplexityModuleRemoved);
         SubscribeLocalEvent<ModSuitComplexityLimitComponent, ModuleContainerModuleAddingAttemptEvent>(OnComplexityModuleAttempt);
 
-        SubscribeLocalEvent<ModSuitComplexityLimitComponent, ModSuitGetUiStatesEvent>(OnGetModSuitUiState);
+        SubscribeLocalEvent<ModSuitComplexityLimitComponent, ModSuitGetUiEntriesEvent>(OnGetModSuitUiState);
     }
 
     private void OnComplexityModuleAdded(Entity<ModSuitComplexityLimitComponent> ent, ref ModuleContainerModuleAddedEvent args)
@@ -46,27 +46,27 @@ public partial class SharedModSuitSystem
             args.Cancel();
     }
 
-    private void OnGetModSuitUiState(Entity<ModSuitComplexityLimitComponent> ent, ref ModSuitGetUiStatesEvent args)
+    private void OnGetModSuitUiState(Entity<ModSuitComplexityLimitComponent> ent, ref ModSuitGetUiEntriesEvent args)
     {
         var toAdd = (ent.Comp.Complexity, ent.Comp.MaxComplexity);
-        ModSuitComplexityBoundUserInterfaceState? foundState = null;
+        ModSuitComplexityBuiEntry? foundEntry = null;
 
-        foreach (var state in args.States)
+        foreach (var entry in args.Entries)
         {
-            if (state is not ModSuitComplexityBoundUserInterfaceState complexityState)
+            if (entry is not ModSuitComplexityBuiEntry complexityEntry)
                 continue;
 
-            foundState = complexityState;
+            foundEntry = complexityEntry;
             break;
         }
 
-        if (foundState == null)
+        if (foundEntry == null)
         {
-            var newState = new ModSuitComplexityBoundUserInterfaceState(toAdd);
-            args.States.Add(newState);
+            var newEntry = new ModSuitComplexityBuiEntry(toAdd);
+            args.Entries.Add(newEntry);
             return;
         }
 
-        foundState.Complexity = toAdd;
+        foundEntry.Complexity = toAdd;
     }
 }

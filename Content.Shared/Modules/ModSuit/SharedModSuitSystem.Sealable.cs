@@ -16,8 +16,8 @@ public partial class SharedModSuitSystem
         SubscribeLocalEvent<ModSuitSealableComponent, ComponentInit>(OnSealableInit);
         SubscribeLocalEvent<ModSuitSealableComponent, ClothingGotUnequippedEvent>(OnSealableUnequipped);
 
-        SubscribeLocalEvent<ModSuitSealableComponent, ModSuitGetUiStatesEvent>(OnSealableGetUiStates);
-        SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployableRelayedEvent<ModSuitGetUiStatesEvent>>((u, c, a) => OnSealableGetUiStates((u, c), ref a.Args));
+        SubscribeLocalEvent<ModSuitSealableComponent, ModSuitGetUiEntriesEvent>(OnSealableGetUiEntries);
+        SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployableRelayedEvent<ModSuitGetUiEntriesEvent>>((u, c, a) => OnSealableGetUiEntries((u, c), ref a.Args));
 
         SubscribeAllEvent<ModSuitSealButtonMessage>(OnSealableUiButton);
     }
@@ -33,39 +33,39 @@ public partial class SharedModSuitSystem
         SetSeal((ent.Owner, ent.Comp), false);
     }
 
-    private void OnSealableGetUiStates(Entity<ModSuitSealableComponent> ent, ref ModSuitGetUiStatesEvent args)
+    private void OnSealableGetUiEntries(Entity<ModSuitSealableComponent> ent, ref ModSuitGetUiEntriesEvent args)
     {
         var type = CompOrNull<ModSuitPartTypeComponent>(ent.Owner)?.Type ?? ModSuitPartType.Other;
-        var newData = new ModSuitSealableBuiEntry(ent.Comp.UiLayer, type, ent.Comp.Sealed);
+        var newData = new ModSuitSealablePartBuiEntry(ent.Comp.UiLayer, type, ent.Comp.Sealed);
         var toAdd = KeyValuePair.Create(GetNetEntity(ent.Owner), newData);
 
-        ModSuitSealableBoundUserInterfaceState? foundState = null;
+        ModSuitSealableBuiEntry? foundEntry = null;
 
         // find any state that another part may have added
-        foreach (var state in args.States)
+        foreach (var entry in args.Entries)
         {
-            if (state is not ModSuitSealableBoundUserInterfaceState sealableState)
+            if (entry is not ModSuitSealableBuiEntry sealableEntry)
                 continue;
 
-            foundState = sealableState;
+            foundEntry = sealableEntry;
             break;
         }
 
-        var length = (foundState?.Parts.Length ?? 0) + 1;
-        var parts = new KeyValuePair<NetEntity, ModSuitSealableBuiEntry>[length];
+        var length = (foundEntry?.Parts.Length ?? 0) + 1;
+        var parts = new KeyValuePair<NetEntity, ModSuitSealablePartBuiEntry>[length];
 
-        if (foundState == null)
+        if (foundEntry == null)
         {
             parts = [toAdd];
-            var newState = new ModSuitSealableBoundUserInterfaceState(parts);
-            args.States.Add(newState);
+            var newEntry = new ModSuitSealableBuiEntry(parts);
+            args.Entries.Add(newEntry);
             return;
         }
 
-        var insertIndex = foundState.Parts.Length;
-        for (var i = 0; i < foundState.Parts.Length; i++)
+        var insertIndex = foundEntry.Parts.Length;
+        for (var i = 0; i < foundEntry.Parts.Length; i++)
         {
-            if (foundState.Parts[i].Value.Type > type)
+            if (foundEntry.Parts[i].Value.Type > type)
             {
                 insertIndex = i;
                 break;
@@ -73,14 +73,14 @@ public partial class SharedModSuitSystem
         }
 
         if (insertIndex > 0)
-            Array.Copy(foundState.Parts, parts, insertIndex);
+            Array.Copy(foundEntry.Parts, parts, insertIndex);
 
         parts[insertIndex] = toAdd;
 
-        if (insertIndex < foundState.Parts.Length)
-            Array.Copy(foundState.Parts, insertIndex, parts, insertIndex + 1, foundState.Parts.Length - insertIndex);
+        if (insertIndex < foundEntry.Parts.Length)
+            Array.Copy(foundEntry.Parts, insertIndex, parts, insertIndex + 1, foundEntry.Parts.Length - insertIndex);
 
-        foundState.Parts = parts;
+        foundEntry.Parts = parts;
     }
 
     private void OnSealableUiButton(ModSuitSealButtonMessage args)

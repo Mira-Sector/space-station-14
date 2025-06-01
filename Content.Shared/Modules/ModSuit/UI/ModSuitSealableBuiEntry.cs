@@ -4,24 +4,24 @@ using Robust.Shared.Utility;
 namespace Content.Shared.Modules.ModSuit.UI;
 
 [Serializable, NetSerializable]
-public sealed class ModSuitSealableBoundUserInterfaceState : BoundUserInterfaceState
+public sealed class ModSuitSealableBuiEntry : BaseModSuitPowerBuiEntry
 {
-    public KeyValuePair<NetEntity, ModSuitSealableBuiEntry>[] Parts;
+    public KeyValuePair<NetEntity, ModSuitSealablePartBuiEntry>[] Parts;
 
-    public ModSuitSealableBoundUserInterfaceState(KeyValuePair<NetEntity, ModSuitSealableBuiEntry>[] parts)
+    public ModSuitSealableBuiEntry(KeyValuePair<NetEntity, ModSuitSealablePartBuiEntry>[] parts)
     {
         Parts = parts;
     }
 }
 
 [Serializable, NetSerializable]
-public sealed class ModSuitSealableBuiEntry
+public sealed class ModSuitSealablePartBuiEntry
 {
     public readonly Dictionary<bool, SpriteSpecifier> Sprite;
     public readonly ModSuitPartType Type;
     public readonly bool IsSealed;
 
-    public ModSuitSealableBuiEntry(Dictionary<bool, SpriteSpecifier> sprite, ModSuitPartType type, bool isSealed)
+    public ModSuitSealablePartBuiEntry(Dictionary<bool, SpriteSpecifier> sprite, ModSuitPartType type, bool isSealed)
     {
         Sprite = sprite;
         Type = type;

@@ -3,16 +3,16 @@ using Robust.Shared.Serialization;
 namespace Content.Shared.Modules.ModSuit.UI;
 
 [Serializable, NetSerializable]
-public sealed class ModSuitComplexityBoundUserInterfaceState : BoundUserInterfaceState
+public sealed class ModSuitComplexityBuiEntry : BaseModSuitBuiEntry
 {
     public (int Complexity, int MaxComplexity)? Complexity;
 
-    public ModSuitComplexityBoundUserInterfaceState(int complexity, int maxComplexity)
+    public ModSuitComplexityBuiEntry(int complexity, int maxComplexity)
     {
         Complexity = (complexity, maxComplexity);
     }
 
-    public ModSuitComplexityBoundUserInterfaceState((int, int) complexity)
+    public ModSuitComplexityBuiEntry((int, int) complexity)
     {
         Complexity = complexity;
     }

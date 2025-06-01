@@ -9,58 +9,99 @@
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"
         Margin="8">
-        <controls:StripeBack
-            HasTopEdge="False"
-            HasBottomEdge="False"
-            HasMargins="False">
-            <PanelContainer StyleClasses="PdaBorderRect">
-                <BoxContainer
-                    Name="SealContainer"
-                    Visible="False"
-                    Margin="16"
-                    VerticalAlignment="Top"
-                    Access="Public">
-                    <PanelContainer
-                        Name="SealPanel"
-                        StyleClasses="PanelBackgroundBaseDark"
-                        Access="Public">
-                    </PanelContainer>
-                    <BoxContainer
-                        Margin="16"/>
-                    <PanelContainer StyleClasses="PanelBackgroundLight">
-                        <BoxContainer
-                            Name="SealButtons"
-                            Margin="16, 8"
-                            Orientation="Vertical"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Access="Public"/>
-                    </PanelContainer>
-                </BoxContainer>
-            </PanelContainer>
-        </controls:StripeBack>
-
         <BoxContainer
+            Name="SealableContainer"
             Orientation="Vertical"
             HorizontalExpand="True"
-            Margin="0, 8">
-            <PanelContainer StyleClasses="LowDivider"/>
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Access="Public">
+            <controls:StripeBack
+                HasTopEdge="False"
+                HasBottomEdge="False"
+                HasMargins="False">
+                <PanelContainer StyleClasses="PdaBorderRect">
+                    <BoxContainer
+                        Name="SealContainer"
+                        Visible="False"
+                        Margin="16"
+                        VerticalAlignment="Top"
+                        Access="Public">
+                        <PanelContainer
+                            Name="SealPanel"
+                            StyleClasses="PanelBackgroundBaseDark"
+                            Access="Public">
+                        </PanelContainer>
+                        <BoxContainer
+                            Margin="16"/>
+                        <PanelContainer StyleClasses="PanelBackgroundLight">
+                            <BoxContainer
+                                Name="SealButtons"
+                                Margin="16, 8"
+                                Orientation="Vertical"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Access="Public"/>
+                        </PanelContainer>
+                    </BoxContainer>
+                </PanelContainer>
+            </controls:StripeBack>
+            <BoxContainer
+                Orientation="Vertical"
+                HorizontalExpand="True"
+                Margin="0, 8">
+                <PanelContainer StyleClasses="LowDivider"/>
+            </BoxContainer>
         </BoxContainer>
 
         <BoxContainer
-            Name="ComplexityContainer"
+            Name="CenterContainer"
             Visible="False"
             Orientation="Vertical"
             Access="Public">
             <BoxContainer
-                Orientation="Vertical"
+                Orientation="Horizontal"
                 HorizontalExpand="True"
-                Margin="32, 0">
+                Margin="32, 4">
                 <Label
                     Name="ComplexityLabel"
+                    Visible="False"
                     Align="Left"
                     HorizontalExpand="True"
                     Access="Public"/>
+                <PanelContainer
+                    HorizontalAlignment="Stretch"
+                    HorizontalExpand="True"
+                    VerticalAlignment="Stretch"
+                    VerticalExpand="True">
+                    <ProgressBar
+                        Name="ChargeBar"
+                        Visible="False"
+                        HorizontalExpand="True"
+                        MinValue="0"
+                        Value="1"
+                        MaxValue="1">
+                        <BoxContainer
+                            Margin="16, 0">
+                            <Label
+                                Name="ChargeLabel"
+                                Align="Right"
+                                HorizontalExpand="True"
+                                Access="Public"/>
+                        </BoxContainer>
+                    </ProgressBar>
+                    <BoxContainer
+                        VerticalExpand="True"
+                        VerticalAlignment="Stretch">
+                        <Label
+                            Text="{Loc 'modsuit-interface-no-cell'}"
+                            Name="NoCellLabel"
+                            Visible="False"
+                            Align="Right"
+                            HorizontalExpand="True"
+                            Access="Public"/>
+                    </BoxContainer>
+                </PanelContainer>
             </BoxContainer>
             <BoxContainer
                 Orientation="Vertical"

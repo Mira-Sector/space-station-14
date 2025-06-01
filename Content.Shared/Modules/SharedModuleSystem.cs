@@ -37,7 +37,7 @@ public abstract partial class SharedModuleSystem : EntitySystem
         SubscribeLocalEvent<ModuleContainerComponent, EntInsertedIntoContainerMessage>(OnContainerInserted);
         SubscribeLocalEvent<ModuleContainerComponent, EntRemovedFromContainerMessage>(OnContainerRemoved);
 
-        SubscribeLocalEvent<ModuleContainerComponent, ModSuitGetUiStatesEvent>(OnGetModSuitUiState);
+        SubscribeLocalEvent<ModuleContainerComponent, ModSuitGetUiEntriesEvent>(OnGetModSuitUiEntry);
 
         SubscribeAllEvent<ModSuitEjectButtonMessage>(OnModSuitEjectButton);
     }
@@ -116,16 +116,16 @@ public abstract partial class SharedModuleSystem : EntitySystem
         RaiseLocalEvent(args.Entity, moduleEv);
     }
 
-    private void OnGetModSuitUiState(Entity<ModuleContainerComponent> ent, ref ModSuitGetUiStatesEvent args)
+    private void OnGetModSuitUiEntry(Entity<ModuleContainerComponent> ent, ref ModSuitGetUiEntriesEvent args)
     {
         // add a blank one so we override incase there is no more modules
-        foreach (var state in args.States)
+        foreach (var entry in args.Entries)
         {
-            if (state is ModSuitModuleBoundUserInterfaceState)
+            if (entry is ModSuitModuleBuiEntry)
                 return;
         }
 
-        args.States.Add(new ModSuitModuleBoundUserInterfaceState());
+        args.Entries.Add(new ModSuitModuleBuiEntry());
         RelayToModules(ent, ref args);
     }
 
