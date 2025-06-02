@@ -47,7 +47,7 @@ public sealed partial class RequireSealedModuleSystem : EntitySystem
 
     private void OnUnsealed(Entity<RequireSealedModuleComponent> ent, ref ModuleRelayedEvent<ModSuitContainerPartUnsealedEvent> args)
     {
-        if (!CanEnable(ent, args.ModuleOwner))
+        if (CanEnable(ent, args.ModuleOwner))
             return;
 
         _toggleableModule.RaiseToggleEvents(ent.Owner, false, null);
