@@ -1,0 +1,51 @@
+- type: entity
+  save: false
+  name: Urist McGas
+  parent: BaseMobSpeciesOrganic
+  id: BaseMobPlasmaMan
+  abstract: true
+  components:
+  - type: HumanoidAppearance
+    species: Plasma
+  - type: Icon
+    sprite: Mobs/Species/Plasma/parts.rsi
+    state: full
+  - type: Body
+    prototype: Plasma
+    requiredLegs: 2
+  - type: IgniteOnAtmosExposed
+    fireStacks: 10
+    gas:
+      temperature: 0
+      moles:
+      - 1
+  - type: DamageVisuals
+    damageOverlayGroups:
+      Brute:
+        sprite: Mobs/Effects/brute_damage.rsi
+        color: "#896e55"
+      Burn:
+        sprite: Mobs/Effects/burn_damage.rsi
+  - type: Bloodstream
+    bloodReagent: Plasma
+  - type: LeavesFootprints
+    footprintPrototype: FootprintFootLeft
+    footprintPrototypeAlternative: FootprintFootRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-foot-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-foot-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-foot-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-foot-ancient
+      ageThrestholdMin: 20
+
+- type: entity
+  parent: BaseSpeciesDummy
+  id: MobPlasmaManDummy
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: HumanoidAppearance
+    species: Plasma
