@@ -82,6 +82,7 @@ public sealed partial class StorageModuleSystem : EntitySystem
         }
 
         Dirty(ent);
+        RemCompDeferred(args.Container, containerStorage);
     }
 
     private void OnStorageUsingAttempt(Entity<StorageModuleComponent> ent, ref StorageInteractUsingAttemptEvent args)
