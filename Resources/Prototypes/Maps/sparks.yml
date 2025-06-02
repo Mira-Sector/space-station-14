@@ -5,6 +5,8 @@
   minPlayers: 0
   maxPlayers: 20
   fallback: true
+  cVars:
+    shuttle.mass_limit: 3000
   stations:
     Sparks:
       stationProto: StandardNanotrasenStation

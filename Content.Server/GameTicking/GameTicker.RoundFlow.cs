@@ -16,6 +16,7 @@ using JetBrains.Annotations;
 using Prometheus;
 using Robust.Shared.Asynchronous;
 using Robust.Shared.Audio;
+using Robust.Shared.Configuration;
 using Robust.Shared.EntitySerialization;
 using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.Map;
@@ -29,6 +30,7 @@ namespace Content.Server.GameTicking
 {
     public sealed partial class GameTicker
     {
+        [Dependency] private readonly IConfigurationManager _configurationManager = default!;
         [Dependency] private readonly DiscordWebhook _discord = default!;
         [Dependency] private readonly RoleSystem _role = default!;
         [Dependency] private readonly ITaskManager _taskManager = default!;
@@ -51,6 +53,9 @@ namespace Content.Server.GameTicking
 
         [ViewVariables]
         private GameRunLevel _runLevel;
+
+        [ViewVariables]
+        private readonly Dictionary<string, object> _modifiedCvars = [];
 
         private RoundEndMessageEvent.RoundEndPlayerInfo[]? _replayRoundPlayerInfo;
 
@@ -207,6 +212,7 @@ namespace Content.Server.GameTicking
                     throw new Exception($"Failed to load game-map grid {ev.GameMap.ID}");
                 }
 
+                UpdateMapCVars(proto);
                 _metaData.SetEntityName(mapUid, proto.MapName);
                 var g = new List<EntityUid> {grid.Value.Owner};
                 RaiseLocalEvent(new PostGameMapLoad(proto, mapId, g, stationName));
@@ -223,6 +229,7 @@ namespace Content.Server.GameTicking
                 throw new Exception($"Failed to load game map {ev.GameMap.ID}");
             }
 
+            UpdateMapCVars(proto);
             mapId = map.Value.Comp.MapId;
             _metaData.SetEntityName(map.Value.Owner, proto.MapName);
             var gridUids = grids.Select(x => x.Owner).ToList();
@@ -257,6 +264,7 @@ namespace Content.Server.GameTicking
                     throw new Exception($"Failed to load game-map grid {ev.GameMap.ID}");
                 }
 
+                UpdateMapCVars(proto);
                 _metaData.SetEntityName(mapUid, proto.MapName);
                 var g = new List<EntityUid> {grid.Value.Owner};
                 RaiseLocalEvent(new PostGameMapLoad(proto, mapId, g, stationName));
@@ -276,6 +284,7 @@ namespace Content.Server.GameTicking
             }
 
             _metaData.SetEntityName(map.Value.Owner, proto.MapName);
+            UpdateMapCVars(proto);
             var gridUids = grids.Select(x => x.Owner).ToList();
             RaiseLocalEvent(new PostGameMapLoad(proto, mapId, gridUids, stationName));
             return gridUids;
@@ -308,6 +317,7 @@ namespace Content.Server.GameTicking
                     throw new Exception($"Failed to load game-map grid {ev.GameMap.ID}");
                 }
 
+                UpdateMapCVars(proto);
                 var g = new List<EntityUid> {grid.Value.Owner};
                 // TODO MAP LOADING use a new event?
                 RaiseLocalEvent(new PostGameMapLoad(proto, targetMap, g, stationName));
@@ -324,11 +334,32 @@ namespace Content.Server.GameTicking
                 throw new Exception($"Failed to load map");
             }
 
+            UpdateMapCVars(proto);
             var gridUids = grids.Select(x => x.Owner).ToList();
 
             // TODO MAP LOADING use a new event?
             RaiseLocalEvent(new PostGameMapLoad(proto, targetMap, gridUids, stationName));
             return gridUids;
+        }
+
+        private void UpdateMapCVars(GameMapPrototype proto)
+        {
+            foreach (var (cvar, value) in _modifiedCvars)
+            {
+                _configurationManager.SetCVar(cvar, value);
+            }
+
+            _modifiedCvars.Clear();
+
+            foreach (var (cvar, value) in proto.CVars)
+            {
+                var oldValue = _configurationManager.GetCVar<object>(cvar);
+                _modifiedCvars.Add(cvar, oldValue);
+
+                var type = _configurationManager.GetCVarType(cvar);
+                var parsed = CVarCommandUtil.ParseObject(type, value);
+                _configurationManager.SetCVar(cvar, parsed);
+            }
         }
 
         public int ReadyPlayerCount()
