@@ -25,6 +25,10 @@
       Ammonia: stationAmmonia
       NitrousOxide: stationNO
       Frezon: danger
+      Pluoxium: ignore
+      Nitrium: stationNitrium
+      Noblium: ignore
+      Halon: ignore # if theres no oxy in the air then does nothing
   - type: Tag
     tags:
       - AirSensor

@@ -1,0 +1,360 @@
+- type: entity
+  id: Supermatter
+  parent: BaseStructure
+  name: supermatter crystal
+  description: Get away from the beam Gordon!
+  save: false
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: Structures/Power/Generation/supermatter.rsi
+    offset: 0, 0.25
+    noRot: true
+    layers:
+    - map: [ "shard" ]
+      state: sm
+    - map: [ "xmas-hat" ]
+      state: santa_hat
+      visible: false
+    - map: [ "xmas-lights" ]
+      state: holiday_lights
+      visible: false
+    - map: [ "field" ]
+      state: causality_field
+      visible: false
+  - type: Appearance
+  - type: HolidayVisuals
+    holidays:
+      festive:
+      - FestiveSeason
+  - type: GenericVisualizer
+    visuals:
+      enum.SupermatterVisuals.Delaminating:
+        field:
+          True: { visible: true }
+          False: { visible: False }
+      enum.HolidayVisuals.Holiday:
+        xmas-hat:
+          festive: { visible: true }
+        xmas-lights:
+          festive: { visible: true }
+  - type: PointLight
+    color: "#FFFF00"
+    radius: 3
+    energy: 2.4
+  - type: AtmosExposed
+  - type: SupermatterActive
+    activationBlackList:
+      components:
+      - ConditionalSpawner
+      - AtmosFixMarker
+  - type: SupermatterDelaminationCountdown
+    length: 30
+    tickDelay: 5
+  - type: SupermatterEnergyCollide
+    whitelist:
+      tags:
+      - EmitterBolt
+    ourFixtureId: emitter
+  - type: SupermatterEnergy
+  - type: SupermatterEnergyDecay
+    delay: 1
+    decayPower: 0.00052
+    decayOffset: 2
+  - type: SupermatterGasEmitter
+    ratios:
+      Plasma: 1
+      Oxygen: 1
+    baseRate: 2
+    minTemperature: 100
+    temperaturePerRate: 0.75
+    delay: 1.5
+  - type: SupermatterGasAbsorber
+    absorbedMultiplier: 0.7
+  - type: SupermatterGasReaction
+    spaceReactions:
+    - !type:ModifyIntegerity
+      integerity: -10
+    gasReactions:
+      Noblium:
+      - !type:ModifyPowerTransmission
+        multiplier: 0.3
+      - !type:ModifyWaste
+        multiplier: -14
+      - !type:ModifyHeatEnergy
+        multiplier: -1
+      Frezon:
+      - !type:ModifyPowerTransmission
+        multiplier: -3
+      - !type:ModifyWaste
+        multiplier: -9
+      - !type:ModifyHeatEnergy
+        multiplier: -1
+      Nitrogen:
+      - !type:ModifyWaste
+        multiplier: -2.5
+      - !type:ModifyHeatEnergy
+        multiplier: -1
+      Pluoxium:
+      - !type:ModifyPowerTransmission
+        multiplier: -0.5
+      - !type:ModifyWaste
+        multiplier: -1.5
+      - !type:ModifyHeatEnergy
+        multiplier: -1
+      NitrousOxide:
+      - !type:ModifyHeatResistance
+        Multiplier: 5
+      Oxygen:
+      - !type:ModifyPowerTransmission
+        multiplier: 1.15
+      - !type:ModifyHeatEnergy
+        multiplier: 1
+      Ammonia:
+      - !type:ModifyHeatEnergy
+        multiplier: 0.5
+      CarbonDioxide:
+      - !type:ModifyWaste
+        multiplier: 1
+      - !type:ModifyHeatEnergy
+        multiplier: 1
+      - !type:EnergyRecoupling
+      WaterVapor:
+      - !type:ModifyPowerTransmission
+        multiplier: -0.25
+      - !type:ModifyWaste
+        multiplier: -1.5
+      - !type:ModifyHeatEnergy
+        multiplier: 1
+      Plasma:
+      - !type:ModifyPowerTransmission
+        multiplier: 0.4
+      - !type:ModifyWaste
+        multiplier: 14
+      - !type:ModifyHeatEnergy
+        multiplier: 1
+      Tritium:
+      - !type:ModifyPowerTransmission
+        multiplier: 3
+      - !type:ModifyWaste
+        multiplier: 9
+      - !type:ModifyHeatEnergy
+        multiplier: 1
+  - type: SupermatterIntegerity
+  - type: SupermatterModifyIntegerityOnEnergy
+    min: 5000
+    integerityPerEnergy: -1.8
+  - type: RadiationSource
+    intensity: 1
+    slope: 0.7
+  - type: SupermatterRadiation
+    intensityPower: 0.00053
+  - type: SupermatterRadio
+    integerityMessages:
+      1: supermatter-radio-integerity-fucked
+      5: supermatter-radio-integerity-danger
+      10: supermatter-radio-integerity-danger
+      15: supermatter-radio-integerity-warning
+      20: supermatter-radio-integerity-warning
+      25: supermatter-radio-integerity-caution
+      30: supermatter-radio-integerity-caution
+    countdownMessages:
+      0: supermatter-radio-countdown
+      1: supermatter-radio-countdown
+      2: supermatter-radio-countdown
+      3: supermatter-radio-countdown
+      4: supermatter-radio-countdown
+      5: supermatter-radio-countdown
+      10: supermatter-radio-countdown
+      15: supermatter-radio-countdown
+      20: supermatter-radio-countdown
+      25: supermatter-radio-countdown
+    channel: Engineering
+  - type: SupermatterDelaminatable
+    delaminations:
+    - delaminations:
+      - !type:TeleportInRange
+        range: 175
+        whitelist:
+          components:
+          - Body
+      - !type:ExplosionDelamination
+        type: Minibomb
+        maxIntensity: 150
+        intensitySlope: 3
+        totalIntensity: 50000
+      requirements:
+      - !type:GasRequirement
+        requiredGas:
+          Noblium: 0.4
+          Tritium: 0.4
+      - !type:TotalMoleRequirement
+        min: 270
+    - delaminations:
+      - !type:SpawnDelamination
+        count: 1
+        prototypes:
+        - Singularity
+      requirements:
+      - !type:TotalMoleRequirement
+        min: 1800
+    - delaminations:
+      - !type:SpawnDelamination
+        count: 1
+        prototypes:
+        - TeslaEnergyBall
+      requirements:
+      - !type:EnergyRequirement
+        min: 5000
+    - delaminations:
+      - !type:ExplosionDelamination
+        type: Radioactive
+        totalIntensity: 1000
+        intensitySlope: 3
+        maxIntensity: 75
+  - type: SupermatterDelaminationTeleportMap
+    mapPath: /Maps/Misc/resonance_cascade.yml
+  - type: SupermatterSpawnOnIntegerity
+    spawns:
+    - min: 300
+      max: 400
+      prototypes:
+      - RandomAnomalySpawner
+      range: 8
+      minSpawns: 0
+      maxSpawns: 1
+      minDelay: 30
+      maxDelay: 60
+    - min: 400
+      max: 500
+      prototypes:
+      - RandomAnomalySpawner
+      range: 8
+      minSpawns: 0
+      maxSpawns: 1
+      minDelay: 15
+      maxDelay: 25
+    - min: 500
+      prototypes:
+      - RandomAnomalySpawner
+      range: 8
+      minSpawns: 0
+      maxSpawns: 1
+      minDelay: 1
+      maxDelay: 5
+  - type: SupermatterHeatEnergy
+    baseEnergy: 2.3
+    minTemperature: 280
+    saturationTemperature: 0.11
+  - type: SupermatterHeatResistance
+  - type: SupermatterModifyIntegerityOnHeatResistance
+    damages:
+    - belowHeatResistance: true
+      integerityDamage: -10
+    - belowHeatResistance: false
+      integerityDamage: 15
+  - type: SupermatterModifyHeatResistanceOnMoles
+    resistances:
+    - minMoles: 30
+      heatResistance: 1
+  - type: SupermatterModifyIntegerityOnMoles
+    damages:
+    - minMoles: 1800
+      integerityDamage: 20
+  - type: SupermatterAudio
+    normalLoop:
+      path: /Audio/Machines/Supermatter/loops/calm.ogg
+      params:
+        loop: true
+    delaminationLoop:
+      path: /Audio/Machines/Supermatter/loops/delamming.ogg
+      params:
+        loop: true
+    minPulseSoundDelay: 5
+    maxPulseSoundDelay: 10
+    normalPulse:
+      collection: SupermatterNormal
+    delaminationPulse:
+      collection: SupermatterDelamination
+  - type: SupermatterPowerTransmission
+    basePower: 20
+  - type: SupermatterEnergyArcShooter
+    energyRequiredForArc: 20
+    delayScale: 0.5
+  - type: AmbientSound
+    enabled: false
+    volume: -5
+    range: 8
+    sound:
+      path: /Audio/Machines/Supermatter/loops/calm.ogg
+      params:
+        loop: true
+  - type: EventHorizon
+    consumeTiles: false
+    consumeEntities: false
+    colliderFixtureId: EventHorizonCollider
+    consumerFixtureId: EventHorizonConsumer
+  - type: IncidentDisplayIncrementer
+    incidentType: Supermatter
+    whitelist:
+      requireAll: true
+      components:
+      - HumanoidAppearance
+      - MobState
+  - type: Fixtures
+    fixtures:
+      emitter:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.6
+        hard: false
+        layer:
+        - Opaque
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 60
+        layer:
+        - MidImpassable
+        - LowImpassable
+      EventHorizonCollider:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.25,-0.25,0.25,0.25"
+        hard: false
+        layer:
+        - WallLayer
+      EventHorizonConsumer:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.3,-0.3,0.3,0.3"
+        hard: false
+        layer:
+        - WallLayer
+
+- type: entity
+  id: SupermatterDummy
+  name: supermatter crystal
+  description: Get away from the beam Gordon!
+  suffix: Dummy
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: Structures/Power/Generation/supermatter.rsi
+    offset: 0, 0.25
+    noRot: true
+    layers:
+    - state: sm-psy
+    - state: causality_field
+  - type: PointLight
+    color: "#FD8335"
+    radius: 3
+    energy: 2.4
+  - type: AmbientSound
+    volume: -5
+    range: 8
+    sound:
+      path: /Audio/Effects/Weather/snowstorm.ogg

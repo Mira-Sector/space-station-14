@@ -1,0 +1,164 @@
+- type: entity
+  id: IncidentDisplay
+  parent: BaseStructure
+  name: incident display
+  description: The screen that shows how stupid your co-workers are.
+  components:
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        collection: GlassSmash
+  - type: WallMount
+    arc: 360
+  - type: Sprite
+    drawdepth: WallMountedItems
+    sprite: Structures/Wallmounts/incident_display.rsi
+    layers:
+    - state: display
+    - map: [ "display" ]
+      state: display_normal
+      shader: unshaded
+    - map: [ "tens" ]
+      state: num_0
+      shader: unshaded
+      offset: 0.5, 0
+      visible: false
+    - map: [ "units" ]
+      state: num_0
+      shader: unshaded
+      offset: 0.7, 0
+      visible: false
+    - map: [ "relative" ]
+      state: rising
+      shader: unshaded
+      visible: false
+    - map: [ "type" ]
+      state: overlay_delam
+      shader: unshaded
+      visible: false
+    - map: [ "hundreds" ]
+      state: num_100_blue
+      visible: false
+  - type: GenericVisualizer
+    visuals:
+      enum.IncidentDisplayVisuals.Screen:
+        display:
+          Normal:
+            visible: true
+            state: display_normal
+          Advertisement:
+            visible: true
+            state: advert_meson
+          UnPowered:
+            visible: false
+          Broken:
+            visible: true
+            state: display_broken
+        tens: # purposefully no hundreds as funny
+          Normal: { visible: true }
+          Advertisement: { visible: false }
+          UnPowered: { visible: false }
+          Broken: { visible: false }
+        units:
+          Normal: { visible: true }
+          Advertisement: { visible: false }
+          UnPowered: { visible: false }
+          Broken: { visible: false }
+        relative:
+          Normal: { visible: false }
+          Advertisement: { visible: false }
+          UnPowered: { visible: false }
+          Broken: { visible: false }
+        type:
+          Normal: { visible: true }
+          Advertisement: { visible: false }
+          UnPowered: { visible: false }
+          Broken: { visible: false }
+      enum.IncidentDisplayVisuals.Relative:
+        relative:
+          None:
+            visible: false
+          Rising:
+            state: rising
+            visible: true
+          Falling:
+            state: falling
+            visible: true
+        display:
+          Rising: { state: display_shame }
+          Falling: { state: display_shame }
+      enum.IncidentDisplayVisuals.Type:
+        type:
+          Supermatter:
+            state: overlay_delam
+            visible: true
+      enum.IncidentDisplayVisuals.Hundreds:
+        hundreds:
+          0: { visible: false }
+          1: { visible: true }
+      enum.IncidentDisplayVisuals.Tens:
+        tens:
+          0: { state: num_0 }
+          1: { state: num_1 }
+          2: { state: num_2 }
+          3: { state: num_3 }
+          4: { state: num_4 }
+          5: { state: num_5 }
+          6: { state: num_6 }
+          7: { state: num_7 }
+          8: { state: num_8 }
+          9: { state: num_9 }
+      enum.IncidentDisplayVisuals.Units:
+        units:
+          0: { state: num_0 }
+          1: { state: num_1 }
+          2: { state: num_2 }
+          3: { state: num_3 }
+          4: { state: num_4 }
+          5: { state: num_5 }
+          6: { state: num_6 }
+          7: { state: num_7 }
+          8: { state: num_8 }
+          9: { state: num_9 }
+  - type: IncidentDisplay
+    advertiseLength: 5.27
+    timePerType: 10
+    selectableTypes:
+    - Supermatter
+    screenColor:
+      Normal: "#3d3588"
+      Advertisement: "#657ca4"
+      UnPowered: null
+      Broken: "#1f86e4"
+    relativeColor:
+      None: null
+      Rising: "#721a27"
+      Falling: "#721a27"
+  - type: PointLight
+    radius: 1.5
+    energy: 10
+    enabled: false
+  - type: ApcPowerReceiver
+  - type: ExtensionCableReceiver
+  - type: InteractionOutline
+  - type: Appearance
+  - type: Damageable
+    damageContainer: StructuralInorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Breakage"]
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: WiresPanel
+  - type: Wires
+    boardName: wires-board-name-incident-display
+    layoutId: Computer
