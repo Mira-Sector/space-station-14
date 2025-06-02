@@ -1,0 +1,63 @@
+- type: entity
+  id: ClothingOuterModSuitBase
+  abstract: true
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: ModSuitSealable
+  - type: ModSuitDeployableInventory
+  - type: Clothing
+    slots:
+    - outerClothing
+  - type: Appearance
+  - type: Tag
+    tags:
+      - WhitelistChameleon
+
+- type: entity
+  id: ClothingOuterModSuitAdvanced
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: advanced MOD chestplate
+  components:
+  - type: Sprite
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/advanced.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/advanced.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/advanced.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/advanced.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/advanced.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/advanced.rsi
+        state: equipped-OUTERCLOTHING
+  - type: PressureProtection
+    highPressureMultiplier: 0.02
+    lowPressureMultiplier: 1000
+  - type: FireProtection
+    reduction: 0.8
+  - type: ExplosionResistance
+    damageCoefficient: 0.2
+  - type: Armor
+    modifiers:
+      [ Torso, Arm, Leg ] :
+        coefficients:
+          Blunt: 0.8
+          Slash: 0.8
+          Piercing: 0.8
+          Heat: 0.4
+          Radiation: 0.0
+          Caustic: 0.7

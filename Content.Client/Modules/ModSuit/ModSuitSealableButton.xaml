@@ -1,0 +1,12 @@
+<PanelContainer xmlns="https://spacestation14.io">
+    <BoxContainer>
+        <Button
+            Name="ButtonButton"
+            Text="{Loc 'modsuit-interface-seal'}"
+            ToggleMode="True"
+            Access="Public"/>
+        <Label
+            Name="ButtonName"
+            Access="Public"/>
+    </BoxContainer>
+</PanelContainer>

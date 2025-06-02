@@ -167,7 +167,9 @@ public partial class SharedBodySystem
         Dirty(rootPartUid, rootPart);
 
         // Setup the rest of the body entities.
-        SetupOrgans((rootPartUid, rootPart), protoRoot.Organs);
+        if (protoRoot.Organs != null)
+            SetupOrgans((rootPartUid, rootPart), protoRoot.Organs);
+
         MapInitParts(rootPartUid, prototype);
     }
 
@@ -203,10 +205,11 @@ public partial class SharedBodySystem
     /// <summary>
     /// Sets up all of the relevant body parts for a particular body entity and root part.
     /// </summary>
-    private void MapInitParts(EntityUid rootPartId, BodyPrototype prototype)
+    private void MapInitParts(EntityUid rootPartId, BodyLimbChildren prototype)
     {
         // Start at the root part and traverse the body graph, setting up parts as we go.
         // Basic BFS pathfind.
+
         var rootSlot = prototype.Root;
         var frontier = new Queue<string>();
         frontier.Enqueue(rootSlot);
@@ -221,6 +224,9 @@ public partial class SharedBodySystem
         while (frontier.TryDequeue(out var currentSlotId))
         {
             var currentSlot = prototype.Slots[currentSlotId];
+
+            if (currentSlot.Connections == null)
+                continue;
 
             foreach (var connection in currentSlot.Connections)
             {
@@ -245,13 +251,14 @@ public partial class SharedBodySystem
 
                 if (partSlot is null || !Containers.Insert(childPart, cont))
                 {
-                    Log.Error($"Could not create slot for connection {connection} in body {prototype.ID}");
+                    Log.Error($"Could not create slot for connection {connection} in body {ToPrettyString(rootPartId)}");
                     QueueDel(childPart);
                     continue;
                 }
 
                 // Add organs
-                SetupOrgans((childPart, childPartComponent), connectionSlot.Organs);
+                if (connectionSlot.Organs != null)
+                    SetupOrgans((childPart, childPartComponent), connectionSlot.Organs);
 
                 // Enqueue it so we can also get its neighbors.
                 frontier.Enqueue(connection);

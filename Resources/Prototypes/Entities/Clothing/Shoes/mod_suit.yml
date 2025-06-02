@@ -1,0 +1,46 @@
+- type: entity
+  id: ClothingShoesModSuitBase
+  abstract: true
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: ModSuitSealable
+  - type: ModSuitDeployableInventory
+  - type: Clothing
+    slots:
+    - feet
+  - type: Appearance
+  - type: Tag
+    tags:
+      - WhitelistChameleon
+
+- type: entity
+  id: ClothingShoesModSuitAdvanced
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: advanced MOD boots
+  components:
+  - type: Sprite
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/advanced.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/advanced.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/advanced.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/advanced.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/advanced.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/advanced.rsi
+        state: equipped-FEET

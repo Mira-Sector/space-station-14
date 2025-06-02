@@ -54,6 +54,9 @@ public sealed partial class BodyPartComponent : Component
     [DataField]
     public float MissProb = 0f;
 
+    [DataField]
+    public BodyLimbChildren? LimbChildren;
+
     /// <summary>
     /// These are only for VV/Debug do not use these for gameplay/systems
     /// </summary>

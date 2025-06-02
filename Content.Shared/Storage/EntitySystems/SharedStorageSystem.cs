@@ -413,7 +413,7 @@ public abstract class SharedStorageSystem : EntitySystem
         if (args.Handled || !storageComp.ClickInsert || !CanInteract(args.User, (uid, storageComp), silent: false))
             return;
 
-        var attemptEv = new StorageInteractUsingAttemptEvent();
+        var attemptEv = new StorageInteractUsingAttemptEvent(args.Used);
         RaiseLocalEvent(uid, ref attemptEv);
         if (attemptEv.Cancelled)
             return;

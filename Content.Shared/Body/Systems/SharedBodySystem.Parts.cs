@@ -24,6 +24,7 @@ public partial class SharedBodySystem
         SubscribeLocalEvent<BodyPartComponent, EntRemovedFromContainerMessage>(OnBodyPartRemoved);
 
         SubscribeLocalEvent<BodyPartComponent, AccessibleTargetOverrideEvent>(OnBodyPartAccessible);
+        SubscribeLocalEvent<BodyPartComponent, MapInitEvent>(OnBodyPartInit);
     }
 
     private void OnBodyPartInserted(Entity<BodyPartComponent> ent, ref EntInsertedIntoContainerMessage args)
@@ -71,6 +72,14 @@ public partial class SharedBodySystem
 
         args.Handled = true;
         args.Accessible = Containers.IsInSameOrParentContainer(args.User, body, out _, out _);
+    }
+
+    private void OnBodyPartInit(Entity<BodyPartComponent> ent, ref MapInitEvent args)
+    {
+        if (ent.Comp.LimbChildren == null)
+            return;
+
+        MapInitParts(ent.Owner, ent.Comp.LimbChildren);
     }
 
     private void RecursiveBodyUpdate(Entity<BodyPartComponent> ent, EntityUid? bodyUid)

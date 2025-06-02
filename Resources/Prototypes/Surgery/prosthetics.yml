@@ -1,0 +1,38 @@
+﻿- type: surgery
+  id: ProstheticsAmputation
+  startingNode: Start
+  nodes:
+  - id: Start
+    edges:
+    - connection: Screwdriver1
+      requirement: !type:ToolRequirement
+        qualities:
+        - Screwing
+  - id: Screwdriver1
+    edges:
+    - connection: Wrench1
+      requirement: !type:ToolRequirement
+        qualities:
+        - Anchoring
+  - id: Wrench1
+    edges:
+    - connection: Multitool
+      requirement: !type:ToolRequirement
+        qualities:
+        - Pulsing
+  - id: Multitool
+    edges:
+    - connection: Wrench2
+      requirement: !type:ToolRequirement
+        qualities:
+        - Anchoring
+  - id: Wrench2
+    edges:
+    - connection: Screwdriver2
+      requirement: !type:ToolRequirement
+        qualities:
+        - Screwing
+  - id: Screwdriver2
+    edges:
+    - connection: Start
+      requirement: !type:LimbRequirement

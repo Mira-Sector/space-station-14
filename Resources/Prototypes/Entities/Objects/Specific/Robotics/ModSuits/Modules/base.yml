@@ -1,0 +1,10 @@
+- type: entity
+  id: BaseModSuitModule
+  parent: BaseItem
+  abstract: true
+  components:
+  - type: Item
+  - type: Sprite
+  - type: Tag
+    tags:
+    - ModSuitModule
