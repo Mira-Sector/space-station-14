@@ -156,3 +156,23 @@
   id: PowerDischarging
   name: signal-port-name-power-discharging
   description: signal-port-description-power-discharging
+
+- type: sourcePort
+  id: ElevatorEntranceDelayed
+  name: signal-port-name-elevator-entrance-delayed
+  description: signal-port-description-elevator-entrance-delayed
+
+- type: sourcePort
+  id: ElevatorExitDelayed
+  name: signal-port-name-elevator-exit-delayed
+  description: signal-port-description-elevator-exit-delayed
+
+- type: sourcePort
+  id: ElevatorEntranceFinished
+  name: signal-port-name-elevator-entrance-finished
+  description: signal-port-description-elevator-entrance-finished
+
+- type: sourcePort
+  id: ElevatorExitFinished
+  name: signal-port-name-elevator-exit-finished
+  description: signal-port-description-elevator-exit-finished
