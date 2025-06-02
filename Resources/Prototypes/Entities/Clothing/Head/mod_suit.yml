@@ -934,36 +934,36 @@
         state: equipped-HELMET
 
 - type: entity
-  id: ClothingHeadModSuitSafegaurd
+  id: ClothingHeadModSuitSafeguard
   parent: ClothingHeadModSuitBase
   categories: [ HideSpawnMenu ]
-  name: safegaurd MOD helmet
+  name: safeguard MOD helmet
   components:
   - type: Sprite
-    sprite: Clothing/Head/ModSuits/safegaurd.rsi
+    sprite: Clothing/Head/ModSuits/safeguard.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Head/ModSuits/safegaurd.rsi
+      - sprite: Clothing/Head/ModSuits/safeguard.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Head/ModSuits/safegaurd.rsi
+      - sprite: Clothing/Head/ModSuits/safeguard.rsi
         state: icon
     clothingLayers:
       true:
         head:
-        - sprite: Clothing/Head/ModSuits/safegaurd.rsi
+        - sprite: Clothing/Head/ModSuits/safeguard.rsi
           state: equipped-HELMET-sealed
       false:
         head:
-        - sprite: Clothing/Head/ModSuits/safegaurd.rsi
+        - sprite: Clothing/Head/ModSuits/safeguard.rsi
           state: equipped-HELMET
     uiLayer:
       true:
-        sprite: Clothing/Head/ModSuits/safegaurd.rsi
+        sprite: Clothing/Head/ModSuits/safeguard.rsi
         state: equipped-HELMET-sealed
       false:
-        sprite: Clothing/Head/ModSuits/safegaurd.rsi
+        sprite: Clothing/Head/ModSuits/safeguard.rsi
         state: equipped-HELMET
 
 - type: entity

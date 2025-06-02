@@ -64,9 +64,993 @@
             Heat: 0.4
             Radiation: 0.0
             Caustic: 0.7
-  - type: HideLayerClothing
-    hideOnToggle: true
-    layers:
-      Hair: HEAD
-      HeadTop : HEAD
-      HeadSide : HEAD
+
+- type: entity
+  id: ClothingOuterModSuitApocrphal
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: apocryphal MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/apocryphal.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/apocryphal.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/apocryphal.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/apocryphal.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/apocryphal.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/apocryphal.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/apocryphal.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitAsteroid
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: asteroid MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitAtmospheric
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: atmospheric MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/atmospheric.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/atmospheric.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/atmospheric.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/atmospheric.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/atmospheric.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/atmospheric.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/atmospheric.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitChrono
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: chrono MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/chrono.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/chrono.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/chrono.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/chrono.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/chrono.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/chrono.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/chrono.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitCivilian
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: civilian MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/civilian.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/civilian.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/civilian.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/civilian.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/civilian.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/civilian.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/civilian.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitCorporate
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: corporate MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/corporate.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/corporate.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/corporate.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/corporate.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/corporate.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/corporate.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/corporate.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitCorpsman
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: corpsman MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/corpsman.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/corpsman.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/corpsman.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/corpsman.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/corpsman.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/corpsman.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/corpsman.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitCosmohonk
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: cosmohonk MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/cosmohonk.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/cosmohonk.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/cosmohonk.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/cosmohonk.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/cosmohonk.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/cosmohonk.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/cosmohonk.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitDebug
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: debug MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/debug.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/debug.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/debug.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/debug.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/debug.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/debug.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/debug.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitElite
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: elite MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/elite.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/elite.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/elite.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/elite.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/elite.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/elite.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/elite.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitEnchanted
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: enchanted MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/enchanted.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/enchanted.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/enchanted.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/enchanted.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/enchanted.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/enchanted.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/enchanted.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitEngineering
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: engineering MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/engineering.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/engineering.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/engineering.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/engineering.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/engineering.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/engineering.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/engineering.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitGlitch
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: glitch MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitHonkerative
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: honkerative MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/honkerative.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/honkerative.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/honkerative.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/honkerative.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/honkerative.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/honkerative.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/honkerative.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitInfiltrator
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: infiltrator MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitInquisitory
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: inquisitory MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/inquisitory.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/inquisitory.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/inquisitory.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/inquisitory.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/inquisitory.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/inquisitory.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/inquisitory.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitInterdyne
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: interdyne MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitLoader
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: loader MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/loader.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/loader.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/loader.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/loader.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/loader.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/loader.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/loader.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitMagnate
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: magnate MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitMedical
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: medical MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/medical.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/medical.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/medical.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/medical.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/medical.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/medical.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/medical.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitMining
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: mining MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/mining.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/mining.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/mining.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/mining.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/mining.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/mining.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/mining.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitNinja
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: ninja MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/ninja.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/ninja.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/ninja.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/ninja.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/ninja.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/ninja.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/ninja.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitPrototype
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: prototype MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/prototype.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/prototype.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/prototype.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/prototype.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/prototype.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/prototype.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/prototype.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitRescue
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: rescue MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/rescue.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/rescue.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/rescue.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/rescue.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/rescue.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/rescue.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/rescue.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitResearch
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: research MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/research.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/research.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/research.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/research.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/research.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/research.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/research.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitResponsory
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: responsory MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/responsory.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/responsory.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/responsory.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/responsory.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/responsory.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/responsory.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/responsory.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitSafeguard
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: safeguard MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/safeguard.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/safeguard.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/safeguard.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/safeguard.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/safeguard.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/safeguard.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/safeguard.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitSecurity
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: security MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/security.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/security.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/security.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/security.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/security.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/security.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/security.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitStandard
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: standard MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/standard.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/standard.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/standard.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/standard.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/standard.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/standard.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/standard.rsi
+        state: equipped-OUTERCLOTHING
+
+- type: entity
+  id: ClothingOuterModSuitSyndicate
+  parent: ClothingOuterModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: syndicate MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/syndicate.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/syndicate.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/syndicate.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/syndicate.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/syndicate.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/syndicate.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/syndicate.rsi
+        state: equipped-OUTERCLOTHING
