@@ -53,13 +53,12 @@ public partial class SharedModSuitSystem
 
     private void OnSealableUnequipped(Entity<ModSuitSealableComponent> ent, ref ClothingGotUnequippedEvent args)
     {
-        ent.Comp.Wearer = args.Wearer;
+        ent.Comp.Wearer = null;
         Dirty(ent);
 
         // handled in a separate event
         if (HasComp<ModSuitDeployedPartComponent>(ent.Owner))
             return;
-
 
         // cant be sealed when not worn
         SetSeal((ent.Owner, ent.Comp), false);
