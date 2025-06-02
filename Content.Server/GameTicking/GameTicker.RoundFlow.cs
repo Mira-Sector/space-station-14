@@ -345,9 +345,7 @@ namespace Content.Server.GameTicking
         private void UpdateMapCVars(GameMapPrototype proto)
         {
             foreach (var (cvar, value) in _modifiedCvars)
-            {
                 _configurationManager.SetCVar(cvar, value);
-            }
 
             _modifiedCvars.Clear();
 
