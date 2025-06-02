@@ -48,7 +48,7 @@ public sealed class HideLayerClothingSystem : EntitySystem
     private void OnModSuitUnsealed(Entity<HideLayerClothingComponent> ent, ref ModSuitUnsealedEvent args)
     {
         if (args.Wearer != null)
-            SetLayerVisibility(ent!, args.Wearer.Value, false);
+            SetLayerVisibility(ent!, args.Wearer.Value, !ent.Comp.HideOnToggle);
     }
 
     private void SetLayerVisibility(
