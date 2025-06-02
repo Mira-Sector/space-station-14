@@ -65,11 +65,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
           state: equipped-FEET
     uiLayer:
@@ -98,11 +98,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/asteroid.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/asteroid.rsi
           state: equipped-FEET
     uiLayer:
@@ -131,11 +131,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/atmospheric.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/atmospheric.rsi
           state: equipped-FEET
     uiLayer:
@@ -164,11 +164,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/chrono.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/chrono.rsi
           state: equipped-FEET
     uiLayer:
@@ -197,11 +197,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/civilian.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/civilian.rsi
           state: equipped-FEET
     uiLayer:
@@ -230,11 +230,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/corporate.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/corporate.rsi
           state: equipped-FEET
     uiLayer:
@@ -263,11 +263,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/corpsman.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/corpsman.rsi
           state: equipped-FEET
     uiLayer:
@@ -296,11 +296,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/cosmohonk.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/cosmohonk.rsi
           state: equipped-FEET
     uiLayer:
@@ -329,11 +329,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/debug.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/debug.rsi
           state: equipped-FEET
     uiLayer:
@@ -362,11 +362,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/elite.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/elite.rsi
           state: equipped-FEET
     uiLayer:
@@ -395,11 +395,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/enchanted.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/enchanted.rsi
           state: equipped-FEET
     uiLayer:
@@ -428,11 +428,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/engineering.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/engineering.rsi
           state: equipped-FEET
     uiLayer:
@@ -461,11 +461,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/glitch.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/glitch.rsi
           state: equipped-FEET
     uiLayer:
@@ -494,11 +494,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/honkerative.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/honkerative.rsi
           state: equipped-FEET
     uiLayer:
@@ -527,11 +527,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/infiltrator.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/infiltrator.rsi
           state: equipped-FEET
     uiLayer:
@@ -560,11 +560,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/inquisitory.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/inquisitory.rsi
           state: equipped-FEET
     uiLayer:
@@ -593,11 +593,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/interdyne.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/interdyne.rsi
           state: equipped-FEET
     uiLayer:
@@ -626,11 +626,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/loader.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/loader.rsi
           state: equipped-FEET
     uiLayer:
@@ -659,11 +659,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/magnate.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/magnate.rsi
           state: equipped-FEET
     uiLayer:
@@ -692,11 +692,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/medical.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/medical.rsi
           state: equipped-FEET
     uiLayer:
@@ -725,11 +725,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/mining.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/mining.rsi
           state: equipped-FEET
     uiLayer:
@@ -758,11 +758,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/ninja.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/ninja.rsi
           state: equipped-FEET
     uiLayer:
@@ -791,11 +791,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/prototype.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/prototype.rsi
           state: equipped-FEET
     uiLayer:
@@ -824,11 +824,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/rescue.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/rescue.rsi
           state: equipped-FEET
     uiLayer:
@@ -857,11 +857,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/research.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/research.rsi
           state: equipped-FEET
     uiLayer:
@@ -890,11 +890,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/responsory.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/responsory.rsi
           state: equipped-FEET
     uiLayer:
@@ -923,11 +923,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/safeguard.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/safeguard.rsi
           state: equipped-FEET
     uiLayer:
@@ -956,11 +956,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/security.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/security.rsi
           state: equipped-FEET
     uiLayer:
@@ -989,11 +989,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/standard.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/standard.rsi
           state: equipped-FEET
     uiLayer:
@@ -1022,11 +1022,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/syndicate.rsi
           state: equipped-FEET-sealed
       false:
-        head:
+        shoes:
         - sprite: Clothing/Shoes/ModSuits/syndicate.rsi
           state: equipped-FEET
     uiLayer:
