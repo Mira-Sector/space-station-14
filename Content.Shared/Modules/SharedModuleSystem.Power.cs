@@ -4,12 +4,14 @@ using Content.Shared.Modules.Events;
 using Content.Shared.PowerCell;
 using Content.Shared.PowerCell.Components;
 using JetBrains.Annotations;
+using Robust.Shared.Timing;
 
 namespace Content.Shared.Modules;
 
 public partial class SharedModuleSystem
 {
     [Dependency] private readonly SharedPowerCellSystem _powerCell = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
 
     private void InitializePower()
     {
@@ -19,7 +21,7 @@ public partial class SharedModuleSystem
         SubscribeLocalEvent<ModuleContainerPowerComponent, ModuleContainerModuleAddedEvent>((u, c, a) => UpdatePowerDraw((u, c)));
         SubscribeLocalEvent<ModuleContainerPowerComponent, ModuleContainerModuleRemovedEvent>((u, c, a) => UpdatePowerDraw((u, c)));
 
-        SubscribeLocalEvent<ModuleContainerPowerComponent, PowerCellChangedEvent>((u, c, a) => UpdateUis(u));
+        SubscribeLocalEvent<ModuleContainerPowerComponent, PowerCellChangedEvent>(OnPowerCellChanged);
     }
 
     private void OnPowerEquipped(Entity<ModuleContainerPowerComponent> ent, ref ClothingGotEquippedEvent args)
@@ -31,6 +33,16 @@ public partial class SharedModuleSystem
     private void OnPowerUnequipped(Entity<ModuleContainerPowerComponent> ent, ref ClothingGotUnequippedEvent args)
     {
         _powerCell.SetDrawEnabled(ent.Owner, false);
+    }
+
+    private void OnPowerCellChanged(Entity<ModuleContainerPowerComponent> ent, ref PowerCellChangedEvent args)
+    {
+        if (ent.Comp.NextUiUpdate > _timing.CurTime)
+            return;
+
+        ent.Comp.NextUiUpdate += ent.Comp.UiUpdateInterval;
+        Dirty(ent);
+        UpdateUis(ent.Owner);
     }
 
     [PublicAPI]
