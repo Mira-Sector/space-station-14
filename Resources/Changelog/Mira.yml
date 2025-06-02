@@ -1735,3 +1735,9 @@ Entries:
     type: Add
   id: 248
   time: '2025-05-31T21:20:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Sparks can now FTL
+    type: Add
+  id: 249
+  time: '2025-06-02T17:10:00.0000000+00:00'
