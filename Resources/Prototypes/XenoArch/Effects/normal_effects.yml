@@ -456,6 +456,10 @@
     - Ammonia
     - NitrousOxide
     - Frezon
+    - Pluoxium
+    - Nitrium
+    - Noblium
+    - Halon
 
 - type: artifactEffect
   id: EffectBlink
