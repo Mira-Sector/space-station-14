@@ -20,8 +20,20 @@
       - WhitelistChameleon
 
 - type: entity
+  id: ClothingHeadModSuitBaseWithHair
+  abstract: true
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: HideLayerClothing
+    hideOnToggle: true
+    layers:
+      Hair: HEAD
+      HeadTop : HEAD
+      HeadSide : HEAD
+
+- type: entity
   id: ClothingHeadModSuitAdvanced
-  parent: ClothingHeadModSuitBase
+  parent: ClothingHeadModSuitBaseWithHair
   categories: [ HideSpawnMenu ]
   name: advanced MOD helmet
   components:
@@ -68,12 +80,6 @@
             Heat: 0.4
             Radiation: 0.0
             Caustic: 0.7
-  - type: HideLayerClothing
-    hideOnToggle: true
-    layers:
-      Hair: HEAD
-      HeadTop : HEAD
-      HeadSide : HEAD
 
 - type: entity
   id: ClothingHeadModSuitApocrphal
@@ -143,7 +149,7 @@
 
 - type: entity
   id: ClothingHeadModSuitAtmospheric
-  parent: ClothingHeadModSuitBase
+  parent: ClothingHeadModSuitBaseWithHair
   categories: [ HideSpawnMenu ]
   name: atmospheric MOD helmet
   components:
@@ -242,7 +248,7 @@
 
 - type: entity
   id: ClothingHeadModSuitCorporate
-  parent: ClothingHeadModSuitBase
+  parent: ClothingHeadModSuitBaseWithHair
   categories: [ HideSpawnMenu ]
   name: corporate MOD helmet
   components:
@@ -275,7 +281,7 @@
 
 - type: entity
   id: ClothingHeadModSuitCorpsman
-  parent: ClothingHeadModSuitBase
+  parent: ClothingHeadModSuitBaseWithHair
   categories: [ HideSpawnMenu ]
   name: corpsman MOD helmet
   components:
@@ -374,7 +380,7 @@
 
 - type: entity
   id: ClothingHeadModSuitElite
-  parent: ClothingHeadModSuitBase
+  parent: ClothingHeadModSuitBaseWithHair
   categories: [ HideSpawnMenu ]
   name: elite MOD helmet
   components:
@@ -440,7 +446,7 @@
 
 - type: entity
   id: ClothingHeadModSuitEngineering
-  parent: ClothingHeadModSuitBase
+  parent: ClothingHeadModSuitBaseWithHair
   categories: [ HideSpawnMenu ]
   name: engineering MOD helmet
   components:
@@ -704,7 +710,7 @@
 
 - type: entity
   id: ClothingHeadModSuitMedical
-  parent: ClothingHeadModSuitBase
+  parent: ClothingHeadModSuitBaseWithHair
   categories: [ HideSpawnMenu ]
   name: medical MOD helmet
   components:
@@ -836,7 +842,7 @@
 
 - type: entity
   id: ClothingHeadModSuitRescue
-  parent: ClothingHeadModSuitBase
+  parent: ClothingHeadModSuitBaseWithHair
   categories: [ HideSpawnMenu ]
   name: rescue MOD helmet
   components:
@@ -902,7 +908,7 @@
 
 - type: entity
   id: ClothingHeadModSuitResponsory
-  parent: ClothingHeadModSuitBase
+  parent: ClothingHeadModSuitBaseWithHair
   categories: [ HideSpawnMenu ]
   name: responsory MOD helmet
   components:
@@ -1001,7 +1007,7 @@
 
 - type: entity
   id: ClothingHeadModSuitStandard
-  parent: ClothingHeadModSuitBase
+  parent: ClothingHeadModSuitBaseWithHair
   categories: [ HideSpawnMenu ]
   name: standard MOD helmet
   components:

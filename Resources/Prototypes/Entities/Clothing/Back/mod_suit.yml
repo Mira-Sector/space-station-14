@@ -21,6 +21,8 @@
   - type: PowerCellSlot
     fitsInCharger: false
   - type: ModSuitUserInterface
+  - type: WiresPanel
+    visible: false
   - type: UserInterface
     interfaces:
       enum.ModSuitUiKey.Key:
@@ -158,7 +160,6 @@
 - type: entity
   id: ClothingBackpackModSuitAtmospheric
   parent: ClothingBackpackModSuitBase
-  categories: [ HideSpawnMenu ]
   name: atmospheric MOD control unit
   components:
   - type: Sprite
@@ -193,6 +194,9 @@
       gloves: ClothingHandsModSuitAtmospheric
       head: ClothingHeadModSuitAtmospheric
       shoes: ClothingShoesModSuitAtmospheric
+  - type: Construction
+    graph: ModSuit
+    node: atmosphericPlating
 
 - type: entity
   id: ClothingBackpackModSuitChrono
@@ -383,6 +387,9 @@
       gloves: ClothingHandsModSuitCosmohonk
       head: ClothingHeadModSuitCosmohonk
       shoes: ClothingShoesModSuitCosmohonk
+  - type: Construction
+    graph: ModSuit
+    node: cosmohonkPlating
 
 - type: entity
   id: ClothingBackpackModSuitDebug
@@ -535,6 +542,9 @@
       gloves: ClothingHandsModSuitEngineering
       head: ClothingHeadModSuitEngineering
       shoes: ClothingShoesModSuitEngineering
+  - type: Construction
+    graph: ModSuit
+    node: engineeringPlating
 
 - type: entity
   id: ClothingBackpackModSuitGlitch
@@ -839,6 +849,9 @@
       gloves: ClothingHandsModSuitMedical
       head: ClothingHeadModSuitMedical
       shoes: ClothingShoesModSuitMedical
+  - type: Construction
+    graph: ModSuit
+    node: medicalPlating
 
 - type: entity
   id: ClothingBackpackModSuitMining
@@ -1143,6 +1156,9 @@
       gloves: ClothingHandsModSuitSecurity
       head: ClothingHeadModSuitSecurity
       shoes: ClothingShoesModSuitSecurity
+  - type: Construction
+    graph: ModSuit
+    node: securityPlating
 
 - type: entity
   id: ClothingBackpackModSuitStandard
@@ -1181,6 +1197,9 @@
       gloves: ClothingHandsModSuitStandard
       head: ClothingHeadModSuitStandard
       shoes: ClothingShoesModSuitStandard
+  - type: Construction
+    graph: ModSuit
+    node: standardPlating
 
 - type: entity
   id: ClothingBackpackModSuitSyndicate
