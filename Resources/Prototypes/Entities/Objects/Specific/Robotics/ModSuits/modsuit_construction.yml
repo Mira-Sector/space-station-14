@@ -1,0 +1,78 @@
+- type: entity
+  id: ModSuitConstructionShell
+  name: MOD Shell
+  parent: BaseItem
+  description: The ground work for a MOD suit.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/construction_shell.rsi
+    layers:
+    - state: start
+      map: [ "enum.ConstructionVisuals.Layer" ]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ConstructionVisuals.Key:
+        enum.ConstructionVisuals.Layer:
+          start: { state: start }
+          modCore: { state: core }
+          modCoreScrewed: { state: screwed_core }
+          helmet: { state: helmet }
+          chestplate: { state: chestplate }
+          gauntlets: { state: gauntlets }
+          boots: { state: boots }
+          wrenched: { state: wrenched_assembly }
+          screwed: { state: screwed_assembly }
+  - type: Construction
+    graph: ModSuit
+    node: start
+    targetNode: MOD suit
+    defaultTarget: MOD suit
+
+- type: entity
+  id: ModSuitConstructionHelmet
+  name: MOD helmet
+  parent: BaseItem
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/construction.rsi
+    state: helmet
+  - type: Tag
+    tags:
+    - ModSuitHelmet
+
+- type: entity
+  id: ModSuitConstructionChestplate
+  name: MOD chestplate
+  parent: BaseItem
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/construction.rsi
+    state: chestplate
+  - type: Tag
+    tags:
+    - ModSuitChestplate
+
+- type: entity
+  id: ModSuitConstructionGauntlets
+  name: MOD gauntlets
+  parent: BaseItem
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/construction.rsi
+    state: gauntlets
+  - type: Tag
+    tags:
+    - ModSuitGauntlets
+
+- type: entity
+  id: ModSuitConstructionBoots
+  name: MOD boots
+  parent: BaseItem
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/construction.rsi
+    state: boots
+  - type: Tag
+    tags:
+    - ModSuitBoots

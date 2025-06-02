@@ -117,5 +117,5 @@ public sealed class GetEyeProtectionEvent : EntityEventArgs, IInventoryRelayEven
     /// </summary>
     public TimeSpan Protection;
 
-    public SlotFlags TargetSlots => SlotFlags.EYES | SlotFlags.MASK | SlotFlags.HEAD;
+    public SlotFlags TargetSlots => SlotFlags.EYES | SlotFlags.MASK | SlotFlags.HEAD | SlotFlags.BACK;
 }

@@ -883,6 +883,42 @@
   id: Mineshaft
 
 - type: Tag
+  id: ModSuitBoots
+
+- type: Tag
+  id: ModSuitCore
+
+- type: Tag
+  id: ModSuitChestplate
+
+- type: Tag
+  id: ModSuitGauntlets
+
+- type: Tag
+  id: ModSuitHelmet
+
+- type: Tag
+  id: ModSuitModule
+
+- type: Tag
+  id: ModSuitPlatingStandard
+
+- type: Tag
+  id: ModSuitPlatingEngineering
+
+- type: Tag
+  id: ModSuitPlatingAtmospheric
+
+- type: Tag
+  id: ModSuitPlatingMedical
+
+- type: Tag
+  id: ModSuitPlatingSecurity
+
+- type: Tag
+  id: ModSuitPlatingCosmohonk
+
+- type: Tag
   id: ModularReceiver
 
 - type: Tag
