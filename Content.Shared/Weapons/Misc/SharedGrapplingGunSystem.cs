@@ -1,7 +1,7 @@
 using System.Numerics;
-using Content.Shared.CombatMode;
 using Content.Shared.Hands;
 using Content.Shared.Hands.Components;
+using Content.Shared.Intents;
 using Content.Shared.Interaction;
 using Content.Shared.Movement.Events;
 using Content.Shared.Physics;
@@ -14,6 +14,7 @@ using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Dynamics.Joints;
 using Robust.Shared.Physics.Systems;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Timing;
 
@@ -25,11 +26,18 @@ public abstract class SharedGrapplingGunSystem : EntitySystem
     [Dependency] private readonly INetManager _netManager = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] protected readonly IntentSystem Intent = default!;
     [Dependency] private readonly SharedJointSystem _joints = default!;
     [Dependency] private readonly SharedGunSystem _gun = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
 
     public const string GrapplingJoint = "grappling";
+
+    protected static readonly HashSet<ProtoId<IntentPrototype>> CombatIntents = new()
+    {
+        "Harm",
+        "Disarm"
+    };
 
     public override void Initialize()
     {
@@ -88,8 +96,9 @@ public abstract class SharedGrapplingGunSystem : EntitySystem
         }
 
         if (msg.Reeling &&
-            (!TryComp<CombatModeComponent>(player, out var combatMode) ||
-             !combatMode.IsInCombatMode))
+            (player == null ||
+            !Intent.TryGetIntent(player.Value, out var intent) ||
+            !CombatIntents.Contains(intent.Value)))
         {
             return;
         }

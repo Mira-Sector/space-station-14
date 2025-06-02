@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "size":
+    {
+        "x": 16,
+        "y": 16
+    },
+    "license": "CC-BY-NC-SA-3.0",
+    "copyright": "Taken from tgstation at https://github.com/tgstation/tgstation/blob/8ac8fd086df2a487c1f3ae501a57ad4e221a0323/icons/hud/screen_gen.dmi and split by Doctor-Cpu",
+    "states":
+    [{
+        "name": "help"
+    },
+    {
+        "name": "disarm"
+    },
+    {
+        "name": "grab"
+    },
+    {
+        "name": "harm"
+    }]
+}

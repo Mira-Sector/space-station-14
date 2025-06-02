@@ -29,6 +29,9 @@ public sealed class GrapplingGunSystem : SharedGrapplingGunSystem
         var local = _player.LocalEntity;
         var handUid = _hands.GetActiveHandEntity();
 
+        if (local == null)
+            return;
+
         if (!TryComp<GrapplingGunComponent>(handUid, out var grappling))
             return;
 
@@ -44,8 +47,8 @@ public sealed class GrapplingGunSystem : SharedGrapplingGunSystem
 
         var reelKey = _input.CmdStates.GetState(EngineKeyFunctions.UseSecondary) == BoundKeyState.Down;
 
-        if (!TryComp<CombatModeComponent>(local, out var combatMode) ||
-            !combatMode.IsInCombatMode)
+        if (!Intent.TryGetIntent(local.Value, out var intent) ||
+            !CombatIntents.Contains(intent.Value))
         {
             reelKey = false;
         }
