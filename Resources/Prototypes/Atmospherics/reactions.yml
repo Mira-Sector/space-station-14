@@ -25,7 +25,7 @@
 
 - type: gasReaction
   id: FrezonCoolant
-  priority: 1
+  priority: 8
   minimumTemperature: 23.15
   minimumRequirements:
   - 0     # oxygen
@@ -61,35 +61,105 @@
   id: AmmoniaOxygenReaction
   priority: 2
   minimumTemperature: 323.149
-  minimumRequirements:
-  - 0.01  # oxygen
-  - 0     # nitrogen
-  - 0     # carbon dioxide
-  - 0     # plasma
-  - 0     # tritium
-  - 0     # vapor
-  - 0.01  # ammonia
-  - 0     # n2o
-  - 0     # frezon
-  effects:
-  - !type:AmmoniaOxygenReaction {}
+  reactants:
+    Ammonia: 2
+    Oxygen: 2
+  products:
+    NitrousOxide: 1
+    WaterVapor: 3
 
 - type: gasReaction
   id: N2ODecomposition
   priority: 0
   minimumTemperature: 850
-  minimumRequirements:
-  - 0     # oxygen
-  - 0     # nitrogen
-  - 0     # carbon dioxide
-  - 0     # plasma
-  - 0     # tritium
-  - 0     # vapor
-  - 0     # ammonia
-  - 0.01  # n2o
-  - 0     # frezon
-  effects:
-  - !type:N2ODecompositionReaction {}
+  reactants:
+    NitrousOxide: 2
+  products:
+    Nitrogen: 2
+    Oxygen: 1
+
+- type: gasReaction
+  id: PluoxiumProduction
+  priority: 4
+  minimumTemperature: 50
+  maximumTemperature: 273
+  reactants:
+    Oxygen: 100
+    CarbonDioxide: 50
+    Tritium: 1
+  products:
+    Pluoxium: 130
+  enthalpy: 15600
+
+- type: gasReaction
+  id: NitriumProduction
+  priority: 5
+  minimumTemperature: 1500
+  reactants:
+    Tritium: 20
+    Nitrogen: 10
+    NitrousOxide: 5
+  products:
+    Nitrium: 30
+  enthalpy: -26000
+
+- type: gasReaction
+  id: NitriumDecomposition
+  priority: 1
+  maximumTemperature: 343.15
+  reactants:
+    Nitrium: 3
+  catalysts:
+    Oxygen: 1
+  products:
+    Nitrogen: 1
+    Tritium: 1
+    Oxygen: 1
+  enthalpy: 1100
+
+- type: gasReaction
+  id: NobliumProduction
+  priority: 9
+  maximumTemperature: 50
+  reactants:
+    Nitrogen: 1
+    Tritium: 1
+  products:
+    Noblium: 2
+  enthalpy: 276000
+
+- type: gasReaction
+  id: NobliumCancel
+  priority: 8
+  minimumTemperature: 20
+  reactants:
+    Noblium: 1
+  products:
+    Noblium: 1
+  cancelReactions: true
+
+- type: gasReaction
+  id: HalonProduction
+  priority: 6
+  minimumTemperature: 50
+  reactants:
+    NitrousOxide: 1
+    CarbonDioxide: 1
+  products:
+    Halon: 1
+    Oxygen: 1
+  enthalpy: 16600
+
+- type: gasReaction
+  id: HalonDecomposition
+  priority: 7
+  minimumTemperature: 343.15
+  reactants:
+    Halon: 1
+    Oxygen: 20
+  products:
+    Pluoxium: 20
+  enthalpy: -2310000
 
 #- type: gasReaction
 #  id: WaterVaporPuddle
