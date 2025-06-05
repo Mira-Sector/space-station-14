@@ -81,7 +81,7 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
         if (!TryComp<NodeContainerComponent>(uid, out var nodeComp))
             return;
 
-        // get the current pipes directions to iterate over
+        // get the current pipes directions to itterate over
         if (currentPipeDir == null)
         {
             currentPipeDir = PipeDirection.None;
@@ -104,7 +104,7 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
 
         var pipeCoords = _map.TileIndicesFor(gridUid!.Value, grid, xform.Coordinates);
 
-        Dictionary<Direction, HashSet<EntityUid>> connectedPipes = new();
+        Dictionary<Direction, EntityUid> connectedPipes = new();
         Dictionary<Direction, PipeDirection> connectedPipesDir = new();
         foreach (PipeDirection pipeDir in Enum.GetValues(typeof(PipeDirection)))
         {
@@ -129,9 +129,6 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
                 if (pipe == uid)
                     continue;
 
-                if (connectedPipes.ContainsKey(dir) && connectedPipes[dir].Contains(pipe))
-                    continue;
-
                 if (HasComp<PipeCrawlingPipeBlockComponent>(pipe))
                     continue;
 
@@ -142,21 +139,10 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
 
                 foreach (var node in currentNodeComp.Nodes.Values)
                 {
-                    if (node is not PipeNode pipeNode ||
-                        (pipeNode.CurrentPipeDirection != mainPipeDir && (pipeNode.CurrentPipeDirection & mainPipeDir) != mainPipeDir))
+                    if (node is PipeNode pipeNode &&
+                        (pipeNode.CurrentPipeDirection == mainPipeDir || (pipeNode.CurrentPipeDirection & mainPipeDir) == mainPipeDir))
                     {
-                        continue;
-                    }
-
-                    if (connectedPipes.TryGetValue(dir, out var pipeList))
-                    {
-                        pipeList.Add(pipe);
-                    }
-                    else
-                    {
-                        pipeList = new();
-                        pipeList.Add(pipe);
-                        connectedPipes.Add(dir, pipeList);
+                        connectedPipes.Add(dir, pipe);
                         connectedPipesDir.Add(dir, pipeNode.CurrentPipeDirection);
                     }
                 }
@@ -176,19 +162,13 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
             Dirty(uid, component);
 
 
-            foreach ((var dir, var pipes) in connectedPipes)
+            foreach ((var dir, var pipe) in connectedPipes)
             {
-                foreach (var pipe in pipes)
-                {
-                    if (component.UpdatedBy.Contains(pipe))
-                        continue;
+                if (component.UpdatedBy.Contains(pipe))
+                    continue;
 
-                    if (pipe == uid)
-                        continue;
-
-                    // update the connected pipes
-                    UpdateState(pipe, null, connectedPipesDir[dir], uid);
-                }
+                // update the connected pipes
+                UpdateState(pipe, null, connectedPipesDir[dir], uid);
             }
         }
     }

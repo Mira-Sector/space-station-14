@@ -24,7 +24,7 @@
         pipeDirection: South
 
 - type: entity
-  parent: [ GasPipeLayerableDisplacementBase, GasBinaryBase ]
+  parent: GasBinaryBase
   id: GasPressurePump
   name: gas pump
   description: A pump that moves gas by pressure.
@@ -83,7 +83,7 @@
     - Pumps
 
 - type: entity
-  parent: [ GasPipeLayerableDisplacementBase, GasBinaryBase ]
+  parent: GasBinaryBase
   id: GasVolumePump
   name: volumetric gas pump
   description: A pump that moves gas by volume.
@@ -148,7 +148,7 @@
       - Pumps
 
 - type: entity
-  parent: [ GasPipeLayerableDisplacementBase, GasBinaryBase ]
+  parent: GasBinaryBase
   id: GasPassiveGate
   name: passive gate
   description: A one-way air valve that does not require power.
@@ -185,7 +185,7 @@
       - PassiveGate
 
 - type: entity
-  parent: [ GasPipeLayerableDisplacementBase, GasBinaryBase ]
+  parent: GasBinaryBase
   id: GasValve
   name: manual valve
   description: A pipe with a valve that can be used to disable the flow of gas through it.
@@ -241,7 +241,7 @@
       - ManualValve
 
 - type: entity
-  parent: [ GasPipeLayerableDisplacementBase, GasBinaryBase ]
+  parent: GasBinaryBase
   id: GasTrap
   name: trap pipe
   description: A pipe with a blocker stopping anything apart from gas escaping.
@@ -270,7 +270,7 @@
       node: valve
 
 - type: entity
-  parent: [ GasPipeLayerableBase , GasBinaryBase ]
+  parent: GasBinaryBase
   id: SignalControlledValve
   name: signal valve
   description: A pipe with a valve that can be controlled with signals.

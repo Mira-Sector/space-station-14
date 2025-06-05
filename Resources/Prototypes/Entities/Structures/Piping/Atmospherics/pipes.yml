@@ -74,161 +74,10 @@
       pipe: !type:Container
   - type: PipeCrawlingPipe
 
-- type: entity
-  abstract: true
-  id: GasPipeLayerableBase
-  components:
-  - type: PipeLayerable
-  - type: PipeLayerVisuals
-    displacementLayers:
-    - NorthConnection_-2
-    - SouthConnection_-2
-    - EastConnection_-2
-    - WestConnection_-2
-    - NorthConnection_-1
-    - SouthConnection_-1
-    - EastConnection_-1
-    - WestConnection_-1
-    - NorthConnection_0
-    - SouthConnection_0
-    - EastConnection_0
-    - WestConnection_0
-    - NorthConnection_1
-    - SouthConnection_1
-    - EastConnection_1
-    - WestConnection_1
-    - NorthConnection_2
-    - SouthConnection_2
-    - EastConnection_2
-    - WestConnection_2
-    displacements:
-      1:
-        sizeMaps:
-          32:
-            sprite: Structures/Piping/Atmospherics/pipeconnection_displacement.rsi
-            state: 1
-      2:
-        sizeMaps:
-          32:
-            sprite: Structures/Piping/Atmospherics/pipeconnection_displacement.rsi
-            state: 2
-      0:
-        sizeMaps:
-          32:
-            sprite: Structures/Piping/Atmospherics/pipeconnection_displacement.rsi
-            state: 0
-      -1:
-        sizeMaps:
-          32:
-            sprite: Structures/Piping/Atmospherics/pipeconnection_displacement.rsi
-            state: -1
-      -2:
-        sizeMaps:
-          32:
-            sprite: Structures/Piping/Atmospherics/pipeconnection_displacement.rsi
-            state: -2
-
-- type: entity
-  abstract: true
-  id: GasPipeLayerableOffsetBase
-  components:
-  - type: PipeLayerable
-  - type: PipeLayerVisuals
-    offsetLayers:
-    - enum.PipeVisualLayers.Pipe
-    - enum.SubfloorLayers.FirstLayer
-    - enum.PowerDeviceVisualLayers.Powered
-    - enabled
-    - base
-    - NorthConnection_-2
-    - SouthConnection_-2
-    - EastConnection_-2
-    - WestConnection_-2
-    - NorthConnection_-1
-    - SouthConnection_-1
-    - EastConnection_-1
-    - WestConnection_-1
-    - NorthConnection_0
-    - SouthConnection_0
-    - EastConnection_0
-    - WestConnection_0
-    - NorthConnection_1
-    - SouthConnection_1
-    - EastConnection_1
-    - WestConnection_1
-    - NorthConnection_2
-    - SouthConnection_2
-    - EastConnection_2
-    - WestConnection_2
-    offsets:
-      -2: 0.28125, 0
-      -1: 0.125, 0
-      1: -0.16, 0
-      2: -0.32, 0
-
-- type: entity
-  abstract: true
-  id: GasPipeLayerableDisplacementBase
-  components:
-  - type: PipeLayerable
-  - type: PipeLayerVisuals
-    displacementLayers:
-    - enum.PipeVisualLayers.Pipe
-    - enum.SubfloorLayers.FirstLayer
-    - enum.PowerDeviceVisualLayers.Powered
-    - enabled
-    - base
-    - NorthConnection_-2
-    - SouthConnection_-2
-    - EastConnection_-2
-    - WestConnection_-2
-    - NorthConnection_-1
-    - SouthConnection_-1
-    - EastConnection_-1
-    - WestConnection_-1
-    - NorthConnection_0
-    - SouthConnection_0
-    - EastConnection_0
-    - WestConnection_0
-    - NorthConnection_1
-    - SouthConnection_1
-    - EastConnection_1
-    - WestConnection_1
-    - NorthConnection_2
-    - SouthConnection_2
-    - EastConnection_2
-    - WestConnection_2
-    displacements:
-      1:
-        sizeMaps:
-          32:
-            sprite: Structures/Piping/Atmospherics/pipeStraight_displacement.rsi
-            state: 1
-      2:
-        sizeMaps:
-          32:
-            sprite: Structures/Piping/Atmospherics/pipeStraight_displacement.rsi
-            state: 2
-      0:
-        sizeMaps:
-          32:
-            sprite: Structures/Piping/Atmospherics/pipeStraight_displacement.rsi
-            state: 0
-      -1:
-        sizeMaps:
-          32:
-            sprite: Structures/Piping/Atmospherics/pipeStraight_displacement.rsi
-            state: -1
-      -2:
-        sizeMaps:
-          32:
-            sprite: Structures/Piping/Atmospherics/pipeStraight_displacement.rsi
-            state: -2
-
 #Note: The PipeDirection of the PipeNode should be the south-facing version, because the entity starts at an angle of 0 (south)
 
 - type: entity
-  parent: [ GasPipeLayerableDisplacementBase , GasPipeBase ]
+  parent: GasPipeBase
   id: GasPipeHalf
   suffix: Half
   components:
@@ -251,7 +100,7 @@
     - PipeNetworks
 
 - type: entity
-  parent: [ GasPipeLayerableDisplacementBase , GasPipeBase ]
+  parent: GasPipeBase
   id: GasPipeStraight
   suffix: Straight
   components:
@@ -288,7 +137,7 @@
     - PipeNetworks
 
 - type: entity
-  parent: [ GasPipeLayerableBase, GasPipeBase ]
+  parent: GasPipeBase
   id: GasPipeBend
   suffix: Bend
   components:
@@ -302,15 +151,6 @@
     layers:
       - state: pipeBend
         map: [ "enum.PipeVisualLayers.Pipe" ]
-  - type: GenericVisualizer
-    visuals:
-      enum.PipeLayerVisuals.Layer:
-        enum.PipeVisualLayers.Pipe:
-          -2: { state: pipeBend_-2 }
-          -1: { state: pipeBend_-1 }
-          0: { state: pipeBend }
-          1: { state: pipeBend_1 }
-          2: { state: pipeBend_2 }
   - type: Construction
     graph: GasPipe
     node: bend
@@ -341,7 +181,7 @@
     - PipeNetworks
 
 - type: entity
-  parent: [ GasPipeLayerableBase, GasPipeBase ]
+  parent: GasPipeBase
   id: GasPipeTJunction
   suffix: TJunction
   components:
@@ -355,15 +195,6 @@
     layers:
       - state: pipeTJunction
         map: [ "enum.PipeVisualLayers.Pipe" ]
-  - type: GenericVisualizer
-    visuals:
-      enum.PipeLayerVisuals.Layer:
-        enum.PipeVisualLayers.Pipe:
-          -2: { state: pipeTJunction_-2 }
-          -1: { state: pipeTJunction_-1 }
-          0: { state: pipeTJunction }
-          2: { state: pipeTJunction_2 }
-          1: { state: pipeTJunction_1 }
   - type: Construction
     graph: GasPipe
     node: tjunction
@@ -390,7 +221,7 @@
     - PipeNetworks
 
 - type: entity
-  parent: [ GasPipeLayerableBase, GasPipeBase ]
+  parent: GasPipeBase
   id: GasPipeFourway
   suffix: Fourway
   components:
@@ -406,15 +237,6 @@
     layers:
       - state: pipeFourway
         map: [ "enum.PipeVisualLayers.Pipe" ]
-  - type: GenericVisualizer
-    visuals:
-      enum.PipeLayerVisuals.Layer:
-        enum.PipeVisualLayers.Pipe:
-          -2: { state: pipeFourway_-2 }
-          -1: { state: pipeFourway_-1 }
-          0: { state: pipeFourway }
-          1: { state: pipeFourway_1 }
-          2: { state: pipeFourway_2 }
   - type: Construction
     graph: GasPipe
     node: fourway
@@ -439,7 +261,7 @@
 
 - type: entity
   id: GasPipeBroken
-  parent: [ GasPipeLayerableDisplacementBase , GasPipeBase ]
+  parent: GasPipeBase
   name: broken pipe
   description: It used to hold gas.
   components:
@@ -465,213 +287,3 @@
     guides:
     - Pipes
     - PipeNetworks
-
-- type: entity
-  abstract: true
-  parent: [ GasPipeLayerableOffsetBase , GasPipeBase ]
-  id: GasPipeManifoldBase
-  name: pipe manifold
-  components:
-  - type: Sprite
-    sprite: Structures/Piping/Atmospherics/manifold.rsi
-  - type: PipeAppearance
-    sprite:
-      sprite: Structures/Piping/Atmospherics/manifold.rsi
-      state: connector
-    layerOffsets:
-      1:
-        NorthConnection: -0.16, 0
-        SouthConnection: 0.138, 0
-      2:
-        NorthConnection: -0.32, 0
-        SouthConnection: 0.32, 0
-      -1:
-        NorthConnection: 0.138, 0
-        SouthConnection: -0.16, 0
-      -2:
-        NorthConnection: 0.28125, 0
-        SouthConnection: 0.32, 0
-  - type: GuideHelp
-    guides:
-    - Pipes
-    - PipeNetworks
-
-- type: entity
-  parent: GasPipeManifoldBase
-  id: GasPipeManifold5
-  suffix: 5 layers
-  components:
-  - type: NodeContainer
-    nodes:
-      -2:
-        !type:PipeNode
-        nodeGroupID: Pipe
-        pipeDirection: Longitudinal
-        layer: -2
-      -1:
-        !type:PipeNode
-        nodeGroupID: Pipe
-        pipeDirection: Longitudinal
-        layer: -1
-      0:
-        !type:PipeNode
-        nodeGroupID: Pipe
-        pipeDirection: Longitudinal
-        layer: 0
-      1:
-        !type:PipeNode
-        nodeGroupID: Pipe
-        pipeDirection: Longitudinal
-        layer: 1
-      2:
-        !type:PipeNode
-        nodeGroupID: Pipe
-        pipeDirection: Longitudinal
-        layer: 2
-  - type: PipeAlwaysConnectedNodes
-    nodes:
-    - -2
-    - -1
-    - 0
-    - 1
-    - 2
-  - type: Construction
-    graph: GasPipe
-    node: manifold5
-  - type: Sprite
-    layers:
-      - state: 5
-        map: [ "enum.PipeVisualLayers.Pipe" ]
-  - type: Item
-    size: Small
-    shape:
-    - 0,0,5,0
-    storedSprite:
-      sprite: Structures/Piping/Atmospherics/manifold.rsi
-      state: storage5
-
-- type: entity
-  parent: GasPipeManifoldBase
-  id: GasPipeManifold4
-  suffix: 4 layers
-  components:
-  - type: NodeContainer
-    nodes:
-      -1:
-        !type:PipeNode
-        nodeGroupID: Pipe
-        pipeDirection: SWBend
-        layer: -1
-      0:
-        !type:PipeNode
-        nodeGroupID: Pipe
-        pipeDirection: Longitudinal
-        layer: 0
-      1:
-        !type:PipeNode
-        nodeGroupID: Pipe
-        pipeDirection: Longitudinal
-        layer: 1
-      2:
-        !type:PipeNode
-        nodeGroupID: Pipe
-        pipeDirection: Longitudinal
-        layer: 2
-  - type: PipeAlwaysConnectedNodes
-    nodes:
-    - -1
-    - 0
-    - 1
-    - 2
-  - type: Construction
-    graph: GasPipe
-    node: manifold4
-  - type: Sprite
-    layers:
-      - state: 4
-        map: [ "enum.PipeVisualLayers.Pipe" ]
-  - type: Item
-    size: Small
-    shape:
-    - 0,0,4,0
-    storedSprite:
-      sprite: Structures/Piping/Atmospherics/manifold.rsi
-      state: storage4
-
-- type: entity
-  parent: GasPipeManifoldBase
-  id: GasPipeManifold3
-  suffix: 3 layers
-  components:
-  - type: NodeContainer
-    nodes:
-      -1:
-        !type:PipeNode
-        nodeGroupID: Pipe
-        pipeDirection: Longitudinal
-        layer: -1
-      0:
-        !type:PipeNode
-        nodeGroupID: Pipe
-        pipeDirection: Longitudinal
-        layer: 0
-      1:
-        !type:PipeNode
-        nodeGroupID: Pipe
-        pipeDirection: Longitudinal
-        layer: 1
-  - type: PipeAlwaysConnectedNodes
-    nodes:
-    - -1
-    - 0
-    - 1
-  - type: Construction
-    graph: GasPipe
-    node: manifold3
-  - type: Sprite
-    layers:
-      - state: 3
-        map: [ "enum.PipeVisualLayers.Pipe" ]
-  - type: Item
-    size: Small
-    shape:
-    - 0,0,3,0
-    storedSprite:
-      sprite: Structures/Piping/Atmospherics/manifold.rsi
-      state: storage3
-
-- type: entity
-  parent: GasPipeManifoldBase
-  id: GasPipeManifold2
-  suffix: 2 layers
-  components:
-  - type: NodeContainer
-    nodes:
-      0:
-        !type:PipeNode
-        nodeGroupID: Pipe
-        pipeDirection: Longitudinal
-        layer: 0
-      1:
-        !type:PipeNode
-        nodeGroupID: Pipe
-        pipeDirection: Longitudinal
-        layer: 1
-  - type: PipeAlwaysConnectedNodes
-    nodes:
-    - 0
-    - 1
-  - type: Construction
-    graph: GasPipe
-    node: manifold2
-  - type: Sprite
-    layers:
-      - state: 2
-        map: [ "enum.PipeVisualLayers.Pipe" ]
-  - type: Item
-    size: Small
-    shape:
-    - 0,0,2,0
-    storedSprite:
-      sprite: Structures/Piping/Atmospherics/manifold.rsi
-      state: storage2

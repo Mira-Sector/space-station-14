@@ -48,11 +48,11 @@ public sealed class TrayScannerSystem : SharedTrayScannerSystem
 
         // TODO: Should probably sub to player attached changes / inventory changes but inventory's
         // API is extremely skrungly. If this ever shows up on dottrace ping me and laugh.
-        Entity<TrayScannerComponent>? scanner = null;
+        var canSee = false;
 
         if (scannerQuery.TryGetComponent(player, out var playerScanner) && playerScanner.Enabled)
         {
-            scanner = (player.Value, playerScanner);
+            canSee = true;
             range = MathF.Max(range, playerScanner.Range);
         }
 
@@ -66,7 +66,7 @@ public sealed class TrayScannerSystem : SharedTrayScannerSystem
                     if (!scannerQuery.TryGetComponent(ent, out var sneakScanner) || !sneakScanner.Enabled)
                         continue;
 
-                    scanner = (ent, sneakScanner);
+                    canSee = true;
                     range = MathF.Max(range, sneakScanner.Range);
                 }
             }
@@ -78,31 +78,19 @@ public sealed class TrayScannerSystem : SharedTrayScannerSystem
                 continue;
 
             range = MathF.Max(heldScanner.Range, range);
-            scanner = (hand.HeldEntity.Value, heldScanner);
+            canSee = true;
         }
 
         inRange = new HashSet<Entity<SubFloorHideComponent>>();
 
-        if (scanner != null)
+        if (canSee)
         {
             _lookup.GetEntitiesInRange(playerMap, playerPos, range, inRange, flags: Flags);
 
             foreach (var (uid, comp) in inRange)
             {
-                if (!comp.IsUnderCover)
-                if (!comp.IsUnderCover && !_trayScanReveal.IsUnderRevealingEntity(uid))
-                    continue;
-
-                var ev = new TrayCanRevealEvent(scanner.Value);
-                RaiseLocalEvent(uid, ev);
-
-                if (ev.Cancelled)
-                {
-                    inRange.Remove((uid, comp));
-                    continue;
-                }
-
-                EnsureComp<TrayRevealedComponent>(uid);
+                if (comp.IsUnderCover)
+                    EnsureComp<TrayRevealedComponent>(uid);
             }
         }
 

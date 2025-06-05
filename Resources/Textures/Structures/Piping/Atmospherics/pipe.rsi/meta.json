@@ -5,7 +5,7 @@
       "y":32
    },
    "license":"CC-BY-SA-3.0",
-   "copyright":"Inhand sprites by alzore_(discord) for SS14. pipeTrinaryConnectors made by Menshin for SS14 based on pipeTJunction, layered sprites modified by Doctor-Cpu, the rest is taken from https://github.com/tgstation/tgstation at commit 57cd1d59ca019dd0e7811ac451f295f818e573da.",
+   "copyright":"Inhand sprites by alzore_(discord) for SS14. pipeTrinaryConnectors made by Menshin for SS14 based on pipeTJunction, the rest is taken from https://github.com/tgstation/tgstation at commit 57cd1d59ca019dd0e7811ac451f295f818e573da.",
    "states":[
       {
          "name": "inhand-left",
@@ -48,22 +48,6 @@
          "directions":4
       },
       {
-         "name":"pipeTJunction_1",
-         "directions":4
-      },
-      {
-         "name":"pipeTJunction_2",
-         "directions":4
-      },
-      {
-         "name":"pipeTJunction_-1",
-         "directions":4
-      },
-      {
-         "name":"pipeTJunction_-2",
-         "directions":4
-      },
-      {
          "name":"pipeHalf",
          "directions":4
       },
@@ -72,39 +56,7 @@
          "directions":4
       },
       {
-         "name":"pipeBend_1",
-         "directions":4
-      },
-      {
-         "name":"pipeBend_2",
-         "directions":4
-      },
-      {
-         "name":"pipeBend_-1",
-         "directions":4
-      },
-      {
-         "name":"pipeBend_-2",
-         "directions":4
-      },
-      {
          "name": "pipeFourway",
-         "directions":4
-      },
-      {
-         "name": "pipeFourway_1",
-         "directions":4
-      },
-      {
-         "name": "pipeFourway_2",
-         "directions":4
-      },
-      {
-         "name": "pipeFourway_-1",
-         "directions":4
-      },
-      {
-         "name": "pipeFourway_-2",
          "directions":4
       },
       {
