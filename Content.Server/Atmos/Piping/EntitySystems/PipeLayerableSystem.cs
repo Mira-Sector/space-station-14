@@ -1,9 +1,9 @@
 using Content.Server.NodeContainer;
 using Content.Server.NodeContainer.EntitySystems;
 using Content.Server.NodeContainer.Nodes;
-using Content.Shared.Atmos;
 using Content.Shared.Atmos.Piping;
 using Content.Shared.Atmos.Piping.Layerable;
+using Content.Shared.Interaction;
 using Content.Shared.Interaction.Events;
 using Content.Shared.Verbs;
 using Robust.Server.GameObjects;
@@ -23,6 +23,9 @@ public sealed partial class PipeLayerableSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<PipeLayerableComponent, GetVerbsEvent<InteractionVerb>>(OnInteractionVerbs);
+        SubscribeLocalEvent<PipeLayerableComponent, GetVerbsEvent<AlternativeVerb>>(OnAlternativeVerbs);
+
+        SubscribeLocalEvent<PipeLayerableComponent, InteractHandEvent>(OnHandInteract);
         SubscribeLocalEvent<PipeLayerableComponent, UseInHandEvent>(OnHandUse);
     }
 
@@ -31,18 +34,38 @@ public sealed partial class PipeLayerableSystem : EntitySystem
         if (!args.CanAccess || !args.CanInteract || !args.CanComplexInteract)
             return;
 
-        args.Verbs.Add(new InteractionVerb()
+        var verb = new InteractionVerb()
         {
             Text = Loc.GetString("pipe-layerable-increment"),
-            Act = () => TryIncrementLayer((ent.Owner, ent.Comp)),
-            Priority = 1
-        });
+            Act = () => TryIncrementLayer((ent.Owner, ent.Comp))
+        };
 
-        args.Verbs.Add(new InteractionVerb()
+        args.Verbs.Add(verb);
+    }
+
+    private void OnAlternativeVerbs(Entity<PipeLayerableComponent> ent, ref GetVerbsEvent<AlternativeVerb> args)
+    {
+        if (!args.CanAccess || !args.CanInteract || !args.CanComplexInteract)
+            return;
+
+        var verb = new AlternativeVerb()
         {
             Text = Loc.GetString("pipe-layerable-decrement"),
-            Act = () => TryIncrementLayer((ent.Owner, ent.Comp), true),
-        });
+            Act = () => TryIncrementLayer((ent.Owner, ent.Comp), true)
+        };
+
+        args.Verbs.Add(verb);
+    }
+
+    private void OnHandInteract(Entity<PipeLayerableComponent> ent, ref InteractHandEvent args)
+    {
+        if (args.Handled)
+            return;
+
+        if (!Transform(ent).Anchored)
+            return;
+
+        args.Handled = TryIncrementLayer((ent.Owner, ent.Comp));
     }
 
     private void OnHandUse(Entity<PipeLayerableComponent> ent, ref UseInHandEvent args)
@@ -95,7 +118,7 @@ public sealed partial class PipeLayerableSystem : EntitySystem
         if (!Resolve(ent, ref ent.Comp2))
             return false;
 
-        Dictionary<int, HashSet<PipeDirection>> otherEntityLayers = new();
+        HashSet<int> otherEntityLayers = new();
 
         var xform = Transform(ent);
 
@@ -111,16 +134,7 @@ public sealed partial class PipeLayerableSystem : EntitySystem
                     if (node is not PipeNode pipeNode)
                         continue;
 
-                    if (otherEntityLayers.TryGetValue(pipeNode.Layer, out var directions))
-                    {
-                        directions.Add(pipeNode.CurrentPipeDirection);
-                    }
-                    else
-                    {
-                        directions = new();
-                        directions.Add(pipeNode.CurrentPipeDirection);
-                        otherEntityLayers.Add(pipeNode.Layer, directions);
-                    }
+                    otherEntityLayers.Add(pipeNode.Layer);
                 }
             }
         }
@@ -136,10 +150,7 @@ public sealed partial class PipeLayerableSystem : EntitySystem
             if (!InBounds(ent, newLayer))
                 return false;
 
-            if (!otherEntityLayers.TryGetValue(newLayer, out var directions))
-                continue;
-
-            if (directions.Contains(pipeNode.CurrentPipeDirection))
+            if (otherEntityLayers.Contains(newLayer))
                 return false;
         }
 
