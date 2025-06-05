@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using Content.Server.GameTicking;
 using Content.Server.Ghost;
 using Content.Server.Mind;
@@ -98,9 +98,6 @@ public sealed class AGhostCommand : LocalizedCommands
             : gameTicker.GetObserverSpawnPoint();
         var ghost = _entities.SpawnEntity(GameTicker.AdminObserverPrototypeName, coordinates);
         transformSystem.AttachToGridOrMap(ghost, _entities.GetComponent<TransformComponent>(ghost));
-
-        var ev = new GhostedEvent((mindId, mind));
-        _entities.EventBus.RaiseLocalEvent(ghost, ev);
 
         if (canReturn)
         {
