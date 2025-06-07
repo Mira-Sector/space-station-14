@@ -37,7 +37,6 @@
     - id: RevenantSpawn
     - id: SleeperAgents
     - id: ZombieOutbreak
-    - id: MorphSpawn
     - id: LoneOpsSpawn
     - id: DerelictCyborgSpawn
     - id: WizardSpawn
@@ -186,23 +185,6 @@
       pickPlayer: false
       mindRoles:
       - MindRoleDragon
-
-- type: entity
-  parent: BaseGameRule
-  id: MorphSpawn
-  components:
-  - type: StationEvent
-    weight: 8
-    earliestStart: 30
-    reoccurrenceDelay: 20
-    minimumPlayers: 15
-    duration: null
-  - type: VentCrittersRule
-    specialEntries:
-    - id: SpawnPointGhostMorph
-      prob: 0.0001
-  - type: AntagSelection
-    agentName: morph-round-end-agent-name
 
 - type: entity
   parent: BaseGameRule
