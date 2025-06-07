@@ -3,7 +3,8 @@
   icon:
     sprite: Objects/Fun/Instruments/accordion.rsi
     state: icon
-  product: CrateFunInstrumentsVariety
+  data: !type:CargoProductItemData
+    product: CrateFunInstrumentsVariety
   cost: 2000
   category: cargoproduct-category-name-fun
   group: market
@@ -13,7 +14,8 @@
   icon:
     sprite: Objects/Fun/Instruments/structureinstruments.rsi
     state: tuba
-  product: CrateFunInstrumentsBrass
+  data: !type:CargoProductItemData
+    product: CrateFunInstrumentsBrass
   cost: 2000
   category: cargoproduct-category-name-fun
   group: market
@@ -114,6 +116,16 @@
     sprite: Objects/Fun/toys.rsi
     state: plushie_lizard
   product: CrateFunLizardPlushieBulk
+  cost: 500
+  category: cargoproduct-category-name-fun
+  group: market
+
+- type: cargoProduct
+  id: FunSharkPlushies
+  icon:
+    sprite: Objects/Fun/sharkplush.rsi
+    state: blue
+  product: CrateFunSharkPlushieBulk
   cost: 500
   category: cargoproduct-category-name-fun
   group: market

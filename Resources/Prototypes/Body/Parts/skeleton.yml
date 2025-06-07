@@ -12,7 +12,6 @@
         ents: []
   - type: StaticPrice
     price: 20
-  - type: Gibbable
   - type: Tag
     tags:
       - Trash
@@ -44,7 +43,7 @@
   id: HeadSkeleton
   name: "skull"
   description: Alas poor Yorick...
-  parent: PartSkeleton
+  parent: [ PartSkeleton, BaseMob ]
   components:
     - type: Sprite
       sprite: Mobs/Species/Skeleton/parts.rsi
@@ -62,10 +61,13 @@
         Healthy: 0
         Damaged: 10
         Dead: 75
+    - type: BlockMovement
     - type: Input
       context: "human"
     - type: Speech
       speechVerb: Skeleton
+      speechSounds: Alto
+    - type: SkeletonAccent
     - type: Actions
     - type: VocalBodyPart
       sounds:
@@ -73,7 +75,6 @@
         Female: Skeleton
         Unsexed: Skeleton
     - type: Emoting
-    - type: SkeletonAccent
     - type: Grammar
       attributes:
         proper: true

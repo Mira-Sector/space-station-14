@@ -16,8 +16,9 @@ namespace Content.Client.Tools
         [Dependency] private readonly AnimationPlayerSystem _anim = default!;
         [Dependency] private readonly MetaDataSystem _metaData = default!;
         [Dependency] private readonly TransformSystem _transform = default!;
+        [Dependency] private readonly SpriteSystem _sprite = default!;
 
-        private readonly string AnimationKey = "tool_interact";
+        private readonly string _animationKey = "tool_interact";
 
         public override void Initialize()
         {
@@ -65,15 +66,15 @@ namespace Content.Client.Tools
             var val = metadata.EntityName;
             _metaData.SetEntityName(animatableClone, val);
 
-            if (!TryComp(uid, out SpriteComponent? sprite0))
+            if (!TryComp<SpriteComponent>(uid, out var sprite0))
             {
                 Log.Error("Entity ({0}) couldn't be animated for pickup since it doesn't have a {1}!", metadata.EntityName, nameof(SpriteComponent));
                 return;
             }
 
             var sprite = Comp<SpriteComponent>(animatableClone);
-            sprite.CopyFrom(sprite0);
-            sprite.Visible = true;
+            _sprite.CopySprite((animatableClone, sprite), (uid, sprite0));
+            _sprite.SetVisible((animatableClone, sprite), true);
 
             var player = Comp<AnimationPlayerComponent>(animatableClone);
 
@@ -129,7 +130,7 @@ namespace Content.Client.Tools
                 }
             };
 
-            _anim.Play((animatableClone, player), animation, AnimationKey);
+            _anim.Play((animatableClone, player), animation, _animationKey);
             component.HasAnimation = true;
         }
 
@@ -160,7 +161,7 @@ namespace Content.Client.Tools
             {
                 var current = multiple.Entries[multiple.CurrentEntry];
                 if (current.Sprite != null)
-                    sprite.LayerSetSprite(0, current.Sprite);
+                    _sprite.LayerSetSprite((uid, sprite), 0, current.Sprite);
             }
         }
     }

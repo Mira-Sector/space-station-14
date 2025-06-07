@@ -12,6 +12,7 @@ public sealed partial class StationAiSystem : SharedStationAiSystem
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly IOverlayManager _overlayMgr = default!;
     [Dependency] private readonly IPlayerManager _player = default!;
+    [Dependency] private readonly SpriteSystem _sprite = default!;
 
     private StationAiOverlay? _overlay;
 
@@ -27,7 +28,7 @@ public sealed partial class StationAiSystem : SharedStationAiSystem
         SubscribeLocalEvent<StationAiOverlayComponent, LocalPlayerDetachedEvent>(OnAiDetached);
         SubscribeLocalEvent<StationAiOverlayComponent, ComponentInit>(OnAiOverlayInit);
         SubscribeLocalEvent<StationAiOverlayComponent, ComponentRemove>(OnAiOverlayRemove);
-        SubscribeLocalEvent<StationAiHolderComponent, AppearanceChangeEvent>(OnAppearanceChanged);
+        SubscribeLocalEvent<StationAiCoreComponent, AppearanceChangeEvent>(OnAppearanceChange);
     }
 
     private void OnAiOverlayInit(Entity<StationAiOverlayComponent> ent, ref ComponentInit args)
@@ -48,26 +49,6 @@ public sealed partial class StationAiSystem : SharedStationAiSystem
             return;
 
         RemoveOverlay();
-    }
-
-    private void OnAppearanceChanged(Entity<StationAiHolderComponent> ent, ref AppearanceChangeEvent args)
-    {
-        if (args.Sprite == null)
-            return;
-
-        if (!_appearance.TryGetData<StationAiState>(ent, StationAiVisualState.Key, out var state, args.Component))
-            return;
-
-        if (!ent.Comp.Visuals.ContainsKey(state))
-            return;
-
-        foreach (var (layer, sprite) in ent.Comp.Visuals[state])
-        {
-            if (!args.Sprite.LayerExists(layer))
-                continue;
-
-            args.Sprite.LayerSetSprite(layer, sprite);
-        }
     }
 
     private void AddOverlay()
@@ -96,6 +77,17 @@ public sealed partial class StationAiSystem : SharedStationAiSystem
     private void OnAiDetached(Entity<StationAiOverlayComponent> ent, ref LocalPlayerDetachedEvent args)
     {
         RemoveOverlay();
+    }
+
+    private void OnAppearanceChange(Entity<StationAiCoreComponent> entity, ref AppearanceChangeEvent args)
+    {
+        if (args.Sprite == null)
+            return;
+
+        if (_appearance.TryGetData<PrototypeLayerData>(entity.Owner, StationAiVisualState.Key, out var layerData, args.Component))
+            _sprite.LayerSetData((entity.Owner, args.Sprite), StationAiVisualState.Key, layerData);
+
+        _sprite.LayerSetVisible((entity.Owner, args.Sprite), StationAiVisualState.Key, layerData != null);
     }
 
     public override void Shutdown()

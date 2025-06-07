@@ -1,4 +1,5 @@
 using Content.Shared.Actions;
+using Content.Shared.Actions.Components;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 
@@ -56,8 +57,6 @@ public sealed class DamagePartSelectorSystem : EntitySystem
         if (component.Action == null)
             return;
 
-        if (!TryComp<InstantActionComponent>(component.Action, out var actionComp))
-            return;
 
         //enumerate over all of them because c# fuckery
         foreach ((var part, var sprite) in component.SelectableParts)
@@ -65,8 +64,7 @@ public sealed class DamagePartSelectorSystem : EntitySystem
             if (part.Type != args.Part.Type || part.Side != args.Part.Side)
                 continue;
 
-            actionComp.Icon = sprite;
-            Dirty(component.Action.Value, actionComp);
+            _actions.SetIcon(component.Action.Value, sprite);
             break;
         }
     }
