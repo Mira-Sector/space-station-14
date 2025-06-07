@@ -1,4 +1,3 @@
-using Content.Server.NodeContainer;
 using Content.Server.NodeContainer.Nodes;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Piping.Crawling.Components;
@@ -6,6 +5,7 @@ using Robust.Shared.Containers;
 using Content.Shared.Destructible;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map.Components;
+using Content.Shared.NodeContainer;
 
 namespace Content.Server.Atmos.Piping.Crawling;
 
@@ -15,7 +15,7 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
     [Dependency] private readonly SharedContainerSystem _containers = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
 
-    const string PipeContainer = "pipe";
+    private const string PipeContainer = "pipe";
 
     public override void Initialize()
     {
@@ -75,9 +75,6 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
         if (HasComp<PipeCrawlingPipeBlockComponent>(uid))
             return;
 
-        if (!TryComp<TransformComponent>(uid, out var xform))
-            return;
-
         if (!TryComp<NodeContainerComponent>(uid, out var nodeComp))
             return;
 
@@ -96,6 +93,8 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
 
         if (currentPipeDir == PipeDirection.None)
             return;
+
+        var xform = Transform(uid);
 
         var gridUid = xform.GridUid;
 
@@ -149,7 +148,7 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
             }
         }
 
-        if (connectedPipes.Count <=0)
+        if (connectedPipes.Count <= 0)
             return;
 
         if (component.ConnectedPipes != connectedPipes)

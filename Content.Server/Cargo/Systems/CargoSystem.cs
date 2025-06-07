@@ -73,7 +73,6 @@ public sealed partial class CargoSystem : SharedCargoSystem
         base.Update(frameTime);
         UpdateConsole();
         UpdateBounty();
-        UpdateOrderedShuttles();
     }
 
     public void UpdateBankAccount(

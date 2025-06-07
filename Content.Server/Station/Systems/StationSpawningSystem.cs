@@ -84,8 +84,6 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
             }
         };
     }
-=======
->>>>>>> a91154702d5314f157f98862f55e8fefeefe10e5
 
     /// <summary>
     /// Attempts to spawn a player character onto the given station.

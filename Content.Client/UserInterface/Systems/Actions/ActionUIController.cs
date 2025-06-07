@@ -834,9 +834,6 @@ public sealed class ActionUIController : UIController, IOnStateChanged<GameplayS
         if (!EntityManager.TryGetComponent<EntityTargetActionComponent>(uid, out var entity))
             return;
 
-        if (!entityAction.ShowOutline)
-            return;
-
         Func<EntityUid, bool>? predicate = null;
         var attachedEnt = action.AttachedEntity;
 

@@ -19,7 +19,7 @@ public sealed partial class PuddleSystem
     {
         if (!_actionBlocker.CanComplexInteract(args.User))
         {
-            _popups.PopupEntity(Loc.GetString("mopping-system-no-hands"), args.User, args.User);
+            Popups.PopupEntity(Loc.GetString("mopping-system-no-hands"), args.User, args.User);
             return;
         }
 

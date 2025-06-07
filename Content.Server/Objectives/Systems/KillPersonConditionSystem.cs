@@ -28,12 +28,8 @@ public sealed class KillPersonConditionSystem : EntitySystem
 
     private void OnGetProgress(EntityUid uid, KillPersonConditionComponent comp, ref ObjectiveGetProgressEvent args)
     {
-        if (_target.GetTarget(uid, out var target) &&
-            target != null)
-        {
-            args.Progress = GetProgress(target.Value, comp.RequireDead);
+        if (!_target.GetTarget(uid, out var target) || target == null)
             return;
-        }
 
         args.Progress = GetProgress(target.Value, comp.RequireDead, comp.RequireMaroon);
     }
