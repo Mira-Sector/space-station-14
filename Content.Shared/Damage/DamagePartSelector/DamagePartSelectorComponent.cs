@@ -10,13 +10,24 @@ namespace Content.Shared.Damage.DamageSelector;
 public sealed partial class DamagePartSelectorComponent : Component
 {
     [ViewVariables, AutoNetworkedField]
-    public BodyPart SelectedPart = new BodyPart(BodyPartType.Torso, BodyPartSymmetry.None);
+    public BodyPart SelectedPart = new(BodyPartType.Torso, BodyPartSymmetry.None);
 
     [DataField(required: true)]
-    public Dictionary<BodyPart, SpriteSpecifier> SelectableParts = new();
+    public List<DamagePartSelectorEntry> SelectableParts = [];
 
     [ViewVariables]
     public EntityUid? Action;
+}
+
+[Serializable, NetSerializable]
+[DataDefinition]
+public sealed partial class DamagePartSelectorEntry
+{
+    [DataField]
+    public BodyPart BodyPart;
+
+    [DataField]
+    public SpriteSpecifier Sprite;
 }
 
 public sealed partial class DamageSelectorActionEvent : InstantActionEvent;

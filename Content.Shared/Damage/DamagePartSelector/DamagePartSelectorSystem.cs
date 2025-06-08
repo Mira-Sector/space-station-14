@@ -57,14 +57,13 @@ public sealed class DamagePartSelectorSystem : EntitySystem
         if (component.Action == null)
             return;
 
-
         //enumerate over all of them because c# fuckery
-        foreach ((var part, var sprite) in component.SelectableParts)
+        foreach (var data in component.SelectableParts)
         {
-            if (part.Type != args.Part.Type || part.Side != args.Part.Side)
+            if (data.BodyPart.Type != args.Part.Type || data.BodyPart.Side != args.Part.Side)
                 continue;
 
-            _actions.SetIcon(component.Action.Value, sprite);
+            _actions.SetIcon(component.Action.Value, data.Sprite);
             break;
         }
     }

@@ -80,13 +80,6 @@
     tags:
     - AllowGhostShownByEvent
 
-# proto for player ghosts specifically
-- type: entity
-  parent: MobObserverBase
-  id: MobObserver
-  components:
-  - type: Spectral
-
 - type: entity
   parent: BaseMentalAction
   id: ActionGhostBoo
