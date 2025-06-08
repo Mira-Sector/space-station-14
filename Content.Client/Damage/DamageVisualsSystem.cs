@@ -258,15 +258,15 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
             //
             // If the layer doesn't have a base state, or
             // the layer key just doesn't exist, we skip it.
-            foreach ((var key, var value) in damageVisComp.TargetLayers)
+            foreach (var data in damageVisComp.TargetLayers)
             {
-                if (!SpriteSystem.LayerMapTryGet((entity, spriteComponent), value, out var index, false))
+                if (!SpriteSystem.LayerMapTryGet((entity, spriteComponent), data.Layers, out var index, false))
                 {
-                    Log.Warning($"Layer at key {key} was invalid for entity {entity}.");
+                    Log.Warning($"Layer at key {data.BodyPart} was invalid for entity {entity}.");
                     continue;
                 }
 
-                damageVisComp.TargetLayerMapKeys.Add(key, value);
+                damageVisComp.TargetLayerMapKeys.Add(data.BodyPart, data.BodyPart);
             }
 
             // Similar to damage overlay groups, if none of the targeted

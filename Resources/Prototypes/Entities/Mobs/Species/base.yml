@@ -56,12 +56,30 @@
   - type: DamageVisuals
     thresholds: [ 10, 20, 30, 50, 70, 100 ]
     targetLayers:
-      !type:BodyPart { type: Head, side: None }: Head
-      !type:BodyPart { type: Torso, side: None }: Chest
-      !type:BodyPart { type: Arm, side: Left }: LArm
-      !type:BodyPart { type: Arm, side: Right }: RArm
-      !type:BodyPart { type: Leg, side: Left }: LLeg
-      !type:BodyPart { type: Leg, side: Right }: RLeg
+    - bodyPart:
+        type: Head
+        side: None
+      layers: Head
+    - bodyPart:
+        type: Torso
+        side: None
+      layers: Chest
+    - bodyPart:
+        type: Arm
+        side: Left
+      layers: LArm
+    - bodyPart:
+        type: Arm
+        side: Right
+      layers: RArm
+    - bodyPart:
+        type: Leg
+        side: Left
+      layers: LLeg
+    - bodyPart:
+        type: Leg
+        side: Right
+      layers: RLeg
     damageOverlayGroups:
       Brute:
         sprite: Mobs/Effects/brute_damage.rsi

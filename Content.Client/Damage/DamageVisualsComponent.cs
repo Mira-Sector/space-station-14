@@ -47,7 +47,7 @@ public sealed partial class DamageVisualsComponent : Component
     ///     Setting the layer as disabled will make it
     ///     completely invisible.
     /// </remarks>
-    [DataField("targetLayers")] public Dictionary<BodyPart, HumanoidVisualLayers>? TargetLayers;
+    [DataField("targetLayers")] public List<DamageVisualizerLayers>? TargetLayers;
 
     /// <summary>
     ///     The actual sprites for every damage group
@@ -125,6 +125,16 @@ public sealed partial class DamageVisualsComponent : Component
     public readonly Dictionary<object, string> LayerMapKeyStates = new();
     public readonly Dictionary<string, FixedPoint2> LastThresholdPerGroup = new();
     public string TopMostLayerKey = default!;
+}
+
+[DataDefinition]
+public sealed partial class DamageVisualizerLayers
+{
+    [DataField]
+    public BodyPart BodyPart;
+
+    [DataField]
+    public HumanoidVisualLayers Layers;
 }
 
 // deals with the edge case of human damage visuals not
