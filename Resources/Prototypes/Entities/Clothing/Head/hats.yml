@@ -41,7 +41,7 @@
   - type: Tag
     tags:
     - ClothMade
-    - Recyclable    
+    - Recyclable
     - WhitelistChameleon
 
 - type: entity
@@ -493,8 +493,8 @@
     - state: icon-nobeard
       map: [ "foldedLayer" ]
       visible: true
-  
-    
+
+
 
 - type: entity
   parent: ClothingHeadBase
@@ -966,7 +966,11 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] : { coefficients: { Blunt: 0.95 } }
+    - parts:
+      - Head
+      modifier:
+        coefficients:
+          Blunt: 0.95
 
 - type: entity
   parent: ClothingHeadBase
@@ -981,7 +985,11 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] : { coefficients: { Caustic: 0.95 } }
+    - parts:
+      - Head
+      modifier:
+        coefficients:
+          Caustic: 0.95
 
 - type: entity
   parent: ClothingHeadBase

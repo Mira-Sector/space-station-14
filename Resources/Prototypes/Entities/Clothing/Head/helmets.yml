@@ -22,7 +22,14 @@
   - type: Armor #Values seem to let the user survive one extra hit if attacked consistently.
     basePart: Head
     modifiers:
-      [ Head ] : { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.9 } }
+    - parts:
+      - Head
+      modifier:
+        coefficients:
+        Blunt: 0.9
+        Slash: 0.9
+        Piercing: 0.9
+        Heat: 0.9
 
 #Basic Helmet (Security Helmet)
 - type: entity
@@ -42,7 +49,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.7
           Slash: 0.7
@@ -66,7 +75,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.7
           Slash: 0.7
@@ -90,7 +101,9 @@
   - type: Armor #This is intentionally not spaceproof, when the time comes to port the values from SS13 this should be buffed from what it was.
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.7
           Slash: 0.7
@@ -117,7 +130,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.6
           Slash: 0.6
@@ -142,7 +157,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.4
           Slash: 0.4
@@ -170,7 +187,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.9
           Slash: 0.9
@@ -196,7 +215,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.9
           Slash: 0.9
@@ -221,7 +242,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.5
           Slash: 0.5
@@ -254,7 +277,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.8
           Slash: 0.8
@@ -292,7 +317,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.2
           Slash: 0.2
@@ -320,7 +347,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.2
           Slash: 0.2
@@ -362,7 +391,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Slash: 0.9
           Heat: 0.8
@@ -402,7 +433,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Slash: 0.9
           Heat: 0.8
@@ -422,7 +455,9 @@
   - type: Armor #admeme item so it should be fine being overpowered while helmets are still intentionally kneecapped.
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.5
           Slash: 0.5
@@ -448,7 +483,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.7
           Slash: 0.7
@@ -472,7 +509,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.7
           Slash: 0.7
@@ -496,7 +535,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.7
           Slash: 0.7
@@ -520,7 +561,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.7
           Slash: 0.7
@@ -544,7 +587,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.7
           Slash: 0.7
@@ -567,7 +612,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.35
           Slash: 0.35
@@ -596,7 +643,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.6
           Slash: 0.8
@@ -616,7 +665,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.5
           Slash: 0.5
@@ -699,7 +750,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.7
           Slash: 0.7

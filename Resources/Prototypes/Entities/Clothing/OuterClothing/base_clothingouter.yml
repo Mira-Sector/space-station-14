@@ -122,7 +122,17 @@
     size: Ginormous
   - type: Armor
     modifiers:
-      [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.90, Slash: 0.90, Piercing: 0.95, Heat: 0.90, Radiation: 0.25 } }
+    - parts:
+      - Torso
+      - Arm
+      - Leg
+      modifier:
+        coefficients:
+          Blunt: 0.90
+          Slash: 0.90
+          Piercing: 0.95
+          Heat: 0.90
+          Radiation: 0.25
   - type: ToggleableClothing
     slot: head
   - type: ContainerContainer

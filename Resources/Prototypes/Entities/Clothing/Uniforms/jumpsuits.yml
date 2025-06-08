@@ -229,7 +229,13 @@
     node: jumpsuit
   - type: Armor
     modifiers:
-      [ Torso, Arm, Leg ] : { coefficients: { Radiation: 0.8 } }
+    - parts:
+      - Torso
+      - Arm
+      - Leg
+      modifier:
+        coefficients:
+          Radiation: 0.8
 
 - type: entity
   parent: ClothingUniformBase

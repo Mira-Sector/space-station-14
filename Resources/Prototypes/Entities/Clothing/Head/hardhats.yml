@@ -151,4 +151,11 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] : { coefficients: { Blunt: 0.8, Slash: 0.8, Piercing: 0.9, Heat: 0.8 } }
+    - parts:
+      - Head
+      modifier:
+        coefficients:
+          Blunt: 0.8
+          Slash: 0.8
+          Piercing: 0.9
+          Heat: 0.8

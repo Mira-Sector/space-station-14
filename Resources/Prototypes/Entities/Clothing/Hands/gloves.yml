@@ -125,7 +125,11 @@
   - type: Armor
     basePart: Arm
     modifiers:
-      [ Arm ]: { coefficients: { Slash: 0.95 } }
+    - parts:
+      - Arm
+      modifier:
+        coefficients:
+            Slash: 0.95
   - type: FingerprintMask
 
 #### Medical

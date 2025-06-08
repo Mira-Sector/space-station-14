@@ -23,5 +23,10 @@
       coolingCoefficient: 0.1
     - type: Armor
       modifiers:
-        [ Torso ] : { coefficients: { Slash: 0.95, Heat: 0.90 } }
+    - parts:
+      - Torso
+      modifier:
+        coefficients:
+          Slash: 0.95
+          Heat: 0.90
       showArmorOnExamine: false

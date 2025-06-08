@@ -3,6 +3,7 @@ using Content.Shared.Inventory;
 using Robust.Shared.GameStates;
 using Robust.Shared.Utility;
 using Content.Shared.Body.Part;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared.Armor;
 
@@ -16,7 +17,7 @@ public sealed partial class ArmorComponent : Component
     /// The damage reduction
     /// </summary>
     [DataField(required: true)]
-    public Dictionary<HashSet<BodyPartType>, DamageModifierSet> Modifiers = default!;
+    public List<ArmorModifier> Modifiers = [];
 
     /// <summary>
     /// If the damagereciever has no body component which damage modifier to use
@@ -36,6 +37,17 @@ public sealed partial class ArmorComponent : Component
     /// </summary>
     [DataField]
     public bool ShowArmorOnExamine = true;
+}
+
+[Serializable, NetSerializable]
+[DataDefinition]
+public sealed partial class ArmorModifier
+{
+    [DataField]
+    public HashSet<BodyPartType> Parts;
+
+    [DataField]
+    public DamageModifierSet Modifier;
 }
 
 /// <summary>

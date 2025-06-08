@@ -12,8 +12,6 @@
   - type: BreathMask
   - type: IngestionBlocker
   - type: GroupExamine
-  - type: Armor
-    modifiers: { }
   - type: ZombificationResistance
     zombificationResistanceCoefficient: 0.9
   - type: Tag
@@ -28,7 +26,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Caustic: 0.5
 
@@ -47,7 +47,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Caustic: 0.5
   - type: ZombificationResistance
@@ -68,7 +70,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Caustic: 0.5
 
@@ -87,7 +91,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Caustic: 0.5
 
@@ -106,7 +112,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Caustic: 0.5
 
@@ -125,7 +133,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Caustic: 0.5
   - type: ZombificationResistance
@@ -198,7 +208,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Heat: 0.90
           Radiation: 0.01

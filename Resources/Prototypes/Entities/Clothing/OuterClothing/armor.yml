@@ -16,7 +16,14 @@
     sprite: Clothing/OuterClothing/Armor/security.rsi
   - type: Armor
     modifiers:
-      [ Torso ] : { coefficients: { Blunt: 0.70, Slash: 0.70, Piercing: 0.70, Heat: 0.80 } }
+    - parts:
+      - Torso
+      modifier:
+        coefficients:
+          Blunt: 0.70
+          Slash: 0.70
+          Piercing: 0.70
+          Heat: 0.80
   - type: ExplosionResistance
     damageCoefficient: 0.90
 
@@ -50,7 +57,14 @@
     sprite: Clothing/OuterClothing/Armor/bulletproof.rsi
   - type: Armor
     modifiers:
-      [ Torso ] : { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.4, Heat: 0.9 } }
+    - parts:
+      - Torso
+      modifier:
+        coefficients:
+          Blunt: 0.9
+          Slash: 0.9
+          Piercing: 0.4
+          Heat: 0.9
   - type: ExplosionResistance
     damageCoefficient: 0.80
 
@@ -66,7 +80,14 @@
     sprite: Clothing/OuterClothing/Armor/armor_reflec.rsi
   - type: Armor
     modifiers:
-      [ Torso ] : { coefficients: { Blunt: 0.9, Slash: 0.9, Piercing: 0.9, Heat: 0.4 } }
+    - parts:
+      - Torso
+      modifier:
+        coefficients:
+          Blunt: 0.9
+          Slash: 0.9
+          Piercing: 0.9
+          Heat: 0.4
   - type: Reflect
     reflectProb: 1
     innate: true # armor grants a passive shield that does not require concentration to maintain
@@ -93,7 +114,15 @@
   components:
   - type: Armor
     modifiers:
-      [ Torso ] : { coefficients: { Blunt: 0.5, Slash: 0.5, Piercing: 0.6, Heat: 0.5, Caustic: 0.9 } }
+    - parts:
+      - Torso
+      modifier:
+        coefficients:
+          Blunt: 0.5
+          Slash: 0.5
+          Piercing: 0.6
+          Heat: 0.5
+          Caustic: 0.9
   - type: ExplosionResistance
     damageCoefficient: 0.65
   - type: ClothingSpeedModifier
@@ -137,7 +166,9 @@
     sprite: Clothing/OuterClothing/Vests/webvest.rsi
   - type: Armor
     modifiers:
-      [ Torso ] :
+    - parts:
+      - Torso
+      modifier:
         coefficients:
           Blunt: 0.6
           Slash: 0.6
@@ -162,7 +193,9 @@
     coolingCoefficient: 0.1
   - type: Armor
     modifiers:
-      [ Torso ] :
+    - parts:
+      - Torso
+      modifier:
         coefficients:
           Blunt: 0.5
           Slash: 0.5
@@ -188,7 +221,9 @@
     sprite: Clothing/OuterClothing/Vests/mercwebvest.rsi
   - type: Armor
     modifiers:
-      [ Torso ] :
+    - parts:
+      - Torso
+      modifier:
         coefficients:
           Blunt: 0.7 #slightly better overall protection but slightly worse than bulletproof armor against bullets seems sensible
           Slash: 0.7
@@ -216,7 +251,17 @@
     sprite: Clothing/OuterClothing/Armor/syndie-raid.rsi
   - type: Armor
     modifiers:
-      [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.35, Slash: 0.35, Piercing: 0.35, Heat: 0.35, Caustic: 0.5 } }
+    - parts:
+      - Torso
+      - Arm
+      - Leg
+      modifier:
+        coefficients:
+          Blunt: 0.35
+          Slash: 0.35
+          Piercing: 0.35
+          Heat: 0.35
+          Caustic: 0.5
   - type: ExplosionResistance
     damageCoefficient: 0.35
   #- type: StaminaResistance
@@ -286,7 +331,17 @@
     sprite: Clothing/OuterClothing/Armor/riot.rsi
   - type: Armor
     modifiers:
-      [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.4, Slash: 0.4, Piercing: 0.7, Heat: 0.9, Caustic: 0.9 } }
+    - parts:
+      - Torso
+      - Arm
+      - Leg
+      modifier:
+        coefficients:
+          Blunt: 0.4
+          Slash: 0.4
+          Piercing: 0.7
+          Heat: 0.9
+          Caustic: 0.9
   - type: ExplosionResistance
     damageCoefficient: 0.9
   - type: GroupExamine
@@ -303,7 +358,16 @@
     sprite: Clothing/OuterClothing/Armor/cult_armour.rsi
   - type: Armor
     modifiers:
-      [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.5, Slash: 0.5, Piercing: 0.6, Heat: 0.5 } }
+    - parts:
+      - Torso
+      - Arm
+      - Leg
+      modifier:
+        coefficients:
+          Blunt: 0.5
+          Slash: 0.5
+          Piercing: 0.6
+          Heat: 0.5
   - type: GroupExamine
 
 - type: entity
@@ -318,7 +382,18 @@
     sprite: Clothing/OuterClothing/Armor/heavy.rsi
   - type: Armor
     modifiers:
-      [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.2, Slash: 0.2, Piercing: 0.2, Heat: 0.5, Radiation: 0, Caustic: 0.75 } }
+    - parts:
+      - Torso
+      - Arm
+      - Leg
+      modifier:
+        coefficients:
+          Blunt: 0.2
+          Slash: 0.2
+          Piercing: 0.2
+          Heat: 0.5
+          Radiation: 0
+          Caustic: 0.75
   - type: GroupExamine
   - type: ProtectedFromStepTriggers
     slots: WITHOUT_POCKET
@@ -379,7 +454,17 @@
     sprite: Clothing/OuterClothing/Armor/lingarmor.rsi
   - type: Armor
     modifiers:
-      [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.5, Slash: 0.5, Piercing: 0.5, Heat: 0.9, Radiation: 0.8 } }
+    - parts:
+      - Torso
+      - Arm
+      - Leg
+      modifier:
+        coefficients:
+          Blunt: 0.5
+          Slash: 0.5
+          Piercing: 0.5
+          Heat: 0.9
+          Radiation: 0.8
   - type: ClothingSpeedModifier
     walkModifier: 0.7
     sprintModifier: 0.65
@@ -402,7 +487,15 @@
     sprite: Clothing/OuterClothing/Armor/bone_armor.rsi
   - type: Armor
     modifiers:
-      [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.6, Slash: 0.8, Piercing: 0.4 } }
+    - parts:
+      - Torso
+      - Arm
+      - Leg
+      modifier:
+        coefficients:
+          Blunt: 0.6
+          Slash: 0.8
+          Piercing: 0.4
   - type: ClothingSpeedModifier
     walkModifier: 0.8
   - type: HeldSpeedModifier
@@ -427,7 +520,16 @@
     sprite: Clothing/OuterClothing/Armor/podwars_armor.rsi
   - type: Armor
     modifiers:
-      [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.5, Slash: 0.5, Piercing: 0.6, Heat: 0.5 } }
+    - parts:
+      - Torso
+      - Arm
+      - Leg
+      modifier:
+        coefficients:
+          Blunt: 0.5
+          Slash: 0.5
+          Piercing: 0.6
+          Heat: 0.5
   - type: GroupExamine
   - type: ProtectedFromStepTriggers
     slots: WITHOUT_POCKET

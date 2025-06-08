@@ -56,7 +56,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.9
           Slash: 0.9
@@ -83,7 +85,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.9
           Slash: 0.9
@@ -137,7 +141,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.9
           Slash: 0.9
@@ -165,7 +171,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.7
           Slash: 0.6
@@ -218,7 +226,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.7
           Slash: 0.7
@@ -244,7 +254,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.6
           Slash: 0.6
@@ -271,7 +283,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.6
           Slash: 0.6
@@ -294,7 +308,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.8
           Slash: 0.8
@@ -323,7 +339,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.4
           Slash: 0.5
@@ -348,7 +366,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.8
           Slash: 0.8
@@ -379,7 +399,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.8
           Slash: 0.8
@@ -407,7 +429,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Caustic: 0.1
 
@@ -430,7 +454,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.6
           Slash: 0.8
@@ -458,7 +484,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.6
           Slash: 0.5
@@ -488,7 +516,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.9
           Slash: 0.8
@@ -518,7 +548,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.5
           Slash: 0.5
@@ -546,7 +578,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.5
           Slash: 0.5
@@ -579,7 +613,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.6
           Slash: 0.6
@@ -607,7 +643,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.4
           Slash: 0.4
@@ -633,7 +671,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.2
           Slash: 0.2
@@ -661,7 +701,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.6
           Slash: 0.6
@@ -687,7 +729,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.95
           Slash: 0.95
@@ -712,7 +756,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.8
           Slash: 0.8
@@ -759,7 +805,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.7
           Slash: 0.8
@@ -784,7 +832,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.4
           Slash: 0.4
@@ -809,7 +859,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.2
           Slash: 0.2
@@ -836,7 +888,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.7
           Slash: 0.7
@@ -863,7 +917,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.5
           Slash: 0.5
@@ -888,7 +944,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.5
           Slash: 0.5
@@ -913,7 +971,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-     [ Head ] :
+    - parts:
+      - Head
+      modifier:
        coefficients:
          Blunt: 0.7
          Slash: 0.7
@@ -958,7 +1018,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.7
           Slash: 0.7
@@ -991,7 +1053,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.1
           Slash: 0.1
@@ -1018,7 +1082,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.9
           Slash: 0.9
@@ -1040,7 +1106,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.9
           Slash: 0.9
@@ -1066,7 +1134,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Blunt: 0.85
           Slash: 0.9

@@ -56,7 +56,11 @@
       damageCoefficient: 0.2
     - type: Armor
       modifiers:
-        [ Torso, Arm, Leg ] :
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
           coefficients:
             Blunt: 0.8
             Slash: 0.8

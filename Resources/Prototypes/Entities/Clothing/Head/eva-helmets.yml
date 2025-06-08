@@ -97,7 +97,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Heat: 0.90
           Radiation: 0.75
