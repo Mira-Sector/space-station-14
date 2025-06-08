@@ -43,10 +43,10 @@ public sealed partial class ArmorComponent : Component
 [DataDefinition]
 public sealed partial class ArmorModifier
 {
-    [DataField]
+    [DataField(required: true)]
     public HashSet<BodyPartType> Parts;
 
-    [DataField]
+    [DataField(required: true)]
     public DamageModifierSet Modifier;
 }
 

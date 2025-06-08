@@ -130,10 +130,10 @@ public sealed partial class DamageVisualsComponent : Component
 [DataDefinition]
 public sealed partial class DamageVisualizerLayers
 {
-    [DataField]
+    [DataField(required: true)]
     public BodyPart BodyPart;
 
-    [DataField]
+    [DataField(required: true)]
     public HumanoidVisualLayers Layers;
 }
 

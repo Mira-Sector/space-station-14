@@ -23,10 +23,10 @@ public sealed partial class DamagePartSelectorComponent : Component
 [DataDefinition]
 public sealed partial class DamagePartSelectorEntry
 {
-    [DataField]
+    [DataField(required: true)]
     public BodyPart BodyPart;
 
-    [DataField]
+    [DataField(required: true)]
     public SpriteSpecifier Sprite;
 }
 
