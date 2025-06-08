@@ -115,11 +115,6 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         SubscribeLocalEvent<StationAiCoreComponent, MapInitEvent>(OnAiMapInit);
         SubscribeLocalEvent<StationAiCoreComponent, ComponentShutdown>(OnAiShutdown);
         SubscribeLocalEvent<StationAiCoreComponent, GetVerbsEvent<Verb>>(OnCoreVerbs);
-
-        SubscribeLocalEvent<StationAiCoreSpriteComponent, ComponentInit>(OnCoreSpriteInit);
-        SubscribeLocalEvent<StationAiCoreSpriteComponent, EntGotInsertedIntoContainerMessage>((u, c, e) => OnInsert((u, c), e.Container.Owner));
-        SubscribeLocalEvent<StationAiCoreSpriteComponent, EntGotRemovedFromContainerMessage>((u, c, e) => OnRemoved((u, c), e.Container.Owner));
-        SubscribeLocalEvent<StationAiCoreSpriteComponent, SiliconSyncMasterGetIconEvent>(OnCoreSpriteGetMasterIcon);
     }
 
     private void OnCoreVerbs(Entity<StationAiCoreComponent> ent, ref GetVerbsEvent<Verb> args)
@@ -536,65 +531,6 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         ClearEye(ent);
     }
 
-    private void OnCoreSpriteInit(Entity<StationAiCoreSpriteComponent> ent, ref ComponentInit args)
-    {
-        if (!_containers.TryGetContainingContainer(ent.Owner, out var container))
-            return;
-
-        OnInsert(ent, container.Owner);
-    }
-
-    private void OnInsert(Entity<StationAiCoreSpriteComponent> ent, EntityUid container)
-    {
-        if (!TryComp<StationAiHolderComponent>(container, out var coreComp))
-            return;
-
-        if (!coreComp.UpdateSprite)
-            return;
-
-        ent.Comp.CoreUid = container;
-        ent.Comp.OldVisuals = coreComp.Visuals;
-        Dirty(ent);
-
-        var _oldVisuals = coreComp.Visuals;
-        foreach (var (state, layers) in _oldVisuals)
-        {
-            if (!ent.Comp.Visuals.ContainsKey(state))
-                continue;
-
-            foreach (var (layer, sprite) in layers)
-            {
-                if (!ent.Comp.Visuals[state].ContainsKey(layer))
-                    continue;
-
-                coreComp.Visuals[state][layer] = ent.Comp.Visuals[state][layer];
-            }
-        }
-
-        Dirty(container, coreComp);
-
-        coreComp.AiDied = false;
-        Dirty(container, coreComp);
-        UpdateAppearance((container, coreComp));
-    }
-
-    private void OnRemoved(Entity<StationAiCoreSpriteComponent> ent, EntityUid container)
-    {
-        if (container != ent.Comp.CoreUid)
-            return;
-
-        if (!TryComp<StationAiHolderComponent>(container, out var coreComp))
-            return;
-
-        if (!coreComp.UpdateSprite)
-            return;
-
-        coreComp.Visuals = ent.Comp.OldVisuals;
-        Dirty(container, coreComp);
-
-        UpdateAppearance((container, coreComp));
-    }
-
     protected void UpdateAppearance(Entity<StationAiHolderComponent?> entity)
     {
         if (!Resolve(entity.Owner, ref entity.Comp, false))
@@ -755,12 +691,6 @@ public sealed partial class IntellicardDoAfterEvent : SimpleDoAfterEvent;
 public enum StationAiVisualState : byte
 {
     Key,
-}
-
-public enum StationAiVisualLayers : byte
-{
-    Base,
-    Screen
 }
 
 [Serializable, NetSerializable]

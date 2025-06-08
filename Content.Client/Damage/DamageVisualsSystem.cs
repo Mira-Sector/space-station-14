@@ -266,7 +266,7 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
                     continue;
                 }
 
-                damageVisComp.TargetLayerMapKeys.Add(data.BodyPart, data.BodyPart);
+                damageVisComp.TargetLayerMapKeys.Add(data.BodyPart, data.Layers);
             }
 
             // Similar to damage overlay groups, if none of the targeted

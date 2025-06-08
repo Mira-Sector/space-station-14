@@ -151,28 +151,15 @@
     sprite: Objects/Devices/ai_card.rsi
     layers:
     - state: base
-      map: [ "enum.StationAiVisualLayers.Base" ]
     - state: full
-      map: [ "enum.StationAiVisualLayers.Screen" ]
+      map: [ "unshaded"]
       shader: unshaded
-  - type: StationAiHolder
-    slot:
-      name: station-ai-mind-slot
-      locked: false
-      disableEject: true
-      whitelist:
-        tags:
-        - StationAi
-    updateSprite: false
+  - type: GenericVisualizer
     visuals:
-      Empty:
-        Screen:
-          sprite: Objects/Devices/ai_card.rsi
-          state: empty
-      Occupied:
-        Screen:
-          sprite: Objects/Devices/ai_card.rsi
-          state: full
+      enum.StationAiVisualState.Key:
+        unshaded:
+          Empty: { state: empty }
+          Occupied: { state: full }
   - type: Appearance
   - type: Intellicard
 
