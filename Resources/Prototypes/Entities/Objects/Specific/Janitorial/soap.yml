@@ -253,7 +253,7 @@
   - type: CleansForensics
   - type: Residue
     residueAdjective: residue-slippery
-    residueColor: residue-grey
+    residueColor: "#b0aec0"
   - type: Tag
     tags:
     - Soap

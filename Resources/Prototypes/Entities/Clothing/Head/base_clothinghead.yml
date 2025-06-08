@@ -273,8 +273,6 @@
   - type: ZombificationResistance
     zombificationResistanceCoefficient: 0.90
   - type: Armor # so zombification resistance shows up
-    modifiers:
-      coefficients: { }
   - type: GroupExamine
   - type: HideLayerClothing
     slots:

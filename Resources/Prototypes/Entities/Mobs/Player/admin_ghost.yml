@@ -224,7 +224,7 @@
   name: Silicon Slave Interface
   description: View your controlled slaves.
   components:
-  - type: InstantAction
+  - type: Action
     icon:
       sprite: Interface/Actions/actions_ai.rsi
       state: sync_monitor

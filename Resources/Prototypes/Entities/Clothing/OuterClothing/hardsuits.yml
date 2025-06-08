@@ -468,12 +468,12 @@
       - Leg
       modifier:
         coefficients:
-        Blunt: 0.6
-        Slash: 0.8
-        Piercing: 0.9
-        Heat: 0.3
-        Radiation: 0.1
-        Caustic: 0.2
+          Blunt: 0.6
+          Slash: 0.8
+          Piercing: 0.9
+          Heat: 0.3
+          Radiation: 0.1
+          Caustic: 0.2
   - type: ExplosionResistance
     damageCoefficient: 0.1
   - type: ClothingSpeedModifier

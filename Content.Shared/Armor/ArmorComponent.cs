@@ -16,7 +16,7 @@ public sealed partial class ArmorComponent : Component
     /// <summary>
     /// The damage reduction
     /// </summary>
-    [DataField(required: true)]
+    [DataField]
     public List<ArmorModifier> Modifiers = [];
 
     /// <summary>

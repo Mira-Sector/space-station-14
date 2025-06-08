@@ -471,7 +471,7 @@
   - type: Clothing
     sprite: Clothing/Hands/Gloves/KnuckleDusters/knuckleduster.rsi
   - type: Fiber
-    fiberColor: fibers-silver
+    fiberColor: "#d0d0d0"
   - type: MeleeWeapon
     attackRate: 1.5
     damage:
@@ -517,7 +517,7 @@
   - type: Clothing
     sprite: Clothing/Hands/Gloves/KnuckleDusters/goldenknuckleduster.rsi
   - type: Fiber
-    fiberColor: fibers-gold
+    fiberColor: "#F7C430"
   - type: MeleeWeapon
     attackRate: 1.5
     damage:
@@ -640,7 +640,7 @@
   - type: Clothing
     sprite: Clothing/Hands/Gloves/KnuckleDusters/goldenknuckleduster.rsi
   - type: Fiber
-    fiberColor: fibers-gold
+    fiberColor: "#F7C430"
   - type: MeleeWeapon
     attackRate: 2
     damage:

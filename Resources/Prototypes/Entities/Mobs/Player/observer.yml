@@ -72,7 +72,7 @@
 
 # proto for player ghosts specifically
 - type: entity
-  parent: [ MobObserverBase, MobObserverVisuals ]
+  parent: MobObserverBase
   id: MobObserver
   components:
   - type: Spectral

@@ -358,8 +358,8 @@
     canCreateVacuum: false
 
 - type: entity
-  id: BaseBorgChassisNT
-  parent: [BaseBorgChassis, BaseBorgTransponder]
+  id: BaseBorgNT
+  parent: BaseBorgChassis
   abstract: true
   components:
   - type: NpcFactionMember
