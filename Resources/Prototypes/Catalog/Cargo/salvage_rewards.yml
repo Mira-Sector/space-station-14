@@ -4,7 +4,8 @@
   icon:
     sprite: Objects/Tanks/emergency_double.rsi
     state: icon
-  product: CrateDoubleEmergencyTank
+  data: !type:CargoProductItemData
+    product: CrateDoubleEmergencyTank
   cost: 2400
   category: cargoproduct-category-name-cargo
   group: SalvageJobReward2
@@ -14,7 +15,8 @@
   icon:
     sprite: Objects/Weapons/Bombs/seismic.rsi
     state: icon
-  product: CrateSeismicCharge
+  data: !type:CargoProductItemData
+    product: CrateSeismicCharge
   cost: 1800
   category: cargoproduct-category-name-cargo
   group: SalvageJobReward2
@@ -24,7 +26,8 @@
   icon:
     sprite: Objects/Weapons/Melee/crusher.rsi
     state: icon
-  product: CrateCrusher
+  data: !type:CargoProductItemData
+    product: CrateCrusher
   cost: 5000
   category: cargoproduct-category-name-cargo
   group: SalvageJobReward2
@@ -34,7 +37,8 @@
   icon:
     sprite: Clothing/OuterClothing/Hardsuits/salvage.rsi
     state: icon
-  product: CrateSalvageHardsuit
+  data: !type:CargoProductItemData
+    product: CrateSalvageHardsuit
   cost: 7500
   category: cargoproduct-category-name-cargo
   group: SalvageJobReward2
@@ -45,7 +49,8 @@
   icon:
     sprite: /Textures/Objects/Tools/fulton.rsi
     state: extraction_pack
-  product: CrateFulton
+  data: !type:CargoProductItemData
+    product: CrateFulton
   cost: 3000
   category: cargoproduct-category-name-cargo
   group: SalvageJobReward3
@@ -55,7 +60,8 @@
   icon:
     sprite: Objects/Tanks/Jetpacks/void.rsi
     state: icon
-  product: CrateVoidJetpack
+  data: !type:CargoProductItemData
+    product: CrateVoidJetpack
   cost: 4000
   category: cargoproduct-category-name-cargo
   group: SalvageJobReward3
@@ -65,7 +71,8 @@
   icon:
     sprite: Objects/Weapons/Melee/crusher_glaive.rsi
     state: icon
-  product: CrateCrusherGlaive
+  data: !type:CargoProductItemData
+    product: CrateCrusherGlaive
   cost: 8000
   category: cargoproduct-category-name-cargo
   group: SalvageJobReward3
@@ -77,7 +84,8 @@
   icon:
     sprite: Clothing/Neck/Cloaks/miner.rsi
     state: icon
-  product: CrateSupremeSalvagerCloak
+  data: !type:CargoProductItemData
+    product: CrateSupremeSalvagerCloak
   cost: 25000
   category: cargoproduct-category-name-cargo
   group: SalvageJobRewardMAX

@@ -3,7 +3,8 @@
   icon:
     sprite: Objects/Specific/Hydroponics/banana.rsi
     state: seed
-  product: CrateHydroponicsSeedsExotic
+  data: !type:CargoProductItemData
+    product: CrateHydroponicsSeedsExotic
   cost: 1000
   category: cargoproduct-category-name-hydroponics
   group: market
@@ -13,7 +14,8 @@
   icon:
     sprite: Objects/Specific/Hydroponics/galaxythistle.rsi
     state: seed
-  product: CrateHydroponicsSeedsMedicinal
+  data: !type:CargoProductItemData
+    product: CrateHydroponicsSeedsMedicinal
   cost: 500
   category: cargoproduct-category-name-hydroponics
   group: market
@@ -23,7 +25,8 @@
   icon:
     sprite: Objects/Tools/Hydroponics/hoe.rsi
     state: icon
-  product: CrateHydroponicsTools
+  data: !type:CargoProductItemData
+    product: CrateHydroponicsTools
   cost: 500
   category: cargoproduct-category-name-hydroponics
   group: market
@@ -33,7 +36,8 @@
   icon:
     sprite: Objects/Specific/Hydroponics/apple.rsi
     state: seed
-  product: CrateHydroponicsSeeds
+  data: !type:CargoProductItemData
+    product: CrateHydroponicsSeeds
   cost: 600
   category: cargoproduct-category-name-hydroponics
   group: market
@@ -43,7 +47,8 @@
   icon:
     sprite: Objects/Specific/Chemistry/jug.rsi
     state: jug
-  product: CratePlantBGone
+  data: !type:CargoProductItemData
+    product: CratePlantBGone
   cost: 750
   category: cargoproduct-category-name-hydroponics
   group: market
@@ -53,7 +58,8 @@
   icon:
     sprite: Structures/Hydroponics/containers.rsi
     state: hydrotray3
-  product: CrateHydroponicsTray
+  data: !type:CargoProductItemData
+    product: CrateHydroponicsTray
   cost: 750
   category: cargoproduct-category-name-hydroponics
   group: market

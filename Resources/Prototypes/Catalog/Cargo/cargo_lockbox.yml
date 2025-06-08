@@ -3,7 +3,8 @@
   icon:
     sprite: Structures/Storage/Crates/lockbox.rsi
     state: icon
-  product: CrateLockBoxEngineering
+  data: !type:CargoProductItemData
+    product: CrateLockBoxEngineering
   cost: 100
   category: cargoproduct-category-name-engineering
   group: market
@@ -13,7 +14,8 @@
   icon:
     sprite: Structures/Storage/Crates/lockbox.rsi
     state: icon
-  product: CrateLockBoxMedical
+  data: !type:CargoProductItemData
+    product: CrateLockBoxMedical
   cost: 100
   category: cargoproduct-category-name-medical
   group: market
@@ -23,7 +25,8 @@
   icon:
     sprite: Structures/Storage/Crates/lockbox.rsi
     state: icon
-  product: CrateLockBoxScience
+  data: !type:CargoProductItemData
+    product: CrateLockBoxScience
   cost: 100
   category: cargoproduct-category-name-science
   group: market
@@ -33,7 +36,8 @@
   icon:
     sprite: Structures/Storage/Crates/lockbox.rsi
     state: icon
-  product: CrateLockBoxSecurity
+  data: !type:CargoProductItemData
+    product: CrateLockBoxSecurity
   cost: 100
   category: cargoproduct-category-name-security
   group: market
@@ -43,7 +47,8 @@
   icon:
     sprite: Structures/Storage/Crates/lockbox.rsi
     state: icon
-  product: CrateLockBoxService
+  data: !type:CargoProductItemData
+    product: CrateLockBoxService
   cost: 100
   category: cargoproduct-category-name-service
   group: market

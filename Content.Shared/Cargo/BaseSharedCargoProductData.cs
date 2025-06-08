@@ -1,3 +1,4 @@
 namespace Content.Shared.Cargo;
 
-public abstract class BaseSharedCargoProductData;
+[ImplicitDataDefinitionForInheritors]
+public abstract partial class BaseSharedCargoProductData;

@@ -13,7 +13,7 @@ using Robust.Shared.Utility;
 
 namespace Content.Server.Cargo.Orders;
 
-public sealed class CargoProductShuttleData : BaseCargoProductData
+public sealed partial class CargoProductShuttleData : BaseCargoProductData
 {
     [DataField]
     public ResPath Path;

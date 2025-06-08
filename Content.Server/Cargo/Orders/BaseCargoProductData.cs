@@ -6,7 +6,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Server.Cargo.Orders;
 
-public abstract class BaseCargoProductData : BaseSharedCargoProductData
+public abstract partial class BaseCargoProductData : BaseSharedCargoProductData
 {
     public abstract bool IsValid();
 

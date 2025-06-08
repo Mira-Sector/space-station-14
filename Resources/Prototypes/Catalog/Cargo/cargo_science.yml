@@ -3,7 +3,8 @@
   icon:
     sprite: Structures/Storage/Crates/artifact.rsi
     state: artifact_container_icon
-  product: CrateArtifactContainer
+  data: !type:CargoProductItemData
+    product: CrateArtifactContainer
   cost: 500
   category: cargoproduct-category-name-science
   group: market
@@ -13,7 +14,8 @@
   icon:
     sprite: Objects/Storage/artifact_container.rsi
     state: icon
-  product: HandheldArtifactContainer
+  data: !type:CargoProductItemData
+    product: HandheldArtifactContainer
   cost: 500
   category: cargoproduct-category-name-science
   group: market
@@ -23,7 +25,8 @@
   icon:
     sprite: Objects/Specific/Xenoarchaeology/xeno_artifacts.rsi
     state: ano13
-  product: RandomArtifactSpawner
+  data: !type:CargoProductItemData
+    product: RandomArtifactSpawner
   cost: 2000
   category: cargoproduct-category-name-science
   group: market
@@ -33,7 +36,8 @@
   icon:
     sprite: Clothing/Head/Hoods/Bio/scientist.rsi
     state: icon
-  product: CrateScienceBiosuit
+  data: !type:CargoProductItemData
+    product: CrateScienceBiosuit
   cost: 800
   category: cargoproduct-category-name-science
   group: market
@@ -43,7 +47,8 @@
   icon:
     sprite: Structures/Machines/server.rsi
     state: server
-  product: CrateCrewMonitoring
+  data: !type:CargoProductItemData
+    product: CrateCrewMonitoring
   cost: 2000
   category: cargoproduct-category-name-science
   group: market

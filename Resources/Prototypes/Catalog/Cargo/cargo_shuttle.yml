@@ -3,7 +3,8 @@
   icon:
     sprite: Structures/Shuttles/thruster.rsi
     state: base
-  product: CrateEngineeringThruster
+  data: !type:CargoProductItemData
+    product: CrateEngineeringThruster
   cost: 1250
   category: cargoproduct-category-name-shuttle
   group: market
@@ -13,127 +14,138 @@
   icon:
     sprite: Structures/Shuttles/gyroscope.rsi
     state: base
-  product: CrateEngineeringGyroscope
+  data: !type:CargoProductItemData
+    product: CrateEngineeringGyroscope
   cost: 3500
   category: cargoproduct-category-name-shuttle
   group: market
 
 - type: cargoProduct
   id: ShuttleCargo
-  name: Cargo Shuttle
+  name: cargo shuttle
   description: A spare shuttle to help transport the pizza's off the trade station.
   icon:
     sprite: Clothing/Head/Soft/cargosoft.rsi
     state: icon
-  shuttle: /Maps/Shuttles/cargo.yml
+  data: !type:CargoProductShuttleData
+    shuttle: /Maps/Shuttles/cargo.yml
   cost: 14500
   category: cargoproduct-category-name-shuttle
   group: market
 
 - type: cargoProduct
   id: ShuttleSalvage
-  name: Salvage Shuttle
+  name: salvage shuttle
   description: The good ol reliable.
   icon:
     sprite: Objects/Weapons/Melee/pickaxe.rsi
     state: pickaxe
-  shuttle: /Maps/Shuttles/salvage_shuttle.yml
+  data: !type:CargoProductShuttleData
+    shuttle: /Maps/Shuttles/salvage_shuttle.yml
   cost: 14000
   category: cargoproduct-category-name-shuttle
   group: market
 
 - type: cargoProduct
   id: ShuttleLarge
-  name: Large Shuttle
+  name: large shuttle
   description: Your Large and Spacious shuttle, built to transport large amounts of crates.
   icon:
     sprite: Structures/Furniture/chairs.rsi
     state: shuttle
-  shuttle: /Maps/Shuttles/large_shittle.yml
+  data: !type:CargoProductShuttleData
+    shuttle: /Maps/Shuttles/large_shittle.yml
   cost: 10000
   category: cargoproduct-category-name-shuttle
   group: market
 
 - type: cargoProduct
   id: ShuttleMedium
-  name: Medium Shuttle
+  name: medium shuttle
   description: A average shuttle to fuck off into space in.
   icon:
     sprite: Structures/Furniture/folding_chair.rsi
     state: folding_folded
-  shuttle: /Maps/Shuttles/medium_shittle.yml
+  data: !type:CargoProductShuttleData
+    shuttle: /Maps/Shuttles/medium_shittle.yml
   cost: 9500
   category: cargoproduct-category-name-shuttle
   group: market
 
 - type: cargoProduct
   id: ShuttleSmall
-  name: Small Shuttle
+  name: small shuttle
   description: It's not small... its average... *(no refunds!)
   icon:
     sprite: Objects/Specific/Janitorial/trashbag.rsi
     state: icon-3
-  shuttle: /Maps/Shuttles/shittle.yml
+  data: !type:CargoProductShuttleData
+    shuttle: /Maps/Shuttles/shittle.yml
   cost: 6149
   category: cargoproduct-category-name-shuttle
   group: market
 
 - type: cargoProduct
   id: ShuttleTrucker
-  name: Trucker Shuttle
+  name: trucker shuttle
   description: Your generic no-nonsense shuttle to fuck off into space in
   icon:
     sprite: Clothing/Head/Hats/truckershat.rsi
     state: icon
-  shuttle: /Maps/Shuttles/trucker_shittle.yml
+  data: !type:CargoProductShuttleData
+    shuttle: /Maps/Shuttles/trucker_shittle.yml
   cost: 10000
   category: cargoproduct-category-name-shuttle
   group: market
 
 - type: cargoProduct
   id: ShuttleScoop
-  name: Scoop Shuttle
+  name: scoop shuttle
   description: Big doors to grab stuff from the depths of space...
   icon:
     sprite: Objects/Tools/shovel.rsi
     state: icon
-  shuttle: /Maps/Shuttles/scoop_shittle.yml
+  data: !type:CargoProductShuttleData
+    shuttle: /Maps/Shuttles/scoop_shittle.yml
   cost: 9000
   category: cargoproduct-category-name-shuttle
   group: market
 
 - type: cargoProduct
   id: ShuttleSneak
-  name: Sneeker Shuttle
+  name: sneeker shuttle
   description: Small but mobile gunned shuttle. (PS. Ammunition not included!)
   icon:
     sprite: Objects/Weapons/Guns/Shuttles/launcher.rsi
     state: exp-320g
-  shuttle: /Maps/Shuttles/sneak_shittle.yml
+  data: !type:CargoProductShuttleData
+    shuttle: /Maps/Shuttles/sneak_shittle.yml
   cost: 20000
   category: cargoproduct-category-name-shuttle
   group: market
 
 - type: cargoProduct
   id: ShuttleBox
-  name: Box Shuttle
+  name: box shuttle
   description: A second-hand flying shitbox...
   icon:
     sprite: Objects/Storage/boxicons.rsi
     state: box
-  shuttle: /Maps/Shuttles/box_shuttle.yml
+  data: !type:CargoProductShuttleData
+    shuttle: /Maps/Shuttles/box_shuttle.yml
   cost: 8000
   category: cargoproduct-category-name-shuttle
   group: market
 
 - type: cargoProduct
   id: ShuttleSpear
-  name: Spear Shuttle
+  name: spear shuttle
   description: A small, ugly looking shuttle... at least it flies...
   icon:
     sprite: Objects/Weapons/Melee/spear.rsi
     state: spear
-  shuttle: /Maps/Shuttles/spear_shuttle.yml
+  data: !type:CargoProductShuttleData
+    shuttle: /Maps/Shuttles/spear_shuttle.yml
   cost: 8500
   category: cargoproduct-category-name-shuttle
   group: market

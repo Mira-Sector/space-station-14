@@ -25,7 +25,8 @@
   icon:
     sprite: Objects/Fun/Instruments/bassguitar.rsi
     state: icon
-  product: CrateFunInstrumentsString
+  data: !type:CargoProductItemData
+    product: CrateFunInstrumentsString
   cost: 2500
   category: cargoproduct-category-name-fun
   group: market
@@ -35,7 +36,8 @@
   icon:
     sprite: Objects/Fun/Instruments/harmonica.rsi
     state: icon
-  product: CrateFunInstrumentsWoodwind
+  data: !type:CargoProductItemData
+    product: CrateFunInstrumentsWoodwind
   cost: 3000
   category: cargoproduct-category-name-fun
   group: market
@@ -45,7 +47,8 @@
   icon:
     sprite: Objects/Fun/Instruments/h_synthesizer.rsi
     state: icon
-  product: CrateFunInstrumentsKeyedPercussion
+  data: !type:CargoProductItemData
+    product: CrateFunInstrumentsKeyedPercussion
   cost: 2500
   category: cargoproduct-category-name-fun
   group: market
@@ -55,7 +58,8 @@
   icon:
     sprite: Objects/Fun/Instruments/gunpet.rsi
     state: icon
-  product: CrateFunInstrumentsSpecial
+  data: !type:CargoProductItemData
+    product: CrateFunInstrumentsSpecial
   cost: 10000
   category: cargoproduct-category-name-fun
   group: market
@@ -65,7 +69,8 @@
   icon:
     sprite: Objects/Fun/crayons.rsi
     state: box
-  product: CrateFunArtSupplies
+  data: !type:CargoProductItemData
+    product: CrateFunArtSupplies
   cost: 500
   category: cargoproduct-category-name-fun
   group: market
@@ -75,7 +80,8 @@
   icon:
     sprite: Objects/Consumable/Food/Baked/cake.rsi
     state: birthday
-  product: CrateFunParty
+  data: !type:CargoProductItemData
+    product: CrateFunParty
   cost: 1000
   category: cargoproduct-category-name-fun
   group: market
@@ -85,7 +91,8 @@
   icon:
     sprite: Objects/Weapons/Guns/Pistols/water_pistol.rsi
     state: display
-  product: CrateFunWaterGuns
+  data: !type:CargoProductItemData
+    product: CrateFunWaterGuns
   cost: 750
   category: cargoproduct-category-name-fun
   group: market
@@ -95,7 +102,8 @@
   icon:
     sprite: Objects/Weapons/Guns/Rifles/foam_rifle.rsi
     state: icon
-  product: CrateFunFoamGuns
+  data: !type:CargoProductItemData
+    product: CrateFunFoamGuns
   cost: 3000
   category: cargoproduct-category-name-fun
   group: market
@@ -105,7 +113,8 @@
   icon:
     sprite: Objects/Fun/toys.rsi
     state: plushie_h
-  product: CrateFunPlushie
+  data: !type:CargoProductItemData
+    product: CrateFunPlushie
   cost: 1000
   category: cargoproduct-category-name-fun
   group: market
@@ -115,7 +124,8 @@
   icon:
     sprite: Objects/Fun/toys.rsi
     state: plushie_lizard
-  product: CrateFunLizardPlushieBulk
+  data: !type:CargoProductItemData
+    product: CrateFunLizardPlushieBulk
   cost: 500
   category: cargoproduct-category-name-fun
   group: market
@@ -125,7 +135,8 @@
   icon:
     sprite: Objects/Fun/sharkplush.rsi
     state: blue
-  product: CrateFunSharkPlushieBulk
+  data: !type:CargoProductItemData
+    product: CrateFunSharkPlushieBulk
   cost: 500
   category: cargoproduct-category-name-fun
   group: market
@@ -135,7 +146,8 @@
   icon:
     sprite: Objects/Fun/dice.rsi
     state: d6_6
-  product: CrateFunBoardGames
+  data: !type:CargoProductItemData
+    product: CrateFunBoardGames
   cost: 1500
   category: cargoproduct-category-name-fun
   group: market
@@ -145,7 +157,8 @@
   icon:
     sprite: Objects/Specific/Medical/implanter.rsi
     state: implanter0
-  product: CrateFunSadTromboneImplants
+  data: !type:CargoProductItemData
+    product: CrateFunSadTromboneImplants
   cost: 1000
   category: cargoproduct-category-name-fun
   group: market
@@ -155,7 +168,8 @@
   icon:
     sprite: Objects/Specific/Medical/implanter.rsi
     state: implanter0
-  product: CrateFunLightImplants
+  data: !type:CargoProductItemData
+    product: CrateFunLightImplants
   cost: 1000
   category: cargoproduct-category-name-fun
   group: market
@@ -165,7 +179,8 @@
   icon:
     sprite: Clothing/Hands/Gloves/Boxing/boxingred.rsi
     state: icon
-  product: CrateFunBoxing
+  data: !type:CargoProductItemData
+    product: CrateFunBoxing
   cost: 500
   category: cargoproduct-category-name-fun
   group: market
@@ -175,7 +190,8 @@
   icon:
     sprite: Structures/Storage/Crates/piratechest.rsi
     state: crate_icon
-  product: CrateFunPirate
+  data: !type:CargoProductItemData
+    product: CrateFunPirate
   cost: 400
   category: cargoproduct-category-name-fun
   group: market
@@ -185,7 +201,8 @@
   icon:
     sprite: Structures/Storage/Crates/toybox.rsi
     state: crate_icon
-  product: CrateFunToyBox
+  data: !type:CargoProductItemData
+    product: CrateFunToyBox
   cost: 900
   category: cargoproduct-category-name-fun
   group: market
@@ -195,7 +212,8 @@
   icon:
     sprite: Objects/Specific/Medical/implanter.rsi
     state: implanter0
-  product: CrateFunBikeHornImplants
+  data: !type:CargoProductItemData
+    product: CrateFunBikeHornImplants
   cost: 1000
   category: cargoproduct-category-name-fun
   group: market
@@ -205,7 +223,8 @@
   icon:
     sprite: Objects/Fun/figurines.rsi
     state: fig_box
-  product: CrateFunMysteryFigurines
+  data: !type:CargoProductItemData
+    product: CrateFunMysteryFigurines
   cost: 4000
   category: cargoproduct-category-name-fun
   group: market
@@ -215,7 +234,8 @@
   icon:
     sprite: Objects/Fun/Darts/dart_red.rsi
     state: icon
-  product: CrateFunDartsSet
+  data: !type:CargoProductItemData
+    product: CrateFunDartsSet
   cost: 900
   category: cargoproduct-category-name-fun
   group: market
@@ -225,7 +245,8 @@
   icon:
     sprite: Objects/Economy/cash.rsi
     state: cash_1000000
-  product: CrateCargoGambling
+  data: !type:CargoProductItemData
+    product: CrateCargoGambling
   cost: 10000
   category: cargoproduct-category-name-fun
   group: market
@@ -235,7 +256,8 @@
   icon:
     sprite: Objects/Vehicles/atv.rsi
     state: vehicle
-  product: CrateFunATV
+  data: !type:CargoProductItemData
+    product: CrateFunATV
   cost: 3000
   category: cargoproduct-category-name-fun
   group: market
@@ -245,7 +267,8 @@
   icon:
     sprite: Objects/Fun/Instruments/structureinstruments.rsi
     state: church-organ
-  product: ChurchOrganInstrument
+  data: !type:CargoProductItemData
+    product: ChurchOrganInstrument
   cost: 1500
   category: cargoproduct-category-name-fun
   group: market
@@ -255,7 +278,8 @@
   icon:
     sprite: Clothing/Head/Hats/santahat.rsi
     state: icon
-  product: CrateFunSantaSuit
+  data: !type:CargoProductItemData
+    product: CrateFunSantaSuit
   cost: 300
   category: cargoproduct-category-name-fun
   group: market
@@ -265,7 +289,8 @@
   icon:
     sprite: Objects/Fun/Instruments/structureinstruments.rsi
     state: piano
-  product: PianoInstrument
+  data: !type:CargoProductItemData
+    product: PianoInstrument
   cost: 1500
   category: cargoproduct-category-name-fun
   group: market
@@ -275,7 +300,8 @@
   icon:
     sprite: Objects/Fun/Instruments/structureinstruments.rsi
     state: piano-upright
-  product: UprightPianoInstrument
+  data: !type:CargoProductItemData
+    product: UprightPianoInstrument
   cost: 1500
   category: cargoproduct-category-name-fun
   group: market
@@ -285,7 +311,8 @@
   icon:
     sprite: Objects/Fun/Instruments/structureinstruments.rsi
     state: vibraphone
-  product: VibraphoneInstrument
+  data: !type:CargoProductItemData
+    product: VibraphoneInstrument
   cost: 1500
   category: cargoproduct-category-name-fun
   group: market
@@ -295,7 +322,8 @@
   icon:
     sprite: Objects/Fun/Instruments/structureinstruments.rsi
     state: marimba
-  product: MarimbaInstrument
+  data: !type:CargoProductItemData
+    product: MarimbaInstrument
   cost: 1500
   category: cargoproduct-category-name-fun
   group: market
@@ -305,7 +333,8 @@
   icon:
     sprite: Objects/Fun/Instruments/structureinstruments.rsi
     state: tuba
-  product: TubaInstrument
+  data: !type:CargoProductItemData
+    product: TubaInstrument
   cost: 1500
   category: cargoproduct-category-name-fun
   group: market
@@ -315,7 +344,8 @@
   icon:
     sprite: Objects/Fun/Instruments/structureinstruments.rsi
     state: harp
-  product: HarpInstrument
+  data: !type:CargoProductItemData
+    product: HarpInstrument
   cost: 1500
   category: cargoproduct-category-name-fun
   group: market
@@ -325,7 +355,8 @@
   icon:
     sprite: Objects/Fun/Instruments/structureinstruments.rsi
     state: timpani
-  product: TimpaniInstrument
+  data: !type:CargoProductItemData
+    product: TimpaniInstrument
   cost: 1500
   category: cargoproduct-category-name-fun
   group: market
@@ -335,7 +366,8 @@
   icon:
     sprite: Objects/Fun/Instruments/structureinstruments.rsi
     state: taiko
-  product: TaikoInstrument
+  data: !type:CargoProductItemData
+    product: TaikoInstrument
   cost: 1500
   category: cargoproduct-category-name-fun
   group: market
@@ -345,7 +377,8 @@
   icon:
     sprite: Objects/Fun/Instruments/structureinstruments.rsi
     state: contrabass
-  product: ContrabassInstrument
+  data: !type:CargoProductItemData
+    product: ContrabassInstrument
   cost: 1500
   category: cargoproduct-category-name-fun
   group: market
@@ -355,7 +388,8 @@
   icon:
     sprite: Objects/Fun/Instruments/structureinstruments.rsi
     state: minimoog
-  product: MinimoogInstrument
+  data: !type:CargoProductItemData
+    product: MinimoogInstrument
   cost: 1500
   category: cargoproduct-category-name-fun
   group: market
@@ -365,7 +399,8 @@
   icon:
     sprite: Objects/Fun/Instruments/structureinstruments.rsi
     state: toms
-  product: TomDrumsInstrument
+  data: !type:CargoProductItemData
+    product: TomDrumsInstrument
   cost: 1500
   category: cargoproduct-category-name-fun
   group: market

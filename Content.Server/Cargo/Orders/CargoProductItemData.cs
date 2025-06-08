@@ -11,22 +11,21 @@ using Robust.Shared.Random;
 
 namespace Content.Server.Cargo.Orders;
 
-public sealed class CargoProductItemData : BaseCargoProductData
+public sealed partial class CargoProductItemData : BaseCargoProductData
 {
     /// <summary>
     ///     The entity prototype ID of the product.
     /// </summary>
     [DataField]
-    public EntProtoId? Product;
+    public EntProtoId Product;
 
     public override bool IsValid()
     {
-        return IoCManager.Resolve<IPrototypeManager>().HasIndex(Product ?? default);
+        return IoCManager.Resolve<IPrototypeManager>().HasIndex(Product);
     }
 
     public override EntityUid? FulfillOrder(Entity<StationDataComponent> stationData, ProtoId<CargoAccountPrototype> account, CargoOrderData order, StationCargoOrderDatabaseComponent orderDatabase)
     {
-        // No slots at the trade station
         EntityUid? tradeDestination = null;
 
         var entity = IoCManager.Resolve<IEntityManager>();
