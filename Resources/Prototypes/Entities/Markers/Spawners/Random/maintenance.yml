@@ -132,6 +132,7 @@
       - id: BalloonCorgi
       - id: MysteryFigureBox
       - id: RubberChicken
+      - id: GroanTube
       # Cult
       - !type:AllSelector
         children:

@@ -1,0 +1,5 @@
+- type: soundCollection
+  id: GroanTube
+  files:
+    - /Audio/Items/Toys/groantube1.ogg
+    - /Audio/Items/Toys/groantube2.ogg

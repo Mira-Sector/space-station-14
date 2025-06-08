@@ -223,3 +223,18 @@
   - type: Storage
     grid:
     - 0,0,3,3
+
+- type: entity
+  parent: BaseItem
+  name: groan tube
+  id: GroanTube
+  description:
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/groantube.rsi
+    state: icon
+  - type: EmitSoundOnUse
+    sound:
+      collection: GroanTube
+  - type: UseDelay
+    delay: 1

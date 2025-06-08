@@ -353,6 +353,7 @@
       - id: ClothingShoesSkates
       - id: RubberChicken
       - id: WaterBalloonBox
+      - id: GroanTube
 
 - type: entity
   id: CrateFunBikeHornImplants
