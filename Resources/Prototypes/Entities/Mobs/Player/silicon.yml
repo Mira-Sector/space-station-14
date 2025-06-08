@@ -226,7 +226,6 @@
     sprite: Mobs/Silicon/station_ai.rsi
     layers:
     - state: base
-      map: [ "enum.StationAiVisualLayers.Base" ]
     - state: ai_empty
       shader: unshaded
     - state: ai

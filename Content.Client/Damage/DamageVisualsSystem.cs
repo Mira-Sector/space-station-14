@@ -417,7 +417,7 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
         if (!TryComp<BodyComponent>(uid, out var bodyComp))
         {
             if (TryComp(uid, out DamageableComponent? damageComponent))
-                HandleDamage(uid, args.Component, damageVisComp, spriteComponent, damageComponent);
+                HandleDamage((uid, args.Component, damageVisComp, spriteComponent), (uid, damageComponent));
 
             return;
         }
@@ -431,32 +431,32 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
 
             var bodyPart = new BodyPart(partComp.PartType, partComp.Symmetry);
 
-            HandleDamage(uid, args.Component, damageVisComp, spriteComponent, partDamageable, bodyPart);
+            HandleDamage((uid, args.Component, damageVisComp, spriteComponent), (partUid, partDamageable), bodyPart);
         }
 
     }
-    private void HandleDamage(EntityUid uid, AppearanceComponent component, DamageVisualsComponent damageVisComp, SpriteComponent spriteComponent, DamageableComponent damageComponent, BodyPart? bodyPart = null)
+    private void HandleDamage(Entity<AppearanceComponent, DamageVisualsComponent, SpriteComponent> ent, Entity<DamageableComponent> damageable, BodyPart? bodyPart = null)
     {
-        if (AppearanceSystem.TryGetData<bool>(uid, DamageVisualizerKeys.ForceUpdate, out var update, component)
+        if (AppearanceSystem.TryGetData<bool>(ent, DamageVisualizerKeys.ForceUpdate, out var update, ent.Comp1)
             && update)
         {
-            ForceUpdateLayers((uid, damageComponent, spriteComponent, damageVisComp), bodyPart);
+            ForceUpdateLayers((ent.Owner, ent.Comp3, ent.Comp2), damageable, bodyPart);
             return;
         }
 
-        if (damageVisComp.TrackAllDamage)
+        if (ent.Comp2.TrackAllDamage)
         {
-            UpdateDamageVisuals((uid, damageComponent, spriteComponent, damageVisComp), bodyPart);
+            UpdateDamageVisuals((ent.Owner, ent.Comp3, ent.Comp2), damageable, bodyPart);
             return;
         }
 
-        if (!AppearanceSystem.TryGetData<DamageVisualizerGroupData>(uid, DamageVisualizerKeys.DamageUpdateGroups,
-                out var data, component))
+        if (!AppearanceSystem.TryGetData<DamageVisualizerGroupData>(ent.Owner, DamageVisualizerKeys.DamageUpdateGroups,
+                out var data, ent.Comp1))
         {
-            data = new DamageVisualizerGroupData(damageComponent.DamagePerGroup.Keys.ToList());
+            data = new DamageVisualizerGroupData(damageable.Comp.DamagePerGroup.Keys.ToList());
         }
 
-        UpdateDamageVisuals(data.GroupList, (uid, damageComponent, spriteComponent, damageVisComp), bodyPart);
+        UpdateDamageVisuals(data.GroupList, (ent.Owner, ent.Comp3, ent.Comp2), damageable, bodyPart);
     }
 
     /// <summary>
@@ -553,11 +553,11 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
     ///     Updates damage visuals without tracking
     ///     any damage groups.
     /// </summary>
-    private void UpdateDamageVisuals(Entity<DamageableComponent, SpriteComponent, DamageVisualsComponent> entity, BodyPart? bodyPart = null)
+    private void UpdateDamageVisuals(Entity<SpriteComponent, DamageVisualsComponent> entity, Entity<DamageableComponent> damageable, BodyPart? bodyPart = null)
     {
-        var damageComponent = entity.Comp1;
-        var spriteComponent = entity.Comp2;
-        var damageVisComp = entity.Comp3;
+        var damageComponent = damageable.Comp;
+        var spriteComponent = entity.Comp1;
+        var damageVisComp = entity.Comp2;
 
         if (!CheckThresholdBoundary(damageComponent.TotalDamage, damageVisComp.LastDamageThreshold, damageVisComp, out var threshold))
             return;
@@ -588,11 +588,11 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
     ///     according to the list of damage groups
     ///     passed into it.
     /// </summary>
-    private void UpdateDamageVisuals(List<string> delta, Entity<DamageableComponent, SpriteComponent, DamageVisualsComponent> entity, BodyPart? bodyPart = null)
+    private void UpdateDamageVisuals(List<string> delta, Entity<SpriteComponent, DamageVisualsComponent> entity, Entity<DamageableComponent> damageable, BodyPart? bodyPart = null)
     {
-        var damageComponent = entity.Comp1;
-        var spriteComponent = entity.Comp2;
-        var damageVisComp = entity.Comp3;
+        var damageComponent = damageable.Comp;
+        var spriteComponent = entity.Comp1;
+        var damageVisComp = entity.Comp2;
 
         foreach (var damageGroup in delta)
         {
@@ -672,21 +672,21 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
     ///     Does different things depending on
     ///     the configuration of the visualizer.
     /// </summary>
-    private void ForceUpdateLayers(Entity<DamageableComponent, SpriteComponent, DamageVisualsComponent> entity, BodyPart? bodyPart = null)
+    private void ForceUpdateLayers(Entity<SpriteComponent, DamageVisualsComponent> entity, Entity<DamageableComponent> damageable, BodyPart? bodyPart = null)
     {
-        var damageVisComp = entity.Comp3;
+        var damageVisComp = entity.Comp2;
 
         if (damageVisComp.DamageOverlayGroups != null)
         {
-            UpdateDamageVisuals(damageVisComp.DamageOverlayGroups.Keys.ToList(), entity, bodyPart);
+            UpdateDamageVisuals(damageVisComp.DamageOverlayGroups.Keys.ToList(), entity, damageable, bodyPart);
         }
         else if (damageVisComp.DamageGroup != null)
         {
-            UpdateDamageVisuals(new List<string>() { damageVisComp.DamageGroup }, entity, bodyPart);
+            UpdateDamageVisuals(new List<string>() { damageVisComp.DamageGroup }, entity, damageable, bodyPart);
         }
         else if (damageVisComp.DamageOverlay != null)
         {
-            UpdateDamageVisuals(entity, bodyPart);
+            UpdateDamageVisuals(entity, damageable, bodyPart);
         }
     }
 

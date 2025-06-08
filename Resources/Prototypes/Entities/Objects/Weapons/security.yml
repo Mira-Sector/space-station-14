@@ -114,7 +114,7 @@
     sprite: Objects/Weapons/Melee/telebaton.rsi
     layers:
     - state: telebaton-icon
-      map: [ "enum.ToggleVisuals.Layer" ]
+      map: [ "enum.ToggleableVisuals.Layer" ]
   - type: ItemToggle
     predictable: false
     soundActivate:
@@ -159,12 +159,12 @@
   - type: Appearance
   - type: GenericVisualizer
     visuals:
-     enum.ToggleVisuals.Toggled:
-        enum.ToggleVisuals.Layer:
+      enum.ToggleableVisuals.Enabled:
+        enum.ToggleableVisuals.Layer:
           True: {state: telebaton-on}
           False: {state: telebaton-icon}
-  - type: ToggleableLightVisuals
-    spriteLayer: shield
+  - type: ToggleableVisuals
+    spriteLayer: enum.ToggleableVisuals.Layer
     inhandVisuals:
       left:
         - state: inhand-left-shield

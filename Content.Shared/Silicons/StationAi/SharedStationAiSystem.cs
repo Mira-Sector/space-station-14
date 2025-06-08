@@ -554,14 +554,6 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         _appearance.SetData(entity.Owner, StationAiVisualState.Key, state);
     }
 
-    private void OnCoreSpriteGetMasterIcon(Entity<StationAiCoreSpriteComponent> ent, ref SiliconSyncMasterGetIconEvent args)
-    {
-        if (!ent.Comp.Visuals.TryGetValue(StationAiState.Occupied, out var visuals))
-            return;
-
-        visuals.TryGetValue(StationAiVisualLayers.Screen, out args.Icon);
-    }
-
     public virtual void AnnounceAi(EntityUid uid, string msg, SoundSpecifier? cue = null) { }
 
     public virtual bool SetVisionEnabled(Entity<StationAiVisionComponent> entity, bool enabled, bool announce = false)
