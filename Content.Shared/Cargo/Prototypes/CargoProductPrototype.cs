@@ -1,3 +1,4 @@
+using Content.Shared.Cargo.Orders;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
@@ -26,16 +27,16 @@ namespace Content.Shared.Cargo.Prototypes
         ///     Product name.
         /// </summary>
         [DataField]
-        public string Name = default!;
+        public string? Name;
 
         /// <summary>
         ///     Short description of the product.
         /// </summary>
         [DataField]
-        public string Description = default!;
+        public string? Description;
 
-        [DataField(serverOnly: true)]
-        public BaseSharedCargoProductData Data = default!;
+        [DataField]
+        public BaseCargoProductData Data = default!;
 
         /// <summary>
         ///     Texture path used in the CargoConsole GUI.

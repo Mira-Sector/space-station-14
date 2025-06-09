@@ -2,6 +2,7 @@ using Content.Server.Cargo.Components;
 using Content.Server.Cargo.Systems;
 using Content.Server.Station.Components;
 using Content.Shared.Cargo;
+using Content.Shared.Cargo.Orders;
 using Content.Shared.Cargo.Prototypes;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Labels.Components;
@@ -11,20 +12,9 @@ using Robust.Shared.Random;
 
 namespace Content.Server.Cargo.Orders;
 
-public sealed partial class CargoProductItemData : BaseCargoProductData
+public sealed partial class CargoProductItemData : SharedCargoProductItemData, IServerCargoProductData
 {
-    /// <summary>
-    ///     The entity prototype ID of the product.
-    /// </summary>
-    [DataField]
-    public EntProtoId Product;
-
-    public override bool IsValid()
-    {
-        return IoCManager.Resolve<IPrototypeManager>().HasIndex(Product);
-    }
-
-    public override EntityUid? FulfillOrder(Entity<StationDataComponent> stationData, ProtoId<CargoAccountPrototype> account, CargoOrderData order, StationCargoOrderDatabaseComponent orderDatabase)
+    public EntityUid? FulfillOrder(Entity<StationDataComponent> stationData, ProtoId<CargoAccountPrototype> account, CargoOrderData order, StationCargoOrderDatabaseComponent orderDatabase)
     {
         EntityUid? tradeDestination = null;
 
@@ -46,7 +36,7 @@ public sealed partial class CargoProductItemData : BaseCargoProductData
             {
                 foreach (var (pad, _, padXform) in freePads)
                 {
-                    var item = entity.SpawnEntity(order.ProductId, padXform.Coordinates);
+                    var item = entity.SpawnEntity(Product, padXform.Coordinates);
 
                     // Ensure the item doesn't start anchored
                     transform.Unanchor(item);

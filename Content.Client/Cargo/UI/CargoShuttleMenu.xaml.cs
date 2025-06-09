@@ -37,6 +37,9 @@ namespace Content.Client.Cargo.UI
                 if (!protoManager.TryIndex(order.ProductId, out var product))
                     continue;
 
+                if (!SharedCargoSystem.TryGetProductName(product, out var name))
+                    continue;
+
                 var account = protoManager.Index(order.Account);
 
                 var row = new CargoOrderRow
@@ -47,7 +50,7 @@ namespace Content.Client.Cargo.UI
                     {
                         Text = Loc.GetString(
                             "cargo-console-menu-populate-orders-cargo-order-row-product-name-text",
-                            ("productName", product.Name),
+                            ("productName", name),
                             ("orderAmount", order.OrderQuantity - order.NumDispatched),
                             ("orderRequester", order.Requester),
                             ("accountColor", account.Color),

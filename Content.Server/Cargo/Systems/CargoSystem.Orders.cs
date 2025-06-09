@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Server.Cargo.Components;
@@ -21,7 +22,6 @@ namespace Content.Server.Cargo.Systems
 {
     public sealed partial class CargoSystem
     {
-        [Dependency] private readonly SharedTransformSystem _transformSystem = default!;
         [Dependency] private readonly EmagSystem _emag = default!;
         [Dependency] private readonly IGameTiming _timing = default!;
 
@@ -171,7 +171,9 @@ namespace Content.Server.Cargo.Systems
             }
 
             // Invalid order
-            if (!_protoMan.TryIndex(order.ProductId, out var product) || !((BaseCargoProductData)product.Data).IsValid())
+            if (!_protoMan.TryIndex(order.ProductId, out var product) ||
+                !product.Data.IsValid() ||
+                !TryGetProductName(product, out var productName))
             {
                 ConsolePopup(args.Actor, Loc.GetString("cargo-console-invalid-product"));
                 PlayDenySound(uid, component);
@@ -236,7 +238,7 @@ namespace Content.Server.Cargo.Systems
                 order.SetApproverData(tryGetIdentityShortInfoEvent.Title);
 
                 var message = Loc.GetString("cargo-console-unlock-approved-order-broadcast",
-                    ("productName", Loc.GetString(product.Name))!,
+                    ("productName", Loc.GetString(productName)),
                     ("orderAmount", order.OrderQuantity),
                     ("approver", order.Approver ?? string.Empty),
                     ("cost", cost));
@@ -262,7 +264,9 @@ namespace Content.Server.Cargo.Systems
             if (!_protoMan.TryIndex(order.ProductId, out var product))
                 return null;
 
-            return ((BaseCargoProductData)product.Data).FulfillOrder(stationData, account, order, orderDatabase);
+            Debug.Assert(product.Data is IServerCargoProductData, $"{product.Data.GetType()} does not implement {nameof(IServerCargoProductData)}.");
+
+            return ((IServerCargoProductData)product.Data).FulfillOrder(stationData, account, order, orderDatabase);
         }
 
         public IEnumerable<EntityUid> GetTradeStations(StationDataComponent data)
@@ -297,6 +301,9 @@ namespace Content.Server.Cargo.Systems
             if (Timing.CurTime < component.NextPrintTime)
                 return;
 
+            if (!TryGetProductName(product, out var name) || !TryGetProductDescription(product, out var description))
+                return;
+
             var label = Spawn(account.AcquisitionSlip, Transform(uid).Coordinates);
             component.NextPrintTime = Timing.CurTime + component.PrintDelay;
             _audio.PlayPvs(component.PrintSound, uid);
@@ -305,8 +312,8 @@ namespace Content.Server.Cargo.Systems
             var msg = new FormattedMessage();
 
             msg.AddMarkupPermissive(Loc.GetString("cargo-acquisition-slip-body",
-                ("product", product.Name),
-                ("description", product.Description),
+                ("product", name),
+                ("description", description),
                 ("unit", product.Cost),
                 ("amount", args.Amount),
                 ("cost", product.Cost * args.Amount),
@@ -539,6 +546,9 @@ namespace Content.Server.Cargo.Systems
             if (!_protoMan.TryIndex(order.ProductId, out var product))
                 return printed;
 
+            if (!TryGetProductName(product, out var name))
+                return printed;
+
             // fill in the order data
             var val = Loc.GetString("cargo-console-paper-print-name", ("orderNumber", order.OrderId));
             _metaSystem.SetEntityName(printed, val);
@@ -548,7 +558,7 @@ namespace Content.Server.Cargo.Systems
                 Loc.GetString(
                     "cargo-console-paper-print-text",
                     ("orderNumber", order.OrderId),
-                    ("itemName", product.Name),
+                    ("itemName", name),
                     ("orderQuantity", order.OrderQuantity),
                     ("requester", order.Requester),
                     ("reason", string.IsNullOrWhiteSpace(order.Reason) ? Loc.GetString("cargo-console-paper-reason-default") : order.Reason),

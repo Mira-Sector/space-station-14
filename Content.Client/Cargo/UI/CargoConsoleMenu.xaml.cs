@@ -140,26 +140,30 @@ namespace Content.Client.Cargo.UI
         public void PopulateProducts()
         {
             Products.RemoveAllChildren();
-            var products = ProductPrototypes.ToList();
-            products.Sort((x, y) =>
-                string.Compare(x.Name, y.Name, StringComparison.CurrentCultureIgnoreCase));
 
-            var search = SearchBar.Text.Trim().ToLowerInvariant();
-            foreach (var prototype in products)
+            Dictionary<string, (CargoProductPrototype, string)> products = [];
+            foreach (var product in ProductPrototypes)
+            {
+                if (SharedCargoSystem.TryGetProductName(product, out var name) && SharedCargoSystem.TryGetProductDescription(product, out var description))
+                    products.Add(name, (product, description));
+            }
+
+            var search = SearchBar.Text.Trim();
+            foreach (var (name, (prototype, description)) in products.OrderBy(x => x.Key))
             {
                 // if no search or category
                 // else if search
                 // else if category and not search
                 if (search.Length == 0 && _category == null ||
-                    search.Length != 0 && prototype.Name.ToLowerInvariant().Contains(search) ||
-                    search.Length != 0 && prototype.Description.ToLowerInvariant().Contains(search) ||
+                    search.Length != 0 && name.Contains(search, StringComparison.InvariantCultureIgnoreCase) ||
+                    search.Length != 0 && description.Contains(search, StringComparison.InvariantCultureIgnoreCase) ||
                     search.Length == 0 && _category != null && Loc.GetString(prototype.Category).Equals(_category))
                 {
                     var button = new CargoProductRow
                     {
                         Product = prototype,
-                        ProductName = { Text = prototype.Name },
-                        MainButton = { ToolTip = prototype.Description },
+                        ProductName = { Text = name },
+                        MainButton = { ToolTip = description },
                         PointCost = { Text = Loc.GetString("cargo-console-menu-points-amount", ("amount", prototype.Cost.ToString())) },
                         Icon = { Texture = _spriteSystem.Frame0(prototype.Icon) },
                     };
@@ -212,8 +216,10 @@ namespace Content.Client.Cargo.UI
                     continue;
 
                 var product = _protoManager.Index(order.ProductId);
-                var productName = product.Name;
                 var account = _protoManager.Index(order.Account);
+
+                if (!SharedCargoSystem.TryGetProductName(product, out var name))
+                    continue;
 
                 var row = new CargoOrderRow
                 {
@@ -223,7 +229,7 @@ namespace Content.Client.Cargo.UI
                     {
                         Text = Loc.GetString(
                             "cargo-console-menu-populate-orders-cargo-order-row-product-name-text",
-                            ("productName", productName),
+                            ("productName", name),
                             ("orderAmount", order.OrderQuantity),
                             ("orderRequester", order.Requester),
                             ("accountColor", account.Color),

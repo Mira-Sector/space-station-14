@@ -4,26 +4,18 @@ using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Systems;
 using Content.Server.Station.Components;
 using Content.Shared.Cargo;
+using Content.Shared.Cargo.Orders;
 using Content.Shared.Cargo.Prototypes;
 using Robust.Server.GameObjects;
 using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
-using Robust.Shared.Utility;
 
 namespace Content.Server.Cargo.Orders;
 
-public sealed partial class CargoProductShuttleData : BaseCargoProductData
+public sealed partial class CargoProductShuttleData : SharedCargoProductShuttleData, IServerCargoProductData
 {
-    [DataField]
-    public ResPath Path;
-
-    public override bool IsValid()
-    {
-        return true;
-    }
-
-    public override EntityUid? FulfillOrder(Entity<StationDataComponent> stationData, ProtoId<CargoAccountPrototype> account, CargoOrderData order, StationCargoOrderDatabaseComponent orderDatabase)
+    public EntityUid? FulfillOrder(Entity<StationDataComponent> stationData, ProtoId<CargoAccountPrototype> account, CargoOrderData order, StationCargoOrderDatabaseComponent orderDatabase)
     {
         var entity = IoCManager.Resolve<IEntityManager>();
         var random = IoCManager.Resolve<IRobustRandom>();
@@ -37,7 +29,7 @@ public sealed partial class CargoProductShuttleData : BaseCargoProductData
         map.CreateMap(out var pausedMap);
         map.SetPaused(pausedMap, true);
 
-        if (!mapLoader.TryLoadGrid(pausedMap, Path, out var shuttleGrid))
+        if (!mapLoader.TryLoadGrid(pausedMap, Shuttle, out var shuttleGrid))
         {
             map.DeleteMap(pausedMap);
             return null;

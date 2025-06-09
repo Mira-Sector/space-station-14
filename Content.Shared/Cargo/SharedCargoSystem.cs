@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Cargo.Components;
 using Content.Shared.Cargo.Prototypes;
 using Robust.Shared.Prototypes;
@@ -54,6 +55,18 @@ public abstract class SharedCargoSystem : EntitySystem
             distribution[account] = existing + remaining * percentage;
         }
         return distribution;
+    }
+
+    public static bool TryGetProductName(CargoProductPrototype product, [NotNullWhen(true)] out string? name)
+    {
+        name = product.Name ?? product.Data.GetName();
+        return name != null;
+    }
+
+    public static bool TryGetProductDescription(CargoProductPrototype product, [NotNullWhen(true)] out string? description)
+    {
+        description = product.Description ?? product.Data.GetDescription();
+        return description != null;
     }
 }
 

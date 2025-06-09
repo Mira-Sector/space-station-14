@@ -1331,5 +1331,5 @@
     prototype: WashingMachine
     stackRequirements:
       Steel: 1
-      MatterBin: 1
+      Manipulator: 1
       Cable: 1
