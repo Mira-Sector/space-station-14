@@ -73,7 +73,7 @@ namespace Content.Client.Tools
             }
 
             var sprite = Comp<SpriteComponent>(animatableClone);
-            _sprite.CopySprite((animatableClone, sprite), (uid, sprite0));
+            _sprite.CopySprite((uid, sprite0), (animatableClone, sprite));
             _sprite.SetVisible((animatableClone, sprite), true);
 
             var player = Comp<AnimationPlayerComponent>(animatableClone);
