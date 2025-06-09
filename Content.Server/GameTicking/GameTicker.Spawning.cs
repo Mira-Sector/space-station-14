@@ -273,14 +273,24 @@ namespace Content.Server.GameTicking
             var newMind = _mind.CreateMind(data!.UserId, character.Name);
             _mind.SetUserId(newMind, data.UserId);
 
+            _playTimeTrackings.PlayerRolesChanged(player);
+
+            var mobMaybe = _stationSpawning.SpawnPlayerCharacterOnStation(station, jobId, character);
+            DebugTools.AssertNotNull(mobMaybe);
+            var mob = mobMaybe!.Value;
+
+            _mind.TransferTo(newMind, mob);
+
+            _roles.MindAddJobRole(newMind, silent: silent, jobPrototype: jobId);
+            _admin.UpdatePlayerList(player);
+
             var jobPrototype = _prototypeManager.Index<JobPrototype>(jobId);
-            _roles.MindAddJobRole(newMind, silent: silent, jobPrototype:jobId);
             var jobName = _jobs.MindTryGetJobName(newMind);
             var jobLoadout = LoadoutSystem.GetJobPrototype(jobPrototype.ID);
 
-            if (_prototypeManager.TryIndex(jobLoadout, out RoleLoadoutPrototype? rolePrototype))
+            if (_prototypeManager.TryIndex<RoleLoadoutPrototype>(jobLoadout, out var rolePrototype))
             {
-                character.Loadouts.TryGetValue(jobLoadout, out RoleLoadout? loadout);
+                character.Loadouts.TryGetValue(jobLoadout, out var loadout);
 
                 if (loadout == null)
                 {
@@ -303,17 +313,6 @@ namespace Content.Server.GameTicking
                     }
                 }
             }
-
-            _playTimeTrackings.PlayerRolesChanged(player);
-
-            var mobMaybe = _stationSpawning.SpawnPlayerCharacterOnStation(station, jobId, character);
-            DebugTools.AssertNotNull(mobMaybe);
-            var mob = mobMaybe!.Value;
-
-            _mind.TransferTo(newMind, mob);
-
-            _roles.MindAddJobRole(newMind, silent: silent, jobPrototype: jobId);
-            _admin.UpdatePlayerList(player);
 
             if (lateJoin && !silent)
             {
