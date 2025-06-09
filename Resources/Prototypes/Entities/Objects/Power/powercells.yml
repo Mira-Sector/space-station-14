@@ -9,7 +9,7 @@
     pricePerJoule: 0.15
   - type: PowerCell
   - type: BatteryTransfer
-    canRecieve: true
+    canReceive: true
     canTransfer: true
   - type: Explosive
     explosionType: Default

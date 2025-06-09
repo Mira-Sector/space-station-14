@@ -1010,7 +1010,7 @@
     proto: RedLightLaser
     fireCost: 50
   - type: BatteryTransfer
-    canRecieve: true
+    canReceive: true
     canTransfer: true
   - type: Explosive
     explosionType: Default

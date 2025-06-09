@@ -106,7 +106,7 @@
   abstract: true
   components:
   - type: BatteryTransfer
-    canRecieve: true
+    canReceive: true
     canTransfer: false
 
 - type: entity
