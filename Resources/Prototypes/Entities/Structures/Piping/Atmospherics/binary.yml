@@ -276,6 +276,11 @@
     - type: Construction
       graph: GasBinary
       node: valve
+    - type: AtmosPipeLayers
+      spriteRsiPaths:
+        Primary: Structures/Piping/Atmospherics/trap.rsi
+        Secondary: Structures/Piping/Atmospherics/trap_alt1.rsi
+        Tertiary: Structures/Piping/Atmospherics/trap_alt2.rsi
 
 - type: entity
   parent: GasBinaryBase
