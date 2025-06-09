@@ -445,7 +445,7 @@
         - ReagentSlimeEphedrine
         - ReagentSlimeRobustHarvest
         - ReagentSlimeJuiceThatMakesYouWeh
-        - ReagentSlimeJuiceThatMakesYouNyah
+        - ReagentSlimeJuiceThatMakesYouNya
         - ReagentSlimePhlogiston
         - ReagentSlimeBananadine
         - ReagentSlimeLaughter
@@ -681,9 +681,9 @@
       color: "#59b23a"
 
 - type: entity
-  id: ReagentSlimeJuiceThatMakesYouNyah
+  id: ReagentSlimeJuiceThatMakesYouNya
   parent: ReagentSlime
-  suffix: Juice That Makes You Nyah
+  suffix: Juice That Makes You Nya
   components:
   - type: Bloodstream
     bloodReagent: JuiceThatMakesYouNya

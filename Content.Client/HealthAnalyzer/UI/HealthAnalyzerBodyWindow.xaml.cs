@@ -124,11 +124,14 @@ public sealed partial class HealthAnalyzerBodyWindow : BaseHealthAnalyzerWindow
     {
         foreach (var data in component.Limbs)
         {
-            if (data.BodyPart == bodyPart)
-            {
-                limbData = data;
-                return true;
-            }
+            if (data.BodyPart.Type != bodyPart.Type)
+                continue;
+
+            if (data.BodyPart.Side != bodyPart.Side)
+                continue;
+
+            limbData = data;
+            return true;
         }
 
         limbData = null;
