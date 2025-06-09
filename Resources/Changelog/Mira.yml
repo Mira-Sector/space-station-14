@@ -1761,3 +1761,9 @@ Entries:
     type: Remove
   id: 251
   time: '2025-06-08T08:00:00.0000000+00:00'
+- author: Wudanty
+  changes:
+  - message: Changed wizard pop requirement to 25 players
+    type: Tweak
+  id: 252
+  time: '2025-06-09T18:20:00.0000000+00:00'
