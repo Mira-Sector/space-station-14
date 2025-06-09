@@ -1,4 +1,6 @@
+using Content.Shared.Cargo.Orders;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Array;
 using Robust.Shared.Utility;
@@ -6,7 +8,7 @@ using Robust.Shared.Utility;
 namespace Content.Shared.Cargo.Prototypes
 {
     [Prototype]
-    public sealed partial class CargoProductPrototype : IPrototype, IInheritingPrototype
+    public sealed class CargoProductPrototype : IPrototype, IInheritingPrototype
     {
         /// <inheritdoc />
         [ParentDataField(typeof(AbstractPrototypeIdArraySerializer<CargoProductPrototype>))]
@@ -17,10 +19,6 @@ namespace Content.Shared.Cargo.Prototypes
         [AbstractDataField]
         public bool Abstract { get; private set; }
 
-        [DataField("name")] private string _name = string.Empty;
-
-        [DataField("description")] private string _description = string.Empty;
-
         [ViewVariables]
         [IdDataField]
         public string ID { get; private set; } = default!;
@@ -28,60 +26,23 @@ namespace Content.Shared.Cargo.Prototypes
         /// <summary>
         ///     Product name.
         /// </summary>
-        [ViewVariables]
-        public string Name
-        {
-            get
-            {
-                if (_name.Trim().Length != 0)
-                    return _name;
-
-                if (IoCManager.Resolve<IPrototypeManager>().TryIndex(Product, out EntityPrototype? prototype))
-                {
-                    _name = prototype.Name;
-                }
-
-                return _name;
-            }
-        }
+        [DataField]
+        public string? Name;
 
         /// <summary>
         ///     Short description of the product.
         /// </summary>
-        [ViewVariables]
-        public string Description
-        {
-            get
-            {
-                if (_description.Trim().Length != 0)
-                    return _description;
+        [DataField]
+        public string? Description;
 
-                if (IoCManager.Resolve<IPrototypeManager>().TryIndex(Product, out EntityPrototype? prototype))
-                {
-                    _description = prototype.Description;
-                }
-
-                return _description;
-            }
-        }
+        [DataField]
+        public BaseCargoProductData Data = default!;
 
         /// <summary>
         ///     Texture path used in the CargoConsole GUI.
         /// </summary>
         [DataField]
         public SpriteSpecifier Icon { get; private set; } = SpriteSpecifier.Invalid;
-
-        /// <summary>
-        ///     The entity prototype ID of the product.
-        /// </summary>
-        [DataField]
-        public EntProtoId? Product;
-
-        /// <summary>
-        ///     The path to the shuttle that will get ftl
-        /// </summary>
-        [DataField]
-        public ResPath? Shuttle;
 
         /// <summary>
         ///     The point cost of the product.
@@ -99,6 +60,6 @@ namespace Content.Shared.Cargo.Prototypes
         ///     The prototype group of the product. (e.g. Contraband)
         /// </summary>
         [DataField]
-        public string Group { get; private set; } = "market";
+        public ProtoId<CargoMarketPrototype> Group { get; private set; } = "market";
     }
 }

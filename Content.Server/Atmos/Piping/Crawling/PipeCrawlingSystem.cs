@@ -11,7 +11,7 @@ public sealed class PipeCrawlingSystem : EntitySystem
     [Dependency] private readonly InternalsSystem _internals = default!;
     [Dependency] private readonly NodeContainerSystem _nodeContainer = default!;
 
-    const string NodeName = "pipe";
+    private const string NodeName = "pipe";
 
     public override void Initialize()
     {

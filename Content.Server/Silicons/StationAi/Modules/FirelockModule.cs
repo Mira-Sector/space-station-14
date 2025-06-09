@@ -1,4 +1,5 @@
 using Content.Server.Atmos.Monitor.Components;
+using Content.Shared.Charges.Components;
 using Content.Shared.Doors.Components;
 using Content.Shared.Silicons.StationAi;
 using Content.Shared.Silicons.StationAi.Modules;
@@ -37,7 +38,7 @@ public sealed class FirelockModuleSystem : EntitySystem
         if (!args.Handled)
             return;
 
-        if (args.Action.Comp.Charges > 0)
+        if (TryComp<LimitedChargesComponent>(args.Action.Owner, out var charges) && charges.LastCharges > 0)
             return;
 
         EntityManager.DeleteEntity(args.Action);

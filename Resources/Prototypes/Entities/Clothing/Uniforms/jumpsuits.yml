@@ -229,7 +229,13 @@
     node: jumpsuit
   - type: Armor
     modifiers:
-      [ Torso, Arm, Leg ] : { coefficients: { Radiation: 0.8 } }
+    - parts:
+      - Torso
+      - Arm
+      - Leg
+      modifier:
+        coefficients:
+          Radiation: 0.8
 
 - type: entity
   parent: ClothingUniformBase
@@ -384,6 +390,17 @@
     sprite: Clothing/Uniforms/Jumpsuit/hos_parade.rsi
 
 - type: entity
+  parent: [ ClothingUniformBase, BaseCommandContraband ]
+  id: ClothingUniformJumpsuitCommandGeneric
+  name: command jumpsuit
+  description: A generic Command-colored jumpsuit not associated with any particular department.
+  components:
+  - type: Sprite
+    sprite: Clothing/Uniforms/Jumpsuit/commandgeneric.rsi
+  - type: Clothing
+    sprite: Clothing/Uniforms/Jumpsuit/commandgeneric.rsi
+
+- type: entity
   parent: ClothingUniformBase
   id: ClothingUniformJumpsuitHydroponics
   name: hydroponics jumpsuit
@@ -496,6 +513,7 @@
   - type: Tag
     tags:
     - ClothMade
+    - Recyclable
     - PrisonUniform
     - WhitelistChameleon
 

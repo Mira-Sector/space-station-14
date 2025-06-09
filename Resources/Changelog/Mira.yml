@@ -1747,3 +1747,17 @@ Entries:
     type: Add
   id: 250
   time: '2025-06-02T18:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Reverted morph pending a rewrite
+    type: Remove
+  - message: Removed buggy humanoid ghosts
+    type: Remove
+  - message: Shuttle ordering has been reworked so they dock at the ATS
+    type: Add
+  - message: Removed telepads
+    type: Remove
+  - message: Removed AI screen loadouts
+    type: Remove
+  id: 251
+  time: '2025-06-08T08:00:00.0000000+00:00'

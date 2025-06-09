@@ -1,5 +1,5 @@
-using Content.Server.NodeContainer.NodeGroups;
 using Content.Shared.Electrocution;
+using Content.Shared.NodeContainer.NodeGroups;
 
 namespace Content.Server.Electrocution;
 

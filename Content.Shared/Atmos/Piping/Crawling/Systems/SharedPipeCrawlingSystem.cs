@@ -82,28 +82,23 @@ public sealed class SharedPipeCrawlingSystem : EntitySystem
                 continue;
             }
 
-            var newPipes = pipeComp.ConnectedPipes[direction];
+            var newPipe = pipeComp.ConnectedPipes[direction];
 
-            // only insert us into the first available pipe
-            foreach (var newPipe in newPipes)
+            if (_containers.TryGetContainer(component.CurrentPipe, PipeContainer, out var currentPipeContainer) &&
+                TryComp<PipeCrawlingPipeComponent>(component.CurrentPipe, out var currentPipeComp))
             {
-                if (_containers.TryGetContainer(component.CurrentPipe, PipeContainer, out var currentPipeContainer) &&
-                    TryComp<PipeCrawlingPipeComponent>(component.CurrentPipe, out var currentPipeComp))
-                {
-                    var newPipeCoords = Transform(newPipe).Coordinates;
-                    _containers.Remove(uid, currentPipeContainer, destination: newPipeCoords, localRotation: direction.ToAngle());
-                }
-
-                if (_containers.TryGetContainer(newPipe, PipeContainer, out var newPipeContainer) &&
-                TryComp<PipeCrawlingPipeComponent>(newPipe, out var newPipeComp))
-                {
-                    _containers.Insert(uid, newPipeContainer);
-                }
-
-                component.CurrentPipe = newPipe;
-                Dirty(uid, component);
-                break;
+                var newPipeCoords = Transform(newPipe).Coordinates;
+                _containers.Remove(uid, currentPipeContainer, destination: newPipeCoords, localRotation: direction.ToAngle());
             }
+
+            if (_containers.TryGetContainer(newPipe, PipeContainer, out var newPipeContainer) &&
+            TryComp<PipeCrawlingPipeComponent>(newPipe, out var newPipeComp))
+            {
+                _containers.Insert(uid, newPipeContainer);
+            }
+
+            component.CurrentPipe = newPipe;
+            Dirty(uid, component);
         }
     }
 

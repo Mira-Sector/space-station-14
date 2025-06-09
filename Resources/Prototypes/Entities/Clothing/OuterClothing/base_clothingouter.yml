@@ -105,6 +105,9 @@
   id: ClothingOuterHardsuitBase
   name: base hardsuit
   components:
+# SlotBlocker blocked until UI change
+#  - type: SlotBlock
+#    slots: [innerclothing, feet]
   - type: PressureProtection
     highPressureMultiplier: 0.3
     lowPressureMultiplier: 1000
@@ -119,7 +122,17 @@
     size: Ginormous
   - type: Armor
     modifiers:
-      [ Torso, Arm, Leg ] : { coefficients: { Blunt: 0.90, Slash: 0.90, Piercing: 0.95, Heat: 0.90, Radiation: 0.25 } }
+    - parts:
+      - Torso
+      - Arm
+      - Leg
+      modifier:
+        coefficients:
+          Blunt: 0.90
+          Slash: 0.90
+          Piercing: 0.95
+          Heat: 0.90
+          Radiation: 0.25
   - type: ToggleableClothing
     slot: head
   - type: ContainerContainer
@@ -144,6 +157,9 @@
   id: ClothingOuterEVASuitBase
   name: base EVA Suit
   components:
+# SlotBlocker blocked until UI change
+#  - type: SlotBlock
+#    slots: [innerclothing, feet]
   - type: PressureProtection
     highPressureMultiplier: 0.6
     lowPressureMultiplier: 1000

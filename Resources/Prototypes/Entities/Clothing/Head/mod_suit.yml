@@ -73,7 +73,9 @@
     - type: Armor
       basePart: Head
       modifiers:
-        [ Head ] :
+      - parts:
+        - Head
+        modifier:
           coefficients:
             Blunt: 0.8
             Slash: 0.8

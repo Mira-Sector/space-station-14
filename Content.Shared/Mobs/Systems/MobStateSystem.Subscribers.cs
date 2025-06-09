@@ -105,6 +105,9 @@ public partial class MobStateSystem
         if (_timing.ApplyingState)
             return;
 
+        if (TerminatingOrDeleted(target))
+            return;
+
         _blocker.UpdateCanMove(target); //update movement anytime a state changes
         switch (state)
         {

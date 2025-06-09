@@ -8,12 +8,15 @@ namespace Content.Shared.MedicalScanner;
 public sealed partial class HealthAnalyzerBodyComponent : Component
 {
     [DataField]
-    public Dictionary<BodyPart, HealthAnalyzerLimb> Limbs = new();
+    public List<HealthAnalyzerLimb> Limbs = [];
 }
 
 [DataDefinition, Serializable, NetSerializable]
 public sealed partial class HealthAnalyzerLimb
 {
+    [DataField(required: true)]
+    public BodyPart BodyPart;
+
     [DataField(required: true)]
     public SpriteSpecifier HoverSprite = default!;
 

@@ -26,8 +26,8 @@
     - category: Thirst
     - alertType: Magboots
     - alertType: Crawling
+    - alertType: Rooted
     - alertType: Pacified
-    - alertType: Deflecting
 
 - type: entity
   id: AlertSpriteView
@@ -137,6 +137,7 @@
     state: walking
   name: alerts-walking-name
   description: alerts-walking-desc
+  clientHandled: true
 
 - type: alert
   id: Stun
@@ -503,11 +504,3 @@
     state: critical
   name: Debug6
   description: Debug
-
-- type: alert
-  id: Deflecting
-  icons:
-  - sprite: /Textures/Interface/Alerts/deflecting.rsi
-    state: deflecting0
-  name: alerts-deflecting-name
-  description: alerts-deflecting-desc

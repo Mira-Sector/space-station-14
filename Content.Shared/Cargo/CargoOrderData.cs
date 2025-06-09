@@ -1,5 +1,6 @@
+using Content.Shared.Cargo.Prototypes;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
-using Robust.Shared.Utility;
 using System.Text;
 namespace Content.Shared.Cargo
 {
@@ -7,37 +8,13 @@ namespace Content.Shared.Cargo
     public sealed partial class CargoOrderData
     {
         /// <summary>
-        /// Price when the order was added.
-        /// </summary>
-        [DataField]
-        public int Price;
-
-        /// <summary>
         /// A unique (arbitrary) ID which identifies this order.
         /// </summary>
         [DataField]
         public int OrderId { get; private set; }
 
-        /// <summary>
-        /// Prototype Id for the item to be created
-        /// </summary>
         [DataField]
-        public string? ProductId { get; private set; }
-
-        /// <summary>
-        /// Prototype Id for the item to be created
-        /// </summary>
-        [DataField]
-        public ResPath? Shuttle { get; private set; }
-
-        [DataField]
-        public SpriteSpecifier IconOverride { get; private set; } = SpriteSpecifier.Invalid;
-
-        /// <summary>
-        /// Prototype Name
-        /// </summary>
-        [DataField]
-        public string ProductName { get; private set; }
+        public ProtoId<CargoProductPrototype> ProductId { get; private set; }
 
         /// <summary>
         /// The number of items in the order. Not readonly, as it might change
@@ -62,17 +39,20 @@ namespace Content.Shared.Cargo
         [DataField]
         public string? Approver;
 
-        public CargoOrderData(int orderId, string productId, string productName, int price, int amount, string requester, string reason, ResPath? shuttle = null, SpriteSpecifier? iconOverride = null)
+        /// <summary>
+        /// Which account to deduct funds from when ordering
+        /// </summary>
+        [DataField]
+        public ProtoId<CargoAccountPrototype> Account;
+
+        public CargoOrderData(int orderId, ProtoId<CargoProductPrototype> productId, int amount, string requester, string reason, ProtoId<CargoAccountPrototype> account)
         {
             OrderId = orderId;
             ProductId = productId;
-            ProductName = productName;
-            Price = price;
             OrderQuantity = amount;
             Requester = requester;
             Reason = reason;
-            Shuttle = shuttle;
-            IconOverride = iconOverride ?? SpriteSpecifier.Invalid;
+            Account = account;
         }
 
         public void SetApproverData(string? approver)
