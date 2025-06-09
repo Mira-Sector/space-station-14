@@ -1,18 +1,3 @@
-# Senior times
-- type: loadoutEffectGroup
-  id: SeniorSalvage
-  effects:
-  - !type:JobRequirementLoadoutEffect
-    requirement:
-      !type:RoleTimeRequirement
-      role: JobSalvageSpecialist
-      time: 18000
-  - !type:JobRequirementLoadoutEffect
-    requirement:
-      !type:DepartmentTimeRequirement
-      department: Cargo
-      time: 25200
-
 # Back
 - type: loadout
   id: SalvageSpecialistBackpack
@@ -30,14 +15,6 @@
     back: ClothingBackpackDuffelSalvage
 
 # Neck
-- type: loadout
-  id: SalvageSpecialistCloak
-  equipment:
-    neck: ClothingNeckCloakMiner
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: SeniorSalvage
-
 # OuterClothing
 - type: loadout
   id: SalvageSpecialistWintercoat
