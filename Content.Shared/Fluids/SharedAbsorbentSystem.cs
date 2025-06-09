@@ -79,7 +79,7 @@ public abstract class SharedAbsorbentSystem : EntitySystem
 
     private void OnUnstrapped(EntityUid uid, AbsorbentToggleComponent component, ref UnstrappedEvent args)
     {
-        _actions.RemoveAction(args.Buckle, component.AbsorbentAction);
+        _actions.RemoveAction(component.AbsorbentAction);
         Dirty(uid, component);
     }
 

@@ -1,14 +1,10 @@
 using Content.Shared.Eye;
 using Content.Shared.Hands;
 using Content.Shared.Interaction;
-using Content.Shared.Verbs;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
-using Robust.Shared.Utility;
 using Content.Shared.Inventory.Events;
-using Robust.Shared.GameStates;
 using Robust.Shared.Network;
-using Robust.Shared.Serialization;
 
 namespace Content.Shared.SubFloor;
 
@@ -27,8 +23,6 @@ public abstract class SharedTrayScannerSystem : EntitySystem
         SubscribeLocalEvent<TrayScannerComponent, ComponentGetState>(OnTrayScannerGetState);
         SubscribeLocalEvent<TrayScannerComponent, ComponentHandleState>(OnTrayScannerHandleState);
         SubscribeLocalEvent<TrayScannerComponent, ActivateInWorldEvent>(OnTrayScannerActivate);
-        SubscribeLocalEvent<TrayScannerComponent, ComponentInit>(OnTrayScannerInit);
-        SubscribeLocalEvent<TrayScannerComponent, GetVerbsEvent<Verb>>(OnGetVerbs);
 
         SubscribeLocalEvent<TrayScannerComponent, GotEquippedHandEvent>(OnTrayHandEquipped);
         SubscribeLocalEvent<TrayScannerComponent, GotUnequippedHandEvent>(OnTrayHandUnequipped);
@@ -37,55 +31,6 @@ public abstract class SharedTrayScannerSystem : EntitySystem
 
         SubscribeLocalEvent<TrayScannerUserComponent, GetVisMaskEvent>(OnUserGetVis);
     }
-
-    private void OnTrayScannerInit(EntityUid uid, TrayScannerComponent scanner, ref ComponentInit args)
-    {
-        foreach (var layer in scanner.ToggleableLayers)
-            scanner.RevealedLayers.Add(layer);
-    }
-
-    private void OnGetVerbs(EntityUid uid, TrayScannerComponent scanner, GetVerbsEvent<Verb> args)
-    {
-        if (!scanner.CanToggleLayers)
-            return;
-
-        foreach (var layer in scanner.ToggleableLayers)
-        {
-            Verb verb = new()
-            {
-                Text = Loc.GetString("pipe-layerable-status", ("layer", layer)),
-                Category = VerbCategory.TrayLayer,
-                Priority = layer,
-                Act = () =>
-                {
-                    if (scanner.RevealedLayers.Contains(layer))
-                    {
-                        scanner.RevealedLayers.Remove(layer);
-                    }
-                    else
-                    {
-                        scanner.RevealedLayers.Add(layer);
-                    }
-
-                    Dirty(uid, scanner);
-                }
-            };
-
-            if (scanner.RevealedLayers.Contains(layer))
-            {
-                verb.TextStyleClass = Verbs.AlternativeVerb.DefaultTextStyleClass;
-                verb.Icon = new SpriteSpecifier.Texture(new ResPath("/Textures/Interface/Changelog/minus.svg.192dpi.png"));
-            }
-            else
-            {
-                verb.TextStyleClass = Verbs.Verb.DefaultTextStyleClass;
-                verb.Icon = new SpriteSpecifier.Texture(new ResPath("/Textures/Interface/Changelog/plus.svg.192dpi.png"));
-            }
-
-            args.Verbs.Add(verb);
-        }
-    }
-
 
     private void OnUserGetVis(Entity<TrayScannerUserComponent> ent, ref GetVisMaskEvent args)
     {
@@ -171,7 +116,7 @@ public abstract class SharedTrayScannerSystem : EntitySystem
 
     private void OnTrayScannerGetState(EntityUid uid, TrayScannerComponent scanner, ref ComponentGetState args)
     {
-        args.State = new TrayScannerState(scanner.Enabled, scanner.Range, scanner.RevealedLayers);
+        args.State = new TrayScannerState(scanner.Enabled, scanner.Range);
     }
 
     private void OnTrayScannerHandleState(EntityUid uid, TrayScannerComponent scanner, ref ComponentHandleState args)
@@ -180,7 +125,6 @@ public abstract class SharedTrayScannerSystem : EntitySystem
             return;
 
         scanner.Range = state.Range;
-        scanner.RevealedLayers = state.RevealedLayers;
         SetScannerEnabled(uid, state.Enabled, scanner);
     }
 }

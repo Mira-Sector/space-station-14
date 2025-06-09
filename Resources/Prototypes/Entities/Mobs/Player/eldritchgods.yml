@@ -87,6 +87,9 @@
   - type: GravityWell
     baseRadialAcceleration: 6
     maxRange: 8
+  - type: Tag
+    tags:
+    - GhostOnlyWarp
 
 - type: entity
   parent: [MobNarsieBase, MobEldergodBase, BaseMob]
@@ -101,6 +104,9 @@
   - type: WarpPoint
     follow: true
     location: Nar'Sie
+    blacklist:
+      tags:
+      - GhostOnlyWarp
 
 - type: entity
   abstract: true
@@ -143,6 +149,9 @@
   - type: WarpPoint
     follow: true
     location: Ratvar
+    blacklist:
+      tags:
+      - GhostOnlyWarp
 
 - type: entity
   abstract: true
@@ -187,3 +196,6 @@
   - type: WarpPoint
     follow: true
     location: Honkmother
+    blacklist:
+      tags:
+      - GhostOnlyWarp

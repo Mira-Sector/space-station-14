@@ -114,11 +114,11 @@ alerts-revenant-essence-desc = The power of souls. It sustains you and is used f
 alerts-revenant-corporeal-name = Corporeal
 alerts-revenant-corporeal-desc = You have manifested physically. People around you can see and hurt you.
 
-alerts-deflecting-name = Deflecting
-alerts-deflecting-desc = You have a chance to deflect incoming projectiles. Standing still or moving slowly will increase this chance.
-
 alerts-crawling-name = Crawling
 alerts-crawling-desc = You're crawling.
 
 alerts-limbs-name = Limb Damage
 alerts-limbs-desc = Where your booboos are on your body.
+
+alerts-rooted-name = Rooted
+alerts-rooted-desc = You are attached to the ground. You can't slip, but you absorb fluids under you.

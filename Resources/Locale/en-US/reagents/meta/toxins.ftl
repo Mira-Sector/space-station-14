@@ -84,3 +84,6 @@ reagent-desc-mechanotoxin = A neurotoxin used as venom by some species of spider
 
 reagent-name-voidoil = void oil
 reagent-desc-voidoil = An anomalous liquid that consumes other chemicals to create more of itself, if ingested it will rapidly drain the victim's bodily fluids, it will also consume any other chemicals in their system.
+
+reagent-name-toxintrash = trash
+reagent-desc-toxintrash = An awful-smelling fluid. Deadly to non-vox.

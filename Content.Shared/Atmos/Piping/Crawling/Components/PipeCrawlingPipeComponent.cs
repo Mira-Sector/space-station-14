@@ -6,7 +6,7 @@ namespace Content.Shared.Atmos.Piping.Crawling.Components;
 public sealed partial class PipeCrawlingPipeComponent : Component
 {
     [ViewVariables]
-    public Dictionary<Direction, HashSet<EntityUid>> ConnectedPipes = new();
+    public Dictionary<Direction, EntityUid> ConnectedPipes = new();
 
     [ViewVariables]
     public List<EntityUid> UpdatedBy = new();

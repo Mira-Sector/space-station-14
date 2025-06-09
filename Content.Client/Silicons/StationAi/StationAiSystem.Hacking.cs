@@ -6,9 +6,11 @@ namespace Content.Client.Silicons.StationAi;
 
 public sealed partial class StationAiSystem
 {
+    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+
     private void InitializeHacking()
     {
-        SubscribeLocalEvent<StationAiHackableComponent , GetStationAiRadialEvent>(OnHackableGetRadial);
+        SubscribeLocalEvent<StationAiHackableComponent, GetStationAiRadialEvent>(OnHackableGetRadial);
 
         SubscribeLocalEvent<ShowHackingHUDComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<ShowHackingHUDComponent, ComponentShutdown>(OnShutdown);

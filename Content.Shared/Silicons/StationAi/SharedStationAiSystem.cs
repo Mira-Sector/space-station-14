@@ -34,6 +34,7 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Timing;
 using System.Diagnostics.CodeAnalysis;
+using Robust.Shared.Utility;
 
 namespace Content.Shared.Silicons.StationAi;
 
@@ -63,6 +64,7 @@ public abstract partial class SharedStationAiSystem : EntitySystem
     [Dependency] private readonly   SharedUserInterfaceSystem _uiSystem = default!;
     [Dependency] private readonly   StationAiVisionSystem _vision = default!;
     [Dependency] private readonly   EntityWhitelistSystem _whitelist = default!;
+    [Dependency] private readonly   IPrototypeManager _protoManager = default!;
 
     // StationAiHeld is added to anything inside of an AI core.
     // StationAiHolder indicates it can hold an AI positronic brain (e.g. holocard / core).
@@ -91,6 +93,7 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         InitializeHeld();
         InitializeLight();
         InitializeShunting();
+        InitializeCustomization();
 
         SubscribeLocalEvent<StationAiWhitelistComponent, BoundUserInterfaceCheckRangeEvent>(OnAiBuiCheck);
 
@@ -112,34 +115,39 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         SubscribeLocalEvent<StationAiCoreComponent, MapInitEvent>(OnAiMapInit);
         SubscribeLocalEvent<StationAiCoreComponent, ComponentShutdown>(OnAiShutdown);
         SubscribeLocalEvent<StationAiCoreComponent, GetVerbsEvent<Verb>>(OnCoreVerbs);
-
-        SubscribeLocalEvent<StationAiCoreSpriteComponent, ComponentInit>(OnCoreSpriteInit);
-        SubscribeLocalEvent<StationAiCoreSpriteComponent, EntGotInsertedIntoContainerMessage>((u, c, e) => OnInsert((u, c), e.Container.Owner));
-        SubscribeLocalEvent<StationAiCoreSpriteComponent, EntGotRemovedFromContainerMessage>((u, c, e) => OnRemoved((u, c), e.Container.Owner));
-        SubscribeLocalEvent<StationAiCoreSpriteComponent, SiliconSyncMasterGetIconEvent>(OnCoreSpriteGetMasterIcon);
     }
 
     private void OnCoreVerbs(Entity<StationAiCoreComponent> ent, ref GetVerbsEvent<Verb> args)
     {
-        if (!_admin.IsAdmin(args.User) ||
-            TryGetHeld((ent.Owner, ent.Comp), out _))
-        {
-            return;
-        }
-
         var user = args.User;
 
-        args.Verbs.Add(new Verb()
+        // Admin option to take over the station AI core
+        if (_admin.IsAdmin(args.User) &&
+            !TryGetHeld((ent.Owner, ent.Comp), out _))
         {
-            Text = Loc.GetString("station-ai-takeover"),
-            Category = VerbCategory.Debug,
-            Act = () =>
+            args.Verbs.Add(new Verb()
             {
-                var brain = SpawnInContainerOrDrop(DefaultAi, ent.Owner, StationAiCoreComponent.Container);
-                _mind.ControlMob(user, brain);
-            },
-            Impact = LogImpact.High,
-        });
+                Text = Loc.GetString("station-ai-takeover"),
+                Category = VerbCategory.Debug,
+                Act = () =>
+                {
+                    var brain = SpawnInContainerOrDrop(DefaultAi, ent.Owner, StationAiCoreComponent.Container);
+                    _mind.ControlMob(user, brain);
+                },
+                Impact = LogImpact.High,
+            });
+        }
+
+        // Option to open the station AI customization menu
+        if (TryGetHeld((ent, ent.Comp), out var insertedAi) && insertedAi == user)
+        {
+            args.Verbs.Add(new Verb()
+            {
+                Text = Loc.GetString("station-ai-customization-menu"),
+                Act = () => _uiSystem.TryOpenUi(ent.Owner, StationAiCustomizationUiKey.Key, insertedAi),
+                Icon = new SpriteSpecifier.Texture(new("/Textures/Interface/emotes.svg.192dpi.png")),
+            });
+        }
     }
 
     private void OnAiAccessible(Entity<StationAiOverlayComponent> ent, ref AccessibleOverrideEvent args)
@@ -391,10 +399,19 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         EntityCoordinates? coords = ent.Comp.RemoteEntity != null ? Transform(ent.Comp.RemoteEntity.Value).Coordinates : null;
 
         // Attach new eye
+        var oldEye = ent.Comp.RemoteEntity;
+
         ClearEye(ent);
 
         if (SetupEye(ent, coords))
             AttachEye(ent);
+
+        if (oldEye != null)
+        {
+            // Raise the following event on the old eye before it's deleted
+            var ev = new StationAiRemoteEntityReplacementEvent(ent.Comp.RemoteEntity);
+            RaiseLocalEvent(oldEye.Value, ref ev);
+        }
 
         // Adjust user FoV
         var user = GetInsertedAI(ent);
@@ -514,92 +531,27 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         ClearEye(ent);
     }
 
-    private void OnCoreSpriteInit(Entity<StationAiCoreSpriteComponent> ent, ref ComponentInit args)
-    {
-        if (!_containers.TryGetContainingContainer(ent, out var container))
-            return;
-
-        OnInsert(ent, container.Owner);
-    }
-
-    private void OnInsert(Entity<StationAiCoreSpriteComponent> ent, EntityUid container)
-    {
-        if (!TryComp<StationAiHolderComponent>(container, out var coreComp))
-            return;
-
-        if (!coreComp.UpdateSprite)
-            return;
-
-        ent.Comp.CoreUid = container;
-        ent.Comp.OldVisuals = coreComp.Visuals;
-        Dirty(ent);
-
-        var _oldVisuals = coreComp.Visuals;
-        foreach (var (state, layers) in _oldVisuals)
-        {
-            if (!ent.Comp.Visuals.ContainsKey(state))
-                continue;
-
-            foreach (var (layer, sprite) in layers)
-            {
-                if (!ent.Comp.Visuals[state].ContainsKey(layer))
-                    continue;
-
-                coreComp.Visuals[state][layer] = ent.Comp.Visuals[state][layer];
-            }
-        }
-
-        Dirty(container, coreComp);
-
-        coreComp.AiDied = false;
-        Dirty(container, coreComp);
-        UpdateAppearance((container, coreComp));
-    }
-
-    private void OnRemoved(Entity<StationAiCoreSpriteComponent> ent, EntityUid container)
-    {
-        if (container != ent.Comp.CoreUid)
-            return;
-
-        if (!TryComp<StationAiHolderComponent>(container, out var coreComp))
-            return;
-
-        if (!coreComp.UpdateSprite)
-            return;
-
-        coreComp.Visuals = ent.Comp.OldVisuals;
-        Dirty(container, coreComp);
-
-        UpdateAppearance((container, coreComp));
-    }
-
     protected void UpdateAppearance(Entity<StationAiHolderComponent?> entity)
     {
         if (!Resolve(entity.Owner, ref entity.Comp, false))
             return;
 
+        var state = StationAiState.Empty;
+
         if (entity.Comp.AiDied)
+            state = StationAiState.Dead;
+        else if (_containers.TryGetContainer(entity.Owner, StationAiHolderComponent.Container, out var container) && container.Count > 0)
+            state = StationAiState.Occupied;
+
+        // If the entity is a station AI core, attempt to customize its appearance
+        if (TryComp<StationAiCoreComponent>(entity, out var stationAiCore))
         {
-            _appearance.SetData(entity.Owner, StationAiVisualState.Key, StationAiState.Dead);
+            CustomizeAppearance((entity, stationAiCore), state);
             return;
         }
 
-        if (!_containers.TryGetContainer(entity.Owner, StationAiHolderComponent.Container, out var container) ||
-            container.Count == 0)
-        {
-            _appearance.SetData(entity.Owner, StationAiVisualState.Key, StationAiState.Empty);
-            return;
-        }
-
-        _appearance.SetData(entity.Owner, StationAiVisualState.Key, StationAiState.Occupied);
-    }
-
-    private void OnCoreSpriteGetMasterIcon(Entity<StationAiCoreSpriteComponent> ent, ref SiliconSyncMasterGetIconEvent args)
-    {
-        if (!ent.Comp.Visuals.TryGetValue(StationAiState.Occupied, out var visuals))
-            return;
-
-        visuals.TryGetValue(StationAiVisualLayers.Screen, out args.Icon);
+        // Otherwise let generic visualizers handle the appearance update
+        _appearance.SetData(entity.Owner, StationAiVisualState.Key, state);
     }
 
     public virtual void AnnounceAi(EntityUid uid, string msg, SoundSpecifier? cue = null) { }
@@ -733,10 +685,10 @@ public enum StationAiVisualState : byte
     Key,
 }
 
-public enum StationAiVisualLayers : byte
+[Serializable, NetSerializable]
+public enum StationAiSpriteState : byte
 {
-    Base,
-    Screen
+    Key,
 }
 
 [Serializable, NetSerializable]
@@ -745,4 +697,5 @@ public enum StationAiState : byte
     Empty,
     Occupied,
     Dead,
+    Hologram,
 }

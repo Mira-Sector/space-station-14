@@ -30,7 +30,6 @@ namespace Content.Server.GameTicking
 {
     public sealed partial class GameTicker
     {
-        [Dependency] private readonly IConfigurationManager _configurationManager = default!;
         [Dependency] private readonly DiscordWebhook _discord = default!;
         [Dependency] private readonly RoleSystem _role = default!;
         [Dependency] private readonly ITaskManager _taskManager = default!;
@@ -95,7 +94,7 @@ namespace Content.Server.GameTicking
         /// </remarks>
         private void LoadMaps()
         {
-            if (_mapManager.MapExists(DefaultMap))
+            if (_map.MapExists(DefaultMap))
                 return;
 
             AddGamePresetRules();
@@ -214,7 +213,7 @@ namespace Content.Server.GameTicking
 
                 UpdateMapCVars(proto);
                 _metaData.SetEntityName(mapUid, proto.MapName);
-                var g = new List<EntityUid> {grid.Value.Owner};
+                var g = new List<EntityUid> { grid.Value.Owner };
                 RaiseLocalEvent(new PostGameMapLoad(proto, mapId, g, stationName));
                 return g;
             }
@@ -266,7 +265,7 @@ namespace Content.Server.GameTicking
 
                 UpdateMapCVars(proto);
                 _metaData.SetEntityName(mapUid, proto.MapName);
-                var g = new List<EntityUid> {grid.Value.Owner};
+                var g = new List<EntityUid> { grid.Value.Owner };
                 RaiseLocalEvent(new PostGameMapLoad(proto, mapId, g, stationName));
                 return g;
             }
@@ -318,7 +317,7 @@ namespace Content.Server.GameTicking
                 }
 
                 UpdateMapCVars(proto);
-                var g = new List<EntityUid> {grid.Value.Owner};
+                var g = new List<EntityUid> { grid.Value.Owner };
                 // TODO MAP LOADING use a new event?
                 RaiseLocalEvent(new PostGameMapLoad(proto, targetMap, g, stationName));
                 return g;
@@ -345,18 +344,18 @@ namespace Content.Server.GameTicking
         private void UpdateMapCVars(GameMapPrototype proto)
         {
             foreach (var (cvar, value) in _modifiedCvars)
-                _configurationManager.SetCVar(cvar, value);
+                _cfg.SetCVar(cvar, value);
 
             _modifiedCvars.Clear();
 
             foreach (var (cvar, value) in proto.CVars)
             {
-                var oldValue = _configurationManager.GetCVar<object>(cvar);
+                var oldValue = _cfg.GetCVar<object>(cvar);
                 _modifiedCvars.Add(cvar, oldValue);
 
-                var type = _configurationManager.GetCVarType(cvar);
+                var type = _cfg.GetCVarType(cvar);
                 var parsed = CVarCommandUtil.ParseObject(type, value);
-                _configurationManager.SetCVar(cvar, parsed);
+                _cfg.SetCVar(cvar, parsed);
             }
         }
 
@@ -419,7 +418,7 @@ namespace Content.Server.GameTicking
                 HumanoidCharacterProfile profile;
                 if (_prefsManager.TryGetCachedPreferences(userId, out var preferences))
                 {
-                    profile = (HumanoidCharacterProfile) preferences.SelectedCharacter;
+                    profile = (HumanoidCharacterProfile)preferences.SelectedCharacter;
                 }
                 else
                 {
@@ -675,6 +674,9 @@ namespace Content.Server.GameTicking
             // Handle restart for server update
             if (_serverUpdates.RoundEnded())
                 return;
+
+            // Check if the GamePreset needs to be reset
+            TryResetPreset();
 
             _sawmill.Info("Restarting round!");
 

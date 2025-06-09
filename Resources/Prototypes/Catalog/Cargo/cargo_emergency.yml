@@ -3,7 +3,8 @@
   icon:
     sprite: Clothing/Head/Helmets/bombsuit.rsi
     state: icon
-  product: CrateEmergencyExplosive
+  data: !type:CargoProductItemData
+    product: CrateEmergencyExplosive
   cost: 1000
   category: cargoproduct-category-name-emergency
   group: market
@@ -13,7 +14,8 @@
   icon:
     sprite: Objects/Misc/fire_extinguisher.rsi
     state: fire_extinguisher_closed
-  product: CrateEmergencyFire
+  data: !type:CargoProductItemData
+    product: CrateEmergencyFire
   cost: 1500
   category: cargoproduct-category-name-emergency
   group: market
@@ -23,7 +25,8 @@
   icon:
     sprite: Clothing/Mask/breath.rsi
     state: icon
-  product: CrateEmergencyInternals
+  data: !type:CargoProductItemData
+    product: CrateEmergencyInternals
   cost: 600
   category: cargoproduct-category-name-emergency
   group: market
@@ -33,7 +36,8 @@
   icon:
     sprite: Clothing/Mask/breath.rsi
     state: icon
-  product: CrateEmergencyInternalsLarge
+  data: !type:CargoProductItemData
+    product: CrateEmergencyInternalsLarge
   cost: 1200
   category: cargoproduct-category-name-emergency
   group: market
@@ -43,7 +47,8 @@
   icon:
     sprite: Structures/Wallmounts/signs.rsi
     state: radiation
-  product: CrateEmergencyRadiation
+  data: !type:CargoProductItemData
+    product: CrateEmergencyRadiation
   cost: 1000
   category: cargoproduct-category-name-emergency
   group: market
@@ -53,7 +58,8 @@
   icon:
     sprite: Objects/Misc/inflatable_wall.rsi
     state: item_wall
-  product: CrateEmergencyInflatablewall
+  data: !type:CargoProductItemData
+    product: CrateEmergencyInflatablewall
   cost: 500
   category: cargoproduct-category-name-emergency
   group: market
@@ -63,7 +69,8 @@
   icon:
     sprite: Objects/Tanks/red.rsi
     state: icon
-  product: CrateNitrogenInternals
+  data: !type:CargoProductItemData
+    product: CrateNitrogenInternals
   cost: 350
   category: cargoproduct-category-name-emergency
   group: market
@@ -73,7 +80,8 @@
   icon:
     sprite: Clothing/Head/Hoods/Bio/general.rsi
     state: icon
-  product: CrateGenericBiosuit
+  data: !type:CargoProductItemData
+    product: CrateGenericBiosuit
   cost: 800
   category: cargoproduct-category-name-emergency
   group: market

@@ -1,4 +1,3 @@
-using Content.Server.NodeContainer;
 using Content.Server.NodeContainer.Nodes;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Piping.Crawling.Components;
@@ -6,6 +5,7 @@ using Robust.Shared.Containers;
 using Content.Shared.Destructible;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map.Components;
+using Content.Shared.NodeContainer;
 
 namespace Content.Server.Atmos.Piping.Crawling;
 
@@ -15,7 +15,7 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
     [Dependency] private readonly SharedContainerSystem _containers = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
 
-    const string PipeContainer = "pipe";
+    private const string PipeContainer = "pipe";
 
     public override void Initialize()
     {
@@ -75,13 +75,10 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
         if (HasComp<PipeCrawlingPipeBlockComponent>(uid))
             return;
 
-        if (!TryComp<TransformComponent>(uid, out var xform))
-            return;
-
         if (!TryComp<NodeContainerComponent>(uid, out var nodeComp))
             return;
 
-        // get the current pipes directions to iterate over
+        // get the current pipes directions to itterate over
         if (currentPipeDir == null)
         {
             currentPipeDir = PipeDirection.None;
@@ -97,6 +94,8 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
         if (currentPipeDir == PipeDirection.None)
             return;
 
+        var xform = Transform(uid);
+
         var gridUid = xform.GridUid;
 
         if (!TryComp<MapGridComponent>(gridUid, out var grid))
@@ -104,7 +103,7 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
 
         var pipeCoords = _map.TileIndicesFor(gridUid!.Value, grid, xform.Coordinates);
 
-        Dictionary<Direction, HashSet<EntityUid>> connectedPipes = new();
+        Dictionary<Direction, EntityUid> connectedPipes = new();
         Dictionary<Direction, PipeDirection> connectedPipesDir = new();
         foreach (PipeDirection pipeDir in Enum.GetValues(typeof(PipeDirection)))
         {
@@ -129,9 +128,6 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
                 if (pipe == uid)
                     continue;
 
-                if (connectedPipes.ContainsKey(dir) && connectedPipes[dir].Contains(pipe))
-                    continue;
-
                 if (HasComp<PipeCrawlingPipeBlockComponent>(pipe))
                     continue;
 
@@ -142,28 +138,17 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
 
                 foreach (var node in currentNodeComp.Nodes.Values)
                 {
-                    if (node is not PipeNode pipeNode ||
-                        (pipeNode.CurrentPipeDirection != mainPipeDir && (pipeNode.CurrentPipeDirection & mainPipeDir) != mainPipeDir))
+                    if (node is PipeNode pipeNode &&
+                        (pipeNode.CurrentPipeDirection == mainPipeDir || (pipeNode.CurrentPipeDirection & mainPipeDir) == mainPipeDir))
                     {
-                        continue;
-                    }
-
-                    if (connectedPipes.TryGetValue(dir, out var pipeList))
-                    {
-                        pipeList.Add(pipe);
-                    }
-                    else
-                    {
-                        pipeList = new();
-                        pipeList.Add(pipe);
-                        connectedPipes.Add(dir, pipeList);
+                        connectedPipes.Add(dir, pipe);
                         connectedPipesDir.Add(dir, pipeNode.CurrentPipeDirection);
                     }
                 }
             }
         }
 
-        if (connectedPipes.Count <=0)
+        if (connectedPipes.Count <= 0)
             return;
 
         if (component.ConnectedPipes != connectedPipes)
@@ -176,19 +161,13 @@ public sealed class PipeCrawlingPipeSystem : EntitySystem
             Dirty(uid, component);
 
 
-            foreach ((var dir, var pipes) in connectedPipes)
+            foreach ((var dir, var pipe) in connectedPipes)
             {
-                foreach (var pipe in pipes)
-                {
-                    if (component.UpdatedBy.Contains(pipe))
-                        continue;
+                if (component.UpdatedBy.Contains(pipe))
+                    continue;
 
-                    if (pipe == uid)
-                        continue;
-
-                    // update the connected pipes
-                    UpdateState(pipe, null, connectedPipesDir[dir], uid);
-                }
+                // update the connected pipes
+                UpdateState(pipe, null, connectedPipesDir[dir], uid);
             }
         }
     }

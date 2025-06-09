@@ -3,7 +3,8 @@
   icon:
     sprite: Clothing/OuterClothing/Armor/bulletproof.rsi
     state: icon
-  product: CrateSecurityArmor
+  data: !type:CargoProductItemData
+    product: CrateSecurityArmor
   cost: 1250
   category: cargoproduct-category-name-security
   group: market
@@ -13,7 +14,8 @@
   icon:
     sprite: Clothing/Head/Helmets/security.rsi
     state: icon
-  product: CrateSecurityHelmet
+  data: !type:CargoProductItemData
+    product: CrateSecurityHelmet
   cost: 550
   category: cargoproduct-category-name-security
   group: market
@@ -23,7 +25,8 @@
   icon:
     sprite: Objects/Weapons/Guns/Battery/disabler.rsi
     state: base
-  product: CrateSecurityNonlethal
+  data: !type:CargoProductItemData
+    product: CrateSecurityNonlethal
   cost: 4000
   category: cargoproduct-category-name-security
   group: market
@@ -33,7 +36,8 @@
   icon:
     sprite: Objects/Storage/boxes.rsi
     state: box_security
-  product: CrateSecuritySupplies
+  data: !type:CargoProductItemData
+    product: CrateSecuritySupplies
   cost: 500
   category: cargoproduct-category-name-security
   group: market
@@ -43,7 +47,8 @@
   icon:
     sprite: Objects/Misc/handcuffs.rsi
     state: handcuff
-  product: CrateRestraints
+  data: !type:CargoProductItemData
+    product: CrateRestraints
   cost: 1000
   category: cargoproduct-category-name-security
   group: market
@@ -53,7 +58,8 @@
   icon:
     sprite: Clothing/Head/Hoods/Bio/security.rsi
     state: icon
-  product: CrateSecurityBiosuit
+  data: !type:CargoProductItemData
+    product: CrateSecurityBiosuit
   cost: 800
   category: cargoproduct-category-name-security
   group: market
@@ -63,7 +69,30 @@
   icon:
     sprite: Objects/Specific/Security/barrier.rsi
     state: idle
-  product: DeployableBarrier
+  data: !type:CargoProductItemData
+    product: DeployableBarrier
   cost: 1000
+  category: cargoproduct-category-name-security
+  group: market
+
+- type: cargoProduct
+  id: SecurityNonlethalThrowables
+  icon:
+    sprite: Objects/Weapons/Grenades/stingergrenade.rsi
+    state: icon
+  data: !type:CargoProductItemData
+    product: CrateSecNonlethalThrowables
+  cost: 2500
+  category: cargoproduct-category-name-security
+  group: market
+
+- type: cargoProduct
+  id: SecurityGenPopCloset
+  icon:
+    sprite: Structures/Storage/closet.rsi
+    state: genpop
+  data: !type:CargoProductItemData
+    product: LockerPrisoner
+  cost: 250
   category: cargoproduct-category-name-security
   group: market

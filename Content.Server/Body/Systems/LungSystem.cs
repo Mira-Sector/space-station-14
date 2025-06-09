@@ -1,4 +1,3 @@
-using Content.Server.Atmos.Components;
 using Content.Server.Atmos.EntitySystems;
 using Content.Server.Body.Components;
 using Content.Shared.Atmos.Rotting;
@@ -7,6 +6,8 @@ using Content.Shared.Atmos;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Clothing;
 using Content.Shared.Inventory.Events;
+using BreathToolComponent = Content.Shared.Atmos.Components.BreathToolComponent;
+using InternalsComponent = Content.Shared.Body.Components.InternalsComponent;
 
 namespace Content.Server.Body.Systems;
 
@@ -26,7 +27,6 @@ public sealed class LungSystem : EntitySystem
 
         SubscribeLocalEvent<BreathToolComponent, GotEquippedEvent>(OnGotEquipped);
         SubscribeLocalEvent<BreathToolComponent, GotUnequippedEvent>(OnGotUnequipped);
-        SubscribeLocalEvent<BreathToolComponent, ItemMaskToggledEvent>(OnMaskToggled);
     }
 
     private void OnGotUnequipped(Entity<BreathToolComponent> ent, ref GotUnequippedEvent args)
@@ -40,8 +40,6 @@ public sealed class LungSystem : EntitySystem
         {
             return;
         }
-
-        ent.Comp.IsFunctional = true;
 
         if (TryComp(args.Equipee, out InternalsComponent? internals))
         {
@@ -62,24 +60,6 @@ public sealed class LungSystem : EntitySystem
     private void OnRotting(Entity<LungComponent> ent, ref StartedRottingEvent args)
     {
         ent.Comp.Broken = true;
-    }
-
-    private void OnMaskToggled(Entity<BreathToolComponent> ent, ref ItemMaskToggledEvent args)
-    {
-        if (args.Mask.Comp.IsToggled)
-        {
-            _atmos.DisconnectInternals(ent);
-        }
-        else
-        {
-            ent.Comp.IsFunctional = true;
-
-            if (TryComp(args.Wearer, out InternalsComponent? internals))
-            {
-                ent.Comp.ConnectedInternalsEntity = args.Wearer;
-                _internals.ConnectBreathTool((args.Wearer.Value, internals), ent);
-            }
-        }
     }
 
     public void GasToReagent(EntityUid uid, LungComponent lung)
