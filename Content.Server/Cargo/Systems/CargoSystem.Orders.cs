@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Server.Cargo.Components;
 using Content.Server.Cargo.Orders;
+using Content.Server.Shuttles.Events;
 using Content.Server.Station.Components;
 using Content.Shared.Cargo;
 using Content.Shared.Cargo.BUI;
@@ -14,6 +15,7 @@ using Content.Shared.Emag.Systems;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Interaction;
 using Content.Shared.Paper;
+using Robust.Server.GameObjects;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
@@ -23,6 +25,7 @@ namespace Content.Server.Cargo.Systems
     public sealed partial class CargoSystem
     {
         [Dependency] private readonly EmagSystem _emag = default!;
+        [Dependency] private readonly MapSystem _map = default!;
         [Dependency] private readonly IGameTiming _timing = default!;
 
         private void InitializeConsole()
@@ -34,6 +37,8 @@ namespace Content.Server.Cargo.Systems
             SubscribeLocalEvent<CargoOrderConsoleComponent, ComponentInit>(OnInit);
             SubscribeLocalEvent<CargoOrderConsoleComponent, InteractUsingEvent>(OnInteractUsing);
             SubscribeLocalEvent<CargoOrderConsoleComponent, GotEmaggedEvent>(OnEmagged);
+
+            SubscribeLocalEvent<CargoOrderedShuttleComponent, FTLCompletedEvent>(OnOrderedShuttleFTL);
         }
 
         private void OnInteractUsingCash(EntityUid uid, CargoOrderConsoleComponent component, ref InteractUsingEvent args)
@@ -118,6 +123,12 @@ namespace Content.Server.Cargo.Systems
                 return;
 
             args.Handled = true;
+        }
+
+        private void OnOrderedShuttleFTL(Entity<CargoOrderedShuttleComponent> ent, ref FTLCompletedEvent args)
+        {
+            _map.DeleteMap(ent.Comp.SourceMap);
+            RemCompDeferred(ent.Owner, ent.Comp);
         }
 
         private void UpdateConsole()

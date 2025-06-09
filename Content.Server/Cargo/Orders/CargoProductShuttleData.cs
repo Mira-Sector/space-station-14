@@ -27,23 +27,18 @@ public sealed partial class CargoProductShuttleData : SharedCargoProductShuttleD
         var transform = entity.System<TransformSystem>();
 
         map.CreateMap(out var pausedMap);
-        map.SetPaused(pausedMap, true);
-
         if (!mapLoader.TryLoadGrid(pausedMap, Shuttle, out var shuttleGrid))
         {
             map.DeleteMap(pausedMap);
             return null;
         }
 
-        var shuttleComp = entity.EnsureComponent<ShuttleComponent>(shuttleGrid.Value);
+        entity.EnsureComponent<CargoOrderedShuttleComponent>(shuttleGrid.Value).SourceMap = pausedMap;
+        entity.EnsureComponent<ShuttleComponent>(shuttleGrid.Value, out var shuttleComp);
+
         foreach (var trade in cargo.GetTradeStations(stationData))
         {
-            if (!shuttle.TryFTLDock(shuttleGrid.Value, shuttleComp, trade))
-            {
-                // fallback to teleporting near
-                if (!shuttle.TryFTLProximity(shuttleGrid.Value, trade))
-                    continue;
-            }
+            shuttle.FTLToDock(shuttleGrid.Value, shuttleComp, trade, 0f);
 
             // spawn the paper on a random pallet
             var tradePads = cargo.GetCargoPallets(trade, BuySellType.Buy);
@@ -57,11 +52,9 @@ public sealed partial class CargoProductShuttleData : SharedCargoProductShuttleD
                 break;
             }
 
-            map.DeleteMap(pausedMap);
             return trade;
         }
 
-        entity.DeleteEntity(shuttleGrid.Value);
         map.DeleteMap(pausedMap);
         return null;
     }
