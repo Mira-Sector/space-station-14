@@ -5,6 +5,7 @@ using Content.Server.Light.EntitySystems;
 using Content.Shared.Silicons.StationAi;
 using Content.Shared.Silicons.StationAi.Modules;
 using Robust.Shared.Random;
+using Content.Shared.Charges.Components;
 
 namespace Content.Server.Silicons.StationAi.Modules;
 
@@ -62,7 +63,7 @@ public sealed class BlackoutModuleSystem : EntitySystem
         if (!args.Handled)
             return;
 
-        if (args.Action.Comp.Charges > 0)
+        if (TryComp<LimitedChargesComponent>(args.Action.Owner, out var charges) && charges.LastCharges > 0)
             return;
 
         EntityManager.DeleteEntity(args.Action);

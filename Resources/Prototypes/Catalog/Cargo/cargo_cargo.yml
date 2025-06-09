@@ -3,7 +3,8 @@
   icon:
     sprite:  /Textures/Structures/Storage/orebox.rsi
     state: orebox
-  product: OreBox
+  data: !type:CargoProductItemData
+    product: OreBox
   cost: 500
   category: cargoproduct-category-name-cargo
   group: market
@@ -13,7 +14,30 @@
   icon:
     sprite: Clothing/Head/Hardsuits/luxury.rsi
     state: icon
-  product: CrateCargoLuxuryHardsuit
+  data: !type:CargoProductItemData
+    product: CrateCargoLuxuryHardsuit
   cost: 15000
   category: cargoproduct-category-name-cargo
   group: market
+
+- type: cargoProduct
+  id: CargoParcelWrap
+  icon:
+    sprite: Objects/Misc/ParcelWrap/parcel_wrap.rsi
+    state: brown
+  data: !type:CargoProductItemData
+    product: CrateCargoParcelWrap
+  cost: 750
+  category: cargoproduct-category-name-cargo
+  group: market
+
+- type: cargoProduct
+  id: CargoCrusherDagger
+  icon:
+    sprite: Objects/Weapons/Melee/crusher_dagger.rsi
+    state: icon
+  data: !type:CargoProductItemData
+    product: CrateCrusherDagger
+  cost: 2500
+  category: cargoproduct-category-name-cargo
+  group: marke

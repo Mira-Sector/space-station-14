@@ -1,0 +1,7 @@
+- type: entity
+  id: ActionModSuitViewUI
+  name: Open MOD interface panel
+  description: View the MOD suits user interface
+  components:
+  - type: InstantAction
+    event: !type:ModSuitViewUiEvent

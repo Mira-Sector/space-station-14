@@ -1,0 +1,38 @@
+- type: entity
+  id: BaseModSuitModuleJetpack
+  parent: BaseModSuitModuleAction
+  abstract: true
+  components:
+  - type: ModSuitModuleComplexity
+    complexity: 3
+  - type: RequireSealedModule
+    parts:
+    - Chestplate
+    - Control
+  - type: PowerDrainModule
+    enabledDraw: 0.25
+    onUseDraw: 0.5
+  - type: JetpackModule
+
+- type: entity
+  id: ModSuitModuleJetpackNormal
+  parent: BaseModSuitModuleJetpack
+  name: MOD ion jetpack module
+  description: A series of electric thrusters installed across the suit, this is a module highly anticipated by trainee Engineers. Rather than using gasses for combustion thrust, these jets are capable of accelerating ions using charge from the suit's cell. Some say this isn't Nakamura Engineering's first foray into jet-enabled suits.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/Modules/jetpack.rsi
+    layers:
+    - state: normal
+  - type: ModSuitDeployableContainerVisuals
+    partType: Chestplate
+  - type: ModuleContainerVisuals
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Objects/Specific/Robotics/ModSuits/Modules/jetpack.rsi
+          state: normal-worn-on
+      false:
+        outerClothing:
+        - sprite: Objects/Specific/Robotics/ModSuits/Modules/jetpack.rsi
+          state: normal-worn

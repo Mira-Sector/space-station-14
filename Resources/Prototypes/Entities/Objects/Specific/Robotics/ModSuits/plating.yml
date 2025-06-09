@@ -1,0 +1,71 @@
+- type: entity
+  id: ModSuitPlatingStandard
+  name: standard plating
+  parent: BaseItem
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/plating.rsi
+    state: standard
+  - type: Tag
+    tags:
+    - ModSuitPlatingStandard
+
+- type: entity
+  id: ModSuitPlatingEngineering
+  name: engineering plating
+  parent: BaseItem
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/plating.rsi
+    state: engineering
+  - type: Tag
+    tags:
+    - ModSuitPlatingEngineering
+
+- type: entity
+  id: ModSuitPlatingAtmospheric
+  name: atmospheric plating
+  parent: BaseItem
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/plating.rsi
+    state: atmospheric
+  - type: Tag
+    tags:
+    - ModSuitPlatingAtmospheric
+
+- type: entity
+  id: ModSuitPlatingMedical
+  name: medical plating
+  parent: BaseItem
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/plating.rsi
+    state: medical
+  - type: Tag
+    tags:
+    - ModSuitPlatingMedical
+
+- type: entity
+  id: ModSuitPlatingSecurity
+  name: security plating
+  parent: BaseItem
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/plating.rsi
+    state: security
+  - type: Tag
+    tags:
+    - ModSuitPlatingSecurity
+
+- type: entity
+  id: ModSuitPlatingCosmohonk
+  name: cosmohonk plating
+  parent: BaseItem
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/plating.rsi
+    state: cosmohonk
+  - type: Tag
+    tags:
+    - ModSuitPlatingCosmohonk

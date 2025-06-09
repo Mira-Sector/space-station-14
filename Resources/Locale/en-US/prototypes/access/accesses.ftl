@@ -9,6 +9,8 @@ id-card-access-level-security = Security
 id-card-access-level-armory = Armory
 id-card-access-level-brig = Brig
 id-card-access-level-detective = Detective
+id-card-access-level-genpop-enter = Enter Genpop
+id-card-access-level-genpop-leave = Leave Genpop
 
 id-card-access-level-chief-engineer = Chief Engineer
 id-card-access-level-engineering = Engineering
@@ -46,6 +48,8 @@ id-card-access-level-central-command = Central Command
 
 id-card-access-level-wizard = Wizard
 
-id-card-access-level-station-ai = Artifical Intelligence
+id-card-access-level-station-ai = Artificial Intelligence
 id-card-access-level-borg = Cyborg
 id-card-access-level-basic-silicon = Robot
+
+id-card-access-level-basic-xenoborg = Xenoborg

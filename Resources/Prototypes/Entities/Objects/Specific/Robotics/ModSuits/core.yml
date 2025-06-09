@@ -1,0 +1,11 @@
+- type: entity
+  id: ModSuitCoreStandard
+  name: standard MOD core
+  parent: BaseItem
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/cores.rsi
+    state: standard
+  - type: Tag
+    tags:
+    - ModSuitCore

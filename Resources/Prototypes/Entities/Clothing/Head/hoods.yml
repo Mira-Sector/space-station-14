@@ -11,19 +11,24 @@
     sprite: Clothing/Head/Hoods/Bio/general.rsi
   - type: BreathMask
   - type: IngestionBlocker
+  - type: GroupExamine
+  - type: ZombificationResistance
+    zombificationResistanceCoefficient: 0.9
   - type: Tag
     tags:
     - WhitelistChameleon
   - type: HideLayerClothing
-    slots:
-    - Hair
-    - Snout
-    - HeadTop
-    - HeadSide
+    layers:
+      Hair: HEAD
+      Snout: HEAD
+      HeadTop: HEAD
+      HeadSide: HEAD
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Caustic: 0.5
 
@@ -42,9 +47,13 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Caustic: 0.5
+  - type: ZombificationResistance
+    zombificationResistanceCoefficient: 0.8
 
 - type: entity
   parent: ClothingHeadHatHoodBioGeneral
@@ -61,7 +70,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Caustic: 0.5
 
@@ -80,7 +91,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Caustic: 0.5
 
@@ -99,7 +112,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Caustic: 0.5
 
@@ -108,7 +123,7 @@
   id: ClothingHeadHatHoodBioVirology
   name: bio hood
   suffix: Virology
-  description: A hood that protects the head and face from biological contaminants.
+  description: A hood that strongly protects the head and face from biological contaminants.
   components:
   - type: IdentityBlocker
   - type: Sprite
@@ -118,9 +133,13 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Caustic: 0.5
+  - type: ZombificationResistance
+    zombificationResistanceCoefficient: 0.8
 
 - type: entity
   parent: ClothingHeadBase
@@ -189,7 +208,9 @@
   - type: Armor
     basePart: Head
     modifiers:
-      [ Head ] :
+    - parts:
+      - Head
+      modifier:
         coefficients:
           Heat: 0.90
           Radiation: 0.01

@@ -19,11 +19,10 @@
   - type: AnimationPlayer
 
 - type: entity
-  parent: GasTankBase
   abstract: true
-  id: BaseJetpack
+  id: BaseJetpackNoClothing
   name: jetpack
-  description: It's a jetpack. It can hold 5 L of gas.
+  description: It's a jetpack.
   components:
     - type: InputMover
       toParent: true
@@ -32,38 +31,67 @@
       weightlessFriction: 0.3
       weightlessModifier: 1.2
     - type: CanMoveInAir
-    - type: Sprite
-      sprite: Objects/Tanks/Jetpacks/blue.rsi
-      state: icon
-    - type: Item
-      sprite: Objects/Tanks/Jetpacks/blue.rsi
-      size: Huge
-    - type: UserInterface
-      interfaces:
-        enum.SharedGasTankUiKey.Key:
-          type: GasTankBoundUserInterface
-    - type: Clothing
-      sprite: Objects/Tanks/Jetpacks/blue.rsi
-      quickEquip: false
-      slots:
-        - Back
-    - type: GasTank
-      outputPressure: 21.3
-      air:
-        volume: 5
-        temperature: 293.15
     - type: Jetpack
       moleUsage: 0.00085
-    - type: Appearance
     - type: StaticPrice
       price: 100
 
 - type: entity
+  parent: BaseJetpackNoClothing
+  abstract: true
+  id: BaseJetpack
+  components:
+    - type: Sprite
+      sprite: Objects/Tanks/Jetpacks/blue.rsi
+      layers:
+      - state: icon
+        map: ["enum.JetpackVisuals.Layer"]
+    - type: Item
+      sprite: Objects/Tanks/Jetpacks/blue.rsi
+      size: Huge
+    - type: Clothing
+      sprite: Objects/Tanks/Jetpacks/blue.rsi
+      quickEquip: false
+      slots:
+      - Back
+    - type: Appearance
+    - type: GenericVisualizer
+      visuals:
+        enum.JetpackVisuals.Enabled:
+          enum.JetpackVisuals.Layer:
+            True: {state: icon-on}
+            False: {state: icon}
+
+- type: entity
+  parent: [ BaseJetpack, GasTankBase ]
+  abstract: true
+  id: BaseJetpackAir
+  name: jetpack
+  description: It's a jetpack. It can hold 5 L of gas.
+  components:
+  - type: UserInterface
+    interfaces:
+      enum.SharedGasTankUiKey.Key:
+        type: GasTankBoundUserInterface
+  - type: UseDelay
+    delays:
+      gasTank:
+        length: 1.0
+  - type: AirJetpack
+    moleUsage: 0.00085
+  - type: GasTank
+    outputPressure: 21.3
+    air:
+      volume: 5
+      temperature: 293.15
+
+- type: entity
+  parent: BaseAction
   id: ActionToggleJetpack
   name: Toggle jetpack
   description: Toggles the jetpack, giving you movement outside the station.
   components:
-  - type: InstantAction
+  - type: Action
     icon:
       sprite: Objects/Tanks/Jetpacks/blue.rsi
       state: icon
@@ -71,17 +99,21 @@
       sprite: Objects/Tanks/Jetpacks/blue.rsi
       state: icon-on
     useDelay: 1.0
+  - type: InstantAction
     event: !type:ToggleJetpackEvent
 
 #Empty blue
 - type: entity
   id: JetpackBlue
-  parent: BaseJetpack
+  parent: BaseJetpackAir
   name: jetpack
   suffix: Empty
   components:
   - type: Sprite
     sprite: Objects/Tanks/Jetpacks/blue.rsi
+    layers:
+    - map: [ "jetpackLayer" ]
+      state: icon
   - type: Clothing
     sprite: Objects/Tanks/Jetpacks/blue.rsi
     slots:
@@ -107,7 +139,7 @@
 #Empty black
 - type: entity
   id: JetpackBlack
-  parent: [BaseJetpack, BaseSyndicateContraband]
+  parent: [BaseJetpackAir, BaseSyndicateContraband]
   name: jetpack
   suffix: Empty
   components:
@@ -115,6 +147,9 @@
     sprite: Objects/Tanks/Jetpacks/black.rsi
   - type: Sprite
     sprite: Objects/Tanks/Jetpacks/black.rsi
+    layers:
+    - map: [ "jetpackLayer" ]
+      state: icon
   - type: Clothing
     sprite: Objects/Tanks/Jetpacks/black.rsi
     slots:
@@ -140,12 +175,15 @@
 #Empty captain
 - type: entity
   id: JetpackCaptain
-  parent: [BaseJetpack, BaseGrandTheftContraband]
+  parent: [BaseJetpackAir, BaseGrandTheftContraband]
   name: captain's jetpack
   suffix: Empty
   components:
   - type: Sprite
     sprite: Objects/Tanks/Jetpacks/captain.rsi
+    layers:
+    - map: [ "jetpackLayer" ]
+      state: icon
   - type: Clothing
     sprite: Objects/Tanks/Jetpacks/captain.rsi
     slots:
@@ -180,7 +218,7 @@
 #Empty mini
 - type: entity
   id: JetpackMini
-  parent: BaseJetpack
+  parent: BaseJetpackAir
   name: mini jetpack
   description: It's a jetpack. It can hold 1.5 L of gas.
   suffix: Empty
@@ -189,6 +227,9 @@
       sprite: Objects/Tanks/Jetpacks/mini.rsi
     - type: Sprite
       sprite: Objects/Tanks/Jetpacks/mini.rsi
+      layers:
+      - map: [ "jetpackLayer" ]
+        state: icon
     - type: Clothing
       sprite: Objects/Tanks/Jetpacks/mini.rsi
       slots:
@@ -220,7 +261,7 @@
 #Empty security
 - type: entity
   id: JetpackSecurity
-  parent: [BaseJetpack, BaseSecurityContraband]
+  parent: [BaseJetpackAir, BaseSecurityContraband]
   name: security jetpack
   suffix: Empty
   components:
@@ -228,6 +269,9 @@
     sprite: Objects/Tanks/Jetpacks/security.rsi
   - type: Sprite
     sprite: Objects/Tanks/Jetpacks/security.rsi
+    layers:
+    - map: [ "jetpackLayer" ]
+      state: icon
   - type: Clothing
     sprite: Objects/Tanks/Jetpacks/security.rsi
     slots:
@@ -253,7 +297,7 @@
 #Empty void
 - type: entity
   id: JetpackVoid
-  parent: BaseJetpack
+  parent: BaseJetpackAir
   name: void jetpack
   suffix: Empty
   components:
@@ -261,6 +305,9 @@
     sprite: Objects/Tanks/Jetpacks/void.rsi
   - type: Sprite
     sprite: Objects/Tanks/Jetpacks/void.rsi
+    layers:
+    - map: [ "jetpackLayer" ]
+      state: icon
   - type: Clothing
     sprite: Objects/Tanks/Jetpacks/void.rsi
     slots:
@@ -284,3 +331,22 @@
       moles:
         - 1.025689525 # oxygen
         - 1.025689525 # nitrogen
+
+# Infinite jetpack
+- type: entity
+  parent: [ JetpackBlack, BaseXenoborgContraband ]
+  id: JetpackXenoborg
+  name: xenoborg jetpack
+  suffix: Infinite
+  components:
+  - type: GasTank
+    outputPressure: 21.3
+    air:
+      volume: 5
+      temperature: 293.15
+  - type: Jetpack
+    moleUsage: 0
+  - type: MovementSpeedModifier
+    weightlessAcceleration: 1.3
+    weightlessFriction: 0.3
+    weightlessModifier: 1

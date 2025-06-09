@@ -3,18 +3,9 @@
   icon:
     sprite: Objects/Consumable/Food/Baked/pizza.rsi
     state: margherita-slice
-  product: CrateFoodPizza
-  cost: 450
-  category: cargoproduct-category-name-food
-  group: market
-
-- type: cargoProduct
-  id: FoodPizzaLarge
-  icon:
-    sprite: Objects/Consumable/Food/Baked/pizza.rsi
-    state: margherita
-  product: CrateFoodPizzaLarge
-  cost: 1800
+  data: !type:CargoProductItemData
+    product: CrateFoodPizza
+  cost: 1600
   category: cargoproduct-category-name-food
   group: market
 
@@ -23,8 +14,9 @@
   icon:
     sprite: Objects/Consumable/Food/snacks.rsi
     state: nutribrick
-  product: CrateFoodMRE
-  cost: 1000
+  data: !type:CargoProductItemData
+    product: CrateFoodMRE
+  cost: 1400
   category: cargoproduct-category-name-food
   group: market
 
@@ -33,7 +25,8 @@
   icon:
     sprite: Objects/Consumable/Food/ingredients.rsi
     state: flour-big
-  product: CrateFoodCooking
+  data: !type:CargoProductItemData
+    product: CrateFoodCooking
   cost: 750
   category: cargoproduct-category-name-food
   group: market
@@ -43,7 +36,8 @@
   icon:
     sprite: Objects/Consumable/Food/plates.rsi
     state: tin
-  product: CrateFoodDinnerware
+  data: !type:CargoProductItemData
+    product: CrateFoodDinnerware
   cost: 750
   category: cargoproduct-category-name-food
   group: market
@@ -53,7 +47,8 @@
   icon:
     sprite: Objects/Consumable/Drinks/beerglass.rsi
     state: icon
-  product: CrateFoodBarSupply
+  data: !type:CargoProductItemData
+    product: CrateFoodBarSupply
   cost: 750
   category: cargoproduct-category-name-food
   group: market
@@ -63,17 +58,52 @@
   icon:
     sprite: Objects/Consumable/Drinks/cola.rsi
     state: icon
-  product: CrateFoodSoftdrinks
-  cost: 1200
+  data: !type:CargoProductItemData
+    product: CrateFoodSoftdrinks
+  cost: 1500
   category: cargoproduct-category-name-food
   group: market
 
 - type: cargoProduct
-  id: FoodSoftdrinksLarge
+  id: FoodCookGetmore
   icon:
-    sprite: Objects/Consumable/Drinks/colabottle.rsi
-    state: icon
-  product: CrateFoodSoftdrinksLarge
-  cost: 2400
+    sprite: Objects/Consumable/Food/snacks.rsi
+    state: raisins
+  data: !type:CargoProductItemData
+    product: CrateFoodGetMore
+  cost: 750
+  category: cargoproduct-category-name-food
+  group: market
+
+- type: cargoProduct
+  id: FoodHappyHonkMeals
+  icon:
+    sprite: Objects/Consumable/Food/burger.rsi
+    state: bigbite
+  data: !type:CargoProductItemData
+    product: CrateFoodHappyHonkBigBite
+  cost: 2800
+  category: cargoproduct-category-name-food
+  group: market
+
+- type: cargoProduct
+  id: FoodIceCream
+  icon:
+    sprite: Objects/Consumable/Food/frozen.rsi
+    state: sandwich
+  data: !type:CargoProductItemData
+    product: CrateFoodIceCream
+  cost: 2000
+  category: cargoproduct-category-name-food
+  group: market
+
+- type: cargoProduct
+  id: FoodSnowcone
+  icon:
+    sprite: Objects/Consumable/Food/frozen.rsi
+    state: cone
+  data: !type:CargoProductItemData
+    product: CrateFoodSnowcone
+  cost: 2000
   category: cargoproduct-category-name-food
   group: market

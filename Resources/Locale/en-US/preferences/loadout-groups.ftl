@@ -222,6 +222,8 @@ loadout-group-paramedic-jumpsuit = Paramedic jumpsuit
 loadout-group-paramedic-outerclothing = Paramedic outer clothing
 loadout-group-paramedic-shoes = Paramedic shoes
 
+loadout-group-medical-glasses = Medical glasses
+
 # Wildcards
 loadout-group-reporter-head = Reporter head
 loadout-group-reporter-jumpsuit = Reporter jumpsuit
@@ -232,5 +234,3 @@ loadout-group-psychologist-jumpsuit = Psychologist jumpsuit
 loadout-group-boxer-head = Boxer head
 loadout-group-boxer-jumpsuit = Boxer jumpsuit
 loadout-group-boxer-gloves = Boxer gloves
-
-loadout-group-ai-screen = AI screens

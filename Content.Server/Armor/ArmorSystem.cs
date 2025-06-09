@@ -1,5 +1,5 @@
-using Content.Server.Cargo.Systems;
 using Content.Shared.Armor;
+using Content.Shared.Cargo;
 using Robust.Shared.Prototypes;
 using Content.Shared.Damage.Prototypes;
 
@@ -19,22 +19,19 @@ public sealed class ArmorSystem : SharedArmorSystem
 
     private void GetArmorPrice(EntityUid uid, ArmorComponent component, ref PriceCalculationEvent args)
     {
-        foreach (var parts in component.Modifiers.Keys)
+        if (!TryGetModifier(component, null, out var modifier))
+            return;
+
+        foreach (var coefficient in modifier.Modifier.Coefficients)
         {
-            if (!parts.Contains(component.BasePart))
-                continue;
+            var damageType = _protoManager.Index<DamageTypePrototype>(coefficient.Key);
+            args.Price += component.PriceMultiplier * damageType.ArmorPriceCoefficient * 100 * (1 - coefficient.Value);
+        }
 
-            foreach (var modifier in component.Modifiers[parts].Coefficients)
-            {
-                var damageType = _protoManager.Index<DamageTypePrototype>(modifier.Key);
-                args.Price += component.PriceMultiplier * damageType.ArmorPriceCoefficient * 100 * (1 - modifier.Value);
-            }
-
-            foreach (var modifier in component.Modifiers[parts].FlatReduction)
-            {
-                var damageType = _protoManager.Index<DamageTypePrototype>(modifier.Key);
-                args.Price += component.PriceMultiplier * damageType.ArmorPriceFlat * modifier.Value;
-            }
+        foreach (var flat in modifier.Modifier.FlatReduction)
+        {
+            var damageType = _protoManager.Index<DamageTypePrototype>(flat.Key);
+            args.Price += component.PriceMultiplier * damageType.ArmorPriceFlat * flat.Value;
         }
     }
 }

@@ -5,12 +5,18 @@ public abstract class SharedDestructibleSystem : EntitySystem
     /// <summary>
     ///     Force entity to be destroyed and deleted.
     /// </summary>
-    public void DestroyEntity(EntityUid owner)
+    public bool DestroyEntity(EntityUid owner)
     {
-        var eventArgs = new DestructionEventArgs();
+        var ev = new DestructionAttemptEvent();
+        RaiseLocalEvent(owner, ev);
+        if (ev.Cancelled)
+            return false;
 
+        var eventArgs = new DestructionEventArgs();
         RaiseLocalEvent(owner, eventArgs);
+
         QueueDel(owner);
+        return true;
     }
 
     /// <summary>
@@ -27,6 +33,14 @@ public abstract class SharedDestructibleSystem : EntitySystem
         var ev = new DestructableSpawnedEvent(owner);
         RaiseLocalEvent(spawned, ev);
     }
+}
+
+/// <summary>
+///     Raised before an entity is about to be destroyed and deleted
+/// </summary>
+public sealed class DestructionAttemptEvent : CancellableEntityEventArgs
+{
+
 }
 
 /// <summary>

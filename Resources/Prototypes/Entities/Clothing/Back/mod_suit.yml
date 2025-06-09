@@ -1,0 +1,1240 @@
+- type: entity
+  id: ClothingBackpackModSuitBase
+  parent:
+  - Clothing
+  - PowerCellSlotMediumItem
+  - BaseJetpackNoClothing # needed for jetpack module
+  abstract: true
+  components:
+  - type: ModSuitComplexityLimit
+    maxComplexity: 15
+  - type: ModSuitSealable
+  - type: ModuleContainer
+    whitelist:
+      tags:
+      - ModSuitModule
+  - type: ModuleContainerAddOnInteract
+  - type: ModuleContainerRequireWirePanel
+  - type: ModuleContainerPower
+    baseRate: 0.5
+  - type: PowerCellDraw
+  - type: PowerCellSlot
+    fitsInCharger: false
+  - type: ModSuitUserInterface
+  - type: WiresPanel
+    visible: false
+  - type: UserInterface
+    interfaces:
+      enum.ModSuitUiKey.Key:
+        type: ModSuitBoundUserInterface
+      enum.StorageUiKey.Key: # needed for storage modules
+        type: StorageBoundUserInterface
+  - type: Item
+    size: Ginormous
+  - type: Clothing
+    autoGenerateVisuals: false
+    slots:
+    - back
+  - type: Appearance
+  - type: Jetpack # needed for jetpack module
+    toggleAction: null # action is handled by generic module action
+
+- type: entity
+  id: ClothingBackpackModSuitAdvanced
+  parent: ClothingBackpackModSuitBase
+  name: advanced MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/advanced.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/advanced.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/advanced.rsi
+        state: icon
+    clothingLayers:
+      true:
+        back:
+        - sprite: Clothing/Back/ModSuits/advanced.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        back:
+        - sprite: Clothing/Back/ModSuits/advanced.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/advanced.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/advanced.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitAdvanced
+      gloves: ClothingHandsModSuitAdvanced
+      head: ClothingHeadModSuitAdvanced
+      shoes: ClothingShoesModSuitAdvanced
+  - type: ClothingSpeedModifier
+    walkModifier: 0.75
+    sprintModifier: 0.8
+  - type: HeldSpeedModifier
+
+- type: entity
+  id: ClothingBackpackModSuitApocrphal
+  parent: ClothingBackpackModSuitBase
+  name: apocryphal MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/apocryphal.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/apocryphal.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/apocryphal.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/apocryphal.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/apocryphal.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/apocryphal.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/apocryphal.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitApocrphal
+      gloves: ClothingHandsModSuitApocrphal
+      head: ClothingHeadModSuitApocrphal
+      shoes: ClothingShoesModSuitApocrphal
+
+- type: entity
+  id: ClothingBackpackModSuitAsteroid
+  parent: ClothingBackpackModSuitBase
+  name: asteroid MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/asteroid.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/asteroid.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/asteroid.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/asteroid.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/asteroid.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/asteroid.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/asteroid.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitAsteroid
+      gloves: ClothingHandsModSuitAsteroid
+      head: ClothingHeadModSuitAsteroid
+      shoes: ClothingShoesModSuitAsteroid
+
+- type: entity
+  id: ClothingBackpackModSuitAtmospheric
+  parent: ClothingBackpackModSuitBase
+  name: atmospheric MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/atmospheric.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/atmospheric.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/atmospheric.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/atmospheric.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/atmospheric.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/atmospheric.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/atmospheric.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitAtmospheric
+      gloves: ClothingHandsModSuitAtmospheric
+      head: ClothingHeadModSuitAtmospheric
+      shoes: ClothingShoesModSuitAtmospheric
+  - type: Construction
+    graph: ModSuit
+    node: atmosphericPlating
+
+- type: entity
+  id: ClothingBackpackModSuitChrono
+  parent: ClothingBackpackModSuitBase
+  name: chrono MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/chrono.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/chrono.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/chrono.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/chrono.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/chrono.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/chrono.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/chrono.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitChrono
+      gloves: ClothingHandsModSuitChrono
+      head: ClothingHeadModSuitChrono
+      shoes: ClothingShoesModSuitChrono
+
+- type: entity
+  id: ClothingBackpackModSuitCivilian
+  parent: ClothingBackpackModSuitBase
+  name: civilian MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/civilian.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/civilian.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/civilian.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/civilian.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/civilian.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/civilian.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/civilian.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitCivilian
+      gloves: ClothingHandsModSuitCivilian
+      head: ClothingHeadModSuitCivilian
+      shoes: ClothingShoesModSuitCivilian
+
+- type: entity
+  id: ClothingBackpackModSuitCorporate
+  parent: ClothingBackpackModSuitBase
+  name: corporate MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/corporate.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/corporate.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/corporate.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/corporate.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/corporate.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/corporate.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/corporate.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitCorporate
+      gloves: ClothingHandsModSuitCorporate
+      head: ClothingHeadModSuitCorporate
+      shoes: ClothingShoesModSuitCorporate
+
+- type: entity
+  id: ClothingBackpackModSuitCorpsman
+  parent: ClothingBackpackModSuitBase
+  name: corpsman MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/corpsman.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/corpsman.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/corpsman.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/corpsman.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/corpsman.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/corpsman.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/corpsman.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitCorpsman
+      gloves: ClothingHandsModSuitCorpsman
+      head: ClothingHeadModSuitCorpsman
+      shoes: ClothingShoesModSuitCorpsman
+
+- type: entity
+  id: ClothingBackpackModSuitCosmohonk
+  parent: ClothingBackpackModSuitBase
+  name: cosmohonk MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/cosmohonk.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/cosmohonk.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/cosmohonk.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/cosmohonk.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/cosmohonk.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/cosmohonk.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/cosmohonk.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitCosmohonk
+      gloves: ClothingHandsModSuitCosmohonk
+      head: ClothingHeadModSuitCosmohonk
+      shoes: ClothingShoesModSuitCosmohonk
+  - type: Construction
+    graph: ModSuit
+    node: cosmohonkPlating
+
+- type: entity
+  id: ClothingBackpackModSuitDebug
+  parent: ClothingBackpackModSuitBase
+  name: debug MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/debug.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/debug.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/debug.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/debug.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/debug.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/debug.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/debug.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitDebug
+      gloves: ClothingHandsModSuitDebug
+      head: ClothingHeadModSuitDebug
+      shoes: ClothingShoesModSuitDebug
+
+- type: entity
+  id: ClothingBackpackModSuitElite
+  parent: ClothingBackpackModSuitBase
+  name: elite MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/elite.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/elite.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/elite.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/elite.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/elite.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/elite.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/elite.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitElite
+      gloves: ClothingHandsModSuitElite
+      head: ClothingHeadModSuitElite
+      shoes: ClothingShoesModSuitElite
+
+- type: entity
+  id: ClothingBackpackModSuitEnchanted
+  parent: ClothingBackpackModSuitBase
+  name: enchanted MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/enchanted.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/enchanted.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/enchanted.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/enchanted.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/enchanted.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/enchanted.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/enchanted.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitEnchanted
+      gloves: ClothingHandsModSuitEnchanted
+      head: ClothingHeadModSuitEnchanted
+      shoes: ClothingShoesModSuitEnchanted
+
+- type: entity
+  id: ClothingBackpackModSuitEngineering
+  parent: ClothingBackpackModSuitBase
+  name: engineering MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/engineering.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/engineering.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/engineering.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/engineering.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/engineering.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/engineering.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/engineering.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitEngineering
+      gloves: ClothingHandsModSuitEngineering
+      head: ClothingHeadModSuitEngineering
+      shoes: ClothingShoesModSuitEngineering
+  - type: Construction
+    graph: ModSuit
+    node: engineeringPlating
+
+- type: entity
+  id: ClothingBackpackModSuitGlitch
+  parent: ClothingBackpackModSuitBase
+  name: glitch MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/glitch.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/glitch.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/glitch.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/glitch.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/glitch.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/glitch.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/glitch.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitGlitch
+      gloves: ClothingHandsModSuitGlitch
+      head: ClothingHeadModSuitGlitch
+      shoes: ClothingShoesModSuitGlitch
+
+- type: entity
+  id: ClothingBackpackModSuitHonkerative
+  parent: ClothingBackpackModSuitBase
+  name: honkerative MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/honkerative.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/honkerative.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/honkerative.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/honkerative.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/honkerative.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/honkerative.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/honkerative.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitHonkerative
+      gloves: ClothingHandsModSuitHonkerative
+      head: ClothingHeadModSuitHonkerative
+      shoes: ClothingShoesModSuitHonkerative
+
+- type: entity
+  id: ClothingBackpackModSuitInfiltrator
+  parent: ClothingBackpackModSuitBase
+  name: infiltrator MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/infiltrator.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/infiltrator.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/infiltrator.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/infiltrator.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/infiltrator.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/infiltrator.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/infiltrator.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitInfiltrator
+      gloves: ClothingHandsModSuitInfiltrator
+      head: ClothingHeadModSuitInfiltrator
+      shoes: ClothingShoesModSuitInfiltrator
+
+- type: entity
+  id: ClothingBackpackModSuitInquisitory
+  parent: ClothingBackpackModSuitBase
+  name: inquisitory MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/inquisitory.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/inquisitory.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/inquisitory.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/inquisitory.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/inquisitory.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/inquisitory.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/inquisitory.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitInquisitory
+      gloves: ClothingHandsModSuitInquisitory
+      head: ClothingHeadModSuitInquisitory
+      shoes: ClothingShoesModSuitInquisitory
+
+- type: entity
+  id: ClothingBackpackModSuitInterdyne
+  parent: ClothingBackpackModSuitBase
+  name: interdyne MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/interdyne.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/interdyne.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/interdyne.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/interdyne.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/interdyne.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/interdyne.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/interdyne.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitInterdyne
+      gloves: ClothingHandsModSuitInterdyne
+      head: ClothingHeadModSuitInterdyne
+      shoes: ClothingShoesModSuitInterdyne
+
+- type: entity
+  id: ClothingBackpackModSuitLoader
+  parent: ClothingBackpackModSuitBase
+  name: loader MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/loader.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/loader.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/loader.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/loader.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/loader.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/loader.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/loader.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitLoader
+      gloves: ClothingHandsModSuitLoader
+      head: ClothingHeadModSuitLoader
+      shoes: ClothingShoesModSuitLoader
+
+- type: entity
+  id: ClothingBackpackModSuitMagnate
+  parent: ClothingBackpackModSuitBase
+  name: magnate MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/magnate.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/magnate.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/magnate.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/magnate.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/magnate.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/magnate.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/magnate.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitMagnate
+      gloves: ClothingHandsModSuitMagnate
+      head: ClothingHeadModSuitMagnate
+      shoes: ClothingShoesModSuitMagnate
+
+- type: entity
+  id: ClothingBackpackModSuitMedical
+  parent: ClothingBackpackModSuitBase
+  name: medical MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/medical.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/medical.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/medical.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/medical.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/medical.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/medical.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/medical.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitMedical
+      gloves: ClothingHandsModSuitMedical
+      head: ClothingHeadModSuitMedical
+      shoes: ClothingShoesModSuitMedical
+  - type: Construction
+    graph: ModSuit
+    node: medicalPlating
+
+- type: entity
+  id: ClothingBackpackModSuitMining
+  parent: ClothingBackpackModSuitBase
+  name: mining MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/mining.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/mining.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/mining.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/mining.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/mining.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/mining.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/mining.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitMining
+      gloves: ClothingHandsModSuitMining
+      head: ClothingHeadModSuitMining
+      shoes: ClothingShoesModSuitMining
+
+- type: entity
+  id: ClothingBackpackModSuitNinja
+  parent: ClothingBackpackModSuitBase
+  name: ninja MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/ninja.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/ninja.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/ninja.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/ninja.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/ninja.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/ninja.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/ninja.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitNinja
+      gloves: ClothingHandsModSuitNinja
+      head: ClothingHeadModSuitNinja
+      shoes: ClothingShoesModSuitNinja
+
+- type: entity
+  id: ClothingBackpackModSuitPrototype
+  parent: ClothingBackpackModSuitBase
+  name: prototype MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/prototype.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/prototype.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/prototype.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/prototype.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/prototype.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/prototype.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/prototype.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitPrototype
+      gloves: ClothingHandsModSuitPrototype
+      head: ClothingHeadModSuitPrototype
+      shoes: ClothingShoesModSuitPrototype
+
+- type: entity
+  id: ClothingBackpackModSuitRescue
+  parent: ClothingBackpackModSuitBase
+  name: rescue MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/rescue.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/rescue.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/rescue.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/rescue.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/rescue.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/rescue.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/rescue.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitRescue
+      gloves: ClothingHandsModSuitRescue
+      head: ClothingHeadModSuitRescue
+      shoes: ClothingShoesModSuitRescue
+
+- type: entity
+  id: ClothingBackpackModSuitResearch
+  parent: ClothingBackpackModSuitBase
+  name: research MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/research.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/research.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/research.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/research.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/research.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/research.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/research.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitResearch
+      gloves: ClothingHandsModSuitResearch
+      head: ClothingHeadModSuitResearch
+      shoes: ClothingShoesModSuitResearch
+
+- type: entity
+  id: ClothingBackpackModSuitResponsory
+  parent: ClothingBackpackModSuitBase
+  name: responsory MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/responsory.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/responsory.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/responsory.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/responsory.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/responsory.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/responsory.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/responsory.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitResponsory
+      gloves: ClothingHandsModSuitResponsory
+      head: ClothingHeadModSuitResponsory
+      shoes: ClothingShoesModSuitResponsory
+
+- type: entity
+  id: ClothingBackpackModSuitSafeguard
+  parent: ClothingBackpackModSuitBase
+  name: safeguard MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/safeguard.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/safeguard.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/safeguard.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/safeguard.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/safeguard.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/safeguard.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/safeguard.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitSafeguard
+      gloves: ClothingHandsModSuitSafeguard
+      head: ClothingHeadModSuitSafeguard
+      shoes: ClothingShoesModSuitSafeguard
+
+- type: entity
+  id: ClothingBackpackModSuitSecurity
+  parent: ClothingBackpackModSuitBase
+  name: security MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/security.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/security.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/security.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/security.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/security.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/security.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/security.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitSecurity
+      gloves: ClothingHandsModSuitSecurity
+      head: ClothingHeadModSuitSecurity
+      shoes: ClothingShoesModSuitSecurity
+  - type: Construction
+    graph: ModSuit
+    node: securityPlating
+
+- type: entity
+  id: ClothingBackpackModSuitStandard
+  parent: ClothingBackpackModSuitBase
+  name: standard MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/standard.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/standard.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/standard.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/standard.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/standard.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/standard.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/standard.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitStandard
+      gloves: ClothingHandsModSuitStandard
+      head: ClothingHeadModSuitStandard
+      shoes: ClothingShoesModSuitStandard
+  - type: Construction
+    graph: ModSuit
+    node: standardPlating
+
+- type: entity
+  id: ClothingBackpackModSuitSyndicate
+  parent: ClothingBackpackModSuitBase
+  name: syndicate MOD control unit
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/syndicate.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/syndicate.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/syndicate.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Back/ModSuits/syndicate.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        head:
+        - sprite: Clothing/Back/ModSuits/syndicate.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/syndicate.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/syndicate.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitSyndicate
+      gloves: ClothingHandsModSuitSyndicate
+      head: ClothingHeadModSuitSyndicate
+      shoes: ClothingShoesModSuitSyndicate

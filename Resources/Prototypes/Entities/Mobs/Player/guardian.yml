@@ -80,12 +80,42 @@
     - type: CombatMode
     - type: DamagePartSelector
       selectableParts:
-        !type:BodyPart { type: Head, side: None }: { sprite: Interface/Actions/zone_sel.rsi, state: head }
-        !type:BodyPart { type: Arm, side: Left }: { sprite: Interface/Actions/zone_sel.rsi, state: larm }
-        !type:BodyPart { type: Leg, side: Left }: { sprite: Interface/Actions/zone_sel.rsi, state: lleg }
-        !type:BodyPart { type: Torso, side: None }: { sprite: Interface/Actions/zone_sel.rsi, state: torso }
-        !type:BodyPart { type: Leg, side: Right }: { sprite: Interface/Actions/zone_sel.rsi, state: rleg }
-        !type:BodyPart { type: Arm, side: Right }: { sprite: Interface/Actions/zone_sel.rsi, state: rarm }
+      - bodyPart:
+          type: Head
+          side: None
+        sprite:
+          sprite: Interface/Actions/zone_sel.rsi
+          state: head
+      - bodyPart:
+          type: Arm
+          side: Left
+        sprite:
+          sprite: Interface/Actions/zone_sel.rsi
+          state: larm
+      - bodyPart:
+          type: Leg
+          side: Left
+        sprite:
+          sprite: Interface/Actions/zone_sel.rsi
+          state: lleg
+      - bodyPart:
+          type: Torso
+          side: None
+        sprite:
+          sprite: Interface/Actions/zone_sel.rsi
+          state: torso
+      - bodyPart:
+          type: Leg
+          side: Right
+        sprite:
+          sprite: Interface/Actions/zone_sel.rsi
+          state: rleg
+      - bodyPart:
+          type: Arm
+          side: Right
+        sprite:
+          sprite: Interface/Actions/zone_sel.rsi
+          state: rarm
     - type: Internals
     - type: Examiner
     - type: Speech
@@ -269,13 +299,13 @@
         task: SimpleHumanoidHostileCompound
 
 - type: entity
+  parent: BaseMentalAction
   id: ActionToggleGuardian
   name: Toggle Guardian
   description: Either manifests the guardian or recalls it back into your body
   components:
-  - type: InstantAction
+  - type: Action
     icon: Interface/Actions/manifest.png
-    event: !type:GuardianToggleActionEvent
     useDelay: 2
-    checkCanInteract: false
-    checkConsciousness: false
+  - type: InstantAction
+    event: !type:GuardianToggleActionEvent

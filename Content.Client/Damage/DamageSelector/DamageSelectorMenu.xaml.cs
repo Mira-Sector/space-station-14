@@ -50,9 +50,9 @@ public sealed partial class DamageSelectorMenu : RadialMenu
         if (!_entManager.TryGetComponent<DamagePartSelectorComponent>(_owner, out var damageSelector))
             return;
 
-        foreach ((var part, var sprite) in damageSelector.SelectableParts)
+        foreach (var data in damageSelector.SelectableParts)
         {
-            var button = new LimbButton(part)
+            var button = new LimbButton(data.BodyPart)
             {
                 StyleClasses = { "RadialMenuButton" },
                 SetSize = new Vector2(64f, 64f),
@@ -62,7 +62,7 @@ public sealed partial class DamageSelectorMenu : RadialMenu
             {
                 VerticalAlignment = VAlignment.Center,
                 HorizontalAlignment = HAlignment.Center,
-                Texture = _sprites.Frame0(sprite),
+                Texture = _sprites.Frame0(data.Sprite),
                 TextureScale = new Vector2(2f, 2f),
             };
 
