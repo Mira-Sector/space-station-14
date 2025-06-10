@@ -163,9 +163,6 @@
   - type: Occluder
   - type: Appearance
   - type: SmoothEdge
-  - type: IconSmooth
-    key: walls
-    mode: NoSprite
   - type: Transform
     anchored: true
   - type: Airtight
