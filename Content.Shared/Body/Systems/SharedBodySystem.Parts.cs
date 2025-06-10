@@ -94,6 +94,9 @@ public partial class SharedBodySystem
                 {
                     var removedEv = new OrganRemovedFromBodyEvent(oldBodyUid, ent);
                     RaiseLocalEvent(organ, ref removedEv);
+
+                    var bodyEv = new OrganRemovedBodyEvent(organ);
+                    RaiseLocalEvent(oldBodyUid, ref bodyEv);
                 }
 
                 organComp.Body = bodyUid;
@@ -101,6 +104,9 @@ public partial class SharedBodySystem
                 {
                     var addedEv = new OrganAddedToBodyEvent(bodyUid.Value, ent);
                     RaiseLocalEvent(organ, ref addedEv);
+
+                    var bodyEv = new OrganAddedBodyEvent(organ);
+                    RaiseLocalEvent(bodyUid.Value, ref bodyEv);
                 }
             }
         }

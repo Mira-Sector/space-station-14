@@ -113,6 +113,9 @@ public partial class SharedBodySystem
         {
             var addedInBodyEv = new OrganAddedToBodyEvent(bodyUid, parentPartUid);
             RaiseLocalEvent(organEnt, ref addedInBodyEv);
+
+            var bodyAddedEv = new OrganAddedBodyEvent(organEnt);
+            RaiseLocalEvent(bodyUid, ref bodyAddedEv);
         }
 
         Dirty(organEnt, organEnt.Comp);
@@ -127,6 +130,9 @@ public partial class SharedBodySystem
         {
             var removedInBodyEv = new OrganRemovedFromBodyEvent(bodyUid, parentPartUid);
             RaiseLocalEvent(organEnt, ref removedInBodyEv);
+
+            var bodyRemovedEv = new OrganRemovedBodyEvent(organEnt);
+            RaiseLocalEvent(bodyUid, ref bodyRemovedEv);
         }
 
         organEnt.Comp.Body = null;

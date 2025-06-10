@@ -16,6 +16,12 @@ public readonly record struct OrganAddedEvent(EntityUid Part);
 public readonly record struct OrganAddedToBodyEvent(EntityUid Body, EntityUid Part);
 
 /// <summary>
+/// Raised on the body when a mechanism is added.
+/// </summary>
+[ByRefEvent]
+public readonly record struct OrganAddedBodyEvent(EntityUid Organ);
+
+/// <summary>
 /// Raised on a mechanism when it is removed from a body part.
 /// </summary>
 [ByRefEvent]
@@ -26,3 +32,9 @@ public readonly record struct OrganRemovedEvent(EntityUid OldPart);
 /// </summary>
 [ByRefEvent]
 public readonly record struct OrganRemovedFromBodyEvent(EntityUid OldBody, EntityUid OldPart);
+
+/// <summary>
+/// Raised on the body when a mechanism is removed.
+/// </summary>
+[ByRefEvent]
+public readonly record struct OrganRemovedBodyEvent(EntityUid Organ);
