@@ -106,8 +106,12 @@ public partial class SharedBodySystem
     {
         organEnt.Comp.Body = bodyUid;
         organEnt.Comp.BodyPart = parentPartUid;
+
         var addedEv = new OrganAddedEvent(parentPartUid);
         RaiseLocalEvent(organEnt, ref addedEv);
+
+        var limbEv = new OrganAddedLimbEvent(organEnt);
+        RaiseLocalEvent(parentPartUid, ref limbEv);
 
         if (organEnt.Comp.Body is not null)
         {
@@ -125,6 +129,9 @@ public partial class SharedBodySystem
     {
         var removedEv = new OrganRemovedEvent(parentPartUid);
         RaiseLocalEvent(organEnt, ref removedEv);
+
+        var limbRemovedEv = new OrganRemovedLimbEvent(organEnt);
+        RaiseLocalEvent(parentPartUid, ref limbRemovedEv);
 
         if (organEnt.Comp.Body is { Valid: true } bodyUid)
         {

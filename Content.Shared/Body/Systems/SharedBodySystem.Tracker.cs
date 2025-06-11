@@ -10,19 +10,32 @@ public partial class SharedBodySystem
 {
     private void InitializeTracker()
     {
-        SubscribeLocalEvent<BodyTrackerComponent, OrganAddedBodyEvent>(OnTrackerOrganAdded);
-        SubscribeLocalEvent<BodyTrackerComponent, OrganRemovedBodyEvent>(OnTrackerOrganRemoved);
+        SubscribeLocalEvent<BodyTrackerComponent, OrganAddedBodyEvent>(OnTrackerOrganBodyAdded);
+        SubscribeLocalEvent<BodyTrackerComponent, OrganRemovedBodyEvent>(OnTrackerOrganBodyRemoved);
+
+        SubscribeLocalEvent<BodyTrackerComponent, OrganAddedLimbEvent>(OnTrackerOrganLimbAdded);
+        SubscribeLocalEvent<BodyTrackerComponent, OrganRemovedLimbEvent>(OnTrackerOrganLimbRemoved);
 
         SubscribeLocalEvent<BodyTrackerComponent, BodyPartAddedEvent>(OnTrackerBodyPartAdded);
         SubscribeLocalEvent<BodyTrackerComponent, BodyPartRemovedEvent>(OnTrackerBodyPartRemoved);
     }
 
-    private void OnTrackerOrganAdded(Entity<BodyTrackerComponent> ent, ref OrganAddedBodyEvent args)
+    private void OnTrackerOrganBodyAdded(Entity<BodyTrackerComponent> ent, ref OrganAddedBodyEvent args)
     {
         AddTracker(ent, args.Organ);
     }
 
-    private void OnTrackerOrganRemoved(Entity<BodyTrackerComponent> ent, ref OrganRemovedBodyEvent args)
+    private void OnTrackerOrganBodyRemoved(Entity<BodyTrackerComponent> ent, ref OrganRemovedBodyEvent args)
+    {
+        RemoveTracker(ent, args.Organ);
+    }
+
+    private void OnTrackerOrganLimbAdded(Entity<BodyTrackerComponent> ent, ref OrganAddedLimbEvent args)
+    {
+        AddTracker(ent, args.Organ);
+    }
+
+    private void OnTrackerOrganLimbRemoved(Entity<BodyTrackerComponent> ent, ref OrganRemovedLimbEvent args)
     {
         RemoveTracker(ent, args.Organ);
     }
@@ -45,7 +58,8 @@ public partial class SharedBodySystem
             if (!EntityManager.TryGetComponent(toAdd, component, out var newData))
                 continue;
 
-            data.Add(toAdd, newData);
+            if (!data.TryAdd(toAdd, newData))
+                continue;
 
             var ev = new BodyTrackerAdded((toAdd, newData), (uint)data.Count + 1, componentName);
             RaiseLocalEvent(ent.Owner, ref ev);
@@ -100,31 +114,50 @@ public partial class SharedBodySystem
 
         // couldnt find it
         // retroactively update the entry
-        foreach (var newData in RegisterNewTracker<T>(ent!))
-            yield return newData;
+        RegisterNewTracker<T>(ent!);
+
+        foreach (var (tracked, comp) in ent.Comp!.Trackers[componentName])
+            yield return (tracked, (T)comp);
     }
 
-    private IEnumerable<Entity<T>> RegisterNewTracker<T>(Entity<BodyTrackerComponent> ent) where T : IComponent, new()
+    private void RegisterNewTracker<T>(Entity<BodyTrackerComponent> ent) where T : IComponent, new()
+    {
+        if (TryComp<BodyComponent>(ent.Owner, out var bodyComp))
+            RegisterNewTrackerBody<T>((ent.Owner, ent.Comp, bodyComp));
+        else if (TryComp<BodyPartComponent>(ent.Owner, out var bodyPartComp))
+            RegisterNewTrackerLimb<T>((ent.Owner, ent.Comp, bodyPartComp));
+    }
+
+    private void RegisterNewTrackerBody<T>(Entity<BodyTrackerComponent, BodyComponent> ent) where T : IComponent, new()
     {
         var componentName = Factory.GetComponentName<T>();
+        var query = GetEntityQuery<T>();
 
         Dictionary<EntityUid, IComponent> newTrackers = [];
-        foreach (var (organ, comp, _) in GetBodyOrganEntityComps<T>(ent.Owner))
-        {
+        foreach (var (organ, comp, _) in GetBodyOrganEntityComps<T>((ent.Owner, ent.Comp2)))
             newTrackers.Add(organ, comp);
-            yield return (organ, comp);
-        }
 
-        foreach (var (bodyPart, _) in GetBodyChildren(ent.Owner))
+        foreach (var (bodyPart, _) in GetBodyChildren(ent.Owner, ent.Comp2))
         {
-            var component = Factory.GetRegistration(componentName);
-            if (!EntityManager.TryGetComponent(bodyPart, component, out var comp))
-                continue;
-
-            newTrackers.Add(bodyPart, (T)comp);
-            yield return (bodyPart, (T)comp);
+            if (query.TryGetComponent(bodyPart, out var comp))
+                newTrackers.Add(bodyPart, comp);
         }
 
-        ent.Comp.Trackers.Add(componentName, newTrackers);
+        ent.Comp1.Trackers.Add(componentName, newTrackers);
+    }
+
+    private void RegisterNewTrackerLimb<T>(Entity<BodyTrackerComponent, BodyPartComponent> ent) where T : IComponent, new()
+    {
+        var componentName = Factory.GetComponentName<T>();
+        var query = GetEntityQuery<T>();
+
+        Dictionary<EntityUid, IComponent> newTrackers = [];
+        foreach (var (organ, _) in GetPartOrgans(ent.Owner, ent.Comp2))
+        {
+            if (query.TryGetComponent(organ, out var comp))
+                newTrackers.Add(organ, comp);
+        }
+
+        ent.Comp1.Trackers.Add(componentName, newTrackers);
     }
 }

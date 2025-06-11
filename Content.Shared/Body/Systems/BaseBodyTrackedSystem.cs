@@ -27,7 +27,8 @@ public abstract partial class BaseBodyTrackedSystem : EntitySystem
         }
     }
 
-    private void OnTrackerAdded<TTracker>(EntityUid uid, TTracker component, ref BodyTrackerAdded args) where TTracker : Component, new()
+    private void OnTrackerAdded<TTracker>(EntityUid uid, TTracker component, ref BodyTrackerAdded args)
+        where TTracker : Component, new()
     {
         var trackerName = Factory.GetComponentName<TTracker>();
         if (!_addSubscribers.TryGetValue(trackerName, out var trackers))
@@ -66,7 +67,8 @@ public abstract partial class BaseBodyTrackedSystem : EntitySystem
         }
     }
 
-    private void OnTrackerRemoved<TTracker>(EntityUid uid, TTracker component, ref BodyTrackerRemoved args) where TTracker : Component, new()
+    private void OnTrackerRemoved<TTracker>(EntityUid uid, TTracker component, ref BodyTrackerRemoved args)
+        where TTracker : Component, new()
     {
         var trackerName = Factory.GetComponentName<TTracker>();
         if (!_removeSubscribers.TryGetValue(trackerName, out var trackers))
