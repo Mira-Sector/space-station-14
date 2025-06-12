@@ -10,8 +10,6 @@
   tier: 1
   cost: 5000
   recipeUnlocks:
-  - SeedExtractorMachineCircuitboard
-  - HydroponicsTrayMachineCircuitboard
   - ReagentGrinderIndustrialMachineCircuitboard
   - PlantScanCartridge
 
@@ -104,8 +102,8 @@
   - FauxTileAstroAsteroidSand
 
 - type: technology
-  id: BiochemicalStasis
-  name: research-technology-biochemical-stasis
+  id: AdvancedChemistry
+  name: research-technology-advanced-chemistry
   icon:
     sprite: Structures/Machines/stasis_bed.rsi
     state: icon
@@ -117,17 +115,6 @@
   - CryoPodMachineCircuitboard
   - CryostasisBeaker
   - SyringeCryostasis
-
-- type: technology # Merge with other T2 medical research if possible!
-  id: MechanizedTreatment
-  name: research-technology-mechanized-treatment
-  icon:
-    sprite: Mobs/Silicon/chassis.rsi
-    state: medical
-  discipline: CivilianServices
-  tier: 2
-  cost: 5000
-  recipeUnlocks:
   - BorgModuleAdvancedChemical
 
 - type: technology
@@ -145,15 +132,23 @@
   - BorgModuleAdvancedCleaning
 
 - type: technology
-  id: HONKMech
-  name: research-technology-honk-mech
+  id: CivilianMechatronics
+  name: research-technology-civilian-mechatronics
   icon:
     sprite: Objects/Specific/Mech/mecha.rsi
     state: honker
   discipline: CivilianServices
   tier: 2
-  cost: 7500
+  cost: 10000
   recipeUnlocks:
+  - RipleyHarness
+  - RipleyLArm
+  - RipleyRArm
+  - RipleyLLeg
+  - RipleyRLeg
+  - RipleyCentralElectronics
+  - RipleyPeripheralsElectronics
+  - MechEquipmentGrabber
   - HonkerHarness
   - HonkerLArm
   - HonkerRArm
