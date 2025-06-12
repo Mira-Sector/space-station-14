@@ -4,6 +4,7 @@ using Content.Shared.DoAfter;
 using Content.Shared.Examine;
 using Content.Shared.Interaction;
 using Content.Shared.Swab;
+using Content.Shared.Interaction.Events;
 
 namespace Content.Server.Botany.Systems;
 
@@ -19,6 +20,7 @@ public sealed class BotanySwabSystem : EntitySystem
         SubscribeLocalEvent<BotanySwabComponent, ExaminedEvent>(OnExamined);
         SubscribeLocalEvent<BotanySwabComponent, AfterInteractEvent>(OnAfterInteract);
         SubscribeLocalEvent<BotanySwabComponent, BotanySwabDoAfterEvent>(OnDoAfter);
+        SubscribeLocalEvent<BotanySwabComponent, UseInHandEvent>(OnClean);
     }
 
     /// <summary>
@@ -72,11 +74,24 @@ public sealed class BotanySwabSystem : EntitySystem
             if (old == null)
                 return;
             plant.Seed = _mutationSystem.Cross(swab.SeedData, old); // Cross-pollenate
-            swab.SeedData = old; // Transfer old plant pollen to swab
+            if (swab.Contaminate == true)
+                swab.SeedData = old; // Transfer old plant pollen to swab
             _popupSystem.PopupEntity(Loc.GetString("botany-swab-to"), args.Args.Target.Value, args.Args.User);
         }
 
         args.Handled = true;
     }
-}
 
+    private void OnClean(EntityUid uid, BotanySwabComponent swab, ref UseInHandEvent args)
+    {
+        if (args.Handled)
+            return;
+
+        if (swab.Cleanable == true)
+        {
+            swab.SeedData = null;
+            _popupSystem.PopupClient(Loc.GetString("botany-swab-clean"), args.User);
+        }
+        args.Handled = true;
+    }
+}

@@ -21,6 +21,15 @@
     - Chemicals
 
 - type: entity
+  parent: DiseaseSwab
+  id: SynthSwab
+  name: SynthSwab
+  description: A Synthetic swab that holds samples on a glass surface, making it easy to clean.
+  components:
+  - type: BotanySwab
+    cleanable: true
+
+- type: entity
   parent: BaseAmmoProvider # this is for cycling swabs out and not spawning 30 entities, trust
   id: BoxMouthSwab
   name: sterile swab dispenser

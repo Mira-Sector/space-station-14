@@ -12,8 +12,22 @@ namespace Content.Server.Botany
         public float SwabDelay = 1f;
 
         /// <summary>
+        /// Are the swab's contents replaced on swabbing, default true.
+        /// </summary>
+        [DataField]
+        public bool Contaminate = true;
+
+        /// <summary>
+        /// Whether the swab is self-cleanable, default false
+        /// </summary>
+        [DataField]
+        public bool Cleanable = false;
+
+        /// <summary>
         /// SeedData from the first plant that got swabbed.
         /// </summary>
         public SeedData? SeedData;
+
+
     }
 }
