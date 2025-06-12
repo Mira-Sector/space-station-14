@@ -192,3 +192,19 @@
   - PowerCellHyper
   technologyPrerequisites:
   - AdvancedPowercells
+
+- type: technology
+  id: FurtherKnowledgeIndustrial
+  name: research-technology-further-knowledge
+  icon:
+    sprite: Objects/Structures/Machines/rndpointsource.rsi
+    state: rndpointsource-icon
+  discipline: Industrial
+  tier: 4
+  cost: 20000
+  recipeUnlocks:
+  - ResearchAndDevelopmentServerMachineCircuitboard
+  #technologyBlacklist:
+  #- FurtherKnowledgeCivilianServices
+  #- FurtherKnowledgeExperimental
+  #- FurtherKnowledgeArsenal

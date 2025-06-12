@@ -223,3 +223,19 @@
   recipeUnlocks:
   - LauncherSyringe
   - MiniSyringe
+
+- type: technology
+  id: FurtherKnowledgeCivilianServices
+  name: research-technology-further-knowledge
+  icon:
+    sprite: Objects/Structures/Machines/rndpointsource.rsi
+    state: rndpointsource-icon
+  discipline: CivilianServices
+  tier: 4
+  cost: 20000
+  recipeUnlocks:
+  - ResearchAndDevelopmentServerMachineCircuitboard
+  #technologyBlacklist:
+  #- FurtherKnowledgeExperimental
+  #- FurtherKnowledgeIndustrial
+  #- FurtherKnowledgeArsenal
