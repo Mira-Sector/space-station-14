@@ -6,73 +6,35 @@ using Content.Shared.Speech.Muting;
 
 namespace Content.Shared.Body.Systems;
 
-public sealed class TongueSystem : EntitySystem
+public sealed class TongueSystem : BaseBodyTrackedSystem
 {
+    [Dependency] private readonly SharedBodySystem _body = default!;
+
     public override void Initialize()
     {
         base.Initialize();
 
         SubscribeLocalEvent<TongueComponent, OrganAddedEvent>(OnOrganAdded);
-        SubscribeLocalEvent<TongueComponent, OrganRemovedEvent>(OnOrganRemoved);
-
-        SubscribeLocalEvent<TongueContainerComponent, BodyPartAddedEvent>(OnTongueContainerAdded);
-        SubscribeLocalEvent<TongueContainerComponent, BodyPartRemovedEvent>(OnTongueContainerRemoved);
 
         SubscribeLocalEvent<TongueContainerComponent, EmoteAttemptEvent>(OnTongueContainerEmoteAttempt);
+
+        SubscribeTrackerAdded<TongueContainerComponent, TongueComponent>(OnTrackerAdded);
+        SubscribeTrackerRemoved<TongueContainerComponent, TongueComponent>(OnTrackerRemoved);
     }
 
     private void OnOrganAdded(Entity<TongueComponent> ent, ref OrganAddedEvent args)
     {
-        EnsureComp<TongueContainerComponent>(args.Part, out var tongueContainerComp);
-        tongueContainerComp.Tongues += 1;
-        Dirty(args.Part, tongueContainerComp);
-
-        if (!TryComp<BodyPartComponent>(args.Part, out var bodyPartComp) || bodyPartComp.Body is not {} body)
+        if (!TryComp<BodyPartComponent>(args.Part, out var bodyPartComp))
             return;
 
-        EnsureComp<TongueContainerComponent>(body, out var bodyTongueComp);
-        bodyTongueComp.Tongues += 1;
-        Dirty(body, bodyTongueComp);
+        EnsureComp<TongueContainerComponent>(args.Part);
+        _body.RegisterTracker<TongueComponent>(args.Part);
 
-        CheckMute((body, bodyTongueComp));
-    }
-
-    private void OnOrganRemoved(Entity<TongueComponent> ent, ref OrganRemovedEvent args)
-    {
-        var tongueContainerComp = EntityManager.GetComponent<TongueContainerComponent>(args.OldPart);
-        tongueContainerComp.Tongues -= 1;
-        Dirty(args.OldPart, tongueContainerComp);
-
-        if (!TryComp<BodyPartComponent>(args.OldPart, out var bodyPartComp) || bodyPartComp.Body is not {} body)
-            return;
-
-        EnsureComp<TongueContainerComponent>(body, out var bodyTongueComp);
-        bodyTongueComp.Tongues -= 1;
-        Dirty(body, bodyTongueComp);
-
-        CheckMute((body, bodyTongueComp));
-    }
-
-    private void OnTongueContainerAdded(Entity<TongueContainerComponent> ent, ref BodyPartAddedEvent args)
-    {
-        if (!TryComp<TongueContainerComponent>(args.Part, out var partTongueComp))
-            return;
-
-        ent.Comp.Tongues += partTongueComp.Tongues;
-        Dirty(ent);
-
-        CheckMute(ent);
-    }
-
-    private void OnTongueContainerRemoved(Entity<TongueContainerComponent> ent, ref BodyPartRemovedEvent args)
-    {
-        if (!TryComp<TongueContainerComponent>(args.Part, out var partTongueComp))
-            return;
-
-        ent.Comp.Tongues -= partTongueComp.Tongues;
-        Dirty(ent);
-
-        CheckMute(ent);
+        if (bodyPartComp.Body is { } body)
+        {
+            EnsureComp<TongueContainerComponent>(body);
+            _body.RegisterTracker<TongueComponent>(body);
+        }
     }
 
     private void OnTongueContainerEmoteAttempt(Entity<TongueContainerComponent> ent, ref EmoteAttemptEvent args)
@@ -80,24 +42,25 @@ public sealed class TongueSystem : EntitySystem
         if (args.Cancelled)
             return;
 
-        if (ent.Comp.Tongues > 0)
+        if (_body.GetTrackerCount<TongueComponent>(ent.Owner) > 0)
             return;
 
         args.Cancel();
     }
 
-    private void CheckMute(Entity<TongueContainerComponent> ent)
+    private void OnTrackerAdded(Entity<TongueContainerComponent> ent, ref BodyTrackerAdded args)
     {
-        if (ent.Comp.Tongues > 0)
-        {
-            if (!HasComp<MutedComponent>(ent))
-                return;
+        if (!HasComp<MutedComponent>(ent))
+            return;
 
-            RemComp<MutedComponent>(ent);
-        }
-        else
-        {
-            EnsureComp<MutedComponent>(ent);
-        }
+        RemComp<MutedComponent>(ent);
+    }
+
+    private void OnTrackerRemoved(Entity<TongueContainerComponent> ent, ref BodyTrackerRemoved args)
+    {
+        if (args.Count > 0)
+            return;
+
+        EnsureComp<MutedComponent>(ent);
     }
 }
