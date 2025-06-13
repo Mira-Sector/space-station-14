@@ -125,7 +125,7 @@
   id: FurtherKnowledgeExperimental
   name: research-technology-further-knowledge
   icon:
-    sprite: Objects/Structures/Machines/rndpointsource.rsi
+    sprite: Structures/Machines/rndpointsource.rsi
     state: rndpointsource-icon
   discipline: Experimental
   tier: 4

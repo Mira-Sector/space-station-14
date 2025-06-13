@@ -197,7 +197,7 @@
   id: FurtherKnowledgeIndustrial
   name: research-technology-further-knowledge
   icon:
-    sprite: Objects/Structures/Machines/rndpointsource.rsi
+    sprite: Structures/Machines/rndpointsource.rsi
     state: rndpointsource-icon
   discipline: Industrial
   tier: 4
