@@ -4,8 +4,8 @@
   id: Hydroponics
   name: research-technology-basic-hydroponics
   icon:
-    sprite: Structures/Machines/seed_extractor.rsi
-    state: seedextractor
+    sprite: Structures/Machines/recycling.rsi
+    state: grinder-b0
   discipline: CivilianServices
   tier: 1
   cost: 5000
