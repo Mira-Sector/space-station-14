@@ -162,3 +162,5 @@ seeds-coconut-name = coconut
 seeds-coconut-display-name = coconut
 seeds-cryoconut-name = cryoconut
 seeds-cryoconut-display-name = cryoconut
+seeds-spaceshroom-name = spaceshroom
+seeds-spaceshroom-display-name = spaceshrooms

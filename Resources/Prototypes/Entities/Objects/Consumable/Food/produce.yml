@@ -3472,3 +3472,24 @@
         acts: [ "Destruction" ]
   - type: DnaSubstanceTrace
 
+#This basically exists as workaround to have spaceshroom TRULY random.
+- type: entity
+  name: spaceshroom
+  suffix: Botany Produce
+  parent: FoodProduceBase
+  id: ProduceSpaceshroomPlant
+  description: A wild mushroom. There's no telling what effect it could have...
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/spaceshroom.rsi
+  - type: Produce
+    seedId: spaceshroom
+  - type: SolutionContainerManager
+  - type: Perishable
+    perishUpdateRate: 0 #Can't instantly rot and there is no other way to have it instantly replace botany grown mushroom (which lacks chemicals) with randomly generated one (the one that has funny chemicals). Please change this if there is a better solution.
+    rotAfter: 0
+    molsPerSecondPerUnitMass: 0
+    forceRotProgression: true
+    rotAccumulator: 9001
+  - type: RotInto
+    entity: FoodSpaceshroom
