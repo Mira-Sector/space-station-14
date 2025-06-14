@@ -66,14 +66,13 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
                 continue;
             }
 
+            crawling.NextMove += crawler.MoveDelay;
+            Dirty(uid, crawling);
+
             if (_net.IsServer)
             {
                 if (!_player.TryGetSessionByEntity(uid, out var session))
-                {
-                    crawling.NextMove += crawler.MoveDelay;
-                    Dirty(uid, crawling);
                     continue;
-                }
 
                 var ev = new PipeCrawlingGetWishDirEvent(GetNetEntity(uid));
                 RaiseNetworkEvent(ev, session);
@@ -119,7 +118,10 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
         if (!TryComp<PipeCrawlingComponent>(entity, out var crawling))
             return;
 
-        if (crawling.NextMove > _timing.CurTime)
+        if (!TryComp<CanEnterPipeCrawlingComponent>(entity, out var crawler))
+            return;
+
+        if (crawling.NextMove - crawler.MoveDelay > _timing.CurTime)
             return;
 
         CrawlPipe((entity, crawling), args.WishDir);
@@ -139,13 +141,8 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
         if (!Resolve(ent.Owner, ref ent.Comp2, false))
             return;
 
-        ent.Comp1.NextMove += ent.Comp2.MoveDelay;
-
         if (wishDir == Vector2.Zero)
-        {
-            Dirty(ent, ent.Comp1);
             return;
-        }
 
         if (!PipeQuery.TryComp(ent.Comp1.CurrentPipe, out var pipe))
         {
