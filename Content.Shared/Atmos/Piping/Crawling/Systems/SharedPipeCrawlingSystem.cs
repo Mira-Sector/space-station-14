@@ -70,10 +70,7 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
             crawling.NextMove += crawler.MoveDelay;
 
             if (AutoQuery.TryComp(uid, out var autoPilot))
-            {
                 UpdateAuto((uid, autoPilot, crawling, crawler));
-                continue;
-            }
 
             if (_net.IsServer)
             {
@@ -86,7 +83,7 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
             }
             else if (_net.IsClient)
             {
-                CrawlPipe((uid, crawling, crawler, input), GetWishDir((uid, input)));
+                CrawlPipe((uid, crawling, crawler, input, autoPilot), GetWishDir((uid, input)));
             }
         }
     }
@@ -143,7 +140,7 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
         return eyeRot.RotateVec(ent.Comp1.WishDir);
     }
 
-    private void CrawlPipe(Entity<PipeCrawlingComponent, CanEnterPipeCrawlingComponent?, InputMoverComponent?> ent, Vector2 wishDir)
+    private void CrawlPipe(Entity<PipeCrawlingComponent, CanEnterPipeCrawlingComponent?, InputMoverComponent?, PipeCrawlingAutoPilotComponent?> ent, Vector2 wishDir)
     {
         if (!Resolve(ent.Owner, ref ent.Comp2, ref ent.Comp3, false))
             return;
@@ -160,12 +157,35 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
 
         var normalizedWishDir = Vector2.Normalize(wishDir);
         var wishDirection = DirectionExtensions.GetDir(normalizedWishDir);
+
+        if (Resolve(ent.Owner, ref ent.Comp4, false))
+        {
+            if (ent.Comp1.Direction == wishDirection)
+                return;
+
+            if (ent.Comp3.Sprinting)
+            {
+                // player requested a different direction
+                // send them down that path
+                var nextStop = GetNextStop((ent.Comp1.CurrentPipe, pipe), ent.Comp1.CurrentLayer, wishDirection);
+                ent.Comp4.TargetPipe = nextStop;
+                Dirty(ent.Owner, ent.Comp4);
+                return;
+            }
+
+            // player requested finer control
+            RemCompDeferred<PipeCrawlingAutoPilotComponent>(ent.Owner);
+        }
+
         ent.Comp1.Direction = wishDirection;
 
         if (ent.Comp3.Sprinting)
         {
             var nextStop = GetNextStop((ent.Comp1.CurrentPipe, pipe), ent.Comp1.CurrentLayer, wishDirection);
-            EnsureComp<PipeCrawlingAutoPilotComponent>(ent.Owner).TargetPipe = nextStop;
+            EnsureComp<PipeCrawlingAutoPilotComponent>(ent.Owner, out ent.Comp4);
+            ent.Comp4.TargetPipe = nextStop;
+            Dirty(ent.Owner, ent.Comp1);
+            Dirty(ent.Owner, ent.Comp4);
             return;
         }
 
