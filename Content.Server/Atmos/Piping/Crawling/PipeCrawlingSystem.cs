@@ -3,6 +3,7 @@ using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
 using Content.Shared.Atmos.Piping.Crawling.Components;
 using Content.Shared.Atmos.Piping.Crawling.Systems;
+using Content.Shared.Maps;
 using Content.Shared.NodeContainer;
 
 namespace Content.Server.Atmos.Piping.Crawling;
@@ -55,14 +56,16 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
     private void UpdatePipeConnections(Entity<PipeCrawlingPipeComponent> ent)
     {
         var pipeLayers = GetPipeLayers(ent.Owner);
+        var pipeTile = Transform(ent.Owner).Coordinates.GetTileRef()?.GridIndices;
 
         ent.Comp.ConnectedPipes.Clear();
 
         foreach (var neighbor in GetNeighbors(ent))
         {
             var neighborLayers = GetPipeLayers(neighbor);
+            var neighborTile = Transform(neighbor).Coordinates.GetTileRef()?.GridIndices;
 
-            foreach (var (connectedLayer, connectedDirections) in GetConnection(pipeLayers, neighborLayers))
+            foreach (var (connectedLayer, connectedDirections) in GetPotentialConnections(pipeLayers, neighborLayers))
             {
                 if (!ent.Comp.ConnectedPipes.TryGetValue(connectedLayer, out var connections))
                 {
@@ -71,7 +74,12 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
                 }
 
                 foreach (var connectedDirection in connectedDirections)
-                    connections[connectedDirection] = GetNetEntity(neighbor);
+                {
+                    // check the direction points at our neighbor
+                    var directionVec = DirectionExtensions.ToIntVec(connectedDirection);
+                    if (neighborTile == pipeTile + directionVec)
+                        connections[connectedDirection] = GetNetEntity(neighbor);
+                }
             }
         }
 
@@ -143,7 +151,7 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
         return layers;
     }
 
-    private static Dictionary<AtmosPipeLayer, HashSet<Direction>> GetConnection(Dictionary<AtmosPipeLayer, PipeDirection> mainPipe, Dictionary<AtmosPipeLayer, PipeDirection> otherPipe)
+    private static Dictionary<AtmosPipeLayer, HashSet<Direction>> GetPotentialConnections(Dictionary<AtmosPipeLayer, PipeDirection> mainPipe, Dictionary<AtmosPipeLayer, PipeDirection> otherPipe)
     {
         Dictionary<AtmosPipeLayer, HashSet<Direction>> connections = [];
 
