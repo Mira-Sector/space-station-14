@@ -3,14 +3,4 @@ using Robust.Shared.GameStates;
 namespace Content.Shared.Atmos.Piping.Crawling.Components;
 
 [RegisterComponent, NetworkedComponent]
-public sealed partial class PipeCrawlingComponent : Component
-{
-    [ViewVariables]
-    public EntityUid CurrentPipe;
-
-    [ViewVariables]
-    public TimeSpan NextMoveAttempt;
-
-    [ViewVariables]
-    public bool IsMoving = false;
-}
+public sealed partial class PipeCrawlingComponent : Component;

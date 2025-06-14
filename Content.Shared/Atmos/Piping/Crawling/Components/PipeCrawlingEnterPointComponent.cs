@@ -4,7 +4,7 @@ using Robust.Shared.GameStates;
 
 namespace Content.Shared.Atmos.Piping.Crawling.Components;
 
-[RegisterComponent, NetworkedComponent]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class PipeCrawlingEnterPointComponent : Component
 {
     [DataField]
@@ -13,14 +13,12 @@ public sealed partial class PipeCrawlingEnterPointComponent : Component
     [DataField]
     public bool CanExit = true;
 
-    [ViewVariables]
+    [ViewVariables, AutoNetworkedField]
     public bool Enterable = false;
 
-    [ViewVariables]
+    [ViewVariables, AutoNetworkedField]
     public bool Exitable = false;
 }
 
 [Serializable, NetSerializable]
-public sealed partial class PipeEnterDoAfterEvent : SimpleDoAfterEvent
-{
-}
+public sealed partial class PipeEnterDoAfterEvent : SimpleDoAfterEvent;
