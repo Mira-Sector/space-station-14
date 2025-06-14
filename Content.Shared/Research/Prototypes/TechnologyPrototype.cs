@@ -59,6 +59,12 @@ public sealed partial class TechnologyPrototype : IPrototype
     public List<ProtoId<TechnologyPrototype>> TechnologyPrerequisites = new();
 
     /// <summary>
+    /// A list of <see cref="TechnologyPrototype"/>s that prevent a technology being unlocked
+    /// </summary>
+    [DataField]
+    public List<ProtoId<TechnologyPrototype>> TechnologyBlacklist = new();
+
+    /// <summary>
     /// A list of <see cref="LatheRecipePrototype"/>s that are unlocked by this technology
     /// </summary>
     [DataField]
