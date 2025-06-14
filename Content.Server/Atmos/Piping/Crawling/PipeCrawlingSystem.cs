@@ -7,13 +7,17 @@ using Content.Shared.Atmos.Piping.Crawling.Components;
 using Content.Shared.Atmos.Piping.Crawling.Systems;
 using Content.Shared.Maps;
 using Content.Shared.NodeContainer;
+using Robust.Shared.Audio.Systems;
+using Robust.Shared.Random;
 
 namespace Content.Server.Atmos.Piping.Crawling;
 
 public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
 {
+    [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly InternalsSystem _internals = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
+    [Dependency] private readonly IRobustRandom _random = default!;
 
     private EntityQuery<NodeContainerComponent> _nodeQuery;
 
@@ -83,6 +87,14 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
     {
         if (GetAir(ent) is { } air)
             args.Gas = air;
+    }
+
+    protected override void PlaySound(Entity<PipeCrawlingPipeComponent> ent)
+    {
+        if (!_random.Prob(ent.Comp.MovingSoundProb))
+            return;
+
+        _audio.PlayPvs(ent.Comp.MovingSound, ent.Owner);
     }
 
     private GasMixture? GetAir(Entity<PipeCrawlingComponent> ent)

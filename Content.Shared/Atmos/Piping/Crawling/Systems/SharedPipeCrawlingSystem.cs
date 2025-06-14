@@ -3,12 +3,11 @@ using Content.Shared.Atmos.Components;
 using Content.Shared.Atmos.Piping.Crawling.Components;
 using Content.Shared.Atmos.Piping.Crawling.Events;
 using Content.Shared.Movement.Components;
-using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Network;
 using Robust.Shared.Player;
-using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 
 namespace Content.Shared.Atmos.Piping.Crawling.Systems;
@@ -16,16 +15,16 @@ namespace Content.Shared.Atmos.Piping.Crawling.Systems;
 public abstract partial class SharedPipeCrawlingSystem : EntitySystem
 {
     [Dependency] private readonly SharedActionsSystem _actions = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly ISharedPlayerManager _player = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly INetManager _net = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
 
     private static readonly string ContainerId = "pipe-crawling";
 
     protected EntityQuery<PipeCrawlingPipeComponent> PipeQuery;
+    protected EntityQuery<PipeCrawlingEnterPointComponent> EnterQuery;
+    protected EntityQuery<PipeCrawlingAutoPilotComponent> AutoQuery;
 
     public override void Initialize()
     {
@@ -44,6 +43,8 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
         SubscribeNetworkEvent<PipeCrawlingSendWishDirEvent>(OnSendWishDir);
 
         PipeQuery = GetEntityQuery<PipeCrawlingPipeComponent>();
+        EnterQuery = GetEntityQuery<PipeCrawlingEnterPointComponent>();
+        AutoQuery = GetEntityQuery<PipeCrawlingAutoPilotComponent>();
     }
 
     public override void Update(float frameTime)
@@ -67,7 +68,12 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
             }
 
             crawling.NextMove += crawler.MoveDelay;
-            Dirty(uid, crawling);
+
+            if (AutoQuery.TryComp(uid, out var autoPilot))
+            {
+                UpdateAuto((uid, autoPilot, crawling, crawler));
+                continue;
+            }
 
             if (_net.IsServer)
             {
@@ -76,10 +82,11 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
 
                 var ev = new PipeCrawlingGetWishDirEvent(GetNetEntity(uid));
                 RaiseNetworkEvent(ev, session);
+                Dirty(uid, crawling);
             }
             else if (_net.IsClient)
             {
-                CrawlPipe((uid, crawling, crawler), GetWishDir((uid, input)));
+                CrawlPipe((uid, crawling, crawler, input), GetWishDir((uid, input)));
             }
         }
     }
@@ -136,9 +143,9 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
         return eyeRot.RotateVec(ent.Comp1.WishDir);
     }
 
-    private void CrawlPipe(Entity<PipeCrawlingComponent, CanEnterPipeCrawlingComponent?> ent, Vector2 wishDir)
+    private void CrawlPipe(Entity<PipeCrawlingComponent, CanEnterPipeCrawlingComponent?, InputMoverComponent?> ent, Vector2 wishDir)
     {
-        if (!Resolve(ent.Owner, ref ent.Comp2, false))
+        if (!Resolve(ent.Owner, ref ent.Comp2, ref ent.Comp3, false))
             return;
 
         if (wishDir == Vector2.Zero)
@@ -151,31 +158,52 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
             return;
         }
 
-        if (!pipe.ConnectedPipes.TryGetValue(ent.Comp1.CurrentLayer, out var connections))
-            return;
-
         var normalizedWishDir = Vector2.Normalize(wishDir);
         var wishDirection = DirectionExtensions.GetDir(normalizedWishDir);
-        if (!connections.TryGetValue(wishDirection, out var netConnection))
+        ent.Comp1.Direction = wishDirection;
+
+        if (ent.Comp3.Sprinting)
+        {
+            var nextStop = GetNextStop((ent.Comp1.CurrentPipe, pipe), ent.Comp1.CurrentLayer, wishDirection);
+            EnsureComp<PipeCrawlingAutoPilotComponent>(ent.Owner).TargetPipe = nextStop;
             return;
+        }
+
+        if (!TryGetNextPipe((ent.Comp1.CurrentPipe, pipe), ent.Comp1.CurrentLayer, wishDirection, out var connection))
+            return;
+
+        TransferPipe((ent.Owner, ent.Comp1), connection.Value);
+    }
+
+    private void TransferPipe(Entity<PipeCrawlingComponent> ent, Entity<PipeCrawlingPipeComponent> pipe)
+    {
+        if (!_container.Insert(ent.Owner, pipe.Comp.Container))
+            return;
+
+        ent.Comp.CurrentPipe = pipe.Owner;
+        Dirty(ent);
+
+        PlaySound(pipe);
+    }
+
+    protected virtual void PlaySound(Entity<PipeCrawlingPipeComponent> ent)
+    {
+    }
+
+    private bool TryGetNextPipe(Entity<PipeCrawlingPipeComponent> ent, AtmosPipeLayer layer, Direction direction, [NotNullWhen(true)] out Entity<PipeCrawlingPipeComponent>? nextPipe)
+    {
+        nextPipe = null;
+
+        if (!ent.Comp.ConnectedPipes.TryGetValue(layer, out var connections))
+            return false;
+
+        if (!connections.TryGetValue(direction, out var netConnection))
+            return false;
 
         var connection = GetEntity(netConnection);
         var connectedPipe = PipeQuery.Comp(connection);
-        if (!_container.Insert(ent.Owner, connectedPipe.Container))
-            return;
-
-        ent.Comp1.CurrentPipe = connection;
-        ent.Comp1.Direction = wishDirection;
-        Dirty(ent.Owner, ent.Comp1);
-
-        // random isnt predictable so server it is
-        if (!_net.IsServer)
-            return;
-
-        if (!_random.Prob(connectedPipe.MovingSoundProb))
-            return;
-
-        _audio.PlayPvs(connectedPipe.MovingSound, connection);
+        nextPipe = (connection, connectedPipe);
+        return true;
     }
 
     private void Insert(Entity<PipeCrawlingPipeComponent> ent, EntityUid toInsert)
