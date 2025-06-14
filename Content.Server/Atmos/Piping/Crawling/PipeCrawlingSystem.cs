@@ -34,7 +34,7 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
     private void OnAnchor(Entity<PipeCrawlingPipeComponent> ent, ref AnchorStateChangedEvent args)
     {
         // prevent running on map init
-        // that has its own logic flow to stop updating neighbors
+        // that has its own logic flow to not updating neighbors
         if (!Initialized(ent.Owner))
             return;
 

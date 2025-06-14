@@ -1,5 +1,6 @@
 using Content.Shared.Atmos.Components;
 using Content.Shared.Atmos.Piping.Crawling.Systems;
+using Robust.Shared.Audio;
 using Robust.Shared.Containers;
 using Robust.Shared.GameStates;
 
@@ -19,4 +20,10 @@ public sealed partial class PipeCrawlingPipeComponent : Component
     /// </summary>
     [DataField]
     public bool IsSealed;
+
+    [DataField]
+    public SoundSpecifier? MovingSound = new SoundPathSpecifier("/Audio/Effects/clang.ogg", AudioParams.Default.WithVolume(-5f));
+
+    [DataField]
+    public float MovingSoundProb = 0.125f;
 }
