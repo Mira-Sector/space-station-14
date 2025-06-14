@@ -1,0 +1,7 @@
+- type: soundCollection
+  id: VentWalk
+  files:
+  - /Audio/Effects/Vent/1.ogg
+  - /Audio/Effects/Vent/2.ogg
+  - /Audio/Effects/Vent/3.ogg
+  - /Audio/Effects/Vent/4.ogg

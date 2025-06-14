@@ -22,7 +22,7 @@ public sealed partial class PipeCrawlingPipeComponent : Component
     public bool IsSealed;
 
     [DataField]
-    public SoundSpecifier? MovingSound = new SoundPathSpecifier("/Audio/Effects/clang.ogg", AudioParams.Default.WithVolume(-5f));
+    public SoundSpecifier? MovingSound = new SoundCollectionSpecifier("VentWalk");
 
     [DataField]
     public float MovingSoundProb = 0.05f;
