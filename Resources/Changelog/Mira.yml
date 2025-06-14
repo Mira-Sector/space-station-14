@@ -1767,3 +1767,9 @@ Entries:
     type: Tweak
   id: 252
   time: '2025-06-09T18:20:00.0000000+00:00'
+- author: Catazeus
+  changes:
+  - message: Spaceshrooms are now farmable at hydroponic trays
+    type: Add
+  id: 253
+  time: '2025-06-14T21:20:00.0000000+00:00'
