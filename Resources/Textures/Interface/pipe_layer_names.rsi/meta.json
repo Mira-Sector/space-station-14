@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "size":
+    {
+        "x": 48,
+        "y": 48
+    },
+    "license": "CC-BY-NC-SA-3.0",
+    "copyright": "Doctor-Cpu, pipe sprites taken from tgstation at https://github.com/tgstation/tgstation/commit/662c08272acd7be79531550919f56f846726eabb and edited by chromiumboy (github)",
+    "states":
+    [
+        {
+            "name": "primary"
+        },
+        {
+            "name": "secondary"
+        },
+        {
+            "name": "tertiary"
+        }
+    ]
+}

@@ -1,5 +1,3 @@
-using Content.Shared.DoAfter;
-using Robust.Shared.Serialization;
 using Robust.Shared.GameStates;
 using Content.Shared.Atmos.Piping.Crawling.Systems;
 
@@ -23,6 +21,3 @@ public sealed partial class PipeCrawlingEnterPointComponent : Component
     [DataField]
     public TimeSpan DoAfterTime;
 }
-
-[Serializable, NetSerializable]
-public sealed partial class PipeCrawlingEnterDoAfterEvent : SimpleDoAfterEvent;

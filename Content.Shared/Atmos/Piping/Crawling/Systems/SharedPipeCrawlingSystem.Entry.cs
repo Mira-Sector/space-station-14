@@ -1,4 +1,5 @@
 using Content.Shared.Atmos.Piping.Crawling.Components;
+using Content.Shared.Atmos.Piping.Crawling.Events;
 using Content.Shared.DoAfter;
 using Content.Shared.Tools.Components;
 using Content.Shared.Tools.Systems;
