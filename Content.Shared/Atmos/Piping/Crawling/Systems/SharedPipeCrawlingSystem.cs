@@ -185,6 +185,7 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
     {
         _container.Insert(toInsert, ent.Comp.Container);
         EnsureComp<PipeCrawlingComponent>(toInsert, out var crawling);
+        crawling.NextMove = _timing.CurTime;
         crawling.CurrentPipe = ent.Owner;
         crawling.CurrentLayer = CompOrNull<AtmosPipeLayersComponent>(ent.Owner)?.CurrentPipeLayer ?? AtmosPipeLayer.Primary;
 
