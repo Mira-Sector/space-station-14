@@ -9,6 +9,8 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
 
     private static readonly string ContainerId = "pipe-crawling";
 
+    protected EntityQuery<PipeCrawlingPipeComponent> PipeQuery;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -17,6 +19,8 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
 
         SubscribeLocalEvent<PipeCrawlingPipeComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<PipeCrawlingPipeComponent, ComponentRemove>(OnRemove);
+
+        PipeQuery = GetEntityQuery<PipeCrawlingPipeComponent>();
     }
 
     private void OnInit(Entity<PipeCrawlingPipeComponent> ent, ref ComponentInit args)

@@ -11,7 +11,6 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
 {
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
 
-    private EntityQuery<PipeCrawlingPipeComponent> _pipeQuery;
     private EntityQuery<NodeContainerComponent> _nodeQuery;
 
     private static readonly LookupFlags LookupFlags = LookupFlags.Approximate | LookupFlags.Static | LookupFlags.Sundries | LookupFlags.Sensors;
@@ -21,20 +20,73 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
         base.Initialize();
 
         SubscribeLocalEvent<PipeCrawlingPipeComponent, MapInitEvent>(OnMapInit);
+        SubscribeLocalEvent<PipeCrawlingPipeComponent, AnchorStateChangedEvent>(OnAnchor);
 
-        _pipeQuery = GetEntityQuery<PipeCrawlingPipeComponent>();
         _nodeQuery = GetEntityQuery<NodeContainerComponent>();
     }
 
     private void OnMapInit(Entity<PipeCrawlingPipeComponent> ent, ref MapInitEvent args)
     {
-        var xform = Transform(ent.Owner);
+        UpdatePipeConnections(ent);
+    }
 
-        if (xform.GridUid is not { } gridUid)
+    private void OnAnchor(Entity<PipeCrawlingPipeComponent> ent, ref AnchorStateChangedEvent args)
+    {
+        // prevent running on map init
+        // that has its own logic flow to stop updating neighbors
+        if (!Initialized(ent.Owner))
             return;
 
-        var pipePos = Transform(ent.Owner).LocalPosition;
+        if (args.Anchored)
+        {
+            UpdatePipeConnections(ent);
+        }
+        else
+        {
+            ent.Comp.ConnectedPipes.Clear();
+            Dirty(ent);
+        }
+
+        // now update anyone who is close by
+        foreach (var neighbor in GetNeighbors(ent))
+            UpdatePipeConnections(neighbor);
+    }
+
+    private void UpdatePipeConnections(Entity<PipeCrawlingPipeComponent> ent)
+    {
         var pipeLayers = GetPipeLayers(ent.Owner);
+
+        ent.Comp.ConnectedPipes.Clear();
+
+        foreach (var neighbor in GetNeighbors(ent))
+        {
+            var neighborLayers = GetPipeLayers(neighbor);
+
+            foreach (var (connectedLayer, connectedDirections) in GetConnection(pipeLayers, neighborLayers))
+            {
+                if (!ent.Comp.ConnectedPipes.TryGetValue(connectedLayer, out var connections))
+                {
+                    connections = [];
+                    ent.Comp.ConnectedPipes[connectedLayer] = connections;
+                }
+
+                foreach (var connectedDirection in connectedDirections)
+                    connections[connectedDirection] = GetNetEntity(neighbor);
+            }
+        }
+
+        Dirty(ent);
+    }
+
+    private HashSet<Entity<PipeCrawlingPipeComponent>> GetNeighbors(EntityUid uid)
+    {
+        HashSet<Entity<PipeCrawlingPipeComponent>> neighbors = [];
+        var xform = Transform(uid);
+
+        if (xform.GridUid is not { } gridUid)
+            return neighbors;
+
+        var pipePos = xform.LocalPosition;
 
         foreach (var direction in DirectionExtensions.AllDirections)
         {
@@ -42,27 +94,20 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
                 continue;
 
             var neighborPos = (Vector2i)pipePos + direction.ToIntVec();
-            var neighbors = _lookup.GetLocalEntitiesIntersecting(gridUid, neighborPos, 0f, LookupFlags);
-            foreach (var neighbor in neighbors)
+            foreach (var neighbor in _lookup.GetLocalEntitiesIntersecting(gridUid, neighborPos, 0f, LookupFlags))
             {
-                if (!_pipeQuery.HasComp(neighbor))
+                if (TerminatingOrDeleted(neighbor))
                     continue;
 
-                var neighborLayers = GetPipeLayers(neighbor);
-                if (GetConnection(pipeLayers, neighborLayers) is not { } connection)
+                if (!Transform(neighbor).Anchored)
                     continue;
 
-                var (connectedLayer, connectedDirection) = connection;
-
-                if (!ent.Comp.ConnectedPipes.TryGetValue(connectedLayer, out var connections))
-                {
-                    connections = [];
-                    ent.Comp.ConnectedPipes[connectedLayer] = connections;
-                }
-
-                connections[connectedDirection] = GetNetEntity(neighbor);
+                if (PipeQuery.TryComp(neighbor, out var neighborPipe))
+                    neighbors.Add((neighbor, neighborPipe));
             }
         }
+
+        return neighbors;
     }
 
     // why this isnt in engine already baffles me
@@ -98,12 +143,16 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
         return layers;
     }
 
-    private static (AtmosPipeLayer, Direction)? GetConnection(Dictionary<AtmosPipeLayer, PipeDirection> mainPipe, Dictionary<AtmosPipeLayer, PipeDirection> otherPipe)
+    private static Dictionary<AtmosPipeLayer, HashSet<Direction>> GetConnection(Dictionary<AtmosPipeLayer, PipeDirection> mainPipe, Dictionary<AtmosPipeLayer, PipeDirection> otherPipe)
     {
+        Dictionary<AtmosPipeLayer, HashSet<Direction>> connections = [];
+
         foreach (var (layer, mainDirection) in mainPipe)
         {
             if (!otherPipe.TryGetValue(layer, out var otherDirection))
                 continue;
+
+            HashSet<Direction> connectionDirections = [];
 
             for (var i = 0; i < PipeDirectionHelpers.PipeDirections; i++)
             {
@@ -115,10 +164,12 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
                 if (!otherDirection.HasFlag(oppositeDirection))
                     continue;
 
-                return (layer, PipeDirectionHelpers.ToDirection(direction));
+                connectionDirections.Add(PipeDirectionHelpers.ToDirection(direction));
             }
+
+            connections.Add(layer, connectionDirections);
         }
 
-        return null;
+        return connections;
     }
 }
