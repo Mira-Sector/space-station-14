@@ -69,9 +69,6 @@
     bodyType: static
   - type: StaticPrice
     price: 30
-  - type: ContainerContainer
-    containers:
-      pipe: !type:Container
   - type: PipeCrawlingPipe
 
 - type: entity

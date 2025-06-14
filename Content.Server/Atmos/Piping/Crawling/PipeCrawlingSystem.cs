@@ -1,3 +1,5 @@
+using Content.Server.Atmos.EntitySystems;
+using Content.Server.Body.Systems;
 using Content.Server.NodeContainer.Nodes;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
@@ -10,11 +12,13 @@ namespace Content.Server.Atmos.Piping.Crawling;
 
 public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
 {
+    [Dependency] private readonly InternalsSystem _internals = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
 
     private EntityQuery<NodeContainerComponent> _nodeQuery;
 
-    private static readonly LookupFlags LookupFlags = LookupFlags.Approximate | LookupFlags.Static | LookupFlags.Sundries | LookupFlags.Sensors;
+    private const LookupFlags Flags = LookupFlags.Approximate | LookupFlags.Static | LookupFlags.Sundries | LookupFlags.Sensors;
+    private static readonly string[] AirNodePreference = ["pipe", "inlet", "outlet", "filter"];
 
     public override void Initialize()
     {
@@ -22,6 +26,11 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
 
         SubscribeLocalEvent<PipeCrawlingPipeComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<PipeCrawlingPipeComponent, AnchorStateChangedEvent>(OnAnchor);
+
+
+        SubscribeLocalEvent<PipeCrawlingComponent, AtmosExposedGetAirEvent>(OnCrawlingExposed);
+        SubscribeLocalEvent<PipeCrawlingComponent, InhaleLocationEvent>(OnCrawlingInhale);
+        SubscribeLocalEvent<PipeCrawlingComponent, ExhaleLocationEvent>(OnCrawlingExhale);
 
         _nodeQuery = GetEntityQuery<NodeContainerComponent>();
     }
@@ -51,6 +60,55 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
         // now update anyone who is close by
         foreach (var neighbor in GetNeighbors(ent))
             UpdatePipeConnections(neighbor);
+    }
+
+    private void OnCrawlingExposed(Entity<PipeCrawlingComponent> ent, ref AtmosExposedGetAirEvent args)
+    {
+        if (args.Handled)
+            return;
+
+        if (GetAir(ent) is { } air)
+        {
+            args.Gas = air;
+            args.Handled = true;
+        }
+    }
+
+    private void OnCrawlingInhale(Entity<PipeCrawlingComponent> ent, ref InhaleLocationEvent args)
+    {
+        if (GetAir(ent) is { } air)
+            args.Gas = air;
+    }
+
+    private void OnCrawlingExhale(Entity<PipeCrawlingComponent> ent, ref ExhaleLocationEvent args)
+    {
+        if (GetAir(ent) is { } air)
+            args.Gas = air;
+    }
+
+    private GasMixture? GetAir(Entity<PipeCrawlingComponent> ent)
+    {
+        if (_internals.AreInternalsWorking(ent.Owner))
+            return null;
+
+        if (!_nodeQuery.TryComp(ent.Comp.CurrentPipe, out var nodeContainer))
+            return null;
+
+        var crawlerDirection = ent.Comp.Direction.ToPipeDirection().GetOpposite();
+
+        foreach (var node in nodeContainer.Nodes.Values)
+        {
+            if (node is not PipeNode pipeNode)
+                continue;
+
+            if (pipeNode.CurrentPipeLayer != ent.Comp.CurrentLayer)
+                continue;
+
+            if (pipeNode.CurrentPipeDirection.HasFlag(crawlerDirection))
+                return pipeNode.Air;
+        }
+
+        return null;
     }
 
     private void UpdatePipeConnections(Entity<PipeCrawlingPipeComponent> ent)
@@ -102,7 +160,7 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
                 continue;
 
             var neighborPos = (Vector2i)pipePos + direction.ToIntVec();
-            foreach (var neighbor in _lookup.GetLocalEntitiesIntersecting(gridUid, neighborPos, 0f, LookupFlags))
+            foreach (var neighbor in _lookup.GetLocalEntitiesIntersecting(gridUid, neighborPos, 0f, Flags))
             {
                 if (TerminatingOrDeleted(neighbor))
                     continue;

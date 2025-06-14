@@ -25,5 +25,5 @@ public sealed partial class PipeCrawlingPipeComponent : Component
     public SoundSpecifier? MovingSound = new SoundPathSpecifier("/Audio/Effects/clang.ogg", AudioParams.Default.WithVolume(-5f));
 
     [DataField]
-    public float MovingSoundProb = 0.125f;
+    public float MovingSoundProb = 0.05f;
 }

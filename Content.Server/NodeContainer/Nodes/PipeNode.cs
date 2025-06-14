@@ -87,7 +87,7 @@ namespace Content.Server.NodeContainer.Nodes
         ///     The <see cref="IPipeNet"/> this pipe is a part of.
         /// </summary>
         [ViewVariables]
-        private IPipeNet? PipeNet => (IPipeNet?) NodeGroup;
+        public IPipeNet? PipeNet => (IPipeNet?) NodeGroup;
 
         /// <summary>
         ///     The gases in this pipe.

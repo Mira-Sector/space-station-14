@@ -168,6 +168,7 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
             return;
 
         ent.Comp1.CurrentPipe = connection;
+        ent.Comp1.Direction = wishDirection;
         Dirty(ent.Owner, ent.Comp1);
 
         // random isnt predictable so server it is

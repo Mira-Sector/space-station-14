@@ -18,6 +18,9 @@ public sealed partial class PipeCrawlingComponent : Component
     [ViewVariables, AutoNetworkedField]
     public AtmosPipeLayer CurrentLayer;
 
+    [ViewVariables, AutoNetworkedField]
+    public Direction Direction;
+
     [DataField]
     public EntProtoId LayerActionId = "ActionPipeCrawlingLayer";
 
