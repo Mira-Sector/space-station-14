@@ -18,7 +18,6 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
     private EntityQuery<NodeContainerComponent> _nodeQuery;
 
     private const LookupFlags Flags = LookupFlags.Approximate | LookupFlags.Static | LookupFlags.Sundries | LookupFlags.Sensors;
-    private static readonly string[] AirNodePreference = ["pipe", "inlet", "outlet", "filter"];
 
     public override void Initialize()
     {
@@ -118,8 +117,17 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
 
         ent.Comp.ConnectedPipes.Clear();
 
+        if (HasComp<PipeCrawlingPipeBlockComponent>(ent.Owner))
+        {
+            Dirty(ent);
+            return;
+        }
+
         foreach (var neighbor in GetNeighbors(ent))
         {
+            if (HasComp<PipeCrawlingPipeBlockComponent>(neighbor))
+                continue;
+
             var neighborLayers = GetPipeLayers(neighbor);
             var neighborTile = Transform(neighbor).Coordinates.GetTileRef()?.GridIndices;
 
