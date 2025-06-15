@@ -59,6 +59,8 @@ public partial class SharedPipeCrawlingSystem
             if (!pipe.Comp.Revealers.Any())
                 RemCompDeferred<PipeCrawlingVisualsComponent>(pipe);
         }
+
+        UpdateOverlay(ent);
     }
 
     private void DisableVisuals(Entity<PipeCrawlingComponent> ent)
@@ -75,6 +77,16 @@ public partial class SharedPipeCrawlingSystem
 
         ent.Comp.PipeNet.Clear();
         Dirty(ent);
+
+        RemoveOverlay(ent);
+    }
+
+    protected virtual void UpdateOverlay(Entity<PipeCrawlingComponent> ent)
+    {
+    }
+
+    protected virtual void RemoveOverlay(Entity<PipeCrawlingComponent> ent)
+    {
     }
 
     private IEnumerable<Entity<PipeCrawlingPipeComponent>> GetVisiblePipes(Entity<PipeCrawlingPipeComponent> start)
