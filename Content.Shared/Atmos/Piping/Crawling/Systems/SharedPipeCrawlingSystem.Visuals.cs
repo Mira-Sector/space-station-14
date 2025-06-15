@@ -60,11 +60,14 @@ public partial class SharedPipeCrawlingSystem
                 RemCompDeferred<PipeCrawlingVisualsComponent>(pipe);
         }
 
-        UpdateOverlay(ent);
+        UpdateOverlay(ent.AsNullable());
     }
 
-    private void DisableVisuals(Entity<PipeCrawlingComponent> ent)
+    private void DisableVisuals(Entity<PipeCrawlingComponent?> ent)
     {
+        if (!Resolve(ent.Owner, ref ent.Comp, false))
+            return;
+
         foreach (var pipe in ent.Comp.PipeNet)
         {
             if (!VisualsQuery.TryComp(pipe, out var visuals))
@@ -78,14 +81,14 @@ public partial class SharedPipeCrawlingSystem
         ent.Comp.PipeNet.Clear();
         Dirty(ent);
 
-        RemoveOverlay(ent);
+        RemoveOverlay(ent.AsNullable());
     }
 
-    protected virtual void UpdateOverlay(Entity<PipeCrawlingComponent> ent)
+    protected virtual void UpdateOverlay(Entity<PipeCrawlingComponent?> ent)
     {
     }
 
-    protected virtual void RemoveOverlay(Entity<PipeCrawlingComponent> ent)
+    protected virtual void RemoveOverlay(Entity<PipeCrawlingComponent?> ent)
     {
     }
 

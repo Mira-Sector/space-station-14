@@ -18,7 +18,7 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
     [Dependency] private readonly SharedActionsSystem _actions = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly SharedEyeSystem _eye = default!;
-    [Dependency] private readonly ISharedPlayerManager _player = default!;
+    [Dependency] protected readonly ISharedPlayerManager Player = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly INetManager _net = default!;
 
@@ -80,7 +80,7 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
 
             if (_net.IsServer)
             {
-                if (!_player.TryGetSessionByEntity(uid, out var session))
+                if (!Player.TryGetSessionByEntity(uid, out var session))
                     continue;
 
                 var ev = new PipeCrawlingGetWishDirEvent(GetNetEntity(uid));
@@ -113,7 +113,6 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
     private void OnCrawlingRemove(Entity<PipeCrawlingComponent> ent, ref ComponentRemove args)
     {
         _actions.RemoveAction(ent.Comp.LayerAction);
-        DisableVisuals(ent);
     }
 
     private void OnCrawlingVisMask(Entity<PipeCrawlingComponent> ent, ref GetVisMaskEvent args)
@@ -257,6 +256,7 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
     private void Eject(Entity<PipeCrawlingPipeComponent> ent, EntityUid toRemove)
     {
         _container.Remove(toRemove, ent.Comp.Container);
+        DisableVisuals(toRemove);
         RemCompDeferred<PipeCrawlingComponent>(toRemove);
         _eye.RefreshVisibilityMask(toRemove);
     }

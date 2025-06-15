@@ -246,11 +246,11 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
                 if (!mainDirection.HasFlag(direction))
                     continue;
 
-                var oppositeDirection = PipeDirectionHelpers.GetOpposite(direction);
+                var oppositeDirection = direction.GetOpposite();
                 if (!otherDirection.HasFlag(oppositeDirection))
                     continue;
 
-                connectionDirections.Add(PipeDirectionHelpers.ToDirection(direction));
+                connectionDirections.Add(direction.ToDirection());
             }
 
             connections.Add(layer, connectionDirections);
