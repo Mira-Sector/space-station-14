@@ -7,8 +7,11 @@ using Content.Shared.Atmos.Piping.Crawling.Components;
 using Content.Shared.Atmos.Piping.Crawling.Systems;
 using Content.Shared.Maps;
 using Content.Shared.NodeContainer;
+using Robust.Server.GameObjects;
 using Robust.Shared.Audio.Systems;
+using Robust.Shared.Map.Components;
 using Robust.Shared.Random;
+using System.Linq;
 
 namespace Content.Server.Atmos.Piping.Crawling;
 
@@ -17,19 +20,18 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly InternalsSystem _internals = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
+    [Dependency] private readonly MapSystem _map = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
 
     private EntityQuery<NodeContainerComponent> _nodeQuery;
 
-    private const LookupFlags Flags = LookupFlags.Approximate | LookupFlags.Static | LookupFlags.Sundries | LookupFlags.Sensors;
+    private const LookupFlags Flags = LookupFlags.Approximate | LookupFlags.Static | LookupFlags.Sundries;
 
     public override void Initialize()
     {
         base.Initialize();
 
-        SubscribeLocalEvent<PipeCrawlingPipeComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<PipeCrawlingPipeComponent, AnchorStateChangedEvent>(OnAnchor);
-
 
         SubscribeLocalEvent<PipeCrawlingComponent, AtmosExposedGetAirEvent>(OnCrawlingExposed);
         SubscribeLocalEvent<PipeCrawlingComponent, InhaleLocationEvent>(OnCrawlingInhale);
@@ -38,16 +40,9 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
         _nodeQuery = GetEntityQuery<NodeContainerComponent>();
     }
 
-    private void OnMapInit(Entity<PipeCrawlingPipeComponent> ent, ref MapInitEvent args)
-    {
-        UpdatePipeConnections(ent);
-    }
-
     private void OnAnchor(Entity<PipeCrawlingPipeComponent> ent, ref AnchorStateChangedEvent args)
     {
-        // prevent running on map init
-        // that has its own logic flow to not updating neighbors
-        if (!Initialized(ent.Owner))
+        if (TerminatingOrDeleted(ent.Owner))
             return;
 
         if (args.Anchored)
@@ -129,6 +124,12 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
 
         ent.Comp.ConnectedPipes.Clear();
 
+        if (pipeTile == null)
+        {
+            Dirty(ent);
+            return;
+        }
+
         if (HasComp<PipeCrawlingPipeBlockComponent>(ent.Owner))
         {
             Dirty(ent);
@@ -155,7 +156,8 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
                 {
                     // check the direction points at our neighbor
                     var directionVec = DirectionExtensions.ToIntVec(connectedDirection);
-                    if (neighborTile == pipeTile + directionVec)
+                    var expectedNeighborPos = pipeTile.Value + directionVec;
+                    if (neighborTile == expectedNeighborPos)
                         connections[connectedDirection] = GetNetEntity(neighbor);
                 }
             }
@@ -172,15 +174,19 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
         if (xform.GridUid is not { } gridUid)
             return neighbors;
 
-        var pipePos = xform.LocalPosition;
+        if (!TryComp<MapGridComponent>(gridUid, out var mapGrid))
+            return neighbors;
+
+        var pipePos = xform.Coordinates;
 
         foreach (var direction in DirectionExtensions.AllDirections)
         {
             if (!IsCardinalDirection(direction))
                 continue;
 
-            var neighborPos = (Vector2i)pipePos + direction.ToIntVec();
-            foreach (var neighbor in _lookup.GetLocalEntitiesIntersecting(gridUid, neighborPos, 0f, Flags))
+            var neighborPos = pipePos.Offset(direction.ToVec());
+            var neighborTile = _map.CoordinatesToTile(gridUid, mapGrid, neighborPos);
+            foreach (var neighbor in _lookup.GetLocalEntitiesIntersecting(gridUid, neighborTile, 0f, Flags, mapGrid))
             {
                 if (TerminatingOrDeleted(neighbor))
                     continue;
@@ -253,7 +259,8 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
                 connectionDirections.Add(direction.ToDirection());
             }
 
-            connections.Add(layer, connectionDirections);
+            if (connectionDirections.Any())
+                connections.Add(layer, connectionDirections);
         }
 
         return connections;
