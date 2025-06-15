@@ -25,4 +25,7 @@ public sealed partial class PipeCrawlingComponent : Component
 
     [ViewVariables]
     public EntityUid? LayerAction;
+
+    [ViewVariables, AutoNetworkedField]
+    public List<EntityUid> PipeNet = [];
 }

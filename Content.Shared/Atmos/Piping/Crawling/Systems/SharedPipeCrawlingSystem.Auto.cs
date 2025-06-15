@@ -47,7 +47,7 @@ public partial class SharedPipeCrawlingSystem
                 if (connectedDirection == oppositeDir)
                     continue;
 
-                // we foun a new fork in the way
+                // we found a new fork in the way
                 // allow the player to make a choice
                 return nextPipe.Value;
             }
@@ -57,5 +57,4 @@ public partial class SharedPipeCrawlingSystem
 
         return currentPipe;
     }
-
 }

@@ -2,6 +2,7 @@ using Content.Shared.Actions;
 using Content.Shared.Atmos.Components;
 using Content.Shared.Atmos.Piping.Crawling.Components;
 using Content.Shared.Atmos.Piping.Crawling.Events;
+using Content.Shared.Eye;
 using Content.Shared.Movement.Components;
 using Robust.Shared.Containers;
 using Robust.Shared.Network;
@@ -16,6 +17,7 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
 {
     [Dependency] private readonly SharedActionsSystem _actions = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!;
+    [Dependency] private readonly SharedEyeSystem _eye = default!;
     [Dependency] private readonly ISharedPlayerManager _player = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly INetManager _net = default!;
@@ -25,6 +27,7 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
     protected EntityQuery<PipeCrawlingPipeComponent> PipeQuery;
     protected EntityQuery<PipeCrawlingEnterPointComponent> EnterQuery;
     protected EntityQuery<PipeCrawlingAutoPilotComponent> AutoQuery;
+    protected EntityQuery<PipeCrawlingVisualsComponent> VisualsQuery;
 
     public override void Initialize()
     {
@@ -32,12 +35,14 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
 
         InitializeAction();
         InitializeEntry();
+        InitializeVisuals();
 
         SubscribeLocalEvent<PipeCrawlingPipeComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<PipeCrawlingPipeComponent, ComponentRemove>(OnRemove);
 
         SubscribeLocalEvent<PipeCrawlingComponent, ComponentInit>(OnCrawlingInit);
         SubscribeLocalEvent<PipeCrawlingComponent, ComponentRemove>(OnCrawlingRemove);
+        SubscribeLocalEvent<PipeCrawlingComponent, GetVisMaskEvent>(OnCrawlingVisMask);
 
         SubscribeNetworkEvent<PipeCrawlingGetWishDirEvent>(OnGetWishDir);
         SubscribeNetworkEvent<PipeCrawlingSendWishDirEvent>(OnSendWishDir);
@@ -45,6 +50,7 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
         PipeQuery = GetEntityQuery<PipeCrawlingPipeComponent>();
         EnterQuery = GetEntityQuery<PipeCrawlingEnterPointComponent>();
         AutoQuery = GetEntityQuery<PipeCrawlingAutoPilotComponent>();
+        VisualsQuery = GetEntityQuery<PipeCrawlingVisualsComponent>();
     }
 
     public override void Update(float frameTime)
@@ -107,6 +113,12 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
     private void OnCrawlingRemove(Entity<PipeCrawlingComponent> ent, ref ComponentRemove args)
     {
         _actions.RemoveAction(ent.Comp.LayerAction);
+        DisableVisuals(ent);
+    }
+
+    private void OnCrawlingVisMask(Entity<PipeCrawlingComponent> ent, ref GetVisMaskEvent args)
+    {
+        args.VisibilityMask |= (int)VisibilityFlags.Subfloor;
     }
 
     private void OnGetWishDir(PipeCrawlingGetWishDirEvent args)
@@ -201,6 +213,7 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
             return;
 
         ent.Comp.CurrentPipe = pipe.Owner;
+        EnableVisuals(ent);
         Dirty(ent);
 
         PlaySound(pipe);
@@ -233,13 +246,18 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
         crawling.NextMove = _timing.CurTime;
         crawling.CurrentPipe = ent.Owner;
         crawling.CurrentLayer = CompOrNull<AtmosPipeLayersComponent>(ent.Owner)?.CurrentPipeLayer ?? AtmosPipeLayer.Primary;
+        EnableVisuals((toInsert, crawling));
+        Dirty(toInsert, crawling);
 
         SetActionIcon((toInsert, crawling));
+
+        _eye.RefreshVisibilityMask(toInsert);
     }
 
     private void Eject(Entity<PipeCrawlingPipeComponent> ent, EntityUid toRemove)
     {
         _container.Remove(toRemove, ent.Comp.Container);
         RemCompDeferred<PipeCrawlingComponent>(toRemove);
+        _eye.RefreshVisibilityMask(toRemove);
     }
 }
