@@ -19,5 +19,5 @@ public sealed partial class PipeCrawlingEnterPointComponent : Component
     public bool Exitable = false;
 
     [DataField]
-    public TimeSpan DoAfterTime;
+    public TimeSpan DoAfterTime = TimeSpan.FromSeconds(0.5);
 }

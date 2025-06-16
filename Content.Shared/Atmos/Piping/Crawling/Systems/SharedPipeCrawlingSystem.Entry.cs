@@ -1,6 +1,7 @@
 using Content.Shared.Atmos.Piping.Crawling.Components;
 using Content.Shared.Atmos.Piping.Crawling.Events;
 using Content.Shared.DoAfter;
+using Content.Shared.Interaction;
 using Content.Shared.Tools.Components;
 using Content.Shared.Tools.Systems;
 using Content.Shared.Verbs;
@@ -18,6 +19,7 @@ public partial class SharedPipeCrawlingSystem
         SubscribeLocalEvent<PipeCrawlingEnterPointComponent, WeldableChangedEvent>(OnEntryWelded);
         SubscribeLocalEvent<PipeCrawlingEnterPointComponent, AnchorStateChangedEvent>(OnEntryAnchor);
         SubscribeLocalEvent<PipeCrawlingEnterPointComponent, GetVerbsEvent<ActivationVerb>>(OnEntryVerbs);
+        SubscribeLocalEvent<PipeCrawlingEnterPointComponent, ActivateInWorldEvent>(OnEntryActivate);
         SubscribeLocalEvent<PipeCrawlingEnterPointComponent, PipeCrawlingEnterDoAfterEvent>(OnEnterDoAfter);
     }
 
@@ -58,24 +60,11 @@ public partial class SharedPipeCrawlingSystem
 
         var user = args.User;
 
-        if (!HasComp<CanEnterPipeCrawlingComponent>(user))
+        if (!TryComp<CanEnterPipeCrawlingComponent>(user, out var crawler))
             return;
 
-        var pipeComp = Comp<PipeCrawlingPipeComponent>(ent.Owner);
         var isCrawling = HasComp<PipeCrawlingComponent>(user);
-        var contains = pipeComp.Container.Contains(user);
-
-        var disabled = false;
-
-        if (isCrawling)
-        {
-            disabled |= !ent.Comp.CanExit;
-            disabled |= !contains;
-        }
-        else
-        {
-            disabled |= !ent.Comp.CanEnter;
-        }
+        var disabled = IsEntryDisabled(ent, (user, crawler), isCrawling);
 
         var verb = new ActivationVerb()
         {
@@ -87,6 +76,21 @@ public partial class SharedPipeCrawlingSystem
         };
 
         args.Verbs.Add(verb);
+    }
+
+    private void OnEntryActivate(Entity<PipeCrawlingEnterPointComponent> ent, ref ActivateInWorldEvent args)
+    {
+        if (args.Handled)
+            return;
+
+        if (!TryComp<CanEnterPipeCrawlingComponent>(args.User, out var crawler))
+            return;
+
+        var isCrawling = HasComp<PipeCrawlingComponent>(args.User);
+        if (IsEntryDisabled(ent, (args.User, crawler), isCrawling))
+            return;
+
+        _doAfter.TryStartDoAfter(new DoAfterArgs(EntityManager, args.User, ent.Comp.DoAfterTime, new PipeCrawlingEnterDoAfterEvent(), ent.Owner));
     }
 
     private void OnEnterDoAfter(Entity<PipeCrawlingEnterPointComponent> ent, ref PipeCrawlingEnterDoAfterEvent args)
@@ -106,5 +110,25 @@ public partial class SharedPipeCrawlingSystem
             Insert((ent.Owner, pipeComp), args.User);
 
         args.Handled = true;
+    }
+
+    private bool IsEntryDisabled(Entity<PipeCrawlingEnterPointComponent> ent, Entity<CanEnterPipeCrawlingComponent> user, bool isCrawling)
+    {
+        var pipeComp = Comp<PipeCrawlingPipeComponent>(ent.Owner);
+        var contains = pipeComp.Container.Contains(user);
+
+        var disabled = false;
+
+        if (isCrawling)
+        {
+            disabled |= !ent.Comp.CanExit;
+            disabled |= !contains;
+        }
+        else
+        {
+            disabled |= !ent.Comp.CanEnter;
+        }
+
+        return disabled;
     }
 }
