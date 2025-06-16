@@ -226,7 +226,9 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
             return false;
 
         var connection = GetEntity(netConnection);
-        var connectedPipe = PipeQuery.Comp(connection);
+        if (!PipeQuery.TryComp(connection, out var connectedPipe))
+            return false;
+
         nextPipe = (connection, connectedPipe);
         return true;
     }
