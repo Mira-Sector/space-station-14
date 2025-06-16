@@ -1,15 +1,14 @@
 using Content.Shared.Actions;
 using Content.Shared.Atmos.Components;
 using Content.Shared.Atmos.Piping.Crawling.Components;
-using Content.Shared.Atmos.Piping.Crawling.Events;
 using Content.Shared.Eye;
 using Content.Shared.Movement.Components;
+using Content.Shared.Movement.Events;
+using Content.Shared.Movement.Systems;
 using Robust.Shared.Containers;
-using Robust.Shared.Network;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
 using System.Diagnostics.CodeAnalysis;
-using System.Numerics;
 
 namespace Content.Shared.Atmos.Piping.Crawling.Systems;
 
@@ -18,9 +17,9 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
     [Dependency] private readonly SharedActionsSystem _actions = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly SharedEyeSystem _eye = default!;
+    [Dependency] private readonly SharedMoverController _mover = default!;
     [Dependency] protected readonly ISharedPlayerManager Player = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly INetManager _net = default!;
 
     private static readonly string ContainerId = "pipe-crawling";
 
@@ -43,9 +42,7 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
         SubscribeLocalEvent<PipeCrawlingComponent, ComponentInit>(OnCrawlingInit);
         SubscribeLocalEvent<PipeCrawlingComponent, ComponentRemove>(OnCrawlingRemove);
         SubscribeLocalEvent<PipeCrawlingComponent, GetVisMaskEvent>(OnCrawlingVisMask);
-
-        SubscribeNetworkEvent<PipeCrawlingGetWishDirEvent>(OnGetWishDir);
-        SubscribeNetworkEvent<PipeCrawlingSendWishDirEvent>(OnSendWishDir);
+        SubscribeLocalEvent<PipeCrawlingComponent, MoveInputEvent>(OnCrawlingInput);
 
         PipeQuery = GetEntityQuery<PipeCrawlingPipeComponent>();
         EnterQuery = GetEntityQuery<PipeCrawlingEnterPointComponent>();
@@ -60,39 +57,23 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
         if (!_timing.IsFirstTimePredicted)
             return;
 
-        var query = EntityQueryEnumerator<PipeCrawlingComponent, CanEnterPipeCrawlingComponent, InputMoverComponent>();
-        while (query.MoveNext(out var uid, out var crawling, out var crawler, out var input))
+        var query = EntityQueryEnumerator<PipeCrawlingComponent, CanEnterPipeCrawlingComponent>();
+        while (query.MoveNext(out var uid, out var crawling, out var crawler))
         {
             if (crawling.NextMove > _timing.CurTime)
                 continue;
 
-            UpdateVisuals((uid, crawling));
-
-            if (!input.CanMove)
-            {
-                crawling.NextMove += crawler.MoveDelay;
-                Dirty(uid, crawling);
-                continue;
-            }
-
             crawling.NextMove += crawler.MoveDelay;
 
-            if (AutoQuery.TryComp(uid, out var autoPilot))
-                UpdateAuto((uid, autoPilot, crawling, crawler));
+            if (AutoQuery.TryComp(uid, out var auto))
+                UpdateAuto((uid, auto, crawling, crawler));
 
-            if (_net.IsServer)
-            {
-                if (!Player.TryGetSessionByEntity(uid, out var session))
-                    continue;
+            UpdateVisuals((uid, crawling));
 
-                var ev = new PipeCrawlingGetWishDirEvent(GetNetEntity(uid));
-                RaiseNetworkEvent(ev, session);
-                Dirty(uid, crawling);
-            }
-            else if (_net.IsClient)
-            {
-                CrawlPipe((uid, crawling, crawler, input, autoPilot), GetWishDir((uid, input)));
-            }
+            if (crawling.WishDirection is not { } wishDir)
+                continue;
+
+            CrawlPipe((uid, crawling, crawler), wishDir);
         }
     }
 
@@ -123,43 +104,40 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
         args.VisibilityMask |= (int)VisibilityFlags.Subfloor;
     }
 
-    private void OnGetWishDir(PipeCrawlingGetWishDirEvent args)
+    private void OnCrawlingInput(Entity<PipeCrawlingComponent> ent, ref MoveInputEvent args)
     {
-        var entity = GetEntity(args.NetEntity);
-        var ev = new PipeCrawlingSendWishDirEvent(args.NetEntity, GetWishDir(entity));
-        RaiseNetworkEvent(ev);
-    }
-
-    private void OnSendWishDir(PipeCrawlingSendWishDirEvent args)
-    {
-        var entity = GetEntity(args.NetEntity);
-        if (!TryComp<PipeCrawlingComponent>(entity, out var crawling))
+        if (!_timing.IsFirstTimePredicted)
             return;
 
-        if (!TryComp<CanEnterPipeCrawlingComponent>(entity, out var crawler))
+        Direction? direction;
+        if (args.HasDirectionalMovement && TryComp<InputMoverComponent>(ent.Owner, out var mover))
+        {
+            var (sprinting, walking) = _mover.GetVelocityInput(mover);
+            var vec = sprinting.LengthSquared() > walking.LengthSquared() ? sprinting : walking;
+            direction = Angle.FromWorldVec(vec).GetCardinalDir();
+        }
+        else
+        {
+            direction = null;
+        }
+
+        if (ent.Comp.WishDirection == direction)
             return;
 
-        if (crawling.NextMove - crawler.MoveDelay > _timing.CurTime)
+        ent.Comp.WishDirection = direction;
+
+        if (ent.Comp.NextMove > _timing.CurTime)
+        {
+            Dirty(ent);
             return;
+        }
 
-        CrawlPipe((entity, crawling), args.WishDir);
+        CrawlPipe((ent.Owner, ent.Comp, null, args.Entity.Comp), direction);
     }
 
-    private Vector2 GetWishDir(Entity<InputMoverComponent?, EyeComponent?> ent)
-    {
-        if (!Resolve(ent.Owner, ref ent.Comp1, ref ent.Comp2, false))
-            return Vector2.Zero;
-
-        var eyeRot = ent.Comp2.Rotation;
-        return eyeRot.RotateVec(ent.Comp1.WishDir);
-    }
-
-    private void CrawlPipe(Entity<PipeCrawlingComponent, CanEnterPipeCrawlingComponent?, InputMoverComponent?, PipeCrawlingAutoPilotComponent?> ent, Vector2 wishDir)
+    private void CrawlPipe(Entity<PipeCrawlingComponent, CanEnterPipeCrawlingComponent?, InputMoverComponent?, PipeCrawlingAutoPilotComponent?> ent, Direction? direction)
     {
         if (!Resolve(ent.Owner, ref ent.Comp2, ref ent.Comp3, false))
-            return;
-
-        if (wishDir == Vector2.Zero)
             return;
 
         if (!PipeQuery.TryComp(ent.Comp1.CurrentPipe, out var pipe))
@@ -169,21 +147,30 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
             return;
         }
 
-        var normalizedWishDir = Vector2.Normalize(wishDir);
-        var wishDirection = DirectionExtensions.GetDir(normalizedWishDir);
+        ent.Comp1.WishDirection = null;
 
         if (Resolve(ent.Owner, ref ent.Comp4, false))
         {
-            if (ent.Comp1.Direction == wishDirection)
+            if (ent.Comp1.LastDirection == direction)
+            {
+                Dirty(ent.Owner, ent.Comp1);
                 return;
+            }
 
             if (ent.Comp3.Sprinting)
             {
+                if (direction == null)
+                {
+                    Dirty(ent.Owner, ent.Comp1);
+                    return;
+                }
+
                 // player requested a different direction
                 // send them down that path
-                var nextStop = GetNextStop((ent.Comp1.CurrentPipe, pipe), ent.Comp1.CurrentLayer, wishDirection);
+                var nextStop = GetNextStop((ent.Comp1.CurrentPipe, pipe), ent.Comp1.CurrentLayer, direction.Value);
                 ent.Comp4.TargetPipe = nextStop;
                 Dirty(ent.Owner, ent.Comp4);
+                Dirty(ent.Owner, ent.Comp1);
                 return;
             }
 
@@ -191,19 +178,21 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
             RemCompDeferred<PipeCrawlingAutoPilotComponent>(ent.Owner);
         }
 
-        ent.Comp1.Direction = wishDirection;
+        if (direction != null)
+            ent.Comp1.LastDirection = direction;
 
-        if (ent.Comp3.Sprinting)
+        Dirty(ent.Owner, ent.Comp1);
+
+        if (ent.Comp3.Sprinting && direction != null)
         {
-            var nextStop = GetNextStop((ent.Comp1.CurrentPipe, pipe), ent.Comp1.CurrentLayer, wishDirection);
+            var nextStop = GetNextStop((ent.Comp1.CurrentPipe, pipe), ent.Comp1.CurrentLayer, direction.Value);
             EnsureComp<PipeCrawlingAutoPilotComponent>(ent.Owner, out ent.Comp4);
             ent.Comp4.TargetPipe = nextStop;
-            Dirty(ent.Owner, ent.Comp1);
             Dirty(ent.Owner, ent.Comp4);
             return;
         }
 
-        if (!TryGetNextPipe((ent.Comp1.CurrentPipe, pipe), ent.Comp1.CurrentLayer, wishDirection, out var connection))
+        if (!TryGetNextPipe((ent.Comp1.CurrentPipe, pipe), ent.Comp1.CurrentLayer, direction, out var connection))
             return;
 
         TransferPipe((ent.Owner, ent.Comp1), connection.Value);
@@ -211,8 +200,7 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
 
     private void TransferPipe(Entity<PipeCrawlingComponent> ent, Entity<PipeCrawlingPipeComponent> pipe)
     {
-        if (!_container.Insert(ent.Owner, pipe.Comp.Container))
-            return;
+        _container.Insert(ent.Owner, pipe.Comp.Container);
 
         ent.Comp.CurrentPipe = pipe.Owner;
         Dirty(ent);
@@ -224,14 +212,17 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
     {
     }
 
-    private bool TryGetNextPipe(Entity<PipeCrawlingPipeComponent> ent, AtmosPipeLayer layer, Direction direction, [NotNullWhen(true)] out Entity<PipeCrawlingPipeComponent>? nextPipe)
+    private bool TryGetNextPipe(Entity<PipeCrawlingPipeComponent> ent, AtmosPipeLayer layer, Direction? direction, [NotNullWhen(true)] out Entity<PipeCrawlingPipeComponent>? nextPipe)
     {
         nextPipe = null;
+
+        if (direction == null)
+            return false;
 
         if (!ent.Comp.ConnectedPipes.TryGetValue(layer, out var connections))
             return false;
 
-        if (!connections.TryGetValue(direction, out var netConnection))
+        if (!connections.TryGetValue(direction.Value, out var netConnection))
             return false;
 
         var connection = GetEntity(netConnection);

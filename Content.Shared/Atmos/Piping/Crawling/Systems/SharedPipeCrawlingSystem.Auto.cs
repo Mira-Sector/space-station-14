@@ -8,7 +8,7 @@ public partial class SharedPipeCrawlingSystem
     private void UpdateAuto(Entity<PipeCrawlingAutoPilotComponent, PipeCrawlingComponent, CanEnterPipeCrawlingComponent> ent)
     {
         var pipe = PipeQuery.Comp(ent.Comp2.CurrentPipe);
-        if (!TryGetNextPipe((ent.Comp2.CurrentPipe, pipe), ent.Comp2.CurrentLayer, ent.Comp2.Direction, out var nextPipe))
+        if (!TryGetNextPipe((ent.Comp2.CurrentPipe, pipe), ent.Comp2.CurrentLayer, ent.Comp2.LastDirection, out var nextPipe))
         {
             RemCompDeferred<PipeCrawlingAutoPilotComponent>(ent.Owner);
             return;

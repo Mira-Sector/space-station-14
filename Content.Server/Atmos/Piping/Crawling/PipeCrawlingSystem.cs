@@ -94,13 +94,16 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
 
     private GasMixture? GetAir(Entity<PipeCrawlingComponent> ent)
     {
+        if (ent.Comp.LastDirection == null)
+            return null;
+
         if (_internals.AreInternalsWorking(ent.Owner))
             return null;
 
         if (!_nodeQuery.TryComp(ent.Comp.CurrentPipe, out var nodeContainer))
             return null;
 
-        var crawlerDirection = ent.Comp.Direction.ToPipeDirection().GetOpposite();
+        var crawlerDirection = ent.Comp.LastDirection.Value.ToPipeDirection().GetOpposite();
 
         foreach (var node in nodeContainer.Nodes.Values)
         {
