@@ -47,7 +47,7 @@ public partial class SharedPipeCrawlingSystem
         foreach (var pipe in removed)
         {
             if (!pipe.Comp.Revealers.Any())
-                RemCompDeferred<PipeCrawlingVisualsComponent>(pipe);
+                RemComp<PipeCrawlingVisualsComponent>(pipe);
         }
 
         UpdateOverlay(ent.AsNullable());
@@ -72,7 +72,7 @@ public partial class SharedPipeCrawlingSystem
 
             visuals.Revealers.Remove(ent.Owner);
             if (!visuals.Revealers.Any())
-                RemCompDeferred<PipeCrawlingVisualsComponent>(pipe);
+                RemComp<PipeCrawlingVisualsComponent>(pipe);
         }
 
         ent.Comp.PipeNet.Clear();
