@@ -66,6 +66,8 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
             if (crawling.NextMove > _timing.CurTime)
                 continue;
 
+            UpdateVisuals((uid, crawling));
+
             if (!input.CanMove)
             {
                 crawling.NextMove += crawler.MoveDelay;
@@ -113,6 +115,7 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
     private void OnCrawlingRemove(Entity<PipeCrawlingComponent> ent, ref ComponentRemove args)
     {
         _actions.RemoveAction(ent.Comp.LayerAction);
+        DisableVisuals(ent);
     }
 
     private void OnCrawlingVisMask(Entity<PipeCrawlingComponent> ent, ref GetVisMaskEvent args)
@@ -212,7 +215,6 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
             return;
 
         ent.Comp.CurrentPipe = pipe.Owner;
-        EnableVisuals(ent);
         Dirty(ent);
 
         PlaySound(pipe);
@@ -245,19 +247,16 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
         crawling.NextMove = _timing.CurTime;
         crawling.CurrentPipe = ent.Owner;
         crawling.CurrentLayer = CompOrNull<AtmosPipeLayersComponent>(ent.Owner)?.CurrentPipeLayer ?? AtmosPipeLayer.Primary;
-        EnableVisuals((toInsert, crawling));
-        Dirty(toInsert, crawling);
-
-        SetActionIcon((toInsert, crawling));
 
         _eye.RefreshVisibilityMask(toInsert);
+        SetActionIcon((toInsert, crawling));
+        Dirty(toInsert, crawling);
     }
 
     private void Eject(Entity<PipeCrawlingPipeComponent> ent, EntityUid toRemove)
     {
         _container.Remove(toRemove, ent.Comp.Container);
-        DisableVisuals(toRemove);
-        RemCompDeferred<PipeCrawlingComponent>(toRemove);
         _eye.RefreshVisibilityMask(toRemove);
+        RemCompDeferred<PipeCrawlingComponent>(toRemove);
     }
 }

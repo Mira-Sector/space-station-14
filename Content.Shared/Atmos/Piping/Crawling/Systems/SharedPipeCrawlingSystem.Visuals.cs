@@ -18,17 +18,7 @@ public partial class SharedPipeCrawlingSystem
         SubscribeLocalEvent<PipeCrawlingVisualsComponent, ComponentRemove>(OnVisualsRemove);
     }
 
-    private void OnVisualsInit(Entity<PipeCrawlingVisualsComponent> ent, ref ComponentInit args)
-    {
-        _appearance.SetData(ent.Owner, SubFloorVisuals.ScannerRevealed, true);
-    }
-
-    private void OnVisualsRemove(Entity<PipeCrawlingVisualsComponent> ent, ref ComponentRemove args)
-    {
-        _appearance.SetData(ent.Owner, SubFloorVisuals.ScannerRevealed, false);
-    }
-
-    private void EnableVisuals(Entity<PipeCrawlingComponent> ent)
+    private void UpdateVisuals(Entity<PipeCrawlingComponent> ent)
     {
         List<Entity<PipeCrawlingVisualsComponent>> removed = [];
         foreach (var pipe in ent.Comp.PipeNet)
@@ -63,11 +53,18 @@ public partial class SharedPipeCrawlingSystem
         UpdateOverlay(ent.AsNullable());
     }
 
-    private void DisableVisuals(Entity<PipeCrawlingComponent?> ent)
+    private void OnVisualsInit(Entity<PipeCrawlingVisualsComponent> ent, ref ComponentInit args)
     {
-        if (!Resolve(ent.Owner, ref ent.Comp, false))
-            return;
+        _appearance.SetData(ent.Owner, SubFloorVisuals.ScannerRevealed, true);
+    }
 
+    private void OnVisualsRemove(Entity<PipeCrawlingVisualsComponent> ent, ref ComponentRemove args)
+    {
+        _appearance.SetData(ent.Owner, SubFloorVisuals.ScannerRevealed, false);
+    }
+
+    private void DisableVisuals(Entity<PipeCrawlingComponent> ent)
+    {
         foreach (var pipe in ent.Comp.PipeNet)
         {
             if (!VisualsQuery.TryComp(pipe, out var visuals))
@@ -118,9 +115,8 @@ public partial class SharedPipeCrawlingSystem
                 foreach (var (_, netConnection) in connections)
                 {
                     var connection = GetEntity(netConnection);
-                    var pipe = PipeQuery.Comp(connection);
-
-                    queue.Enqueue((connection, pipe));
+                    if (PipeQuery.TryComp(connection, out var pipe))
+                        queue.Enqueue((connection, pipe));
                 }
             }
         }
