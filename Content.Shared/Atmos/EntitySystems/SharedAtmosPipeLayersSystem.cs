@@ -257,7 +257,7 @@ public abstract partial class SharedAtmosPipeLayersSystem : EntitySystem
         return false;
     }
 
-    private string GetPipeLayerName(AtmosPipeLayer layer)
+    public string GetPipeLayerName(AtmosPipeLayer layer)
     {
         return Loc.GetString("atmos-pipe-layers-component-layer-" + layer.ToString().ToLower());
     }

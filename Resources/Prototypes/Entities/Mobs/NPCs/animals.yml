@@ -410,6 +410,13 @@
     - chewy
   - type: Hunger
     baseDecayRate: 0.25
+  - type: CanEnterPipeCrawling
+  - type: UserInterface
+    interfaces:
+      enum.DamageSelectorUiKey.Key:
+        type: DamageSelectorBoundUserInterface
+      enum.PipeCrawlingLayerUiKey.Key:
+        type: PipeCrawlingLayerBoundUserInterface
   - type: Extractable
     grindableSolutionName: food
   - type: SolutionContainerManager
@@ -447,7 +454,6 @@
     damage:
       types:
         Piercing: 0
-  - type: CanEnterPipeCrawling
 
 - type: entity
   name: cockroach
@@ -1908,6 +1914,13 @@
     constantlyReplan: false
     rootTask:
       task: MouseCompound
+  - type: CanEnterPipeCrawling
+  - type: UserInterface
+    interfaces:
+      enum.DamageSelectorUiKey.Key:
+        type: DamageSelectorBoundUserInterface
+      enum.PipeCrawlingLayerUiKey.Key:
+        type: PipeCrawlingLayerBoundUserInterface
   - type: Physics
   - type: FaxableObject
     insertingState: inserting_mouse
@@ -2022,7 +2035,6 @@
       Taco: RatTaco
       Burger: RatBurger
       Skewer: RatSkewer
-  - type: CanEnterPipeCrawling
 
 - type: entity
   parent: MobMouse
@@ -2656,6 +2668,13 @@
   - type: Bloodstream
     bloodMaxVolume: 150
     bloodReagent: CopperBlood
+  - type: CanEnterPipeCrawling
+  - type: UserInterface
+    interfaces:
+      enum.DamageSelectorUiKey.Key:
+        type: DamageSelectorBoundUserInterface
+      enum.PipeCrawlingLayerUiKey.Key:
+        type: PipeCrawlingLayerBoundUserInterface
   - type: Speech
     speechVerb: Arachnid
     speechSounds: Arachnid
@@ -2680,7 +2699,6 @@
       groups:
         Brute: -0.07
         Burn: -0.07
-  - type: CanEnterPipeCrawling
 
 - type: entity
   parent: MobSpiderBase
