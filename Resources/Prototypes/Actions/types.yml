@@ -496,3 +496,23 @@
     itemIconStyle: BigAction
   - type: InstantAction
     event: !type:ChameleonControllerOpenMenuEvent
+
+- type: entity
+  parent: BaseMentalAction
+  id: ActionPipeCrawlingLayer
+  name: Pipe Layer
+  description: Move to a different pipe layer.
+  components:
+  - type: InstantAction
+    event: !type:PipeCrawlingLayerActionEvent
+  - type: PipeCrawlingLayerAction
+    iconSprites:
+      Primary:
+        sprite: Interface/pipe_layer_names.rsi
+        state: primary
+      Secondary:
+        sprite: Interface/pipe_layer_names.rsi
+        state: secondary
+      Tertiary:
+        sprite: Interface/pipe_layer_names.rsi
+        state: tertiary
