@@ -26,7 +26,6 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
     protected EntityQuery<PipeCrawlingPipeComponent> PipeQuery;
     protected EntityQuery<PipeCrawlingEnterPointComponent> EnterQuery;
     protected EntityQuery<PipeCrawlingAutoPilotComponent> AutoQuery;
-    protected EntityQuery<PipeCrawlingVisualsComponent> VisualsQuery;
 
     public override void Initialize()
     {
@@ -34,7 +33,6 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
 
         InitializeAction();
         InitializeEntry();
-        InitializeVisuals();
 
         SubscribeLocalEvent<PipeCrawlingPipeComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<PipeCrawlingPipeComponent, ComponentRemove>(OnRemove);
@@ -47,7 +45,6 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
         PipeQuery = GetEntityQuery<PipeCrawlingPipeComponent>();
         EnterQuery = GetEntityQuery<PipeCrawlingEnterPointComponent>();
         AutoQuery = GetEntityQuery<PipeCrawlingAutoPilotComponent>();
-        VisualsQuery = GetEntityQuery<PipeCrawlingVisualsComponent>();
     }
 
     public override void Update(float frameTime)
@@ -251,5 +248,21 @@ public abstract partial class SharedPipeCrawlingSystem : EntitySystem
         _container.Remove(toRemove, ent.Comp.Container);
         _eye.RefreshVisibilityMask(toRemove);
         RemCompDeferred<PipeCrawlingComponent>(toRemove);
+    }
+
+    protected virtual void UpdateVisuals(Entity<PipeCrawlingComponent> ent)
+    {
+    }
+
+    protected virtual void DisableVisuals(Entity<PipeCrawlingComponent> ent)
+    {
+    }
+
+    protected virtual void UpdateOverlay(Entity<PipeCrawlingComponent?> ent)
+    {
+    }
+
+    protected virtual void RemoveOverlay(Entity<PipeCrawlingComponent?> ent)
+    {
     }
 }
