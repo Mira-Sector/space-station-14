@@ -121,8 +121,6 @@
     sound:
       path: /Audio/Misc/yippee.ogg
 
-
-
 - type: entity
   parent: ToySword
   id: ToyDSword
