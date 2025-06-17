@@ -1,10 +1,9 @@
-using Content.Shared.DoAfter;
-using Robust.Shared.Serialization;
 using Robust.Shared.GameStates;
+using Content.Shared.Atmos.Piping.Crawling.Systems;
 
 namespace Content.Shared.Atmos.Piping.Crawling.Components;
 
-[RegisterComponent, NetworkedComponent]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState, Access(typeof(SharedPipeCrawlingSystem))]
 public sealed partial class PipeCrawlingEnterPointComponent : Component
 {
     [DataField]
@@ -13,14 +12,12 @@ public sealed partial class PipeCrawlingEnterPointComponent : Component
     [DataField]
     public bool CanExit = true;
 
-    [ViewVariables]
+    [ViewVariables, AutoNetworkedField]
     public bool Enterable = false;
 
-    [ViewVariables]
+    [ViewVariables, AutoNetworkedField]
     public bool Exitable = false;
-}
 
-[Serializable, NetSerializable]
-public sealed partial class PipeEnterDoAfterEvent : SimpleDoAfterEvent
-{
+    [DataField]
+    public TimeSpan DoAfterTime = TimeSpan.FromSeconds(0.5);
 }
