@@ -48,6 +48,7 @@
     - id: PlushieGwen
     - id: PlushieSalad
     - id: PlushieWudanty
+    - id: PlushieCreature
 
 - type: entity
   id: CrateFunPlushie

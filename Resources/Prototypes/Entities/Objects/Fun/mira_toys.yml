@@ -109,6 +109,21 @@
     state: plushie_wudanty
 
 - type: entity
+  parent: BasePlushie
+  id: PlushieCreature
+  name: creature plushie
+  description: Yippee! More pillow than plushie.
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/mira_plushies.rsi
+    state: plushie_creature
+  - type: EmitSoundOnUse
+    sound:
+      path: /Audio/Misc/yippee.ogg
+
+
+
+- type: entity
   parent: ToySword
   id: ToyDSword
   name: double-bladed toy sword
