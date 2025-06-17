@@ -1,6 +1,8 @@
 using Content.Shared.Clothing.Components;
 using Content.Shared.Humanoid;
 using Content.Shared.Inventory;
+using Content.Shared.Modules.ModSuit.Components;
+using Content.Shared.Modules.ModSuit.Events;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
@@ -16,6 +18,9 @@ public sealed class HideLayerClothingSystem : EntitySystem
         SubscribeLocalEvent<HideLayerClothingComponent, ClothingGotUnequippedEvent>(OnHideGotUnequipped);
         SubscribeLocalEvent<HideLayerClothingComponent, ClothingGotEquippedEvent>(OnHideGotEquipped);
         SubscribeLocalEvent<HideLayerClothingComponent, ItemMaskToggledEvent>(OnHideToggled);
+
+        SubscribeLocalEvent<HideLayerClothingComponent, ModSuitSealedEvent>(OnModSuitSealed);
+        SubscribeLocalEvent<HideLayerClothingComponent, ModSuitUnsealedEvent>(OnModSuitUnsealed);
     }
 
     private void OnHideToggled(Entity<HideLayerClothingComponent> ent, ref ItemMaskToggledEvent args)
@@ -34,6 +39,18 @@ public sealed class HideLayerClothingSystem : EntitySystem
         SetLayerVisibility(ent!, args.Wearer, hideLayers: false);
     }
 
+    private void OnModSuitSealed(Entity<HideLayerClothingComponent> ent, ref ModSuitSealedEvent args)
+    {
+        if (args.Wearer != null)
+            SetLayerVisibility(ent!, args.Wearer.Value, true);
+    }
+
+    private void OnModSuitUnsealed(Entity<HideLayerClothingComponent> ent, ref ModSuitUnsealedEvent args)
+    {
+        if (args.Wearer != null)
+            SetLayerVisibility(ent!, args.Wearer.Value, !ent.Comp.HideOnToggle);
+    }
+
     private void SetLayerVisibility(
         Entity<HideLayerClothingComponent?, ClothingComponent?> clothing,
         Entity<HumanoidAppearanceComponent?> user,
@@ -45,7 +62,8 @@ public sealed class HideLayerClothingSystem : EntitySystem
         if (!Resolve(clothing.Owner, ref clothing.Comp1, ref clothing.Comp2))
             return;
 
-        if (!Resolve(user.Owner, ref user.Comp))
+        // logMissing: false, as this clothing might be getting equipped by a non-human.
+        if (!Resolve(user.Owner, ref user.Comp, false))
             return;
 
         hideLayers &= IsEnabled(clothing!);
@@ -98,9 +116,12 @@ public sealed class HideLayerClothingSystem : EntitySystem
         if (!clothing.Comp1.HideOnToggle)
             return true;
 
-        if (!TryComp(clothing, out MaskComponent? mask))
+        if (TryComp<MaskComponent>(clothing, out var mask) && mask.IsToggled)
             return true;
 
-        return !mask.IsToggled;
+        if (TryComp<ModSuitSealableComponent>(clothing, out var sealable) && sealable.Sealed)
+            return true;
+
+        return false;
     }
 }

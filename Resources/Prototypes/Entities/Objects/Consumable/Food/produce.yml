@@ -549,6 +549,8 @@
   - type: Extractable
     grindableSolutionName: food
   - type: SpaceGarbage
+  - type: Food
+    requiresSpecialDigestion: true
 
 - type: entity
   name: baked banana peel
@@ -1008,7 +1010,7 @@
     proto: RedLightLaser
     fireCost: 50
   - type: BatteryTransfer
-    canRecieve: true
+    canReceive: true
     canTransfer: true
   - type: Explosive
     explosionType: Default
@@ -1479,6 +1481,7 @@
   - type: Tag
     tags:
     - Vegetable
+    - Mushroom
 
 # Slices
 
@@ -1822,6 +1825,9 @@
     entries:
       Taco: Lingzhi
       Burger: Lingzhi
+  - type: Tag
+    tags:
+    - Mushroom
 
 - type: entity
   name: ambrosia vulgaris
@@ -2043,6 +2049,9 @@
     entries:
       Taco: FlyAmanita
       Burger: FlyAmanita
+  - type: Tag
+    tags:
+    - Mushroom
 
 - type: entity
   name: gatfruit
@@ -2860,6 +2869,9 @@
     tags:
     - ClothMade
     - CottonBoll
+  - type: FoodSequenceElement
+    entries:
+      CottonBurger: CottonBol
 
 - type: entity
   name: pyrotton boll
@@ -2897,6 +2909,9 @@
     - CottonBoll
   - type: Extractable
     grindableSolutionName: food
+  - type: FoodSequenceElement
+    entries:
+      CottonBurger: PyrottonBol
 
 - type: entity
   name: cherry
@@ -3457,3 +3472,24 @@
         acts: [ "Destruction" ]
   - type: DnaSubstanceTrace
 
+#This basically exists as workaround to have spaceshroom TRULY random.
+- type: entity
+  name: spaceshroom
+  suffix: Botany Produce
+  parent: FoodProduceBase
+  id: ProduceSpaceshroomPlant
+  description: A wild mushroom. There's no telling what effect it could have...
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/spaceshroom.rsi
+  - type: Produce
+    seedId: spaceshroom
+  - type: SolutionContainerManager
+  - type: Perishable
+    perishUpdateRate: 0 #Can't instantly rot and there is no other way to have it instantly replace botany grown mushroom (which lacks chemicals) with randomly generated one (the one that has funny chemicals). Please change this if there is a better solution.
+    rotAfter: 0
+    molsPerSecondPerUnitMass: 0
+    forceRotProgression: true
+    rotAccumulator: 9001
+  - type: RotInto
+    entity: FoodSpaceshroom

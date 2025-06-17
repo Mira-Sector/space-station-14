@@ -28,7 +28,7 @@
           pipeDirection: South
 
 - type: entity
-  parent: [ GasPipeLayerableOffsetBase , GasTrinaryBase ]
+  parent: GasTrinaryBase
   id: GasFilter
   name: gas filter
   description: Very useful for filtering gases.
@@ -127,13 +127,16 @@
         pipeDirection: North
 
 - type: entity
-  parent: [ GasPipeLayerableOffsetBase , GasTrinaryBase ]
+  parent: GasTrinaryBase
   id: GasMixer
   name: gas mixer
   description: Very useful for mixing gases.
   placement:
     mode: SnapgridCenter
   components:
+    - type: SubFloorHide
+      visibleLayers:
+      - enum.SubfloorLayers.FirstLayer
     - type: Sprite
       sprite: Structures/Piping/Atmospherics/gasmixer.rsi
       layers:
@@ -219,7 +222,7 @@
     node: mixerflipped
 
 - type: entity
-  parent: [ GasPipeLayerableBase , GasPipeBase ]
+  parent: GasPipeBase
   id: PressureControlledValve
   name: pneumatic valve
   description: A bidirectional valve controlled by pressure. Opens if the output pipe is lower than the pressure of the control pipe by 101.325 kPa.
@@ -233,6 +236,8 @@
     - type: SubFloorHide
       blockInteractions: false
       blockAmbience: false
+      visibleLayers:
+      - enum.SubfloorLayers.FirstLayer
     - type: NodeContainer
       nodes:
         inlet:

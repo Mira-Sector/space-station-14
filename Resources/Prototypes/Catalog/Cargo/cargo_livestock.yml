@@ -3,7 +3,8 @@
   icon:
     sprite: Mobs/Animals/bee.rsi
     state: 0
-  product: CrateNPCBee
+  data: !type:CargoProductItemData
+    product: CrateNPCBee
   cost: 7000
   category: cargoproduct-category-name-livestock
   group: market
@@ -13,7 +14,8 @@
   icon:
     sprite: Mobs/Animals/butterfly.rsi
     state: butterfly
-  product: CrateNPCButterflies
+  data: !type:CargoProductItemData
+    product: CrateNPCButterflies
   cost: 4400
   category: cargoproduct-category-name-livestock
   group: market
@@ -23,7 +25,8 @@
   icon:
     sprite: Mobs/Pets/cat.rsi
     state: cat
-  product: CrateNPCCat
+  data: !type:CargoProductItemData
+    product: CrateNPCCat
   cost: 1200
   category: cargoproduct-category-name-livestock
   group: market
@@ -33,7 +36,8 @@
   icon:
     sprite: Mobs/Animals/chicken.rsi
     state: icon-1
-  product: CrateNPCChicken
+  data: !type:CargoProductItemData
+    product: CrateNPCChicken
   cost: 4000
   category: cargoproduct-category-name-livestock
   group: market
@@ -43,7 +47,8 @@
   icon:
     sprite: Mobs/Animals/crab.rsi
     state: crab
-  product: CrateNPCCrab
+  data: !type:CargoProductItemData
+    product: CrateNPCCrab
   cost: 3000
   category: cargoproduct-category-name-livestock
   group: market
@@ -53,7 +58,8 @@
   icon:
     sprite: Mobs/Animals/duck.rsi
     state: icon-0
-  product: CrateNPCDuck
+  data: !type:CargoProductItemData
+    product: CrateNPCDuck
   cost: 4000
   category: cargoproduct-category-name-livestock
   group: market
@@ -63,7 +69,8 @@
   icon:
     sprite: Mobs/Pets/corgi.rsi
     state: corgi
-  product: CrateNPCCorgi
+  data: !type:CargoProductItemData
+    product: CrateNPCCorgi
   cost: 1200
   category: cargoproduct-category-name-livestock
   group: market
@@ -73,7 +80,8 @@
   icon:
     sprite: Mobs/Pets/corgi.rsi
     state: puppy
-  product: CrateNPCPuppyCorgi
+  data: !type:CargoProductItemData
+    product: CrateNPCPuppyCorgi
   cost: 1200
   category: cargoproduct-category-name-livestock
   group: market
@@ -83,7 +91,8 @@
   icon:
     sprite: Mobs/Animals/cow.rsi
     state: cow
-  product: CrateNPCCow
+  data: !type:CargoProductItemData
+    product: CrateNPCCow
   cost: 3200
   category: cargoproduct-category-name-livestock
   group: market
@@ -93,7 +102,8 @@
   icon:
     sprite: Mobs/Animals/goat.rsi
     state: goat
-  product: CrateNPCGoat
+  data: !type:CargoProductItemData
+    product: CrateNPCGoat
   cost: 1200
   category: cargoproduct-category-name-livestock
   group: market
@@ -103,7 +113,8 @@
   icon:
     sprite: Mobs/Animals/goose.rsi
     state: goose
-  product: CrateNPCGoose
+  data: !type:CargoProductItemData
+    product: CrateNPCGoose
   cost: 2100
   category: cargoproduct-category-name-livestock
   group: market
@@ -113,7 +124,8 @@
   icon:
     sprite: Mobs/Animals/gorilla.rsi
     state: icon
-  product: CrateNPCGorilla
+  data: !type:CargoProductItemData
+    product: CrateNPCGorilla
   cost: 1100
   category: cargoproduct-category-name-livestock
   group: market
@@ -123,7 +135,8 @@
   icon:
     sprite: Objects/Misc/monkeycube.rsi
     state: box
-  product: CrateNPCMonkeyCube
+  data: !type:CargoProductItemData
+    product: CrateNPCMonkeyCube
   cost: 2000
   category: cargoproduct-category-name-livestock
   group: market
@@ -133,7 +146,8 @@
   icon:
     sprite: Objects/Misc/monkeycube.rsi
     state: box_kobold
-  product: CrateNPCKoboldCube
+  data: !type:CargoProductItemData
+    product: CrateNPCKoboldCube
   cost: 2000
   category: cargoproduct-category-name-livestock
   group: market
@@ -143,7 +157,8 @@
   icon:
     sprite: Mobs/Animals/mouse.rsi
     state: icon-0
-  product: CrateNPCMouse
+  data: !type:CargoProductItemData
+    product: CrateNPCMouse
   cost: 4400
   category: cargoproduct-category-name-livestock
   group: market
@@ -153,7 +168,8 @@
   icon:
     sprite: Mobs/Animals/parrot.rsi
     state: parrot
-  product: CrateNPCParrot
+  data: !type:CargoProductItemData
+    product: CrateNPCParrot
   cost: 3000
   category: cargoproduct-category-name-livestock
   group: market
@@ -163,7 +179,8 @@
   icon:
     sprite: Mobs/Animals/penguin.rsi
     state: penguin
-  product: CrateNPCPenguin
+  data: !type:CargoProductItemData
+    product: CrateNPCPenguin
   cost: 2100
   category: cargoproduct-category-name-livestock
   group: market
@@ -173,7 +190,8 @@
   icon:
     sprite: Mobs/Animals/pig.rsi
     state: pig
-  product: CrateNPCPig
+  data: !type:CargoProductItemData
+    product: CrateNPCPig
   cost: 1100
   category: cargoproduct-category-name-livestock
   group: market
@@ -183,7 +201,8 @@
   icon:
     sprite: Mobs/Animals/snake.rsi
     state: snake
-  product: CrateNPCSnake
+  data: !type:CargoProductItemData
+    product: CrateNPCSnake
   cost: 3000
   category: cargoproduct-category-name-livestock
   group: market
@@ -193,7 +212,8 @@
   icon:
     sprite: Mobs/Animals/hamster.rsi
     state: icon-0
-  product: CrateNPCHamster
+  data: !type:CargoProductItemData
+    product: CrateNPCHamster
   cost: 2800
   category: cargoproduct-category-name-livestock
   group: market
@@ -203,7 +223,8 @@
   icon:
     sprite: Mobs/Animals/lizard.rsi
     state: lizard
-  product: CrateNPCLizard
+  data: !type:CargoProductItemData
+    product: CrateNPCLizard
   cost: 1100
   category: cargoproduct-category-name-livestock
   group: market
@@ -213,7 +234,8 @@
   icon:
     sprite: Mobs/Animals/kangaroo.rsi
     state: kangaroo
-  product: CrateNPCKangaroo
+  data: !type:CargoProductItemData
+    product: CrateNPCKangaroo
   cost: 2800
   category: cargoproduct-category-name-livestock
   group: market
@@ -223,7 +245,8 @@
   icon:
     sprite: Mobs/Animals/mothroach/mothroach.rsi
     state: mothroach
-  product: CrateNPCMothroach
+  data: !type:CargoProductItemData
+    product: CrateNPCMothroach
   cost: 5000
   category: cargoproduct-category-name-livestock
   group: market
@@ -233,7 +256,8 @@
   icon:
     sprite: Mobs/Animals/spider.rsi
     state: tarantula
-  product: CrateNPCFriendlyTarantulas
+  data: !type:CargoProductItemData
+    product: CrateNPCFriendlyTarantulas
   cost: 6000
   category: cargoproduct-category-name-livestock
   group: market

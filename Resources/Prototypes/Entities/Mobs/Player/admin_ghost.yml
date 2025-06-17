@@ -1,5 +1,5 @@
 - type: entity
-  parent: [MobObserverBase, MobObserverVisuals, InventoryBase]
+  parent: [MobObserverBase, InventoryBase]
   id: AdminObserver
   name: admin observer
   categories: [ HideSpawnMenu ]
@@ -24,15 +24,46 @@
   - type: Hands
   - type: ComplexInteraction
   - type: Puller
+    needsHands: false
   - type: CombatMode
   - type: DamagePartSelector
     selectableParts:
-      !type:BodyPart { type: Head, side: None }: { sprite: Interface/Actions/zone_sel.rsi, state: head }
-      !type:BodyPart { type: Arm, side: Left }: { sprite: Interface/Actions/zone_sel.rsi, state: larm }
-      !type:BodyPart { type: Leg, side: Left }: { sprite: Interface/Actions/zone_sel.rsi, state: lleg }
-      !type:BodyPart { type: Torso, side: None }: { sprite: Interface/Actions/zone_sel.rsi, state: torso }
-      !type:BodyPart { type: Leg, side: Right }: { sprite: Interface/Actions/zone_sel.rsi, state: rleg }
-      !type:BodyPart { type: Arm, side: Right }: { sprite: Interface/Actions/zone_sel.rsi, state: rarm }
+    - bodyPart:
+        type: Head
+        side: None
+      sprite:
+        sprite: Interface/Actions/zone_sel.rsi
+        state: head
+    - bodyPart:
+        type: Arm
+        side: Left
+      sprite:
+        sprite: Interface/Actions/zone_sel.rsi
+        state: larm
+    - bodyPart:
+        type: Leg
+        side: Left
+      sprite:
+        sprite: Interface/Actions/zone_sel.rsi
+        state: lleg
+    - bodyPart:
+        type: Torso
+        side: None
+      sprite:
+        sprite: Interface/Actions/zone_sel.rsi
+        state: torso
+    - bodyPart:
+        type: Leg
+        side: Right
+      sprite:
+        sprite: Interface/Actions/zone_sel.rsi
+        state: rleg
+    - bodyPart:
+        type: Arm
+        side: Right
+      sprite:
+        sprite: Interface/Actions/zone_sel.rsi
+        state: rarm
   - type: Physics
     ignorePaused: true
     bodyType: Kinematic
@@ -91,7 +122,6 @@
   - type: RadarConsole
     followEntity: true
   - type: CargoOrderConsole
-  - type: BankClient
   - type: CrewMonitoringConsole
   - type: SiliconSyncableMonitoringConsole
   - type: GeneralStationRecordConsole
@@ -110,6 +140,7 @@
   - type: SolutionScanner
   - type: IgnoreUIRange
   - type: ShowAntagIcons
+  - type: ShowContrabandDetails
   - type: Inventory
     templateId: aghost
   - type: Loadout
@@ -117,71 +148,83 @@
   - type: BypassInteractionChecks
 
 - type: entity
+  abstract: true
+  parent: BaseAction
+  id: BaseAGhostAction
+  components:
+  - type: Action
+    icon: { sprite: Structures/Machines/parts.rsi, state: box_0 }
+    iconOn: Structures/Machines/parts.rsi/box_2.png
+    keywords: [ "AI", "console", "interface" ]
+    priority: -10
+
+- type: entity
+  parent: BaseAGhostAction
   id: ActionAGhostShowSolar
   name: Solar Control Interface
   description: View a Solar Control Interface.
   components:
   - type: InstantAction
-    icon: { sprite: Structures/Machines/parts.rsi, state: box_0 }
-    iconOn: Structures/Machines/parts.rsi/box_2.png
-    keywords: [ "AI", "console", "interface" ]
-    priority: -10
     event: !type:ToggleIntrinsicUIEvent { key: enum.SolarControlConsoleUiKey.Key }
 
 - type: entity
+  parent: BaseAGhostAction
   id: ActionAGhostShowCommunications
   name: Communications Interface
   description: View a Communications Interface.
   components:
-  - type: InstantAction
+  - type: Action
     icon: { sprite: Interface/Actions/actions_ai.rsi, state: comms_console }
     iconOn: Interface/Actions/actions_ai.rsi/comms_console.png
     keywords: [ "AI", "console", "interface" ]
     priority: -4
+  - type: InstantAction
     event: !type:ToggleIntrinsicUIEvent { key: enum.CommunicationsConsoleUiKey.Key }
 
 - type: entity
+  parent: BaseAGhostAction
   id: ActionAGhostShowRadar
   name: Mass Scanner Interface
   description: View a Mass Scanner Interface.
   components:
-  - type: InstantAction
+  - type: Action
     icon: { sprite: Interface/Actions/actions_ai.rsi, state: mass_scanner }
     iconOn: Interface/Actions/actions_ai.rsi/mass_scanner.png
     keywords: [ "AI", "console", "interface" ]
     priority: -6
+  - type: InstantAction
     event: !type:ToggleIntrinsicUIEvent { key: enum.RadarConsoleUiKey.Key }
 
 - type: entity
+  parent: BaseAGhostAction
   id: ActionAGhostShowCargo
   name: Cargo Ordering Interface
   description: View a Cargo Ordering Interface.
   components:
   - type: InstantAction
-    icon: { sprite: Structures/Machines/parts.rsi, state: box_0 }
-    iconOn: Structures/Machines/parts.rsi/box_2.png
-    keywords: [ "AI", "console", "interface" ]
-    priority: -10
     event: !type:ToggleIntrinsicUIEvent { key: enum.CargoConsoleUiKey.Orders }
 
 - type: entity
+  parent: BaseAGhostAction
   id: ActionAGhostShowCrewMonitoring
   name: Crew Monitoring Interface
   description: View a Crew Monitoring Interface.
   components:
-  - type: InstantAction
+  - type: Action
     icon: { sprite: Interface/Actions/actions_ai.rsi, state: crew_monitor }
     iconOn: Interface/Actions/actions_ai.rsi/crew_monitor.png
     keywords: [ "AI", "console", "interface" ]
     priority: -8
+  - type: InstantAction
     event: !type:ToggleIntrinsicUIEvent { key: enum.CrewMonitoringUIKey.Key }
 
 - type: entity
+  parent: BaseAGhostAction
   id: ActionAGhostShowSiliconSyncMonitoring
   name: Silicon Slave Interface
   description: View your controlled slaves.
   components:
-  - type: InstantAction
+  - type: Action
     icon:
       sprite: Interface/Actions/actions_ai.rsi
       state: sync_monitor
@@ -189,17 +232,20 @@
       sprite: Interface/Actions/actions_ai.rsi
       state: sync_monitor
     keywords: [ "AI", "console", "interface" ]
-    priority: -8
+    priority: -7
+  - type: InstantAction
     event: !type:ToggleIntrinsicUIEvent { key: enum.SiliconSyncMonitoringUiKey.Key }
 
 - type: entity
+  parent: BaseAGhostAction
   id: ActionAGhostShowStationRecords
   name: Station Records Interface
   description: View a Station Records Interface.
   components:
-  - type: InstantAction
+  - type: Action
     icon: { sprite: Interface/Actions/actions_ai.rsi, state: station_records }
     iconOn: Interface/Actions/actions_ai.rsi/station_records.png
     keywords: [ "AI", "console", "interface" ]
     priority: -6
+  - type: InstantAction
     event: !type:ToggleIntrinsicUIEvent { key: enum.GeneralStationRecordConsoleKey.Key }

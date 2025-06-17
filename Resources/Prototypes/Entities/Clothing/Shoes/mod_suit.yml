@@ -1,0 +1,1038 @@
+- type: entity
+  id: ClothingShoesModSuitBase
+  abstract: true
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: ModSuitSealable
+  - type: ModSuitDeployableInventory
+  - type: Clothing
+    autoGenerateVisuals: false
+    slots:
+    - feet
+  - type: Appearance
+  - type: Tag
+    tags:
+      - WhitelistChameleon
+
+- type: entity
+  id: ClothingShoesModSuitAdvanced
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: advanced MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/advanced.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/advanced.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/advanced.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/advanced.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/advanced.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/advanced.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/advanced.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitApocrphal
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: apocryphal MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitAsteroid
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: asteroid MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/asteroid.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/asteroid.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/asteroid.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/asteroid.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/asteroid.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/asteroid.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/asteroid.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitAtmospheric
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: atmospheric MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/atmospheric.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/atmospheric.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/atmospheric.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/atmospheric.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/atmospheric.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/atmospheric.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/atmospheric.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitChrono
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: chrono MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/chrono.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/chrono.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/chrono.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/chrono.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/chrono.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/chrono.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/chrono.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitCivilian
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: civilian MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/civilian.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/civilian.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/civilian.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/civilian.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/civilian.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/civilian.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/civilian.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitCorporate
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: corporate MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/corporate.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/corporate.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/corporate.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/corporate.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/corporate.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/corporate.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/corporate.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitCorpsman
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: corpsman MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/corpsman.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/corpsman.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/corpsman.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/corpsman.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/corpsman.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/corpsman.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/corpsman.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitCosmohonk
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: cosmohonk MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/cosmohonk.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/cosmohonk.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/cosmohonk.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/cosmohonk.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/cosmohonk.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/cosmohonk.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/cosmohonk.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitDebug
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: debug MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/debug.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/debug.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/debug.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/debug.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/debug.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/debug.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/debug.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitElite
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: elite MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/elite.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/elite.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/elite.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/elite.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/elite.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/elite.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/elite.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitEnchanted
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: enchanted MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/enchanted.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/enchanted.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/enchanted.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/enchanted.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/enchanted.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/enchanted.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/enchanted.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitEngineering
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: engineering MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/engineering.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/engineering.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/engineering.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/engineering.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/engineering.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/engineering.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/engineering.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitGlitch
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: glitch MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/glitch.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/glitch.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/glitch.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/glitch.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/glitch.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/glitch.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/glitch.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitHonkerative
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: honkerative MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/honkerative.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/honkerative.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/honkerative.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/honkerative.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/honkerative.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/honkerative.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/honkerative.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitInfiltrator
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: infiltrator MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/infiltrator.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/infiltrator.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/infiltrator.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/infiltrator.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/infiltrator.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/infiltrator.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/infiltrator.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitInquisitory
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: inquisitory MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/inquisitory.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/inquisitory.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/inquisitory.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/inquisitory.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/inquisitory.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/inquisitory.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/inquisitory.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitInterdyne
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: interdyne MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/interdyne.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/interdyne.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/interdyne.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/interdyne.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/interdyne.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/interdyne.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/interdyne.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitLoader
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: loader MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/loader.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/loader.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/loader.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/loader.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/loader.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/loader.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/loader.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitMagnate
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: magnate MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/magnate.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/magnate.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/magnate.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/magnate.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/magnate.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/magnate.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/magnate.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitMedical
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: medical MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/medical.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/medical.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/medical.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/medical.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/medical.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/medical.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/medical.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitMining
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: mining MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/mining.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/mining.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/mining.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/mining.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/mining.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/mining.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/mining.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitNinja
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: ninja MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/ninja.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/ninja.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/ninja.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/ninja.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/ninja.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/ninja.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/ninja.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitPrototype
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: prototype MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/prototype.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/prototype.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/prototype.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/prototype.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/prototype.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/prototype.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/prototype.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitRescue
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: rescue MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/rescue.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/rescue.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/rescue.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/rescue.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/rescue.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/rescue.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/rescue.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitResearch
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: research MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/research.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/research.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/research.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/research.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/research.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/research.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/research.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitResponsory
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: responsory MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/responsory.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/responsory.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/responsory.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/responsory.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/responsory.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/responsory.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/responsory.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitSafeguard
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: safeguard MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/safeguard.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/safeguard.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/safeguard.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/safeguard.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/safeguard.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/safeguard.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/safeguard.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitSecurity
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: security MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/security.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/security.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/security.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/security.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/security.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/security.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/security.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitStandard
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: standard MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/standard.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/standard.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/standard.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/standard.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/standard.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/standard.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/standard.rsi
+        state: equipped-FEET
+
+- type: entity
+  id: ClothingShoesModSuitSyndicate
+  parent: ClothingShoesModSuitBase
+  categories: [ HideSpawnMenu ]
+  name: syndicate MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/syndicate.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/syndicate.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/syndicate.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/syndicate.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/syndicate.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/syndicate.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/syndicate.rsi
+        state: equipped-FEET

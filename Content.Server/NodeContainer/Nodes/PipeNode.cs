@@ -1,8 +1,8 @@
-using Content.Server.Atmos;
 using Content.Server.NodeContainer.EntitySystems;
 using Content.Server.NodeContainer.NodeGroups;
 using Content.Shared.Atmos;
-using Robust.Shared.Map;
+using Content.Shared.Atmos.Components;
+using Content.Shared.NodeContainer;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Utility;
 
@@ -10,7 +10,7 @@ namespace Content.Server.NodeContainer.Nodes
 {
     /// <summary>
     ///     Connects with other <see cref="PipeNode"/>s whose <see cref="PipeDirection"/>
-    ///     correctly correspond.
+    ///     and <see cref="CurrentPipeLayer"/> correctly correspond.
     /// </summary>
     [DataDefinition]
     [Virtual]
@@ -23,13 +23,16 @@ namespace Content.Server.NodeContainer.Nodes
         public PipeDirection OriginalPipeDirection;
 
         /// <summary>
+        ///     The *current* layer to which the pipe node is assigned.
+        /// </summary>
+        [DataField("pipeLayer")]
+        public AtmosPipeLayer CurrentPipeLayer = AtmosPipeLayer.Primary;
+
+        /// <summary>
         ///     The *current* pipe directions (accounting for rotation)
         ///     Used to check if this pipe can connect to another pipe in a given direction.
         /// </summary>
         public PipeDirection CurrentPipeDirection { get; private set; }
-
-        [DataField]
-        public int Layer;
 
         private HashSet<PipeNode>? _alwaysReachable;
 
@@ -84,7 +87,7 @@ namespace Content.Server.NodeContainer.Nodes
         ///     The <see cref="IPipeNet"/> this pipe is a part of.
         /// </summary>
         [ViewVariables]
-        private IPipeNet? PipeNet => (IPipeNet?) NodeGroup;
+        public IPipeNet? PipeNet => (IPipeNet?) NodeGroup;
 
         /// <summary>
         ///     The gases in this pipe.
@@ -205,10 +208,10 @@ namespace Content.Server.NodeContainer.Nodes
             foreach (var pipe in PipesInDirection(pos, pipeDir, grid, nodeQuery))
             {
                 if (pipe.NodeGroupID == NodeGroupID
+                    && pipe.CurrentPipeLayer == CurrentPipeLayer
                     && pipe.CurrentPipeDirection.HasDirection(pipeDir.GetOpposite()))
                 {
-                    if (Layer == pipe.Layer)
-                        yield return pipe;
+                    yield return pipe;
                 }
             }
         }
@@ -228,10 +231,8 @@ namespace Content.Server.NodeContainer.Nodes
 
                 foreach (var node in container.Nodes.Values)
                 {
-                    if (node is not PipeNode pipe)
-                        continue;
-
-                    yield return pipe;
+                    if (node is PipeNode pipe)
+                        yield return pipe;
                 }
             }
         }

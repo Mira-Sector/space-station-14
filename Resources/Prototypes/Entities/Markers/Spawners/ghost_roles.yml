@@ -194,27 +194,6 @@
 - type: entity
   categories: [ HideSpawnMenu, Spawner ]
   parent: BaseAntagSpawner
-  id: SpawnPointGhostMorph
-  components:
-  - type: GhostRole
-    name: ghost-role-information-morph-name
-    description: ghost-role-information-morph-description
-    rules: ghost-role-information-antagonist-rules
-    mindRoles:
-    - MindRoleGhostRoleSoloAntagonist
-    raffle:
-      settings: default
-  - type: Sprite
-    layers:
-    - state: green
-    - sprite: Mobs/Aliens/morph.rsi
-      state: morph
-  - type: GhostRoleMobSpawner
-    prototype: MobMorph
-
-- type: entity
-  categories: [ HideSpawnMenu, Spawner ]
-  parent: BaseAntagSpawner
   id: SpawnPointGhostParadoxClone
   components:
   - type: GhostRole

@@ -45,6 +45,7 @@ public abstract partial class SharedBodySystem : EntitySystem
         InitializeParts();
         InitializePartThresholds();
         InitializeRelays();
+        InitializeTracker();
     }
 
     /// <summary>

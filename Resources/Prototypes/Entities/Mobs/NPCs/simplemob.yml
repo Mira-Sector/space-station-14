@@ -49,6 +49,8 @@
   abstract: true
   parent:
   - BaseSimpleMobBody
+  - BaseSimpleMob
+  - MobAtmosExposed
   - MobCombat
   - MobBloodstream
   - MobFlammable

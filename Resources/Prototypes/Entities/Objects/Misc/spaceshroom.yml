@@ -24,7 +24,9 @@
         components:
           - Hands
       loot:
-        All: SpaceshroomGather
+        All: !type:GroupSelector
+          children:
+          - id: FoodSpaceshroom
     - type: Damageable
       damageContainer: StructuralInorganic
       damageModifierSet: Wood
@@ -37,13 +39,6 @@
             - !type:DoActsBehavior
               acts: [ "Destruction" ]
 
-- type: entityLootTable
-  id: SpaceshroomGather
-  entries:
-  - id: FoodSpaceshroom
-    amount: 1
-    maxAmount: 1
-
 - type: entity
   name: spaceshroom
   parent: FoodProduceBase
@@ -51,6 +46,7 @@
   description: A wild mushroom. There's no telling what effect it could have...
   components:
   - type: Produce
+    seedId: spaceshroom #Allows to extract spaceshroom spores.
   - type: Sprite
     sprite: Objects/Misc/spaceshroom.rsi
     state: object
@@ -98,6 +94,9 @@
     thickness: 0.02
     area: 0.02
     conductivity: 0.43
+  - type: Tag
+    tags:
+    - Mushroom
 
 - type: weightedRandomFillSolution
   id: RandomFillSpaceshroom

@@ -2,9 +2,12 @@ using Content.Shared.Body.Part;
 using Content.Shared.Damage;
 using Content.Shared.Examine;
 using Content.Shared.Inventory;
+using Content.Shared.Localizations;
 using Content.Shared.Silicons.Borgs;
 using Content.Shared.Verbs;
 using Robust.Shared.Utility;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace Content.Shared.Armor;
 
@@ -33,61 +36,47 @@ public abstract class SharedArmorSystem : EntitySystem
     /// <param name="args">The event, contains the running count of armor percentage as a coefficient</param>
     private void OnCoefficientQuery(Entity<ArmorComponent> ent, ref InventoryRelayedEvent<CoefficientQueryEvent> args)
     {
-        foreach (var parts in ent.Comp.Modifiers.Keys)
-        {
-            if (!parts.Contains(ent.Comp.BasePart))
-                continue;
+        if (!TryGetModifier(ent.Comp, null, out var modifier))
+            return;
 
-            foreach (var armorCoefficient in ent.Comp.Modifiers[parts].Coefficients)
-            {
-                args.Args.DamageModifiers.Coefficients[armorCoefficient.Key] = args.Args.DamageModifiers.Coefficients.TryGetValue(armorCoefficient.Key, out var coefficient) ? coefficient * armorCoefficient.Value : armorCoefficient.Value;
-            }
+        foreach (var armorCoefficient in modifier.Modifier.Coefficients)
+        {
+            args.Args.DamageModifiers.Coefficients[armorCoefficient.Key] = args.Args.DamageModifiers.Coefficients.TryGetValue(armorCoefficient.Key, out var coefficient) ? coefficient * armorCoefficient.Value : armorCoefficient.Value;
         }
     }
 
     private void OnDamageModify(EntityUid uid, ArmorComponent component, InventoryRelayedEvent<DamageModifyEvent> args)
     {
-        var part = GetModifier(component, args.Args.BodyPart);
-
-        if (part == null)
+        if (!TryGetModifier(component, args.Args.BodyPart, out var modifier))
             return;
 
-        args.Args.Damage = DamageSpecifier.ApplyModifierSet(args.Args.Damage, component.Modifiers[part]);
+        args.Args.Damage = DamageSpecifier.ApplyModifierSet(args.Args.Damage, modifier.Modifier);
     }
 
     private void OnBorgDamageModify(EntityUid uid, ArmorComponent component,
         ref BorgModuleRelayedEvent<DamageModifyEvent> args)
     {
-        var part = GetModifier(component, args.Args.BodyPart);
-
-        if (part == null)
+        if (!TryGetModifier(component, args.Args.BodyPart, out var modifier))
             return;
 
-        args.Args.Damage = DamageSpecifier.ApplyModifierSet(args.Args.Damage, component.Modifiers[part]);
+        args.Args.Damage = DamageSpecifier.ApplyModifierSet(args.Args.Damage, modifier.Modifier);
     }
 
-    private void OnBodyDamageModify(EntityUid uid, ArmorComponent component, LimbBodyRelayedEvent<DamageModifyEvent> args)
+    public static bool TryGetModifier(ArmorComponent component, BodyPartType? part, [NotNullWhen(true)] out ArmorModifier? modifier)
     {
-        var part = GetModifier(component, args.Args.BodyPart);
+        part ??= component.BasePart;
 
-        if (part == null)
-            return;
-
-        args.Args.Damage = DamageSpecifier.ApplyModifierSet(args.Args.Damage, component.Modifiers[part]);
-    }
-
-    private List<BodyPartType>? GetModifier(ArmorComponent component, BodyPartType? part)
-    {
-        if (part == null)
-            part = component.BasePart;
-
-        foreach (var key in component.Modifiers.Keys)
+        foreach (var data in component.Modifiers)
         {
-            if (key.Contains(part.Value))
-                return key;
+            if (!data.Parts.Contains(part.Value))
+                continue;
+
+            modifier = data;
+            return true;
         }
 
-        return null;
+        modifier = null;
+        return false;
     }
 
     private void OnArmorVerbExamine(EntityUid uid, ArmorComponent component, GetVerbsEvent<ExamineVerb> args)
@@ -105,26 +94,22 @@ public abstract class SharedArmorSystem : EntitySystem
             Loc.GetString("armor-examinable-verb-message"));
     }
 
-    private FormattedMessage GetArmorExamine(Dictionary<List<BodyPartType>, DamageModifierSet> armorModifiers)
+    private FormattedMessage GetArmorExamine(List<ArmorModifier> armorModifiers)
     {
         var msg = new FormattedMessage();
         msg.AddMarkupOrThrow(Loc.GetString("armor-examine"));
 
-        foreach (var (parts, modifier) in armorModifiers)
+        foreach (var data in armorModifiers)
         {
             msg.PushNewline();
 
-            for (var i = 1; i <= parts.Count; i++)
-            {
-                msg.AddMarkupOrThrow(Loc.GetString("armor-part-" + parts[i - 1].ToString().ToLower()));
+            var partsLoc = ContentLocalizationManager.FormatList(data.Parts
+                .Select(p => Loc.GetString("armor-part-name", ("part", p)))
+                .ToList());
 
-                if (i < parts.Count)
-                    msg.AddMarkupOrThrow(", ");
-                else
-                    msg.AddMarkupOrThrow(":");
-            }
+            msg.AddMarkupOrThrow(Loc.GetString("armor-part-wrap", ("message", partsLoc)));
 
-            foreach (var coefficientArmor in modifier.Coefficients)
+            foreach (var coefficientArmor in data.Modifier.Coefficients)
             {
                 msg.PushNewline();
 
@@ -135,7 +120,7 @@ public abstract class SharedArmorSystem : EntitySystem
                 ));
             }
 
-            foreach (var flatArmor in modifier.FlatReduction)
+            foreach (var flatArmor in data.Modifier.FlatReduction)
             {
                 msg.PushNewline();
 

@@ -1,6 +1,6 @@
+using Robust.Shared.GameStates;
+
 namespace Content.Shared.Body.Components;
 
-[RegisterComponent]
-public sealed partial class TongueComponent : Component
-{
-}
+[RegisterComponent, NetworkedComponent]
+public sealed partial class TongueComponent : Component;

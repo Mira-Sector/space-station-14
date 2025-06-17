@@ -84,18 +84,6 @@
   - type: Speech
     speechVerb: Plant
     allowedEmotes: ['Chirp']
-  - type: Absorbent
-    solutionName: chemicals
-    pickupAmmount: 5
-    delay: 3
-    alwaysPickup: true
-    animation: false
-    pickupSound: null
-    transferSound: null
-  - type: AbsorbentToggle
-    toggleActionId: null
-    enabled: true
-    canSlip: false
   - type: BodyEmotes
     soundsId: DionaBodyEmotes
   - type: IgnoreKudzu
@@ -114,6 +102,7 @@
           32:
             sprite: Mobs/Species/Human/displacement.rsi
             state: jumpsuit-female
+  - type: Rootable
 
 - type: entity
   parent: BaseSpeciesDummy

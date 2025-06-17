@@ -106,13 +106,20 @@ public partial class SharedBodySystem
     {
         organEnt.Comp.Body = bodyUid;
         organEnt.Comp.BodyPart = parentPartUid;
+
         var addedEv = new OrganAddedEvent(parentPartUid);
         RaiseLocalEvent(organEnt, ref addedEv);
+
+        var limbEv = new OrganAddedLimbEvent(organEnt);
+        RaiseLocalEvent(parentPartUid, ref limbEv);
 
         if (organEnt.Comp.Body is not null)
         {
             var addedInBodyEv = new OrganAddedToBodyEvent(bodyUid, parentPartUid);
             RaiseLocalEvent(organEnt, ref addedInBodyEv);
+
+            var bodyAddedEv = new OrganAddedBodyEvent(organEnt);
+            RaiseLocalEvent(bodyUid, ref bodyAddedEv);
         }
 
         Dirty(organEnt, organEnt.Comp);
@@ -123,10 +130,16 @@ public partial class SharedBodySystem
         var removedEv = new OrganRemovedEvent(parentPartUid);
         RaiseLocalEvent(organEnt, ref removedEv);
 
+        var limbRemovedEv = new OrganRemovedLimbEvent(organEnt);
+        RaiseLocalEvent(parentPartUid, ref limbRemovedEv);
+
         if (organEnt.Comp.Body is { Valid: true } bodyUid)
         {
             var removedInBodyEv = new OrganRemovedFromBodyEvent(bodyUid, parentPartUid);
             RaiseLocalEvent(organEnt, ref removedInBodyEv);
+
+            var bodyRemovedEv = new OrganRemovedBodyEvent(organEnt);
+            RaiseLocalEvent(bodyUid, ref bodyRemovedEv);
         }
 
         organEnt.Comp.Body = null;

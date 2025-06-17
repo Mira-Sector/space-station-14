@@ -1,146 +1,268 @@
+using Content.Shared.Actions;
+using Content.Shared.Atmos.Components;
 using Content.Shared.Atmos.Piping.Crawling.Components;
-using Content.Shared.Mobs.Systems;
+using Content.Shared.Eye;
 using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Events;
 using Content.Shared.Movement.Systems;
-using Content.Shared.SubFloor;
 using Robust.Shared.Containers;
-using Robust.Shared.Physics;
-using Robust.Shared.Physics.Components;
-using Robust.Shared.Physics.Systems;
+using Robust.Shared.Player;
 using Robust.Shared.Timing;
-using System.Numerics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Content.Shared.Atmos.Piping.Crawling.Systems;
 
-public sealed class SharedPipeCrawlingSystem : EntitySystem
+public abstract partial class SharedPipeCrawlingSystem : EntitySystem
 {
+    [Dependency] private readonly SharedActionsSystem _actions = default!;
+    [Dependency] private readonly SharedContainerSystem _container = default!;
+    [Dependency] private readonly SharedEyeSystem _eye = default!;
+    [Dependency] private readonly SharedMoverController _mover = default!;
+    [Dependency] protected readonly ISharedPlayerManager Player = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly SharedContainerSystem _containers = default!;
-    [Dependency] private readonly SharedMoverController _movement = default!;
-    [Dependency] private readonly SharedPhysicsSystem _physics = default!;
-    [Dependency] private readonly SharedTrayScannerSystem _tray = default!;
-    [Dependency] private readonly SharedTransformSystem _xform = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
 
-    const string PipeContainer = "pipe";
-    Vector2 Offset = new Vector2(0.5f, 0.5f);
+    private static readonly string ContainerId = "pipe-crawling";
 
-    const float CrawlSpeedMultiplier = 0.8f;
+    protected EntityQuery<PipeCrawlingPipeComponent> PipeQuery;
+    protected EntityQuery<PipeCrawlingEnterPointComponent> EnterQuery;
+    protected EntityQuery<PipeCrawlingAutoPilotComponent> AutoQuery;
 
     public override void Initialize()
     {
         base.Initialize();
 
-        SubscribeLocalEvent<PipeCrawlingComponent, ComponentInit>(OnInit);
-        SubscribeLocalEvent<PipeCrawlingComponent, ComponentRemove>(OnRemoved);
+        InitializeAction();
+        InitializeEntry();
 
-        SubscribeLocalEvent<PipeCrawlingComponent, MoveInputEvent>(OnMove);
+        SubscribeLocalEvent<PipeCrawlingPipeComponent, ComponentInit>(OnInit);
+        SubscribeLocalEvent<PipeCrawlingPipeComponent, ComponentRemove>(OnRemove);
+
+        SubscribeLocalEvent<PipeCrawlingComponent, ComponentInit>(OnCrawlingInit);
+        SubscribeLocalEvent<PipeCrawlingComponent, ComponentRemove>(OnCrawlingRemove);
+        SubscribeLocalEvent<PipeCrawlingComponent, GetVisMaskEvent>(OnCrawlingVisMask);
+        SubscribeLocalEvent<PipeCrawlingComponent, MoveInputEvent>(OnCrawlingInput);
+
+        PipeQuery = GetEntityQuery<PipeCrawlingPipeComponent>();
+        EnterQuery = GetEntityQuery<PipeCrawlingEnterPointComponent>();
+        AutoQuery = GetEntityQuery<PipeCrawlingAutoPilotComponent>();
     }
 
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
 
-        var query = EntityQueryEnumerator<PipeCrawlingComponent>();
-        while (query.MoveNext(out var uid, out var component))
+        if (!_timing.IsFirstTimePredicted)
+            return;
+
+        var query = EntityQueryEnumerator<PipeCrawlingComponent, CanEnterPipeCrawlingComponent>();
+        while (query.MoveNext(out var uid, out var crawling, out var crawler))
         {
-            if (!component.IsMoving)
+            if (crawling.NextMove > _timing.CurTime)
                 continue;
 
-            if (!TryComp<CanEnterPipeCrawlingComponent>(uid, out var pipeCrawlerComp))
+            crawling.NextMove += crawler.MoveDelay;
+
+            if (AutoQuery.TryComp(uid, out var auto))
+                UpdateAuto((uid, auto, crawling, crawler));
+
+            UpdateVisuals((uid, crawling));
+
+            if (crawling.WishDirection is not { } wishDir)
                 continue;
 
-            if (!TryComp<PipeCrawlingPipeComponent>(component.CurrentPipe, out var pipeComp))
-                continue;
-
-            if (!TryComp<MovementSpeedModifierComponent>(uid, out var speedComp))
-                continue;
-
-            if (!TryComp<InputMoverComponent>(uid, out var inputComp))
-                continue;
-
-            if (TryComp<PhysicsComponent>(uid, out var physics))
-                _physics.ResetDynamics(uid, physics);
-
-            (_, var sprintingVec) = _movement.GetVelocityInput(inputComp);
-            var direction = sprintingVec.GetDir();
-
-            if (component.NextMoveAttempt > _timing.CurTime)
-            {
-                continue;
-            }
-
-            component.NextMoveAttempt = _timing.CurTime + TimeSpan.FromSeconds(pipeCrawlerComp.PipeMoveSpeed ?? (1f / speedComp.BaseSprintSpeed) * CrawlSpeedMultiplier);
-
-            if (_mobState.IsIncapacitated(uid))
-                continue;
-
-            // does the pipe has a connection to annother pipe in that direction
-            if (!pipeComp.ConnectedPipes.ContainsKey(direction))
-            {
-                continue;
-            }
-
-            var newPipes = pipeComp.ConnectedPipes[direction];
-
-            // only insert us into the first available pipe
-            foreach (var newPipe in newPipes)
-            {
-                if (_containers.TryGetContainer(component.CurrentPipe, PipeContainer, out var currentPipeContainer) &&
-                    TryComp<PipeCrawlingPipeComponent>(component.CurrentPipe, out var currentPipeComp))
-                {
-                    var newPipeCoords = Transform(newPipe).Coordinates;
-                    _containers.Remove(uid, currentPipeContainer, destination: newPipeCoords, localRotation: direction.ToAngle());
-                }
-
-                if (_containers.TryGetContainer(newPipe, PipeContainer, out var newPipeContainer) &&
-                TryComp<PipeCrawlingPipeComponent>(newPipe, out var newPipeComp))
-                {
-                    _containers.Insert(uid, newPipeContainer);
-                }
-
-                component.CurrentPipe = newPipe;
-                Dirty(uid, component);
-                break;
-            }
+            CrawlPipe((uid, crawling, crawler), wishDir);
         }
     }
 
-    private void OnInit(EntityUid uid, PipeCrawlingComponent component, ref ComponentInit args)
+    private void OnInit(Entity<PipeCrawlingPipeComponent> ent, ref ComponentInit args)
     {
-        SetState(uid, component, true);
+        ent.Comp.Container = _container.EnsureContainer<Container>(ent.Owner, ContainerId);
     }
 
-    private void OnRemoved(EntityUid uid, PipeCrawlingComponent component, ref ComponentRemove args)
+    private void OnRemove(Entity<PipeCrawlingPipeComponent> ent, ref ComponentRemove args)
     {
-        SetState(uid, component, false);
+        foreach (var contained in ent.Comp.Container.ContainedEntities)
+            Eject(ent, contained);
     }
 
-    private void SetState(EntityUid uid, PipeCrawlingComponent component, bool enabled)
+    private void OnCrawlingInit(Entity<PipeCrawlingComponent> ent, ref ComponentInit args)
     {
-        if (!TryComp<FixturesComponent>(uid, out var playerFixturesComp))
+        ent.Comp.LayerAction = _actions.AddAction(ent.Owner, ent.Comp.LayerActionId);
+    }
+
+    private void OnCrawlingRemove(Entity<PipeCrawlingComponent> ent, ref ComponentRemove args)
+    {
+        _actions.RemoveAction(ent.Comp.LayerAction);
+        DisableVisuals(ent);
+    }
+
+    private void OnCrawlingVisMask(Entity<PipeCrawlingComponent> ent, ref GetVisMaskEvent args)
+    {
+        args.VisibilityMask |= (int)VisibilityFlags.Subfloor;
+    }
+
+    private void OnCrawlingInput(Entity<PipeCrawlingComponent> ent, ref MoveInputEvent args)
+    {
+        if (!_timing.IsFirstTimePredicted)
             return;
 
-        if (enabled)
+        Direction? direction;
+        if (args.HasDirectionalMovement && TryComp<InputMoverComponent>(ent.Owner, out var mover))
         {
-            EnsureComp<TrayScannerComponent>(uid).Enabled = true;
-            _tray.AddUser(uid);
+            var (sprinting, walking) = _mover.GetVelocityInput(mover);
+            var vec = sprinting.LengthSquared() > walking.LengthSquared() ? sprinting : walking;
+            direction = Angle.FromWorldVec(vec).GetCardinalDir();
         }
         else
         {
-            RemComp<TrayScannerComponent>(uid);
-            _tray.RemoveUser(uid);
+            direction = null;
         }
 
-        if (!TryComp<InputMoverComponent>(uid, out var inputComp))
+        if (ent.Comp.WishDirection == direction)
             return;
 
-        inputComp.CanMove = !enabled;
+        ent.Comp.WishDirection = direction;
+
+        if (ent.Comp.NextMove > _timing.CurTime)
+        {
+            Dirty(ent);
+            return;
+        }
+
+        CrawlPipe((ent.Owner, ent.Comp, null, args.Entity.Comp), direction);
     }
 
-    private void OnMove(EntityUid uid, PipeCrawlingComponent component, ref MoveInputEvent args)
+    private void CrawlPipe(Entity<PipeCrawlingComponent, CanEnterPipeCrawlingComponent?, InputMoverComponent?, PipeCrawlingAutoPilotComponent?> ent, Direction? direction)
     {
-        component.IsMoving = (args.Entity.Comp.HeldMoveButtons & (MoveButtons.Down | MoveButtons.Left | MoveButtons.Up | MoveButtons.Right)) != 0x0;
+        if (!Resolve(ent.Owner, ref ent.Comp2, ref ent.Comp3, false))
+            return;
+
+        if (!PipeQuery.TryComp(ent.Comp1.CurrentPipe, out var pipe))
+        {
+            Log.Warning($"{ToPrettyString(ent.Comp1.CurrentPipe)} does not have a {nameof(PipeCrawlingPipeComponent)} yet {ToPrettyString(ent.Owner)} is crawling inside?");
+            Dirty(ent.Owner, ent.Comp1);
+            return;
+        }
+
+        ent.Comp1.WishDirection = null;
+
+        if (Resolve(ent.Owner, ref ent.Comp4, false))
+        {
+            if (ent.Comp1.LastDirection == direction)
+            {
+                Dirty(ent.Owner, ent.Comp1);
+                return;
+            }
+
+            if (ent.Comp3.Sprinting)
+            {
+                if (direction == null)
+                {
+                    Dirty(ent.Owner, ent.Comp1);
+                    return;
+                }
+
+                // player requested a different direction
+                // send them down that path
+                var nextStop = GetNextStop((ent.Comp1.CurrentPipe, pipe), ent.Comp1.CurrentLayer, direction.Value);
+                ent.Comp4.TargetPipe = nextStop;
+                Dirty(ent.Owner, ent.Comp4);
+                Dirty(ent.Owner, ent.Comp1);
+                return;
+            }
+
+            // player requested finer control
+            RemCompDeferred<PipeCrawlingAutoPilotComponent>(ent.Owner);
+        }
+
+        if (direction != null)
+            ent.Comp1.LastDirection = direction;
+
+        Dirty(ent.Owner, ent.Comp1);
+
+        if (ent.Comp3.Sprinting && direction != null)
+        {
+            var nextStop = GetNextStop((ent.Comp1.CurrentPipe, pipe), ent.Comp1.CurrentLayer, direction.Value);
+            EnsureComp<PipeCrawlingAutoPilotComponent>(ent.Owner, out ent.Comp4);
+            ent.Comp4.TargetPipe = nextStop;
+            Dirty(ent.Owner, ent.Comp4);
+            return;
+        }
+
+        if (!TryGetNextPipe((ent.Comp1.CurrentPipe, pipe), ent.Comp1.CurrentLayer, direction, out var connection))
+            return;
+
+        TransferPipe((ent.Owner, ent.Comp1), connection.Value);
+    }
+
+    private void TransferPipe(Entity<PipeCrawlingComponent> ent, Entity<PipeCrawlingPipeComponent> pipe)
+    {
+        _container.Insert(ent.Owner, pipe.Comp.Container);
+
+        ent.Comp.CurrentPipe = pipe.Owner;
+        Dirty(ent);
+
+        PlaySound(pipe);
+    }
+
+    protected virtual void PlaySound(Entity<PipeCrawlingPipeComponent> ent)
+    {
+    }
+
+    private bool TryGetNextPipe(Entity<PipeCrawlingPipeComponent> ent, AtmosPipeLayer layer, Direction? direction, [NotNullWhen(true)] out Entity<PipeCrawlingPipeComponent>? nextPipe)
+    {
+        nextPipe = null;
+
+        if (direction == null)
+            return false;
+
+        if (!ent.Comp.ConnectedPipes.TryGetValue(layer, out var connections))
+            return false;
+
+        if (!connections.TryGetValue(direction.Value, out var netConnection))
+            return false;
+
+        var connection = GetEntity(netConnection);
+        if (!PipeQuery.TryComp(connection, out var connectedPipe))
+            return false;
+
+        nextPipe = (connection, connectedPipe);
+        return true;
+    }
+
+    private void Insert(Entity<PipeCrawlingPipeComponent> ent, EntityUid toInsert)
+    {
+        _container.Insert(toInsert, ent.Comp.Container);
+        EnsureComp<PipeCrawlingComponent>(toInsert, out var crawling);
+        crawling.NextMove = _timing.CurTime;
+        crawling.CurrentPipe = ent.Owner;
+        crawling.CurrentLayer = CompOrNull<AtmosPipeLayersComponent>(ent.Owner)?.CurrentPipeLayer ?? AtmosPipeLayer.Primary;
+
+        _eye.RefreshVisibilityMask(toInsert);
+        SetActionIcon((toInsert, crawling));
+        Dirty(toInsert, crawling);
+    }
+
+    private void Eject(Entity<PipeCrawlingPipeComponent> ent, EntityUid toRemove)
+    {
+        _container.Remove(toRemove, ent.Comp.Container);
+        _eye.RefreshVisibilityMask(toRemove);
+        RemCompDeferred<PipeCrawlingComponent>(toRemove);
+    }
+
+    protected virtual void UpdateVisuals(Entity<PipeCrawlingComponent> ent)
+    {
+    }
+
+    protected virtual void DisableVisuals(Entity<PipeCrawlingComponent> ent)
+    {
+    }
+
+    protected virtual void UpdateOverlay(Entity<PipeCrawlingComponent?> ent)
+    {
+    }
+
+    protected virtual void RemoveOverlay(Entity<PipeCrawlingComponent?> ent)
+    {
     }
 }

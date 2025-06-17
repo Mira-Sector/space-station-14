@@ -3,20 +3,21 @@ using Content.Shared.Inventory;
 using Robust.Shared.GameStates;
 using Robust.Shared.Utility;
 using Content.Shared.Body.Part;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared.Armor;
 
 /// <summary>
 /// Used for clothing that reduces damage when worn.
 /// </summary>
-[RegisterComponent, NetworkedComponent, Access(typeof(SharedArmorSystem))]
+[RegisterComponent, NetworkedComponent]
 public sealed partial class ArmorComponent : Component
 {
     /// <summary>
     /// The damage reduction
     /// </summary>
-    [DataField(required: true)]
-    public Dictionary<List<BodyPartType>, DamageModifierSet> Modifiers = default!;
+    [DataField]
+    public List<ArmorModifier> Modifiers = [];
 
     /// <summary>
     /// If the damagereciever has no body component which damage modifier to use
@@ -36,6 +37,17 @@ public sealed partial class ArmorComponent : Component
     /// </summary>
     [DataField]
     public bool ShowArmorOnExamine = true;
+}
+
+[Serializable, NetSerializable]
+[DataDefinition]
+public sealed partial class ArmorModifier
+{
+    [DataField(required: true)]
+    public HashSet<BodyPartType> Parts;
+
+    [DataField(required: true)]
+    public DamageModifierSet Modifier;
 }
 
 /// <summary>

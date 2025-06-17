@@ -3,7 +3,8 @@
   icon:
     sprite: Objects/Power/AME/ame_jar.rsi
     state: jar
-  product: CrateEngineeringAMEJar
+  data: !type:CargoProductItemData
+    product: CrateEngineeringAMEJar
   cost: 2000
   category: cargoproduct-category-name-engineering
   group: market
@@ -13,7 +14,8 @@
   icon:
     sprite: Structures/Power/Generation/Singularity/generator.rsi
     state: icon
-  product: CrateEngineeringSingularityGenerator
+  data: !type:CargoProductItemData
+    product: CrateEngineeringSingularityGenerator
   cost: 4000
   category: cargoproduct-category-name-engineering
   group: market
@@ -23,20 +25,20 @@
   icon:
     sprite: Structures/Power/Generation/Singularity/containment.rsi
     state: icon
-  product: CrateEngineeringSingularityContainment
+  data: !type:CargoProductItemData
+    product: CrateEngineeringSingularityContainment
   cost: 1000
   category: cargoproduct-category-name-engineering
   group: market
 
 - type: cargoProduct
-  name: "emitter crate"
   id: EngineSingularityEmitter
-  description: "Contains an emitter. Used only for dangerous applications."
   icon:
     sprite: Structures/Power/Generation/Singularity/emitter.rsi
     state: emitter2
-  product: CrateEngineeringSingularityEmitter
-  cost: 3000
+  data: !type:CargoProductItemData
+    product: CrateEngineeringSingularityEmitter
+  cost: 1500
   category: cargoproduct-category-name-engineering
   group: market
 
@@ -45,7 +47,8 @@
   icon:
     sprite: Structures/Power/Generation/Singularity/collector.rsi
     state: ca_on
-  product: CrateEngineeringSingularityCollector
+  data: !type:CargoProductItemData
+    product: CrateEngineeringSingularityCollector
   cost: 1000
   category: cargoproduct-category-name-engineering
   group: market
@@ -55,7 +58,8 @@
   icon:
     sprite: Structures/Power/Generation/PA/control_box.rsi
     state: completed
-  product: CrateEngineeringParticleAccelerator
+  data: !type:CargoProductItemData
+    product: CrateEngineeringParticleAccelerator
   cost: 2000
   category: cargoproduct-category-name-engineering
   group: market
@@ -65,7 +69,8 @@
   icon:
     sprite: Objects/Devices/flatpack.rsi
     state: solar-assembly-part
-  product: CrateEngineeringSolar
+  data: !type:CargoProductItemData
+    product: CrateEngineeringSolar
   cost: 1250
   category: cargoproduct-category-name-engineering
   group: market
@@ -75,7 +80,8 @@
   icon:
     sprite: Structures/Power/Generation/Tesla/generator.rsi
     state: icon
-  product: CrateEngineeringTeslaGenerator
+  data: !type:CargoProductItemData
+    product: CrateEngineeringTeslaGenerator
   cost: 4000
   category: cargoproduct-category-name-engineering
   group: market
@@ -85,7 +91,8 @@
   icon:
     sprite: Structures/Power/Generation/Tesla/coil.rsi
     state: coil
-  product: CrateEngineeringTeslaCoil
+  data: !type:CargoProductItemData
+    product: CrateEngineeringTeslaCoil
   cost: 1200
   category: cargoproduct-category-name-engineering
   group: market
@@ -95,7 +102,8 @@
   icon:
     sprite: Structures/Power/Generation/Tesla/coil.rsi
     state: grounding_rod
-  product: CrateEngineeringTeslaGroundingRod
+  data: !type:CargoProductItemData
+    product: CrateEngineeringTeslaGroundingRod
   cost: 400
   category: cargoproduct-category-name-engineering
   group: market

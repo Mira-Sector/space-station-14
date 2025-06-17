@@ -1,28 +1,32 @@
 # Actions
 - type: entity
+  parent: BaseAction
   id: ActionJumpToCore
   name: Jump to core
   description: Sends your eye back to the core.
   components:
-  - type: InstantAction
+  - type: Action
     priority: -9
     itemIconStyle: BigAction
     icon:
       sprite: Interface/Actions/actions_ai.rsi
       state: ai_core
+  - type: InstantAction
     event: !type:JumpToCoreEvent
 
 - type: entity
+  parent: BaseAction
   id: ActionSurvCameraLights
   name: Toggle camera lights
   description: Enable surveillance camera lights near wherever you're viewing.
   components:
-  - type: InstantAction
+  - type: Action
     priority: -5
     itemIconStyle: BigAction
     icon:
       sprite: Interface/Actions/actions_ai.rsi
       state: camera_light
+  - type: InstantAction
     event: !type:RelayedActionComponentChangeEvent
       components:
       - type: LightOnCollideCollider
@@ -39,28 +43,31 @@
 
 
 - type: entity
+  parent: BaseMentalAction
   id: ActionAIViewLaws
   name: View Laws
   description: View the laws that you must follow.
   components:
-  - type: InstantAction
-    checkCanInteract: false
-    checkConsciousness: false
+  - type: Action
     priority: -3
     itemIconStyle: NoItem
     icon:
       sprite: Interface/Actions/actions_ai.rsi
       state: state_laws
-    event: !type:ToggleLawsScreenEvent
     useDelay: 0.5
+  - type: InstantAction
+    event: !type:ToggleLawsScreenEvent
 
 - type: entity
   id: ActionStationAiShop
   name: Modules
   description: Purchace modules with your gained power.
   components:
+  - type: Action
+    icon:
+      sprite: Interface/Actions/actions_ai.rsi
+      state: store
   - type: InstantAction
-    icon: Interface/Actions/shop.png
     event: !type:StationAiShopActionEvent
 
 - type: entity
@@ -68,12 +75,14 @@
   name: Doomsday Device
   description: Nuke the whole station.
   components:
-  - type: InstantAction
-    charges: 1
+  - type: Action
     itemIconStyle: BigAction
     icon:
-      sprite: Objects/Devices/nuke.rsi
-      state: nuclearbomb_base
+      sprite: Interface/Actions/actions_ai.rsi
+      state: nuke
+  - type: LimitedCharges
+    maxCharges: 1
+  - type: InstantAction
     event: !type:StationAiNukeEvent
       additionalDelay: 60
 
@@ -82,12 +91,14 @@
   name: Hostile Station Lockdown
   description: Close, bolt and electrify every door on the station for 90 seconds.
   components:
-  - type: InstantAction
-    charges: 1
+  - type: Action
     itemIconStyle: BigAction
     icon:
       sprite: Interface/Actions/actions_ai.rsi
-      state: bolt_door
+      state: lockdown
+  - type: LimitedCharges
+    maxCharges: 1
+  - type: InstantAction
     event: !type:StationAiLockdownEvent
       resetDelay: 90
 
@@ -96,12 +107,14 @@
   name: Override Thermal Sensors
   description: Disables every firelock on the station.
   components:
-  - type: InstantAction
-    charges: 1
+  - type: Action
     itemIconStyle: BigAction
     icon:
-      sprite: Structures/Doors/Airlocks/Standard/firelock.rsi
-      state: closed
+      sprite: Interface/Actions/actions_ai.rsi
+      state: thermal_sensors
+  - type: LimitedCharges
+    maxCharges: 1
+  - type: InstantAction
     event: !type:StationAiFirelockEvent
 
 - type: entity
@@ -109,16 +122,17 @@
   name: Overload Machine
   description: Overload a machine causing it to explode.
   components:
+  - type: Action
+    itemIconStyle: BigAction
+    icon:
+      sprite: Interface/Actions/actions_ai.rsi
+      state: overload
+  - type: LimitedCharges
+    maxCharges: 2
   - type: EntityTargetAction
     canTargetSelf: false
     checkCanAccess: false
     showOutline: false
-    range: -1
-    charges: 2
-    itemIconStyle: BigAction
-    icon:
-      sprite: Objects/Power/powersink.rsi
-      state: powersink
     event: !type:StationAiOverloadEvent
       delay: 5
       beepInterval: 1
@@ -130,11 +144,13 @@
   name: Blackout
   description: Overload the stations APCs for a 30% chance to blow up the bulbs.
   components:
-  - type: InstantAction
-    charges: 3
+  - type: Action
     itemIconStyle: BigAction
     icon:
-      sprite: Structures/Power/apc.rsi
-      state: broken
+      sprite: Interface/Actions/actions_ai.rsi
+      state: blackout
+  - type: LimitedCharges
+    maxCharges: 3
+  - type: InstantAction
     event: !type:StationAiBlackoutEvent
       chance: 0.3

@@ -1,0 +1,268 @@
+- type: constructionGraph
+  id: ModSuit
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: modCore
+      steps:
+      - tag: ModSuitCore
+        name: a MOD core
+        store: core
+        icon:
+          sprite: Objects/Specific/Robotics/ModSuits/cores.rsi
+          state: standard
+
+  - node: modCore
+    actions:
+    - !type:AppearanceChange
+    edges:
+    - to: modCoreScrewed
+      steps:
+      - tool: Screwing
+        doAfter: 0.5
+    - to: start
+      steps:
+      - tool: Prying
+        doAfter: 0.5
+        completed:
+        - !type:EmptyContainer
+          container: core
+          pickup: true
+
+  - node: modCoreScrewed
+    actions:
+    - !type:AppearanceChange
+    edges:
+    - to: helmet
+      steps:
+      - tag: ModSuitHelmet
+        name: MOD helmet
+        store: helmet
+        icon:
+          sprite: Objects/Specific/Robotics/ModSuits/construction.rsi
+          state: helmet
+    - to: modCore
+      steps:
+      - tool: Screwing
+        doAfter: 0.5
+
+  - node: helmet
+    actions:
+    - !type:AppearanceChange
+    edges:
+    - to: chestplate
+      steps:
+      - tag: ModSuitChestplate
+        name: MOD chestplate
+        store: chestplate
+        icon:
+          sprite: Objects/Specific/Robotics/ModSuits/construction.rsi
+          state: chestplate
+    - to: modCoreScrewed
+      steps:
+      - tool: Prying
+        doAfter: 0.5
+        completed:
+        - !type:EmptyContainer
+          container: helmet
+          pickup: true
+
+  - node: chestplate
+    actions:
+    - !type:AppearanceChange
+    edges:
+    - to: gauntlets
+      steps:
+      - tag: ModSuitGauntlets
+        name: MOD gauntlets
+        store: gauntlets
+        icon:
+          sprite: Objects/Specific/Robotics/ModSuits/construction.rsi
+          state: gauntlets
+    - to: helmet
+      steps:
+      - tool: Prying
+        doAfter: 0.5
+        completed:
+        - !type:EmptyContainer
+          container: chestplate
+          pickup: true
+
+  - node: gauntlets
+    actions:
+    - !type:AppearanceChange
+    edges:
+    - to: boots
+      steps:
+      - tag: ModSuitBoots
+        name: MOD boots
+        store: boots
+        icon:
+          sprite: Objects/Specific/Robotics/ModSuits/construction.rsi
+          state: boots
+    - to: chestplate
+      steps:
+      - tool: Prying
+        doAfter: 0.5
+        completed:
+        - !type:EmptyContainer
+          container: gauntlets
+          pickup: true
+
+  - node: boots
+    actions:
+    - !type:AppearanceChange
+    edges:
+    - to: wrenched
+      steps:
+      - tool: Anchoring
+        doAfter: 0.5
+    - to: gauntlets
+      steps:
+      - tool: Prying
+        doAfter: 0.5
+        completed:
+        - !type:EmptyContainer
+          container: boots
+          pickup: true
+
+  - node: wrenched
+    actions:
+    - !type:AppearanceChange
+    edges:
+    - to: screwed
+      steps:
+      - tool: Screwing
+        doAfter: 0.5
+    - to: boots
+      steps:
+      - tool: Anchoring
+        doAfter: 0.5
+
+  - node: screwed
+    actions:
+    - !type:AppearanceChange
+    edges:
+    - to: MOD suit
+      steps:
+      - tag: null
+        name: external plating to assembly
+        icon:
+          sprite: Objects/Specific/Robotics/ModSuits/plating.rsi
+          state: standard
+    - to: standardPlating
+      steps:
+      - tag: ModSuitPlatingStandard
+        store: plating
+    - to: engineeringPlating
+      steps:
+      - tag: ModSuitPlatingEngineering
+        store: plating
+    - to: atmosphericPlating
+      steps:
+      - tag: ModSuitPlatingAtmospheric
+        store: plating
+    - to: medicalPlating
+      steps:
+      - tag: ModSuitPlatingMedical
+        store: plating
+    - to: securityPlating
+      steps:
+      - tag: ModSuitPlatingSecurity
+        store: plating
+    - to: cosmohonkPlating
+      steps:
+      - tag: ModSuitPlatingCosmohonk
+        store: plating
+    - to: wrenched
+      steps:
+      - tool: Screwing
+        doAfter: 0.5
+
+  # dummy node for the construction ui
+  - node: MOD suit
+
+  - node: standardPlating
+    entity: ClothingBackpackModSuitStandard
+    edges:
+    - to: screwed
+      conditions:
+      - !type:WirePanel
+      steps:
+      - tool: Prying
+        doAfter: 0.5
+      completed:
+      - !type:EmptyContainer
+        container: plating
+        pickup: true
+
+  - node: engineeringPlating
+    entity: ClothingBackpackModSuitEngineering
+    edges:
+    - to: screwed
+      conditions:
+      - !type:WirePanel
+      steps:
+      - tool: Prying
+        doAfter: 0.5
+      completed:
+      - !type:EmptyContainer
+        container: plating
+        pickup: true
+
+  - node: atmosphericPlating
+    entity: ClothingBackpackModSuitAtmospheric
+    edges:
+    - to: screwed
+      conditions:
+      - !type:WirePanel
+      steps:
+      - tool: Prying
+        doAfter: 0.5
+      completed:
+      - !type:EmptyContainer
+        container: plating
+        pickup: true
+
+  - node: medicalPlating
+    entity: ClothingBackpackModSuitMedical
+    edges:
+    - to: screwed
+      conditions:
+      - !type:WirePanel
+      steps:
+      - tool: Prying
+        doAfter: 0.5
+      completed:
+      - !type:EmptyContainer
+        container: plating
+        pickup: true
+
+  - node: securityPlating
+    entity: ClothingBackpackModSuitSecurity
+    edges:
+    - to: screwed
+      conditions:
+      - !type:WirePanel
+      steps:
+      - tool: Prying
+        doAfter: 0.5
+      completed:
+      - !type:EmptyContainer
+        container: plating
+        pickup: true
+
+  - node: cosmohonkPlating
+    entity: ClothingBackpackModSuitCosmohonk
+    edges:
+    - to: screwed
+      conditions:
+      - !type:WirePanel
+      steps:
+      - tool: Prying
+        doAfter: 0.5
+      completed:
+      - !type:EmptyContainer
+        container: plating
+        pickup: true

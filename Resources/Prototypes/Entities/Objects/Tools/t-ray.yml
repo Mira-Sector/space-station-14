@@ -10,7 +10,6 @@
     - state: tray-off
       map: ["base"]
   - type: TrayScanner
-    canToggleLayers: true
   - type: Item
     sprite: Objects/Tools/t-ray.rsi
   - type: Appearance

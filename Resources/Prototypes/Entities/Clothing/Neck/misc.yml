@@ -8,11 +8,10 @@
     sprite: Clothing/Neck/Misc/headphones.rsi
     layers:
     - state: icon
-      map: [ "enum.ToggleVisuals.Layer" ]
+      map: [ "enum.ToggleableVisuals.Layer" ]
   - type: Clothing
     equippedPrefix: off
     sprite: Clothing/Neck/Misc/headphones.rsi
-  - type: Appearance
   - type: ActivatableUI
     singleUser: true
     verbText: verb-instrument-openui
@@ -28,6 +27,18 @@
     respectMidiLimits: false
     allowBands: false
     playPVS: false
+  - type: ToggleableVisuals
+    spriteLayer: enum.ToggleableVisuals.Layer
+    clothingVisuals:
+      neck:
+      - state: on-equipped-NECK
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ToggleableVisuals.Enabled:
+        enum.ToggleableVisuals.Layer:
+          True: {state: icon-on}
+          False: {state: icon}
 
 - type: entity
   parent: Clothing
@@ -48,17 +59,20 @@
   - type: Stethoscope
 
 - type: entity
+  parent: BaseAction
   id: ActionStethoscope
   name: Listen with stethoscope
   components:
-  - type: EntityTargetAction
+  - type: Action
     icon:
       sprite: Clothing/Neck/Misc/stethoscope.rsi
       state: icon
-    event: !type:StethoscopeActionEvent
-    checkCanInteract: false
     priority: -1
     itemIconStyle: BigAction
+    checkCanInteract: false
+  - type: TargetAction
+  - type: EntityTargetAction
+    event: !type:StethoscopeActionEvent
 
 - type: entity
   parent: ClothingNeckBase

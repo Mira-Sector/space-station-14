@@ -1717,3 +1717,73 @@ Entries:
     type: Add
   id: 245
   time: '2025-05-15T10:45:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: AI modules now have unique icons
+    type: Add
+  id: 246
+  time: '2025-05-27T16:25:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: Added Sparks map to rotation
+    type: Add
+  id: 247
+  time: '2025-05-31T21:15:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Removed reach from rotation (again)
+    type: Add
+  id: 248
+  time: '2025-05-31T21:20:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Sparks can now FTL
+    type: Add
+  id: 249
+  time: '2025-06-02T17:10:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added MOD suits as an admeme item
+    type: Add
+  id: 250
+  time: '2025-06-02T18:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Reverted morph pending a rewrite
+    type: Remove
+  - message: Removed buggy humanoid ghosts
+    type: Remove
+  - message: Shuttle ordering has been reworked so they dock at the ATS
+    type: Add
+  - message: Removed telepads
+    type: Remove
+  - message: Removed AI screen loadouts
+    type: Remove
+  id: 251
+  time: '2025-06-08T08:00:00.0000000+00:00'
+- author: Wudanty
+  changes:
+  - message: Changed wizard pop requirement to 25 players
+    type: Tweak
+  id: 252
+  time: '2025-06-09T18:20:00.0000000+00:00'
+- author: Catazeus
+  changes:
+  - message: Spaceshrooms are now farmable at hydroponic trays
+    type: Add
+  id: 253
+  time: '2025-06-14T21:20:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Pipe crawling now randomly plays a sound
+    type: Add
+  - message: Pipe crawling now shows the character for easier navigation
+    type: Add
+  - message: Pipe crawling no longer crashes with multiple pipe layers
+    type: Fix
+  - message: Pipe crawling now only shows the current pipe net rather than every subfloor object
+    type: Tweak
+  - message: Pipe crawling is now junction based. Pressing a movement key brings you to the next junction or exit
+    type: Tweak
+  id: 254
+  time: '2025-06-16T17:15:00.0000000+00:00'

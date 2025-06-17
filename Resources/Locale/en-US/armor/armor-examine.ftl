@@ -20,7 +20,13 @@ armor-damage-type-shock = Shock
 armor-damage-type-structural = Structural
 armor-damage-type-holy = Holy
 
-armor-part-head = Head
-armor-part-torso = Torso
-armor-part-arm = Arms
-armor-part-leg = Legs
+armor-part-wrap = {$message}:
+
+armor-part-name =
+    { $part ->
+        [head] Head
+        [torso] Torso
+        [arm] Arms
+        [leg] Legs
+        *[other] Unknown
+    }

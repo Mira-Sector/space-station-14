@@ -11,6 +11,13 @@
     layers:
     - map: [ "enum.DamageStateVisualLayers.Base" ]
       state: blue_adult_slime
+  - type: CanEnterPipeCrawling
+  - type: UserInterface
+    interfaces:
+      enum.DamageSelectorUiKey.Key:
+        type: DamageSelectorBoundUserInterface
+      enum.PipeCrawlingLayerUiKey.Key:
+        type: PipeCrawlingLayerBoundUserInterface
   - type: Fixtures
     fixtures:
       fix1:
@@ -28,9 +35,7 @@
       120: Dead
   - type: FootstepModifier
     footstepSoundCollection:
-      path: /Audio/Effects/Footsteps/slime1.ogg
-      params:
-        volume: 3
+      collection: FootstepSlime
   - type: Tag
     tags:
     - FootstepSound
@@ -112,7 +117,6 @@
   - type: SpeciesLanguage
     understoodLanguages:
     - Slime
-  - type: CanEnterPipeCrawling
 
 - type: entity
   name: basic slime
@@ -218,6 +222,8 @@
         type: StorageBoundUserInterface
       enum.DamageSelectorUiKey.Key:
         type: DamageSelectorBoundUserInterface
+      enum.PipeCrawlingLayerUiKey.Key:
+        type: PipeCrawlingLayerBoundUserInterface
   - type: PersistantSlimeStorage
 
 - type: entity

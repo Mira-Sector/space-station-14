@@ -25,7 +25,7 @@ public sealed partial class CrawlingSystem : EntitySystem
     [Dependency] private readonly MovementSpeedModifierSystem _movementSpeedModifier = default!;
     [Dependency] private readonly SharedCombatModeSystem _combatMode = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
-    [Dependency] private readonly StaminaSystem _stamina = default!;
+    [Dependency] private readonly SharedStaminaSystem _stamina = default!;
     [Dependency] private readonly StandingStateSystem _standing = default!;
 
     public override void Initialize()
@@ -151,7 +151,7 @@ public sealed partial class CrawlingSystem : EntitySystem
                     return false;
 
                 RemComp<KnockedDownComponent>(uid);
-                _stamina.ExitStamCrit(uid, staminaComponent, user, true);
+                _stamina.ExitStamCrit(uid, staminaComponent);
                 return true;
             }
         }

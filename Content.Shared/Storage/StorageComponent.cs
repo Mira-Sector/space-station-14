@@ -20,6 +20,14 @@ namespace Content.Shared.Storage
     {
         public static string ContainerId = "storagebase";
 
+        public const byte ChunkSize = 8;
+
+        // No datafield because we can just derive it from stored items.
+        /// <summary>
+        /// Bitmask of occupied tiles
+        /// </summary>
+        public Dictionary<Vector2i, ulong> OccupiedGrid = new();
+
         [ViewVariables]
         public Container Container = default!;
 
@@ -47,7 +55,6 @@ namespace Content.Shared.Storage
         /// The maximum size item that can be inserted into this storage,
         /// </summary>
         [DataField, ViewVariables(VVAccess.ReadWrite)]
-        [Access(typeof(SharedStorageSystem))]
         public ProtoId<ItemSizePrototype>? MaxItemSize;
 
         // TODO: Make area insert its own component.
@@ -290,7 +297,7 @@ namespace Content.Shared.Storage
     public record struct StorageInteractAttemptEvent(bool Silent, bool Cancelled = false);
 
     [ByRefEvent]
-    public record struct StorageInteractUsingAttemptEvent(bool Cancelled = false);
+    public record struct StorageInteractUsingAttemptEvent(EntityUid Using, bool Cancelled = false);
 
     [ByRefEvent]
     public record struct StorageRemovedItemEvent(EntityUid User, EntityUid Storage);

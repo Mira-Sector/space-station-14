@@ -1,3 +1,5 @@
+using Content.Shared.Cargo.Prototypes;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 
 namespace Content.Shared.Cargo.Events;
@@ -10,10 +12,10 @@ public sealed class CargoConsoleAddOrderMessage : BoundUserInterfaceMessage
 {
     public string Requester;
     public string Reason;
-    public string CargoProductId;
+    public ProtoId<CargoProductPrototype> CargoProductId;
     public int Amount;
 
-    public CargoConsoleAddOrderMessage(string requester, string reason, string cargoProductId, int amount)
+    public CargoConsoleAddOrderMessage(string requester, string reason, ProtoId<CargoProductPrototype> cargoProductId, int amount)
     {
         Requester = requester;
         Reason = reason;

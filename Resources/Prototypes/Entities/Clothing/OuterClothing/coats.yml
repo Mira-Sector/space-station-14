@@ -25,7 +25,15 @@
     - id: FlippoEngravedLighter
   - type: Armor #same as regular sec armor
     modifiers:
-      [ Torso, Arm ] : { coefficients: { Blunt: 0.70, Slash: 0.70, Piercing: 0.70, Heat: 0.80 } }
+    - parts:
+      - Torso
+      - Arm
+      modifier:
+        coefficients:
+          Blunt: 0.70
+          Slash: 0.70
+          Piercing: 0.70
+          Heat: 0.80
   - type: ExplosionResistance
     damageCoefficient: 1 #its a coat. it doesnt do shit
 
@@ -76,7 +84,16 @@
   components:
   - type: Armor
     modifiers:
-      [ Torso, Arm ] : { coefficients: { Blunt: 0.7, Slash: 0.7, Piercing: 0.7, Heat: 0.7, Caustic: 0.90 } }
+    - parts:
+      - Torso
+      - Arm
+      modifier:
+        coefficients:
+          Blunt: 0.65
+          Slash: 0.65
+          Piercing: 0.6
+          Heat: 0.7
+          Caustic: 0.75 # not the full 90% from ss13 because of the head
   - type: ExplosionResistance
     damageCoefficient: 0.9
 
@@ -86,7 +103,16 @@
   components:
   - type: Armor
     modifiers:
-      [ Torso, Arm ] : { coefficients: { Blunt: 0.7, Slash: 0.7, Piercing: 0.7, Heat: 0.7 } }
+    - parts:
+      - Torso
+      - Arm
+      modifier:
+        coefficients:
+          Blunt: 0.65
+          Slash: 0.65
+          Piercing: 0.7
+          Heat: 0.7
+          Caustic: 0.9
   - type: ExplosionResistance
     damageCoefficient: 0.9
 
@@ -140,7 +166,12 @@
     coolingCoefficient: 0.1
   - type: Armor
     modifiers:
-      [ Torso, Arm ] : { coefficients: { Slash: 0.95 } }
+    - parts:
+      - Torso
+      - Arm
+      modifier:
+        coefficients:
+          Slash: 0.95
   - type: Food
     requiresSpecialDigestion: true
   - type: SolutionContainerManager
@@ -163,7 +194,12 @@
     sprite: Clothing/OuterClothing/Coats/labcoat.rsi
   - type: Armor
     modifiers:
-      [ Torso, Arm ] : { coefficients: { Caustic: 0.75 } }
+    - parts:
+      - Torso
+      - Arm
+      modifier:
+        coefficients:
+          Caustic: 0.75
 
 - type: entity
   parent: [ClothingOuterStorageFoldableBaseOpened, ClothingOuterCoatLab]
@@ -182,7 +218,12 @@
     sprite: Clothing/OuterClothing/Coats/labcoat_chem.rsi
   - type: Armor
     modifiers:
-      [ Torso, Arm ] : { coefficients: { Caustic: 0.75 } }
+    - parts:
+      - Torso
+      - Arm
+      modifier:
+        coefficients:
+          Caustic: 0.75
 
 - type: entity
   parent: [ClothingOuterStorageFoldableBaseOpened, ClothingOuterCoatLabChem]
@@ -201,7 +242,12 @@
     sprite: Clothing/OuterClothing/Coats/labcoat_viro.rsi
   - type: Armor
     modifiers:
-      [ Torso, Arm ] : { coefficients: { Caustic: 0.75 } }
+    - parts:
+      - Torso
+      - Arm
+      modifier:
+        coefficients:
+          Caustic: 0.75
 
 - type: entity
   parent: [ClothingOuterStorageFoldableBaseOpened, ClothingOuterCoatLabViro]
@@ -220,7 +266,12 @@
     sprite: Clothing/OuterClothing/Coats/labcoat_gene.rsi
   - type: Armor
     modifiers:
-      [ Torso, Arm ] : { coefficients: { Caustic: 0.75 } }
+    - parts:
+      - Torso
+      - Arm
+      modifier:
+        coefficients:
+          Caustic: 0.75
 
 - type: entity
   parent: [ClothingOuterStorageFoldableBaseOpened, ClothingOuterCoatLabGene]
@@ -239,7 +290,14 @@
     sprite: Clothing/OuterClothing/Coats/labcoat_cmo.rsi
   - type: Armor
     modifiers:
-      [ Torso, Arm ] : { coefficients: { Slash: 0.95, Heat: 0.95, Caustic: 0.65 } }
+    - parts:
+      - Torso
+      - Arm
+      modifier:
+        coefficients:
+          Slash: 0.95
+          Heat: 0.95
+          Caustic: 0.65
 
 - type: entity
   parent: [ClothingOuterStorageFoldableBaseOpened, ClothingOuterCoatLabCmo]
@@ -258,7 +316,12 @@
     sprite: Clothing/OuterClothing/Coats/labcoat_sci.rsi
   - type: Armor
     modifiers:
-      [ Torso, Arm ] : { coefficients: { Caustic: 0.75 } }
+    - parts:
+      - Torso
+      - Arm
+      modifier:
+        coefficients:
+          Caustic: 0.75
 
 - type: entity
   parent: [ClothingOuterStorageFoldableBaseOpened, ClothingOuterCoatRnd]
@@ -277,7 +340,12 @@
     sprite: Clothing/OuterClothing/Coats/labcoat_robo.rsi
   - type: Armor
     modifiers:
-      [ Torso, Arm ] : { coefficients: { Caustic: 0.75 } }
+    - parts:
+      - Torso
+      - Arm
+      modifier:
+        coefficients:
+          Caustic: 0.75
 
 - type: entity
   parent: [ClothingOuterStorageFoldableBaseOpened, ClothingOuterCoatRobo]
@@ -296,7 +364,13 @@
     sprite: Clothing/OuterClothing/Coats/labcoat_rd.rsi
   - type: Armor
     modifiers:
-      [ Torso, Arm ] : { coefficients: { Caustic: 0.75, Radiation: 0.9 } }
+    - parts:
+      - Torso
+      - Arm
+      modifier:
+        coefficients:
+          Caustic: 0.75
+          Radiation: 0.9
 
 - type: entity
   parent: [ClothingOuterStorageFoldableBaseOpened, ClothingOuterCoatRD]
@@ -359,7 +433,14 @@
     sprite: Clothing/OuterClothing/Coats/dogi.rsi
   - type: Armor
     modifiers:
-      [ Torso, Arm ] : { coefficients: { Blunt: 0.8, Slash: 0.65, Piercing: 0.85 } }
+    - parts:
+      - Torso
+      - Arm
+      modifier:
+        coefficients:
+          Blunt: 0.8
+          Slash: 0.65
+          Piercing: 0.85
 
 - type: entity
   parent: ClothingOuterStorageBase
@@ -406,7 +487,16 @@
     sprite: Clothing/OuterClothing/Coats/brigmedic.rsi
   - type: Armor
     modifiers:
-      [ Torso, Arm ] : { coefficients: { Blunt: 0.8, Slash: 0.85, Piercing: 0.65, Heat: 0.85, Caustic: 0.75 } }
+    - parts:
+      - Torso
+      - Arm
+      modifier:
+        coefficients:
+          Blunt: 0.8
+          Slash: 0.85
+          Piercing: 0.65
+          Heat: 0.85
+          Caustic: 0.75
 
 - type: entity
   parent: ClothingOuterStorageFoldableBase
@@ -420,7 +510,12 @@
     sprite: Clothing/OuterClothing/Coats/labcoat_senior_researcher.rsi
   - type: Armor
     modifiers:
-      [ Torso, Arm ] : { coefficients: { Caustic: 0.75 } }
+    - parts:
+      - Torso
+      - Arm
+      modifier:
+        coefficients:
+          Caustic: 0.75
 
 - type: entity
   parent: [ClothingOuterStorageFoldableBaseOpened, ClothingOuterCoatLabSeniorResearcher]
@@ -439,7 +534,12 @@
     sprite: Clothing/OuterClothing/Coats/labcoat_senior_physician.rsi
   - type: Armor
     modifiers:
-      [ Torso, Arm ] : { coefficients: { Caustic: 0.75 } }
+    - parts:
+      - Torso
+      - Arm
+      modifier:
+        coefficients:
+          Caustic: 0.75
 
 - type: entity
   parent: [ClothingOuterStorageFoldableBaseOpened, ClothingOuterCoatLabSeniorPhysician]

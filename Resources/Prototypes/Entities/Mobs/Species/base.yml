@@ -56,12 +56,30 @@
   - type: DamageVisuals
     thresholds: [ 10, 20, 30, 50, 70, 100 ]
     targetLayers:
-      !type:BodyPart { type: Head, side: None }: Head
-      !type:BodyPart { type: Torso, side: None }: Chest
-      !type:BodyPart { type: Arm, side: Left }: LArm
-      !type:BodyPart { type: Arm, side: Right }: RArm
-      !type:BodyPart { type: Leg, side: Left }: LLeg
-      !type:BodyPart { type: Leg, side: Right }: RLeg
+    - bodyPart:
+        type: Head
+        side: None
+      layers: Head
+    - bodyPart:
+        type: Torso
+        side: None
+      layers: Chest
+    - bodyPart:
+        type: Arm
+        side: Left
+      layers: LArm
+    - bodyPart:
+        type: Arm
+        side: Right
+      layers: RArm
+    - bodyPart:
+        type: Leg
+        side: Left
+      layers: LLeg
+    - bodyPart:
+        type: Leg
+        side: Right
+      layers: RLeg
     damageOverlayGroups:
       Brute:
         sprite: Mobs/Effects/brute_damage.rsi
@@ -332,42 +350,54 @@
     alternateState: Standing
   - type: HealthAnalyzerBody
     limbs:
-      !type:BodyPart { type: Head, side: None }:
+      - bodyPart:
+          type: Head
+          side: None
         hoverSprite:
           sprite: /Textures/Interface/health_analyzer_body.rsi
           state: head-hover
         selectedSprite:
           sprite: /Textures/Interface/health_analyzer_body.rsi
           state: head
-      !type:BodyPart { type: Torso, side: None }:
+      - bodyPart:
+          type: Torso
+          side: None
         hoverSprite:
           sprite: /Textures/Interface/health_analyzer_body.rsi
           state: torso-hover
         selectedSprite:
           sprite: /Textures/Interface/health_analyzer_body.rsi
           state: torso
-      !type:BodyPart { type: Arm, side: Left }:
+      - bodyPart:
+          type: Arm
+          side: Left
         hoverSprite:
           sprite: /Textures/Interface/health_analyzer_body.rsi
           state: l_arm-hover
         selectedSprite:
           sprite: /Textures/Interface/health_analyzer_body.rsi
           state: l_arm
-      !type:BodyPart { type: Arm, side: Right }:
+      - bodyPart:
+          type: Arm
+          side: Right
         hoverSprite:
           sprite: /Textures/Interface/health_analyzer_body.rsi
           state: r_arm-hover
         selectedSprite:
           sprite: /Textures/Interface/health_analyzer_body.rsi
           state: r_arm
-      !type:BodyPart { type: Leg, side: Left }:
+      - bodyPart:
+          type: Leg
+          side: Left
         hoverSprite:
           sprite: /Textures/Interface/health_analyzer_body.rsi
           state: l_leg-hover
         selectedSprite:
           sprite: /Textures/Interface/health_analyzer_body.rsi
           state: l_leg
-      !type:BodyPart { type: Leg, side: Right }:
+      - bodyPart:
+          type: Leg
+          side: Right
         hoverSprite:
           sprite: /Textures/Interface/health_analyzer_body.rsi
           state: r_leg-hover
