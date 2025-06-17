@@ -42,6 +42,12 @@
     - id: PlushieMoth
     - id: PlushieArachind
     - id: PlushiePenguin
+    - id: PlushieSolusHuman
+    - id: PlushieSolusSlime
+    - id: PlushieAnurath
+    - id: PlushieGwen
+    - id: PlushieSalad
+    - id: PlushieWudanty
 
 - type: entity
   id: CrateFunPlushie

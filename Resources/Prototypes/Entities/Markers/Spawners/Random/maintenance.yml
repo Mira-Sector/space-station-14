@@ -102,12 +102,6 @@
       children:
       - id: ClothingNeckCloakHerald
       - id: ClothingHeadHelmetTemplar
-      - id: PlushieSolusHuman
-      - id: PlushieSolusSlime
-      - id: PlushieAnurath
-      - id: PlushieGwen
-      - id: PlushieSalad
-      - id: PlushieWudanty
       # Cloaks
       - !type:GroupSelector
         children:
