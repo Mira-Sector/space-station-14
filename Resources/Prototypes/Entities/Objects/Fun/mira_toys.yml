@@ -122,6 +122,19 @@
       path: /Audio/Misc/yippee.ogg
 
 - type: entity
+  parent: BasePlushie
+  id: PlushieClownothing
+  name: clownothing plushie
+  description: When you look away, you can feel it staring at you...
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/mira_plushies.rsi
+    state: plushie_clownothing
+  - type: EmitSoundOnUse
+    sound:
+      collection: BikeHorn
+
+- type: entity
   parent: ToySword
   id: ToyDSword
   name: double-bladed toy sword

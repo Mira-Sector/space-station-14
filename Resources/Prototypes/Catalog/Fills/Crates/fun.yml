@@ -49,6 +49,7 @@
     - id: PlushieSalad
     - id: PlushieWudanty
     - id: PlushieCreature
+    - id: PlushieClownothing
 
 - type: entity
   id: CrateFunPlushie
