@@ -120,6 +120,9 @@
   - type: EmitSoundOnUse
     sound:
       path: /Audio/Misc/yippee.ogg
+  - type: EmitSoundOnActivate
+    sound:
+      path: /Audio/Misc/yippee.ogg
 
 - type: entity
   parent: BasePlushie
@@ -131,6 +134,9 @@
     sprite: Objects/Fun/mira_plushies.rsi
     state: plushie_clownothing
   - type: EmitSoundOnUse
+    sound:
+      collection: BikeHorn
+  - type: EmitSoundOnActivate
     sound:
       collection: BikeHorn
 
