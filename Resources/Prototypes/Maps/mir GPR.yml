@@ -1,5 +1,5 @@
 - type: gameMap
-  id: Mir
+  id: MirGPR
   mapName: 'MirGPR'
   mapPath: /Maps/MirReSec.yml
   minPlayers: 5
