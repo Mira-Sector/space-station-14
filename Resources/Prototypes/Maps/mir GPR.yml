@@ -1,7 +1,7 @@
 - type: gameMap
   id: MirGPR
   mapName: 'MirGPR'
-  mapPath: /Maps/MirReSec.yml
+  mapPath: /Maps/MiReSec.yml
   minPlayers: 5
   maxPlayers: 20
   stations:
