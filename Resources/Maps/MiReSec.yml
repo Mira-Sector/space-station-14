@@ -4,8 +4,8 @@ meta:
   engineVersion: 261.2.0
   forkId: ""
   forkVersion: ""
-  time: 06/20/2025 18:54:21
-  entityCount: 13631
+  time: 06/20/2025 19:28:52
+  entityCount: 13629
 maps:
 - 1
 grids:
@@ -151,7 +151,7 @@ entities:
           version: 7
         -3,-1:
           ind: -3,-1
-          tiles: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgQAAAAAAAIEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCAAAAAAAAggAAAAAAAAAAAAAAAACBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAIIAAAAAAAAAAAAAAAAAgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIIAAAAAAAARAAAAAAAAggAAAAAAAAAAAAAAAAAAAAAAAAAAggAAAAAAACAAAAAAAACCAAAAAAAAgQAAAAAAAIEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCAAAAAAAAJAAAAAAAAIIAAAAAAAAAAAAAAAAAAAAAAAAAAIIAAAAAAAAgAAAAAAAAggAAAAAAAAAAAAAAAACBAAAAAAAAgQAAAAAAAIEAAAAAAACBAAAAAAAAgQAAAAAAAIEAAAAAAACCAAAAAAAAggAAAAAAABEAAAAAAACCAAAAAAAAggAAAAAAAIIAAAAAAACCAAAAAAAAIAAAAAAAAIIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgQAAAAAAAAAAAAAAAAAAAAAAAAAAggAAAAAAADcAAAAAAAAkAAAAAAAAIAAAAAAAAIIAAAAAAACCAAAAAAAAggAAAAAAACAAAAAAAACCAAAAAAAAggAAAAAAAIIAAAAAAACCAAAAAAAAggAAAAAAAIIAAAAAAACCAAAAAAAAAAAAAAAAAIIAAAAAAAA3AAAAAAAAJAAAAAAAACAAAAAAAACCAAAAAAAAggAAAAAAAIIAAAAAAACCAAAAAAAAggAAAAAAAHEAAAAAAABxAAAAAAAAcQAAAAAAAHEAAAAAAABxAAAAAAAAggAAAAAAAIIAAAAAAACCAAAAAAAAggAAAAAAACAAAAAAAACCAAAAAAAAggAAAAAAAHEAAAAAAACCAAAAAAAAcQAAAAAAAHEAAAAAAABxAAAAAAAAggAAAAAAAIIAAAAAAACCAAAAAAAAcQAAAAAAAHEAAAAAAABxAAAAAAAAcQAAAAAAAHEAAAAAAABxAAAAAAAAcQAAAAAAAHEAAAAAAABxAAAAAAAAggAAAAAAAHEAAAAAAABxAAAAAAAAcQAAAAAAAIIAAAAAAACCAAAAAAAAggAAAAAAAHEAAAAAAABxAAAAAAAAcQAAAAAAAHEAAAAAAABxAAAAAAAAcQAAAAAAAHEAAAAAAABxAAAAAAAAcQAAAAAAAIIAAAAAAACCAAAAAAAAggAAAAAAAHEAAAAAAABxAAAAAAAAcQAAAAAAAHEAAAAAAABxAAAAAAAAggAAAAAAAIIAAAAAAACCAAAAAAAAggAAAAAAAIIAAAAAAACCAAAAAAAAIAAAAAAAACAAAAAAAACCAAAAAAAAPQAAAAAAAIIAAAAAAACCAAAAAAAAggAAAAAAAIIAAAAAAACCAAAAAAAAggAAAAAAAIIAAAAAAAAAAAAAAAAAAAAAAAAAAIEAAAAAAACBAAAAAAAAggAAAAAAACAAAAAAAAAgAAAAAAAAggAAAAAAAA==
+          tiles: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgQAAAAAAAIEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCAAAAAAAAggAAAAAAAAAAAAAAAACBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAIIAAAAAAAAAAAAAAAAAgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIIAAAAAAAARAAAAAAAAggAAAAAAAAAAAAAAAAAAAAAAAAAAggAAAAAAACAAAAAAAACCAAAAAAAAgQAAAAAAAIEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCAAAAAAAAJAAAAAAAAIIAAAAAAAAAAAAAAAAAAAAAAAAAAIIAAAAAAAAgAAAAAAAAggAAAAAAAAAAAAAAAACBAAAAAAAAgQAAAAAAAIEAAAAAAACBAAAAAAAAgQAAAAAAAIEAAAAAAACCAAAAAAAAggAAAAAAABEAAAAAAACCAAAAAAAAggAAAAAAAIIAAAAAAACCAAAAAAAAIAAAAAAAAIIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgQAAAAAAAAAAAAAAAAAAAAAAAAAAggAAAAAAADcAAAAAAAAkAAAAAAAAIAAAAAAAAIIAAAAAAACCAAAAAAAAggAAAAAAACAAAAAAAACCAAAAAAAAggAAAAAAAIIAAAAAAACCAAAAAAAAggAAAAAAAIIAAAAAAACCAAAAAAAAAAAAAAAAAIIAAAAAAAA3AAAAAAAAJAAAAAAAACAAAAAAAACCAAAAAAAAggAAAAAAAIIAAAAAAACCAAAAAAAAggAAAAAAAHEAAAAAAABxAAAAAAAAcQAAAAAAAHEAAAAAAABxAAAAAAAAggAAAAAAAIIAAAAAAACCAAAAAAAAggAAAAAAACAAAAAAAACCAAAAAAAAggAAAAAAAHEAAAAAAACCAAAAAAAAcQAAAAAAAHEAAAAAAABxAAAAAAAAggAAAAAAAHEAAAAAAACCAAAAAAAAcQAAAAAAAHEAAAAAAABxAAAAAAAAcQAAAAAAAHEAAAAAAABxAAAAAAAAcQAAAAAAAHEAAAAAAABxAAAAAAAAggAAAAAAAHEAAAAAAABxAAAAAAAAcQAAAAAAAIIAAAAAAABxAAAAAAAAggAAAAAAAHEAAAAAAABxAAAAAAAAcQAAAAAAAHEAAAAAAABxAAAAAAAAcQAAAAAAAHEAAAAAAABxAAAAAAAAcQAAAAAAAIIAAAAAAACCAAAAAAAAggAAAAAAAHEAAAAAAABxAAAAAAAAcQAAAAAAAHEAAAAAAABxAAAAAAAAggAAAAAAAIIAAAAAAACCAAAAAAAAggAAAAAAAIIAAAAAAACCAAAAAAAAIAAAAAAAACAAAAAAAACCAAAAAAAAPQAAAAAAAIIAAAAAAACCAAAAAAAAggAAAAAAAIIAAAAAAACCAAAAAAAAggAAAAAAAIIAAAAAAAAAAAAAAAAAAAAAAAAAAIEAAAAAAACBAAAAAAAAggAAAAAAACAAAAAAAAAgAAAAAAAAggAAAAAAAA==
           version: 7
         -3,0:
           ind: -3,0
@@ -996,6 +996,7 @@ entities:
             14022: -42,-3
             14023: -40,-3
             14041: -46,-3
+            14042: -44,-3
         - node:
             zIndex: 1
             color: '#FFFFFFFF'
@@ -1113,6 +1114,7 @@ entities:
             14026: -46,-4
             14027: -48,-4
             14028: -50,-4
+            14043: -44,-4
         - node:
             zIndex: 1
             color: '#FFFFFFFF'
@@ -10354,10 +10356,9 @@ entities:
       parent: 2
     - type: DeviceList
       devices:
+      - 9771
       - 6233
       - 6200
-      - 6313
-      - 9771
       - 7565
   - uid: 66
     components:
@@ -10751,19 +10752,18 @@ entities:
       parent: 2
     - type: DeviceList
       devices:
+      - 6313
+      - 7575
+      - 13629
+      - 413
+      - 6236
+      - 6432
       - 6433
+      - 6434
       - 7565
       - 130
       - 6332
       - 6333
-      - 6233
-      - 6200
-      - 6432
-      - 6434
-      - 13629
-      - 13631
-      - 13630
-      - 6313
 - proto: AirAlarmVox
   entities:
   - uid: 96
@@ -10847,7 +10847,7 @@ entities:
       pos: -25.5,6.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -189944.98
+      secondsUntilStateChange: -190510.44
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -11139,7 +11139,7 @@ entities:
       pos: -2.5,10.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -44902.12
+      secondsUntilStateChange: -45467.574
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -11504,7 +11504,7 @@ entities:
       pos: 12.5,-33.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -281735.88
+      secondsUntilStateChange: -282301.34
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -11736,7 +11736,7 @@ entities:
       pos: 12.5,-21.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -261244.22
+      secondsUntilStateChange: -261809.67
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -11871,7 +11871,7 @@ entities:
       pos: -14.5,-17.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -272170.47
+      secondsUntilStateChange: -272735.94
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -12013,7 +12013,7 @@ entities:
       pos: 33.5,31.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -61045.773
+      secondsUntilStateChange: -61611.227
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -12038,7 +12038,7 @@ entities:
       pos: 22.5,17.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -16868.938
+      secondsUntilStateChange: -17434.39
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -12987,8 +12987,11 @@ entities:
       pos: -48.5,-2.5
       parent: 2
     - type: DeviceNetwork
+      configurators:
+      - invalid
       deviceLists:
       - 67
+      - 10781
   - uid: 414
     components:
     - type: Transform
@@ -13256,9 +13259,10 @@ entities:
       pos: -34.5,-3.5
       parent: 2
     - type: DeviceNetwork
+      configurators:
+      - invalid
       deviceLists:
       - 10781
-      - 65
   - uid: 9771
     components:
     - type: Transform
@@ -13275,6 +13279,8 @@ entities:
       pos: -43.5,-1.5
       parent: 2
     - type: DeviceNetwork
+      configurators:
+      - invalid
       deviceLists:
       - 10781
 - proto: AirSensorVox
@@ -36539,20 +36545,10 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 62.5,27.5
       parent: 2
-  - uid: 10784
-    components:
-    - type: Transform
-      pos: -43.5,-2.5
-      parent: 2
   - uid: 10785
     components:
     - type: Transform
       pos: -44.5,-3.5
-      parent: 2
-  - uid: 10786
-    components:
-    - type: Transform
-      pos: -43.5,-3.5
       parent: 2
 - proto: Chair
   entities:
@@ -44821,15 +44817,13 @@ entities:
       parent: 2
     - type: DeviceList
       devices:
+      - 6432
       - 6433
+      - 6434
       - 7565
       - 130
       - 6332
       - 6333
-      - 6233
-      - 6200
-      - 6432
-      - 6434
   - uid: 6176
     components:
     - type: Transform
@@ -46172,6 +46166,8 @@ entities:
       pos: -33.5,-4.5
       parent: 2
     - type: DeviceNetwork
+      configurators:
+      - invalid
       deviceLists:
       - 10781
       - 6175
@@ -46277,6 +46273,8 @@ entities:
       pos: -34.5,-1.5
       parent: 2
     - type: DeviceNetwork
+      configurators:
+      - invalid
       deviceLists:
       - 73
       - 6176
@@ -46290,6 +46288,8 @@ entities:
       pos: -33.5,-1.5
       parent: 2
     - type: DeviceNetwork
+      configurators:
+      - invalid
       deviceLists:
       - 73
       - 6176
@@ -47283,6 +47283,8 @@ entities:
       pos: -50.5,-2.5
       parent: 2
     - type: DeviceNetwork
+      configurators:
+      - invalid
       deviceLists:
       - 69
       - 67
@@ -47296,6 +47298,8 @@ entities:
       pos: -50.5,-3.5
       parent: 2
     - type: DeviceNetwork
+      configurators:
+      - invalid
       deviceLists:
       - 69
       - 67
@@ -47309,6 +47313,8 @@ entities:
       pos: -48.5,-4.5
       parent: 2
     - type: DeviceNetwork
+      configurators:
+      - invalid
       deviceLists:
       - 67
       - 6183
@@ -47634,10 +47640,12 @@ entities:
       pos: -36.5,-4.5
       parent: 2
     - type: DeviceNetwork
+      configurators:
+      - invalid
       deviceLists:
-      - 6175
-      - 10781
       - 65
+      - 10781
+      - 6175
 - proto: Fireplace
   entities:
   - uid: 6468
@@ -48232,7 +48240,7 @@ entities:
     - type: GasFilter
       filteredGas: Nitrogen
     - type: AtmosPipeColor
-      color: '#FF1212FF'
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -50131,6 +50139,32 @@ entities:
       parent: 2
     - type: AtmosPipeColor
       color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+- proto: GasPipeManifold
+  entities:
+  - uid: 7503
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -42.5,-3.5
+      parent: 2
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 7574
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -44.5,-2.5
+      parent: 2
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -59221,18 +59255,6 @@ entities:
       containers:
         pipe-crawling: !type:Container
           ents: []
-  - uid: 7503
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -42.5,-3.5
-      parent: 2
-    - type: AtmosPipeColor
-      color: '#FF1212FF'
-    - type: ContainerContainer
-      containers:
-        pipe-crawling: !type:Container
-          ents: []
   - uid: 7504
     components:
     - type: Transform
@@ -60010,22 +60032,10 @@ entities:
       containers:
         pipe-crawling: !type:Container
           ents: []
-  - uid: 7575
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: -44.5,-2.5
-      parent: 2
-    - type: AtmosPipeColor
-      color: '#0335FCFF'
-    - type: ContainerContainer
-      containers:
-        pipe-crawling: !type:Container
-          ents: []
   - uid: 7576
     components:
     - type: Transform
-      rot: 1.5707963267948966 rad
+      rot: -1.5707963267948966 rad
       pos: -42.5,-2.5
       parent: 2
     - type: AtmosPipeColor
@@ -61885,7 +61895,7 @@ entities:
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
-      pos: -43.5,-3.5
+      pos: -38.5,-3.5
       parent: 2
     - type: AtmosPipeColor
       color: '#FF1212FF'
@@ -64830,10 +64840,34 @@ entities:
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
+      pos: -48.5,-2.5
+      parent: 2
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 10784
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
       pos: -43.5,-2.5
       parent: 2
     - type: AtmosPipeColor
       color: '#0335FCFF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 10786
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -43.5,-3.5
+      parent: 2
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -64888,29 +64922,6 @@ entities:
           ents: []
 - proto: GasPipeTJunction
   entities:
-  - uid: 6236
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -38.5,-3.5
-      parent: 2
-    - type: AtmosPipeColor
-      color: '#FF1212FF'
-    - type: ContainerContainer
-      containers:
-        pipe-crawling: !type:Container
-          ents: []
-  - uid: 7574
-    components:
-    - type: Transform
-      pos: -48.5,-2.5
-      parent: 2
-    - type: AtmosPipeColor
-      color: '#0335FCFF'
-    - type: ContainerContainer
-      containers:
-        pipe-crawling: !type:Container
-          ents: []
   - uid: 7986
     components:
     - type: Transform
@@ -67566,8 +67577,25 @@ entities:
       - invalid
       deviceLists:
       - 65
-      - 6175
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 6236
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: -43.5,-2.5
+      parent: 2
+    - type: DeviceNetwork
+      configurators:
+      - invalid
+      deviceLists:
       - 10781
+    - type: AtmosPipeLayers
+      pipeLayer: Secondary
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -69021,21 +69049,6 @@ entities:
       containers:
         pipe-crawling: !type:Container
           ents: []
-  - uid: 13630
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -48.5,-3.5
-      parent: 2
-    - type: DeviceNetwork
-      deviceLists:
-      - 10781
-    - type: AtmosPipeColor
-      color: '#0335FCFF'
-    - type: ContainerContainer
-      containers:
-        pipe-crawling: !type:Container
-          ents: []
 - proto: GasVentPumpVox
   entities:
   - uid: 8318
@@ -69065,8 +69078,25 @@ entities:
       - invalid
       deviceLists:
       - 65
-      - 6175
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 7575
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: -43.5,-3.5
+      parent: 2
+    - type: DeviceNetwork
+      configurators:
+      - invalid
+      deviceLists:
       - 10781
+    - type: AtmosPipeLayers
+      pipeLayer: Secondary
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -70443,20 +70473,6 @@ entities:
       - invalid
       deviceLists:
       - 94
-    - type: AtmosPipeColor
-      color: '#FF1212FF'
-    - type: ContainerContainer
-      containers:
-        pipe-crawling: !type:Container
-          ents: []
-  - uid: 13631
-    components:
-    - type: Transform
-      pos: -38.5,-2.5
-      parent: 2
-    - type: DeviceNetwork
-      deviceLists:
-      - 10781
     - type: AtmosPipeColor
       color: '#FF1212FF'
     - type: ContainerContainer
@@ -75092,7 +75108,7 @@ entities:
       pos: -56.5,-0.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -7877.4404
+      secondsUntilStateChange: -8442.895
       state: Opening
   - uid: 9233
     components:
@@ -75101,7 +75117,7 @@ entities:
       pos: 6.5,-4.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -138525.95
+      secondsUntilStateChange: -139091.4
       state: Opening
 - proto: HospitalCurtainsOpen
   entities:
