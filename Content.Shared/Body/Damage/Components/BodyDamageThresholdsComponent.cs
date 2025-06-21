@@ -11,8 +11,8 @@ public sealed partial class BodyDamageThresholdsComponent : Component
     [DataField, AutoNetworkedField]
     public BodyDamageState CurrentState = BodyDamageState.Alive;
 
-    [DataField(required: true), AutoNetworkedField]
-    public OrderedDictionary<BodyDamageState, FixedPoint2> Thresholds = [];
+    [DataField(required: true)]
+    public Dictionary<BodyDamageState, FixedPoint2> Thresholds = [];
 
     [DataField, AutoNetworkedField]
     public bool PreventFurtherDamage = true;

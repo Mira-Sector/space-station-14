@@ -20,37 +20,37 @@ public sealed partial class BodyDamageThresholdsSystem : EntitySystem
 
     private void OnDamageChanged(Entity<BodyDamageThresholdsComponent> ent, ref BodyDamageChangedEvent args)
     {
-        var index = ent.Comp.Thresholds.IndexOf(ent.Comp.CurrentState);
+        var index = (int)ent.Comp.CurrentState;
         var positive = args.NewDamage - args.OldDamage > 0;
         var potentialIndex = positive ? index + 1 : index - 1;
 
-        if (potentialIndex > ent.Comp.Thresholds.Count || potentialIndex < 0)
+        if (!Enum.IsDefined(typeof(BodyDamageState), potentialIndex))
             return;
 
-        KeyValuePair<BodyDamageState, FixedPoint2> potentialState;
-        potentialState = ent.Comp.Thresholds.GetAt(potentialIndex);
+        var potentialState = (BodyDamageState)potentialIndex;
+        var potentialThreshold = ent.Comp.Thresholds[potentialState];
 
         if (positive)
         {
-            if (potentialState.Value > args.NewDamage)
+            if (potentialThreshold > args.NewDamage)
                 return;
         }
         else
         {
-            if (potentialState.Value < args.NewDamage)
+            if (potentialThreshold < args.NewDamage)
                 return;
         }
 
-        if (ent.Comp.CurrentState == potentialState.Key)
+        if (ent.Comp.CurrentState == potentialState)
             return;
 
-        var ev = new BodyDamageThresholdChangedEvent(ent.Comp.CurrentState, potentialState.Key);
+        var ev = new BodyDamageThresholdChangedEvent(ent.Comp.CurrentState, potentialState);
         RaiseLocalEvent(ent.Owner, ref ev);
 
-        ent.Comp.CurrentState = potentialState.Key;
+        ent.Comp.CurrentState = potentialState;
         Dirty(ent);
 
-        _appearance.SetData(ent.Owner, BodyDamageThresholdVisuals.State, potentialState.Key);
+        _appearance.SetData(ent.Owner, BodyDamageThresholdVisuals.State, potentialState);
     }
 
     private void OnCanDamage(Entity<BodyDamageThresholdsComponent> ent, ref BodyDamageCanDamageEvent args)
@@ -64,6 +64,7 @@ public sealed partial class BodyDamageThresholdsSystem : EntitySystem
         if (ent.Comp.Thresholds.Last().Key == ent.Comp.CurrentState)
             args.Cancel();
     }
+
 
     [PublicAPI]
     public FixedPoint2 RelativeToState(Entity<BodyDamageThresholdsComponent?, BodyDamageableComponent?> ent, BodyDamageState state)
