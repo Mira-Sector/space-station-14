@@ -8,12 +8,12 @@ namespace Content.Shared.Body.Damage.Components;
 public sealed partial class BodyDamageOnRotComponent : Component
 {
     [DataField]
-    public int MinRotStage;
+    public int MinRotStage = int.MinValue;
 
     [DataField]
-    public int MaxRotStage;
+    public int MaxRotStage = int.MaxValue;
 
-    [DataField]
+    [DataField(required: true)]
     public FixedPoint2 FullyRottenDamage;
 
     [ViewVariables, AutoNetworkedField, Access(typeof(BodyDamageOnRotSystem))]

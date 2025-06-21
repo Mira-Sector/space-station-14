@@ -191,40 +191,9 @@
 
 - type: entity
   id: OrganHumanHeart
-  parent: BaseHumanOrgan
+  parent: [ BaseHumanOrgan, BaseOrganHeart ]
   name: heart
   description: "I feel bad for the heartless bastard who lost this."
-  components:
-  - type: Sprite
-    state: heart-on
-    map: [ "enum.HeartVisualLayers.Beating" ]
-  - type: Appearance
-  - type: GenericVisualizer
-    visuals:
-      enum.HeartVisuals.Beating:
-        enum.HeartVisualLayers.Beating:
-          True: { state: heart-on }
-          False: { state: heart-off }
-  # The heart 'metabolizes' medicines and poisons that aren't filtered out by other organs.
-  # This is done because these chemicals need to have some effect even if they aren't being filtered out of your body.
-  # You're technically 'immune to poison' without a heart, but.. uhh, you'll have bigger problems on your hands.
-  - type: Metabolizer
-    maxReagents: 2
-    metabolizerTypes: [Human]
-    groups:
-    - id: Medicine
-    - id: Poison
-    - id: Narcotic
-  - type: Temperature
-  - type: Heart
-  - type: Perishable
-    rotAfter: 360
-    molsPerSecondPerUnitMass: 0
-  - type: Item
-    size: Small
-    heldPrefix: heart
-  - type: Organ
-    organType: Heart
 
 - type: entity
   id: OrganHumanStomach

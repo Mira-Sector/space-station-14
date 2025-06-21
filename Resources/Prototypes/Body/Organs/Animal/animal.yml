@@ -152,21 +152,10 @@
 
 - type: entity
   id: OrganAnimalHeart
-  parent: BaseAnimalOrgan
+  parent: [ BaseAnimalOrgan, BaseOrganHeart ]
   name: heart
   categories: [ HideSpawnMenu ]
   components:
-  - type: Sprite
-    state: heart-on
-  - type: Appearance
-  - type: GenericVisualizer
-    visuals:
-      enum.HeartVisuals.Beating:
-        enum.HeartVisualLayers.Beating:
-          True: { state: heart-on }
-          False: { state: heart-off }
-  - type: Organ
-    organType: Heart
   - type: Metabolizer
     maxReagents: 2
     metabolizerTypes: [ Animal ]
@@ -174,14 +163,6 @@
     - id: Medicine
     - id: Poison
     - id: Narcotic
-  - type: Temperature
-  - type: Heart
-  - type: Perishable
-    rotAfter: 360
-    molsPerSecondPerUnitMass: 0
-  - type: Item
-    size: Small
-    heldPrefix: heart
 
 - type: entity
   id: OrganAnimalKidneys

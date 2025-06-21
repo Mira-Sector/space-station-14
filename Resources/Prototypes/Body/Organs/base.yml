@@ -1,0 +1,55 @@
+- type: entity
+  id: BaseOrganHeart
+  components:
+  - type: Sprite
+    layers:
+    - state: heart-on
+      map: [ "enum.ToggleableVisuals.Layer" ]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ToggleableVisuals.Enabled:
+        enum.ToggleableVisuals.Layer:
+          True: { state: heart-on }
+          False: { state: heart-off }
+  - type: BodyDamageable
+  - type: BodyDamageThresholds
+    thresholds:
+      Alive: 0
+      Wounded: 10
+      Dead: 100
+  - type: BodyDamageOnRot
+    minRotStage: 1
+    fullyRottenDamage: 100
+  # The heart 'metabolizes' medicines and poisons that aren't filtered out by other organs.
+  # This is done because these chemicals need to have some effect even if they aren't being filtered out of your body.
+  # You're technically 'immune to poison' without a heart, but.. uhh, you'll have bigger problems on your hands.
+  - type: Metabolizer
+    maxReagents: 2
+    metabolizerTypes:
+      - Human
+    groups:
+    - id: Medicine
+    - id: Poison
+    - id: Narcotic
+  - type: Organ
+    organType: Heart
+  - type: ItemToggle
+    activated: true # beating by default
+    onActivate: false
+  - type: ItemToggleExamineText
+    enabledText: heart-examine-beating
+    disabledText: heart-examine-not-beating
+  - type: OrganRequiredForDefibrillation
+  - type: DisableRespireOnItemToggle
+  - type: RespirationDelayOnBodyDamage
+    requiredStates:
+    - Wounded
+    - Dead
+  - type: Temperature
+  - type: Perishable
+    rotAfter: 360
+    molsPerSecondPerUnitMass: 0
+  - type: Item
+    size: Small
+    heldPrefix: heart

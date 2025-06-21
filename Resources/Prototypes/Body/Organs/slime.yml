@@ -1,6 +1,6 @@
 - type: entity
   id: SentientSlimeCore
-  parent: [BaseItem, OrganHumanBrain]
+  parent: [BaseItem, OrganHumanBrain, BaseOrganHeart]
   name: sentient slime core
   description: "The source of incredible, unending gooeyness."
   components:
@@ -20,7 +20,6 @@
         - id: Narcotic
         - id: Alcohol
           rateModifier: 0.25
-    - type: Heart
     - type: SolutionContainerManager
       solutions:
         stomach:
@@ -44,11 +43,7 @@
       damage:
         types:
           Poison: 4
-    - type: Temperature
     - type: MetabolizerRot
-    - type: Perishable
-      rotAfter: 1800
-      molsPerSecondPerUnitMass: 0
     - type: VomitOnRot
 
 - type: entity
