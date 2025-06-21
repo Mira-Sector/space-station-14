@@ -88,6 +88,13 @@ public partial record struct GenericUnlock()
     public object? PurchaseEvent = null;
 
     /// <summary>
+    /// What gamerule event is raised when this is unlocked?
+    /// Used for doing non-standard logic but with an easier to use shell around it.
+    /// </summary>
+    [DataField]
+    public string? PurchaseGameRule = null;
+
+    /// <summary>
     /// A player facing tooltip for what the unlock does.
     /// Supports locale strings.
     /// </summary>
