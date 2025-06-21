@@ -20,6 +20,7 @@ using JetBrains.Annotations;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using System.Linq;
+using Content.Shared.Body.Organ;
 
 namespace Content.Server.Body.Systems;
 
@@ -38,7 +39,6 @@ public sealed class RespiratorSystem : EntitySystem
     [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
     [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly EntityEffectSystem _entityEffect = default!;
-
     private static readonly ProtoId<MetabolismGroupPrototype> GasId = new("Gas");
 
     public override void Initialize()
@@ -83,9 +83,7 @@ public sealed class RespiratorSystem : EntitySystem
             var ev = new GetRespiratingUpdateDelay(respirator.UpdateInterval);
 
             foreach (var (organ, _) in _bodySystem.GetBodyOrgans(uid, body))
-            {
                 RaiseLocalEvent(organ, ev);
-            }
 
             respirator.NextUpdate += ev.Delay;
 
@@ -142,7 +140,9 @@ public sealed class RespiratorSystem : EntitySystem
         if (!Resolve(uid, ref body, logMissing: false))
             return;
 
-        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((uid, body)).Where(x => !x.Comp1.Broken).ToList();
+        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((uid, body));
+        if (!CanRespire((uid, body), organs))
+            return;
 
         // Inhale gas
         var ev = new InhaleLocationEvent();
@@ -176,7 +176,9 @@ public sealed class RespiratorSystem : EntitySystem
         if (!Resolve(uid, ref body, logMissing: false))
             return;
 
-        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((uid, body)).Where(x => !x.Comp1.Broken).ToList();
+        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((uid, body));
+        if (!CanRespire((uid, body), organs))
+            return;
 
         // exhale gas
 
@@ -251,8 +253,11 @@ public sealed class RespiratorSystem : EntitySystem
         if (!Resolve(ent, ref ent.Comp))
             return false;
 
-        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((ent, null)).Where(x => !x.Comp1.Broken).ToList();
+        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((ent, null));
         if (organs.Count == 0)
+            return false;
+
+        if (!CanRespire(ent.Owner, organs))
             return false;
 
         gas = new GasMixture(gas);
@@ -353,11 +358,9 @@ public sealed class RespiratorSystem : EntitySystem
             _adminLogger.Add(LogType.Asphyxiation, $"{ToPrettyString(ent):entity} stopped suffocating");
 
         // TODO: This is not going work with multiple different lungs, if that ever becomes a possibility
-        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((ent, null)).Where(x => !x.Comp1.Broken).ToList();
+        var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((ent, null));
         foreach (var entity in organs)
-        {
             _alertsSystem.ClearAlert(ent, entity.Comp1.Alert);
-        }
 
         _damageableSys.TryChangeDamage(ent, ent.Comp.DamageRecovery);
     }
@@ -395,7 +398,25 @@ public sealed class RespiratorSystem : EntitySystem
         ent.Comp.MaxSaturation /= args.Multiplier;
         ent.Comp.MinSaturation /= args.Multiplier;
     }
+
+    private bool CanRespire(Entity<BodyComponent?> ent, List<Entity<LungComponent, OrganComponent>>? lungs = null)
+    {
+        lungs ??= _bodySystem.GetBodyOrganEntityComps<LungComponent>(ent);
+        foreach (var lung in lungs)
+        {
+            var ev = new CanRespireEvent();
+            RaiseLocalEvent(lung, ref ev);
+
+            if (ev.Enabled)
+                return true;
+        }
+
+        return false;
+    }
 }
+
+[ByRefEvent]
+public record struct CanRespireEvent(bool Enabled = true);
 
 [ByRefEvent]
 public record struct InhaleLocationEvent(GasMixture? Gas);
