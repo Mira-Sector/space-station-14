@@ -71,7 +71,8 @@ public sealed class RespiratorSystem : EntitySystem
         if (args.Cancelled)
             return;
 
-        args.Cancelled = !(_itemToggle.IsActivated(ent.Owner) ^ ent.Comp.DisableOnEnable);
+        if (_itemToggle.IsActivated(ent.Owner) ^ ent.Comp.DisableOnEnable)
+            args.Cancel();
     }
 
     public override void Update(float frameTime)
@@ -88,12 +89,12 @@ public sealed class RespiratorSystem : EntitySystem
             foreach (var (organ, _) in _bodySystem.GetBodyOrgans(uid, body))
                 RaiseLocalEvent(organ, ev);
 
-            respirator.NextUpdate = ev.TotalDelay;
+            respirator.NextUpdate += ev.TotalDelay;
 
             if (_mobState.IsDead(uid))
                 continue;
 
-            UpdateSaturation(uid, -(float) respirator.UpdateInterval.TotalSeconds, respirator);
+            UpdateSaturation(uid, -(float)ev.TotalDelay.TotalSeconds, respirator);
 
             if (!_mobState.IsIncapacitated(uid)) // cannot breathe in crit.
             {
@@ -408,7 +409,7 @@ public sealed class RespiratorSystem : EntitySystem
         foreach (var lung in lungs)
         {
             var ev = new CanRespireEvent();
-            RaiseLocalEvent(lung, ref ev);
+            RaiseLocalEvent(lung, ev);
 
             if (ev.Cancelled)
                 return false;
@@ -421,8 +422,10 @@ public sealed class RespiratorSystem : EntitySystem
     }
 }
 
-[ByRefEvent]
-public record struct CanRespireEvent(bool Enabled = true, bool Cancelled = false);
+public sealed partial class CanRespireEvent : CancellableEntityEventArgs
+{
+    public bool Enabled = true;
+}
 
 [ByRefEvent]
 public record struct InhaleLocationEvent(GasMixture? Gas);
