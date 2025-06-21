@@ -1,12 +1,16 @@
+using Content.Server.GameTicking;
 using Content.Shared.Database;
 using Content.Shared.Research.Components;
 using Content.Shared.Research.Prototypes;
+using Robust.Shared.Prototypes;
 using JetBrains.Annotations;
 
 namespace Content.Server.Research.Systems;
 
 public sealed partial class ResearchSystem
 {
+    [Dependency] private readonly IPrototypeManager _prototype = default!;
+    [Dependency] public readonly GameTicker GameTicker = default!;
     /// <summary>
     /// Syncs the primary entity's database to that of the secondary entity's database.
     /// </summary>
@@ -116,6 +120,24 @@ public sealed partial class ResearchSystem
         {
             if (generic.PurchaseEvent != null)
                 RaiseLocalEvent(generic.PurchaseEvent);
+            Log.Debug($"{generic.PurchaseGameRule}");
+            if (generic.PurchaseGameRule != null) //has the gamerule been defined?
+            {
+                Log.Debug("Not Null");
+                if (!_prototype.TryIndex(generic.PurchaseGameRule, out _)) //If it has, can a prototype for it be found
+                {
+                    Log.Warning($"Research gamerule {generic.PurchaseGameRule} prototype not found");
+                    continue;
+                }
+                GameTicker.AddGameRule(generic.PurchaseGameRule); //add the gamerule
+                Log.Debug($"Add Gamerule");
+                if (GameTicker.RunLevel == GameRunLevel.InRound) //check we're in a round, should always be in the case
+                {
+                    Log.Debug($"Run Gamerule");
+                    GameTicker.StartGameRule(generic.PurchaseGameRule); //then run it immediately.
+                }
+            }
+
         }
 
         component.UnlockedTechnologies.Add(technology.ID);

@@ -59,6 +59,12 @@ public sealed partial class TechnologyPrototype : IPrototype
     public List<ProtoId<TechnologyPrototype>> TechnologyPrerequisites = new();
 
     /// <summary>
+    /// A list of <see cref="TechnologyPrototype"/>s that prevent a technology being unlocked
+    /// </summary>
+    [DataField]
+    public List<ProtoId<TechnologyPrototype>> TechnologyBlacklist = new();
+
+    /// <summary>
     /// A list of <see cref="LatheRecipePrototype"/>s that are unlocked by this technology
     /// </summary>
     [DataField]
@@ -80,6 +86,13 @@ public partial record struct GenericUnlock()
     /// </summary>
     [DataField]
     public object? PurchaseEvent = null;
+
+    /// <summary>
+    /// What gamerule event is raised when this is unlocked?
+    /// Used for doing non-standard logic but with an easier to use shell around it.
+    /// </summary>
+    [DataField]
+    public string? PurchaseGameRule = null;
 
     /// <summary>
     /// A player facing tooltip for what the unlock does.
