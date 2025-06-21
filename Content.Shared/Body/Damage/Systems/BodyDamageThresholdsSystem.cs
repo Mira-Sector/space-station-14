@@ -1,0 +1,83 @@
+using System.Linq;
+using Content.Shared.Body.Damage.Components;
+using Content.Shared.Body.Damage.Events;
+using Content.Shared.FixedPoint;
+using JetBrains.Annotations;
+
+namespace Content.Shared.Body.Damage.Systems;
+
+public sealed partial class BodyDamageThresholdsSystem : EntitySystem
+{
+    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        SubscribeLocalEvent<BodyDamageThresholdsComponent, BodyDamageChangedEvent>(OnDamageChanged);
+        SubscribeLocalEvent<BodyDamageThresholdsComponent, BodyDamageCanDamageEvent>(OnCanDamage);
+    }
+
+    private void OnDamageChanged(Entity<BodyDamageThresholdsComponent> ent, ref BodyDamageChangedEvent args)
+    {
+        var index = (int)ent.Comp.CurrentState;
+        var positive = args.NewDamage - args.OldDamage > 0;
+        var potentialIndex = positive ? index + 1 : index - 1;
+
+        if (!Enum.IsDefined(typeof(BodyDamageState), potentialIndex))
+            return;
+
+        var potentialState = (BodyDamageState)potentialIndex;
+        var potentialThreshold = ent.Comp.Thresholds[potentialState];
+
+        if (positive)
+        {
+            if (potentialThreshold > args.NewDamage)
+                return;
+        }
+        else
+        {
+            if (potentialThreshold < args.NewDamage)
+                return;
+        }
+
+        if (ent.Comp.CurrentState == potentialState)
+            return;
+
+        var ev = new BodyDamageThresholdChangedEvent(ent.Comp.CurrentState, potentialState);
+        RaiseLocalEvent(ent.Owner, ref ev);
+
+        ent.Comp.CurrentState = potentialState;
+        Dirty(ent);
+
+        _appearance.SetData(ent.Owner, BodyDamageThresholdVisuals.State, potentialState);
+    }
+
+    private void OnCanDamage(Entity<BodyDamageThresholdsComponent> ent, ref BodyDamageCanDamageEvent args)
+    {
+        if (args.Cancelled)
+            return;
+
+        if (!ent.Comp.PreventFurtherDamage)
+            return;
+
+        if (ent.Comp.Thresholds.Last().Key == ent.Comp.CurrentState)
+            args.Cancel();
+    }
+
+
+    [PublicAPI]
+    public FixedPoint2 RelativeToState(Entity<BodyDamageThresholdsComponent?, BodyDamageableComponent?> ent, BodyDamageState state)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp1, ref ent.Comp2))
+            return FixedPoint2.Zero;
+
+        if (ent.Comp1.CurrentState == state)
+            return FixedPoint2.Zero;
+
+        if (!ent.Comp1.Thresholds.TryGetValue(state, out var threshold))
+            return FixedPoint2.Zero;
+
+        return ent.Comp2.Damage - threshold;
+    }
+}
