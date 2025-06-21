@@ -1,9 +1,8 @@
 using Content.Shared.Body.Damage.Components;
-using Robust.Shared.GameStates;
 
 namespace Content.Server.Body.Damage.Components;
 
-[RegisterComponent, NetworkedComponent]
+[RegisterComponent]
 public sealed partial class RespirationDelayOnBodyDamageComponent : BaseOnBodyDamageComponent
 {
     [DataField]
