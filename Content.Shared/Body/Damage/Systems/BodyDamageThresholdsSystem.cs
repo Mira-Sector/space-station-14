@@ -20,9 +20,9 @@ public sealed partial class BodyDamageThresholdsSystem : EntitySystem
 
     private void OnDamageChanged(Entity<BodyDamageThresholdsComponent> ent, ref BodyDamageChangedEvent args)
     {
-        var index = (int)ent.Comp.CurrentState;
+        var index = (byte)ent.Comp.CurrentState;
         var positive = args.NewDamage - args.OldDamage > 0;
-        var potentialIndex = positive ? index + 1 : index - 1;
+        var potentialIndex = positive ? ++index : --index;
 
         if (!Enum.IsDefined(typeof(BodyDamageState), potentialIndex))
             return;

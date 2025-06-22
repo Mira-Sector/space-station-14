@@ -61,6 +61,6 @@ public sealed partial class BodyDamageableSystem : EntitySystem
         var ev = new BodyDamageCanDamageEvent(ent.Comp.Damage, damage);
         RaiseLocalEvent(ent.Owner, ev);
 
-        return ev.Cancelled;
+        return !ev.Cancelled;
     }
 }
