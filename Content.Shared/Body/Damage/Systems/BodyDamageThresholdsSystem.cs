@@ -51,6 +51,16 @@ public sealed partial class BodyDamageThresholdsSystem : EntitySystem
         Dirty(ent);
 
         _appearance.SetData(ent.Owner, BodyDamageThresholdVisuals.State, potentialState);
+
+        if (!ent.Comp.PreventFurtherDamage)
+            return;
+
+        var (lastState, lastThreshold) = ent.Comp.Thresholds.Last();
+        if (lastState != potentialState)
+            return;
+
+        if (args.NewDamage > lastThreshold)
+            args.NewDamage = lastThreshold;
     }
 
     private void OnCanDamage(Entity<BodyDamageThresholdsComponent> ent, ref BodyDamageCanDamageEvent args)

@@ -30,11 +30,11 @@ public sealed partial class BodyDamageableSystem : EntitySystem
         if (!CanDamage(ent!, targetDamage, force))
             return;
 
-        var oldDamage = ent.Comp.Damage;
-        ent.Comp.Damage = targetDamage;
-        Dirty(ent);
-        var ev = new BodyDamageChangedEvent(oldDamage, ent.Comp.Damage);
+        var ev = new BodyDamageChangedEvent(ent.Comp.Damage, targetDamage);
         RaiseLocalEvent(ent.Owner, ref ev);
+
+        ent.Comp.Damage = ev.NewDamage;
+        Dirty(ent);
     }
 
     [PublicAPI]
@@ -46,15 +46,18 @@ public sealed partial class BodyDamageableSystem : EntitySystem
         if (!CanDamage(ent!, damage, force))
             return;
 
-        var oldDamage = ent.Comp.Damage;
-        ent.Comp.Damage = damage;
-        Dirty(ent);
-        var ev = new BodyDamageChangedEvent(oldDamage, ent.Comp.Damage);
+        var ev = new BodyDamageChangedEvent(ent.Comp.Damage, damage);
         RaiseLocalEvent(ent.Owner, ref ev);
+
+        ent.Comp.Damage = ev.NewDamage;
+        Dirty(ent);
     }
 
     private bool CanDamage(Entity<BodyDamageableComponent> ent, FixedPoint2 damage, bool force)
     {
+        if (damage < FixedPoint2.Zero)
+            return false;
+
         if (force)
             return true;
 
