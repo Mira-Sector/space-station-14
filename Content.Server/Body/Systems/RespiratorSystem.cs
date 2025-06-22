@@ -405,10 +405,14 @@ public sealed class RespiratorSystem : EntitySystem
 
     private bool CanRespire(Entity<BodyComponent?> ent, List<Entity<LungComponent, OrganComponent>>? lungs = null)
     {
+        var ev = new CanRespireEvent();
+        RaiseLocalEvent(ent.Owner, ev);
+        if (ev.Cancelled)
+            return false;
+
         lungs ??= _bodySystem.GetBodyOrganEntityComps<LungComponent>(ent);
         foreach (var lung in lungs)
         {
-            var ev = new CanRespireEvent();
             RaiseLocalEvent(lung, ev);
 
             if (ev.Cancelled)

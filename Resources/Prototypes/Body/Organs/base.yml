@@ -1,5 +1,6 @@
 - type: entity
   id: BaseOrganHeart
+  abstract: true
   components:
   - type: Sprite
     layers:
