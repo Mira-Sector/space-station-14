@@ -212,8 +212,6 @@
   cost: 20000
   recipeUnlocks:
   - ResearchAndDevelopmentServerMachineCircuitboard
-  #technologyBlacklist:
-  #- FurtherKnowledgeCivilianServices
-  #- FurtherKnowledgeExperimental
-  #- FurtherKnowledgeIndustrial
-
+  genericUnlocks:
+  - unlockDescription: Additional Funding
+  - purchaseGameRule: RandomFunding

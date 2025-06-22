@@ -123,16 +123,5 @@
 
 - type: technology
   id: FurtherKnowledgeExperimental
-  name: research-technology-further-knowledge
-  icon:
-    sprite: Structures/Machines/rndpointsource.rsi
-    state: rndpointsource-icon
+  parent: FurtherKnowledgeArsenal
   discipline: Experimental
-  tier: 4
-  cost: 20000
-  recipeUnlocks:
-  - ResearchAndDevelopmentServerMachineCircuitboard
-  #technologyBlacklist:
-  #- FurtherKnowledgeCivilianServices
-  #- FurtherKnowledgeIndustrial
-  #- FurtherKnowledgeArsenal

@@ -11,8 +11,8 @@
       path: /Audio/Announcements/Default/attention.ogg
     announcementStart: Announce
   - type: RandomFundingRule
-    baseCash: 2500
-    maxMult: 4
+    baseCash: 3000
+    maxMult: 5
     splitFunds: 0.3
 
 - type: entity
@@ -52,3 +52,9 @@
   components:
   - type: RandomFundingRule
     message: industrial
+
+- type: localizedDataset
+  id: RandomFundingReason
+  values:
+    prefix: station-event-funding-reason-
+    count: 5
