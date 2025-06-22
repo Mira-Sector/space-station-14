@@ -40,6 +40,9 @@
   - type: ItemToggleExamineText
     enabledText: heart-examine-beating
     disabledText: heart-examine-not-beating
+  - type: ItemToggleOnBodyDamage
+    requiredStates:
+    - Dead
   - type: OrganRequiredForDefibrillation
   - type: DisableRespireOnItemToggle
   - type: RespirationDelayOnBodyDamage
