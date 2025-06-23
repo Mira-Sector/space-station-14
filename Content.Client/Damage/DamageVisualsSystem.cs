@@ -55,7 +55,7 @@ public sealed class DamageVisualsSystem : VisualizerSystem<DamageVisualsComponen
             InitializeVisualizer(entity, comp);
     }
 
-    private void BodyChanged(EntityUid entity, DamageVisualsComponent comp, BodyChangedEvent args)
+    private void BodyChanged(EntityUid entity, DamageVisualsComponent comp, ref BodyChangedEvent args)
     {
         InitializeVisualizer(entity, comp);
 

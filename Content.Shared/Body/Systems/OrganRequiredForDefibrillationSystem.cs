@@ -16,15 +16,15 @@ public sealed partial class OrganRequiredForDefibrillationSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<OrganRequiredForDefibrillationComponent, OrganAddedToBodyEvent>(OnOrganAdded);
+        SubscribeLocalEvent<OrganRequiredForDefibrillationComponent, OrganInitEvent>(OnOrganInit);
 
         SubscribeLocalEvent<OrganRequiredForDefibrillationContainerComponent, DefibrillateAttemptEvent>(OnDefibAttempt);
     }
 
-    private void OnOrganAdded(Entity<OrganRequiredForDefibrillationComponent> ent, ref OrganAddedToBodyEvent args)
+    private void OnOrganInit(Entity<OrganRequiredForDefibrillationComponent> ent, ref OrganInitEvent args)
     {
         EnsureComp<OrganRequiredForDefibrillationContainerComponent>(args.Body);
-        _body.RegisterTracker<OrganRequiredForDefibrillationComponent>(args.Body);
+        _body.RegisterTracker<OrganRequiredForDefibrillationComponent>(args.Body.Owner);
     }
 
     private void OnDefibAttempt(Entity<OrganRequiredForDefibrillationContainerComponent> ent, ref DefibrillateAttemptEvent args)

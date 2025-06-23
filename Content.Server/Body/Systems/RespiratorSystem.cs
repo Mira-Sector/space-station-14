@@ -56,7 +56,7 @@ public sealed class RespiratorSystem : EntitySystem
 
         SubscribeLocalEvent<DisableRespireOnItemToggleComponent, CanRespireEvent>(OnDisableOnItemToggleRespire);
 
-        SubscribeLocalEvent<OrganRequiredForRespirationComponent, OrganAddedToBodyEvent>(OnOrganRequiredAdded);
+        SubscribeLocalEvent<OrganRequiredForRespirationComponent, OrganInitEvent>(OnOrganRequiredAdded);
         SubscribeLocalEvent<OrganRequiredForRespirationContainerComponent, CanRespireEvent>(OnOrganRequiredRespire);
     }
 
@@ -79,11 +79,11 @@ public sealed class RespiratorSystem : EntitySystem
             args.Cancel();
     }
 
-    private void OnOrganRequiredAdded(Entity<OrganRequiredForRespirationComponent> ent, ref OrganAddedToBodyEvent args)
+    private void OnOrganRequiredAdded(Entity<OrganRequiredForRespirationComponent> ent, ref OrganInitEvent args)
     {
         var organType = Comp<OrganComponent>(ent.Owner).OrganType;
         EnsureComp<OrganRequiredForRespirationContainerComponent>(args.Body).OrganTypes.Add(organType);
-        _bodySystem.RegisterTracker<OrganRequiredForRespirationComponent>(args.Body);
+        _bodySystem.RegisterTracker<OrganRequiredForRespirationComponent>(args.Body.Owner);
     }
 
     private void OnOrganRequiredRespire(Entity<OrganRequiredForRespirationContainerComponent> ent, ref CanRespireEvent args)
