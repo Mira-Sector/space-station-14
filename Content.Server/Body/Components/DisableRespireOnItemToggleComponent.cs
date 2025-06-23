@@ -4,5 +4,5 @@ namespace Content.Server.Body.Components;
 public sealed partial class DisableRespireOnItemToggleComponent : Component
 {
     [DataField]
-    public bool DisableOnEnable;
+    public bool DisableOnToggled;
 }

@@ -45,6 +45,7 @@
     requiredStates:
     - Dead
   - type: OrganRequiredForDefibrillation
+  - type: OrganRequiredForRespirationComponent
   - type: DisableRespireOnItemToggle
   - type: RespirationDelayOnBodyDamage
     requiredStates:

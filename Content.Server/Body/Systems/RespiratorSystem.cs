@@ -19,8 +19,9 @@ using Content.Shared.Mobs.Systems;
 using JetBrains.Annotations;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
-using Content.Shared.Body.Organ;
 using Content.Shared.Item.ItemToggle;
+using Content.Shared.Body.Events;
+using Content.Shared.Body.Organ;
 
 namespace Content.Server.Body.Systems;
 
@@ -53,7 +54,10 @@ public sealed class RespiratorSystem : EntitySystem
         SubscribeLocalEvent<RespiratorComponent, EntityUnpausedEvent>(OnUnpaused);
         SubscribeLocalEvent<RespiratorComponent, ApplyMetabolicMultiplierEvent>(OnApplyMetabolicMultiplier);
 
-        SubscribeLocalEvent<DisableRespireOnItemToggleComponent, CanRespireEvent>(OnDisableOnItemToggle);
+        SubscribeLocalEvent<DisableRespireOnItemToggleComponent, CanRespireEvent>(OnDisableOnItemToggleRespire);
+
+        SubscribeLocalEvent<OrganRequiredForRespirationComponent, OrganAddedToBodyEvent>(OnOrganRequiredAdded);
+        SubscribeLocalEvent<OrganRequiredForRespirationContainerComponent, CanRespireEvent>(OnOrganRequiredRespire);
     }
 
     private void OnMapInit(Entity<RespiratorComponent> ent, ref MapInitEvent args)
@@ -66,12 +70,35 @@ public sealed class RespiratorSystem : EntitySystem
         ent.Comp.NextUpdate += args.PausedTime;
     }
 
-    private void OnDisableOnItemToggle(Entity<DisableRespireOnItemToggleComponent> ent, ref CanRespireEvent args)
+    private void OnDisableOnItemToggleRespire(Entity<DisableRespireOnItemToggleComponent> ent, ref CanRespireEvent args)
     {
         if (args.Cancelled)
             return;
 
-        if (_itemToggle.IsActivated(ent.Owner) ^ ent.Comp.DisableOnEnable)
+        if (_itemToggle.IsActivated(ent.Owner) ^ !ent.Comp.DisableOnToggled)
+            args.Cancel();
+    }
+
+    private void OnOrganRequiredAdded(Entity<OrganRequiredForRespirationComponent> ent, ref OrganAddedToBodyEvent args)
+    {
+        var organType = Comp<OrganComponent>(ent.Owner).OrganType;
+        EnsureComp<OrganRequiredForRespirationContainerComponent>(args.Body).OrganTypes.Add(organType);
+        _bodySystem.RegisterTracker<OrganRequiredForRespirationComponent>(args.Body);
+    }
+
+    private void OnOrganRequiredRespire(Entity<OrganRequiredForRespirationContainerComponent> ent, ref CanRespireEvent args)
+    {
+        if (args.Cancelled)
+            return;
+
+        HashSet<ProtoId<OrganPrototype>> foundOrgans = [];
+        foreach (var organ in _bodySystem.GetTrackers<OrganRequiredForRespirationComponent>(ent.Owner))
+        {
+            var organType = Comp<OrganComponent>(organ).OrganType;
+            foundOrgans.Add(organType);
+        }
+
+        if (ent.Comp.OrganTypes.Count > foundOrgans.Count)
             args.Cancel();
     }
 
@@ -131,7 +158,6 @@ public sealed class RespiratorSystem : EntitySystem
                 continue;
             }
 
-            // purpusfully not gasping
             // your lungs are full but the heart isnt doing anything
             TakeSuffocationDamage((uid, respirator));
             respirator.SuffocationCycles += 1;
@@ -145,7 +171,7 @@ public sealed class RespiratorSystem : EntitySystem
             return;
 
         var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((uid, body));
-        if (!CanRespire((uid, body), organs))
+        if (!CanRespire((uid, body)))
             return;
 
         // Inhale gas
@@ -181,7 +207,7 @@ public sealed class RespiratorSystem : EntitySystem
             return;
 
         var organs = _bodySystem.GetBodyOrganEntityComps<LungComponent>((uid, body));
-        if (!CanRespire((uid, body), organs))
+        if (!CanRespire((uid, body)))
             return;
 
         // exhale gas
@@ -261,7 +287,7 @@ public sealed class RespiratorSystem : EntitySystem
         if (organs.Count == 0)
             return false;
 
-        if (!CanRespire(ent.Owner, organs))
+        if (!CanRespire(ent.Owner))
             return false;
 
         gas = new GasMixture(gas);
@@ -403,17 +429,12 @@ public sealed class RespiratorSystem : EntitySystem
         ent.Comp.MinSaturation /= args.Multiplier;
     }
 
-    private bool CanRespire(Entity<BodyComponent?> ent, List<Entity<LungComponent, OrganComponent>>? lungs = null)
+    private bool CanRespire(Entity<BodyComponent?> ent)
     {
         var ev = new CanRespireEvent();
-        RaiseLocalEvent(ent.Owner, ev);
-        if (ev.Cancelled)
-            return false;
-
-        lungs ??= _bodySystem.GetBodyOrganEntityComps<LungComponent>(ent);
-        foreach (var lung in lungs)
+        foreach (var (organ, _) in _bodySystem.GetBodyOrgans(ent.Owner, ent.Comp))
         {
-            RaiseLocalEvent(lung, ev);
+            RaiseLocalEvent(organ, ev);
 
             if (ev.Cancelled)
                 return false;
