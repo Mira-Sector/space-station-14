@@ -13,7 +13,7 @@ public sealed partial class ItemToggleOnBodyDamageSystem : BaseOnBodyDamageSyste
     {
         base.Initialize();
 
-        SubscribeLocalEvent<ItemToggleOnBodyDamageComponent, BodyDamageChangedEvent>(OnDamageChanged);
+        SubscribeLocalEvent<ItemToggleOnBodyDamageComponent, BodyDamageChangedEvent>(OnDamageChanged, after: [typeof(BodyDamageThresholdsSystem)]);
 
         SubscribeLocalEvent<ItemToggleOnBodyDamageComponent, ItemToggleActivateAttemptEvent>(OnActivateAttempt);
         SubscribeLocalEvent<ItemToggleOnBodyDamageComponent, ItemToggleDeactivateAttemptEvent>(OnDeactivateAttempt);

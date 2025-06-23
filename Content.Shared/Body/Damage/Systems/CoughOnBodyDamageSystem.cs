@@ -11,7 +11,7 @@ public sealed partial class CoughOnBodyDamageSystem : BaseOnBodyDamageSystem<Cou
     {
         base.Initialize();
 
-        SubscribeLocalEvent<CoughOnBodyDamageComponent, BodyDamageChangedEvent>(OnDamageChanged);
+        SubscribeLocalEvent<CoughOnBodyDamageComponent, BodyDamageChangedEvent>(OnDamageChanged, after: [typeof(BodyDamageThresholdsSystem)]);
         SubscribeLocalEvent<CoughOnBodyDamageComponent, CoughGetChanceEvent>(OnGetCoughChance);
     }
 
