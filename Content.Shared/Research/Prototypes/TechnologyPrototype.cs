@@ -1,5 +1,6 @@
 ﻿using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
+using Content.Shared.Research.Systems;
 
 namespace Content.Shared.Research.Prototypes;
 
@@ -85,7 +86,7 @@ public partial record struct GenericUnlock()
     /// Used for doing non-standard logic.
     /// </summary>
     [DataField]
-    public object? PurchaseEvent = null;
+    public ResearchEvent? PurchaseEvent = null;
 
     /// <summary>
     /// What gamerule event is raised when this is unlocked?

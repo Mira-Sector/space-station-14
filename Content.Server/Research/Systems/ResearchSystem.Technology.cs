@@ -4,6 +4,9 @@ using Content.Shared.Research.Components;
 using Content.Shared.Research.Prototypes;
 using Robust.Shared.Prototypes;
 using JetBrains.Annotations;
+using Microsoft.CodeAnalysis.Scripting.Hosting;
+using Robust.Shared.GameObjects;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Content.Server.Research.Systems;
 
@@ -11,6 +14,7 @@ public sealed partial class ResearchSystem
 {
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] public readonly GameTicker GameTicker = default!;
+
     /// <summary>
     /// Syncs the primary entity's database to that of the secondary entity's database.
     /// </summary>
@@ -119,7 +123,10 @@ public sealed partial class ResearchSystem
         foreach (var generic in technology.GenericUnlocks)
         {
             if (generic.PurchaseEvent != null)
-                RaiseLocalEvent(generic.PurchaseEvent);
+            {
+                RaiseLocalEvent(uid, generic.PurchaseEvent);
+            }
+
             if (generic.PurchaseGameRule != null) //has the gamerule been defined?
             {
                 if (!_prototype.TryIndex(generic.PurchaseGameRule, out _)) //If it has, can a prototype for it be found

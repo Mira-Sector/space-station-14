@@ -5,15 +5,14 @@
   - type: StationEvent
     weight: 2
     duration: 1
-    maxOccurrences: 1
-    startAnnouncement: station-event-vent-creatures-start-announcement
-    startAudio:
+    maxOccurrences: 1 #Nanotransen are stingy
+    startAudio: #no starting announcement, done in rule system as it's dynamic to the department funded.
       path: /Audio/Announcements/Default/attention.ogg
     announcementStart: Announce
   - type: RandomFundingRule
     baseCash: 3000
-    maxMult: 5
-    splitFunds: 0.3
+    maxMult: 4
+    splitFunds: 0.25
 
 - type: entity
   id: FurtherKnowledgeArsenalFunding
@@ -37,7 +36,7 @@
   parent: FurtherKnowledgeArsenalFunding
   components:
   - type: RandomFundingRule
-    message: civilian Services"
+    message: civilian services
 
 - type: entity
   id: FurtherKnowledgeExperimentalFunding

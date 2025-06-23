@@ -195,5 +195,17 @@
 
 - type: technology
   id: FurtherKnowledgeIndustrial
-  parent: FurtherKnowledgeArsenal
+  name: research-technology-further-knowledge
+  icon:
+    sprite: Structures/Machines/rndpointsource.rsi
+    state: rndpointsource-icon
   discipline: Industrial
+  tier: 4
+  cost: 20000
+  recipeUnlocks:
+  - ResearchAndDevelopmentServerMachineCircuitboard
+  genericUnlocks:
+  - unlockDescription: Additional Funding
+    purchaseEvent: !ResearchFundingEvent
+      discipline: Industrial
+      payment: 20000

@@ -11,11 +11,12 @@ station-event-funding-all = the station
 
 station-event-funding-reason-1 = our advanced financial predictive systems
 station-event-funding-reason-2 = our shareholders
-station-event-funding-reason-3 = the Disaster Advisory Comittee
+station-event-funding-reason-3 = the Disaster Advisory Committee
 station-event-funding-reason-4 = a random number generator
 station-event-funding-reason-5 = forces beyond your comprehension
 
-station-event-research-funding-arsenal = Arsenal
-station-event-research-funding-experimental = Experimental
-station-event-research-funding-civilian = Civilian Services
-station-event-research-funding-industrial = Industrial
+station-event-funding-research-arsenal = Arsenal
+station-event-funding-research-experimental = Experimental
+station-event-funding-research-civilian = Civilian Services
+station-event-funding-research-industrial = Industrial
+station-event-funding-research-null = [REDACTED]

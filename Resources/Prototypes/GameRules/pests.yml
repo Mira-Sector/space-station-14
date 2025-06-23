@@ -91,6 +91,7 @@
   parent: BaseStationEventShortDelay
   components:
   - type: StationEvent
+    startAnnouncement: station-event-vent-creatures-start-announcement
     startAudio:
       path: /Audio/Announcements/Default/attention.ogg
     announcementStart: Attention

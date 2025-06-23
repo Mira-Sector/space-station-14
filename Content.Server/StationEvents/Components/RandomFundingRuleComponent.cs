@@ -4,7 +4,7 @@ using Robust.Shared.Prototypes;
 namespace Content.Server.StationEvents.Components;
 
 [RegisterComponent, Access(typeof(RandomFundingRule))]
-public sealed partial class RandomFundingRuleComponent : Component
+public sealed partial class RandomFundingRuleComponent : Component //exists for use with RandomFundingRule as a StationEvent
 {
     /// <summary>
     /// Base amount of cash to pay the station
@@ -28,5 +28,5 @@ public sealed partial class RandomFundingRuleComponent : Component
     /// Can be used to override the default funding message.
     /// </summary>
     [DataField]
-    public string? Message = null;
+    public LocId? Message = null;
 }
