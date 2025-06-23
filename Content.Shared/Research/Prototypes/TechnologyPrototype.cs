@@ -1,6 +1,7 @@
-﻿using Robust.Shared.Prototypes;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 using Content.Shared.Research.Systems;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Array;
 
 namespace Content.Shared.Research.Prototypes;
 
@@ -8,11 +9,20 @@ namespace Content.Shared.Research.Prototypes;
 /// This is a prototype for a technology that can be unlocked.
 /// </summary>
 [Prototype]
-public sealed partial class TechnologyPrototype : IPrototype
+public sealed partial class TechnologyPrototype : IPrototype, IInheritingPrototype
 {
     /// <inheritdoc/>
     [IdDataField]
     public string ID { get; private set; } = default!;
+
+    /// <inheritdoc />
+    [ParentDataField(typeof(AbstractPrototypeIdArraySerializer<TechnologyPrototype>))]
+    public string[]? Parents { get; private set; }
+
+    /// <inheritdoc />
+    [AbstractDataField]
+    [NeverPushInheritance]
+    public bool Abstract { get; private set; }
 
     /// <summary>
     /// The name of the technology.
