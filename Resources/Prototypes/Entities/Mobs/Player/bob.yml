@@ -1,0 +1,43 @@
+- type: entity
+  save: false
+  parent: BaseMob
+  id: MobBob
+  name: "?"
+  components:
+  - type: CombatMode
+  - type: Speech
+  - type: InteractionPopup
+    successChance: 1
+    interactSuccessString: hugging-success-generic
+    interactSuccessSound: /Audio/Effects/thudswoosh.ogg
+    messagePerceivedByOthers: hugging-success-generic-others
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 5
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      450: Critical
+      500: Dead
+  - type: MeleeWeapon
+    altDisarm: false
+    soundHit:
+      path: /Audio/Weapons/Xeno/alien_claw_flesh3.ogg
+    damage:
+      types:
+        Piercing: 15
+        Slash: 15
+  - type: Prying
+    pryPowered: true
+    force: true
+    speedModifier: 2.5
+    useSound:
+      path: /Audio/Items/crowbar.ogg
+  - type: Sprite
+    sprite: Mobs/Demons/bob.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: base
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: base_unshaded
+      shader: unshaded
