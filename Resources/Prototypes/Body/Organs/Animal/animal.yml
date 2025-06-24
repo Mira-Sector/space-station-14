@@ -71,7 +71,7 @@
 
 - type: entity
   id: OrganAnimalStomach
-  parent: BaseAnimalOrgan
+  parent: [ BaseAnimalOrgan, BaseOrganStomach ]
   name: stomach
   categories: [ HideSpawnMenu ]
   components:
@@ -88,21 +88,13 @@
         reagents:
         - ReagentId: UncookedAnimalProteins
           Quantity: 5
-  - type: Stomach
   - type: Metabolizer
     maxReagents: 3
-    metabolizerTypes: [ Animal ]
+    metabolizerTypes:
+    - Animal
     groups:
     - id: Food
     - id: Drink
-  - type: Item
-    size: Small
-    heldPrefix: stomach
-  - type: VomitOnRot
-  - type: Temperature
-  - type: Perishable
-    rotAfter: 780
-    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganMouseStomach

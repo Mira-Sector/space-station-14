@@ -6,6 +6,9 @@
     layers:
     - state: heart-on
       map: [ "enum.ToggleableVisuals.Layer" ]
+  - type: Item
+    size: Small
+    heldPrefix: heart
   - type: Appearance
   - type: GenericVisualizer
     visuals:
@@ -13,15 +16,17 @@
         enum.ToggleableVisuals.Layer:
           True: { state: heart-on }
           False: { state: heart-off }
+  - type: Organ
+    organType: Heart
   - type: BodyDamageable
   - type: BodyDamageThresholds
     thresholds:
       Alive: 0
       Wounded: 10
-      Dead: 100
+      Dead: 120
   - type: BodyDamageOnRot
     minRotStage: 1
-    fullyRottenDamage: 100
+    fullyRottenDamage: 120
   # The heart 'metabolizes' medicines and poisons that aren't filtered out by other organs.
   # This is done because these chemicals need to have some effect even if they aren't being filtered out of your body.
   # You're technically 'immune to poison' without a heart, but.. uhh, you'll have bigger problems on your hands.
@@ -33,8 +38,6 @@
     - id: Medicine
     - id: Poison
     - id: Narcotic
-  - type: Organ
-    organType: Heart
   - type: ItemToggle
     activated: true # beating by default
     onActivate: false
@@ -55,6 +58,56 @@
   - type: Perishable
     rotAfter: 360
     molsPerSecondPerUnitMass: 0
+
+- type: entity
+  id: BaseOrganStomach
+  abstract: true
+  components:
+  - type: Sprite
+    state: stomach
   - type: Item
     size: Small
-    heldPrefix: heart
+    heldPrefix: stomach
+  - type: Organ
+    organType: Stomach
+  - type: BodyDamageable
+  - type: BodyDamageThresholds
+    thresholds:
+      Alive: 0
+      Wounded: 10
+      Dead: 100
+  - type: BodyDamageOnRot
+    minRotStage: 1
+    fullyRottenDamage: 100
+  - type: VomitOnBodyDamage
+    requiredStates:
+    - Wounded
+    - Dead
+    minProb: 0.005
+    maxProb: 0.5
+    scaleProbToDamage: 100
+  - type: SolutionContainerManager
+    solutions:
+      stomach:
+        maxVol: 50
+      food:
+        maxVol: 5
+        reagents:
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 5
+  - type: Stomach
+  # The stomach metabolizes stuff like foods and drinks.
+  # TODO: Have it work off of the ent's solution container, and move this
+  # to intestines instead.
+  - type: Metabolizer
+    # mm yummy
+    maxReagents: 3
+    metabolizerTypes:
+    - Human
+    groups:
+    - id: Food
+    - id: Drink
+  - type: Temperature
+  - type: Perishable
+    rotAfter: 780
+    molsPerSecondPerUnitMass: 0
