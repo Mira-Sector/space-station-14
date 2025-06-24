@@ -111,3 +111,7 @@
   - type: Perishable
     rotAfter: 780
     molsPerSecondPerUnitMass: 0
+
+- type: entity
+  id: BaseOrganLiver
+  abstract: true
