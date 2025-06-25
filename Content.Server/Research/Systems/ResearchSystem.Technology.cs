@@ -122,9 +122,12 @@ public sealed partial class ResearchSystem
         //todo this needs to support some other stuff, too
         foreach (var generic in technology.GenericUnlocks)
         {
+            Log.Debug($"{generic.UnlockDescription}");
             if (generic.PurchaseEvent != null)
             {
-                RaiseLocalEvent(uid, generic.PurchaseEvent);
+                Log.Debug(generic.PurchaseEvent.GetType().ToString());
+                generic.PurchaseEvent.Location = uid;
+                RaiseLocalEvent(generic.PurchaseEvent);
             }
 
             if (generic.PurchaseGameRule != null) //has the gamerule been defined?
@@ -134,7 +137,8 @@ public sealed partial class ResearchSystem
                     Log.Warning($"Research gamerule {generic.PurchaseGameRule} prototype not found");
                     continue;
                 }
-                GameTicker.AddGameRule(generic.PurchaseGameRule); //add the gamerule
+                if (!GameTicker.IsGameRuleAdded(generic.PurchaseGameRule))
+                    GameTicker.AddGameRule(generic.PurchaseGameRule); //add the gamerule, as long as it hasn't previously been added
             }
 
         }

@@ -206,6 +206,6 @@
   - ResearchAndDevelopmentServerMachineCircuitboard
   genericUnlocks:
   - unlockDescription: Additional Funding
-    purchaseEvent: !ResearchFundingEvent
+    purchaseEvent: !type:ResearchFundingEvent
       discipline: Industrial
       payment: 20000

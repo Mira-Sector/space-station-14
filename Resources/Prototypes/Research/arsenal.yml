@@ -214,6 +214,6 @@
   - ResearchAndDevelopmentServerMachineCircuitboard
   genericUnlocks:
   - unlockDescription: Additional Funding
-    purchaseEvent: !ResearchFundingEvent
+    purchaseEvent: !type:ResearchFundingEvent
       discipline: Arsenal
       payment: 20000

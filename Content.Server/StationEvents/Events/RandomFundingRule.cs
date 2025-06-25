@@ -19,13 +19,7 @@ public sealed class RandomFundingRule : StationEventSystem<RandomFundingRuleComp
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly CargoSystem _cargo = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
 
-    public override void Initialize()
-    {
-        base.Initialize();
-        SubscribeLocalEvent<ResearchServerComponent, ResearchFundingEvent>(OnResearchFunding);
-    }
 
     protected override void Started(EntityUid uid, RandomFundingRuleComponent component, GameRuleComponent gameRule, GameRuleStartedEvent args)
     {
@@ -67,28 +61,26 @@ public sealed class RandomFundingRule : StationEventSystem<RandomFundingRuleComp
         }
     }
 
-    private void OnResearchFunding(EntityUid uid, ResearchServerComponent server, ref ResearchFundingEvent args)
+    public void Fund() //make funding accessible through here so researchfundingevent can access it?
     {
-        var station = _transform.GetGrid(uid.ToCoordinates()) ?? EntityUid.Invalid;
-        Log.Debug(station.Id.ToString());
-        if (TryComp(station, out StationBankAccountComponent? bank))
-        {
-            _cargo.UpdateBankAccount((station, bank), args.Payment, bank.RevenueDistribution);
 
-            var discipline = "null";
-            if (args.Discipline != null)
-                discipline = args.Discipline;
+    }
 
-            ChatSystem.DispatchStationAnnouncement( //sent starting message.
-                station,  //Find in: Resources/Locale/en-US/station-events/funding.ftl
-                Loc.GetString("station-event-funding-research-announcement", ("data", Loc.GetString("station-event-funding-research-" + discipline))),
-                playDefaultSound: false,
-                colorOverride: Color.Gold
-                );
-        }
+    public void ResearchMessage(EntityUid station, String? discipline)
+    {
+        LocId data = "station-event-funding-";
+        if (discipline == null)
+            data += "null";
         else
-        {
-            Log.Debug("No Station Bank Account found, RandomResearchFunding could not proceed");
-        }
+            data += discipline;
+
+        ChatSystem.DispatchStationAnnouncement( //sent starting message.
+            station,  //Find in: Resources/Locale/en-US/station-events/funding.ftl
+            Loc.GetString("station-event-research-funding-announcement", ("data", Loc.GetString(data))),
+            playDefaultSound: false,
+            colorOverride: Color.Gold
+            );
     }
 }
+
+

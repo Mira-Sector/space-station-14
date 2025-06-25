@@ -1,4 +1,4 @@
-using Robust.Shared.Prototypes;
+﻿using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 using Content.Shared.Research.Systems;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Array;
@@ -89,13 +89,13 @@ public sealed partial class TechnologyPrototype : IPrototype, IInheritingPrototy
 }
 
 [DataDefinition]
-public partial record struct GenericUnlock()
+public sealed partial class GenericUnlock()
 {
     /// <summary>
     /// What event is raised when this is unlocked?
     /// Used for doing non-standard logic.
     /// </summary>
-    [DataField]
+    [DataField, NonSerialized]
     public ResearchEvent? PurchaseEvent = null;
 
     /// <summary>

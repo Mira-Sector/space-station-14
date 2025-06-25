@@ -1,5 +1,8 @@
+
 using Content.Shared.Research.Prototypes;
 using Robust.Shared.Prototypes;
+
+
 
 namespace Content.Shared.Research.Systems;
 
@@ -9,7 +12,7 @@ public abstract partial class ResearchEvent : EntityEventArgs
     /// <summary>
     /// Can be raised on the purchase of a research
     /// </summary>
-    public readonly EntityUid Location;
+    public EntityUid Location;
 }
 
 public sealed partial class ResearchFundingEvent : ResearchEvent
@@ -23,3 +26,5 @@ public sealed partial class ResearchFundingEvent : ResearchEvent
     [DataField(required: true)]
     public int Payment;
 }
+
+
