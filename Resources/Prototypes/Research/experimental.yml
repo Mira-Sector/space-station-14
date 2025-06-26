@@ -125,3 +125,9 @@
   id: FurtherKnowledgeExperimental
   parent: FurtherKnowledgeArsenal
   discipline: Experimental
+  genericUnlocks:
+  - unlockDescription: Additional Funding
+    purchaseEvent: !type:ResearchFundingEvent
+      message: station-event-funding-research-announcement
+      discipline: station-event-funding-research-experimental
+      payment: 20000

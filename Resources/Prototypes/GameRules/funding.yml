@@ -14,45 +14,6 @@
     maxMult: 4
     splitFunds: 0.25
 
-#delete when regular events work
-- type: entity
-  id: FurtherKnowledgeArsenalFunding
-  parent: RandomFunding
-  components:
-  - type: StationEvent
-    weight: 0
-    duration: 0
-    maxOccurrences: 1
-    startAudio:
-      path: /Audio/Announcements/Default/attention.ogg
-    announcementStart: Announce
-  - type: RandomFundingRule
-    baseCash: 20000
-    maxMult: 1
-    splitFunds: 1
-    message: arsenal
-
-- type: entity
-  id: FurtherKnowledgeCivilianFunding
-  parent: FurtherKnowledgeArsenalFunding
-  components:
-  - type: RandomFundingRule
-    message: civilian services
-
-- type: entity
-  id: FurtherKnowledgeExperimentalFunding
-  parent: FurtherKnowledgeArsenalFunding
-  components:
-  - type: RandomFundingRule
-    message: experimental
-
-- type: entity
-  id: FurtherKnowledgeIndustrialFunding
-  parent: FurtherKnowledgeArsenalFunding
-  components:
-  - type: RandomFundingRule
-    message: industrial
-
 - type: localizedDataset
   id: RandomFundingReason
   values:

@@ -1,5 +1,5 @@
 station-event-funding-announcement = Additional funding has been diverted to { $data } by request of { $reason }. Please use this wisely.
-station-event-funding-research-announcement = Your station's science department have made notable contributions to the { $data } field of research, additional funding has been made available.
+station-event-funding-research-announcement = Your station's science department have made notable contributions to the { $data1 } field of research, additional funding has been made available.
 
 station-event-funding-security = the station's security force
 station-event-funding-service = crew services

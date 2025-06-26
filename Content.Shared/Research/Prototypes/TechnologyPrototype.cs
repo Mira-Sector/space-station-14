@@ -1,4 +1,4 @@
-using Robust.Shared.Prototypes;
+﻿using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 using Content.Shared.Research.Systems;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Array;
@@ -102,7 +102,7 @@ public sealed partial class GenericUnlock
 
     /// <summary>
     /// What gamerule event is raised when this is unlocked?
-    /// Used for doing non-standard logic but with an easier to use shell around it.
+    /// Used for doing non-standard logic but with station-wide consequences
     /// </summary>
     [DataField]
     public string? PurchaseGameRule = null;

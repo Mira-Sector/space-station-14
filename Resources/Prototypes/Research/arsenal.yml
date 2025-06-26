@@ -215,5 +215,6 @@
   genericUnlocks:
   - unlockDescription: Additional Funding
     purchaseEvent: !type:ResearchFundingEvent
-      discipline: Arsenal
+      message: station-event-funding-research-announcement
+      discipline: station-event-funding-research-arsenal
       payment: 20000

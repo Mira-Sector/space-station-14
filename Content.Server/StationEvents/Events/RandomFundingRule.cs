@@ -1,5 +1,4 @@
 using Content.Server.StationEvents.Components;
-using Content.Shared.Research.Systems;
 using Content.Server.Cargo.Systems;
 using Content.Shared.Dataset;
 using Content.Shared.GameTicking.Components;
@@ -7,8 +6,6 @@ using Content.Shared.Random.Helpers;
 using Content.Shared.Cargo.Components;
 using Robust.Shared.Random;
 using Robust.Shared.Prototypes;
-using Content.Shared.Research.Components;
-using Content.Shared.Coordinates;
 
 using System.Linq;
 
@@ -53,7 +50,6 @@ public sealed class RandomFundingRule : StationEventSystem<RandomFundingRuleComp
                 playDefaultSound: false,
                 colorOverride: Color.Gold
                 );
-
         }
         else
         {

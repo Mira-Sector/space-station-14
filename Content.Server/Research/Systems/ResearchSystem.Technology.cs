@@ -4,9 +4,6 @@ using Content.Shared.Research.Components;
 using Content.Shared.Research.Prototypes;
 using Robust.Shared.Prototypes;
 using JetBrains.Annotations;
-using Microsoft.CodeAnalysis.Scripting.Hosting;
-using Robust.Shared.GameObjects;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Content.Server.Research.Systems;
 
@@ -122,9 +119,10 @@ public sealed partial class ResearchSystem
         //TODO: this needs to support some other stuff, too
         foreach (var generic in technology.GenericUnlocks)
         {
+            //has PurchaseEvent been defined?
             if (generic.PurchaseEvent != null)
             {
-                generic.PurchaseEvent.Location = uid;
+                generic.PurchaseEvent.Location = uid; //assign server uid to aid in finding station research occurred on
                 RaiseLocalEvent(uid, (object)generic.PurchaseEvent, true);
             }
 

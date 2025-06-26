@@ -1,5 +1,4 @@
 using Content.Server.StationEvents.Events;
-using Robust.Shared.Prototypes;
 
 namespace Content.Server.StationEvents.Components;
 
@@ -23,10 +22,4 @@ public sealed partial class RandomFundingRuleComponent : Component //exists for 
     /// </summary>
     [DataField]
     public float SplitFunds = 0.3f;
-
-    /// <summary>
-    /// Can be used to override the default funding message.
-    /// </summary>
-    [DataField]
-    public LocId? Message = null;
 }

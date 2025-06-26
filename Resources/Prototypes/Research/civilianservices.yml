@@ -228,3 +228,9 @@
   id: FurtherKnowledgeCivilianServices
   parent: FurtherKnowledgeArsenal
   discipline: CivilianServices
+  genericUnlocks:
+  - unlockDescription: Additional Funding
+    purchaseEvent: !type:ResearchFundingEvent
+      message: station-event-funding-research-announcement
+      discipline: station-event-funding-research-civilian
+      payment: 20000
