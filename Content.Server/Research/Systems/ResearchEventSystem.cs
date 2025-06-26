@@ -14,6 +14,7 @@ public sealed partial class ResearchEventSystem : EntitySystem
     [Dependency] private readonly StationSystem _station = default!;
     [Dependency] private readonly ChatSystem _chat = default!;
 
+    private const string FUND = "station-event-funding-";
     public override void Initialize()
     {
         base.Initialize();
@@ -21,32 +22,23 @@ public sealed partial class ResearchEventSystem : EntitySystem
         SubscribeLocalEvent<ResearchServerComponent, ResearchFundingEvent>(OnResearchFunding);
     }
 
-    private void Announce(EntityUid station, LocId announce, string data1 = "", string data2 = "", string data3 = "")
-    {
-        _chat.DispatchStationAnnouncement( //sent starting message.
-            station,  //Find in: Resources/Locale/en-US/station-events/funding.ftl
-            Loc.GetString(announce, ("data1", Loc.GetString(data1)), ("data2", Loc.GetString(data2)), ("data3", Loc.GetString(data3))),
-            playDefaultSound: true,
-            colorOverride: Color.Gold
-            );
-    }
-
     private void OnResearchFunding(EntityUid uid, ResearchServerComponent server, ResearchFundingEvent args)
     {
-        var station = _station.GetOwningStation(args.Location) ?? EntityUid.Invalid;
-        Log.Debug(ToPrettyString(station));
-
-        if (TryComp<StationBankAccountComponent>(station, out var bank))
+        var station = _station.GetOwningStation(args.Location) ?? EntityUid.Invalid; //get station Research Server is on
+        if (TryComp<StationBankAccountComponent>(station, out var bank)) //check if there is a Station Bank Account
         {
             _cargo.UpdateBankAccount((station, bank), args.Payment, bank.RevenueDistribution);
-
-            Log.Debug($"Deployed {args.Payment} Spesos");
         }
         else
         {
             Log.Debug("No Station Bank Account found, RandomResearchFunding could not proceed");
         }
 
-        Announce(station, args.Message, args.Discipline);
+        _chat.DispatchStationAnnouncement( //sent funding message
+            station,  //Find in: Resources/Locale/en-US/station-events/funding.ftl
+            Loc.GetString(args.Message, ("data1", Loc.GetString(args.Discipline))),
+            playDefaultSound: true,
+            colorOverride: Color.Gold
+            );
     }
 }

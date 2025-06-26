@@ -229,7 +229,7 @@
   parent: FurtherKnowledgeArsenal
   discipline: CivilianServices
   genericUnlocks:
-  - unlockDescription: Additional Funding
+  - unlockDescription: station-event-funding-research-description
     purchaseEvent: !type:ResearchFundingEvent
       message: station-event-funding-research-announcement
       discipline: station-event-funding-research-civilian

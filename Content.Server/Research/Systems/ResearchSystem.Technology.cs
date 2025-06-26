@@ -10,7 +10,7 @@ namespace Content.Server.Research.Systems;
 public sealed partial class ResearchSystem
 {
     [Dependency] private readonly IPrototypeManager _prototype = default!;
-    [Dependency] public readonly GameTicker GameTicker = default!;
+    [Dependency] private readonly GameTicker _gameTicker = default!;
 
     /// <summary>
     /// Syncs the primary entity's database to that of the secondary entity's database.
@@ -137,8 +137,8 @@ public sealed partial class ResearchSystem
                 }
 
                 //add the gamerule, as long as it hasn't previously been added
-                if (!GameTicker.IsGameRuleAdded(generic.PurchaseGameRule))
-                    GameTicker.AddGameRule(generic.PurchaseGameRule);
+                if (!_gameTicker.IsGameRuleAdded(generic.PurchaseGameRule))
+                    _gameTicker.AddGameRule(generic.PurchaseGameRule);
             }
         }
 

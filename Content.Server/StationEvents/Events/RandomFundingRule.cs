@@ -17,7 +17,7 @@ public sealed class RandomFundingRule : StationEventSystem<RandomFundingRuleComp
     [Dependency] private readonly CargoSystem _cargo = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;
 
-
+    private const string FUND = "station-event-funding-";
     protected override void Started(EntityUid uid, RandomFundingRuleComponent component, GameRuleComponent gameRule, GameRuleStartedEvent args)
     {
         base.Started(uid, component, gameRule, args); //does all the pre-amble in the base StationEventSystem
@@ -26,10 +26,10 @@ public sealed class RandomFundingRule : StationEventSystem<RandomFundingRuleComp
             return;
 
         // No station to deduct from.
-        if (TryComp(station, out StationBankAccountComponent? bank))//...but if no bank account found cancel immediately.
+        if (TryComp<StationBankAccountComponent>(station, out var bank))//...but if no bank account found cancel immediately.
         {
-            var payment = (int)(component.BaseCash * (_random.Next(component.MaxMult) + 1)); //component-defined base cash multiplied by random number between 1 and component-defined maximum multiplier.
-            var dep = "test"; //department suffix used for announcement, should always be replaced
+            var payment = component.BaseCash * (_random.Next(component.MaxMult) + 1); //component-defined base cash multiplied by random number between 1 and component-defined maximum multiplier.
+            string dep; //department suffix used for announcement, should always be replaced
 
             if (component.SplitFunds > _random.NextFloat()) //roll to see if funds are split or not. If true, funds are split between all departments.
             {
@@ -43,7 +43,7 @@ public sealed class RandomFundingRule : StationEventSystem<RandomFundingRuleComp
                 dep = b.Key; //also store the key for use in announcement
             }
 
-            LocId data = "station-event-funding-" + dep.ToLower(); //create specific LocId string based off of department funding result
+            string data = FUND + dep.ToLower(); //create specific LocId string based off of department funding result
             ChatSystem.DispatchStationAnnouncement( //sent starting message.
                 station.Value,  //Find in: Resources/Locale/en-US/station-events/funding.ftl
                 Loc.GetString("station-event-funding-announcement", ("data", Loc.GetString(data)), ("reason", _random.Pick(_prototype.Index<LocalizedDatasetPrototype>("RandomFundingReason")))),
@@ -55,27 +55,6 @@ public sealed class RandomFundingRule : StationEventSystem<RandomFundingRuleComp
         {
             Log.Debug("No Station Bank Account found, RandomFundingRule could not proceed");
         }
-    }
-
-    public void Fund() //make funding accessible through here so researchfundingevent can access it?
-    {
-
-    }
-
-    public void ResearchMessage(EntityUid station, String? discipline)
-    {
-        LocId data = "station-event-funding-";
-        if (discipline == null)
-            data += "null";
-        else
-            data += discipline;
-
-        ChatSystem.DispatchStationAnnouncement( //sent starting message.
-            station,  //Find in: Resources/Locale/en-US/station-events/funding.ftl
-            Loc.GetString("station-event-research-funding-announcement", ("data", Loc.GetString(data))),
-            playDefaultSound: false,
-            colorOverride: Color.Gold
-            );
     }
 }
 

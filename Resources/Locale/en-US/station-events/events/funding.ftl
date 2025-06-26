@@ -20,3 +20,5 @@ station-event-funding-research-experimental = Experimental
 station-event-funding-research-civilian = Civilian Services
 station-event-funding-research-industrial = Industrial
 station-event-funding-research-null = [REDACTED]
+
+station-event-funding-research-description = Additional Funding
