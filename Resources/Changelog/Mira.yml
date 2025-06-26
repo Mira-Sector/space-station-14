@@ -1797,3 +1797,9 @@ Entries:
     type: Add
   id: 255
   time: '2025-06-26T22:40:00.0000000+00:00'
+- author: Catazeus
+  changes:
+  - message: Add sustenance restock box and ability to order it. No more hungry prisoners
+    type: Add
+  id: 256
+  time: '2025-06-26T23:00:00.0000000+00:00'
