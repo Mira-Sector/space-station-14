@@ -1803,3 +1803,13 @@ Entries:
     type: Add
   id: 256
   time: '2025-06-26T23:00:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Add the TBH creature and clownothing plushies
+    type: Add
+  - message: Inhands for Mira plushies
+    type: Add
+  - message: Mira plushies can be worn on the head
+    type: Add
+  id: 257
+  time: '2025-06-26T23:20:00.0000000+00:00'
