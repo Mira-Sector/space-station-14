@@ -119,28 +119,29 @@ public sealed partial class ResearchSystem
         if (!Resolve(uid, ref component))
             return;
 
-        //todo this needs to support some other stuff, too
+        //TODO: this needs to support some other stuff, too
         foreach (var generic in technology.GenericUnlocks)
         {
-            Log.Debug($"{generic.UnlockDescription}");
             if (generic.PurchaseEvent != null)
             {
-                Log.Debug(generic.PurchaseEvent.GetType().ToString());
                 generic.PurchaseEvent.Location = uid;
-                RaiseLocalEvent(generic.PurchaseEvent);
+                RaiseLocalEvent(uid, (object)generic.PurchaseEvent, true);
             }
 
-            if (generic.PurchaseGameRule != null) //has the gamerule been defined?
+            //has the gamerule been defined?
+            if (generic.PurchaseGameRule != null)
             {
-                if (!_prototype.TryIndex(generic.PurchaseGameRule, out _)) //If it has, can a prototype for it be found
+                //If it has, can a prototype for it be found
+                if (!_prototype.TryIndex(generic.PurchaseGameRule, out _))
                 {
-                    Log.Warning($"Research gamerule {generic.PurchaseGameRule} prototype not found");
+                    Log.Error($"Research gamerule {generic.PurchaseGameRule} prototype not found");
                     continue;
                 }
-                if (!GameTicker.IsGameRuleAdded(generic.PurchaseGameRule))
-                    GameTicker.AddGameRule(generic.PurchaseGameRule); //add the gamerule, as long as it hasn't previously been added
-            }
 
+                //add the gamerule, as long as it hasn't previously been added
+                if (!GameTicker.IsGameRuleAdded(generic.PurchaseGameRule))
+                    GameTicker.AddGameRule(generic.PurchaseGameRule);
+            }
         }
 
         component.UnlockedTechnologies.Add(technology.ID);
@@ -152,6 +153,7 @@ public sealed partial class ResearchSystem
             component.UnlockedRecipes.Add(unlock);
             addedRecipes.Add(unlock);
         }
+
         Dirty(uid, component);
 
         var ev = new TechnologyDatabaseModifiedEvent(addedRecipes);

@@ -1,8 +1,5 @@
-
 using Content.Shared.Research.Prototypes;
 using Robust.Shared.Prototypes;
-
-
 
 namespace Content.Shared.Research.Systems;
 
@@ -26,5 +23,3 @@ public sealed partial class ResearchFundingEvent : ResearchEvent
     [DataField(required: true)]
     public int Payment;
 }
-
-
