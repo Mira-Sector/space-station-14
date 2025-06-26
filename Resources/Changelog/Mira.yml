@@ -1787,3 +1787,13 @@ Entries:
     type: Tweak
   id: 254
   time: '2025-06-16T17:15:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: "'Further Knowledge' Tier 4 research, to unlock RND Server boards."
+    type: Add
+  - message: Consolidated some researches to make science smoother
+    type: Tweak
+  - message: Nanotransen's Byzantine bureaucracy may now randomly fund some or all of the station's departments for reasons unknowable
+    type: Add
+  id: 255
+  time: '2025-06-26T22:40:00.0000000+00:00'
