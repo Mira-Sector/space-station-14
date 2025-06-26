@@ -178,14 +178,6 @@
   - type: EmitSoundOnActivate
     sound:
       collection: BikeHorn
-  - type: Clothing
-    quickEquip: false
-    sprite: Objects/Fun/MiraPlushies/clownothing.rsi
-    slots:
-    - HEAD
-    clothingVisuals:
-      head:
-      - state: equipped-HELMET
   - type: MultiHandedItem
 
 - type: entity
