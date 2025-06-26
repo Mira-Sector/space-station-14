@@ -1,0 +1,21 @@
+- type: entity
+  id: RandomFunding
+  parent: BaseGameRule
+  components:
+  - type: StationEvent
+    weight: 2
+    duration: 0
+    maxOccurrences: 1 #Nanotransen are stingy
+    startAudio: #no starting announcement, done in rule system as it's dynamic to the department funded.
+      path: /Audio/Announcements/Default/attention.ogg
+    announcementStart: Announce
+  - type: RandomFundingRule
+    baseCash: 3000
+    maxMult: 4
+    splitFunds: 0.25
+
+- type: localizedDataset
+  id: RandomFundingReason
+  values:
+    prefix: station-event-funding-reason-
+    count: 5
