@@ -148,10 +148,10 @@
     state: icon
   - type: EmitSoundOnUse
     sound:
-      path: /Audio/Misc/yippee.ogg
+      path: /Audio/Items/Toys/yippie.ogg
   - type: EmitSoundOnActivate
     sound:
-      path: /Audio/Misc/yippee.ogg
+      path: /Audio/Items/Toys/yippie.ogg
   - type: Clothing
     quickEquip: false
     sprite: Objects/Fun/MiraPlushies/creature.rsi
