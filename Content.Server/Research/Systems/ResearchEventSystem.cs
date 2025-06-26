@@ -9,12 +9,10 @@ namespace Content.Server.Research.Systems;
 
 public sealed partial class ResearchEventSystem : EntitySystem
 {
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly CargoSystem _cargo = default!;
     [Dependency] private readonly StationSystem _station = default!;
     [Dependency] private readonly ChatSystem _chat = default!;
 
-    private const string FUND = "station-event-funding-";
     public override void Initialize()
     {
         base.Initialize();

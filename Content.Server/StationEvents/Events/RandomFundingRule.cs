@@ -6,7 +6,6 @@ using Content.Shared.Random.Helpers;
 using Content.Shared.Cargo.Components;
 using Robust.Shared.Random;
 using Robust.Shared.Prototypes;
-
 using System.Linq;
 
 namespace Content.Server.StationEvents.Events;
@@ -17,7 +16,10 @@ public sealed class RandomFundingRule : StationEventSystem<RandomFundingRuleComp
     [Dependency] private readonly CargoSystem _cargo = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;
 
-    private const string FUND = "station-event-funding-";
+    private const string AnnouncementPrefix = "station-event-funding-";
+    private static readonly LocId AnnouncementText = "station-event-funding-announcement";
+    private static readonly ProtoId<LocalizedDatasetPrototype> AnnouncementReasons = "RandomFundingReason";
+
     protected override void Started(EntityUid uid, RandomFundingRuleComponent component, GameRuleComponent gameRule, GameRuleStartedEvent args)
     {
         base.Started(uid, component, gameRule, args); //does all the pre-amble in the base StationEventSystem
@@ -43,10 +45,12 @@ public sealed class RandomFundingRule : StationEventSystem<RandomFundingRuleComp
                 dep = b.Key; //also store the key for use in announcement
             }
 
-            string data = FUND + dep.ToLower(); //create specific LocId string based off of department funding result
+            LocId data = AnnouncementPrefix + dep.ToLower(); //create specific LocId string based off of department funding result
+            var reasons = _prototype.Index(AnnouncementReasons);
+            var reason = _random.Pick(reasons);
             ChatSystem.DispatchStationAnnouncement( //sent starting message.
                 station.Value,  //Find in: Resources/Locale/en-US/station-events/funding.ftl
-                Loc.GetString("station-event-funding-announcement", ("data", Loc.GetString(data)), ("reason", _random.Pick(_prototype.Index<LocalizedDatasetPrototype>("RandomFundingReason")))),
+                Loc.GetString(AnnouncementText, ("data", Loc.GetString(data)), ("reason", reason)),
                 playDefaultSound: false,
                 colorOverride: Color.Gold
                 );
