@@ -85,9 +85,7 @@ public sealed partial class DamageOnBodyDamageSystem : BaseOnBodyDamageSystem<Da
                 return;
             }
         }
-        else
-        {
-            _damageable.TryChangeDamage(uid, damage);
-        }
+
+        _damageable.TryChangeDamage(uid, damage);
     }
 }
