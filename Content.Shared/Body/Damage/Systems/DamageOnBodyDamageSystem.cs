@@ -1,5 +1,6 @@
 using Content.Shared.Body.Damage.Components;
 using Content.Shared.Body.Damage.Events;
+using Content.Shared.Body.Organ;
 using Content.Shared.Damage;
 using Robust.Shared.Timing;
 
@@ -38,7 +39,7 @@ public sealed partial class DamageOnBodyDamageSystem : BaseOnBodyDamageSystem<Da
                 continue;
             }
 
-            _damageable.TryChangeDamage(uid, component.Damage);
+            DealDamage(uid, component.Damage);
             Dirty(uid, component);
         }
     }
@@ -57,15 +58,7 @@ public sealed partial class DamageOnBodyDamageSystem : BaseOnBodyDamageSystem<Da
             return;
 
         var damage = ent.Comp.Damage * delta;
-        _damageable.TryChangeDamage(ent.Owner, damage);
-    }
-
-    protected override bool CanDoEffect(Entity<DamageOnBodyDamageComponent, BodyDamageThresholdsComponent?, BodyDamageableComponent?> ent)
-    {
-        if (!base.CanDoEffect(ent))
-            return false;
-
-        return true;
+        DealDamage(ent.Owner, damage);
     }
 
     private static bool CheckMode(Entity<DamageOnBodyDamageComponent> ent, bool positive)
@@ -74,5 +67,27 @@ public sealed partial class DamageOnBodyDamageSystem : BaseOnBodyDamageSystem<Da
             return ent.Comp.Mode.HasFlag(DamageOnBodyDamageModes.Damage);
         else
             return ent.Comp.Mode.HasFlag(DamageOnBodyDamageModes.Healing);
+    }
+
+    private void DealDamage(EntityUid uid, DamageSpecifier damage)
+    {
+        if (TryComp<OrganComponent>(uid, out var organ))
+        {
+            if (organ.Body is { } body)
+            {
+                _damageable.TryChangeDamageBody(body, damage);
+                return;
+            }
+
+            if (organ.BodyPart is { } limb)
+            {
+                _damageable.TryChangeDamage(limb, damage);
+                return;
+            }
+        }
+        else
+        {
+            _damageable.TryChangeDamage(uid, damage);
+        }
     }
 }

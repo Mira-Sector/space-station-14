@@ -1,6 +1,7 @@
 using System.Linq;
 using Content.Shared.Body.Damage.Components;
 using Content.Shared.Body.Damage.Events;
+using Content.Shared.Examine;
 using Content.Shared.FixedPoint;
 using JetBrains.Annotations;
 
@@ -16,6 +17,7 @@ public sealed partial class BodyDamageThresholdsSystem : EntitySystem
 
         SubscribeLocalEvent<BodyDamageThresholdsComponent, BodyDamageChangedEvent>(OnDamageChanged);
         SubscribeLocalEvent<BodyDamageThresholdsComponent, BodyDamageCanDamageEvent>(OnCanDamage);
+        SubscribeLocalEvent<BodyDamageThresholdsComponent, ExaminedEvent>(OnExamine);
     }
 
     private void OnDamageChanged(Entity<BodyDamageThresholdsComponent> ent, ref BodyDamageChangedEvent args)
@@ -75,6 +77,13 @@ public sealed partial class BodyDamageThresholdsSystem : EntitySystem
             args.Cancel();
     }
 
+    private void OnExamine(Entity<BodyDamageThresholdsComponent> ent, ref ExaminedEvent args)
+    {
+        if (!ent.Comp.ExamineText.TryGetValue(ent.Comp.CurrentState, out var examine))
+            return;
+
+        args.PushMarkup(Loc.GetString(examine));
+    }
 
     [PublicAPI]
     public FixedPoint2 RelativeToState(Entity<BodyDamageThresholdsComponent?, BodyDamageableComponent?> ent, BodyDamageState state)

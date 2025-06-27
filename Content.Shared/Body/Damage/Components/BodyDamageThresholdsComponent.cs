@@ -16,6 +16,9 @@ public sealed partial class BodyDamageThresholdsComponent : Component
 
     [DataField, AutoNetworkedField]
     public bool PreventFurtherDamage = true;
+
+    [DataField]
+    public Dictionary<BodyDamageState, LocId> ExamineText = [];
 }
 
 [Serializable, NetSerializable]
