@@ -84,7 +84,7 @@ public sealed partial class CargoSystem : SharedCargoSystem
         UpdateBankAccount(
             ent,
             balanceAdded,
-            new Dictionary<ProtoId<CargoAccountPrototype>, double> { {account, 1} },
+            new Dictionary<ProtoId<CargoAccountPrototype>, double> { { account, 1 } },
             dirty: dirty);
     }
 
@@ -107,7 +107,7 @@ public sealed partial class CargoSystem : SharedCargoSystem
 
         foreach (var (account, percent) in accountDistribution)
         {
-            var accountBalancedAdded = (int) Math.Round(percent * balanceAdded);
+            var accountBalancedAdded = (int)Math.Round(percent * balanceAdded);
             ent.Comp.Accounts[account] += accountBalancedAdded;
         }
 
@@ -120,3 +120,4 @@ public sealed partial class CargoSystem : SharedCargoSystem
         Dirty(ent);
     }
 }
+

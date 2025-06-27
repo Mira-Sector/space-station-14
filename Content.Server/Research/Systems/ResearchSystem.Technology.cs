@@ -1,12 +1,17 @@
+using Content.Server.GameTicking;
 using Content.Shared.Database;
 using Content.Shared.Research.Components;
 using Content.Shared.Research.Prototypes;
+using Robust.Shared.Prototypes;
 using JetBrains.Annotations;
 
 namespace Content.Server.Research.Systems;
 
 public sealed partial class ResearchSystem
 {
+    [Dependency] private readonly IPrototypeManager _prototype = default!;
+    [Dependency] private readonly GameTicker _gameTicker = default!;
+
     /// <summary>
     /// Syncs the primary entity's database to that of the secondary entity's database.
     /// </summary>
@@ -111,11 +116,30 @@ public sealed partial class ResearchSystem
         if (!Resolve(uid, ref component))
             return;
 
-        //todo this needs to support some other stuff, too
+        //TODO: this needs to support some other stuff, too
         foreach (var generic in technology.GenericUnlocks)
         {
+            //has PurchaseEvent been defined?
             if (generic.PurchaseEvent != null)
-                RaiseLocalEvent(generic.PurchaseEvent);
+            {
+                generic.PurchaseEvent.Location = uid; //assign server uid to aid in finding station research occurred on
+                RaiseLocalEvent(uid, (object)generic.PurchaseEvent, true);
+            }
+
+            //has the gamerule been defined?
+            if (generic.PurchaseGameRule != null)
+            {
+                //If it has, can a prototype for it be found
+                if (!_prototype.TryIndex(generic.PurchaseGameRule, out _))
+                {
+                    Log.Error($"Research gamerule {generic.PurchaseGameRule} prototype not found");
+                    continue;
+                }
+
+                //add the gamerule, as long as it hasn't previously been added
+                if (!_gameTicker.IsGameRuleAdded(generic.PurchaseGameRule))
+                    _gameTicker.AddGameRule(generic.PurchaseGameRule);
+            }
         }
 
         component.UnlockedTechnologies.Add(technology.ID);
@@ -127,6 +151,7 @@ public sealed partial class ResearchSystem
             component.UnlockedRecipes.Add(unlock);
             addedRecipes.Add(unlock);
         }
+
         Dirty(uid, component);
 
         var ev = new TechnologyDatabaseModifiedEvent(addedRecipes);

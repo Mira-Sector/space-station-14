@@ -107,3 +107,8 @@
   license: "CC0-1.0"
   copyright: "Created by Orsoniks, from the game Casualties Unknown"
   source: "https://orsonik.itch.io/scav-prototype"
+
+  files: ["yippee.ogg"]
+  license: "none"
+  copyright: "From Starlight"
+  source: "https://github.com/ss14Starlight/space-station-14/commit/a715232e02670d5799e67401c41e274f49f77c8f"

@@ -62,6 +62,7 @@
   - Stunbaton
   - CombatKnife
   - RiotShield
+  - WeaponLaserCarbine
 
 ## Dynamic recipes
 
@@ -130,7 +131,6 @@
   - Truncheon
   - WeaponAdvancedLaser
   - WeaponLaserCannon
-  - WeaponLaserCarbine
   - WeaponXrayCannon
   - WeaponTemperatureGun
 

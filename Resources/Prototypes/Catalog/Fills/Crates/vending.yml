@@ -161,6 +161,16 @@
       - id: VendingMachineRestockSecTech
 
 - type: entity
+  id: CrateVendingMachineRestockSustenanceFilled
+  parent: CrateSecgear
+  name: Sustenance restock crate
+  description: Contains a restock box for the sustenance vending machine.
+  components:
+  - type: StorageFill
+    contents:
+      - id: VendingMachineRestockSustenance
+
+- type: entity
   id: CrateVendingMachineRestockSeedsFilled
   parent: CrateHydroSecure
   name: MegaSeed restock crate

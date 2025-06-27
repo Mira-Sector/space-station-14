@@ -1787,3 +1787,29 @@ Entries:
     type: Tweak
   id: 254
   time: '2025-06-16T17:15:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: "'Further Knowledge' Tier 4 research, to unlock RND Server boards."
+    type: Add
+  - message: Consolidated some researches to make science smoother
+    type: Tweak
+  - message: Nanotransen's Byzantine bureaucracy may now randomly fund some or all of the station's departments for reasons unknowable
+    type: Add
+  id: 255
+  time: '2025-06-26T22:40:00.0000000+00:00'
+- author: Catazeus
+  changes:
+  - message: Add sustenance restock box and ability to order it. No more hungry prisoners
+    type: Add
+  id: 256
+  time: '2025-06-26T23:00:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Add the TBH creature and clownothing plushies
+    type: Add
+  - message: Inhands for Mira plushies
+    type: Add
+  - message: Mira plushies can be worn on the head
+    type: Add
+  id: 257
+  time: '2025-06-26T23:20:00.0000000+00:00'
