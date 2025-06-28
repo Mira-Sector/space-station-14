@@ -1,6 +1,6 @@
 - type: entity
   id: SentientSlimesCore
-  parent: [BaseItem, OrganHumanBrain]
+  parent: [BaseItem, OrganHumanBrain, BaseOrganHeart, BaseOrganStomach ]
   name: sentient slimes core
   description: "The source of incredible, unending gooeyness."
   components:
@@ -8,7 +8,6 @@
       sprite: Mobs/Species/Slime/organs.rsi
       state: brain-slime
     - type: Stomach
-    - type: VomitOnRot
     - type: Metabolizer
       maxReagents: 3
       metabolizerTypes: [ Slime ]
@@ -25,11 +24,6 @@
       solutions:
         stomach:
           maxVol: 30.0
-    - type: Temperature
-    - type: Heart
-    - type: Perishable
-      rotAfter: 360
-      molsPerSecondPerUnitMass: 0
     - type: OrganRotDamage
       mode: Rotting
       damage:

@@ -81,8 +81,8 @@ public partial class SharedBodySystem
         // so random stuff doesnt trigger it if the body didnt change
         if (part != null || organ != null)
         {
-            var ev = new BodyChangedEvent(ent.Comp);
-            RaiseLocalEvent(ent, ev);
+            var ev = new BodyChangedEvent(ent);
+            RaiseLocalEvent(ent, ref ev);
         }
     }
 
@@ -110,8 +110,8 @@ public partial class SharedBodySystem
         // so random stuff doesnt trigger it if the body didnt change
         if (part != null || organ != null)
         {
-            var ev = new BodyChangedEvent(ent.Comp);
-            RaiseLocalEvent(ent, ev);
+            var ev = new BodyChangedEvent(ent);
+            RaiseLocalEvent(ent, ref ev);
         }
     }
 
@@ -126,32 +126,38 @@ public partial class SharedBodySystem
         _alerts.ClearAlert(ent.Owner, ent.Comp.Alert);
     }
 
-    private void OnBodyMapInit(EntityUid uid, BodyComponent component, MapInitEvent args)
+    private void OnBodyMapInit(Entity<BodyComponent> ent, ref MapInitEvent args)
     {
-        if (component.Prototype is null)
+        if (ent.Comp.Prototype is null)
             return;
 
         // One-time setup
         // Obviously can't run in Init to avoid double-spawns on save / load.
-        var prototype = Prototypes.Index(component.Prototype.Value);
-        MapInitBody(uid, prototype);
+        var prototype = Prototypes.Index(ent.Comp.Prototype.Value);
+        MapInitBody(ent.Owner, prototype);
 
-        var bodyEv = new BodyInitEvent(component);
-        RaiseLocalEvent(uid, bodyEv);
+        var bodyEv = new BodyInitEvent(ent);
+        RaiseLocalEvent(ent.Owner, ref bodyEv);
 
-        foreach (var (partUid, partComp) in GetBodyChildren(uid, component))
+        foreach (var (partUid, partComp) in GetBodyChildren(ent.Owner, ent.Comp))
         {
-            var limbEv = new LimbInitEvent(partComp);
-            RaiseLocalEvent(partUid, limbEv);
+            var limbEv = new LimbInitEvent((partUid, partComp), ent);
+            RaiseLocalEvent(partUid, ref limbEv);
+
+            foreach (var (organUid, organComp) in GetPartOrgans(partUid, partComp))
+            {
+                var organEv = new OrganInitEvent((organUid, organComp), (partUid, partComp), ent);
+                RaiseLocalEvent(organUid, ref organEv);
+            }
 
             if (!HasComp<DamageableComponent>(partUid) || !HasComp<BodyPartThresholdsComponent>(partUid))
                 continue;
 
             var bodyPart = new BodyPart(partComp.PartType, partComp.Symmetry);
-            component.AlertLayers.Add(bodyPart, BodyPartToLayer(bodyPart));
+            ent.Comp.AlertLayers.Add(bodyPart, BodyPartToLayer(bodyPart));
         }
 
-        _alerts.ShowAlert(uid, component.Alert);
+        _alerts.ShowAlert(ent.Owner, ent.Comp.Alert);
     }
 
     private void MapInitBody(EntityUid bodyEntity, BodyPrototype prototype)
