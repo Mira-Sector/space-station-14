@@ -4,8 +4,8 @@ meta:
   engineVersion: 261.2.0
   forkId: ""
   forkVersion: ""
-  time: 06/26/2025 22:53:35
-  entityCount: 9111
+  time: 06/28/2025 12:22:18
+  entityCount: 9126
 maps:
 - 119
 grids:
@@ -758,6 +758,7 @@ entities:
             1757: 60,96
             1761: 60,95
             1764: 60,94
+            2103: 60,97
         - node:
             zIndex: 2
             color: '#1861D5FF'
@@ -835,6 +836,7 @@ entities:
             1756: 60,95
             1758: 60,96
             1763: 60,94
+            2102: 60,97
         - node:
             zIndex: 2
             color: '#1861D5FF'
@@ -916,6 +918,7 @@ entities:
             1762: 60,96
             1765: 60,94
             1836: 58,98
+            2101: 60,97
         - node:
             zIndex: 2
             color: '#1861D5FF'
@@ -933,6 +936,7 @@ entities:
             1882: 52,73
             1937: 48,76
             2088: 59,84
+            2116: 52,79
         - node:
             color: '#4B709CFF'
             id: BrickTileWhiteInnerSe
@@ -995,6 +999,7 @@ entities:
             1760: 60,95
             1766: 60,94
             1837: 60,98
+            2100: 60,97
         - node:
             zIndex: 2
             color: '#1861D5FF'
@@ -1018,6 +1023,7 @@ entities:
             1221: 54,77
             1944: 48,74
             1945: 48,78
+            2115: 52,79
         - node:
             color: '#4B709CFF'
             id: BrickTileWhiteInnerSw
@@ -1120,6 +1126,8 @@ entities:
           decals:
             1122: 67,52
             1123: 67,53
+            2106: 71,52
+            2107: 74,52
         - node:
             color: '#9A54BFFF'
             id: BrickTileWhiteLineE
@@ -1515,6 +1523,12 @@ entities:
             1751: 60,95
             1752: 60,96
             1834: 52,97
+        - node:
+            color: '#765428FF'
+            id: BrickTileWhiteLineW
+          decals:
+            2104: 71,52
+            2105: 74,52
         - node:
             color: '#9A54BFFF'
             id: BrickTileWhiteLineW
@@ -1974,7 +1988,6 @@ entities:
             1385: 64,59
             1397: 62,69
             1403: 62,75
-            1444: 60,68
             1483: 54,39
             1517: 64,47
             1518: 64,42
@@ -2036,7 +2049,6 @@ entities:
             1402: 62,74
             1409: 62,81
             1420: 68,58
-            1446: 60,67
             1516: 64,47
             1520: 64,42
             2004: 72,72
@@ -2179,7 +2191,7 @@ entities:
             2054: 71,96
             2063: 62,46
             2077: 72,59
-            2082: 60,68
+            2113: 60,68
         - node:
             color: '#FFFFFFFF'
             id: GrayConcreteTrimLineS
@@ -2229,7 +2241,7 @@ entities:
             1993: 74,72
             2002: 73,72
             2062: 62,46
-            2083: 60,67
+            2114: 60,67
         - node:
             color: '#FFFFFFFF'
             id: GrayConcreteTrimLineW
@@ -2516,12 +2528,14 @@ entities:
           decals:
             678: 60,83
             2086: 59,84
+            2109: 65,83
         - node:
             color: '#FFFFFFFF'
             id: OldConcreteTrimInnerNw
           decals:
             669: 69,84
             670: 68,83
+            2108: 63,83
         - node:
             color: '#FFFFFFFF'
             id: OldConcreteTrimInnerSw
@@ -2529,13 +2543,15 @@ entities:
             2087: 69,90
         - node:
             color: '#FFFFFFFF'
+            id: OldConcreteTrimLineE
+          decals:
+            2111: 65,84
+        - node:
+            color: '#FFFFFFFF'
             id: OldConcreteTrimLineN
           decals:
             661: 61,83
             662: 62,83
-            663: 63,83
-            664: 64,83
-            665: 65,83
             666: 66,83
             667: 67,83
         - node:
@@ -2553,6 +2569,7 @@ entities:
             674: 69,87
             675: 69,88
             758: 69,89
+            2110: 63,84
         - node:
             color: '#FFFFFFFF'
             id: Rock01
@@ -3177,7 +3194,7 @@ entities:
             1: 4095
           10,21:
             0: 2
-            1: 32768
+            2: 32768
           10,22:
             1: 52940
           10,23:
@@ -3201,7 +3218,7 @@ entities:
             1: 3663
           12,23:
             0: 4096
-            2: 238
+            3: 238
             1: 49152
           10,25:
             0: 34824
@@ -3264,10 +3281,10 @@ entities:
             0: 275
             1: 19976
           14,6:
-            3: 224
-            4: 57344
+            4: 224
+            5: 57344
           14,7:
-            5: 224
+            6: 224
           14,8:
             1: 61166
           15,5:
@@ -3384,7 +3401,7 @@ entities:
             1: 65520
           12,22:
             1: 238
-            2: 57344
+            3: 57344
           13,21:
             1: 43567
           13,22:
@@ -3484,9 +3501,9 @@ entities:
             1: 24339
             0: 8
           17,6:
-            3: 57568
+            4: 57568
           17,7:
-            3: 224
+            4: 224
           17,8:
             1: 28927
           18,5:
@@ -3561,7 +3578,7 @@ entities:
           18,14:
             1: 65357
           18,15:
-            6: 16
+            7: 16
             1: 65504
           19,13:
             1: 56816
@@ -3837,6 +3854,21 @@ entities:
           moles:
           - 21.824879
           - 82.10312
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+        - volume: 2500
+          temperature: 293.14975
+          moles:
+          - 20.078888
+          - 75.53487
           - 0
           - 0
           - 0
@@ -4278,6 +4310,8 @@ entities:
       - 3357
       - 5911
       - 1889
+      - 8782
+      - 5952
   - uid: 2897
     components:
     - type: Transform
@@ -4758,7 +4792,6 @@ entities:
       devices:
       - 8909
       - 8657
-      - 7760
   - uid: 8884
     components:
     - type: Transform
@@ -4913,6 +4946,16 @@ entities:
       parent: 1
 - proto: AirlockCargoGlassLocked
   entities:
+  - uid: 2010
+    components:
+    - type: Transform
+      pos: 71.5,52.5
+      parent: 1
+  - uid: 2809
+    components:
+    - type: Transform
+      pos: 74.5,52.5
+      parent: 1
   - uid: 5803
     components:
     - type: Transform
@@ -4922,18 +4965,6 @@ entities:
     components:
     - type: Transform
       pos: 66.5,52.5
-      parent: 1
-  - uid: 6037
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 71.5,52.5
-      parent: 1
-  - uid: 6038
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 74.5,52.5
       parent: 1
 - proto: AirlockCargoLocked
   entities:
@@ -5499,12 +5530,6 @@ entities:
       parent: 1
 - proto: AirlockGlass
   entities:
-  - uid: 2010
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 63.5,84.5
-      parent: 1
   - uid: 2012
     components:
     - type: Transform
@@ -5633,6 +5658,11 @@ entities:
     components:
     - type: Transform
       pos: 79.5,62.5
+      parent: 1
+  - uid: 4505
+    components:
+    - type: Transform
+      pos: 63.5,84.5
       parent: 1
 - proto: AirlockHeadOfPersonnelLocked
   entities:
@@ -5879,7 +5909,7 @@ entities:
       parent: 1
 - proto: AirlockMedicalMorgueLocked
   entities:
-  - uid: 6264
+  - uid: 8043
     components:
     - type: Transform
       pos: 52.5,79.5
@@ -21422,6 +21452,35 @@ entities:
     - type: Transform
       pos: 43.5,87.5
       parent: 1
+    - type: EntityStorage
+      air:
+        volume: 200
+        immutable: False
+        temperature: 293.14673
+        moles:
+        - 1.7459903
+        - 6.568249
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+    - type: ContainerContainer
+      containers:
+        entity_storage: !type:Container
+          showEnts: False
+          occludes: True
+          ents:
+          - 6037
+        paper_label: !type:ContainerSlot
+          showEnts: False
+          occludes: True
+          ent: null
   - uid: 3000
     components:
     - type: Transform
@@ -23044,6 +23103,13 @@ entities:
     - type: Transform
       pos: 79.5163,76.44764
       parent: 1
+  - uid: 6037
+    components:
+    - type: Transform
+      parent: 2063
+    - type: Physics
+      canCollide: False
+    - type: InsideEntityStorage
 - proto: CryogenicSleepUnit
   entities:
   - uid: 4316
@@ -23689,6 +23755,11 @@ entities:
     components:
     - type: Transform
       pos: 60.27944,44.891132
+      parent: 1
+  - uid: 8044
+    components:
+    - type: Transform
+      pos: 59.780365,44.854034
       parent: 1
 - proto: DisposalBend
   entities:
@@ -29078,18 +29149,6 @@ entities:
       containers:
         pipe-crawling: !type:Container
           ents: []
-  - uid: 2809
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 66.5,95.5
-      parent: 1
-    - type: AtmosPipeColor
-      color: '#FF1212FF'
-    - type: ContainerContainer
-      containers:
-        pipe-crawling: !type:Container
-          ents: []
   - uid: 3009
     components:
     - type: Transform
@@ -29184,6 +29243,17 @@ entities:
       parent: 1
     - type: AtmosPipeColor
       color: '#0335FCFF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 6264
+    components:
+    - type: Transform
+      pos: 64.5,83.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -30097,11 +30167,11 @@ entities:
       containers:
         pipe-crawling: !type:Container
           ents: []
-  - uid: 7758
+  - uid: 7756
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
-      pos: 53.5,88.5
+      pos: 53.5,89.5
       parent: 1
     - type: AtmosPipeColor
       color: '#0335FCFF'
@@ -30348,6 +30418,20 @@ entities:
     - type: Transform
       pos: 72.5,95.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 8674
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 66.5,93.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -30396,6 +30480,52 @@ entities:
       parent: 1
     - type: AtmosPipeColor
       color: '#0335FCFF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 9112
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 60.5,83.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 9113
+    components:
+    - type: Transform
+      pos: 60.5,84.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 9120
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 53.5,84.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 9124
+    components:
+    - type: Transform
+      pos: 53.5,88.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -30917,6 +31047,8 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 63.5,96.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -31068,18 +31200,6 @@ entities:
     components:
     - type: Transform
       pos: 59.5,97.5
-      parent: 1
-    - type: AtmosPipeColor
-      color: '#0335FCFF'
-    - type: ContainerContainer
-      containers:
-        pipe-crawling: !type:Container
-          ents: []
-  - uid: 5988
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 64.5,93.5
       parent: 1
     - type: AtmosPipeColor
       color: '#0335FCFF'
@@ -31389,6 +31509,18 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 68.5,25.5
       parent: 1
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 6597
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 66.5,94.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -34092,18 +34224,6 @@ entities:
       containers:
         pipe-crawling: !type:Container
           ents: []
-  - uid: 6966
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 64.5,81.5
-      parent: 1
-    - type: AtmosPipeColor
-      color: '#FF1212FF'
-    - type: ContainerContainer
-      containers:
-        pipe-crawling: !type:Container
-          ents: []
   - uid: 6967
     components:
     - type: Transform
@@ -34966,6 +35086,8 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 74.5,73.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -35024,6 +35146,8 @@ entities:
       rot: 3.141592653589793 rad
       pos: 71.5,71.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -35067,6 +35191,8 @@ entities:
       rot: 3.141592653589793 rad
       pos: 73.5,71.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -35570,6 +35696,8 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 81.5,93.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -35674,6 +35802,8 @@ entities:
       rot: 3.141592653589793 rad
       pos: 68.5,71.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -35706,6 +35836,8 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 47.5,78.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -36850,13 +36982,14 @@ entities:
       containers:
         pipe-crawling: !type:Container
           ents: []
-  - uid: 7756
+  - uid: 7758
     components:
     - type: Transform
-      pos: 53.5,89.5
+      rot: 3.141592653589793 rad
+      pos: 64.5,82.5
       parent: 1
     - type: AtmosPipeColor
-      color: '#0335FCFF'
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -36865,10 +36998,10 @@ entities:
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
-      pos: 52.5,88.5
+      pos: 63.5,83.5
       parent: 1
     - type: AtmosPipeColor
-      color: '#0335FCFF'
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -37340,6 +37473,8 @@ entities:
       rot: 3.141592653589793 rad
       pos: 68.5,76.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -37986,6 +38121,18 @@ entities:
       containers:
         pipe-crawling: !type:Container
           ents: []
+  - uid: 8045
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 52.5,89.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
   - uid: 8461
     components:
     - type: Transform
@@ -38003,6 +38150,8 @@ entities:
       rot: 3.141592653589793 rad
       pos: 67.5,76.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -38302,6 +38451,30 @@ entities:
       containers:
         pipe-crawling: !type:Container
           ents: []
+  - uid: 8673
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 64.5,93.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 8783
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 62.5,83.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
   - uid: 8876
     components:
     - type: Transform
@@ -38429,6 +38602,18 @@ entities:
       containers:
         pipe-crawling: !type:Container
           ents: []
+  - uid: 8938
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 61.5,83.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
   - uid: 9035
     components:
     - type: Transform
@@ -38485,6 +38670,126 @@ entities:
       parent: 1
     - type: AtmosPipeColor
       color: '#0335FCFF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 9114
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 59.5,84.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 9115
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 58.5,84.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 9116
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 57.5,84.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 9117
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 56.5,84.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 9118
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 55.5,84.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 9119
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 54.5,84.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 9121
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 53.5,85.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 9122
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 53.5,86.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 9123
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 53.5,87.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 9125
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 52.5,88.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -38729,6 +39034,18 @@ entities:
       parent: 1
     - type: AtmosPipeColor
       color: '#0335FCFF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 6038
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 66.5,95.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -39280,6 +39597,18 @@ entities:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: 70.5,81.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 6966
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 64.5,81.5
       parent: 1
     - type: AtmosPipeColor
       color: '#FF1212FF'
@@ -40156,6 +40485,8 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 64.5,96.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -40166,6 +40497,8 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 63.5,93.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -40176,6 +40509,8 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 65.5,95.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -40186,6 +40521,8 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 75.5,32.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -40196,6 +40533,8 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 75.5,31.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -40205,6 +40544,8 @@ entities:
     - type: Transform
       pos: 48.5,33.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -40214,6 +40555,8 @@ entities:
     - type: Transform
       pos: 49.5,36.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -40224,6 +40567,8 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 75.5,72.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -40234,6 +40579,8 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 73.5,73.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -40243,6 +40590,8 @@ entities:
     - type: Transform
       pos: 68.5,72.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -40253,6 +40602,8 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 63.5,74.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -40263,6 +40614,8 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 63.5,75.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -40273,6 +40626,8 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 75.5,94.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -40282,6 +40637,8 @@ entities:
     - type: Transform
       pos: 67.5,71.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -40292,6 +40649,8 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 48.5,78.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -40302,6 +40661,8 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 76.5,55.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -40312,6 +40673,8 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 76.5,53.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -40322,6 +40685,8 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 64.5,42.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -40517,6 +40882,9 @@ entities:
     - type: Transform
       pos: 65.5,94.5
       parent: 1
+    - type: DeviceNetwork
+      deviceLists:
+      - 2890
     - type: AtmosPipeColor
       color: '#0335FCFF'
     - type: ContainerContainer
@@ -40846,21 +41214,6 @@ entities:
       deviceLists:
       - 2897
       - 2838
-    - type: AtmosPipeColor
-      color: '#0335FCFF'
-    - type: ContainerContainer
-      containers:
-        pipe-crawling: !type:Container
-          ents: []
-  - uid: 7760
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 51.5,88.5
-      parent: 1
-    - type: DeviceNetwork
-      deviceLists:
-      - 8874
     - type: AtmosPipeColor
       color: '#0335FCFF'
     - type: ContainerContainer
@@ -41277,6 +41630,18 @@ entities:
       containers:
         pipe-crawling: !type:Container
           ents: []
+  - uid: 8784
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 51.5,89.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
   - uid: 8800
     components:
     - type: Transform
@@ -41433,6 +41798,8 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 71.5,95.5
       parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -42008,6 +42375,21 @@ entities:
       containers:
         pipe-crawling: !type:Container
           ents: []
+  - uid: 8782
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 65.5,93.5
+      parent: 1
+    - type: DeviceNetwork
+      deviceLists:
+      - 2890
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
   - uid: 8834
     components:
     - type: Transform
@@ -42020,6 +42402,18 @@ entities:
       deviceLists:
       - 8616
       - 8617
+    - type: ContainerContainer
+      containers:
+        pipe-crawling: !type:Container
+          ents: []
+  - uid: 9126
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 51.5,88.5
+      parent: 1
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         pipe-crawling: !type:Container
@@ -51066,31 +51460,6 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 87.5,24.5
       parent: 1
-  - uid: 8043
-    components:
-    - type: Transform
-      anchored: False
-      pos: -11.5,-43.5
-      parent: 119
-    - type: Physics
-      bodyType: Dynamic
-  - uid: 8044
-    components:
-    - type: Transform
-      anchored: False
-      rot: 1.5707963267948966 rad
-      pos: -11.5,-45.5
-      parent: 119
-    - type: Physics
-      bodyType: Dynamic
-  - uid: 8045
-    components:
-    - type: Transform
-      anchored: False
-      pos: 23.5,-45.5
-      parent: 119
-    - type: Physics
-      bodyType: Dynamic
   - uid: 8507
     components:
     - type: Transform
@@ -51103,33 +51472,6 @@ entities:
       rot: 3.141592653589793 rad
       pos: 41.5,35.5
       parent: 1
-  - uid: 8782
-    components:
-    - type: Transform
-      anchored: False
-      rot: -1.5707963267948966 rad
-      pos: -22.5,-32.5
-      parent: 119
-    - type: Physics
-      bodyType: Dynamic
-  - uid: 8783
-    components:
-    - type: Transform
-      anchored: False
-      rot: 3.141592653589793 rad
-      pos: -22.5,-29.5
-      parent: 119
-    - type: Physics
-      bodyType: Dynamic
-  - uid: 8784
-    components:
-    - type: Transform
-      anchored: False
-      rot: 3.141592653589793 rad
-      pos: -22.5,-34.5
-      parent: 119
-    - type: Physics
-      bodyType: Dynamic
 - proto: RandomArcade
   entities:
   - uid: 4318
@@ -53329,10 +53671,11 @@ entities:
     - type: Transform
       pos: 75.5,99.5
       parent: 1
-  - uid: 6597
+  - uid: 7760
     components:
     - type: Transform
-      pos: 70.5,101.5
+      rot: -1.5707963267948966 rad
+      pos: 73.5,99.5
       parent: 1
 - proto: ShelfKitchen
   entities:
@@ -55291,7 +55634,7 @@ entities:
       parent: 1
 - proto: SpawnPointChemist
   entities:
-  - uid: 8938
+  - uid: 5988
     components:
     - type: Transform
       pos: 52.5,78.5
@@ -55312,11 +55655,6 @@ entities:
       parent: 1
 - proto: SpawnPointClown
   entities:
-  - uid: 4505
-    components:
-    - type: Transform
-      pos: 67.5,88.5
-      parent: 1
   - uid: 5467
     components:
     - type: Transform
@@ -58671,7 +59009,7 @@ entities:
   - uid: 8458
     components:
     - type: Transform
-      pos: 77.70336,101.5134
+      pos: 77.42828,99.69705
       parent: 1
 - proto: ToyFigurineSecurity
   entities:
@@ -65515,7 +65853,7 @@ entities:
       pos: 55.5,56.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -64684.273
+      secondsUntilStateChange: -67233.87
       state: Opening
 - proto: WoodenBench
   entities:
