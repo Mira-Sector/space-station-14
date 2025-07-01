@@ -24,6 +24,13 @@ namespace Content.Server.Botany
         public bool Cleanable = false;
 
         /// <summary>
+        /// Whether the swab can be used if it has no seed data, default true
+        /// If false, a seperate may to provide seed data is required or the swab will be unusable
+        /// </summary>
+        [DataField]
+        public bool Usable = true;
+
+        /// <summary>
         /// SeedData from the first plant that got swabbed.
         /// </summary>
         public SeedData? SeedData;

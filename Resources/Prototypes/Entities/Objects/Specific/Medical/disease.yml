@@ -13,6 +13,7 @@
     tags:
     - Recyclable
     - Trash
+    - Swab
   - type: BotanySwab
   - type: GuideHelp
     guides:
@@ -28,6 +29,46 @@
   components:
   - type: BotanySwab
     cleanable: true
+
+- type: entity
+  parent: BaseItem
+  id: SwabApplicator
+  name: Swab Applicator
+  description: A thin device that can hold a single swab, able to apply pollon without risk of cross-contamination.
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Pistols/viper.rsi #to change
+    layers:
+    - state: base
+      map: ["enum.GunVisualLayers.Base"]
+    - state: mag-0
+      map: ["enum.GunVisualLayers.Mag"]
+  - type: Item
+    size: Small
+  - type: ItemSlots
+    ejectOnUse: true
+    slots:
+      swabs:
+        name: Swab
+        insertSound: /Audio/Weapons/Guns/MagIn/pistol_magin.ogg
+        ejectSound: /Audio/Weapons/Guns/MagOut/pistol_magout.ogg
+        priority: 1
+        whitelist:
+          tags:
+          - Swab
+        whitelistFailPopup: swab-applicator-whitelist-fail
+  - type: ContainerContainer
+    containers:
+      swabs: !type:ContainerSlot
+  - type: MagazineVisuals
+    magState: mag
+    steps: 1
+    zeroVisible: true
+  - type: Appearance
+  - type: BotanySwab
+    swabDelay: 0.75
+    usable: false
+    contaminate: false
 
 - type: entity
   parent: BaseAmmoProvider # this is for cycling swabs out and not spawning 30 entities, trust
