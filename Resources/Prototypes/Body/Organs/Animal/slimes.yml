@@ -34,43 +34,6 @@
       damageContainer: Liver
 
 - type: entity
-  id: OrganSlimesLungs
-  parent: BaseHumanOrgan
-  name: slimes gas sacs
-  description: "Collects nitrogen, which slime cells use for maintenance."
-  components:
-    - type: Sprite
-      sprite: Mobs/Species/Slime/organs.rsi
-      layers:
-        - state: lung-l-slime
-        - state: lung-r-slime
-    - type: Organ
-      organType: Lungs
-    - type: Lung
-      alert: LowNitrogen
-    - type: Metabolizer
-      removeEmpty: true
-      solutionOnBody: false
-      solution: "Lung"
-      metabolizerTypes: [ Slime ]
-      groups:
-      - id: Gas
-        rateModifier: 100.0
-    - type: SolutionContainerManager
-      solutions:
-        organ:
-          reagents:
-          - ReagentId: Nutriment
-            Quantity: 10
-        Lung:
-          maxVol: 100.0
-          canReact: false
-    - type: Temperature
-    - type: Perishable
-      rotAfter: 990
-      molsPerSecondPerUnitMass: 0
-
-- type: entity
   id: OrganSlimesTongue
   parent: OrganHumanTongue
   components:

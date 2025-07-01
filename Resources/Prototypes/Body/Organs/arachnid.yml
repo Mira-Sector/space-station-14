@@ -53,17 +53,10 @@
 
 - type: entity
   id: OrganArachnidLungs
-  parent: BaseArachnidOrgan
+  parent: [ BaseArachnidOrgan, BaseOrganLungs ]
   name: lungs
   description: "Filters oxygen from an atmosphere... just more greedily."
   components:
-  - type: Sprite
-    layers:
-      - state: lung-l
-      - state: lung-r
-  - type: Organ
-    organType: Lungs
-  - type: Lung
   - type: Metabolizer
     updateInterval: 1.5
     removeEmpty: true
@@ -73,25 +66,6 @@
     groups:
     - id: Gas
       rateModifier: 100.0
-  - type: SolutionContainerManager
-    solutions:
-      organ:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 10
-      Lung:
-        maxVol: 100.0
-        canReact: false
-      food:
-        maxVol: 5
-        reagents:
-        - ReagentId: UncookedAnimalProteins
-          Quantity: 5
-  - type: Temperature
-  - type: Perishable
-    rotAfter: 990
-    molsPerSecondPerUnitMass: 0
-  - type: CoughOnRespire
 
 - type: entity
   id: OrganArachnidHeart

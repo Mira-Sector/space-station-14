@@ -98,18 +98,12 @@
 
 - type: entity
   id: OrganDionaLungs
-  parent: BaseDionaOrgan
+  parent: [ BaseDionaOrgan, BaseOrganLungs ]
   name: lungs
   description: "A spongy mess of slimy, leaf-like structures. Capable of breathing both carbon dioxide and oxygen."
   components:
   - type: Sprite
     state: lungs
-  - type: Item
-    size: Small
-    heldPrefix: lungs
-  - type: Organ
-    organType: Lungs
-  - type: Lung
   - type: Metabolizer
     removeEmpty: true
     solutionOnBody: false
@@ -128,11 +122,6 @@
       Lung:
         maxVol: 100
         canReact: False
-  - type: Temperature
-  - type: Perishable
-    rotAfter: 990
-    molsPerSecondPerUnitMass: 0
-  - type: CoughOnRespire
 
 # Organs that turn into nymphs on removal
 - type: entity

@@ -10,8 +10,8 @@ public sealed partial class CoughOnBodyDamageComponent : BaseOnBodyDamageCompone
     public float CurrentChance;
 
     [DataField]
-    public float MinChance;
+    public float MinChance = 0f;
 
     [DataField]
-    public float MaxChance;
+    public float MaxChance = 1f;
 }

@@ -47,7 +47,7 @@
 
 - type: entity
   id: OrganSlimeLungs
-  parent: BaseHumanOrgan
+  parent: [ BaseHumanOrgan, BaseOrganLungs ]
   name: slime gas sacs
   description: "Collects nitrogen, which slime cells use for maintenance."
   components:
@@ -56,8 +56,6 @@
     layers:
       - state: lung-l-slime
       - state: lung-r-slime
-  - type: Organ
-    organType: Lungs
   - type: Lung
     alert: LowNitrogen
   - type: Metabolizer
@@ -82,14 +80,6 @@
         reagents:
         - ReagentId: UncookedAnimalProteins
           Quantity: 5
-  - type: Item
-    size: Small
-    heldPrefix: lungs
-  - type: Temperature
-  - type: Perishable
-    rotAfter: 990
-    molsPerSecondPerUnitMass: 0
-  - type: CoughOnRespire
 
 - type: entity
   id: OrganSlimeTongue
