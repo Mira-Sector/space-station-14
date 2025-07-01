@@ -9,7 +9,7 @@
       - left leg
       - right leg
       organs:
-        core: SentientSlimesCore
+        core: SentientSlimeCore
         lungs: OrganSlimeLungs
         tongue: OrganSlimesTongue
     left leg:
@@ -34,7 +34,7 @@
       - left leg
       - right leg
       organs:
-        core: SentientSlimesCore
+        core: SentientSlimeCore
         lungs: OrganSlimeLungs
     left leg:
       part: LeftLegGeras

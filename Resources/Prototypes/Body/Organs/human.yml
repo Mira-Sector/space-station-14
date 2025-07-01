@@ -187,35 +187,9 @@
 
 - type: entity
   id: OrganHumanLiver
-  parent: BaseHumanOrgan
+  parent: [ BaseHumanOrgan, BaseOrganLiver ]
   name: liver
   description: "Pairing suggestion: chianti and fava beans."
-  components:
-  - type: Sprite
-    state: liver
-  - type: Organ
-    organType: Liver
-  - type: Item
-    size: Small
-    heldPrefix: liver
-  - type: Metabolizer # The liver metabolizes certain chemicals only, like alcohol.
-    maxReagents: 1
-    metabolizerTypes: [Human]
-    groups:
-    - id: Alcohol
-      rateModifier: 0.1 # removes alcohol very slowly along with the stomach removing it as a drink
-  - type: Damageable
-    damageContainer: Liver
-  - type: OrganRotDamage
-    mode: Rotting
-    damage:
-      types:
-        Poison: 4
-  - type: Temperature
-  - type: MetabolizerRot
-  - type: Perishable
-    rotAfter: 900
-    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganHumanKidneys

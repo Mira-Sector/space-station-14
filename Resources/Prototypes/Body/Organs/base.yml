@@ -146,6 +146,7 @@
     minProb: 0.005
     maxProb: 0.5
     scaleProbToDamage: 100
+  - type: MetabolizerDelayOnBodyDamage
   - type: SolutionContainerManager
     solutions:
       stomach:
@@ -175,3 +176,42 @@
 - type: entity
   id: BaseOrganLiver
   abstract: true
+  components:
+  - type: Sprite
+    state: liver
+  - type: Organ
+    organType: Liver
+  - type: Item
+    size: Small
+    heldPrefix: liver
+  - type: Metabolizer # The liver metabolizes certain chemicals only, like alcohol.
+    maxReagents: 1
+    metabolizerTypes: [Human]
+    groups:
+    - id: Alcohol
+      rateModifier: 0.1 # removes alcohol very slowly along with the stomach removing it as a drink
+  - type: Damageable
+    damageContainer: Liver
+  - type: BodyDamageable
+  - type: BodyDamageThresholds
+    thresholds:
+      Alive: 0
+      Wounded: 10
+      Dead: 100
+  - type: BodyDamageOnRot
+    minRotStage: 1
+    fullyRottenDamage: 100
+  - type: DamageOnBodyDamage
+    requiredStates:
+    - Wounded
+    - Dead
+    mode: Damage
+    damageDelay: 1
+    damage:
+      types:
+        Poison: 4
+  - type: MetabolizerDelayOnBodyDamage
+  - type: Temperature
+  - type: Perishable
+    rotAfter: 900
+    molsPerSecondPerUnitMass: 0
