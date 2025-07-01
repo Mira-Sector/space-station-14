@@ -227,3 +227,21 @@
     - id: Medicine
     - id: Poison
     - id: Narcotic
+  - type: OrganMissingDamage
+    damage:
+      types:
+        Cellular: 0.02
+  - type: BodyDamageable
+  - type: BodyDamageThresholds
+    thresholds:
+      Alive: 0
+      Wounded: 10
+      Dead: 100
+  - type: BodyDamageOnRot
+    minRotStage: 1
+    fullyRottenDamage: 100
+  - type: MetabolizerDelayOnBodyDamage
+  - type: Temperature
+  - type: Perishable
+    rotAfter: 900
+    molsPerSecondPerUnitMass: 0
