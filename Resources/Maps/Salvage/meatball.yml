@@ -1092,7 +1092,7 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 3.3358135,-1.0707432
       parent: 1
-- proto: OrganDwarfHeart
+- proto: OrganHumanHeart
   entities:
   - uid: 167
     components:

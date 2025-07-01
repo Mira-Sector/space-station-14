@@ -12,6 +12,7 @@
         core: SentientSlimeCore
         lungs: OrganSlimeLungs
         tongue: OrganSlimesTongue
+        kidneys: OrganSlimeKidneys
     left leg:
       part: LeftLegSlimes
       connections:
@@ -36,6 +37,8 @@
       organs:
         core: SentientSlimeCore
         lungs: OrganSlimeLungs
+        tongue: OrganSlimeTongue
+        kidneys: OrganSlimeKidneys
     left leg:
       part: LeftLegGeras
       connections:

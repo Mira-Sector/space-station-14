@@ -53,7 +53,7 @@
 
 - type: entity
   id: OrganArachnidLungs
-  parent: [ BaseArachnidOrgan, BaseOrganLungs ]
+  parent: [ BaseOrganLungs, BaseArachnidOrgan ]
   name: lungs
   description: "Filters oxygen from an atmosphere... just more greedily."
   components:
@@ -69,22 +69,13 @@
 
 - type: entity
   id: OrganArachnidHeart
-  parent: [ BaseArachnidOrgan, BaseOrganHeart ]
+  parent: [ BaseOrganHeart, BaseArachnidOrgan ]
   name: heart
   description: "A disgustingly persistent little biological pump made for spiders."
-  components:
-  - type: Metabolizer
-    updateInterval: 1.5
-    maxReagents: 2
-    metabolizerTypes: [Arachnid]
-    groups:
-    - id: Medicine
-    - id: Poison
-    - id: Narcotic
 
 - type: entity
   id: OrganArachnidLiver
-  parent: [ BaseHumanOrgan, BaseOrganLiver ]
+  parent: [ BaseOrganLiver, BaseArachnidOrgan ]
   name: liver
   description: "Pairing suggestion: chianti and fava beans."
   categories: [ HideSpawnMenu ]
@@ -99,7 +90,7 @@
 
 - type: entity
   id: OrganArachnidKidneys
-  parent: BaseHumanOrgan
+  parent: [ BaseOrganKidneys, BaseArachnidOrgan ]
   name: kidneys
   description: "Filters toxins from the bloodstream."
   categories: [ HideSpawnMenu ]
@@ -116,9 +107,13 @@
     organType: Kidneys
   - type: Metabolizer
     updateInterval: 1.5
-    maxReagents: 5
-    metabolizerTypes: [Animal]
+    maxReagents: 2
     removeEmpty: true
+    metabolizerTypes: [Arachnid]
+    groups:
+    - id: Medicine
+    - id: Poison
+    - id: Narcotic
 
 - type: entity
   id: OrganArachnidEyes
