@@ -9,11 +9,11 @@ namespace Content.Shared.Damage.DamageSelector;
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class DamagePartSelectorComponent : Component
 {
-    [ViewVariables, AutoNetworkedField]
+    [ViewVariables, AutoNetworkedField, Access(typeof(DamagePartSelectorSystem))]
     public BodyPart SelectedPart = new(BodyPartType.Torso, BodyPartSymmetry.None);
 
     [DataField(required: true)]
-    public DamagePartSelectorEntry[] SelectableParts = [];
+    public DamagePartSelectorEntry[] SelectableParts;
 
     [DataField]
     public BodyPart MainPart = new(BodyPartType.Torso, BodyPartSymmetry.None);

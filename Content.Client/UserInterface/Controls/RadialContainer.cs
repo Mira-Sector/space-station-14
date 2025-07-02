@@ -5,7 +5,7 @@ using System.Numerics;
 namespace Content.Client.UserInterface.Controls;
 
 [Virtual]
-public class RadialContainer : LayoutContainer
+public partial class RadialContainer : LayoutContainer
 {
     /// <summary>
     /// Increment of radius per child element to be rendered.
@@ -134,7 +134,14 @@ public class RadialContainer : LayoutContainer
         {
             const float angleOffset = MathF.PI * 0.5f;
 
-            var targetAngleOfChild = AngularRange.X + sepAngle * (childIndex + 0.5f) + angleOffset;
+            var baseAngle = AngularRange.X + sepAngle * childIndex;
+
+            // for odd number of children
+            // offset all angles by half a segment to center the middle one at top
+            if (childCount % 2 == 1 && MathHelper.CloseTo(arc, MathF.Tau, 0.01f))
+                baseAngle -= sepAngle * 0.5f;
+
+            var targetAngleOfChild = baseAngle + sepAngle * 0.5f + angleOffset;
 
             // flooring values for snapping float values to physical grid -
             // it prevents gaps and overlapping between different button segments
@@ -149,8 +156,8 @@ public class RadialContainer : LayoutContainer
             // they should be rendered, how much space sector should should take etc.
             if (child is IRadialMenuItemWithSector tb)
             {
-                tb.AngleSectorFrom = sepAngle * childIndex;
-                tb.AngleSectorTo = sepAngle * (childIndex + 1);
+                tb.AngleSectorFrom = baseAngle;
+                tb.AngleSectorTo = baseAngle + sepAngle;
                 tb.AngleOffset = angleOffset;
                 tb.InnerRadius = CalculatedRadius * InnerRadiusMultiplier;
                 tb.OuterRadius = CalculatedRadius * OuterRadiusMultiplier;

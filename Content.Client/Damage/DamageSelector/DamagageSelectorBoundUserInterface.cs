@@ -36,9 +36,15 @@ public sealed class DamageSelectorBoundUserInterface : BoundUserInterface
 
         DamagePartSelectorEntry[] entries;
 
-        if (GetMainButton(damageSelector, out var mainIndex))
+        if (GetMainButton(damageSelector, out var mainIndex, out var mainEntry))
         {
-            var mainEntry = damageSelector.SelectableParts[mainIndex.Value];
+            /*
+             * this sucks
+             * redo whenever proper center buttons get added
+             * this includes the mess i made inside radial menus
+             * it is essentially not reusable and is made entirely for this
+             * doesnt support layered radial menus and is a pain to setup (see for yourself below)
+            */
             _menu.ContextualButton.TextureNormal = _sprite.Frame0(mainEntry.Sprite);
             _menu.ContextualButton.BackgroundColor = RadialMenuTextureButtonWithSector.DefaultBackgroundColor;
             _menu.ContextualButton.HoverBackgroundColor = RadialMenuTextureButtonWithSector.DefaultHoverBackgroundColor;
@@ -48,14 +54,13 @@ public sealed class DamageSelectorBoundUserInterface : BoundUserInterface
             entries = new DamagePartSelectorEntry[damageSelector.SelectableParts.Length - 1];
 
             if (mainIndex > 0)
-                Array.Copy(damageSelector.SelectableParts, 0, entries, 0, mainIndex.Value);
+                Array.Copy(damageSelector.SelectableParts, 0, entries, 0, mainIndex);
 
             if (mainIndex < damageSelector.SelectableParts.Length - 1)
-                Array.Copy(damageSelector.SelectableParts, mainIndex.Value + 1, entries, mainIndex.Value, damageSelector.SelectableParts.Length - mainIndex.Value - 1);
+                Array.Copy(damageSelector.SelectableParts, mainIndex + 1, entries, mainIndex, damageSelector.SelectableParts.Length - mainIndex - 1);
         }
         else
         {
-            _menu = new SimpleRadialMenu();
             entries = damageSelector.SelectableParts;
         }
 
@@ -64,11 +69,11 @@ public sealed class DamageSelectorBoundUserInterface : BoundUserInterface
         _menu.OpenOverMouseScreenPosition();
     }
 
-    private static bool GetMainButton(DamagePartSelectorComponent damageSelector, [NotNullWhen(true)] out int? index)
+    private static bool GetMainButton(DamagePartSelectorComponent damageSelector, out int index, [NotNullWhen(true)] out DamagePartSelectorEntry? entry)
     {
         for (index = 0; index < damageSelector.SelectableParts.Length; index++)
         {
-            var entry = damageSelector.SelectableParts[index.Value];
+            entry = damageSelector.SelectableParts[index];
             if (entry.BodyPart.Type != damageSelector.MainPart.Type)
                 continue;
 
@@ -78,7 +83,7 @@ public sealed class DamageSelectorBoundUserInterface : BoundUserInterface
             return true;
         }
 
-        index = null;
+        entry = null;
         return false;
     }
 
@@ -105,6 +110,6 @@ public sealed class DamageSelectorBoundUserInterface : BoundUserInterface
     private void HandleRadialMenuClick(BodyPart part)
     {
         var ev = new DamageSelectorSystemMessage(part);
-        SendMessage(ev);
+        SendPredictedMessage(ev);
     }
 }
