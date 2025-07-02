@@ -1,4 +1,3 @@
-using Content.Shared.Actions;
 using Content.Shared.Body.Part;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
@@ -17,9 +16,6 @@ public sealed partial class DamagePartSelectorComponent : Component
 
     [DataField]
     public BodyPart MainPart = new(BodyPartType.Torso, BodyPartSymmetry.None);
-
-    [ViewVariables]
-    public EntityUid? Action;
 }
 
 [Serializable, NetSerializable]
@@ -32,8 +28,6 @@ public sealed partial class DamagePartSelectorEntry
     [DataField(required: true)]
     public SpriteSpecifier Sprite;
 }
-
-public sealed partial class DamageSelectorActionEvent : InstantActionEvent;
 
 [Serializable, NetSerializable]
 public enum DamageSelectorUiKey : byte
