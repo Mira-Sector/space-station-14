@@ -6,6 +6,7 @@ using Content.Shared.Interaction;
 using Content.Shared.Swab;
 using Content.Shared.Interaction.Events;
 using Robust.Shared.Containers;
+using Robust.Shared.Audio.Systems;
 
 namespace Content.Server.Botany.Systems;
 
@@ -14,6 +15,7 @@ public sealed class BotanySwabSystem : EntitySystem
     [Dependency] private readonly SharedDoAfterSystem _doAfterSystem = default!;
     [Dependency] private readonly PopupSystem _popupSystem = default!;
     [Dependency] private readonly MutationSystem _mutationSystem = default!;
+    [Dependency] private readonly SharedAudioSystem _audioSystem = default!;
 
     public override void Initialize()
     {
@@ -51,7 +53,7 @@ public sealed class BotanySwabSystem : EntitySystem
 
         if (swab.Usable == false && swab.SeedData == null)
         {
-            _popupSystem.PopupClient(Loc.GetString("botany-swab-unusable"), swab.Owner, args.User);
+            _popupSystem.PopupClient(Loc.GetString("botany-swab-unusable"), uid, args.User);
             return;
         }
 
@@ -71,6 +73,7 @@ public sealed class BotanySwabSystem : EntitySystem
         if (args.Cancelled || args.Handled || !TryComp<PlantHolderComponent>(args.Args.Target, out var plant))
             return;
 
+        _audioSystem.PlayPvs(swab.SwabSound, uid);
         if (swab.SeedData == null)
         {
             // Pick up pollen
@@ -87,7 +90,6 @@ public sealed class BotanySwabSystem : EntitySystem
                 swab.SeedData = old; // Transfer old plant pollen to swab
             _popupSystem.PopupEntity(Loc.GetString("botany-swab-to"), args.Args.Target.Value, args.Args.User);
         }
-
         args.Handled = true;
     }
 
@@ -99,7 +101,8 @@ public sealed class BotanySwabSystem : EntitySystem
         if (swab.Cleanable == true)
         {
             swab.SeedData = null;
-            _popupSystem.PopupClient(Loc.GetString("botany-swab-clean"), swab.Owner, args.User);
+            _popupSystem.PopupClient(Loc.GetString("botany-swab-clean"), uid, args.User);
+            _audioSystem.PlayPvs(swab.CleanSound, uid);
         }
         args.Handled = true;
     }
@@ -107,9 +110,18 @@ public sealed class BotanySwabSystem : EntitySystem
     private void OnInsertAttempt(EntityUid uid, BotanySwabComponent swab, ref ContainerGettingInsertedAttemptEvent args)
     {
         if (!TryComp<BotanySwabComponent>(args.Container.Owner, out var applicator)) //does the container have the botanySwab component
+        {
+            args.Cancel();
             return;
+        }
 
-        //Log.Debug(uid.Id.ToString());
+        if (applicator.SeedData == null)
+        {
+            _popupSystem.PopupClient(Loc.GetString("swab-applicator-needs-pollen"), uid);
+            args.Cancel();
+            return;
+        }
+
         applicator.SeedData = swab.SeedData;
     }
 
@@ -118,9 +130,6 @@ public sealed class BotanySwabSystem : EntitySystem
         if (!TryComp<BotanySwabComponent>(args.Container.Owner, out var applicator)) //does the container have the botanySwab component
             return;
 
-        //Log.Debug("Reset Applicator to Null");
         applicator.SeedData = null;
     }
-
-
 }

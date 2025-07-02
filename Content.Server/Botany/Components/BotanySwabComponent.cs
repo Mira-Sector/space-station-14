@@ -1,4 +1,5 @@
 using System.Threading;
+using Robust.Shared.Audio;
 
 namespace Content.Server.Botany
 {
@@ -35,6 +36,8 @@ namespace Content.Server.Botany
         /// </summary>
         public SeedData? SeedData;
 
+        public SoundSpecifier SwabSound = new SoundPathSpecifier("/Audio/Effects/Footsteps/grass1.ogg");
 
+        public SoundSpecifier CleanSound = new SoundPathSpecifier("/Audio/Effects/unwrap.ogg");
     }
 }

@@ -14,6 +14,10 @@
         {
             "name": "icon2",
             "directions": 1
+        },
+        {
+            "name": "iconsynth",
+            "directions": 1
         }
     ]
 }
