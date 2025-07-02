@@ -644,5 +644,5 @@ binds:
   type: State
   key: C
 - function: DamagePartSelector
-  type: Toggle
+  type: State
   key: N
