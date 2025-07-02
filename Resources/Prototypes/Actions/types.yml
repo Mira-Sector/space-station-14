@@ -425,17 +425,6 @@
 
 - type: entity
   parent: BaseAction
-  id: ActionDamageSelector
-  name: Limb Selector
-  description: Change where you aim.
-  components:
-  - type: Action
-    icon: { sprite: Interface/Actions/zone_sel.rsi , state: torso }
-  - type: InstantAction
-    event: !type:DamageSelectorActionEvent
-
-- type: entity
-  parent: BaseAction
   id: ActionInstrument
   name: Play Music
   description: Play your sick dubstep.

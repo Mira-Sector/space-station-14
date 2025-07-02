@@ -10,17 +10,27 @@ using Robust.Shared.Input;
 namespace Content.Client.UserInterface.Controls;
 
 [Virtual]
-public class RadialMenu : BaseWindow
+public partial class RadialMenu : BaseWindow
 {
     /// <summary>
     /// Contextual button used to traverse through previous layers of the radial menu
     /// </summary>
-    public RadialMenuContextualCentralTextureButton ContextualButton { get; }
+    public RadialMenuContextualCentralTextureButton ContextualButton;
 
     /// <summary>
     /// Button that represents outer area of menu (closes menu on outside clicks).
     /// </summary>
     public RadialMenuOuterAreaButton MenuOuterAreaButton { get; }
+
+    /// <summary>
+    /// Action to perform when the center button is clicked (if not null, overrides default back behavior)
+    /// </summary>
+    public Action<RadialMenu>? CenterButtonAction { get; set; }
+
+    /// <summary>
+    /// Controls whether the center button performs its custom action or the default back behavior
+    /// </summary>
+    public bool CenterButtonPerformsCustomAction => CenterButtonAction != null;
 
     /// <summary>
     /// Set a style class to be applied to the contextual button when it is set to move the user back through previous layers of the radial menu
@@ -94,7 +104,7 @@ public class RadialMenu : BaseWindow
         };
         MenuOuterAreaButton = new RadialMenuOuterAreaButton();
 
-        ContextualButton.OnButtonUp += _ => ReturnToPreviousLayer();
+        ContextualButton.OnButtonUp += _ => OnContextualButtonClicked();
         MenuOuterAreaButton.OnButtonUp += _ => Close();
         AddChild(ContextualButton);
         AddChild(MenuOuterAreaButton);
@@ -105,6 +115,18 @@ public class RadialMenu : BaseWindow
             child.Visible = GetCurrentActiveLayer() == child;
             SetupContextualButtonData(child);
         };
+    }
+
+    private void OnContextualButtonClicked()
+    {
+        if (CenterButtonPerformsCustomAction)
+        {
+            CenterButtonAction?.Invoke(this);
+        }
+        else
+        {
+            ReturnToPreviousLayer();
+        }
     }
 
     private void SetupContextualButtonData(Control child)
@@ -219,7 +241,21 @@ public class RadialMenu : BaseWindow
         _path.RemoveAt(_path.Count - 1);
 
         // Set the style class of the button
-        if (_path.Count == 0 && ContextualButton != null && CloseButtonStyleClass != null)
+        if (_path.Count == 0 && ContextualButton != null)
+        {
+            if (CloseButtonStyleClass != null)
+                ContextualButton.SetOnlyStyleClass(CloseButtonStyleClass);
+        }
+    }
+
+    public void UpdateContextualButtonAppearance()
+    {
+        if (ContextualButton == null)
+            return;
+
+        if (_path.Count > 0 && BackButtonStyleClass != null)
+            ContextualButton.SetOnlyStyleClass(BackButtonStyleClass);
+        else if (CloseButtonStyleClass != null)
             ContextualButton.SetOnlyStyleClass(CloseButtonStyleClass);
     }
 }
@@ -259,6 +295,9 @@ public sealed class RadialMenuContextualCentralTextureButton : RadialMenuTexture
 
     public Vector2? ParentCenter { get; set; }
 
+    public Color? BackgroundColor;
+    public Color? HoverBackgroundColor;
+
     /// <inheritdoc />
     protected override bool HasPoint(Vector2 point)
     {
@@ -273,6 +312,25 @@ public sealed class RadialMenuContextualCentralTextureButton : RadialMenuTexture
 
         // comparing to squared values is faster then making sqrt
         return distSquared < innerRadiusSquared;
+    }
+
+    protected override void Draw(DrawingHandleScreen handle)
+    {
+        base.Draw(handle);
+
+        if (ParentCenter == null)
+            return;
+
+        var segmentColor = DrawMode == DrawModeEnum.Hover
+            ? HoverBackgroundColor
+            : BackgroundColor;
+
+        if (segmentColor == null)
+            return;
+
+        var pos = (ParentCenter.Value - Position) * UIScale;
+        var radius = InnerRadius * UIScale;
+        handle.DrawCircle(pos, radius, segmentColor.Value);
     }
 }
 
@@ -404,8 +462,11 @@ public class RadialMenuTextureButtonWithSector : RadialMenuTextureButton, IRadia
     private bool _isWholeCircle;
     private Vector2? _parentCenter;
 
-    private Color _backgroundColorSrgb = Color.ToSrgb(new Color(70, 73, 102, 128));
-    private Color _hoverBackgroundColorSrgb = Color.ToSrgb(new Color(87, 91, 127, 128));
+    public static readonly Color DefaultBackgroundColor = Color.ToSrgb(new Color(70, 73, 102, 128));
+    public static readonly Color DefaultHoverBackgroundColor = Color.ToSrgb(new Color(87, 91, 127, 128));
+
+    private Color _backgroundColorSrgb = DefaultBackgroundColor;
+    private Color _hoverBackgroundColorSrgb = DefaultHoverBackgroundColor;
     private Color _borderColorSrgb = Color.ToSrgb(new Color(173, 216, 230, 70));
     private Color _hoverBorderColorSrgb = Color.ToSrgb(new Color(87, 91, 127, 128));
 

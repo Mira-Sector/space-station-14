@@ -1,6 +1,7 @@
-using Content.Shared.Actions;
+using Content.Shared.Alert;
 using Content.Shared.Body.Part;
 using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
 
@@ -9,14 +10,17 @@ namespace Content.Shared.Damage.DamageSelector;
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class DamagePartSelectorComponent : Component
 {
-    [ViewVariables, AutoNetworkedField]
+    [ViewVariables, AutoNetworkedField, Access(typeof(SharedDamagePartSelectorSystem))]
     public BodyPart SelectedPart = new(BodyPartType.Torso, BodyPartSymmetry.None);
 
     [DataField(required: true)]
-    public List<DamagePartSelectorEntry> SelectableParts = [];
+    public DamagePartSelectorEntry[] SelectableParts;
 
-    [ViewVariables]
-    public EntityUid? Action;
+    [DataField]
+    public BodyPart MainPart = new(BodyPartType.Torso, BodyPartSymmetry.None);
+
+    [DataField]
+    public ProtoId<AlertPrototype> Alert = "LimbHealth";
 }
 
 [Serializable, NetSerializable]
@@ -30,8 +34,6 @@ public sealed partial class DamagePartSelectorEntry
     public SpriteSpecifier Sprite;
 }
 
-public sealed partial class DamageSelectorActionEvent : InstantActionEvent;
-
 [Serializable, NetSerializable]
 public enum DamageSelectorUiKey : byte
 {
@@ -39,12 +41,15 @@ public enum DamageSelectorUiKey : byte
 }
 
 [Serializable, NetSerializable]
-public sealed class DamageSelectorSystemMessage : BoundUserInterfaceMessage
+public enum DamageSelectorDollLayer : byte
 {
-    public BodyPart Part;
-
-    public DamageSelectorSystemMessage(BodyPart part)
-    {
-        Part = part;
-    }
+    Layer
 }
+
+[Serializable, NetSerializable]
+public sealed class DamageSelectorSystemMessage(BodyPart part) : BoundUserInterfaceMessage
+{
+    public readonly BodyPart Part = part;
+}
+
+public sealed partial class ShowDamagePartSelectorAlertEvent : BaseAlertEvent;

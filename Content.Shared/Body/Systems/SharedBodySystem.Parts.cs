@@ -863,12 +863,12 @@ public partial class SharedBodySystem
 
     #endregion
 
-    public BodyPartLayer BodyPartToLayer(BodyPartType type, BodyPartSymmetry side)
+    public static BodyPartLayer BodyPartToLayer(BodyPartType type, BodyPartSymmetry side)
     {
         return BodyPartToLayer(new BodyPart(type, side));
     }
 
-    public BodyPartLayer BodyPartToLayer(BodyPart bodyPart)
+    public static BodyPartLayer BodyPartToLayer(BodyPart bodyPart)
     {
         return bodyPart.Type switch
         {
