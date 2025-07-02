@@ -11,6 +11,7 @@
     - map: [ "enum.BodyPartLayer.RArm" ]
     - map: [ "enum.BodyPartLayer.LLeg" ]
     - map: [ "enum.BodyPartLayer.RLeg" ]
+    - map: [ "enum.DamageSelectorDollLayer.Layer" ]
 
 - type: alert
   id: LimbHealth
@@ -20,3 +21,4 @@
   alertViewEntity: AlertLimbDamageSpriteView
   name: alerts-limbs-name
   description: alerts-limbs-desc
+  clickEvent: !type:ShowDamagePartSelectorAlertEvent

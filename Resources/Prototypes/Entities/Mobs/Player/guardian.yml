@@ -88,16 +88,16 @@
           state: head
       - bodyPart:
           type: Arm
-          side: Left
+          side: Right
         sprite:
           sprite: Interface/Actions/zone_sel.rsi
-          state: larm
+          state: rarm
       - bodyPart:
           type: Leg
-          side: Left
+          side: Right
         sprite:
           sprite: Interface/Actions/zone_sel.rsi
-          state: lleg
+          state: rleg
       - bodyPart:
           type: Torso
           side: None
@@ -106,16 +106,16 @@
           state: torso
       - bodyPart:
           type: Leg
-          side: Right
+          side: Left
         sprite:
           sprite: Interface/Actions/zone_sel.rsi
-          state: rleg
+          state: lleg
       - bodyPart:
           type: Arm
-          side: Right
+          side: Left
         sprite:
           sprite: Interface/Actions/zone_sel.rsi
-          state: rarm
+          state: larm
     - type: Internals
     - type: Examiner
     - type: Speech

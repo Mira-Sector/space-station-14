@@ -643,3 +643,6 @@ binds:
 - function: ToggleCrawling
   type: State
   key: C
+- function: DamagePartSelector
+  type: State
+  key: N
