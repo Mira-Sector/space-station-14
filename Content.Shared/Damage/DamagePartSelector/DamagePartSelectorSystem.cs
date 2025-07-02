@@ -1,5 +1,4 @@
 using Content.Shared.Actions;
-using Content.Shared.Actions.Components;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 
@@ -17,7 +16,7 @@ public sealed class DamagePartSelectorSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<DamagePartSelectorComponent, MapInitEvent >(OnInit);
+        SubscribeLocalEvent<DamagePartSelectorComponent, MapInitEvent>(OnInit);
         SubscribeLocalEvent<DamagePartSelectorComponent, ComponentRemove>(OnRemoved);
 
         SubscribeLocalEvent<DamagePartSelectorComponent, DamageSelectorActionEvent>(OnAction);

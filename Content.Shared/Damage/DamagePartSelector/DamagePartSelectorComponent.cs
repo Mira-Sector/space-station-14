@@ -13,7 +13,7 @@ public sealed partial class DamagePartSelectorComponent : Component
     public BodyPart SelectedPart = new(BodyPartType.Torso, BodyPartSymmetry.None);
 
     [DataField(required: true)]
-    public List<DamagePartSelectorEntry> SelectableParts = [];
+    public DamagePartSelectorEntry[] SelectableParts = [];
 
     [ViewVariables]
     public EntityUid? Action;
@@ -39,12 +39,7 @@ public enum DamageSelectorUiKey : byte
 }
 
 [Serializable, NetSerializable]
-public sealed class DamageSelectorSystemMessage : BoundUserInterfaceMessage
+public sealed class DamageSelectorSystemMessage(BodyPart part) : BoundUserInterfaceMessage
 {
-    public BodyPart Part;
-
-    public DamageSelectorSystemMessage(BodyPart part)
-    {
-        Part = part;
-    }
+    public readonly BodyPart Part = part;
 }
