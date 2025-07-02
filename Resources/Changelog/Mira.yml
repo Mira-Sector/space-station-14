@@ -1813,3 +1813,9 @@ Entries:
     type: Add
   id: 257
   time: '2025-06-26T23:20:00.0000000+00:00'
+- author: SentientSalad
+  changes:
+  - message: Bullets now travel faster
+    type: Add
+  id: 258
+  time: '2025-07-02T01:00:00.0000000+00:00'
