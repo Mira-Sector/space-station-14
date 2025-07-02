@@ -1819,3 +1819,11 @@ Entries:
     type: Add
   id: 258
   time: '2025-07-02T01:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Limb damage selection has been reworked to be a keybind (n by default) and also toggled by clicking the limb doll
+    type: Tweak
+  - message: Improved the limb damage selection UI
+    type: Tweak
+  id: 259
+  time: '2025-07-02T07:00:00.0000000+00:00'
