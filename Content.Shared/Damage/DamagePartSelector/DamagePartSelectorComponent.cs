@@ -15,6 +15,9 @@ public sealed partial class DamagePartSelectorComponent : Component
     [DataField(required: true)]
     public DamagePartSelectorEntry[] SelectableParts = [];
 
+    [DataField]
+    public BodyPart MainPart = new(BodyPartType.Torso, BodyPartSymmetry.None);
+
     [ViewVariables]
     public EntityUid? Action;
 }
