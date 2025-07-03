@@ -111,16 +111,15 @@ public sealed class BotanySwabSystem : EntitySystem
     {
         if (!TryComp<BotanySwabComponent>(args.Container.Owner, out var applicator)) //does the container have the botanySwab component
         {
-            args.Cancel();
             return;
         }
 
-        if (applicator.SeedData == null)
-        {
-            _popupSystem.PopupClient(Loc.GetString("swab-applicator-needs-pollen"), uid);
-            args.Cancel();
-            return;
-        }
+        //if (applicator.SeedData == null)
+        //{
+        //    _popupSystem.PopupClient(Loc.GetString("swab-applicator-needs-pollen"), uid);
+        //    args.Cancel();
+        //    return;
+        //}
 
         applicator.SeedData = swab.SeedData;
     }
