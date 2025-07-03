@@ -15,6 +15,9 @@ public sealed partial class MetabolizerDelayOnBodyDamageSystem : BaseDelayOnBody
 
     private void OnGetDelay(Entity<MetabolizerDelayOnBodyDamageComponent> ent, ref GetMetabolizingUpdateDelay args)
     {
+        if (args.Cancelled)
+            return;
+
         if (!CanDoEffect(ent))
             return;
 

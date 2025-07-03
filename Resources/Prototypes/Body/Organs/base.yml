@@ -241,6 +241,11 @@
     minRotStage: 1
     fullyRottenDamage: 100
   - type: MetabolizerDelayOnBodyDamage
+    requiredStates:
+    - Wounded
+  - type: DisableMetabolisingOnBodyDamage
+    requiredStates:
+    - Dead
   - type: Temperature
   - type: Perishable
     rotAfter: 900

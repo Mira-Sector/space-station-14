@@ -4,7 +4,7 @@ using Content.Shared.Body.Damage.Systems;
 
 namespace Content.Server.Body.Damage.Systems;
 
-public sealed partial class DisableRespireOnBodyDamageSystem : BaseOnBodyDamageSystem<DisableRespireOnBodyDamageComponent>
+public sealed partial class DisableRespireOnBodyDamageSystem : BaseToggleOnBodyDamageSystem<DisableRespireOnBodyDamageComponent>
 {
     public override void Initialize()
     {
@@ -15,6 +15,6 @@ public sealed partial class DisableRespireOnBodyDamageSystem : BaseOnBodyDamageS
 
     private void OnCanRespire(Entity<DisableRespireOnBodyDamageComponent> ent, ref CanRespireEvent args)
     {
-        args.Enabled = !CanDoEffect(ent);
+        args.Enabled = ent.Comp.Enabled;
     }
 }
