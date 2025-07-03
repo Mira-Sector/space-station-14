@@ -38,8 +38,8 @@
   components:
   - type: Metabolizer
     removeEmpty: true
-    solutionOnBody: false
     solution: "Lung"
+    bodySolution: chemicals
     metabolizerTypes: [ Animal ]
     groups:
     - id: Gas

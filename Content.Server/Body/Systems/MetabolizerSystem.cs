@@ -1,5 +1,4 @@
 using Content.Server.Body.Components;
-using Content.Shared.Atmos.Rotting;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Body.Organ;
@@ -25,7 +24,6 @@ namespace Content.Server.Body.Systems
         [Dependency] private readonly IRobustRandom _random = default!;
         [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
         [Dependency] private readonly MobStateSystem _mobStateSystem = default!;
-        [Dependency] private readonly SharedRottingSystem _rotting = default!;
         [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
 
         private EntityQuery<OrganComponent> _organQuery;
@@ -111,36 +109,30 @@ namespace Content.Server.Body.Systems
             }
         }
 
-        private void TryMetabolize(Entity<MetabolizerComponent, OrganComponent?, SolutionContainerManagerComponent?> ent)
+        private void TryMetabolize(Entity<MetabolizerComponent, OrganComponent?> ent)
         {
             _organQuery.Resolve(ent, ref ent.Comp2, logMissing: false);
 
-            // First step is get the solution we actually care about
-            var solutionName = ent.Comp1.SolutionName;
-            Solution? solution = null;
-            Entity<SolutionComponent>? soln = default!;
-            EntityUid? solutionEntityUid = null;
-
-            if (ent.Comp1.SolutionOnBody)
+            if (ent.Comp1.SolutionOnBody && ent.Comp2?.Body is { } body)
             {
-                if (ent.Comp2?.Body is { } body)
-                {
-                    if (!_solutionQuery.Resolve(body, ref ent.Comp3, logMissing: false))
-                        return;
+                var bodySolutionName = ent.Comp1.BodySolutionName ?? ent.Comp1.SolutionName;
 
-                    _solutionContainerSystem.TryGetSolution((body, ent.Comp3), solutionName, out soln, out solution);
-                    solutionEntityUid = body;
+                if (_solutionQuery.TryComp(body, out var bodySolution))
+                {
+                    _solutionContainerSystem.TryGetSolution((body, bodySolution), bodySolutionName, out var soln, out var solution);
+                    Metabolize(ent, solution, soln, body);
                 }
             }
-            else
+
+            if (_solutionQuery.TryComp(ent, out var entSolution))
             {
-                if (!_solutionQuery.Resolve(ent, ref ent.Comp3, logMissing: false))
-                    return;
-
-                _solutionContainerSystem.TryGetSolution((ent, ent), solutionName, out soln, out solution);
-                solutionEntityUid = ent;
+                _solutionContainerSystem.TryGetSolution((ent.Owner, entSolution), ent.Comp1.SolutionName, out var soln, out var solution);
+                Metabolize(ent, solution, soln, ent);
             }
+        }
 
+        private void Metabolize(Entity<MetabolizerComponent, OrganComponent?> ent, Solution? solution, Entity<SolutionComponent>? soln, EntityUid? solutionEntityUid)
+        {
             if (solutionEntityUid is null
                 || soln is null
                 || solution is null
@@ -149,15 +141,12 @@ namespace Content.Server.Body.Systems
                 return;
             }
 
-            if (_rotting.IsRotten(ent))
-                return;
-
             // randomize the reagent list so we don't have any weird quirks
             // like alphabetical order or insertion order mattering for processing
             var list = solution.Contents.ToArray();
             _random.Shuffle(list);
 
-            int reagents = 0;
+            var reagents = 0;
             foreach (var (reagent, quantity) in list)
             {
                 if (!_prototypeManager.TryIndex<ReagentPrototype>(reagent.Prototype, out var proto))
@@ -193,7 +182,7 @@ namespace Content.Server.Body.Systems
                     // Remove $rate, as long as there's enough reagent there to actually remove that much
                     mostToRemove = FixedPoint2.Clamp(rate, 0, quantity);
 
-                    float scale = (float) mostToRemove / (float) rate;
+                    var scale = (float)mostToRemove / (float)rate;
 
                     // if it's possible for them to be dead, and they are,
                     // then we shouldn't process any effects, but should probably

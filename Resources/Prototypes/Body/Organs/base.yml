@@ -64,8 +64,8 @@
   - type: Lung
   - type: Metabolizer
     removeEmpty: true
-    solutionOnBody: false
     solution: "Lung"
+    bodySolution: chemicals
     metabolizerTypes: [ Human ]
     groups:
     - id: Gas

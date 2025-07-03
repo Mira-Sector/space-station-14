@@ -431,3 +431,9 @@ reagent-effect-guidebook-glowing =
         [1] Makes the
         *[other] makes the
     } individual emit a powerful glow
+
+reagent-effect-guidebook-body-damage =
+    { $deltasign ->
+        [-1] Heals [color=green]{NATURALFIXED($amount, 2)}[/color] organ damage
+        *[1] Deals [color=red]{NATURALFIXED($amount, 2)}[/color] organ damage
+    }
