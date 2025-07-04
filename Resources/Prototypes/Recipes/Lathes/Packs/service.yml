@@ -37,6 +37,8 @@
   - BoozeDispenserMachineCircuitboard
   - SodaDispenserMachineCircuitboard
   - WashingMachineCircuitboard
+  - SeedExtractorMachineCircuitboard
+  - HydroponicsTrayMachineCircuitboard
 
 - type: latheRecipePack
   id: HydroponicsStatic

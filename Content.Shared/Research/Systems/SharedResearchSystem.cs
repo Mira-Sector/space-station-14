@@ -85,6 +85,12 @@ public abstract class SharedResearchSystem : EntitySystem
                 return false;
         }
 
+        foreach (var prereq in tech.TechnologyBlacklist)
+        {
+            if (component.UnlockedTechnologies.Contains(prereq))
+                return false;
+        }
+
         return true;
     }
 

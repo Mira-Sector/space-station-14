@@ -22,6 +22,7 @@
     fixedRotation: false
   - type: CollisionWake
     enabled: false
+  - type: Rotatable
   - type: StepTrigger
     requiredTriggeredSpeed: 0
   - type: Appearance
@@ -33,14 +34,10 @@
         shape:
           !type:PhysShapeAabb
           bounds: "-0.4,-0.4,0.4,0.4"
+        density: 1
+        hard: false
         layer:
         - SlipLayer
-        hard: false
-      fix1:
-        shape:
-          !type:PhysShapeAabb
-          bounds: "-0.4,-0.4,0.4,0.4"
-        density: 1
         mask:
         - ItemMask
 

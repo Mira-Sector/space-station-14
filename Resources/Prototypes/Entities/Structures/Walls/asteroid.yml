@@ -12,9 +12,6 @@
   components:
   - type: Transform
     noRot: true
-  - type: IconSmooth
-    key: walls
-    mode: NoSprite
   - type: SmoothEdge
   - type: Icon
     sprite: Structures/Walls/rock.rsi
@@ -457,9 +454,6 @@
   suffix: Low Ore Yield
   description: A rocky asteroid.
   components:
-  - type: IconSmooth
-    key: walls
-    mode: NoSprite
   - type: Icon
     sprite: Structures/Walls/rock.rsi
     state: ironrock
@@ -786,9 +780,6 @@
       behaviors:
       - !type:DoActsBehavior
         acts: ["Destruction"]
-  - type: IconSmooth
-    key: walls
-    mode: NoSprite
   - type: Icon
     sprite: Structures/Walls/rock.rsi
     state: rock
