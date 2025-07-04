@@ -181,6 +181,10 @@
       rateModifier: 0.1 # removes alcohol very slowly along with the stomach removing it as a drink
   - type: Damageable
     damageContainer: Liver
+  - type: OrganMissingDamage
+    damage:
+      types:
+        Necrosis: 0.06
   - type: BodyDamageable
   - type: BodyDamageThresholds
     thresholds:
@@ -230,7 +234,7 @@
   - type: OrganMissingDamage
     damage:
       types:
-        Cellular: 0.02
+        Necrosis: 0.06
   - type: BodyDamageable
   - type: BodyDamageThresholds
     thresholds:
