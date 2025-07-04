@@ -23,9 +23,9 @@
 
 - type: entity
   parent: DiseaseSwab
-  id: SynthSwab
-  name: SynthSwab
-  description: A Synthetic swab that holds samples on a glass surface, making it easy to clean.
+  id: SyntheticSwab
+  name: synthetic swab
+  description: This swab holds samples on a glass surface, making it easy to clean.
   components:
   - type: Sprite
     sprite: Objects/Specific/Medical/mouth_swab.rsi
@@ -36,8 +36,8 @@
 - type: entity
   parent: BaseItem
   id: SwabApplicator
-  name: Swab Applicator
-  description: A thin device that can hold a single swab, able to apply pollen without risk of cross-contamination.
+  name: swab applicator
+  description: A device that can hold a single swab, able to apply pollen without risk of cross-contamination.
   components:
   - type: Sprite
     sprite: Objects/Specific/Hydroponics/swab_applicator.rsi #to change
