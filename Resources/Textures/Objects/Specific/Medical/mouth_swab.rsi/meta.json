@@ -5,10 +5,18 @@
         "y": 32
     },
     "license": "CC0-1.0",
-    "copyright": "Created by @moonheart08 on github",
+    "copyright": "Created by @moonheart08 on github, modified by Mehnix",
     "states": [
         {
             "name": "icon",
+            "directions": 1
+        },
+        {
+            "name": "icon2",
+            "directions": 1
+        },
+        {
+            "name": "iconsynth",
             "directions": 1
         }
     ]
