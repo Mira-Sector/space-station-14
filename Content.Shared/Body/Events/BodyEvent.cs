@@ -1,34 +1,17 @@
 using Content.Shared.Body.Components;
+using Content.Shared.Body.Organ;
 using Content.Shared.Body.Part;
 
 namespace Content.Shared.Body.Events;
 
-public sealed class BodyChangedEvent : EntityEventArgs
-{
-    public BodyComponent Body;
+[ByRefEvent]
+public readonly record struct BodyChangedEvent(Entity<BodyComponent> Body);
 
-    public BodyChangedEvent(BodyComponent body)
-    {
-        Body = body;
-    }
-}
+[ByRefEvent]
+public readonly record struct BodyInitEvent(Entity<BodyComponent> Body);
 
-public sealed class BodyInitEvent : EntityEventArgs
-{
-    public BodyComponent Body;
+[ByRefEvent]
+public readonly record struct LimbInitEvent(Entity<BodyPartComponent> Part, Entity<BodyComponent> Body);
 
-    public BodyInitEvent(BodyComponent body)
-    {
-        Body = body;
-    }
-}
-
-public sealed class LimbInitEvent : EntityEventArgs
-{
-    public BodyPartComponent Part;
-
-    public LimbInitEvent(BodyPartComponent part)
-    {
-        Part = part;
-    }
-}
+[ByRefEvent]
+public readonly record struct OrganInitEvent(Entity<OrganComponent> Organ, Entity<BodyPartComponent> Part, Entity<BodyComponent> Body);

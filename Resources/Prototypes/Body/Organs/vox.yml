@@ -55,6 +55,10 @@
   id: OrganVoxHeart
   name: heart
   description: "The strange heart of a vox."
+
+- type: entity
+  parent: OrganHumanKidneys
+  id: OrganVoxKidneys
   components:
   - type: Metabolizer
     metabolizerTypes: [Vox]

@@ -32,21 +32,14 @@
 
 - type: entity
   id: OrganAnimalLungs
-  parent: BaseAnimalOrgan
+  parent: [ BaseAnimalOrgan, BaseOrganLungs ]
   name: lungs
   categories: [ HideSpawnMenu ]
   components:
-  - type: Sprite
-    layers:
-    - state: lung-l
-    - state: lung-r
-  - type: Organ
-    organType: Lungs
-  - type: Lung
   - type: Metabolizer
     removeEmpty: true
-    solutionOnBody: false
     solution: "Lung"
+    bodySolution: chemicals
     metabolizerTypes: [ Animal ]
     groups:
     - id: Gas
@@ -61,17 +54,10 @@
         reagents:
         - ReagentId: UncookedAnimalProteins
           Quantity: 5
-  - type: Item
-    size: Small
-    heldPrefix: lungs
-  - type: Temperature
-  - type: Perishable
-    rotAfter: 990
-    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganAnimalStomach
-  parent: BaseAnimalOrgan
+  parent: [ BaseAnimalOrgan, BaseOrganStomach ]
   name: stomach
   categories: [ HideSpawnMenu ]
   components:
@@ -88,21 +74,13 @@
         reagents:
         - ReagentId: UncookedAnimalProteins
           Quantity: 5
-  - type: Stomach
   - type: Metabolizer
     maxReagents: 3
-    metabolizerTypes: [ Animal ]
+    metabolizerTypes:
+    - Animal
     groups:
     - id: Food
     - id: Drink
-  - type: Item
-    size: Small
-    heldPrefix: stomach
-  - type: VomitOnRot
-  - type: Temperature
-  - type: Perishable
-    rotAfter: 780
-    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganMouseStomach
@@ -120,85 +98,34 @@
 
 - type: entity
   id: OrganAnimalLiver
-  parent: BaseAnimalOrgan
+  parent: [ BaseAnimalOrgan, BaseOrganLiver ]
   name: liver
   categories: [ HideSpawnMenu ]
   components:
-  - type: Sprite
-    state: liver
-  - type: Organ
-    organType: Liver
   - type: Metabolizer
     maxReagents: 1
     metabolizerTypes: [ Animal ]
     groups:
     - id: Alcohol
       rateModifier: 0.1
-  - type: Item
-    size: Small
-    heldPrefix: liver
-  - type: Damageable
-    damageContainer: Liver
-  - type: OrganRotDamage
-    mode: Rotting
-    damage:
-      types:
-        Poison: 4
-  - type: Temperature
-  - type: MetabolizerRot
-  - type: Perishable
-    rotAfter: 900
-    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganAnimalHeart
-  parent: BaseAnimalOrgan
+  parent: [ BaseAnimalOrgan, BaseOrganHeart ]
   name: heart
   categories: [ HideSpawnMenu ]
+
+- type: entity
+  id: OrganAnimalKidneys
+  parent: [ BaseAnimalOrgan, BaseOrganKidneys ]
+  name: kidneys
+  categories: [ HideSpawnMenu ]
   components:
-  - type: Sprite
-    state: heart-on
-  - type: Appearance
-  - type: GenericVisualizer
-    visuals:
-      enum.HeartVisuals.Beating:
-        enum.HeartVisualLayers.Beating:
-          True: { state: heart-on }
-          False: { state: heart-off }
-  - type: Organ
-    organType: Heart
   - type: Metabolizer
     maxReagents: 2
+    removeEmpty: true
     metabolizerTypes: [ Animal ]
     groups:
     - id: Medicine
     - id: Poison
     - id: Narcotic
-  - type: Temperature
-  - type: Heart
-  - type: Perishable
-    rotAfter: 360
-    molsPerSecondPerUnitMass: 0
-  - type: Item
-    size: Small
-    heldPrefix: heart
-
-- type: entity
-  id: OrganAnimalKidneys
-  parent: BaseAnimalOrgan
-  name: kidneys
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    layers:
-    - state: kidney-l
-    - state: kidney-r
-  - type: Organ
-    organType: Kidneys
-  - type: Metabolizer
-    maxReagents: 5
-    metabolizerTypes: [ Animal ]
-    removeEmpty: true
-  - type: Item
-    size: Small
-    heldPrefix: kidneys

@@ -120,11 +120,34 @@
     organType: Appendix
   - type: Sprite
     layers:
-    - state: appendix
-    - state: appendix-inflamed
-      visible: false
-  - type: OrganRotDamage
-    mode: Rotted
+    - map: [ "base" ]
+      state: appendix
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.BodyDamageThresholdVisuals.State:
+        base:
+          Alive: { state: appendix }
+          Wounded: { state: appendix }
+          Dead: { state: appendix-inflamed }
+  - type: BodyDamageable
+  - type: BodyDamageThresholds
+    thresholds:
+      Alive: 0
+      Wounded: 10
+      Dead: 80
+    examineText:
+      Alive: appendix-examine-not-burst
+      Wounded: appendix-examine-not-burst
+      Dead: appendix-examine-burst
+  - type: BodyDamageOnRot
+    minRotStage: 1
+    fullyRottenDamage: 80
+  - type: DamageOnBodyDamage
+    requiredStates:
+    - Dead # burst when dead
+    mode: Damage
+    damageDelay: 1
     damage:
       types:
         Poison: 2.5
@@ -146,174 +169,30 @@
 
 - type: entity
   id: OrganHumanLungs
-  parent: BaseHumanOrgan
+  parent: [ BaseOrganLungs, BaseHumanOrgan ]
   name: lungs
   description: "Filters oxygen from an atmosphere, which is then sent into the bloodstream to be used as an electron carrier."
-  components:
-  - type: Sprite
-    layers:
-      - state: lung-l
-      - state: lung-r
-  - type: Item
-    size: Small
-    heldPrefix: lungs
-  - type: Organ
-    organType: Lungs
-  - type: Lung
-  - type: Metabolizer
-    removeEmpty: true
-    solutionOnBody: false
-    solution: "Lung"
-    metabolizerTypes: [ Human ]
-    groups:
-    - id: Gas
-      rateModifier: 100.0
-  - type: SolutionContainerManager
-    solutions:
-      organ:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 10
-      Lung:
-        maxVol: 100.0
-        canReact: false
-      food:
-        maxVol: 5
-        reagents:
-        - ReagentId: UncookedAnimalProteins
-          Quantity: 5
-  - type: Temperature
-  - type: Perishable
-    rotAfter: 990
-    molsPerSecondPerUnitMass: 0
-  - type: CoughOnRespire
-  - type: CoughRotChangeModify
 
 - type: entity
   id: OrganHumanHeart
-  parent: BaseHumanOrgan
+  parent: [ BaseOrganHeart, BaseHumanOrgan ]
   name: heart
   description: "I feel bad for the heartless bastard who lost this."
-  components:
-  - type: Sprite
-    state: heart-on
-    map: [ "enum.HeartVisualLayers.Beating" ]
-  - type: Appearance
-  - type: GenericVisualizer
-    visuals:
-      enum.HeartVisuals.Beating:
-        enum.HeartVisualLayers.Beating:
-          True: { state: heart-on }
-          False: { state: heart-off }
-  # The heart 'metabolizes' medicines and poisons that aren't filtered out by other organs.
-  # This is done because these chemicals need to have some effect even if they aren't being filtered out of your body.
-  # You're technically 'immune to poison' without a heart, but.. uhh, you'll have bigger problems on your hands.
-  - type: Metabolizer
-    maxReagents: 2
-    metabolizerTypes: [Human]
-    groups:
-    - id: Medicine
-    - id: Poison
-    - id: Narcotic
-  - type: Temperature
-  - type: Heart
-  - type: Perishable
-    rotAfter: 360
-    molsPerSecondPerUnitMass: 0
-  - type: Item
-    size: Small
-    heldPrefix: heart
-  - type: Organ
-    organType: Heart
 
 - type: entity
   id: OrganHumanStomach
-  parent: BaseHumanOrgan
+  parent: [ BaseOrganStomach, BaseHumanOrgan ]
   name: stomach
   description: "Gross. This is hard to stomach."
-  components:
-  - type: Sprite
-    state: stomach
-  - type: Item
-    size: Small
-    heldPrefix: stomach
-  - type: SolutionContainerManager
-    solutions:
-      stomach:
-        maxVol: 50
-      food:
-        maxVol: 5
-        reagents:
-        - ReagentId: UncookedAnimalProteins
-          Quantity: 5
-  - type: Organ
-    organType: Stomach
-  - type: Stomach
-  # The stomach metabolizes stuff like foods and drinks.
-  # TODO: Have it work off of the ent's solution container, and move this
-  # to intestines instead.
-  - type: Metabolizer
-    # mm yummy
-    maxReagents: 3
-    metabolizerTypes: [Human]
-    groups:
-    - id: Food
-    - id: Drink
-  - type: Temperature
-  - type: VomitOnRot
-  - type: Perishable
-    rotAfter: 780
-    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganHumanLiver
-  parent: BaseHumanOrgan
+  parent: [ BaseOrganLiver, BaseHumanOrgan ]
   name: liver
   description: "Pairing suggestion: chianti and fava beans."
-  components:
-  - type: Sprite
-    state: liver
-  - type: Organ
-    organType: Liver
-  - type: Item
-    size: Small
-    heldPrefix: liver
-  - type: Metabolizer # The liver metabolizes certain chemicals only, like alcohol.
-    maxReagents: 1
-    metabolizerTypes: [Human]
-    groups:
-    - id: Alcohol
-      rateModifier: 0.1 # removes alcohol very slowly along with the stomach removing it as a drink
-  - type: Damageable
-    damageContainer: Liver
-  - type: OrganRotDamage
-    mode: Rotting
-    damage:
-      types:
-        Poison: 4
-  - type: Temperature
-  - type: MetabolizerRot
-  - type: Perishable
-    rotAfter: 900
-    molsPerSecondPerUnitMass: 0
 
 - type: entity
   id: OrganHumanKidneys
-  parent: BaseHumanOrgan
+  parent: [ BaseOrganKidneys, BaseHumanOrgan ]
   name: kidneys
   description: "Filters toxins from the bloodstream."
-  components:
-  - type: Sprite
-    layers:
-      - state: kidney-l
-      - state: kidney-r
-  - type: Organ
-    organType: Kidneys
-  - type: Item
-    size: Small
-    heldPrefix: kidneys
-  # The kidneys just remove anything that doesn't currently have any metabolisms, as a stopgap.
-  - type: Metabolizer
-    maxReagents: 5
-    metabolizerTypes: [Human]
-    removeEmpty: true

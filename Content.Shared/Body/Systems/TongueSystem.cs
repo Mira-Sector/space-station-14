@@ -1,6 +1,5 @@
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Events;
-using Content.Shared.Body.Part;
 using Content.Shared.Emoting;
 using Content.Shared.Speech.Muting;
 
@@ -8,13 +7,11 @@ namespace Content.Shared.Body.Systems;
 
 public sealed class TongueSystem : BaseBodyTrackedSystem
 {
-    [Dependency] private readonly SharedBodySystem _body = default!;
-
     public override void Initialize()
     {
         base.Initialize();
 
-        SubscribeLocalEvent<TongueComponent, OrganAddedEvent>(OnOrganAdded);
+        SubscribeLocalEvent<TongueComponent, OrganInitEvent>(OnOrganInit);
 
         SubscribeLocalEvent<TongueContainerComponent, EmoteAttemptEvent>(OnTongueContainerEmoteAttempt);
 
@@ -22,19 +19,13 @@ public sealed class TongueSystem : BaseBodyTrackedSystem
         SubscribeTrackerRemoved<TongueContainerComponent, TongueComponent>(OnTrackerRemoved);
     }
 
-    private void OnOrganAdded(Entity<TongueComponent> ent, ref OrganAddedEvent args)
+    private void OnOrganInit(Entity<TongueComponent> ent, ref OrganInitEvent args)
     {
-        if (!TryComp<BodyPartComponent>(args.Part, out var bodyPartComp))
-            return;
-
         EnsureComp<TongueContainerComponent>(args.Part);
-        _body.RegisterTracker<TongueComponent>(args.Part);
+        Body.RegisterTracker<TongueComponent>(args.Part.Owner);
 
-        if (bodyPartComp.Body is { } body)
-        {
-            EnsureComp<TongueContainerComponent>(body);
-            _body.RegisterTracker<TongueComponent>(body);
-        }
+        EnsureComp<TongueContainerComponent>(args.Body);
+        Body.RegisterTracker<TongueComponent>(args.Body.Owner);
     }
 
     private void OnTongueContainerEmoteAttempt(Entity<TongueContainerComponent> ent, ref EmoteAttemptEvent args)
@@ -42,7 +33,7 @@ public sealed class TongueSystem : BaseBodyTrackedSystem
         if (args.Cancelled)
             return;
 
-        if (_body.GetTrackerCount<TongueComponent>(ent.Owner) > 0)
+        if (Body.GetTrackerCount<TongueComponent>(ent.Owner) > 0)
             return;
 
         args.Cancel();

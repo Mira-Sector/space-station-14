@@ -81,11 +81,11 @@ public sealed class RottingSystem : SharedRottingSystem
                 Dirty(uid, perishable);
             }
 
-            var updateEv = new RotUpdateEvent(stage, GetRotProgress(uid, perishable));
-            RaiseLocalEvent(uid, updateEv);
-
             if (IsRotten(uid) || !IsRotProgressing(uid, perishable))
                 continue;
+
+            var updateEv = new RotUpdateEvent(stage, GetRotProgress(uid, perishable));
+            RaiseLocalEvent(uid, updateEv);
 
             perishable.RotAccumulator += perishable.PerishUpdateRate * GetRotRate(uid);
             if (perishable.RotAccumulator >= perishable.RotAfter)

@@ -32,6 +32,12 @@ namespace Content.Server.Body.Components
         public string SolutionName = BloodstreamComponent.DefaultChemicalsSolutionName;
 
         /// <summary>
+        ///     From which solution will this metabolizer attempt to metabolize chemicals if <see cref=SolutionOnBody>
+        /// </summary>
+        [DataField("bodySolution")]
+        public string? BodySolutionName = null;
+
+        /// <summary>
         ///     Does this component use a solution on it's parent entity (the body) or itself
         /// </summary>
         /// <remarks>

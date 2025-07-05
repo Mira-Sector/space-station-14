@@ -20,11 +20,11 @@
       - right leg
       - left leg
       organs:
-        heart: OrganDwarfHeart
+        heart: OrganHumanHeart
         lungs: OrganHumanLungs
         stomach: OrganDwarfStomach
         liver: OrganDwarfLiver
-        kidneys: OrganHumanKidneys
+        kidneys: OrganDwarfKidneys
         appendix: OrganHumanAppendix
     right arm:
       part: RightArmHuman

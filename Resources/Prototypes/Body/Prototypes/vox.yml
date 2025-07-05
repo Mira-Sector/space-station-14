@@ -24,7 +24,7 @@
         lungs: OrganVoxLungs
         stomach: OrganVoxStomach
         liver: OrganVoxLiver
-        kidneys: OrganHumanKidneys
+        kidneys: OrganVoxKidneys
         appendix: OrganHumanAppendix
     right arm:
       part: RightArmVox

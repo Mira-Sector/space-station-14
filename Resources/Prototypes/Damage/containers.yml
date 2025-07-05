@@ -4,6 +4,7 @@
     - Brute
     - Burn
     - Airloss
+    - Genetic
   supportedTypes:
     - Radiation
 

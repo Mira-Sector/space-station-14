@@ -2,6 +2,7 @@ damage-type-asphyxiation = Asphyxiation
 damage-type-bloodloss = Bloodloss
 damage-type-blunt = Blunt
 damage-type-cellular = Cellular
+damage-type-necrosis = Necrosis
 damage-type-caustic = Caustic
 damage-type-cold = Cold
 damage-type-heat = Heat

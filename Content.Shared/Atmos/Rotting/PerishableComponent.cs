@@ -61,8 +61,8 @@ public record struct IsRottingEvent(bool Handled = false);
 [Serializable, NetSerializable]
 public sealed partial class RotUpdateEvent : EntityEventArgs
 {
-    public int Stage;
-    public float RotProgress;
+    public readonly int Stage;
+    public readonly float RotProgress;
 
     public RotUpdateEvent(int stage, float rotProgress)
     {

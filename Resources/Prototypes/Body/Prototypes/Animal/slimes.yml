@@ -9,9 +9,10 @@
       - left leg
       - right leg
       organs:
-        core: SentientSlimesCore
-        lungs: OrganSlimesLungs
+        core: SentientSlimeCore
+        lungs: OrganSlimeLungs
         tongue: OrganSlimesTongue
+        kidneys: OrganSlimeKidneys
     left leg:
       part: LeftLegSlimes
       connections:
@@ -34,8 +35,10 @@
       - left leg
       - right leg
       organs:
-        core: SentientSlimesCore
-        lungs: OrganSlimesLungs
+        core: SentientSlimeCore
+        lungs: OrganSlimeLungs
+        tongue: OrganSlimeTongue
+        kidneys: OrganSlimeKidneys
     left leg:
       part: LeftLegGeras
       connections:

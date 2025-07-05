@@ -14,6 +14,7 @@ armor-damage-type-caustic = Caustic
 armor-damage-type-bloodloss = Bloodloss
 armor-damage-type-asphyxiation = Asphyxiation
 armor-damage-type-cellular = Cellular
+armor-damage-type-necrosis = Necrosis
 armor-damage-type-cold = Cold
 armor-damage-type-poison = Poison
 armor-damage-type-shock = Shock

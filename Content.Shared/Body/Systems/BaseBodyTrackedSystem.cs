@@ -4,6 +4,8 @@ namespace Content.Shared.Body.Systems;
 
 public abstract partial class BaseBodyTrackedSystem : EntitySystem
 {
+    [Dependency] protected readonly SharedBodySystem Body = default!;
+
     private readonly Dictionary<string, Dictionary<string, Delegate>> _addSubscribers = [];
     private readonly Dictionary<string, Dictionary<string, Delegate>> _removeSubscribers = [];
 
