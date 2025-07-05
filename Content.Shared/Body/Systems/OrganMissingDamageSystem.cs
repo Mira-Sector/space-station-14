@@ -8,7 +8,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Shared.Body.Systems;
 
-public sealed class OrganMissingDamageSystem : BaseBodyTrackedSystem
+public sealed partial class OrganMissingDamageSystem : BaseBodyTrackedSystem
 {
     [Dependency] private readonly DamageableSystem _damageable = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!;
@@ -42,37 +42,53 @@ public sealed class OrganMissingDamageSystem : BaseBodyTrackedSystem
                 continue;
             }
 
-            Dictionary<EntityUid, bool> nextDamageUpdated = [];
+            Dictionary<EntityUid, Dictionary<int, bool>> nextDamageUpdated = [];
 
-            foreach (var (organ, data) in component.Organs)
+            foreach (var (organ, entries) in component.Organs)
             {
-                if (data.NextDamage > _timing.CurTime)
-                    continue;
-
-                if (!data.PassedDamageGrace)
+                for (var i = 0; i < entries.Length; i++)
                 {
-                    if (_timing.CurTime < data.DamageGrace)
+                    var data = entries[i];
+                    if (data.NextDamage > _timing.CurTime)
                         continue;
 
-                    nextDamageUpdated.Add(organ, true);
-                }
-                else
-                {
-                    nextDamageUpdated.Add(organ, false);
-                }
+                    var passedGrace = false;
 
-                _damageable.TryChangeDamage(uid, data.Damage, interruptsDoAfters: false);
+                    if (!data.PassedDamageGrace)
+                    {
+                        if (_timing.CurTime < data.DamageGrace)
+                            continue;
+
+                        passedGrace = true;
+                    }
+
+                    if (nextDamageUpdated.TryGetValue(organ, out var toAdd))
+                    {
+                        toAdd.Add(i, passedGrace);
+                    }
+                    else
+                    {
+                        toAdd = [];
+                        toAdd.Add(i, passedGrace);
+                    }
+
+                    _damageable.TryChangeDamage(uid, data.Damage, interruptsDoAfters: false);
+                }
             }
 
-            foreach (var (organ, passedDamageGrace) in nextDamageUpdated)
+            foreach (var (organ, array) in nextDamageUpdated)
             {
-                var data = component.Organs[organ];
-                data.NextDamage += data.DamageDelay;
+                var entries = component.Organs[organ];
+                foreach (var (index, passedDamageGrace) in array)
+                {
+                    var data = entries[index];
+                    data.NextDamage += data.DamageDelay;
 
-                if (passedDamageGrace)
-                    data.PassedDamageGrace = true;
+                    if (passedDamageGrace)
+                        data.PassedDamageGrace = true;
+                }
 
-                component.Organs[organ] = data;
+                component.Organs[organ] = entries;
             }
 
             Dirty(uid, component);
@@ -90,13 +106,13 @@ public sealed class OrganMissingDamageSystem : BaseBodyTrackedSystem
 
     private void OnTrackerAdded(Entity<OrganMissingDamageContainerComponent> ent, ref BodyTrackerAdded args)
     {
-        ent.Comp.Organs.Remove(args.Tracked.Owner, out var removed);
+        if (!ent.Comp.Organs.Remove(args.Tracked.Owner, out var entries))
+            return;
 
-        // recalculate the damage delay
-        if (removed.DamageDelay == ent.Comp.DamageDelay)
+        if (entries.Any(entry => entry.DamageDelay == ent.Comp.DamageDelay))
         {
             ent.Comp.DamageDelay = ent.Comp.Organs.Any()
-                ? ent.Comp.Organs.Values.Min(data => data.DamageDelay)
+                ? ent.Comp.Organs.Values.SelectMany(arr => arr).Min(entry => entry.DamageDelay)
                 : OrganMissingDamageContainerComponent.DefaultDamageDelay;
         }
 
@@ -110,14 +126,27 @@ public sealed class OrganMissingDamageSystem : BaseBodyTrackedSystem
          * the organ may get deleted and we should still damage
         */
         var trackedComp = (OrganMissingDamageComponent)args.Tracked.Comp;
-        var graceTime = trackedComp.GraceTime + _timing.CurTime;
-        var nextDamage = trackedComp.DamageDelay + _timing.CurTime;
-        var data = new OrganMissingDamageContainerEntry(trackedComp.Damage, graceTime, trackedComp.DamageDelay, nextDamage);
-        ent.Comp.Organs.Add(args.Tracked.Owner, data);
+        var currentTime = _timing.CurTime;
+        var newEntries = new OrganMissingDamageContainerEntry[trackedComp.Entries.Length];
 
-        // always follow lowest common denominator
-        if (trackedComp.DamageDelay < ent.Comp.DamageDelay)
-            ent.Comp.DamageDelay = trackedComp.DamageDelay;
+        TimeSpan? minDelay = null;
+
+        for (var i = 0; i < trackedComp.Entries.Length; i++)
+        {
+            var entry = trackedComp.Entries[i];
+            var graceTime = entry.GraceTime + currentTime;
+            var nextDamage = entry.DamageDelay + currentTime;
+
+            newEntries[i] = new OrganMissingDamageContainerEntry(entry.Damage, graceTime, entry.DamageDelay, nextDamage);
+
+            if (minDelay == null || entry.DamageDelay < minDelay)
+                minDelay = entry.DamageDelay;
+        }
+
+        ent.Comp.Organs[args.Tracked.Owner] = newEntries;
+
+        if (minDelay < ent.Comp.DamageDelay)
+            ent.Comp.DamageDelay = minDelay.Value;
 
         Dirty(ent);
     }

@@ -17,7 +17,7 @@ public sealed partial class OrganMissingDamageContainerComponent : Component
     public TimeSpan NextDamage;
 
     [ViewVariables, AutoNetworkedField]
-    public Dictionary<EntityUid, OrganMissingDamageContainerEntry> Organs = [];
+    public Dictionary<EntityUid, OrganMissingDamageContainerEntry[]> Organs = [];
 }
 
 [Serializable, NetSerializable]

@@ -182,9 +182,10 @@
   - type: Damageable
     damageContainer: Liver
   - type: OrganMissingDamage
-    damage:
-      types:
-        Necrosis: 0.1
+    entries:
+    - damage:
+        types:
+          Necrosis: 0.1
   - type: BodyDamageable
   - type: BodyDamageThresholds
     thresholds:
@@ -232,9 +233,10 @@
     - id: Poison
     - id: Narcotic
   - type: OrganMissingDamage
-    damage:
-      types:
-        Necrosis: 0.1
+    entries:
+    - damage:
+        types:
+          Necrosis: 0.1
   - type: BodyDamageable
   - type: BodyDamageThresholds
     thresholds:
