@@ -41,8 +41,38 @@ public sealed class OrganMissingDamageSystem : BaseBodyTrackedSystem
                 continue;
             }
 
-            foreach (var (_, damage) in component.Organs)
-                _damageable.TryChangeDamage(uid, damage, interruptsDoAfters: false);
+            Dictionary<EntityUid, bool> nextDamageUpdated = [];
+
+            foreach (var (organ, data) in component.Organs)
+            {
+                if (data.NextDamage > _timing.CurTime)
+                    continue;
+
+                if (!data.PassedDamageGrace)
+                {
+                    if (_timing.CurTime < data.DamageGrace)
+                        continue;
+
+                    nextDamageUpdated.Add(organ, true);
+                }
+                else
+                {
+                    nextDamageUpdated.Add(organ, false);
+                }
+
+                _damageable.TryChangeDamage(uid, data.Damage, interruptsDoAfters: false);
+            }
+
+            foreach (var (organ, passedDamageGrace) in nextDamageUpdated)
+            {
+                var data = component.Organs[organ];
+                data.NextDamage += data.DamageDelay;
+
+                if (passedDamageGrace)
+                    data.PassedDamageGrace = true;
+
+                component.Organs[organ] = data;
+            }
 
             Dirty(uid, component);
         }
@@ -65,8 +95,15 @@ public sealed class OrganMissingDamageSystem : BaseBodyTrackedSystem
 
     private void OnTrackerRemoved(Entity<OrganMissingDamageContainerComponent> ent, ref BodyTrackerRemoved args)
     {
-        //we dont just fetch the componment as the organ may get deleted and we should still damage
-        ent.Comp.Organs.Add(args.Tracked.Owner, ((OrganMissingDamageComponent)args.Tracked.Comp).Damage);
+        /*
+         * we dont just fetch the componment in the update loop
+         * the organ may get deleted and we should still damage
+        */
+        var trackedComp = (OrganMissingDamageComponent)args.Tracked.Comp;
+        var graceTime = trackedComp.GraceTime + _timing.CurTime;
+        var nextDamage = trackedComp.DamageDelay + _timing.CurTime;
+        var data = new OrganMissingDamageContainerEntry(trackedComp.Damage, graceTime, trackedComp.DamageDelay, nextDamage);
+        ent.Comp.Organs.Add(args.Tracked.Owner, data);
         Dirty(ent);
     }
 
@@ -78,7 +115,7 @@ public sealed class OrganMissingDamageSystem : BaseBodyTrackedSystem
         if (TryComp<BodyPartComponent>(ent.Owner, out var bodyPart))
         {
             // body will handle it separtely
-            if (bodyPart.Body is { })
+            if (bodyPart.Body != null)
                 return false;
         }
 

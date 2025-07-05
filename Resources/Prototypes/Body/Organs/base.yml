@@ -184,7 +184,7 @@
   - type: OrganMissingDamage
     damage:
       types:
-        Necrosis: 0.06
+        Necrosis: 0.1
   - type: BodyDamageable
   - type: BodyDamageThresholds
     thresholds:
@@ -234,7 +234,7 @@
   - type: OrganMissingDamage
     damage:
       types:
-        Necrosis: 0.06
+        Necrosis: 0.1
   - type: BodyDamageable
   - type: BodyDamageThresholds
     thresholds:
