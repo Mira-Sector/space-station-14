@@ -122,3 +122,6 @@ alerts-limbs-desc = Where your booboos are on your body.
 
 alerts-rooted-name = Rooted
 alerts-rooted-desc = You are attached to the ground. You can't slip, but you absorb fluids under you.
+
+alerts-stealthy-name = Pickpocketing
+alerts-stealthy-desc = Whether you are currently pickpocketing. Click to toggle.

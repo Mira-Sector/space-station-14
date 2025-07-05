@@ -236,7 +236,8 @@
           Quantity: 10
         - ReagentId: JuiceThatMakesYouNya
           Quantity: 10
-
+  - type: StaticPrice
+    price: 15000
 
 - type: entity
   parent: [ClothingHeadHatCatEars, BaseToggleClothing]

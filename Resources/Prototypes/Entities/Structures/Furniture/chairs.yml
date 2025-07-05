@@ -479,3 +479,10 @@
   - type: StaticPrice
     price: 150
 
+- type: entity
+  parent: StoolBase
+  id: ChairXeno
+  name: xeno chair
+  components:
+  - type: Sprite
+    state: xeno-chair

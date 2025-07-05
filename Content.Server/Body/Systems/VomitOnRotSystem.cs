@@ -1,6 +1,7 @@
 using Content.Server.Body.Components;
 using Content.Server.Medical;
 using Content.Shared.Atmos.Rotting;
+using Content.Shared.Body.Components;
 using Content.Shared.Body.Organ;
 using Robust.Shared.Random;
 

@@ -100,7 +100,7 @@
 - type: cargoProduct
   id: CrateFunFoamGuns
   icon:
-    sprite: Objects/Weapons/Guns/Rifles/foam_rifle.rsi
+    sprite: Objects/Fun/Foam/foam_rifle.rsi
     state: icon
   data: !type:CargoProductItemData
     product: CrateFunFoamGuns
@@ -111,8 +111,8 @@
 - type: cargoProduct
   id: FunPlushies
   icon:
-    sprite: Objects/Fun/toys.rsi
-    state: plushie_h
+    sprite: Objects/Fun/Plushies/human.rsi
+    state: icon
   data: !type:CargoProductItemData
     product: CrateFunPlushie
   cost: 1000
@@ -122,8 +122,8 @@
 - type: cargoProduct
   id: FunLizardPlushies
   icon:
-    sprite: Objects/Fun/toys.rsi
-    state: plushie_lizard
+    sprite: Objects/Fun/Plushies/lizard.rsi
+    state: icon
   data: !type:CargoProductItemData
     product: CrateFunLizardPlushieBulk
   cost: 500
@@ -133,7 +133,7 @@
 - type: cargoProduct
   id: FunSharkPlushies
   icon:
-    sprite: Objects/Fun/sharkplush.rsi
+    sprite: Objects/Fun/Plushies/shark.rsi
     state: blue
   data: !type:CargoProductItemData
     product: CrateFunSharkPlushieBulk
@@ -402,5 +402,15 @@
   data: !type:CargoProductItemData
     product: TomDrumsInstrument
   cost: 1500
+  category: cargoproduct-category-name-fun
+  group: market
+
+- type: cargoProduct
+  id: FunPlants
+  icon:
+    sprite: Structures/Furniture/potted_plants.rsi
+    state: random
+  product: CratePlants
+  cost: 1000
   category: cargoproduct-category-name-fun
   group: market

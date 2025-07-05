@@ -33,6 +33,9 @@
       head-vox:
       - state: equipped-head-light-vox
         shader: unshaded
+      head-dog:
+      - state: equipped-head-light-dog
+        shader: unshaded
   - type: Clothing
     clothingVisuals:
       head:
@@ -42,6 +45,10 @@
       head-vox:
       - state: equipped-head-vox
       - state: equipped-head-unshaded-vox
+        shader: unshaded
+      head-dog:
+      - state: equipped-head-dog
+      - state: equipped-head-unshaded-dog
         shader: unshaded
   - type: PointLight
     color: "#adffe6"
@@ -65,6 +72,10 @@
           Piercing: 0.9
           Heat: 0.8
           Radiation: 0.5
+  - type: Tag
+    tags:
+    - CorgiWearable
+    - WhitelistChameleon
 
 #Engineering Hardsuit
 - type: entity
@@ -95,6 +106,10 @@
           Shock: 0.8
           Caustic: 0.5
           Radiation: 0.2
+  - type: Tag
+    tags:
+    - CorgiWearable
+    - WhitelistChameleon
 
 #Spationaut Hardsuit
 - type: entity
@@ -123,6 +138,9 @@
       head-vox:
       - state: equipped-head-light-vox
         shader: unshaded
+      head-dog:
+      - state: equipped-head-light-dog
+        shader: unshaded
   - type: Clothing
     clothingVisuals:
       head:
@@ -132,6 +150,10 @@
       head-vox:
       - state: equipped-head-vox
       - state: equipped-head-unshaded-vox
+        shader: unshaded
+      head-dog:
+      - state: equipped-head-dog
+      - state: equipped-head-unshaded-dog
         shader: unshaded
   - type: PointLight
     radius: 6
@@ -150,6 +172,10 @@
           Piercing: 0.9
           Radiation: 0.3
           Caustic: 0.8
+  - type: Tag
+    tags:
+    - CorgiWearable
+    - WhitelistChameleon
 
 #Salvage Hardsuit
 - type: entity
@@ -181,6 +207,10 @@
           Heat: 0.7
           Radiation: 0.3
           Caustic: 0.7
+  - type: Tag
+    tags:
+    - CorgiWearable
+    - WhitelistChameleon
 
 - type: entity
   parent: [ ClothingHeadHardsuitBase, ClothingHeadSuitWithLightBase ]
@@ -208,6 +238,9 @@
       head-vox:
       - state: equipped-head-light-vox
         shader: unshaded
+      head-dog:
+      - state: equipped-head-light-dog
+        shader: unshaded
   - type: Clothing
     clothingVisuals:
       head:
@@ -217,6 +250,10 @@
       head-vox:
       - state: equipped-head-vox
       - state: equipped-head-unshaded-vox
+        shader: unshaded
+      head-dog:
+      - state: equipped-head-dog
+      - state: equipped-head-unshaded-dog
         shader: unshaded
   - type: PointLight
     radius: 6
@@ -236,6 +273,10 @@
           Heat: 0.7
           Radiation: 0.3
           Caustic: 0.8
+  - type: Tag
+    tags:
+    - CorgiWearable
+    - WhitelistChameleon
 
 - type: entity
   parent: ClothingHeadHardsuitBase
@@ -291,6 +332,10 @@
           Slash: 0.6
           Piercing: 0.6
           Caustic: 0.7
+  - type: Tag
+    tags:
+    - CorgiWearable
+    - WhitelistChameleon
 
 #Brigmedic Hardsuit
 - type: entity
@@ -376,7 +421,10 @@
           Heat: 0.5
           Radiation: 0.5
           Caustic: 0.6
-
+  - type: Tag
+    tags:
+    - CorgiWearable
+    - WhitelistChameleon
 
 #Chief Engineer's Hardsuit
 - type: entity
@@ -409,6 +457,10 @@
           Heat: 0.4
           Radiation: 0.0
           Caustic: 0.7
+  - type: Tag
+    tags:
+    - CorgiWearable
+    - WhitelistChameleon
 
 #Chief Medical Officer's Hardsuit
 - type: entity
@@ -434,6 +486,10 @@
       modifier:
         coefficients:
           Caustic: 0.1
+  - type: Tag
+    tags:
+    - CorgiWearable
+    - WhitelistChameleon
 
 #Research Director's Hardsuit
 - type: entity
@@ -464,6 +520,10 @@
           Heat: 0.3
           Radiation: 0.1
           Caustic: 0.2
+  - type: Tag
+    tags:
+    - CorgiWearable
+    - WhitelistChameleon
 
 #Head of Security's hardsuit
 - type: entity
@@ -558,6 +618,10 @@
           Heat: 0.5
           Radiation: 0.5
           Caustic: 0.5
+  - type: Tag
+    tags:
+    - CorgiWearable
+    - WhitelistChameleon
 
 #Blood-red Medic Hardsuit
 - type: entity
@@ -623,6 +687,10 @@
           Heat: 0.2
           Radiation: 0.01
           Caustic: 0.5
+  - type: Tag
+    tags:
+    - CorgiWearable
+    - WhitelistChameleon
 
 #Syndicate Commander Hardsuit
 - type: entity
@@ -653,6 +721,10 @@
           Heat: 0.5
           Radiation: 0.25
           Caustic: 0.4
+  - type: Tag
+    tags:
+    - CorgiWearable
+    - WhitelistChameleon
 
 #Cybersun Juggernaut Hardsuit
 - type: entity
@@ -681,6 +753,10 @@
           Heat: 0.2
           Radiation: 0.2
           Caustic: 0.2
+  - type: Tag
+    tags:
+    - CorgiWearable
+    - WhitelistChameleon
 
 #Wizard Hardsuit
 - type: entity
@@ -711,6 +787,10 @@
           Heat: 0.25
           Radiation: 0.25
           Caustic: 0.75
+  - type: Tag
+    tags:
+    - CorgiWearable
+    - WhitelistChameleon
 
 #Organic Space Suit
 - type: entity

@@ -39,9 +39,9 @@
           bounds: "-0.45,-0.45,0.45,0.45"
         density: 55
         mask:
-        - TableMask
+        - MachineMask
         layer:
-        - TableLayer
+        - MachineLayer
   - type: Destructible
     thresholds:
     - trigger:
@@ -95,6 +95,7 @@
     powerToggleDelayReduction: 1.5
   - type: ThrowInsertContainer
     containerId: disposals
+    probability: 0.67
   - type: UserInterface
     interfaces:
       enum.DisposalUnitUiKey.Key:
