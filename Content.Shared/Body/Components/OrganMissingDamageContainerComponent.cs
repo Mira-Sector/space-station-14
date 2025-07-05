@@ -8,8 +8,10 @@ namespace Content.Shared.Body.Components;
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState, AutoGenerateComponentPause]
 public sealed partial class OrganMissingDamageContainerComponent : Component
 {
+    public static readonly TimeSpan DefaultDamageDelay = TimeSpan.FromSeconds(10);
+
     [DataField]
-    public TimeSpan DamageDelay = TimeSpan.FromSeconds(1);
+    public TimeSpan DamageDelay = DefaultDamageDelay;
 
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoNetworkedField, AutoPausedField]
     public TimeSpan NextDamage;

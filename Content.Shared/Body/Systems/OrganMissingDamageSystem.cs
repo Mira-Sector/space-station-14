@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Events;
 using Content.Shared.Body.Part;
@@ -89,7 +90,16 @@ public sealed class OrganMissingDamageSystem : BaseBodyTrackedSystem
 
     private void OnTrackerAdded(Entity<OrganMissingDamageContainerComponent> ent, ref BodyTrackerAdded args)
     {
-        ent.Comp.Organs.Remove(args.Tracked.Owner);
+        ent.Comp.Organs.Remove(args.Tracked.Owner, out var removed);
+
+        // recalculate the damage delay
+        if (removed.DamageDelay == ent.Comp.DamageDelay)
+        {
+            ent.Comp.DamageDelay = ent.Comp.Organs.Any()
+                ? ent.Comp.Organs.Values.Min(data => data.DamageDelay)
+                : OrganMissingDamageContainerComponent.DefaultDamageDelay;
+        }
+
         Dirty(ent);
     }
 
@@ -104,18 +114,25 @@ public sealed class OrganMissingDamageSystem : BaseBodyTrackedSystem
         var nextDamage = trackedComp.DamageDelay + _timing.CurTime;
         var data = new OrganMissingDamageContainerEntry(trackedComp.Damage, graceTime, trackedComp.DamageDelay, nextDamage);
         ent.Comp.Organs.Add(args.Tracked.Owner, data);
+
+        // always follow lowest common denominator
+        if (trackedComp.DamageDelay < ent.Comp.DamageDelay)
+            ent.Comp.DamageDelay = trackedComp.DamageDelay;
+
         Dirty(ent);
     }
 
     private bool CanDamage(Entity<OrganMissingDamageContainerComponent> ent)
     {
-        if (_mobState.IsDead(ent.Owner))
-            return false;
-
         if (TryComp<BodyPartComponent>(ent.Owner, out var bodyPart))
         {
             // body will handle it separtely
             if (bodyPart.Body != null)
+                return false;
+        }
+        else
+        {
+            if (_mobState.IsDead(ent.Owner))
                 return false;
         }
 
