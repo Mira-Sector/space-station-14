@@ -47,7 +47,5 @@ namespace Content.Server.Botany
         /// SeedData from the first plant that got swabbed.
         /// </summary>
         public SeedData? SeedData;
-
-
     }
 }
