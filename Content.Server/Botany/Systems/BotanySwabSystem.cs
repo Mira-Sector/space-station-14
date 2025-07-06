@@ -75,7 +75,8 @@ public sealed class BotanySwabSystem : EntitySystem
         if (args.Cancelled || args.Handled || !TryComp<PlantHolderComponent>(args.Args.Target, out var plant))
             return;
 
-        _audioSystem.PlayPvs(swab.SwabSound, uid, AudioParams.Default.WithVolume(-4f));
+        _audioSystem.PlayPvs(swab.SwabSound, uid);
+
         if (swab.SeedData == null)
         {
             // Pick up pollen
@@ -87,9 +88,13 @@ public sealed class BotanySwabSystem : EntitySystem
             var old = plant.Seed;
             if (old == null)
                 return;
+
             plant.Seed = _mutationSystem.Cross(swab.SeedData, old); // Cross-pollenate
-            if (swab.Contaminate == true)
-                swab.SeedData = old; // Transfer old plant pollen to swab
+
+            // Transfer old plant pollen to swab
+            if (swab.Contaminate)
+                swab.SeedData = old;
+
             _popupSystem.PopupEntity(Loc.GetString("botany-swab-to"), args.Args.Target.Value, args.Args.User);
         }
         args.Handled = true;
@@ -100,7 +105,7 @@ public sealed class BotanySwabSystem : EntitySystem
         if (args.Handled)
             return;
 
-        if (swab.Cleanable == false)
+        if (!swab.Cleanable)
             return;
 
         swab.SeedData = null;
@@ -111,31 +116,27 @@ public sealed class BotanySwabSystem : EntitySystem
 
     private void OnInsertAttempt(EntityUid uid, BotanySwabComponent swab, ref ContainerGettingInsertedAttemptEvent args)
     {
-        if (HasComp<BotanySwabComponent>(args.Container.Owner)) //does the container have the botanySwab component
-        {
-            if (swab.SeedData == null)
-            {
-                _popupSystem.PopupEntity(Loc.GetString("swab-applicator-needs-pollen"), uid);
-                args.Cancel();
-                return;
-            }
-        }
+        //does the container have the botanySwab component
+        if (!HasComp<BotanySwabComponent>(args.Container.Owner))
+            return;
+
+        if (swab.SeedData != null)
+            return;
+
+        _popupSystem.PopupEntity(Loc.GetString("swab-applicator-needs-pollen"), uid);
+        args.Cancel();
+        return;
     }
 
     private void OnInsert(EntityUid uid, BotanySwabComponent swab, ref EntGotInsertedIntoContainerMessage args)
     {
-        if (!TryComp<BotanySwabComponent>(args.Container.Owner, out var applicator)) //does the container have the botanySwab component
-        {
-            return;
-        }
-        applicator.SeedData = swab.SeedData;
+        if (TryComp<BotanySwabComponent>(args.Container.Owner, out var applicator))
+            applicator.SeedData = swab.SeedData;
     }
 
     private void OnRemove(EntityUid uid, BotanySwabComponent swab, ref EntGotRemovedFromContainerMessage args)
     {
-        if (!TryComp<BotanySwabComponent>(args.Container.Owner, out var applicator)) //does the container have the botanySwab component
-            return;
-
-        applicator.SeedData = null;
+        if (TryComp<BotanySwabComponent>(args.Container.Owner, out var applicator))
+            applicator.SeedData = null;
     }
 }

@@ -35,7 +35,7 @@ namespace Content.Server.Botany
         /// Sound played on swabbing
         /// </summary>
         [DataField]
-        public SoundSpecifier? SwabSound = new SoundPathSpecifier("/Audio/Effects/Footsteps/grass2.ogg");
+        public SoundSpecifier? SwabSound = new SoundPathSpecifier("/Audio/Effects/Footsteps/grass2.ogg", AudioParams.Default.WithVolume(-4f));
 
         /// <summary>
         /// Sound played on cleaning a swab

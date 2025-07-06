@@ -75,7 +75,6 @@
     swabDelay: 0.75
     usable: false
     contaminate: false
-    swabSound: /Audio/Effects/Footsteps/grass2.ogg
 
 - type: entity
   parent: BaseAmmoProvider # this is for cycling swabs out and not spawning 30 entities, trust
