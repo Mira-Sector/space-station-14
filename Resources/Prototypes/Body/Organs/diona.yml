@@ -90,11 +90,6 @@
     groups:
       - id: Food
       - id: Drink
-      - id: Medicine
-      - id: Poison
-      - id: Narcotic
-      - id: Alcohol
-        rateModifier: 0.1
 
 - type: entity
   id: OrganDionaLungs
@@ -123,6 +118,36 @@
       Lung:
         maxVol: 100
         canReact: False
+
+- type: entity
+  id: OrganDionaLiver
+  parent: [ BaseOrganLiver, BaseDionaOrgan ]
+  name: liver
+  description: "What loosely resembles a liver, minus the branches."
+  components:
+  - type: Metabolizer
+    maxReagents: 1
+    metabolizerTypes: [ Plant ]
+    groups:
+    - id: Alcohol
+      rateModifier: 0.05
+
+- type: entity
+  id: OrganDionaKidneys
+  parent: [ BaseOrganKidneys, BaseDionaOrgan ]
+  name: kidneys
+  description: "Green potatoes."
+  components:
+  - type: Metabolizer
+    updateInterval: 0.9
+    maxReagents: 2
+    removeEmpty: true
+    metabolizerTypes:
+      - Plant
+    groups:
+    - id: Medicine
+    - id: Poison
+    - id: Narcotic
 
 # Organs that turn into nymphs on removal
 - type: entity
@@ -156,6 +181,26 @@
   components:
   - type: Nymph
     entityPrototype: OrganDionaNymphLungs
+
+- type: entity
+  id: OrganDionaLiverNymph
+  parent: OrganDionaLiver
+  categories: [ HideSpawnMenu ]
+  name: kidneys
+  description: "Pairing suggestion: chianti and fava beans."
+  components:
+  - type: Nymph
+    entityPrototype: OrganDionaNymphLiver
+
+- type: entity
+  id: OrganDionaKidneysNymph
+  parent: OrganDionaKidneys
+  categories: [ HideSpawnMenu ]
+  name: kidneys
+  description: "Filters toxins from the bloodstream."
+  components:
+  - type: Nymph
+    entityPrototype: OrganDionaNymphKidneys
 
 # Nymphs that the organs will turn into
 - type: entity
@@ -193,6 +238,30 @@
   - type: IsDeadIC
   - type: Body
     prototype: AnimalNymphLungs
+
+- type: entity
+  id: OrganDionaNymphLiver
+  parent: MobDionaNymphAccent
+  categories: [ HideSpawnMenu ]
+  name: diona nymph
+  suffix: Liver
+  description: Contains the liver of a formerly fully-formed Diona. A walking pub.
+  components:
+  - type: IsDeadIC
+  - type: Body
+    prototype: AnimalNymphLiver
+
+- type: entity
+  id: OrganDionaNymphKidneys
+  parent: MobDionaNymphAccent
+  categories: [ HideSpawnMenu ]
+  name: diona nymph
+  suffix: Kidneys
+  description: Contains the kidneys of a formerly fully-formed Diona. Perfect for a pie.
+  components:
+  - type: IsDeadIC
+  - type: Body
+    prototype: AnimalNymphKidneys
 
 - type: entity
   id: OrganDionaTongue

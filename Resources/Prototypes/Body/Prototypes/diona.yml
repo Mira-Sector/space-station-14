@@ -23,6 +23,9 @@
         heart: OrganHumanHeart
         stomach: OrganDionaStomachNymph
         lungs: OrganDionaLungsNymph
+        liver: OrganDionaLiverNymph
+        kidneys: OrganDionaKidneysNymph
+        appendix: OrganHumanAppendix
     right arm:
       part: RightArmDiona
       connections:
