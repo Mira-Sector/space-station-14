@@ -27,12 +27,13 @@ public sealed partial class OrganMissingDamageContainerComponent : Component
 }
 
 [Serializable, NetSerializable]
-public record struct OrganMissingDamageContainerEntry(DamageSpecifier Damage, TimeSpan DamageGrace, TimeSpan DamageDelay, TimeSpan NextDamage, ProtoId<OrganPrototype>? CapToOrganType)
+public record struct OrganMissingDamageContainerEntry(DamageSpecifier Damage, TimeSpan DamageGrace, TimeSpan DamageDelay, TimeSpan NextDamage, ProtoId<OrganPrototype> OrganType, bool CapToOrganType)
 {
     public readonly DamageSpecifier Damage = Damage;
     public readonly TimeSpan DamageGrace = DamageGrace;
     public readonly TimeSpan DamageDelay = DamageDelay;
-    public readonly ProtoId<OrganPrototype>? CapToOrganType = CapToOrganType;
+    public readonly ProtoId<OrganPrototype> OrganType = OrganType;
+    public readonly bool CapToOrganType = CapToOrganType;
 
     public TimeSpan NextDamage = NextDamage;
     public bool PassedDamageGrace;

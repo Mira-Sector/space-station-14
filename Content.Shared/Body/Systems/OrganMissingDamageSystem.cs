@@ -70,12 +70,12 @@ public sealed partial class OrganMissingDamageSystem : BaseBodyTrackedSystem
                     toAdd.Add((i, passedGrace));
 
                     var damageToDeal = data.Damage;
-                    if (data.CapToOrganType is { } capToOrganType && component.OrganTypeCaps.TryGetValue(capToOrganType, out var existingOrganCap))
+                    if (data.CapToOrganType)
                     {
                         damageToDeal = new();
                         foreach (var (damageType, damageValue) in data.Damage.DamageDict)
                         {
-                            if (existingOrganCap.DamageDict.TryGetValue(damageType, out var existingDamageValue) && existingDamageValue > 0)
+                            if (component.OrganTypeCaps[data.OrganType].DamageDict.TryGetValue(damageType, out var existingDamageValue) && existingDamageValue > 0)
                                 damageToDeal.DamageDict[damageType] = FixedPoint2.Max(0, damageValue - existingDamageValue);
                             else
                                 damageToDeal.DamageDict[damageType] = damageValue;
@@ -85,11 +85,7 @@ public sealed partial class OrganMissingDamageSystem : BaseBodyTrackedSystem
                     if (_damageable.TryChangeDamage(uid, damageToDeal, interruptsDoAfters: false) is not { } addedDamage)
                         continue;
 
-                    var organType = _organQuery.Comp(organ).OrganType;
-                    if (component.OrganTypeCaps.ContainsKey(organType))
-                        component.OrganTypeCaps[organType] += addedDamage;
-                    else
-                        component.OrganTypeCaps[organType] = addedDamage;
+                    component.OrganTypeCaps[data.OrganType] += addedDamage;
                 }
             }
 
@@ -173,16 +169,16 @@ public sealed partial class OrganMissingDamageSystem : BaseBodyTrackedSystem
             var graceTime = entry.GraceTime + _timing.CurTime;
             var nextDamage = entry.DamageDelay + _timing.CurTime;
 
-            if (entry.CapToOrganType)
-                newEntries.Add(new OrganMissingDamageContainerEntry(entry.Damage, graceTime, entry.DamageDelay, nextDamage, organType));
-            else
-                newEntries.Add(new OrganMissingDamageContainerEntry(entry.Damage, graceTime, entry.DamageDelay, nextDamage, null));
+            newEntries.Add(new OrganMissingDamageContainerEntry(entry.Damage, graceTime, entry.DamageDelay, nextDamage, organType, entry.CapToOrganType));
 
             if (minDelay == null || entry.DamageDelay < minDelay)
                 minDelay = entry.DamageDelay;
         }
 
         ent.Comp.Organs[source.Owner] = newEntries.ToArray();
+
+        if (!ent.Comp.OrganTypeCaps.ContainsKey(organType))
+            ent.Comp.OrganTypeCaps.Add(organType, new());
 
         if (minDelay == null)
             ent.Comp.DamageDelay = OrganMissingDamageContainerComponent.DefaultDamageDelay;
