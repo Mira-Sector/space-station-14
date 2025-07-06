@@ -40,10 +40,12 @@
   description: A device that can hold a single swab, able to apply pollen without risk of cross-contamination.
   components:
   - type: Sprite
-    sprite: Objects/Specific/Hydroponics/swab_applicator.rsi #to change
+    sprite: Objects/Specific/Hydroponics/swab_applicator.rsi
     layers:
     - state: swab_applicator
   - type: Item
+    sprite: Objects/Specific/Hydroponics/swab_applicator.rsi
+    heldPrefix: swab_applicator
     size: Small
   - type: ItemSlots
     ejectOnUse: true
@@ -73,6 +75,7 @@
     swabDelay: 0.75
     usable: false
     contaminate: false
+    swabSound: /Audio/Effects/Footsteps/grass2.ogg
 
 - type: entity
   parent: BaseAmmoProvider # this is for cycling swabs out and not spawning 30 entities, trust

@@ -32,12 +32,22 @@ namespace Content.Server.Botany
         public bool Usable = true;
 
         /// <summary>
+        /// Sound played on swabbing
+        /// </summary>
+        [DataField]
+        public SoundSpecifier? SwabSound = new SoundPathSpecifier("/Audio/Effects/Footsteps/grass2.ogg");
+
+        /// <summary>
+        /// Sound played on cleaning a swab
+        /// </summary>
+        [DataField]
+        public SoundSpecifier? CleanSound = new SoundPathSpecifier("/Audio/Effects/unwrap.ogg");
+
+        /// <summary>
         /// SeedData from the first plant that got swabbed.
         /// </summary>
         public SeedData? SeedData;
 
-        public SoundSpecifier SwabSound = new SoundPathSpecifier("/Audio/Effects/Footsteps/grass1.ogg");
 
-        public SoundSpecifier CleanSound = new SoundPathSpecifier("/Audio/Effects/unwrap.ogg");
     }
 }
