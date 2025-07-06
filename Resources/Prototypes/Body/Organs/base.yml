@@ -185,7 +185,12 @@
     entries:
     - damage:
         types:
-          Necrosis: 0.1
+          Necrosis: 0.2
+    - damage:
+        types:
+          Necrosis: -0.1
+      damageOn: Added
+      capToOrganType: true
   - type: BodyDamageable
   - type: BodyDamageThresholds
     thresholds:
@@ -236,7 +241,12 @@
     entries:
     - damage:
         types:
-          Necrosis: 0.1
+          Necrosis: 0.2
+    - damage:
+        types:
+          Necrosis: -0.1
+      damageOn: Added
+      capToOrganType: true
   - type: BodyDamageable
   - type: BodyDamageThresholds
     thresholds:

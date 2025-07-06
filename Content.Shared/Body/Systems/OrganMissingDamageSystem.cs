@@ -1,8 +1,9 @@
-using System.Linq;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Events;
+using Content.Shared.Body.Organ;
 using Content.Shared.Body.Part;
 using Content.Shared.Damage;
+using Content.Shared.FixedPoint;
 using Content.Shared.Mobs.Systems;
 using Robust.Shared.Timing;
 
@@ -14,14 +15,19 @@ public sealed partial class OrganMissingDamageSystem : BaseBodyTrackedSystem
     [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
 
+    private EntityQuery<OrganComponent> _organQuery;
+
     public override void Initialize()
     {
         base.Initialize();
 
+        SubscribeLocalEvent<OrganMissingDamageComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<OrganMissingDamageComponent, OrganInitEvent>(OnOrganInit);
 
         SubscribeTrackerAdded<OrganMissingDamageContainerComponent, OrganMissingDamageComponent>(OnTrackerAdded);
         SubscribeTrackerRemoved<OrganMissingDamageContainerComponent, OrganMissingDamageComponent>(OnTrackerRemoved);
+
+        _organQuery = GetEntityQuery<OrganComponent>();
     }
 
     public override void Update(float frameTime)
@@ -42,7 +48,7 @@ public sealed partial class OrganMissingDamageSystem : BaseBodyTrackedSystem
                 continue;
             }
 
-            Dictionary<EntityUid, Dictionary<int, bool>> nextDamageUpdated = [];
+            Dictionary<EntityUid, List<(int, bool)>> nextDamageUpdated = [];
 
             foreach (var (organ, entries) in component.Organs)
             {
@@ -52,27 +58,38 @@ public sealed partial class OrganMissingDamageSystem : BaseBodyTrackedSystem
                     if (data.NextDamage > _timing.CurTime)
                         continue;
 
-                    var passedGrace = false;
+                    var passedGrace = !data.PassedDamageGrace && _timing.CurTime > data.DamageGrace;
+                    if (passedGrace)
+                        data.PassedDamageGrace = true;
 
-                    if (!data.PassedDamageGrace)
-                    {
-                        if (_timing.CurTime < data.DamageGrace)
-                            continue;
-
-                        passedGrace = true;
-                    }
-
-                    if (nextDamageUpdated.TryGetValue(organ, out var toAdd))
-                    {
-                        toAdd.Add(i, passedGrace);
-                    }
-                    else
+                    if (!nextDamageUpdated.TryGetValue(organ, out var toAdd))
                     {
                         toAdd = [];
-                        toAdd.Add(i, passedGrace);
+                        nextDamageUpdated[organ] = toAdd;
+                    }
+                    toAdd.Add((i, passedGrace));
+
+                    var damageToDeal = data.Damage;
+                    if (data.CapToOrganType is { } capToOrganType && component.OrganTypeCaps.TryGetValue(capToOrganType, out var existingOrganCap))
+                    {
+                        damageToDeal = new();
+                        foreach (var (damageType, damageValue) in data.Damage.DamageDict)
+                        {
+                            if (existingOrganCap.DamageDict.TryGetValue(damageType, out var existingDamageValue) && existingDamageValue > 0)
+                                damageToDeal.DamageDict[damageType] = FixedPoint2.Max(0, damageValue - existingDamageValue);
+                            else
+                                damageToDeal.DamageDict[damageType] = damageValue;
+                        }
                     }
 
-                    _damageable.TryChangeDamage(uid, data.Damage, interruptsDoAfters: false);
+                    if (_damageable.TryChangeDamage(uid, damageToDeal, interruptsDoAfters: false) is not { } addedDamage)
+                        continue;
+
+                    var organType = _organQuery.Comp(organ).OrganType;
+                    if (component.OrganTypeCaps.ContainsKey(organType))
+                        component.OrganTypeCaps[organType] += addedDamage;
+                    else
+                        component.OrganTypeCaps[organType] = addedDamage;
                 }
             }
 
@@ -95,57 +112,81 @@ public sealed partial class OrganMissingDamageSystem : BaseBodyTrackedSystem
         }
     }
 
+    private void OnInit(Entity<OrganMissingDamageComponent> ent, ref ComponentInit args)
+    {
+        foreach (var entry in ent.Comp.Entries)
+        {
+            if (!ent.Comp.DamageTypeCount.TryGetValue(entry.DamageOn, out var typeCount))
+                ent.Comp.DamageTypeCount[entry.DamageOn] = 1;
+            else
+                ent.Comp.DamageTypeCount[entry.DamageOn] = typeCount++;
+        }
+
+        /*
+         * ensure they all have a value
+         * can just index the dictionary rather than do a tryget later
+        */
+        foreach (var type in Enum.GetValues<OrganMissingDamageType>())
+        {
+            if (!ent.Comp.DamageTypeCount.ContainsKey(type))
+                ent.Comp.DamageTypeCount[type] = 0;
+        }
+    }
+
     private void OnOrganInit(Entity<OrganMissingDamageComponent> ent, ref OrganInitEvent args)
     {
-        EnsureComp<OrganMissingDamageContainerComponent>(args.Part);
+        EnsureComp<OrganMissingDamageContainerComponent>(args.Part.Owner, out var partComp);
         Body.RegisterTracker<OrganMissingDamageComponent>(args.Part.Owner);
+        DamageSourceModify((args.Part.Owner, partComp), ent, OrganMissingDamageType.Added);
 
-        EnsureComp<OrganMissingDamageContainerComponent>(args.Body);
+        EnsureComp<OrganMissingDamageContainerComponent>(args.Body.Owner, out var bodyComp);
         Body.RegisterTracker<OrganMissingDamageComponent>(args.Body.Owner);
+        DamageSourceModify((args.Body.Owner, bodyComp), ent, OrganMissingDamageType.Added);
     }
 
     private void OnTrackerAdded(Entity<OrganMissingDamageContainerComponent> ent, ref BodyTrackerAdded args)
     {
-        if (!ent.Comp.Organs.Remove(args.Tracked.Owner, out var entries))
-            return;
-
-        if (entries.Any(entry => entry.DamageDelay == ent.Comp.DamageDelay))
-        {
-            ent.Comp.DamageDelay = ent.Comp.Organs.Any()
-                ? ent.Comp.Organs.Values.SelectMany(arr => arr).Min(entry => entry.DamageDelay)
-                : OrganMissingDamageContainerComponent.DefaultDamageDelay;
-        }
-
-        Dirty(ent);
+        DamageSourceModify(ent, (args.Tracked.Owner, (OrganMissingDamageComponent)args.Tracked.Comp), OrganMissingDamageType.Added);
     }
 
     private void OnTrackerRemoved(Entity<OrganMissingDamageContainerComponent> ent, ref BodyTrackerRemoved args)
+    {
+        DamageSourceModify(ent, (args.Tracked.Owner, (OrganMissingDamageComponent)args.Tracked.Comp), OrganMissingDamageType.Missing);
+    }
+
+    private void DamageSourceModify(Entity<OrganMissingDamageContainerComponent> ent, Entity<OrganMissingDamageComponent> source, OrganMissingDamageType damageType)
     {
         /*
          * we dont just fetch the componment in the update loop
          * the organ may get deleted and we should still damage
         */
-        var trackedComp = (OrganMissingDamageComponent)args.Tracked.Comp;
-        var currentTime = _timing.CurTime;
-        var newEntries = new OrganMissingDamageContainerEntry[trackedComp.Entries.Length];
+        List<OrganMissingDamageContainerEntry> newEntries = [];
+        var organType = _organQuery.Comp(source.Owner).OrganType;
 
         TimeSpan? minDelay = null;
 
-        for (var i = 0; i < trackedComp.Entries.Length; i++)
+        foreach (var entry in source.Comp.Entries)
         {
-            var entry = trackedComp.Entries[i];
-            var graceTime = entry.GraceTime + currentTime;
-            var nextDamage = entry.DamageDelay + currentTime;
+            if (entry.DamageOn != damageType)
+                continue;
 
-            newEntries[i] = new OrganMissingDamageContainerEntry(entry.Damage, graceTime, entry.DamageDelay, nextDamage);
+            var graceTime = entry.GraceTime + _timing.CurTime;
+            var nextDamage = entry.DamageDelay + _timing.CurTime;
+
+            if (entry.CapToOrganType)
+                newEntries.Add(new OrganMissingDamageContainerEntry(entry.Damage, graceTime, entry.DamageDelay, nextDamage, organType));
+            else
+                newEntries.Add(new OrganMissingDamageContainerEntry(entry.Damage, graceTime, entry.DamageDelay, nextDamage, null));
 
             if (minDelay == null || entry.DamageDelay < minDelay)
                 minDelay = entry.DamageDelay;
         }
 
-        ent.Comp.Organs[args.Tracked.Owner] = newEntries;
+        ent.Comp.Organs[source.Owner] = newEntries.ToArray();
 
-        if (minDelay < ent.Comp.DamageDelay)
+        if (minDelay == null)
+            ent.Comp.DamageDelay = OrganMissingDamageContainerComponent.DefaultDamageDelay;
+        else if (minDelay < ent.Comp.DamageDelay)
             ent.Comp.DamageDelay = minDelay.Value;
 
         Dirty(ent);
