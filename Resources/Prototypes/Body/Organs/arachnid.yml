@@ -80,6 +80,8 @@
   description: "Pairing suggestion: chianti and fava beans."
   categories: [ HideSpawnMenu ]
   components:
+  - type: Sprite
+    sprite: Mobs/Species/Human/organs.rsi
   - type: Metabolizer # The liver metabolizes certain chemicals only, like alcohol.
     updateInterval: 1.5
     maxReagents: 1
@@ -96,9 +98,7 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
-    layers:
-      - state: kidney-l
-      - state: kidney-r
+    sprite: Mobs/Species/Human/organs.rsi
   # The kidneys just remove anything that doesn't currently have any metabolisms, as a stopgap.
   - type: Item
     size: Small
