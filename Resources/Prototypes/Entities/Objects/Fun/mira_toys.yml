@@ -1,3 +1,4 @@
+#admin plushies
 - type: entity
   parent: BasePlushie
   id: PlushieSillyAmy
@@ -86,7 +87,7 @@
   parent: PlushieSillyAmy
   id: PlushieGwen
   name: gwen riley plushie
-  description: A cute stuffed toy that resembles a certain nerd.
+  description: A cute stuffed toy that resembling a certain nerd.
   components:
   - type: Sprite
     sprite: Objects/Fun/MiraPlushies/gwen.rsi
@@ -137,6 +138,8 @@
       head:
       - state: equipped-HELMET
 
+#miscellaneous plushies
+
 - type: entity
   parent: BasePlushie
   id: PlushieCreature
@@ -179,6 +182,52 @@
     sound:
       collection: BikeHorn
   - type: MultiHandedItem
+
+#non-admins
+
+- type: entity
+  parent: BasePlushie
+  id: PlushieAnurath
+  name: anurath veiler plushie
+  description: A cute stuffed toy that resembles a maintenance pill addict.
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/MiraPlushies/anurath.rsi
+    state: icon
+  - type: EmitSoundOnUse
+    sound:
+      collection: MaleScreams
+  - type: EmitSoundOnLand
+    sound:
+      collection: MaleScreams
+  - type: EmitSoundOnActivate
+    sound:
+      collection: MaleScreams
+  - type: EmitSoundOnTrigger
+    sound:
+      collection: MaleScreams
+  - type: EmitSoundOnCollide
+    sound:
+      collection: MaleScreams
+  - type: Food
+    requiresSpecialDigestion: true
+    useSound:
+      collection: MaleScreams
+  - type: MeleeWeapon
+    wideAnimationRotation: 180
+    soundHit:
+      collection: MaleScreams
+  - type: Clothing
+    quickEquip: false
+    sprite: Objects/Fun/MiraPlushies/anurath.rsi
+    slots:
+    - HEAD
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET
+        offset: "0, 0.03"
+
+#others
 
 - type: entity
   parent: ToySword
