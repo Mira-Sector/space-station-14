@@ -68,7 +68,7 @@ public sealed partial class BodySystem : SharedBodySystem
         }
     }
 
-    private void OnBodyInit(EntityUid uid, BodyComponent component, BodyInitEvent args)
+    private void OnBodyInit(EntityUid uid, BodyComponent component, ref BodyInitEvent args)
     {
         if (TryComp<MobThresholdsComponent>(uid, out var thresholds))
         {

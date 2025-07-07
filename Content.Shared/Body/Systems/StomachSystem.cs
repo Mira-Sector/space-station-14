@@ -90,12 +90,12 @@ namespace Content.Shared.Body.Systems
 
                 _solutionContainerSystem.UpdateChemicals(stomach.Solution.Value);
 
-
                 // Transfer everything to the body solution!
-                _solutionContainerSystem.TryAddSolution(bodySolution.Value, transferSolution);
-
-                var ev = new StomachDigestedEvent();
-                RaiseLocalEvent(uid, ev);
+                if (_solutionContainerSystem.TryAddSolution(bodySolution.Value, transferSolution))
+                {
+                    var ev = new StomachDigestedEvent();
+                    RaiseLocalEvent(uid, ev);
+                }
             }
         }
 

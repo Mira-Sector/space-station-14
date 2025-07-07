@@ -79,3 +79,57 @@
       - feet
     feet:
       part: FeetAnimal
+
+- type: body
+  id: AnimalNymphLiver
+  name: "nymph"
+  root: torso
+  slots:
+    torso:
+      part: TorsoAnimal
+      connections:
+      - left leg
+      - right leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganDionaStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    left leg:
+      part: LeftLegAnimal
+      connections:
+      - feet
+    right leg:
+      part: RightLegAnimal
+      connections:
+      - feet
+    feet:
+      part: FeetAnimal
+
+- type: body
+  id: AnimalNymphKidneys
+  name: "nymph"
+  root: torso
+  slots:
+    torso:
+      part: TorsoAnimal
+      connections:
+      - left leg
+      - right leg
+      organs:
+        lungs: OrganAnimalLungs
+        stomach: OrganDionaStomach
+        liver: OrganAnimalLiver
+        heart: OrganAnimalHeart
+        kidneys: OrganAnimalKidneys
+    left leg:
+      part: LeftLegAnimal
+      connections:
+      - feet
+    right leg:
+      part: RightLegAnimal
+      connections:
+      - feet
+    feet:
+      part: FeetAnimal
