@@ -4,7 +4,6 @@ using Content.Shared.Atmos;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.FixedPoint;
 using Content.Shared.Humanoid;
-using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.IdentityManagement;
 using Content.Shared.MedicalScanner;
 using Content.Shared.Mobs;
@@ -27,24 +26,24 @@ namespace Content.Client.HealthAnalyzer.UI;
 [Virtual]
 public partial class BaseHealthAnalyzerWindow : FancyWindow
 {
-    protected readonly IEntityManager _entityManager;
-    protected SpriteSystem _spriteSystem = default!;
-    protected IPrototypeManager _prototypes = default!;
-    protected IResourceCache _cache = default!;
-    protected ProgressColorSystem _progressColor = default!;
-    private MobThresholdSystem _mobThreshold = default!;
+    protected readonly IEntityManager EntityManager;
+    protected SpriteSystem SpriteSystem = default!;
+    protected IPrototypeManager Prototypes = default!;
+    protected IResourceCache Cache = default!;
+    protected ProgressColorSystem ProgressColor = default!;
+    private readonly MobThresholdSystem _mobThreshold = default!;
 
     public BaseHealthAnalyzerWindow()
     {
         RobustXamlLoader.Load(this);
 
         var dependencies = IoCManager.Instance!;
-        _entityManager = dependencies.Resolve<IEntityManager>();
-        _spriteSystem = _entityManager.System<SpriteSystem>();
-        _prototypes = dependencies.Resolve<IPrototypeManager>();
-        _cache = dependencies.Resolve<IResourceCache>();
-        _progressColor = _entityManager.System<ProgressColorSystem>();
-        _mobThreshold = _entityManager.System<MobThresholdSystem>();
+        EntityManager = dependencies.Resolve<IEntityManager>();
+        SpriteSystem = EntityManager.System<SpriteSystem>();
+        Prototypes = dependencies.Resolve<IPrototypeManager>();
+        Cache = dependencies.Resolve<IResourceCache>();
+        ProgressColor = EntityManager.System<ProgressColorSystem>();
+        _mobThreshold = EntityManager.System<MobThresholdSystem>();
     }
 
     public virtual void Populate(HealthAnalyzerScannedUserMessage msg)
@@ -92,11 +91,11 @@ public partial class BaseHealthAnalyzerWindow : FancyWindow
 
         var name = new FormattedMessage();
         name.PushColor(Color.White);
-        name.AddText(_entityManager.HasComponent<MetaDataComponent>(target) ? Identity.Name(target, _entityManager) : Loc.GetString("health-analyzer-window-entity-unknown-text"));
+        name.AddText(EntityManager.HasComponent<MetaDataComponent>(target) ? Identity.Name(target, EntityManager) : Loc.GetString("health-analyzer-window-entity-unknown-text"));
         nameLabel.SetMessage(name);
 
-        speciesLabel.Text = _entityManager.TryGetComponent<HumanoidAppearanceComponent>(target, out var humanoidAppearanceComponent)
-            ? Loc.GetString(_prototypes.Index<SpeciesPrototype>(humanoidAppearanceComponent.Species).Name)
+        speciesLabel.Text = EntityManager.TryGetComponent<HumanoidAppearanceComponent>(target, out var humanoidAppearanceComponent)
+            ? Loc.GetString(Prototypes.Index(humanoidAppearanceComponent.Species).Name)
             : Loc.GetString("health-analyzer-window-entity-unknown-species-text");
     }
 
@@ -105,16 +104,16 @@ public partial class BaseHealthAnalyzerWindow : FancyWindow
         temperatureLabel.Text = !float.IsNaN(temperature) ? $"{temperature - Atmospherics.T0C:F1} °C ({temperature:F1} K)" : Loc.GetString("health-analyzer-window-entity-unknown-value-text");
 
         bloodLabel.Text = !float.IsNaN(bloodLevel)
-            ? Loc.GetString(("health-analyzer-color-label"), ("color", _progressColor.GetProgressColor(bloodLevel)), ("text", $"{bloodLevel * 100:F1} %"))
+            ? Loc.GetString(("health-analyzer-color-label"), ("color", ProgressColor.GetProgressColor(bloodLevel)), ("text", $"{bloodLevel * 100:F1} %"))
             : Loc.GetString("health-analyzer-window-entity-unknown-value-text");
 
-        statusLabel.Text = _entityManager.TryGetComponent<MobStateComponent>(target, out var mobStateComponent)
+        statusLabel.Text = EntityManager.TryGetComponent<MobStateComponent>(target, out var mobStateComponent)
             ? GetStatus(mobStateComponent.CurrentState)
             : Loc.GetString("health-analyzer-window-entity-unknown-text");
 
         if (_mobThreshold.TryGetDeadPercentage(target, damage, out var deadPercentage))
         {
-            damageLabel.Text = Loc.GetString(("health-analyzer-color-label"), ("color", _progressColor.GetProgressColor((float) Math.Abs(1 - (float) deadPercentage.Value))), ("text", damage.ToString()));
+            damageLabel.Text = Loc.GetString("health-analyzer-color-label", ("color", ProgressColor.GetProgressColor((float)Math.Abs(1 - (float)deadPercentage.Value))), ("text", damage.ToString()));
         }
         else
         {
@@ -122,16 +121,16 @@ public partial class BaseHealthAnalyzerWindow : FancyWindow
         }
     }
 
-    protected bool DrawAlerts(BoxContainer AlertsContainer, bool? unrevivable, bool? Bleeding)
+    protected bool DrawAlerts(BoxContainer alertsContainer, bool? unrevivable, bool? bleeding)
     {
-        if (unrevivable != true && Bleeding != true)
+        if (unrevivable != true && bleeding != true)
             return false;
 
-        AlertsContainer.DisposeAllChildren();
+        alertsContainer.DisposeAllChildren();
 
         if (unrevivable == true)
         {
-            AlertsContainer.AddChild(new RichTextLabel
+            alertsContainer.AddChild(new RichTextLabel
             {
                 Text = Loc.GetString("health-analyzer-window-entity-unrevivable-text"),
                 Margin = new Thickness(0, 4),
@@ -139,9 +138,9 @@ public partial class BaseHealthAnalyzerWindow : FancyWindow
             });
         }
 
-        if (Bleeding == true)
+        if (bleeding == true)
         {
-            AlertsContainer.AddChild(new RichTextLabel
+            alertsContainer.AddChild(new RichTextLabel
             {
                 Text = Loc.GetString("health-analyzer-window-entity-bleeding-text"),
                 Margin = new Thickness(0, 4),
@@ -154,7 +153,7 @@ public partial class BaseHealthAnalyzerWindow : FancyWindow
 
     protected List<BoxContainer> DrawDiagnosticGroups(Dictionary<string, FixedPoint2> groups, IReadOnlyDictionary<string, FixedPoint2> damageDict, float scale = 1f)
     {
-        List<BoxContainer> containers = new();
+        List<BoxContainer> containers = [];
 
         foreach (var (damageGroupId, damageAmount) in groups)
         {
@@ -163,7 +162,7 @@ public partial class BaseHealthAnalyzerWindow : FancyWindow
 
             var groupTitleText = $"{Loc.GetString(
                 "health-analyzer-window-damage-group-text",
-                ("damageGroup", _prototypes.Index<DamageGroupPrototype>(damageGroupId).LocalizedName),
+                ("damageGroup", Prototypes.Index<DamageGroupPrototype>(damageGroupId).LocalizedName),
                 ("amount", damageAmount)
             )}";
 
@@ -177,7 +176,7 @@ public partial class BaseHealthAnalyzerWindow : FancyWindow
             containers.Add(groupContainer);
 
             // Show the damage for each type in that group.
-            var group = _prototypes.Index<DamageGroupPrototype>(damageGroupId);
+            var group = Prototypes.Index<DamageGroupPrototype>(damageGroupId);
 
             foreach (var type in group.DamageTypes)
             {
@@ -186,7 +185,7 @@ public partial class BaseHealthAnalyzerWindow : FancyWindow
 
                 var damageString = Loc.GetString(
                     "health-analyzer-window-damage-type-text",
-                    ("damageType", _prototypes.Index<DamageTypePrototype>(type).LocalizedName),
+                    ("damageType", Prototypes.Index<DamageTypePrototype>(type).LocalizedName),
                     ("amount", typeAmount)
                 );
 
@@ -202,21 +201,19 @@ public partial class BaseHealthAnalyzerWindow : FancyWindow
         var rsiPath = new ResPath("/Textures/Objects/Devices/health_analyzer.rsi");
         var rsiSprite = new SpriteSpecifier.Rsi(rsiPath, texture);
 
-        var rsi = _cache.GetResource<RSIResource>(rsiSprite.RsiPath).RSI;
-        if (!rsi.TryGetState(rsiSprite.RsiState, out var state))
-        {
+        var rsi = Cache.GetResource<RSIResource>(rsiSprite.RsiPath).RSI;
+        if (!rsi.TryGetState(rsiSprite.RsiState, out _))
             rsiSprite = new SpriteSpecifier.Rsi(rsiPath, "unknown");
-        }
 
-        return _spriteSystem.Frame0(rsiSprite);
+        return SpriteSystem.Frame0(rsiSprite);
     }
 
     private static RichTextLabel CreateDiagnosticItemLabel(string text, float scale)
     {
-        var label = new RichTextLabel();
-
-        label.Text = $"[font size={Math.Round(FontTag.DefaultSize * scale)}]{text}[/font]";
-        return label;
+        return new RichTextLabel()
+        {
+            Text = $"[font size={Math.Round(FontTag.DefaultSize * scale)}]{text}[/font]"
+        };
     }
 
     private BoxContainer CreateDiagnosticGroupTitle(string text, string id, float scale)

@@ -15,21 +15,21 @@ public sealed partial class HealthAnalyzerBodyWindow : BaseHealthAnalyzerWindow
 {
     private readonly SharedBodySystem _bodySystem;
 
-    private BodyPart? SelectedPart;
+    private BodyPart? _selectedPart;
     public bool Updateable = true;
 
     public HealthAnalyzerBodyWindow()
     {
         RobustXamlLoader.Load(this);
 
-        _bodySystem = _entityManager.System<SharedBodySystem>();
+        _bodySystem = EntityManager.System<SharedBodySystem>();
     }
 
     public override void Populate(HealthAnalyzerScannedUserMessage msg)
     {
-        var target = _entityManager.GetEntity(msg.TargetEntity);
+        var target = EntityManager.GetEntity(msg.TargetEntity);
 
-        if (target == null || _bodySystem.GetBodyDamage(target.Value) is not {} damage)
+        if (target == null || _bodySystem.GetBodyDamage(target.Value) is not { } damage)
         {
             NoPatientDataText.Visible = true;
             return;
@@ -45,9 +45,9 @@ public sealed partial class HealthAnalyzerBodyWindow : BaseHealthAnalyzerWindow
         AlertsDivider.Visible = showAlerts;
         AlertsContainer.Visible = showAlerts;
 
-        var healthBodyComp = _entityManager.GetComponent<HealthAnalyzerBodyComponent>(target.Value);
+        var healthBodyComp = EntityManager.GetComponent<HealthAnalyzerBodyComponent>(target.Value);
 
-        Dictionary<BodyPart, (EntityUid Uid, DamageableComponent Damageable, HealthAnalyzerLimb Data, TextureRect Texture)> limbs = new();
+        Dictionary<BodyPart, (EntityUid Uid, DamageableComponent Damageable, HealthAnalyzerLimb Data, TextureRect Texture)> limbs = [];
 
         foreach (var (limbUid, limbComp) in _bodySystem.GetBodyChildren(target.Value))
         {
@@ -55,10 +55,10 @@ public sealed partial class HealthAnalyzerBodyWindow : BaseHealthAnalyzerWindow
             if (!TryGetLimbData(healthBodyComp, part, out var data))
                 continue;
 
-            if (!_entityManager.TryGetComponent<DamageableComponent>(limbUid, out var damageable))
+            if (!EntityManager.TryGetComponent<DamageableComponent>(limbUid, out var damageable))
                 continue;
 
-            if (!_entityManager.TryGetComponent<BodyPartThresholdsComponent>(limbUid, out var thresholdsComp) || !thresholdsComp.Thresholds.TryGetValue(WoundState.Dead, out var deadThreshold))
+            if (!EntityManager.TryGetComponent<BodyPartThresholdsComponent>(limbUid, out var thresholdsComp) || !thresholdsComp.Thresholds.TryGetValue(WoundState.Dead, out var deadThreshold))
                 continue;
 
             var progressBar = GetProgressBar(part);
@@ -69,7 +69,7 @@ public sealed partial class HealthAnalyzerBodyWindow : BaseHealthAnalyzerWindow
             progressBar.ProgressText.Text = $"{deadThreshold - damageable.TotalDamage}/{deadThreshold}";
 
             var button = GetButton(part);
-            button.Texture = _spriteSystem.Frame0(data.HoverSprite);
+            button.Texture = SpriteSystem.Frame0(data.HoverSprite);
             button.Visible = true;
 
             limbs.Add(part, (limbUid, damageable, data, button));
@@ -84,18 +84,18 @@ public sealed partial class HealthAnalyzerBodyWindow : BaseHealthAnalyzerWindow
 
             foreach (var (part, (_, _, data, button)) in limbs)
             {
-                var selectedTexture = _spriteSystem.Frame0(data.SelectedSprite);
+                var selectedTexture = SpriteSystem.Frame0(data.SelectedSprite);
                 var scale = selectedTexture.Size / LimbButton.Size;
                 var pixel = scale * args.Event.RelativePosition;
 
-                var color = selectedTexture.GetPixel((int) Math.Round(pixel.X), (int) Math.Round(pixel.Y));
+                var color = selectedTexture.GetPixel((int)Math.Round(pixel.X), (int)Math.Round(pixel.Y));
 
                 if (color.A > 0)
                 {
-                    if (SelectedPart == part)
-                        SelectedPart = null;
+                    if (_selectedPart == part)
+                        _selectedPart = null;
                     else
-                        SelectedPart = part;
+                        _selectedPart = part;
 
                     break;
                 }
@@ -104,16 +104,16 @@ public sealed partial class HealthAnalyzerBodyWindow : BaseHealthAnalyzerWindow
             Updateable = false;
         };
 
-        if (SelectedPart is {} && limbs.TryGetValue(SelectedPart, out var limbData))
+        if (_selectedPart is { } && limbs.TryGetValue(_selectedPart, out var limbData))
         {
             DrawLimbDamage(limbData.Damageable.Damage);
-            limbData.Texture.Texture = _spriteSystem.Frame0(limbData.Data.SelectedSprite);
-            LimbDamageLabel.Text = Loc.GetString($"[font size=16]{Loc.GetString($"health-analyzer-body-{SelectedPart.Side.ToString().ToLower()}-{SelectedPart.Type.ToString().ToLower()}")}[/font]");
+            limbData.Texture.Texture = SpriteSystem.Frame0(limbData.Data.SelectedSprite);
+            LimbDamageLabel.Text = Loc.GetString($"[font size=16]{Loc.GetString($"health-analyzer-body-{_selectedPart.Side.ToString().ToLower()}-{_selectedPart.Type.ToString().ToLower()}")}[/font]");
         }
         else
         {
             foreach (var (part, (limb, _, data, button)) in limbs)
-                button.Texture = _spriteSystem.Frame0(data.SelectedSprite);
+                button.Texture = SpriteSystem.Frame0(data.SelectedSprite);
 
             DrawLimbDamage(damage);
             LimbDamageLabel.Text = $"[font size=16]{Loc.GetString("health-analyzer-body-all")}[/font]";
@@ -141,7 +141,7 @@ public sealed partial class HealthAnalyzerBodyWindow : BaseHealthAnalyzerWindow
     private void DrawLimbDamage(DamageSpecifier damage)
     {
         var damageSortedGroups =
-            damage.GetDamagePerGroup(_prototypes).OrderByDescending(damage => damage.Value)
+            damage.GetDamagePerGroup(Prototypes).OrderByDescending(damage => damage.Value)
                 .ToDictionary(x => x.Key, x => x.Value);
 
         GroupsContainer.RemoveAllChildren();
