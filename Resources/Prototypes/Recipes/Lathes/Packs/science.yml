@@ -19,6 +19,8 @@
   - AnomalyVesselCircuitboard
   - AnalysisComputerCircuitboard
   - ArtifactAnalyzerMachineCircuitboard
+  - TeleporterScienceMachineCircuitboard
+  - ComputerTeleporterCircuitboard
 
 - type: latheRecipePack
   id: CircuitFloorsStatic

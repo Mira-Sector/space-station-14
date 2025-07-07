@@ -127,3 +127,9 @@
   id: SetParticleSigma
   name: signal-port-name-set-particle-sigma
   description: signal-port-description-set-particle-sigma
+
+- type: sinkPort
+  id: TeleportReceiver
+  name: signal-port-name-teleport-receiver
+  description: signal-port-description-teleport-receiver
+  defaultLinks: [ TeleportSender ]

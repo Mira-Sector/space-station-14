@@ -1,0 +1,75 @@
+- type: entity
+  id: BaseTeleporter
+  parent: [ SmallConstructibleMachine, ConstructibleMachine ]
+  name: Abstract Teleporter
+  description: Abstractly teleporting you since 2599!
+  abstract: true
+  components:
+  - type: InteractionOutline
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Transform
+    anchored: true
+    noRot: true
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.00"
+        density: 190
+        mask:
+          - MachineMask
+  - type: Sprite
+    sprite: Structures/cargo_telepad.rsi
+    drawdepth: HighFloorObjects
+    layers:
+    - state: offline
+    - state: idle
+      map: ["enum.PowerDeviceVisualLayers.Powered"]
+      shader: unshaded
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallicStrong
+  - type: DeviceList
+  - type: DeviceNetwork
+    deviceNetId: Wired
+    receiveFrequencyId: BasicDevice
+  - type: DeviceLinkSink
+    ports:
+      - TeleportReceiver
+  - type: PowerConsumer #set power draw in teleport component, add/remove when teleporter powers on/off. See EmitterSystem.
+    drawRate: 50 #for now, generic amount
+    voltage: High
+  - type: NodeContainer
+    examinable: true
+    nodes:
+      input:
+        !type:CableDeviceNode
+        nodeGroupID: HVPower
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.PowerDeviceVisuals.Powered:
+        enum.PowerDeviceVisualLayers.Powered:
+          True: { visible: true }
+          False: { visible: false }
+  - type: CollideOnAnchor
+  - type: NameIdentifier
+    group: CargoTelepads
+  - type: AnimationPlayer
+  - type: PointLight
+    radius: 1.5
+    energy: 1.5
+    color: "#ffffff"
+  - type: LitOnPowered
+
+- type: entity
+  id: TeleporterScience
+  parent: BaseTeleporter
+  name: teleframe core
+  description: The core of an advanced device cable of ripping holes in reality itself for near-instanteous travel. With time and material, its capabilities can be expanded.
+  components:
+  - type: Machine
+    board: TeleporterMachineCircuitboard

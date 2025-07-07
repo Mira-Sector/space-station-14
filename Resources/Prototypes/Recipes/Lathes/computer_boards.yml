@@ -70,6 +70,11 @@
   id: TechDiskComputerCircuitboard
   result: TechDiskComputerCircuitboard
 
+- type: latheRecipe
+  parent: [ BaseGoldCircuitboardRecipe, BaseResearchComputerRecipeCategory ]
+  id: ComputerTeleporterCircuitboard
+  result: ComputerTeleporterCircuitboard
+
 # Cameras
 - type: latheRecipe
   parent: [ BaseCircuitboardRecipe, BaseSecurityComputerRecipeCategory ]
@@ -103,3 +108,4 @@
   parent: [ BaseCircuitboardRecipe, BaseGeneralComputerRecipeCategory ]
   id: ComputerTelevisionCircuitboard
   result: ComputerTelevisionCircuitboard
+

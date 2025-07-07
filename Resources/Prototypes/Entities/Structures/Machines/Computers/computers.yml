@@ -1587,3 +1587,38 @@
     containers:
       circuit_holder: !type:ContainerSlot
       board: !type:Container
+
+- type: entity
+  id: ComputerTeleporter
+  parent: BaseComputerAiAccess
+  name: teleporter console
+  description: Links to a teleporter to set its coordinates.
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "computerLayerBody" ]
+      state: computer
+    - map: [ "computerLayerKeyboard" ]
+      state: generic_keyboard
+    - map: [ "computerLayerScreen" ]
+      state: telesci
+    - map: [ "computerLayerKeys" ]
+      state: telesci_key
+    - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
+      state: generic_panel_open
+  - type: DeviceList
+  - type: DeviceNetwork
+    deviceNetId: Wired
+  - type: DeviceLinkSource
+    range: 10
+    ports:
+      - TeleportSender
+  - type: ApcPowerReceiver
+    powerLoad: 1000
+  - type: Computer
+    board: ComputerTeleporterCircuitboard
+  - type: AccessReader
+    access: [ [ "Research" ] ]
+  - type: ContainerContainer
+    containers:
+      board: !type:Container

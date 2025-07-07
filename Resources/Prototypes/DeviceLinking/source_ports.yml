@@ -162,3 +162,9 @@
   name: signal-port-name-item-detected
   description: signal-port-description-item-detected
   defaultLinks: [ Toggle, Trigger, Timer ]
+
+- type: sourcePort
+  id: TeleportSender
+  name: signal-port-name-teleport-sender
+  description: signal-port-description-teleport-sender
+  defaultLinks: [ TeleportReceiver ]

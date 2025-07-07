@@ -1333,3 +1333,25 @@
       Steel: 1
       Manipulator: 1
       Cable: 1
+
+- type: entity
+  parent: BaseMachineCircuitboard
+  id: TeleporterScienceMachineCircuitboard
+  name: teleframe core machine board
+  description: A machine printed circuit board for a teleframe core.
+  components:
+  - type: Sprite
+    state: science
+  - type: MachineBoard
+    prototype: TeleporterScience
+    stackRequirements:
+      Plasma: 10
+      Cable: 10
+      CableHV: 5
+      Manipulator: 5
+      Steel: 5
+      Glass: 5
+    tagRequirements:
+      AnomalyCore: #accepts any anomaly core, inert or active
+        amount: 1
+        defaultPrototype: AnomalyCoreBluespaceInert
