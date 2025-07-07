@@ -20,15 +20,16 @@ public sealed partial class OrganMissingDamageContainerComponent : Component
     public TimeSpan NextDamage;
 
     [ViewVariables, AutoNetworkedField]
-    public Dictionary<EntityUid, OrganMissingDamageContainerEntry[]> Organs = [];
+    public List<OrganMissingDamageContainerEntry> Organs = [];
 
     [ViewVariables, AutoNetworkedField]
     public Dictionary<ProtoId<OrganPrototype>, DamageSpecifier> OrganTypeCaps = [];
 }
 
 [Serializable, NetSerializable]
-public record struct OrganMissingDamageContainerEntry(DamageSpecifier Damage, TimeSpan DamageGrace, TimeSpan DamageDelay, TimeSpan NextDamage, OrganMissingDamageType DamageOn, ProtoId<OrganPrototype> OrganType, bool CapToOrganType)
+public record struct OrganMissingDamageContainerEntry(NetEntity Organ, DamageSpecifier Damage, TimeSpan DamageGrace, TimeSpan DamageDelay, TimeSpan NextDamage, OrganMissingDamageType DamageOn, ProtoId<OrganPrototype> OrganType, bool CapToOrganType)
 {
+    public readonly NetEntity Organ = Organ;
     public readonly DamageSpecifier Damage = Damage;
     public readonly TimeSpan DamageGrace = DamageGrace;
     public readonly TimeSpan DamageDelay = DamageDelay;

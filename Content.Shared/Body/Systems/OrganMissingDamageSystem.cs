@@ -1,4 +1,3 @@
-using System.Linq;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Events;
 using Content.Shared.Body.Organ;
@@ -49,60 +48,45 @@ public sealed partial class OrganMissingDamageSystem : BaseBodyTrackedSystem
                 continue;
             }
 
-            Dictionary<EntityUid, List<(int, bool)>> nextDamageUpdated = [];
+            List<(OrganMissingDamageContainerEntry, bool)> nextDamageUpdated = [];
 
-            foreach (var (organ, entries) in component.Organs)
+            foreach (var entry in component.Organs)
             {
-                for (var i = 0; i < entries.Length; i++)
+                if (entry.NextDamage > _timing.CurTime)
+                    continue;
+
+                var passedGrace = !entry.PassedDamageGrace && _timing.CurTime > entry.DamageGrace;
+                nextDamageUpdated.Add((entry, passedGrace));
+
+                var damageToDeal = entry.Damage;
+                if (entry.CapToOrganType)
                 {
-                    var data = entries[i];
-                    if (data.NextDamage > _timing.CurTime)
-                        continue;
-
-                    var passedGrace = !data.PassedDamageGrace && _timing.CurTime > data.DamageGrace;
-                    if (passedGrace)
-                        data.PassedDamageGrace = true;
-
-                    if (!nextDamageUpdated.TryGetValue(organ, out var toAdd))
+                    damageToDeal = new();
+                    foreach (var (damageType, damageValue) in entry.Damage.DamageDict)
                     {
-                        toAdd = [];
-                        nextDamageUpdated[organ] = toAdd;
+                        if (component.OrganTypeCaps[entry.OrganType].DamageDict.TryGetValue(damageType, out var existingDamageValue) && existingDamageValue > 0)
+                            damageToDeal.DamageDict[damageType] = FixedPoint2.Max(0, damageValue - existingDamageValue);
+                        else
+                            damageToDeal.DamageDict[damageType] = damageValue;
                     }
-                    toAdd.Add((i, passedGrace));
-
-                    var damageToDeal = data.Damage;
-                    if (data.CapToOrganType)
-                    {
-                        damageToDeal = new();
-                        foreach (var (damageType, damageValue) in data.Damage.DamageDict)
-                        {
-                            if (component.OrganTypeCaps[data.OrganType].DamageDict.TryGetValue(damageType, out var existingDamageValue) && existingDamageValue > 0)
-                                damageToDeal.DamageDict[damageType] = FixedPoint2.Max(0, damageValue - existingDamageValue);
-                            else
-                                damageToDeal.DamageDict[damageType] = damageValue;
-                        }
-                    }
-
-                    if (_damageable.TryChangeDamage(uid, damageToDeal, interruptsDoAfters: false) is not { } addedDamage)
-                        continue;
-
-                    component.OrganTypeCaps[data.OrganType] += addedDamage;
                 }
+
+                if (_damageable.TryChangeDamage(uid, damageToDeal, interruptsDoAfters: false) is not { } addedDamage)
+                    continue;
+
+                component.OrganTypeCaps[entry.OrganType] += addedDamage;
             }
 
-            foreach (var (organ, array) in nextDamageUpdated)
+            foreach (var (entry, passedDamageGrace) in nextDamageUpdated)
             {
-                var entries = component.Organs[organ];
-                foreach (var (index, passedDamageGrace) in array)
-                {
-                    var data = entries[index];
-                    data.NextDamage += data.DamageDelay;
+                var newEntry = new OrganMissingDamageContainerEntry(entry.Organ, entry.Damage, entry.DamageGrace, entry.DamageDelay, entry.NextDamage, entry.DamageOn, entry.OrganType, entry.CapToOrganType);
+                newEntry.NextDamage += entry.DamageDelay;
 
-                    if (passedDamageGrace)
-                        data.PassedDamageGrace = true;
-                }
+                if (passedDamageGrace)
+                    newEntry.PassedDamageGrace = true;
 
-                component.Organs[organ] = entries;
+                component.Organs.Remove(entry);
+                component.Organs.Add(newEntry);
             }
 
             Dirty(uid, component);
@@ -157,11 +141,11 @@ public sealed partial class OrganMissingDamageSystem : BaseBodyTrackedSystem
          * we dont just fetch the componment in the update loop
          * the organ may get deleted and we should still damage
         */
-        List<OrganMissingDamageContainerEntry> newEntries = [];
         var organType = _organQuery.Comp(source.Owner).OrganType;
 
         TimeSpan? minDelay = null;
 
+        List<OrganMissingDamageContainerEntry> newEntries = [];
         foreach (var entry in source.Comp.Entries)
         {
             if (entry.DamageOn != damageType)
@@ -170,70 +154,49 @@ public sealed partial class OrganMissingDamageSystem : BaseBodyTrackedSystem
             var graceTime = entry.GraceTime + _timing.CurTime;
             var nextDamage = entry.DamageDelay + _timing.CurTime;
 
-            newEntries.Add(new OrganMissingDamageContainerEntry(entry.Damage, graceTime, entry.DamageDelay, nextDamage, entry.DamageOn, organType, entry.CapToOrganType));
+            newEntries.Add(new OrganMissingDamageContainerEntry(GetNetEntity(source.Owner), entry.Damage, graceTime, entry.DamageDelay, nextDamage, entry.DamageOn, organType, entry.CapToOrganType));
 
             if (minDelay == null || entry.DamageDelay < minDelay)
                 minDelay = entry.DamageDelay;
         }
-
-        ent.Comp.Organs[source.Owner] = newEntries.ToArray();
 
         /*
          * remove any conflicting damage types
          * dont want to still be taking damage if the liver got replaced with someone elses
          * so check for any existing ones and remove them
         */
-        Dictionary<EntityUid, HashSet<int>> toRemove = [];
-        foreach (var (organ, entries) in ent.Comp.Organs)
+        List<OrganMissingDamageContainerEntry> toRemove = [];
+        foreach (var entry in ent.Comp.Organs)
         {
-            List<int> toRemoveIndices = [];
-
-            for (var i = 0; i < entries.Length; i++)
+            if (GetEntity(entry.Organ) == source.Owner)
             {
-                var entry = entries[i];
-                if (entry.OrganType != organType)
-                    continue;
-
-                if (entry.DamageOn == damageType)
-                    continue;
-
-                switch (damageType)
-                {
-                    case OrganMissingDamageType.Added:
-                        toRemoveIndices.Add(i);
-                        break;
-                    case OrganMissingDamageType.Missing:
-                        break;
-                    default:
-                        throw new NotImplementedException();
-                }
-            }
-
-            if (toRemoveIndices.Any())
-                toRemove[organ] = toRemoveIndices.ToHashSet();
-        }
-
-        foreach (var (organ, indices) in toRemove)
-        {
-            var entries = ent.Comp.Organs[organ];
-            if (entries.Length <= indices.Count)
-            {
-                ent.Comp.Organs.Remove(organ);
+                toRemove.Add(entry);
                 continue;
             }
 
-            var newConflicting = new OrganMissingDamageContainerEntry[entries.Length - indices.Count];
+            if (entry.OrganType != organType)
+                continue;
 
-            var newIndex = 0;
-            for (var oldIndex = 0; oldIndex < entries.Length; oldIndex++)
+            if (entry.DamageOn == damageType)
+                continue;
+
+            switch (damageType)
             {
-                if (indices.Contains(oldIndex))
-                    continue;
-
-                newConflicting[newIndex++] = entries[oldIndex];
+                case OrganMissingDamageType.Added:
+                    toRemove.Add(entry);
+                    break;
+                case OrganMissingDamageType.Missing:
+                    break;
+                default:
+                    throw new NotImplementedException();
             }
-            ent.Comp.Organs[organ] = newConflicting;
         }
+
+        foreach (var entry in toRemove)
+            ent.Comp.Organs.Remove(entry);
+
+        foreach (var entry in newEntries)
+            ent.Comp.Organs.Add(entry);
 
         if (!ent.Comp.OrganTypeCaps.ContainsKey(organType))
             ent.Comp.OrganTypeCaps.Add(organType, new());
