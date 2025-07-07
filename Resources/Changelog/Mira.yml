@@ -1849,3 +1849,9 @@ Entries:
     type: Add
   id: 261
   time: '2025-07-07T22:50:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Added the Alexia plushie for winning the recent shuttle competition
+    type: Add
+  id: 262
+  time: '2025-07-07T22:55:00.0000000+00:00'
