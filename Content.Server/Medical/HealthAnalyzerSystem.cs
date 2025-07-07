@@ -22,7 +22,7 @@ public sealed class HealthAnalyzerSystem : BaseAnalyzerSystem<HealthAnalyzerComp
     [Dependency] private readonly SharedBodySystem _bodySystem = default!;
 
     /// <inheritdoc/>
-    public override void UpdateScannedUser(EntityUid healthAnalyzer, EntityUid target, bool scanMode)
+    public override void UpdateScannedUser(Entity<HealthAnalyzerComponent> healthAnalyzer, EntityUid target, bool scanMode)
     {
         if (!_uiSystem.HasUi(healthAnalyzer, HealthAnalyzerUiKey.Key))
             return;
@@ -50,8 +50,9 @@ public sealed class HealthAnalyzerSystem : BaseAnalyzerSystem<HealthAnalyzerComp
         if (TryComp<UnrevivableComponent>(target, out var unrevivableComp) && unrevivableComp.Analyzable)
             unrevivable = true;
 
-        _uiSystem.ServerSendUiMessage(healthAnalyzer, HealthAnalyzerUiKey.Key, new HealthAnalyzerScannedUserMessage(
+        _uiSystem.ServerSendUiMessage(healthAnalyzer.Owner, HealthAnalyzerUiKey.Key, new HealthAnalyzerScannedUserMessage(
             GetNetEntity(target),
+            healthAnalyzer.Comp.Type,
             bodyTemperature,
             bloodAmount,
             scanMode,
