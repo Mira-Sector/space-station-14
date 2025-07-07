@@ -1827,3 +1827,31 @@ Entries:
     type: Tweak
   id: 259
   time: '2025-07-02T07:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Floor mats now have inhands
+    type: Add
+  - message: Pathfinding AI are less likely to get stuck on floor mats
+    type: Fix
+  id: 260
+  time: '2025-07-04T15:00:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: Swab Applicator, allows re-using of swabs without cross contamination
+    type: Add
+  - message: Synthetic swabs, swabs that can be cleaned
+    type: Add
+  id: 261
+  time: '2025-07-06T15:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Readded thieving gloves to the uplink
+    type: Add
+  id: 261
+  time: '2025-07-07T22:50:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Added the Alexia plushie for winning the recent shuttle competition
+    type: Add
+  id: 262
+  time: '2025-07-07T22:55:00.0000000+00:00'
