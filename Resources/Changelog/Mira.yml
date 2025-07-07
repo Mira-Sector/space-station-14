@@ -1855,3 +1855,25 @@ Entries:
     type: Add
   id: 262
   time: '2025-07-07T22:55:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Diona now have a liver and kidneys
+    type: Add
+  - message: The kidneys are now responsible for the majority of chemical digestion rather than the heart
+    type: Add
+  - message: Added a new damage type, necrosis, which is taken when someone lacks a liver or a kidney
+    type: Add
+  - message: Necrosis damage recovery when a missing organ is replaced
+    type: Add
+  - message: Smoking deals lung damage
+    type: Add
+  - message: You no longer idly cough with no lung damage
+    type: Remove
+  - message: Alcohol poisoning now deals liver damage rather than poison damage
+    type: Tweak
+  - message: Vomiting on a damaged stomach now works
+    type: Fix
+  - message: Toggling a heart to beating now works
+    type: Fix
+  id: 263
+  time: '2025-07-07T23:00:00.0000000+00:00'
