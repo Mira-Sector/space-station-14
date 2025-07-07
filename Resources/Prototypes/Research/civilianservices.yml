@@ -12,6 +12,8 @@
   recipeUnlocks:
   - ReagentGrinderIndustrialMachineCircuitboard
   - PlantScanCartridge
+  - SyntheticSwab
+  - SwabApplicator
 
 - type: technology
   id: CritterMechs
