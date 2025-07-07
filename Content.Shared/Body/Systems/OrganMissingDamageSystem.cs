@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Events;
 using Content.Shared.Body.Organ;
@@ -169,13 +170,70 @@ public sealed partial class OrganMissingDamageSystem : BaseBodyTrackedSystem
             var graceTime = entry.GraceTime + _timing.CurTime;
             var nextDamage = entry.DamageDelay + _timing.CurTime;
 
-            newEntries.Add(new OrganMissingDamageContainerEntry(entry.Damage, graceTime, entry.DamageDelay, nextDamage, organType, entry.CapToOrganType));
+            newEntries.Add(new OrganMissingDamageContainerEntry(entry.Damage, graceTime, entry.DamageDelay, nextDamage, entry.DamageOn, organType, entry.CapToOrganType));
 
             if (minDelay == null || entry.DamageDelay < minDelay)
                 minDelay = entry.DamageDelay;
         }
 
         ent.Comp.Organs[source.Owner] = newEntries.ToArray();
+
+        /*
+         * remove any conflicting damage types
+         * dont want to still be taking damage if the liver got replaced with someone elses
+         * so check for any existing ones and remove them
+        */
+        Dictionary<EntityUid, HashSet<int>> toRemove = [];
+        foreach (var (organ, entries) in ent.Comp.Organs)
+        {
+            List<int> toRemoveIndices = [];
+
+            for (var i = 0; i < entries.Length; i++)
+            {
+                var entry = entries[i];
+                if (entry.OrganType != organType)
+                    continue;
+
+                if (entry.DamageOn == damageType)
+                    continue;
+
+                switch (damageType)
+                {
+                    case OrganMissingDamageType.Added:
+                        toRemoveIndices.Add(i);
+                        break;
+                    case OrganMissingDamageType.Missing:
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+
+            if (toRemoveIndices.Any())
+                toRemove[organ] = toRemoveIndices.ToHashSet();
+        }
+
+        foreach (var (organ, indices) in toRemove)
+        {
+            var entries = ent.Comp.Organs[organ];
+            if (entries.Length <= indices.Count)
+            {
+                ent.Comp.Organs.Remove(organ);
+                continue;
+            }
+
+            var newConflicting = new OrganMissingDamageContainerEntry[entries.Length - indices.Count];
+
+            var newIndex = 0;
+            for (var oldIndex = 0; oldIndex < entries.Length; oldIndex++)
+            {
+                if (indices.Contains(oldIndex))
+                    continue;
+
+                newConflicting[newIndex++] = entries[oldIndex];
+            }
+            ent.Comp.Organs[organ] = newConflicting;
+        }
 
         if (!ent.Comp.OrganTypeCaps.ContainsKey(organType))
             ent.Comp.OrganTypeCaps.Add(organType, new());
