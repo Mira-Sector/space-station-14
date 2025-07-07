@@ -136,7 +136,8 @@
     - id: ClothingHandsGlovesCombat
     - id: ClothingMaskGasSyndicate
     - id: ToyAmongPequeno
-
+  - type: StaticPrice
+    price: 1000
 
 - type: entity
   id: ToolboxGoldFilled

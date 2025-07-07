@@ -36,3 +36,6 @@ reagent-desc-hew = Pure essence of inversed lizard plush. Makes you Hew!
 
 reagent-name-solaroil = solar oil
 reagent-desc-solaroil = an anomalous liquid that produces a powerful golden glow. Those that consume the chemical find they too glow for a time.
+
+reagent-name-corgiessence = corgium
+reagent-desc-corgiessence = Tastes like dog food. Clearly an acquired taste.
