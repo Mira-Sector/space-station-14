@@ -8,40 +8,96 @@
     "license": "CC-BY-NC-SA-3.0",
     "copyright": "Doctor-Cpu",
     "states":
-    [{
-        "name": "head"
-    },
-    {
-        "name": "head-hover"
-    },
-    {
-        "name": "torso"
-    },
-    {
-        "name": "torso-hover"
-    },
-    {
-        "name": "l_arm"
-    },
-    {
-        "name": "l_arm-hover"
-    },
-    {
-        "name": "r_arm"
-    },
-    {
-        "name": "r_arm-hover"
-    },
-    {
-        "name": "l_leg"
-    },
-    {
-        "name": "l_leg-hover"
-    },
-    {
-        "name": "r_leg"
-    },
-    {
-        "name": "r_leg-hover"
-    }]
+    [
+        {
+            "name": "head"
+        },
+        {
+            "name": "head-hover"
+        },
+        {
+            "name": "torso"
+        },
+        {
+            "name": "torso-hover"
+        },
+        {
+            "name": "l_arm"
+        },
+        {
+            "name": "l_arm-hover"
+        },
+        {
+            "name": "r_arm"
+        },
+        {
+            "name": "r_arm-hover"
+        },
+        {
+            "name": "l_leg"
+        },
+        {
+            "name": "l_leg-hover"
+        },
+        {
+            "name": "r_leg"
+        },
+        {
+            "name": "r_leg-hover"
+        },
+        {
+            "name": "eyes"
+        },
+        {
+            "name": "eyes-hover"
+        },
+        {
+            "name": "ears"
+        },
+        {
+            "name": "ears-hover"
+        },
+        {
+            "name": "tongue"
+        },
+        {
+            "name": "tongue-hover"
+        },
+        {
+            "name": "lungs"
+        },
+        {
+            "name": "lungs-hover"
+        },
+        {
+            "name": "heart"
+        },
+        {
+            "name": "heart-hover"
+        },
+        {
+            "name": "liver"
+        },
+        {
+            "name": "liver-hover"
+        },
+        {
+            "name": "kidneys"
+        },
+        {
+            "name": "kidneys-hover"
+        },
+        {
+            "name": "stomach"
+        },
+        {
+            "name": "stomach-hover"
+        },
+        {
+            "name": "appendix"
+        },
+        {
+            "name": "appendix-hover"
+        },
+    ]
 }
