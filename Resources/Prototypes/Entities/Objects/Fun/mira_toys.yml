@@ -87,7 +87,7 @@
   parent: PlushieSillyAmy
   id: PlushieGwen
   name: gwen riley plushie
-  description: A cute stuffed toy that resembling a certain nerd.
+  description: A cute stuffed toy that resembles a certain nerd.
   components:
   - type: Sprite
     sprite: Objects/Fun/MiraPlushies/gwen.rsi
@@ -187,39 +187,39 @@
 
 - type: entity
   parent: BasePlushie
-  id: PlushieAnurath
-  name: anurath veiler plushie
-  description: A cute stuffed toy that resembles a maintenance pill addict.
+  id: PlushieAlexia
+  name: alexia trainer plushie
+  description: A cute stuffed toy that resembles someone that takes their job too seriously.
   components:
   - type: Sprite
-    sprite: Objects/Fun/MiraPlushies/anurath.rsi
+    sprite: Objects/Fun/MiraPlushies/alexia.rsi
     state: icon
   - type: EmitSoundOnUse
     sound:
-      collection: MaleScreams
+      collection: FemaleScreams
   - type: EmitSoundOnLand
     sound:
-      collection: MaleScreams
+      collection: FemaleScreams
   - type: EmitSoundOnActivate
     sound:
-      collection: MaleScreams
+      collection: FemaleScreams
   - type: EmitSoundOnTrigger
     sound:
-      collection: MaleScreams
+      collection: FemaleScreams
   - type: EmitSoundOnCollide
     sound:
-      collection: MaleScreams
+      collection: FemaleScreams
   - type: Food
     requiresSpecialDigestion: true
     useSound:
-      collection: MaleScreams
+      collection: FemaleScreams
   - type: MeleeWeapon
     wideAnimationRotation: 180
     soundHit:
-      collection: MaleScreams
+      collection: FemaleScreams
   - type: Clothing
     quickEquip: false
-    sprite: Objects/Fun/MiraPlushies/anurath.rsi
+    sprite: Objects/Fun/MiraPlushies/alexia.rsi
     slots:
     - HEAD
     clothingVisuals:
