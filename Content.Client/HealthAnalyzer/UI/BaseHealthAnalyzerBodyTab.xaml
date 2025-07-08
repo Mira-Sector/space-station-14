@@ -1,0 +1,98 @@
+<PanelContainer
+    xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client.HealthAnalyzer.UI"
+    MinHeight="64"
+    HorizontalExpand="True"
+    VerticalExpand="True">
+    <BoxContainer
+        Name="RootContainer"
+        VerticalExpand="True"
+        Orientation="Horizontal">
+        <Label
+            Name="NoPatientDataText"
+            Text="{Loc health-analyzer-window-no-patient-data-text}"/>
+        <BoxContainer
+            Name="PatientDataContainer"
+            Orientation="Vertical">
+            <BoxContainer
+                Orientation="Horizontal"
+                HorizontalExpand="True">
+                <BoxContainer HorizontalExpand="True" HorizontalAlignment="Left">
+                    <GridContainer Margin="8" Columns="2">
+                        <Label Text="{Loc 'health-analyzer-window-entity-status-text'}" />
+                        <RichTextLabel Name="StatusLabel" />
+                        <Label Text="{Loc 'health-analyzer-window-entity-temperature-text'}" />
+                        <Label Name="TemperatureLabel" />
+                        <Label Text="{Loc 'health-analyzer-window-entity-blood-level-text'}" />
+                        <RichTextLabel Name="BloodLabel" />
+                        <Label Text="{Loc 'health-analyzer-window-entity-damage-total-text'}" />
+                        <RichTextLabel Name="DamageLabel" />
+                    </GridContainer>
+                </BoxContainer>
+                <PanelContainer StyleClasses="LowDivider"/>
+                <BoxContainer Margin="8" HorizontalExpand="True">
+                    <BoxContainer Orientation="Vertical" VerticalAlignment="Top">
+                        <RichTextLabel Name="NameLabel" SetWidth="150" />
+                        <Label Name="SpeciesLabel" VerticalAlignment="Top" StyleClasses="LabelSubText"/>
+                    </BoxContainer>
+                    <Label HorizontalExpand="True" HorizontalAlignment="Right" VerticalExpand="True"
+                           VerticalAlignment="Top" Name="ScanModeLabel"
+                           Text="{Loc 'health-analyzer-window-entity-unknown-text'}"/>
+                </BoxContainer>
+            </BoxContainer>
+            <PanelContainer StyleClasses="LowDivider"/>
+            <BoxContainer
+                Orientation="Vertical"
+                VerticalExpand="True"
+                HorizontalExpand="True"
+                Margin="16">
+                <SpriteView
+                    OverrideDirection="South"
+                    Scale="16 16"
+                    Name="SpriteView"
+                    Access="Public"
+                    Stretch="None"
+                    SetSize="640 640">
+                    <TextureButton Name="LimbButton" Access="Public" SetSize="512 512"/>
+                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarTopLeft" Access="Public" Visible="False" Margin="0 0 512 386"/>
+                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarTopCenter" Access="Public" Visible="False" Margin="256 0 256 386"/>
+                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarTopRight" Access="Public" Visible="False" Margin="512 0 0 386"/>
+                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarMiddleLeft" Access="Public" Visible="False" Margin="0 0 512 128"/>
+                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarMiddleCenter" Access="Public" Visible="False" Margin="256 0 256 128"/>
+                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarMiddleRight" Access="Public" Visible="False" Margin="512 0 0 128"/>
+                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarBottomLeft" Access="Public" Visible="False" Margin="0 256 512 0"/>
+                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarBottomCenter" Access="Public" Visible="False" Margin="256 256 256 0"/>
+                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarBottomRight" Access="Public" Visible="False" Margin="512 256 0 0"/>
+                </SpriteView>
+                <TextureRect Name="NoDataTex" Access="Public" SetSize="512 512" Visible="false" Stretch="KeepAspectCentered" TexturePath="/Textures/Interface/Misc/health_analyzer_out_of_range.png"/>
+            </BoxContainer>
+        </BoxContainer>
+        <PanelContainer StyleClasses="LowDivider"/>
+        <BoxContainer
+            VerticalExpand="True"
+            HorizontalExpand="True"
+            Orientation="Vertical">
+            <RichTextLabel
+                Name="LimbDamageLabel"
+                Access="Public"
+                HorizontalAlignment="Center"
+                HorizontalExpand="True"
+                Margin="8 8 8 0"/>
+            <BoxContainer
+                Name="GroupsContainer"
+                Orientation="Vertical"
+                VerticalExpand="True"
+                HorizontalAlignment="Center"
+                HorizontalExpand="True"
+                Margin="8 0 8 8">
+            </BoxContainer>
+            <PanelContainer Name="AlertsDivider" Access="Public" StyleClasses="LowDivider"/>
+            <BoxContainer
+                Name="AlertsContainer"
+                Visible="False"
+                Margin="16"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"/>
+        </BoxContainer>
+    </BoxContainer>
+</PanelContainer>

@@ -50,7 +50,7 @@ public partial class BaseHealthAnalyzerWindow : FancyWindow
     {
     }
 
-    protected static string GetStatus(MobState mobState)
+    public string GetStatus(MobState mobState)
     {
         return mobState switch
         {
@@ -70,13 +70,13 @@ public partial class BaseHealthAnalyzerWindow : FancyWindow
             : Loc.GetString("health-analyzer-window-entity-unknown-text");
     }
 
-    protected void DrawScanMode(Label label, bool? scanMode)
+    public void DrawScanMode(Label label, bool? scanMode)
     {
         label.Text = GetScanMode(scanMode);
         label.FontColorOverride = scanMode.HasValue && scanMode.Value ? Color.Green : Color.Red;
     }
 
-    protected void DrawPatient(SpriteView spriteView, TextureRect noDataTex, RichTextLabel nameLabel, Label speciesLabel, EntityUid target, bool? scanMode)
+    public void DrawPatient(SpriteView spriteView, TextureRect noDataTex, RichTextLabel nameLabel, Label speciesLabel, EntityUid target, bool? scanMode)
     {
         spriteView.SetEntity(target);
         spriteView.Visible = scanMode.HasValue && scanMode.Value;
@@ -99,12 +99,12 @@ public partial class BaseHealthAnalyzerWindow : FancyWindow
             : Loc.GetString("health-analyzer-window-entity-unknown-species-text");
     }
 
-    protected void DrawBasicDiagnostics(Label temperatureLabel, RichTextLabel bloodLabel, RichTextLabel statusLabel, RichTextLabel damageLabel, EntityUid target, float temperature, float bloodLevel, FixedPoint2 damage)
+    public void DrawBasicDiagnostics(Label temperatureLabel, RichTextLabel bloodLabel, RichTextLabel statusLabel, RichTextLabel damageLabel, EntityUid target, float temperature, float bloodLevel, FixedPoint2 damage)
     {
         temperatureLabel.Text = !float.IsNaN(temperature) ? $"{temperature - Atmospherics.T0C:F1} °C ({temperature:F1} K)" : Loc.GetString("health-analyzer-window-entity-unknown-value-text");
 
         bloodLabel.Text = !float.IsNaN(bloodLevel)
-            ? Loc.GetString(("health-analyzer-color-label"), ("color", ProgressColor.GetProgressColor(bloodLevel)), ("text", $"{bloodLevel * 100:F1} %"))
+            ? Loc.GetString("health-analyzer-color-label", ("color", ProgressColor.GetProgressColor(bloodLevel)), ("text", $"{bloodLevel * 100:F1} %"))
             : Loc.GetString("health-analyzer-window-entity-unknown-value-text");
 
         statusLabel.Text = EntityManager.TryGetComponent<MobStateComponent>(target, out var mobStateComponent)
@@ -121,7 +121,7 @@ public partial class BaseHealthAnalyzerWindow : FancyWindow
         }
     }
 
-    protected bool DrawAlerts(BoxContainer alertsContainer, bool? unrevivable, bool? bleeding)
+    public bool DrawAlerts(BoxContainer alertsContainer, bool? unrevivable, bool? bleeding)
     {
         if (unrevivable != true && bleeding != true)
             return false;
@@ -151,7 +151,7 @@ public partial class BaseHealthAnalyzerWindow : FancyWindow
         return true;
     }
 
-    protected List<BoxContainer> DrawDiagnosticGroups(Dictionary<string, FixedPoint2> groups, IReadOnlyDictionary<string, FixedPoint2> damageDict, float scale = 1f)
+    public List<BoxContainer> DrawDiagnosticGroups(Dictionary<string, FixedPoint2> groups, IReadOnlyDictionary<string, FixedPoint2> damageDict, float scale = 1f)
     {
         List<BoxContainer> containers = [];
 

@@ -17,9 +17,15 @@ public sealed partial class HealthAnalyzerBodyButton : TextureRect
     private readonly Texture _hoverTexture;
     private readonly Texture _selectedTexture;
 
-    public HealthAnalyzerBodyButton(SpriteSpecifier hoverSprite, SpriteSpecifier selectedSprite, SpriteSystem spriteSystem)
+    public object Identifier;
+    public EntityUid Owner;
+
+    public HealthAnalyzerBodyButton(object identifier, EntityUid owner, SpriteSpecifier hoverSprite, SpriteSpecifier selectedSprite, SpriteSystem spriteSystem)
     {
         RobustXamlLoader.Load(this);
+
+        Identifier = identifier;
+        Owner = owner;
 
         _hoverSprite = hoverSprite;
         _selectedSprite = selectedSprite;
