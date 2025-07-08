@@ -52,20 +52,16 @@
                     Access="Public"
                     Stretch="None"
                     SetSize="640 640">
-                    <TextureButton Name="LimbButton" Access="Public" SetSize="512 512">
-                        <TextureRect Name="ButtonHead" Access="Public" SetSize="512 512" TextureScale="16 16" Visible="False"/>
-                        <TextureRect Name="ButtonTorso" Access="Public" SetSize="512 512" TextureScale="16 16" Visible="False"/>
-                        <TextureRect Name="ButtonRightArm" Access="Public" SetSize="512 512" TextureScale="16 16" Visible="False"/>
-                        <TextureRect Name="ButtonLeftArm" Access="Public" SetSize="512 512" TextureScale="16 16" Visible="False"/>
-                        <TextureRect Name="ButtonRightLeg" Access="Public" SetSize="512 512" TextureScale="16 16" Visible="False"/>
-                        <TextureRect Name="ButtonLeftLeg" Access="Public" SetSize="512 512" TextureScale="16 16" Visible="False"/>
-                    </TextureButton>
-                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarHead" Access="Public" Visible="False" Margin="512 0 0 386"/>
-                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarTorso" Access="Public" Visible="False" Margin="0 0 512 386"/>
-                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarRightArm" Access="Public" Visible="False" Margin="512 0 0 128"/>
-                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarLeftArm" Access="Public" Visible="False" Margin="0 0 512 128"/>
-                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarRightLeg" Access="Public" Visible="False" Margin="512 256 0 0"/>
-                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarLeftLeg" Access="Public" Visible="False" Margin="0 256 512 0"/>
+                    <TextureButton Name="LimbButton" Access="Public" SetSize="512 512"/>
+                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarTopLeft" Access="Public" Visible="False" Margin="0 0 512 386"/>
+                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarTopCenter" Access="Public" Visible="False" Margin="256 0 256 386"/>
+                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarTopRight" Access="Public" Visible="False" Margin="512 0 0 386"/>
+                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarMiddleLeft" Access="Public" Visible="False" Margin="0 0 512 128"/>
+                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarMiddleCenter" Access="Public" Visible="False" Margin="256 0 256 128"/>
+                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarMiddleRight" Access="Public" Visible="False" Margin="512 0 0 128"/>
+                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarBottomLeft" Access="Public" Visible="False" Margin="0 256 512 0"/>
+                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarBottomCenter" Access="Public" Visible="False" Margin="256 256 256 0"/>
+                    <controls:HealthAnalyzerBodyProgressBar Name="ProgressBarBottomRight" Access="Public" Visible="False" Margin="512 256 0 0"/>
                 </SpriteView>
                 <TextureRect Name="NoDataTex" Access="Public" SetSize="512 512" Visible="false" Stretch="KeepAspectCentered" TexturePath="/Textures/Interface/Misc/health_analyzer_out_of_range.png"/>
             </BoxContainer>

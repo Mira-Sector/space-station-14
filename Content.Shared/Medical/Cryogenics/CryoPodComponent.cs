@@ -1,3 +1,4 @@
+using Content.Shared.MedicalScanner;
 using Robust.Shared.Containers;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
@@ -73,6 +74,9 @@ public sealed partial class CryoPodComponent : Component
     [ViewVariables(VVAccess.ReadWrite)]
     [DataField("permaLocked")]
     public bool PermaLocked { get; set; }
+
+    [DataField]
+    public HealthAnalyzerType Type = HealthAnalyzerType.BodyAndOrgans;
 
     [Serializable, NetSerializable]
     public enum CryoPodVisuals : byte
