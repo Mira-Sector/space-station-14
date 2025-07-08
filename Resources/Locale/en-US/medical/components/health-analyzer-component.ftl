@@ -37,3 +37,14 @@ health-analyzer-body-right-arm = Right Arm:
 health-analyzer-body-left-leg = Left Leg:
 health-analyzer-body-right-leg = Right Leg:
 health-analyzer-body-all = Overall:
+
+health-analyzer-body-brain = Brain:
+health-analyzer-body-tongue = Tongue:
+health-analyzer-body-ears = Ears:
+health-analyzer-body-heart = Heart:
+health-analyzer-body-lungs = Lungs:
+health-analyzer-body-eyes = Eyes:
+health-analyzer-body-liver = Liver:
+health-analyzer-body-stomach = Stomach:
+health-analyzer-body-kidneys = Kidneys:
+health-analyzer-body-appendix = Appendix:

@@ -47,6 +47,14 @@
   - type: Perishable
     rotAfter: 360
     molsPerSecondPerUnitMass: 0
+  - type: HealthAnalyzerBodyItem
+    progressBarLocation: TopLeft
+    hoverSprite:
+      sprite: /Textures/Interface/health_analyzer_body.rsi
+      state: heart-hover
+    selectedSprite:
+      sprite: /Textures/Interface/health_analyzer_body.rsi
+      state: heart
 
 - type: entity
   id: BaseOrganLungs
@@ -107,6 +115,14 @@
     rotAfter: 990
     molsPerSecondPerUnitMass: 0
   - type: CoughOnRespire
+  - type: HealthAnalyzerBodyItem
+    progressBarLocation: TopRight
+    hoverSprite:
+      sprite: /Textures/Interface/health_analyzer_body.rsi
+      state: lungs-hover
+    selectedSprite:
+      sprite: /Textures/Interface/health_analyzer_body.rsi
+      state: lungs
 
 - type: entity
   id: BaseOrganStomach
@@ -161,6 +177,14 @@
   - type: Perishable
     rotAfter: 780
     molsPerSecondPerUnitMass: 0
+  - type: HealthAnalyzerBodyItem
+    progressBarLocation: MiddleLeft
+    hoverSprite:
+      sprite: /Textures/Interface/health_analyzer_body.rsi
+      state: stomach-hover
+    selectedSprite:
+      sprite: /Textures/Interface/health_analyzer_body.rsi
+      state: stomach
 
 - type: entity
   id: BaseOrganLiver
@@ -214,6 +238,14 @@
   - type: Perishable
     rotAfter: 900
     molsPerSecondPerUnitMass: 0
+  - type: HealthAnalyzerBodyItem
+    progressBarLocation: MiddleRight
+    hoverSprite:
+      sprite: /Textures/Interface/health_analyzer_body.rsi
+      state: liver-hover
+    selectedSprite:
+      sprite: /Textures/Interface/health_analyzer_body.rsi
+      state: liver
 
 - type: entity
   id: BaseOrganKidneys
@@ -266,3 +298,63 @@
   - type: Perishable
     rotAfter: 900
     molsPerSecondPerUnitMass: 0
+  - type: HealthAnalyzerBodyItem
+    progressBarLocation: BottomLeft
+    hoverSprite:
+      sprite: /Textures/Interface/health_analyzer_body.rsi
+      state: kidneys-hover
+    selectedSprite:
+      sprite: /Textures/Interface/health_analyzer_body.rsi
+      state: kidneys
+
+- type: entity
+  id: BaseOrganAppendix
+  abstract: true
+  components:
+  - type: Organ
+    organType: Appendix
+  - type: Sprite
+    layers:
+    - map: [ "base" ]
+      state: appendix
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.BodyDamageThresholdVisuals.State:
+        base:
+          Alive: { state: appendix }
+          Wounded: { state: appendix }
+          Dead: { state: appendix-inflamed }
+  - type: BodyDamageable
+  - type: BodyDamageThresholds
+    thresholds:
+      Alive: 0
+      Wounded: 10
+      Dead: 80
+    examineText:
+      Alive: appendix-examine-not-burst
+      Wounded: appendix-examine-not-burst
+      Dead: appendix-examine-burst
+  - type: BodyDamageOnRot
+    minRotStage: 1
+    fullyRottenDamage: 80
+  - type: DamageOnBodyDamage
+    requiredStates:
+    - Dead # burst when dead
+    mode: Damage
+    damageDelay: 1
+    damage:
+      types:
+        Poison: 2.5
+  - type: Temperature
+  - type: Perishable
+    rotAfter: 900
+    molsPerSecondPerUnitMass: 0
+  - type: HealthAnalyzerBodyItem
+    progressBarLocation: BottomRight
+    hoverSprite:
+      sprite: /Textures/Interface/health_analyzer_body.rsi
+      state: appendix-hover
+    selectedSprite:
+      sprite: /Textures/Interface/health_analyzer_body.rsi
+      state: appendix
