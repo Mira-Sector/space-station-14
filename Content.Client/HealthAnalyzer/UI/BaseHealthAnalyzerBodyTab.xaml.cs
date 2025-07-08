@@ -105,7 +105,7 @@ public partial class BaseHealthAnalyzerBodyTab : PanelContainer
     {
         progressBar.ProgressLabel.Text = Loc.GetString($"health-analyzer-body-{suffix}");
 
-        progressBar.ProgressTex.Progress = Math.Abs(totalDamage / maxDamage) - 1;
+        progressBar.ProgressTex.Progress = Math.Abs(totalDamage / maxDamage - 1);
         progressBar.ProgressText.Text = $"{maxDamage - totalDamage}/{maxDamage}";
 
         progressBar.Visible = true;
