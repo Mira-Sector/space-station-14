@@ -32,13 +32,14 @@ public sealed partial class HealthAnalyzerBodyWindow : BaseHealthAnalyzerWindow
         else
             ent = (uid.Value, EntityManager.GetComponent<HealthAnalyzerBodyComponent>(uid.Value));
 
-        foreach (var type in Enum.GetValues<HealthAnalyzerType>().Where(e => msg.Type.HasFlag(e)))
+        foreach (var type in Enum.GetValues<HealthAnalyzerType>().Where(e => e != 0 && ((byte)e & (byte)e - 1) == 0 && msg.Type.HasFlag(e)))
         {
             if (!_tabs.TryGetValue(type, out var tab))
             {
                 tab = type switch
                 {
                     HealthAnalyzerType.Body => new HealthAnalyzerBodyBodyTab(this, EntityManager, _bodySystem, Prototypes, SpriteSystem),
+                    HealthAnalyzerType.Organs => new HealthAnalyzerBodyOrganTab(this, EntityManager, _bodySystem, Prototypes, SpriteSystem),
                     _ => throw new NotImplementedException()
                 };
 

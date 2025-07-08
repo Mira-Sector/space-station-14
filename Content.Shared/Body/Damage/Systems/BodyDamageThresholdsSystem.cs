@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Shared.Body.Damage.Components;
 using Content.Shared.Body.Damage.Events;
@@ -98,5 +99,17 @@ public sealed partial class BodyDamageThresholdsSystem : EntitySystem
             return FixedPoint2.Zero;
 
         return ent.Comp2.Damage - threshold;
+    }
+
+    [PublicAPI]
+    public bool TryGetThreshold(Entity<BodyDamageThresholdsComponent?> ent, BodyDamageState state, out FixedPoint2 threshold)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp))
+        {
+            threshold = FixedPoint2.Zero;
+            return false;
+        }
+
+        return ent.Comp.Thresholds.TryGetValue(state, out threshold);
     }
 }

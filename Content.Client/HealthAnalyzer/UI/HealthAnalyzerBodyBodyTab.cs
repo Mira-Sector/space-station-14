@@ -16,6 +16,7 @@ public sealed partial class HealthAnalyzerBodyBodyTab : BaseHealthAnalyzerBodyTa
 
     public HealthAnalyzerBodyBodyTab(HealthAnalyzerBodyWindow window, IEntityManager entityManager, SharedBodySystem bodySystem, IPrototypeManager prototypeManager, SpriteSystem spriteSystem) : base(window, entityManager, bodySystem, prototypeManager, spriteSystem)
     {
+        Name = Loc.GetString("health-analyzer-window-tab-body");
     }
 
     protected override bool TryGetTotalDamage(Entity<HealthAnalyzerBodyComponent> target, [NotNullWhen(true)] out FixedPoint2? totalDamage)

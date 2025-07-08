@@ -208,7 +208,7 @@ public partial class BaseHealthAnalyzerWindow : FancyWindow
         return SpriteSystem.Frame0(rsiSprite);
     }
 
-    private static RichTextLabel CreateDiagnosticItemLabel(string text, float scale)
+    public static RichTextLabel CreateDiagnosticItemLabel(string text, float scale)
     {
         return new RichTextLabel()
         {
