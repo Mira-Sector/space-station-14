@@ -11,6 +11,8 @@ public sealed partial class HealthAnalyzerBodyWindow : BaseHealthAnalyzerWindow
 {
     private readonly SharedBodySystem _bodySystem;
 
+    private readonly Dictionary<HealthAnalyzerType, BaseHealthAnalyzerBodyTab> _tabs = [];
+
     public bool Updateable = true;
 
     public HealthAnalyzerBodyWindow()
@@ -30,16 +32,21 @@ public sealed partial class HealthAnalyzerBodyWindow : BaseHealthAnalyzerWindow
         else
             ent = (uid.Value, EntityManager.GetComponent<HealthAnalyzerBodyComponent>(uid.Value));
 
-        Tabs.RemoveAllChildren();
         foreach (var type in Enum.GetValues<HealthAnalyzerType>().Where(e => msg.Type.HasFlag(e)))
         {
-            var tab = type switch
+            if (!_tabs.TryGetValue(type, out var tab))
             {
-                HealthAnalyzerType.Body => new HealthAnalyzerBodyBodyTab(ent, msg, this, EntityManager, _bodySystem, Prototypes, SpriteSystem),
-                _ => throw new NotImplementedException()
-            };
+                tab = type switch
+                {
+                    HealthAnalyzerType.Body => new HealthAnalyzerBodyBodyTab(this, EntityManager, _bodySystem, Prototypes, SpriteSystem),
+                    _ => throw new NotImplementedException()
+                };
 
-            Tabs.AddChild(tab);
+                _tabs[type] = tab;
+                Tabs.AddChild(tab);
+            }
+
+            tab.Populate(ent, msg);
         }
     }
 }

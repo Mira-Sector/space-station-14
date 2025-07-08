@@ -20,7 +20,7 @@ public partial class BaseHealthAnalyzerBodyTab : PanelContainer
     protected readonly IPrototypeManager PrototypeManager;
     protected readonly SpriteSystem SpriteSystem;
 
-    public BaseHealthAnalyzerBodyTab(Entity<HealthAnalyzerBodyComponent>? target, HealthAnalyzerScannedUserMessage msg, HealthAnalyzerBodyWindow window, IEntityManager entityManager, SharedBodySystem bodySystem, IPrototypeManager prototypeManager, SpriteSystem spriteSystem)
+    public BaseHealthAnalyzerBodyTab(HealthAnalyzerBodyWindow window, IEntityManager entityManager, SharedBodySystem bodySystem, IPrototypeManager prototypeManager, SpriteSystem spriteSystem)
     {
         EntityManager = entityManager;
         BodySystem = bodySystem;
@@ -29,7 +29,10 @@ public partial class BaseHealthAnalyzerBodyTab : PanelContainer
         SpriteSystem = spriteSystem;
 
         RobustXamlLoader.Load(this);
+    }
 
+    public virtual void Populate(Entity<HealthAnalyzerBodyComponent>? target, HealthAnalyzerScannedUserMessage msg)
+    {
         if (target == null || !TryGetTotalDamage(target.Value, out var damage))
         {
             NoPatientDataText.Visible = true;

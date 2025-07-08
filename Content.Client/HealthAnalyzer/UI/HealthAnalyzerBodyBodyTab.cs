@@ -14,7 +14,7 @@ public sealed partial class HealthAnalyzerBodyBodyTab : BaseHealthAnalyzerBodyTa
 {
     private (BodyPart Part, DamageableComponent Damageable)? _selectedPart;
 
-    public HealthAnalyzerBodyBodyTab(Entity<HealthAnalyzerBodyComponent>? target, HealthAnalyzerScannedUserMessage msg, HealthAnalyzerBodyWindow window, IEntityManager entityManager, SharedBodySystem bodySystem, IPrototypeManager prototypeManager, SpriteSystem spriteSystem) : base(target, msg, window, entityManager, bodySystem, prototypeManager, spriteSystem)
+    public HealthAnalyzerBodyBodyTab(HealthAnalyzerBodyWindow window, IEntityManager entityManager, SharedBodySystem bodySystem, IPrototypeManager prototypeManager, SpriteSystem spriteSystem) : base(window, entityManager, bodySystem, prototypeManager, spriteSystem)
     {
     }
 
