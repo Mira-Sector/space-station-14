@@ -76,7 +76,7 @@ public sealed partial class CryoPodComponent : Component
     public bool PermaLocked { get; set; }
 
     [DataField]
-    public HealthAnalyzerType Type = HealthAnalyzerType.BodyAndOrgans;
+    public HealthAnalyzerType AnalyzerType = HealthAnalyzerType.BodyAndOrgans;
 
     [Serializable, NetSerializable]
     public enum CryoPodVisuals : byte

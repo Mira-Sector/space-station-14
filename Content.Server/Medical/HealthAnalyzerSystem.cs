@@ -52,7 +52,7 @@ public sealed class HealthAnalyzerSystem : BaseAnalyzerSystem<HealthAnalyzerComp
 
         _uiSystem.ServerSendUiMessage(healthAnalyzer.Owner, HealthAnalyzerUiKey.Key, new HealthAnalyzerScannedUserMessage(
             GetNetEntity(target),
-            healthAnalyzer.Comp.Type,
+            healthAnalyzer.Comp.AnalyzerType,
             bodyTemperature,
             bloodAmount,
             scanMode,

@@ -199,7 +199,7 @@ public sealed partial class CryoPodSystem : SharedCryoPodSystem
             entity.Owner,
             HealthAnalyzerUiKey.Key,
             new HealthAnalyzerScannedUserMessage(GetNetEntity(entity.Comp.BodyContainer.ContainedEntity),
-                entity.Comp.Type,
+                entity.Comp.AnalyzerType,
             temp?.CurrentTemperature ?? 0,
             (bloodstream != null && _solutionContainerSystem.ResolveSolution(entity.Comp.BodyContainer.ContainedEntity.Value,
                 bloodstream.BloodSolutionName, ref bloodstream.BloodSolution, out var bloodSolution))

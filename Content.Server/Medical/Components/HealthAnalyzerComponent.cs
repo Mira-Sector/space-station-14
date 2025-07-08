@@ -6,7 +6,6 @@ namespace Content.Server.Medical.Components;
 
 /// <inheritdoc/>
 [RegisterComponent, AutoGenerateComponentPause]
-[Access(typeof(HealthAnalyzerSystem), typeof(CryoPodSystem))]
 public sealed partial class HealthAnalyzerComponent : BaseAnalyzerComponent
 {
     /// <inheritdoc/>
@@ -15,5 +14,5 @@ public sealed partial class HealthAnalyzerComponent : BaseAnalyzerComponent
     public override TimeSpan NextUpdate { get; set; } = TimeSpan.Zero;
 
     [DataField]
-    public HealthAnalyzerType Type = HealthAnalyzerType.Body;
+    public HealthAnalyzerType AnalyzerType = HealthAnalyzerType.Body;
 }
