@@ -7,5 +7,6 @@
     Resizable="True">
     <TabContainer
         Name="Tabs"
-        Access="Public"/>
+        Access="Public"
+        Margin="12"/>
 </controls:BaseHealthAnalyzerWindow>

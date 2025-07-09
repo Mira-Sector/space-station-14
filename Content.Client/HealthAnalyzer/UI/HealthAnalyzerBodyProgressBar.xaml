@@ -23,11 +23,15 @@
                         Access="Public"
                         ProgressDirection="Right"
                         TexturePath="/Textures/Interface/health_analyzer_body.rsi/progress.png">
-                        <Label
-                            Name="ProgressText"
-                            Access="Public"
-                            Align="Center"
-                            HorizontalExpand="True"/>
+                        <BoxContainer
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom">
+                            <Label
+                                Name="ProgressText"
+                                Access="Public"
+                                Align="Center"
+                                HorizontalExpand="True"/>
+                        </BoxContainer>
                     </cc:ProgressTextureRect>
             </BoxContainer>
         </BoxContainer>

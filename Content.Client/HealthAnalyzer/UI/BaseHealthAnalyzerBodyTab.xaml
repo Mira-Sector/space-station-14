@@ -1,6 +1,7 @@
 <PanelContainer
     xmlns="https://spacestation14.io"
     xmlns:controls="clr-namespace:Content.Client.HealthAnalyzer.UI"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
     HorizontalExpand="True"
     VerticalExpand="True">
     <BoxContainer
@@ -16,17 +17,19 @@
             <BoxContainer
                 Orientation="Horizontal"
                 HorizontalExpand="True">
-                <BoxContainer HorizontalExpand="True" HorizontalAlignment="Left">
-                    <GridContainer Margin="8" Columns="2">
-                        <Label Text="{Loc 'health-analyzer-window-entity-status-text'}" />
-                        <RichTextLabel Name="StatusLabel" />
-                        <Label Text="{Loc 'health-analyzer-window-entity-temperature-text'}" />
-                        <Label Name="TemperatureLabel" />
-                        <Label Text="{Loc 'health-analyzer-window-entity-blood-level-text'}" />
-                        <RichTextLabel Name="BloodLabel" />
-                        <Label Text="{Loc 'health-analyzer-window-entity-damage-total-text'}" />
-                        <RichTextLabel Name="DamageLabel" />
-                    </GridContainer>
+                <BoxContainer
+                    HorizontalExpand="True"
+                    HorizontalAlignment="Left">
+                        <GridContainer Margin="8" Columns="2">
+                            <Label Text="{Loc 'health-analyzer-window-entity-status-text'}" />
+                            <RichTextLabel Name="StatusLabel" />
+                            <Label Text="{Loc 'health-analyzer-window-entity-temperature-text'}" />
+                            <Label Name="TemperatureLabel" />
+                            <Label Text="{Loc 'health-analyzer-window-entity-blood-level-text'}" />
+                            <RichTextLabel Name="BloodLabel" />
+                            <Label Text="{Loc 'health-analyzer-window-entity-damage-total-text'}" />
+                            <RichTextLabel Name="DamageLabel" />
+                        </GridContainer>
                 </BoxContainer>
                 <PanelContainer StyleClasses="LowDivider"/>
                 <BoxContainer Margin="8" HorizontalExpand="True">
