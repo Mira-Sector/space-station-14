@@ -49,12 +49,6 @@
     molsPerSecondPerUnitMass: 0
   - type: HealthAnalyzerBodyItem
     progressBarLocation: TopLeft
-    hoverSprite:
-      sprite: /Textures/Interface/health_analyzer_body.rsi
-      state: heart-hover
-    selectedSprite:
-      sprite: /Textures/Interface/health_analyzer_body.rsi
-      state: heart
 
 - type: entity
   id: BaseOrganLungs
@@ -117,12 +111,6 @@
   - type: CoughOnRespire
   - type: HealthAnalyzerBodyItem
     progressBarLocation: TopRight
-    hoverSprite:
-      sprite: /Textures/Interface/health_analyzer_body.rsi
-      state: lungs-hover
-    selectedSprite:
-      sprite: /Textures/Interface/health_analyzer_body.rsi
-      state: lungs
 
 - type: entity
   id: BaseOrganStomach
@@ -179,12 +167,6 @@
     molsPerSecondPerUnitMass: 0
   - type: HealthAnalyzerBodyItem
     progressBarLocation: MiddleLeft
-    hoverSprite:
-      sprite: /Textures/Interface/health_analyzer_body.rsi
-      state: stomach-hover
-    selectedSprite:
-      sprite: /Textures/Interface/health_analyzer_body.rsi
-      state: stomach
 
 - type: entity
   id: BaseOrganLiver
@@ -240,12 +222,6 @@
     molsPerSecondPerUnitMass: 0
   - type: HealthAnalyzerBodyItem
     progressBarLocation: MiddleRight
-    hoverSprite:
-      sprite: /Textures/Interface/health_analyzer_body.rsi
-      state: liver-hover
-    selectedSprite:
-      sprite: /Textures/Interface/health_analyzer_body.rsi
-      state: liver
 
 - type: entity
   id: BaseOrganKidneys
@@ -300,12 +276,6 @@
     molsPerSecondPerUnitMass: 0
   - type: HealthAnalyzerBodyItem
     progressBarLocation: BottomLeft
-    hoverSprite:
-      sprite: /Textures/Interface/health_analyzer_body.rsi
-      state: kidneys-hover
-    selectedSprite:
-      sprite: /Textures/Interface/health_analyzer_body.rsi
-      state: kidneys
 
 - type: entity
   id: BaseOrganAppendix
@@ -352,9 +322,3 @@
     molsPerSecondPerUnitMass: 0
   - type: HealthAnalyzerBodyItem
     progressBarLocation: BottomRight
-    hoverSprite:
-      sprite: /Textures/Interface/health_analyzer_body.rsi
-      state: appendix-hover
-    selectedSprite:
-      sprite: /Textures/Interface/health_analyzer_body.rsi
-      state: appendix

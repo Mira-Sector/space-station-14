@@ -44,60 +44,6 @@
         },
         {
             "name": "r_leg-hover"
-        },
-        {
-            "name": "eyes"
-        },
-        {
-            "name": "eyes-hover"
-        },
-        {
-            "name": "ears"
-        },
-        {
-            "name": "ears-hover"
-        },
-        {
-            "name": "tongue"
-        },
-        {
-            "name": "tongue-hover"
-        },
-        {
-            "name": "lungs"
-        },
-        {
-            "name": "lungs-hover"
-        },
-        {
-            "name": "heart"
-        },
-        {
-            "name": "heart-hover"
-        },
-        {
-            "name": "liver"
-        },
-        {
-            "name": "liver-hover"
-        },
-        {
-            "name": "kidneys"
-        },
-        {
-            "name": "kidneys-hover"
-        },
-        {
-            "name": "stomach"
-        },
-        {
-            "name": "stomach-hover"
-        },
-        {
-            "name": "appendix"
-        },
-        {
-            "name": "appendix-hover"
         }
     ]
 }

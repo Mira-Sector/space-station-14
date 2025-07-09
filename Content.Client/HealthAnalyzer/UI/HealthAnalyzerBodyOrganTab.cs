@@ -50,7 +50,9 @@ public sealed partial class HealthAnalyzerBodyOrganTab : BaseHealthAnalyzerBodyT
             var progressBar = GetProgressBar(data.ProgressBarLocation);
             var barLabelSuffix = $"{organ.Comp2.OrganType.ToString().ToLower()}";
             UpdateProgressBar(progressBar, organ.Comp2.OrganType, organ.Owner, barLabelSuffix, (float)organ.Comp1.Damage, (float)deadThreshold);
-            yield return new HealthAnalyzerBodyButton(organ.Comp2.OrganType, organ.Owner, data.HoverSprite, data.SelectedSprite, SpriteSystem);
+
+            if (data.Sprites != null)
+                yield return new HealthAnalyzerBodyButton(organ.Comp2.OrganType, organ.Owner, data.Sprites, SpriteSystem);
         }
     }
 
