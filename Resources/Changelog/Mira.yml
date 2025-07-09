@@ -1877,3 +1877,15 @@ Entries:
     type: Fix
   id: 263
   time: '2025-07-07T23:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added a researchable advanced medical scanner capable of seeing organ damage
+    type: Add
+  - message: CMO starts with the advanced med-tek cartridge installed
+    type: Add
+  - message: Clicking on the progress bars in the health analyzer now shows the damage details ontop of clicking on the limb
+    type: Tweak
+  - message: Health analyzer UI has been shrunk
+    type: Tweak
+  id: 264
+  time: '2025-07-09T07:45:00.0000000+00:00'
