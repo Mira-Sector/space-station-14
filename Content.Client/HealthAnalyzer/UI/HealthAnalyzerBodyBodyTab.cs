@@ -29,7 +29,7 @@ public sealed partial class HealthAnalyzerBodyBodyTab : BaseHealthAnalyzerBodyTa
         return true;
     }
 
-    protected override void DrawButtons(Entity<HealthAnalyzerBodyComponent> target)
+    protected override IEnumerable<HealthAnalyzerBodyButton> GetButtons(Entity<HealthAnalyzerBodyComponent> target)
     {
         foreach (var (limbUid, limbComp) in BodySystem.GetBodyChildren(target.Owner))
         {
@@ -46,8 +46,7 @@ public sealed partial class HealthAnalyzerBodyBodyTab : BaseHealthAnalyzerBodyTa
             var progressBar = GetProgressBar(data.ProgressBarLocation);
             var barLabelSuffix = $"{part.Side.ToString().ToLower()}-{part.Type.ToString().ToLower()}";
             UpdateProgressBar(progressBar, barLabelSuffix, (float)damageable.TotalDamage, (float)deadThreshold);
-            var button = new HealthAnalyzerBodyButton(part, limbUid, data.HoverSprite, data.SelectedSprite, SpriteSystem);
-            LimbButton.AddChild(button);
+            yield return new HealthAnalyzerBodyButton(part, limbUid, data.HoverSprite, data.SelectedSprite, SpriteSystem);
         }
     }
 

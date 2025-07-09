@@ -51,7 +51,8 @@ public partial class BaseHealthAnalyzerBodyTab : PanelContainer
 
         LimbButton.RemoveAllChildren();
 
-        DrawButtons(target.Value);
+        foreach (var button in GetButtons(target.Value))
+            LimbButton.AddChild(button);
 
         HealthAnalyzerWindow.Updateable = true;
 
@@ -85,8 +86,9 @@ public partial class BaseHealthAnalyzerBodyTab : PanelContainer
         return false;
     }
 
-    protected virtual void DrawButtons(Entity<HealthAnalyzerBodyComponent> target)
+    protected virtual IEnumerable<HealthAnalyzerBodyButton> GetButtons(Entity<HealthAnalyzerBodyComponent> target)
     {
+        yield break;
     }
 
     protected virtual void DrawDamageSidebar()
