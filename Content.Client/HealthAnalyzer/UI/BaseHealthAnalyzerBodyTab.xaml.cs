@@ -49,6 +49,16 @@ public partial class BaseHealthAnalyzerBodyTab : PanelContainer
         AlertsDivider.Visible = showAlerts;
         AlertsContainer.Visible = showAlerts;
 
+        foreach (var child in SpriteView.Children)
+        {
+            if (child is not IHealthAnalyzerBodyButton button)
+                continue;
+
+            child.Visible = false;
+            button.Identifier = null;
+            button.Owner = null;
+        }
+
         LimbButton.RemoveAllChildren();
 
         foreach (var button in GetButtons(target.Value))
@@ -95,7 +105,7 @@ public partial class BaseHealthAnalyzerBodyTab : PanelContainer
     {
     }
 
-    protected virtual void ButtonPressed(HealthAnalyzerBodyButton button)
+    protected virtual void ButtonPressed(IHealthAnalyzerBodyButton button)
     {
     }
 
@@ -103,14 +113,26 @@ public partial class BaseHealthAnalyzerBodyTab : PanelContainer
     {
     }
 
-    protected static void UpdateProgressBar(HealthAnalyzerBodyProgressBar progressBar, string suffix, float totalDamage, float maxDamage)
+    protected void UpdateProgressBar(HealthAnalyzerBodyProgressBar progressBar, object identifier, EntityUid owner, string suffix, float totalDamage, float maxDamage)
     {
+        progressBar.Identifier = identifier;
+        progressBar.Owner = owner;
+
         progressBar.ProgressLabel.Text = Loc.GetString($"health-analyzer-body-{suffix}");
 
         progressBar.ProgressTex.Progress = Math.Abs(totalDamage / maxDamage - 1);
         progressBar.ProgressText.Text = $"{maxDamage - totalDamage}/{maxDamage}";
 
         progressBar.Visible = true;
+
+        progressBar.ProgressButton.OnPressed += args =>
+        {
+            if (!HealthAnalyzerWindow.Updateable)
+                return;
+
+            ButtonPressed(progressBar);
+            HealthAnalyzerWindow.Updateable = false;
+        };
     }
 
     protected HealthAnalyzerBodyProgressBar GetProgressBar(HealthAnalyzerBodyItemBarPosition position)

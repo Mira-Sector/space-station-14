@@ -9,7 +9,7 @@ using Robust.Shared.Utility;
 namespace Content.Client.HealthAnalyzer.UI;
 
 [GenerateTypedNameReferences]
-public sealed partial class HealthAnalyzerBodyButton : TextureRect
+public sealed partial class HealthAnalyzerBodyButton : TextureRect, IHealthAnalyzerBodyButton
 {
     private readonly SpriteSpecifier _hoverSprite;
     private readonly SpriteSpecifier _selectedSprite;
@@ -17,8 +17,8 @@ public sealed partial class HealthAnalyzerBodyButton : TextureRect
     private readonly Texture _hoverTexture;
     private readonly Texture _selectedTexture;
 
-    public object Identifier;
-    public EntityUid Owner;
+    public object? Identifier { get; set; }
+    public EntityUid? Owner { get; set; }
 
     public HealthAnalyzerBodyButton(object identifier, EntityUid owner, SpriteSpecifier hoverSprite, SpriteSpecifier selectedSprite, SpriteSystem spriteSystem)
     {

@@ -4,8 +4,11 @@ using Robust.Client.UserInterface.Controls;
 namespace Content.Client.HealthAnalyzer.UI;
 
 [GenerateTypedNameReferences]
-public sealed partial class HealthAnalyzerBodyProgressBar : PanelContainer
+public sealed partial class HealthAnalyzerBodyProgressBar : PanelContainer, IHealthAnalyzerBodyButton
 {
+    public object? Identifier { get; set; }
+    public EntityUid? Owner { get; set; }
+
     public HealthAnalyzerBodyProgressBar()
     {
     }

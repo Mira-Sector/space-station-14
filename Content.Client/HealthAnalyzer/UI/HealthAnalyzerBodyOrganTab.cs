@@ -49,17 +49,17 @@ public sealed partial class HealthAnalyzerBodyOrganTab : BaseHealthAnalyzerBodyT
 
             var progressBar = GetProgressBar(data.ProgressBarLocation);
             var barLabelSuffix = $"{organ.Comp2.OrganType.ToString().ToLower()}";
-            UpdateProgressBar(progressBar, barLabelSuffix, (float)organ.Comp1.Damage, (float)deadThreshold);
+            UpdateProgressBar(progressBar, organ.Comp2.OrganType, organ.Owner, barLabelSuffix, (float)organ.Comp1.Damage, (float)deadThreshold);
             yield return new HealthAnalyzerBodyButton(organ.Comp2.OrganType, organ.Owner, data.HoverSprite, data.SelectedSprite, SpriteSystem);
         }
     }
 
-    protected override void ButtonPressed(HealthAnalyzerBodyButton button)
+    protected override void ButtonPressed(IHealthAnalyzerBodyButton button)
     {
-        if (button.Identifier is not ProtoId<OrganPrototype> organ)
+        if (button.Identifier is not ProtoId<OrganPrototype> organ || button.Owner == null)
             return;
 
-        _selectedOrgan = (organ, EntityManager.GetComponent<BodyDamageableComponent>(button.Owner));
+        _selectedOrgan = (organ, EntityManager.GetComponent<BodyDamageableComponent>(button.Owner.Value));
     }
 
     protected override void ActOnButton()
