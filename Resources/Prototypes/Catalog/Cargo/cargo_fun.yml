@@ -410,7 +410,8 @@
   icon:
     sprite: Structures/Furniture/potted_plants.rsi
     state: random
-  product: CratePlants
+  data: !type:CargoProductItemData
+    product: CratePlants
   cost: 1000
   category: cargoproduct-category-name-fun
   group: market
