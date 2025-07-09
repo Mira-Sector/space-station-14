@@ -1,7 +1,7 @@
 <PanelContainer
     xmlns="https://spacestation14.io"
     xmlns:cc="clr-namespace:Content.Client.UserInterface.Controls"
-    MinHeight="64"
+    MinHeight="48"
     VerticalExpand="False"
     VerticalAlignment="Center"
     HorizontalExpand="True">
