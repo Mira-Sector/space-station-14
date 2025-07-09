@@ -486,6 +486,7 @@
     - SurgeryStatic
     dynamicPacks:
     - Chemistry
+    - AdvancedMedical
   - type: Machine
     board: MedicalTechFabCircuitboard
   - type: StealTarget

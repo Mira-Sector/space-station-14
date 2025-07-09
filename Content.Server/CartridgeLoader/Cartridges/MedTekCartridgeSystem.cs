@@ -18,6 +18,7 @@ public sealed class MedTekCartridgeSystem : EntitySystem
     private void OnCartridgeAdded(Entity<MedTekCartridgeComponent> ent, ref CartridgeAddedEvent args)
     {
         var healthAnalyzer = EnsureComp<HealthAnalyzerComponent>(args.Loader);
+        healthAnalyzer.AnalyzerType = ent.Comp.AnalyzerType;
     }
 
     private void OnCartridgeRemoved(Entity<MedTekCartridgeComponent> ent, ref CartridgeRemovedEvent args)

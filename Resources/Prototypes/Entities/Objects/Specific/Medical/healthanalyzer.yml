@@ -61,3 +61,26 @@
     slots:
       cell_slot:
         name: power-cell-slot-component-slot-name-default
+
+- type: entity
+  id: BaseHandheldAdvancedHealthAnalyzer
+  abstract: true
+  name: advanced health analyzer
+  description: An advanced hand-held body scanner capable of distinguishing vital signs and organ status of the subject.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Medical/advhealthanalyzer.rsi
+  - type: HealthAnalyzer
+    analyzerType: BodyAndOrgans
+
+- type: entity
+  id: HandheldAdvancedHealthAnalyzerUnpowered
+  parent: [ BaseHandheldAdvancedHealthAnalyzer, HandheldHealthAnalyzerUnpowered ]
+
+- type: entity
+  id: HandheldAdvancedHealthAnalyzer
+  parent: [ BaseHandheldAdvancedHealthAnalyzer, HandheldHealthAnalyzer ]
+
+- type: entity
+  id: HandheldAdvancedHealthAnalyzerEmpty
+  parent: [ BaseHandheldAdvancedHealthAnalyzer, HandheldHealthAnalyzerEmpty ]

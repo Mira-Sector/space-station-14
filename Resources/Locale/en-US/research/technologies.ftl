@@ -58,6 +58,7 @@ research-technology-advanced-entertainment = Advanced Entertainment
 research-technology-audio-visual-communication = A/V Communication
 research-technology-faux-astro-tiles = Faux Astro-Tiles
 research-technology-advanced-chemistry = Advanced Chemistry
+research-technology-advanced-medical = Advanced Medical
 research-technology-advanced-cleaning = Advanced Cleaning
 research-technology-meat-manipulation = Meat Manipulation
 research-technology-civilian-mechatronics = Civilian Mechatronics

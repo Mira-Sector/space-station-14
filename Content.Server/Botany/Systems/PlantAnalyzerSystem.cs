@@ -37,7 +37,7 @@ public sealed class PlantAnalyzerSystem : BaseAnalyzerSystem<PlantAnalyzerCompon
     }
 
     /// <inheritdoc/>
-    public override void UpdateScannedUser(EntityUid analyzer, EntityUid target, bool scanMode)
+    public override void UpdateScannedUser(Entity<PlantAnalyzerComponent> analyzer, EntityUid target, bool scanMode)
     {
 
         if (!_uiSystem.HasUi(analyzer, PlantAnalyzerUiKey.Key))
@@ -49,7 +49,7 @@ public sealed class PlantAnalyzerSystem : BaseAnalyzerSystem<PlantAnalyzerCompon
         if (!_entityManager.TryGetComponent<PlantAnalyzerComponent>(analyzer, out var analyzerComponent))
             return;
 
-        _uiSystem.ServerSendUiMessage(analyzer, PlantAnalyzerUiKey.Key, GatherData(analyzerComponent, scanMode, target: target));
+        _uiSystem.ServerSendUiMessage(analyzer.Owner, PlantAnalyzerUiKey.Key, GatherData(analyzerComponent, scanMode, target: target));
     }
 
     private PlantAnalyzerScannedUserMessage GatherData(PlantAnalyzerComponent analyzer, bool? scanMode = null, EntityUid? target = null)

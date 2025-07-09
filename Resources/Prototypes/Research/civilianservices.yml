@@ -162,6 +162,18 @@
   - MechEquipmentHorn
 
 - type: technology
+  id: AdvancedMedical
+  name: research-technology-advanced-medical
+  icon:
+    sprite: Objects/Specific/Medical/advhealthanalyzer.rsi
+    state: icon
+  discipline: CivilianServices
+  tier: 2
+  cost: 7500
+  recipeUnlocks:
+  - HandheldAdvancedHealthAnalyzer
+
+- type: technology
   id: AdvancedSpray
   name: research-technology-advanced-spray
   icon:

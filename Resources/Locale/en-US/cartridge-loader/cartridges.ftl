@@ -28,6 +28,7 @@ log-probe-printout-entry = #{$number} / {$time} / {$accessor}
 astro-nav-program-name = AstroNav
 
 med-tek-program-name = MedTek
+adv-med-tek-program-name = Advanced MedTek
 
 plant-scan-program-name = PlantScan
 
