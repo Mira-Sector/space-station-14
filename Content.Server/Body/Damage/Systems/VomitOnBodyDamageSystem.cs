@@ -1,5 +1,6 @@
 using Content.Server.Body.Damage.Components;
 using Content.Server.Medical;
+using Content.Shared.Body.Components;
 using Content.Shared.Body.Damage.Events;
 using Content.Shared.Body.Damage.Systems;
 using Robust.Shared.Random;

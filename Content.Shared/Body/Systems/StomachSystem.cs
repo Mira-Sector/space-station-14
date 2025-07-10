@@ -4,6 +4,7 @@ using Content.Shared.Body.Organ;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Components.SolutionManager;
 using Content.Shared.Chemistry.EntitySystems;
+using Content.Shared.FixedPoint;
 using Robust.Shared.Containers;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
@@ -84,14 +85,12 @@ namespace Content.Shared.Body.Systems
                 }
 
                 foreach (var item in queue)
-                {
                     stomach.ReagentDeltas.Remove(item);
-                }
 
                 _solutionContainerSystem.UpdateChemicals(stomach.Solution.Value);
 
                 // Transfer everything to the body solution!
-                if (_solutionContainerSystem.TryAddSolution(bodySolution.Value, transferSolution))
+                if (_solutionContainerSystem.TryAddSolution(bodySolution.Value, transferSolution) && transferSolution.Volume != FixedPoint2.Zero)
                 {
                     var ev = new StomachDigestedEvent();
                     RaiseLocalEvent(uid, ev);
