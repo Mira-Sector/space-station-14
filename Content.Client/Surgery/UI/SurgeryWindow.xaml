@@ -1,0 +1,24 @@
+<controls:FancyWindow
+    xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+    xmlns:cc="clr-namespace:Content.Client.Surgery.UI"
+    Title="{Loc 'surgery-menu-title'}">
+    <BoxContainer
+        Name="LimbButtons"
+        Orientation="Vertical"
+        HorizontalAlignment="Left"
+        Margin="4"
+        Access="Public"/>
+    <PanelContainer
+        Margin="4">
+        <cc:SurgeryGraphControl
+            Name="GraphView"
+            Access="Public"/>
+    </PanelContainer>
+    <BoxContainer
+        Name="SurgeryButtons"
+        Orientation="Vertical"
+        HorizontalAlignment="Right"
+        Margin="4"
+        Access="Public"/>
+</controls:FancyWindow>

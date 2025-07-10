@@ -12,7 +12,7 @@ public sealed partial class SurgeryPrototype : SurgeryGraph, IPrototype, ISerial
 
     void ISerializationHooks.AfterDeserialization()
     {
-        HashSet<string> nodeIds = new();
+        HashSet<string> nodeIds = [];
 
         foreach (var node in _nodes)
         {
@@ -33,7 +33,7 @@ public sealed partial class SurgeryPrototype : SurgeryGraph, IPrototype, ISerial
         {
             foreach (var edge in node.Edges)
             {
-                if (edge._connection is not {})
+                if (edge._connection is not { })
                     continue;
 
                 if (!TryFindNode(edge._connection, out var connection))
@@ -54,6 +54,5 @@ public sealed partial class SurgeryPrototype : SurgeryGraph, IPrototype, ISerial
 
         if (!startingNodeFound)
             throw new InvalidDataException($"Cannot find starting node {_startingNode} in surgery graph {ID}");
-
     }
 }

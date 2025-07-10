@@ -2,7 +2,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Surgery.Systems;
 
-public sealed partial class SurgerySystem
+public abstract partial class SharedSurgerySystem
 {
     // calculating the graph is expensive and reused multiple times so cache it
     private Dictionary<List<ProtoId<SurgeryPrototype>>, SurgeryGraph> Graphs = new();
