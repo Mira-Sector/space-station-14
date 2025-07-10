@@ -1889,3 +1889,13 @@ Entries:
     type: Tweak
   id: 264
   time: '2025-07-09T07:45:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Mobs no longer excessively vomit from minor stomach damage
+    type: Tweak
+  - message: Stomach damage only has a chance to vomit when actually digesting food
+    type: Fix
+  - message: Stomach damage vomiting only happens when a mob is alive
+    type: Fix
+  id: 265
+  time: '2025-07-10T08:30:00.0000000+00:00'
