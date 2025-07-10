@@ -136,8 +136,8 @@
     requiredStates:
     - Wounded
     - Dead
-    minProb: 0.0002
-    maxProb: 0.02
+    minProb: 0.01
+    maxProb: 0.5
     scaleProbToDamage: 100
   - type: MetabolizerDelayOnBodyDamage
   - type: SolutionContainerManager
