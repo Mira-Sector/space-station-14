@@ -132,13 +132,13 @@
   - type: BodyDamageOnRot
     minRotStage: 1
     fullyRottenDamage: 100
-#  - type: VomitOnBodyDamage
-#    requiredStates:
-#    - Wounded
-#    - Dead
-#    minProb: 0.00005
-#    maxProb: 0.005
-#    scaleProbToDamage: 100
+  - type: VomitOnBodyDamage
+    requiredStates:
+    - Wounded
+    - Dead
+    minProb: 0.0002
+    maxProb: 0.02
+    scaleProbToDamage: 100
   - type: MetabolizerDelayOnBodyDamage
   - type: SolutionContainerManager
     solutions:
