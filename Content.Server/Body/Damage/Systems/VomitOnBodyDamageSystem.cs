@@ -3,12 +3,15 @@ using Content.Server.Medical;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Damage.Events;
 using Content.Shared.Body.Damage.Systems;
+using Content.Shared.Body.Organ;
+using Content.Shared.Mobs.Systems;
 using Robust.Shared.Random;
 
 namespace Content.Server.Body.Damage.Systems;
 
 public sealed partial class VomitOnBodyDamageSystem : BaseOnBodyDamageSystem<VomitOnBodyDamageComponent>
 {
+    [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly VomitSystem _vomit = default!;
 
@@ -60,12 +63,18 @@ public sealed partial class VomitOnBodyDamageSystem : BaseOnBodyDamageSystem<Vom
         if (!ent.Comp.TriggeredOnDigestion)
             return;
 
+        if (!TryComp<OrganComponent>(ent.Owner, out var organComp) || organComp.Body is not { } body)
+            return;
+
+        if (_mobState.IsDead(body))
+            return;
+
         if (!CanDoEffect(ent))
             return;
 
         if (!_random.Prob(ent.Comp.CurrentProb))
             return;
 
-        _vomit.VomitOrgan(ent.Owner);
+        _vomit.VomitOrgan((ent.Owner, organComp));
     }
 }
