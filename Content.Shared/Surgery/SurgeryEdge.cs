@@ -8,7 +8,7 @@ public sealed partial class SurgeryEdge
     /// <summary>
     /// Requirements that must be met for this edge to be taken.
     /// </summary>
-    [DataField(required:true)]
+    [DataField(required: true)]
     public SurgeryEdgeRequirement Requirement { get; set; } = default!;
 
     [DataField("connection")]
