@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Client.UserInterface.Controls;
 using Content.Shared.Body.Part;
 using Content.Shared.Surgery;
@@ -12,6 +13,7 @@ namespace Content.Client.Surgery.UI;
 public sealed partial class SurgeryWindow : FancyWindow
 {
     [Dependency] private readonly IEntityManager _entityManager = default!;
+    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
 
     private ISurgeryReceiver? _receiver;
 
@@ -89,8 +91,9 @@ public sealed partial class SurgeryWindow : FancyWindow
         GraphView.ChangeGraph(_receiver.Graph);
     }
 
-    private void OnSurgeryButtonPressed(ProtoId<SurgeryPrototype> surgery)
+    private void OnSurgeryButtonPressed(ProtoId<SurgeryPrototype> surgeryId)
     {
-        // TODO: highlight this path on the graph
+        var surgery = _prototypeManager.Index(surgeryId);
+        GraphView.HighlightedNodes = surgery.Nodes.Values.ToHashSet();
     }
 }
