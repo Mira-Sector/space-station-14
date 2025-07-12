@@ -42,14 +42,14 @@
     - id: PlushieMoth
     - id: PlushieArachind
     - id: PlushiePenguin
-    - id: PlushieSolusHuman
-    - id: PlushieSolusSlime
+    - id: PlushieSillyAmy
     - id: PlushieAnurath
     - id: PlushieGwen
     - id: PlushieSalad
     - id: PlushieWudanty
     - id: PlushieCreature
     - id: PlushieClownothing
+    - id: PlushieAlexia
 
 - type: entityTable
   id: AllPottedPlantsTable
