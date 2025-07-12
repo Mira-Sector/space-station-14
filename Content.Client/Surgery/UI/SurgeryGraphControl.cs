@@ -1,40 +1,37 @@
 using Content.Shared.Surgery;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
+using System.Linq;
 using System.Numerics;
 
 namespace Content.Client.Surgery.UI;
 
 public sealed partial class SurgeryGraphControl : Control
 {
-    private const float NodeCircleRadius = 20f;
-    private const float NodeDistance = 100f;
+    private const float NodeCircleRadius = 15f;
+    private const float LayerHeight = 80f;
+    private const float NodeSpacing = 60f;
 
-    private static readonly Color HighlightedNodeColor = Color.Red;
-    private static readonly Color NormalNodeColor = Color.Blue;
+    private static readonly Color HighlightedNodeColor = Color.SeaGreen;
+    private static readonly Color NormalNodeColor = Color.SkyBlue;
 
     private const float EdgeArrowSize = 5f;
-    private static readonly Color EdgeColor = Color.Gray;
+    private static readonly Color EdgeColor = Color.PaleTurquoise;
 
     private const float SelfEdgeLoopRadius = 20f;
     private const int SelfEdgeSegments = 12;
     private const float SelfEdgeVerticalOffset = 20f;
     private const int SelfEdgeArrowPositionSegment = 3;
 
-    private const int CurveSegments = 8;
-    private const float CurveHeight = 30f;
-
-    private const int MaxIterations = 100;
-    private const float RepulsionForce = 1000f;
-    private const float SpringLength = NodeDistance;
-    private const float SpringConstant = 0.05f;
-    private const float Damping = 0.9f;
-    private const float Temperature = 100f;
+    private const float EdgeClearance = 8f;
+    private const float BranchSpacing = 20f;
+    private const int MaxRoutingAttempts = 5;
 
     private const float LayoutPadding = 20f;
 
     private SurgeryGraph? _graph;
     private Dictionary<SurgeryNode, Vector2>? _nodePositions;
+    private Dictionary<SurgeryNode, int>? _layers;
     public HashSet<SurgeryNode> HighlightedNodes = [];
 
     public SurgeryGraphControl()
@@ -52,24 +49,25 @@ public sealed partial class SurgeryGraphControl : Control
         if (_graph == null)
         {
             _nodePositions = null;
+            return;
         }
-        else
-        {
-            _nodePositions = InitializeNodePositions();
 
-            Dictionary<SurgeryNode, Vector2> velocities = [];
-            for (var i = 0; i < MaxIterations; i++)
-                ApplyForces(_graph, _nodePositions, velocities, Temperature * (1 - (float)i / MaxIterations));
-        }
+        _layers = AssignLayers(_graph);
+        var ordered = ReduceCrossings(_layers, _graph);
+        _nodePositions = AssignCoordinates(ordered);
     }
 
     protected override void Draw(DrawingHandleScreen handle)
     {
         base.Draw(handle);
-        if (_graph == null || _nodePositions == null)
+        if (_graph == null || _nodePositions == null || _layers == null)
             return;
 
-        HashSet<(SurgeryNode, SurgeryNode)> drawnEdges = [];
+        foreach (var (node, position) in _nodePositions)
+            DrawNode(handle, node, position);
+
+        List<Vector2[]> drawnEdges = [];
+        HashSet<(SurgeryNode, SurgeryNode)> drawnEdgePairs = [];
         foreach (var (node, position) in _nodePositions)
         {
             foreach (var edge in node.Edges)
@@ -81,198 +79,233 @@ public sealed partial class SurgeryGraphControl : Control
                     continue;
 
                 var edgeKey = (node, targetNode);
-                if (drawnEdges.Contains(edgeKey))
+                var reverseKey = (targetNode, node);
+                if (drawnEdgePairs.Contains(edgeKey) || drawnEdgePairs.Contains(reverseKey))
                     continue;
 
-                drawnEdges.Add(edgeKey);
+                drawnEdgePairs.Add(edgeKey);
 
                 if (node == targetNode)
-                {
                     DrawSelfReferentialEdge(handle, position);
-                }
                 else
+                    DrawEdge(handle, position, targetPos, node, targetNode, _layers, _nodePositions, drawnEdges);
+            }
+        }
+    }
+
+    private static Dictionary<SurgeryNode, int> AssignLayers(SurgeryGraph graph)
+    {
+        Dictionary<SurgeryNode, int> layers = [];
+        HashSet<SurgeryNode> visited = [];
+
+        foreach (var start in graph.Nodes.Values)
+        {
+            if (visited.Contains(start))
+                continue;
+
+            Queue<(SurgeryNode node, int layer)> queue = new();
+            queue.Enqueue((start, 0));
+
+            while (queue.Count > 0)
+            {
+                var (node, layer) = queue.Dequeue();
+
+                if (visited.Contains(node))
+                    continue;
+
+                visited.Add(node);
+                layers[node] = layer;
+
+                foreach (var edge in node.Edges)
                 {
-                    var isBackEdge = IsBackEdge(node, targetNode, _graph);
-                    DrawEdge(handle, position, targetPos, isBackEdge);
+                    if (edge.Connection == null || !graph.Nodes.TryGetValue(edge.Connection.Value, out var target))
+                        continue;
+
+                    if (!visited.Contains(target))
+                        queue.Enqueue((target, layer + 1));
                 }
             }
         }
 
-        foreach (var (node, position) in _nodePositions)
-            DrawNode(handle, node, position);
+        return layers;
     }
 
-    private Dictionary<SurgeryNode, Vector2> InitializeNodePositions()
+    private static Dictionary<int, List<SurgeryNode>> ReduceCrossings(Dictionary<SurgeryNode, int> layers, SurgeryGraph graph)
     {
-        var positions = new Dictionary<SurgeryNode, Vector2>();
-        if (_graph == null || _graph.Nodes.Count == 0 || PixelSize.X <= 2 * LayoutPadding || PixelSize.Y <= 2 * LayoutPadding)
-            return positions;
+        Dictionary<int, List<SurgeryNode>> orderedLayers = [];
 
-        var nodeCount = _graph.Nodes.Count;
-        var columns = Math.Max(1, (int)Math.Ceiling(Math.Sqrt(nodeCount)));
-        var rows = Math.Max(1, (int)Math.Ceiling((float)nodeCount / columns));
-
-        var safeColumns = Math.Max(2, columns);
-        var safeRows = Math.Max(2, rows);
-
-        var maxAllowedSpacingX = (PixelSize.X - 2 * LayoutPadding) / (safeColumns - 1);
-        var maxAllowedSpacingY = (PixelSize.Y - 2 * LayoutPadding) / (safeRows - 1);
-        var uniformSpacing = Math.Min(maxAllowedSpacingX, maxAllowedSpacingY);
-
-        var offsetX = (PixelSize.X - (columns - 1) * uniformSpacing) / 2;
-        var offsetY = (PixelSize.Y - (rows - 1) * uniformSpacing) / 2;
-
-        var index = 0;
-        foreach (var node in _graph.Nodes.Values)
+        foreach (var (node, layer) in layers)
         {
-            var x = index % columns;
-            var y = index / columns;
+            if (!orderedLayers.ContainsKey(layer))
+                orderedLayers[layer] = [];
+            orderedLayers[layer].Add(node);
+        }
 
-            positions[node] = new Vector2(
-                offsetX + x * uniformSpacing,
-                offsetY + y * uniformSpacing
-            );
+        for (var i = 1; orderedLayers.ContainsKey(i); i++)
+        {
+            var layer = orderedLayers[i];
+            layer.Sort((a, b) =>
+            {
+                float GetBarycenter(SurgeryNode node)
+                {
+                    var parentCenters = node.Edges
+                        .Where(e => e.Connection != null &&
+                                    graph.Nodes.TryGetValue(e.Connection.Value, out var parent) &&
+                                    layers[parent] == i - 1)
+                        .Select(e => orderedLayers[i - 1].IndexOf(graph.Nodes[e.Connection!.Value]));
 
-            index++;
+                    return parentCenters.Any() ? (float)parentCenters.Average() : 0;
+                }
+
+                return GetBarycenter(a).CompareTo(GetBarycenter(b));
+            });
+        }
+
+        return orderedLayers;
+    }
+
+    private static Dictionary<SurgeryNode, Vector2> AssignCoordinates(Dictionary<int, List<SurgeryNode>> orderedLayers)
+    {
+        Dictionary<SurgeryNode, Vector2> positions = [];
+
+        foreach (var (layerIndex, nodes) in orderedLayers)
+        {
+            for (var i = 0; i < nodes.Count; i++)
+            {
+                var x = LayoutPadding + i * NodeSpacing;
+                var y = LayoutPadding + layerIndex * LayerHeight;
+
+                positions[nodes[i]] = new Vector2(x, y);
+            }
         }
 
         return positions;
     }
 
-    private void ApplyForces(SurgeryGraph graph, Dictionary<SurgeryNode, Vector2> positions, Dictionary<SurgeryNode, Vector2> velocities, float temperature)
+    private static void DrawEdge(DrawingHandleScreen handle, Vector2 startPos, Vector2 endPos, SurgeryNode from, SurgeryNode to, Dictionary<SurgeryNode, int> layers, Dictionary<SurgeryNode, Vector2> nodePositions, List<Vector2[]> existingEdges)
     {
-        foreach (var node in positions.Keys)
+        var direction = (endPos - startPos).Normalized();
+        var start = startPos + direction * (NodeCircleRadius + EdgeClearance);
+        var end = endPos - direction * (NodeCircleRadius + EdgeClearance);
+
+        Vector2[] straightPath = [start, end];
+        if (!PathIntersectsAnything(straightPath, nodePositions, existingEdges))
         {
-            if (!velocities.ContainsKey(node))
-                velocities[node] = Vector2.Zero;
+            DrawLineSegment(handle, start, end, existingEdges, isFinal: true);
+            return;
         }
 
-        foreach (var (nodeA, posA) in positions)
+        var mid = new Vector2(start.X, end.Y);
+        Vector2[] elbowPath = [start, mid, end];
+        if (!PathIntersectsAnything(elbowPath, nodePositions, existingEdges))
         {
-            var totalForce = Vector2.Zero;
-
-            foreach (var (nodeB, posB) in positions)
-            {
-                if (nodeA == nodeB)
-                    continue;
-
-                var delta = posA - posB;
-                var distance = Math.Max(delta.Length(), float.Epsilon);
-
-                var repulsion = RepulsionForce / (distance * distance);
-                totalForce += repulsion * delta.Normalized();
-            }
-
-            velocities[nodeA] += totalForce;
+            DrawLineSegment(handle, start, mid, existingEdges);
+            DrawLineSegment(handle, mid, end, existingEdges, isFinal: true);
+            return;
         }
 
-        foreach (var (node, pos) in positions)
+        for (var attempt = 0; attempt < MaxRoutingAttempts; attempt++)
         {
-            foreach (var edge in node.Edges)
+            var offset = BranchSpacing * (attempt + 1);
+            foreach (var side in new[] { 1, -1 })
             {
-                if (edge.Connection == null || !graph.Nodes.TryGetValue(edge.Connection.Value, out var target))
-                    continue;
+                var dx = side * offset;
 
-                if (!positions.TryGetValue(target, out var targetPos))
-                    continue;
+                var mid1 = new Vector2(start.X + dx, start.Y);
+                var mid2 = new Vector2(start.X + dx, end.Y);
+                var path = new[] { start, mid1, mid2, end };
 
-                var delta = targetPos - pos;
-                var distance = Math.Max(delta.Length(), float.Epsilon);
-                var direction = delta.Normalized();
-
-                var displacement = distance - SpringLength;
-                var springForce = SpringConstant * displacement;
-
-                velocities[node] += springForce * direction;
-                velocities[target] -= springForce * direction;
+                if (!PathIntersectsAnything(path, nodePositions, existingEdges))
+                {
+                    DrawLineSegment(handle, start, mid1, existingEdges);
+                    DrawLineSegment(handle, mid1, mid2, existingEdges);
+                    DrawLineSegment(handle, mid2, end, existingEdges, isFinal: true);
+                    return;
+                }
             }
         }
 
-        foreach (var node in positions.Keys)
-        {
-            velocities[node] *= Damping;
-            positions[node] += velocities[node];
-        }
-
-        var minX = LayoutPadding + NodeCircleRadius;
-        var minY = LayoutPadding + NodeCircleRadius;
-        var maxX = PixelSize.X - LayoutPadding - NodeCircleRadius;
-        var maxY = PixelSize.Y - LayoutPadding - NodeCircleRadius;
-
-        /*
-        foreach (var node in positions.Keys)
-        {
-            var p = positions[node];
-            positions[node] = new Vector2(
-                Math.Clamp(p.X, minX, maxX),
-                Math.Clamp(p.Y, minY, maxY)
-            );
-        }
-        */
+        DrawLineSegment(handle, start, end, existingEdges, isFinal: true);
     }
 
-
-    private static bool IsBackEdge(SurgeryNode from, SurgeryNode to, SurgeryGraph graph)
+    private static bool PathIntersectsAnything(Vector2[] path, Dictionary<SurgeryNode, Vector2> nodePositions, List<Vector2[]> existingEdges)
     {
-        Queue<SurgeryNode> queue = [];
-        HashSet<SurgeryNode> visited = [];
-
-        queue.Enqueue(graph.Nodes[graph.StartingNode]);
-        visited.Add(graph.Nodes[graph.StartingNode]);
-
-        while (queue.Count > 0)
+        foreach (var nodePos in nodePositions.Values)
         {
-            var current = queue.Dequeue();
-            foreach (var edge in current.Edges)
+            for (var i = 0; i < path.Length - 1; i++)
             {
-                if (edge.Connection == null || !graph.Nodes.TryGetValue(edge.Connection.Value, out var neighbor))
+                var start = path[i];
+                var end = path[i + 1];
+
+                // if perfectly vertical or horizontal skip node collision check
+                if (MathF.Abs(start.X - end.X) < 0.5f || MathF.Abs(start.Y - end.Y) < 0.5f)
                     continue;
 
-                // normal forward edge
-                if (neighbor == to && current == from)
-                    return false;
-
-                // back edge found
-                if (neighbor == to)
+                if (PointLineDistance(start, end, nodePos) < NodeCircleRadius + EdgeClearance)
                     return true;
+            }
+        }
 
-                if (visited.Add(neighbor))
-                    queue.Enqueue(neighbor);
+        foreach (var edge in existingEdges)
+        {
+            for (var i = 0; i < path.Length - 1; i++)
+            {
+                if (LinesIntersect(path[i], path[i + 1], edge[0], edge[1]))
+                    return true;
             }
         }
 
         return false;
     }
 
-    private static void DrawEdge(DrawingHandleScreen handle, Vector2 startPos, Vector2 endPos, bool isBackEdge)
+    private static void DrawLineSegment(DrawingHandleScreen handle, Vector2 start, Vector2 end, List<Vector2[]> existingEdges, bool isFinal = false)
     {
-        if (!isBackEdge)
-        {
-            handle.DrawLine(startPos, endPos, EdgeColor);
-        }
-        else
-        {
-            var points = new Vector2[CurveSegments + 1];
-            var direction = (endPos - startPos).Normalized();
-            var perpendicular = new Vector2(-direction.Y, direction.X);
+        handle.DrawLine(start, end, EdgeColor);
+        existingEdges.Add([start, end]);
 
-            for (var i = 0; i <= CurveSegments; i++)
-            {
-                var t = i / (float)CurveSegments;
-                var controlPoint = (startPos + endPos) / 2 + perpendicular * CurveHeight;
-                points[i] = CalculateQuadraticBezierPoint(startPos, controlPoint, endPos, t);
-            }
-
-            handle.DrawPrimitives(DrawPrimitiveTopology.LineStrip, points, EdgeColor);
-        }
-
-        DrawArrowHead(handle, startPos, endPos);
+        if (isFinal)
+            DrawArrowHead(handle, start, end);
     }
 
-    private static Vector2 CalculateQuadraticBezierPoint(Vector2 p0, Vector2 p1, Vector2 p2, float t)
+    private static bool LinesIntersect(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2)
     {
-        var u = 1 - t;
-        return u * u * p0 + 2 * u * t * p1 + t * t * p2;
+        var orientation1 = (b1.X - a1.X) * (a2.Y - a1.Y) - (b1.Y - a1.Y) * (a2.X - a1.X);
+        var orientation2 = (b2.X - a1.X) * (a2.Y - a1.Y) - (b2.Y - a1.Y) * (a2.X - a1.X);
+        var orientation3 = (a1.X - b1.X) * (b2.Y - b1.Y) - (a1.Y - b1.Y) * (b2.X - b1.X);
+        var orientation4 = (a2.X - b1.X) * (b2.Y - b1.Y) - (a2.Y - b1.Y) * (b2.X - b1.X);
+
+        if (orientation1 * orientation2 < 0 && orientation3 * orientation4 < 0)
+            return true;
+
+        if (orientation1 == 0 && OnSegment(a1, a2, b1))
+            return true;
+        if (orientation2 == 0 && OnSegment(a1, a2, b2))
+            return true;
+        if (orientation3 == 0 && OnSegment(b1, b2, a1))
+            return true;
+        if (orientation4 == 0 && OnSegment(b1, b2, a2))
+            return true;
+
+        return false;
+    }
+
+    private static bool OnSegment(Vector2 p, Vector2 q, Vector2 r)
+    {
+        return r.X <= Math.Max(p.X, q.X) &&
+               r.X >= Math.Min(p.X, q.X) &&
+               r.Y <= Math.Max(p.Y, q.Y) &&
+               r.Y >= Math.Min(p.Y, q.Y);
+    }
+
+    private static float PointLineDistance(Vector2 start, Vector2 end, Vector2 point)
+    {
+        var l2 = (end - start).LengthSquared();
+        if (l2 == 0)
+            return Vector2.Distance(point, start);
+
+        var t = MathF.Max(0, MathF.Min(1, Vector2.Dot(point - start, end - start) / l2));
+        var projection = start + t * (end - start);
+        return Vector2.Distance(point, projection);
     }
 
     private static void DrawArrowHead(DrawingHandleScreen handle, Vector2 startPos, Vector2 endPos)
@@ -291,7 +324,7 @@ public sealed partial class SurgeryGraphControl : Control
     private void DrawNode(DrawingHandleScreen handle, SurgeryNode node, Vector2 position)
     {
         var color = HighlightedNodes.Contains(node) ? HighlightedNodeColor : NormalNodeColor;
-        handle.DrawCircle(position, NodeCircleRadius, color, false);
+        handle.DrawCircle(position, NodeCircleRadius, color, true);
     }
 
     private static void DrawSelfReferentialEdge(DrawingHandleScreen handle, Vector2 nodePosition)
