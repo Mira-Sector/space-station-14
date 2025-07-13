@@ -1,11 +1,10 @@
 using Content.Shared.Silicons.StationAi;
 using Robust.Client.Graphics;
-using Robust.Shared.Serialization;
 using System.Numerics;
 
 namespace Content.Client.Silicons.StationAi;
 
-[DataDefinition, Serializable, NetSerializable]
+[DataDefinition]
 public sealed partial class StationAiVisionVisualsVertex : SharedStationAiVisionVisualsVertex, IClientStationAiVisionVisualsShape
 {
     public void Draw(DrawingHandleWorld worldHandle, Vector2 pos, Angle rot)

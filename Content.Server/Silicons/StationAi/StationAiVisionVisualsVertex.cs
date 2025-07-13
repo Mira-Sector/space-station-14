@@ -1,7 +1,6 @@
 using Content.Shared.Silicons.StationAi;
-using Robust.Shared.Serialization;
 
 namespace Content.Server.Silicons.StationAi;
 
-[DataDefinition, Serializable, NetSerializable]
+[DataDefinition]
 public sealed partial class StationAiVisionVisualsVertex : SharedStationAiVisionVisualsVertex;
