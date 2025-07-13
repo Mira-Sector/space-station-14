@@ -3,6 +3,7 @@ using Content.Shared.Silicons.StationAi;
 using Robust.Client.Graphics;
 using Robust.Client.Player;
 using Robust.Shared.Enums;
+using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics;
 using Robust.Shared.Prototypes;
@@ -20,12 +21,12 @@ public sealed class StationAiOverlay : Overlay
 
     public override OverlaySpace Space => OverlaySpace.WorldSpace;
 
-    private readonly HashSet<Vector2i> _visibleTiles = new();
+    private readonly HashSet<TileRef> _visibleTiles = [];
 
     private IRenderTexture? _staticTexture;
     private IRenderTexture? _stencilTexture;
 
-    private float _updateRate = 1f / 30f;
+    private static readonly float UpdateRate = 1f / 30f;
     private float _accumulator;
 
     public StationAiOverlay()
@@ -56,7 +57,7 @@ public sealed class StationAiOverlay : Overlay
         _entManager.TryGetComponent(gridUid, out BroadphaseComponent? broadphase);
 
         var invMatrix = args.Viewport.GetWorldToLocalMatrix();
-        _accumulator -= (float) _timing.FrameTime.TotalSeconds;
+        _accumulator -= (float)_timing.FrameTime.TotalSeconds;
 
         if (grid != null && broadphase != null)
         {
@@ -65,13 +66,13 @@ public sealed class StationAiOverlay : Overlay
 
             if (_accumulator <= 0f)
             {
-                _accumulator = MathF.Max(0f, _accumulator + _updateRate);
+                _accumulator = MathF.Max(0f, _accumulator + UpdateRate);
                 _visibleTiles.Clear();
                 _entManager.System<StationAiVisionSystem>().GetView((gridUid, broadphase, grid), worldBounds, _visibleTiles);
             }
 
             var gridMatrix = xforms.GetWorldMatrix(gridUid);
-            var matty =  Matrix3x2.Multiply(gridMatrix, invMatrix);
+            var matty = Matrix3x2.Multiply(gridMatrix, invMatrix);
 
             // Draw visible tiles to stencil
             worldHandle.RenderInRenderTarget(_stencilTexture!, () =>
