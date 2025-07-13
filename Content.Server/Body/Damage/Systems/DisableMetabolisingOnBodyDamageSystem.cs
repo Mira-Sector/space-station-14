@@ -18,7 +18,7 @@ public sealed partial class DisableMetabolisingOnBodyDamageSystem : BaseToggleOn
         if (args.Cancelled)
             return;
 
-        if (ent.Comp.Enabled)
+        if (!ent.Comp.Enabled)
             args.Cancel();
     }
 }
