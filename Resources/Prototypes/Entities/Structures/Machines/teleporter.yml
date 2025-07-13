@@ -2,7 +2,7 @@
   id: BaseTeleporter
   parent: [ SmallConstructibleMachine, ConstructibleMachine ]
   name: Abstract Teleporter
-  description: Abstractly teleporting you since 2599!
+  description: Abstractly teleporting you since 2599.
   abstract: true
   components:
   - type: InteractionOutline
@@ -39,7 +39,7 @@
   - type: DeviceLinkSink
     ports:
       - TeleportReceiver
-  - type: PowerConsumer #set power draw in teleport component, add/remove when teleporter powers on/off. See EmitterSystem.
+  - type: PowerConsumer #set power draw in teleport component, add/remove when teleporter powers on/off. See EmitterSystem for example.
     drawRate: 50 #for now, generic amount
     voltage: High
   - type: NodeContainer
@@ -69,7 +69,7 @@
   id: TeleporterScience
   parent: BaseTeleporter
   name: teleframe core
-  description: The core of an advanced device cable of ripping holes in reality itself for near-instanteous travel. With time and material, its capabilities can be expanded.
+  description: The core of an advanced device that rips holes in reality for near-instanteous travel. With time and material its capabilities can be expanded. Safety not guaranteed.
   components:
   - type: Machine
     board: TeleporterMachineCircuitboard
