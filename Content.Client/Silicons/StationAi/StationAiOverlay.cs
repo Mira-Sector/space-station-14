@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Shared.Maps;
 using Content.Shared.Silicons.StationAi;
 using Robust.Client.Graphics;
 using Robust.Client.Player;
@@ -15,6 +16,7 @@ public sealed class StationAiOverlay : Overlay
 {
     [Dependency] private readonly IClyde _clyde = default!;
     [Dependency] private readonly IEntityManager _entManager = default!;
+    [Dependency] private readonly ITileDefinitionManager _tileDefinitions = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly IPlayerManager _player = default!;
     [Dependency] private readonly IPrototypeManager _proto = default!;
@@ -81,9 +83,19 @@ public sealed class StationAiOverlay : Overlay
 
                 foreach (var tile in _visibleTiles)
                 {
-                    var aabb = lookups.GetLocalBounds(tile, grid.TileSize);
-                    worldHandle.DrawRect(aabb, Color.White);
+                    var tileDef = tile.GetContentTileDefinition(_tileDefinitions);
+                    if (tileDef.StationAiVisuals is not { } aiVisuals)
+                    {
+                        DrawTileStatic(tile, worldHandle, lookups, grid.TileSize);
+                        continue;
+                    }
+
+                    if (aiVisuals.DrawStatic)
+                        DrawTileStatic(tile, worldHandle, lookups, grid.TileSize);
+
+                    DrawVisuals(aiVisuals, tile.GridIndices, Angle.Zero, worldHandle);
                 }
+
             },
             Color.Transparent);
 
@@ -124,6 +136,17 @@ public sealed class StationAiOverlay : Overlay
 
         worldHandle.SetTransform(Matrix3x2.Identity);
         worldHandle.UseShader(null);
+    }
 
+    private static void DrawVisuals(IStationAiVisionVisuals visuals, Vector2 pos, Angle rot, DrawingHandleWorld worldHandle)
+    {
+        foreach (var shape in visuals.Shapes)
+            ((IClientStationAiVisionVisualsShape)shape).Draw(worldHandle, pos, rot);
+    }
+
+    private static void DrawTileStatic(TileRef tile, DrawingHandleWorld worldHandle, EntityLookupSystem lookups, ushort tileSize)
+    {
+        var aabb = lookups.GetLocalBounds(tile, tileSize);
+        worldHandle.DrawRect(aabb, Color.White);
     }
 }
