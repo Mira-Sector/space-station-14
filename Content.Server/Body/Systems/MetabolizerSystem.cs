@@ -157,9 +157,7 @@ namespace Content.Server.Body.Systems
                 if (proto.Metabolisms is null)
                 {
                     if (ent.Comp1.RemoveEmpty)
-                    {
                         solution.RemoveReagent(reagent, FixedPoint2.New(1));
-                    }
 
                     continue;
                 }

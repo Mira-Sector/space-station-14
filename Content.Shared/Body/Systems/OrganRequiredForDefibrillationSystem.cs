@@ -35,7 +35,7 @@ public sealed partial class OrganRequiredForDefibrillationSystem : EntitySystem
         LocId? organReason = null;
         foreach (var tracker in _body.GetTrackers<OrganRequiredForDefibrillationComponent>(ent.Owner))
         {
-            if (!IsEnabled(tracker))
+            if (IsEnabled(tracker))
                 return;
 
             organReason = tracker.Comp.DisableReason;
