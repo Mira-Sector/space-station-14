@@ -1899,3 +1899,11 @@ Entries:
     type: Fix
   id: 265
   time: '2025-07-10T08:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Defibrillating now requires a beating heart rather than one not beating
+    type: Fix
+  - message: Kidneys now arent disabled by default
+    type: Fix
+  id: 266
+  time: '2025-07-13T17:15:00.0000000+00:00'
