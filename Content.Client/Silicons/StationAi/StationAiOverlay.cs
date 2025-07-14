@@ -27,7 +27,7 @@ public sealed class StationAiOverlay : Overlay
 
     private readonly Dictionary<Vector2i, TileRef> _visibleTiles = [];
     private readonly Dictionary<Vector2i, (Vector2, TileRef, IStationAiVisionVisuals)> _tileVisuals = [];
-    private readonly Dictionary<Vector2i, (Entity<TransformComponent>, IStationAiVisionVisuals)> _entityVisuals = [];
+    private readonly Dictionary<Vector2i, List<(Entity<TransformComponent>, IStationAiVisionVisuals)>> _entityVisuals = [];
 
     private IRenderTexture? _staticTexture;
     private IRenderTexture? _stencilTexture;
@@ -111,6 +111,7 @@ public sealed class StationAiOverlay : Overlay
                     if (ent.Comp.BlockTiles)
                         blockedTiles.Add(uidPos);
 
+                    List<(Entity<TransformComponent>, IStationAiVisionVisuals)>? posEnts;
                     if (_appearanceQuery.TryGetComponent(ent.Owner, out var appearanceComp))
                     {
                         var foundAppearanceData = false;
@@ -123,7 +124,12 @@ public sealed class StationAiOverlay : Overlay
                             if (!values.TryGetValue(data, out var visuals))
                                 continue;
 
-                            _entityVisuals[uidPos] = ((ent.Owner, xform), visuals);
+                            if (!_entityVisuals.TryGetValue(uidPos, out posEnts))
+                            {
+                                posEnts = [];
+                                _entityVisuals[uidPos] = posEnts;
+                            }
+                            posEnts.Add(((ent.Owner, xform), visuals));
                             foundAppearanceData = true;
                             break;
                         }
@@ -132,7 +138,13 @@ public sealed class StationAiOverlay : Overlay
                             continue;
                     }
 
-                    _entityVisuals[uidPos] = ((ent.Owner, xform), ent.Comp);
+
+                    if (!_entityVisuals.TryGetValue(uidPos, out posEnts))
+                    {
+                        posEnts = [];
+                        _entityVisuals[uidPos] = posEnts;
+                    }
+                    posEnts.Add(((ent.Owner, xform), ent.Comp));
                 }
 
                 var chunkEnumerator = new ChunkIndicesEnumerator(gridAabb, grid.TileSize);
@@ -192,15 +204,18 @@ public sealed class StationAiOverlay : Overlay
                 DrawVisuals(aiVisuals, worldHandle);
             }
 
-            foreach (var (tileIndices, (ent, aiVisuals)) in _entityVisuals)
+            foreach (var (tileIndices, ents) in _entityVisuals)
             {
-                // no need to check if the tile is visible as the entity lookup only checks blocked tiles
-                var worldTransform = xforms.GetWorldMatrix(ent.Comp);
-                var tileOffset = Matrix3x2.CreateTranslation(-grid.TileSizeHalfVector);
-                var rotation = Matrix3x2.CreateRotation((float)ent.Comp.LocalRotation.Degrees);
-                var transform = Matrix3x2.Multiply(tileOffset, Matrix3x2.Multiply(worldTransform, rotation));
-                worldHandle.SetTransform(transform);
-                DrawVisuals(aiVisuals, worldHandle);
+                foreach (var (ent, aiVisuals) in ents)
+                {
+                    // no need to check if the tile is visible as the entity lookup only checks blocked tiles
+                    var worldTransform = xforms.GetWorldMatrix(ent.Comp);
+                    var tileOffset = Matrix3x2.CreateTranslation(-grid.TileSizeHalfVector);
+                    var rotation = Matrix3x2.CreateRotation((float)ent.Comp.LocalRotation.Degrees);
+                    var transform = Matrix3x2.Multiply(tileOffset, Matrix3x2.Multiply(worldTransform, rotation));
+                    worldHandle.SetTransform(transform);
+                    DrawVisuals(aiVisuals, worldHandle);
+                }
             }
         }
         // Not on a grid
