@@ -1,6 +1,7 @@
 using System.Numerics;
 using Content.Shared.Maps;
 using Content.Shared.Silicons.StationAi;
+using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Client.Player;
 using Robust.Shared.Enums;
@@ -26,16 +27,27 @@ public sealed class StationAiOverlay : Overlay
 
     private readonly Dictionary<Vector2i, TileRef> _visibleTiles = [];
     private readonly Dictionary<Vector2i, (Vector2, TileRef, IStationAiVisionVisuals)> _tileVisuals = [];
+    private readonly Dictionary<Vector2i, (Entity<TransformComponent>, IStationAiVisionVisuals)> _entityVisuals = [];
 
     private IRenderTexture? _staticTexture;
     private IRenderTexture? _stencilTexture;
 
+    private readonly EntityQuery<StationAiVisionVisualsComponent> _visionVisualsQuery;
+    private readonly EntityQuery<AppearanceComponent> _appearanceQuery;
+    private readonly EntityQuery<TransformComponent> _xformQuery;
+
     private static readonly float UpdateRate = 1f / 30f;
     private float _accumulator;
+
+    private const LookupFlags Flags = LookupFlags.Approximate | LookupFlags.Dynamic | LookupFlags.Static | LookupFlags.Sundries;
 
     public StationAiOverlay()
     {
         IoCManager.InjectDependencies(this);
+
+        _visionVisualsQuery = _entManager.GetEntityQuery<StationAiVisionVisualsComponent>();
+        _appearanceQuery = _entManager.GetEntityQuery<AppearanceComponent>();
+        _xformQuery = _entManager.GetEntityQuery<TransformComponent>();
     }
 
     protected override void Draw(in OverlayDrawArgs args)
@@ -55,7 +67,7 @@ public sealed class StationAiOverlay : Overlay
         var worldBounds = args.WorldBounds;
 
         var playerEnt = _player.LocalEntity;
-        _entManager.TryGetComponent(playerEnt, out TransformComponent? playerXform);
+        _xformQuery.TryGetComponent(playerEnt, out var playerXform);
         var gridUid = playerXform?.GridUid ?? EntityUid.Invalid;
         _entManager.TryGetComponent(gridUid, out MapGridComponent? grid);
         _entManager.TryGetComponent(gridUid, out BroadphaseComponent? broadphase);
@@ -67,6 +79,7 @@ public sealed class StationAiOverlay : Overlay
 
         if (grid != null && broadphase != null)
         {
+            var appearance = _entManager.System<AppearanceSystem>();
             var xforms = _entManager.System<SharedTransformSystem>();
             var maps = _entManager.System<SharedMapSystem>();
 
@@ -78,13 +91,56 @@ public sealed class StationAiOverlay : Overlay
                 _accumulator = MathF.Max(0f, _accumulator + UpdateRate);
                 _visibleTiles.Clear();
                 _tileVisuals.Clear();
+                _entityVisuals.Clear();
                 _entManager.System<StationAiVisionSystem>().GetView((gridUid, broadphase, grid), worldBounds, _visibleTiles);
 
+                // get the bb to overcompensate rather than fetch too little incase the camera is rotated
+                var worldBoundsMax = worldBounds.CalcBoundingBox();
+
                 var gridInvMatrix = xforms.GetInvWorldMatrix(gridUid);
-                var gridAabb = gridInvMatrix.TransformBox(worldBounds);
+                var gridAabb = gridInvMatrix.TransformBox(worldBoundsMax);
+
+                HashSet<Vector2i> blockedTiles = [];
+                HashSet<Entity<StationAiVisionVisualsComponent>> entities = [];
+                lookups.GetLocalEntitiesIntersecting((gridUid, broadphase), gridAabb, entities, _visionVisualsQuery, Flags);
+                foreach (var ent in entities)
+                {
+                    var xform = _xformQuery.GetComponent(ent.Owner);
+                    var uidPos = xforms.GetGridTilePositionOrDefault((ent.Owner, xform), grid);
+
+                    if (ent.Comp.BlockTiles)
+                        blockedTiles.Add(uidPos);
+
+                    if (_appearanceQuery.TryGetComponent(ent.Owner, out var appearanceComp))
+                    {
+                        var foundAppearanceData = false;
+
+                        foreach (var (@enum, values) in ent.Comp.AppearanceData)
+                        {
+                            if (!appearance.TryGetData(ent.Owner, @enum, out var data, appearanceComp))
+                                continue;
+
+                            if (!values.TryGetValue(data, out var visuals))
+                                continue;
+
+                            _entityVisuals[uidPos] = ((ent.Owner, xform), visuals);
+                            foundAppearanceData = true;
+                            break;
+                        }
+
+                        if (foundAppearanceData)
+                            continue;
+                    }
+
+                    _entityVisuals[uidPos] = ((ent.Owner, xform), ent.Comp);
+                }
+
                 var chunkEnumerator = new ChunkIndicesEnumerator(gridAabb, grid.TileSize);
                 while (chunkEnumerator.MoveNext(out var tileIndices))
                 {
+                    if (blockedTiles.Contains(tileIndices.Value))
+                        continue;
+
                     if (!maps.TryGetTileRef(gridUid, grid, tileIndices.Value, out var tile))
                         continue;
 
@@ -132,6 +188,17 @@ public sealed class StationAiOverlay : Overlay
                 var tileAabb = lookups.GetLocalBounds(tileIndices, grid.TileSize);
                 var tileOffset = Matrix3x2.CreateTranslation(tileIndices * grid.TileSizeVector);
                 var transform = Matrix3x2.Multiply(tileOffset, gridMatrix);
+                worldHandle.SetTransform(transform);
+                DrawVisuals(aiVisuals, worldHandle);
+            }
+
+            foreach (var (tileIndices, (ent, aiVisuals)) in _entityVisuals)
+            {
+                // no need to check if the tile is visible as the entity lookup only checks blocked tiles
+                var worldTransform = xforms.GetWorldMatrix(ent.Comp);
+                var tileOffset = Matrix3x2.CreateTranslation(-grid.TileSizeHalfVector);
+                var rotation = Matrix3x2.CreateRotation((float)ent.Comp.LocalRotation.Degrees);
+                var transform = Matrix3x2.Multiply(tileOffset, Matrix3x2.Multiply(worldTransform, rotation));
                 worldHandle.SetTransform(transform);
                 DrawVisuals(aiVisuals, worldHandle);
             }
