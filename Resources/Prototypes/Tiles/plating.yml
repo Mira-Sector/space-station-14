@@ -1,5 +1,6 @@
 - type: tile
   id: Plating
+  parent: BaseAiVisionSquare
   name: tiles-plating
   sprite: /Textures/Tiles/plating.png
   baseTurf: Lattice

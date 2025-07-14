@@ -1,5 +1,6 @@
 - type: tile
   id: FloorSteel
+  parent: BaseAiVisionTile
   name: tiles-steel-floor
   sprite: /Textures/Tiles/steel.png
   variants: 4
@@ -15,42 +16,10 @@
     collection: FootstepFloor
   itemDrop: FloorTileItemSteel
   heatCapacity: 10000
-  stationAiVisuals:
-    shapes:
-    - !type:StationAiVisionVisualsRect
-      rect: 0, 0, 1, 1
-      color: "#000000"
-    - !type:StationAiVisionVisualsVertex
-      start: 0, 0
-      end: 1, 0
-      color: "#006000"
-    - !type:StationAiVisionVisualsVertex
-      start: 0, 0
-      end: 0, 1
-      color: "#006000"
-    - !type:StationAiVisionVisualsVertex
-      start: 1, 1
-      end: 1, 0
-      color: "#006000"
-    - !type:StationAiVisionVisualsVertex
-      start: 1, 1
-      end: 0, 1
-      color: "#006000"
-    - !type:StationAiVisionVisualsVertex
-      start: 1, 1
-      end: 0, 1
-      color: "#006000"
-    - !type:StationAiVisionVisualsVertex
-      start: 0.5, 0
-      end: 0.5, 1
-      color: "#006000"
-    - !type:StationAiVisionVisualsVertex
-      start: 0, 0.5
-      end: 1, 0.5
-      color: "#006000"
 
 - type: tile
   id: FloorSteelCheckerLight
+  parent: BaseAiVisionTile
   name: tiles-steel-floor-checker-light
   sprite: /Textures/Tiles/cafeteria.png
   variants: 4
@@ -69,6 +38,7 @@
 
 - type: tile
   id: FloorSteelCheckerDark
+  parent: BaseAiVisionTile
   name: tiles-steel-floor-checker-dark
   sprite: /Textures/Tiles/checker_dark.png
   variants: 4
@@ -87,6 +57,7 @@
 
 - type: tile
   id: FloorSteelMini
+  parent: BaseAiVisionMiniTile
   name: tiles-steel-floor-mini
   sprite: /Textures/Tiles/steel_mini.png
   variants: 4
@@ -105,6 +76,7 @@
 
 - type: tile
   id: FloorSteelPavement
+  parent: BaseAiVisionPavement
   name: tiles-steel-floor-pavement
   sprite: /Textures/Tiles/steel_pavement.png
   variants: 4
@@ -123,6 +95,7 @@
 
 - type: tile
   id: FloorSteelDiagonal
+  parent: BaseAiVisionDiagonal
   name: tiles-steel-floor-diagonal
   sprite: /Textures/Tiles/steel_diagonal.png
   variants: 4
@@ -141,6 +114,7 @@
 
 - type: tile
   id: FloorSteelOffset
+  parent: BaseAiVisionTileOffset
   name: tiles-steel-floor-offset
   sprite: /Textures/Tiles/steel_offset.png
   baseTurf: Plating
@@ -153,6 +127,7 @@
 
 - type: tile
   id: FloorSteelMono
+  parent: BaseAiVisionSquare
   name: tiles-steel-floor-mono
   sprite: /Textures/Tiles/steel_mono.png
   variants: 4
@@ -171,6 +146,7 @@
 
 - type: tile
   id: FloorSteelPavementVertical
+  parent: BaseAiVisionPavementVertical
   name: tiles-steel-floor-pavement-vertical
   sprite: /Textures/Tiles/steel_pavement_vertical.png
   variants: 4
@@ -189,6 +165,7 @@
 
 - type: tile
   id: FloorSteelHerringbone
+  parent: BaseAiVisionHerringbone
   name: tiles-steel-floor-herringbone
   sprite: /Textures/Tiles/steel_herringbone.png
   variants: 4
@@ -207,6 +184,7 @@
 
 - type: tile
   id: FloorSteelDiagonalMini
+  parent: BaseAiVisionDiagonalMini
   name: tiles-steel-floor-diagonal-mini
   sprite: /Textures/Tiles/steel_diagonal_mini.png
   variants: 4
@@ -225,6 +203,7 @@
 
 - type: tile
   id: FloorBrassFilled
+  parent: BaseAiVisionTile
   name: tiles-brass-floor-filled
   sprite: /Textures/Tiles/Misc/clockwork/clockwork_floor_filled.png
   baseTurf: PlatingBrass
@@ -237,6 +216,7 @@
 
 - type: tile
   id: FloorBrassReebe
+  parent: BaseAiVisionSquare
   name: tiles-brass-floor-reebe
   sprite: /Textures/Tiles/Misc/clockwork/reebe.png
   baseTurf: PlatingBrass
@@ -249,6 +229,7 @@
 
 - type: tile
   id: FloorPlastic
+  parent: BaseAiVisionTile
   name: tiles-plastic-floor
   sprite: /Textures/Tiles/plastic.png
   variants: 4
@@ -284,9 +265,111 @@
     collection: BarestepWood
   itemDrop: FloorTileItemWood
   heatCapacity: 10000
+  stationAiVisuals:
+    shapes:
+    - !type:StationAiVisionVisualsRect
+      rect: 0, 0, 1, 1
+      color: "#000000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0
+      end: 1, 0
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.125, 0
+      end: 0.125, 0.125
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.625, 0
+      end: 0.625, 0.125
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.125
+      end: 1, 0.125
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.25, 0.125
+      end: 0.25, 0.25
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.75, 0.125
+      end: 0.75, 0.25
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.25
+      end: 1, 0.25
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.125, 0.25
+      end: 0.125, 0.375
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.625, 0.25
+      end: 0.625, 0.375
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.375
+      end: 1, 0.375
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.375, 0.375
+      end: 0.375, 0.5
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.875, 0.375
+      end: 0.875, 0.5
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.5
+      end: 1, 0.5
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.125, 0.5
+      end: 0.125, 0.625
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.625, 0.5
+      end: 0.625, 0.625
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.625
+      end: 1, 0.625
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.375, 0.625
+      end: 0.375, 0.75
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.875, 0.625
+      end: 0.875, 0.75
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.75
+      end: 1, 0.75
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.25, 0.75
+      end: 0.25, 0.875
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.75, 0.75
+      end: 0.75, 0.875
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.875
+      end: 1, 0.875
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.4375, 0.875
+      end: 0.4375, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.0625, 0.875
+      end: 0.0625, 1
+      color: "#006000"
 
 - type: tile
   id: FloorWhite
+  parent: BaseAiVisionTile
   name: tiles-white-floor
   sprite: /Textures/Tiles/white.png
   variants: 4
@@ -305,6 +388,7 @@
 
 - type: tile
   id: FloorWhiteMini
+  parent: BaseAiVisionMiniTile
   name: tiles-white-floor-mini
   sprite: /Textures/Tiles/white_mini.png
   variants: 4
@@ -323,6 +407,7 @@
 
 - type: tile
   id: FloorWhitePavement
+  parent: BaseAiVisionPavement
   name: tiles-white-floor-pavement
   sprite: /Textures/Tiles/white_pavement.png
   variants: 4
@@ -341,6 +426,7 @@
 
 - type: tile
   id: FloorWhiteDiagonal
+  parent: BaseAiVisionDiagonal
   name: tiles-white-floor-diagonal
   sprite: /Textures/Tiles/white_diagonal.png
   variants: 4
@@ -359,6 +445,7 @@
 
 - type: tile
   id: FloorWhiteOffset
+  parent: BaseAiVisionTileOffset
   name: tiles-white-floor-offset
   sprite: /Textures/Tiles/white_offset.png
   baseTurf: Plating
@@ -371,6 +458,7 @@
 
 - type: tile
   id: FloorWhiteMono
+  parent: BaseAiVisionSquare
   name: tiles-white-floor-mono
   sprite: /Textures/Tiles/white_mono.png
   variants: 4
@@ -389,6 +477,7 @@
 
 - type: tile
   id: FloorWhitePavementVertical
+  parent: BaseAiVisionPavementVertical
   name: tiles-white-floor-pavement-vertical
   sprite: /Textures/Tiles/white_pavement_vertical.png
   variants: 4
@@ -407,6 +496,7 @@
 
 - type: tile
   id: FloorWhiteHerringbone
+  parent: BaseAiVisionHerringbone
   name: tiles-white-floor-herringbone
   sprite: /Textures/Tiles/white_herringbone.png
   variants: 4
@@ -425,6 +515,7 @@
 
 - type: tile
   id: FloorWhiteDiagonalMini
+  parent: BaseAiVisionDiagonalMini
   name: tiles-white-floor-diagonal-mini
   sprite: /Textures/Tiles/white_diagonal_mini.png
   variants: 4
@@ -443,6 +534,7 @@
 
 - type: tile
   id: FloorWhitePlastic
+  parent: BaseAiVisionTile
   name: tiles-plastic-white-floor
   sprite: /Textures/Tiles/white_plastic.png
   variants: 4
@@ -461,6 +553,7 @@
 
 - type: tile
   id: FloorDark
+  parent: BaseAiVisionTile
   name: tiles-dark-floor
   sprite: /Textures/Tiles/dark.png
   variants: 4
@@ -479,6 +572,7 @@
 
 - type: tile
   id: FloorDarkMini
+  parent: BaseAiVisionMiniTile
   name: tiles-dark-floor-mini
   sprite: /Textures/Tiles/dark_mini.png
   variants: 4
@@ -497,6 +591,7 @@
 
 - type: tile
   id: FloorDarkPavement
+  parent: BaseAiVisionPavement
   name: tiles-dark-floor-pavement
   sprite: /Textures/Tiles/dark_pavement.png
   variants: 4
@@ -515,6 +610,7 @@
 
 - type: tile
   id: FloorDarkDiagonal
+  parent: BaseAiVisionDiagonal
   name: tiles-dark-floor-diagonal
   sprite: /Textures/Tiles/dark_diagonal.png
   variants: 4
@@ -533,6 +629,7 @@
 
 - type: tile
   id: FloorDarkOffset
+  parent: BaseAiVisionTileOffset
   name: tiles-dark-floor-offset
   sprite: /Textures/Tiles/dark_offset.png
   baseTurf: Plating
@@ -545,6 +642,7 @@
 
 - type: tile
   id: FloorDarkMono
+  parent: BaseAiVisionSquare
   name: tiles-dark-floor-mono
   sprite: /Textures/Tiles/dark_mono.png
   variants: 4
@@ -563,6 +661,7 @@
 
 - type: tile
   id: FloorDarkPavementVertical
+  parent: BaseAiVisionPavementVertical
   name: tiles-dark-floor-pavement-vertical
   sprite: /Textures/Tiles/dark_pavement_vertical.png
   variants: 4
@@ -581,6 +680,7 @@
 
 - type: tile
   id: FloorDarkHerringbone
+  parent: BaseAiVisionHerringbone
   name: tiles-dark-floor-herringbone
   sprite: /Textures/Tiles/dark_herringbone.png
   variants: 4
@@ -599,6 +699,7 @@
 
 - type: tile
   id: FloorDarkDiagonalMini
+  parent: BaseAiVisionDiagonalMini
   name: tiles-dark-floor-diagonal-mini
   sprite: /Textures/Tiles/dark_diagonal_mini.png
   variants: 4
@@ -617,6 +718,7 @@
 
 - type: tile
   id: FloorDarkPlastic
+  parent: BaseAiVisionTile
   name: tiles-plastic-dark-floor
   sprite: /Textures/Tiles/dark_plastic.png
   variants: 4
@@ -635,6 +737,7 @@
 
 - type: tile
   id: FloorTechMaint
+  parent: BaseAiVisionTile
   name: tiles-techmaint-floor
   sprite: /Textures/Tiles/tech_maint.png
   baseTurf: Plating
@@ -647,6 +750,7 @@
 
 - type: tile
   id: FloorTechMaintDark
+  parent: BaseAiVisionTile
   name: tiles-techmaint-floor-dark
   sprite: /Textures/Tiles/tech_maint_dark.png
   baseTurf: Plating
@@ -671,6 +775,7 @@
 
 - type: tile
   id: FloorMono
+  parent: BaseAiVisionSquare
   name: tiles-mono-floor
   sprite: /Textures/Tiles/mono.png
   baseTurf: Plating
@@ -683,6 +788,7 @@
 
 - type: tile
   id: FloorLino
+  parent: BaseAiVisionSquare
   name: tiles-linoleum-floor
   sprite: /Textures/Tiles/lino.png
   baseTurf: Plating
@@ -695,6 +801,7 @@
 
 - type: tile
   id: FloorSteelDirty
+  parent: BaseAiVisionTile
   name: tiles-dirty-steel-floor
   sprite: /Textures/Tiles/steel_dirty.png
   variants: 4
@@ -713,6 +820,7 @@
 
 - type: tile
   id: FloorElevatorShaft
+  parent: BaseAiVisionTile
   name: tiles-elevator-shaft
   sprite: /Textures/Tiles/elevator_shaft.png
   baseTurf: Plating
@@ -725,6 +833,7 @@
 
 - type: tile
   id: FloorMetalDiamond
+  parent: BaseAiVisionSquare
   name: tiles-diamond-plate-floor
   sprite: /Textures/Tiles/metaldiamond.png
   baseTurf: Plating
@@ -737,6 +846,7 @@
 
 - type: tile
   id: FloorRockVault
+  parent: BaseAiVisionTile
   name: tiles-rock-floor
   sprite: /Textures/Tiles/rock_vault.png
   baseTurf: Plating
@@ -749,6 +859,7 @@
 
 - type: tile
   id: FloorBlue
+  parent: BaseAiVisionTile
   name: tiles-blue-tile
   sprite: /Textures/Tiles/blue.png
   baseTurf: Plating
@@ -761,6 +872,7 @@
 
 - type: tile
   id: FloorSteelLime
+  parent: BaseAiVisionTile
   name: tiles-lime-floor
   sprite: /Textures/Tiles/lime.png
   variants: 4
@@ -779,6 +891,7 @@
 
 - type: tile
   id: FloorMining
+  parent: BaseAiVisionTile
   name: tiles-mining-tile
   sprite: /Textures/Tiles/mining_floor.png
   baseTurf: Plating
@@ -791,6 +904,7 @@
 
 - type: tile
   id: FloorMiningDark
+  parent: BaseAiVisionTile
   name: tiles-mining-dark-tile
   sprite: /Textures/Tiles/mining_floor_dark.png
   baseTurf: Plating
@@ -803,6 +917,7 @@
 
 - type: tile
   id: FloorMiningLight
+  parent: BaseAiVisionTile
   name: tiles-mining-light-tile
   sprite: /Textures/Tiles/mining_floor_light.png
   baseTurf: Plating
@@ -816,6 +931,7 @@
 # Departamental
 - type: tile
   id: FloorFreezer
+  parent: BaseAiVisionTile
   name: tiles-freezer
   sprite: /Textures/Tiles/freezer.png
   baseTurf: Plating
@@ -828,6 +944,7 @@
 
 - type: tile
   id: FloorShowroom
+  parent: BaseAiVisionTile
   name: tiles-showroom-floor
   sprite: /Textures/Tiles/showroom.png
   baseTurf: Plating
@@ -840,6 +957,7 @@
 
 - type: tile
   id: FloorHydro
+  parent: BaseAiVisionTile
   name: tiles-hydro-floor
   sprite: /Textures/Tiles/hydro.png
   baseTurf: Plating
@@ -852,6 +970,7 @@
 
 - type: tile
   id: FloorBar
+  parent: BaseAiVisionTile
   name: tiles-bar-floor
   sprite: /Textures/Tiles/bar.png
   variants: 4
@@ -870,6 +989,7 @@
 
 - type: tile
   id: FloorClown
+  parent: BaseAiVisionTile
   name: tiles-clown-floor
   sprite: /Textures/Tiles/clown.png
   baseTurf: Plating
@@ -882,6 +1002,7 @@
 
 - type: tile
   id: FloorMime
+  parent: BaseAiVisionTile
   name: tiles-mime-floor
   sprite: /Textures/Tiles/mime.png
   baseTurf: Plating
@@ -894,6 +1015,7 @@
 
 - type: tile
   id: FloorKitchen
+  parent: BaseAiVisionTile
   name: tiles-kitchen-floor
   sprite: /Textures/Tiles/kitchen.png
   baseTurf: Plating
@@ -906,6 +1028,7 @@
 
 - type: tile
   id: FloorLaundry
+  parent: BaseAiVisionTile
   name: tiles-laundry-floor
   sprite: /Textures/Tiles/laundry.png
   baseTurf: Plating
@@ -918,6 +1041,7 @@
 
 - type: tile
   id: FloorSteelDamaged
+  parent: BaseAiVisionTile
   name: tiles-steel-floor
   sprite: /Textures/Tiles/steel_damaged.png
   variants: 5
@@ -938,6 +1062,7 @@
 # Concrete
 - type: tile
   id: FloorConcrete
+  parent: BaseAiVisionTile
   name: tiles-concrete-tile
   sprite: /Textures/Tiles/Planet/Concrete/concrete.png
   variants: 4
@@ -956,6 +1081,7 @@
 
 - type: tile
   id: FloorConcreteMono
+  parent: BaseAiVisionSquare
   name: tiles-concrete-slab
   sprite: /Textures/Tiles/Planet/Concrete/concrete_mono.png
   variants: 4
@@ -974,6 +1100,7 @@
 
 - type: tile
   id: FloorConcreteSmooth
+  parent: BaseAiVisionSquare
   name: tiles-concrete-smooth
   sprite: /Textures/Tiles/Planet/Concrete/concrete_smooth.png
   variants: 4
@@ -992,6 +1119,7 @@
 
 - type: tile
   id: FloorGrayConcrete
+  parent: BaseAiVisionTile
   name: tiles-gray-concrete-tile
   sprite: /Textures/Tiles/Planet/Concrete/grayconcrete.png
   variants: 4
@@ -1010,6 +1138,7 @@
 
 - type: tile
   id: FloorGrayConcreteMono
+  parent: BaseAiVisionSquare
   name: tiles-gray-concrete-slab
   sprite: /Textures/Tiles/Planet/Concrete/grayconcrete_mono.png
   variants: 4
@@ -1028,6 +1157,7 @@
 
 - type: tile
   id: FloorGrayConcreteSmooth
+  parent: BaseAiVisionSquare
   name: tiles-gray-concrete-smooth
   sprite: /Textures/Tiles/Planet/Concrete/grayconcrete_smooth.png
   variants: 4
@@ -1046,6 +1176,7 @@
 
 - type: tile
   id: FloorOldConcrete
+  parent: BaseAiVisionTile
   name: tiles-old-concrete-tile
   sprite: /Textures/Tiles/Planet/Concrete/oldconcrete.png
   variants: 4
@@ -1064,6 +1195,7 @@
 
 - type: tile
   id: FloorOldConcreteMono
+  parent: BaseAiVisionSquare
   name: tiles-old-concrete-slab
   sprite: /Textures/Tiles/Planet/Concrete/oldconcrete_mono.png
   variants: 4
@@ -1082,6 +1214,7 @@
 
 - type: tile
   id: FloorOldConcreteSmooth
+  parent: BaseAiVisionSquare
   name: tiles-old-concrete-smooth
   sprite: /Textures/Tiles/Planet/Concrete/oldconcrete_smooth.png
   variants: 4
@@ -1101,6 +1234,7 @@
 # Carpets (non smoothing)
 - type: tile
   id: FloorArcadeBlue
+  parent: BaseAiVisionSquare
   name: tiles-blue-arcade-floor
   sprite: /Textures/Tiles/arcadeblue.png
   baseTurf: Plating
@@ -1116,6 +1250,7 @@
 
 - type: tile
   id: FloorArcadeBlue2
+  parent: BaseAiVisionSquare
   name: tiles-blue-arcade-floor
   sprite: /Textures/Tiles/arcadeblue2.png
   baseTurf: Plating
@@ -1131,6 +1266,7 @@
 
 - type: tile
   id: FloorArcadeRed
+  parent: BaseAiVisionSquare
   name: tiles-red-arcade-floor
   sprite: /Textures/Tiles/arcadered.png
   baseTurf: Plating
@@ -1146,6 +1282,7 @@
 
 - type: tile
   id: FloorEighties
+  parent: BaseAiVisionSquare
   name: tiles-eighties-floor
   sprite: /Textures/Tiles/eighties.png
   baseTurf: Plating
@@ -1161,6 +1298,7 @@
 
 - type: tile
   id: FloorCarpetClown
+  parent: BaseAiVisionSquare
   name: tiles-clown-carpet-floor
   sprite: /Textures/Tiles/carpetclown.png
   baseTurf: Plating
@@ -1176,6 +1314,7 @@
 
 - type: tile
   id: FloorCarpetOffice
+  parent: BaseAiVisionSquare
   name: tiles-office-carpet-floor
   sprite: /Textures/Tiles/carpetoffice.png
   baseTurf: Plating
@@ -1191,6 +1330,7 @@
 
 - type: tile
   id: FloorBoxing
+  parent: BaseAiVisionSquare
   name: tiles-boxing-ring-floor
   sprite: /Textures/Tiles/boxing.png
   variants: 4
@@ -1210,6 +1350,7 @@
 
 - type: tile
   id: FloorGym
+  parent: BaseAiVisionSquare
   name: tiles-gym-floor
   sprite: /Textures/Tiles/gym.png
   variants: 4
@@ -1358,6 +1499,7 @@
 # Materials
 - type: tile
   id: FloorGold
+  parent: BaseAiVisionTile
   name: tiles-gold-tile
   sprite: /Textures/Tiles/gold.png
   baseTurf: Plating
@@ -1370,6 +1512,7 @@
 
 - type: tile
   id: FloorSilver
+  parent: BaseAiVisionTile
   name: tiles-silver-tile
   sprite: /Textures/Tiles/silver.png
   baseTurf: Plating
@@ -1382,6 +1525,7 @@
 
 - type: tile
   id: FloorGlass
+  parent: BaseAiVisionSquare
   name: tiles-glass-floor
   sprite: /Textures/Tiles/glass.png
   variants: 4
@@ -1400,6 +1544,7 @@
 
 - type: tile
   id: FloorRGlass
+  parent: BaseAiVisionSquare
   name: tiles-reinforced-glass-floor
   sprite: /Textures/Tiles/rglass.png
   variants: 4
@@ -1845,6 +1990,7 @@
 
 - type: tile
   id: FloorTechMaint2
+  parent: BaseAiVisionTile
   name: tiles-techmaint2-floor
   sprite: /Textures/Tiles/steel_maint.png
   baseTurf: Plating
@@ -1857,6 +2003,7 @@
 
 - type: tile
   id: FloorTechMaint3
+  parent: BaseAiVisionTile
   name: tiles-techmaint3-floor
   sprite: /Textures/Tiles/grating_maint.png
   variants: 4
@@ -1918,6 +2065,7 @@
 
 - type: tile
   id: FloorWebTile
+  parent: BaseAiVisionDiagonalMini
   name: tiles-web
   sprite: /Textures/Tiles/Misc/Web/web_tile.png
   baseTurf: Plating
@@ -1932,6 +2080,7 @@
 
 - type: tile
   id: FloorChromite
+  parent: BaseAiVisionSquare
   name: tiles-chromite
   sprite: /Textures/Tiles/chromite.png
   variants: 7
@@ -2172,6 +2321,7 @@
 
 - type: tile
   id: FloorXenoMaint
+  parent: BaseAiVisionTile
   name: tiles-xeno-maint
   sprite: /Textures/Tiles/xeno_maint.png
   baseTurf: Plating
