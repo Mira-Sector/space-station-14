@@ -6,8 +6,5 @@ namespace Content.Shared.Silicons.StationAi;
 public sealed partial class StationAiVisionTileVisuals : IStationAiVisionVisuals
 {
     [DataField]
-    public bool DrawStatic;
-
-    [DataField]
     public SharedStationAiVisionVisualsShape[] Shapes { get; set; }
 }

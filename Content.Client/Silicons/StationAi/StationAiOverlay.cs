@@ -6,6 +6,7 @@ using Robust.Client.Player;
 using Robust.Shared.Enums;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
+using Robust.Shared.Map.Enumerators;
 using Robust.Shared.Physics;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
@@ -23,7 +24,8 @@ public sealed class StationAiOverlay : Overlay
 
     public override OverlaySpace Space => OverlaySpace.WorldSpace;
 
-    private readonly HashSet<TileRef> _visibleTiles = [];
+    private readonly Dictionary<Vector2i, TileRef> _visibleTiles = [];
+    private readonly Dictionary<Vector2i, (Vector2, TileRef, IStationAiVisionVisuals)> _tileVisuals = [];
 
     private IRenderTexture? _staticTexture;
     private IRenderTexture? _stencilTexture;
@@ -61,41 +63,51 @@ public sealed class StationAiOverlay : Overlay
         var invMatrix = args.Viewport.GetWorldToLocalMatrix();
         _accumulator -= (float)_timing.FrameTime.TotalSeconds;
 
+        var lookups = _entManager.System<EntityLookupSystem>();
+
         if (grid != null && broadphase != null)
         {
-            var lookups = _entManager.System<EntityLookupSystem>();
             var xforms = _entManager.System<SharedTransformSystem>();
+            var maps = _entManager.System<SharedMapSystem>();
+
+            var gridMatrix = xforms.GetWorldMatrix(gridUid);
+            var matty = Matrix3x2.Multiply(gridMatrix, invMatrix);
 
             if (_accumulator <= 0f)
             {
                 _accumulator = MathF.Max(0f, _accumulator + UpdateRate);
                 _visibleTiles.Clear();
+                _tileVisuals.Clear();
                 _entManager.System<StationAiVisionSystem>().GetView((gridUid, broadphase, grid), worldBounds, _visibleTiles);
-            }
 
-            var gridMatrix = xforms.GetWorldMatrix(gridUid);
-            var matty = Matrix3x2.Multiply(gridMatrix, invMatrix);
+                var gridInvMatrix = xforms.GetInvWorldMatrix(gridUid);
+                var gridAabb = gridInvMatrix.TransformBox(worldBounds);
+                var chunkEnumerator = new ChunkIndicesEnumerator(gridAabb, grid.TileSize);
+                while (chunkEnumerator.MoveNext(out var tileIndices))
+                {
+                    if (!maps.TryGetTileRef(gridUid, grid, tileIndices.Value, out var tile))
+                        continue;
+
+                    var tileDef = tile.GetContentTileDefinition(_tileDefinitions);
+
+                    if (tileDef.StationAiVisuals is not { } aiVisuals)
+                        continue;
+
+                    var tilePos = maps.GridTileToWorld(gridUid, grid, tileIndices.Value).Position;
+                    _tileVisuals[tileIndices.Value] = (tilePos, tile, aiVisuals);
+                }
+            }
 
             // Draw visible tiles to stencil
             worldHandle.RenderInRenderTarget(_stencilTexture!, () =>
             {
                 worldHandle.SetTransform(matty);
 
-                foreach (var tile in _visibleTiles)
+                foreach (var tile in _visibleTiles.Keys)
                 {
-                    var tileDef = tile.GetContentTileDefinition(_tileDefinitions);
-                    if (tileDef.StationAiVisuals is not { } aiVisuals)
-                    {
-                        DrawTileStatic(tile, worldHandle, lookups, grid.TileSize);
-                        continue;
-                    }
-
-                    if (aiVisuals.DrawStatic)
-                        DrawTileStatic(tile, worldHandle, lookups, grid.TileSize);
-
-                    DrawVisuals(aiVisuals, tile.GridIndices, Angle.Zero, worldHandle);
+                    var aabb = lookups.GetLocalBounds(tile, grid.TileSize);
+                    worldHandle.DrawRect(aabb, Color.White);
                 }
-
             },
             Color.Transparent);
 
@@ -109,6 +121,20 @@ public sealed class StationAiOverlay : Overlay
                 worldHandle.DrawRect(worldBounds, Color.White);
             },
             Color.Black);
+
+            DrawStencils(worldHandle, worldBounds);
+
+            foreach (var (tileIndices, (pos, tileRef, aiVisuals)) in _tileVisuals)
+            {
+                if (_visibleTiles.ContainsKey(tileIndices))
+                    continue;
+
+                var tileAabb = lookups.GetLocalBounds(tileIndices, grid.TileSize);
+                var tileOffset = Matrix3x2.CreateTranslation(tileIndices * grid.TileSizeVector);
+                var transform = Matrix3x2.Multiply(tileOffset, gridMatrix);
+                worldHandle.SetTransform(transform);
+                DrawVisuals(aiVisuals, worldHandle);
+            }
         }
         // Not on a grid
         else
@@ -124,8 +150,16 @@ public sealed class StationAiOverlay : Overlay
                 worldHandle.SetTransform(Matrix3x2.Identity);
                 worldHandle.DrawRect(worldBounds, Color.Black);
             }, Color.Black);
+
+            DrawStencils(worldHandle, worldBounds);
         }
 
+        worldHandle.SetTransform(Matrix3x2.Identity);
+        worldHandle.UseShader(null);
+    }
+
+    private void DrawStencils(DrawingHandleWorld worldHandle, Box2Rotated worldBounds)
+    {
         // Use the lighting as a mask
         worldHandle.UseShader(_proto.Index<ShaderPrototype>("StencilMask").Instance());
         worldHandle.DrawTextureRect(_stencilTexture!.Texture, worldBounds);
@@ -133,20 +167,11 @@ public sealed class StationAiOverlay : Overlay
         // Draw the static
         worldHandle.UseShader(_proto.Index<ShaderPrototype>("StencilDraw").Instance());
         worldHandle.DrawTextureRect(_staticTexture!.Texture, worldBounds);
-
-        worldHandle.SetTransform(Matrix3x2.Identity);
-        worldHandle.UseShader(null);
     }
 
-    private static void DrawVisuals(IStationAiVisionVisuals visuals, Vector2 pos, Angle rot, DrawingHandleWorld worldHandle)
+    private static void DrawVisuals(IStationAiVisionVisuals visuals, DrawingHandleWorld worldHandle)
     {
         foreach (var shape in visuals.Shapes)
-            ((IClientStationAiVisionVisualsShape)shape).Draw(worldHandle, pos, rot);
-    }
-
-    private static void DrawTileStatic(TileRef tile, DrawingHandleWorld worldHandle, EntityLookupSystem lookups, ushort tileSize)
-    {
-        var aabb = lookups.GetLocalBounds(tile, tileSize);
-        worldHandle.DrawRect(aabb, Color.White);
+            ((IClientStationAiVisionVisualsShape)shape).Draw(worldHandle);
     }
 }

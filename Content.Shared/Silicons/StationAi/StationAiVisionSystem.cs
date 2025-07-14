@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Numerics;
 using Content.Shared.Power.EntitySystems;
 using Content.Shared.StationAi;
 using Robust.Shared.Map;
@@ -32,7 +33,7 @@ public sealed class StationAiVisionSystem : EntitySystem
     private EntityQuery<OccluderComponent> _occluderQuery;
 
     // Dummy set
-    private readonly HashSet<TileRef> _singleTiles = new();
+    private readonly Dictionary<Vector2i, TileRef> _singleTiles = new();
 
     // Occupied tiles per-run.
     // For now it's only 1-grid supported but updating to TileRefs if required shouldn't be too hard.
@@ -107,9 +108,7 @@ public sealed class StationAiVisionSystem : EntitySystem
             while (tileEnumerator.MoveNext(out var tileRef))
             {
                 if (IsOccluded(grid, tileRef.GridIndices))
-                {
                     _opaque.Add(tileRef.GridIndices);
-                }
             }
         }
 
@@ -126,7 +125,7 @@ public sealed class StationAiVisionSystem : EntitySystem
         _job.VisibleTiles = _singleTiles;
         _parallel.ProcessNow(_job, _job.Data.Count);
 
-        return _job.VisibleTiles.Where(x => x.GridIndices == tile).Any();
+        return _job.VisibleTiles.ContainsKey(tile);
     }
 
     private bool IsOccluded(Entity<BroadphaseComponent, MapGridComponent> grid, Vector2i tile)
@@ -152,7 +151,7 @@ public sealed class StationAiVisionSystem : EntitySystem
     /// Gets a byond-equivalent for tiles in the specified worldAABB.
     /// </summary>
     /// <param name="expansionSize">How much to expand the bounds before to find vision intersecting it. Makes this the largest vision size + 1 tile.</param>
-    public void GetView(Entity<BroadphaseComponent, MapGridComponent> grid, Box2Rotated worldBounds, HashSet<TileRef> visibleTiles, float expansionSize = 8.5f)
+    public void GetView(Entity<BroadphaseComponent, MapGridComponent> grid, Box2Rotated worldBounds, Dictionary<Vector2i, TileRef> visibleTiles, float expansionSize = 8.5f)
     {
         _viewportTiles.Clear();
         _opaque.Clear();
@@ -316,7 +315,7 @@ public sealed class StationAiVisionSystem : EntitySystem
         public Entity<MapGridComponent> Grid;
         public List<Entity<StationAiVisionComponent>> Data = [];
 
-        public required HashSet<TileRef> VisibleTiles;
+        public required Dictionary<Vector2i, TileRef> VisibleTiles;
 
         public readonly List<Dictionary<Vector2i, int>> Vis1 = [];
         public readonly List<Dictionary<Vector2i, int>> Vis2 = [];
@@ -340,9 +339,7 @@ public sealed class StationAiVisionSystem : EntitySystem
                 lock (VisibleTiles)
                 {
                     foreach (var tile in squircles)
-                    {
-                        VisibleTiles.Add(tile);
-                    }
+                        VisibleTiles[tile.GridIndices] = tile;
                 }
 
                 return;
@@ -478,7 +475,7 @@ public sealed class StationAiVisionSystem : EntitySystem
                 // No idea if it's better to do this inside or out.
                 lock (VisibleTiles)
                 {
-                    VisibleTiles.Add(tileRef);
+                    VisibleTiles[tile] = tileRef;
                 }
             }
         }
