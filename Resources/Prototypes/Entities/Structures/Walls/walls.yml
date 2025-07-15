@@ -60,6 +60,8 @@
   - type: Occluder # Breaks on diagonal walls
   - type: StationAiVisionVisuals
     blockTiles: true
+    noRotation: true
+    snapCardinals: true
     shapes:
     - !type:StationAiVisionVisualsRect
       rect: 0, 0, 1, 1

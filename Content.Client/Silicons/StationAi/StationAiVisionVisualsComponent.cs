@@ -12,6 +12,12 @@ public sealed partial class StationAiVisionVisualsComponent : Component, IStatio
     public bool BlockTiles;
 
     [DataField]
+    public bool NoRotation;
+
+    [DataField]
+    public bool SnapCardinals;
+
+    [DataField]
     public Dictionary<Enum, Dictionary<string, StationAiVisionVisualsAppearanceEntry>> AppearanceData = [];
 }
 

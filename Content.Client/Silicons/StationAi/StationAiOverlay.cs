@@ -27,7 +27,7 @@ public sealed class StationAiOverlay : Overlay
 
     private readonly Dictionary<Vector2i, TileRef> _visibleTiles = [];
     private readonly Dictionary<Vector2i, (Vector2, TileRef, IStationAiVisionVisuals)> _tileVisuals = [];
-    private readonly Dictionary<Vector2i, List<(Entity<TransformComponent>, IStationAiVisionVisuals)>> _entityVisuals = [];
+    private readonly Dictionary<Vector2i, List<(Entity<StationAiVisionVisualsComponent, TransformComponent>, IStationAiVisionVisuals)>> _entityVisuals = [];
 
     private IRenderTexture? _staticTexture;
     private IRenderTexture? _stencilTexture;
@@ -71,6 +71,7 @@ public sealed class StationAiOverlay : Overlay
         var gridUid = playerXform?.GridUid ?? EntityUid.Invalid;
         _entManager.TryGetComponent(gridUid, out MapGridComponent? grid);
         _entManager.TryGetComponent(gridUid, out BroadphaseComponent? broadphase);
+        _xformQuery.TryGetComponent(gridUid, out var gridXform);
 
         var invMatrix = args.Viewport.GetWorldToLocalMatrix();
         _accumulator -= (float)_timing.FrameTime.TotalSeconds;
@@ -111,7 +112,7 @@ public sealed class StationAiOverlay : Overlay
                     if (ent.Comp.BlockTiles)
                         blockedTiles.Add(uidPos);
 
-                    List<(Entity<TransformComponent>, IStationAiVisionVisuals)>? posEnts;
+                    List<(Entity<StationAiVisionVisualsComponent, TransformComponent>, IStationAiVisionVisuals)>? posEnts;
                     if (_appearanceQuery.TryGetComponent(ent.Owner, out var appearanceComp))
                     {
                         var foundAppearanceData = false;
@@ -133,7 +134,7 @@ public sealed class StationAiOverlay : Overlay
                                 posEnts = [];
                                 _entityVisuals[uidPos] = posEnts;
                             }
-                            posEnts.Add(((ent.Owner, xform), visuals));
+                            posEnts.Add(((ent.Owner, ent.Comp, xform), visuals));
                             foundAppearanceData = true;
                             break;
                         }
@@ -148,7 +149,7 @@ public sealed class StationAiOverlay : Overlay
                         posEnts = [];
                         _entityVisuals[uidPos] = posEnts;
                     }
-                    posEnts.Add(((ent.Owner, xform), ent.Comp));
+                    posEnts.Add(((ent.Owner, ent.Comp, xform), ent.Comp));
                 }
 
                 var chunkEnumerator = new ChunkIndicesEnumerator(gridAabb, grid.TileSize);
@@ -201,22 +202,25 @@ public sealed class StationAiOverlay : Overlay
                 if (_visibleTiles.ContainsKey(tileIndices))
                     continue;
 
-                var tileAabb = lookups.GetLocalBounds(tileIndices, grid.TileSize);
                 var tileOffset = Matrix3x2.CreateTranslation(tileIndices * grid.TileSizeVector);
                 var transform = Matrix3x2.Multiply(tileOffset, gridMatrix);
                 worldHandle.SetTransform(transform);
                 DrawVisuals(aiVisuals, worldHandle);
             }
 
+            var eyeRot = args.Viewport.Eye?.Rotation.Reduced() ?? Angle.Zero;
+            var gridRot = gridXform?.LocalRotation ?? Angle.Zero;
             foreach (var (tileIndices, ents) in _entityVisuals)
             {
                 foreach (var (ent, aiVisuals) in ents)
                 {
                     // no need to check if the tile is visible as the entity lookup only checks blocked tiles
-                    var worldTransform = xforms.GetWorldMatrix(ent.Comp);
-                    var tileOffset = Matrix3x2.CreateTranslation(-grid.TileSizeHalfVector);
-                    var rotation = Matrix3x2.CreateRotation((float)ent.Comp.LocalRotation.Degrees);
-                    var transform = Matrix3x2.Multiply(tileOffset, Matrix3x2.Multiply(worldTransform, rotation));
+                    var (worldPos, worldRot) = xforms.GetWorldPositionRotation(ent.Comp2, _xformQuery);
+                    var rot = ent.Comp1.NoRotation ? -eyeRot : worldRot;
+                    if (ent.Comp1.SnapCardinals)
+                        rot = gridRot + rot.RoundToCardinalAngle();
+                    var pos = worldPos - rot.RotateVec(grid.TileSizeHalfVector);
+                    var transform = Matrix3Helpers.CreateTransform(pos, rot);
                     worldHandle.SetTransform(transform);
                     DrawVisuals(aiVisuals, worldHandle);
                 }

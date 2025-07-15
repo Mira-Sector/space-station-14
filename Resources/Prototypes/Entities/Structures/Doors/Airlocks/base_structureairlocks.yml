@@ -43,6 +43,8 @@
       map: ["enum.ElectrifiedLayers.Sparks"]
   - type: StationAiVisionVisuals
     blockTiles: true
+    noRotation: true
+    snapCardinals: true
     appearanceData:
       enum.DoorVisuals.State:
         Open:
