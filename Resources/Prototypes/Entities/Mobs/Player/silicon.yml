@@ -221,6 +221,8 @@
     wattage: 50
   - type: StationAiCore
   - type: StationAiVision
+    occluded: false
+    range: 15.5
   - type: InteractionOutline
   - type: Sprite
     sprite: Mobs/Silicon/station_ai.rsi
