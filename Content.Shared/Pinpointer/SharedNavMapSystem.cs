@@ -288,15 +288,16 @@ public abstract class SharedNavMapSystem : EntitySystem
         public int MaxRadius = 25;
     }
 
-    [Serializable, NetSerializable]
-    public sealed partial class NavMapWarpAttemptMessage(NetEntity user, Vector2 worldPosition) : BoundUserInterfaceMessage
-    {
-        public readonly NetEntity User = user;
-        public readonly Vector2 WorldPosition = worldPosition;
-    }
-
     #endregion
 }
+
+[Serializable, NetSerializable]
+public sealed partial class NavMapWarpAttemptMessage(NetEntity user, Vector2 worldPosition) : BoundUserInterfaceMessage
+{
+    public readonly NetEntity User = user;
+    public readonly Vector2 WorldPosition = worldPosition;
+}
+
 
 public sealed partial class GetNavMapWarpEntity(EntityUid entity) : CancellableEntityEventArgs
 {

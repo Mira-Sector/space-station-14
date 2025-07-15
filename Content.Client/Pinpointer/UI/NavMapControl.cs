@@ -42,7 +42,7 @@ public partial class NavMapControl : MapGridControl
     // Actions
     public event Action<NetEntity?>? TrackedEntitySelectedAction;
     public event Action<DrawingHandleScreen>? PostWallDrawingAction;
-    public event Action<SharedNavMapSystem.NavMapWarpAttemptMessage>? NavMapWarpAttemptAction;
+    public event Action<NavMapWarpAttemptMessage>? NavMapWarpAttemptAction;
 
     // Tracked data
     public Dictionary<EntityCoordinates, (bool Visible, Color Color)> TrackedCoordinates = new();
@@ -266,7 +266,7 @@ public partial class NavMapControl : MapGridControl
             if (GetMouseWorldPos(args) is not { } pos)
                 return;
 
-            var ev = new SharedNavMapSystem.NavMapWarpAttemptMessage(EntManager.GetNetEntity(uid), pos);
+            var ev = new NavMapWarpAttemptMessage(EntManager.GetNetEntity(uid), pos);
             NavMapWarpAttemptAction?.Invoke(ev);
         }
     }
