@@ -1,5 +1,8 @@
+using System.Linq;
+using System.Numerics;
 using Content.Shared.Power.EntitySystems;
 using Content.Shared.StationAi;
+using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics;
 using Robust.Shared.Threading;
@@ -30,7 +33,7 @@ public sealed class StationAiVisionSystem : EntitySystem
     private EntityQuery<OccluderComponent> _occluderQuery;
 
     // Dummy set
-    private readonly HashSet<Vector2i> _singleTiles = new();
+    private readonly Dictionary<Vector2i, TileRef> _singleTiles = new();
 
     // Occupied tiles per-run.
     // For now it's only 1-grid supported but updating to TileRefs if required shouldn't be too hard.
@@ -105,9 +108,7 @@ public sealed class StationAiVisionSystem : EntitySystem
             while (tileEnumerator.MoveNext(out var tileRef))
             {
                 if (IsOccluded(grid, tileRef.GridIndices))
-                {
                     _opaque.Add(tileRef.GridIndices);
-                }
             }
         }
 
@@ -124,7 +125,7 @@ public sealed class StationAiVisionSystem : EntitySystem
         _job.VisibleTiles = _singleTiles;
         _parallel.ProcessNow(_job, _job.Data.Count);
 
-        return _job.VisibleTiles.Contains(tile);
+        return _job.VisibleTiles.ContainsKey(tile);
     }
 
     private bool IsOccluded(Entity<BroadphaseComponent, MapGridComponent> grid, Vector2i tile)
@@ -150,7 +151,7 @@ public sealed class StationAiVisionSystem : EntitySystem
     /// Gets a byond-equivalent for tiles in the specified worldAABB.
     /// </summary>
     /// <param name="expansionSize">How much to expand the bounds before to find vision intersecting it. Makes this the largest vision size + 1 tile.</param>
-    public void GetView(Entity<BroadphaseComponent, MapGridComponent> grid, Box2Rotated worldBounds, HashSet<Vector2i> visibleTiles, float expansionSize = 8.5f)
+    public void GetView(Entity<BroadphaseComponent, MapGridComponent> grid, Box2Rotated worldBounds, Dictionary<Vector2i, TileRef> visibleTiles, float expansionSize = 8.5f)
     {
         _viewportTiles.Clear();
         _opaque.Clear();
@@ -305,22 +306,22 @@ public sealed class StationAiVisionSystem : EntitySystem
 
     private record struct ViewJob() : IParallelRobustJob
     {
-        public int BatchSize => 1;
+        public readonly int BatchSize => 1;
 
         public required IEntityManager EntManager;
         public required SharedMapSystem Maps;
         public required StationAiVisionSystem System;
 
         public Entity<MapGridComponent> Grid;
-        public List<Entity<StationAiVisionComponent>> Data = new();
+        public List<Entity<StationAiVisionComponent>> Data = [];
 
-        public required HashSet<Vector2i> VisibleTiles;
+        public required Dictionary<Vector2i, TileRef> VisibleTiles;
 
-        public readonly List<Dictionary<Vector2i, int>> Vis1 = new();
-        public readonly List<Dictionary<Vector2i, int>> Vis2 = new();
+        public readonly List<Dictionary<Vector2i, int>> Vis1 = [];
+        public readonly List<Dictionary<Vector2i, int>> Vis2 = [];
 
-        public readonly List<HashSet<Vector2i>> SeedTiles = new();
-        public readonly List<HashSet<Vector2i>> BoundaryTiles = new();
+        public readonly List<HashSet<Vector2i>> SeedTiles = [];
+        public readonly List<HashSet<Vector2i>> BoundaryTiles = [];
 
         public void Execute(int index)
         {
@@ -338,9 +339,7 @@ public sealed class StationAiVisionSystem : EntitySystem
                 lock (VisibleTiles)
                 {
                     foreach (var tile in squircles)
-                    {
-                        VisibleTiles.Add(tile.GridIndices);
-                    }
+                        VisibleTiles[tile.GridIndices] = tile;
                 }
 
                 return;
@@ -393,7 +392,7 @@ public sealed class StationAiVisionSystem : EntitySystem
 
                     if (maxDelta == d + 1 && System.CheckNeighborsVis(vis2, tile, d))
                     {
-                        vis2[tile] = (System._opaque.Contains(tile) ? -1 : d + 1);
+                        vis2[tile] = System._opaque.Contains(tile) ? -1 : d + 1;
                     }
                 }
             }
@@ -467,13 +466,16 @@ public sealed class StationAiVisionSystem : EntitySystem
 
                 var tileVis = vis1.GetValueOrDefault(tile, 0);
 
-                if (tileVis != 0)
+                if (tileVis == 0)
+                    continue;
+
+                if (!Maps.TryGetTileRef(Grid.Owner, Grid.Comp, tile, out var tileRef))
+                    continue;
+
+                // No idea if it's better to do this inside or out.
+                lock (VisibleTiles)
                 {
-                    // No idea if it's better to do this inside or out.
-                    lock (VisibleTiles)
-                    {
-                        VisibleTiles.Add(tile);
-                    }
+                    VisibleTiles[tile] = tileRef;
                 }
             }
         }
