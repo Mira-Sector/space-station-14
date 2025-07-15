@@ -165,12 +165,10 @@ public sealed class StationAiOverlay : Overlay
                         continue;
 
                     var tileDef = tile.GetContentTileDefinition(_tileDefinitions);
-
                     if (tileDef.StationAiVisuals is not { } aiVisuals)
                         continue;
 
-                    var tilePos = maps.GridTileToWorld(gridUid, grid, tileIndices.Value).Position;
-                    var tileOffset = Matrix3x2.CreateTranslation(tilePos * grid.TileSizeVector);
+                    var tileOffset = Matrix3x2.CreateTranslation(tileIndices.Value * grid.TileSizeVector);
                     var transform = Matrix3x2.Multiply(tileOffset, gridMatrix);
                     _tileVisuals[tileIndices.Value] = (transform, aiVisuals);
                 }
