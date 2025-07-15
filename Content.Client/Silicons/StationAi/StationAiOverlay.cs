@@ -27,7 +27,7 @@ public sealed class StationAiOverlay : Overlay
 
     private readonly Dictionary<Vector2i, TileRef> _visibleTiles = [];
     private readonly Dictionary<Vector2i, (Matrix3x2, IStationAiVisionVisuals)> _tileVisuals = [];
-    private readonly Dictionary<Vector2i, List<(Matrix3x2, IStationAiVisionVisuals)>> _entityVisuals = [];
+    private readonly Dictionary<Vector2i, Dictionary<int, List<(Matrix3x2, IStationAiVisionVisuals)>>> _entityVisuals = [];
     private readonly HashSet<Entity<SpriteComponent, TransformComponent>> _renderOverVision = [];
 
     private IRenderTexture? _staticTexture;
@@ -112,6 +112,9 @@ public sealed class StationAiOverlay : Overlay
                 lookups.GetLocalEntitiesIntersecting((gridUid, broadphase), gridAabb, entities, _visionVisualsQuery, Flags);
                 foreach (var ent in entities)
                 {
+                    if (!_spriteQuery.TryGetComponent(ent.Owner, out var spriteComp))
+                        continue;
+
                     var xform = _xformQuery.GetComponent(ent.Owner);
                     var uidPos = xforms.GetGridTilePositionOrDefault((ent.Owner, xform), grid);
 
@@ -119,7 +122,8 @@ public sealed class StationAiOverlay : Overlay
                         blockedTiles.Add(uidPos);
 
                     var transform = GetEntityTransform((ent.Owner, ent.Comp, xform), (gridUid, grid), gridRot, eyeRot, xforms);
-                    List<(Matrix3x2, IStationAiVisionVisuals)>? posEnts;
+                    Dictionary<int, List<(Matrix3x2, IStationAiVisionVisuals)>>? drawDepths;
+                    List<(Matrix3x2, IStationAiVisionVisuals)>? layers;
                     if (_appearanceQuery.TryGetComponent(ent.Owner, out var appearanceComp))
                     {
                         var foundAppearanceData = false;
@@ -136,12 +140,17 @@ public sealed class StationAiOverlay : Overlay
                             if (!values.TryGetValue(key, out var visuals))
                                 continue;
 
-                            if (!_entityVisuals.TryGetValue(uidPos, out posEnts))
+                            if (!_entityVisuals.TryGetValue(uidPos, out drawDepths))
                             {
-                                posEnts = [];
-                                _entityVisuals[uidPos] = posEnts;
+                                drawDepths = [];
+                                _entityVisuals[uidPos] = drawDepths;
                             }
-                            posEnts.Add((transform, visuals));
+                            if (!drawDepths.TryGetValue(spriteComp.DrawDepth, out layers))
+                            {
+                                layers = [];
+                                drawDepths[spriteComp.DrawDepth] = layers;
+                            }
+                            layers.Add((transform, visuals));
                             foundAppearanceData = true;
                             break;
                         }
@@ -151,12 +160,17 @@ public sealed class StationAiOverlay : Overlay
                     }
 
 
-                    if (!_entityVisuals.TryGetValue(uidPos, out posEnts))
+                    if (!_entityVisuals.TryGetValue(uidPos, out drawDepths))
                     {
-                        posEnts = [];
-                        _entityVisuals[uidPos] = posEnts;
+                        drawDepths = [];
+                        _entityVisuals[uidPos] = drawDepths;
                     }
-                    posEnts.Add((transform, ent.Comp));
+                    if (!drawDepths.TryGetValue(spriteComp.DrawDepth, out layers))
+                    {
+                        layers = [];
+                        drawDepths[spriteComp.DrawDepth] = layers;
+                    }
+                    layers.Add((transform, ent.Comp));
                 }
 
                 var chunkEnumerator = new ChunkIndicesEnumerator(gridAabb, grid.TileSize);
@@ -230,13 +244,16 @@ public sealed class StationAiOverlay : Overlay
                 DrawVisuals(aiVisuals, worldHandle);
             }
 
-            foreach (var (tileIndices, ents) in _entityVisuals)
+            foreach (var (tileIndices, layers) in _entityVisuals)
             {
-                foreach (var (transform, aiVisuals) in ents)
+                foreach (var (_, ents) in layers)
                 {
-                    // no need to check if the tile is visible as the entity lookup only checks blocked tiles
-                    worldHandle.SetTransform(transform);
-                    DrawVisuals(aiVisuals, worldHandle);
+                    foreach (var (transform, aiVisuals) in ents)
+                    {
+                        // no need to check if the tile is visible as the entity lookup only checks blocked tiles
+                        worldHandle.SetTransform(transform);
+                        DrawVisuals(aiVisuals, worldHandle);
+                    }
                 }
             }
         }
