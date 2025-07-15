@@ -1917,3 +1917,9 @@ Entries:
     type: Tweak
   id: 267
   time: '2025-07-15T10:15:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: AI can now press "Alternative activate item in world" on any UI with a navmap to warp to the location
+    type: Add
+  id: 268
+  time: '2025-07-15T13:30:50.0000000+00:00'
