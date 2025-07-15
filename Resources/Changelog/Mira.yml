@@ -1923,3 +1923,11 @@ Entries:
     type: Add
   id: 268
   time: '2025-07-15T13:30:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Necrosis damage no longer causes bleeding
+    type: Fix
+  - message: Smoking and alcohol poisoning damage have been increased
+    type: Tweak
+  id: 269
+  time: '2025-07-15T15:10:50.0000000+00:00'
