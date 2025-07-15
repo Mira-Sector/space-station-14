@@ -220,7 +220,7 @@
     Gas:
       effects:
       - !type:BodyDamage
-        damage: 0.1
+        damage: 4
 
 # TODO: Replace these nonstandardized effects with generic brain damage
 - type: reagent
