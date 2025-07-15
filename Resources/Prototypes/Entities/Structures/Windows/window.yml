@@ -92,6 +92,58 @@
   - type: StaticPrice
     price: 100
   - type: BlockWeather
+  - type: StationAiVisionVisuals
+    shapes:
+    - !type:StationAiVisionVisualsRect
+      rect: 0, 0, 1, 0.125
+      color: "#000000"
+    - !type:StationAiVisionVisualsRect
+      rect: 0, 1, 1, 0.875
+      color: "#000000"
+    - !type:StationAiVisionVisualsRect
+      rect: 0, 0, 0.125, 1
+      color: "#000000"
+    - !type:StationAiVisionVisualsRect
+      rect: 0.875, 0, 1, 1
+      color: "#000000"
+
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0
+      end: 1, 0
+      color: "#00ff00"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0
+      end: 0, 1
+      color: "#00f000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 1
+      end: 1, 0
+      color: "#00ff00"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 1
+      end: 0, 1
+      color: "#00ff00"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 1
+      end: 0, 1
+      color: "#00ff00"
+
+    - !type:StationAiVisionVisualsVertex
+      start: 0.125, 0.125
+      end: 0.875, 0.125
+      color: "#00ff00"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.125, 0.875
+      end: 0.875, 0.875
+      color: "#00ff00"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.125, 0.125
+      end: 0.125, 0.875
+      color: "#00ff00"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.875, 0.125
+      end: 0.875, 0.875
+      color: "#00ff00"
 
 - type: entity
   parent: Window
@@ -216,23 +268,23 @@
   - type: StationAiVisionVisuals
     shapes:
     - !type:StationAiVisionVisualsRect
-      rect: 0, 0.78125, 1, 0.78125
+      rect: 0, 0.21875, 1, 0.21875
       color: "#000000"
     - !type:StationAiVisionVisualsVertex
-      start: 0, 0.78125
-      end: 1, 0.78125
+      start: 0, 0.21875
+      end: 1, 0.21875
       color: "#00ff00"
     - !type:StationAiVisionVisualsVertex
-      start: 0, 1
-      end: 1, 1
+      start: 0, 0
+      end: 1, 0
       color: "#00ff00"
     - !type:StationAiVisionVisualsVertex
-      start: 0, 0.78125
-      end: 0, 1
+      start: 0, 0.21875
+      end: 0, 0
       color: "#00ff00"
     - !type:StationAiVisionVisualsVertex
-      start: 1, 0.78125
-      end: 1, 1
+      start: 1, 0.21875
+      end: 1, 0
       color: "#00ff00"
 
 - type: entity
