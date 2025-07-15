@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using Content.Shared.Tag;
+using Robust.Shared.Audio.Systems;
 using Robust.Shared.GameStates;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
@@ -24,6 +25,7 @@ public abstract class SharedNavMapSystem : EntitySystem
     public const int WallMask = AllDirMask << (int) NavMapChunkType.Wall;
     public const int FloorMask = AllDirMask << (int) NavMapChunkType.Floor;
 
+    [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly TagSystem _tagSystem = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
@@ -188,6 +190,7 @@ public abstract class SharedNavMapSystem : EntitySystem
             return;
 
         _transform.SetWorldPosition(ev.Entity, args.WorldPosition);
+        _audio.PlayLocal(warperComp.Sound, ev.Entity, uid);
     }
 
     #endregion
