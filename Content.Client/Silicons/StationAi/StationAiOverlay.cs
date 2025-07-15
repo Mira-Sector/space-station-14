@@ -28,12 +28,14 @@ public sealed class StationAiOverlay : Overlay
     private readonly Dictionary<Vector2i, TileRef> _visibleTiles = [];
     private readonly Dictionary<Vector2i, (Matrix3x2, IStationAiVisionVisuals)> _tileVisuals = [];
     private readonly Dictionary<Vector2i, List<(Matrix3x2, IStationAiVisionVisuals)>> _entityVisuals = [];
+    private readonly HashSet<Entity<SpriteComponent, TransformComponent>> _renderOverVision = [];
 
     private IRenderTexture? _staticTexture;
     private IRenderTexture? _stencilTexture;
 
     private readonly EntityQuery<StationAiVisionVisualsComponent> _visionVisualsQuery;
     private readonly EntityQuery<AppearanceComponent> _appearanceQuery;
+    private readonly EntityQuery<SpriteComponent> _spriteQuery;
     private readonly EntityQuery<TransformComponent> _xformQuery;
 
     private static readonly float UpdateRate = 1f / 30f;
@@ -47,6 +49,7 @@ public sealed class StationAiOverlay : Overlay
 
         _visionVisualsQuery = _entManager.GetEntityQuery<StationAiVisionVisualsComponent>();
         _appearanceQuery = _entManager.GetEntityQuery<AppearanceComponent>();
+        _spriteQuery = _entManager.GetEntityQuery<SpriteComponent>();
         _xformQuery = _entManager.GetEntityQuery<TransformComponent>();
     }
 
@@ -63,8 +66,8 @@ public sealed class StationAiOverlay : Overlay
         }
 
         var worldHandle = args.WorldHandle;
-
         var worldBounds = args.WorldBounds;
+        var eyeRot = args.Viewport.Eye?.Rotation.Reduced() ?? Angle.Zero;
 
         var playerEnt = _player.LocalEntity;
         _xformQuery.TryGetComponent(playerEnt, out var playerXform);
@@ -77,11 +80,12 @@ public sealed class StationAiOverlay : Overlay
         _accumulator -= (float)_timing.FrameTime.TotalSeconds;
 
         var lookups = _entManager.System<EntityLookupSystem>();
+        var sprite = _entManager.System<SpriteSystem>();
+        var xforms = _entManager.System<SharedTransformSystem>();
 
-        if (grid != null && broadphase != null)
+        if (grid != null && broadphase != null && gridXform != null)
         {
             var appearance = _entManager.System<AppearanceSystem>();
-            var xforms = _entManager.System<SharedTransformSystem>();
             var maps = _entManager.System<SharedMapSystem>();
 
             var gridMatrix = xforms.GetWorldMatrix(gridUid);
@@ -92,6 +96,7 @@ public sealed class StationAiOverlay : Overlay
                 _accumulator = MathF.Max(0f, _accumulator + UpdateRate);
                 _visibleTiles.Clear();
                 _tileVisuals.Clear();
+                _renderOverVision.Clear();
                 _entityVisuals.Clear();
                 _entManager.System<StationAiVisionSystem>().GetView((gridUid, broadphase, grid), worldBounds, _visibleTiles);
 
@@ -100,8 +105,7 @@ public sealed class StationAiOverlay : Overlay
 
                 var gridInvMatrix = xforms.GetInvWorldMatrix(gridUid);
                 var gridAabb = gridInvMatrix.TransformBox(worldBoundsMax);
-                var gridRot = gridXform?.LocalRotation ?? Angle.Zero;
-                var eyeRot = args.Viewport.Eye?.Rotation.Reduced() ?? Angle.Zero;
+                var gridRot = gridXform.LocalRotation;
 
                 HashSet<Vector2i> blockedTiles = [];
                 HashSet<Entity<StationAiVisionVisualsComponent>> entities = [];
@@ -172,6 +176,23 @@ public sealed class StationAiOverlay : Overlay
                     var transform = Matrix3x2.Multiply(tileOffset, gridMatrix);
                     _tileVisuals[tileIndices.Value] = (transform, aiVisuals);
                 }
+
+                HashSet<Entity<StationAiRenderOverVisionComponent>> renderOverVision = [];
+                lookups.GetEntitiesIntersecting(gridXform.MapID, worldBoundsMax, renderOverVision, Flags);
+                foreach (var ent in renderOverVision)
+                {
+                    if (!_spriteQuery.TryGetComponent(ent.Owner, out var spriteComp))
+                        continue;
+
+                    var xform = _xformQuery.GetComponent(ent.Owner);
+                    if (xforms.TryGetGridTilePosition((ent.Owner, xform), out var uidPos, grid))
+                    {
+                        if (_visibleTiles.ContainsKey(uidPos))
+                            continue;
+                    }
+
+                    _renderOverVision.Add((ent.Owner, spriteComp, xform));
+                }
             }
 
             // Draw visible tiles to stencil
@@ -239,6 +260,12 @@ public sealed class StationAiOverlay : Overlay
 
         worldHandle.SetTransform(Matrix3x2.Identity);
         worldHandle.UseShader(null);
+
+        foreach (var ent in _renderOverVision)
+        {
+            var (worldPos, worldRot) = xforms.GetWorldPositionRotation(ent.Comp2);
+            sprite.RenderSprite((ent.Owner, ent.Comp1), worldHandle, eyeRot, worldRot, worldPos);
+        }
     }
 
     private Matrix3x2 GetEntityTransform(Entity<StationAiVisionVisualsComponent, TransformComponent> ent, Entity<MapGridComponent> grid, Angle gridRot, Angle eyeRot, SharedTransformSystem xforms)

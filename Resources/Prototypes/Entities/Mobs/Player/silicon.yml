@@ -370,6 +370,7 @@
       - GhostOnlyWarp
   - type: Eye
     pvsScale: 1.5
+  - type: StationAiRenderOverVision
   - type: Visibility
     layer: 2
   - type: Sprite
