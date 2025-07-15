@@ -1907,3 +1907,13 @@ Entries:
     type: Fix
   id: 266
   time: '2025-07-13T17:15:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: AI now get a basic station overview outside of the AIs view
+    type: Add
+  - message: Cameras now turn off vision with no power
+    type: Tweak
+  - message: AI eye now draws over the AIs view
+    type: Tweak
+  id: 267
+  time: '2025-07-15T10:15:50.0000000+00:00'
