@@ -14,7 +14,7 @@
         </controls:StripeBack>
 
         <BoxContainer Orientation="Horizontal" HorizontalExpand="True" VerticalAlignment="Top">
-            <ui:NavMapControl Name="NavMapScreen"/>
+            <ui:NavMapControl Name="NavMapScreen" Access="Public"/>
 
             <BoxContainer Orientation="Vertical" SetWidth="200">
                 <!-- Search bar -->

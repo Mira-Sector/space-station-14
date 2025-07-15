@@ -84,6 +84,7 @@
   - type: StationAiCanHack
   - type: SiliconSyncableMaster
   - type: SiliconSyncableMasterLaw
+  - type: NavMapWarper
 
 - type: entity
   id: AiHeldIntellicard

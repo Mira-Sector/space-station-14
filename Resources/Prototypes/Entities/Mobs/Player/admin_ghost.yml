@@ -146,6 +146,7 @@
   - type: Loadout
     prototypes: [ MobAghostGear ]
   - type: BypassInteractionChecks
+  - type: NavMapWarper
 
 - type: entity
   abstract: true

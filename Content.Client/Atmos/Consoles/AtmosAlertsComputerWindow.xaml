@@ -10,7 +10,7 @@
         <BoxContainer Orientation="Horizontal" VerticalExpand="True" HorizontalExpand="True">
             <!-- Nav map -->
             <BoxContainer Orientation="Vertical" VerticalExpand="True" HorizontalExpand="True">
-                <ui:NavMapControl Name="NavMap" Margin="5 5" VerticalExpand="True" HorizontalExpand="True">
+                <ui:NavMapControl Name="NavMap" Margin="5 5" VerticalExpand="True" HorizontalExpand="True" Access="Public">
 
                     <!-- System warning -->
                     <PanelContainer Name="SystemWarningPanel"
