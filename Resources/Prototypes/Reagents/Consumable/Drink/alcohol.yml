@@ -164,7 +164,7 @@
     Alcohol:
       effects:
       - !type:BodyDamage
-        damage: 1
+        damage: 5
         conditions:
         - !type:ReagentThreshold
           min: 15
@@ -173,7 +173,7 @@
           shouldHave: false
       # dwarves take less damage and heal a marginal amount of brute
       - !type:BodyDamage
-        damage: 0.2
+        damage: 2
         conditions:
         - !type:ReagentThreshold
           min: 15
@@ -2319,7 +2319,7 @@
           min: 5
         probability: 0.5
       - !type:BodyDamage
-        damage: 0.5
+        damage: 5
       - !type:SatiateThirst
         factor: 1
       - !type:AdjustReagent
@@ -2514,7 +2514,7 @@
       - !type:Drunk
         boozePower: 10
       - !type:BodyDamage
-        damage: 2
+        damage: 10
         conditions:
         - !type:ReagentThreshold
           min: 6
@@ -2522,7 +2522,7 @@
           type: Dwarf
           shouldHave: false
       - !type:BodyDamage
-        damage: 0.4
+        damage: 4
         conditions:
         - !type:ReagentThreshold
           min: 6
