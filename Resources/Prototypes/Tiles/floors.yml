@@ -2022,6 +2022,7 @@
 
 - type: tile
   id: FloorWoodTile
+  parent: BaseAiVisionMiniTile
   name: tiles-wood2
   sprite: /Textures/Tiles/wood_tile.png
   variants: 4
@@ -2042,6 +2043,7 @@
 
 - type: tile
   id: FloorBrokenWood
+  parent: FloorWood
   name: tiles-wood3
   sprite: /Textures/Tiles/wood_broken.png
   variants: 7
@@ -2244,6 +2246,64 @@
     collection: BarestepWood
   itemDrop: FloorTileItemWoodLarge
   heatCapacity: 10000
+  stationAiVisuals:
+    shapes:
+    - !type:StationAiVisionVisualsRect
+      rect: 0, 0, 1, 1
+      color: "#000000"
+
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0
+      end: 1, 0
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.25
+      end: 1, 0.25
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.5
+      end: 1, 0.5
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.75
+      end: 1, 0.75
+      color: "#006000"
+
+    - !type:StationAiVisionVisualsVertex
+      start: 0.03125, 1
+      end: 0.03125, 0.75
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.4375, 1
+      end: 0.4375, 0.75
+      color: "#006000"
+
+    - !type:StationAiVisionVisualsVertex
+      start: 0.5, 0.75
+      end: 0.5, 0.5
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.9375, 0.75
+      end: 0.9375, 0.5
+      color: "#006000"
+
+    - !type:StationAiVisionVisualsVertex
+      start: 0.375, 0.5
+      end: 0.375, 0.25
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.84375, 0.5
+      end: 0.84375, 0.25
+      color: "#006000"
+
+    - !type:StationAiVisionVisualsVertex
+      start: 0.5, 0.25
+      end: 0.5, 0
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.25
+      end: 0, 0
+      color: "#006000"
 
 - type: tile
   id: FloorCheese
