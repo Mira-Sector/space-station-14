@@ -213,6 +213,27 @@
       sprite: Structures/Windows/cracks_directional.rsi
   - type: StaticPrice
     price: 15
+  - type: StationAiVisionVisuals
+    shapes:
+    - !type:StationAiVisionVisualsRect
+      rect: 0, 0.78125, 1, 0.78125
+      color: "#000000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.78125
+      end: 1, 0.78125
+      color: "#00ff00"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 1
+      end: 1, 1
+      color: "#00ff00"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.78125
+      end: 0, 1
+      color: "#00ff00"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 0.78125
+      end: 1, 1
+      color: "#00ff00"
 
 - type: entity
   id: WindowDirectionalRCDResistant
