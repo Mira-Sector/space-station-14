@@ -19,6 +19,7 @@ using JetBrains.Annotations;
 using Content.Shared.Atmos;
 using System.Linq;
 using Robust.Shared.Utility;
+using Robust.Client.Player;
 
 namespace Content.Client.Pinpointer.UI;
 
@@ -29,6 +30,7 @@ namespace Content.Client.Pinpointer.UI;
 public partial class NavMapControl : MapGridControl
 {
     [Dependency] private IResourceCache _cache = default!;
+    [Dependency] private IPlayerManager _player = default!;
     private readonly SharedTransformSystem _transformSystem;
     private readonly SharedNavMapSystem _navMapSystem;
 
@@ -40,6 +42,7 @@ public partial class NavMapControl : MapGridControl
     // Actions
     public event Action<NetEntity?>? TrackedEntitySelectedAction;
     public event Action<DrawingHandleScreen>? PostWallDrawingAction;
+    public event Action<SharedNavMapSystem.NavMapWarpAttemptMessage>? NavMapWarpAttemptAction;
 
     // Tracked data
     public Dictionary<EntityCoordinates, (bool Visible, Color Color)> TrackedCoordinates = new();
@@ -206,20 +209,15 @@ public partial class NavMapControl : MapGridControl
             if (TrackedEntitySelectedAction == null)
                 return;
 
-            if (_xform == null || _physics == null || TrackedEntities.Count == 0)
+            if (TrackedEntities.Count == 0)
                 return;
 
             // If the cursor has moved a significant distance, exit
             if ((StartDragPosition - args.PointerLocation.Position).Length() > MinDragDistance)
                 return;
 
-            // Get the clicked position
-            var offset = Offset + _physics.LocalCenter;
-            var localPosition = args.PointerLocation.Position - GlobalPixelPosition;
-
-            // Convert to a world position
-            var unscaledPosition = (localPosition - MidPointVector) / MinimapScale;
-            var worldPosition = Vector2.Transform(new Vector2(unscaledPosition.X, -unscaledPosition.Y) + offset, _transformSystem.GetWorldMatrix(_xform));
+            if (GetMouseWorldPos(args) is not { } worldPosition)
+                return;
 
             // Find closest tracked entity in range
             var closestEntity = NetEntity.Invalid;
@@ -255,6 +253,21 @@ public partial class NavMapControl : MapGridControl
         {
             // Toggle beacon labels
             _beacons.Pressed = !_beacons.Pressed;
+        }
+
+        else if (args.Function == ContentKeyFunctions.AltActivateItemInWorld)
+        {
+            if (_player?.LocalEntity is not { } uid)
+                return;
+
+            if (!EntManager.HasComponent<NavMapWarperComponent>(uid))
+                return;
+
+            if (GetMouseWorldPos(args) is not { } pos)
+                return;
+
+            var ev = new SharedNavMapSystem.NavMapWarpAttemptMessage(EntManager.GetNetEntity(uid), pos);
+            NavMapWarpAttemptAction?.Invoke(ev);
         }
     }
 
@@ -473,6 +486,21 @@ public partial class NavMapControl : MapGridControl
         UpdateNavMapFloorTiles();
         UpdateNavMapWallLines();
         UpdateNavMapAirlocks();
+    }
+
+    private Vector2? GetMouseWorldPos(GUIBoundKeyEventArgs args)
+    {
+        if (_xform == null || _physics == null)
+            return null;
+
+        // Get the clicked position
+        var offset = Offset + _physics.LocalCenter;
+        var localPosition = args.PointerLocation.Position - GlobalPixelPosition;
+
+        // Convert to a world position
+        var unscaledPosition = (localPosition - MidPointVector) / MinimapScale;
+        var worldPosition = Vector2.Transform(new Vector2(unscaledPosition.X, -unscaledPosition.Y) + offset, _transformSystem.GetWorldMatrix(_xform));
+        return worldPosition;
     }
 
     private void UpdateNavMapFloorTiles()

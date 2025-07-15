@@ -16,6 +16,7 @@ public sealed class AtmosMonitoringConsoleBoundUserInterface : BoundUserInterfac
         _menu = new AtmosMonitoringConsoleWindow(this, Owner);
         _menu.OpenCentered();
         _menu.OnClose += Close;
+        _menu.NavMap.NavMapWarpAttemptAction += SendPredictedMessage;
     }
 
     protected override void UpdateState(BoundUserInterfaceState state)
