@@ -4,12 +4,12 @@ namespace Content.Shared.Silicons.StationAi;
 
 public abstract partial class SharedStationAiVisionVisualsVertex : SharedStationAiVisionVisualsShape
 {
-    [DataField]
+    [DataField(required: true)]
     public Vector2 Start;
 
-    [DataField]
+    [DataField(required: true)]
     public Vector2 End;
 
-    [DataField]
+    [DataField(required: true)]
     public Color Color;
 }

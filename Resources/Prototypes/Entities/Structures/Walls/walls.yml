@@ -60,8 +60,6 @@
   - type: Occluder # Breaks on diagonal walls
   - type: StationAiVisionVisuals
     blockTiles: true
-    noRotation: true
-    snapCardinals: true
     shapes:
     - !type:StationAiVisionVisualsRect
       rect: 0, 0, 1, 1
@@ -131,6 +129,29 @@
         - FullTileMask
         layer:
         - WallLayer
+  - type: StationAiVisionVisuals
+    shapes:
+    - !type:StationAiVisionVisualsTri
+      point1: 0, 0
+      point2: 1, 1
+      point3: 1, 0
+      color: "#000000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 1
+      end: 0, 0
+      color: "#00f000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 0
+      end: 0.5, 0.5
+      color: "#00f000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.5, 0
+      end: 0.25, 0.25
+      color: "#00f000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 0.5
+      end: 0.75, 0.75
+      color: "#00f000"
 
 - type: entity
   parent: BaseWall
