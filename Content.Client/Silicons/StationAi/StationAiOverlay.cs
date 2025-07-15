@@ -118,10 +118,14 @@ public sealed class StationAiOverlay : Overlay
 
                         foreach (var (@enum, values) in ent.Comp.AppearanceData)
                         {
-                            if (!appearance.TryGetData(ent.Owner, @enum, out var data, appearanceComp))
+                            if (!appearance.TryGetData<object>(ent.Owner, @enum, out var data, appearanceComp))
                                 continue;
 
-                            if (!values.TryGetValue(data, out var visuals))
+                            var key = data.ToString();
+                            if (string.IsNullOrEmpty(key))
+                                continue;
+
+                            if (!values.TryGetValue(key, out var visuals))
                                 continue;
 
                             if (!_entityVisuals.TryGetValue(uidPos, out posEnts))

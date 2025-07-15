@@ -6,13 +6,13 @@ namespace Content.Client.Silicons.StationAi;
 public sealed partial class StationAiVisionVisualsComponent : Component, IStationAiVisionVisuals
 {
     [DataField]
-    public SharedStationAiVisionVisualsShape[] Shapes { get; set; }
+    public SharedStationAiVisionVisualsShape[] Shapes { get; set; } = [];
 
     [DataField]
     public bool BlockTiles;
 
     [DataField]
-    public Dictionary<Enum, Dictionary<object, StationAiVisionVisualsAppearanceEntry>> AppearanceData = [];
+    public Dictionary<Enum, Dictionary<string, StationAiVisionVisualsAppearanceEntry>> AppearanceData = [];
 }
 
 [DataDefinition]
