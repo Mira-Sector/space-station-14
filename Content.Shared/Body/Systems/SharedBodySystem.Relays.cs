@@ -22,6 +22,8 @@ public partial class SharedBodySystem
 
         SubscribeLocalEvent<BodyPartComponent, DamageModifyEvent>(RelayToBody);
         SubscribeLocalEvent<BodyPartComponent, DamageChangedEvent>(RelayToBody);
+
+        SubscribeLocalEvent<OrganComponent, DamageChangedEvent>(RelayToBody);
     }
 
     #region Single
@@ -120,6 +122,26 @@ public partial class SharedBodySystem
             return;
 
         var ev = new OrganLimbRelayedEvent<T>(args, uid);
+
+        RaiseLocalEvent(bodyPart, ref ev);
+    }
+
+    public void RelayToBody<T>(EntityUid uid, OrganComponent component, T args) where T : class
+    {
+        if (component.BodyPart is not {} bodyPart)
+            return;
+
+        var ev = new BodyOrganRelayedEvent<T>(args, uid);
+
+        RaiseLocalEvent(bodyPart, ref ev);
+    }
+
+    public void RelayToBody<T>(EntityUid uid, OrganComponent component, ref T args) where T : struct
+    {
+        if (component.BodyPart is not {} bodyPart)
+            return;
+
+        var ev = new BodyOrganRelayedEvent<T>(args, uid);
 
         RaiseLocalEvent(bodyPart, ref ev);
     }
