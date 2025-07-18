@@ -201,7 +201,7 @@
   - type: BodyDamageThresholds
     thresholds:
       Alive: 0
-      Wounded: 10
+      Wounded: 40
       Dead: 100
   - type: BodyDamageOnRot
     minRotStage: 1
@@ -215,7 +215,7 @@
     damageDelay: 1
     damage:
       types:
-        Poison: 6
+        Poison: 4
   - type: MetabolizerDelayOnBodyDamage
   - type: Temperature
   - type: Perishable
