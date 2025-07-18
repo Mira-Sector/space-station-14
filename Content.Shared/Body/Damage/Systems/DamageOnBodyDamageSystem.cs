@@ -2,6 +2,7 @@ using Content.Shared.Body.Damage.Components;
 using Content.Shared.Body.Damage.Events;
 using Content.Shared.Body.Organ;
 using Content.Shared.Damage;
+using Content.Shared.FixedPoint;
 using Robust.Shared.Timing;
 
 namespace Content.Shared.Body.Damage.Systems;
@@ -9,6 +10,7 @@ namespace Content.Shared.Body.Damage.Systems;
 public sealed partial class DamageOnBodyDamageSystem : BaseOnBodyDamageSystem<DamageOnBodyDamageComponent>
 {
     [Dependency] private readonly DamageableSystem _damageable = default!;
+    [Dependency] private readonly BodyDamageThresholdsSystem _thresholds = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
 
     public override void Initialize()
@@ -39,7 +41,8 @@ public sealed partial class DamageOnBodyDamageSystem : BaseOnBodyDamageSystem<Da
                 continue;
             }
 
-            DealDamage(uid, component.Damage);
+            var damage = GetScaledDamage((uid, component));
+            DealDamage(uid, damage);
             Dirty(uid, component);
         }
     }
@@ -57,7 +60,7 @@ public sealed partial class DamageOnBodyDamageSystem : BaseOnBodyDamageSystem<Da
         if (!CheckMode(ent, delta > 0))
             return;
 
-        var damage = ent.Comp.Damage * delta;
+        var damage = GetScaledDamage(ent) * delta;
         DealDamage(ent.Owner, damage);
     }
 
@@ -69,21 +72,32 @@ public sealed partial class DamageOnBodyDamageSystem : BaseOnBodyDamageSystem<Da
             return ent.Comp.Mode.HasFlag(DamageOnBodyDamageModes.Healing);
     }
 
+    private DamageSpecifier GetScaledDamage(Entity<DamageOnBodyDamageComponent, BodyDamageableComponent?, BodyDamageThresholdsComponent?> ent)
+    {
+        if (ent.Comp1.ScaleToState is not { } targetState)
+            return ent.Comp1.Damage;
+
+        if (!_thresholds.TryGetThreshold((ent.Owner, ent.Comp3), targetState, out var threshold))
+            return ent.Comp1.Damage;
+
+        var toState = _thresholds.RelativeToState((ent.Owner, ent.Comp3, ent.Comp2), targetState);
+        if (toState == FixedPoint2.Zero)
+            return ent.Comp1.Damage;
+
+        var ratio = toState / threshold;
+        return ent.Comp1.Damage * ratio;
+    }
+
     private void DealDamage(EntityUid uid, DamageSpecifier damage)
     {
         if (TryComp<OrganComponent>(uid, out var organ))
         {
             if (organ.Body is { } body)
-            {
                 _damageable.TryChangeDamageBody(body, damage);
-                return;
-            }
-
-            if (organ.BodyPart is { } limb)
-            {
+            else if (organ.BodyPart is { } limb)
                 _damageable.TryChangeDamage(limb, damage);
-                return;
-            }
+
+            return;
         }
 
         _damageable.TryChangeDamage(uid, damage);
