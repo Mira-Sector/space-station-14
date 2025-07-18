@@ -80,8 +80,8 @@ public sealed partial class DamageOnBodyDamageSystem : BaseOnBodyDamageSystem<Da
         if (!_thresholds.TryGetThreshold((ent.Owner, ent.Comp3), targetState, out var threshold))
             return ent.Comp1.Damage;
 
-        var toState = _thresholds.RelativeToState((ent.Owner, ent.Comp3, ent.Comp2), targetState);
-        if (toState == FixedPoint2.Zero)
+        var toState = -1 * _thresholds.RelativeToState((ent.Owner, ent.Comp3, ent.Comp2), targetState);
+        if (toState <= FixedPoint2.Zero)
             return ent.Comp1.Damage;
 
         var ratio = toState / threshold;
