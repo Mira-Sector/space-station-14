@@ -214,7 +214,7 @@
     damageDelay: 1
     damage:
       types:
-        Poison: 0.2
+        Poison: 4
   - type: MetabolizerDelayOnBodyDamage
   - type: Temperature
   - type: Perishable
