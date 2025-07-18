@@ -45,7 +45,7 @@ public sealed partial class HealthAnalyzerBodyBodyTab : BaseHealthAnalyzerBodyTa
 
             var progressBar = GetProgressBar(data.ProgressBarLocation);
             var barLabelSuffix = $"{part.Side.ToString().ToLower()}-{part.Type.ToString().ToLower()}";
-            UpdateProgressBar(progressBar, part, limbUid, barLabelSuffix, (float)damageable.TotalDamage, (float)deadThreshold);
+            UpdateProgressBar(progressBar, part, limbUid, barLabelSuffix, damageable.TotalDamage.Float(), deadThreshold.Float());
 
             if (data.Sprites != null)
                 yield return new HealthAnalyzerBodyButton(part, limbUid, data.Sprites, SpriteSystem);
