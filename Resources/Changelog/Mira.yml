@@ -1949,3 +1949,11 @@ Entries:
     type: Fix
   id: 272
   time: '2025-07-18T17:30:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Organs only rot when the body is dead
+    type: Tweak
+  - message: Organs get damaged when rotting reaches the second stage
+    type: Tweak
+  id: 273
+  time: '2025-07-18T21:15:50.0000000+00:00'
