@@ -57,7 +57,10 @@ public sealed partial class HealthAnalyzerBodyBodyTab : BaseHealthAnalyzerBodyTa
         if (button.Identifier is not BodyPart part || button.Owner == null)
             return;
 
-        _selectedPart = (part, EntityManager.GetComponent<DamageableComponent>(button.Owner.Value));
+        if (_selectedPart != null && _selectedPart.Value.Part.Type == part.Type && _selectedPart.Value.Part.Side == part.Side)
+            _selectedPart = null;
+        else
+            _selectedPart = (part, EntityManager.GetComponent<DamageableComponent>(button.Owner.Value));
     }
 
     protected override void ActOnButton()
