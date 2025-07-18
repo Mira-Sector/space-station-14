@@ -1931,3 +1931,9 @@ Entries:
     type: Tweak
   id: 269
   time: '2025-07-15T15:10:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Poison damage from a wounded liver now counts to to being crit/dead
+    type: Fix
+  id: 270
+  time: '2025-07-18T14:20:50.0000000+00:00'
