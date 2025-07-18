@@ -11,6 +11,9 @@ public sealed partial class DamageOnBodyDamageComponent : BaseOnBodyDamageCompon
     [DataField(required: true)]
     public DamageSpecifier Damage;
 
+    [DataField]
+    public BodyDamageState? ScaleToState;
+
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoNetworkedField, AutoPausedField]
     public TimeSpan NextDamage;
 
