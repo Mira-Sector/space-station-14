@@ -1,8 +1,8 @@
 <controls:BaseHealthAnalyzerWindow
     xmlns="https://spacestation14.io"
     xmlns:controls="clr-namespace:Content.Client.HealthAnalyzer.UI"
-    SetSize="720 600"
-    MinWidth="720"
+    SetSize="800 600"
+    MinWidth="800"
     MinHeight="600"
     Resizable="True">
     <TabContainer
