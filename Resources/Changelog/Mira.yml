@@ -1937,3 +1937,9 @@ Entries:
     type: Fix
   id: 270
   time: '2025-07-18T14:20:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Poison damage from a wounded liver now scales based on how damaged it is
+    type: Add
+  id: 271
+  time: '2025-07-18T16:50:50.0000000+00:00'
