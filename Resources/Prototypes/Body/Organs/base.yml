@@ -25,7 +25,7 @@
       Wounded: 10
       Dead: 120
   - type: BodyDamageOnRot
-    minRotStage: 1
+    minRotStage: 2
     fullyRottenDamage: 120
   - type: ItemToggle
     activated: true # beating by default
@@ -79,7 +79,7 @@
       Wounded: 10
       Dead: 120
   - type: BodyDamageOnRot
-    minRotStage: 1
+    minRotStage: 2
     fullyRottenDamage: 120
   - type: CoughOnBodyDamage
     minChance: 0
@@ -130,7 +130,7 @@
       Wounded: 10
       Dead: 100
   - type: BodyDamageOnRot
-    minRotStage: 1
+    minRotStage: 2
     fullyRottenDamage: 100
   - type: VomitOnBodyDamage
     requiredStates:
@@ -204,7 +204,7 @@
       Wounded: 40
       Dead: 100
   - type: BodyDamageOnRot
-    minRotStage: 1
+    minRotStage: 2
     fullyRottenDamage: 100
   - type: DamageOnBodyDamage
     requiredStates:
@@ -263,7 +263,7 @@
       Wounded: 10
       Dead: 100
   - type: BodyDamageOnRot
-    minRotStage: 1
+    minRotStage: 2
     fullyRottenDamage: 100
   - type: MetabolizerDelayOnBodyDamage
     requiredStates:
@@ -307,7 +307,7 @@
       Wounded: appendix-examine-not-burst
       Dead: appendix-examine-burst
   - type: BodyDamageOnRot
-    minRotStage: 1
+    minRotStage: 2
     fullyRottenDamage: 80
   - type: DamageOnBodyDamage
     requiredStates:
