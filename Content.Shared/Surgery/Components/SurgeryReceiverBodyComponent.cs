@@ -1,7 +1,7 @@
 using Content.Shared.Body.Part;
-using Content.Shared.DoAfter;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared.Surgery.Components;
 
@@ -18,10 +18,10 @@ public sealed partial class SurgeryReceiverBodyComponent : Component
     /// Used for surgeries that need to be targeted but on a limb that doesn't exist
     /// </summary>
     [DataField]
-    public HashSet<SurgeryBodyReceiver> Surgeries = new();
+    public HashSet<SurgeryBodyReceiver> Surgeries = [];
 
     [ViewVariables, AutoNetworkedField]
-    public Dictionary<BodyPart, NetEntity> Limbs = new();
+    public Dictionary<BodyPart, NetEntity> Limbs = [];
 
     /// <summary>
     /// My sanity requires me to do this
@@ -31,7 +31,7 @@ public sealed partial class SurgeryReceiverBodyComponent : Component
     {
         get
         {
-            Dictionary<NetEntity, SurgeryReceiverComponent> dict = new();
+            Dictionary<NetEntity, SurgeryReceiverComponent> dict = [];
 
             var entMan = IoCManager.Resolve<EntityManager>();
 
@@ -48,22 +48,21 @@ public sealed partial class SurgeryReceiverBodyComponent : Component
     }
 }
 
-
-[DataDefinition, Serializable]
+[DataDefinition, Serializable, NetSerializable]
 public sealed partial class SurgeryBodyReceiver
 {
     [DataField(required: true)]
     public BodyPart BodyPart = default!;
 
     [DataField(required: true)]
-    public SurgeryBodyPartReceiver Surgeries = new();
+    public SurgeryBodyPartReceiver Surgeries;
 }
 
-[DataDefinition, Serializable]
+[DataDefinition, Serializable, NetSerializable]
 public sealed partial class SurgeryBodyPartReceiver : ISurgeryReceiver
 {
     [DataField]
-    public List<ProtoId<SurgeryPrototype>> AvailableSurgeries { get; set; } = new();
+    public List<ProtoId<SurgeryPrototype>> AvailableSurgeries { get; set; } = [];
 
     [ViewVariables]
     public SurgeryGraph Graph { get; set; } = new();
@@ -72,8 +71,8 @@ public sealed partial class SurgeryBodyPartReceiver : ISurgeryReceiver
     public SurgeryNode? CurrentNode { get; set; }
 
     [ViewVariables]
-    public Dictionary<DoAfterId, (EntityUid, SurgeryEdgeRequirement)> DoAfters { get; set; } = new();
+    public Dictionary<(NetEntity, ushort), (NetEntity, SurgeryEdgeRequirement)> DoAfters { get; set; } = [];
 
     [ViewVariables]
-    public HashSet<Enum> UserInterfaces { get; set; } = new();
+    public HashSet<Enum> UserInterfaces { get; set; } = [];
 }

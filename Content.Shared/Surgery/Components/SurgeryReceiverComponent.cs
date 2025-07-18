@@ -1,4 +1,3 @@
-using Content.Shared.DoAfter;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
@@ -8,7 +7,7 @@ namespace Content.Shared.Surgery.Components;
 public sealed partial class SurgeryReceiverComponent : Component, ISurgeryReceiver
 {
     [DataField]
-    public List<ProtoId<SurgeryPrototype>> AvailableSurgeries { get; set; } = new();
+    public List<ProtoId<SurgeryPrototype>> AvailableSurgeries { get; set; } = [];
 
     [ViewVariables]
     public SurgeryGraph Graph { get; set; } = new();
@@ -17,8 +16,8 @@ public sealed partial class SurgeryReceiverComponent : Component, ISurgeryReceiv
     public SurgeryNode? CurrentNode { get; set; }
 
     [ViewVariables]
-    public Dictionary<DoAfterId, (EntityUid, SurgeryEdgeRequirement)> DoAfters { get; set; } = new();
+    public Dictionary<(NetEntity, ushort), (NetEntity, SurgeryEdgeRequirement)> DoAfters { get; set; } = [];
 
     [ViewVariables]
-    public HashSet<Enum> UserInterfaces { get; set; } = new();
+    public HashSet<Enum> UserInterfaces { get; set; } = [];
 }

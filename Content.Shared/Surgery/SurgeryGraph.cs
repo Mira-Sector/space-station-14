@@ -7,13 +7,13 @@ namespace Content.Shared.Surgery;
 public partial class SurgeryGraph
 {
     [DataField("nodes")]
-    public List<SurgeryNode> _nodes { get; set; } = new();
+    public List<SurgeryNode> _nodes { get; set; } = [];
 
     /// <summary>
     /// List of nodes this graph contains
     /// </summary>
     [ViewVariables]
-    public Dictionary<int, SurgeryNode> Nodes { get; set; } = new();
+    public Dictionary<int, SurgeryNode> Nodes { get; set; } = [];
 
     [DataField("startingNode", required: true)]
     public string _startingNode = default!;
