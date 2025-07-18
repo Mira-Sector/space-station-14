@@ -128,22 +128,22 @@ public partial class SharedBodySystem
 
     public void RelayToBody<T>(EntityUid uid, OrganComponent component, T args) where T : class
     {
-        if (component.BodyPart is not {} bodyPart)
+        if (component.Body is not {} body)
             return;
 
-        var ev = new BodyOrganRelayedEvent<T>(args, uid);
+        var ev = new OrganBodyRelayedEvent<T>(args, uid);
 
-        RaiseLocalEvent(bodyPart, ref ev);
+        RaiseLocalEvent(body, ref ev);
     }
 
     public void RelayToBody<T>(EntityUid uid, OrganComponent component, ref T args) where T : struct
     {
-        if (component.BodyPart is not {} bodyPart)
+        if (component.Body is not {} body)
             return;
 
-        var ev = new BodyOrganRelayedEvent<T>(args, uid);
+        var ev = new OrganBodyRelayedEvent<T>(args, uid);
 
-        RaiseLocalEvent(bodyPart, ref ev);
+        RaiseLocalEvent(body, ref ev);
     }
 
     #endregion
