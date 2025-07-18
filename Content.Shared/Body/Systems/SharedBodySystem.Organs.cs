@@ -87,7 +87,7 @@ public partial class SharedBodySystem
         if (component.Body is not {} body)
             return;
 
-        if (_mobState.IsAlive(body))
+        if (!_mobState.IsIncapacitated(body))
         {
             args.Handled = true;
             return;
