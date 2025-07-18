@@ -63,10 +63,11 @@
                             Scale="8 8"
                             Name="SpriteView"
                             Access="Public"
-                            Stretch="None"/>
-                        <TextureButton
-                            Name="LimbButton"
-                            Access="Public"/>
+                            Stretch="None">
+                            <TextureButton
+                                Name="LimbButton"
+                                Access="Public"/>
+                        </SpriteView>
                         <TextureRect Name="NoDataTex" Access="Public" SetSize="128 512" Visible="false" Stretch="KeepAspectCentered" TexturePath="/Textures/Interface/Misc/health_analyzer_out_of_range.png"/>
                     </PanelContainer>
                     <PanelContainer

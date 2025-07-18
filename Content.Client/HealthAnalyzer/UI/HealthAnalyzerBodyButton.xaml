@@ -1,5 +1,5 @@
 <TextureRect
     xmlns="https://spacestation14.io"
     Access="Public"
-    Stretch="KeepCentered"
+    Stretch="KeepAspectCentered"
     TextureScale="8 8"/>

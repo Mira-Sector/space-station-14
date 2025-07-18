@@ -45,7 +45,7 @@ public sealed partial class HealthAnalyzerBodyBodyTab : BaseHealthAnalyzerBodyTa
 
             var progressBar = GetProgressBar(data.ProgressBarLocation);
             var barLabelSuffix = $"{part.Side.ToString().ToLower()}-{part.Type.ToString().ToLower()}";
-            UpdateProgressBar(progressBar, part, limbUid, barLabelSuffix, (float)damageable.TotalDamage, (float)deadThreshold);
+            UpdateProgressBar(progressBar, part, limbUid, barLabelSuffix, damageable.TotalDamage.Float(), deadThreshold.Float());
 
             if (data.Sprites != null)
                 yield return new HealthAnalyzerBodyButton(part, limbUid, data.Sprites, SpriteSystem);
@@ -57,7 +57,10 @@ public sealed partial class HealthAnalyzerBodyBodyTab : BaseHealthAnalyzerBodyTa
         if (button.Identifier is not BodyPart part || button.Owner == null)
             return;
 
-        _selectedPart = (part, EntityManager.GetComponent<DamageableComponent>(button.Owner.Value));
+        if (_selectedPart != null && _selectedPart.Value.Part.Type == part.Type && _selectedPart.Value.Part.Side == part.Side)
+            _selectedPart = null;
+        else
+            _selectedPart = (part, EntityManager.GetComponent<DamageableComponent>(button.Owner.Value));
     }
 
     protected override void ActOnButton()
@@ -101,14 +104,26 @@ public sealed partial class HealthAnalyzerBodyBodyTab : BaseHealthAnalyzerBodyTa
     {
         GroupsContainer.RemoveAllChildren();
 
+        DamageSpecifier damage;
         if (_selectedPart == null)
-            return;
+        {
+            if (Target is not { } target)
+                return;
 
-        var damageSortedGroups =
-            _selectedPart.Value.Damageable.Damage.GetDamagePerGroup(PrototypeManager).OrderByDescending(damage => damage.Value)
-                .ToDictionary(x => x.Key, x => x.Value);
+            if (BodySystem.GetBodyDamage(target.Owner) is not { } bodyDamage)
+                return;
 
-        foreach (var container in HealthAnalyzerWindow.DrawDiagnosticGroups(damageSortedGroups, _selectedPart.Value.Damageable.Damage.DamageDict, 1.125f))
+            damage = bodyDamage;
+        }
+        else
+        {
+            damage = _selectedPart.Value.Damageable.Damage;
+        }
+
+        var damageSortedGroups = damage.GetDamagePerGroup(PrototypeManager).OrderByDescending(x => x.Value)
+                .ToDictionary(y => y.Key, y => y.Value);
+
+        foreach (var container in HealthAnalyzerWindow.DrawDiagnosticGroups(damageSortedGroups, damage.DamageDict, 1.125f))
             GroupsContainer.AddChild(container);
     }
 

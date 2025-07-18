@@ -20,6 +20,8 @@ public partial class BaseHealthAnalyzerBodyTab : PanelContainer
     protected readonly IPrototypeManager PrototypeManager;
     protected readonly SpriteSystem SpriteSystem;
 
+    protected Entity<HealthAnalyzerBodyComponent>? Target;
+
     public BaseHealthAnalyzerBodyTab(HealthAnalyzerBodyWindow window, IEntityManager entityManager, SharedBodySystem bodySystem, IPrototypeManager prototypeManager, SpriteSystem spriteSystem)
     {
         EntityManager = entityManager;
@@ -33,6 +35,8 @@ public partial class BaseHealthAnalyzerBodyTab : PanelContainer
 
     public virtual void Populate(Entity<HealthAnalyzerBodyComponent>? target, HealthAnalyzerScannedUserMessage msg)
     {
+        Target = target;
+
         if (target == null || !TryGetTotalDamage(target.Value, out var damage))
         {
             NoPatientDataText.Visible = true;
