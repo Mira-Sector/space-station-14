@@ -51,6 +51,6 @@ public sealed partial class BodyDamageOnRotSystem : EntitySystem
 
     private static bool RotStageWithinBounds(Entity<BodyDamageOnRotComponent> ent, int stage)
     {
-        return ent.Comp.MinRotStage <= stage || ent.Comp.MaxRotStage >= stage;
+        return ent.Comp.MinRotStage <= stage && ent.Comp.MaxRotStage >= stage;
     }
 }
