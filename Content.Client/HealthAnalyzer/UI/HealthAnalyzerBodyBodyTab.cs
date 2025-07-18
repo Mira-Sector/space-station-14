@@ -101,14 +101,26 @@ public sealed partial class HealthAnalyzerBodyBodyTab : BaseHealthAnalyzerBodyTa
     {
         GroupsContainer.RemoveAllChildren();
 
+        DamageSpecifier damage;
         if (_selectedPart == null)
-            return;
+        {
+            if (Target is not { } target)
+                return;
 
-        var damageSortedGroups =
-            _selectedPart.Value.Damageable.Damage.GetDamagePerGroup(PrototypeManager).OrderByDescending(damage => damage.Value)
-                .ToDictionary(x => x.Key, x => x.Value);
+            if (BodySystem.GetBodyDamage(target.Owner) is not { } bodyDamage)
+                return;
 
-        foreach (var container in HealthAnalyzerWindow.DrawDiagnosticGroups(damageSortedGroups, _selectedPart.Value.Damageable.Damage.DamageDict, 1.125f))
+            damage = bodyDamage;
+        }
+        else
+        {
+            damage = _selectedPart.Value.Damageable.Damage;
+        }
+
+        var damageSortedGroups = damage.GetDamagePerGroup(PrototypeManager).OrderByDescending(x => x.Value)
+                .ToDictionary(y => y.Key, y => y.Value);
+
+        foreach (var container in HealthAnalyzerWindow.DrawDiagnosticGroups(damageSortedGroups, damage.DamageDict, 1.125f))
             GroupsContainer.AddChild(container);
     }
 
