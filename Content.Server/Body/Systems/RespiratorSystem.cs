@@ -439,12 +439,9 @@ public sealed class RespiratorSystem : EntitySystem
 
             if (ev.Cancelled)
                 return false;
-
-            if (ev.Enabled)
-                return true;
         }
 
-        return false;
+        return ev.Enabled;
     }
 }
 

@@ -89,11 +89,12 @@
     minChance: 0
     maxChance: 0.2
   - type: OrganRequiredForRespiration
-  - type: DisableRespireOnItemToggle
+  - type: DisableRespireOnBodyDamage
+    requiredStates:
+    - Dead
   - type: RespirationDelayOnBodyDamage
     requiredStates:
     - Wounded
-    - Dead
   - type: SolutionContainerManager
     solutions:
       organ:
