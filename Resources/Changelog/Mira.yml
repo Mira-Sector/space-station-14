@@ -1957,3 +1957,9 @@ Entries:
     type: Tweak
   id: 273
   time: '2025-07-18T21:15:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Slimes get kidneys
+    type: Fix
+  id: 274
+  time: '2025-07-19T17:25:50.0000000+00:00'
