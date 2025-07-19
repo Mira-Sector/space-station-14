@@ -39,6 +39,10 @@
   - type: OrganRequiredForDefibrillation
   - type: OrganRequiredForRespiration
   - type: DisableRespireOnItemToggle
+  - type: DefibrillationDisableOnBodyDamage
+    requiredStates:
+    - Dead
+    reason: defibrillator-heart-dead
   - type: RespirationDelayOnBodyDamage
     requiredStates:
     - Wounded
