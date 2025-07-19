@@ -20,6 +20,7 @@
       organs:
         core: SentientSlimeCore
         lungs: OrganSlimeLungs
+        kidneys: OrganSlimeKidneys
         appendix: OrganHumanAppendix
     right arm:
       part: RightArmSlime
