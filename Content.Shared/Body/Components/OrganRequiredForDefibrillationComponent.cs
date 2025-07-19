@@ -6,5 +6,5 @@ namespace Content.Shared.Body.Components;
 public sealed partial class OrganRequiredForDefibrillationComponent : Component
 {
     [DataField]
-    public LocId? DisableReason = "defibrillator-heart-off";
+    public LocId? DisableReason;
 }
