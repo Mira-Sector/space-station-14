@@ -1,0 +1,417 @@
+- type: tile
+  id: BaseAiVisionSquare
+  abstract: true
+  stationAiVisuals:
+    shapes:
+    - !type:StationAiVisionVisualsRect
+      rect: 0, 0, 1, 1
+      color: "#000000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0
+      end: 1, 0
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0
+      end: 0, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 1
+      end: 1, 0
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 1
+      end: 0, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 1
+      end: 0, 1
+      color: "#006000"
+
+- type: tile
+  id: BaseAiVisionTile
+  abstract: true
+  stationAiVisuals:
+    shapes:
+    - !type:StationAiVisionVisualsRect
+      rect: 0, 0, 1, 1
+      color: "#000000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0
+      end: 1, 0
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0
+      end: 0, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 1
+      end: 1, 0
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 1
+      end: 0, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 1
+      end: 0, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.5, 0
+      end: 0.5, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.5
+      end: 1, 0.5
+      color: "#006000"
+
+- type: tile
+  id: BaseAiVisionTileOffset
+  abstract: true
+  stationAiVisuals:
+    shapes:
+    - !type:StationAiVisionVisualsRect
+      rect: 0, 0, 1, 1
+      color: "#000000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.25, 0
+      end: 0.25, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.75, 0
+      end: 0.75, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.25
+      end: 1, 0.25
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.75
+      end: 1, 0.75
+      color: "#006000"
+
+- type: tile
+  id: BaseAiVisionMiniTile
+  abstract: true
+  stationAiVisuals:
+    shapes:
+    - !type:StationAiVisionVisualsRect
+      rect: 0, 0, 1, 1
+      color: "#000000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0
+      end: 1, 0
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0
+      end: 0, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 1
+      end: 1, 0
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 1
+      end: 0, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 1
+      end: 0, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.5, 0
+      end: 0.5, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.5
+      end: 1, 0.5
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.25, 0
+      end: 0.25, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.25
+      end: 1, 0.25
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.75, 0
+      end: 0.75, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.75
+      end: 1, 0.75
+      color: "#006000"
+
+- type: tile
+  id: BaseAiVisionDiagonal
+  abstract: true
+  stationAiVisuals:
+    shapes:
+    - !type:StationAiVisionVisualsRect
+      rect: 0, 0, 1, 1
+      color: "#000000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0
+      end: 1, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.5, 0
+      end: 1, 0.5
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.5
+      end: 0.5, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 0
+      end: 0, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.5, 0
+      end: 0, 0.5
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 0.5
+      end: 0.5, 1
+      color: "#006000"
+
+- type: tile
+  id: BaseAiVisionDiagonalMini
+  abstract: true
+  stationAiVisuals:
+    shapes:
+    - !type:StationAiVisionVisualsRect
+      rect: 0, 0, 1, 1
+      color: "#000000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0
+      end: 1, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.25, 0
+      end: 0, 0.25
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.25, 0
+      end: 1, 0.75
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.5, 0
+      end: 0, 0.5
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.5, 0
+      end: 1, 0.5
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.75, 0
+      end: 0, 0.75
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.75, 0
+      end: 1, 0.25
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 0
+      end: 0, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.25, 1
+      end: 0, 0.75
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.25, 1
+      end: 1, 0.25
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.5, 1
+      end: 0, 0.5
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.5, 1
+      end: 1, 0.5
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.75, 1
+      end: 0, 0.25
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.75, 1
+      end: 1, 0.75
+      color: "#006000"
+
+- type: tile
+  id: BaseAiVisionPavement
+  abstract: true
+  stationAiVisuals:
+    shapes:
+    - !type:StationAiVisionVisualsRect
+      rect: 0, 0, 1, 1
+      color: "#000000"
+
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.25
+      end: 1, 0.25
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.5
+      end: 1, 0.5
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.75
+      end: 1, 0.75
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 1
+      end: 1, 1
+      color: "#006000"
+
+    - !type:StationAiVisionVisualsVertex
+      start: 0.5, 1
+      end: 0.5, 0.75
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 1
+      end: 1, 0.75
+      color: "#006000"
+
+    - !type:StationAiVisionVisualsVertex
+      start: 0.25, 0.75
+      end: 0.25, 0.5
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.75, 0.75
+      end: 0.75, 0.5
+      color: "#006000"
+
+    - !type:StationAiVisionVisualsVertex
+      start: 0.5, 0.5
+      end: 0.5, 0.25
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 0.5
+      end: 1, 0.25
+      color: "#006000"
+
+    - !type:StationAiVisionVisualsVertex
+      start: 0.25, 0.25
+      end: 0.25, 0
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.75, 0.25
+      end: 0.75, 0
+      color: "#006000"
+
+- type: tile
+  id: BaseAiVisionPavementVertical
+  abstract: true
+  stationAiVisuals:
+    shapes:
+    - !type:StationAiVisionVisualsRect
+      rect: 0, 0, 1, 1
+      color: "#000000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.25, 0
+      end: 0.25, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.5, 0
+      end: 0.5, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.75, 0
+      end: 0.75, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 0
+      end: 1, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.5
+      end: 0.25, 0.5
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.5, 0.5
+      end: 0.75, 0.5
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.25, 0.25
+      end: 0.5, 0.25
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.75, 0.25
+      end: 1, 0.25
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.25, 0.75
+      end: 0.5, 0.75
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.75, 0.75
+      end: 1, 0.75
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 1
+      end: 0.25, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.5, 1
+      end: 0.75, 1
+      color: "#006000"
+
+- type: tile
+  id: BaseAiVisionHerringbone
+  abstract: true
+  stationAiVisuals:
+    shapes:
+    - !type:StationAiVisionVisualsRect
+      rect: 0, 0, 1, 1
+      color: "#000000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.25, 0
+      end: 0.25, 0.25
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.5, 0
+      end: 0.5, 0.5
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.75, 0
+      end: 0.75, 0.75
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 0.25
+      end: 1, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.75, 0.25
+      end: 1, 0.25
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 0.75
+      end: 0.25, 0.75
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 1
+      end: 0.5, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.5, 1
+      end: 0.5, 0.75
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 1
+      end: 0.25, 1
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.25, 1
+      end: 0.25, 0.5
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.5
+      end: 0.75, 0.5
+      color: "#006000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.25
+      end: 0.5, 0.25
+      color: "#006000"

@@ -30,10 +30,12 @@ public sealed class StationMapBoundUserInterface : BoundUserInterface
         {
             stationName = gridMetaData.EntityName;
         }
-        
+
         if (EntMan.TryGetComponent<StationMapComponent>(Owner, out var comp) && comp.ShowLocation)
             _window.Set(stationName, gridUid, Owner);
         else
             _window.Set(stationName, gridUid, null);
+
+        _window.NavMapScreen.NavMapWarpAttemptAction += SendPredictedMessage;
     }
 }

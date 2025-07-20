@@ -49,6 +49,13 @@ public record struct OrganLimbRelayedEvent<TEvent>(TEvent Args, EntityUid Organ)
     public readonly EntityUid Organ = Organ;
 }
 
+[ByRefEvent]
+public record struct OrganBodyRelayedEvent<TEvent>(TEvent Args, EntityUid Organ)
+{
+    public TEvent Args = Args;
+    public readonly EntityUid Organ = Organ;
+}
+
 public sealed class LimbStateChangedEvent : EntityEventArgs
 {
     public EntityUid Body;

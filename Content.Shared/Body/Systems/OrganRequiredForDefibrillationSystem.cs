@@ -1,6 +1,5 @@
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Events;
-using Content.Shared.Item.ItemToggle;
 using Content.Shared.Medical;
 
 namespace Content.Shared.Body.Systems;
@@ -8,7 +7,6 @@ namespace Content.Shared.Body.Systems;
 public sealed partial class OrganRequiredForDefibrillationSystem : EntitySystem
 {
     [Dependency] private readonly SharedBodySystem _body = default!;
-    [Dependency] private readonly ItemToggleSystem _itemToggle = default!;
 
     public static readonly LocId NoOrganReason = "defibrillator-heart-missing";
 
@@ -35,21 +33,22 @@ public sealed partial class OrganRequiredForDefibrillationSystem : EntitySystem
         LocId? organReason = null;
         foreach (var tracker in _body.GetTrackers<OrganRequiredForDefibrillationComponent>(ent.Owner))
         {
-            if (!IsEnabled(tracker))
+            if (IsEnabled(tracker, ent.Owner, out var reason))
                 return;
 
-            organReason = tracker.Comp.DisableReason;
+            organReason = reason ?? tracker.Comp.DisableReason;
+            break;
         }
 
         args.Cancel();
         args.Reason = organReason ?? NoOrganReason;
     }
 
-    private bool IsEnabled(EntityUid uid)
+    private bool IsEnabled(EntityUid uid, EntityUid body, out LocId? reason)
     {
-        if (!_itemToggle.IsActivated(uid))
-            return false;
-
-        return true;
+        var ev = new OrganCanDefibrillateEvent(body);
+        RaiseLocalEvent(uid, ref ev);
+        reason = ev.Reason;
+        return !ev.Cancelled;
     }
 }

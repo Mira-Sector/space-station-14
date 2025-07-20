@@ -72,6 +72,9 @@
   parent: [ BaseOrganHeart, BaseArachnidOrgan ]
   name: heart
   description: "A disgustingly persistent little biological pump made for spiders."
+  components:
+  - type: Metabolizer
+    metabolizerTypes: [ Arachnid ]
 
 - type: entity
   id: OrganArachnidLiver

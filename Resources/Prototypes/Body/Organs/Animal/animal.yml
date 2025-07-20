@@ -114,6 +114,9 @@
   parent: [ BaseAnimalOrgan, BaseOrganHeart ]
   name: heart
   categories: [ HideSpawnMenu ]
+  components:
+  - type: Metabolizer
+    metabolizerTypes: [ Animal ]
 
 - type: entity
   id: OrganAnimalKidneys

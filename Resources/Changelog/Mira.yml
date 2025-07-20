@@ -1899,3 +1899,81 @@ Entries:
     type: Fix
   id: 265
   time: '2025-07-10T08:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Defibrillating now requires a beating heart rather than one not beating
+    type: Fix
+  - message: Kidneys now arent disabled by default
+    type: Fix
+  id: 266
+  time: '2025-07-13T17:15:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: AI now get a basic station overview outside of the AIs view
+    type: Add
+  - message: Cameras now turn off vision with no power
+    type: Tweak
+  - message: AI eye now draws over the AIs view
+    type: Tweak
+  id: 267
+  time: '2025-07-15T10:15:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: AI can now press "Alternative activate item in world" on any UI with a navmap to warp to the location
+    type: Add
+  id: 268
+  time: '2025-07-15T13:30:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Necrosis damage no longer causes bleeding
+    type: Fix
+  - message: Smoking and alcohol poisoning damage have been increased
+    type: Tweak
+  id: 269
+  time: '2025-07-15T15:10:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Poison damage from a wounded liver now counts to to being crit/dead
+    type: Fix
+  id: 270
+  time: '2025-07-18T14:20:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Poison damage from a wounded liver now scales based on how damaged it is
+    type: Add
+  id: 271
+  time: '2025-07-18T16:50:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Health analyzer can now select overall damage again
+    type: Fix
+  id: 272
+  time: '2025-07-18T17:30:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Organs only rot when the body is dead
+    type: Tweak
+  - message: Organs get damaged when rotting reaches the second stage
+    type: Tweak
+  id: 273
+  time: '2025-07-18T21:15:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Slimes get kidneys
+    type: Fix
+  id: 274
+  time: '2025-07-19T17:25:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: A disabled heart no longer prevents defibrillation
+    type: Remove
+  - message: A dead heart prevents defibrillation
+    type: Add
+  - message: The body dying causes the heart to stop beating
+    type: Add
+  - message: Defibrillation causes the heart to beat
+    type: Add
+  - message: Epinephrine causes minor heart damage
+    type: Add
+  id: 275
+  time: '2025-07-20T01:30:50.0000000+00:00'

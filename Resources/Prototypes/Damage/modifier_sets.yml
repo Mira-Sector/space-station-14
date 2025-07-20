@@ -249,6 +249,7 @@
     Cold: 0.0
     Heat: -0.5 # heat damage cauterizes wounds, but will still hurt obviously.
     Holy: 0
+    Necrosis: 0
     Piercing: 0.2
     Poison: 0.0
     Radiation: 0.0
