@@ -10,7 +10,14 @@ public abstract partial class BaseToggleOnBodyDamageSystem<T> : BaseOnBodyDamage
     {
         base.Initialize();
 
+        SubscribeLocalEvent<T, ComponentInit>(OnInit);
         SubscribeLocalEvent<T, BodyDamageChangedEvent>(OnDamage, after: [typeof(BodyDamageThresholdsSystem)]);
+    }
+
+    [MustCallBase]
+    protected void OnInit(Entity<T> ent, ref ComponentInit args)
+    {
+        ent.Comp.Enabled = CanDoEffect(ent);
     }
 
     [MustCallBase]

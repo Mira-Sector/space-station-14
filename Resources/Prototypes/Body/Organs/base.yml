@@ -18,6 +18,12 @@
           False: { state: heart-off }
   - type: Organ
     organType: Heart
+  - type: Metabolizer
+    maxReagents: 2
+    metabolizerTypes:
+    - Human
+    groups:
+    - id: Heart
   - type: BodyDamageable
   - type: BodyDamageThresholds
     thresholds:
@@ -33,12 +39,22 @@
   - type: ItemToggleExamineText
     enabledText: heart-examine-beating
     disabledText: heart-examine-not-beating
+  - type: ItemToggleOnDefibrillation
+    enable: true
+  - type: ItemToggleOnMobThresholds
+    mode: Disable
+    states:
+    - Dead
   - type: ItemToggleOnBodyDamage
     requiredStates:
     - Dead
   - type: OrganRequiredForDefibrillation
   - type: OrganRequiredForRespiration
   - type: DisableRespireOnItemToggle
+  - type: DefibrillationDisableOnBodyDamage
+    requiredStates:
+    - Dead
+    reason: defibrillator-heart-dead
   - type: RespirationDelayOnBodyDamage
     requiredStates:
     - Wounded
@@ -85,11 +101,12 @@
     minChance: 0
     maxChance: 0.2
   - type: OrganRequiredForRespiration
-  - type: DisableRespireOnItemToggle
+  - type: DisableRespireOnBodyDamage
+    requiredStates:
+    - Dead
   - type: RespirationDelayOnBodyDamage
     requiredStates:
     - Wounded
-    - Dead
   - type: SolutionContainerManager
     solutions:
       organ:

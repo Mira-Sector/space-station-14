@@ -15,6 +15,7 @@ public sealed partial class DisableRespireOnBodyDamageSystem : BaseToggleOnBodyD
 
     private void OnCanRespire(Entity<DisableRespireOnBodyDamageComponent> ent, ref CanRespireEvent args)
     {
-        args.Enabled = ent.Comp.Enabled;
+        if (ent.Comp.Enabled)
+            args.Cancel();
     }
 }

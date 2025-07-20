@@ -48,6 +48,8 @@
   - type: Item
     size: Small
     heldPrefix: brain
+  - type: Metabolizer
+    metabolizerTypes: [ Slime ]
 
 - type: entity
   id: OrganSlimeLungs
