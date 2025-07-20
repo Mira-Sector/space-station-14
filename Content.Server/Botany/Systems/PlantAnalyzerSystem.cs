@@ -176,11 +176,6 @@ public sealed class PlantAnalyzerSystem : BaseAnalyzerSystem<PlantAnalyzerCompon
             ("nl", "\n")
         ];
 
-        var test = data.PlantData?.Kudzu.ToString() ?? "nope";
-        Log.Debug(test);
-        test = data.PlantData?.Viable.ToString() ?? "nope";
-        Log.Debug(test);
-
         _paperSystem.SetContent((printed, paperComp), Loc.GetString($"plant-analyzer-printout", [.. parameters]));
         _labelSystem.Label(printed, seedName);
         _audioSystem.PlayPvs(component.SoundPrint, uid, AudioParams.Default);
