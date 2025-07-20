@@ -75,6 +75,10 @@
     swabDelay: 0.75
     usable: false
     contaminate: false
+  - type: Tag
+    tags:
+    - SwabApplicator
+
 
 - type: entity
   parent: BaseAmmoProvider # this is for cycling swabs out and not spawning 30 entities, trust

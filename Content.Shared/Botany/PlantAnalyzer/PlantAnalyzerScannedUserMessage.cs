@@ -99,7 +99,7 @@ public sealed class PlantAnalyzerProduceData(int yield, float potency, List<stri
             potencyFtl += "gigantic";
         else if (potency < 80)
             potencyFtl += "ludicrous";
-        else if (potency < 99)
+        else if (potency < 100)
             potencyFtl += "immeasurable";
         else
             potencyFtl += "perfect"; //you've earned this, king.
