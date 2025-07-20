@@ -170,8 +170,8 @@ public sealed class PlantAnalyzerSystem : BaseAnalyzerSystem<PlantAnalyzerCompon
             ("endurance", data.PlantData?.Endurance.ToString(PlantAnalyzerLocalizationHelper.DP) ?? missingData),
             ("lifespan", data.PlantData?.Lifespan.ToString(PlantAnalyzerLocalizationHelper.DP) ?? missingData),
             ("seeds", data.ProduceData is not null ? PlantAnalyzerLocalizationHelper.BooleanToLocalizedStrings(data.ProduceData.Seedless, _prototypeManager) : missingData),
-            ("viable", data.PlantData?.Viable.ToString() ?? missingData),
-            ("kudzu", data.PlantData?.Kudzu.ToString() ?? missingData),
+            ("viable", data.PlantData is not null ? PlantAnalyzerLocalizationHelper.BooleanToLocalizedStrings(data.PlantData.Viable, _prototypeManager) : missingData),
+            ("kudzu", data.PlantData is not null ? PlantAnalyzerLocalizationHelper.BooleanToLocalizedStrings(data.PlantData.Kudzu, _prototypeManager) : missingData),
             ("indent", "    "),
             ("nl", "\n")
         ];

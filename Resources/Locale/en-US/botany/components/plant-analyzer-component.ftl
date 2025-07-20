@@ -77,16 +77,8 @@ plant-analyzer-printout-missing = N/A
 plant-analyzer-printout = [color=#9FED58][head=2]Plant Analyzer Report[/head][/color]{$nl
     }──────────────────────────────{$nl
     }[bullet/] Species: {$seedName}{$nl
-    }{$indent}[bullet/] Viable: {$viable ->
-        [False][color=red]No[/color]
-        [True][color=green]Yes[/color]
-        *[other]{LOC("plant-analyzer-printout-missing")}
-    }{$nl
-    }{$indent}[bullet/] Kudzu: {$kudzu ->
-    [False][color=green]No[/color]
-    [True][color=red]Yes[/color]
-    *[other]{LOC("plant-analyzer-printout-missing")}
-    }{$nl
+    }{$indent}[bullet/] Viable: {$viable}{$nl
+    }{$indent}[bullet/] Kudzu: {$kudzu}{$nl
     }{$indent}[bullet/] Endurance: {$endurance}{$nl
     }{$indent}[bullet/] Lifespan: {$lifespan}{$nl
     }{$indent}[bullet/] Produce: {$yield ->
