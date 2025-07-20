@@ -3,6 +3,7 @@ using Content.Shared.Body.Organ;
 using Content.Shared.Body.Part;
 using Content.Shared.Damage;
 using Content.Shared.Humanoid;
+using Content.Shared.Mobs;
 using Content.Shared.Speech;
 using Content.Shared.Standing;
 
@@ -19,6 +20,7 @@ public partial class SharedBodySystem
 
         SubscribeLocalEvent<BodyComponent, SexChangedEvent>(RelayToLimbsAndOrgans);
         SubscribeLocalEvent<BodyComponent, ScreamActionEvent>(RelayToLimbsAndOrgans);
+        SubscribeLocalEvent<BodyComponent, MobStateChangedEvent>(RelayToLimbsAndOrgans);
 
         SubscribeLocalEvent<BodyPartComponent, DamageModifyEvent>(RelayToBody);
         SubscribeLocalEvent<BodyPartComponent, DamageChangedEvent>(RelayToBody);

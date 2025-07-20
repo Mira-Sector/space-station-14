@@ -33,6 +33,10 @@
   - type: ItemToggleExamineText
     enabledText: heart-examine-beating
     disabledText: heart-examine-not-beating
+  - type: ItemToggleOnMobThresholds
+    mode: Disable
+    states:
+    - Dead
   - type: ItemToggleOnBodyDamage
     requiredStates:
     - Dead
