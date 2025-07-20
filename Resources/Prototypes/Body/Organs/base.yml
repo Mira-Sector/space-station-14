@@ -33,6 +33,8 @@
   - type: ItemToggleExamineText
     enabledText: heart-examine-beating
     disabledText: heart-examine-not-beating
+  - type: ItemToggleOnDefibrillation
+    enable: true
   - type: ItemToggleOnMobThresholds
     mode: Disable
     states:
