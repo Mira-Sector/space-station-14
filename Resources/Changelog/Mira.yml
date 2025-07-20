@@ -1963,3 +1963,17 @@ Entries:
     type: Fix
   id: 274
   time: '2025-07-19T17:25:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: A disabled heart no longer prevents defibrillation
+    type: Remove
+  - message: A dead heart prevents defibrillation
+    type: Add
+  - message: The body dying causes the heart to stop beating
+    type: Add
+  - message: Defibrillation causes the heart to beat
+    type: Add
+  - message: Epinephrine causes minor heart damage
+    type: Add
+  id: 275
+  time: '2025-07-20T01:30:50.0000000+00:00'
