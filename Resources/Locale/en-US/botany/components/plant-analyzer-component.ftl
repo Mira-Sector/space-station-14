@@ -77,8 +77,16 @@ plant-analyzer-printout-missing = N/A
 plant-analyzer-printout = [color=#9FED58][head=2]Plant Analyzer Report[/head][/color]{$nl
     }──────────────────────────────{$nl
     }[bullet/] Species: {$seedName}{$nl
-    }{$indent}[bullet/] Viable: {$viable}{$nl
-    }{$indent}[bullet/] Kudzu: {$kudzu}{$nl
+    }{$indent}[bullet/] Viable: {$viable ->
+        [Yes][color=green]Yes[/color]
+        [No][color=red]No[/color]
+        *[other]{LOC("plant-analyzer-printout-missing")}
+    }{$nl
+    }{$indent}[bullet/] Kudzu: {$kudzu ->
+        [Yes][color=red]Yes[/color]
+        [No][color=green]No[/color]
+        *[other]{LOC("plant-analyzer-printout-missing")}
+    }{$nl
     }{$indent}[bullet/] Endurance: {$endurance}{$nl
     }{$indent}[bullet/] Lifespan: {$lifespan}{$nl
     }{$indent}[bullet/] Produce: {$yield ->
@@ -93,8 +101,8 @@ plant-analyzer-printout = [color=#9FED58][head=2]Plant Analyzer Report[/head][/c
         *[other][color=lightgreen][bold]{$potency}[/bold] {"("}{$potencyDesc}{")"}[/color]
         }{$nl
     }{$indent}[bullet/] Seedless: {$seeds ->
-        [no][color=red]Yes[/color]
-        [yes][color=green]No[/color]
+        [Yes][color=red]Yes[/color]
+        [No][color=green]No[/color]
         *[other]{LOC("plant-analyzer-printout-missing")}
         }{$nl
     }[bullet/] Growth profile:{$nl
