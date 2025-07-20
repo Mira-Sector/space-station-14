@@ -170,11 +170,16 @@ public sealed class PlantAnalyzerSystem : BaseAnalyzerSystem<PlantAnalyzerCompon
             ("endurance", data.PlantData?.Endurance.ToString(PlantAnalyzerLocalizationHelper.DP) ?? missingData),
             ("lifespan", data.PlantData?.Lifespan.ToString(PlantAnalyzerLocalizationHelper.DP) ?? missingData),
             ("seeds", data.ProduceData is not null ? PlantAnalyzerLocalizationHelper.BooleanToLocalizedStrings(data.ProduceData.Seedless ? true : false, _prototypeManager) : missingData),
-            ("viable", data.PlantData is not null ? PlantAnalyzerLocalizationHelper.BooleanToLocalizedStrings(data.PlantData.Viable ? true : false, _prototypeManager) : missingData),
-            ("kudzu", data.PlantData is not null ? PlantAnalyzerLocalizationHelper.BooleanToLocalizedStrings(data.PlantData.Kudzu ? true : false, _prototypeManager) : missingData),
+            ("viable", data.PlantData?.Viable.ToString() ?? missingData),
+            ("kudzu", data.PlantData?.Kudzu.ToString() ?? missingData),
             ("indent", "    "),
             ("nl", "\n")
         ];
+
+        var test = data.PlantData?.Kudzu.ToString() ?? "nope";
+        Log.Debug(test);
+        test = data.PlantData?.Viable.ToString() ?? "nope";
+        Log.Debug(test);
 
         _paperSystem.SetContent((printed, paperComp), Loc.GetString($"plant-analyzer-printout", [.. parameters]));
         _labelSystem.Label(printed, seedName);

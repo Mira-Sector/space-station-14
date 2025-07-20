@@ -205,7 +205,7 @@
         maxVol: 10
         reagents:
           - ReagentId: Chlorine
-            Quantity: 5
+            Quantity: 10
 
 - type: entity
   id: PlasmaChemistryVial

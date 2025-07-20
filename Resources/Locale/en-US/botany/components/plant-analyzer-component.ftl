@@ -78,13 +78,13 @@ plant-analyzer-printout = [color=#9FED58][head=2]Plant Analyzer Report[/head][/c
     }──────────────────────────────{$nl
     }[bullet/] Species: {$seedName}{$nl
     }{$indent}[bullet/] Viable: {$viable ->
-        [no][color=red]No[/color]
-        [yes][color=green]Yes[/color]
+        [False][color=red]No[/color]
+        [True][color=green]Yes[/color]
         *[other]{LOC("plant-analyzer-printout-missing")}
     }{$nl
     }{$indent}[bullet/] Kudzu: {$kudzu ->
-    [no][color=green]No[/color]
-    [yes][color=red]Yes[/color]
+    [False][color=green]No[/color]
+    [True][color=red]Yes[/color]
     *[other]{LOC("plant-analyzer-printout-missing")}
     }{$nl
     }{$indent}[bullet/] Endurance: {$endurance}{$nl
