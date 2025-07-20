@@ -314,6 +314,10 @@
   flavor: medicine
   color: "#d2fffa"
   metabolisms:
+    Heart:
+      effects:
+      - !type:BodyDamage
+        damage: 0.3
     Medicine:
       effects:
       - !type:AdjustReagent

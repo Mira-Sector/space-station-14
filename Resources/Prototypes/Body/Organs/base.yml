@@ -18,6 +18,12 @@
           False: { state: heart-off }
   - type: Organ
     organType: Heart
+  - type: Metabolizer
+    maxReagents: 2
+    metabolizerTypes:
+    - Human
+    groups:
+    - id: Heart
   - type: BodyDamageable
   - type: BodyDamageThresholds
     thresholds:
