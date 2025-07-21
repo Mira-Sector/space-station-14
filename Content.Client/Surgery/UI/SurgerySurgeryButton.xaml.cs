@@ -9,9 +9,13 @@ namespace Content.Client.Surgery.UI;
 [GenerateTypedNameReferences]
 public sealed partial class SurgerySurgeryButton : Button
 {
+    public ProtoId<SurgeryPrototype> Surgery;
+
     public SurgerySurgeryButton(ProtoId<SurgeryPrototype> surgeryId)
     {
         RobustXamlLoader.Load(this);
+
+        Surgery = surgeryId;
         Text = surgeryId;
     }
 }

@@ -37,7 +37,7 @@ public sealed partial class SurgeryWindow : FancyWindow
 
         foreach (var (part, receiver) in GetLimbSurgeries(target.Value))
         {
-            var button = new SurgeryLimbButton(part);
+            var button = new SurgeryLimbButton(receiver, part);
             button.OnPressed += _ => OnLimbButtonPressed(receiver);
             LimbButtons.AddChild(button);
         }
@@ -89,11 +89,29 @@ public sealed partial class SurgeryWindow : FancyWindow
         _receiver = receiver;
         UpdateSurgeries();
         GraphView.ChangeGraph(_receiver.Graph);
+
+        foreach (var control in LimbButtons.Children)
+        {
+            if (control is not SurgeryLimbButton button)
+                continue;
+
+            if (button.Receiver != receiver)
+                button.Pressed = false;
+        }
     }
 
     private void OnSurgeryButtonPressed(ProtoId<SurgeryPrototype> surgeryId)
     {
         var surgery = _prototypeManager.Index(surgeryId);
         GraphView.HighlightedNodes = surgery.Nodes.Values.ToHashSet();
+
+        foreach (var control in SurgeryButtons.Children)
+        {
+            if (control is not SurgerySurgeryButton button)
+                continue;
+
+            if (button.Surgery != surgeryId)
+                button.Pressed = false;
+        }
     }
 }
