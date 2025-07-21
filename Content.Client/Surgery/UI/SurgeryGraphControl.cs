@@ -37,6 +37,7 @@ public sealed partial class SurgeryGraphControl : Control
 
     private static readonly Color NodeColor = Color.SkyBlue;
     private static readonly Color NodeHighlightColor = Color.SeaGreen;
+    private static readonly Color CurrentNodeColor = Color.MediumPurple;
     private static readonly Color EdgeColor = Color.PaleTurquoise;
     private static readonly Color EdgeHighlightColor = Color.GreenYellow;
 
@@ -48,6 +49,8 @@ public sealed partial class SurgeryGraphControl : Control
     private Dictionary<SurgeryNode, int>? _layerMap;
     private Dictionary<int, List<SurgeryNode>>? _orderedLayers;
     private Dictionary<SurgeryNode, Vector2>? _nodePositions;
+
+    public SurgeryNode? CurrentNode;
 
     [ViewVariables]
     public Vector2 GraphOffset = Vector2.Zero;
@@ -284,7 +287,13 @@ public sealed partial class SurgeryGraphControl : Control
 
         foreach (var (node, pos) in _nodePositions)
         {
-            DrawNode(handle, node, pos);
+            var nodeColor = node == CurrentNode
+                ? CurrentNodeColor
+                : HighlightedNodes.Contains(node)
+                    ? NodeHighlightColor
+                    : NodeColor;
+
+            DrawNode(handle, node, pos, nodeColor);
 
             foreach (var edge in node.Edges)
             {
@@ -300,21 +309,20 @@ public sealed partial class SurgeryGraphControl : Control
 
                 drawnPairs.Add(key);
 
-                var color = HighlightedNodes.Contains(node) && HighlightedNodes.Contains(target) ? EdgeHighlightColor : EdgeColor;
+                var edgeColor = HighlightedNodes.Contains(node) && HighlightedNodes.Contains(target) ? EdgeHighlightColor : EdgeColor;
 
                 if (node == target)
-                    DrawSelfLoop(handle, pos, color);
+                    DrawSelfLoop(handle, pos, edgeColor);
                 else
-                    DrawEdge(handle, pos, targetPos, node, target, color, _layerMap, _nodePositions, drawnEdges);
+                    DrawEdge(handle, pos, targetPos, node, target, edgeColor, _layerMap, _nodePositions, drawnEdges);
             }
         }
 
         handle.SetTransform(previous);
     }
 
-    private void DrawNode(DrawingHandleScreen handle, SurgeryNode node, Vector2 pos)
+    private static void DrawNode(DrawingHandleScreen handle, SurgeryNode node, Vector2 pos, Color color)
     {
-        var color = HighlightedNodes.Contains(node) ? NodeHighlightColor : NodeColor;
         handle.DrawCircle(pos, NodeRadius, color, filled: true);
     }
 

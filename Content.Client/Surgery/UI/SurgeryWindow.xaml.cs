@@ -90,6 +90,8 @@ public sealed partial class SurgeryWindow : FancyWindow
         UpdateSurgeries();
         GraphView.ChangeGraph(_receiver.Graph);
 
+        GraphView.CurrentNode = _receiver.CurrentNode;
+
         foreach (var control in LimbButtons.Children)
         {
             if (control is not SurgeryLimbButton button)
