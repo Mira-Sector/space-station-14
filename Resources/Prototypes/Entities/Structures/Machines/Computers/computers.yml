@@ -643,6 +643,9 @@
     color: "#1f8c28"
   - type: SurgeryUserInterface
   - type: SurgeryUserInterfaceLinkedSink
+  - type: DeviceLinkSink
+    ports:
+      - SurgeryUiSink
   - type: ActivatableUI
     key: enum.SurgeryUiKey.Key
   - type: UserInterface

@@ -5,6 +5,7 @@ using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
 using Content.Shared.Standing;
 using Content.Shared.Surgery.Components;
+using Content.Shared.Surgery.Events;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Surgery.Systems;
@@ -222,6 +223,8 @@ public abstract partial class SharedSurgerySystem : EntitySystem
 
         args.Handled = true;
 
+        var oldNode = surgeryReceiver.CurrentNode;
+
         DoNodeLeftSpecials(surgeryReceiver.CurrentNode?.Special, body, limb, args.User, args.Used, args.BodyPart);
         surgeryReceiver.CurrentNode = newNode;
         DoNodeReachedSpecials(surgeryReceiver.CurrentNode?.Special, body, limb, args.User, args.Used, args.BodyPart);
@@ -229,6 +232,8 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         var netDoAfterId = (GetNetEntity(args.DoAfter.Id.Uid), args.DoAfter.Id.Index);
         surgeryReceiver.DoAfters.Remove(netDoAfterId);
         CancelDoAfters(limb ?? body, surgeryReceiver);
+
+        RaiseNodeModifiedEvents(limb, body, surgeryReceiver, oldNode!, newNode, args.TargetEdge);
     }
 
     public bool TryTraverseGraph(EntityUid? limb, ISurgeryReceiver surgery, EntityUid? body, EntityUid user, EntityUid? used, BodyPart bodyPart)
@@ -243,6 +248,8 @@ public abstract partial class SharedSurgerySystem : EntitySystem
 
         Enum? ui = null;
 
+        var oldNode = surgery.CurrentNode;
+
         foreach (var edge in surgery.CurrentNode.Edges)
         {
             // when merging the graph we made sure there arent multiple edges to traverse
@@ -250,9 +257,11 @@ public abstract partial class SharedSurgerySystem : EntitySystem
             {
                 case SurgeryEdgeState.Passed:
                 case SurgeryEdgeState.DoAfter:
+                    RaiseNodeModifiedEvents(limb, body, surgery, oldNode!, surgery.CurrentNode, edge);
                     return true;
                 case SurgeryEdgeState.UserInterface:
                     ui ??= edgeUi;
+                    RaiseNodeModifiedEvents(limb, body, surgery, oldNode!, surgery.CurrentNode, edge);
                     break;
             }
         }
@@ -366,5 +375,20 @@ public abstract partial class SharedSurgerySystem : EntitySystem
             Ui.CloseUi(uid.Value, ui);
 
         surgeryReceiver.UserInterfaces.Clear();
+    }
+
+    private void RaiseNodeModifiedEvents(EntityUid? limb, EntityUid? body, ISurgeryReceiver receiver, SurgeryNode previousNode, SurgeryNode currentNode, SurgeryEdge edge)
+    {
+        if (limb != null)
+        {
+            var limbEv = new SurgeryCurrentNodeModifiedEvent(previousNode, currentNode, edge, receiver.Graph);
+            RaiseLocalEvent(limb.Value, ref limbEv);
+        }
+
+        if (body != null)
+        {
+            var bodyEv = new SurgeryBodyCurrentNodeModifiedEvent(previousNode, currentNode, edge, receiver.Graph);
+            RaiseLocalEvent(body.Value, ref bodyEv);
+        }
     }
 }
