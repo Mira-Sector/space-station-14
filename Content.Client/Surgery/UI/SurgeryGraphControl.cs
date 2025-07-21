@@ -1,6 +1,7 @@
 using Content.Shared.Surgery;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
+using Robust.Shared.Input;
 using System.Linq;
 using System.Numerics;
 
@@ -29,6 +30,11 @@ public sealed partial class SurgeryGraphControl : Control
     private const int SelfLoopSegments = 12;
     private const int SelfLoopArrowSegment = 3;
 
+    private const float ScrollSensitivity = 8f;
+    private const float ScrollSensitivityMultiplier = 1 / ScrollSensitivity;
+    private const float MinZoom = 0.5f;
+    private const float MaxZoom = 4;
+
     private static readonly Color NodeColor = Color.SkyBlue;
     private static readonly Color NodeHighlightColor = Color.SeaGreen;
     private static readonly Color EdgeColor = Color.PaleTurquoise;
@@ -42,15 +48,99 @@ public sealed partial class SurgeryGraphControl : Control
     private Dictionary<int, List<SurgeryNode>>? _orderedLayers;
     private Dictionary<SurgeryNode, Vector2>? _nodePositions;
 
+    [ViewVariables]
+    public Vector2 GraphOffset = Vector2.Zero;
+
+    [ViewVariables]
+    public Vector2 Scale = Vector2.One;
+
+    private bool _dragging = false;
+
     public HashSet<SurgeryNode> HighlightedNodes = [];
+
+    private Matrix3x2 Transform => Matrix3x2.CreateScale(Scale) * Matrix3x2.CreateTranslation(GraphOffset);
+    private Matrix3x2 InverseTransform => Matrix3x2.Invert(Transform, out var inverse) ? inverse : Matrix3x2.Identity;
 
     #endregion
 
     #region Initialization
 
-    public SurgeryGraphControl()
+    public SurgeryGraphControl() : base()
     {
         IoCManager.InjectDependencies(this);
+
+        MouseFilter = MouseFilterMode.Stop;
+    }
+
+    protected override void KeyBindDown(GUIBoundKeyEventArgs args)
+    {
+        base.KeyBindDown(args);
+
+        if (args.Function == EngineKeyFunctions.UIClick)
+            _dragging = true;
+    }
+
+    protected override void KeyBindUp(GUIBoundKeyEventArgs args)
+    {
+        base.KeyBindUp(args);
+
+        if (args.Function == EngineKeyFunctions.UIClick)
+            _dragging = false;
+    }
+
+    protected override void MouseMove(GUIMouseMoveEventArgs args)
+    {
+        base.MouseMove(args);
+
+        if (_dragging)
+        {
+            GraphOffset += args.Relative;
+            InvalidateMeasure();
+            return;
+        }
+    }
+
+    protected override void MouseWheel(GUIMouseWheelEventArgs args)
+    {
+        base.MouseWheel(args);
+
+        var cursorGraphPosBeforeZoom = (args.RelativePosition - GraphOffset) / Scale;
+
+        var delta = new Vector2(args.Delta.Y, args.Delta.Y) * ScrollSensitivityMultiplier;
+        Scale += delta;
+
+        Scale = new Vector2(
+            Math.Clamp(Scale.X, MinZoom, MaxZoom),
+            Math.Clamp(Scale.Y, MinZoom, MaxZoom)
+        );
+
+        GraphOffset = args.RelativePosition - cursorGraphPosBeforeZoom * Scale;
+        InvalidateMeasure();
+    }
+
+    protected override Vector2 MeasureOverride(Vector2 availableSize)
+    {
+        if (_nodePositions == null || !_nodePositions.Any())
+            return Vector2.Zero;
+
+        var bounds = Box2.Empty;
+
+        foreach (var pos in _nodePositions.Values)
+        {
+            var nodeBox = Box2.FromDimensions(
+                pos - new Vector2(NodeRadius),
+                new Vector2(NodeRadius * 2)
+            );
+
+            bounds = bounds.Union(nodeBox);
+        }
+
+        var desiredSize = bounds.Translated(GlobalPosition).Scale(Scale).Size;
+
+        return new Vector2(
+            MathF.Min(desiredSize.X, availableSize.X),
+            MathF.Min(desiredSize.Y, availableSize.Y)
+        );
     }
 
     public void ChangeGraph(SurgeryGraph? graph)
@@ -69,6 +159,7 @@ public sealed partial class SurgeryGraphControl : Control
         _layerMap = AssignLayers(_graph);
         _orderedLayers = ReduceCrossings(_layerMap, _graph);
         _nodePositions = AssignCoordinates(_orderedLayers);
+        InvalidateMeasure();
     }
 
     #endregion
@@ -187,6 +278,9 @@ public sealed partial class SurgeryGraphControl : Control
         List<Vector2[]> drawnEdges = [];
         HashSet<(SurgeryNode, SurgeryNode)> drawnPairs = [];
 
+        var previous = handle.GetTransform();
+        handle.SetTransform(Transform * previous);
+
         foreach (var (node, pos) in _nodePositions)
         {
             DrawNode(handle, node, pos);
@@ -211,6 +305,8 @@ public sealed partial class SurgeryGraphControl : Control
                     DrawEdge(handle, pos, targetPos, node, target, _layerMap, _nodePositions, drawnEdges);
             }
         }
+
+        handle.SetTransform(previous);
     }
 
     private void DrawNode(DrawingHandleScreen handle, SurgeryNode node, Vector2 pos)
@@ -256,12 +352,6 @@ public sealed partial class SurgeryGraphControl : Control
         var isBackwards = toLayer < fromLayer;
         if (isBackwards)
         {
-            var baseDir = (endPos - startPos).Normalized();
-
-            // adjusted start and end to avoid overlapping nodes
-            start = startPos + baseDir * (NodeRadius + EdgeClearance);
-            end = endPos - baseDir * (NodeRadius + EdgeClearance);
-
             var control1 = new Vector2(start.X - BackwardEdgeControlOffsetX, start.Y - BackwardEdgeCurveHeight);
             var control2 = new Vector2(end.X - BackwardEdgeControlOffsetX, end.Y - BackwardEdgeCurveHeight);
 
@@ -346,7 +436,7 @@ public sealed partial class SurgeryGraphControl : Control
         Vector2 control2,
         Vector2 end,
         Color color,
-        int segments = 6)
+        int segments = 24)
     {
         var points = new Vector2[segments + 1];
 
