@@ -38,6 +38,7 @@ public sealed partial class SurgeryGraphControl : Control
     private static readonly Color NodeColor = Color.SkyBlue;
     private static readonly Color NodeHighlightColor = Color.SeaGreen;
     private static readonly Color EdgeColor = Color.PaleTurquoise;
+    private static readonly Color EdgeHighlightColor = Color.GreenYellow;
 
     #endregion
 
@@ -299,10 +300,12 @@ public sealed partial class SurgeryGraphControl : Control
 
                 drawnPairs.Add(key);
 
+                var color = HighlightedNodes.Contains(node) && HighlightedNodes.Contains(target) ? EdgeHighlightColor : EdgeColor;
+
                 if (node == target)
-                    DrawSelfLoop(handle, pos);
+                    DrawSelfLoop(handle, pos, color);
                 else
-                    DrawEdge(handle, pos, targetPos, node, target, _layerMap, _nodePositions, drawnEdges);
+                    DrawEdge(handle, pos, targetPos, node, target, color, _layerMap, _nodePositions, drawnEdges);
             }
         }
 
@@ -315,7 +318,7 @@ public sealed partial class SurgeryGraphControl : Control
         handle.DrawCircle(pos, NodeRadius, color, filled: true);
     }
 
-    private static void DrawSelfLoop(DrawingHandleScreen handle, Vector2 pos)
+    private static void DrawSelfLoop(DrawingHandleScreen handle, Vector2 pos, Color color)
     {
         var points = new Vector2[SelfLoopSegments + 1];
         for (var i = 0; i <= SelfLoopSegments; i++)
@@ -327,8 +330,8 @@ public sealed partial class SurgeryGraphControl : Control
             );
         }
 
-        handle.DrawPrimitives(DrawPrimitiveTopology.LineStrip, points, EdgeColor);
-        DrawArrowHead(handle, points[SelfLoopArrowSegment - 1], points[SelfLoopArrowSegment]);
+        handle.DrawPrimitives(DrawPrimitiveTopology.LineStrip, points, color);
+        DrawArrowHead(handle, points[SelfLoopArrowSegment - 1], points[SelfLoopArrowSegment], color);
     }
 
     private static void DrawEdge(
@@ -337,6 +340,7 @@ public sealed partial class SurgeryGraphControl : Control
         Vector2 endPos,
         SurgeryNode from,
         SurgeryNode to,
+        Color color,
         Dictionary<SurgeryNode, int> layers,
         Dictionary<SurgeryNode, Vector2> nodePositions,
         List<Vector2[]> existingEdges)
@@ -366,17 +370,17 @@ public sealed partial class SurgeryGraphControl : Control
             control1 = new Vector2(adjustedStart.X - BackwardEdgeControlOffsetX, adjustedStart.Y - BackwardEdgeCurveHeight);
             control2 = new Vector2(adjustedEnd.X - BackwardEdgeControlOffsetX, adjustedEnd.Y - BackwardEdgeCurveHeight);
 
-            DrawBezier(handle, adjustedStart, control1, control2, adjustedEnd, EdgeColor);
+            DrawBezier(handle, adjustedStart, control1, control2, adjustedEnd, color);
 
             var arrowBase = CalculateCubicBezierPoint(BezierArrowOffsetT, adjustedStart, control1, control2, adjustedEnd);
             var arrowTip = CalculateCubicBezierPoint(BezierArrowTipT, adjustedStart, control1, control2, adjustedEnd);
-            DrawArrowHead(handle, arrowBase, arrowTip);
+            DrawArrowHead(handle, arrowBase, arrowTip, color);
             return;
         }
 
         if (!PathIntersectsAnything([start, end], nodePositions, existingEdges))
         {
-            DrawLineSegment(handle, start, end, existingEdges, isFinal: true);
+            DrawLineSegment(handle, start, end, existingEdges, color, isFinal: true);
             return;
         }
 
@@ -395,7 +399,7 @@ public sealed partial class SurgeryGraphControl : Control
             if (!PathIntersectsAnything(points.ToArray(), nodePositions, existingEdges))
             {
                 for (var i = 0; i < points.Count - 1; i++)
-                    DrawLineSegment(handle, points[i], points[i + 1], existingEdges, i == points.Count - 2);
+                    DrawLineSegment(handle, points[i], points[i + 1], existingEdges, color, i == points.Count - 2);
 
                 return;
             }
@@ -404,7 +408,7 @@ public sealed partial class SurgeryGraphControl : Control
         var match = from.Edges.FirstOrDefault(e => e.Connection?.Equals(to.Id) == true);
         if (match == null)
         {
-            DrawLineSegment(handle, start, end, existingEdges, isFinal: true);
+            DrawLineSegment(handle, start, end, existingEdges, color, isFinal: true);
             return;
         }
 
@@ -419,14 +423,14 @@ public sealed partial class SurgeryGraphControl : Control
 
         if (!PathIntersectsAnything(elbowPath, nodePositions, existingEdges))
         {
-            DrawLineSegment(handle, start, mid1, existingEdges);
-            DrawLineSegment(handle, mid1, mid2, existingEdges);
-            DrawLineSegment(handle, mid2, end, existingEdges, isFinal: true);
+            DrawLineSegment(handle, start, mid1, existingEdges, color);
+            DrawLineSegment(handle, mid1, mid2, existingEdges, color);
+            DrawLineSegment(handle, mid2, end, existingEdges, color, isFinal: true);
             return;
         }
 
         // raw direct
-        DrawLineSegment(handle, start, end, existingEdges, isFinal: true);
+        DrawLineSegment(handle, start, end, existingEdges, color, isFinal: true);
     }
 
     public static void DrawBezier(
@@ -449,16 +453,16 @@ public sealed partial class SurgeryGraphControl : Control
         handle.DrawPrimitives(DrawPrimitiveTopology.LineStrip, points, color);
     }
 
-    private static void DrawLineSegment(DrawingHandleScreen handle, Vector2 start, Vector2 end, List<Vector2[]> drawnEdges, bool isFinal = false)
+    private static void DrawLineSegment(DrawingHandleScreen handle, Vector2 start, Vector2 end, List<Vector2[]> drawnEdges, Color color, bool isFinal = false)
     {
-        handle.DrawLine(start, end, EdgeColor);
+        handle.DrawLine(start, end, color);
         drawnEdges.Add([start, end]);
 
         if (isFinal)
-            DrawArrowHead(handle, start, end);
+            DrawArrowHead(handle, start, end, color);
     }
 
-    private static void DrawArrowHead(DrawingHandleScreen handle, Vector2 start, Vector2 end)
+    private static void DrawArrowHead(DrawingHandleScreen handle, Vector2 start, Vector2 end, Color color)
     {
         var direction = (end - start).Normalized();
         var perpendicular = new Vector2(-direction.Y, direction.X);
@@ -467,8 +471,8 @@ public sealed partial class SurgeryGraphControl : Control
         var arrow1 = basePoint + perpendicular * EdgeArrowSize - direction * EdgeArrowSize;
         var arrow2 = basePoint - perpendicular * EdgeArrowSize - direction * EdgeArrowSize;
 
-        handle.DrawLine(end, arrow1, EdgeColor);
-        handle.DrawLine(end, arrow2, EdgeColor);
+        handle.DrawLine(end, arrow1, color);
+        handle.DrawLine(end, arrow2, color);
     }
 
     #endregion
