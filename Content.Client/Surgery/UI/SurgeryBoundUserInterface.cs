@@ -33,10 +33,10 @@ public sealed partial class SurgeryBoundUserInterface : BoundUserInterface
             return;
 
         var targetUid = _entityManager.GetEntity(surgeryState.Target);
-        if (!_entityManager.TryGetComponent<SurgeryReceiverBodyComponent>(targetUid, out var receiverBodyComponent))
-            return;
-
-        _target = (targetUid.Value, receiverBodyComponent);
+        if (_entityManager.TryGetComponent<SurgeryReceiverBodyComponent>(targetUid, out var receiverBodyComponent))
+            _target = (targetUid.Value, receiverBodyComponent);
+        else
+            _target = null;
 
         _window?.UpdateState(_target);
     }

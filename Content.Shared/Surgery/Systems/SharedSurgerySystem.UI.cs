@@ -12,6 +12,9 @@ public abstract partial class SharedSurgerySystem
 {
     private void InitializeUI()
     {
+        SubscribeLocalEvent<SurgeryUserInterfaceLinkedSourceComponent, StrappedEvent>(OnLinkedSourceStrapped);
+        SubscribeLocalEvent<SurgeryUserInterfaceLinkedSourceComponent, UnstrappedEvent>(OnLinkedSourceUnstrapped);
+
         SubscribeLocalEvent<SurgeryUserInterfaceLinkedSinkComponent, GetSurgeryUiTargetEvent>(OnLinkedSinkGetTarget);
         SubscribeLocalEvent<SurgeryUserInterfaceLinkedSourceComponent, GetSurgeryUiTargetEvent>(OnLinkedSourceGetTarget);
 
@@ -35,11 +38,24 @@ public abstract partial class SharedSurgerySystem
 
     private void OnUiOpened(Entity<SurgeryUserInterfaceComponent> ent, ref BoundUIOpenedEvent args)
     {
-        if (!TryGetTarget(ent.Owner, out var target))
+        TryGetTarget(ent.Owner, out var target);
+        UpdateUi(ent.Owner, target);
+    }
+
+    private void OnLinkedSourceStrapped(Entity<SurgeryUserInterfaceLinkedSourceComponent> ent, ref StrappedEvent args)
+    {
+        if (ent.Comp.Sink is not { } sink)
             return;
 
-        var state = new SurgeryBoundUserInterfaceState(GetNetEntity(target.Value));
-        Ui.SetUiState(ent.Owner, args.UiKey, state);
+        UpdateUi(sink, args.Buckle.Owner);
+    }
+
+    private void OnLinkedSourceUnstrapped(Entity<SurgeryUserInterfaceLinkedSourceComponent> ent, ref UnstrappedEvent args)
+    {
+        if (ent.Comp.Sink is not { } sink)
+            return;
+
+        UpdateUi(sink, null);
     }
 
     private void OnLinkedSinkGetTarget(Entity<SurgeryUserInterfaceLinkedSinkComponent> ent, ref GetSurgeryUiTargetEvent args)
@@ -121,6 +137,12 @@ public abstract partial class SharedSurgerySystem
 
     private void OnBodyNodeModified(Entity<SurgeryReceiverBodyComponent> ent, ref SurgeryBodyCurrentNodeModifiedEvent args)
     {
+    }
+
+    private void UpdateUi(EntityUid ui, EntityUid? target)
+    {
+        var state = new SurgeryBoundUserInterfaceState(GetNetEntity(target));
+        Ui.SetUiState(ui, SurgeryUiKey.Key, state);
     }
 
     public bool TryGetTarget(EntityUid uid, [NotNullWhen(true)] out EntityUid? target)
