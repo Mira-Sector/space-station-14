@@ -5,7 +5,7 @@ namespace Content.Shared.Surgery.Systems;
 public abstract partial class SharedSurgerySystem
 {
     // calculating the graph is expensive and reused multiple times so cache it
-    private Dictionary<List<ProtoId<SurgeryPrototype>>, SurgeryGraph> Graphs = new();
+    private Dictionary<List<ProtoId<SurgeryPrototype>>, SurgeryGraph> Graphs = [];
 
     public SurgeryGraph MergeGraphs(List<ProtoId<SurgeryPrototype>> prototypeIds)
     {
@@ -43,7 +43,7 @@ public abstract partial class SharedSurgerySystem
         return mergedGraph;
     }
 
-    private void MergeGraphs(SurgeryGraph targetGraph, SurgeryGraph mergedGraph)
+    private static void MergeGraphs(SurgeryGraph targetGraph, SurgeryGraph mergedGraph)
     {
         if (!targetGraph.TryGetStaringNode(out var targetStartingNode))
             return;
@@ -54,12 +54,12 @@ public abstract partial class SharedSurgerySystem
             return;
         }
 
-        HashSet<SurgeryNode> exploredNodes = new();
+        HashSet<SurgeryNode> exploredNodes = [];
 
-        Queue<SurgeryNode> targetQueue = new();
+        Queue<SurgeryNode> targetQueue = [];
         targetQueue.Enqueue(targetStartingNode);
 
-        Dictionary<SurgeryNode, SurgeryNode> nodeMap = new();
+        Dictionary<SurgeryNode, SurgeryNode> nodeMap = [];
         nodeMap.Add(targetStartingNode, mergedStartingNode);
 
         while (targetQueue.TryDequeue(out var targetNode))
@@ -90,13 +90,11 @@ public abstract partial class SharedSurgerySystem
             }
 
             foreach (var targetEdge in missingEdges)
-            {
                 ContinueGraph(targetEdge, targetNode, mergedNode, targetGraph, mergedGraph);
-            }
         }
     }
 
-    private void SetGraph(SurgeryGraph targetGraph, SurgeryGraph mergedGraph, SurgeryNode targetStartingNode)
+    private static void SetGraph(SurgeryGraph targetGraph, SurgeryGraph mergedGraph, SurgeryNode targetStartingNode)
     {
         var newId = mergedGraph.GetNextId();
         var newNode = new SurgeryNode();
@@ -109,10 +107,10 @@ public abstract partial class SharedSurgerySystem
             ContinueGraph(edge, targetStartingNode, newNode, targetGraph, mergedGraph);
     }
 
-    private void GetMatchingEdges(SurgeryNode targetNode, SurgeryNode mergedNode, out Dictionary<SurgeryEdge, SurgeryEdge> matchingEdges, out HashSet<SurgeryEdge> missingEdges)
+    public static void GetMatchingEdges(SurgeryNode targetNode, SurgeryNode mergedNode, out Dictionary<SurgeryEdge, SurgeryEdge> matchingEdges, out HashSet<SurgeryEdge> missingEdges)
     {
-        matchingEdges = new();
-        missingEdges = new();
+        matchingEdges = [];
+        missingEdges = [];
 
         if (targetNode.Special.Count != mergedNode.Special.Count)
             return;
@@ -137,28 +135,24 @@ public abstract partial class SharedSurgerySystem
             }
 
             if (matchingEdge != null)
-            {
                 matchingEdges.Add(targetEdge, matchingEdge);
-            }
             else
-            {
                 missingEdges.Add(targetEdge);
-            }
         }
     }
 
-    private void ContinueGraph(SurgeryEdge sourceTargetEdge, SurgeryNode sourceTargetNode, SurgeryNode sourceMergedNode, SurgeryGraph targetGraph, SurgeryGraph mergedGraph)
+    public static void ContinueGraph(SurgeryEdge sourceTargetEdge, SurgeryNode sourceTargetNode, SurgeryNode sourceMergedNode, SurgeryGraph targetGraph, SurgeryGraph mergedGraph)
     {
         if (!targetGraph.TryFindNode(sourceTargetEdge.Connection, out var sourceTargetConnection))
             return;
 
-        Queue<SurgeryNode> targetNodes = new();
+        Queue<SurgeryNode> targetNodes = [];
         targetNodes.Enqueue(sourceTargetConnection);
 
         // we need to keep track of what node sent us down this path
         // the edge connections need to be updated with new ids
-        Dictionary<SurgeryNode, SurgeryEdge> connectionsNeedUpdate = new();
-        Dictionary<SurgeryNode, SurgeryNode> nodeMap = new();
+        Dictionary<SurgeryNode, SurgeryEdge> connectionsNeedUpdate = [];
+        Dictionary<SurgeryNode, SurgeryNode> nodeMap = [];
 
         var sourceMergedEdge = new SurgeryEdge();
         sourceMergedNode.Edges.Add(sourceMergedEdge);
