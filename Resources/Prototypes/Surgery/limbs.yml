@@ -1,5 +1,7 @@
 - type: surgery
   id: LimbAmputation
+  name: surgery-name-limb-amputation
+  description: surgery-desc-limb-amputation
   startingNode: Start
   nodes:
   - id: Start
@@ -45,6 +47,8 @@
 
 - type: surgery
   id: LimbReplacement
+  name: surgery-name-limb-replacement
+  description: surgery-desc-limb-replacement
   startingNode: Start
   nodes:
   - id: Start

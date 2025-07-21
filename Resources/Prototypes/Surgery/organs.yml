@@ -1,5 +1,7 @@
 - type: surgery
   id: OrganManipulation
+  name: surgery-name-organ-manipulation
+  description: surgery-desc-organ-manipulation
   startingNode: Start
   nodes:
   - id: Start

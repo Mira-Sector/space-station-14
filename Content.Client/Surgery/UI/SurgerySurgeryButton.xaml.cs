@@ -11,11 +11,14 @@ public sealed partial class SurgerySurgeryButton : Button
 {
     public ProtoId<SurgeryPrototype> Surgery;
 
-    public SurgerySurgeryButton(ProtoId<SurgeryPrototype> surgeryId)
+    public SurgerySurgeryButton(ProtoId<SurgeryPrototype> surgeryId, IPrototypeManager prototype)
     {
         RobustXamlLoader.Load(this);
 
         Surgery = surgeryId;
-        Text = surgeryId;
+        var surgery = prototype.Index(surgeryId);
+
+        Text = Loc.GetString(surgery.Name);
+        ToolTip = Loc.GetString(surgery.Description);
     }
 }

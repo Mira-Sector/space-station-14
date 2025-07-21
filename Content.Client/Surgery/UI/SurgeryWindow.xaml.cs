@@ -90,7 +90,7 @@ public sealed partial class SurgeryWindow : FancyWindow
 
         foreach (var surgery in _receiver.AvailableSurgeries)
         {
-            var button = new SurgerySurgeryButton(surgery);
+            var button = new SurgerySurgeryButton(surgery, _prototypeManager);
             button.OnToggled += args => OnSurgeryButtonPressed(_receiver, surgery, args);
             SurgeryButtons.AddChild(button);
         }

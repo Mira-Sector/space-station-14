@@ -10,6 +10,12 @@ public sealed partial class SurgeryPrototype : SurgeryGraph, IPrototype, ISerial
     [IdDataField]
     public string ID { get; } = default!;
 
+    [DataField(required: true)]
+    public LocId Name;
+
+    [DataField(required: true)]
+    public LocId Description;
+
     void ISerializationHooks.AfterDeserialization()
     {
         HashSet<string> nodeIds = [];
