@@ -256,8 +256,9 @@ public abstract partial class SharedSurgerySystem : EntitySystem
             switch (TryEdge(limb, surgery, edge, body, user, used, bodyPart, out var edgeUi))
             {
                 case SurgeryEdgeState.Passed:
-                case SurgeryEdgeState.DoAfter:
                     RaiseNodeModifiedEvents(limb, body, surgery, oldNode!, surgery.CurrentNode, edge);
+                    return true;
+                case SurgeryEdgeState.DoAfter:
                     return true;
                 case SurgeryEdgeState.UserInterface:
                     ui ??= edgeUi;

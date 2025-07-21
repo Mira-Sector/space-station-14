@@ -17,6 +17,7 @@ public sealed partial class SurgeryWindow : FancyWindow
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
 
     private ISurgeryReceiver? _receiver;
+    private Entity<SurgeryReceiverBodyComponent>? _target = null;
 
     public SurgeryWindow()
     {
@@ -26,6 +27,16 @@ public sealed partial class SurgeryWindow : FancyWindow
 
     public void UpdateState(Entity<SurgeryReceiverBodyComponent>? target)
     {
+        if (_target == target)
+        {
+            if (_receiver != null)
+                GraphView.CurrentNode = _receiver.CurrentNode;
+
+            return;
+        }
+
+        _target = target;
+
         LimbButtons.RemoveAllChildren();
 
         if (target == null)

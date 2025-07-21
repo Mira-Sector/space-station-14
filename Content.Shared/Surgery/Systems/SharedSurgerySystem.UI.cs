@@ -90,10 +90,7 @@ public abstract partial class SharedSurgerySystem
         if (ent.Comp.Sink is not { } sink)
             return;
 
-        if (!TryGetUiEntity(sink, out var ui))
-            return;
-
-        args.Source = ui;
+        args.Source = sink;
     }
 
     private void OnNewLink(NewLinkEvent args)
@@ -133,10 +130,16 @@ public abstract partial class SharedSurgerySystem
     {
         if (!TryGetUiEntity(ent.Owner, out var ui))
             return;
+
+        UpdateUi(ui.Value, ent.Owner);
     }
 
     private void OnBodyNodeModified(Entity<SurgeryReceiverBodyComponent> ent, ref SurgeryBodyCurrentNodeModifiedEvent args)
     {
+        if (!TryGetUiEntity(ent.Owner, out var ui))
+            return;
+
+        UpdateUi(ui.Value, ent.Owner);
     }
 
     private void UpdateUi(EntityUid ui, EntityUid? target)
