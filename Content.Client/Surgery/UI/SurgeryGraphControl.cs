@@ -19,16 +19,20 @@ public sealed partial class SurgeryGraphControl : Control
     private const float BranchSpacing = 20f;
     private const float LayoutPadding = 20f;
 
-    private const float BackwardEdgeCurveHeight = LayerHeight / 2f;
-    private const float BackwardEdgeControlOffsetX = 40f;
-
+    private const int BezierSegments = 24;
     private const float BezierArrowOffsetT = 0.95f;
     private const float BezierArrowTipT = 1.0f;
+    private const float BackwardEdgeCurveHeight = LayerHeight / 2f;
+    private const float BackwardEdgeControlOffsetX = 40f;
 
     private const float SelfLoopRadius = 20f;
     private const float SelfLoopYOffset = 20f;
     private const int SelfLoopSegments = 12;
     private const int SelfLoopArrowSegment = 3;
+
+    private const float EdgeHoverDetectionWidth = 8f;
+    private const float CurvedEdgeHoverWidthMultiplier = 1.5f;
+    private const float BezierEarlyRejectionMultiplier = 2f;
 
     private const float ScrollSensitivity = 8f;
     private const float ScrollSensitivityMultiplier = 1 / ScrollSensitivity;
@@ -38,8 +42,10 @@ public sealed partial class SurgeryGraphControl : Control
     private static readonly Color NodeColor = Color.SkyBlue;
     private static readonly Color NodeHighlightColor = Color.SeaGreen;
     private static readonly Color CurrentNodeColor = Color.MediumPurple;
+    private static readonly Color NodeHoverColor = Color.IndianRed;
     private static readonly Color EdgeColor = Color.PaleTurquoise;
     private static readonly Color EdgeHighlightColor = Color.GreenYellow;
+    private static readonly Color EdgeHoverColor = Color.MediumVioletRed;
 
     #endregion
 
@@ -62,8 +68,18 @@ public sealed partial class SurgeryGraphControl : Control
 
     public HashSet<SurgeryNode> HighlightedNodes = [];
 
-    private Matrix3x2 Transform => Matrix3x2.CreateScale(Scale) * Matrix3x2.CreateTranslation(GraphOffset);
+    private SurgeryNode? _hoveredNode;
+    private SurgeryEdge? _hoveredEdge;
+
+    private Matrix3x2 Transform => Matrix3x2.CreateTranslation(GraphOffset) * Matrix3x2.CreateScale(Scale);
     private Matrix3x2 InverseTransform => Matrix3x2.Invert(Transform, out var inverse) ? inverse : Matrix3x2.Identity;
+
+    #endregion
+
+    #region Actions
+
+    public event Action<SurgeryNode>? NodeClicked;
+    public event Action<SurgeryEdge>? EdgeClicked;
 
     #endregion
 
@@ -80,7 +96,7 @@ public sealed partial class SurgeryGraphControl : Control
     {
         base.KeyBindDown(args);
 
-        if (args.Function == EngineKeyFunctions.UIClick)
+        if (args.Function == EngineKeyFunctions.UIRightClick)
             _dragging = true;
     }
 
@@ -89,6 +105,23 @@ public sealed partial class SurgeryGraphControl : Control
         base.KeyBindUp(args);
 
         if (args.Function == EngineKeyFunctions.UIClick)
+        {
+            var graphPos = Vector2.Transform(args.RelativePixelPosition, InverseTransform);
+
+            if (GetNodeAtPosition(graphPos) is { } node)
+            {
+                NodeClicked?.Invoke(node);
+                return;
+            }
+
+            if (GetEdgeAtPosition(graphPos) is { } edge)
+            {
+                EdgeClicked?.Invoke(edge);
+                return;
+            }
+        }
+
+        if (args.Function == EngineKeyFunctions.UIRightClick)
             _dragging = false;
     }
 
@@ -98,17 +131,22 @@ public sealed partial class SurgeryGraphControl : Control
 
         if (_dragging)
         {
-            GraphOffset += args.Relative;
+            GraphOffset += args.Relative / Scale;
             InvalidateMeasure();
             return;
         }
+
+        var graphPos = Vector2.Transform(args.RelativePixelPosition, InverseTransform);
+
+        _hoveredNode = GetNodeAtPosition(graphPos);
+        _hoveredEdge = _hoveredNode == null ? GetEdgeAtPosition(graphPos) : null;
     }
 
     protected override void MouseWheel(GUIMouseWheelEventArgs args)
     {
         base.MouseWheel(args);
 
-        var cursorGraphPosBeforeZoom = (args.RelativePosition - GraphOffset) / Scale;
+        var cursorGraphPosBeforeZoom = (args.RelativePixelPosition - GraphOffset) / Scale;
 
         var delta = new Vector2(args.Delta.Y, args.Delta.Y) * ScrollSensitivityMultiplier;
         Scale += delta;
@@ -293,7 +331,10 @@ public sealed partial class SurgeryGraphControl : Control
                     ? NodeHighlightColor
                     : NodeColor;
 
-            DrawNode(handle, node, pos, nodeColor);
+            DrawNode(handle, pos, nodeColor);
+
+            if (_hoveredNode == node)
+                DrawNode(handle, pos, NodeHoverColor, false);
 
             foreach (var edge in node.Edges)
             {
@@ -309,7 +350,12 @@ public sealed partial class SurgeryGraphControl : Control
 
                 drawnPairs.Add(key);
 
-                var edgeColor = HighlightedNodes.Contains(node) && HighlightedNodes.Contains(target) ? EdgeHighlightColor : EdgeColor;
+                var isHighlighted = HighlightedNodes.Contains(node) && HighlightedNodes.Contains(target);
+                var edgeColor = _hoveredEdge == edge
+                    ? EdgeHoverColor
+                    : isHighlighted
+                        ? EdgeHighlightColor
+                        : EdgeColor;
 
                 if (node == target)
                     DrawSelfLoop(handle, pos, edgeColor);
@@ -321,9 +367,9 @@ public sealed partial class SurgeryGraphControl : Control
         handle.SetTransform(previous);
     }
 
-    private static void DrawNode(DrawingHandleScreen handle, SurgeryNode node, Vector2 pos, Color color)
+    private static void DrawNode(DrawingHandleScreen handle, Vector2 pos, Color color, bool filled = true)
     {
-        handle.DrawCircle(pos, NodeRadius, color, filled: true);
+        handle.DrawCircle(pos, NodeRadius, color, filled: filled);
     }
 
     private static void DrawSelfLoop(DrawingHandleScreen handle, Vector2 pos, Color color)
@@ -447,14 +493,13 @@ public sealed partial class SurgeryGraphControl : Control
         Vector2 control1,
         Vector2 control2,
         Vector2 end,
-        Color color,
-        int segments = 24)
+        Color color)
     {
-        var points = new Vector2[segments + 1];
+        var points = new Vector2[BezierSegments + 1];
 
-        for (var i = 0; i <= segments; i++)
+        for (var i = 0; i <= BezierSegments; i++)
         {
-            var t = i / (float)segments;
+            var t = i / (float)BezierSegments;
             points[i] = CalculateCubicBezierPoint(t, start, control1, control2, end);
         }
 
@@ -545,6 +590,101 @@ public sealed partial class SurgeryGraphControl : Control
         return point;
     }
 
+    private SurgeryNode? GetNodeAtPosition(Vector2 position)
+    {
+        if (_nodePositions == null)
+            return null;
+
+        foreach (var (node, nodePos) in _nodePositions)
+        {
+            if (Vector2.Distance(position, nodePos) <= NodeRadius)
+                return node;
+        }
+
+        return null;
+    }
+
+    private SurgeryEdge? GetEdgeAtPosition(Vector2 position)
+    {
+        if (_graph == null || _nodePositions == null || _layerMap == null)
+            return null;
+
+        foreach (var (node, nodePos) in _nodePositions)
+        {
+            foreach (var edge in node.Edges)
+            {
+                if (edge.Connection == null || !_graph.Nodes.TryGetValue(edge.Connection.Value, out var target))
+                    continue;
+
+                if (!_nodePositions.TryGetValue(target, out var targetPos))
+                    continue;
+
+                if (IsPointOnEdge(position, nodePos, targetPos, node, target, _layerMap))
+                    return edge;
+            }
+        }
+
+        return null;
+    }
+
+    private static bool IsPointOnEdge(Vector2 point, Vector2 startPos, Vector2 endPos, SurgeryNode from, SurgeryNode to, Dictionary<SurgeryNode, int> layers)
+    {
+        var fromLayer = layers[from];
+        var toLayer = layers[to];
+        var isBackwards = toLayer < fromLayer;
+
+        var direction = (endPos - startPos).Normalized();
+        var start = startPos + direction * (NodeRadius + EdgeClearance);
+        var end = endPos - direction * (NodeRadius + EdgeClearance);
+
+        // self loops
+        if (from == to)
+        {
+            var center = startPos + new Vector2(0, -SelfLoopYOffset);
+            return Vector2.Distance(point, center) <= SelfLoopRadius + EdgeHoverDetectionWidth * CurvedEdgeHoverWidthMultiplier;
+        }
+
+        // bezier curves
+        if (isBackwards)
+        {
+            var control1 = new Vector2(start.X - BackwardEdgeControlOffsetX * (1 + (fromLayer - toLayer)), start.Y - BackwardEdgeCurveHeight * (1 + (fromLayer - toLayer)));
+            var control2 = new Vector2(end.X - BackwardEdgeControlOffsetX * (1 + (fromLayer - toLayer)), end.Y - BackwardEdgeCurveHeight * (1 + (fromLayer - toLayer)));
+            return IsPointNearBezier(point, start, control1, control2, end, EdgeHoverDetectionWidth * CurvedEdgeHoverWidthMultiplier);
+        }
+
+        // straight edges
+        return PointLineDistance(start, end, point) <= EdgeHoverDetectionWidth;
+    }
+
+    private static bool IsPointNearBezier(Vector2 point, Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, float maxDistance)
+    {
+        if (!IsPointNearPolygon(point, [p0, p1, p2, p3], maxDistance * BezierEarlyRejectionMultiplier))
+            return false;
+
+        var prevPoint = p0;
+        for (var i = 1; i <= BezierSegments; i++)
+        {
+            var t = i / (float)BezierSegments;
+            var curvePoint = CalculateCubicBezierPoint(t, p0, p1, p2, p3);
+
+            if (PointLineDistance(prevPoint, curvePoint, point) <= maxDistance)
+                return true;
+
+            prevPoint = curvePoint;
+        }
+        return false;
+    }
+
+    private static bool IsPointNearPolygon(Vector2 point, Vector2[] polygon, float maxDistance)
+    {
+        for (var i = 0; i < polygon.Length - 1; i++)
+        {
+            if (PointLineDistance(polygon[i], polygon[i + 1], point) <= maxDistance)
+                return true;
+        }
+        return false;
+    }
+
     private static float PointLineDistance(Vector2 a, Vector2 b, Vector2 p)
     {
         var l2 = (b - a).LengthSquared();
@@ -573,11 +713,15 @@ public sealed partial class SurgeryGraphControl : Control
     }
 
     private static float Orientation(Vector2 p, Vector2 q, Vector2 r)
-        => (q.X - p.X) * (r.Y - p.Y) - (q.Y - p.Y) * (r.X - p.X);
+    {
+        return (q.X - p.X) * (r.Y - p.Y) - (q.Y - p.Y) * (r.X - p.X);
+    }
 
     private static bool OnSegment(Vector2 a, Vector2 b, Vector2 p)
-        => p.X <= Math.Max(a.X, b.X) && p.X >= Math.Min(a.X, b.X) &&
+    {
+        return p.X <= Math.Max(a.X, b.X) && p.X >= Math.Min(a.X, b.X) &&
            p.Y <= Math.Max(a.Y, b.Y) && p.Y >= Math.Min(a.Y, b.Y);
+    }
 
     #endregion
 }
