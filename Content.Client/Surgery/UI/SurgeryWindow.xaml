@@ -8,26 +8,35 @@
     VerticalExpand="True"
     Title="{Loc 'surgery-menu-title'}">
     <BoxContainer
+        Orientation="Vertical"
         HorizontalExpand="True"
         VerticalExpand="True">
         <BoxContainer
-            Name="LimbButtons"
-            Orientation="Vertical"
+            Orientation="Horizontal"
             HorizontalExpand="True"
-            HorizontalAlignment="Left"
-            Margin="4"
-            Access="Public"/>
-        <cc:SurgeryGraphControl
-            Name="GraphView"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Access="Public"/>
+            VerticalExpand="True">
+            <BoxContainer
+                Name="LimbButtons"
+                Orientation="Vertical"
+                HorizontalExpand="True"
+                HorizontalAlignment="Left"
+                Margin="4"
+                Access="Public"/>
+            <cc:SurgeryGraphControl
+                Name="GraphView"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Access="Public"/>
+            <BoxContainer
+                Name="SurgeryButtons"
+                Orientation="Vertical"
+                HorizontalExpand="True"
+                HorizontalAlignment="Right"
+                Margin="4"
+                Access="Public"/>
+        </BoxContainer>
         <BoxContainer
-            Name="SurgeryButtons"
-            Orientation="Vertical"
-            HorizontalExpand="True"
-            HorizontalAlignment="Right"
-            Margin="4"
+            Name="GraphDetails"
             Access="Public"/>
     </BoxContainer>
 </controls:FancyWindow>

@@ -23,6 +23,9 @@ public sealed partial class SurgeryWindow : FancyWindow
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
+
+        GraphView.NodeClicked += OnNodeClicked;
+        GraphView.EdgeClicked += OnEdgeClicked;
     }
 
     public void UpdateState(Entity<SurgeryReceiverBodyComponent>? target)
@@ -38,6 +41,7 @@ public sealed partial class SurgeryWindow : FancyWindow
         _target = target;
 
         LimbButtons.RemoveAllChildren();
+        GraphDetails.RemoveAllChildren();
 
         if (target == null)
         {
@@ -184,5 +188,19 @@ public sealed partial class SurgeryWindow : FancyWindow
             if (button.Surgery != surgeryId)
                 button.Pressed = false;
         }
+    }
+
+    private void OnNodeClicked(SurgeryNode node)
+    {
+        GraphDetails.RemoveAllChildren();
+        var details = new SurgeryNodeDetails(node);
+        GraphDetails.AddChild(details);
+    }
+
+    private void OnEdgeClicked(SurgeryEdge edge)
+    {
+        GraphDetails.RemoveAllChildren();
+        var details = new SurgeryEdgeDetails(edge);
+        GraphDetails.AddChild(details);
     }
 }
