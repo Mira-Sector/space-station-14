@@ -17,7 +17,9 @@ public sealed partial class SurgeryWindow : FancyWindow
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
 
     private ISurgeryReceiver? _receiver;
-    private Entity<SurgeryReceiverBodyComponent>? _target = null;
+    private BodyPart? _bodyPart;
+    private EntityUid? _body;
+    private EntityUid? _limb;
 
     public SurgeryWindow()
     {
@@ -30,7 +32,7 @@ public sealed partial class SurgeryWindow : FancyWindow
 
     public void UpdateState(Entity<SurgeryReceiverBodyComponent>? target)
     {
-        if (_target == target)
+        if (_body == (EntityUid?)target)
         {
             if (_receiver != null)
                 GraphView.CurrentNode = _receiver.CurrentNode;
@@ -38,7 +40,7 @@ public sealed partial class SurgeryWindow : FancyWindow
             return;
         }
 
-        _target = target;
+        _body = target;
 
         LimbButtons.RemoveAllChildren();
         GraphDetails.RemoveAllChildren();
@@ -46,43 +48,45 @@ public sealed partial class SurgeryWindow : FancyWindow
         if (target == null)
         {
             _receiver = null;
+            _bodyPart = null;
             GraphView.ChangeGraph(null);
             UpdateSurgeries();
             return;
         }
 
-        foreach (var (part, receiver) in GetLimbSurgeries(target.Value))
+        foreach (var (limb, part, receiver) in GetLimbSurgeries(target.Value))
         {
             var button = new SurgeryLimbButton(receiver, part);
-            button.OnToggled += args => OnLimbButtonPressed(receiver, args);
+            button.OnToggled += args => OnLimbButtonPressed(receiver, limb, part, args);
             LimbButtons.AddChild(button);
         }
 
         UpdateSurgeries();
     }
 
-    private Dictionary<BodyPart, ISurgeryReceiver> GetLimbSurgeries(Entity<SurgeryReceiverBodyComponent> target)
+    private IEnumerable<(EntityUid?, BodyPart, ISurgeryReceiver)> GetLimbSurgeries(Entity<SurgeryReceiverBodyComponent> target)
     {
-        Dictionary<BodyPart, ISurgeryReceiver> limbSurgeries = [];
+        HashSet<BodyPart> limbs = [];
+        limbs.EnsureCapacity(target.Comp.Limbs.Count);
+
         foreach (var (bodyPart, netLimb) in target.Comp.Limbs)
         {
             var limbUid = _entityManager.GetEntity(netLimb);
             var surgeryReceiver = _entityManager.GetComponent<SurgeryReceiverComponent>(limbUid);
 
-            limbSurgeries[bodyPart] = surgeryReceiver;
+            limbs.Add(bodyPart);
+            yield return (limbUid, bodyPart, surgeryReceiver);
         }
 
         foreach (var receiver in target.Comp.Surgeries)
         {
             // still have a limb
             // dont show limbless surgery
-            if (limbSurgeries.ContainsKey(receiver.BodyPart))
+            if (limbs.Contains(receiver.BodyPart))
                 continue;
 
-            limbSurgeries[receiver.BodyPart] = receiver.Surgeries;
+            yield return (null, receiver.BodyPart, receiver.Surgeries);
         }
-
-        return limbSurgeries;
     }
 
     private void UpdateSurgeries()
@@ -100,17 +104,21 @@ public sealed partial class SurgeryWindow : FancyWindow
         }
     }
 
-    private void OnLimbButtonPressed(ISurgeryReceiver receiver, BaseButton.ButtonToggledEventArgs args)
+    private void OnLimbButtonPressed(ISurgeryReceiver receiver, EntityUid? limb, BodyPart part, BaseButton.ButtonToggledEventArgs args)
     {
         if (!args.Pressed)
         {
             _receiver = null;
+            _bodyPart = null;
+            _limb = null;
             UpdateSurgeries();
             GraphView.ChangeGraph(null);
             return;
         }
 
         _receiver = receiver;
+        _bodyPart = part;
+        _limb = limb;
         UpdateSurgeries();
         GraphView.ChangeGraph(_receiver.Graph);
 
@@ -200,7 +208,7 @@ public sealed partial class SurgeryWindow : FancyWindow
     private void OnEdgeClicked(SurgeryEdge edge)
     {
         GraphDetails.RemoveAllChildren();
-        var details = new SurgeryEdgeDetails(edge);
+        var details = new SurgeryEdgeDetails(edge, _body, _limb, _bodyPart!);
         GraphDetails.AddChild(details);
     }
 }

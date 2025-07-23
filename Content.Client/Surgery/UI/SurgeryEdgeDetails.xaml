@@ -1,3 +1,8 @@
 <PanelContainer
     xmlns="https://spacestation14.io">
+    <BoxContainer>
+        <Label
+            Name="RequirementDescription"
+            Access="Public"/>
+    </BoxContainer>
 </PanelContainer>

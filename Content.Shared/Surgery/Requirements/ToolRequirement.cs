@@ -1,7 +1,10 @@
 using Content.Shared.Body.Part;
 using Content.Shared.DoAfter;
+using Content.Shared.Localizations;
+using Content.Shared.Tools;
 using Content.Shared.Tools.Systems;
 using JetBrains.Annotations;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using System.Diagnostics.CodeAnalysis;
 
@@ -12,10 +15,27 @@ namespace Content.Shared.Surgery.Requirements;
 public sealed partial class ToolRequirement : SurgeryEdgeRequirement
 {
     [DataField]
-    public List<string> Qualities = new();
+    public List<string> Qualities = [];
 
     [DataField]
     public TimeSpan Delay = TimeSpan.FromSeconds(1f);
+
+    public override string Description(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    {
+        var prototypes = IoCManager.Resolve<IPrototypeManager>();
+
+        List<string> toolNames = [];
+        foreach (var qualityId in Qualities)
+        {
+            if (!prototypes.TryIndex<ToolQualityPrototype>(qualityId, out var quality))
+                continue;
+
+            var name = Loc.GetString(quality.Name);
+            toolNames.Add(name);
+        }
+
+        return Loc.GetString("surgery-requirement-tool-desc", ("tools", ContentLocalizationManager.FormatList(toolNames)));
+    }
 
     public override SurgeryEdgeState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
     {

@@ -20,6 +20,11 @@ public sealed partial class UsedWhitelistRequirement : SurgeryEdgeRequirement
     [DataField]
     public TimeSpan? Delay;
 
+    public override string Description(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    {
+        return string.Empty;
+    }
+
     public override SurgeryEdgeState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
     {
         ui = null;

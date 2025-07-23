@@ -1,6 +1,7 @@
 using Content.Shared.Body.Part;
 using Content.Shared.Damage.DamageSelector;
 using Content.Shared.DoAfter;
+using Content.Shared.Surgery.Systems;
 using JetBrains.Annotations;
 using Robust.Shared.Serialization;
 using System.Diagnostics.CodeAnalysis;
@@ -16,6 +17,11 @@ public sealed partial class BodyPartRequirement : SurgeryEdgeRequirement
 
     [DataField]
     public bool RequireAiming = true;
+
+    public override string Description(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    {
+        return Loc.GetString("surgery-requirement-body-part-desc", ("part", Loc.GetString(SurgeryHelper.GetBodyPartLoc(bodyPart))));
+    }
 
     public override SurgeryEdgeState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
     {

@@ -11,6 +11,11 @@ namespace Content.Shared.Surgery.Requirements;
 [Serializable, NetSerializable]
 public sealed partial class OrganRequirement : SurgeryEdgeRequirement
 {
+    public override string Description(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    {
+        return Loc.GetString("surgery-requirement-organ-desc");
+    }
+
     public override SurgeryEdgeState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
     {
         ui = null;
