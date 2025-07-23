@@ -14,8 +14,8 @@ namespace Content.Shared.Surgery.Requirements;
 [Serializable, NetSerializable]
 public sealed partial class ToolRequirement : SurgeryEdgeRequirement
 {
-    [DataField]
-    public List<string> Qualities = [];
+    [DataField(required: true)]
+    public ProtoId<ToolQualityPrototype> Quality;
 
     [DataField]
     public TimeSpan Delay = TimeSpan.FromSeconds(1f);
@@ -24,17 +24,9 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
     {
         var prototypes = IoCManager.Resolve<IPrototypeManager>();
 
-        List<string> toolNames = [];
-        foreach (var qualityId in Qualities)
-        {
-            if (!prototypes.TryIndex<ToolQualityPrototype>(qualityId, out var quality))
-                continue;
+        var qualityName = Loc.GetString(prototypes.Index(Quality).Name);
 
-            var name = Loc.GetString(quality.Name);
-            toolNames.Add(name);
-        }
-
-        return Loc.GetString("surgery-requirement-tool-desc", ("tools", ContentLocalizationManager.FormatList(toolNames)));
+        return Loc.GetString("surgery-requirement-tool-desc", ("tool", qualityName));
     }
 
     public override SurgeryEdgeState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
@@ -47,8 +39,8 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
         var entMan = IoCManager.Resolve<IEntityManager>();
         var toolSystem = entMan.System<SharedToolSystem>();
 
-        if (toolSystem.HasAllQualities(tool.Value, Qualities))
-            return SurgeryEdgeState.DoAfter;
+        if (toolSystem.HasQuality(tool.Value, Quality))
+            return Delay > TimeSpan.Zero ? SurgeryEdgeState.DoAfter : SurgeryEdgeState.Passed;
 
         return SurgeryEdgeState.Failed;
     }
@@ -76,29 +68,12 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
         if (other is not ToolRequirement otherTool)
             return false;
 
-        if (Qualities.Count != otherTool.Qualities.Count)
+        if (Quality != otherTool.Quality)
             return false;
-
-        foreach (var quality in Qualities)
-        {
-            var matchFound = false;
-
-            foreach (var otherQuality in otherTool.Qualities)
-            {
-                if (quality != otherQuality)
-                    continue;
-
-                matchFound = true;
-                break;
-            }
-
-            if (!matchFound)
-                return false;
-        }
 
         merged = new ToolRequirement()
         {
-            Qualities = Qualities,
+            Quality = Quality,
             Delay = TimeSpan.FromSeconds(Math.Min(Delay.TotalSeconds, otherTool.Delay.TotalSeconds)) //use the shortest delay
         };
 
@@ -107,7 +82,7 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
         var log = logMan.RootSawmill;
 
         if (Delay != otherTool.Delay)
-            log.Warning($"Surgery ToolRequirement has mismatching delays of {Delay} and {otherTool.Delay} with {Qualities}.");
+            log.Warning($"Surgery ToolRequirement has mismatching delays of {Delay} and {otherTool.Delay} with {Quality}.");
 # endif
 
         return true;

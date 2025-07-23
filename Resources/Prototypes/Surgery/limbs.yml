@@ -8,38 +8,32 @@
     edges:
     - connection: Scalpel1
       requirement: !type:ToolRequirement
-        qualities:
-        - Slicing
+        quality: Slicing
   - id: Scalpel1
     edges:
     - connection: Retractor
       requirement: !type:ToolRequirement
-        qualities:
-        - Retracting
+        quality: Retracting
   - id: Retractor
     edges:
     - connection: Hemostat1
       requirement: !type:ToolRequirement
-        qualities:
-        - Clamping
+        quality: Clamping
   - id: Hemostat1
     edges:
     - connection: Saw
       requirement: !type:ToolRequirement
-        qualities:
-        - Sawing
+        quality: Sawing
   - id: Saw
     edges:
     - connection: Hemostat2
       requirement: !type:ToolRequirement
-        qualities:
-        - Clamping
+        quality: Clamping
   - id: Hemostat2
     edges:
     - connection: Scalpel2
       requirement: !type:ToolRequirement
-        qualities:
-        - Slicing
+        quality: Slicing
   - id: Scalpel2
     edges:
     - connection: Start
@@ -55,20 +49,17 @@
     edges:
     - connection: Scalpel
       requirement: !type:ToolRequirement
-        qualities:
-        - Slicing
+        quality: Slicing
   - id: Scalpel
     edges:
     - connection: Retractor
       requirement: !type:ToolRequirement
-        qualities:
-        - Retracting
+        quality: Retracting
   - id: Retractor
     edges:
     - connection: Hemostat
       requirement: !type:ToolRequirement
-        qualities:
-        - Clamping
+        quality: Clamping
   - id: Hemostat
     edges:
     - connection: Start
