@@ -28,10 +28,15 @@ public sealed partial class SurgeryGraphControl
                     ? NodeHighlightColor
                     : NodeColor;
 
-            DrawNode(handle, pos, nodeColor);
-
             if (_hoveredNode == node || _clickedNode == node)
-                DrawNode(handle, pos, NodeHoverColor, false);
+            {
+                DrawNode(handle, pos, NodeHoverColor);
+                DrawNode(handle, pos, nodeColor, false);
+            }
+            else
+            {
+                DrawNode(handle, pos, nodeColor);
+            }
 
             foreach (var edge in node.Edges)
             {
