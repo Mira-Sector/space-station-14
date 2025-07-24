@@ -1,7 +1,10 @@
+using Content.Shared.Body.Part;
 using Content.Shared.Surgery;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
 using Robust.Shared.Input;
+using Robust.Shared.Utility;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
 
@@ -55,6 +58,8 @@ public sealed partial class SurgeryGraphControl : Control
     private Dictionary<SurgeryNode, int>? _layerMap;
     private Dictionary<int, List<SurgeryNode>>? _orderedLayers;
     private Dictionary<SurgeryNode, Vector2>? _nodePositions;
+
+    private Dictionary<SurgeryEdge, SpriteSpecifier?> _edgeIcons = [];
 
     public SurgeryNode? CurrentNode;
 
@@ -324,7 +329,7 @@ public sealed partial class SurgeryGraphControl : Control
             return;
 
         List<Vector2[]> drawnEdges = [];
-        HashSet<(SurgeryNode, SurgeryNode)> drawnPairs = [];
+        HashSet<(SurgeryNode, SurgeryNode?)> drawnPairs = [];
 
         var previous = handle.GetTransform();
         handle.SetTransform(Transform * previous);
@@ -344,29 +349,40 @@ public sealed partial class SurgeryGraphControl : Control
 
             foreach (var edge in node.Edges)
             {
-                if (edge.Connection == null || !_graph.Nodes.TryGetValue(edge.Connection.Value, out var target))
-                    continue;
+                if (IsSelfLoop(edge, _graph, out var target, out var targetPos))
+                {
+                    var isHighlighted = HighlightedNodes.Contains(node);
+                    var edgeColor = _hoveredEdge == edge
+                        ? EdgeHoverColor
+                        : isHighlighted
+                            ? EdgeHighlightColor
+                            : EdgeColor;
 
-                if (!_nodePositions.TryGetValue(target, out var targetPos))
-                    continue;
-
-                var key = (node, target);
-                if (drawnPairs.Contains(key) || drawnPairs.Contains((target, node)))
-                    continue;
-
-                drawnPairs.Add(key);
-
-                var isHighlighted = HighlightedNodes.Contains(node) && HighlightedNodes.Contains(target);
-                var edgeColor = _hoveredEdge == edge
-                    ? EdgeHoverColor
-                    : isHighlighted
-                        ? EdgeHighlightColor
-                        : EdgeColor;
-
-                if (node == target)
                     DrawSelfLoop(handle, pos, edgeColor);
+                }
                 else
-                    DrawEdge(handle, pos, targetPos, node, target, edgeColor, _layerMap, _nodePositions, drawnEdges);
+                {
+                    if (targetPos == null)
+                        continue;
+
+                    if (drawnPairs.Contains((target, node)))
+                        continue;
+
+                    var key = (node, target);
+                    if (drawnPairs.Contains(key))
+                        continue;
+
+                    drawnPairs.Add(key);
+
+                    var isHighlighted = HighlightedNodes.Contains(node) && (target == null || HighlightedNodes.Contains(target));
+                    var edgeColor = _hoveredEdge == edge
+                        ? EdgeHoverColor
+                        : isHighlighted
+                            ? EdgeHighlightColor
+                            : EdgeColor;
+
+                    DrawEdge(handle, pos, targetPos.Value, node, target!, edgeColor, _layerMap, _nodePositions, drawnEdges);
+                }
             }
         }
 
@@ -534,9 +550,47 @@ public sealed partial class SurgeryGraphControl : Control
         handle.DrawLine(end, arrow2, color);
     }
 
+    private void DrawEdgeIcon(DrawingHandleScreen handle, SurgeryEdge edge, EntityUid? body, EntityUid? limb, BodyPart part)
+    {
+        if (!_edgeIcons.TryGetValue(edge, out var icon))
+        {
+            icon = edge.Requirement.GetIcon(body, limb, part);
+            _edgeIcons[edge] = icon;
+        }
+
+        if (icon == null)
+            return;
+    }
+
     #endregion
 
     #region Geometry Helpers
+
+    private bool IsSelfLoop(SurgeryEdge edge, SurgeryGraph graph, [NotNullWhen(false)] out SurgeryNode? connectedNode, out Vector2? nodePos)
+    {
+        if (edge.Connection == null)
+        {
+            connectedNode = null;
+            nodePos = null;
+            return true;
+        }
+        else
+        {
+            connectedNode = graph.Nodes[edge.Connection.Value];
+
+            if (_nodePositions == null)
+            {
+                nodePos = null;
+            }
+            else
+            {
+                _nodePositions.TryGetValue(connectedNode, out var pos);
+                nodePos = pos;
+            }
+
+            return false;
+        }
+    }
 
     private static bool PathIntersectsAnything(Vector2[] path, Dictionary<SurgeryNode, Vector2> nodes, List<Vector2[]> edges)
     {
@@ -619,13 +673,16 @@ public sealed partial class SurgeryGraphControl : Control
         {
             foreach (var edge in node.Edges)
             {
-                if (edge.Connection == null || !_graph.Nodes.TryGetValue(edge.Connection.Value, out var target))
+                if (IsSelfLoop(edge, _graph, out var target, out var targetPos))
+                {
+                    target = node;
+                    targetPos = nodePos;
+                }
+
+                if (targetPos == null)
                     continue;
 
-                if (!_nodePositions.TryGetValue(target, out var targetPos))
-                    continue;
-
-                if (IsPointOnEdge(position, nodePos, targetPos, node, target, _layerMap))
+                if (IsPointOnEdge(position, nodePos, targetPos.Value, node, target, _layerMap))
                     return edge;
             }
         }
