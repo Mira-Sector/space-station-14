@@ -30,8 +30,6 @@ public sealed partial class SurgeryGraphControl : Control
 
     private const float SelfLoopRadius = 20f;
     private const float SelfLoopYOffset = 20f;
-    private const int SelfLoopSegments = 12;
-    private const int SelfLoopArrowSegment = 3;
 
     private const float EdgeHoverDetectionWidth = 8f;
     private const float CurvedEdgeHoverWidthMultiplier = 1.5f;
@@ -396,18 +394,16 @@ public sealed partial class SurgeryGraphControl : Control
 
     private static void DrawSelfLoop(DrawingHandleScreen handle, Vector2 pos, Color color)
     {
-        var points = new Vector2[SelfLoopSegments + 1];
-        for (var i = 0; i <= SelfLoopSegments; i++)
-        {
-            var angle = 2 * MathF.PI * i / SelfLoopSegments;
-            points[i] = pos + new Vector2(
-                SelfLoopRadius * MathF.Sin(angle),
-                -SelfLoopYOffset - SelfLoopRadius * MathF.Cos(angle)
-            );
-        }
+        var start = pos + new Vector2(-SelfLoopRadius, -SelfLoopYOffset);
+        var end = pos + new Vector2(SelfLoopRadius, -SelfLoopYOffset);
+        var control1 = pos + new Vector2(-SelfLoopRadius, -SelfLoopRadius - SelfLoopYOffset);
+        var control2 = pos + new Vector2(SelfLoopRadius, -SelfLoopRadius - SelfLoopYOffset);
 
-        handle.DrawPrimitives(DrawPrimitiveTopology.LineStrip, points, color);
-        DrawArrowHead(handle, points[SelfLoopArrowSegment - 1], points[SelfLoopArrowSegment], color);
+        DrawBezier(handle, start, control1, control2, end, color);
+
+        var arrowBase = CalculateCubicBezierPoint(BezierArrowOffsetT, start, control1, control2, end);
+        var arrowTip = CalculateCubicBezierPoint(BezierArrowTipT, start, control1, control2, end);
+        DrawArrowHead(handle, arrowBase, arrowTip, color);
     }
 
     private static void DrawEdge(

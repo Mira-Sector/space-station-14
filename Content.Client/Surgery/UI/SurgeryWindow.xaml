@@ -15,7 +15,15 @@
         HorizontalExpand="True"
         VerticalExpand="True">
         <BoxContainer
+            HorizontalExpand="True"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Stretch"
+            Name="GraphDetails"
+            Access="Public"/>
+        <PanelContainer StyleClasses="LowDivider"/>
+        <BoxContainer
             Orientation="Horizontal"
+            VerticalAlignment="Bottom"
             HorizontalExpand="True">
             <BoxContainer
                 Name="LimbButtons"
@@ -38,13 +46,5 @@
                 Margin="16"
                 Access="Public"/>
         </BoxContainer>
-        <PanelContainer StyleClasses="LowDivider"/>
-        <BoxContainer
-            HorizontalExpand="True"
-            VerticalExpand="True"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Bottom"
-            Name="GraphDetails"
-            Access="Public"/>
     </BoxContainer>
 </controls:FancyWindow>

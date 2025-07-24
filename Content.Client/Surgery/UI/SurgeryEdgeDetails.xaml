@@ -1,12 +1,26 @@
 <PanelContainer
-    xmlns="https://spacestation14.io">
-    <BoxContainer>
-        <Label
-            Name="RequirementDescription"
-            Access="Public"/>
-        <TextureRect
-            Stretch="Tile"
-            Name="RequirementIcon"
-            Access="Public"/>
+    xmlns="https://spacestation14.io"
+    HorizontalExpand="True"
+    VerticalExpand="True">
+    <BoxContainer
+        Margin="16"
+        HorizontalExpand="True"
+        VerticalExpand="True">
+        <BoxContainer
+            Margin="16, 0">
+            <Label
+                Name="RequirementDescription"
+                Access="Public"/>
+        </BoxContainer>
+        <BoxContainer
+            HorizontalExpand="True"
+            VerticalExpand="True"
+            Margin="16, 0">
+            <TextureRect
+                Stretch="KeepAspectCentered"
+                SetSize="96, 96"
+                Name="RequirementIcon"
+                Access="Public"/>
+        </BoxContainer>
     </BoxContainer>
 </PanelContainer>
