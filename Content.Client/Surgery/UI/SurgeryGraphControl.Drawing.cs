@@ -30,7 +30,7 @@ public sealed partial class SurgeryGraphControl
 
             DrawNode(handle, pos, nodeColor);
 
-            if (_hoveredNode == node)
+            if (_hoveredNode == node || _clickedNode == node)
                 DrawNode(handle, pos, NodeHoverColor, false);
 
             foreach (var edge in node.Edges)
@@ -38,7 +38,8 @@ public sealed partial class SurgeryGraphControl
                 if (IsSelfLoop(edge, _graph, out var target, out var targetPos))
                 {
                     var isHighlighted = HighlightedNodes.Contains(node);
-                    var edgeColor = _hoveredEdge == edge
+                    var isHovered = _hoveredEdge == edge || _clickedEdge == edge;
+                    var edgeColor = isHovered
                         ? EdgeHoverColor
                         : isHighlighted
                             ? EdgeHighlightColor
@@ -62,7 +63,8 @@ public sealed partial class SurgeryGraphControl
                     drawnPairs.Add(key);
 
                     var isHighlighted = HighlightedNodes.Contains(node) && (target == null || HighlightedNodes.Contains(target));
-                    var edgeColor = _hoveredEdge == edge
+                    var isHovered = _hoveredEdge == edge || _clickedEdge == edge;
+                    var edgeColor = isHovered
                         ? EdgeHoverColor
                         : isHighlighted
                             ? EdgeHighlightColor

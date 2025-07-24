@@ -87,6 +87,9 @@ public sealed partial class SurgeryGraphControl : Control
     private SurgeryNode? _hoveredNode;
     private SurgeryEdge? _hoveredEdge;
 
+    private SurgeryNode? _clickedNode;
+    private SurgeryEdge? _clickedEdge;
+
     private Matrix3x2 Transform => Matrix3x2.CreateTranslation(GraphOffset) * Matrix3x2.CreateScale(Scale);
     private Matrix3x2 InverseTransform => Matrix3x2.Invert(Transform, out var inverse) ? inverse : Matrix3x2.Identity;
 
@@ -131,12 +134,16 @@ public sealed partial class SurgeryGraphControl : Control
 
             if (GetNodeAtPosition(graphPos) is { } node)
             {
+                _clickedNode = node;
+                _clickedEdge = null;
                 NodeClicked?.Invoke(node);
                 return;
             }
 
             if (GetEdgeAtPosition(graphPos) is { } edge)
             {
+                _clickedNode = null;
+                _clickedEdge = edge;
                 EdgeClicked?.Invoke(edge);
                 return;
             }
