@@ -54,7 +54,7 @@ public sealed partial class SurgeryWindow : FancyWindow
         {
             _receiver = null;
             _bodyPart = null;
-            GraphView.ChangeGraph(null);
+            GraphView.ChangeGraph(null, null, null, null);
             UpdateSurgeries();
             return;
         }
@@ -117,7 +117,7 @@ public sealed partial class SurgeryWindow : FancyWindow
             _bodyPart = null;
             _limb = null;
             UpdateSurgeries();
-            GraphView.ChangeGraph(null);
+            GraphView.ChangeGraph(null, null, null, null);
             return;
         }
 
@@ -125,7 +125,7 @@ public sealed partial class SurgeryWindow : FancyWindow
         _bodyPart = part;
         _limb = limb;
         UpdateSurgeries();
-        GraphView.ChangeGraph(_receiver.Graph);
+        GraphView.ChangeGraph(_receiver.Graph, _body, _limb, _bodyPart);
 
         GraphView.CurrentNode = _receiver.CurrentNode;
 

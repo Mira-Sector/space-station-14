@@ -1,7 +1,9 @@
+using Content.Shared.Body.Part;
 using Content.Shared.Surgery;
+using Robust.Client.GameObjects;
+using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
 using Robust.Shared.Input;
-using Robust.Shared.Utility;
 using System.Linq;
 using System.Numerics;
 
@@ -12,7 +14,7 @@ public sealed partial class SurgeryGraphControl : Control
     #region Constants & Config
 
     private const float NodeRadius = 15f;
-    private const float LayerHeight = 80f;
+    private const float LayerHeight = 128f;
     private const float NodeSpacing = 60f;
     private const float EdgeArrowSize = 5f;
     private const float EdgeClearance = 8f;
@@ -41,9 +43,19 @@ public sealed partial class SurgeryGraphControl : Control
     private static readonly Color NodeHighlightColor = Color.SeaGreen;
     private static readonly Color CurrentNodeColor = Color.MediumPurple;
     private static readonly Color NodeHoverColor = Color.IndianRed;
+
     private static readonly Color EdgeColor = Color.PaleTurquoise;
     private static readonly Color EdgeHighlightColor = Color.GreenYellow;
     private static readonly Color EdgeHoverColor = Color.MediumVioletRed;
+    private const float EdgeIconBackgroundAlpha = 0.2f;
+
+    #endregion
+
+    #region Dependencies
+
+    [Dependency] private readonly IEntityManager _entity = default!;
+
+    private readonly SpriteSystem _sprite;
 
     #endregion
 
@@ -54,9 +66,13 @@ public sealed partial class SurgeryGraphControl : Control
     private Dictionary<int, List<SurgeryNode>>? _orderedLayers;
     private Dictionary<SurgeryNode, Vector2>? _nodePositions;
 
-    private Dictionary<SurgeryEdge, SpriteSpecifier?> _edgeIcons = [];
+    private Dictionary<SurgeryEdge, Texture?> _edgeIcons = [];
 
     public SurgeryNode? CurrentNode;
+
+    private EntityUid? _body;
+    private EntityUid? _limb;
+    private BodyPart? _bodyPart;
 
     [ViewVariables]
     public Vector2 GraphOffset = Vector2.Zero;
@@ -88,6 +104,8 @@ public sealed partial class SurgeryGraphControl : Control
     public SurgeryGraphControl() : base()
     {
         IoCManager.InjectDependencies(this);
+
+        _sprite = _entity.System<SpriteSystem>();
 
         MouseFilter = MouseFilterMode.Stop;
     }
@@ -191,12 +209,15 @@ public sealed partial class SurgeryGraphControl : Control
         );
     }
 
-    public void ChangeGraph(SurgeryGraph? graph)
+    public void ChangeGraph(SurgeryGraph? graph, EntityUid? body, EntityUid? limb, BodyPart? bodyPart)
     {
         if (_graph == graph)
             return;
 
         _graph = graph;
+        _body = body;
+        _limb = limb;
+        _bodyPart = bodyPart;
 
         if (_graph == null)
         {

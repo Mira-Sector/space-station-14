@@ -1,4 +1,3 @@
-using Content.Shared.Body.Part;
 using Content.Shared.Surgery;
 using Robust.Client.Graphics;
 using System.Numerics;
@@ -45,7 +44,8 @@ public sealed partial class SurgeryGraphControl
                             ? EdgeHighlightColor
                             : EdgeColor;
 
-                    DrawSelfLoop(handle, pos, edgeColor);
+                    var midPoint = DrawSelfLoop(handle, pos, edgeColor);
+                    DrawEdgeIcon(handle, edge, midPoint, edgeColor.WithAlpha(EdgeIconBackgroundAlpha));
                 }
                 else
                 {
@@ -68,7 +68,8 @@ public sealed partial class SurgeryGraphControl
                             ? EdgeHighlightColor
                             : EdgeColor;
 
-                    DrawEdge(handle, pos, targetPos.Value, node, target!, edgeColor, _layerMap, _nodePositions, drawnEdges);
+                    var midPoint = DrawEdge(handle, pos, targetPos.Value, node, target!, edgeColor, _layerMap, _nodePositions, drawnEdges);
+                    DrawEdgeIcon(handle, edge, midPoint, edgeColor.WithAlpha(EdgeIconBackgroundAlpha));
                 }
             }
         }
@@ -81,7 +82,7 @@ public sealed partial class SurgeryGraphControl
         handle.DrawCircle(pos, NodeRadius, color, filled: filled);
     }
 
-    private static void DrawSelfLoop(DrawingHandleScreen handle, Vector2 pos, Color color)
+    private static Vector2 DrawSelfLoop(DrawingHandleScreen handle, Vector2 pos, Color color)
     {
         var start = pos + new Vector2(-SelfLoopRadius, -SelfLoopYOffset);
         var end = pos + new Vector2(SelfLoopRadius, -SelfLoopYOffset);
@@ -93,9 +94,11 @@ public sealed partial class SurgeryGraphControl
         var arrowBase = CalculateCubicBezierPoint(BezierArrowOffsetT, start, control1, control2, end);
         var arrowTip = CalculateCubicBezierPoint(BezierArrowTipT, start, control1, control2, end);
         DrawArrowHead(handle, arrowBase, arrowTip, color);
+
+        return CalculateCubicBezierPoint(0.5f, start, control1, control2, end);
     }
 
-    private static void DrawEdge(
+    private static Vector2 DrawEdge(
         DrawingHandleScreen handle,
         Vector2 startPos,
         Vector2 endPos,
@@ -136,33 +139,34 @@ public sealed partial class SurgeryGraphControl
             var arrowBase = CalculateCubicBezierPoint(BezierArrowOffsetT, adjustedStart, control1, control2, adjustedEnd);
             var arrowTip = CalculateCubicBezierPoint(BezierArrowTipT, adjustedStart, control1, control2, adjustedEnd);
             DrawArrowHead(handle, arrowBase, arrowTip, color);
-            return;
+
+            return CalculateCubicBezierPoint(0.5f, start, control1, control2, end);
         }
 
         if (!PathIntersectsAnything([start, end], nodePositions, existingEdges))
         {
             DrawLineSegment(handle, start, end, existingEdges, color, isFinal: true);
-            return;
+            return (start + end) / 2;
         }
 
         // multi layer edge routing
         if (layerDiff > 1)
         {
-            List<Vector2> points = [];
-            points.Add(start);
+            var points = new Vector2[layerDiff + 1];
+            points[0] = start;
             for (var i = 1; i < layerDiff; i++)
             {
                 var y = start.Y + (end.Y - start.Y) * i / layerDiff;
-                points.Add(new Vector2(start.X, y));
+                points[i] = new Vector2(start.X, y);
             }
-            points.Add(end);
+            points[layerDiff] = end;
 
-            if (!PathIntersectsAnything(points.ToArray(), nodePositions, existingEdges))
+            if (!PathIntersectsAnything(points, nodePositions, existingEdges))
             {
-                for (var i = 0; i < points.Count - 1; i++)
-                    DrawLineSegment(handle, points[i], points[i + 1], existingEdges, color, i == points.Count - 2);
+                for (var i = 0; i < points.Length - 1; i++)
+                    DrawLineSegment(handle, points[i], points[i + 1], existingEdges, color, i == points.Length - 2);
 
-                return;
+                return GetMidpointOfPolyline(points);
             }
         }
 
@@ -170,7 +174,7 @@ public sealed partial class SurgeryGraphControl
         if (match == null)
         {
             DrawLineSegment(handle, start, end, existingEdges, color, isFinal: true);
-            return;
+            return (start + end) / 2;
         }
 
         // branch aware elbow fallback
@@ -187,11 +191,12 @@ public sealed partial class SurgeryGraphControl
             DrawLineSegment(handle, start, mid1, existingEdges, color);
             DrawLineSegment(handle, mid1, mid2, existingEdges, color);
             DrawLineSegment(handle, mid2, end, existingEdges, color, isFinal: true);
-            return;
+            return GetMidpointOfPolyline(elbowPath);
         }
 
         // raw direct
         DrawLineSegment(handle, start, end, existingEdges, color, isFinal: true);
+        return (start + end) / 2;
     }
 
     public static void DrawBezier(
@@ -235,15 +240,21 @@ public sealed partial class SurgeryGraphControl
         handle.DrawLine(end, arrow2, color);
     }
 
-    private void DrawEdgeIcon(DrawingHandleScreen handle, SurgeryEdge edge, EntityUid? body, EntityUid? limb, BodyPart part)
+    private void DrawEdgeIcon(DrawingHandleScreen handle, SurgeryEdge edge, Vector2 pos, Color color)
     {
         if (!_edgeIcons.TryGetValue(edge, out var icon))
         {
-            icon = edge.Requirement.GetIcon(body, limb, part);
+            var sprite = edge.Requirement.GetIcon(_body, _limb, _bodyPart!);
+            icon = sprite == null ? null : _sprite.Frame0(sprite);
             _edgeIcons[edge] = icon;
         }
 
         if (icon == null)
             return;
+
+        var textureCenter = pos - icon.Size / 2;
+
+        handle.DrawRect(UIBox2.FromDimensions(textureCenter, icon.Size), color);
+        handle.DrawTexture(icon, textureCenter);
     }
 }

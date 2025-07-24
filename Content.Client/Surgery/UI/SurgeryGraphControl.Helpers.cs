@@ -61,6 +61,38 @@ public sealed partial class SurgeryGraphControl
         return false;
     }
 
+    private static Vector2 GetMidpointOfPolyline(Vector2[] points)
+    {
+        var totalLength = 0f;
+        List<float> segmentLengths = [];
+
+        for (var i = 0; i < points.Length - 1; i++)
+        {
+            var len = (points[i + 1] - points[i]).Length();
+            segmentLengths.Add(len);
+            totalLength += len;
+        }
+
+        var halfLength = totalLength / 2f;
+        var accumulated = 0f;
+
+        for (var i = 0; i < segmentLengths.Count; i++)
+        {
+            if (accumulated + segmentLengths[i] >= halfLength)
+            {
+                var segmentStart = points[i];
+                var segmentEnd = points[i + 1];
+                var remain = halfLength - accumulated;
+                var t = remain / segmentLengths[i];
+                return segmentStart + (segmentEnd - segmentStart) * t;
+            }
+            accumulated += segmentLengths[i];
+        }
+
+        // fallback
+        return points[0];
+    }
+
     private static Vector2 CalculateCubicBezierPoint(float t, Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3)
     {
         var u = 1 - t;
