@@ -9,34 +9,30 @@ public sealed partial class SurgeryGraphControl
     private static Dictionary<SurgeryNode, int> AssignLayers(SurgeryGraph graph)
     {
         Dictionary<SurgeryNode, int> layers = [];
-        HashSet<SurgeryNode> visited = [];
+        layers.EnsureCapacity(graph.Nodes.Count);
 
-        foreach (var node in graph.Nodes.Values)
+        Queue<SurgeryNode> queue = [];
+        queue.EnsureCapacity(graph.Nodes.Count);
+
+        var starting = graph.Nodes[graph.StartingNode];
+        layers[starting] = 0;
+        queue.Enqueue(starting);
+
+        while (queue.TryDequeue(out var node))
         {
-            if (visited.Contains(node))
+            if (!layers.TryGetValue(node, out var layer))
                 continue;
 
-            Queue<(SurgeryNode node, int layer)> queue = [];
-            queue.Enqueue((node, 0));
-
-            while (queue.Count > 0)
+            foreach (var edge in node.Edges)
             {
-                var (current, layer) = queue.Dequeue();
-
-                if (visited.Contains(current))
+                if (edge.Connection == null || !graph.Nodes.TryGetValue(edge.Connection.Value, out var target))
                     continue;
 
-                visited.Add(current);
-                layers[current] = layer;
+                if (layers.ContainsKey(target))
+                    continue;
 
-                foreach (var edge in current.Edges)
-                {
-                    if (edge.Connection == null || !graph.Nodes.TryGetValue(edge.Connection.Value, out var target))
-                        continue;
-
-                    if (!visited.Contains(target))
-                        queue.Enqueue((target, layer + 1));
-                }
+                queue.Enqueue(target);
+                layers[target] = layer + 1;
             }
         }
 

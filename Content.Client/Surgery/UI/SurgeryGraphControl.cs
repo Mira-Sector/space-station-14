@@ -66,7 +66,7 @@ public sealed partial class SurgeryGraphControl : Control
     private Dictionary<int, List<SurgeryNode>>? _orderedLayers;
     private Dictionary<SurgeryNode, Vector2>? _nodePositions;
 
-    private Dictionary<SurgeryEdge, Texture?> _edgeIcons = [];
+    private readonly Dictionary<SurgeryEdge, Texture?> _edgeIcons = [];
 
     public SurgeryNode? CurrentNode;
 
