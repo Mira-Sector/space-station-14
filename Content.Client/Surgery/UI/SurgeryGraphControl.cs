@@ -97,7 +97,10 @@ public sealed partial class SurgeryGraphControl : Control
         base.KeyBindDown(args);
 
         if (args.Function == EngineKeyFunctions.UIRightClick)
+        {
             _dragging = true;
+            DefaultCursorShape = CursorShape.Crosshair;
+        }
     }
 
     protected override void KeyBindUp(GUIBoundKeyEventArgs args)
@@ -122,7 +125,10 @@ public sealed partial class SurgeryGraphControl : Control
         }
 
         if (args.Function == EngineKeyFunctions.UIRightClick)
+        {
             _dragging = false;
+            DefaultCursorShape = CursorShape.Arrow;
+        }
     }
 
     protected override void MouseMove(GUIMouseMoveEventArgs args)
