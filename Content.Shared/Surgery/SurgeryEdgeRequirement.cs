@@ -1,6 +1,7 @@
 using Content.Shared.Body.Part;
 using Content.Shared.DoAfter;
 using Robust.Shared.Serialization;
+using Robust.Shared.Utility;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Content.Shared.Surgery;
@@ -15,7 +16,12 @@ public abstract partial class SurgeryEdgeRequirement
 
     public abstract bool RequirementsMatch(SurgeryEdgeRequirement other, [NotNullWhen(true)] out SurgeryEdgeRequirement? merged);
 
+    #region UI
+
     public abstract string Description(EntityUid? body, EntityUid? limb, BodyPart bodyPart);
+    public abstract SpriteSpecifier? GetIcon(EntityUid? body, EntityUid? limb, BodyPart bodyPart);
+
+    #endregion
 }
 
 [Serializable, NetSerializable]

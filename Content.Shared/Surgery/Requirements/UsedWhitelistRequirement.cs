@@ -3,6 +3,7 @@ using Content.Shared.DoAfter;
 using Content.Shared.Whitelist;
 using JetBrains.Annotations;
 using Robust.Shared.Serialization;
+using Robust.Shared.Utility;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Content.Shared.Surgery.Requirements;
@@ -23,6 +24,11 @@ public sealed partial class UsedWhitelistRequirement : SurgeryEdgeRequirement
     public override string Description(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
     {
         return string.Empty;
+    }
+
+    public override SpriteSpecifier? GetIcon(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    {
+        return null;
     }
 
     public override SurgeryEdgeState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)

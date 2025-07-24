@@ -4,5 +4,9 @@
         <Label
             Name="RequirementDescription"
             Access="Public"/>
+        <TextureRect
+            Stretch="Tile"
+            Name="RequirementIcon"
+            Access="Public"/>
     </BoxContainer>
 </PanelContainer>

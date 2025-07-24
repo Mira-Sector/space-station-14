@@ -3,6 +3,7 @@ using Content.Shared.Body.Part;
 using Content.Shared.DoAfter;
 using JetBrains.Annotations;
 using Robust.Shared.Serialization;
+using Robust.Shared.Utility;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Content.Shared.Surgery.Requirements;
@@ -11,9 +12,16 @@ namespace Content.Shared.Surgery.Requirements;
 [Serializable, NetSerializable]
 public sealed partial class OrganRequirement : SurgeryEdgeRequirement
 {
+    private static readonly SpriteSpecifier.Rsi Icon = new(new("/Textures/Interface/surgery_icons.rsi"), "organ");
+
     public override string Description(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
     {
         return Loc.GetString("surgery-requirement-organ-desc");
+    }
+
+    public override SpriteSpecifier? GetIcon(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    {
+        return Icon;
     }
 
     public override SurgeryEdgeState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)

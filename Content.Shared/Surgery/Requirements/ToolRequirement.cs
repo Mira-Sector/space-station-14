@@ -1,11 +1,11 @@
 using Content.Shared.Body.Part;
 using Content.Shared.DoAfter;
-using Content.Shared.Localizations;
 using Content.Shared.Tools;
 using Content.Shared.Tools.Systems;
 using JetBrains.Annotations;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
+using Robust.Shared.Utility;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Content.Shared.Surgery.Requirements;
@@ -27,6 +27,13 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
         var qualityName = Loc.GetString(prototypes.Index(Quality).Name);
 
         return Loc.GetString("surgery-requirement-tool-desc", ("tool", qualityName));
+    }
+
+    public override SpriteSpecifier? GetIcon(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    {
+        var prototypes = IoCManager.Resolve<IPrototypeManager>();
+
+        return prototypes.Index(Quality).Icon;
     }
 
     public override SurgeryEdgeState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
@@ -58,7 +65,7 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
         var entMan = IoCManager.Resolve<IEntityManager>();
         var toolSystem = entMan.System<SharedToolSystem>();
 
-        return toolSystem.UseTool(tool.Value, user, limb ?? body, Delay, Qualities, new SurgeryDoAfterEvent(targetEdge, bodyPart), out doAfterId, requireDown: body != null ? true : null);
+        return toolSystem.UseTool(tool.Value, user, limb ?? body, Delay, [Quality], new SurgeryDoAfterEvent(targetEdge, bodyPart), out doAfterId, requireDown: body != null ? true : null);
     }
 
     public override bool RequirementsMatch(SurgeryEdgeRequirement other, [NotNullWhen(true)] out SurgeryEdgeRequirement? merged)
