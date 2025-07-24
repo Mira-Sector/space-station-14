@@ -2,6 +2,9 @@
     xmlns="https://spacestation14.io"
     xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
     xmlns:cc="clr-namespace:Content.Client.Surgery.UI"
+    SetSize="768 512"
+    MinWidth="512"
+    MinHeight="384"
     HorizontalAlignment="Stretch"
     VerticalAlignment="Stretch"
     HorizontalExpand="True"
@@ -13,29 +16,34 @@
         VerticalExpand="True">
         <BoxContainer
             Orientation="Horizontal"
-            HorizontalExpand="True"
-            VerticalExpand="True">
+            HorizontalExpand="True">
             <BoxContainer
                 Name="LimbButtons"
                 Orientation="Vertical"
-                HorizontalExpand="True"
                 HorizontalAlignment="Left"
-                Margin="4"
+                Margin="16"
                 Access="Public"/>
+            <PanelContainer StyleClasses="LowDivider"/>
             <cc:SurgeryGraphControl
                 Name="GraphView"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
+                Margin="4"
+                RectClipContent="True"
+                HorizontalExpand="True"
                 Access="Public"/>
+            <PanelContainer StyleClasses="LowDivider"/>
             <BoxContainer
                 Name="SurgeryButtons"
                 Orientation="Vertical"
-                HorizontalExpand="True"
                 HorizontalAlignment="Right"
-                Margin="4"
+                Margin="16"
                 Access="Public"/>
         </BoxContainer>
+        <PanelContainer StyleClasses="LowDivider"/>
         <BoxContainer
+            HorizontalExpand="True"
+            VerticalExpand="True"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
             Name="GraphDetails"
             Access="Public"/>
     </BoxContainer>

@@ -14,7 +14,7 @@ namespace Content.Shared.Surgery.Requirements;
 [Serializable, NetSerializable]
 public sealed partial class BodyPartRequirement : SurgeryEdgeRequirement
 {
-    private static readonly ResPath LimbIcons = new("/Textures/Interface/Alerts/limb_damage.rsi");
+    private static readonly ResPath IconRsi = new("/Textures/Interface/Actions/zone_sel.rsi");
 
     [DataField]
     public TimeSpan? Delay;
@@ -29,8 +29,7 @@ public sealed partial class BodyPartRequirement : SurgeryEdgeRequirement
 
     public override SpriteSpecifier? GetIcon(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
     {
-        var state = SharedBodySystem.BodyPartToLayer(bodyPart);
-        return new SpriteSpecifier.Rsi(LimbIcons, state.ToString());
+        return new SpriteSpecifier.Rsi(IconRsi, SurgeryHelper.BodyPartIconState(bodyPart));
     }
 
     public override SurgeryEdgeState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)

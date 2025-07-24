@@ -1,3 +1,4 @@
 <Button
     xmlns="https://spacestation14.io"
-    ToggleMode="True"/>
+    ToggleMode="True"
+    Margin="4"/>
