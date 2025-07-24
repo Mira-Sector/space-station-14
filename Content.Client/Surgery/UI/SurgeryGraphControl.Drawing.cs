@@ -31,7 +31,7 @@ public sealed partial class SurgeryGraphControl
             if (_hoveredNode == node || _clickedNode == node)
             {
                 DrawNode(handle, pos, NodeHoverColor);
-                DrawNode(handle, pos, nodeColor, false);
+                DrawNode(handle, pos, nodeColor, true);
             }
             else
             {
@@ -84,9 +84,10 @@ public sealed partial class SurgeryGraphControl
         handle.SetTransform(previous);
     }
 
-    private static void DrawNode(DrawingHandleScreen handle, Vector2 pos, Color color, bool filled = true)
+    private static void DrawNode(DrawingHandleScreen handle, Vector2 pos, Color color, bool inner = false)
     {
-        handle.DrawCircle(pos, NodeRadius, color, filled: filled);
+        var radius = inner ? NodeInnerRadius : NodeRadius;
+        handle.DrawCircle(pos, radius, color);
     }
 
     private static Vector2 DrawSelfLoop(DrawingHandleScreen handle, Vector2 pos, Color color)

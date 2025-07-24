@@ -13,7 +13,8 @@ public sealed partial class SurgeryGraphControl : Control
 {
     #region Constants & Config
 
-    private const float NodeRadius = 15f;
+    private const float NodeRadius = 16f;
+    private const float NodeInnerRadius = 14f;
     private const float LayerHeight = 128f;
     private const float NodeSpacing = 60f;
     private const float EdgeArrowSize = 5f;
