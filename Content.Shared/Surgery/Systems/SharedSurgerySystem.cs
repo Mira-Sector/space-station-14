@@ -37,8 +37,8 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         SubscribeLocalEvent<SurgeryReceiverComponent, InteractHandEvent>((u, c, a) => OnLimbInteract(u, c, a.User, null, a));
         SubscribeLocalEvent<SurgeryReceiverBodyComponent, InteractHandEvent>((u, c, a) => OnBodyInteract(u, c, a.User, null, a));
 
-        SubscribeLocalEvent<SurgeryReceiverComponent, SurgeryDoAfterEvent>(OnLimbDoAfter);
-        SubscribeLocalEvent<SurgeryReceiverBodyComponent, SurgeryDoAfterEvent>(OnBodyDoAfter);
+        SubscribeLocalEvent<SurgeryReceiverComponent, SurgeryEdgeRequirementDoAfterEvent>(OnLimbEdgeRequirementDoAfter);
+        SubscribeLocalEvent<SurgeryReceiverBodyComponent, SurgeryEdgeRequirementDoAfterEvent>(OnBodyEdgeRequirementDoAfter);
     }
 
     private void OnLimbInit(EntityUid uid, SurgeryReceiverComponent component, BodyPartComponent? bodyPartComp = null)
@@ -187,7 +187,7 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         return true;
     }
 
-    private void OnBodyDoAfter(EntityUid uid, SurgeryReceiverBodyComponent component, SurgeryDoAfterEvent args)
+    private void OnBodyEdgeRequirementDoAfter(EntityUid uid, SurgeryReceiverBodyComponent component, SurgeryEdgeRequirementDoAfterEvent args)
     {
         if (args.Handled)
             return;
@@ -196,20 +196,20 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         {
             // this is fucking abysmal but doafterid isnt serializable
             var netDoAfterId = (GetNetEntity(args.DoAfter.Id.Uid), args.DoAfter.Id.Index);
-            if (!surgeries.Surgeries.DoAfters.ContainsKey(netDoAfterId))
+            if (!surgeries.Surgeries.EdgeDoAfters.ContainsKey(netDoAfterId))
                 continue;
 
             if (args.Cancelled)
             {
-                surgeries.Surgeries.DoAfters.Remove(netDoAfterId);
+                surgeries.Surgeries.EdgeDoAfters.Remove(netDoAfterId);
                 continue;
             }
 
-            OnDoAfter(null, uid, surgeries.Surgeries, args);
+            OnEdgeRequirementDoAfter(null, uid, surgeries.Surgeries, args);
         }
     }
 
-    private void OnLimbDoAfter(EntityUid uid, SurgeryReceiverComponent component, SurgeryDoAfterEvent args)
+    private void OnLimbEdgeRequirementDoAfter(EntityUid uid, SurgeryReceiverComponent component, SurgeryEdgeRequirementDoAfterEvent args)
     {
         if (args.Handled)
             return;
@@ -217,7 +217,7 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         if (args.Cancelled)
         {
             var netDoAfterId = (GetNetEntity(args.DoAfter.Id.Uid), args.DoAfter.Id.Index);
-            component.DoAfters.Remove(netDoAfterId);
+            component.EdgeDoAfters.Remove(netDoAfterId);
 
             return;
         }
@@ -228,10 +228,10 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         if (args.BodyPart.Type != bodyPartComp.PartType || args.BodyPart.Side != bodyPartComp.Symmetry)
             return;
 
-        OnDoAfter(uid, bodyPartComp.Body, component, args);
+        OnEdgeRequirementDoAfter(uid, bodyPartComp.Body, component, args);
     }
 
-    private void OnDoAfter(EntityUid? limb, EntityUid? body, ISurgeryReceiver surgeryReceiver, SurgeryDoAfterEvent args)
+    private void OnEdgeRequirementDoAfter(EntityUid? limb, EntityUid? body, ISurgeryReceiver surgeryReceiver, SurgeryEdgeRequirementDoAfterEvent args)
     {
         if (!surgeryReceiver.Graph.TryFindNode(args.TargetEdge.Connection, out var newNode))
             return;
@@ -245,8 +245,10 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         DoNodeReachedSpecials(surgeryReceiver, body, limb, args.User, args.Used, args.BodyPart);
 
         var netDoAfterId = (GetNetEntity(args.DoAfter.Id.Uid), args.DoAfter.Id.Index);
-        surgeryReceiver.DoAfters.Remove(netDoAfterId);
-        CancelDoAfters(limb ?? body, surgeryReceiver);
+        surgeryReceiver.EdgeDoAfters.Remove(netDoAfterId);
+        CancelEdgeRequirementDoAfters(surgeryReceiver);
+        CancelNodeSpecialDoAfters(surgeryReceiver, oldNode);
+        CloseAllUis(limb ?? body, surgeryReceiver);
 
         RaiseNodeModifiedEvents(limb, body, surgeryReceiver, oldNode!, newNode, args.TargetEdge);
     }
@@ -270,12 +272,12 @@ public abstract partial class SharedSurgerySystem : EntitySystem
             // when merging the graph we made sure there arent multiple edges to traverse
             switch (TryEdge(limb, surgery, edge, body, user, used, bodyPart, out var edgeUi))
             {
-                case SurgeryEdgeState.Passed:
+                case SurgeryInteractionState.Passed:
                     RaiseNodeModifiedEvents(limb, body, surgery, oldNode!, surgery.CurrentNode, edge);
                     return true;
-                case SurgeryEdgeState.DoAfter:
+                case SurgeryInteractionState.DoAfter:
                     return true;
-                case SurgeryEdgeState.UserInterface:
+                case SurgeryInteractionState.UserInterface:
                     ui ??= edgeUi;
                     RaiseNodeModifiedEvents(limb, body, surgery, oldNode!, surgery.CurrentNode, edge);
                     break;
@@ -296,11 +298,11 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         return false;
     }
 
-    public SurgeryEdgeState TryEdge(EntityUid? limb, ISurgeryReceiver surgery, SurgeryEdge edge, EntityUid? body, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui)
+    public SurgeryInteractionState TryEdge(EntityUid? limb, ISurgeryReceiver surgery, SurgeryEdge edge, EntityUid? body, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui)
     {
         ui = null;
 
-        foreach (var (doAfterId, (doAfterNetUser, requirement)) in surgery.DoAfters)
+        foreach (var (_, (doAfterNetUser, requirement)) in surgery.EdgeDoAfters)
         {
             if (requirement != edge.Requirement)
                 continue;
@@ -310,47 +312,49 @@ public abstract partial class SharedSurgerySystem : EntitySystem
             // yes its passed
             // its valid as we are already doing something
             if (doAfterUser == user)
-                return SurgeryEdgeState.Passed;
+                return SurgeryInteractionState.Passed;
         }
 
         var requirementsPassed = edge.Requirement.RequirementMet(body, limb, user, used, bodyPart, out ui);
 
-        if (requirementsPassed == SurgeryEdgeState.Failed)
-            return SurgeryEdgeState.Failed;
+        if (requirementsPassed == SurgeryInteractionState.Failed)
+            return SurgeryInteractionState.Failed;
 
-        if (requirementsPassed == SurgeryEdgeState.UserInterface)
+        if (requirementsPassed == SurgeryInteractionState.UserInterface)
         {
             if (ui == null)
-                return SurgeryEdgeState.Failed;
+                return SurgeryInteractionState.Failed;
 
             surgery.UserInterfaces.Add(ui);
 
-            return SurgeryEdgeState.UserInterface;
+            return SurgeryInteractionState.UserInterface;
         }
 
-        CancelDoAfters(limb ?? body, surgery);
+        CancelEdgeRequirementDoAfters(surgery);
+        CloseAllUis(limb ?? body, surgery);
 
-        if (requirementsPassed == SurgeryEdgeState.DoAfter)
+        if (requirementsPassed == SurgeryInteractionState.DoAfter)
         {
             var doAfterStarted = edge.Requirement.StartDoAfter(_doAfter, edge, body, limb, user, used, bodyPart, out var doAfterId);
 
             if (doAfterId != null)
             {
                 var netDoAfterId = (GetNetEntity(doAfterId.Value.Uid), doAfterId.Value.Index);
-                surgery.DoAfters.Add(netDoAfterId, (GetNetEntity(user), edge.Requirement));
+                surgery.EdgeDoAfters.Add(netDoAfterId, (GetNetEntity(user), edge.Requirement));
             }
 
-            return doAfterStarted ? SurgeryEdgeState.DoAfter : SurgeryEdgeState.Failed;
+            return doAfterStarted ? SurgeryInteractionState.DoAfter : SurgeryInteractionState.Failed;
         }
 
         if (!surgery.Graph.TryFindNode(edge.Connection, out var newNode))
-            return SurgeryEdgeState.Failed;
+            return SurgeryInteractionState.Failed;
 
+        CancelNodeSpecialDoAfters(surgery);
         DoNodeLeftSpecials(surgery, body, limb, user, used, bodyPart);
         surgery.CurrentNode = newNode;
         DoNodeReachedSpecials(surgery, body, limb, user, used, bodyPart);
 
-        return SurgeryEdgeState.Passed;
+        return SurgeryInteractionState.Passed;
     }
 
     private void DoNodeReachedSpecials(ISurgeryReceiver receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
@@ -396,26 +400,43 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         if (receiver.CurrentNode?.Special is not { } specials)
             return false;
 
+        var netUser = GetNetEntity(user);
         var uiUid = limb ?? body;
         var handled = false;
 
         foreach (var special in specials)
         {
-            handled |= special.Interacted(body, limb, user, used, bodyPart, out var ui);
+            switch (special.Interacted(body, limb, user, used, bodyPart, out var ui))
+            {
+                case SurgeryInteractionState.Failed:
+                    continue;
+                case SurgeryInteractionState.Passed:
+                    handled = true;
+                    continue;
+                case SurgeryInteractionState.DoAfter:
+                    if (!special.StartDoAfter(_doAfter, body, limb, user, used, bodyPart, out var doAfterId))
+                        continue;
 
-            if (ui == null)
-                continue;
-
-            receiver.UserInterfaces.Add(ui);
-            Ui.TryOpenUi(uiUid!.Value, ui, user);
+                    CancelSpecialDoAfter(receiver, netUser, user, special);
+                    if (!receiver.SpecialDoAfters.TryGetValue(special, out var specialDoAfters))
+                        specialDoAfters = [];
+                    specialDoAfters[netUser] = doAfterId.Value.Index;
+                    handled = true;
+                    continue;
+                case SurgeryInteractionState.UserInterface:
+                    receiver.UserInterfaces.Add(ui!);
+                    Ui.TryOpenUi(uiUid!.Value, ui!, user);
+                    handled = true;
+                    continue;
+            }
         }
 
         return handled;
     }
 
-    private void CancelDoAfters(EntityUid? uid, ISurgeryReceiver surgeryReceiver)
+    private void CancelEdgeRequirementDoAfters(ISurgeryReceiver surgeryReceiver)
     {
-        foreach (var netDoAfter in surgeryReceiver.DoAfters.Keys)
+        foreach (var netDoAfter in surgeryReceiver.EdgeDoAfters.Keys)
         {
             var doAfter = new DoAfterId(GetEntity(netDoAfter.Item1), netDoAfter.Item2);
             if (!_doAfter.IsRunning(doAfter))
@@ -424,10 +445,52 @@ public abstract partial class SharedSurgerySystem : EntitySystem
             _doAfter.Cancel(doAfter);
         }
 
-        if (uid == null)
+        surgeryReceiver.EdgeDoAfters.Clear();
+    }
+
+    private void CancelSpecialDoAfter(ISurgeryReceiver receiver, NetEntity netUser, EntityUid user, SurgerySpecial special)
+    {
+        if (!receiver.SpecialDoAfters.TryGetValue(special, out var doAfters))
             return;
 
-        surgeryReceiver.DoAfters.Clear();
+        if (!doAfters.TryGetValue(netUser, out var doAfterId))
+            return;
+
+        doAfters.Remove(netUser);
+
+        var doAfter = new DoAfterId(user, doAfterId);
+        if (!_doAfter.IsRunning(doAfter))
+            return;
+
+        _doAfter.Cancel(doAfter);
+    }
+
+    private void CancelNodeSpecialDoAfters(ISurgeryReceiver receiver, SurgeryNode? node = null)
+    {
+        node ??= receiver.CurrentNode!;
+
+        foreach (var special in node.Special)
+        {
+            if (!receiver.SpecialDoAfters.TryGetValue(special, out var specialDoAfters))
+                continue;
+
+            foreach (var (user, doAfterId) in specialDoAfters)
+            {
+                var doAfter = new DoAfterId(GetEntity(user), doAfterId);
+                if (!_doAfter.IsRunning(doAfter))
+                    continue;
+
+                _doAfter.Cancel(doAfter);
+            }
+        }
+
+        receiver.SpecialDoAfters.Clear();
+    }
+
+    private void CloseAllUis(EntityUid? uid, ISurgeryReceiver surgeryReceiver)
+    {
+        if (uid == null)
+            return;
 
         foreach (var ui in surgeryReceiver.UserInterfaces)
             Ui.CloseUi(uid.Value, ui);

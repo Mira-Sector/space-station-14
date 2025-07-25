@@ -1,5 +1,6 @@
 using Content.Shared.Body.Part;
 using Content.Shared.DoAfter;
+using Content.Shared.Surgery.Events;
 using Content.Shared.Whitelist;
 using JetBrains.Annotations;
 using Robust.Shared.Serialization;
@@ -31,23 +32,23 @@ public sealed partial class UsedWhitelistRequirement : SurgeryEdgeRequirement
         return null;
     }
 
-    public override SurgeryEdgeState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
+    public override SurgeryInteractionState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
     {
         ui = null;
 
         if (tool == null)
-            return SurgeryEdgeState.Failed;
+            return SurgeryInteractionState.Failed;
 
         var entMan = IoCManager.Resolve<IEntityManager>();
         var whitelistSystem = entMan.System<EntityWhitelistSystem>();
 
         if (whitelistSystem.IsWhitelistFailOrNull(Whitelist, tool.Value) || whitelistSystem.IsBlacklistFail(BlackList, tool.Value))
-            return SurgeryEdgeState.Failed;
+            return SurgeryInteractionState.Failed;
 
         if (Delay == null)
-            return SurgeryEdgeState.Passed;
+            return SurgeryInteractionState.Passed;
 
-        return SurgeryEdgeState.DoAfter;
+        return SurgeryInteractionState.DoAfter;
     }
 
     public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
@@ -59,7 +60,7 @@ public sealed partial class UsedWhitelistRequirement : SurgeryEdgeRequirement
 
         var entMan = IoCManager.Resolve<IEntityManager>();
 
-        var doAfterArgs = new DoAfterArgs(entMan, user, Delay.Value, new SurgeryDoAfterEvent(targetEdge, bodyPart), limb, used: tool)
+        var doAfterArgs = new DoAfterArgs(entMan, user, Delay.Value, new SurgeryEdgeRequirementDoAfterEvent(targetEdge, bodyPart), limb, used: tool)
         {
             BreakOnMove = true,
             RequireDown = true

@@ -1,6 +1,5 @@
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
-using Content.Shared.DoAfter;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Surgery.Systems;
 using JetBrains.Annotations;
@@ -27,7 +26,7 @@ public sealed partial class LimbRequirement : SurgeryEdgeRequirement
         return Icon;
     }
 
-    public override SurgeryEdgeState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
+    public override SurgeryInteractionState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
     {
         ui = null;
 
@@ -37,17 +36,17 @@ public sealed partial class LimbRequirement : SurgeryEdgeRequirement
         {
             var handSys = entMan.System<SharedHandsSystem>();
             handSys.PickupOrDrop(user, limb.Value);
-            return SurgeryEdgeState.Passed;
+            return SurgeryInteractionState.Passed;
         }
 
         if (tool is not { } used || body == null)
-            return SurgeryEdgeState.Failed;
+            return SurgeryInteractionState.Failed;
 
         var containerSys = entMan.System<SharedContainerSystem>();
         var bodySys = entMan.System<SharedBodySystem>();
 
         if (!entMan.TryGetComponent<BodyPartComponent>(used, out var bodyPartComp))
-            return SurgeryEdgeState.Failed;
+            return SurgeryInteractionState.Failed;
 
         foreach (var (_, container) in bodySys.GetBodyContainers(body.Value))
         {
@@ -59,16 +58,10 @@ public sealed partial class LimbRequirement : SurgeryEdgeRequirement
                 continue;
 
             if (containerSys.Insert(used, container))
-                return SurgeryEdgeState.Passed;
+                return SurgeryInteractionState.Passed;
         }
 
-        return SurgeryEdgeState.Failed;
-    }
-
-    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
-    {
-        doAfterId = null;
-        return false;
+        return SurgeryInteractionState.Failed;
     }
 
     public override bool RequirementsMatch(SurgeryEdgeRequirement other, [NotNullWhen(true)] out SurgeryEdgeRequirement? merged)

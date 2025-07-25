@@ -1,5 +1,6 @@
 using Content.Shared.Body.Part;
 using Content.Shared.DoAfter;
+using Content.Shared.Surgery.Events;
 using Content.Shared.Tools;
 using Content.Shared.Tools.Systems;
 using JetBrains.Annotations;
@@ -36,20 +37,20 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
         return prototypes.Index(Quality).Icon;
     }
 
-    public override SurgeryEdgeState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
+    public override SurgeryInteractionState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
     {
         ui = null;
 
         if (tool == null)
-            return SurgeryEdgeState.Failed;
+            return SurgeryInteractionState.Failed;
 
         var entMan = IoCManager.Resolve<IEntityManager>();
         var toolSystem = entMan.System<SharedToolSystem>();
 
         if (toolSystem.HasQuality(tool.Value, Quality))
-            return Delay > TimeSpan.Zero ? SurgeryEdgeState.DoAfter : SurgeryEdgeState.Passed;
+            return Delay > TimeSpan.Zero ? SurgeryInteractionState.DoAfter : SurgeryInteractionState.Passed;
 
-        return SurgeryEdgeState.Failed;
+        return SurgeryInteractionState.Failed;
     }
 
     public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
@@ -65,7 +66,7 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
         var entMan = IoCManager.Resolve<IEntityManager>();
         var toolSystem = entMan.System<SharedToolSystem>();
 
-        return toolSystem.UseTool(tool.Value, user, limb ?? body, Delay, [Quality], new SurgeryDoAfterEvent(targetEdge, bodyPart), out doAfterId, requireDown: body != null ? true : null);
+        return toolSystem.UseTool(tool.Value, user, limb ?? body, Delay, [Quality], new SurgeryEdgeRequirementDoAfterEvent(targetEdge, bodyPart), out doAfterId, requireDown: body != null ? true : null);
     }
 
     public override bool RequirementsMatch(SurgeryEdgeRequirement other, [NotNullWhen(true)] out SurgeryEdgeRequirement? merged)

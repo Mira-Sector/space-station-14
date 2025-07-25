@@ -23,7 +23,10 @@ public interface ISurgeryReceiver
     /// Keep track of doafters as they will need to be cancelled when we change node
     /// </summary>
     [ViewVariables]
-    Dictionary<(NetEntity, ushort), (NetEntity, SurgeryEdgeRequirement)> DoAfters { get; set; }
+    Dictionary<(NetEntity, ushort), (NetEntity, SurgeryEdgeRequirement)> EdgeDoAfters { get; set; }
+
+    [ViewVariables]
+    Dictionary<SurgerySpecial, Dictionary<NetEntity, ushort>> SpecialDoAfters { get; set; }
 
     /// <summary>
     /// Keep track of the open uis as they will need to be closed

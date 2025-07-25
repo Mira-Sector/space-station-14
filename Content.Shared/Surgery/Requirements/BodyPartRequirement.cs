@@ -1,7 +1,7 @@
 using Content.Shared.Body.Part;
-using Content.Shared.Body.Systems;
 using Content.Shared.Damage.DamageSelector;
 using Content.Shared.DoAfter;
+using Content.Shared.Surgery.Events;
 using Content.Shared.Surgery.Systems;
 using JetBrains.Annotations;
 using Robust.Shared.Serialization;
@@ -32,45 +32,45 @@ public sealed partial class BodyPartRequirement : SurgeryEdgeRequirement
         return new SpriteSpecifier.Rsi(IconRsi, SurgeryHelper.BodyPartIconState(bodyPart));
     }
 
-    public override SurgeryEdgeState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
+    public override SurgeryInteractionState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
     {
         ui = null;
 
         if (tool == null)
-            return SurgeryEdgeState.Failed;
+            return SurgeryInteractionState.Failed;
 
         var entMan = IoCManager.Resolve<IEntityManager>();
 
         if (!entMan.TryGetComponent<BodyPartComponent>(tool.Value, out var bodyPartComp))
-            return SurgeryEdgeState.Failed;
+            return SurgeryInteractionState.Failed;
 
         if (bodyPart != null)
         {
             if (bodyPartComp.PartType != bodyPart.Type || bodyPartComp.Symmetry != bodyPart.Side)
-                return SurgeryEdgeState.Failed;
+                return SurgeryInteractionState.Failed;
         }
 
         if (RequireAiming)
         {
             if (!entMan.TryGetComponent<DamagePartSelectorComponent>(user, out var damageSelectorComp))
-                return SurgeryEdgeState.Failed;
+                return SurgeryInteractionState.Failed;
 
             if (bodyPart != null)
             {
                 if (damageSelectorComp.SelectedPart.Type != bodyPart.Type || damageSelectorComp.SelectedPart.Side != bodyPart.Side)
-                    return SurgeryEdgeState.Failed;
+                    return SurgeryInteractionState.Failed;
             }
             else
             {
                 if (damageSelectorComp.SelectedPart.Type != bodyPartComp.PartType || damageSelectorComp.SelectedPart.Side != bodyPartComp.Symmetry)
-                    return SurgeryEdgeState.Failed;
+                    return SurgeryInteractionState.Failed;
             }
         }
 
         if (Delay == null)
-            return SurgeryEdgeState.Passed;
+            return SurgeryInteractionState.Passed;
 
-        return SurgeryEdgeState.DoAfter;
+        return SurgeryInteractionState.DoAfter;
     }
 
     public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
@@ -82,7 +82,7 @@ public sealed partial class BodyPartRequirement : SurgeryEdgeRequirement
 
         var entMan = IoCManager.Resolve<IEntityManager>();
 
-        var doAfterArgs = new DoAfterArgs(entMan, user, Delay.Value, new SurgeryDoAfterEvent(targetEdge, bodyPart), limb, used: tool)
+        var doAfterArgs = new DoAfterArgs(entMan, user, Delay.Value, new SurgeryEdgeRequirementDoAfterEvent(targetEdge, bodyPart), limb, used: tool)
         {
             BreakOnMove = true,
             RequireDown = true

@@ -71,7 +71,10 @@ public sealed partial class SurgeryBodyPartReceiver : ISurgeryReceiver
     public SurgeryNode? CurrentNode { get; set; }
 
     [ViewVariables]
-    public Dictionary<(NetEntity, ushort), (NetEntity, SurgeryEdgeRequirement)> DoAfters { get; set; } = [];
+    public Dictionary<(NetEntity, ushort), (NetEntity, SurgeryEdgeRequirement)> EdgeDoAfters { get; set; } = [];
+
+    [ViewVariables]
+    public Dictionary<SurgerySpecial, Dictionary<NetEntity, ushort>> SpecialDoAfters { get; set; } = [];
 
     [ViewVariables]
     public HashSet<Enum> UserInterfaces { get; set; } = [];

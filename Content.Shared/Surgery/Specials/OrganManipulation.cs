@@ -8,14 +8,14 @@ namespace Content.Shared.Surgery.Specials;
 [UsedImplicitly, Serializable, NetSerializable]
 public sealed partial class OrganManipulation : SurgerySpecial
 {
-    public override bool Interacted(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui)
+    public override SurgeryInteractionState Interacted(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui)
     {
         base.Interacted(body, limb, user, used, bodyPart, out ui);
 
         if (used != null)
-            return false;
+            return SurgeryInteractionState.Failed;
 
         ui = OrganSelectionUiKey.Key;
-        return true;
+        return SurgeryInteractionState.UserInterface;
     }
 }
