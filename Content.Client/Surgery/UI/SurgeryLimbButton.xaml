@@ -8,12 +8,14 @@
         HorizontalExpand="True"
         VerticalExpand="True">
         <TextureRect
-            Margin="2"
             Stretch="Tile"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             Name="Icon"
             Access="Public"/>
+        <PanelContainer
+            Margin="2"
+            StyleClasses="LowDivider"/>
         <Label
             Margin="2"
             HorizontalAlignment="Right"

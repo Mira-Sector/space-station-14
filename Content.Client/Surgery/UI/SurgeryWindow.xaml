@@ -14,12 +14,18 @@
         Orientation="Vertical"
         HorizontalExpand="True"
         VerticalExpand="True">
-        <BoxContainer
-            HorizontalExpand="True"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Stretch"
-            Name="GraphDetails"
-            Access="Public"/>
+        <controls:StripeBack
+            HasTopEdge="False"
+            HasBottomEdge="False"
+            HasMargins="False">
+            <BoxContainer
+                MinSize="768 128"
+                HorizontalExpand="True"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Stretch"
+                Name="GraphDetails"
+                Access="Public"/>
+        </controls:StripeBack>
         <PanelContainer StyleClasses="LowDivider"/>
         <BoxContainer
             Orientation="Horizontal"
@@ -29,15 +35,19 @@
                 Name="LimbButtons"
                 Orientation="Vertical"
                 HorizontalAlignment="Left"
+                VerticalAlignment="Center"
                 Margin="16"
                 Access="Public"/>
             <PanelContainer StyleClasses="LowDivider"/>
-            <cc:SurgeryGraphControl
-                Name="GraphView"
-                Margin="4"
-                RectClipContent="True"
+            <PanelContainer
                 HorizontalExpand="True"
-                Access="Public"/>
+                StyleClasses="PanelBackgroundBaseDark">
+                <cc:SurgeryGraphControl
+                    Name="GraphView"
+                    HorizontalExpand="True"
+                    RectClipContent="True"
+                    Access="Public"/>
+            </PanelContainer>
             <PanelContainer StyleClasses="LowDivider"/>
             <BoxContainer
                 Name="SurgeryButtons"
