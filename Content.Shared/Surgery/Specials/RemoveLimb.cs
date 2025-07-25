@@ -8,8 +8,10 @@ namespace Content.Shared.Surgery.Specials;
 [UsedImplicitly, Serializable, NetSerializable]
 public sealed partial class RemoveLimb : SurgerySpecial
 {
-    public override void NodeReached(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
+    public override void NodeReached(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui)
     {
+        base.NodeReached(body, limb, user, used, bodyPart, out ui);
+
         if (limb == null)
             return;
 
@@ -17,9 +19,5 @@ public sealed partial class RemoveLimb : SurgerySpecial
         var handSys = entMan.System<SharedHandsSystem>();
 
         handSys.PickupOrDrop(user, limb.Value);
-    }
-
-    public override void NodeLeft(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
-    {
     }
 }

@@ -9,8 +9,10 @@ namespace Content.Shared.Surgery.Specials;
 [UsedImplicitly, Serializable, NetSerializable]
 public sealed partial class AddLimb : SurgerySpecial
 {
-    public override void NodeReached(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
+    public override void NodeReached(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui)
     {
+        base.NodeReached(body, limb, user, used, bodyPart, out ui);
+
         if (used == null)
             return;
 
@@ -24,7 +26,7 @@ public sealed partial class AddLimb : SurgerySpecial
         if (!entMan.TryGetComponent<BodyPartComponent>(used, out var bodyPartComp))
             return;
 
-        foreach (var (bodypart, container) in bodySys.GetBodyContainers(body.Value))
+        foreach (var (_, container) in bodySys.GetBodyContainers(body.Value))
         {
             // must be empty
             if (container.ContainedEntities.Count > 0)
@@ -36,9 +38,5 @@ public sealed partial class AddLimb : SurgerySpecial
             if (containerSys.Insert(used.Value, container))
                 break;
         }
-    }
-
-    public override void NodeLeft(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
-    {
     }
 }

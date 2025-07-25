@@ -102,6 +102,12 @@ public abstract partial class SharedSurgerySystem : EntitySystem
 
         BodyPart bodyPart = new(bodyPartComp.PartType, bodyPartComp.Symmetry);
 
+        if (DoInteractSpecials(component, bodyPartComp.Body, uid, user, used, bodyPart))
+        {
+            args.Handled = true;
+            return;
+        }
+
         args.Handled = TryTraverseGraph(uid, component, bodyPartComp.Body, user, used, bodyPart);
         Dirty(uid, component);
     }
@@ -138,6 +144,12 @@ public abstract partial class SharedSurgerySystem : EntitySystem
             // we have a limb we can do surgery on
             limbFound = true;
 
+            if (DoInteractSpecials(surgeryComp, uid, limb, user, used, bodyPart))
+            {
+                args.Handled = true;
+                continue;
+            }
+
             // may have multiple limbs so dont exit early
             args.Handled |= TryTraverseGraph(limb, surgeryComp, uid, user, used, bodyPart);
         }
@@ -147,7 +159,7 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         if (limbFound)
             return;
 
-        // the body may have a surgery to persue instead
+        // the body may have a surgery to pursue instead
         foreach (var surgeries in component.Surgeries)
         {
             if (surgeries.BodyPart.Type != damageSelectorComp.SelectedPart.Type)
@@ -156,11 +168,14 @@ public abstract partial class SharedSurgerySystem : EntitySystem
             if (surgeries.BodyPart.Side != damageSelectorComp.SelectedPart.Side)
                 continue;
 
-            if (TryTraverseGraph(null, surgeries.Surgeries, uid, user, used, surgeries.BodyPart))
+            if (!DoInteractSpecials(surgeries.Surgeries, uid, null, user, used, surgeries.BodyPart))
             {
-                args.Handled = true;
-                return;
+                if (!TryTraverseGraph(null, surgeries.Surgeries, uid, user, used, surgeries.BodyPart))
+                    continue;
             }
+
+            args.Handled = true;
+            return;
         }
     }
 
@@ -225,9 +240,9 @@ public abstract partial class SharedSurgerySystem : EntitySystem
 
         var oldNode = surgeryReceiver.CurrentNode;
 
-        DoNodeLeftSpecials(surgeryReceiver.CurrentNode?.Special, body, limb, args.User, args.Used, args.BodyPart);
+        DoNodeLeftSpecials(surgeryReceiver, body, limb, args.User, args.Used, args.BodyPart);
         surgeryReceiver.CurrentNode = newNode;
-        DoNodeReachedSpecials(surgeryReceiver.CurrentNode?.Special, body, limb, args.User, args.Used, args.BodyPart);
+        DoNodeReachedSpecials(surgeryReceiver, body, limb, args.User, args.Used, args.BodyPart);
 
         var netDoAfterId = (GetNetEntity(args.DoAfter.Id.Uid), args.DoAfter.Id.Index);
         surgeryReceiver.DoAfters.Remove(netDoAfterId);
@@ -331,29 +346,71 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         if (!surgery.Graph.TryFindNode(edge.Connection, out var newNode))
             return SurgeryEdgeState.Failed;
 
-        DoNodeLeftSpecials(surgery.CurrentNode?.Special, body, limb, user, used, bodyPart);
+        DoNodeLeftSpecials(surgery, body, limb, user, used, bodyPart);
         surgery.CurrentNode = newNode;
-        DoNodeReachedSpecials(surgery.CurrentNode?.Special, body, limb, user, used, bodyPart);
+        DoNodeReachedSpecials(surgery, body, limb, user, used, bodyPart);
 
         return SurgeryEdgeState.Passed;
     }
 
-    private static void DoNodeReachedSpecials(HashSet<SurgerySpecial>? specials, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
+    private void DoNodeReachedSpecials(ISurgeryReceiver receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
     {
-        if (specials == null)
+        if (receiver.CurrentNode?.Special is not { } specials)
             return;
 
+        var uiUid = limb ?? body;
+
         foreach (var special in specials)
-            special.NodeReached(body, limb, user, used, bodyPart);
+        {
+            special.NodeReached(body, limb, user, used, bodyPart, out var ui);
+
+            if (ui == null)
+                continue;
+
+            receiver.UserInterfaces.Add(ui);
+            Ui.TryOpenUi(uiUid!.Value, ui, user);
+        }
     }
 
-    private static void DoNodeLeftSpecials(HashSet<SurgerySpecial>? specials, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
+    private void DoNodeLeftSpecials(ISurgeryReceiver receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
     {
-        if (specials == null)
+        if (receiver.CurrentNode?.Special is not { } specials)
             return;
 
+        var uiUid = limb ?? body;
+
         foreach (var special in specials)
-            special.NodeLeft(body, limb, user, used, bodyPart);
+        {
+            special.NodeLeft(body, limb, user, used, bodyPart, out var ui);
+
+            if (ui == null)
+                continue;
+
+            receiver.UserInterfaces.Add(ui);
+            Ui.TryOpenUi(uiUid!.Value, ui, user);
+        }
+    }
+
+    private bool DoInteractSpecials(ISurgeryReceiver receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
+    {
+        if (receiver.CurrentNode?.Special is not { } specials)
+            return false;
+
+        var uiUid = limb ?? body;
+        var handled = false;
+
+        foreach (var special in specials)
+        {
+            handled |= special.Interacted(body, limb, user, used, bodyPart, out var ui);
+
+            if (ui == null)
+                continue;
+
+            receiver.UserInterfaces.Add(ui);
+            Ui.TryOpenUi(uiUid!.Value, ui, user);
+        }
+
+        return handled;
     }
 
     private void CancelDoAfters(EntityUid? uid, ISurgeryReceiver surgeryReceiver)

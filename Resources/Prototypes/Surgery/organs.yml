@@ -30,8 +30,9 @@
       requirement: !type:ToolRequirement
         quality: Slicing
   - id: Scalpel2
+    special:
+    - !type:OrganManipulation
     edges:
-    - requirement: !type:OrganRequirement
     - connection: Start
       requirement: !type:ToolRequirement
         quality: Slicing
