@@ -38,6 +38,8 @@ public sealed partial class SurgeryGraphControl
                 DrawNode(handle, pos, nodeColor);
             }
 
+            DrawNodeIcon(handle, node, pos);
+
             foreach (var edge in node.Edges)
             {
                 if (IsSelfLoop(edge, _graph, out var target, out var targetPos))
@@ -246,6 +248,51 @@ public sealed partial class SurgeryGraphControl
 
         handle.DrawLine(end, arrow1, color);
         handle.DrawLine(end, arrow2, color);
+    }
+
+    private void DrawNodeIcon(DrawingHandleScreen handle, SurgeryNode node, Vector2 pos)
+    {
+        if (!_nodeIcons.TryGetValue(node, out var icons))
+        {
+            icons = [];
+            icons.EnsureCapacity(node.Special.Count);
+            foreach (var special in node.Special)
+            {
+                var sprite = special.GetIcon(_body, _limb, _bodyPart!);
+                if (sprite == null)
+                    continue;
+                icons.Add(_sprite.Frame0(sprite));
+            }
+
+            _nodeIcons[node] = icons;
+        }
+
+        // prevent division by 0
+        if (!icons.Any())
+        {
+            return;
+        }
+        else if (icons.Count == 1) // special case so it doesnt look ass
+        {
+            var icon = icons[0];
+            var centerPos = pos - icon.Size / 2;
+            handle.DrawTexture(icon, centerPos);
+        }
+        else
+        {
+            var angleStep = MathF.Tau / icons.Count;
+
+            for (var i = 0; i < icons.Count; i++)
+            {
+                var icon = icons[i];
+                var angle = i * angleStep;
+
+                var offset = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * NodeRadius;
+                var iconPos = pos + offset - icon.Size / 2;
+
+                handle.DrawTexture(icon, iconPos);
+            }
+        }
     }
 
     private void DrawEdgeIcon(DrawingHandleScreen handle, SurgeryEdge edge, Vector2 pos, Color color)
