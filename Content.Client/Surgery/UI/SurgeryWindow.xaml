@@ -29,7 +29,7 @@
         <PanelContainer StyleClasses="LowDivider"/>
         <BoxContainer
             Orientation="Horizontal"
-            VerticalAlignment="Bottom"
+            VerticalAlignment="Stretch"
             HorizontalExpand="True"
             VerticalExpand="True">
             <BoxContainer
