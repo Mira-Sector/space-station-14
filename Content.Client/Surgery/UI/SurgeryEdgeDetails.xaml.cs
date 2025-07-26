@@ -20,8 +20,10 @@ public sealed partial class SurgeryEdgeDetails : PanelContainer
         IoCManager.InjectDependencies(this);
         _sprite = _entity.System<SpriteSystem>();
 
-        var icon = edge.Requirement.GetIcon(body, limb, part);
-        RequirementIcon.Texture = icon == null ? null : _sprite.Frame0(icon);
-        RequirementDescription.Text = edge.Requirement.Description(body, limb, part);
+        Tabs.RemoveAllChildren();
+        var tab = new SurgeryEdgeDetailsTab(edge.Requirement, body, limb, part, _sprite);
+        Tabs.AddChild(tab);
+
+        Tabs.Visible = Tabs.ChildCount > 0;
     }
 }

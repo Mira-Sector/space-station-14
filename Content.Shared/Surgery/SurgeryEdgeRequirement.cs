@@ -22,6 +22,7 @@ public abstract partial class SurgeryEdgeRequirement
 
     #region UI
 
+    public abstract string Name(EntityUid? body, EntityUid? limb, BodyPart bodyPart);
     public abstract string Description(EntityUid? body, EntityUid? limb, BodyPart bodyPart);
     public abstract SpriteSpecifier? GetIcon(EntityUid? body, EntityUid? limb, BodyPart bodyPart);
 

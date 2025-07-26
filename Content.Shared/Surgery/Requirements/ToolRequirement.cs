@@ -21,6 +21,11 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
     [DataField]
     public TimeSpan Delay = TimeSpan.FromSeconds(1f);
 
+    public override string Name(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    {
+        return Loc.GetString("surgery-requirement-tool-name");
+    }
+
     public override string Description(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
     {
         var prototypes = IoCManager.Resolve<IPrototypeManager>();

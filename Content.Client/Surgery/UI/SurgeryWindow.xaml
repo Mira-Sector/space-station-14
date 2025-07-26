@@ -2,9 +2,9 @@
     xmlns="https://spacestation14.io"
     xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
     xmlns:cc="clr-namespace:Content.Client.Surgery.UI"
-    SetSize="768 512"
+    SetSize="768 576"
     MinWidth="512"
-    MinHeight="384"
+    MinHeight="576"
     HorizontalAlignment="Stretch"
     VerticalAlignment="Stretch"
     HorizontalExpand="True"
@@ -19,7 +19,7 @@
             HasBottomEdge="False"
             HasMargins="False">
             <BoxContainer
-                MinSize="768 128"
+                MinSize="768 192"
                 HorizontalExpand="True"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Stretch"
@@ -30,7 +30,8 @@
         <BoxContainer
             Orientation="Horizontal"
             VerticalAlignment="Bottom"
-            HorizontalExpand="True">
+            HorizontalExpand="True"
+            VerticalExpand="True">
             <BoxContainer
                 Name="LimbButtons"
                 Orientation="Vertical"

@@ -206,7 +206,7 @@ public sealed partial class SurgeryWindow : FancyWindow
     private void OnNodeClicked(SurgeryNode node)
     {
         GraphDetails.RemoveAllChildren();
-        var details = new SurgeryNodeDetails(node);
+        var details = new SurgeryNodeDetails(node, _body, _limb, _bodyPart!);
         GraphDetails.AddChild(details);
     }
 

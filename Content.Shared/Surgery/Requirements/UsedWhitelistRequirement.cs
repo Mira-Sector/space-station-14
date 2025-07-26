@@ -22,6 +22,11 @@ public sealed partial class UsedWhitelistRequirement : SurgeryEdgeRequirement
     [DataField]
     public TimeSpan? Delay;
 
+    public override string Name(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    {
+        return string.Empty;
+    }
+
     public override string Description(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
     {
         return string.Empty;

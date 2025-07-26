@@ -16,6 +16,11 @@ public sealed partial class LimbRequirement : SurgeryEdgeRequirement
 {
     private static readonly SpriteSpecifier.Rsi Icon = new(new("/Textures/Interface/surgery_icons.rsi"), "limb");
 
+    public override string Name(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    {
+        return Loc.GetString("surgery-requirement-limb-name");
+    }
+
     public override string Description(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
     {
         return Loc.GetString("surgery-requirement-limb-desc", ("part", Loc.GetString(SurgeryHelper.GetBodyPartLoc(bodyPart))));

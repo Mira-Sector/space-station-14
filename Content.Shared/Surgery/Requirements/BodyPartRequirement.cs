@@ -22,6 +22,11 @@ public sealed partial class BodyPartRequirement : SurgeryEdgeRequirement
     [DataField]
     public bool RequireAiming = true;
 
+    public override string Name(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    {
+        return Loc.GetString("surgery-requirement-body-part-name");
+    }
+
     public override string Description(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
     {
         return Loc.GetString("surgery-requirement-body-part-desc", ("part", Loc.GetString(SurgeryHelper.GetBodyPartLoc(bodyPart))));

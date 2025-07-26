@@ -2,27 +2,9 @@
     xmlns="https://spacestation14.io"
     HorizontalExpand="True"
     VerticalExpand="True">
-    <BoxContainer
+    <TabContainer
+        Name="Tabs"
         Margin="16"
         HorizontalExpand="True"
-        VerticalExpand="True">
-        <BoxContainer
-            VerticalExpand="True"
-            Margin="16, 0">
-            <PanelContainer
-                StyleClasses="PanelBackgroundBaseDark">
-                <TextureRect
-                    Stretch="KeepAspectCentered"
-                    SetSize="96, 96"
-                    Name="RequirementIcon"
-                    Access="Public"/>
-            </PanelContainer>
-        </BoxContainer>
-        <BoxContainer
-            Margin="16, 0">
-            <Label
-                Name="RequirementDescription"
-                Access="Public"/>
-        </BoxContainer>
-    </BoxContainer>
+        VerticalExpand="True"/>
 </PanelContainer>

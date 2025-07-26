@@ -13,7 +13,10 @@
             "name": "limb"
         },
         {
-            "name": "organ"
+            "name": "organ-head"
+        },
+        {
+            "name": "organ-body"
         }
     ]
 }

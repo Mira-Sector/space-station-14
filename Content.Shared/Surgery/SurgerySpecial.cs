@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Body.Part;
 using Content.Shared.DoAfter;
 using Robust.Shared.Serialization;
+using Robust.Shared.Utility;
 
 namespace Content.Shared.Surgery;
 
@@ -29,4 +30,12 @@ public abstract partial class SurgerySpecial
         doAfterId = null;
         return false;
     }
+
+    #region UI
+
+    public abstract string Name(EntityUid? body, EntityUid? limb, BodyPart bodyPart);
+    public abstract string Description(EntityUid? body, EntityUid? limb, BodyPart bodyPart);
+    public abstract SpriteSpecifier? GetIcon(EntityUid? body, EntityUid? limb, BodyPart bodyPart);
+
+    #endregion
 }
