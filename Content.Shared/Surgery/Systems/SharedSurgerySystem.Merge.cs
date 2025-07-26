@@ -1,3 +1,4 @@
+using System.Linq;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Surgery.Systems;
@@ -5,223 +6,248 @@ namespace Content.Shared.Surgery.Systems;
 public abstract partial class SharedSurgerySystem
 {
     // calculating the graph is expensive and reused multiple times so cache it
-    private Dictionary<List<ProtoId<SurgeryPrototype>>, SurgeryGraph> Graphs = [];
+    private readonly Dictionary<List<ProtoId<SurgeryPrototype>>, SurgeryGraph> _graphCache = [];
 
     public SurgeryGraph MergeGraphs(List<ProtoId<SurgeryPrototype>> prototypeIds)
     {
-        foreach (var (graphProtoIds, graph) in Graphs)
-        {
-            if (prototypeIds.Count != graphProtoIds.Count)
-                continue;
+        if (TryGetCachedGraph(prototypeIds, out var cached))
+            return cached;
 
-            var failed = false;
-
-            for (var i = 0; i < prototypeIds.Count; i++)
-            {
-                if (prototypeIds[i] != graphProtoIds[i])
-                {
-                    failed = true;
-                    break;
-                }
-            }
-
-            if (!failed)
-                return graph;
-        }
-
-        SurgeryGraph mergedGraph = new();
-
-        foreach (var prototypeId in prototypeIds)
-        {
-            if (!_prototype.TryIndex(prototypeId, out var prototype))
-                continue;
-
-            MergeGraphs(prototype, mergedGraph);
-        }
-
-        Graphs.Add(prototypeIds, mergedGraph);
+        var mergedGraph = BuildMergedGraph(prototypeIds);
+        _graphCache[prototypeIds] = mergedGraph;
         return mergedGraph;
     }
 
-    private static void MergeGraphs(SurgeryGraph targetGraph, SurgeryGraph mergedGraph)
+    private bool TryGetCachedGraph(List<ProtoId<SurgeryPrototype>> prototypeIds, out SurgeryGraph cached)
     {
-        if (!targetGraph.TryGetStaringNode(out var targetStartingNode))
+        foreach (var (cachedIds, graph) in _graphCache)
+        {
+            if (AreProtoListsEqual(prototypeIds, cachedIds))
+            {
+                cached = graph;
+                return true;
+            }
+        }
+
+        cached = null!;
+        return false;
+    }
+
+    private static bool AreProtoListsEqual(List<ProtoId<SurgeryPrototype>> a, List<ProtoId<SurgeryPrototype>> b)
+    {
+        if (a.Count != b.Count)
+            return false;
+
+        for (var i = 0; i < a.Count; i++)
+        {
+            if (a[i] != b[i])
+                return false;
+        }
+
+        return true;
+    }
+
+    private SurgeryGraph BuildMergedGraph(List<ProtoId<SurgeryPrototype>> prototypeIds)
+    {
+        var graph = new SurgeryGraph();
+
+        foreach (var id in prototypeIds)
+        {
+            if (_prototype.TryIndex(id, out var proto))
+                MergeGraphs(proto, graph);
+        }
+
+        return graph;
+    }
+
+    private static void MergeGraphs(SurgeryGraph sourceGraph, SurgeryGraph mergedGraph)
+    {
+        if (!sourceGraph.TryGetStaringNode(out var sourceStart))
             return;
 
-        if (!mergedGraph.TryGetStaringNode(out var mergedStartingNode))
+        if (!mergedGraph.TryGetStaringNode(out var mergedStart))
         {
-            SetGraph(targetGraph, mergedGraph, targetStartingNode);
+            CopyGraph(sourceGraph, mergedGraph, sourceStart);
             return;
         }
 
-        HashSet<SurgeryNode> exploredNodes = [];
+        HashSet<SurgeryNode> explored = [];
 
-        Queue<SurgeryNode> targetQueue = [];
-        targetQueue.Enqueue(targetStartingNode);
+        Queue<SurgeryNode> queue = [];
+        queue.Enqueue(sourceStart);
 
         Dictionary<SurgeryNode, SurgeryNode> nodeMap = [];
-        nodeMap.Add(targetStartingNode, mergedStartingNode);
+        nodeMap[sourceStart] = mergedStart;
 
-        while (targetQueue.TryDequeue(out var targetNode))
+        while (queue.TryDequeue(out var currentSource))
         {
             // node already explored
-            if (!exploredNodes.Add(targetNode))
+            if (!explored.Add(currentSource))
                 continue;
 
-            if (!nodeMap.TryGetValue(targetNode, out var mergedNode))
+            if (!nodeMap.TryGetValue(currentSource, out var currentMerged))
                 continue;
 
-            GetMatchingEdges(targetNode, mergedNode, out var matchingEdges, out var missingEdges);
-
-            foreach (var (targetEdge, mergedEdge) in matchingEdges)
-            {
-                if (targetGraph.TryFindNode(targetEdge.Connection, out var targetConnection))
-                {
-                    if (mergedGraph.TryFindNode(mergedEdge.Connection, out var mergedConnection))
-                    {
-                        targetQueue.Enqueue(targetConnection);
-                        nodeMap.Add(targetConnection, mergedConnection);
-                    }
-                    else
-                    {
-                        ContinueGraph(targetEdge, targetNode, mergedNode, targetGraph, mergedGraph, nodeMap, exploredNodes);
-                    }
-                }
-            }
-
-            foreach (var targetEdge in missingEdges)
-                ContinueGraph(targetEdge, targetNode, mergedNode, targetGraph, mergedGraph, nodeMap, exploredNodes);
+            ProcessNodePair(currentSource, currentMerged, sourceGraph, mergedGraph, queue, nodeMap, explored);
         }
     }
 
-    private static void SetGraph(SurgeryGraph targetGraph, SurgeryGraph mergedGraph, SurgeryNode targetStartingNode)
+    private static void ProcessNodePair(
+        SurgeryNode sourceNode,
+        SurgeryNode mergedNode,
+        SurgeryGraph sourceGraph,
+        SurgeryGraph mergedGraph,
+        Queue<SurgeryNode> queue,
+        Dictionary<SurgeryNode, SurgeryNode> nodeMap,
+        HashSet<SurgeryNode> explored)
     {
+        GetMatchingEdges(sourceNode, mergedNode, out var matches, out var missing);
+
+        foreach (var (sourceEdge, mergedEdge) in matches)
+        {
+            if (!sourceGraph.TryFindNode(sourceEdge.Connection, out var nextSourceNode))
+                continue;
+
+            if (mergedGraph.TryFindNode(mergedEdge.Connection, out var nextMergedNode))
+            {
+                queue.Enqueue(nextSourceNode);
+                nodeMap[nextSourceNode] = nextMergedNode;
+            }
+            else
+            {
+                ExpandGraph(sourceEdge, sourceNode, mergedNode, sourceGraph, mergedGraph, nodeMap, explored);
+            }
+        }
+
+        foreach (var sourceEdge in missing)
+            ExpandGraph(sourceEdge, sourceNode, mergedNode, sourceGraph, mergedGraph, nodeMap, explored);
+    }
+
+    private static void CopyGraph(SurgeryGraph sourceGraph, SurgeryGraph mergedGraph, SurgeryNode startNode)
+    {
+        var newStart = new SurgeryNode
+        {
+            Special = new(startNode.Special)
+        };
+
         var newId = mergedGraph.GetNextId();
-        var newNode = new SurgeryNode();
-        mergedGraph.Nodes.Add(newId, newNode);
+        mergedGraph.Nodes.Add(newId, newStart);
         mergedGraph.StartingNode = newId;
 
-        newNode.Special = new(targetStartingNode.Special);
-
-        HashSet<SurgeryNode> exploredNodes = [];
-        exploredNodes.Add(targetStartingNode);
+        HashSet<SurgeryNode> explored = [];
+        explored.Add(startNode);
 
         Dictionary<SurgeryNode, SurgeryNode> nodeMap = [];
 
-        foreach (var edge in targetStartingNode.Edges)
-            ContinueGraph(edge, targetStartingNode, newNode, targetGraph, mergedGraph, nodeMap, exploredNodes);
+        foreach (var edge in startNode.Edges)
+            ExpandGraph(edge, startNode, newStart, sourceGraph, mergedGraph, nodeMap, explored);
     }
 
-    public static void GetMatchingEdges(SurgeryNode targetNode, SurgeryNode mergedNode, out Dictionary<SurgeryEdge, SurgeryEdge> matchingEdges, out HashSet<SurgeryEdge> missingEdges)
+    public static void GetMatchingEdges(SurgeryNode sourceNode, SurgeryNode mergedNode, out Dictionary<SurgeryEdge, SurgeryEdge> matching, out HashSet<SurgeryEdge> missing)
     {
-        matchingEdges = [];
-        missingEdges = [];
+        matching = [];
+        missing = [];
 
-        if (targetNode.Special.Count != mergedNode.Special.Count)
+        if (!sourceNode.Special.SetEquals(mergedNode.Special))
             return;
 
-        foreach (var targetSpecial in targetNode.Special)
+        foreach (var edge in sourceNode.Edges)
         {
-            if (!mergedNode.Special.Contains(targetSpecial))
-                return;
-        }
+            var match = mergedNode.Edges.FirstOrDefault(
+                me => edge.Requirement.RequirementsMatch(me.Requirement, out _));
 
-        foreach (var targetEdge in targetNode.Edges)
-        {
-            SurgeryEdge? matchingEdge = null;
-
-            foreach (var mergedEdge in mergedNode.Edges)
-            {
-                if (!targetEdge.Requirement.RequirementsMatch(mergedEdge.Requirement, out var _))
-                    continue;
-
-                matchingEdge = mergedEdge;
-                break;
-            }
-
-            if (matchingEdge != null)
-                matchingEdges.Add(targetEdge, matchingEdge);
+            if (match != null)
+                matching[edge] = match;
             else
-                missingEdges.Add(targetEdge);
+                missing.Add(edge);
         }
     }
-
-    public static void ContinueGraph(
-        SurgeryEdge sourceTargetEdge,
-        SurgeryNode sourceTargetNode,
-        SurgeryNode sourceMergedNode,
-        SurgeryGraph targetGraph,
+    public static void ExpandGraph(
+        SurgeryEdge sourceEdge,
+        SurgeryNode sourceNode,
+        SurgeryNode mergedNode,
+        SurgeryGraph sourceGraph,
         SurgeryGraph mergedGraph,
         Dictionary<SurgeryNode, SurgeryNode> nodeMap,
-        HashSet<SurgeryNode> exploredNodes)
+        HashSet<SurgeryNode> explored)
     {
-        if (!targetGraph.TryFindNode(sourceTargetEdge.Connection, out var sourceTargetConnection))
+        if (!sourceGraph.TryFindNode(sourceEdge.Connection, out var sourceConnection))
             return;
 
-        Queue<SurgeryNode> targetNodes = [];
-        targetNodes.Enqueue(sourceTargetConnection);
-
-        var sourceMergedEdge = new SurgeryEdge();
-        sourceMergedNode.Edges.Add(sourceMergedEdge);
-        sourceMergedEdge.Requirement = sourceTargetEdge.Requirement;
-
-        // we need to keep track of what node sent us down this path
-        // the edge connections need to be updated with new ids
-        Dictionary<SurgeryNode, SurgeryEdge> connectionsNeedUpdate = [];
-        connectionsNeedUpdate.Add(sourceTargetConnection, sourceMergedEdge);
-
-        while (targetNodes.TryDequeue(out var targetNode))
+        var newMergedEdge = new SurgeryEdge
         {
-            if (nodeMap.ContainsKey(targetNode))
+            Requirement = sourceEdge.Requirement
+        };
+        mergedNode.Edges.Add(newMergedEdge);
+
+        Queue<SurgeryNode> toVisit = [];
+        Dictionary<SurgeryNode, SurgeryEdge> pendingEdges = [];
+
+        toVisit.Enqueue(sourceConnection);
+        pendingEdges[sourceConnection] = newMergedEdge;
+
+        TraverseAndCloneNodes(toVisit, pendingEdges, sourceGraph, mergedGraph, nodeMap, explored);
+        ResolvePendingConnections(pendingEdges, nodeMap, mergedGraph);
+    }
+
+    private static void TraverseAndCloneNodes(
+        Queue<SurgeryNode> toVisit,
+        Dictionary<SurgeryNode, SurgeryEdge> pendingEdges,
+        SurgeryGraph sourceGraph,
+        SurgeryGraph mergedGraph,
+        Dictionary<SurgeryNode, SurgeryNode> nodeMap,
+        HashSet<SurgeryNode> explored)
+    {
+        while (toVisit.TryDequeue(out var currentSource))
+        {
+            if (nodeMap.ContainsKey(currentSource) || explored.Contains(currentSource))
                 continue;
 
-            if (exploredNodes.Contains(targetNode))
-                continue;
+            explored.Add(currentSource);
 
-            exploredNodes.Add(targetNode);
-
-            var id = mergedGraph.GetNextId();
-
-            var newNode = new SurgeryNode()
+            var newNode = new SurgeryNode
             {
-                Special = new(targetNode.Special)
+                Special = new(currentSource.Special)
             };
 
-            nodeMap.Add(targetNode, newNode);
-            mergedGraph.Nodes.Add(id, newNode);
+            var newId = mergedGraph.GetNextId();
+            mergedGraph.Nodes[newId] = newNode;
+            nodeMap[currentSource] = newNode;
 
-            foreach (var edge in targetNode.Edges)
+            foreach (var edge in currentSource.Edges)
             {
-                var newEdge = new SurgeryEdge()
-                {
-                    Requirement = edge.Requirement
-                };
-
+                var newEdge = new SurgeryEdge { Requirement = edge.Requirement };
                 newNode.Edges.Add(newEdge);
 
-                if (!targetGraph.TryFindNode(edge.Connection, out var targetConnection))
+                if (!sourceGraph.TryFindNode(edge.Connection, out var nextSource))
                 {
                     newEdge.Connection = null;
                     continue;
                 }
 
-                if (!connectionsNeedUpdate.TryAdd(targetConnection, newEdge))
+                if (!pendingEdges.TryAdd(nextSource, newEdge))
                 {
-                    // circular node
+                    // circular edge
                     newEdge.Connection = null;
                     continue;
                 }
 
-                targetNodes.Enqueue(targetConnection);
+                toVisit.Enqueue(nextSource);
             }
         }
+    }
 
-        foreach (var (node, edge) in connectionsNeedUpdate)
+    private static void ResolvePendingConnections(
+        Dictionary<SurgeryNode, SurgeryEdge> pendingEdges,
+        Dictionary<SurgeryNode, SurgeryNode> nodeMap,
+        SurgeryGraph mergedGraph)
+    {
+        foreach (var (sourceNode, edge) in pendingEdges)
         {
-            if (!nodeMap.TryGetValue(node, out var mappedNode))
+            if (!nodeMap.TryGetValue(sourceNode, out var mapped))
                 continue;
 
-            if (mergedGraph.TryFindNodeId(mappedNode, out var id))
+            if (mergedGraph.TryFindNodeId(mapped, out var id))
                 edge.Connection = id;
         }
     }
