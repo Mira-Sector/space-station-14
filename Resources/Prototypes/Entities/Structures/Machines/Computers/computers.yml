@@ -641,6 +641,19 @@
     radius: 1.5
     energy: 1.6
     color: "#1f8c28"
+  - type: SurgeryUserInterface
+  - type: SurgeryUserInterfaceLinkedSink
+  - type: DeviceLinkSink
+    ports:
+      - SurgeryUiSink
+  - type: ActivatableUI
+    key: enum.SurgeryUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.SurgeryUiKey.Key:
+        type: SurgeryBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
 
 - type: entity
   parent: BaseComputerAiAccess

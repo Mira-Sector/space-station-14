@@ -1,0 +1,26 @@
+<Button
+    xmlns="https://spacestation14.io"
+    Margin="4"
+    ToggleMode="True">
+    <BoxContainer
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        HorizontalExpand="True"
+        VerticalExpand="True">
+        <TextureRect
+            Stretch="Tile"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Name="Icon"
+            Access="Public"/>
+        <PanelContainer
+            Margin="2"
+            StyleClasses="LowDivider"/>
+        <Label
+            Margin="2"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Name="Label"
+            Access="Public"/>
+    </BoxContainer>
+</Button>

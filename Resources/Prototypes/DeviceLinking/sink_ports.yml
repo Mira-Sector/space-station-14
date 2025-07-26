@@ -127,3 +127,8 @@
   id: SetParticleSigma
   name: signal-port-name-set-particle-sigma
   description: signal-port-description-set-particle-sigma
+
+- type: sinkPort
+  id: SurgeryUiSink
+  name: signal-port-name-surgery-ui-sink
+  description: signal-port-description-surgery-ui-sink

@@ -162,3 +162,9 @@
   name: signal-port-name-item-detected
   description: signal-port-description-item-detected
   defaultLinks: [ Toggle, Trigger, Timer ]
+
+- type: sourcePort
+  id: SurgeryUiSource
+  name: signal-port-name-surgery-ui-source
+  description: signal-port-description-surgery-ui-source
+  defaultLinks: [ SurgeryUiSink ]
