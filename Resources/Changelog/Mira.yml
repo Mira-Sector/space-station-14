@@ -1977,3 +1977,11 @@ Entries:
     type: Add
   id: 275
   time: '2025-07-20T01:30:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: The operating table can be linked to a body scanner computer
+    type: Add
+  - message: The body scanner computer can show a guide of surgery steps
+    type: Add
+  id: 276
+  time: '2025-07-27T17:30:50.0000000+00:00'
