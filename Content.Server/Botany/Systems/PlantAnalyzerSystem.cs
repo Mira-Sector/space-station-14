@@ -169,9 +169,9 @@ public sealed class PlantAnalyzerSystem : BaseAnalyzerSystem<PlantAnalyzerCompon
             ("gasCount", data.ProduceData?.ExudeGasses.Count.ToString(PlantAnalyzerLocalizationHelper.DP) ?? missingData),
             ("endurance", data.PlantData?.Endurance.ToString(PlantAnalyzerLocalizationHelper.DP) ?? missingData),
             ("lifespan", data.PlantData?.Lifespan.ToString(PlantAnalyzerLocalizationHelper.DP) ?? missingData),
-            ("seeds", data.ProduceData is not null ? PlantAnalyzerLocalizationHelper.BooleanToLocalizedStrings(data.ProduceData.Seedless ? true : false, _prototypeManager) : missingData),
-            ("viable", data.PlantData is not null ? PlantAnalyzerLocalizationHelper.BooleanToLocalizedStrings(data.PlantData.Viable ? true : false, _prototypeManager) : missingData),
-            ("kudzu", data.PlantData is not null ? PlantAnalyzerLocalizationHelper.BooleanToLocalizedStrings(data.PlantData.Kudzu ? true : false, _prototypeManager) : missingData),
+            ("seeds", data.ProduceData is not null ? PlantAnalyzerLocalizationHelper.BooleanToLocalizedStrings(data.ProduceData.Seedless, _prototypeManager) : missingData),
+            ("viable", data.PlantData is not null ? PlantAnalyzerLocalizationHelper.BooleanToLocalizedStrings(data.PlantData.Viable, _prototypeManager) : missingData),
+            ("kudzu", data.PlantData is not null ? PlantAnalyzerLocalizationHelper.BooleanToLocalizedStrings(data.PlantData.Kudzu, _prototypeManager) : missingData),
             ("indent", "    "),
             ("nl", "\n")
         ];
