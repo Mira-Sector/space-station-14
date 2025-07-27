@@ -9105,6 +9105,8 @@ entities:
       rot: 3.141592653589793 rad
       pos: 60.5,39.5
       parent: 1
+    - type: SurgeryUserInterfaceLinkedSink
+      source: 1216
   - uid: 2623
     components:
     - type: Transform
@@ -12688,6 +12690,13 @@ entities:
     - type: Transform
       pos: 59.5,39.5
       parent: 1
+    - type: SurgeryUserInterfaceLinkedSource
+      sink: 1221
+    - type: DeviceLinkSource
+      linkedPorts:
+        1221:
+        - - SurgeryUiSource
+          - SurgeryUiSink
 - proto: OxygenCanister
   entities:
   - uid: 423

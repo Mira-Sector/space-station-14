@@ -1,0 +1,10 @@
+<PanelContainer
+    xmlns="https://spacestation14.io"
+    HorizontalExpand="True"
+    VerticalExpand="True">
+    <TabContainer
+        Name="Tabs"
+        Margin="16"
+        HorizontalExpand="True"
+        VerticalExpand="True"/>
+</PanelContainer>
