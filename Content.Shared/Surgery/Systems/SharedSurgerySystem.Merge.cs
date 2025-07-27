@@ -72,11 +72,14 @@ public abstract partial class SharedSurgerySystem
         }
 
         HashSet<SurgeryNode> explored = [];
+        explored.EnsureCapacity(sourceGraph.Nodes.Count);
 
         Queue<SurgeryNode> queue = [];
+        queue.EnsureCapacity(sourceGraph.Nodes.Count);
         queue.Enqueue(sourceStart);
 
         Dictionary<SurgeryNode, SurgeryNode> nodeMap = [];
+        nodeMap.EnsureCapacity(sourceGraph.Nodes.Count);
         nodeMap[sourceStart] = mergedStart;
 
         while (queue.TryDequeue(out var currentSource))
@@ -135,9 +138,12 @@ public abstract partial class SharedSurgerySystem
         mergedGraph.StartingNode = newId;
 
         HashSet<SurgeryNode> explored = [];
+        explored.EnsureCapacity(sourceGraph.Nodes.Count);
         explored.Add(startNode);
 
         Dictionary<SurgeryNode, SurgeryNode> nodeMap = [];
+        nodeMap.EnsureCapacity(sourceGraph.Nodes.Count);
+        nodeMap[startNode] = newStart;
 
         foreach (var edge in startNode.Edges)
             ExpandGraph(edge, startNode, newStart, sourceGraph, mergedGraph, nodeMap, explored);
@@ -181,7 +187,9 @@ public abstract partial class SharedSurgerySystem
         mergedNode.Edges.Add(newMergedEdge);
 
         Queue<SurgeryNode> toVisit = [];
+        toVisit.EnsureCapacity(sourceGraph.Nodes.Count);
         Dictionary<SurgeryNode, SurgeryEdge> pendingEdges = [];
+        pendingEdges.EnsureCapacity(sourceGraph.Nodes.Count);
 
         toVisit.Enqueue(sourceConnection);
         pendingEdges[sourceConnection] = newMergedEdge;
@@ -200,23 +208,26 @@ public abstract partial class SharedSurgerySystem
     {
         while (toVisit.TryDequeue(out var currentSource))
         {
-            if (nodeMap.ContainsKey(currentSource) || explored.Contains(currentSource))
-                continue;
-
-            explored.Add(currentSource);
-
-            var newNode = new SurgeryNode
+            if (!nodeMap.TryGetValue(currentSource, out var newNode))
             {
-                Special = new(currentSource.Special)
-            };
+                newNode = new SurgeryNode
+                {
+                    Special = new(currentSource.Special)
+                };
+                var newId = mergedGraph.GetNextId();
+                mergedGraph.Nodes[newId] = newNode;
+                nodeMap[currentSource] = newNode;
+            }
 
-            var newId = mergedGraph.GetNextId();
-            mergedGraph.Nodes[newId] = newNode;
-            nodeMap[currentSource] = newNode;
+            if (!explored.Add(currentSource))
+                continue;
 
             foreach (var edge in currentSource.Edges)
             {
-                var newEdge = new SurgeryEdge { Requirement = edge.Requirement };
+                var newEdge = new SurgeryEdge
+                {
+                    Requirement = edge.Requirement
+                };
                 newNode.Edges.Add(newEdge);
 
                 if (!sourceGraph.TryFindNode(edge.Connection, out var nextSource))
@@ -225,14 +236,9 @@ public abstract partial class SharedSurgerySystem
                     continue;
                 }
 
-                if (!pendingEdges.TryAdd(nextSource, newEdge))
-                {
-                    // circular edge
-                    newEdge.Connection = null;
-                    continue;
-                }
+                if (pendingEdges.TryAdd(nextSource, newEdge))
+                    toVisit.Enqueue(nextSource);
 
-                toVisit.Enqueue(nextSource);
             }
         }
     }
