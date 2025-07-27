@@ -122,6 +122,29 @@ public sealed partial class SurgeryGraphControl
         return point;
     }
 
+    private static void GetBackwardBezierPoints(
+        Vector2 startPos,
+        Vector2 endPos,
+        out Vector2 adjustedStart,
+        out Vector2 control1,
+        out Vector2 control2,
+        out Vector2 adjustedEnd)
+    {
+        control1 = new Vector2(startPos.X - BackwardEdgeControlOffsetX, startPos.Y - BackwardEdgeCurveHeight);
+        control2 = new Vector2(endPos.X - BackwardEdgeControlOffsetX, endPos.Y - BackwardEdgeCurveHeight);
+
+        var tangentStart = CalculateCubicBezierTangent(0f, startPos, control1, control2, endPos).Normalized();
+        var tangentEnd = CalculateCubicBezierTangent(1f, startPos, control1, control2, endPos).Normalized();
+
+        // offset start and end further along their tangents by clearance to ensure no overlap
+        adjustedStart = startPos + tangentStart * (NodeRadius + EdgeClearance);
+        adjustedEnd = endPos - tangentEnd * (NodeRadius + EdgeClearance);
+
+        // recalculate control points relative to adjusted start/end, maintaining the arc shape
+        control1 = new Vector2(adjustedStart.X - BackwardEdgeControlOffsetX, adjustedStart.Y - BackwardEdgeCurveHeight);
+        control2 = new Vector2(adjustedEnd.X - BackwardEdgeControlOffsetX, adjustedEnd.Y - BackwardEdgeCurveHeight);
+    }
+
     private SurgeryNode? GetNodeAtPosition(Vector2 position)
     {
         if (_nodePositions == null)
@@ -182,8 +205,7 @@ public sealed partial class SurgeryGraphControl
         // bezier curves
         if (isBackwards)
         {
-            var control1 = new Vector2(start.X - BackwardEdgeControlOffsetX * (1 + (fromLayer - toLayer)), start.Y - BackwardEdgeCurveHeight * (1 + (fromLayer - toLayer)));
-            var control2 = new Vector2(end.X - BackwardEdgeControlOffsetX * (1 + (fromLayer - toLayer)), end.Y - BackwardEdgeCurveHeight * (1 + (fromLayer - toLayer)));
+            GetBackwardBezierPoints(start, end, out start, out var control1, out var control2, out end);
             return IsPointNearBezier(point, start, control1, control2, end, EdgeHoverDetectionWidth * CurvedEdgeHoverWidthMultiplier);
         }
 

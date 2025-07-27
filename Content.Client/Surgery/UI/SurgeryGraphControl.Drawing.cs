@@ -130,27 +130,14 @@ public sealed partial class SurgeryGraphControl
         var isBackwards = toLayer < fromLayer;
         if (isBackwards)
         {
-            var control1 = new Vector2(start.X - BackwardEdgeControlOffsetX, start.Y - BackwardEdgeCurveHeight);
-            var control2 = new Vector2(end.X - BackwardEdgeControlOffsetX, end.Y - BackwardEdgeCurveHeight);
-
-            var tangentStart = CalculateCubicBezierTangent(0f, start, control1, control2, end).Normalized();
-            var tangentEnd = CalculateCubicBezierTangent(1f, start, control1, control2, end).Normalized();
-
-            // offset start and end further along their tangents by clearance to ensure no overlap
-            var adjustedStart = start + tangentStart * (NodeRadius + EdgeClearance);
-            var adjustedEnd = end - tangentEnd * (NodeRadius + EdgeClearance);
-
-            // recalculate control points relative to adjusted start/end, maintaining the arc shape
-            control1 = new Vector2(adjustedStart.X - BackwardEdgeControlOffsetX, adjustedStart.Y - BackwardEdgeCurveHeight);
-            control2 = new Vector2(adjustedEnd.X - BackwardEdgeControlOffsetX, adjustedEnd.Y - BackwardEdgeCurveHeight);
-
+            GetBackwardBezierPoints(start, end, out var adjustedStart, out var control1, out var control2, out var adjustedEnd);
             DrawBezier(handle, adjustedStart, control1, control2, adjustedEnd, color);
 
             var arrowBase = CalculateCubicBezierPoint(BezierArrowOffsetT, adjustedStart, control1, control2, adjustedEnd);
             var arrowTip = CalculateCubicBezierPoint(BezierArrowTipT, adjustedStart, control1, control2, adjustedEnd);
             DrawArrowHead(handle, arrowBase, arrowTip, color);
 
-            return CalculateCubicBezierPoint(0.5f, start, control1, control2, end);
+            return CalculateCubicBezierPoint(0.5f, adjustedStart, control1, control2, adjustedEnd);
         }
 
         if (!PathIntersectsAnything([start, end], nodePositions, existingEdges))
