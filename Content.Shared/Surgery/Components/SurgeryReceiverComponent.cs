@@ -7,7 +7,7 @@ namespace Content.Shared.Surgery.Components;
 public sealed partial class SurgeryReceiverComponent : Component, ISurgeryReceiver
 {
     [DataField]
-    public List<ProtoId<SurgeryPrototype>> AvailableSurgeries { get; set; } = [];
+    public HashSet<ProtoId<SurgeryPrototype>> AvailableSurgeries { get; set; } = [];
 
     [ViewVariables]
     public SurgeryGraph Graph { get; set; } = new();

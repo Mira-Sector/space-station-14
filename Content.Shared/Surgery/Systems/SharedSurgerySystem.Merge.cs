@@ -6,9 +6,9 @@ namespace Content.Shared.Surgery.Systems;
 public abstract partial class SharedSurgerySystem
 {
     // calculating the graph is expensive and reused multiple times so cache it
-    private readonly Dictionary<List<ProtoId<SurgeryPrototype>>, SurgeryGraph> _graphCache = [];
+    private readonly Dictionary<HashSet<ProtoId<SurgeryPrototype>>, SurgeryGraph> _graphCache = [];
 
-    public SurgeryGraph MergeGraphs(List<ProtoId<SurgeryPrototype>> prototypeIds)
+    public SurgeryGraph MergeGraphs(HashSet<ProtoId<SurgeryPrototype>> prototypeIds)
     {
         if (TryGetCachedGraph(prototypeIds, out var cached))
             return cached;
@@ -18,11 +18,11 @@ public abstract partial class SharedSurgerySystem
         return mergedGraph;
     }
 
-    private bool TryGetCachedGraph(List<ProtoId<SurgeryPrototype>> prototypeIds, out SurgeryGraph cached)
+    private bool TryGetCachedGraph(HashSet<ProtoId<SurgeryPrototype>> prototypeIds, out SurgeryGraph cached)
     {
         foreach (var (cachedIds, graph) in _graphCache)
         {
-            if (AreProtoListsEqual(prototypeIds, cachedIds))
+            if (cachedIds.SetEquals(prototypeIds))
             {
                 cached = graph;
                 return true;
@@ -33,21 +33,7 @@ public abstract partial class SharedSurgerySystem
         return false;
     }
 
-    private static bool AreProtoListsEqual(List<ProtoId<SurgeryPrototype>> a, List<ProtoId<SurgeryPrototype>> b)
-    {
-        if (a.Count != b.Count)
-            return false;
-
-        for (var i = 0; i < a.Count; i++)
-        {
-            if (a[i] != b[i])
-                return false;
-        }
-
-        return true;
-    }
-
-    private SurgeryGraph BuildMergedGraph(List<ProtoId<SurgeryPrototype>> prototypeIds)
+    private SurgeryGraph BuildMergedGraph(HashSet<ProtoId<SurgeryPrototype>> prototypeIds)
     {
         var graph = new SurgeryGraph();
 

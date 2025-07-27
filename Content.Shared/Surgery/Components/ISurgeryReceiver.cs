@@ -8,7 +8,7 @@ public interface ISurgeryReceiver
     /// List of surgery graphs that will get merged into one <see cref=SurgeryReceiverComponent.Graph>
     /// </summary>
     [DataField]
-    List<ProtoId<SurgeryPrototype>> AvailableSurgeries { get; set; }
+    HashSet<ProtoId<SurgeryPrototype>> AvailableSurgeries { get; set; }
 
     /// <summary>
     /// All the surgeries graphs merged into one graph.

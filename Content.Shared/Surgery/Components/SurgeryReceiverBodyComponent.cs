@@ -62,7 +62,7 @@ public sealed partial class SurgeryBodyReceiver
 public sealed partial class SurgeryBodyPartReceiver : ISurgeryReceiver
 {
     [DataField]
-    public List<ProtoId<SurgeryPrototype>> AvailableSurgeries { get; set; } = [];
+    public HashSet<ProtoId<SurgeryPrototype>> AvailableSurgeries { get; set; } = [];
 
     [ViewVariables]
     public SurgeryGraph Graph { get; set; } = new();
