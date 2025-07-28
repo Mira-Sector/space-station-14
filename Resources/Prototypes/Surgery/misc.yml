@@ -1,0 +1,38 @@
+- type: surgery
+  id: SexReasignment
+  name: surgery-sex-reasignment-name
+  description: surgery-sex-reasignment-desc
+  startingNode: Start
+  nodes:
+  - id: Start
+    edges:
+    - connection: Scalpel1
+      requirement: !type:ToolRequirement
+        quality: Slicing
+  - id: Scalpel1
+    edges:
+    - connection: Hemostat1
+      requirement: !type:ToolRequirement
+        quality: Retracting
+  - id: Hemostat1
+    edges:
+    - connection: Saw1
+      requirement: !type:ToolRequirement
+        quality: Sawing
+  - id: Saw1
+    edges:
+    - connection: Saw2
+      requirement: !type:ToolRequirement
+        quality: Sawing
+  - id: Saw2
+    edges:
+    - connection: Hemostat2
+      requirement: !type:ToolRequirement
+        quality: Clamping
+  - id: Hemostat2
+    special:
+    - !type:ChangeSex
+    edges:
+    - connection: Start
+      requirement: !type:ToolRequirement
+        quality: Slicing

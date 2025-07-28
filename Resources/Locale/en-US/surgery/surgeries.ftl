@@ -1,8 +1,11 @@
-surgery-name-limb-amputation = Limb Amputation
-surgery-desc-limb-amputation = Remove a patients limb.
+surgery-limb-amputation-name = Limb Amputation
+surgery-limb-amputation-desc = Remove a patients limb.
 
-surgery-name-limb-replacement = Limb Replacement
-surgery-desc-limb-replacement = Attactch a new limb to the patient.
+surgery-limb-replacement-name = Limb Replacement
+surgery-limb-replacement-desc = Attactch a new limb to the patient.
 
-surgery-name-organ-manipulation = Organ Manipulation
-surgery-desc-organ-manipulation = Add or remove a patients organs.
+surgery-organ-manipulation-name = Organ Manipulation
+surgery-organ-manipulation-desc = Add or remove a patients organs.
+
+surgery-sex-reasignment-name = Sex Reasignment
+surgery-sex-reasignment-desc = Change the patients sex.

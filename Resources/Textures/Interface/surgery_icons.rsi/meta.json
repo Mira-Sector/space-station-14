@@ -17,6 +17,9 @@
         },
         {
             "name": "organ-torso"
+        },
+        {
+            "name": "sex"
         }
     ]
 }

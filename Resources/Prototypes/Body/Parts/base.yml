@@ -38,6 +38,7 @@
   - type: SurgeryReceiver
     availableSurgeries:
     - OrganManipulation
+    - SexReasignment
   - type: HealthAnalyzerBodyItem
     progressBarLocation: TopLeft
     sprites:
