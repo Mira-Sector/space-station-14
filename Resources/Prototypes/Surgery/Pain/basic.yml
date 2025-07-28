@@ -8,5 +8,23 @@
   id: BasicNoDamage
   parents: BaseSleeping
   effects:
-    - !type:Emote
-      emote: Scream
+  - !type:Emote
+    emote: Scream
+
+- type: surgeryPain
+  id: BasicLightDamage
+  parents: BasicNoDamage
+  effects:
+  - !type:Damage
+    damage:
+      types:
+        Bloodloss: 2
+
+- type: surgeryPain
+  id: BasicHeavyDamage
+  parents: BasicNoDamage
+  effects:
+  - !type:Damage
+    damage:
+      types:
+        Bloodloss: 10

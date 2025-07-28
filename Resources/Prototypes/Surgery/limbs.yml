@@ -8,7 +8,7 @@
     edges:
     - connection: Scalpel1
       requirement: !type:ToolRequirement
-        pain: BasicNoDamage
+        pain: BasicLightDamage
         quality: Slicing
   - id: Scalpel1
     edges:
@@ -26,7 +26,7 @@
     edges:
     - connection: Saw
       requirement: !type:ToolRequirement
-        pain: BasicNoDamage
+        pain: BasicHeavyDamage
         quality: Sawing
   - id: Saw
     edges:
@@ -38,7 +38,7 @@
     edges:
     - connection: Scalpel2
       requirement: !type:ToolRequirement
-        pain: BasicNoDamage
+        pain: BasicLightDamage
         quality: Slicing
   - id: Scalpel2
     edges:
@@ -56,7 +56,7 @@
     edges:
     - connection: Scalpel
       requirement: !type:ToolRequirement
-        pain: BasicNoDamage
+        pain: BasicLightDamage
         quality: Slicing
   - id: Scalpel
     edges:
