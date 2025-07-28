@@ -5,12 +5,13 @@ namespace Content.Shared.Surgery.Systems;
 
 public abstract partial class SharedSurgerySystem
 {
-    public bool TryDealPain(ProtoId<SurgeryPainPrototype>? painId, EntityUid? body, EntityUid? limb, EntityUid? used)
+    public bool TryDealPain(IEnumerable<ProtoId<SurgeryPainPrototype>> painIds, EntityUid? body, EntityUid? limb, EntityUid? used)
     {
-        if (painId == null)
-            return false;
+        var handled = false;
+        foreach (var painId in painIds)
+            handled |= TryDealPain(painId, body, limb, used);
 
-        return TryDealPain(painId.Value, body, limb, used);
+        return handled;
     }
 
     public bool TryDealPain(ProtoId<SurgeryPainPrototype> painId, EntityUid? body, EntityUid? limb, EntityUid? used)

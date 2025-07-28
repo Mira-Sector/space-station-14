@@ -13,7 +13,7 @@ namespace Content.Shared.Surgery;
 public abstract partial class SurgeryEdgeRequirement
 {
     [DataField]
-    public ProtoId<SurgeryPainPrototype>? Pain;
+    public HashSet<ProtoId<SurgeryPainPrototype>> Pain = [];
 
     public abstract SurgeryInteractionState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui);
 
