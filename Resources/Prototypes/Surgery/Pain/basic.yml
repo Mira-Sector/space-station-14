@@ -1,0 +1,34 @@
+- type: surgeryPain
+  id: BaseSleeping
+  abstract: true
+  requirements:
+  - !type:Sleeping
+
+- type: surgeryPain
+  id: BasicNoDamage
+  parents: BaseSleeping
+  effects:
+  - !type:Emote
+    emote: Scream
+
+- type: surgeryPain
+  id: BasicLightDamage
+  parents: BasicNoDamage
+  effects:
+  - !type:Bleed
+    amount: 1.5
+  - !type:Damage
+    damage:
+      types:
+        Bloodloss: 2
+
+- type: surgeryPain
+  id: BasicHeavyDamage
+  parents: BasicNoDamage
+  effects:
+  - !type:Bleed
+    amount: 3
+  - !type:Damage
+    damage:
+      types:
+        Bloodloss: 10

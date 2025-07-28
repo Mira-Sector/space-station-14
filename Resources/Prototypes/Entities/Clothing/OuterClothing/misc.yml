@@ -293,6 +293,11 @@
     sprite: Clothing/OuterClothing/Misc/hospitalgown.rsi
   - type: Clothing
     sprite: Clothing/OuterClothing/Misc/hospitalgown.rsi
+  - type: AllowSurgeryClothing
+    bodyParts:
+    - Torso
+    - Arm
+    - Leg
 
 - type: entity
   parent: ClothingOuterBase

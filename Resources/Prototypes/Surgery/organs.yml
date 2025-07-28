@@ -8,26 +8,36 @@
     edges:
     - connection: Scalpel1
       requirement: !type:ToolRequirement
+        pain:
+        - BasicNoDamage
         quality: Slicing
   - id: Scalpel1
     edges:
     - connection: Retractor
       requirement: !type:ToolRequirement
+        pain:
+        - BasicNoDamage
         quality: Retracting
   - id: Retractor
     edges:
     - connection: Saw
       requirement: !type:ToolRequirement
+        pain:
+        - BasicNoDamage
         quality: Sawing
   - id: Saw
     edges:
     - connection: Hemostat1
       requirement: !type:ToolRequirement
+        pain:
+        - BasicNoDamage
         quality: Clamping
   - id: Hemostat1
     edges:
     - connection: Scalpel2
       requirement: !type:ToolRequirement
+        pain:
+        - BasicNoDamage
         quality: Slicing
   - id: Scalpel2
     special:
@@ -35,4 +45,6 @@
     edges:
     - connection: Start
       requirement: !type:ToolRequirement
+        pain:
+        - BasicNoDamage
         quality: Slicing

@@ -97,6 +97,8 @@ public abstract partial class SharedSurgerySystem
             if (!sourceGraph.TryFindNode(sourceEdge.Connection, out var nextSourceNode))
                 continue;
 
+            mergedEdge.Requirement.Pain.UnionWith(sourceEdge.Requirement.Pain);
+
             if (mergedGraph.TryFindNode(mergedEdge.Connection, out var nextMergedNode))
             {
                 queue.Enqueue(nextSourceNode);
