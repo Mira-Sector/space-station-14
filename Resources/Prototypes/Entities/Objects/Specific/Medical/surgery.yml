@@ -32,6 +32,9 @@
         Heat: 5
     soundHit:
       path: /Audio/Effects/lightburn.ogg
+  - type: Tool
+    qualities:
+    - Cauterizing
 
 # Drill
 

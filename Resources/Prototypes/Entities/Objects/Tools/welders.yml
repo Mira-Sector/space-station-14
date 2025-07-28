@@ -88,7 +88,9 @@
   - type: Tool
     useSound:
       collection: Welder
-    qualities: Welding
+    qualities:
+    - Welding
+    - Cauterizing
   - type: Welder
   - type: PointLight
     enabled: false

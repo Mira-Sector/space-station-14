@@ -40,6 +40,9 @@ public abstract partial class SharedSurgerySystem : EntitySystem
 
         SubscribeLocalEvent<SurgeryReceiverComponent, SurgeryEdgeRequirementDoAfterEvent>(OnLimbEdgeRequirementDoAfter);
         SubscribeLocalEvent<SurgeryReceiverBodyComponent, SurgeryEdgeRequirementDoAfterEvent>(OnBodyEdgeRequirementDoAfter);
+
+        SubscribeLocalEvent<SurgeryReceiverComponent, SurgerySpecialDoAfterEvent>(OnLimbSpecialDoAfter);
+        SubscribeLocalEvent<SurgeryReceiverBodyComponent, SurgerySpecialDoAfterEvent>(OnBodySpecialDoAfter);
     }
 
     private void OnLimbInit(EntityUid uid, SurgeryReceiverComponent component, BodyPartComponent? bodyPartComp = null)
@@ -277,6 +280,51 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         TryDealPain(args.TargetEdge.Requirement.Pain, body, limb, args.Used);
 
         RaiseNodeModifiedEvents(limb, body, surgeryReceiver, oldNode!, newNode, args.TargetEdge);
+    }
+
+    private void OnLimbSpecialDoAfter(EntityUid uid, SurgeryReceiverComponent component, SurgerySpecialDoAfterEvent args)
+    {
+        if (args.Handled)
+            return;
+
+        if (args.Cancelled)
+        {
+            CancelSpecialDoAfter(component, GetNetEntity(args.User), args.User, args.Special);
+            return;
+        }
+
+        if (!TryComp<BodyPartComponent>(uid, out var bodyPartComp))
+            return;
+
+        if (args.BodyPart.Type != bodyPartComp.PartType || args.BodyPart.Side != bodyPartComp.Symmetry)
+            return;
+
+        OnSpecialDoAfter(uid, bodyPartComp.Body, args);
+    }
+
+    private void OnBodySpecialDoAfter(EntityUid uid, SurgeryReceiverBodyComponent component, SurgerySpecialDoAfterEvent args)
+    {
+        if (args.Handled)
+            return;
+
+        foreach (var surgeries in component.Surgeries)
+        {
+            if (args.BodyPart.Type != surgeries.BodyPart.Type || args.BodyPart.Side != surgeries.BodyPart.Side)
+                continue;
+
+            if (args.Cancelled)
+                CancelSpecialDoAfter(surgeries.Surgeries, GetNetEntity(args.User), args.User, args.Special);
+            else
+                OnSpecialDoAfter(null, uid, args);
+
+            break;
+        }
+    }
+
+    private void OnSpecialDoAfter(EntityUid? limb, EntityUid? body, SurgerySpecialDoAfterEvent args)
+    {
+        args.Handled = true;
+        args.Special.OnDoAfter(body, limb, args);
     }
 
     public bool TryTraverseGraph(EntityUid? limb, ISurgeryReceiver surgery, EntityUid? body, EntityUid user, EntityUid? used, BodyPart bodyPart)

@@ -12,3 +12,6 @@ surgery-sex-reasignment-desc = Change the patients sex.
 
 surgery-hair-transplant-name = Hair Transplant
 surgery-hair-transplant-desc = Modify the patients hair.
+
+surgery-cavity-implant-name = Cavity Implant
+surgery-cavity-implant-desc = Add or remove an item from the patients chest cavity.

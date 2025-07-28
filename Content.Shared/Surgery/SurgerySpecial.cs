@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Body.Part;
 using Content.Shared.DoAfter;
+using Content.Shared.Surgery.Events;
 using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
 
@@ -32,6 +33,10 @@ public abstract partial class SurgerySpecial
     {
         doAfterId = null;
         return false;
+    }
+
+    public virtual void OnDoAfter(EntityUid? body, EntityUid? limb, SurgerySpecialDoAfterEvent args)
+    {
     }
 
     #region UI

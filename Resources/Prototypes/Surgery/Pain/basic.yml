@@ -38,3 +38,12 @@
     damage:
       types:
         Bloodloss: 10
+
+- type: surgeryPain
+  id: BasicLightBurnDamage
+  parents: BasicNoDamage
+  effects:
+  - !type:Damage
+    damage:
+      types:
+        Heat: 3

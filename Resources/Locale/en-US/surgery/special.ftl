@@ -11,3 +11,6 @@ surgery-special-change-sex-desc = Changes the patients sex to {$sex ->
 
 surgery-special-magic-mirror-name = Appearance Change
 surgery-special-magic-mirror-desc = Allows changing the patients appearance.
+
+surgery-special-item-slot-name = Item Slot
+surgery-special-item-slot-desc = Allows removing or adding an item to a slot.

@@ -39,6 +39,7 @@
     availableSurgeries:
     - OrganManipulation
     - SexReasignment
+    - CavityImplant
   - type: HealthAnalyzerBodyItem
     progressBarLocation: TopLeft
     sprites:
