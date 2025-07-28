@@ -6,6 +6,7 @@ using Content.Shared.Interaction;
 using Content.Shared.Standing;
 using Content.Shared.Surgery.Components;
 using Content.Shared.Surgery.Events;
+using Content.Shared.Surgery.Pain;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Surgery.Systems;
@@ -250,6 +251,8 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         CancelNodeSpecialDoAfters(surgeryReceiver, oldNode);
         CloseAllUis(limb ?? body, surgeryReceiver);
 
+        TryDealPain(args.TargetEdge.Requirement.Pain, body, limb, args.Used);
+
         RaiseNodeModifiedEvents(limb, body, surgeryReceiver, oldNode!, newNode, args.TargetEdge);
     }
 
@@ -273,12 +276,14 @@ public abstract partial class SharedSurgerySystem : EntitySystem
             switch (TryEdge(limb, surgery, edge, body, user, used, bodyPart, out var edgeUi))
             {
                 case SurgeryInteractionState.Passed:
+                    TryDealPain(edge.Requirement.Pain, body, limb, used);
                     RaiseNodeModifiedEvents(limb, body, surgery, oldNode!, surgery.CurrentNode, edge);
                     return true;
                 case SurgeryInteractionState.DoAfter:
                     return true;
                 case SurgeryInteractionState.UserInterface:
                     ui ??= edgeUi;
+                    TryDealPain(edge.Requirement.Pain, body, limb, used);
                     RaiseNodeModifiedEvents(limb, body, surgery, oldNode!, surgery.CurrentNode, edge);
                     break;
             }

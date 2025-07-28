@@ -1,0 +1,12 @@
+- type: surgeryPain
+  id: BaseSleeping
+  abstract: true
+  requirements:
+  - !type:Sleeping
+
+- type: surgeryPain
+  id: BasicNoDamage
+  parents: BaseSleeping
+  effects:
+    - !type:Emote
+      emote: Scream
