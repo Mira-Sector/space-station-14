@@ -1985,3 +1985,11 @@ Entries:
     type: Add
   id: 276
   time: '2025-07-27T17:30:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Surgery is now blocked by clothing
+    type: Add
+  - message: Doing surgery on a non sleeping patient causes them to scream and causes bloodloss
+    type: Add
+  id: 277
+  time: '2025-07-28T09:50:50.0000000+00:00'
