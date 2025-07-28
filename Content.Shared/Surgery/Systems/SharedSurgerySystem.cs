@@ -390,17 +390,21 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         if (receiver.CurrentNode?.Special is not { } specials)
             return;
 
-        var uiUid = limb ?? body;
+        var defaultUiUid = limb ?? body;
 
         foreach (var special in specials)
         {
-            special.NodeReached(body, limb, user, used, bodyPart, out var ui);
+            special.NodeReached(body, limb, user, used, bodyPart, out var ui, out var bodyUi);
 
             if (ui == null)
                 continue;
 
-            receiver.UserInterfaces.Add(ui);
+            var uiUid = bodyUi ? body : defaultUiUid;
+            if (uiUid == null)
+                continue;
+
             Ui.TryOpenUi(uiUid!.Value, ui, user);
+            receiver.UserInterfaces.Add(ui);
         }
     }
 
@@ -409,17 +413,21 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         if (receiver.CurrentNode?.Special is not { } specials)
             return;
 
-        var uiUid = limb ?? body;
+        var defaultUiUid = limb ?? body;
 
         foreach (var special in specials)
         {
-            special.NodeLeft(body, limb, user, used, bodyPart, out var ui);
+            special.NodeLeft(body, limb, user, used, bodyPart, out var ui, out var bodyUi);
 
             if (ui == null)
                 continue;
 
-            receiver.UserInterfaces.Add(ui);
+            var uiUid = bodyUi ? body : defaultUiUid;
+            if (uiUid == null)
+                continue;
+
             Ui.TryOpenUi(uiUid!.Value, ui, user);
+            receiver.UserInterfaces.Add(ui);
         }
     }
 
@@ -429,12 +437,12 @@ public abstract partial class SharedSurgerySystem : EntitySystem
             return false;
 
         var netUser = GetNetEntity(user);
-        var uiUid = limb ?? body;
+        var defaultUiUid = limb ?? body;
         var handled = false;
 
         foreach (var special in specials)
         {
-            switch (special.Interacted(body, limb, user, used, bodyPart, out var ui))
+            switch (special.Interacted(body, limb, user, used, bodyPart, out var ui, out var bodyUi))
             {
                 case SurgeryInteractionState.Failed:
                     continue;
@@ -452,8 +460,12 @@ public abstract partial class SharedSurgerySystem : EntitySystem
                     handled = true;
                     continue;
                 case SurgeryInteractionState.UserInterface:
+                    var uiUid = bodyUi ? body : defaultUiUid;
+                    if (uiUid == null)
+                        continue;
+
                     receiver.UserInterfaces.Add(ui!);
-                    Ui.TryOpenUi(uiUid!.Value, ui!, user);
+                    Ui.TryOpenUi(uiUid.Value, ui!, user);
                     handled = true;
                     continue;
             }

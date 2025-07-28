@@ -14,9 +14,10 @@ public sealed partial class ChangeSex : SurgerySpecial
 
     private static readonly SpriteSpecifier.Rsi Icon = new(new("/Textures/Interface/surgery_icons.rsi"), "sex");
 
-    public override void NodeReached(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui)
+    public override void NodeReached(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
     {
-        ui = null;
+        base.NodeReached(body, limb, user, used, bodyPart, out ui, out bodyUi);
+
         if (body == null)
             return;
 

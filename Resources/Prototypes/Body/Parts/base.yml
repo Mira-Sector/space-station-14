@@ -74,6 +74,7 @@
     availableSurgeries:
     - LimbAmputation
     - OrganManipulation
+    - HairTransplant
   - type: HealthAnalyzerBodyItem
     progressBarLocation: TopRight
     sprites:

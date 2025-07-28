@@ -9,3 +9,6 @@ surgery-organ-manipulation-desc = Add or remove a patients organs.
 
 surgery-sex-reasignment-name = Sex Reasignment
 surgery-sex-reasignment-desc = Change the patients sex.
+
+surgery-hair-transplant-name = Hair Transplant
+surgery-hair-transplant-desc = Modify the patients hair.

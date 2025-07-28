@@ -8,3 +8,6 @@ surgery-special-change-sex-desc = Changes the patients sex to {$sex ->
     [female] female
     *[unsexed] unsexed
 }.
+
+surgery-special-magic-mirror-name = Appearance Change
+surgery-special-magic-mirror-desc = Allows changing the patients appearance.

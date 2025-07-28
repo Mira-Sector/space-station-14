@@ -36,3 +36,27 @@
     - connection: Start
       requirement: !type:ToolRequirement
         quality: Slicing
+
+- type: surgery
+  id: HairTransplant
+  name: surgery-hair-transplant-name
+  description: surgery-hair-transplant-desc
+  startingNode: Start
+  nodes:
+  - id: Start
+    edges:
+    - connection: Retractor
+      requirement: !type:ToolRequirement
+        quality: Retracting
+  - id: Retractor
+    edges:
+    - connection: Hemostat
+      requirement: !type:ToolRequirement
+        quality: Clamping
+  - id: Hemostat
+    special:
+    - !type:MagicMirror
+    edges:
+    - connection: Start
+      requirement: !type:ToolRequirement
+        quality: Retracting

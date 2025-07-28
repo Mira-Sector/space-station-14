@@ -9,19 +9,22 @@ namespace Content.Shared.Surgery;
 [ImplicitDataDefinitionForInheritors, Serializable, NetSerializable]
 public abstract partial class SurgerySpecial
 {
-    public virtual void NodeReached(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui)
+    public virtual void NodeReached(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
     {
         ui = null;
+        bodyUi = false;
     }
 
-    public virtual void NodeLeft(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui)
+    public virtual void NodeLeft(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
     {
         ui = null;
+        bodyUi = false;
     }
 
-    public virtual SurgeryInteractionState Interacted(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui)
+    public virtual SurgeryInteractionState Interacted(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
     {
         ui = null;
+        bodyUi = false;
         return SurgeryInteractionState.Failed;
     }
 
