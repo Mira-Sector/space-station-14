@@ -3,10 +3,9 @@ using Content.Shared.Body.Part;
 using Content.Shared.Damage.DamageSelector;
 using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
-using Content.Shared.Standing;
+using Content.Shared.Popups;
 using Content.Shared.Surgery.Components;
 using Content.Shared.Surgery.Events;
-using Content.Shared.Surgery.Pain;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Surgery.Systems;
@@ -15,6 +14,7 @@ public abstract partial class SharedSurgerySystem : EntitySystem
 {
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] protected readonly SharedUserInterfaceSystem Ui = default!;
 
     public override void Initialize()
@@ -103,6 +103,9 @@ public abstract partial class SharedSurgerySystem : EntitySystem
 
         BodyPart bodyPart = new(bodyPartComp.PartType, bodyPartComp.Symmetry);
 
+        if (!PreCheck(component, uid, bodyPartComp.Body, used, user, bodyPart))
+            return;
+
         if (DoInteractSpecials(component, bodyPartComp.Body, uid, user, used, bodyPart))
         {
             args.Handled = true;
@@ -119,9 +122,6 @@ public abstract partial class SharedSurgerySystem : EntitySystem
             return;
 
         if (!TryComp<DamagePartSelectorComponent>(user, out var damageSelectorComp))
-            return;
-
-        if (!PreCheck(uid))
             return;
 
         var limbFound = false;
@@ -144,6 +144,9 @@ public abstract partial class SharedSurgerySystem : EntitySystem
 
             // we have a limb we can do surgery on
             limbFound = true;
+
+            if (!PreCheck(surgeryComp, null, uid, used, user, damageSelectorComp.SelectedPart))
+                return;
 
             if (DoInteractSpecials(surgeryComp, uid, limb, user, used, bodyPart))
             {
@@ -169,6 +172,9 @@ public abstract partial class SharedSurgerySystem : EntitySystem
             if (surgeries.BodyPart.Side != damageSelectorComp.SelectedPart.Side)
                 continue;
 
+            if (!PreCheck(surgeries.Surgeries, null, uid, used, user, damageSelectorComp.SelectedPart))
+                return;
+
             if (!DoInteractSpecials(surgeries.Surgeries, uid, null, user, used, surgeries.BodyPart))
             {
                 if (!TryTraverseGraph(null, surgeries.Surgeries, uid, user, used, surgeries.BodyPart))
@@ -180,12 +186,29 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         }
     }
 
-    private bool PreCheck(EntityUid uid)
+    private bool PreCheck(ISurgeryReceiver receiver, EntityUid? limb, EntityUid? body, EntityUid? used, EntityUid user, BodyPart bodyPart)
     {
-        if (TryComp<StandingStateComponent>(uid, out var standingComp) && standingComp.Standing)
-            return false;
+        var ev = new SurgeryInteractionAttemptEvent(body, limb, used, user, bodyPart);
+        if (limb != null)
+            RaiseLocalEvent(limb.Value, ref ev);
+        if (body != null)
+            RaiseLocalEvent(body.Value, ref ev);
 
-        return true;
+        if (!ev.Cancelled || ev.Reason == null || receiver.CurrentNode is not { } currentNode)
+            return !ev.Cancelled;
+
+        // check if we could have even progressed
+        // if not dont show the reason to stop irrelevant messages showing
+        foreach (var edge in currentNode.Edges)
+        {
+            if (edge.Requirement.RequirementMet(body, limb, user, used, bodyPart, out _, true) == SurgeryInteractionState.Failed)
+                continue;
+
+            _popup.PopupPredicted(ev.Reason, (body ?? limb)!.Value, user);
+            break;
+        }
+
+        return false;
     }
 
     private void OnBodyEdgeRequirementDoAfter(EntityUid uid, SurgeryReceiverBodyComponent component, SurgeryEdgeRequirementDoAfterEvent args)

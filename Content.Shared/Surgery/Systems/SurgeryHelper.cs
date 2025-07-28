@@ -4,7 +4,7 @@ namespace Content.Shared.Surgery.Systems;
 
 public static class SurgeryHelper
 {
-    public static string GetBodyPartLoc(BodyPart part)
+    public static LocId GetBodyPartLoc(BodyPart part)
     {
         return part.Type switch
         {

@@ -55,6 +55,23 @@ public partial class InventorySystem : EntitySystem
         return false;
     }
 
+    public IEnumerable<(Entity<T>, SlotFlags)> GetInventoryEntities<T>(Entity<InventoryComponent?> entity, SlotFlags slotFlags = SlotFlags.All) where T : IComponent, IClothingSlots
+    {
+        if (TryGetContainerSlotEnumerator(entity.Owner, out var containerSlotEnumerator, slotFlags))
+        {
+            while (containerSlotEnumerator.NextItem(out var item, out var slot))
+            {
+                if (!TryComp<T>(item, out var required))
+                    continue;
+
+                if ((((IClothingSlots)required).Slots & slot.SlotFlags) == 0x0)
+                    continue;
+
+                yield return ((item, required), slot.SlotFlags);
+            }
+        }
+    }
+
     protected virtual void OnInit(EntityUid uid, InventoryComponent component, ComponentInit args)
     {
         if (!_prototypeManager.TryIndex(component.TemplateId, out InventoryTemplatePrototype? invTemplate))
@@ -305,6 +322,43 @@ public partial class InventorySystem : EntitySystem
 
             item = default;
             slot = null;
+            return false;
+        }
+
+        public bool NextSlot(out SlotDefinition slot)
+        {
+            while (_nextIdx < _slots.Length)
+            {
+                var i = _nextIdx++;
+                slot = _slots[i];
+
+                if ((slot.SlotFlags & _flags) == 0)
+                    continue;
+
+                return true;
+            }
+
+            slot = default!;
+            return false;
+        }
+
+        public bool NextSlot(out SlotDefinition slot, out EntityUid? item)
+        {
+            while (_nextIdx < _slots.Length)
+            {
+                var i = _nextIdx++;
+                slot = _slots[i];
+
+                if ((slot.SlotFlags & _flags) == 0)
+                    continue;
+
+                var container = _containers[i];
+                item = container.ContainedEntity;
+                return true;
+            }
+
+            slot = default!;
+            item = null;
             return false;
         }
     }

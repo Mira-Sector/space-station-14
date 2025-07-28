@@ -31,7 +31,7 @@ public sealed partial class LimbRequirement : SurgeryEdgeRequirement
         return Icon;
     }
 
-    public override SurgeryInteractionState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
+    public override SurgeryInteractionState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui, bool test = false)
     {
         ui = null;
 
@@ -39,8 +39,11 @@ public sealed partial class LimbRequirement : SurgeryEdgeRequirement
 
         if (limb != null)
         {
-            var handSys = entMan.System<SharedHandsSystem>();
-            handSys.PickupOrDrop(user, limb.Value);
+            if (!test)
+            {
+                var handSys = entMan.System<SharedHandsSystem>();
+                handSys.PickupOrDrop(user, limb.Value);
+            }
             return SurgeryInteractionState.Passed;
         }
 
@@ -62,7 +65,7 @@ public sealed partial class LimbRequirement : SurgeryEdgeRequirement
             if (bodyPart.Type != bodyPartComp.PartType || bodyPart.Side != bodyPartComp.Symmetry)
                 continue;
 
-            if (containerSys.Insert(used, container))
+            if (test || containerSys.Insert(used, container))
                 return SurgeryInteractionState.Passed;
         }
 

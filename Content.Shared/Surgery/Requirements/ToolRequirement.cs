@@ -42,7 +42,7 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
         return prototypes.Index(Quality).Icon;
     }
 
-    public override SurgeryInteractionState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
+    public override SurgeryInteractionState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui, bool test = false)
     {
         ui = null;
 
