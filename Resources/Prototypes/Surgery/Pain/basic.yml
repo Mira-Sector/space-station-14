@@ -3,6 +3,12 @@
   abstract: true
   requirements:
   - !type:Sleeping
+  - !type:RequireMobState
+    allowedStates:
+    - Alive
+    - Critical
+    - SoftCritical
+    - HardCritical
 
 - type: surgeryPain
   id: BasicNoDamage
