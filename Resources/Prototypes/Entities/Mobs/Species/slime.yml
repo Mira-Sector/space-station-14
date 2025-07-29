@@ -35,6 +35,8 @@
         type: StrippableBoundUserInterface
       enum.DamageSelectorUiKey.Key:
         type: DamageSelectorBoundUserInterface
+      enum.MagicMirrorUiKey.Key:
+        type: MagicMirrorBoundUserInterface
   # to prevent bag open/honk spam
   - type: UseDelay
     delay: 0.5

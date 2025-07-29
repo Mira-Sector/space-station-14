@@ -1,7 +1,7 @@
 - type: surgery
   id: LimbAmputation
-  name: surgery-name-limb-amputation
-  description: surgery-desc-limb-amputation
+  name: surgery-limb-amputation-name
+  description: surgery-limb-amputation-desc
   startingNode: Start
   nodes:
   - id: Start

@@ -1,7 +1,7 @@
 - type: surgery
-  id: OrganManipulation
-  name: surgery-organ-manipulation-name
-  description: surgery-organ-manipulation-desc
+  id: SexReasignment
+  name: surgery-sex-reasignment-name
+  description: surgery-sex-reasignment-desc
   startingNode: Start
   nodes:
   - id: Start
@@ -13,35 +13,35 @@
         quality: Slicing
   - id: Scalpel1
     edges:
-    - connection: Retractor
-      requirement: !type:ToolRequirement
-        pain:
-        - BasicNoDamage
-        quality: Retracting
-  - id: Retractor
-    edges:
-    - connection: Saw
-      requirement: !type:ToolRequirement
-        pain:
-        - BasicHeavyDamage
-        quality: Sawing
-  - id: Saw
-    edges:
     - connection: Hemostat1
       requirement: !type:ToolRequirement
         pain:
         - BasicNoDamage
-        quality: Clamping
+        quality: Retracting
   - id: Hemostat1
     edges:
-    - connection: Scalpel2
+    - connection: Saw1
       requirement: !type:ToolRequirement
         pain:
-        - BasicLightDamage
-        quality: Slicing
-  - id: Scalpel2
+        - BasicHeavyDamage
+        quality: Sawing
+  - id: Saw1
+    edges:
+    - connection: Saw2
+      requirement: !type:ToolRequirement
+        pain:
+        - BasicHeavyDamage
+        quality: Sawing
+  - id: Saw2
+    edges:
+    - connection: Hemostat2
+      requirement: !type:ToolRequirement
+        pain:
+        - BasicNoDamage
+        quality: Clamping
+  - id: Hemostat2
     special:
-    - !type:OrganManipulation
+    - !type:ChangeSex
     edges:
     - connection: Start
       requirement: !type:ToolRequirement
@@ -50,51 +50,25 @@
         quality: Slicing
 
 - type: surgery
-  id: CavityImplant
-  name: surgery-cavity-implant-name
-  description: surgery-cavity-implant-desc
+  id: HairTransplant
+  name: surgery-hair-transplant-name
+  description: surgery-hair-transplant-desc
   startingNode: Start
   nodes:
   - id: Start
     edges:
-    - connection: Scalpel1
-      requirement: !type:ToolRequirement
-        pain:
-        - BasicLightDamage
-        quality: Slicing
-  - id: Scalpel1
-    edges:
     - connection: Retractor
       requirement: !type:ToolRequirement
-        pain:
-        - BasicNoDamage
         quality: Retracting
   - id: Retractor
     edges:
     - connection: Hemostat
       requirement: !type:ToolRequirement
-        pain:
-        - BasicNoDamage
         quality: Clamping
   - id: Hemostat
-    edges:
-    - connection: Scalpel2
-      requirement: !type:ToolRequirement
-        pain:
-        - BasicLightDamage
-        quality: Slicing
-  - id: Scalpel2
     special:
-    - !type:ItemSlot
-        slotId: cavity
-        delay: 0.5
-        whitelist:
-          sizes:
-          - Tiny
-          - Small
+    - !type:MagicMirror
     edges:
     - connection: Start
       requirement: !type:ToolRequirement
-        pain:
-        - BasicLightBurnDamage
-        quality: Cauterizing
+        quality: Retracting

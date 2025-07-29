@@ -222,6 +222,8 @@
         type: StrippableBoundUserInterface
       enum.DamageSelectorUiKey.Key:
         type: DamageSelectorBoundUserInterface
+      enum.MagicMirrorUiKey.Key:
+        type: MagicMirrorBoundUserInterface
   - type: Puller
   - type: Speech
     speechSounds: Alto

@@ -38,6 +38,8 @@
   - type: SurgeryReceiver
     availableSurgeries:
     - OrganManipulation
+    - SexReasignment
+    - CavityImplant
   - type: HealthAnalyzerBodyItem
     progressBarLocation: TopLeft
     sprites:
@@ -73,6 +75,7 @@
     availableSurgeries:
     - LimbAmputation
     - OrganManipulation
+    - HairTransplant
   - type: HealthAnalyzerBodyItem
     progressBarLocation: TopRight
     sprites:

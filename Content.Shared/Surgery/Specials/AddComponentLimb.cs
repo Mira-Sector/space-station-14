@@ -23,9 +23,9 @@ public sealed partial class AddComponentLimb : SurgerySpecial
     [DataField(required: true)]
     public SpriteSpecifier Icon;
 
-    public override void NodeReached(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui)
+    public override void NodeReached(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
     {
-        base.NodeReached(body, limb, user, used, bodyPart, out ui);
+        base.NodeReached(body, limb, user, used, bodyPart, out ui, out bodyUi);
 
         if (limb == null)
             return;

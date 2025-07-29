@@ -12,9 +12,13 @@ public sealed partial class OrganManipulation : SurgerySpecial
 {
     private static readonly ResPath RsiPath = new("/Textures/Interface/surgery_icons.rsi");
 
-    public override SurgeryInteractionState Interacted(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui)
+    public override SurgeryInteractionState Interacted(SurgerySpecialInteractionPhase phase, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
     {
-        base.Interacted(body, limb, user, used, bodyPart, out ui);
+        base.Interacted(phase, body, limb, user, used, bodyPart, out ui, out bodyUi);
+
+        // affects surgery so do before all else
+        if (phase != SurgerySpecialInteractionPhase.BeforeGraph)
+            return SurgeryInteractionState.Failed;
 
         if (used != null)
             return SurgeryInteractionState.Failed;

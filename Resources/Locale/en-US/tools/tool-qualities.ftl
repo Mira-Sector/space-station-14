@@ -39,3 +39,6 @@ tool-quality-retracting-tool-name = Retractor
 
 tool-quality-clamping-name = Clamping
 tool-quality-clamping-tool-name = Hemostat
+
+tool-quality-cauterizing-name = Cauterzing
+tool-quality-cauterizing-tool-name = Cautery
