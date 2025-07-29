@@ -37,10 +37,14 @@ public sealed partial class ItemSlot : SurgerySpecial
         containerSys.EnsureContainer<ContainerSlot>((limb ?? body)!.Value, SlotId);
     }
 
-    public override SurgeryInteractionState Interacted(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
+    public override SurgeryInteractionState Interacted(SurgerySpecialInteractionPhase phase, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
     {
         ui = null;
         bodyUi = false;
+
+        // so we dont absorb items t
+        if (phase != SurgerySpecialInteractionPhase.AfterGraph)
+            return SurgeryInteractionState.Failed;
 
         var entity = IoCManager.Resolve<IEntityManager>();
         var containerSys = entity.System<SharedContainerSystem>();

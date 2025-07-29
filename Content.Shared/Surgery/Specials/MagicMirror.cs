@@ -36,9 +36,13 @@ public sealed partial class MagicMirror : SurgerySpecial
         entity.RemoveComponent<MagicMirrorComponent>(body.Value);
     }
 
-    public override SurgeryInteractionState Interacted(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
+    public override SurgeryInteractionState Interacted(SurgerySpecialInteractionPhase phase, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
     {
-        base.Interacted(body, limb, user, used, bodyPart, out ui, out bodyUi);
+        base.Interacted(phase, body, limb, user, used, bodyPart, out ui, out bodyUi);
+
+        // not important so only after
+        if (phase != SurgerySpecialInteractionPhase.AfterGraph)
+            return SurgeryInteractionState.Failed;
 
         if (used != null)
             return SurgeryInteractionState.Failed;
