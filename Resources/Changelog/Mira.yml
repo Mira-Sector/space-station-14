@@ -1993,3 +1993,13 @@ Entries:
     type: Add
   id: 277
   time: '2025-07-28T09:50:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added the sex reasignment surgery targeting the torso
+    type: Add
+  - message: Added the hair transplant surgery targeting the head to allow changing the patients hair
+    type: Add
+  - message: Added the cavity implant surgery targeting the torso to add and remove any small item
+    type: Add
+  id: 278
+  time: '2025-07-29T07:00:50.0000000+00:00'
