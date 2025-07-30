@@ -2003,3 +2003,13 @@ Entries:
     type: Add
   id: 278
   time: '2025-07-29T07:00:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Fixed thirst not improving after drinking
+    type: Fix
+  - message: Fix chemical metabolizing
+    type: Fix
+  - message: Temporarily reverted lung smoking damage
+    type: Remove
+  id: 279
+  time: '2025-07-30T17:00:50.0000000+00:00'
