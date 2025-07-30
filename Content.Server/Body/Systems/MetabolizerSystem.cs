@@ -110,37 +110,42 @@ namespace Content.Server.Body.Systems
             }
         }
 
-        private void TryMetabolize(Entity<MetabolizerComponent, OrganComponent?> ent)
+        private void TryMetabolize(Entity<MetabolizerComponent, OrganComponent?, SolutionContainerManagerComponent?> ent)
         {
             _organQuery.Resolve(ent, ref ent.Comp2, logMissing: false);
 
-            if (ent.Comp1.SolutionOnBody && ent.Comp2?.Body is { } body)
-            {
-                var bodySolutionName = ent.Comp1.BodySolutionName ?? ent.Comp1.SolutionName;
+            // First step is get the solution we actually care about
+            var solutionName = ent.Comp1.SolutionName;
 
-                if (_solutionQuery.TryComp(body, out var bodySolution))
+            if (ent.Comp1.SolutionOnBody)
+            {
+                if (ent.Comp2?.Body is { } body)
                 {
-                    _solutionContainerSystem.TryGetSolution((body, bodySolution), bodySolutionName, out var soln, out var solution);
-                    Metabolize(ent, solution, soln, body);
+                    if (!_solutionQuery.Resolve(body, ref ent.Comp3, logMissing: false))
+                        return;
+
+                    if (!_solutionContainerSystem.TryGetSolution((body, ent.Comp3), solutionName, out var soln, out var solution))
+                        return;
+
+                    Metabolize(ent, solution, soln.Value, body);
                 }
             }
-
-            if (_solutionQuery.TryComp(ent, out var entSolution))
+            else
             {
-                _solutionContainerSystem.TryGetSolution((ent.Owner, entSolution), ent.Comp1.SolutionName, out var soln, out var solution);
-                Metabolize(ent, solution, soln, ent);
+                if (!_solutionQuery.Resolve(ent, ref ent.Comp3, logMissing: false))
+                    return;
+
+                if (!_solutionContainerSystem.TryGetSolution((ent, ent), solutionName, out var soln, out var solution))
+                    return;
+
+                Metabolize(ent, solution, soln.Value, ent.Owner);
             }
         }
 
-        private void Metabolize(Entity<MetabolizerComponent, OrganComponent?> ent, Solution? solution, Entity<SolutionComponent>? soln, EntityUid? solutionEntityUid)
+        private void Metabolize(Entity<MetabolizerComponent, OrganComponent?> ent, Solution solution, Entity<SolutionComponent> soln, EntityUid? solutionEntityUid)
         {
-            if (solutionEntityUid is null
-                || soln is null
-                || solution is null
-                || solution.Contents.Count == 0)
-            {
+            if (solutionEntityUid is null || solution.Contents.Count == 0)
                 return;
-            }
 
             // randomize the reagent list so we don't have any weird quirks
             // like alphabetical order or insertion order mattering for processing
@@ -165,7 +170,6 @@ namespace Content.Server.Body.Systems
                 // we're done here entirely if this is true
                 if (reagents >= ent.Comp1.MaxReagentsProcessable)
                     return;
-
 
                 // loop over all our groups and see which ones apply
                 if (ent.Comp1.MetabolismGroups is null)
@@ -227,7 +231,7 @@ namespace Content.Server.Body.Systems
                 }
             }
 
-            _solutionContainerSystem.UpdateChemicals(soln.Value);
+            _solutionContainerSystem.UpdateChemicals(soln);
         }
     }
 

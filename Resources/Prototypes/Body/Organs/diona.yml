@@ -103,7 +103,6 @@
   - type: Metabolizer
     removeEmpty: true
     solution: "Lung"
-    bodySolution: chemicals
     metabolizerTypes: [ Plant ]
     groups:
     - id: Gas

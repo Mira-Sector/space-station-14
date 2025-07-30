@@ -67,7 +67,6 @@
   - type: Metabolizer
     removeEmpty: true
     solution: "Lung"
-    bodySolution: chemicals
     metabolizerTypes: [ Slime ]
     groups:
     - id: Gas
