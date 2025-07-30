@@ -61,7 +61,6 @@
     updateInterval: 1.5
     removeEmpty: true
     solution: "Lung"
-    bodySolution: chemicals
     metabolizerTypes: [ Human ]
     groups:
     - id: Gas

@@ -39,7 +39,6 @@
   - type: Metabolizer
     removeEmpty: true
     solution: "Lung"
-    bodySolution: chemicals
     metabolizerTypes: [ Animal ]
     groups:
     - id: Gas
