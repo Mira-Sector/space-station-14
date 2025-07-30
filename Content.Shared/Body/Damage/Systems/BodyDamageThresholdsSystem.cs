@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Shared.Body.Damage.Components;
 using Content.Shared.Body.Damage.Events;
@@ -23,47 +22,58 @@ public sealed partial class BodyDamageThresholdsSystem : EntitySystem
 
     private void OnDamageChanged(Entity<BodyDamageThresholdsComponent> ent, ref BodyDamageChangedEvent args)
     {
-        var index = (byte)ent.Comp.CurrentState;
         var positive = args.NewDamage - args.OldDamage > 0;
-        var potentialIndex = positive ? ++index : --index;
+        var oldState = ent.Comp.CurrentState;
 
-        if (!Enum.IsDefined(typeof(BodyDamageState), potentialIndex))
+        while (TryGetNewState(ent, positive, args, out var potentialState))
+            ent.Comp.CurrentState = potentialState;
+
+        if (ent.Comp.CurrentState == oldState)
             return;
 
-        var potentialState = (BodyDamageState)potentialIndex;
-        var potentialThreshold = ent.Comp.Thresholds[potentialState];
-
-        if (positive)
-        {
-            if (potentialThreshold > args.NewDamage)
-                return;
-        }
-        else
-        {
-            if (potentialThreshold < args.NewDamage)
-                return;
-        }
-
-        if (ent.Comp.CurrentState == potentialState)
-            return;
-
-        var ev = new BodyDamageThresholdChangedEvent(ent.Comp.CurrentState, potentialState);
+        var ev = new BodyDamageThresholdChangedEvent(oldState, ent.Comp.CurrentState);
         RaiseLocalEvent(ent.Owner, ref ev);
 
-        ent.Comp.CurrentState = potentialState;
         Dirty(ent);
 
-        _appearance.SetData(ent.Owner, BodyDamageThresholdVisuals.State, potentialState);
+        _appearance.SetData(ent.Owner, BodyDamageThresholdVisuals.State, ent.Comp.CurrentState);
 
         if (!ent.Comp.PreventFurtherDamage)
             return;
 
         var (lastState, lastThreshold) = ent.Comp.Thresholds.Last();
-        if (lastState != potentialState)
+        if (lastState != ent.Comp.CurrentState)
             return;
 
         if (args.NewDamage > lastThreshold)
             args.NewDamage = lastThreshold;
+    }
+
+    private static bool TryGetNewState(Entity<BodyDamageThresholdsComponent> ent, bool positive, BodyDamageChangedEvent args, out BodyDamageState newState)
+    {
+        var index = (byte)ent.Comp.CurrentState;
+        var potentialIndex = positive ? ++index : --index;
+
+        newState = ent.Comp.CurrentState;
+
+        if (!Enum.IsDefined(typeof(BodyDamageState), potentialIndex))
+            return false;
+
+        newState = (BodyDamageState)potentialIndex;
+        var potentialThreshold = ent.Comp.Thresholds[newState];
+
+        if (positive)
+        {
+            if (potentialThreshold > args.NewDamage)
+                return false;
+        }
+        else
+        {
+            if (potentialThreshold < args.NewDamage)
+                return false;
+        }
+
+        return true;
     }
 
     private void OnCanDamage(Entity<BodyDamageThresholdsComponent> ent, ref BodyDamageCanDamageEvent args)
