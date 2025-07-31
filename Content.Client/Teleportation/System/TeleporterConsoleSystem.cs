@@ -1,9 +1,8 @@
-
 using Content.Shared.Teleportation.Systems;
 
 namespace Content.Client.Teleportation.System;
 
-public sealed class TeleporterSystem : SharedTeleporterSystem
+public sealed class TeleporterConsoleSystem : SharedTeleporterConsoleSystem
 {
     public void Initialize()
     {
