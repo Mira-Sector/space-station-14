@@ -969,6 +969,9 @@
   id: ModSuitModule
 
 - type: Tag
+  id: ModSuitModuleInsulation
+
+- type: Tag
   id: ModSuitPlatingStandard
 
 - type: Tag

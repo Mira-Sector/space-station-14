@@ -1,7 +1,9 @@
 - type: entity
+  parent: BaseAction
   id: ActionModuleToggle
   name: Toggle module
   description: View the MOD suits user interface
   components:
+  - type: Action
   - type: InstantAction
     event: !type:ModuleToggleActionEvent
