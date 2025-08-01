@@ -1,17 +1,9 @@
 namespace Content.Shared.Modules.ModSuit.Events;
 
-public sealed partial class ModSuitDeployablePartBeforeEquippedEvent : EntityEventArgs
+public sealed partial class ModSuitDeployablePartBeforeEquippedEvent(EntityUid suit, EntityUid wearer, string slot, int partNumber) : EntityEventArgs
 {
-    public readonly EntityUid Suit;
-    public readonly EntityUid Wearer;
-    public readonly string Slot;
-    public readonly int PartNumber;
-
-    public ModSuitDeployablePartBeforeEquippedEvent(EntityUid suit, EntityUid wearer, string slot, int partNumber)
-    {
-        Suit = suit;
-        Wearer = wearer;
-        Slot = slot;
-        PartNumber = partNumber;
-    }
+    public readonly EntityUid Suit = suit;
+    public readonly EntityUid Wearer = wearer;
+    public readonly string Slot = slot;
+    public readonly int PartNumber = partNumber;
 }
