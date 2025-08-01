@@ -1,6 +1,6 @@
 namespace Content.Shared.Modules.ModSuit.Events;
 
-public sealed partial class ModSuitDeployablePartUnequippedEvent(EntityUid suit, EntityUid? wearer, string slot, int partNumber) : EntityEventArgs
+public abstract partial class BaseModSuitDeployablePartDeployEvent(EntityUid suit, EntityUid? wearer, string slot, int partNumber) : EntityEventArgs
 {
     public readonly EntityUid Suit = suit;
     public readonly EntityUid? Wearer = wearer;

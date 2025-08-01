@@ -19,7 +19,7 @@ public partial class SharedModSuitSystem
         SubscribeLocalEvent<ModSuitSealableComponent, ClothingGotEquippedEvent>(OnSealableEquipped);
         SubscribeLocalEvent<ModSuitSealableComponent, ClothingGotUnequippedEvent>(OnSealableUnequipped);
 
-        SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployablePartUnequippedEvent>(OnSealableDeployablePartUnequipped);
+        SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployablePartUndeployedEvent>(OnSealableDeployablePartUndeployed);
 
         SubscribeLocalEvent<ModSuitSealableComponent, ModSuitGetUiEntriesEvent>(OnSealableGetUiEntries);
         SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployableRelayedEvent<ModSuitGetUiEntriesEvent>>((u, c, a) => OnSealableGetUiEntries((u, c), ref a.Args));
@@ -65,7 +65,7 @@ public partial class SharedModSuitSystem
     }
 
 
-    private void OnSealableDeployablePartUnequipped(Entity<ModSuitSealableComponent> ent, ref ModSuitDeployablePartUnequippedEvent args)
+    private void OnSealableDeployablePartUndeployed(Entity<ModSuitSealableComponent> ent, ref ModSuitDeployablePartUndeployedEvent args)
     {
         SetSeal((ent.Owner, ent.Comp), false, args.PartNumber);
     }
@@ -180,8 +180,7 @@ public partial class SharedModSuitSystem
             var suitEv = new ModSuitContainerPartSealedEvent(ent.Owner);
             RaiseLocalEvent(container, suitEv);
 
-            if (ent.Comp.SealedComponents != null)
-                EntityManager.AddComponents(ent.Owner, ent.Comp.SealedComponents, true);
+            EntityManager.AddComponents(ent.Owner, ent.Comp.SealedComponents, true);
         }
         else
         {
@@ -191,8 +190,7 @@ public partial class SharedModSuitSystem
             var suitEv = new ModSuitContainerPartUnsealedEvent(ent.Owner);
             RaiseLocalEvent(container, suitEv);
 
-            if (ent.Comp.SealedComponents != null)
-                EntityManager.RemoveComponents(ent.Owner, ent.Comp.SealedComponents);
+            EntityManager.RemoveComponents(ent.Owner, ent.Comp.SealedComponents);
         }
 
         PlaySound((ent.Owner, ent.Comp), shouldSeal);
