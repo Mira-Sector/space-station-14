@@ -13,6 +13,11 @@
     enabledDraw: 0.25
     onUseDraw: 0.5
   - type: JetpackModule
+  - type: ModuleExclusivity
+    maximum: 1
+    blacklist:
+      components:
+      - JetpackModule
 
 - type: entity
   id: ModSuitModuleJetpackNormal

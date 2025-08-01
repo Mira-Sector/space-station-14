@@ -1,14 +1,15 @@
-using System.Linq;
 using Content.Shared.Clothing;
 using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;
 using Content.Shared.Modules.Events;
 using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
-using JetBrains.Annotations;
 using Robust.Shared.Containers;
 using Robust.Shared.Network;
 using Robust.Shared.Timing;
+using JetBrains.Annotations;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace Content.Shared.Modules.ModSuit;
 
@@ -177,6 +178,40 @@ public partial class SharedModSuitSystem
     public IEnumerable<EntityUid> GetAllParts(Entity<ModSuitPartDeployableComponent?> ent)
     {
         return GetDeployedParts(ent).Concat(GetDeployableParts(ent));
+    }
+
+    [PublicAPI]
+    public bool TryGetDeployedPart(Entity<ModSuitPartDeployableComponent?> ent, ModSuitPartType type, [NotNullWhen(true)] out EntityUid? foundPart)
+    {
+        var parts = GetDeployedParts(ent);
+        parts = parts.Append(ent.Owner);
+        return TryGetPart(parts, type, out foundPart);
+    }
+
+    [PublicAPI]
+    public bool TryGetDeployablePart(Entity<ModSuitPartDeployableComponent?> ent, ModSuitPartType type, [NotNullWhen(true)] out EntityUid? foundPart)
+    {
+        var parts = GetDeployableParts(ent);
+        parts = parts.Append(ent.Owner);
+        return TryGetPart(parts, type, out foundPart);
+    }
+
+    private bool TryGetPart(IEnumerable<EntityUid> parts, ModSuitPartType type, [NotNullWhen(true)] out EntityUid? foundPart)
+    {
+        foreach (var part in parts)
+        {
+            if (!TryComp<ModSuitPartTypeComponent>(part, out var typeComp))
+                continue;
+
+            if (typeComp.Type != type)
+                continue;
+
+            foundPart = part;
+            return true;
+        }
+
+        foundPart = null;
+        return false;
     }
 
     #endregion
