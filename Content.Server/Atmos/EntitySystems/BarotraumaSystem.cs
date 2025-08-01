@@ -9,6 +9,8 @@ using Content.Shared.Database;
 using Content.Shared.FixedPoint;
 using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;
+using Content.Shared.Modules.ModSuit.Components;
+using Content.Shared.Modules.ModSuit.Events;
 using Robust.Shared.Containers;
 
 namespace Content.Server.Atmos.EntitySystems
@@ -19,7 +21,7 @@ namespace Content.Server.Atmos.EntitySystems
         [Dependency] private readonly DamageableSystem _damageableSystem = default!;
         [Dependency] private readonly AlertsSystem _alertsSystem = default!;
         [Dependency] private readonly SharedBodySystem _bodySystem = default!;
-        [Dependency] private readonly IAdminLogManager _adminLogger= default!;
+        [Dependency] private readonly IAdminLogManager _adminLogger = default!;
         [Dependency] private readonly InventorySystem _inventorySystem = default!;
 
         private const float UpdateTimer = 1f;
@@ -29,6 +31,7 @@ namespace Content.Server.Atmos.EntitySystems
         {
             SubscribeLocalEvent<PressureProtectionComponent, GotEquippedEvent>(OnPressureProtectionEquipped);
             SubscribeLocalEvent<PressureProtectionComponent, GotUnequippedEvent>(OnPressureProtectionUnequipped);
+            SubscribeLocalEvent<PressureProtectionComponent, ModSuitAllSealedComponentsUpdatedEvent>(OnPressureProtectionModSuitSealed);
             SubscribeLocalEvent<PressureProtectionComponent, ComponentInit>(OnUpdateResistance);
             SubscribeLocalEvent<PressureProtectionComponent, ComponentRemove>(OnUpdateResistance);
 
@@ -58,40 +61,46 @@ namespace Content.Server.Atmos.EntitySystems
         private void OnUpdateResistance(EntityUid uid, PressureProtectionComponent pressureProtection, EntityEventArgs args)
         {
             if (TryComp<BarotraumaComponent>(uid, out var barotrauma))
-            {
                 UpdateCachedResistances(uid, barotrauma);
-            }
         }
 
         private void OnPressureProtectionEquipped(EntityUid uid, PressureProtectionComponent pressureProtection, GotEquippedEvent args)
         {
             if (TryComp<BarotraumaComponent>(args.Equipee, out var barotrauma) && barotrauma.ProtectionSlots.Contains(args.Slot))
-            {
                 UpdateCachedResistances(args.Equipee, barotrauma);
-            }
         }
 
         private void OnPressureProtectionUnequipped(EntityUid uid, PressureProtectionComponent pressureProtection, GotUnequippedEvent args)
         {
             if (TryComp<BarotraumaComponent>(args.Equipee, out var barotrauma) && barotrauma.ProtectionSlots.Contains(args.Slot))
-            {
                 UpdateCachedResistances(args.Equipee, barotrauma);
-            }
+        }
+
+        private void OnPressureProtectionModSuitSealed(EntityUid uid, PressureProtectionComponent pressureProtection, ModSuitAllSealedComponentsUpdatedEvent args)
+        {
+            if (!TryComp<ModSuitDeployedPartComponent>(uid, out var deployedPart))
+                return;
+
+            if (!TryComp<ModSuitPartDeployableComponent>(deployedPart.Suit, out var partDeployable))
+                return;
+
+            if (!TryComp<BarotraumaComponent>(partDeployable.Wearer, out var barotrauma))
+                return;
+
+            UpdateCachedResistances(partDeployable.Wearer!.Value, barotrauma);
         }
 
         /// <summary>
         /// Computes the pressure resistance for the entity coming from the equipment and any innate resistance.
-        /// The ProtectionSlots field of the Barotrauma component specifies which parts must be protected for the protection to have any effet.
+        /// The ProtectionSlots field of the Barotrauma component specifies which parts must be protected for the protection to have any effect.
         /// </summary>
         private void UpdateCachedResistances(EntityUid uid, BarotraumaComponent barotrauma)
         {
-
             if (barotrauma.ProtectionSlots.Count != 0)
             {
                 if (!TryComp(uid, out InventoryComponent? inv) || !TryComp(uid, out ContainerManagerComponent? contMan))
-                {
                     return;
-                }
+
                 var hPModifier = float.MinValue;
                 var hPMultiplier = float.MinValue;
                 var lPModifier = float.MaxValue;
@@ -147,11 +156,9 @@ namespace Content.Server.Atmos.EntitySystems
         public float GetFeltLowPressure(EntityUid uid, BarotraumaComponent barotrauma, float environmentPressure)
         {
             if (barotrauma.HasImmunity)
-            {
                 return Atmospherics.OneAtmosphere;
-            }
 
-            var modified = (environmentPressure + barotrauma.LowPressureModifier) * (barotrauma.LowPressureMultiplier);
+            var modified = (environmentPressure + barotrauma.LowPressureModifier) * barotrauma.LowPressureMultiplier;
             return Math.Min(modified, Atmospherics.OneAtmosphere);
         }
 
@@ -161,11 +168,9 @@ namespace Content.Server.Atmos.EntitySystems
         public float GetFeltHighPressure(EntityUid uid, BarotraumaComponent barotrauma, float environmentPressure)
         {
             if (barotrauma.HasImmunity)
-            {
                 return Atmospherics.OneAtmosphere;
-            }
 
-            var modified = (environmentPressure + barotrauma.HighPressureModifier) * (barotrauma.HighPressureMultiplier);
+            var modified = (environmentPressure + barotrauma.HighPressureModifier) * barotrauma.HighPressureMultiplier;
             return Math.Max(modified, Atmospherics.OneAtmosphere);
         }
 
@@ -213,20 +218,14 @@ namespace Content.Server.Atmos.EntitySystems
             {
                 var bodyDamage = _bodySystem.GetBodyDamage(uid);
 
-                DamageSpecifier damage = new();
+                DamageSpecifier damage;
 
                 if (bodyDamage != null)
-                {
                     damage = bodyDamage;
-                }
                 else if (TryComp<DamageableComponent>(uid, out var damageable))
-                {
                     damage = damageable.Damage;
-                }
                 else
-                {
                     continue;
-                }
 
                 var totalDamage = FixedPoint2.Zero;
                 foreach (var (barotraumaDamageType, _) in barotrauma.Damage.DamageDict)

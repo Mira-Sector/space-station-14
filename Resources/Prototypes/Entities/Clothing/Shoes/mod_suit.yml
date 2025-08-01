@@ -9,6 +9,8 @@
     autoGenerateVisuals: false
     slots:
     - feet
+  - type: ProtectedFromStepTriggers
+    slots: WITHOUT_POCKET
   - type: Appearance
   - type: Tag
     tags:

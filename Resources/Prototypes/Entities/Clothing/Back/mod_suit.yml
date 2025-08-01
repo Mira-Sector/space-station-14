@@ -76,6 +76,14 @@
       gloves: ClothingHandsModSuitAdvanced
       head: ClothingHeadModSuitAdvanced
       shoes: ClothingShoesModSuitAdvanced
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
   - type: ClothingSpeedModifier
     walkModifier: 0.75
     sprintModifier: 0.8
