@@ -1,0 +1,48 @@
+- type: entity
+  id: BaseModSuitModuleMagboots
+  parent: BaseModSuitModuleAction
+  abstract: true
+  components:
+  - type: ModSuitModuleComplexity
+    complexity: 2
+  - type: RequireSealedModule
+    parts:
+    - Boots
+  - type: ToggleableComponentModSuitPartModule
+    part: Boots
+    components:
+    - type: Magboots
+  - type: PowerDrainModule
+    enabledDraw: 0.25
+  - type: MagbootsModule
+    modSuitPart: Boots
+  - type: ModuleExclusivity
+    maximum: 1
+    blacklist:
+      components:
+      - MagbootsModule
+
+- type: entity
+  id: ModSuitModuleMagboots
+  parent: BaseModSuitModuleMagboots
+  name: MOD magnetic stability module
+  description: Highly powerful electromagnets fitted into the suit's boots.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/Modules/magboots.rsi
+    state: standard
+
+- type: entity
+  id: ModSuitModuleMagbootsAdv
+  parent: BaseModSuitModuleMagboots
+  name: MOD advanced magnetic stability module
+  description: The magnetic stability modules big brother. Stops slipping ontop of grounding you.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/Modules/magboots.rsi
+    state: advanced
+  - type: ToggleableComponentModSuitPartModule
+    part: Boots
+    components:
+    - type: Magboots
+    - type: NoSlip
