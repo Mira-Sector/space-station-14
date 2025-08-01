@@ -1,0 +1,9 @@
+- type: entity
+  id: OrganPlasmaLungs
+  parent: OrganHumanLungs
+  suffix: "plasma men"
+  components:
+  - type: Metabolizer
+    metabolizerTypes: [ Plasma ]
+  - type: Lung
+    alert: LowPlasma
