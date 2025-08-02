@@ -147,39 +147,6 @@
         state: equipped-HAND
 
 - type: entity
-  id: ClothingHandsModSuitChrono
-  parent: ClothingHandsModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: chrono MOD gauntlets
-  components:
-  - type: Sprite
-    sprite: Clothing/Hands/ModSuits/chrono.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Hands/ModSuits/chrono.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Hands/ModSuits/chrono.rsi
-        state: icon
-    clothingLayers:
-      true:
-        gloves:
-        - sprite: Clothing/Hands/ModSuits/chrono.rsi
-          state: equipped-HAND-sealed
-      false:
-        gloves:
-        - sprite: Clothing/Hands/ModSuits/chrono.rsi
-          state: equipped-HAND
-    uiLayer:
-      true:
-        sprite: Clothing/Hands/ModSuits/chrono.rsi
-        state: equipped-HAND-sealed
-      false:
-        sprite: Clothing/Hands/ModSuits/chrono.rsi
-        state: equipped-HAND
-
-- type: entity
   id: ClothingHandsModSuitCivilian
   parent: ClothingHandsModSuitBase
   categories: [ HideSpawnMenu ]
@@ -246,39 +213,6 @@
         state: equipped-HAND
 
 - type: entity
-  id: ClothingHandsModSuitCorpsman
-  parent: ClothingHandsModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: corpsman MOD gauntlets
-  components:
-  - type: Sprite
-    sprite: Clothing/Hands/ModSuits/corpsman.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Hands/ModSuits/corpsman.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Hands/ModSuits/corpsman.rsi
-        state: icon
-    clothingLayers:
-      true:
-        gloves:
-        - sprite: Clothing/Hands/ModSuits/corpsman.rsi
-          state: equipped-HAND-sealed
-      false:
-        gloves:
-        - sprite: Clothing/Hands/ModSuits/corpsman.rsi
-          state: equipped-HAND
-    uiLayer:
-      true:
-        sprite: Clothing/Hands/ModSuits/corpsman.rsi
-        state: equipped-HAND-sealed
-      false:
-        sprite: Clothing/Hands/ModSuits/corpsman.rsi
-        state: equipped-HAND
-
-- type: entity
   id: ClothingHandsModSuitCosmohonk
   parent: ClothingHandsModSuitBase
   categories: [ HideSpawnMenu ]
@@ -309,39 +243,6 @@
         state: equipped-HAND-sealed
       false:
         sprite: Clothing/Hands/ModSuits/cosmohonk.rsi
-        state: equipped-HAND
-
-- type: entity
-  id: ClothingHandsModSuitDebug
-  parent: ClothingHandsModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: debug MOD gauntlets
-  components:
-  - type: Sprite
-    sprite: Clothing/Hands/ModSuits/debug.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Hands/ModSuits/debug.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Hands/ModSuits/debug.rsi
-        state: icon
-    clothingLayers:
-      true:
-        gloves:
-        - sprite: Clothing/Hands/ModSuits/debug.rsi
-          state: equipped-HAND-sealed
-      false:
-        gloves:
-        - sprite: Clothing/Hands/ModSuits/debug.rsi
-          state: equipped-HAND
-    uiLayer:
-      true:
-        sprite: Clothing/Hands/ModSuits/debug.rsi
-        state: equipped-HAND-sealed
-      false:
-        sprite: Clothing/Hands/ModSuits/debug.rsi
         state: equipped-HAND
 
 - type: entity
@@ -441,39 +342,6 @@
         state: equipped-HAND-sealed
       false:
         sprite: Clothing/Hands/ModSuits/engineering.rsi
-        state: equipped-HAND
-
-- type: entity
-  id: ClothingHandsModSuitGlitch
-  parent: ClothingHandsModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: glitch MOD gauntlets
-  components:
-  - type: Sprite
-    sprite: Clothing/Hands/ModSuits/glitch.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Hands/ModSuits/glitch.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Hands/ModSuits/glitch.rsi
-        state: icon
-    clothingLayers:
-      true:
-        gloves:
-        - sprite: Clothing/Hands/ModSuits/glitch.rsi
-          state: equipped-HAND-sealed
-      false:
-        gloves:
-        - sprite: Clothing/Hands/ModSuits/glitch.rsi
-          state: equipped-HAND
-    uiLayer:
-      true:
-        sprite: Clothing/Hands/ModSuits/glitch.rsi
-        state: equipped-HAND-sealed
-      false:
-        sprite: Clothing/Hands/ModSuits/glitch.rsi
         state: equipped-HAND
 
 - type: entity
@@ -771,39 +639,6 @@
         state: equipped-HAND-sealed
       false:
         sprite: Clothing/Hands/ModSuits/ninja.rsi
-        state: equipped-HAND
-
-- type: entity
-  id: ClothingHandsModSuitPrototype
-  parent: ClothingHandsModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: prototype MOD gauntlets
-  components:
-  - type: Sprite
-    sprite: Clothing/Hands/ModSuits/prototype.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Hands/ModSuits/prototype.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Hands/ModSuits/prototype.rsi
-        state: icon
-    clothingLayers:
-      true:
-        gloves:
-        - sprite: Clothing/Hands/ModSuits/prototype.rsi
-          state: equipped-HAND-sealed
-      false:
-        gloves:
-        - sprite: Clothing/Hands/ModSuits/prototype.rsi
-          state: equipped-HAND
-    uiLayer:
-      true:
-        sprite: Clothing/Hands/ModSuits/prototype.rsi
-        state: equipped-HAND-sealed
-      false:
-        sprite: Clothing/Hands/ModSuits/prototype.rsi
         state: equipped-HAND
 
 - type: entity

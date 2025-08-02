@@ -164,6 +164,18 @@
       gloves: ClothingHandsModSuitAsteroid
       head: ClothingHeadModSuitAsteroid
       shoes: ClothingShoesModSuitAsteroid
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.7
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+  - type: ClothingSpeedModifier
+    walkModifier: 0.8
+    sprintModifier: 0.8
+  - type: HeldSpeedModifier
 
 - type: entity
   id: ClothingBackpackModSuitAtmospheric
@@ -202,47 +214,21 @@
       gloves: ClothingHandsModSuitAtmospheric
       head: ClothingHeadModSuitAtmospheric
       shoes: ClothingShoesModSuitAtmospheric
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.001
+      coolingCoefficient: 0.001
+  - type: ClothingSpeedModifier
+    walkModifier: 0.7
+    sprintModifier: 0.7
+  - type: HeldSpeedModifier
   - type: Construction
     graph: ModSuit
     node: atmosphericPlating
-
-- type: entity
-  id: ClothingBackpackModSuitChrono
-  parent: ClothingBackpackModSuitBase
-  name: chrono MOD control unit
-  components:
-  - type: Sprite
-    sprite: Clothing/Back/ModSuits/chrono.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Back/ModSuits/chrono.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Back/ModSuits/chrono.rsi
-        state: icon
-    clothingLayers:
-      true:
-        head:
-        - sprite: Clothing/Back/ModSuits/chrono.rsi
-          state: equipped-BACKPACK-sealed
-      false:
-        head:
-        - sprite: Clothing/Back/ModSuits/chrono.rsi
-          state: equipped-BACKPACK
-    uiLayer:
-      true:
-        sprite: Clothing/Back/ModSuits/chrono.rsi
-        state: equipped-BACKPACK-sealed
-      false:
-        sprite: Clothing/Back/ModSuits/chrono.rsi
-        state: equipped-BACKPACK
-  - type: ModSuitPartDeployable
-    deployableParts:
-      outerClothing: ClothingOuterModSuitChrono
-      gloves: ClothingHandsModSuitChrono
-      head: ClothingHeadModSuitChrono
-      shoes: ClothingShoesModSuitChrono
 
 - type: entity
   id: ClothingBackpackModSuitCivilian
@@ -281,6 +267,18 @@
       gloves: ClothingHandsModSuitCivilian
       head: ClothingHeadModSuitCivilian
       shoes: ClothingShoesModSuitCivilian
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+  - type: ClothingSpeedModifier
+    walkModifier: 0.8
+    sprintModifier: 0.8
+  - type: HeldSpeedModifier
 
 - type: entity
   id: ClothingBackpackModSuitCorporate
@@ -319,44 +317,14 @@
       gloves: ClothingHandsModSuitCorporate
       head: ClothingHeadModSuitCorporate
       shoes: ClothingShoesModSuitCorporate
-
-- type: entity
-  id: ClothingBackpackModSuitCorpsman
-  parent: ClothingBackpackModSuitBase
-  name: corpsman MOD control unit
-  components:
-  - type: Sprite
-    sprite: Clothing/Back/ModSuits/corpsman.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Back/ModSuits/corpsman.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Back/ModSuits/corpsman.rsi
-        state: icon
-    clothingLayers:
-      true:
-        head:
-        - sprite: Clothing/Back/ModSuits/corpsman.rsi
-          state: equipped-BACKPACK-sealed
-      false:
-        head:
-        - sprite: Clothing/Back/ModSuits/corpsman.rsi
-          state: equipped-BACKPACK
-    uiLayer:
-      true:
-        sprite: Clothing/Back/ModSuits/corpsman.rsi
-        state: equipped-BACKPACK-sealed
-      false:
-        sprite: Clothing/Back/ModSuits/corpsman.rsi
-        state: equipped-BACKPACK
-  - type: ModSuitPartDeployable
-    deployableParts:
-      outerClothing: ClothingOuterModSuitCorpsman
-      gloves: ClothingHandsModSuitCorpsman
-      head: ClothingHeadModSuitCorpsman
-      shoes: ClothingShoesModSuitCorpsman
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
 
 - type: entity
   id: ClothingBackpackModSuitCosmohonk
@@ -395,47 +363,21 @@
       gloves: ClothingHandsModSuitCosmohonk
       head: ClothingHeadModSuitCosmohonk
       shoes: ClothingShoesModSuitCosmohonk
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.5
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+  - type: ClothingSpeedModifier
+    walkModifier: 0.9
+    sprintModifier: 0.9
+  - type: HeldSpeedModifier
   - type: Construction
     graph: ModSuit
     node: cosmohonkPlating
-
-- type: entity
-  id: ClothingBackpackModSuitDebug
-  parent: ClothingBackpackModSuitBase
-  name: debug MOD control unit
-  components:
-  - type: Sprite
-    sprite: Clothing/Back/ModSuits/debug.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Back/ModSuits/debug.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Back/ModSuits/debug.rsi
-        state: icon
-    clothingLayers:
-      true:
-        head:
-        - sprite: Clothing/Back/ModSuits/debug.rsi
-          state: equipped-BACKPACK-sealed
-      false:
-        head:
-        - sprite: Clothing/Back/ModSuits/debug.rsi
-          state: equipped-BACKPACK
-    uiLayer:
-      true:
-        sprite: Clothing/Back/ModSuits/debug.rsi
-        state: equipped-BACKPACK-sealed
-      false:
-        sprite: Clothing/Back/ModSuits/debug.rsi
-        state: equipped-BACKPACK
-  - type: ModSuitPartDeployable
-    deployableParts:
-      outerClothing: ClothingOuterModSuitDebug
-      gloves: ClothingHandsModSuitDebug
-      head: ClothingHeadModSuitDebug
-      shoes: ClothingShoesModSuitDebug
 
 - type: entity
   id: ClothingBackpackModSuitElite
@@ -474,6 +416,18 @@
       gloves: ClothingHandsModSuitElite
       head: ClothingHeadModSuitElite
       shoes: ClothingShoesModSuitElite
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.001
+      coolingCoefficient: 0.001
+  - type: ClothingSpeedModifier
+    walkModifier: 0.9
+    sprintModifier: 0.9
+  - type: HeldSpeedModifier
 
 - type: entity
   id: ClothingBackpackModSuitEnchanted
@@ -512,6 +466,18 @@
       gloves: ClothingHandsModSuitEnchanted
       head: ClothingHeadModSuitEnchanted
       shoes: ClothingShoesModSuitEnchanted
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.05
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+  - type: ClothingSpeedModifier
+    walkModifier: 0.8
+    sprintModifier: 0.8
+  - type: HeldSpeedModifier
 
 - type: entity
   id: ClothingBackpackModSuitEngineering
@@ -550,51 +516,25 @@
       gloves: ClothingHandsModSuitEngineering
       head: ClothingHeadModSuitEngineering
       shoes: ClothingShoesModSuitEngineering
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.04
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+  - type: ClothingSpeedModifier
+    walkModifier: 0.7
+    sprintModifier: 0.7
+  - type: HeldSpeedModifier
   - type: Construction
     graph: ModSuit
     node: engineeringPlating
 
 - type: entity
-  id: ClothingBackpackModSuitGlitch
-  parent: ClothingBackpackModSuitBase
-  name: glitch MOD control unit
-  components:
-  - type: Sprite
-    sprite: Clothing/Back/ModSuits/glitch.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Back/ModSuits/glitch.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Back/ModSuits/glitch.rsi
-        state: icon
-    clothingLayers:
-      true:
-        head:
-        - sprite: Clothing/Back/ModSuits/glitch.rsi
-          state: equipped-BACKPACK-sealed
-      false:
-        head:
-        - sprite: Clothing/Back/ModSuits/glitch.rsi
-          state: equipped-BACKPACK
-    uiLayer:
-      true:
-        sprite: Clothing/Back/ModSuits/glitch.rsi
-        state: equipped-BACKPACK-sealed
-      false:
-        sprite: Clothing/Back/ModSuits/glitch.rsi
-        state: equipped-BACKPACK
-  - type: ModSuitPartDeployable
-    deployableParts:
-      outerClothing: ClothingOuterModSuitGlitch
-      gloves: ClothingHandsModSuitGlitch
-      head: ClothingHeadModSuitGlitch
-      shoes: ClothingShoesModSuitGlitch
-
-- type: entity
   id: ClothingBackpackModSuitHonkerative
-  parent: ClothingBackpackModSuitBase
+  parent: ClothingBackpackModSuitSyndicate
   name: honkerative MOD control unit
   components:
   - type: Sprite
@@ -667,6 +607,18 @@
       gloves: ClothingHandsModSuitInfiltrator
       head: ClothingHeadModSuitInfiltrator
       shoes: ClothingShoesModSuitInfiltrator
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.05
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+  - type: ClothingSpeedModifier
+    walkModifier: 0.9
+    sprintModifier: 0.9
+  - type: HeldSpeedModifier
 
 - type: entity
   id: ClothingBackpackModSuitInquisitory
@@ -743,6 +695,18 @@
       gloves: ClothingHandsModSuitInterdyne
       head: ClothingHeadModSuitInterdyne
       shoes: ClothingShoesModSuitInterdyne
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+  - type: ClothingSpeedModifier
+    walkModifier: 0.65
+    sprintModifier: 0.65
+  - type: HeldSpeedModifier
 
 - type: entity
   id: ClothingBackpackModSuitLoader
@@ -819,6 +783,18 @@
       gloves: ClothingHandsModSuitMagnate
       head: ClothingHeadModSuitMagnate
       shoes: ClothingShoesModSuitMagnate
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+  - type: ClothingSpeedModifier
+    walkModifier: 0.8
+    sprintModifier: 0.8
+  - type: HeldSpeedModifier
 
 - type: entity
   id: ClothingBackpackModSuitMedical
@@ -857,6 +833,18 @@
       gloves: ClothingHandsModSuitMedical
       head: ClothingHeadModSuitMedical
       shoes: ClothingShoesModSuitMedical
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.03
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+  - type: ClothingSpeedModifier
+    walkModifier: 0.95
+    sprintModifier: 0.95
+  - type: HeldSpeedModifier
   - type: Construction
     graph: ModSuit
     node: medicalPlating
@@ -898,6 +886,18 @@
       gloves: ClothingHandsModSuitMining
       head: ClothingHeadModSuitMining
       shoes: ClothingShoesModSuitMining
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.5
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+  - type: ClothingSpeedModifier
+    walkModifier: 0.9
+    sprintModifier: 0.9
+  - type: HeldSpeedModifier
 
 - type: entity
   id: ClothingBackpackModSuitNinja
@@ -936,44 +936,14 @@
       gloves: ClothingHandsModSuitNinja
       head: ClothingHeadModSuitNinja
       shoes: ClothingShoesModSuitNinja
-
-- type: entity
-  id: ClothingBackpackModSuitPrototype
-  parent: ClothingBackpackModSuitBase
-  name: prototype MOD control unit
-  components:
-  - type: Sprite
-    sprite: Clothing/Back/ModSuits/prototype.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Back/ModSuits/prototype.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Back/ModSuits/prototype.rsi
-        state: icon
-    clothingLayers:
-      true:
-        head:
-        - sprite: Clothing/Back/ModSuits/prototype.rsi
-          state: equipped-BACKPACK-sealed
-      false:
-        head:
-        - sprite: Clothing/Back/ModSuits/prototype.rsi
-          state: equipped-BACKPACK
-    uiLayer:
-      true:
-        sprite: Clothing/Back/ModSuits/prototype.rsi
-        state: equipped-BACKPACK-sealed
-      false:
-        sprite: Clothing/Back/ModSuits/prototype.rsi
-        state: equipped-BACKPACK
-  - type: ModSuitPartDeployable
-    deployableParts:
-      outerClothing: ClothingOuterModSuitPrototype
-      gloves: ClothingHandsModSuitPrototype
-      head: ClothingHeadModSuitPrototype
-      shoes: ClothingShoesModSuitPrototype
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
 
 - type: entity
   id: ClothingBackpackModSuitRescue
@@ -1012,6 +982,18 @@
       gloves: ClothingHandsModSuitRescue
       head: ClothingHeadModSuitRescue
       shoes: ClothingShoesModSuitRescue
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.03
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+  - type: ClothingSpeedModifier
+    walkModifier: 0.95
+    sprintModifier: 0.95
+  - type: HeldSpeedModifier
 
 - type: entity
   id: ClothingBackpackModSuitResearch
@@ -1050,6 +1032,18 @@
       gloves: ClothingHandsModSuitResearch
       head: ClothingHeadModSuitResearch
       shoes: ClothingShoesModSuitResearch
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+  - type: ClothingSpeedModifier
+    walkModifier: 0.75
+    sprintModifier: 0.75
+  - type: HeldSpeedModifier
 
 - type: entity
   id: ClothingBackpackModSuitResponsory
@@ -1088,6 +1082,18 @@
       gloves: ClothingHandsModSuitResponsory
       head: ClothingHeadModSuitResponsory
       shoes: ClothingShoesModSuitResponsory
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.001
+      coolingCoefficient: 0.001
+  - type: ClothingSpeedModifier
+    walkModifier: 0.9
+    sprintModifier: 0.9
+  - type: HeldSpeedModifier
 
 - type: entity
   id: ClothingBackpackModSuitSafeguard
@@ -1126,6 +1132,18 @@
       gloves: ClothingHandsModSuitSafeguard
       head: ClothingHeadModSuitSafeguard
       shoes: ClothingShoesModSuitSafeguard
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.45
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+  - type: ClothingSpeedModifier
+    walkModifier: 0.8
+    sprintModifier: 0.8
+  - type: HeldSpeedModifier
 
 - type: entity
   id: ClothingBackpackModSuitSecurity
@@ -1164,6 +1182,18 @@
       gloves: ClothingHandsModSuitSecurity
       head: ClothingHeadModSuitSecurity
       shoes: ClothingShoesModSuitSecurity
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.5
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+  - type: ClothingSpeedModifier
+    walkModifier: 0.65
+    sprintModifier: 0.65
+  - type: HeldSpeedModifier
   - type: Construction
     graph: ModSuit
     node: securityPlating
@@ -1205,6 +1235,18 @@
       gloves: ClothingHandsModSuitStandard
       head: ClothingHeadModSuitStandard
       shoes: ClothingShoesModSuitStandard
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+  - type: ClothingSpeedModifier
+    walkModifier: 0.8
+    sprintModifier: 0.8
+  - type: HeldSpeedModifier
   - type: Construction
     graph: ModSuit
     node: standardPlating
@@ -1246,3 +1288,15 @@
       gloves: ClothingHandsModSuitSyndicate
       head: ClothingHeadModSuitSyndicate
       shoes: ClothingShoesModSuitSyndicate
+  - type: ToggleableComponentModSuitPartDeployableAllSealed
+    allPartComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.05
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+  - type: ClothingSpeedModifier
+    walkModifier: 0.9
+    sprintModifier: 0.9
+  - type: HeldSpeedModifier

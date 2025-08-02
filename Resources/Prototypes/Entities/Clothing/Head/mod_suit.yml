@@ -184,39 +184,6 @@
         state: equipped-HELMET
 
 - type: entity
-  id: ClothingHeadModSuitChrono
-  parent: ClothingHeadModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: chrono MOD helmet
-  components:
-  - type: Sprite
-    sprite: Clothing/Head/ModSuits/chrono.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Head/ModSuits/chrono.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Head/ModSuits/chrono.rsi
-        state: icon
-    clothingLayers:
-      true:
-        head:
-        - sprite: Clothing/Head/ModSuits/chrono.rsi
-          state: equipped-HELMET-sealed
-      false:
-        head:
-        - sprite: Clothing/Head/ModSuits/chrono.rsi
-          state: equipped-HELMET
-    uiLayer:
-      true:
-        sprite: Clothing/Head/ModSuits/chrono.rsi
-        state: equipped-HELMET-sealed
-      false:
-        sprite: Clothing/Head/ModSuits/chrono.rsi
-        state: equipped-HELMET
-
-- type: entity
   id: ClothingHeadModSuitCivilian
   parent: ClothingHeadModSuitBase
   categories: [ HideSpawnMenu ]
@@ -283,39 +250,6 @@
         state: equipped-HELMET
 
 - type: entity
-  id: ClothingHeadModSuitCorpsman
-  parent: ClothingHeadModSuitBaseWithHair
-  categories: [ HideSpawnMenu ]
-  name: corpsman MOD helmet
-  components:
-  - type: Sprite
-    sprite: Clothing/Head/ModSuits/corpsman.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Head/ModSuits/corpsman.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Head/ModSuits/corpsman.rsi
-        state: icon
-    clothingLayers:
-      true:
-        head:
-        - sprite: Clothing/Head/ModSuits/corpsman.rsi
-          state: equipped-HELMET-sealed
-      false:
-        head:
-        - sprite: Clothing/Head/ModSuits/corpsman.rsi
-          state: equipped-HELMET
-    uiLayer:
-      true:
-        sprite: Clothing/Head/ModSuits/corpsman.rsi
-        state: equipped-HELMET-sealed
-      false:
-        sprite: Clothing/Head/ModSuits/corpsman.rsi
-        state: equipped-HELMET
-
-- type: entity
   id: ClothingHeadModSuitCosmohonk
   parent: ClothingHeadModSuitBase
   categories: [ HideSpawnMenu ]
@@ -346,39 +280,6 @@
         state: equipped-HELMET-sealed
       false:
         sprite: Clothing/Head/ModSuits/cosmohonk.rsi
-        state: equipped-HELMET
-
-- type: entity
-  id: ClothingHeadModSuitDebug
-  parent: ClothingHeadModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: debug MOD helmet
-  components:
-  - type: Sprite
-    sprite: Clothing/Head/ModSuits/debug.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Head/ModSuits/debug.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Head/ModSuits/debug.rsi
-        state: icon
-    clothingLayers:
-      true:
-        head:
-        - sprite: Clothing/Head/ModSuits/debug.rsi
-          state: equipped-HELMET-sealed
-      false:
-        head:
-        - sprite: Clothing/Head/ModSuits/debug.rsi
-          state: equipped-HELMET
-    uiLayer:
-      true:
-        sprite: Clothing/Head/ModSuits/debug.rsi
-        state: equipped-HELMET-sealed
-      false:
-        sprite: Clothing/Head/ModSuits/debug.rsi
         state: equipped-HELMET
 
 - type: entity
@@ -478,39 +379,6 @@
         state: equipped-HELMET-sealed
       false:
         sprite: Clothing/Head/ModSuits/engineering.rsi
-        state: equipped-HELMET
-
-- type: entity
-  id: ClothingHeadModSuitGlitch
-  parent: ClothingHeadModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: glitch MOD helmet
-  components:
-  - type: Sprite
-    sprite: Clothing/Head/ModSuits/glitch.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Head/ModSuits/glitch.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Head/ModSuits/glitch.rsi
-        state: icon
-    clothingLayers:
-      true:
-        head:
-        - sprite: Clothing/Head/ModSuits/glitch.rsi
-          state: equipped-HELMET-sealed
-      false:
-        head:
-        - sprite: Clothing/Head/ModSuits/glitch.rsi
-          state: equipped-HELMET
-    uiLayer:
-      true:
-        sprite: Clothing/Head/ModSuits/glitch.rsi
-        state: equipped-HELMET-sealed
-      false:
-        sprite: Clothing/Head/ModSuits/glitch.rsi
         state: equipped-HELMET
 
 - type: entity
@@ -808,39 +676,6 @@
         state: equipped-HELMET-sealed
       false:
         sprite: Clothing/Head/ModSuits/ninja.rsi
-        state: equipped-HELMET
-
-- type: entity
-  id: ClothingHeadModSuitPrototype
-  parent: ClothingHeadModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: prototype MOD helmet
-  components:
-  - type: Sprite
-    sprite: Clothing/Head/ModSuits/prototype.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Head/ModSuits/prototype.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Head/ModSuits/prototype.rsi
-        state: icon
-    clothingLayers:
-      true:
-        head:
-        - sprite: Clothing/Head/ModSuits/prototype.rsi
-          state: equipped-HELMET-sealed
-      false:
-        head:
-        - sprite: Clothing/Head/ModSuits/prototype.rsi
-          state: equipped-HELMET
-    uiLayer:
-      true:
-        sprite: Clothing/Head/ModSuits/prototype.rsi
-        state: equipped-HELMET-sealed
-      false:
-        sprite: Clothing/Head/ModSuits/prototype.rsi
         state: equipped-HELMET
 
 - type: entity

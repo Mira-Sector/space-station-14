@@ -166,39 +166,6 @@
         state: equipped-OUTERCLOTHING
 
 - type: entity
-  id: ClothingOuterModSuitChrono
-  parent: ClothingOuterModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: chrono MOD chestplate
-  components:
-  - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/chrono.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/OuterClothing/ModSuits/chrono.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/OuterClothing/ModSuits/chrono.rsi
-        state: icon
-    clothingLayers:
-      true:
-        outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/chrono.rsi
-          state: equipped-OUTERCLOTHING-sealed
-      false:
-        outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/chrono.rsi
-          state: equipped-OUTERCLOTHING
-    uiLayer:
-      true:
-        sprite: Clothing/OuterClothing/ModSuits/chrono.rsi
-        state: equipped-OUTERCLOTHING-sealed
-      false:
-        sprite: Clothing/OuterClothing/ModSuits/chrono.rsi
-        state: equipped-OUTERCLOTHING
-
-- type: entity
   id: ClothingOuterModSuitCivilian
   parent: ClothingOuterModSuitBase
   categories: [ HideSpawnMenu ]
@@ -265,39 +232,6 @@
         state: equipped-OUTERCLOTHING
 
 - type: entity
-  id: ClothingOuterModSuitCorpsman
-  parent: ClothingOuterModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: corpsman MOD chestplate
-  components:
-  - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/corpsman.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/OuterClothing/ModSuits/corpsman.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/OuterClothing/ModSuits/corpsman.rsi
-        state: icon
-    clothingLayers:
-      true:
-        outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/corpsman.rsi
-          state: equipped-OUTERCLOTHING-sealed
-      false:
-        outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/corpsman.rsi
-          state: equipped-OUTERCLOTHING
-    uiLayer:
-      true:
-        sprite: Clothing/OuterClothing/ModSuits/corpsman.rsi
-        state: equipped-OUTERCLOTHING-sealed
-      false:
-        sprite: Clothing/OuterClothing/ModSuits/corpsman.rsi
-        state: equipped-OUTERCLOTHING
-
-- type: entity
   id: ClothingOuterModSuitCosmohonk
   parent: ClothingOuterModSuitBase
   categories: [ HideSpawnMenu ]
@@ -328,39 +262,6 @@
         state: equipped-OUTERCLOTHING-sealed
       false:
         sprite: Clothing/OuterClothing/ModSuits/cosmohonk.rsi
-        state: equipped-OUTERCLOTHING
-
-- type: entity
-  id: ClothingOuterModSuitDebug
-  parent: ClothingOuterModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: debug MOD chestplate
-  components:
-  - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/debug.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/OuterClothing/ModSuits/debug.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/OuterClothing/ModSuits/debug.rsi
-        state: icon
-    clothingLayers:
-      true:
-        outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/debug.rsi
-          state: equipped-OUTERCLOTHING-sealed
-      false:
-        outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/debug.rsi
-          state: equipped-OUTERCLOTHING
-    uiLayer:
-      true:
-        sprite: Clothing/OuterClothing/ModSuits/debug.rsi
-        state: equipped-OUTERCLOTHING-sealed
-      false:
-        sprite: Clothing/OuterClothing/ModSuits/debug.rsi
         state: equipped-OUTERCLOTHING
 
 - type: entity
@@ -460,39 +361,6 @@
         state: equipped-OUTERCLOTHING-sealed
       false:
         sprite: Clothing/OuterClothing/ModSuits/engineering.rsi
-        state: equipped-OUTERCLOTHING
-
-- type: entity
-  id: ClothingOuterModSuitGlitch
-  parent: ClothingOuterModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: glitch MOD chestplate
-  components:
-  - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
-        state: icon
-    clothingLayers:
-      true:
-        outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
-          state: equipped-OUTERCLOTHING-sealed
-      false:
-        outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
-          state: equipped-OUTERCLOTHING
-    uiLayer:
-      true:
-        sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
-        state: equipped-OUTERCLOTHING-sealed
-      false:
-        sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
         state: equipped-OUTERCLOTHING
 
 - type: entity
@@ -790,39 +658,6 @@
         state: equipped-OUTERCLOTHING-sealed
       false:
         sprite: Clothing/OuterClothing/ModSuits/ninja.rsi
-        state: equipped-OUTERCLOTHING
-
-- type: entity
-  id: ClothingOuterModSuitPrototype
-  parent: ClothingOuterModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: prototype MOD chestplate
-  components:
-  - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/prototype.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/OuterClothing/ModSuits/prototype.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/OuterClothing/ModSuits/prototype.rsi
-        state: icon
-    clothingLayers:
-      true:
-        outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/prototype.rsi
-          state: equipped-OUTERCLOTHING-sealed
-      false:
-        outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/prototype.rsi
-          state: equipped-OUTERCLOTHING
-    uiLayer:
-      true:
-        sprite: Clothing/OuterClothing/ModSuits/prototype.rsi
-        state: equipped-OUTERCLOTHING-sealed
-      false:
-        sprite: Clothing/OuterClothing/ModSuits/prototype.rsi
         state: equipped-OUTERCLOTHING
 
 - type: entity

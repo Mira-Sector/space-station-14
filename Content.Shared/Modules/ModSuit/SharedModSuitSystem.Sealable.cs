@@ -143,7 +143,7 @@ public partial class SharedModSuitSystem
 
             EntityManager.AddComponents(ent.Owner, ent.Comp.AllPartComponents);
 
-            if (ent.Comp.DeployerComponents != null)
+            if (ent.Comp.DeployerComponents == null)
                 RaiseLocalEvent(ent.Owner, ev);
         }
 
@@ -172,7 +172,7 @@ public partial class SharedModSuitSystem
                 EntityManager.RemoveComponents(part, ent.Comp.AllPartComponents);
             }
 
-            if (ent.Comp.DeployerComponents != null)
+            if (ent.Comp.DeployerComponents == null)
                 RaiseLocalEvent(ent.Owner, ev);
 
             EntityManager.RemoveComponents(ent.Owner, ent.Comp.AllPartComponents);
