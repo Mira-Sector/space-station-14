@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Content.Shared.Clothing;
 using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
@@ -19,10 +20,13 @@ public partial class SharedModSuitSystem
         SubscribeLocalEvent<ModSuitSealableComponent, ClothingGotEquippedEvent>(OnSealableEquipped);
         SubscribeLocalEvent<ModSuitSealableComponent, ClothingGotUnequippedEvent>(OnSealableUnequipped);
 
-        SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployablePartUnequippedEvent>(OnSealableDeployablePartUnequipped);
+        SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployablePartUndeployedEvent>(OnSealableDeployablePartUndeployed);
 
         SubscribeLocalEvent<ModSuitSealableComponent, ModSuitGetUiEntriesEvent>(OnSealableGetUiEntries);
         SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployableRelayedEvent<ModSuitGetUiEntriesEvent>>((u, c, a) => OnSealableGetUiEntries((u, c), ref a.Args));
+
+        SubscribeLocalEvent<ToggleableComponentModSuitPartDeployableAllSealedComponent, ModSuitContainerPartSealedEvent>(OnToggleComponentSealed);
+        SubscribeLocalEvent<ToggleableComponentModSuitPartDeployableAllSealedComponent, ModSuitContainerPartUnsealedEvent>(OnToggleComponentUnsealed);
 
         SubscribeAllEvent<ModSuitSealButtonMessage>(OnSealableUiButton);
     }
@@ -65,7 +69,7 @@ public partial class SharedModSuitSystem
     }
 
 
-    private void OnSealableDeployablePartUnequipped(Entity<ModSuitSealableComponent> ent, ref ModSuitDeployablePartUnequippedEvent args)
+    private void OnSealableDeployablePartUndeployed(Entity<ModSuitSealableComponent> ent, ref ModSuitDeployablePartUndeployedEvent args)
     {
         SetSeal((ent.Owner, ent.Comp), false, args.PartNumber);
     }
@@ -118,6 +122,71 @@ public partial class SharedModSuitSystem
             Array.Copy(foundEntry.Parts, insertIndex, parts, insertIndex + 1, foundEntry.Parts.Length - insertIndex);
 
         foundEntry.Parts = parts;
+    }
+
+    private void OnToggleComponentSealed(Entity<ToggleableComponentModSuitPartDeployableAllSealedComponent> ent, ref ModSuitContainerPartSealedEvent args)
+    {
+        var partDeployable = Comp<ModSuitPartDeployableComponent>(ent.Owner);
+        var parts = GetDeployedParts((ent.Owner, partDeployable)).ToArray();
+        if (parts.Length > partDeployable.DeployableContainers.Count)
+            return;
+
+        var ev = new ModSuitAllSealedComponentsUpdatedEvent();
+
+        if (ent.Comp.AllPartComponents != null)
+        {
+            foreach (var part in parts)
+            {
+                EntityManager.AddComponents(part, ent.Comp.AllPartComponents);
+                RaiseLocalEvent(part, ev);
+            }
+
+            EntityManager.AddComponents(ent.Owner, ent.Comp.AllPartComponents);
+
+            if (ent.Comp.DeployerComponents == null)
+                RaiseLocalEvent(ent.Owner, ev);
+        }
+
+        if (ent.Comp.DeployerComponents != null)
+        {
+            EntityManager.AddComponents(ent.Owner, ent.Comp.DeployerComponents);
+            RaiseLocalEvent(ent.Owner, ev);
+        }
+
+        ent.Comp.AllSealed = true;
+        Dirty(ent);
+    }
+
+    private void OnToggleComponentUnsealed(Entity<ToggleableComponentModSuitPartDeployableAllSealedComponent> ent, ref ModSuitContainerPartUnsealedEvent args)
+    {
+        if (!ent.Comp.AllSealed)
+            return;
+
+        var ev = new ModSuitAllSealedComponentsUpdatedEvent();
+
+        if (ent.Comp.AllPartComponents != null)
+        {
+            foreach (var part in GetAllParts(ent.Owner))
+            {
+                RaiseLocalEvent(part, ev);
+                EntityManager.RemoveComponents(part, ent.Comp.AllPartComponents);
+            }
+
+            if (ent.Comp.DeployerComponents == null)
+                RaiseLocalEvent(ent.Owner, ev);
+
+            EntityManager.RemoveComponents(ent.Owner, ent.Comp.AllPartComponents);
+
+        }
+
+        if (ent.Comp.DeployerComponents != null)
+        {
+            RaiseLocalEvent(ent.Owner, ev);
+            EntityManager.RemoveComponents(ent.Owner, ent.Comp.DeployerComponents);
+        }
+
+        ent.Comp.AllSealed = false;
+        Dirty(ent);
     }
 
     private void OnSealableUiButton(ModSuitSealButtonMessage args)
@@ -180,8 +249,7 @@ public partial class SharedModSuitSystem
             var suitEv = new ModSuitContainerPartSealedEvent(ent.Owner);
             RaiseLocalEvent(container, suitEv);
 
-            if (ent.Comp.SealedComponents != null)
-                EntityManager.AddComponents(ent.Owner, ent.Comp.SealedComponents, true);
+            EntityManager.AddComponents(ent.Owner, ent.Comp.SealedComponents, true);
         }
         else
         {
@@ -191,8 +259,7 @@ public partial class SharedModSuitSystem
             var suitEv = new ModSuitContainerPartUnsealedEvent(ent.Owner);
             RaiseLocalEvent(container, suitEv);
 
-            if (ent.Comp.SealedComponents != null)
-                EntityManager.RemoveComponents(ent.Owner, ent.Comp.SealedComponents);
+            EntityManager.RemoveComponents(ent.Owner, ent.Comp.SealedComponents);
         }
 
         PlaySound((ent.Owner, ent.Comp), shouldSeal);

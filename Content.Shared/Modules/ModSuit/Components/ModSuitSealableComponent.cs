@@ -14,8 +14,8 @@ public sealed partial class ModSuitSealableComponent : Component
     [DataField, AutoNetworkedField]
     public TimeSpan? DelayPerPart = TimeSpan.FromSeconds(0.25f);
 
-    [DataField]
-    public ComponentRegistry? SealedComponents;
+    [DataField, AlwaysPushInheritance]
+    public ComponentRegistry SealedComponents = [];
 
     [ViewVariables, AutoNetworkedField]
     public EntityUid? Wearer;
