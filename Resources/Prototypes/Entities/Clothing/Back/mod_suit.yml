@@ -126,6 +126,8 @@
       gloves: ClothingHandsModSuitApocrphal
       head: ClothingHeadModSuitApocrphal
       shoes: ClothingShoesModSuitApocrphal
+  - type: ModSuitComplexityLimit
+    maxComplexity: 25
 
 - type: entity
   id: ClothingBackpackModSuitAsteroid
@@ -267,6 +269,8 @@
       gloves: ClothingHandsModSuitCivilian
       head: ClothingHeadModSuitCivilian
       shoes: ClothingShoesModSuitCivilian
+  - type: ModSuitComplexityLimit
+    maxComplexity: 12
   - type: ToggleableComponentModSuitPartDeployableAllSealed
     allPartComponents:
     - type: PressureProtection
@@ -363,6 +367,8 @@
       gloves: ClothingHandsModSuitCosmohonk
       head: ClothingHeadModSuitCosmohonk
       shoes: ClothingShoesModSuitCosmohonk
+  - type: ModuleContainerPower
+    baseRate: 0.125
   - type: ToggleableComponentModSuitPartDeployableAllSealed
     allPartComponents:
     - type: PressureProtection
@@ -466,6 +472,8 @@
       gloves: ClothingHandsModSuitEnchanted
       head: ClothingHeadModSuitEnchanted
       shoes: ClothingShoesModSuitEnchanted
+  - type: ModSuitComplexityLimit
+    maxComplexity: 10
   - type: ToggleableComponentModSuitPartDeployableAllSealed
     allPartComponents:
     - type: PressureProtection
@@ -657,6 +665,8 @@
       gloves: ClothingHandsModSuitInquisitory
       head: ClothingHeadModSuitInquisitory
       shoes: ClothingShoesModSuitInquisitory
+  - type: ModSuitComplexityLimit
+    maxComplexity: 20
 
 - type: entity
   id: ClothingBackpackModSuitInterdyne
@@ -695,6 +705,8 @@
       gloves: ClothingHandsModSuitInterdyne
       head: ClothingHeadModSuitInterdyne
       shoes: ClothingShoesModSuitInterdyne
+  - type: ModuleContainerPower
+    baseRate: 0.7
   - type: ToggleableComponentModSuitPartDeployableAllSealed
     allPartComponents:
     - type: PressureProtection
@@ -745,6 +757,8 @@
       gloves: ClothingHandsModSuitLoader
       head: ClothingHeadModSuitLoader
       shoes: ClothingShoesModSuitLoader
+  - type: ModSuitComplexityLimit
+    maxComplexity: 10
 
 - type: entity
   id: ClothingBackpackModSuitMagnate
@@ -783,6 +797,8 @@
       gloves: ClothingHandsModSuitMagnate
       head: ClothingHeadModSuitMagnate
       shoes: ClothingShoesModSuitMagnate
+  - type: ModSuitComplexityLimit
+    maxComplexity: 20
   - type: ToggleableComponentModSuitPartDeployableAllSealed
     allPartComponents:
     - type: PressureProtection
@@ -833,6 +849,8 @@
       gloves: ClothingHandsModSuitMedical
       head: ClothingHeadModSuitMedical
       shoes: ClothingShoesModSuitMedical
+  - type: ModuleContainerPower
+    baseRate: 0.7
   - type: ToggleableComponentModSuitPartDeployableAllSealed
     allPartComponents:
     - type: PressureProtection
@@ -886,6 +904,10 @@
       gloves: ClothingHandsModSuitMining
       head: ClothingHeadModSuitMining
       shoes: ClothingShoesModSuitMining
+  - type: ModSuitComplexityLimit
+    maxComplexity: 13
+  - type: ModuleContainerPower
+    baseRate: 1
   - type: ToggleableComponentModSuitPartDeployableAllSealed
     allPartComponents:
     - type: PressureProtection
@@ -982,6 +1004,8 @@
       gloves: ClothingHandsModSuitRescue
       head: ClothingHeadModSuitRescue
       shoes: ClothingShoesModSuitRescue
+  - type: ModuleContainerPower
+    baseRate: 0.7
   - type: ToggleableComponentModSuitPartDeployableAllSealed
     allPartComponents:
     - type: PressureProtection
@@ -1032,6 +1056,8 @@
       gloves: ClothingHandsModSuitResearch
       head: ClothingHeadModSuitResearch
       shoes: ClothingShoesModSuitResearch
+  - type: ModSuitComplexityLimit
+    maxComplexity: 20
   - type: ToggleableComponentModSuitPartDeployableAllSealed
     allPartComponents:
     - type: PressureProtection
@@ -1132,6 +1158,8 @@
       gloves: ClothingHandsModSuitSafeguard
       head: ClothingHeadModSuitSafeguard
       shoes: ClothingShoesModSuitSafeguard
+  - type: ModSuitComplexityLimit
+    maxComplexity: 10
   - type: ToggleableComponentModSuitPartDeployableAllSealed
     allPartComponents:
     - type: PressureProtection
@@ -1182,6 +1210,8 @@
       gloves: ClothingHandsModSuitSecurity
       head: ClothingHeadModSuitSecurity
       shoes: ClothingShoesModSuitSecurity
+  - type: ModSuitComplexityLimit
+    maxComplexity: 13
   - type: ToggleableComponentModSuitPartDeployableAllSealed
     allPartComponents:
     - type: PressureProtection
