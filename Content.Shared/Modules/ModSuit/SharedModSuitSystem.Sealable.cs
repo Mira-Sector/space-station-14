@@ -244,23 +244,23 @@ public partial class SharedModSuitSystem
 
         if (shouldSeal)
         {
+            EntityManager.AddComponents(ent.Owner, ent.Comp.SealedComponents, true);
+
             var partEv = new ModSuitSealedEvent(ent.Comp.Wearer);
             RaiseLocalEvent(ent.Owner, partEv);
 
             var suitEv = new ModSuitContainerPartSealedEvent(ent.Owner);
             RaiseLocalEvent(container, suitEv);
-
-            EntityManager.AddComponents(ent.Owner, ent.Comp.SealedComponents, true);
         }
         else
         {
+            EntityManager.RemoveComponents(ent.Owner, ent.Comp.SealedComponents);
+
             var partEv = new ModSuitUnsealedEvent(ent.Comp.Wearer);
             RaiseLocalEvent(ent.Owner, partEv);
 
             var suitEv = new ModSuitContainerPartUnsealedEvent(ent.Owner);
             RaiseLocalEvent(container, suitEv);
-
-            EntityManager.RemoveComponents(ent.Owner, ent.Comp.SealedComponents);
         }
 
         PlaySound((ent.Owner, ent.Comp), shouldSeal);

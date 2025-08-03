@@ -4,6 +4,8 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: ModSuitSealable
+    sealedComponents:
+    - type: BreathMask
   - type: ModSuitDeployableInventory
   - type: Clothing
     autoGenerateVisuals: false
@@ -65,9 +67,6 @@
         sprite: Clothing/Head/ModSuits/advanced.rsi
         state: equipped-HELMET
     sealedComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.08
-      lowPressureMultiplier: 1000
     - type: FireProtection
       reduction: 0.2
     - type: Armor
