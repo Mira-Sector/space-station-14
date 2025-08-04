@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Clothing;
 using Content.Shared.Modules.Components.Modules;
 using Content.Shared.Modules.Events;
@@ -31,20 +32,31 @@ public sealed partial class MagbootsModuleSystem : EntitySystem
 
     private void UpdateMagboots(Entity<MagbootsModuleComponent> module, EntityUid container, bool state)
     {
-        var magboots = GetMagboots(module, container);
+        if (!TryGetMagboots(module, container, out var magboots))
+            return;
 
         if (_moduleContained.TryGetUser(module.Owner, out var user))
-            _magboots.UpdateMagbootEffects(user.Value, magboots, state);
+            _magboots.UpdateMagbootEffects(user.Value, magboots.Value, state);
     }
 
-    private Entity<MagbootsComponent> GetMagboots(Entity<MagbootsModuleComponent> module, EntityUid container)
+    private bool TryGetMagboots(Entity<MagbootsModuleComponent> module, EntityUid container, [NotNullWhen(true)] out Entity<MagbootsComponent>? boots)
     {
+        if (TerminatingOrDeleted(module) || TerminatingOrDeleted(container))
+        {
+            boots = null;
+            return false;
+        }
+
         if (module.Comp.ModSuitPart is { } partType)
         {
             if (_modSuit.TryGetDeployedPart(container, partType, out var part))
-                return (part.Value, EnsureComp<MagbootsComponent>(part.Value));
+            {
+                boots = (part.Value, EnsureComp<MagbootsComponent>(part.Value));
+                return true;
+            }
         }
 
-        return (container, EnsureComp<MagbootsComponent>(container));
+        boots = (container, EnsureComp<MagbootsComponent>(container));
+        return true;
     }
 }
