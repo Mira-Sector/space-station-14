@@ -21,6 +21,7 @@
   - type: PowerCellSlot
     fitsInCharger: false
   - type: ModSuitUserInterface
+  - type: OptionalPressureProtection
   - type: WiresPanel
     visible: false
   - type: UserInterface
@@ -70,6 +71,10 @@
       false:
         sprite: Clothing/Back/ModSuits/advanced.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitAdvanced
@@ -98,11 +103,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/apocryphal.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/apocryphal.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -138,11 +143,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/asteroid.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/asteroid.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -152,6 +157,10 @@
       false:
         sprite: Clothing/Back/ModSuits/asteroid.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitAsteroid
@@ -180,11 +189,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/atmospheric.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/atmospheric.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -194,6 +203,10 @@
       false:
         sprite: Clothing/Back/ModSuits/atmospheric.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitAtmospheric
@@ -225,11 +238,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/civilian.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/civilian.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -239,6 +252,10 @@
       false:
         sprite: Clothing/Back/ModSuits/civilian.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitCivilian
@@ -269,11 +286,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/corporate.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/corporate.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -283,6 +300,10 @@
       false:
         sprite: Clothing/Back/ModSuits/corporate.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitCorporate
@@ -307,11 +328,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/cosmohonk.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/cosmohonk.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -321,6 +342,10 @@
       false:
         sprite: Clothing/Back/ModSuits/cosmohonk.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitCosmohonk
@@ -354,11 +379,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/elite.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/elite.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -368,6 +393,10 @@
       false:
         sprite: Clothing/Back/ModSuits/elite.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitElite
@@ -396,11 +425,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/enchanted.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/enchanted.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -410,6 +439,10 @@
       false:
         sprite: Clothing/Back/ModSuits/enchanted.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.27
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitEnchanted
@@ -440,11 +473,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/engineering.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/engineering.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -454,6 +487,10 @@
       false:
         sprite: Clothing/Back/ModSuits/engineering.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.1
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitEngineering
@@ -485,11 +522,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/honkerative.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/honkerative.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -523,11 +560,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/infiltrator.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/infiltrator.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -537,6 +574,10 @@
       false:
         sprite: Clothing/Back/ModSuits/infiltrator.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitInfiltrator
@@ -565,11 +606,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/inquisitory.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/inquisitory.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -605,11 +646,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/interdyne.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/interdyne.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -619,6 +660,10 @@
       false:
         sprite: Clothing/Back/ModSuits/interdyne.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitInterdyne
@@ -649,11 +694,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/loader.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/loader.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -689,11 +734,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/magnate.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/magnate.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -703,6 +748,10 @@
       false:
         sprite: Clothing/Back/ModSuits/magnate.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitMagnate
@@ -733,11 +782,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/medical.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/medical.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -747,6 +796,10 @@
       false:
         sprite: Clothing/Back/ModSuits/medical.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitMedical
@@ -780,11 +833,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/mining.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/mining.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -794,6 +847,10 @@
       false:
         sprite: Clothing/Back/ModSuits/mining.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitMining
@@ -826,11 +883,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/ninja.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/ninja.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -840,6 +897,10 @@
       false:
         sprite: Clothing/Back/ModSuits/ninja.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitNinja
@@ -864,11 +925,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/rescue.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/rescue.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -878,6 +939,10 @@
       false:
         sprite: Clothing/Back/ModSuits/rescue.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitRescue
@@ -908,11 +973,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/research.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/research.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -922,6 +987,10 @@
       false:
         sprite: Clothing/Back/ModSuits/research.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.60
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitResearch
@@ -952,11 +1021,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/responsory.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/responsory.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -966,6 +1035,10 @@
       false:
         sprite: Clothing/Back/ModSuits/responsory.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitResponsory
@@ -994,11 +1067,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/safeguard.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/safeguard.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -1008,6 +1081,10 @@
       false:
         sprite: Clothing/Back/ModSuits/safeguard.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.45
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitSafeguard
@@ -1038,11 +1115,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/security.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/security.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -1052,6 +1129,10 @@
       false:
         sprite: Clothing/Back/ModSuits/security.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitSecurity
@@ -1085,11 +1166,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/standard.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/standard.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -1099,6 +1180,10 @@
       false:
         sprite: Clothing/Back/ModSuits/standard.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitStandard
@@ -1130,11 +1215,11 @@
         state: icon
     clothingLayers:
       true:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/syndicate.rsi
           state: equipped-BACKPACK-sealed
       false:
-        head:
+        back:
         - sprite: Clothing/Back/ModSuits/syndicate.rsi
           state: equipped-BACKPACK
     uiLayer:
@@ -1144,6 +1229,10 @@
       false:
         sprite: Clothing/Back/ModSuits/syndicate.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
       outerClothing: ClothingOuterModSuitSyndicate

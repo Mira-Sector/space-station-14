@@ -10,6 +10,7 @@
         flatReductions:
           Heat: 10 # the average lightbulb only does around four damage!
   - type: ModSuitDeployableInventory
+  - type: OptionalPressureProtection
   - type: Clothing
     autoGenerateVisuals: false
     slots:
@@ -51,6 +52,10 @@
       false:
         sprite: Clothing/Hands/ModSuits/advanced.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingHandsModSuitApocrphal
@@ -117,6 +122,10 @@
       false:
         sprite: Clothing/Hands/ModSuits/asteroid.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingHandsModSuitAtmospheric
@@ -150,6 +159,10 @@
       false:
         sprite: Clothing/Hands/ModSuits/atmospheric.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingHandsModSuitCivilian
@@ -183,6 +196,10 @@
       false:
         sprite: Clothing/Hands/ModSuits/civilian.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingHandsModSuitCorporate
@@ -216,6 +233,10 @@
       false:
         sprite: Clothing/Hands/ModSuits/corporate.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingHandsModSuitCosmohonk
@@ -249,6 +270,10 @@
       false:
         sprite: Clothing/Hands/ModSuits/cosmohonk.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingHandsModSuitElite
@@ -282,6 +307,10 @@
       false:
         sprite: Clothing/Hands/ModSuits/elite.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingHandsModSuitEnchanted
@@ -315,6 +344,10 @@
       false:
         sprite: Clothing/Hands/ModSuits/enchanted.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.27
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingHandsModSuitEngineering
@@ -348,6 +381,10 @@
       false:
         sprite: Clothing/Hands/ModSuits/engineering.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.1
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingHandsModSuitHonkerative
@@ -414,6 +451,10 @@
       false:
         sprite: Clothing/Hands/ModSuits/infiltrator.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingHandsModSuitInquisitory
@@ -480,6 +521,10 @@
       false:
         sprite: Clothing/Hands/ModSuits/interdyne.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingHandsModSuitLoader
@@ -546,6 +591,10 @@
       false:
         sprite: Clothing/Hands/ModSuits/magnate.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingHandsModSuitMedical
@@ -579,6 +628,10 @@
       false:
         sprite: Clothing/Hands/ModSuits/medical.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingHandsModSuitMining
@@ -612,6 +665,10 @@
       false:
         sprite: Clothing/Hands/ModSuits/mining.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingHandsModSuitNinja
@@ -645,6 +702,10 @@
       false:
         sprite: Clothing/Hands/ModSuits/ninja.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingHandsModSuitRescue
@@ -678,6 +739,10 @@
       false:
         sprite: Clothing/Hands/ModSuits/rescue.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingHandsModSuitResearch
@@ -711,6 +776,10 @@
       false:
         sprite: Clothing/Hands/ModSuits/research.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.60
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingHandsModSuitResponsory
@@ -744,6 +813,10 @@
       false:
         sprite: Clothing/Hands/ModSuits/responsory.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingHandsModSuitSafeguard
@@ -777,6 +850,10 @@
       false:
         sprite: Clothing/Hands/ModSuits/safeguard.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.45
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingHandsModSuitSecurity
@@ -810,6 +887,10 @@
       false:
         sprite: Clothing/Hands/ModSuits/security.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingHandsModSuitStandard
@@ -843,6 +924,10 @@
       false:
         sprite: Clothing/Hands/ModSuits/standard.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingHandsModSuitSyndicate
@@ -876,3 +961,7 @@
       false:
         sprite: Clothing/Hands/ModSuits/syndicate.rsi
         state: equipped-HAND
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000

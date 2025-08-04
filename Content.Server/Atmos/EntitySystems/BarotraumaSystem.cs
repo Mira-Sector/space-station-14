@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Content.Server.Administration.Logs;
 using Content.Server.Atmos.Components;
 using Content.Shared.Alert;
@@ -9,7 +10,6 @@ using Content.Shared.Database;
 using Content.Shared.FixedPoint;
 using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;
-using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
 using Robust.Shared.Containers;
 
@@ -27,6 +27,8 @@ namespace Content.Server.Atmos.EntitySystems
         private const float UpdateTimer = 1f;
         private float _timer;
 
+        private EntityQuery<OptionalPressureProtectionComponent> _optionalProtectionQuery;
+
         public override void Initialize()
         {
             SubscribeLocalEvent<PressureProtectionComponent, GotEquippedEvent>(OnPressureProtectionEquipped);
@@ -38,6 +40,8 @@ namespace Content.Server.Atmos.EntitySystems
 
             SubscribeLocalEvent<PressureImmunityComponent, ComponentInit>(OnPressureImmuneInit);
             SubscribeLocalEvent<PressureImmunityComponent, ComponentRemove>(OnPressureImmuneRemove);
+
+            _optionalProtectionQuery = GetEntityQuery<OptionalPressureProtectionComponent>();
         }
 
         private void OnPressureImmuneInit(EntityUid uid, PressureImmunityComponent pressureImmunity, ComponentInit args)
@@ -67,13 +71,13 @@ namespace Content.Server.Atmos.EntitySystems
 
         private void OnPressureProtectionEquipped(EntityUid uid, PressureProtectionComponent pressureProtection, GotEquippedEvent args)
         {
-            if (TryComp<BarotraumaComponent>(args.Equipee, out var barotrauma) && barotrauma.ProtectionSlots.Contains(args.Slot))
+            if (TryComp<BarotraumaComponent>(args.Equipee, out var barotrauma) && ContainsSlot(barotrauma, args.Slot))
                 UpdateCachedResistances(args.Equipee, barotrauma);
         }
 
         private void OnPressureProtectionUnequipped(EntityUid uid, PressureProtectionComponent pressureProtection, GotUnequippedEvent args)
         {
-            if (TryComp<BarotraumaComponent>(args.Equipee, out var barotrauma) && barotrauma.ProtectionSlots.Contains(args.Slot))
+            if (TryComp<BarotraumaComponent>(args.Equipee, out var barotrauma) && ContainsSlot(barotrauma, args.Slot))
                 UpdateCachedResistances(args.Equipee, barotrauma);
         }
 
@@ -91,9 +95,30 @@ namespace Content.Server.Atmos.EntitySystems
         /// </summary>
         private void UpdateCachedResistances(EntityUid uid, BarotraumaComponent barotrauma)
         {
-            if (barotrauma.ProtectionSlots.Count != 0)
+            Dictionary<string, EntityUid?> slots = [];
+            slots.EnsureCapacity(barotrauma.ProtectionSlots.Count + barotrauma.OptionalProtectionSlots.Count);
+
+            foreach (var slot in barotrauma.ProtectionSlots)
+                slots[slot] = null;
+
+            var inv = CompOrNull<InventoryComponent>(uid);
+            var contMan = CompOrNull<ContainerManagerComponent>(uid);
+
+            if (inv != null && contMan != null)
             {
-                if (!TryComp(uid, out InventoryComponent? inv) || !TryComp(uid, out ContainerManagerComponent? contMan))
+                foreach (var optionalSlot in barotrauma.OptionalProtectionSlots)
+                {
+                    if (!_inventorySystem.TryGetSlotEntity(uid, optionalSlot, out var optionalSlotEnt, inv, contMan))
+                        continue;
+
+                    if (_optionalProtectionQuery.HasComp(optionalSlotEnt))
+                        slots[optionalSlot] = optionalSlotEnt;
+                }
+            }
+
+            if (slots.Any())
+            {
+                if (inv == null || contMan == null)
                     return;
 
                 var hPModifier = float.MinValue;
@@ -101,10 +126,23 @@ namespace Content.Server.Atmos.EntitySystems
                 var lPModifier = float.MaxValue;
                 var lPMultiplier = float.MaxValue;
 
-                foreach (var slot in barotrauma.ProtectionSlots)
+                foreach (var (slot, slotEnt) in slots)
                 {
-                    if (!_inventorySystem.TryGetSlotEntity(uid, slot, out var equipment, inv, contMan)
-                        || !TryGetPressureProtectionValues(equipment.Value,
+                    var equipment = slotEnt;
+
+                    if (equipment == null)
+                    {
+                        if (!_inventorySystem.TryGetSlotEntity(uid, slot, out equipment, inv, contMan))
+                        {
+                            hPModifier = 0f;
+                            hPMultiplier = 1f;
+                            lPModifier = 0f;
+                            lPMultiplier = 1f;
+                            break;
+                        }
+                    }
+
+                    if (!TryGetPressureProtectionValues(equipment.Value,
                             out var itemHighMultiplier,
                             out var itemHighModifier,
                             out var itemLowMultiplier,
@@ -167,6 +205,14 @@ namespace Content.Server.Atmos.EntitySystems
 
             var modified = (environmentPressure + barotrauma.HighPressureModifier) * barotrauma.HighPressureMultiplier;
             return Math.Max(modified, Atmospherics.OneAtmosphere);
+        }
+
+        private static bool ContainsSlot(BarotraumaComponent component, string slot)
+        {
+            if (component.ProtectionSlots.Contains(slot))
+                return true;
+
+            return component.OptionalProtectionSlots.Contains(slot);
         }
 
         public bool TryGetPressureProtectionValues(

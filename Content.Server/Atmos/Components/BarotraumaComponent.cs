@@ -28,7 +28,22 @@ namespace Content.Server.Atmos.Components
         ///     These are the inventory slots that are checked for pressure protection. If a slot is missing protection, no protection is applied.
         /// </summary>
         [DataField("protectionSlots")]
-        public List<string> ProtectionSlots = new() { "head", "outerClothing" };
+        public List<string> ProtectionSlots = new()
+        {
+            "head",
+            "outerClothing"
+        };
+
+        /// <summary>
+        ///     These are the inventory slots that are checked for pressure protection if the slot contains the optionalpressureprotection component. If a slot is missing protection, no protection is applied.
+        /// </summary>
+        [DataField]
+        public List<string> OptionalProtectionSlots = new()
+        {
+            "back",
+            "gloves",
+            "shoes"
+        };
 
         /// <summary>
         /// Cached pressure protection values

@@ -9,6 +9,7 @@
     autoGenerateVisuals: false
     slots:
     - feet
+  - type: OptionalPressureProtection
   - type: ProtectedFromStepTriggers
     slots: WITHOUT_POCKET
   - type: Appearance
@@ -48,6 +49,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/advanced.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitApocrphal
@@ -114,6 +119,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/asteroid.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitAtmospheric
@@ -147,6 +156,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/atmospheric.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitCivilian
@@ -180,6 +193,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/civilian.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitCorporate
@@ -213,6 +230,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/corporate.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitCosmohonk
@@ -246,6 +267,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/cosmohonk.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitElite
@@ -279,6 +304,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/elite.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitEnchanted
@@ -312,6 +341,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/enchanted.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.27
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitEngineering
@@ -345,6 +378,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/engineering.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.1
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitHonkerative
@@ -411,6 +448,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/infiltrator.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitInquisitory
@@ -477,6 +518,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/interdyne.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitLoader
@@ -543,6 +588,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/magnate.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitMedical
@@ -576,6 +625,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/medical.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitMining
@@ -609,6 +662,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/mining.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitNinja
@@ -642,6 +699,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/ninja.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitRescue
@@ -675,6 +736,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/rescue.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitResearch
@@ -708,6 +773,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/research.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.60
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitResponsory
@@ -741,6 +810,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/responsory.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitSafeguard
@@ -774,6 +847,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/safeguard.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.45
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitSecurity
@@ -807,6 +884,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/security.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitStandard
@@ -840,6 +921,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/standard.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitSyndicate
@@ -873,3 +958,7 @@
       false:
         sprite: Clothing/Shoes/ModSuits/syndicate.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
