@@ -348,7 +348,7 @@
 
 - type: entity
   id: ClothingShoesModSuitHonkerative
-  parent: ClothingShoesModSuitBase
+  parent: ClothingShoesModSuitSyndicate
   categories: [ HideSpawnMenu ]
   name: honkerative MOD boots
   components:

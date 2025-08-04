@@ -76,14 +76,6 @@
       gloves: ClothingHandsModSuitAdvanced
       head: ClothingHeadModSuitAdvanced
       shoes: ClothingShoesModSuitAdvanced
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.02
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
   - type: ClothingSpeedModifier
     walkModifier: 0.75
     sprintModifier: 0.8
@@ -166,14 +158,6 @@
       gloves: ClothingHandsModSuitAsteroid
       head: ClothingHeadModSuitAsteroid
       shoes: ClothingShoesModSuitAsteroid
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.7
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
   - type: ClothingSpeedModifier
     walkModifier: 0.8
     sprintModifier: 0.8
@@ -216,14 +200,6 @@
       gloves: ClothingHandsModSuitAtmospheric
       head: ClothingHeadModSuitAtmospheric
       shoes: ClothingShoesModSuitAtmospheric
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.02
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.001
-      coolingCoefficient: 0.001
   - type: ClothingSpeedModifier
     walkModifier: 0.7
     sprintModifier: 0.7
@@ -271,14 +247,6 @@
       shoes: ClothingShoesModSuitCivilian
   - type: ModSuitComplexityLimit
     maxComplexity: 12
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.6
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
   - type: ClothingSpeedModifier
     walkModifier: 0.8
     sprintModifier: 0.8
@@ -321,14 +289,6 @@
       gloves: ClothingHandsModSuitCorporate
       head: ClothingHeadModSuitCorporate
       shoes: ClothingShoesModSuitCorporate
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.02
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
 
 - type: entity
   id: ClothingBackpackModSuitCosmohonk
@@ -369,14 +329,6 @@
       shoes: ClothingShoesModSuitCosmohonk
   - type: ModuleContainerPower
     baseRate: 0.125
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.5
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
   - type: ClothingSpeedModifier
     walkModifier: 0.9
     sprintModifier: 0.9
@@ -422,14 +374,6 @@
       gloves: ClothingHandsModSuitElite
       head: ClothingHeadModSuitElite
       shoes: ClothingShoesModSuitElite
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.02
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.001
-      coolingCoefficient: 0.001
   - type: ClothingSpeedModifier
     walkModifier: 0.9
     sprintModifier: 0.9
@@ -474,14 +418,6 @@
       shoes: ClothingShoesModSuitEnchanted
   - type: ModSuitComplexityLimit
     maxComplexity: 10
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.05
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
   - type: ClothingSpeedModifier
     walkModifier: 0.8
     sprintModifier: 0.8
@@ -524,14 +460,6 @@
       gloves: ClothingHandsModSuitEngineering
       head: ClothingHeadModSuitEngineering
       shoes: ClothingShoesModSuitEngineering
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.04
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
   - type: ClothingSpeedModifier
     walkModifier: 0.7
     sprintModifier: 0.7
@@ -615,14 +543,6 @@
       gloves: ClothingHandsModSuitInfiltrator
       head: ClothingHeadModSuitInfiltrator
       shoes: ClothingShoesModSuitInfiltrator
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.05
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
   - type: ClothingSpeedModifier
     walkModifier: 0.9
     sprintModifier: 0.9
@@ -707,14 +627,6 @@
       shoes: ClothingShoesModSuitInterdyne
   - type: ModuleContainerPower
     baseRate: 0.7
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.3
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
   - type: ClothingSpeedModifier
     walkModifier: 0.65
     sprintModifier: 0.65
@@ -799,14 +711,6 @@
       shoes: ClothingShoesModSuitMagnate
   - type: ModSuitComplexityLimit
     maxComplexity: 20
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.02
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
   - type: ClothingSpeedModifier
     walkModifier: 0.8
     sprintModifier: 0.8
@@ -851,14 +755,6 @@
       shoes: ClothingShoesModSuitMedical
   - type: ModuleContainerPower
     baseRate: 0.7
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.03
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
   - type: ClothingSpeedModifier
     walkModifier: 0.95
     sprintModifier: 0.95
@@ -908,14 +804,6 @@
     maxComplexity: 13
   - type: ModuleContainerPower
     baseRate: 1
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.5
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
   - type: ClothingSpeedModifier
     walkModifier: 0.9
     sprintModifier: 0.9
@@ -958,14 +846,6 @@
       gloves: ClothingHandsModSuitNinja
       head: ClothingHeadModSuitNinja
       shoes: ClothingShoesModSuitNinja
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.6
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
 
 - type: entity
   id: ClothingBackpackModSuitRescue
@@ -1006,14 +886,6 @@
       shoes: ClothingShoesModSuitRescue
   - type: ModuleContainerPower
     baseRate: 0.7
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.03
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
   - type: ClothingSpeedModifier
     walkModifier: 0.95
     sprintModifier: 0.95
@@ -1058,14 +930,6 @@
       shoes: ClothingShoesModSuitResearch
   - type: ModSuitComplexityLimit
     maxComplexity: 20
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.02
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
   - type: ClothingSpeedModifier
     walkModifier: 0.75
     sprintModifier: 0.75
@@ -1108,14 +972,6 @@
       gloves: ClothingHandsModSuitResponsory
       head: ClothingHeadModSuitResponsory
       shoes: ClothingShoesModSuitResponsory
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.02
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.001
-      coolingCoefficient: 0.001
   - type: ClothingSpeedModifier
     walkModifier: 0.9
     sprintModifier: 0.9
@@ -1160,14 +1016,6 @@
       shoes: ClothingShoesModSuitSafeguard
   - type: ModSuitComplexityLimit
     maxComplexity: 10
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.45
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
   - type: ClothingSpeedModifier
     walkModifier: 0.8
     sprintModifier: 0.8
@@ -1212,14 +1060,6 @@
       shoes: ClothingShoesModSuitSecurity
   - type: ModSuitComplexityLimit
     maxComplexity: 13
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.5
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
   - type: ClothingSpeedModifier
     walkModifier: 0.65
     sprintModifier: 0.65
@@ -1265,14 +1105,6 @@
       gloves: ClothingHandsModSuitStandard
       head: ClothingHeadModSuitStandard
       shoes: ClothingShoesModSuitStandard
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.6
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
   - type: ClothingSpeedModifier
     walkModifier: 0.8
     sprintModifier: 0.8
@@ -1318,14 +1150,6 @@
       gloves: ClothingHandsModSuitSyndicate
       head: ClothingHeadModSuitSyndicate
       shoes: ClothingShoesModSuitSyndicate
-  - type: ToggleableComponentModSuitPartDeployableAllSealed
-    allPartComponents:
-    - type: PressureProtection
-      highPressureMultiplier: 0.05
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
   - type: ClothingSpeedModifier
     walkModifier: 0.9
     sprintModifier: 0.9

@@ -31,7 +31,8 @@ namespace Content.Server.Atmos.EntitySystems
         {
             SubscribeLocalEvent<PressureProtectionComponent, GotEquippedEvent>(OnPressureProtectionEquipped);
             SubscribeLocalEvent<PressureProtectionComponent, GotUnequippedEvent>(OnPressureProtectionUnequipped);
-            SubscribeLocalEvent<PressureProtectionComponent, ModSuitAllSealedComponentsUpdatedEvent>(OnPressureProtectionModSuitSealed);
+            SubscribeLocalEvent<PressureProtectionComponent, ModSuitSealedEvent>(OnPressureProtectionModSuitSeal);
+            SubscribeLocalEvent<PressureProtectionComponent, ModSuitUnsealedEvent>(OnPressureProtectionModSuitSeal);
             SubscribeLocalEvent<PressureProtectionComponent, ComponentInit>(OnUpdateResistance);
             SubscribeLocalEvent<PressureProtectionComponent, ComponentRemove>(OnUpdateResistance);
 
@@ -76,18 +77,12 @@ namespace Content.Server.Atmos.EntitySystems
                 UpdateCachedResistances(args.Equipee, barotrauma);
         }
 
-        private void OnPressureProtectionModSuitSealed(EntityUid uid, PressureProtectionComponent pressureProtection, ModSuitAllSealedComponentsUpdatedEvent args)
+        private void OnPressureProtectionModSuitSeal(EntityUid uid, PressureProtectionComponent pressureProtection, BaseModSuitSealEvent args)
         {
-            if (!TryComp<ModSuitDeployedPartComponent>(uid, out var deployedPart))
+            if (!TryComp<BarotraumaComponent>(args.Wearer, out var barotrauma))
                 return;
 
-            if (!TryComp<ModSuitPartDeployableComponent>(deployedPart.Suit, out var partDeployable))
-                return;
-
-            if (!TryComp<BarotraumaComponent>(partDeployable.Wearer, out var barotrauma))
-                return;
-
-            UpdateCachedResistances(partDeployable.Wearer!.Value, barotrauma);
+            UpdateCachedResistances(args.Wearer!.Value, barotrauma);
         }
 
         /// <summary>

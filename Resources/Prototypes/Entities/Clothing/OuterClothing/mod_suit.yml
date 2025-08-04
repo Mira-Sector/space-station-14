@@ -47,6 +47,9 @@
         sprite: Clothing/OuterClothing/ModSuits/advanced.rsi
         state: equipped-OUTERCLOTHING
     sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
     - type: FireProtection
       reduction: 0.8
     - type: ExplosionResistance
@@ -131,6 +134,29 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.5
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.7
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.7
+            Slash: 0.6
+            Piercing: 0.7
+            Heat: 0.7
+            Radiation: 0.3
+            Caustic: 0.7
 
 - type: entity
   id: ClothingOuterModSuitAtmospheric
@@ -164,6 +190,30 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/atmospheric.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.001
+      coolingCoefficient: 0.001
+    - type: FireProtection
+      reduction: 0.8
+    - type: ExplosionResistance
+      damageCoefficient: 0.5
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.9
+            Slash: 0.9
+            Piercing: 0.9
+            Heat: 0.8
+            Radiation: 0.5
 
 - type: entity
   id: ClothingOuterModSuitCivilian
@@ -197,6 +247,26 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/civilian.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.90
+            Slash: 0.90
+            Piercing: 0.95
+            Heat: 0.90
+            Radiation: 0.25
 
 - type: entity
   id: ClothingOuterModSuitCorporate
@@ -230,6 +300,29 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/corporate.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.5
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.8
+            Slash: 0.8
+            Piercing: 0.6
+            Heat: 0.5
+            Radiation: 0.5
+            Caustic: 0.6
 
 - type: entity
   id: ClothingOuterModSuitCosmohonk
@@ -263,6 +356,27 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/cosmohonk.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.5
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.9
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.9
+            Slash: 0.9
+            Piercing: 0.9
+            Caustic: 0.8
 
 - type: entity
   id: ClothingOuterModSuitElite
@@ -296,6 +410,33 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/elite.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.001
+      coolingCoefficient: 0.001
+    - type: ExplosionResistance
+      damageCoefficient: 0.2
+    - type: FireProtection
+      reduction: 0.8
+    #- type: StaminaResistance
+    #  damageCoefficient: 0.6
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.6
+            Slash: 0.6
+            Piercing: 0.6
+            Heat: 0.2
+            Radiation: 0.01
+            Caustic: 0.5
 
 - type: entity
   id: ClothingOuterModSuitEnchanted
@@ -329,6 +470,29 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/enchanted.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.05
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.5
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.6
+            Slash: 0.6
+            Piercing: 0.4
+            Heat: 0.25
+            Radiation: 0.25
+            Caustic: 0.75
 
 - type: entity
   id: ClothingOuterModSuitEngineering
@@ -362,10 +526,33 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/engineering.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.04
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.5
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.9
+            Slash: 0.9
+            Piercing: 0.9
+            Shock: 0.8
+            Caustic: 0.5
+            Radiation: 0.2
 
 - type: entity
   id: ClothingOuterModSuitHonkerative
-  parent: ClothingOuterModSuitBase
+  parent: ClothingOuterModSuitSyndicate
   categories: [ HideSpawnMenu ]
   name: honkerative MOD chestplate
   components:
@@ -428,6 +615,31 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.05
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.5
+    #- type: StaminaResistance
+    #  damageCoefficient: 0.6
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.4
+            Slash: 0.4
+            Piercing: 0.3
+            Heat: 0.5
+            Radiation: 0.25
+            Caustic: 0.4
 
 - type: entity
   id: ClothingOuterModSuitInquisitory
@@ -494,6 +706,25 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.8
+            Slash: 0.8
+            Piercing: 0.7
+            Radiation: 0.9
 
 - type: entity
   id: ClothingOuterModSuitLoader
@@ -560,6 +791,29 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.5
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.8
+            Slash: 0.8
+            Piercing: 0.6
+            Heat: 0.5
+            Radiation: 0.5
+            Caustic: 0.6
 
 - type: entity
   id: ClothingOuterModSuitMedical
@@ -593,6 +847,24 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/medical.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Caustic: 0.1
+    - type: ZombificationResistance
+      zombificationResistanceCoefficient: 0.4
 
 - type: entity
   id: ClothingOuterModSuitMining
@@ -626,6 +898,29 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/mining.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.5
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.9
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.9
+            Slash: 0.8
+            Piercing: 0.9
+            Heat: 0.9
+            Radiation: 0.5
+            Caustic: 0.8
 
 - type: entity
   id: ClothingOuterModSuitNinja
@@ -659,6 +954,25 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/ninja.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.8
+            Slash: 0.8
+            Piercing: 0.8
+            Heat: 0.8
 
 - type: entity
   id: ClothingOuterModSuitRescue
@@ -692,6 +1006,24 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/rescue.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.5
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Heat: 0.90
+            Radiation: 0.75
+            Caustic: 0.5
 
 - type: entity
   id: ClothingOuterModSuitResearch
@@ -725,6 +1057,29 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/research.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.1
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.6
+            Slash: 0.8
+            Piercing: 0.9
+            Heat: 0.3
+            Radiation: 0.1
+            Caustic: 0.2
 
 - type: entity
   id: ClothingOuterModSuitResponsory
@@ -758,6 +1113,33 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/responsory.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.001
+      coolingCoefficient: 0.001
+    - type: ExplosionResistance
+      damageCoefficient: 0.2
+    - type: FireProtection
+      reduction: 0.8
+    - type: StaminaResistance
+      damageCoefficient: 0.15 # Needs 21 hits with a disabler to stun :godo:
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.1
+            Slash: 0.1
+            Piercing: 0.1
+            Heat: 0.1
+            Radiation: 0.1
+            Caustic: 0.1
 
 - type: entity
   id: ClothingOuterModSuitSafeguard
@@ -791,6 +1173,29 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/safeguard.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.45
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.5
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.6
+            Slash: 0.5
+            Piercing: 0.5
+            Heat: 0.8
+            Radiation: 0.5
+            Caustic: 0.6
 
 - type: entity
   id: ClothingOuterModSuitSecurity
@@ -824,6 +1229,28 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/security.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.5
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.4
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.6
+            Slash: 0.6
+            Piercing: 0.6
+            Heat: 0.8
+            Caustic: 0.7
 
 - type: entity
   id: ClothingOuterModSuitStandard
@@ -857,6 +1284,26 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/standard.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.90
+            Slash: 0.90
+            Piercing: 0.95
+            Heat: 0.90
+            Radiation: 0.25
 
 - type: entity
   id: ClothingOuterModSuitSyndicate
@@ -890,3 +1337,28 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/syndicate.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.05
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.5
+    #- type: StaminaResistance
+    #  damageCoefficient: 0.75
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.5
+            Slash: 0.5
+            Piercing: 0.5
+            Heat: 0.5
+            Radiation: 0.5
+            Caustic: 0.5

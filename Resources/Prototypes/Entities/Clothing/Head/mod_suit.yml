@@ -6,6 +6,8 @@
   - type: ModSuitSealable
     sealedComponents:
     - type: BreathMask
+    - type: IdentityBlocker
+    - type: IngestionBlocker
   - type: ModSuitDeployableInventory
   - type: Clothing
     autoGenerateVisuals: false
@@ -67,6 +69,12 @@
         sprite: Clothing/Head/ModSuits/advanced.rsi
         state: equipped-HELMET
     sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.2
+      coolingCoefficient: 0.2
     - type: FireProtection
       reduction: 0.2
     - type: Armor
@@ -148,6 +156,26 @@
       false:
         sprite: Clothing/Head/ModSuits/asteroid.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.2
+      coolingCoefficient: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.7
+            Slash: 0.6
+            Piercing: 0.7
+            Heat: 0.7
+            Radiation: 0.3
+            Caustic: 0.7
 
 - type: entity
   id: ClothingHeadModSuitAtmospheric
@@ -181,6 +209,27 @@
       false:
         sprite: Clothing/Head/ModSuits/atmospheric.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.005
+      coolingCoefficient: 0.005
+    - type: FireProtection
+      reduction: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.9
+            Slash: 0.9
+            Piercing: 0.9
+            Heat: 0.8
+            Radiation: 0.5
 
 - type: entity
   id: ClothingHeadModSuitCivilian
@@ -214,6 +263,25 @@
       false:
         sprite: Clothing/Head/ModSuits/civilian.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.2
+      coolingCoefficient: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.90
+            Slash: 0.90
+            Piercing: 0.95
+            Heat: 0.90
+            Radiation: 0.25
 
 - type: entity
   id: ClothingHeadModSuitCorporate
@@ -247,6 +315,26 @@
       false:
         sprite: Clothing/Head/ModSuits/corporate.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.2
+      coolingCoefficient: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.8
+            Slash: 0.8
+            Piercing: 0.6
+            Heat: 0.5
+            Radiation: 0.5
+            Caustic: 0.6
 
 - type: entity
   id: ClothingHeadModSuitCosmohonk
@@ -280,6 +368,24 @@
       false:
         sprite: Clothing/Head/ModSuits/cosmohonk.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.9
+            Slash: 0.9
+            Piercing: 0.9
+            Caustic: 0.8
 
 - type: entity
   id: ClothingHeadModSuitElite
@@ -313,6 +419,28 @@
       false:
         sprite: Clothing/Head/ModSuits/elite.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.005
+      coolingCoefficient: 0.005
+    - type: FireProtection
+      reduction: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.6
+            Slash: 0.6
+            Piercing: 0.6
+            Heat: 0.2
+            Radiation: 0.01
+            Caustic: 0.5
 
 - type: entity
   id: ClothingHeadModSuitEnchanted
@@ -346,6 +474,26 @@
       false:
         sprite: Clothing/Head/ModSuits/enchanted.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.27
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.6
+            Slash: 0.6
+            Piercing: 0.4
+            Heat: 0.25
+            Radiation: 0.25
+            Caustic: 0.75
 
 - type: entity
   id: ClothingHeadModSuitEngineering
@@ -379,10 +527,30 @@
       false:
         sprite: Clothing/Head/ModSuits/engineering.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.1
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.9
+            Slash: 0.9
+            Piercing: 0.9
+            Shock: 0.8
+            Caustic: 0.5
+            Radiation: 0.2
 
 - type: entity
   id: ClothingHeadModSuitHonkerative
-  parent: ClothingHeadModSuitBase
+  parent: ClothingHeadModSuitSyndicate
   categories: [ HideSpawnMenu ]
   name: honkerative MOD helmet
   components:
@@ -445,6 +613,26 @@
       false:
         sprite: Clothing/Head/ModSuits/infiltrator.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.4
+            Slash: 0.4
+            Piercing: 0.3
+            Heat: 0.5
+            Radiation: 0.25
+            Caustic: 0.4
 
 - type: entity
   id: ClothingHeadModSuitInquisitory
@@ -511,6 +699,24 @@
       false:
         sprite: Clothing/Head/ModSuits/interdyne.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.8
+            Slash: 0.8
+            Piercing: 0.7
+            Radiation: 0.9
 
 - type: entity
   id: ClothingHeadModSuitLoader
@@ -577,6 +783,26 @@
       false:
         sprite: Clothing/Head/ModSuits/magnate.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.2
+      coolingCoefficient: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.8
+            Slash: 0.8
+            Piercing: 0.6
+            Heat: 0.5
+            Radiation: 0.5
+            Caustic: 0.6
 
 - type: entity
   id: ClothingHeadModSuitMedical
@@ -610,6 +836,21 @@
       false:
         sprite: Clothing/Head/ModSuits/medical.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.2
+      coolingCoefficient: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Caustic: 0.1
 
 - type: entity
   id: ClothingHeadModSuitMining
@@ -643,6 +884,26 @@
       false:
         sprite: Clothing/Head/ModSuits/mining.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.2
+      coolingCoefficient: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.9
+            Slash: 0.8
+            Piercing: 0.9
+            Heat: 0.9
+            Radiation: 0.5
+            Caustic: 0.8
 
 - type: entity
   id: ClothingHeadModSuitNinja
@@ -676,6 +937,24 @@
       false:
         sprite: Clothing/Head/ModSuits/ninja.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.2
+      coolingCoefficient: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.8
+            Slash: 0.8
+            Piercing: 0.8
+            Heat: 0.8
 
 - type: entity
   id: ClothingHeadModSuitRescue
@@ -709,6 +988,23 @@
       false:
         sprite: Clothing/Head/ModSuits/rescue.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Heat: 0.90
+            Radiation: 0.75
+            Caustic: 0.5
 
 - type: entity
   id: ClothingHeadModSuitResearch
@@ -742,6 +1038,26 @@
       false:
         sprite: Clothing/Head/ModSuits/research.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.60
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.6
+            Slash: 0.8
+            Piercing: 0.9
+            Heat: 0.3
+            Radiation: 0.1
+            Caustic: 0.2
 
 - type: entity
   id: ClothingHeadModSuitResponsory
@@ -775,6 +1091,28 @@
       false:
         sprite: Clothing/Head/ModSuits/responsory.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: FireProtection
+      reduction: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.1
+            Slash: 0.1
+            Piercing: 0.1
+            Heat: 0.1
+            Radiation: 0.1
+            Caustic: 0.1
 
 - type: entity
   id: ClothingHeadModSuitSafeguard
@@ -808,6 +1146,26 @@
       false:
         sprite: Clothing/Head/ModSuits/safeguard.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.45
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.6
+            Slash: 0.5
+            Piercing: 0.5
+            Heat: 0.8
+            Radiation: 0.5
+            Caustic: 0.6
 
 - type: entity
   id: ClothingHeadModSuitSecurity
@@ -841,6 +1199,24 @@
       false:
         sprite: Clothing/Head/ModSuits/security.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.6
+            Slash: 0.6
+            Piercing: 0.6
+            Caustic: 0.7
 
 - type: entity
   id: ClothingHeadModSuitStandard
@@ -874,6 +1250,25 @@
       false:
         sprite: Clothing/Head/ModSuits/standard.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.2
+      coolingCoefficient: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.90
+            Slash: 0.90
+            Piercing: 0.95
+            Heat: 0.90
+            Radiation: 0.25
 
 - type: entity
   id: ClothingHeadModSuitSyndicate
@@ -907,3 +1302,23 @@
       false:
         sprite: Clothing/Head/ModSuits/syndicate.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.5
+            Slash: 0.5
+            Piercing: 0.5
+            Heat: 0.5
+            Radiation: 0.5
+            Caustic: 0.5
