@@ -42,7 +42,9 @@
 
 - type: entity
   id: ClothingBackpackModSuitAdvanced
-  parent: ClothingBackpackModSuitBase
+  parent:
+  - ClothingBackpackModSuitBase
+  - BaseCommandContraband
   name: advanced MOD control unit
   description: An advanced version of the engineering's classic suit, shining with a white, acid and fire resistant polish.
   components:
@@ -129,7 +131,9 @@
 
 - type: entity
   id: ClothingBackpackModSuitAsteroid
-  parent: ClothingBackpackModSuitBase
+  parent:
+  - ClothingBackpackModSuitBase
+  - BaseCargoContraband
   name: asteroid MOD control unit
   description: A special MODsuit with reinforced plating for wildlife encounters designed for the salvage specialists.
   components:
@@ -176,7 +180,9 @@
 
 - type: entity
   id: ClothingBackpackModSuitAtmospheric
-  parent: ClothingBackpackModSuitBase
+  parent:
+  - ClothingBackpackModSuitBase
+  - BaseEngineeringContraband
   name: atmospheric MOD control unit
   description: An atmospheric-resistant suit, offering extreme heat resistance compared to the engineer suit.
   components:
@@ -275,7 +281,9 @@
 
 - type: entity
   id: ClothingBackpackModSuitCorporate
-  parent: ClothingBackpackModSuitBase
+  parent:
+  - ClothingBackpackModSuitBase
+  - BaseCentcommContraband
   name: corporate MOD control unit
   description: A fancy, high-tech suit for Nanotrasen's high ranking officers.
   components:
@@ -370,7 +378,9 @@
 
 - type: entity
   id: ClothingBackpackModSuitElite
-  parent: ClothingBackpackModSuitBase
+  parent:
+  - ClothingBackpackModSuitBase
+  - BaseSyndicateContraband
   name: elite MOD control unit
   description: An elite suit upgraded by Cybersun Industries, offering upgraded armor values.
   components:
@@ -417,7 +427,9 @@
 
 - type: entity
   id: ClothingBackpackModSuitEnchanted
-  parent: ClothingBackpackModSuitBase
+  parent:
+  - ClothingBackpackModSuitBase
+  - BaseMagicalContraband
   name: enchanted MOD control unit
   description: The Wizard Federation's relatively low-tech MODsuit. Is very protective, though.
   components:
@@ -466,7 +478,9 @@
 
 - type: entity
   id: ClothingBackpackModSuitEngineering
-  parent: ClothingBackpackModSuitBase
+  parent:
+  - ClothingBackpackModSuitBase
+  - BaseEngineeringContraband
   name: engineering MOD control unit
   description: An engineer-fit suit with heat and shock resistance. Engineers classic.
   components:
@@ -555,7 +569,9 @@
 
 - type: entity
   id: ClothingBackpackModSuitInfiltrator
-  parent: ClothingBackpackModSuitBase
+  parent:
+  - ClothingBackpackModSuitBase
+  - BaseSyndicateContraband
   name: infiltrator MOD control unit
   description: A specialized infiltration suit for the syndicate commander, designed to strike fear and awe into the hearts of the public.
   components:
@@ -642,7 +658,9 @@
 
 - type: entity
   id: ClothingBackpackModSuitInterdyne
-  parent: ClothingBackpackModSuitBase
+  parent:
+  - ClothingBackpackModSuitBase
+  - BaseSecurityContraband
   name: interdyne MOD control unit
   description: Special MODsuit of the guardian angel of the brig.
   components:
@@ -691,7 +709,9 @@
 
 - type: entity
   id: ClothingBackpackModSuitLoader
-  parent: ClothingBackpackModSuitBase
+  parent:
+  - ClothingBackpackModSuitBase
+  - BaseCargoContraband
   name: loader MOD control unit
   description: An unsealed experimental motorized harness manufactured for quick and efficient munition supplies.
   components:
@@ -732,7 +752,9 @@
 
 - type: entity
   id: ClothingBackpackModSuitMagnate
-  parent: ClothingBackpackModSuitBase
+  parent:
+  - ClothingBackpackModSuitBase
+  - BaseCommandContraband
   name: magnate MOD control unit
   description: A fancy, very protective suit for Nanotrasen's captains. Shock, fire and acid-proof while also having a large capacity.
   components:
@@ -781,7 +803,9 @@
 
 - type: entity
   id: ClothingBackpackModSuitMedical
-  parent: ClothingBackpackModSuitBase
+  parent:
+  - ClothingBackpackModSuitBase
+  - BaseCommandContraband
   name: medical MOD control unit
   description: A special MODsuit built with lightweight materials for easier movement.
   components:
@@ -884,7 +908,9 @@
 
 - type: entity
   id: ClothingBackpackModSuitNinja
-  parent: ClothingBackpackModSuitBase
+  parent:
+  - ClothingBackpackModSuitBase
+  - BaseMajorContraband
   name: ninja MOD control unit
   description: Black technologically advanced, cybernetically-enhanced MODSuit to provide for the space clans duties.
   components:
@@ -927,7 +953,9 @@
 
 - type: entity
   id: ClothingBackpackModSuitRescue
-  parent: ClothingBackpackModSuitBase
+  parent:
+  - ClothingBackpackModSuitBase
+  - BaseMedicalContraband
   name: rescue MOD control unit
   description: A special MODsuit designed for quick rescue of bodies from the most dangerous environments.
   components:
@@ -976,7 +1004,9 @@
 
 - type: entity
   id: ClothingBackpackModSuitResearch
-  parent: ClothingBackpackModSuitBase
+  parent:
+  - ClothingBackpackModSuitBase
+  - BaseGrandTheftContraband
   name: research MOD control unit
   description: The research director's pet project in all its glory. Designed for expansive modification.
   components:
@@ -1025,7 +1055,9 @@
 
 - type: entity
   id: ClothingBackpackModSuitResponsory
-  parent: ClothingBackpackModSuitBase
+  parent:
+  - ClothingBackpackModSuitBase
+  - BaseCentcommContraband
   name: responsory MOD control unit
   description: A high-speed rescue suit by Nanotrasen, intended for its' emergency response teams.
   components:
@@ -1072,7 +1104,9 @@
 
 - type: entity
   id: ClothingBackpackModSuitSafeguard
-  parent: ClothingBackpackModSuitBase
+  parent:
+  - ClothingBackpackModSuitBase
+  - BaseCommandContraband
   name: safeguard MOD control unit
   description: An advanced security suit, offering greater speed and fire protection than the standard security model.
   components:
@@ -1121,7 +1155,9 @@
 
 - type: entity
   id: ClothingBackpackModSuitSecurity
-  parent: ClothingBackpackModSuitBase
+  parent:
+  - ClothingBackpackModSuitBase
+  - BaseSecurityContraband
   name: security MOD control unit
   description: Security specially designed MODsuit, offering quicker speed at the cost of carrying capacity.
   components:
@@ -1223,7 +1259,9 @@
 
 - type: entity
   id: ClothingBackpackModSuitSyndicate
-  parent: ClothingBackpackModSuitBase
+  parent:
+  - ClothingBackpackModSuitBase
+  - BaseSyndicateContraband
   name: syndicate MOD control unit
   description: A suit designed by Gorlex Marauders, offering armor ruled illegal in most of Spinward Stellar.
   components:
