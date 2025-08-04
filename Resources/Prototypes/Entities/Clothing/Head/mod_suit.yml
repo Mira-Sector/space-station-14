@@ -126,36 +126,36 @@
         state: equipped-HELMET
 
 - type: entity
-  id: ClothingHeadModSuitAsteroid
+  id: ClothingHeadModSuitSalvage
   parent: ClothingHeadModSuitBase
   categories: [ HideSpawnMenu ]
-  name: asteroid MOD helmet
+  name: salvage MOD helmet
   components:
   - type: Sprite
-    sprite: Clothing/Head/ModSuits/asteroid.rsi
+    sprite: Clothing/Head/ModSuits/salvage.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Head/ModSuits/asteroid.rsi
+      - sprite: Clothing/Head/ModSuits/salvage.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Head/ModSuits/asteroid.rsi
+      - sprite: Clothing/Head/ModSuits/salvage.rsi
         state: icon
     clothingLayers:
       true:
         head:
-        - sprite: Clothing/Head/ModSuits/asteroid.rsi
+        - sprite: Clothing/Head/ModSuits/salvage.rsi
           state: equipped-HELMET-sealed
       false:
         head:
-        - sprite: Clothing/Head/ModSuits/asteroid.rsi
+        - sprite: Clothing/Head/ModSuits/salvage.rsi
           state: equipped-HELMET
     uiLayer:
       true:
-        sprite: Clothing/Head/ModSuits/asteroid.rsi
+        sprite: Clothing/Head/ModSuits/salvage.rsi
         state: equipped-HELMET-sealed
       false:
-        sprite: Clothing/Head/ModSuits/asteroid.rsi
+        sprite: Clothing/Head/ModSuits/salvage.rsi
         state: equipped-HELMET
     sealedComponents:
     - type: PressureProtection
@@ -583,36 +583,36 @@
         state: equipped-HELMET
 
 - type: entity
-  id: ClothingHeadModSuitInfiltrator
+  id: ClothingHeadModSuitSyndieCommander
   parent: ClothingHeadModSuitBase
   categories: [ HideSpawnMenu ]
-  name: infiltrator MOD helmet
+  name: syndicate commander MOD helmet
   components:
   - type: Sprite
-    sprite: Clothing/Head/ModSuits/infiltrator.rsi
+    sprite: Clothing/Head/ModSuits/syndiecommander.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Head/ModSuits/infiltrator.rsi
+      - sprite: Clothing/Head/ModSuits/syndiecommander.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Head/ModSuits/infiltrator.rsi
+      - sprite: Clothing/Head/ModSuits/syndiecommander.rsi
         state: icon
     clothingLayers:
       true:
         head:
-        - sprite: Clothing/Head/ModSuits/infiltrator.rsi
+        - sprite: Clothing/Head/ModSuits/syndiecommander.rsi
           state: equipped-HELMET-sealed
       false:
         head:
-        - sprite: Clothing/Head/ModSuits/infiltrator.rsi
+        - sprite: Clothing/Head/ModSuits/syndiecommander.rsi
           state: equipped-HELMET
     uiLayer:
       true:
-        sprite: Clothing/Head/ModSuits/infiltrator.rsi
+        sprite: Clothing/Head/ModSuits/syndiecommander.rsi
         state: equipped-HELMET-sealed
       false:
-        sprite: Clothing/Head/ModSuits/infiltrator.rsi
+        sprite: Clothing/Head/ModSuits/syndiecommander.rsi
         state: equipped-HELMET
     sealedComponents:
     - type: PressureProtection
@@ -669,36 +669,36 @@
         state: equipped-HELMET
 
 - type: entity
-  id: ClothingHeadModSuitInterdyne
+  id: ClothingHeadModSuitBrigmedic
   parent: ClothingHeadModSuitBase
   categories: [ HideSpawnMenu ]
-  name: interdyne MOD helmet
+  name: brigmedic MOD helmet
   components:
   - type: Sprite
-    sprite: Clothing/Head/ModSuits/interdyne.rsi
+    sprite: Clothing/Head/ModSuits/brigmedic.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Head/ModSuits/interdyne.rsi
+      - sprite: Clothing/Head/ModSuits/brigmedic.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Head/ModSuits/interdyne.rsi
+      - sprite: Clothing/Head/ModSuits/brigmedic.rsi
         state: icon
     clothingLayers:
       true:
         head:
-        - sprite: Clothing/Head/ModSuits/interdyne.rsi
+        - sprite: Clothing/Head/ModSuits/brigmedic.rsi
           state: equipped-HELMET-sealed
       false:
         head:
-        - sprite: Clothing/Head/ModSuits/interdyne.rsi
+        - sprite: Clothing/Head/ModSuits/brigmedic.rsi
           state: equipped-HELMET
     uiLayer:
       true:
-        sprite: Clothing/Head/ModSuits/interdyne.rsi
+        sprite: Clothing/Head/ModSuits/brigmedic.rsi
         state: equipped-HELMET-sealed
       false:
-        sprite: Clothing/Head/ModSuits/interdyne.rsi
+        sprite: Clothing/Head/ModSuits/brigmedic.rsi
         state: equipped-HELMET
     sealedComponents:
     - type: PressureProtection
@@ -753,36 +753,36 @@
         state: equipped-HELMET
 
 - type: entity
-  id: ClothingHeadModSuitMagnate
-  parent: ClothingHeadModSuitBase
+  id: ClothingHeadModSuitCaptain
+  parent: ClothingHeadModSuitBaseWithHair
   categories: [ HideSpawnMenu ]
-  name: magnate MOD helmet
+  name: captain MOD helmet
   components:
   - type: Sprite
-    sprite: Clothing/Head/ModSuits/magnate.rsi
+    sprite: Clothing/Head/ModSuits/captain.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Head/ModSuits/magnate.rsi
+      - sprite: Clothing/Head/ModSuits/captain.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Head/ModSuits/magnate.rsi
+      - sprite: Clothing/Head/ModSuits/captain.rsi
         state: icon
     clothingLayers:
       true:
         head:
-        - sprite: Clothing/Head/ModSuits/magnate.rsi
+        - sprite: Clothing/Head/ModSuits/captain.rsi
           state: equipped-HELMET-sealed
       false:
         head:
-        - sprite: Clothing/Head/ModSuits/magnate.rsi
+        - sprite: Clothing/Head/ModSuits/captain.rsi
           state: equipped-HELMET
     uiLayer:
       true:
-        sprite: Clothing/Head/ModSuits/magnate.rsi
+        sprite: Clothing/Head/ModSuits/captain.rsi
         state: equipped-HELMET-sealed
       false:
-        sprite: Clothing/Head/ModSuits/magnate.rsi
+        sprite: Clothing/Head/ModSuits/captain.rsi
         state: equipped-HELMET
     sealedComponents:
     - type: PressureProtection
@@ -854,36 +854,36 @@
             Caustic: 0.1
 
 - type: entity
-  id: ClothingHeadModSuitMining
+  id: ClothingHeadModSuitLuxury
   parent: ClothingHeadModSuitBase
   categories: [ HideSpawnMenu ]
-  name: mining MOD helmet
+  name: luxury MOD helmet
   components:
   - type: Sprite
-    sprite: Clothing/Head/ModSuits/mining.rsi
+    sprite: Clothing/Head/ModSuits/luxury.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Head/ModSuits/mining.rsi
+      - sprite: Clothing/Head/ModSuits/luxury.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Head/ModSuits/mining.rsi
+      - sprite: Clothing/Head/ModSuits/luxury.rsi
         state: icon
     clothingLayers:
       true:
         head:
-        - sprite: Clothing/Head/ModSuits/mining.rsi
+        - sprite: Clothing/Head/ModSuits/luxury.rsi
           state: equipped-HELMET-sealed
       false:
         head:
-        - sprite: Clothing/Head/ModSuits/mining.rsi
+        - sprite: Clothing/Head/ModSuits/luxury.rsi
           state: equipped-HELMET
     uiLayer:
       true:
-        sprite: Clothing/Head/ModSuits/mining.rsi
+        sprite: Clothing/Head/ModSuits/luxury.rsi
         state: equipped-HELMET-sealed
       false:
-        sprite: Clothing/Head/ModSuits/mining.rsi
+        sprite: Clothing/Head/ModSuits/luxury.rsi
         state: equipped-HELMET
     sealedComponents:
     - type: PressureProtection

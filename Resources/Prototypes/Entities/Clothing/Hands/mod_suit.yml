@@ -92,36 +92,36 @@
         state: equipped-HAND
 
 - type: entity
-  id: ClothingHandsModSuitAsteroid
+  id: ClothingHandsModSuitSalvage
   parent: ClothingHandsModSuitBase
   categories: [ HideSpawnMenu ]
-  name: asteroid MOD gauntlets
+  name: salvage MOD gauntlets
   components:
   - type: Sprite
-    sprite: Clothing/Hands/ModSuits/asteroid.rsi
+    sprite: Clothing/Hands/ModSuits/salvage.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Hands/ModSuits/asteroid.rsi
+      - sprite: Clothing/Hands/ModSuits/salvage.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Hands/ModSuits/asteroid.rsi
+      - sprite: Clothing/Hands/ModSuits/salvage.rsi
         state: icon
     clothingLayers:
       true:
         gloves:
-        - sprite: Clothing/Hands/ModSuits/asteroid.rsi
+        - sprite: Clothing/Hands/ModSuits/salvage.rsi
           state: equipped-HAND-sealed
       false:
         gloves:
-        - sprite: Clothing/Hands/ModSuits/asteroid.rsi
+        - sprite: Clothing/Hands/ModSuits/salvage.rsi
           state: equipped-HAND
     uiLayer:
       true:
-        sprite: Clothing/Hands/ModSuits/asteroid.rsi
+        sprite: Clothing/Hands/ModSuits/salvage.rsi
         state: equipped-HAND-sealed
       false:
-        sprite: Clothing/Hands/ModSuits/asteroid.rsi
+        sprite: Clothing/Hands/ModSuits/salvage.rsi
         state: equipped-HAND
     sealedComponents:
     - type: PressureProtection
@@ -421,36 +421,36 @@
         state: equipped-HAND
 
 - type: entity
-  id: ClothingHandsModSuitInfiltrator
+  id: ClothingHandsModSuitSyndieCommander
   parent: ClothingHandsModSuitBase
   categories: [ HideSpawnMenu ]
-  name: infiltrator MOD gauntlets
+  name: syndicate commander MOD gauntlets
   components:
   - type: Sprite
-    sprite: Clothing/Hands/ModSuits/infiltrator.rsi
+    sprite: Clothing/Hands/ModSuits/syndiecommander.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Hands/ModSuits/infiltrator.rsi
+      - sprite: Clothing/Hands/ModSuits/syndiecommander.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Hands/ModSuits/infiltrator.rsi
+      - sprite: Clothing/Hands/ModSuits/syndiecommander.rsi
         state: icon
     clothingLayers:
       true:
         gloves:
-        - sprite: Clothing/Hands/ModSuits/infiltrator.rsi
+        - sprite: Clothing/Hands/ModSuits/syndiecommander.rsi
           state: equipped-HAND-sealed
       false:
         gloves:
-        - sprite: Clothing/Hands/ModSuits/infiltrator.rsi
+        - sprite: Clothing/Hands/ModSuits/syndiecommander.rsi
           state: equipped-HAND
     uiLayer:
       true:
-        sprite: Clothing/Hands/ModSuits/infiltrator.rsi
+        sprite: Clothing/Hands/ModSuits/syndiecommander.rsi
         state: equipped-HAND-sealed
       false:
-        sprite: Clothing/Hands/ModSuits/infiltrator.rsi
+        sprite: Clothing/Hands/ModSuits/syndiecommander.rsi
         state: equipped-HAND
     sealedComponents:
     - type: PressureProtection
@@ -491,36 +491,36 @@
         state: equipped-HAND
 
 - type: entity
-  id: ClothingHandsModSuitInterdyne
+  id: ClothingHandsModSuitBrigmedic
   parent: ClothingHandsModSuitBase
   categories: [ HideSpawnMenu ]
-  name: interdyne MOD gauntlets
+  name: brigmedic MOD gauntlets
   components:
   - type: Sprite
-    sprite: Clothing/Hands/ModSuits/interdyne.rsi
+    sprite: Clothing/Hands/ModSuits/brigmedic.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Hands/ModSuits/interdyne.rsi
+      - sprite: Clothing/Hands/ModSuits/brigmedic.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Hands/ModSuits/interdyne.rsi
+      - sprite: Clothing/Hands/ModSuits/brigmedic.rsi
         state: icon
     clothingLayers:
       true:
         gloves:
-        - sprite: Clothing/Hands/ModSuits/interdyne.rsi
+        - sprite: Clothing/Hands/ModSuits/brigmedic.rsi
           state: equipped-HAND-sealed
       false:
         gloves:
-        - sprite: Clothing/Hands/ModSuits/interdyne.rsi
+        - sprite: Clothing/Hands/ModSuits/brigmedic.rsi
           state: equipped-HAND
     uiLayer:
       true:
-        sprite: Clothing/Hands/ModSuits/interdyne.rsi
+        sprite: Clothing/Hands/ModSuits/brigmedic.rsi
         state: equipped-HAND-sealed
       false:
-        sprite: Clothing/Hands/ModSuits/interdyne.rsi
+        sprite: Clothing/Hands/ModSuits/brigmedic.rsi
         state: equipped-HAND
     sealedComponents:
     - type: PressureProtection
@@ -561,36 +561,36 @@
         state: equipped-HAND
 
 - type: entity
-  id: ClothingHandsModSuitMagnate
+  id: ClothingHandsModSuitCaptain
   parent: ClothingHandsModSuitBase
   categories: [ HideSpawnMenu ]
-  name: magnate MOD gauntlets
+  name: captain MOD gauntlets
   components:
   - type: Sprite
-    sprite: Clothing/Hands/ModSuits/magnate.rsi
+    sprite: Clothing/Hands/ModSuits/captain.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Hands/ModSuits/magnate.rsi
+      - sprite: Clothing/Hands/ModSuits/captain.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Hands/ModSuits/magnate.rsi
+      - sprite: Clothing/Hands/ModSuits/captain.rsi
         state: icon
     clothingLayers:
       true:
         gloves:
-        - sprite: Clothing/Hands/ModSuits/magnate.rsi
+        - sprite: Clothing/Hands/ModSuits/captain.rsi
           state: equipped-HAND-sealed
       false:
         gloves:
-        - sprite: Clothing/Hands/ModSuits/magnate.rsi
+        - sprite: Clothing/Hands/ModSuits/captain.rsi
           state: equipped-HAND
     uiLayer:
       true:
-        sprite: Clothing/Hands/ModSuits/magnate.rsi
+        sprite: Clothing/Hands/ModSuits/captain.rsi
         state: equipped-HAND-sealed
       false:
-        sprite: Clothing/Hands/ModSuits/magnate.rsi
+        sprite: Clothing/Hands/ModSuits/captain.rsi
         state: equipped-HAND
     sealedComponents:
     - type: PressureProtection
@@ -635,36 +635,36 @@
       lowPressureMultiplier: 1000
 
 - type: entity
-  id: ClothingHandsModSuitMining
+  id: ClothingHandsModSuitLuxury
   parent: ClothingHandsModSuitBase
   categories: [ HideSpawnMenu ]
-  name: mining MOD gauntlets
+  name: luxury MOD gauntlets
   components:
   - type: Sprite
-    sprite: Clothing/Hands/ModSuits/mining.rsi
+    sprite: Clothing/Hands/ModSuits/luxury.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Hands/ModSuits/mining.rsi
+      - sprite: Clothing/Hands/ModSuits/luxury.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Hands/ModSuits/mining.rsi
+      - sprite: Clothing/Hands/ModSuits/luxury.rsi
         state: icon
     clothingLayers:
       true:
         gloves:
-        - sprite: Clothing/Hands/ModSuits/mining.rsi
+        - sprite: Clothing/Hands/ModSuits/luxury.rsi
           state: equipped-HAND-sealed
       false:
         gloves:
-        - sprite: Clothing/Hands/ModSuits/mining.rsi
+        - sprite: Clothing/Hands/ModSuits/luxury.rsi
           state: equipped-HAND
     uiLayer:
       true:
-        sprite: Clothing/Hands/ModSuits/mining.rsi
+        sprite: Clothing/Hands/ModSuits/luxury.rsi
         state: equipped-HAND-sealed
       false:
-        sprite: Clothing/Hands/ModSuits/mining.rsi
+        sprite: Clothing/Hands/ModSuits/luxury.rsi
         state: equipped-HAND
     sealedComponents:
     - type: PressureProtection

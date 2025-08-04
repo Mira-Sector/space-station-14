@@ -130,38 +130,38 @@
     maxComplexity: 25
 
 - type: entity
-  id: ClothingBackpackModSuitAsteroid
+  id: ClothingBackpackModSuitSalvage
   parent:
   - ClothingBackpackModSuitBase
   - BaseCargoContraband
-  name: asteroid MOD control unit
+  name: salvage MOD control unit
   description: A special MODsuit with reinforced plating for wildlife encounters designed for the salvage specialists.
   components:
   - type: Sprite
-    sprite: Clothing/Back/ModSuits/asteroid.rsi
+    sprite: Clothing/Back/ModSuits/salvage.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Back/ModSuits/asteroid.rsi
+      - sprite: Clothing/Back/ModSuits/salvage.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Back/ModSuits/asteroid.rsi
+      - sprite: Clothing/Back/ModSuits/salvage.rsi
         state: icon
     clothingLayers:
       true:
         back:
-        - sprite: Clothing/Back/ModSuits/asteroid.rsi
+        - sprite: Clothing/Back/ModSuits/salvage.rsi
           state: equipped-BACKPACK-sealed
       false:
         back:
-        - sprite: Clothing/Back/ModSuits/asteroid.rsi
+        - sprite: Clothing/Back/ModSuits/salvage.rsi
           state: equipped-BACKPACK
     uiLayer:
       true:
-        sprite: Clothing/Back/ModSuits/asteroid.rsi
+        sprite: Clothing/Back/ModSuits/salvage.rsi
         state: equipped-BACKPACK-sealed
       false:
-        sprite: Clothing/Back/ModSuits/asteroid.rsi
+        sprite: Clothing/Back/ModSuits/salvage.rsi
         state: equipped-BACKPACK
     sealedComponents:
     - type: PressureProtection
@@ -169,10 +169,10 @@
       lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
-      outerClothing: ClothingOuterModSuitAsteroid
-      gloves: ClothingHandsModSuitAsteroid
-      head: ClothingHeadModSuitAsteroid
-      shoes: ClothingShoesModSuitAsteroid
+      outerClothing: ClothingOuterModSuitSalvage
+      gloves: ClothingHandsModSuitSalvage
+      head: ClothingHeadModSuitSalvage
+      shoes: ClothingShoesModSuitSalvage
   - type: ClothingSpeedModifier
     walkModifier: 0.8
     sprintModifier: 0.8
@@ -568,38 +568,38 @@
       shoes: ClothingShoesModSuitHonkerative
 
 - type: entity
-  id: ClothingBackpackModSuitInfiltrator
+  id: ClothingBackpackModSuitSyndieCommander
   parent:
   - ClothingBackpackModSuitBase
   - BaseSyndicateContraband
-  name: infiltrator MOD control unit
+  name: syndicate commander MOD control unit
   description: A specialized infiltration suit for the syndicate commander, designed to strike fear and awe into the hearts of the public.
   components:
   - type: Sprite
-    sprite: Clothing/Back/ModSuits/infiltrator.rsi
+    sprite: Clothing/Back/ModSuits/syndiecommander.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Back/ModSuits/infiltrator.rsi
+      - sprite: Clothing/Back/ModSuits/syndiecommander.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Back/ModSuits/infiltrator.rsi
+      - sprite: Clothing/Back/ModSuits/syndiecommander.rsi
         state: icon
     clothingLayers:
       true:
         back:
-        - sprite: Clothing/Back/ModSuits/infiltrator.rsi
+        - sprite: Clothing/Back/ModSuits/syndiecommander.rsi
           state: equipped-BACKPACK-sealed
       false:
         back:
-        - sprite: Clothing/Back/ModSuits/infiltrator.rsi
+        - sprite: Clothing/Back/ModSuits/syndiecommander.rsi
           state: equipped-BACKPACK
     uiLayer:
       true:
-        sprite: Clothing/Back/ModSuits/infiltrator.rsi
+        sprite: Clothing/Back/ModSuits/syndiecommander.rsi
         state: equipped-BACKPACK-sealed
       false:
-        sprite: Clothing/Back/ModSuits/infiltrator.rsi
+        sprite: Clothing/Back/ModSuits/syndiecommander.rsi
         state: equipped-BACKPACK
     sealedComponents:
     - type: PressureProtection
@@ -607,10 +607,10 @@
       lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
-      outerClothing: ClothingOuterModSuitInfiltrator
-      gloves: ClothingHandsModSuitInfiltrator
-      head: ClothingHeadModSuitInfiltrator
-      shoes: ClothingShoesModSuitInfiltrator
+      outerClothing: ClothingOuterModSuitSyndieCommander
+      gloves: ClothingHandsModSuitSyndieCommander
+      head: ClothingHeadModSuitSyndieCommander
+      shoes: ClothingShoesModSuitSyndieCommander
   - type: ClothingSpeedModifier
     walkModifier: 0.9
     sprintModifier: 0.9
@@ -657,38 +657,38 @@
     maxComplexity: 20
 
 - type: entity
-  id: ClothingBackpackModSuitInterdyne
+  id: ClothingBackpackModSuitBrigmedic
   parent:
   - ClothingBackpackModSuitBase
   - BaseSecurityContraband
-  name: interdyne MOD control unit
+  name: brigmedic MOD control unit
   description: Special MODsuit of the guardian angel of the brig.
   components:
   - type: Sprite
-    sprite: Clothing/Back/ModSuits/interdyne.rsi
+    sprite: Clothing/Back/ModSuits/brigmedic.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Back/ModSuits/interdyne.rsi
+      - sprite: Clothing/Back/ModSuits/brigmedic.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Back/ModSuits/interdyne.rsi
+      - sprite: Clothing/Back/ModSuits/brigmedic.rsi
         state: icon
     clothingLayers:
       true:
         back:
-        - sprite: Clothing/Back/ModSuits/interdyne.rsi
+        - sprite: Clothing/Back/ModSuits/brigmedic.rsi
           state: equipped-BACKPACK-sealed
       false:
         back:
-        - sprite: Clothing/Back/ModSuits/interdyne.rsi
+        - sprite: Clothing/Back/ModSuits/brigmedic.rsi
           state: equipped-BACKPACK
     uiLayer:
       true:
-        sprite: Clothing/Back/ModSuits/interdyne.rsi
+        sprite: Clothing/Back/ModSuits/brigmedic.rsi
         state: equipped-BACKPACK-sealed
       false:
-        sprite: Clothing/Back/ModSuits/interdyne.rsi
+        sprite: Clothing/Back/ModSuits/brigmedic.rsi
         state: equipped-BACKPACK
     sealedComponents:
     - type: PressureProtection
@@ -696,10 +696,10 @@
       lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
-      outerClothing: ClothingOuterModSuitInterdyne
-      gloves: ClothingHandsModSuitInterdyne
-      head: ClothingHeadModSuitInterdyne
-      shoes: ClothingShoesModSuitInterdyne
+      outerClothing: ClothingOuterModSuitBrigmedic
+      gloves: ClothingHandsModSuitBrigmedic
+      head: ClothingHeadModSuitBrigmedic
+      shoes: ClothingShoesModSuitBrigmedic
   - type: ModuleContainerPower
     baseRate: 0.7
   - type: ClothingSpeedModifier
@@ -751,38 +751,38 @@
     maxComplexity: 10
 
 - type: entity
-  id: ClothingBackpackModSuitMagnate
+  id: ClothingBackpackModSuitCaptain
   parent:
   - ClothingBackpackModSuitBase
   - BaseCommandContraband
-  name: magnate MOD control unit
+  name: captain's MOD control unit
   description: A fancy, very protective suit for Nanotrasen's captains. Shock, fire and acid-proof while also having a large capacity.
   components:
   - type: Sprite
-    sprite: Clothing/Back/ModSuits/magnate.rsi
+    sprite: Clothing/Back/ModSuits/captain.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Back/ModSuits/magnate.rsi
+      - sprite: Clothing/Back/ModSuits/captain.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Back/ModSuits/magnate.rsi
+      - sprite: Clothing/Back/ModSuits/captain.rsi
         state: icon
     clothingLayers:
       true:
         back:
-        - sprite: Clothing/Back/ModSuits/magnate.rsi
+        - sprite: Clothing/Back/ModSuits/captain.rsi
           state: equipped-BACKPACK-sealed
       false:
         back:
-        - sprite: Clothing/Back/ModSuits/magnate.rsi
+        - sprite: Clothing/Back/ModSuits/captain.rsi
           state: equipped-BACKPACK
     uiLayer:
       true:
-        sprite: Clothing/Back/ModSuits/magnate.rsi
+        sprite: Clothing/Back/ModSuits/captain.rsi
         state: equipped-BACKPACK-sealed
       false:
-        sprite: Clothing/Back/ModSuits/magnate.rsi
+        sprite: Clothing/Back/ModSuits/captain.rsi
         state: equipped-BACKPACK
     sealedComponents:
     - type: PressureProtection
@@ -790,10 +790,10 @@
       lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
-      outerClothing: ClothingOuterModSuitMagnate
-      gloves: ClothingHandsModSuitMagnate
-      head: ClothingHeadModSuitMagnate
-      shoes: ClothingShoesModSuitMagnate
+      outerClothing: ClothingOuterModSuitCaptain
+      gloves: ClothingHandsModSuitCaptain
+      head: ClothingHeadModSuitCaptain
+      shoes: ClothingShoesModSuitCaptain
   - type: ModSuitComplexityLimit
     maxComplexity: 20
   - type: ClothingSpeedModifier
@@ -856,36 +856,36 @@
     node: medicalPlating
 
 - type: entity
-  id: ClothingBackpackModSuitMining
+  id: ClothingBackpackModSuitLuxury
   parent: ClothingBackpackModSuitBase
-  name: mining MOD control unit
+  name: luxury MOD control unit
   description: A refurbished mining MODsuit. Graphene lining provides less protection, but is much easier to move.
   components:
   - type: Sprite
-    sprite: Clothing/Back/ModSuits/mining.rsi
+    sprite: Clothing/Back/ModSuits/luxury.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Back/ModSuits/mining.rsi
+      - sprite: Clothing/Back/ModSuits/luxury.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Back/ModSuits/mining.rsi
+      - sprite: Clothing/Back/ModSuits/luxury.rsi
         state: icon
     clothingLayers:
       true:
         back:
-        - sprite: Clothing/Back/ModSuits/mining.rsi
+        - sprite: Clothing/Back/ModSuits/luxury.rsi
           state: equipped-BACKPACK-sealed
       false:
         back:
-        - sprite: Clothing/Back/ModSuits/mining.rsi
+        - sprite: Clothing/Back/ModSuits/luxury.rsi
           state: equipped-BACKPACK
     uiLayer:
       true:
-        sprite: Clothing/Back/ModSuits/mining.rsi
+        sprite: Clothing/Back/ModSuits/luxury.rsi
         state: equipped-BACKPACK-sealed
       false:
-        sprite: Clothing/Back/ModSuits/mining.rsi
+        sprite: Clothing/Back/ModSuits/luxury.rsi
         state: equipped-BACKPACK
     sealedComponents:
     - type: PressureProtection
@@ -893,10 +893,10 @@
       lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
-      outerClothing: ClothingOuterModSuitMining
-      gloves: ClothingHandsModSuitMining
-      head: ClothingHeadModSuitMining
-      shoes: ClothingShoesModSuitMining
+      outerClothing: ClothingOuterModSuitLuxury
+      gloves: ClothingHandsModSuitLuxury
+      head: ClothingHeadModSuitLuxury
+      shoes: ClothingShoesModSuitLuxury
   - type: ModSuitComplexityLimit
     maxComplexity: 13
   - type: ModuleContainerPower

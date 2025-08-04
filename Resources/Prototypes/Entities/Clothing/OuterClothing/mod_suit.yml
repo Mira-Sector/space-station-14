@@ -104,36 +104,36 @@
         state: equipped-OUTERCLOTHING
 
 - type: entity
-  id: ClothingOuterModSuitAsteroid
+  id: ClothingOuterModSuitSalvage
   parent: ClothingOuterModSuitBase
   categories: [ HideSpawnMenu ]
-  name: asteroid MOD chestplate
+  name: salvage MOD chestplate
   components:
   - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
+    sprite: Clothing/OuterClothing/ModSuits/salvage.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/salvage.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/salvage.rsi
         state: icon
     clothingLayers:
       true:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/salvage.rsi
           state: equipped-OUTERCLOTHING-sealed
       false:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/salvage.rsi
           state: equipped-OUTERCLOTHING
     uiLayer:
       true:
-        sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
+        sprite: Clothing/OuterClothing/ModSuits/salvage.rsi
         state: equipped-OUTERCLOTHING-sealed
       false:
-        sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
+        sprite: Clothing/OuterClothing/ModSuits/salvage.rsi
         state: equipped-OUTERCLOTHING
     sealedComponents:
     - type: PressureProtection
@@ -585,36 +585,36 @@
         state: equipped-OUTERCLOTHING
 
 - type: entity
-  id: ClothingOuterModSuitInfiltrator
+  id: ClothingOuterModSuitSyndieCommander
   parent: ClothingOuterModSuitBase
   categories: [ HideSpawnMenu ]
-  name: infiltrator MOD chestplate
+  name: syndicate commander MOD chestplate
   components:
   - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
+    sprite: Clothing/OuterClothing/ModSuits/syndiecommander.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/syndiecommander.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/syndiecommander.rsi
         state: icon
     clothingLayers:
       true:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/syndiecommander.rsi
           state: equipped-OUTERCLOTHING-sealed
       false:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/syndiecommander.rsi
           state: equipped-OUTERCLOTHING
     uiLayer:
       true:
-        sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
+        sprite: Clothing/OuterClothing/ModSuits/syndiecommander.rsi
         state: equipped-OUTERCLOTHING-sealed
       false:
-        sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
+        sprite: Clothing/OuterClothing/ModSuits/syndiecommander.rsi
         state: equipped-OUTERCLOTHING
     sealedComponents:
     - type: PressureProtection
@@ -676,36 +676,36 @@
         state: equipped-OUTERCLOTHING
 
 - type: entity
-  id: ClothingOuterModSuitInterdyne
+  id: ClothingOuterModSuitBrigmedic
   parent: ClothingOuterModSuitBase
   categories: [ HideSpawnMenu ]
-  name: interdyne MOD chestplate
+  name: brigmedic MOD chestplate
   components:
   - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
+    sprite: Clothing/OuterClothing/ModSuits/brigmedic.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/brigmedic.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/brigmedic.rsi
         state: icon
     clothingLayers:
       true:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/brigmedic.rsi
           state: equipped-OUTERCLOTHING-sealed
       false:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/brigmedic.rsi
           state: equipped-OUTERCLOTHING
     uiLayer:
       true:
-        sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
+        sprite: Clothing/OuterClothing/ModSuits/brigmedic.rsi
         state: equipped-OUTERCLOTHING-sealed
       false:
-        sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
+        sprite: Clothing/OuterClothing/ModSuits/brigmedic.rsi
         state: equipped-OUTERCLOTHING
     sealedComponents:
     - type: PressureProtection
@@ -761,36 +761,36 @@
         state: equipped-OUTERCLOTHING
 
 - type: entity
-  id: ClothingOuterModSuitMagnate
+  id: ClothingOuterModSuitCaptain
   parent: ClothingOuterModSuitBase
   categories: [ HideSpawnMenu ]
-  name: magnate MOD chestplate
+  name: captain MOD chestplate
   components:
   - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
+    sprite: Clothing/OuterClothing/ModSuits/captain.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/captain.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/captain.rsi
         state: icon
     clothingLayers:
       true:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/captain.rsi
           state: equipped-OUTERCLOTHING-sealed
       false:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/captain.rsi
           state: equipped-OUTERCLOTHING
     uiLayer:
       true:
-        sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
+        sprite: Clothing/OuterClothing/ModSuits/captain.rsi
         state: equipped-OUTERCLOTHING-sealed
       false:
-        sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
+        sprite: Clothing/OuterClothing/ModSuits/captain.rsi
         state: equipped-OUTERCLOTHING
     sealedComponents:
     - type: PressureProtection
@@ -868,36 +868,36 @@
       zombificationResistanceCoefficient: 0.4
 
 - type: entity
-  id: ClothingOuterModSuitMining
+  id: ClothingOuterModSuitLuxury
   parent: ClothingOuterModSuitBase
   categories: [ HideSpawnMenu ]
-  name: mining MOD chestplate
+  name: luxury MOD chestplate
   components:
   - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/mining.rsi
+    sprite: Clothing/OuterClothing/ModSuits/luxury.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/OuterClothing/ModSuits/mining.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/luxury.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/OuterClothing/ModSuits/mining.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/luxury.rsi
         state: icon
     clothingLayers:
       true:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/mining.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/luxury.rsi
           state: equipped-OUTERCLOTHING-sealed
       false:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/mining.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/luxury.rsi
           state: equipped-OUTERCLOTHING
     uiLayer:
       true:
-        sprite: Clothing/OuterClothing/ModSuits/mining.rsi
+        sprite: Clothing/OuterClothing/ModSuits/luxury.rsi
         state: equipped-OUTERCLOTHING-sealed
       false:
-        sprite: Clothing/OuterClothing/ModSuits/mining.rsi
+        sprite: Clothing/OuterClothing/ModSuits/luxury.rsi
         state: equipped-OUTERCLOTHING
     sealedComponents:
     - type: PressureProtection
