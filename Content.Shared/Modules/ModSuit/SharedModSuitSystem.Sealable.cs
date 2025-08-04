@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Shared.Clothing;
+using Content.Shared.Examine;
 using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
 using Content.Shared.Modules.ModSuit.UI;
@@ -21,6 +22,8 @@ public partial class SharedModSuitSystem
         SubscribeLocalEvent<ModSuitSealableComponent, ClothingGotUnequippedEvent>(OnSealableUnequipped);
 
         SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployablePartUndeployedEvent>(OnSealableDeployablePartUndeployed);
+
+        SubscribeLocalEvent<ModSuitSealableComponent, ExaminedEvent>(OnSealableExamined);
 
         SubscribeLocalEvent<ModSuitSealableComponent, ModSuitGetUiEntriesEvent>(OnSealableGetUiEntries);
         SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployableRelayedEvent<ModSuitGetUiEntriesEvent>>((u, c, a) => OnSealableGetUiEntries((u, c), ref a.Args));
@@ -73,6 +76,12 @@ public partial class SharedModSuitSystem
     {
         if (!TerminatingOrDeleted(ent.Owner))
             SetSeal((ent.Owner, ent.Comp), false, args.PartNumber);
+    }
+
+    private void OnSealableExamined(Entity<ModSuitSealableComponent> ent, ref ExaminedEvent args)
+    {
+        var msg = ent.Comp.Sealed ? Loc.GetString("modsuit-sealable-examine-sealed") : Loc.GetString("modsuit-sealable-examine-unsealed");
+        args.PushMarkup(msg);
     }
 
     private void OnSealableGetUiEntries(Entity<ModSuitSealableComponent> ent, ref ModSuitGetUiEntriesEvent args)
