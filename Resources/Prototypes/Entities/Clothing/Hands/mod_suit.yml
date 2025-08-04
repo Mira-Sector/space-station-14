@@ -1,5 +1,6 @@
 - type: entity
   id: ClothingHandsModSuitBase
+  description: The gauntlets of a deployed MOD suit.
   abstract: true
   categories: [ HideSpawnMenu ]
   components:

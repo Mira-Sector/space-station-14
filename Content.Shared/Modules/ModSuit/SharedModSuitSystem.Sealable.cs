@@ -71,7 +71,6 @@ public partial class SharedModSuitSystem
         SetSeal((ent.Owner, ent.Comp), false);
     }
 
-
     private void OnSealableDeployablePartUndeployed(Entity<ModSuitSealableComponent> ent, ref ModSuitDeployablePartUndeployedEvent args)
     {
         if (!TerminatingOrDeleted(ent.Owner))

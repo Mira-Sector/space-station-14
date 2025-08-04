@@ -44,6 +44,7 @@
   id: ClothingBackpackModSuitAdvanced
   parent: ClothingBackpackModSuitBase
   name: advanced MOD control unit
+  description: An advanced version of the engineering's classic suit, shining with a white, acid and fire resistant polish.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/advanced.rsi
@@ -130,6 +131,7 @@
   id: ClothingBackpackModSuitAsteroid
   parent: ClothingBackpackModSuitBase
   name: asteroid MOD control unit
+  description: A special MODsuit with reinforced plating for wildlife encounters designed for the salvage specialists.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/asteroid.rsi
@@ -176,6 +178,7 @@
   id: ClothingBackpackModSuitAtmospheric
   parent: ClothingBackpackModSuitBase
   name: atmospheric MOD control unit
+  description: An atmospheric-resistant suit, offering extreme heat resistance compared to the engineer suit.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/atmospheric.rsi
@@ -225,6 +228,7 @@
   id: ClothingBackpackModSuitCivilian
   parent: ClothingBackpackModSuitBase
   name: civilian MOD control unit
+  description: A light-weight civilian suit that offers unmatched ease of movement.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/civilian.rsi
@@ -273,6 +277,7 @@
   id: ClothingBackpackModSuitCorporate
   parent: ClothingBackpackModSuitBase
   name: corporate MOD control unit
+  description: A fancy, high-tech suit for Nanotrasen's high ranking officers.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/corporate.rsi
@@ -315,6 +320,7 @@
   id: ClothingBackpackModSuitCosmohonk
   parent: ClothingBackpackModSuitBase
   name: cosmohonk MOD control unit
+  description: Protects against low humor environments. Most of the tech went to lower the power cost.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/cosmohonk.rsi
@@ -366,6 +372,7 @@
   id: ClothingBackpackModSuitElite
   parent: ClothingBackpackModSuitBase
   name: elite MOD control unit
+  description: An elite suit upgraded by Cybersun Industries, offering upgraded armor values.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/elite.rsi
@@ -412,6 +419,7 @@
   id: ClothingBackpackModSuitEnchanted
   parent: ClothingBackpackModSuitBase
   name: enchanted MOD control unit
+  description: The Wizard Federation's relatively low-tech MODsuit. Is very protective, though.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/enchanted.rsi
@@ -460,6 +468,7 @@
   id: ClothingBackpackModSuitEngineering
   parent: ClothingBackpackModSuitBase
   name: engineering MOD control unit
+  description: An engineer-fit suit with heat and shock resistance. Engineers classic.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/engineering.rsi
@@ -509,6 +518,7 @@
   id: ClothingBackpackModSuitHonkerative
   parent: ClothingBackpackModSuitSyndicate
   name: honkerative MOD control unit
+  description: Perfect MODsuit to not only spread humor, but murder.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/honkerative.rsi
@@ -547,6 +557,7 @@
   id: ClothingBackpackModSuitInfiltrator
   parent: ClothingBackpackModSuitBase
   name: infiltrator MOD control unit
+  description: A specialized infiltration suit for the syndicate commander, designed to strike fear and awe into the hearts of the public.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/infiltrator.rsi
@@ -633,6 +644,7 @@
   id: ClothingBackpackModSuitInterdyne
   parent: ClothingBackpackModSuitBase
   name: interdyne MOD control unit
+  description: Special MODsuit of the guardian angel of the brig.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/interdyne.rsi
@@ -681,6 +693,7 @@
   id: ClothingBackpackModSuitLoader
   parent: ClothingBackpackModSuitBase
   name: loader MOD control unit
+  description: An unsealed experimental motorized harness manufactured for quick and efficient munition supplies.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/loader.rsi
@@ -721,6 +734,7 @@
   id: ClothingBackpackModSuitMagnate
   parent: ClothingBackpackModSuitBase
   name: magnate MOD control unit
+  description: A fancy, very protective suit for Nanotrasen's captains. Shock, fire and acid-proof while also having a large capacity.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/magnate.rsi
@@ -769,6 +783,7 @@
   id: ClothingBackpackModSuitMedical
   parent: ClothingBackpackModSuitBase
   name: medical MOD control unit
+  description: A special MODsuit built with lightweight materials for easier movement.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/medical.rsi
@@ -820,6 +835,7 @@
   id: ClothingBackpackModSuitMining
   parent: ClothingBackpackModSuitBase
   name: mining MOD control unit
+  description: A refurbished mining MODsuit. Graphene lining provides less protection, but is much easier to move.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/mining.rsi
@@ -870,6 +886,7 @@
   id: ClothingBackpackModSuitNinja
   parent: ClothingBackpackModSuitBase
   name: ninja MOD control unit
+  description: Black technologically advanced, cybernetically-enhanced MODSuit to provide for the space clans duties.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/ninja.rsi
@@ -912,6 +929,7 @@
   id: ClothingBackpackModSuitRescue
   parent: ClothingBackpackModSuitBase
   name: rescue MOD control unit
+  description: A special MODsuit designed for quick rescue of bodies from the most dangerous environments.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/rescue.rsi
@@ -960,6 +978,7 @@
   id: ClothingBackpackModSuitResearch
   parent: ClothingBackpackModSuitBase
   name: research MOD control unit
+  description: The research director's pet project in all its glory. Designed for expansive modification.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/research.rsi
@@ -1008,6 +1027,7 @@
   id: ClothingBackpackModSuitResponsory
   parent: ClothingBackpackModSuitBase
   name: responsory MOD control unit
+  description: A high-speed rescue suit by Nanotrasen, intended for its' emergency response teams.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/responsory.rsi
@@ -1054,6 +1074,7 @@
   id: ClothingBackpackModSuitSafeguard
   parent: ClothingBackpackModSuitBase
   name: safeguard MOD control unit
+  description: An advanced security suit, offering greater speed and fire protection than the standard security model.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/safeguard.rsi
@@ -1102,6 +1123,7 @@
   id: ClothingBackpackModSuitSecurity
   parent: ClothingBackpackModSuitBase
   name: security MOD control unit
+  description: Security specially designed MODsuit, offering quicker speed at the cost of carrying capacity.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/security.rsi
@@ -1153,6 +1175,7 @@
   id: ClothingBackpackModSuitStandard
   parent: ClothingBackpackModSuitBase
   name: standard MOD control unit
+  description: A civilian class MODsuit, doesn't offer much.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/standard.rsi
@@ -1202,6 +1225,7 @@
   id: ClothingBackpackModSuitSyndicate
   parent: ClothingBackpackModSuitBase
   name: syndicate MOD control unit
+  description: A suit designed by Gorlex Marauders, offering armor ruled illegal in most of Spinward Stellar.
   components:
   - type: Sprite
     sprite: Clothing/Back/ModSuits/syndicate.rsi

@@ -1,5 +1,6 @@
 - type: entity
   id: ClothingHeadModSuitBase
+  description: The helmet of a deployed MOD suit.
   abstract: true
   categories: [ HideSpawnMenu ]
   components:
