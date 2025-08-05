@@ -5,7 +5,7 @@ namespace Content.Shared.Modules.Modules;
 
 public sealed partial class ToggleableComponentUserModuleSystem : EntitySystem
 {
-    [Dependency] private readonly ModuleContainedSystem _moduleContained = default!;
+    [Dependency] private readonly SharedModuleSystem _module = default!;
 
     public override void Initialize()
     {
@@ -17,7 +17,7 @@ public sealed partial class ToggleableComponentUserModuleSystem : EntitySystem
 
     private void OnEnabled(Entity<ToggleableComponentUserModuleComponent> ent, ref ModuleEnabledEvent args)
     {
-        if (!_moduleContained.TryGetUser(ent.Owner, out var user))
+        if (!_module.TryGetUser(ent.Owner, out var user))
             return;
 
         EntityManager.AddComponents(user.Value, ent.Comp.Components);
@@ -25,7 +25,7 @@ public sealed partial class ToggleableComponentUserModuleSystem : EntitySystem
 
     private void OnDisabled(Entity<ToggleableComponentUserModuleComponent> ent, ref ModuleDisabledEvent args)
     {
-        if (!_moduleContained.TryGetUser(ent.Owner, out var user))
+        if (!_module.TryGetUser(ent.Owner, out var user))
             return;
 
         EntityManager.RemoveComponents(user.Value, ent.Comp.Components);

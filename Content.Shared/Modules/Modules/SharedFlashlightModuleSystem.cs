@@ -13,7 +13,7 @@ public abstract partial class SharedFlashlightModuleSystem : EntitySystem
 {
     [Dependency] protected readonly SharedAppearanceSystem Appearance = default!;
     [Dependency] private readonly SharedPointLightSystem _pointLight = default!;
-    [Dependency] private readonly ModuleContainedSystem _moduleContained = default!;
+    [Dependency] private readonly SharedModuleSystem _module = default!;
     [Dependency] protected readonly SharedModuleContainerVisualsSystem ModuleContainerVisuals = default!;
     [Dependency] private readonly ToggleableModuleSystem _toggleableModule = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
@@ -32,7 +32,7 @@ public abstract partial class SharedFlashlightModuleSystem : EntitySystem
 
     private void OnEnabled(Entity<FlashlightModuleComponent> ent, ref ModuleEnabledEvent args)
     {
-        if (!_moduleContained.TryGetContainer(ent.Owner, out var container))
+        if (!_module.TryGetContainer(ent.Owner, out var container))
             return;
 
         var pointlight = _pointLight.EnsureLight(container.Value);
@@ -43,7 +43,7 @@ public abstract partial class SharedFlashlightModuleSystem : EntitySystem
 
     private void OnDisabled(Entity<FlashlightModuleComponent> ent, ref ModuleDisabledEvent args)
     {
-        if (!_moduleContained.TryGetContainer(ent.Owner, out var container))
+        if (!_module.TryGetContainer(ent.Owner, out var container))
             return;
 
         _pointLight.SetEnabled(container.Value, false);
@@ -84,7 +84,7 @@ public abstract partial class SharedFlashlightModuleSystem : EntitySystem
         ent.Comp.Color = color;
         Dirty(ent);
 
-        if (_moduleContained.TryGetContainer(ent.Owner, out var container))
+        if (_module.TryGetContainer(ent.Owner, out var container))
             _pointLight.SetColor(container.Value, color);
 
         if (ModuleContainerVisuals.GetVisualEntity(ent.Owner) is { } visual)

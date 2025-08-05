@@ -10,7 +10,7 @@ public sealed partial class MagbootsModuleSystem : EntitySystem
 {
     [Dependency] private readonly SharedMagbootsSystem _magboots = default!;
     [Dependency] private readonly SharedModSuitSystem _modSuit = default!;
-    [Dependency] private readonly ModuleContainedSystem _moduleContained = default!;
+    [Dependency] private readonly SharedModuleSystem _module = default!;
 
     public override void Initialize()
     {
@@ -35,7 +35,7 @@ public sealed partial class MagbootsModuleSystem : EntitySystem
         if (!TryGetMagboots(module, container, out var magboots))
             return;
 
-        if (_moduleContained.TryGetUser(module.Owner, out var user))
+        if (_module.TryGetUser(module.Owner, out var user))
             _magboots.UpdateMagbootEffects(user.Value, magboots.Value, state);
     }
 

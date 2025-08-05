@@ -12,7 +12,7 @@ namespace Content.Shared.Modules.Modules;
 public sealed partial class ToggleableUiModuleSystem : EntitySystem
 {
     [Dependency] private readonly SharedModSuitSystem _modSuit = default!;
-    [Dependency] private readonly ModuleContainedSystem _moduleContained = default!;
+    [Dependency] private readonly SharedModuleSystem _module = default!;
     [Dependency] private readonly ToggleableModuleSystem _toggleableModule = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
 
@@ -32,7 +32,7 @@ public sealed partial class ToggleableUiModuleSystem : EntitySystem
     {
         var module = GetEntity(args.Module);
 
-        if (!_moduleContained.TryGetContainer(module, out var container))
+        if (!_module.TryGetContainer(module, out var container))
             return;
 
         if (!CanUpdate(module))
@@ -44,13 +44,13 @@ public sealed partial class ToggleableUiModuleSystem : EntitySystem
 
     private void OnEnabled(Entity<ToggleableUiModuleComponent> ent, ref ModuleEnabledEvent args)
     {
-        if (_moduleContained.TryGetContainer(ent.Owner, out var container) && CanUpdate(container.Value))
+        if (_module.TryGetContainer(ent.Owner, out var container) && CanUpdate(container.Value))
             _modSuit.UpdateUI(container.Value);
     }
 
     private void OnDisabled(Entity<ToggleableUiModuleComponent> ent, ref ModuleDisabledEvent args)
     {
-        if (_moduleContained.TryGetContainer(ent.Owner, out var container) && CanUpdate(container.Value))
+        if (_module.TryGetContainer(ent.Owner, out var container) && CanUpdate(container.Value))
             _modSuit.UpdateUI(container.Value);
     }
 

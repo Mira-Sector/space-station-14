@@ -3,7 +3,6 @@
   parent: BaseItem
   abstract: true
   components:
-  - type: ModuleContained
   - type: Item
   - type: Sprite
   - type: Tag
