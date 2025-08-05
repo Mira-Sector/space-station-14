@@ -1,13 +1,11 @@
 using Content.Shared.Modules.Components.Modules;
 using Content.Shared.Modules.Events;
-using Robust.Shared.Timing;
 
 namespace Content.Shared.Modules.Modules;
 
 public sealed partial class ToggleableComponentUserModuleSystem : EntitySystem
 {
     [Dependency] private readonly ModuleContainedSystem _moduleContained = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
 
     public override void Initialize()
     {
@@ -19,9 +17,6 @@ public sealed partial class ToggleableComponentUserModuleSystem : EntitySystem
 
     private void OnEnabled(Entity<ToggleableComponentUserModuleComponent> ent, ref ModuleEnabledEvent args)
     {
-        if (!_timing.IsFirstTimePredicted)
-            return;
-
         if (!_moduleContained.TryGetUser(ent.Owner, out var user))
             return;
 
@@ -30,9 +25,6 @@ public sealed partial class ToggleableComponentUserModuleSystem : EntitySystem
 
     private void OnDisabled(Entity<ToggleableComponentUserModuleComponent> ent, ref ModuleDisabledEvent args)
     {
-        if (!_timing.IsFirstTimePredicted)
-            return;
-
         if (!_moduleContained.TryGetUser(ent.Owner, out var user))
             return;
 
