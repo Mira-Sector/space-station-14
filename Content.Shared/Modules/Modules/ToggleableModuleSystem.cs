@@ -12,10 +12,6 @@ public sealed partial class ToggleableModuleSystem : EntitySystem
     [Dependency] private readonly ModuleContainedSystem _moduleContained = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
 
-    // not stored on the component as its an abstract component
-    internal Dictionary<NetEntity, TimeSpan> NextMessage = [];
-    internal static readonly TimeSpan MessageDelay = TimeSpan.FromSeconds(0.25f);
-
     public override void Initialize()
     {
         base.Initialize();
@@ -82,18 +78,11 @@ public sealed partial class ToggleableModuleSystem : EntitySystem
             if (user == null || beforeEv.Reason == null)
                 return;
 
-            var netUser = GetNetEntity(user.Value);
-
-            if (NextMessage.TryGetValue(netUser, out var nextMessage))
-            {
-                if (nextMessage > _timing.CurTime)
-                    return;
-            }
-
-            nextMessage = _timing.CurTime + MessageDelay;
-            NextMessage[netUser] = nextMessage;
+            if (ent.Comp.NextMessage > _timing.CurTime)
+                return;
 
             _popup.PopupPredicted(Loc.GetString(beforeEv.Reason), ent.Owner, user);
+            ent.Comp.NextMessage = _timing.CurTime + ent.Comp.MessageDelay;
             return;
         }
 
