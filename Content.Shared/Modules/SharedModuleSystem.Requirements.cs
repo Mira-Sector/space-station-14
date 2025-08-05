@@ -7,10 +7,10 @@ public partial class SharedModuleSystem
 {
     private void InitializeRequirements()
     {
-        SubscribeLocalEvent<ModuleExclusivityComponent, ModuleAddingAttemptContainerEvent>(OnExclusivityAdd);
+        SubscribeLocalEvent<ModuleExclusivityComponent, ModuleAddingAttemptEvent>(OnExclusivityAdd);
     }
 
-    private void OnExclusivityAdd(Entity<ModuleExclusivityComponent> ent, ref ModuleAddingAttemptContainerEvent args)
+    private void OnExclusivityAdd(Entity<ModuleExclusivityComponent> ent, ref ModuleAddingAttemptEvent args)
     {
         if (args.Cancelled)
             return;

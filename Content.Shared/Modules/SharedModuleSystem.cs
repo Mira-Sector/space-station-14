@@ -35,7 +35,10 @@ public abstract partial class SharedModuleSystem : EntitySystem
         InitializeSlot();
 
         SubscribeLocalEvent<ModuleContainerComponent, ComponentInit>(OnContainerInit);
-        SubscribeLocalEvent<ModuleContainerComponent, ContainerIsInsertingAttemptEvent>(OnContainerAttempt);
+
+        SubscribeLocalEvent<ModuleContainerComponent, ContainerIsInsertingAttemptEvent>(OnContainerInsertAttempt);
+        SubscribeLocalEvent<ModuleContainerComponent, ContainerIsRemovingAttemptEvent>(OnContainerRemoveAttempt);
+
         SubscribeLocalEvent<ModuleContainerComponent, EntInsertedIntoContainerMessage>(OnContainerInserted);
         SubscribeLocalEvent<ModuleContainerComponent, EntRemovedFromContainerMessage>(OnContainerRemoved);
 
@@ -55,7 +58,7 @@ public abstract partial class SharedModuleSystem : EntitySystem
         ent.Comp.Modules = _container.EnsureContainer<Container>(ent.Owner, ent.Comp.ModuleContainerId);
     }
 
-    private void OnContainerAttempt(Entity<ModuleContainerComponent> ent, ref ContainerIsInsertingAttemptEvent args)
+    private void OnContainerInsertAttempt(Entity<ModuleContainerComponent> ent, ref ContainerIsInsertingAttemptEvent args)
     {
         if (args.Cancelled)
             return;
@@ -81,7 +84,42 @@ public abstract partial class SharedModuleSystem : EntitySystem
             return;
         }
 
-        var moduleEv = new ModuleAddingAttemptContainerEvent(ent.Owner);
+        var moduleEv = new ModuleAddingAttemptEvent(ent.Owner);
+        RaiseLocalEvent(args.EntityUid, moduleEv);
+
+        if (moduleEv.Cancelled)
+        {
+            if (_net.IsServer && moduleEv.Reason != null)
+                _popup.PopupEntity(Loc.GetString(moduleEv.Reason), ent.Owner);
+
+            args.Cancel();
+            return;
+        }
+    }
+
+    private void OnContainerRemoveAttempt(Entity<ModuleContainerComponent> ent, ref ContainerIsRemovingAttemptEvent args)
+    {
+        if (args.Cancelled)
+            return;
+
+        if (args.Container.ID != ent.Comp.ModuleContainerId)
+            return;
+
+        // no whitelist check as how else did it get in here?
+
+        var containerEv = new ModuleContainerModuleRemovingAttemptEvent(args.EntityUid);
+        RaiseLocalEvent(ent.Owner, containerEv);
+
+        if (containerEv.Cancelled)
+        {
+            if (_net.IsServer && containerEv.Reason != null)
+                _popup.PopupEntity(Loc.GetString(containerEv.Reason), ent.Owner);
+
+            args.Cancel();
+            return;
+        }
+
+        var moduleEv = new ModuleRemovingAttemptEvent(ent.Owner);
         RaiseLocalEvent(args.EntityUid, moduleEv);
 
         if (moduleEv.Cancelled)
