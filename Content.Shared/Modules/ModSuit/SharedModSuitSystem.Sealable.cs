@@ -262,13 +262,13 @@ public partial class SharedModSuitSystem
         }
         else
         {
-            EntityManager.RemoveComponents(ent.Owner, ent.Comp.SealedComponents);
-
             var partEv = new ModSuitUnsealedEvent(ent.Comp.Wearer);
             RaiseLocalEvent(ent.Owner, partEv);
 
             var suitEv = new ModSuitContainerPartUnsealedEvent(ent.Owner);
             RaiseLocalEvent(container, suitEv);
+
+            EntityManager.RemoveComponents(ent.Owner, ent.Comp.SealedComponents);
         }
 
         PlaySound((ent.Owner, ent.Comp), shouldSeal);

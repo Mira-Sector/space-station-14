@@ -33,8 +33,8 @@ namespace Content.Server.Atmos.EntitySystems
         {
             SubscribeLocalEvent<PressureProtectionComponent, GotEquippedEvent>(OnPressureProtectionEquipped);
             SubscribeLocalEvent<PressureProtectionComponent, GotUnequippedEvent>(OnPressureProtectionUnequipped);
-            SubscribeLocalEvent<PressureProtectionComponent, ModSuitSealedEvent>(OnPressureProtectionModSuitSeal);
-            SubscribeLocalEvent<PressureProtectionComponent, ModSuitUnsealedEvent>(OnPressureProtectionModSuitSeal);
+            SubscribeLocalEvent<PressureProtectionComponent, ModSuitSealedEvent>(OnPressureProtectionModSuitSealed);
+            SubscribeLocalEvent<PressureProtectionComponent, ModSuitUnsealedEvent>(OnPressureProtectionModSuitUnSealed);
             SubscribeLocalEvent<PressureProtectionComponent, ComponentInit>(OnUpdateResistance);
             SubscribeLocalEvent<PressureProtectionComponent, ComponentRemove>(OnUpdateResistance);
 
@@ -81,7 +81,7 @@ namespace Content.Server.Atmos.EntitySystems
                 UpdateCachedResistances(args.Equipee, barotrauma);
         }
 
-        private void OnPressureProtectionModSuitSeal(EntityUid uid, PressureProtectionComponent pressureProtection, BaseModSuitSealEvent args)
+        private void OnPressureProtectionModSuitSealed(EntityUid uid, PressureProtectionComponent pressureProtection, ModSuitSealedEvent args)
         {
             if (!TryComp<BarotraumaComponent>(args.Wearer, out var barotrauma))
                 return;
@@ -89,12 +89,23 @@ namespace Content.Server.Atmos.EntitySystems
             UpdateCachedResistances(args.Wearer!.Value, barotrauma);
         }
 
+        private void OnPressureProtectionModSuitUnSealed(EntityUid uid, PressureProtectionComponent pressureProtection, ModSuitUnsealedEvent args)
+        {
+            if (!TryComp<BarotraumaComponent>(args.Wearer, out var barotrauma))
+                return;
+
+            //exclude ourself
+            UpdateCachedResistances(args.Wearer!.Value, barotrauma, [uid]);
+        }
+
         /// <summary>
         /// Computes the pressure resistance for the entity coming from the equipment and any innate resistance.
         /// The ProtectionSlots field of the Barotrauma component specifies which parts must be protected for the protection to have any effect.
         /// </summary>
-        private void UpdateCachedResistances(EntityUid uid, BarotraumaComponent barotrauma)
+        private void UpdateCachedResistances(EntityUid uid, BarotraumaComponent barotrauma, HashSet<EntityUid>? exclude = null)
         {
+            exclude ??= [];
+
             Dictionary<string, EntityUid?> slots = [];
             slots.EnsureCapacity(barotrauma.ProtectionSlots.Count + barotrauma.OptionalProtectionSlots.Count);
 
@@ -141,6 +152,9 @@ namespace Content.Server.Atmos.EntitySystems
                             break;
                         }
                     }
+
+                    if (exclude.Contains(equipment.Value))
+                        continue;
 
                     if (!TryGetPressureProtectionValues(equipment.Value,
                             out var itemHighMultiplier,
