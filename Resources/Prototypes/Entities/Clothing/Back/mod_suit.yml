@@ -90,6 +90,22 @@
   - type: HeldSpeedModifier
 
 - type: entity
+  id: ClothingBackpackModSuitAdvancedFilled
+  parent: ClothingBackpackModSuitAdvanced
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleMagbootsAdv
+      - ModSuitModuleJetpackNormal
+      - ModSuitModuleInsulation
+      - ModSuitModuleVisonMeson
+      - ModSuitModuleVisonWelding
+      - ModSuitModuleStorageExpanded
+      - ModSuitModuleFlashlight
+
+- type: entity
   id: ClothingBackpackModSuitApocrphal
   parent: ClothingBackpackModSuitBase
   name: apocryphal MOD control unit
@@ -179,6 +195,18 @@
   - type: HeldSpeedModifier
 
 - type: entity
+  id: ClothingBackpackModSuitSalvageFilled
+  parent: ClothingBackpackModSuitSalvage
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleJetpackNormal
+      - ModSuitModuleStorageNormal
+      - ModSuitModuleFlashlight
+
+- type: entity
   id: ClothingBackpackModSuitAtmospheric
   parent:
   - ClothingBackpackModSuitBase
@@ -229,6 +257,22 @@
   - type: Construction
     graph: ModSuit
     node: atmosphericPlating
+
+- type: entity
+  id: ClothingBackpackModSuitAtmosphericFilled
+  parent: ClothingBackpackModSuitAtmospheric
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleMagboots
+      - ModSuitModuleJetpackNormal
+      - ModSuitModuleInsulation
+      - ModSuitModuleVisonMeson
+      - ModSuitModuleVisonWelding
+      - ModSuitModuleStorageNormal
+      - ModSuitModuleFlashlight
 
 - type: entity
   id: ClothingBackpackModSuitCivilian
@@ -323,6 +367,23 @@
       gloves: ClothingHandsModSuitCorporate
       head: ClothingHeadModSuitCorporate
       shoes: ClothingShoesModSuitCorporate
+
+- type: entity
+  id: ClothingBackpackModSuitCorporateFilled
+  parent: ClothingBackpackModSuitCorporate
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleMagbootsAdv
+      - ModSuitModuleJetpackNormal
+      - ModSuitModuleVisonSec
+      - ModSuitModuleInsulation
+      - ModSuitModuleVisonMeson
+      - ModSuitModuleVisonWelding
+      - ModSuitModuleStorageBluespace
+      - ModSuitModuleFlashlight
 
 - type: entity
   id: ClothingBackpackModSuitCosmohonk
@@ -426,6 +487,18 @@
   - type: HeldSpeedModifier
 
 - type: entity
+  id: ClothingBackpackModSuitEliteFilled
+  parent: ClothingBackpackModSuitElite
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleJetpackNormal
+      - ModSuitModuleStorageSyndie
+      - ModSuitModuleFlashlight
+
+- type: entity
   id: ClothingBackpackModSuitEnchanted
   parent:
   - ClothingBackpackModSuitBase
@@ -475,6 +548,18 @@
     walkModifier: 0.8
     sprintModifier: 0.8
   - type: HeldSpeedModifier
+
+- type: entity
+  id: ClothingBackpackModSuitEnchantedFilled
+  parent: ClothingBackpackModSuitEnchanted
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleJetpackNormal
+      - ModSuitModuleStorageExpanded
+      - ModSuitModuleFlashlight
 
 - type: entity
   id: ClothingBackpackModSuitEngineering
@@ -529,6 +614,22 @@
     node: engineeringPlating
 
 - type: entity
+  id: ClothingBackpackModSuitEngineeringFilled
+  parent: ClothingBackpackModSuitEngineering
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleMagboots
+      - ModSuitModuleJetpackNormal
+      - ModSuitModuleInsulation
+      - ModSuitModuleVisonMeson
+      - ModSuitModuleVisonWelding
+      - ModSuitModuleStorageNormal
+      - ModSuitModuleFlashlight
+
+- type: entity
   id: ClothingBackpackModSuitHonkerative
   parent: ClothingBackpackModSuitSyndicate
   name: honkerative MOD control unit
@@ -566,6 +667,18 @@
       gloves: ClothingHandsModSuitHonkerative
       head: ClothingHeadModSuitHonkerative
       shoes: ClothingShoesModSuitHonkerative
+
+- type: entity
+  id: ClothingBackpackModSuitHonkerativeFilled
+  parent: ClothingBackpackModSuitHonkerative
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleJetpackNormal
+      - ModSuitModuleStorageSyndie
+      - ModSuitModuleFlashlight
 
 - type: entity
   id: ClothingBackpackModSuitSyndieCommander
@@ -615,6 +728,18 @@
     walkModifier: 0.9
     sprintModifier: 0.9
   - type: HeldSpeedModifier
+
+- type: entity
+  id: ClothingBackpackModSuitSyndieCommanderFilled
+  parent: ClothingBackpackModSuitSyndieCommander
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleJetpackNormal
+      - ModSuitModuleStorageSyndie
+      - ModSuitModuleFlashlight
 
 - type: entity
   id: ClothingBackpackModSuitInquisitory
@@ -708,6 +833,18 @@
   - type: HeldSpeedModifier
 
 - type: entity
+  id: ClothingBackpackModSuitBrigmedicFilled
+  parent: ClothingBackpackModSuitBrigmedic
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleVisonMed
+      - ModSuitModuleStorageNormal
+      - ModSuitModuleFlashlight
+
+- type: entity
   id: ClothingBackpackModSuitLoader
   parent:
   - ClothingBackpackModSuitBase
@@ -749,6 +886,17 @@
       shoes: ClothingShoesModSuitLoader
   - type: ModSuitComplexityLimit
     maxComplexity: 10
+
+- type: entity
+  id: ClothingBackpackModSuitLoaderFilled
+  parent: ClothingBackpackModSuitLoader
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleStorageNormal
+      - ModSuitModuleFlashlight
 
 - type: entity
   id: ClothingBackpackModSuitCaptain
@@ -800,6 +948,19 @@
     walkModifier: 0.8
     sprintModifier: 0.8
   - type: HeldSpeedModifier
+
+- type: entity
+  id: ClothingBackpackModSuitCaptainFilled
+  parent: ClothingBackpackModSuitCaptain
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleJetpackNormal
+      - ModSuitModuleStorageExpanded
+      - ModSuitModuleInsulation
+      - ModSuitModuleFlashlight
 
 - type: entity
   id: ClothingBackpackModSuitMedical
@@ -856,6 +1017,18 @@
     node: medicalPlating
 
 - type: entity
+  id: ClothingBackpackModSuitMedicalFilled
+  parent: ClothingBackpackModSuitMedical
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleVisonMed
+      - ModSuitModuleStorageNormal
+      - ModSuitModuleFlashlight
+
+- type: entity
   id: ClothingBackpackModSuitLuxury
   parent: ClothingBackpackModSuitBase
   name: luxury MOD control unit
@@ -907,6 +1080,18 @@
   - type: HeldSpeedModifier
 
 - type: entity
+  id: ClothingBackpackModSuitLuxuryFilled
+  parent: ClothingBackpackModSuitLuxury
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleJetpackNormal
+      - ModSuitModuleStorageExpanded
+      - ModSuitModuleFlashlight
+
+- type: entity
   id: ClothingBackpackModSuitNinja
   parent:
   - ClothingBackpackModSuitBase
@@ -950,6 +1135,19 @@
       gloves: ClothingHandsModSuitNinja
       head: ClothingHeadModSuitNinja
       shoes: ClothingShoesModSuitNinja
+
+- type: entity
+  id: ClothingBackpackModSuitNinjaFilled
+  parent: ClothingBackpackModSuitNinja
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleCloakNinja
+      - ModSuitModuleJetpackNormal
+      - ModSuitModuleStorageExpanded
+      - ModSuitModuleFlashlight
 
 - type: entity
   id: ClothingBackpackModSuitRescue
@@ -1003,6 +1201,18 @@
   - type: HeldSpeedModifier
 
 - type: entity
+  id: ClothingBackpackModSuitRescueFilled
+  parent: ClothingBackpackModSuitRescue
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleVisonMed
+      - ModSuitModuleStorageNormal
+      - ModSuitModuleFlashlight
+
+- type: entity
   id: ClothingBackpackModSuitResearch
   parent:
   - ClothingBackpackModSuitBase
@@ -1054,6 +1264,19 @@
   - type: HeldSpeedModifier
 
 - type: entity
+  id: ClothingBackpackModSuitResearchFilled
+  parent: ClothingBackpackModSuitResearch
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleInsulation
+      - ModSuitModuleVisonWelding
+      - ModSuitModuleStorageExpanded
+      - ModSuitModuleFlashlight
+
+- type: entity
   id: ClothingBackpackModSuitResponsory
   parent:
   - ClothingBackpackModSuitBase
@@ -1101,6 +1324,23 @@
     walkModifier: 0.9
     sprintModifier: 0.9
   - type: HeldSpeedModifier
+
+- type: entity
+  id: ClothingBackpackModSuitResponsoryFilled
+  parent: ClothingBackpackModSuitResponsory
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleMagbootsAdv
+      - ModSuitModuleJetpackNormal
+      - ModSuitModuleVisonSec
+      - ModSuitModuleInsulation
+      - ModSuitModuleVisonMeson
+      - ModSuitModuleVisonWelding
+      - ModSuitModuleStorageBluespace
+      - ModSuitModuleFlashlight
 
 - type: entity
   id: ClothingBackpackModSuitSafeguard
@@ -1152,6 +1392,19 @@
     walkModifier: 0.8
     sprintModifier: 0.8
   - type: HeldSpeedModifier
+
+- type: entity
+  id: ClothingBackpackModSuitSafeguardFilled
+  parent: ClothingBackpackModSuitSafeguard
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleJetpackNormal
+      - ModSuitModuleVisonSec
+      - ModSuitModuleStorageExpanded
+      - ModSuitModuleFlashlight
 
 - type: entity
   id: ClothingBackpackModSuitSecurity
@@ -1206,6 +1459,18 @@
   - type: Construction
     graph: ModSuit
     node: securityPlating
+
+- type: entity
+  id: ClothingBackpackModSuitSecurityFilled
+  parent: ClothingBackpackModSuitSecurity
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleVisonSec
+      - ModSuitModuleStorageNormal
+      - ModSuitModuleFlashlight
 
 - type: entity
   id: ClothingBackpackModSuitStandard
@@ -1305,3 +1570,15 @@
     walkModifier: 0.9
     sprintModifier: 0.9
   - type: HeldSpeedModifier
+
+- type: entity
+  id: ClothingBackpackModSuitSyndicateFilled
+  parent: ClothingBackpackModSuitSyndicate
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleJetpackNormal
+      - ModSuitModuleStorageSyndie
+      - ModSuitModuleFlashlight
