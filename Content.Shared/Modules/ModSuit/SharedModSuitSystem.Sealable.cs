@@ -185,7 +185,6 @@ public partial class SharedModSuitSystem
                 RaiseLocalEvent(ent.Owner, ev);
 
             EntityManager.RemoveComponents(ent.Owner, ent.Comp.AllPartComponents);
-
         }
 
         if (ent.Comp.DeployerComponents != null)
