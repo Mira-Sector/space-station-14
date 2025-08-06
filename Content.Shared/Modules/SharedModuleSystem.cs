@@ -230,7 +230,7 @@ public abstract partial class SharedModuleSystem : EntitySystem
             return;
 
         _container.Remove(module, moduleContainer.Modules);
-        _hands.TryPickup(GetEntity(args.User), module);
+        _hands.TryPickupAnyHand(GetEntity(args.User), module);
     }
 
     [PublicAPI]
