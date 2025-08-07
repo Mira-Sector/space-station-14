@@ -183,8 +183,8 @@
   id: ClothingOuterHardsuitVoidParamed
   name: steal-target-groups-clothing-outer-hardsuit-void-paramed
   sprite:
-    sprite: Clothing/OuterClothing/Hardsuits/paramed.rsi
-    state: icon
+    sprite: Clothing/Back/ModSuits/rescue.rsi
+    state: icon-sealed
 
 - type: stealTargetGroup
   id: MedicalTechFabCircuitboard

@@ -1219,6 +1219,8 @@
     walkModifier: 0.95
     sprintModifier: 0.95
   - type: HeldSpeedModifier
+  - type: StealTarget
+    stealGroup: ClothingOuterHardsuitVoidParamed
 
 - type: entity
   id: ClothingBackpackModSuitRescueFilled
