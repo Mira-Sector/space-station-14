@@ -127,7 +127,7 @@ public partial class SharedModSuitSystem
 
     private void OnDeployableGetUser(Entity<ModSuitPartDeployableComponent> ent, ref ModuleGetUserEvent args)
     {
-        args.User = ent.Comp.Wearer;
+        args.User ??= ent.Comp.Wearer;
     }
 
     private void OnDeployableModuleAdded(Entity<ModSuitPartDeployableComponent> ent, ref ModuleAddedContainerEvent args)
