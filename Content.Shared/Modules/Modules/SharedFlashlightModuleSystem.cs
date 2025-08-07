@@ -35,9 +35,7 @@ public abstract partial class SharedFlashlightModuleSystem : EntitySystem
         if (!_module.TryGetContainer(ent.Owner, out var container))
             return;
 
-        var pointlight = _pointLight.EnsureLight(container.Value);
-        _pointLight.SetEnabled(container.Value, true, pointlight);
-
+        _pointLight.SetEnabled(container.Value, true);
         SetColor(ent.AsNullable(), ent.Comp.Color);
     }
 
