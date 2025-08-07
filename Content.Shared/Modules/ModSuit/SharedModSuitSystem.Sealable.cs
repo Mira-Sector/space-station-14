@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Shared.Clothing;
 using Content.Shared.Examine;
+using Content.Shared.Modules.Events;
 using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
 using Content.Shared.Modules.ModSuit.UI;
@@ -24,6 +25,8 @@ public partial class SharedModSuitSystem
         SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployablePartUndeployedEvent>(OnSealableDeployablePartUndeployed);
 
         SubscribeLocalEvent<ModSuitSealableComponent, ExaminedEvent>(OnSealableExamined);
+
+        SubscribeLocalEvent<ModSuitSealableComponent, ModuleGetUserEvent>(OnSealableGetUser);
 
         SubscribeLocalEvent<ModSuitSealableComponent, ModSuitGetUiEntriesEvent>(OnSealableGetUiEntries);
         SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployableRelayedEvent<ModSuitGetUiEntriesEvent>>((u, c, a) => OnSealableGetUiEntries((u, c), ref a.Args));
@@ -60,15 +63,15 @@ public partial class SharedModSuitSystem
 
     private void OnSealableUnequipped(Entity<ModSuitSealableComponent> ent, ref ClothingGotUnequippedEvent args)
     {
+        // handled in a separate event
+        if (!HasComp<ModSuitDeployedPartComponent>(ent.Owner))
+        {
+            // cant be sealed when not worn
+            SetSeal((ent.Owner, ent.Comp), false);
+        }
+
         ent.Comp.Wearer = null;
         Dirty(ent);
-
-        // handled in a separate event
-        if (HasComp<ModSuitDeployedPartComponent>(ent.Owner))
-            return;
-
-        // cant be sealed when not worn
-        SetSeal((ent.Owner, ent.Comp), false);
     }
 
     private void OnSealableDeployablePartUndeployed(Entity<ModSuitSealableComponent> ent, ref ModSuitDeployablePartUndeployedEvent args)
@@ -81,6 +84,11 @@ public partial class SharedModSuitSystem
     {
         var msg = ent.Comp.Sealed ? Loc.GetString("modsuit-sealable-examine-sealed") : Loc.GetString("modsuit-sealable-examine-unsealed");
         args.PushMarkup(msg);
+    }
+
+    private void OnSealableGetUser(Entity<ModSuitSealableComponent> ent, ref ModuleGetUserEvent args)
+    {
+        args.User ??= ent.Comp.Wearer;
     }
 
     private void OnSealableGetUiEntries(Entity<ModSuitSealableComponent> ent, ref ModSuitGetUiEntriesEvent args)
