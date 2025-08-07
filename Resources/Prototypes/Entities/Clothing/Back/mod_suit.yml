@@ -1606,3 +1606,54 @@
       - ModSuitModuleJetpackNormal
       - ModSuitModuleStorageSyndie
       - ModSuitModuleFlashlightSyndie
+
+- type: entity
+  id: ClothingBackpackModSuitSyndicateMedic
+  parent: ClothingBackpackModSuitSyndicate
+  name: syndicate medic MOD control unit
+  description: A heavily armored and agile advanced MODsuit specifically designed for field medic operations.
+  components:
+  - type: Sprite
+    sprite: Clothing/Back/ModSuits/glitch.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Back/ModSuits/glitch.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Back/ModSuits/glitch.rsi
+        state: icon
+    clothingLayers:
+      true:
+        back:
+        - sprite: Clothing/Back/ModSuits/glitch.rsi
+          state: equipped-BACKPACK-sealed
+      false:
+        back:
+        - sprite: Clothing/Back/ModSuits/glitch.rsi
+          state: equipped-BACKPACK
+    uiLayer:
+      true:
+        sprite: Clothing/Back/ModSuits/glitch.rsi
+        state: equipped-BACKPACK-sealed
+      false:
+        sprite: Clothing/Back/ModSuits/glitch.rsi
+        state: equipped-BACKPACK
+  - type: ModSuitPartDeployable
+    deployableParts:
+      outerClothing: ClothingOuterModSuitSyndicateMedic
+      gloves: ClothingHandsModSuitSyndicateMedic
+      head: ClothingHeadModSuitSyndicateMedic
+      shoes: ClothingShoesModSuitSyndicateMedic
+
+- type: entity
+  id: ClothingBackpackModSuitSyndicateMedicFilled
+  parent: ClothingBackpackModSuitSyndicateMedic
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleJetpackNormal
+      - ModSuitModuleStorageSyndie
+      - ModSuitModuleFlashlightSyndie

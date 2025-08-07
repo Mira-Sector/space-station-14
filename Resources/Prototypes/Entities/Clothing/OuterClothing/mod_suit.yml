@@ -1388,3 +1388,36 @@
             Heat: 0.5
             Radiation: 0.5
             Caustic: 0.5
+
+- type: entity
+  id: ClothingOuterModSuitSyndicateMedic
+  parent: ClothingOuterModSuitSyndicate
+  categories: [ HideSpawnMenu ]
+  name: syndicate medic MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
+        state: equipped-OUTERCLOTHING

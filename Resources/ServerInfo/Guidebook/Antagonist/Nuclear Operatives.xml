@@ -21,7 +21,7 @@
 
   <Box>
     <GuideEntityEmbed Entity="ClothingBackpackModSuitSyndicate"/>
-    <GuideEntityEmbed Entity="ClothingOuterHardsuitSyndieMedic" Caption="agent's MODsuit"/>
+    <GuideEntityEmbed Entity="ClothingBackpackModSuitSyndicateMedic" Caption="agent's MODsuit"/>
     <GuideEntityEmbed Entity="ClothingBackpackModSuitSyndieCommander" Caption="commander's MODsuit"/>
   </Box>
 
