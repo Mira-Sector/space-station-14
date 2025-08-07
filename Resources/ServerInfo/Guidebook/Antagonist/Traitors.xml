@@ -78,7 +78,6 @@
   <Box>
     <GuideEntityEmbed Entity="CaptainIDCard" Caption=""/>
     <GuideEntityEmbed Entity="WeaponAntiqueLaser" Caption=""/>
-    <GuideEntityEmbed Entity="JetpackCaptainFilled" Caption=""/>
     <GuideEntityEmbed Entity="NukeDisk" Caption=""/>
   </Box>
   - Stealing the [color=#5b97bc]Chief Medical Officer[/color]'s [bold]hypospray[/bold] or [bold]handheld crew monitor[/bold].
@@ -86,18 +85,18 @@
     <GuideEntityEmbed Entity="Hypospray" Caption=""/>
     <GuideEntityEmbed Entity="HandheldCrewMonitorEmpty" Caption=""/>
   </Box>
-  - Stealing the [color=#c96dbf]Research Director[/color]'s [bold]experimental hardsuit[/bold] or [bold]hand teleporter[/bold].
+  - Stealing the [color=#c96dbf]Research Director[/color]'s [bold]research MODsuit[/bold] or [bold]hand teleporter[/bold].
   <Box>
-    <GuideEntityEmbed Entity="ClothingOuterHardsuitRd" Caption=""/>
+    <GuideEntityEmbed Entity="ClothingBackpackModSuitResearch" Caption=""/>
     <GuideEntityEmbed Entity="HandTeleporter" Caption=""/>
   </Box>
   - Stealing the [color=#cb0000]Head of Security[/color]'s [bold]energy shotgun[/bold].
   <Box>
     <GuideEntityEmbed Entity="WeaponEnergyShotgun" Caption=""/>
   </Box>
-  - Stealing the [color=#f39f27]Chief Engineer[/color]'s [bold]advanced magboots[/bold].
+  - Stealing the [color=#f39f27]Chief Engineer[/color]'s [bold]advanced magnetic stability module[/bold].
   <Box>
-    <GuideEntityEmbed Entity="ClothingShoesBootsMagAdv" Caption=""/>
+    <GuideEntityEmbed Entity="ModSuitModuleMagbootsAdv" Caption=""/>
   </Box>
   - Stealing the [color=#b18644]Quartermaster[/color]'s [bold]requisition digi-board[/bold].
   <Box>

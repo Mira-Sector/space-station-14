@@ -46,3 +46,5 @@
     components:
     - type: Magboots
     - type: NoSlip
+  - type: StealTarget
+    stealGroup: ClothingShoesBootsMagAdv
