@@ -256,13 +256,6 @@
 
 - type: entity
   parent: BaseCaptainObjective
-  id: CaptainJetpackStealObjective
-  components:
-  - type: StealCondition
-    stealGroup: JetpackCaptainFilled
-
-- type: entity
-  parent: BaseCaptainObjective
   id: CaptainGunStealObjective
   components:
   - type: StealCondition

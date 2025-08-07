@@ -30,7 +30,7 @@ public sealed partial class ModSuitPartDeployableComponent : Component
         }
     }
 
-    [ViewVariables]
+    [ViewVariables, AutoNetworkedField]
     public Dictionary<string, EntityUid> DeployedParts = [];
 
     [ViewVariables, AutoNetworkedField]

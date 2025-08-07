@@ -30,14 +30,14 @@
     layers:
     - state: normal
   - type: ModSuitDeployableContainerVisuals
-    partType: Chestplate
+    partType: Control
   - type: ModuleContainerVisuals
     clothingLayers:
       true:
-        outerClothing:
+        back:
         - sprite: Objects/Specific/Robotics/ModSuits/Modules/jetpack.rsi
           state: normal-worn-on
       false:
-        outerClothing:
+        back:
         - sprite: Objects/Specific/Robotics/ModSuits/Modules/jetpack.rsi
           state: normal-worn

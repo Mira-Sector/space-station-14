@@ -84,6 +84,18 @@
   - BiofabricatorMachineCircuitboard
   - BiomassReclaimerMachineCircuitboard
 
+- type: technology
+  id: ExpandedStorage
+  name: research-technology-expanded-storage
+  icon:
+    sprite: Objects/Specific/Robotics/ModSuits/Modules/storage.rsi
+    state: large
+  discipline: CivilianServices
+  tier: 1
+  cost: 5000
+  recipeUnlocks:
+  - ModSuitModuleStorageExpanded
+
 # Tier 2
 
 - type: technology
@@ -237,6 +249,18 @@
   recipeUnlocks:
   - LauncherSyringe
   - MiniSyringe
+
+- type: technology
+  id: Cloaking
+  name: research-technology-cloaking
+  icon:
+    sprite: Objects/Specific/Robotics/ModSuits/Modules/cloaking.rsi
+    state: prototype
+  discipline: CivilianServices
+  tier: 3
+  cost: 15000
+  recipeUnlocks:
+  - ModSuitModuleCloakPrototype
 
 - type: technology
   id: FurtherKnowledgeCivilianServices

@@ -317,11 +317,14 @@
     - RoboticsStatic
     - BorgModulesStatic
     - BorgLimbsStatic
+    - ModSuitParts
+    - ModSuitModulesStatic
     dynamicPacks:
     - Robotics
     - BorgModules
     - MechParts
     - MechEquipment
+    - ModSuitModules
   - type: MaterialStorage
     whitelist:
       tags:

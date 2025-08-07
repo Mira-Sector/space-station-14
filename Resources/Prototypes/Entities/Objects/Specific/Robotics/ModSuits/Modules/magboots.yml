@@ -34,7 +34,7 @@
 
 - type: entity
   id: ModSuitModuleMagbootsAdv
-  parent: BaseModSuitModuleMagboots
+  parent: [ BaseModSuitModuleMagboots, BaseGrandTheftContraband ]
   name: MOD advanced magnetic stability module
   description: The magnetic stability modules big brother. Stops slipping ontop of grounding you.
   components:
@@ -46,3 +46,5 @@
     components:
     - type: Magboots
     - type: NoSlip
+  - type: StealTarget
+    stealGroup: ClothingShoesBootsMagAdv

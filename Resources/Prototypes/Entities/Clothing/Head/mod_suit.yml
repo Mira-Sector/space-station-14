@@ -1,9 +1,14 @@
 - type: entity
   id: ClothingHeadModSuitBase
+  description: The helmet of a deployed MOD suit.
   abstract: true
   categories: [ HideSpawnMenu ]
   components:
   - type: ModSuitSealable
+    sealedComponents:
+    - type: BreathMask
+    - type: IdentityBlocker
+    - type: IngestionBlocker
   - type: ModSuitDeployableInventory
   - type: Clothing
     autoGenerateVisuals: false
@@ -68,6 +73,9 @@
     - type: PressureProtection
       highPressureMultiplier: 0.08
       lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.2
+      coolingCoefficient: 0.2
     - type: FireProtection
       reduction: 0.2
     - type: Armor
@@ -85,70 +93,109 @@
             Caustic: 0.7
 
 - type: entity
-  id: ClothingHeadModSuitApocrphal
+  id: ClothingHeadModSuitWarden
   parent: ClothingHeadModSuitBase
   categories: [ HideSpawnMenu ]
-  name: apocryphal MOD helmet
+  name: warden's MOD helmet
   components:
   - type: Sprite
-    sprite: Clothing/Head/ModSuits/apocryphal.rsi
+    sprite: Clothing/Head/ModSuits/warden.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Head/ModSuits/apocryphal.rsi
+      - sprite: Clothing/Head/ModSuits/warden.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Head/ModSuits/apocryphal.rsi
+      - sprite: Clothing/Head/ModSuits/warden.rsi
         state: icon
     clothingLayers:
       true:
         head:
-        - sprite: Clothing/Head/ModSuits/apocryphal.rsi
+        - sprite: Clothing/Head/ModSuits/warden.rsi
           state: equipped-HELMET-sealed
       false:
         head:
-        - sprite: Clothing/Head/ModSuits/apocryphal.rsi
+        - sprite: Clothing/Head/ModSuits/warden.rsi
           state: equipped-HELMET
     uiLayer:
       true:
-        sprite: Clothing/Head/ModSuits/apocryphal.rsi
+        sprite: Clothing/Head/ModSuits/warden.rsi
         state: equipped-HELMET-sealed
       false:
-        sprite: Clothing/Head/ModSuits/apocryphal.rsi
+        sprite: Clothing/Head/ModSuits/warden.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.4
+            Slash: 0.5
+            Piercing: 0.6
+            Heat: 0.8
+            Caustic: 0.7
 
 - type: entity
-  id: ClothingHeadModSuitAsteroid
+  id: ClothingHeadModSuitSalvage
   parent: ClothingHeadModSuitBase
   categories: [ HideSpawnMenu ]
-  name: asteroid MOD helmet
+  name: salvage MOD helmet
   components:
   - type: Sprite
-    sprite: Clothing/Head/ModSuits/asteroid.rsi
+    sprite: Clothing/Head/ModSuits/salvage.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Head/ModSuits/asteroid.rsi
+      - sprite: Clothing/Head/ModSuits/salvage.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Head/ModSuits/asteroid.rsi
+      - sprite: Clothing/Head/ModSuits/salvage.rsi
         state: icon
     clothingLayers:
       true:
         head:
-        - sprite: Clothing/Head/ModSuits/asteroid.rsi
+        - sprite: Clothing/Head/ModSuits/salvage.rsi
           state: equipped-HELMET-sealed
       false:
         head:
-        - sprite: Clothing/Head/ModSuits/asteroid.rsi
+        - sprite: Clothing/Head/ModSuits/salvage.rsi
           state: equipped-HELMET
     uiLayer:
       true:
-        sprite: Clothing/Head/ModSuits/asteroid.rsi
+        sprite: Clothing/Head/ModSuits/salvage.rsi
         state: equipped-HELMET-sealed
       false:
-        sprite: Clothing/Head/ModSuits/asteroid.rsi
+        sprite: Clothing/Head/ModSuits/salvage.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.2
+      coolingCoefficient: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.7
+            Slash: 0.6
+            Piercing: 0.7
+            Heat: 0.7
+            Radiation: 0.3
+            Caustic: 0.7
 
 - type: entity
   id: ClothingHeadModSuitAtmospheric
@@ -182,39 +229,27 @@
       false:
         sprite: Clothing/Head/ModSuits/atmospheric.rsi
         state: equipped-HELMET
-
-- type: entity
-  id: ClothingHeadModSuitChrono
-  parent: ClothingHeadModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: chrono MOD helmet
-  components:
-  - type: Sprite
-    sprite: Clothing/Head/ModSuits/chrono.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Head/ModSuits/chrono.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Head/ModSuits/chrono.rsi
-        state: icon
-    clothingLayers:
-      true:
-        head:
-        - sprite: Clothing/Head/ModSuits/chrono.rsi
-          state: equipped-HELMET-sealed
-      false:
-        head:
-        - sprite: Clothing/Head/ModSuits/chrono.rsi
-          state: equipped-HELMET
-    uiLayer:
-      true:
-        sprite: Clothing/Head/ModSuits/chrono.rsi
-        state: equipped-HELMET-sealed
-      false:
-        sprite: Clothing/Head/ModSuits/chrono.rsi
-        state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.005
+      coolingCoefficient: 0.005
+    - type: FireProtection
+      reduction: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.9
+            Slash: 0.9
+            Piercing: 0.9
+            Heat: 0.8
+            Radiation: 0.5
 
 - type: entity
   id: ClothingHeadModSuitCivilian
@@ -248,6 +283,25 @@
       false:
         sprite: Clothing/Head/ModSuits/civilian.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.2
+      coolingCoefficient: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.90
+            Slash: 0.90
+            Piercing: 0.95
+            Heat: 0.90
+            Radiation: 0.25
 
 - type: entity
   id: ClothingHeadModSuitCorporate
@@ -281,39 +335,26 @@
       false:
         sprite: Clothing/Head/ModSuits/corporate.rsi
         state: equipped-HELMET
-
-- type: entity
-  id: ClothingHeadModSuitCorpsman
-  parent: ClothingHeadModSuitBaseWithHair
-  categories: [ HideSpawnMenu ]
-  name: corpsman MOD helmet
-  components:
-  - type: Sprite
-    sprite: Clothing/Head/ModSuits/corpsman.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Head/ModSuits/corpsman.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Head/ModSuits/corpsman.rsi
-        state: icon
-    clothingLayers:
-      true:
-        head:
-        - sprite: Clothing/Head/ModSuits/corpsman.rsi
-          state: equipped-HELMET-sealed
-      false:
-        head:
-        - sprite: Clothing/Head/ModSuits/corpsman.rsi
-          state: equipped-HELMET
-    uiLayer:
-      true:
-        sprite: Clothing/Head/ModSuits/corpsman.rsi
-        state: equipped-HELMET-sealed
-      false:
-        sprite: Clothing/Head/ModSuits/corpsman.rsi
-        state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.2
+      coolingCoefficient: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.8
+            Slash: 0.8
+            Piercing: 0.6
+            Heat: 0.5
+            Radiation: 0.5
+            Caustic: 0.6
 
 - type: entity
   id: ClothingHeadModSuitCosmohonk
@@ -347,39 +388,24 @@
       false:
         sprite: Clothing/Head/ModSuits/cosmohonk.rsi
         state: equipped-HELMET
-
-- type: entity
-  id: ClothingHeadModSuitDebug
-  parent: ClothingHeadModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: debug MOD helmet
-  components:
-  - type: Sprite
-    sprite: Clothing/Head/ModSuits/debug.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Head/ModSuits/debug.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Head/ModSuits/debug.rsi
-        state: icon
-    clothingLayers:
-      true:
-        head:
-        - sprite: Clothing/Head/ModSuits/debug.rsi
-          state: equipped-HELMET-sealed
-      false:
-        head:
-        - sprite: Clothing/Head/ModSuits/debug.rsi
-          state: equipped-HELMET
-    uiLayer:
-      true:
-        sprite: Clothing/Head/ModSuits/debug.rsi
-        state: equipped-HELMET-sealed
-      false:
-        sprite: Clothing/Head/ModSuits/debug.rsi
-        state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.9
+            Slash: 0.9
+            Piercing: 0.9
+            Caustic: 0.8
 
 - type: entity
   id: ClothingHeadModSuitElite
@@ -413,6 +439,28 @@
       false:
         sprite: Clothing/Head/ModSuits/elite.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.005
+      coolingCoefficient: 0.005
+    - type: FireProtection
+      reduction: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.6
+            Slash: 0.6
+            Piercing: 0.6
+            Heat: 0.2
+            Radiation: 0.01
+            Caustic: 0.5
 
 - type: entity
   id: ClothingHeadModSuitEnchanted
@@ -446,6 +494,26 @@
       false:
         sprite: Clothing/Head/ModSuits/enchanted.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.27
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.6
+            Slash: 0.6
+            Piercing: 0.4
+            Heat: 0.25
+            Radiation: 0.25
+            Caustic: 0.75
 
 - type: entity
   id: ClothingHeadModSuitEngineering
@@ -479,43 +547,30 @@
       false:
         sprite: Clothing/Head/ModSuits/engineering.rsi
         state: equipped-HELMET
-
-- type: entity
-  id: ClothingHeadModSuitGlitch
-  parent: ClothingHeadModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: glitch MOD helmet
-  components:
-  - type: Sprite
-    sprite: Clothing/Head/ModSuits/glitch.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Head/ModSuits/glitch.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Head/ModSuits/glitch.rsi
-        state: icon
-    clothingLayers:
-      true:
-        head:
-        - sprite: Clothing/Head/ModSuits/glitch.rsi
-          state: equipped-HELMET-sealed
-      false:
-        head:
-        - sprite: Clothing/Head/ModSuits/glitch.rsi
-          state: equipped-HELMET
-    uiLayer:
-      true:
-        sprite: Clothing/Head/ModSuits/glitch.rsi
-        state: equipped-HELMET-sealed
-      false:
-        sprite: Clothing/Head/ModSuits/glitch.rsi
-        state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.1
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.9
+            Slash: 0.9
+            Piercing: 0.9
+            Shock: 0.8
+            Caustic: 0.5
+            Radiation: 0.2
 
 - type: entity
   id: ClothingHeadModSuitHonkerative
-  parent: ClothingHeadModSuitBase
+  parent: ClothingHeadModSuitSyndicate
   categories: [ HideSpawnMenu ]
   name: honkerative MOD helmet
   components:
@@ -547,37 +602,57 @@
         state: equipped-HELMET
 
 - type: entity
-  id: ClothingHeadModSuitInfiltrator
+  id: ClothingHeadModSuitSyndieCommander
   parent: ClothingHeadModSuitBase
   categories: [ HideSpawnMenu ]
-  name: infiltrator MOD helmet
+  name: syndicate commander MOD helmet
   components:
   - type: Sprite
-    sprite: Clothing/Head/ModSuits/infiltrator.rsi
+    sprite: Clothing/Head/ModSuits/syndiecommander.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Head/ModSuits/infiltrator.rsi
+      - sprite: Clothing/Head/ModSuits/syndiecommander.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Head/ModSuits/infiltrator.rsi
+      - sprite: Clothing/Head/ModSuits/syndiecommander.rsi
         state: icon
     clothingLayers:
       true:
         head:
-        - sprite: Clothing/Head/ModSuits/infiltrator.rsi
+        - sprite: Clothing/Head/ModSuits/syndiecommander.rsi
           state: equipped-HELMET-sealed
       false:
         head:
-        - sprite: Clothing/Head/ModSuits/infiltrator.rsi
+        - sprite: Clothing/Head/ModSuits/syndiecommander.rsi
           state: equipped-HELMET
     uiLayer:
       true:
-        sprite: Clothing/Head/ModSuits/infiltrator.rsi
+        sprite: Clothing/Head/ModSuits/syndiecommander.rsi
         state: equipped-HELMET-sealed
       false:
-        sprite: Clothing/Head/ModSuits/infiltrator.rsi
+        sprite: Clothing/Head/ModSuits/syndiecommander.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.4
+            Slash: 0.4
+            Piercing: 0.3
+            Heat: 0.5
+            Radiation: 0.25
+            Caustic: 0.4
 
 - type: entity
   id: ClothingHeadModSuitInquisitory
@@ -613,37 +688,55 @@
         state: equipped-HELMET
 
 - type: entity
-  id: ClothingHeadModSuitInterdyne
+  id: ClothingHeadModSuitBrigmedic
   parent: ClothingHeadModSuitBase
   categories: [ HideSpawnMenu ]
-  name: interdyne MOD helmet
+  name: brigmedic MOD helmet
   components:
   - type: Sprite
-    sprite: Clothing/Head/ModSuits/interdyne.rsi
+    sprite: Clothing/Head/ModSuits/brigmedic.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Head/ModSuits/interdyne.rsi
+      - sprite: Clothing/Head/ModSuits/brigmedic.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Head/ModSuits/interdyne.rsi
+      - sprite: Clothing/Head/ModSuits/brigmedic.rsi
         state: icon
     clothingLayers:
       true:
         head:
-        - sprite: Clothing/Head/ModSuits/interdyne.rsi
+        - sprite: Clothing/Head/ModSuits/brigmedic.rsi
           state: equipped-HELMET-sealed
       false:
         head:
-        - sprite: Clothing/Head/ModSuits/interdyne.rsi
+        - sprite: Clothing/Head/ModSuits/brigmedic.rsi
           state: equipped-HELMET
     uiLayer:
       true:
-        sprite: Clothing/Head/ModSuits/interdyne.rsi
+        sprite: Clothing/Head/ModSuits/brigmedic.rsi
         state: equipped-HELMET-sealed
       false:
-        sprite: Clothing/Head/ModSuits/interdyne.rsi
+        sprite: Clothing/Head/ModSuits/brigmedic.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.8
+            Slash: 0.8
+            Piercing: 0.7
+            Radiation: 0.9
 
 - type: entity
   id: ClothingHeadModSuitLoader
@@ -679,37 +772,57 @@
         state: equipped-HELMET
 
 - type: entity
-  id: ClothingHeadModSuitMagnate
-  parent: ClothingHeadModSuitBase
+  id: ClothingHeadModSuitCaptain
+  parent: ClothingHeadModSuitBaseWithHair
   categories: [ HideSpawnMenu ]
-  name: magnate MOD helmet
+  name: captain MOD helmet
   components:
   - type: Sprite
-    sprite: Clothing/Head/ModSuits/magnate.rsi
+    sprite: Clothing/Head/ModSuits/captain.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Head/ModSuits/magnate.rsi
+      - sprite: Clothing/Head/ModSuits/captain.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Head/ModSuits/magnate.rsi
+      - sprite: Clothing/Head/ModSuits/captain.rsi
         state: icon
     clothingLayers:
       true:
         head:
-        - sprite: Clothing/Head/ModSuits/magnate.rsi
+        - sprite: Clothing/Head/ModSuits/captain.rsi
           state: equipped-HELMET-sealed
       false:
         head:
-        - sprite: Clothing/Head/ModSuits/magnate.rsi
+        - sprite: Clothing/Head/ModSuits/captain.rsi
           state: equipped-HELMET
     uiLayer:
       true:
-        sprite: Clothing/Head/ModSuits/magnate.rsi
+        sprite: Clothing/Head/ModSuits/captain.rsi
         state: equipped-HELMET-sealed
       false:
-        sprite: Clothing/Head/ModSuits/magnate.rsi
+        sprite: Clothing/Head/ModSuits/captain.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.2
+      coolingCoefficient: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.8
+            Slash: 0.8
+            Piercing: 0.6
+            Heat: 0.5
+            Radiation: 0.5
+            Caustic: 0.6
 
 - type: entity
   id: ClothingHeadModSuitMedical
@@ -743,39 +856,74 @@
       false:
         sprite: Clothing/Head/ModSuits/medical.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.2
+      coolingCoefficient: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Caustic: 0.1
 
 - type: entity
-  id: ClothingHeadModSuitMining
+  id: ClothingHeadModSuitLuxury
   parent: ClothingHeadModSuitBase
   categories: [ HideSpawnMenu ]
-  name: mining MOD helmet
+  name: luxury MOD helmet
   components:
   - type: Sprite
-    sprite: Clothing/Head/ModSuits/mining.rsi
+    sprite: Clothing/Head/ModSuits/luxury.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Head/ModSuits/mining.rsi
+      - sprite: Clothing/Head/ModSuits/luxury.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Head/ModSuits/mining.rsi
+      - sprite: Clothing/Head/ModSuits/luxury.rsi
         state: icon
     clothingLayers:
       true:
         head:
-        - sprite: Clothing/Head/ModSuits/mining.rsi
+        - sprite: Clothing/Head/ModSuits/luxury.rsi
           state: equipped-HELMET-sealed
       false:
         head:
-        - sprite: Clothing/Head/ModSuits/mining.rsi
+        - sprite: Clothing/Head/ModSuits/luxury.rsi
           state: equipped-HELMET
     uiLayer:
       true:
-        sprite: Clothing/Head/ModSuits/mining.rsi
+        sprite: Clothing/Head/ModSuits/luxury.rsi
         state: equipped-HELMET-sealed
       false:
-        sprite: Clothing/Head/ModSuits/mining.rsi
+        sprite: Clothing/Head/ModSuits/luxury.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.2
+      coolingCoefficient: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.9
+            Slash: 0.8
+            Piercing: 0.9
+            Heat: 0.9
+            Radiation: 0.5
+            Caustic: 0.8
 
 - type: entity
   id: ClothingHeadModSuitNinja
@@ -809,39 +957,24 @@
       false:
         sprite: Clothing/Head/ModSuits/ninja.rsi
         state: equipped-HELMET
-
-- type: entity
-  id: ClothingHeadModSuitPrototype
-  parent: ClothingHeadModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: prototype MOD helmet
-  components:
-  - type: Sprite
-    sprite: Clothing/Head/ModSuits/prototype.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Head/ModSuits/prototype.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Head/ModSuits/prototype.rsi
-        state: icon
-    clothingLayers:
-      true:
-        head:
-        - sprite: Clothing/Head/ModSuits/prototype.rsi
-          state: equipped-HELMET-sealed
-      false:
-        head:
-        - sprite: Clothing/Head/ModSuits/prototype.rsi
-          state: equipped-HELMET
-    uiLayer:
-      true:
-        sprite: Clothing/Head/ModSuits/prototype.rsi
-        state: equipped-HELMET-sealed
-      false:
-        sprite: Clothing/Head/ModSuits/prototype.rsi
-        state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.2
+      coolingCoefficient: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.8
+            Slash: 0.8
+            Piercing: 0.8
+            Heat: 0.8
 
 - type: entity
   id: ClothingHeadModSuitRescue
@@ -875,6 +1008,23 @@
       false:
         sprite: Clothing/Head/ModSuits/rescue.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Heat: 0.90
+            Radiation: 0.75
+            Caustic: 0.5
 
 - type: entity
   id: ClothingHeadModSuitResearch
@@ -908,6 +1058,26 @@
       false:
         sprite: Clothing/Head/ModSuits/research.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.60
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.6
+            Slash: 0.8
+            Piercing: 0.9
+            Heat: 0.3
+            Radiation: 0.1
+            Caustic: 0.2
 
 - type: entity
   id: ClothingHeadModSuitResponsory
@@ -941,6 +1111,28 @@
       false:
         sprite: Clothing/Head/ModSuits/responsory.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: FireProtection
+      reduction: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.1
+            Slash: 0.1
+            Piercing: 0.1
+            Heat: 0.1
+            Radiation: 0.1
+            Caustic: 0.1
 
 - type: entity
   id: ClothingHeadModSuitSafeguard
@@ -974,6 +1166,26 @@
       false:
         sprite: Clothing/Head/ModSuits/safeguard.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.45
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.6
+            Slash: 0.5
+            Piercing: 0.5
+            Heat: 0.8
+            Radiation: 0.5
+            Caustic: 0.6
 
 - type: entity
   id: ClothingHeadModSuitSecurity
@@ -1007,6 +1219,24 @@
       false:
         sprite: Clothing/Head/ModSuits/security.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.6
+            Slash: 0.6
+            Piercing: 0.6
+            Caustic: 0.7
 
 - type: entity
   id: ClothingHeadModSuitStandard
@@ -1040,6 +1270,25 @@
       false:
         sprite: Clothing/Head/ModSuits/standard.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.2
+      coolingCoefficient: 0.2
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.90
+            Slash: 0.90
+            Piercing: 0.95
+            Heat: 0.90
+            Radiation: 0.25
 
 - type: entity
   id: ClothingHeadModSuitSyndicate
@@ -1072,4 +1321,57 @@
         state: equipped-HELMET-sealed
       false:
         sprite: Clothing/Head/ModSuits/syndicate.rsi
+        state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.5
+            Slash: 0.5
+            Piercing: 0.5
+            Heat: 0.5
+            Radiation: 0.5
+            Caustic: 0.5
+
+- type: entity
+  id: ClothingHeadModSuitSyndicateMedic
+  parent: ClothingHeadModSuitSyndicate
+  categories: [ HideSpawnMenu ]
+  name: syndicate medic MOD helmet
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/ModSuits/glitch.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Head/ModSuits/glitch.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Head/ModSuits/glitch.rsi
+        state: icon
+    clothingLayers:
+      true:
+        head:
+        - sprite: Clothing/Head/ModSuits/glitch.rsi
+          state: equipped-HELMET-sealed
+      false:
+        head:
+        - sprite: Clothing/Head/ModSuits/glitch.rsi
+          state: equipped-HELMET
+    uiLayer:
+      true:
+        sprite: Clothing/Head/ModSuits/glitch.rsi
+        state: equipped-HELMET-sealed
+      false:
+        sprite: Clothing/Head/ModSuits/glitch.rsi
         state: equipped-HELMET

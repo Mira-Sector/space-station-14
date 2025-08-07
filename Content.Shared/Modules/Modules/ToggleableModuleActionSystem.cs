@@ -7,7 +7,7 @@ namespace Content.Shared.Modules.Modules;
 
 public sealed partial class ToggleableModuleActionSystem : EntitySystem
 {
-    [Dependency] private readonly ModuleContainedSystem _moduleContained = default!;
+    [Dependency] private readonly SharedModuleSystem _module = default!;
     [Dependency] private readonly ToggleableModuleSystem _toggleableModule = default!;
     [Dependency] private readonly SharedActionsSystem _actions = default!;
 
@@ -31,7 +31,7 @@ public sealed partial class ToggleableModuleActionSystem : EntitySystem
 
     private void OnAdded(Entity<ToggleableModuleActionComponent> ent, ref ModuleAddedContainerEvent args)
     {
-        if (!_moduleContained.TryGetUser(ent.Owner, out var user))
+        if (!_module.TryGetUser(ent.Owner, out var user))
             return;
 
         if (!_actions.AddAction(user.Value, ref ent.Comp.Action, ent.Comp.ActionId, ent.Owner))

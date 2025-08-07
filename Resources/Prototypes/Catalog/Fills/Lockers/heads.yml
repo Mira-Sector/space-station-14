@@ -72,9 +72,8 @@
   id: FillCaptainHardsuit
   table: !type:AllSelector
     children:
-    - id: ClothingOuterHardsuitCap
+    - id: ClothingBackpackModSuitCaptainFilled
     - id: ClothingMaskGasCaptain
-    - id: JetpackCaptainFilled
     - id: OxygenTankFilled
 
 # No laser locker, used when the antique laser is placed in the special display crate
@@ -179,9 +178,7 @@
   table: !type:AllSelector
     children:
     - id: ClothingMaskGasAtmos
-    - id: ClothingOuterHardsuitEngineeringWhite
-    - id: ClothingShoesBootsMagAdv
-    - id: JetpackVoidFilled
+    - id: ClothingBackpackModSuitAdvancedFilled
     - id: OxygenTankFilled
 
 # No hardsuit locker
@@ -238,7 +235,7 @@
   table: !type:AllSelector
     children:
     - id: ClothingMaskBreathMedical
-    - id: ClothingOuterHardsuitMedical
+    - id: ClothingBackpackModSuitMedicalFilled
     - id: OxygenTankFilled
 
 # No hardsuit locker
@@ -292,7 +289,7 @@
   table: !type:AllSelector
     children:
     - id: ClothingMaskBreath
-    - id: ClothingOuterHardsuitRd
+    - id: ClothingBackpackModSuitResearchFilled
     - id: OxygenTankFilled
 
 # No hardsuit locker
@@ -351,8 +348,7 @@
   table: !type:AllSelector
     children:
     - id: ClothingMaskGasSwat
-    - id: ClothingOuterHardsuitSecurityRed
-    - id: JetpackSecurityFilled
+    - id: ClothingBackpackModSuitSafeguardFilled
     - id: OxygenTankFilled
 
 # No hardsuit locker

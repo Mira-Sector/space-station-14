@@ -1,4 +1,4 @@
-﻿<Document>
+<Document>
   # Singularity Engine
   The Singularity Engine is a powerful generator that uses a contained singularity to produce energy for the station.
 
@@ -70,11 +70,11 @@
 
   ## Radiation Protection
   The singularity emits a massive amount of radiation, which can kill crew members who are not wearing proper protection.
-  Be sure to wear a radiation suit or an engineering hardsuit when working near the singularity.
+  Be sure to wear a radiation suit or an engineering MODsuit when working near the singularity.
   This won't completely negate the radiation, but it will reduce the damage you take.
 
   <Box>
-    <GuideEntityEmbed Entity="ClothingOuterHardsuitEngineering"/>
+    <GuideEntityEmbed Entity="ClothingBackpackModSuitEngineering"/>
   </Box>
 
   <Box>

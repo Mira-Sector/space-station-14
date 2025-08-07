@@ -38,7 +38,7 @@ public sealed class ContainerFillSystem : EntitySystem
             foreach (var proto in prototypes)
             {
                 var ent = Spawn(proto, coords);
-                if (!_containerSystem.Insert(ent, container, containerXform: xform))
+                if (!_containerSystem.Insert(ent, container, xform, true))
                 {
                     var alreadyContained = container.ContainedEntities.Count > 0 ? string.Join("\n", container.ContainedEntities.Select(e => $"\t - {EntityManager.ToPrettyString(e)}")) : "< empty >";
                     Log.Error($"Entity {ToPrettyString(uid)} with a {nameof(ContainerFillComponent)} failed to insert an entity: {ToPrettyString(ent)}.\nCurrent contents:\n{alreadyContained}");
