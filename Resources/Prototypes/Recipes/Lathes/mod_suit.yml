@@ -64,7 +64,7 @@
 - type: latheRecipe
   parent: BaseModSuitPartRecipe
   id: ModSuitConstructionChestplate
-  result: ModSuitConstructionShell
+  result: ModSuitConstructionChestplate
 
 - type: latheRecipe
   parent: BaseModSuitPartRecipe
