@@ -43,6 +43,15 @@
     Silver: 100
 
 - type: latheRecipe
+  abstract: true
+  id: BaseModSuitPlatingRecipe
+  categories:
+  - Parts
+  completetime: 5
+  materials:
+    Steel: 1000
+
+- type: latheRecipe
   parent: BaseModSuitPartRecipe
   id: ModSuitConstructionShell
   result: ModSuitConstructionShell
@@ -66,6 +75,36 @@
   parent: BaseModSuitPartRecipe
   id: ModSuitConstructionBoots
   result: ModSuitConstructionBoots
+
+- type: latheRecipe
+  parent: BaseModSuitPlatingRecipe
+  id: ModSuitPlatingStandard
+  result: ModSuitPlatingStandard
+
+- type: latheRecipe
+  parent: BaseModSuitPlatingRecipe
+  id: ModSuitPlatingEngineering
+  result: ModSuitPlatingEngineering
+
+- type: latheRecipe
+  parent: BaseModSuitPlatingRecipe
+  id: ModSuitPlatingAtmospheric
+  result: ModSuitPlatingAtmospheric
+
+- type: latheRecipe
+  parent: BaseModSuitPlatingRecipe
+  id: ModSuitPlatingMedical
+  result: ModSuitPlatingMedical
+
+- type: latheRecipe
+  parent: BaseModSuitPlatingRecipe
+  id: ModSuitPlatingSecurity
+  result: ModSuitPlatingSecurity
+
+- type: latheRecipe
+  parent: BaseModSuitPlatingRecipe
+  id: ModSuitPlatingCosmohonk
+  result: ModSuitPlatingCosmohonk
 
 - type: latheRecipe
   parent: BaseModSuitRecipeAdvanced

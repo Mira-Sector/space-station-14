@@ -76,6 +76,12 @@
   - ModSuitConstructionChestplate
   - ModSuitConstructionGauntlets
   - ModSuitConstructionBoots
+  - ModSuitPlatingStandard
+  - ModSuitPlatingEngineering
+  - ModSuitPlatingAtmospheric
+  - ModSuitPlatingMedical
+  - ModSuitPlatingSecurity
+  - ModSuitPlatingCosmohonk
 
 - type: latheRecipePack
   id: ModSuitModulesStatic
