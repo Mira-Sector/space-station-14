@@ -250,7 +250,7 @@
   - type: StorageFill
     contents:
         - id: OxygenTankFilled
-        - id: ClothingOuterHardsuitSyndie
+        - id: ClothingBackpackModSuitSyndicateFilled
         - id: ClothingShoesBootsMagSyndie
         - id: ClothingMaskGasSyndicate
 

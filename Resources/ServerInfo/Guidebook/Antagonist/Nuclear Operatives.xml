@@ -20,9 +20,9 @@
   - The [bold]Commander[/bold] who draws up the plan and leads the team.
 
   <Box>
-    <GuideEntityEmbed Entity="ClothingOuterHardsuitSyndie"/>
-    <GuideEntityEmbed Entity="ClothingOuterHardsuitSyndieMedic" Caption="agent's hardsuit"/>
-    <GuideEntityEmbed Entity="ClothingOuterHardsuitSyndieCommander" Caption="commander's hardsuit"/>
+    <GuideEntityEmbed Entity="ClothingBackpackModSuitSyndicate"/>
+    <GuideEntityEmbed Entity="ClothingOuterHardsuitSyndieMedic" Caption="agent's MODsuit"/>
+    <GuideEntityEmbed Entity="ClothingBackpackModSuitSyndieCommander" Caption="commander's MODsuit"/>
   </Box>
 
   If you have been selected as the Agent or Commander but don't feel ready, one of your teammates can take responsibility.
