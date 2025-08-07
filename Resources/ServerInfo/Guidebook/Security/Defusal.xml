@@ -15,7 +15,7 @@
     <GuideEntityEmbed Entity="ClothingHeadHelmetBombSuit"/>
     <GuideEntityEmbed Entity="ClothingOuterSuitBomb"/>
     <GuideEntityEmbed Entity="ClothingBackpackModSuitResearch"/>
-    <GuideEntityEmbed Entity="ClothingOuterHardsuitAtmos"/>
+    <GuideEntityEmbed Entity="ClothingBackpackModSuitAtmospheric"/>
   </Box>
 
   ## Hardbombs
