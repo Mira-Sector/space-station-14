@@ -67,3 +67,33 @@
     - MechEquipmentGrabber
     - MechEquipmentHorn
     - MechEquipmentGrabberSmall
+
+- type: latheRecipePack
+  id: ModSuitParts
+  recipes:
+  - ModSuitConstructionShell
+  - ModSuitConstructionHelmet
+  - ModSuitConstructionChestplate
+  - ModSuitConstructionGauntlets
+  - ModSuitConstructionBoots
+
+- type: latheRecipePack
+  id: ModSuitModulesStatic
+  recipes:
+  - ModSuitModuleStorageNormal
+  - ModSuitModuleFlashlight
+
+- type: latheRecipePack
+  id: ModSuitModules
+  recipes:
+  - ModSuitModuleCloakPrototype
+  - ModSuitModuleJetpackNormal
+  - ModSuitModuleMagboots
+  - ModSuitModuleInsulation
+  - ModSuitModuleVisonMed
+  - ModSuitModuleVisonDiagnostic
+  - ModSuitModuleVisonSec
+  - ModSuitModuleVisonMeson
+  - ModSuitModuleVisonWelding
+  - ModSuitModuleStorageExpanded
+  - ModSuitModuleStorageBluespace

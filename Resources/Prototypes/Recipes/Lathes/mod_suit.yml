@@ -1,0 +1,135 @@
+- type: latheRecipe
+  abstract: true
+  id: BaseModSuitRecipeBasic
+  categories:
+  - Modules
+  completetime: 3
+  materials:
+    Steel: 400
+    Glass: 50
+    Silver: 100
+
+- type: latheRecipe
+  abstract: true
+  id: BaseModSuitRecipeMedium
+  categories:
+  - Modules
+  completetime: 5
+  materials:
+    Steel: 600
+    Glass: 50
+    Silver: 100
+
+- type: latheRecipe
+  abstract: true
+  id: BaseModSuitRecipeAdvanced
+  categories:
+  - Modules
+  completetime: 10
+  materials:
+    Steel: 1000
+    Glass: 400
+    Gold: 500
+    Uranium: 200
+
+- type: latheRecipe
+  abstract: true
+  id: BaseModSuitPartRecipe
+  categories:
+  - Parts
+  completetime: 3
+  materials:
+    Steel: 800
+    Silver: 100
+
+- type: latheRecipe
+  parent: BaseModSuitPartRecipe
+  id: ModSuitConstructionShell
+  result: ModSuitConstructionShell
+
+- type: latheRecipe
+  parent: BaseModSuitPartRecipe
+  id: ModSuitConstructionHelmet
+  result: ModSuitConstructionHelmet
+
+- type: latheRecipe
+  parent: BaseModSuitPartRecipe
+  id: ModSuitConstructionChestplate
+  result: ModSuitConstructionShell
+
+- type: latheRecipe
+  parent: BaseModSuitPartRecipe
+  id: ModSuitConstructionGauntlets
+  result: ModSuitConstructionGauntlets
+
+- type: latheRecipe
+  parent: BaseModSuitPartRecipe
+  id: ModSuitConstructionBoots
+  result: ModSuitConstructionBoots
+
+- type: latheRecipe
+  parent: BaseModSuitRecipeAdvanced
+  id: ModSuitModuleCloakPrototype
+  result: ModSuitModuleCloakPrototype
+
+- type: latheRecipe
+  parent: BaseModSuitRecipeBasic
+  id: ModSuitModuleFlashlight
+  result: ModSuitModuleFlashlight
+
+- type: latheRecipe
+  parent: BaseModSuitRecipeBasic
+  id: ModSuitModuleJetpackNormal
+  result: ModSuitModuleJetpackNormal
+
+- type: latheRecipe
+  parent: BaseModSuitRecipeBasic
+  id: ModSuitModuleMagboots
+  result: ModSuitModuleMagboots
+
+- type: latheRecipe
+  parent: BaseModSuitRecipeBasic
+  id: ModSuitModuleInsulation
+  result: ModSuitModuleInsulation
+
+- type: latheRecipe
+  parent: BaseModSuitRecipeBasic
+  id: ModSuitModuleVisonMed
+  result: ModSuitModuleVisonMed
+
+- type: latheRecipe
+  parent: BaseModSuitRecipeBasic
+  id: ModSuitModuleVisonDiagnostic
+  result: ModSuitModuleVisonDiagnostic
+
+- type: latheRecipe
+  parent: BaseModSuitRecipeBasic
+  id: ModSuitModuleVisonSec
+  result: ModSuitModuleVisonSec
+
+- type: latheRecipe
+  parent: BaseModSuitRecipeBasic
+  id: ModSuitModuleVisonMeson
+  result: ModSuitModuleVisonMeson
+
+- type: latheRecipe
+  parent: BaseModSuitRecipeMedium
+  id: ModSuitModuleVisonWelding
+  result: ModSuitModuleVisonWelding
+
+- type: latheRecipe
+  parent: BaseModSuitRecipeBasic
+  id: ModSuitModuleStorageNormal
+  result: ModSuitModuleStorageNormal
+
+- type: latheRecipe
+  parent: BaseModSuitRecipeMedium
+  id: ModSuitModuleStorageExpanded
+  result: ModSuitModuleStorageExpanded
+
+- type: latheRecipe
+  parent:
+  - BaseModSuitRecipeAdvanced
+  - ClothingBackpackHolding
+  id: ModSuitModuleStorageBluespace
+  result: ModSuitModuleStorageBluespace
