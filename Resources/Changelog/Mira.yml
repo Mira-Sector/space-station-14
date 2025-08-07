@@ -2013,3 +2013,19 @@ Entries:
     type: Remove
   id: 279
   time: '2025-07-30T17:00:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: MODsuits replace station hardsuits
+    type: Add
+  - message: MODsuit cores are orderable from cargo
+    type: Add
+  - message: Added the expanded storage research
+    type: Add
+  - message: Added the space propulsion research
+    type: Add
+  - message: Added the insulation research
+    type: Add
+  - message: Added the cloaking research
+    type: Add
+  id: 280
+  time: '2025-08-07T19:00:50.0000000+00:00'
