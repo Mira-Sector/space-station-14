@@ -93,37 +93,56 @@
             Caustic: 0.7
 
 - type: entity
-  id: ClothingHeadModSuitApocrphal
+  id: ClothingHeadModSuitWarden
   parent: ClothingHeadModSuitBase
   categories: [ HideSpawnMenu ]
-  name: apocryphal MOD helmet
+  name: warden's MOD helmet
   components:
   - type: Sprite
-    sprite: Clothing/Head/ModSuits/apocryphal.rsi
+    sprite: Clothing/Head/ModSuits/warden.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Head/ModSuits/apocryphal.rsi
+      - sprite: Clothing/Head/ModSuits/warden.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Head/ModSuits/apocryphal.rsi
+      - sprite: Clothing/Head/ModSuits/warden.rsi
         state: icon
     clothingLayers:
       true:
         head:
-        - sprite: Clothing/Head/ModSuits/apocryphal.rsi
+        - sprite: Clothing/Head/ModSuits/warden.rsi
           state: equipped-HELMET-sealed
       false:
         head:
-        - sprite: Clothing/Head/ModSuits/apocryphal.rsi
+        - sprite: Clothing/Head/ModSuits/warden.rsi
           state: equipped-HELMET
     uiLayer:
       true:
-        sprite: Clothing/Head/ModSuits/apocryphal.rsi
+        sprite: Clothing/Head/ModSuits/warden.rsi
         state: equipped-HELMET-sealed
       false:
-        sprite: Clothing/Head/ModSuits/apocryphal.rsi
+        sprite: Clothing/Head/ModSuits/warden.rsi
         state: equipped-HELMET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      basePart: Head
+      modifiers:
+      - parts:
+        - Head
+        modifier:
+          coefficients:
+            Blunt: 0.4
+            Slash: 0.5
+            Piercing: 0.6
+            Heat: 0.8
+            Caustic: 0.7
 
 - type: entity
   id: ClothingHeadModSuitSalvage

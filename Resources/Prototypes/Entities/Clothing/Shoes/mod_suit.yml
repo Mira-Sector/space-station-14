@@ -56,37 +56,41 @@
       lowPressureMultiplier: 1000
 
 - type: entity
-  id: ClothingShoesModSuitApocrphal
+  id: ClothingShoesModSuitWarden
   parent: ClothingShoesModSuitBase
   categories: [ HideSpawnMenu ]
-  name: apocryphal MOD boots
+  name: warden's MOD boots
   components:
   - type: Sprite
-    sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
+    sprite: Clothing/Shoes/ModSuits/warden.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
+      - sprite: Clothing/Shoes/ModSuits/warden.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
+      - sprite: Clothing/Shoes/ModSuits/warden.rsi
         state: icon
     clothingLayers:
       true:
         shoes:
-        - sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
+        - sprite: Clothing/Shoes/ModSuits/warden.rsi
           state: equipped-FEET-sealed
       false:
         shoes:
-        - sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
+        - sprite: Clothing/Shoes/ModSuits/warden.rsi
           state: equipped-FEET
     uiLayer:
       true:
-        sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
+        sprite: Clothing/Shoes/ModSuits/warden.rsi
         state: equipped-FEET-sealed
       false:
-        sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
+        sprite: Clothing/Shoes/ModSuits/warden.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitSalvage

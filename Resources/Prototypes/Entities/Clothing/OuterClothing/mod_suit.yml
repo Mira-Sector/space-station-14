@@ -74,37 +74,59 @@
             Caustic: 0.7
 
 - type: entity
-  id: ClothingOuterModSuitApocrphal
+  id: ClothingOuterModSuitWarden
   parent: ClothingOuterModSuitBase
   categories: [ HideSpawnMenu ]
-  name: apocryphal MOD chestplate
+  name: warden's MOD chestplate
   components:
   - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/apocryphal.rsi
+    sprite: Clothing/OuterClothing/ModSuits/warden.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/OuterClothing/ModSuits/apocryphal.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/warden.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/OuterClothing/ModSuits/apocryphal.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/warden.rsi
         state: icon
     clothingLayers:
       true:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/apocryphal.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/warden.rsi
           state: equipped-OUTERCLOTHING-sealed
       false:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/apocryphal.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/warden.rsi
           state: equipped-OUTERCLOTHING
     uiLayer:
       true:
-        sprite: Clothing/OuterClothing/ModSuits/apocryphal.rsi
+        sprite: Clothing/OuterClothing/ModSuits/warden.rsi
         state: equipped-OUTERCLOTHING-sealed
       false:
-        sprite: Clothing/OuterClothing/ModSuits/apocryphal.rsi
+        sprite: Clothing/OuterClothing/ModSuits/warden.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.5
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.4
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.4
+            Slash: 0.5
+            Piercing: 0.6
+            Heat: 0.8
+            Caustic: 0.7
 
 - type: entity
   id: ClothingOuterModSuitSalvage

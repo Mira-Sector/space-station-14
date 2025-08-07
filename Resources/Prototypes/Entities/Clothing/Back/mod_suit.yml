@@ -106,44 +106,64 @@
       - ModSuitModuleFlashlightAdvanced
 
 - type: entity
-  id: ClothingBackpackModSuitApocrphal
+  id: ClothingBackpackModSuitWarden
   parent: ClothingBackpackModSuitBase
-  name: apocryphal MOD control unit
+  name: warden's MOD control unit
+  description: A specialized riot suit geared to combat those pesky tiders.
   components:
   - type: Sprite
-    sprite: Clothing/Back/ModSuits/apocryphal.rsi
+    sprite: Clothing/Back/ModSuits/warden.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Back/ModSuits/apocryphal.rsi
+      - sprite: Clothing/Back/ModSuits/warden.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Back/ModSuits/apocryphal.rsi
+      - sprite: Clothing/Back/ModSuits/warden.rsi
         state: icon
     clothingLayers:
       true:
         back:
-        - sprite: Clothing/Back/ModSuits/apocryphal.rsi
+        - sprite: Clothing/Back/ModSuits/warden.rsi
           state: equipped-BACKPACK-sealed
       false:
         back:
-        - sprite: Clothing/Back/ModSuits/apocryphal.rsi
+        - sprite: Clothing/Back/ModSuits/warden.rsi
           state: equipped-BACKPACK
     uiLayer:
       true:
-        sprite: Clothing/Back/ModSuits/apocryphal.rsi
+        sprite: Clothing/Back/ModSuits/warden.rsi
         state: equipped-BACKPACK-sealed
       false:
-        sprite: Clothing/Back/ModSuits/apocryphal.rsi
+        sprite: Clothing/Back/ModSuits/warden.rsi
         state: equipped-BACKPACK
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
   - type: ModSuitPartDeployable
     deployableParts:
-      outerClothing: ClothingOuterModSuitApocrphal
-      gloves: ClothingHandsModSuitApocrphal
-      head: ClothingHeadModSuitApocrphal
-      shoes: ClothingShoesModSuitApocrphal
-  - type: ModSuitComplexityLimit
-    maxComplexity: 25
+      outerClothing: ClothingOuterModSuitWarden
+      gloves: ClothingHandsModSuitWarden
+      head: ClothingHeadModSuitWarden
+      shoes: ClothingShoesModSuitWarden
+  - type: ClothingSpeedModifier
+    walkModifier: 0.85
+    sprintModifier: 0.85
+  - type: HeldSpeedModifier
+
+- type: entity
+  id: ClothingBackpackModSuitWardenFilled
+  parent: ClothingBackpackModSuitWarden
+  suffix: Filled
+  components:
+  - type: ContainerFill
+    containers:
+      modules:
+      - ModSuitModuleJetpackNormal
+      - ModSuitModuleVisonSec
+      - ModSuitModuleStorageExpanded
+      - ModSuitModuleFlashlightSecurity
 
 - type: entity
   id: ClothingBackpackModSuitSalvage
