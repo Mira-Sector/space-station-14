@@ -4,7 +4,6 @@ using Content.Shared.Item;
 using Content.Shared.Modules.ModSuit;
 using Content.Shared.Modules.ModSuit.Components;
 using Robust.Client.GameObjects;
-using Robust.Shared.Reflection;
 using System.Linq;
 
 namespace Content.Client.Modules.ModSuit;
@@ -12,7 +11,6 @@ namespace Content.Client.Modules.ModSuit;
 public partial class ModSuitSystem
 {
     [Dependency] private readonly SharedItemSystem _item = default!;
-    [Dependency] private readonly IReflectionManager _reflection = default!;
 
     private const string LayerPrefix = "modsuit-sealable-layers";
 
@@ -76,7 +74,7 @@ public partial class ModSuitSystem
         AddClothingLayers(ev.Layers, ref args);
     }
 
-    private void AddClothingLayers(List<PrototypeLayerData> layers, ref GetEquipmentVisualsEvent args)
+    private static void AddClothingLayers(List<PrototypeLayerData> layers, ref GetEquipmentVisualsEvent args)
     {
         List<(string, PrototypeLayerData)> toAdd = [];
 
