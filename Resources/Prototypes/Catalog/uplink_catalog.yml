@@ -1743,7 +1743,7 @@
   name: uplink-hardsuit-syndie-name
   description: uplink-hardsuit-syndie-desc
   icon: { sprite: Clothing/Back/ModSuits/syndicate.rsi, state: icon-sealed }
-  productEntity: ClothingBackpackDuffelSyndicateHardsuitBundle
+  productEntity: ClothingBackpackModSuitSyndicateFilled
   discountCategory: veryRareDiscounts
   discountDownTo:
     Telecrystal: 4
@@ -1773,7 +1773,7 @@
   name: uplink-hardsuit-syndieelite-name
   description: uplink-hardsuit-syndieelite-desc
   icon: { sprite: Clothing/Back/ModSuits/elite.rsi, state: icon-sealed }
-  productEntity: ClothingBackpackDuffelSyndicateEliteHardsuitBundle
+  productEntity: ClothingBackpackModSuitEliteFilled
   cost:
     Telecrystal: 10
   categories:
