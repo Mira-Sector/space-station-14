@@ -128,7 +128,7 @@
   - type: StorageFill
     contents:
         - id: OxygenTankFilled
-        - id: ClothingOuterHardsuitSecurity
+        - id: ClothingBackpackModSuitSecurityFilled
         - id: ClothingMaskBreath
   - type: AccessReader
     access: [["Security"]]
