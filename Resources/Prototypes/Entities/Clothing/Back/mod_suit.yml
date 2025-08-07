@@ -103,7 +103,7 @@
       - ModSuitModuleVisonMeson
       - ModSuitModuleVisonWelding
       - ModSuitModuleStorageExpanded
-      - ModSuitModuleFlashlight
+      - ModSuitModuleFlashlightAdvanced
 
 - type: entity
   id: ClothingBackpackModSuitApocrphal
@@ -272,7 +272,7 @@
       - ModSuitModuleVisonMeson
       - ModSuitModuleVisonWelding
       - ModSuitModuleStorageNormal
-      - ModSuitModuleFlashlight
+      - ModSuitModuleFlashlightAtmos
 
 - type: entity
   id: ClothingBackpackModSuitCivilian
@@ -383,7 +383,7 @@
       - ModSuitModuleVisonMeson
       - ModSuitModuleVisonWelding
       - ModSuitModuleStorageBluespace
-      - ModSuitModuleFlashlight
+      - ModSuitModuleFlashlightCorporate
 
 - type: entity
   id: ClothingBackpackModSuitCosmohonk
@@ -496,7 +496,7 @@
       modules:
       - ModSuitModuleJetpackNormal
       - ModSuitModuleStorageSyndie
-      - ModSuitModuleFlashlight
+      - ModSuitModuleFlashlightSyndie
 
 - type: entity
   id: ClothingBackpackModSuitEnchanted
@@ -559,7 +559,7 @@
       modules:
       - ModSuitModuleJetpackNormal
       - ModSuitModuleStorageExpanded
-      - ModSuitModuleFlashlight
+      - ModSuitModuleFlashlightEnchanted
 
 - type: entity
   id: ClothingBackpackModSuitEngineering
@@ -627,7 +627,7 @@
       - ModSuitModuleVisonMeson
       - ModSuitModuleVisonWelding
       - ModSuitModuleStorageNormal
-      - ModSuitModuleFlashlight
+      - ModSuitModuleFlashlightEngineering
 
 - type: entity
   id: ClothingBackpackModSuitHonkerative
@@ -678,7 +678,7 @@
       modules:
       - ModSuitModuleJetpackNormal
       - ModSuitModuleStorageSyndie
-      - ModSuitModuleFlashlight
+      - ModSuitModuleFlashlightSyndie
 
 - type: entity
   id: ClothingBackpackModSuitSyndieCommander
@@ -739,7 +739,7 @@
       modules:
       - ModSuitModuleJetpackNormal
       - ModSuitModuleStorageSyndie
-      - ModSuitModuleFlashlight
+      - ModSuitModuleFlashlightSyndie
 
 - type: entity
   id: ClothingBackpackModSuitInquisitory
@@ -842,7 +842,7 @@
       modules:
       - ModSuitModuleVisonMed
       - ModSuitModuleStorageNormal
-      - ModSuitModuleFlashlight
+      - ModSuitModuleFlashlightMedical
 
 - type: entity
   id: ClothingBackpackModSuitLoader
@@ -1026,7 +1026,7 @@
       modules:
       - ModSuitModuleVisonMed
       - ModSuitModuleStorageNormal
-      - ModSuitModuleFlashlight
+      - ModSuitModuleFlashlightMedical
 
 - type: entity
   id: ClothingBackpackModSuitLuxury
@@ -1147,7 +1147,7 @@
       - ModSuitModuleCloakNinja
       - ModSuitModuleJetpackNormal
       - ModSuitModuleStorageExpanded
-      - ModSuitModuleFlashlight
+      - ModSuitModuleFlashlightSyndie
 
 - type: entity
   id: ClothingBackpackModSuitRescue
@@ -1210,7 +1210,7 @@
       modules:
       - ModSuitModuleVisonMed
       - ModSuitModuleStorageNormal
-      - ModSuitModuleFlashlight
+      - ModSuitModuleFlashlightMedical
 
 - type: entity
   id: ClothingBackpackModSuitResearch
@@ -1274,7 +1274,7 @@
       - ModSuitModuleInsulation
       - ModSuitModuleVisonWelding
       - ModSuitModuleStorageExpanded
-      - ModSuitModuleFlashlight
+      - ModSuitModuleFlashlightResearch
 
 - type: entity
   id: ClothingBackpackModSuitResponsory
@@ -1340,7 +1340,7 @@
       - ModSuitModuleVisonMeson
       - ModSuitModuleVisonWelding
       - ModSuitModuleStorageBluespace
-      - ModSuitModuleFlashlight
+      - ModSuitModuleFlashlightCorporate
 
 - type: entity
   id: ClothingBackpackModSuitSafeguard
@@ -1404,7 +1404,7 @@
       - ModSuitModuleJetpackNormal
       - ModSuitModuleVisonSec
       - ModSuitModuleStorageExpanded
-      - ModSuitModuleFlashlight
+      - ModSuitModuleFlashlightSecurity
 
 - type: entity
   id: ClothingBackpackModSuitSecurity
@@ -1470,7 +1470,7 @@
       modules:
       - ModSuitModuleVisonSec
       - ModSuitModuleStorageNormal
-      - ModSuitModuleFlashlight
+      - ModSuitModuleFlashlightSecurity
 
 - type: entity
   id: ClothingBackpackModSuitStandard
@@ -1581,4 +1581,4 @@
       modules:
       - ModSuitModuleJetpackNormal
       - ModSuitModuleStorageSyndie
-      - ModSuitModuleFlashlight
+      - ModSuitModuleFlashlightSyndie
