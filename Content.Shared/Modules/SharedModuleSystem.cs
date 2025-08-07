@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Item;
 using Content.Shared.Modules.Components;
 using Content.Shared.Modules.Components.Modules;
 using Content.Shared.Modules.Events;
@@ -20,9 +21,10 @@ public abstract partial class SharedModuleSystem : EntitySystem
 {
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
+    [Dependency] private readonly SharedItemSystem _item = default!;
+    [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly SharedModSuitSystem _modSuit = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
 
     /// <inheritdoc/>
@@ -148,6 +150,8 @@ public abstract partial class SharedModuleSystem : EntitySystem
 
         var moduleEv = new ModuleAddedContainerEvent(ent.Owner);
         RaiseLocalEvent(args.Entity, moduleEv);
+
+        _item.VisualsChanged(ent.Owner);
     }
 
     private void OnContainerRemoved(Entity<ModuleContainerComponent> ent, ref EntRemovedFromContainerMessage args)
@@ -162,6 +166,8 @@ public abstract partial class SharedModuleSystem : EntitySystem
         RaiseLocalEvent(args.Entity, moduleEv);
 
         RemComp<ModuleContainedComponent>(args.Entity);
+
+        _item.VisualsChanged(ent.Owner);
     }
 
     private void OnContainerGetModSuitUiEntry(Entity<ModuleContainerComponent> ent, ref ModSuitGetUiEntriesEvent args)

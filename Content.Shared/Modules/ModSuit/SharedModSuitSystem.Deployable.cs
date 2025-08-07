@@ -8,6 +8,7 @@ using Robust.Shared.Containers;
 using JetBrains.Annotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Content.Shared.Item;
 
 namespace Content.Shared.Modules.ModSuit;
 
@@ -15,6 +16,7 @@ public partial class SharedModSuitSystem
 {
     [Dependency] protected readonly SharedContainerSystem Container = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
+    [Dependency] private readonly SharedItemSystem _item = default!;
 
     private const string DeployableSlotPrefix = "deployable-";
 
@@ -27,6 +29,9 @@ public partial class SharedModSuitSystem
         SubscribeLocalEvent<ModSuitPartDeployableComponent, ClothingGotEquippedEvent>(OnDeployableEquipped);
         SubscribeLocalEvent<ModSuitPartDeployableComponent, ClothingGotUnequippedEvent>(OnDeployableUnequipped);
         SubscribeLocalEvent<ModSuitPartDeployableComponent, ModuleGetUserEvent>(OnDeployableGetUser);
+
+        SubscribeLocalEvent<ModSuitPartDeployableComponent, ModuleAddedContainerEvent>(OnDeployableModuleAdded);
+        SubscribeLocalEvent<ModSuitPartDeployableComponent, ModuleRemovedContainerEvent>(OnDeployableModuleRemoved);
 
         SubscribeLocalEvent<ModSuitDeployedPartComponent, BeingUnequippedAttemptEvent>(OnDeployedUnequipAttempt);
 
@@ -123,6 +128,22 @@ public partial class SharedModSuitSystem
     private void OnDeployableGetUser(Entity<ModSuitPartDeployableComponent> ent, ref ModuleGetUserEvent args)
     {
         args.User = ent.Comp.Wearer;
+    }
+
+    private void OnDeployableModuleAdded(Entity<ModSuitPartDeployableComponent> ent, ref ModuleAddedContainerEvent args)
+    {
+        _item.VisualsChanged(ent.Owner);
+
+        foreach (var part in GetAllParts(ent!))
+            _item.VisualsChanged(part);
+    }
+
+    private void OnDeployableModuleRemoved(Entity<ModSuitPartDeployableComponent> ent, ref ModuleRemovedContainerEvent args)
+    {
+        _item.VisualsChanged(ent.Owner);
+
+        foreach (var part in GetAllParts(ent!))
+            _item.VisualsChanged(part);
     }
 
     private void OnDeployedUnequipAttempt(Entity<ModSuitDeployedPartComponent> ent, ref BeingUnequippedAttemptEvent args)
