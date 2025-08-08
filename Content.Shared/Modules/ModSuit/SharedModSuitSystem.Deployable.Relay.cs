@@ -1,5 +1,6 @@
 using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
+using Content.Shared.PowerCell;
 using JetBrains.Annotations;
 
 namespace Content.Shared.Modules.ModSuit;
@@ -9,7 +10,9 @@ public partial class SharedModSuitSystem
     private void InitializeDeployableRelay()
     {
         SubscribeLocalEvent<ModSuitPartDeployableComponent, ModSuitGetUiEntriesEvent>(RelayToAllParts);
+        SubscribeLocalEvent<ModSuitPartDeployableComponent, PowerCellSlotEmptyEvent>(RelayToDeployedPartsAndSuit);
     }
+
 
     protected void RelayToDeployedParts<T>(Entity<ModSuitPartDeployableComponent> ent, ref T args)
     {
@@ -17,9 +20,23 @@ public partial class SharedModSuitSystem
         RaiseEventToDeployedParts((ent.Owner, ent.Comp), ev);
     }
 
+    protected void RelayToDeployedPartsAndSuit<T>(Entity<ModSuitPartDeployableComponent> ent, ref T args)
+    {
+        var ev = new ModSuitDeployableRelayedEvent<T>(args, ent.Owner);
+        RaiseLocalEvent(ent, ev);
+        RaiseEventToDeployedParts((ent.Owner, ent.Comp), ev);
+    }
+
     protected void RelayToDeployableParts<T>(Entity<ModSuitPartDeployableComponent> ent, ref T args)
     {
         var ev = new ModSuitDeployableRelayedEvent<T>(args, ent.Owner);
+        RaiseEventToDeployedParts((ent.Owner, ent.Comp), ev);
+    }
+
+    protected void RelayToDeployablePartsAndSuit<T>(Entity<ModSuitPartDeployableComponent> ent, ref T args)
+    {
+        var ev = new ModSuitDeployableRelayedEvent<T>(args, ent.Owner);
+        RaiseLocalEvent(ent, ev);
         RaiseEventToDeployedParts((ent.Owner, ent.Comp), ev);
     }
 

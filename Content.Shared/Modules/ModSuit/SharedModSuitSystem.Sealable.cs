@@ -6,6 +6,7 @@ using Content.Shared.Modules.Events;
 using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
 using Content.Shared.Modules.ModSuit.UI;
+using Content.Shared.PowerCell;
 using JetBrains.Annotations;
 using Robust.Shared.Audio.Systems;
 
@@ -23,6 +24,8 @@ public partial class SharedModSuitSystem
         SubscribeLocalEvent<ModSuitSealableComponent, ClothingGotUnequippedEvent>(OnSealableUnequipped);
 
         SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployablePartUndeployedEvent>(OnSealableDeployablePartUndeployed);
+
+        SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployableRelayedEvent<PowerCellSlotEmptyEvent>>(OnSealableNoPower);
 
         SubscribeLocalEvent<ModSuitSealableComponent, ExaminedEvent>(OnSealableExamined);
 
@@ -78,6 +81,11 @@ public partial class SharedModSuitSystem
     {
         if (!TerminatingOrDeleted(ent.Owner))
             SetSeal((ent.Owner, ent.Comp), false, args.PartNumber);
+    }
+
+    private void OnSealableNoPower(Entity<ModSuitSealableComponent> ent, ref ModSuitDeployableRelayedEvent<PowerCellSlotEmptyEvent> args)
+    {
+        SetSeal(ent!, false);
     }
 
     private void OnSealableExamined(Entity<ModSuitSealableComponent> ent, ref ExaminedEvent args)
