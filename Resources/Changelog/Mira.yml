@@ -2029,3 +2029,13 @@ Entries:
     type: Add
   id: 280
   time: '2025-08-07T19:00:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Modsuits cannot be sealed with no power
+    type: Add
+  - message: Modsuits now unseal when power is lost
+    type: Add
+  - message: Modsuit modules can no longer be enabled with no power
+    type: Fix
+  id: 281
+  time: '2025-08-09T04:15:50.0000000+00:00'
