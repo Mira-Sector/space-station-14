@@ -7,6 +7,7 @@ namespace Content.Shared.Modules.Modules;
 public abstract partial class SharedPowerDrainModuleSystem : EntitySystem
 {
     [Dependency] private readonly SharedModuleSystem _module = default!;
+    [Dependency] private readonly SharedPowerCellSystem _powerCell = default!;
     [Dependency] private readonly ToggleableModuleSystem _toggleableModule = default!;
 
     public override void Initialize()
@@ -15,6 +16,8 @@ public abstract partial class SharedPowerDrainModuleSystem : EntitySystem
 
         SubscribeLocalEvent<PowerDrainModuleComponent, ModuleEnabledEvent>(OnEnabled);
         SubscribeLocalEvent<PowerDrainModuleComponent, ModuleDisabledEvent>(OnDisabled);
+
+        SubscribeLocalEvent<PowerDrainModuleComponent, ModuleToggleAttemptEvent>(OnToggleAttempt);
 
         SubscribeLocalEvent<PowerDrainModuleComponent, GetModulePowerDrawEvent>(OnGetPower);
         SubscribeLocalEvent<PowerDrainModuleComponent, ModuleRelayedEvent<PowerCellSlotEmptyEvent>>(OnEmpty);
@@ -28,6 +31,21 @@ public abstract partial class SharedPowerDrainModuleSystem : EntitySystem
     private void OnDisabled(Entity<PowerDrainModuleComponent> ent, ref ModuleDisabledEvent args)
     {
         _module.UpdatePowerDraw(args.Container);
+    }
+
+    private void OnToggleAttempt(Entity<PowerDrainModuleComponent> ent, ref ModuleToggleAttemptEvent args)
+    {
+        if (args.Cancelled)
+            return;
+
+        // only prevent enabling
+        if (!args.Toggle)
+            return;
+
+        if (_powerCell.HasActivatableCharge(args.Container))
+            return;
+
+        args.Cancel();
     }
 
     private void OnGetPower(Entity<PowerDrainModuleComponent> ent, ref GetModulePowerDrawEvent args)

@@ -1,6 +1,7 @@
 using Content.Shared.Clothing;
 using Content.Shared.Modules.Components;
 using Content.Shared.Modules.Events;
+using Content.Shared.Modules.ModSuit.Events;
 using Content.Shared.PowerCell;
 using Content.Shared.PowerCell.Components;
 using JetBrains.Annotations;
@@ -22,6 +23,9 @@ public partial class SharedModuleSystem
         SubscribeLocalEvent<ModuleContainerPowerComponent, ModuleContainerModuleRemovedEvent>((u, c, a) => UpdatePowerDraw((u, c)));
 
         SubscribeLocalEvent<ModuleContainerPowerComponent, PowerCellChangedEvent>(OnPowerCellChanged);
+
+        SubscribeLocalEvent<ModuleContainerPowerComponent, ModSuitSealAttemptEvent>(OnPowerSealAttempt);
+        SubscribeLocalEvent<ModuleContainerPowerComponent, ModSuitDeployedPartRelayedEvent<ModSuitSealAttemptEvent>>(OnPowerSealAttemptRelayed);
     }
 
     private void OnPowerEquipped(Entity<ModuleContainerPowerComponent> ent, ref ClothingGotEquippedEvent args)
@@ -43,6 +47,26 @@ public partial class SharedModuleSystem
         ent.Comp.NextUiUpdate += ent.Comp.UiUpdateInterval;
         Dirty(ent);
         UpdateUis(ent.Owner);
+    }
+
+    private void OnPowerSealAttemptRelayed(Entity<ModuleContainerPowerComponent> ent, ref ModSuitDeployedPartRelayedEvent<ModSuitSealAttemptEvent> args)
+    {
+        OnPowerSealAttempt(ent, ref args.Args);
+    }
+
+    private void OnPowerSealAttempt(Entity<ModuleContainerPowerComponent> ent, ref ModSuitSealAttemptEvent args)
+    {
+        if (args.Cancelled)
+            return;
+
+        // only prevent sealing
+        if (!args.ShouldSeal)
+            return;
+
+        if (_powerCell.HasDrawCharge(ent.Owner))
+            return;
+
+        args.Cancel();
     }
 
     [PublicAPI]
