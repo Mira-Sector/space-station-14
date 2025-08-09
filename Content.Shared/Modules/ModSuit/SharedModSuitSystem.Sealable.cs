@@ -242,6 +242,9 @@ public partial class SharedModSuitSystem
         if (!IsDelayed((ent.Owner, ent.Comp), sealedPartCount, out var delay))
             return SetSeal(ent, shouldSeal);
 
+        if (!RaiseAttemptSealEvent(ent!, shouldSeal, sealedPartCount))
+            return false;
+
         EnsureComp<ModSuitSealablePendingComponent>(ent.Owner, out var pendingComp);
         pendingComp.NextUpdate = _timing.CurTime + delay.Value;
         pendingComp.ShouldSeal = shouldSeal;
@@ -258,6 +261,9 @@ public partial class SharedModSuitSystem
         // prevent sending events and excessive dirtying
         if (ent.Comp.Sealed == shouldSeal)
             return true;
+
+        if (!RaiseAttemptSealEvent(ent!, shouldSeal, 0))
+            return false;
 
         ent.Comp.Sealed = shouldSeal;
         RemCompDeferred<ModSuitSealablePendingComponent>(ent.Owner); // stop any pending updates overwriting us
@@ -292,6 +298,14 @@ public partial class SharedModSuitSystem
         UpdateUI(container);
 
         return true;
+    }
+
+    private bool RaiseAttemptSealEvent(Entity<ModSuitSealableComponent> ent, bool shouldSeal, int sealedPartCount)
+    {
+        var ev = new ModSuitSealAttemptEvent(shouldSeal, sealedPartCount);
+        RaiseLocalEvent(ent.Owner, ev);
+
+        return !ev.Cancelled;
     }
 
     private void PlaySound(Entity<ModSuitSealableComponent> ent, bool shouldSeal)

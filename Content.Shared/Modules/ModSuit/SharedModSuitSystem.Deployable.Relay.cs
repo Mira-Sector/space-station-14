@@ -11,8 +11,9 @@ public partial class SharedModSuitSystem
     {
         SubscribeLocalEvent<ModSuitPartDeployableComponent, ModSuitGetUiEntriesEvent>(RelayToAllParts);
         SubscribeLocalEvent<ModSuitPartDeployableComponent, PowerCellSlotEmptyEvent>(RelayToDeployedPartsAndSuit);
-    }
 
+        SubscribeLocalEvent<ModSuitDeployedPartComponent, ModSuitSealAttemptEvent>(RelayToSuit);
+    }
 
     protected void RelayToDeployedParts<T>(Entity<ModSuitPartDeployableComponent> ent, ref T args)
     {
@@ -51,6 +52,7 @@ public partial class SharedModSuitSystem
         var ev = new ModSuitDeployedPartRelayedEvent<T>(args, ent.Owner);
         RaiseEventToSuit((ent.Owner, ent.Comp), ev);
     }
+
 
     [PublicAPI]
     public void RaiseEventToDeployedParts<T>(Entity<ModSuitPartDeployableComponent?> ent, T ev) where T : class
