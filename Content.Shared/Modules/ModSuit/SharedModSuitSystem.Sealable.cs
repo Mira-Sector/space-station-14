@@ -85,7 +85,7 @@ public partial class SharedModSuitSystem
 
     private void OnSealableNoPower(Entity<ModSuitSealableComponent> ent, ref ModSuitDeployableRelayedEvent<PowerCellSlotEmptyEvent> args)
     {
-        SetSeal(ent!, false);
+        SetSeal(ent!, false, args.PartNumber);
     }
 
     private void OnSealableExamined(Entity<ModSuitSealableComponent> ent, ref ExaminedEvent args)

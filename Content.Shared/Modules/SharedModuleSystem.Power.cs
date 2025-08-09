@@ -1,4 +1,3 @@
-using System.Runtime.Serialization;
 using Content.Shared.Clothing;
 using Content.Shared.Modules.Components;
 using Content.Shared.Modules.Events;
