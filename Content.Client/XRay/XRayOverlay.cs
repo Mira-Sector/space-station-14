@@ -2,7 +2,6 @@ using Content.Shared.XRay;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Client.ResourceManagement;
-using Robust.Client.Utility;
 using Robust.Shared.Enums;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
@@ -28,17 +27,18 @@ public sealed class XRayOverlay : Overlay
 
     public override OverlaySpace Space => OverlaySpace.WorldSpace;
 
-    public HashSet<Entity<ShowXRayComponent>> Providers = new();
+    public HashSet<Entity<ShowXRayComponent>> Providers = [];
 
     private const float UpdateRate = 1f / 30f;
     private float _accumulator;
 
-    private Dictionary<EntityUid, HashSet<TileRef>> _tiles = new();
-    private Dictionary<EntityUid, List<EntityUid>> _entities = new();
+    private readonly Dictionary<EntityUid, HashSet<TileRef>> _tiles = [];
+    private readonly Dictionary<EntityUid, List<EntityUid>> _entities = [];
 
-    private Dictionary<EntityUid, MapGridComponent> _mapGrids = new();
+    private readonly Dictionary<EntityUid, MapGridComponent> _mapGrids = [];
+    private readonly Dictionary<EntityUid, SpriteComponent> _sprites = [];
 
-    private Dictionary<Tile, Dictionary<byte, Texture>> _tileVariations = new();
+    private readonly Dictionary<Tile, Dictionary<byte, Texture>> _tileVariations = [];
 
     public XRayOverlay()
     {
@@ -53,7 +53,7 @@ public sealed class XRayOverlay : Overlay
     {
         var eyeRot = args.Viewport.Eye?.Rotation ?? Angle.Zero;
 
-        Dictionary<EntityUid, Matrix3x2> mapMatrix = new();
+        Dictionary<EntityUid, Matrix3x2> mapMatrix = [];
 
         _accumulator -= (float)_timing.FrameTime.TotalSeconds;
 
@@ -80,7 +80,7 @@ public sealed class XRayOverlay : Overlay
 
                 var tile = _tileDef[tileRef.Tile.TypeId];
 
-                if (tile.Sprite is not {} sprite)
+                if (tile.Sprite is not { } sprite)
                     continue;
 
                 if (!mapMatrix.TryGetValue(tileRef.GridUid, out var transform))
@@ -111,7 +111,7 @@ public sealed class XRayOverlay : Overlay
                     }
 
                     if (!_tileVariations.ContainsKey(tileRef.Tile))
-                        _tileVariations.Add(tileRef.Tile, new());
+                        _tileVariations.Add(tileRef.Tile, []);
 
                     _tileVariations[tileRef.Tile].Add(tileRef.Tile.Variant, texture);
                 }
@@ -122,46 +122,15 @@ public sealed class XRayOverlay : Overlay
 
             foreach (var entity in _entities[xray])
             {
-                var sprite = _entityManager.GetComponent<SpriteComponent>(entity);
+                if (!_sprites.TryGetValue(entity, out var sprite))
+                {
+                    sprite = _entityManager.GetComponent<SpriteComponent>(entity);
+                    _sprites[entity] = sprite;
+                }
 
                 var entityXform = _entityManager.GetComponent<TransformComponent>(entity);
-                var (entPos, entRot) = _transform.GetWorldPositionRotation(entityXform);
-
-                var relativeRot = (entRot + eyeRot).Reduced().FlipPositive();
-
-                var transform = Matrix3Helpers.CreateTransform(entPos, entityXform.LocalRotation - eyeRot);
-                args.DrawingHandle.SetTransform(transform);
-
-                var spriteRot = entityXform.LocalRotation;
-                if (sprite.SnapCardinals)
-                    spriteRot = entityXform.LocalRotation.GetCardinalDir().ToAngle();
-                else if (sprite.NoRotation)
-                    spriteRot = Angle.Zero;
-
-                // pray to the gods sprite rendering never changes
-                foreach (var spriteLayer in sprite.AllLayers)
-                {
-                    if (spriteLayer is not SpriteComponent.Layer layer || !_sprite.IsVisible(layer))
-                        continue;
-
-                    if (layer.ActualRsi is not {} rsi || !rsi.TryGetState(layer.State, out var rsiState))
-                        continue;
-
-                    var dir = SpriteComponent.Layer.GetDirection(rsiState.RsiDirections, relativeRot);
-
-                    if (sprite.EnableDirectionOverride)
-                        dir = sprite.DirectionOverride.Convert(rsiState.RsiDirections);
-
-                    dir = dir.OffsetRsiDir(layer.DirOffset);
-
-                    var texture = rsiState.GetFrame(dir, layer.AnimationFrame);
-
-                    var textureSize = texture.Size / (float)EyeManager.PixelsPerMeter;
-                    var quad = Box2.FromDimensions(textureSize / -2, textureSize);
-                    var quadRotated = new Box2Rotated(quad, -spriteRot + layer.Rotation);
-
-                    args.WorldHandle.DrawTextureRect(texture, quadRotated, layer.Color);
-                }
+                var (worldPos, worldRot) = _transform.GetWorldPositionRotation(entityXform);
+                _sprite.RenderSprite((entity, sprite), args.WorldHandle, eyeRot, worldRot, worldPos);
             }
         }
 
@@ -176,8 +145,8 @@ public sealed class XRayOverlay : Overlay
 
         foreach (var xray in Providers)
         {
-            _tiles.Add(xray, value: _xray.GetTiles(xray).ToHashSet());
-            _entities.Add(xray, _xray.GetEntities(xray).OrderBy(x => _entityManager.GetComponent<SpriteComponent>(x).DrawDepth).ToList());
+            _tiles[xray] = _xray.GetTiles(xray).ToHashSet();
+            _entities[xray] = _xray.GetEntities(xray).OrderBy(x => _entityManager.GetComponent<SpriteComponent>(x).DrawDepth).ToList();
         }
     }
 }
