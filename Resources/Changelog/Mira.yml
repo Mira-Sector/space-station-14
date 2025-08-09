@@ -2039,3 +2039,11 @@ Entries:
     type: Fix
   id: 281
   time: '2025-08-09T04:15:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: The xray effect now properly renders objects
+    type: Fix
+  - message: The xray effect is now performant
+    type: Tweak
+  id: 282
+  time: '2025-08-09T23:50:50.0000000+00:00'
