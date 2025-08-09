@@ -52,3 +52,14 @@
   cost: 2000
   category: cargoproduct-category-name-science
   group: market
+
+- type: cargoProduct
+  id: ModSuitCoreStandard
+  icon:
+    sprite: Objects/Specific/Robotics/ModSuits/cores.rsi
+    state: standard
+  data: !type:CargoProductItemData
+    product: CrateModSuitCoreStandard
+  cost: 2000
+  category: cargoproduct-category-name-science
+  group: market

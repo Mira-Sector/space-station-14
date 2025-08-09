@@ -11,6 +11,9 @@ namespace Content.Shared.MagicMirror;
 public sealed partial class MagicMirrorComponent : Component
 {
     [DataField]
+    public bool ActivateOnInteract = true;
+
+    [DataField]
     public DoAfterId? DoAfter;
 
     /// <summary>

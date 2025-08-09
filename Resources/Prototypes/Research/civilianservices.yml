@@ -12,6 +12,8 @@
   recipeUnlocks:
   - ReagentGrinderIndustrialMachineCircuitboard
   - PlantScanCartridge
+  - SyntheticSwab
+  - SwabApplicator
 
 - type: technology
   id: CritterMechs
@@ -81,6 +83,18 @@
   - FatExtractorMachineCircuitboard
   - BiofabricatorMachineCircuitboard
   - BiomassReclaimerMachineCircuitboard
+
+- type: technology
+  id: ExpandedStorage
+  name: research-technology-expanded-storage
+  icon:
+    sprite: Objects/Specific/Robotics/ModSuits/Modules/storage.rsi
+    state: large
+  discipline: CivilianServices
+  tier: 1
+  cost: 5000
+  recipeUnlocks:
+  - ModSuitModuleStorageExpanded
 
 # Tier 2
 
@@ -160,6 +174,18 @@
   - MechEquipmentHorn
 
 - type: technology
+  id: AdvancedMedical
+  name: research-technology-advanced-medical
+  icon:
+    sprite: Objects/Specific/Medical/advhealthanalyzer.rsi
+    state: icon
+  discipline: CivilianServices
+  tier: 2
+  cost: 7500
+  recipeUnlocks:
+  - HandheldAdvancedHealthAnalyzer
+
+- type: technology
   id: AdvancedSpray
   name: research-technology-advanced-spray
   icon:
@@ -223,6 +249,18 @@
   recipeUnlocks:
   - LauncherSyringe
   - MiniSyringe
+
+- type: technology
+  id: Cloaking
+  name: research-technology-cloaking
+  icon:
+    sprite: Objects/Specific/Robotics/ModSuits/Modules/cloaking.rsi
+    state: prototype
+  discipline: CivilianServices
+  tier: 3
+  cost: 15000
+  recipeUnlocks:
+  - ModSuitModuleCloakPrototype
 
 - type: technology
   id: FurtherKnowledgeCivilianServices

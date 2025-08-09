@@ -733,6 +733,14 @@
     accentVColor: "#447987"
   - type: Icon
     state: pda-cmo
+  - type: CartridgeLoader
+    preinstalled:
+    - CrewManifestCartridge
+    - NotekeeperCartridge
+    - NanoTaskCartridge
+    - NewsReaderCartridge
+    - WantedListCartridge
+    - AdvMedTekCartridge
 
 - type: entity
   parent: BaseMedicalPDA
@@ -937,7 +945,7 @@
       - NotekeeperCartridge
       - NanoTaskCartridge
       - NewsReaderCartridge
-      - MedTekCartridge
+      - AdvMedTekCartridge
       - WantedListCartridge
       - LogProbeCartridge
       - AstroNavCartridge
@@ -966,7 +974,7 @@
       - NewsReaderCartridge
       - LogProbeCartridge
       - WantedListCartridge
-      - MedTekCartridge
+      - AdvMedTekCartridge
       - AstroNavCartridge
       - PlantScanCartridge
   - type: Tag #  Ignore Chameleon tags
@@ -1115,7 +1123,7 @@
       - NotekeeperCartridge
       - NanoTaskCartridge
       - NewsReaderCartridge
-      - MedTekCartridge
+      - AdvMedTekCartridge
       - WantedListCartridge
       - LogProbeCartridge
       - AstroNavCartridge

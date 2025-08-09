@@ -259,7 +259,7 @@
     - id: BlueprintFulton
     - id: BlueprintSeismicCharge
     - id: WeaponCrusherGlaive
-    - id: ClothingOuterHardsuitSalvage
+    - id: ClothingBackpackModSuitSalvageFilled
     - id: ChemistryBottleOmnizine
     - !type:GroupSelector
       children:

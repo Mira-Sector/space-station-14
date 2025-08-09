@@ -11,8 +11,8 @@
   id: ClothingOuterHardsuitRd
   name: steal-target-groups-clothing-outer-hardsuit-rd
   sprite:
-    sprite: Clothing/OuterClothing/Hardsuits/rd.rsi
-    state: icon
+    sprite: Clothing/Back/ModSuits/research.rsi
+    state: icon-sealed
 
 - type: stealTargetGroup
   id: HandTeleporter
@@ -32,8 +32,8 @@
   id: ClothingShoesBootsMagAdv
   name: steal-target-groups-clothing-shoes-boots-mag-adv
   sprite:
-    sprite: Clothing/Shoes/Boots/magboots-advanced.rsi
-    state: icon
+    sprite: Objects/Specific/Robotics/ModSuits/Modules/magboots.rsi
+    state: advanced
 
 - type: stealTargetGroup
   id: BoxFolderQmClipboard
@@ -62,13 +62,6 @@
   sprite:
     sprite: Objects/Misc/id_cards.rsi
     state: ert_commander #no one will know the difference.
-
-- type: stealTargetGroup
-  id: JetpackCaptainFilled
-  name: steal-target-groups-jetpack-captain-filled
-  sprite:
-    sprite: Objects/Tanks/Jetpacks/captain.rsi
-    state: icon
 
 - type: stealTargetGroup
   id: WeaponAntiqueLaser
@@ -163,7 +156,7 @@
   name: steal-target-groups-forensic-scanner
   sprite:
     sprite: Objects/Devices/forensic_scanner.rsi
-    state: forensicnew
+    state: icon
 
 - type: stealTargetGroup
   id: FlippoEngravedLighter
@@ -190,8 +183,8 @@
   id: ClothingOuterHardsuitVoidParamed
   name: steal-target-groups-clothing-outer-hardsuit-void-paramed
   sprite:
-    sprite: Clothing/OuterClothing/Hardsuits/paramed.rsi
-    state: icon
+    sprite: Clothing/Back/ModSuits/rescue.rsi
+    state: icon-sealed
 
 - type: stealTargetGroup
   id: MedicalTechFabCircuitboard

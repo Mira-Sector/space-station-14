@@ -1,4 +1,4 @@
-﻿- type: entity
+- type: entity
   parent: BaseItem
   id: NotekeeperCartridge
   name: notekeeper cartridge
@@ -154,6 +154,26 @@
         sprite: Objects/Specific/Medical/healthanalyzer.rsi
         state: icon
     - type: MedTekCartridge
+
+- type: entity
+  parent: BaseItem
+  id: AdvMedTekCartridge
+  name: Advanced MedTek cartridge
+  description: A program that provides organ diagnostic ontop of medical diagnostic tools.
+  components:
+    - type: Sprite
+      sprite: Objects/Devices/cartridge.rsi
+      state: cart-med-adv
+    - type: Icon
+      sprite: Objects/Devices/cartridge.rsi
+      state: cart-adv
+    - type: Cartridge
+      programName: adv-med-tek-program-name
+      icon:
+        sprite: Objects/Specific/Medical/advhealthanalyzer.rsi
+        state: icon
+    - type: MedTekCartridge
+      analyzerType: BodyAndOrgans
 
 - type: entity
   parent: BaseItem

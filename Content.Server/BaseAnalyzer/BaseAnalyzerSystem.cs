@@ -64,7 +64,7 @@ public abstract class BaseAnalyzerSystem<TAnalyzerComponent, TAnalyzerDoAfterEve
                 continue;
             }
 
-            UpdateScannedUser(uid, target, true);
+            UpdateScannedUser((uid, component), target, true);
         }
     }
 
@@ -175,7 +175,7 @@ public abstract class BaseAnalyzerSystem<TAnalyzerComponent, TAnalyzerDoAfterEve
     /// <param name="analyzer">The analyzer</param>
     /// <param name="target">The entity being scanned</param>
     /// <param name="scanMode">True makes the UI show ACTIVE, False makes the UI show INACTIVE</param>
-    public abstract void UpdateScannedUser(EntityUid analyzer, EntityUid target, bool scanMode);
+    public abstract void UpdateScannedUser(Entity<TAnalyzerComponent> analyzer, EntityUid target, bool scanMode);
 
     /// <returns>A <see cref="Robust.Shared.Serialization.NetSerializableAttribute"/> byte enum key.</returns>
     protected abstract Enum GetUiKey();

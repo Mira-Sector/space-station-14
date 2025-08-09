@@ -19,7 +19,7 @@ public sealed partial class CoughingSystem : SharedCoughingSystem
 
     private void OnInhale(Entity<CoughOnRespireComponent> ent, ref InhaledEvent args)
     {
-        var ev = new CoughGetChangceEvent(ent.Comp.Chance);
+        var ev = new CoughGetChanceEvent();
 
         RaiseLocalEvent(ent, ev);
 

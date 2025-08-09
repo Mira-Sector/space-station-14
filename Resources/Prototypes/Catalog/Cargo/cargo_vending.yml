@@ -35,7 +35,7 @@
     state: base
   data: !type:CargoProductItemData
     product: CrateVendingMachineRestockClothesFilled
-  cost: 2480
+  cost: 2500
   category: cargoproduct-category-name-service
   group: market
 

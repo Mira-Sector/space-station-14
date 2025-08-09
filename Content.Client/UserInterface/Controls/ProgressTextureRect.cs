@@ -27,25 +27,17 @@ namespace Content.Client.UserInterface.Controls
             switch (ProgressDirection)
             {
                 case ProgressDirection.Top:
-                {
                     dims.Top = Math.Max(dims.Bottom - dims.Bottom * Progress, 0);
                     break;
-                }
                 case ProgressDirection.Bottom:
-                {
-                    dims.Bottom = dims.Bottom * Progress;
+                    dims.Bottom *= Progress;
                     break;
-                }
                 case ProgressDirection.Left:
-                {
                     dims.Left = Math.Max(dims.Right - dims.Right * Progress, 0);
                     break;
-                }
                 case ProgressDirection.Right:
-                {
-                    dims.Right = dims.Right * Progress;
+                    dims.Right *= Progress;
                     break;
-                }
             }
 
             handle.DrawRect(dims, _progressColor.GetProgressColor(Progress));

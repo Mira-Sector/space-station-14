@@ -10,7 +10,9 @@ public partial class SharedModuleSystem
     private void InitializeSlot()
     {
         SubscribeLocalEvent<ModuleContainerAddOnInteractComponent, InteractUsingEvent>(OnAddOnInteract);
-        SubscribeLocalEvent<ModuleContainerRequireWirePanelComponent, ModuleContainerModuleAddingAttemptEvent>(OnWirePanelAttempt);
+
+        SubscribeLocalEvent<ModuleContainerRequireWirePanelComponent, ModuleContainerModuleAddingAttemptEvent>(OnWirePanelAddingAttempt);
+        SubscribeLocalEvent<ModuleContainerRequireWirePanelComponent, ModuleContainerModuleRemovingAttemptEvent>(OnWirePanelRemovingAttempt);
     }
 
     private void OnAddOnInteract(Entity<ModuleContainerAddOnInteractComponent> ent, ref InteractUsingEvent args)
@@ -24,7 +26,17 @@ public partial class SharedModuleSystem
         args.Handled = _container.Insert(args.Used, moduleContainer.Modules);
     }
 
-    private void OnWirePanelAttempt(Entity<ModuleContainerRequireWirePanelComponent> ent, ref ModuleContainerModuleAddingAttemptEvent args)
+    private void OnWirePanelAddingAttempt(Entity<ModuleContainerRequireWirePanelComponent> ent, ref ModuleContainerModuleAddingAttemptEvent args)
+    {
+        WirePanelAttempt(ent, args);
+    }
+
+    private void OnWirePanelRemovingAttempt(Entity<ModuleContainerRequireWirePanelComponent> ent, ref ModuleContainerModuleRemovingAttemptEvent args)
+    {
+        WirePanelAttempt(ent, args);
+    }
+
+    private void WirePanelAttempt(Entity<ModuleContainerRequireWirePanelComponent> ent, BaseModuleContainerModifyAttemptEvent args)
     {
         if (args.Cancelled)
             return;

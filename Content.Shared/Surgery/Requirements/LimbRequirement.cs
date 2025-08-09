@@ -1,10 +1,11 @@
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
-using Content.Shared.DoAfter;
 using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Surgery.Systems;
 using JetBrains.Annotations;
 using Robust.Shared.Containers;
 using Robust.Shared.Serialization;
+using Robust.Shared.Utility;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Content.Shared.Surgery.Requirements;
@@ -13,7 +14,24 @@ namespace Content.Shared.Surgery.Requirements;
 [Serializable, NetSerializable]
 public sealed partial class LimbRequirement : SurgeryEdgeRequirement
 {
-    public override SurgeryEdgeState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
+    private static readonly SpriteSpecifier.Rsi Icon = new(new("/Textures/Interface/surgery_icons.rsi"), "limb");
+
+    public override string Name(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    {
+        return Loc.GetString("surgery-requirement-limb-name");
+    }
+
+    public override string Description(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    {
+        return Loc.GetString("surgery-requirement-limb-desc", ("part", Loc.GetString(SurgeryHelper.GetBodyPartLoc(bodyPart))));
+    }
+
+    public override SpriteSpecifier? GetIcon(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    {
+        return Icon;
+    }
+
+    public override SurgeryInteractionState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui, bool test = false)
     {
         ui = null;
 
@@ -21,22 +39,24 @@ public sealed partial class LimbRequirement : SurgeryEdgeRequirement
 
         if (limb != null)
         {
-            var handSys = entMan.System<SharedHandsSystem>();
-            handSys.PickupOrDrop(user, limb.Value);
-            return SurgeryEdgeState.Passed;
+            if (!test)
+            {
+                var handSys = entMan.System<SharedHandsSystem>();
+                handSys.PickupOrDrop(user, limb.Value);
+            }
+            return SurgeryInteractionState.Passed;
         }
 
-        if (tool is not {} used || body == null)
-            return SurgeryEdgeState.Failed;
-
+        if (tool is not { } used || body == null)
+            return SurgeryInteractionState.Failed;
 
         var containerSys = entMan.System<SharedContainerSystem>();
         var bodySys = entMan.System<SharedBodySystem>();
 
         if (!entMan.TryGetComponent<BodyPartComponent>(used, out var bodyPartComp))
-            return SurgeryEdgeState.Failed;
+            return SurgeryInteractionState.Failed;
 
-        foreach (var (bodypart, container) in bodySys.GetBodyContainers(body.Value))
+        foreach (var (_, container) in bodySys.GetBodyContainers(body.Value))
         {
             // must be empty
             if (container.ContainedEntities.Count > 0)
@@ -45,17 +65,11 @@ public sealed partial class LimbRequirement : SurgeryEdgeRequirement
             if (bodyPart.Type != bodyPartComp.PartType || bodyPart.Side != bodyPartComp.Symmetry)
                 continue;
 
-            if (containerSys.Insert(used, container))
-                return SurgeryEdgeState.Passed;
+            if (test || containerSys.Insert(used, container))
+                return SurgeryInteractionState.Passed;
         }
 
-        return SurgeryEdgeState.Failed;
-    }
-
-    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
-    {
-        doAfterId = null;
-        return false;
+        return SurgeryInteractionState.Failed;
     }
 
     public override bool RequirementsMatch(SurgeryEdgeRequirement other, [NotNullWhen(true)] out SurgeryEdgeRequirement? merged)

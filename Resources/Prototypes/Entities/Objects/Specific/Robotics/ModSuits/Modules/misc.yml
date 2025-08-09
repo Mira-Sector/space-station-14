@@ -1,0 +1,28 @@
+- type: entity
+  id: ModSuitModuleInsulation
+  parent: BaseModSuitModuleToggle
+  name: MOD insulation module
+  description: Modified insulated gloves to fit within the MOD suits gauntlests.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/ModSuits/Modules/insulation.rsi
+    state: insulation
+  - type: ModSuitModuleComplexity
+    complexity: 1
+  - type: RequireSealedModule
+    enableOnSealed: true
+    parts:
+    - Gauntlets
+  - type: ToggleableComponentModSuitPartModule
+    part: Gauntlets
+    components:
+    - type: Insulated
+  - type: ModuleExclusivity
+    maximum: 1
+    blacklist:
+      tags:
+      - ModSuitModuleInsulation
+  - type: Tag
+    tags:
+    - ModSuitModule
+    - ModSuitModuleInsulation

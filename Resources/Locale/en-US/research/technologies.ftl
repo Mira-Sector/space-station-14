@@ -20,6 +20,8 @@ research-technology-bluespace-storage = Bluespace Storage
 research-technology-optimized-microgalvanism = Optimized Microgalvanism
 research-technology-space-scanning = Space Scanning
 research-technology-excavation = Mass Excavation
+research-technology-space-propulsion = Space Propulsion
+research-technology-insulation = Insulation
 
 research-technology-salvage-weapons = Salvage Weapons
 research-technology-draconic-munitions = Draconic Munitions
@@ -58,6 +60,7 @@ research-technology-advanced-entertainment = Advanced Entertainment
 research-technology-audio-visual-communication = A/V Communication
 research-technology-faux-astro-tiles = Faux Astro-Tiles
 research-technology-advanced-chemistry = Advanced Chemistry
+research-technology-advanced-medical = Advanced Medical
 research-technology-advanced-cleaning = Advanced Cleaning
 research-technology-meat-manipulation = Meat Manipulation
 research-technology-civilian-mechatronics = Civilian Mechatronics
@@ -67,5 +70,7 @@ research-technology-bluespace-cargo-transport = Bluespace Cargo Transport
 research-technology-clowning-utilities = Clowning Utilities
 research-technology-quantum-fiber-weaving = Quantum Fiber Weaving
 research-technology-bluespace-chemistry = Bluespace Chemistry
+research-technology-cloaking = Cloaking
+research-technology-expanded-storage = Expanded Storage
 
 research-technology-further-knowledge = Further Knowledge

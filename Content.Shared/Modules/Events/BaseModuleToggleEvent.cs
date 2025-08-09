@@ -1,13 +1,7 @@
 namespace Content.Shared.Modules.Events;
 
-public abstract partial class BaseModuleToggleEvent : EntityEventArgs
+public abstract partial class BaseModuleToggleEvent(EntityUid container, EntityUid? user) : EntityEventArgs
 {
-    public readonly EntityUid Container;
-    public readonly EntityUid? User;
-
-    public BaseModuleToggleEvent(EntityUid container, EntityUid? user)
-    {
-        Container = container;
-        User = user;
-    }
+    public readonly EntityUid Container = container;
+    public readonly EntityUid? User = user;
 }

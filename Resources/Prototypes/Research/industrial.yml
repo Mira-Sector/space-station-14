@@ -162,6 +162,30 @@
     - AdvancedMineralScannerEmpty
     - BorgModuleAdvancedMining
 
+- type: technology
+  id: SpacePropulsion
+  name: research-technology-space-propulsion
+  icon:
+    sprite: Objects/Specific/Robotics/ModSuits/Modules/jetpack.rsi
+    state: normal
+  discipline: Industrial
+  tier: 2
+  cost: 12500
+  recipeUnlocks:
+    - ModSuitModuleJetpackNormal
+
+- type: technology
+  id: Insulation
+  name: research-technology-insulation
+  icon:
+    sprite: Clothing/Hands/Gloves/Color/yellow.rsi
+    state: icon
+  discipline: Industrial
+  tier: 2
+  cost: 12500
+  recipeUnlocks:
+    - ModSuitModuleInsulation
+
 # Tier 3
 
 - type: technology
@@ -177,6 +201,7 @@
   - ClothingBackpackHolding
   - ClothingBackpackSatchelHolding
   - ClothingBackpackDuffelHolding
+  - ModSuitModuleStorageBluespace
 
 - type: technology
   id: OptimizedMicrogalvanism

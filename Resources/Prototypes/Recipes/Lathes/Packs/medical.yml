@@ -102,3 +102,8 @@
   - StasisBedMachineCircuitboard
   - CryoPodMachineCircuitboard
   - BiomassReclaimerMachineCircuitboard
+
+- type: latheRecipePack
+  id: AdvancedMedical
+  recipes:
+  - HandheldAdvancedHealthAnalyzer

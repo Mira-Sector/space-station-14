@@ -7,7 +7,7 @@ namespace Content.Shared.Modules.Modules;
 public abstract partial class SharedModuleContainerVisualsSystem : EntitySystem
 {
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
-    [Dependency] private readonly ModuleContainedSystem _moduleContained = default!;
+    [Dependency] private readonly SharedModuleSystem _module = default!;
     [Dependency] protected readonly ToggleableModuleSystem ToggleableModule = default!;
 
     public override void Initialize()
@@ -46,6 +46,6 @@ public abstract partial class SharedModuleContainerVisualsSystem : EntitySystem
         var ev = new ModuleContainerVisualsGetVisualEntityEvent();
         RaiseLocalEvent(uid, ev);
 
-        return ev.Entity ?? _moduleContained.GetContainer(uid);
+        return ev.Entity ?? _module.GetContainer(uid);
     }
 }

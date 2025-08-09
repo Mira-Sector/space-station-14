@@ -185,84 +185,18 @@
 
   - node: standardPlating
     entity: ClothingBackpackModSuitStandard
-    edges:
-    - to: screwed
-      conditions:
-      - !type:WirePanel
-      steps:
-      - tool: Prying
-        doAfter: 0.5
-      completed:
-      - !type:EmptyContainer
-        container: plating
-        pickup: true
 
   - node: engineeringPlating
     entity: ClothingBackpackModSuitEngineering
-    edges:
-    - to: screwed
-      conditions:
-      - !type:WirePanel
-      steps:
-      - tool: Prying
-        doAfter: 0.5
-      completed:
-      - !type:EmptyContainer
-        container: plating
-        pickup: true
 
   - node: atmosphericPlating
     entity: ClothingBackpackModSuitAtmospheric
-    edges:
-    - to: screwed
-      conditions:
-      - !type:WirePanel
-      steps:
-      - tool: Prying
-        doAfter: 0.5
-      completed:
-      - !type:EmptyContainer
-        container: plating
-        pickup: true
 
   - node: medicalPlating
     entity: ClothingBackpackModSuitMedical
-    edges:
-    - to: screwed
-      conditions:
-      - !type:WirePanel
-      steps:
-      - tool: Prying
-        doAfter: 0.5
-      completed:
-      - !type:EmptyContainer
-        container: plating
-        pickup: true
 
   - node: securityPlating
     entity: ClothingBackpackModSuitSecurity
-    edges:
-    - to: screwed
-      conditions:
-      - !type:WirePanel
-      steps:
-      - tool: Prying
-        doAfter: 0.5
-      completed:
-      - !type:EmptyContainer
-        container: plating
-        pickup: true
 
   - node: cosmohonkPlating
     entity: ClothingBackpackModSuitCosmohonk
-    edges:
-    - to: screwed
-      conditions:
-      - !type:WirePanel
-      steps:
-      - tool: Prying
-        doAfter: 0.5
-      completed:
-      - !type:EmptyContainer
-        container: plating
-        pickup: true

@@ -1,14 +1,14 @@
-using System.Linq;
 using Content.Shared.Clothing;
 using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;
 using Content.Shared.Modules.Events;
 using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
-using JetBrains.Annotations;
 using Robust.Shared.Containers;
-using Robust.Shared.Network;
-using Robust.Shared.Timing;
+using JetBrains.Annotations;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Content.Shared.Item;
 
 namespace Content.Shared.Modules.ModSuit;
 
@@ -16,8 +16,7 @@ public partial class SharedModSuitSystem
 {
     [Dependency] protected readonly SharedContainerSystem Container = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
-    [Dependency] private readonly INetManager _net = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly SharedItemSystem _item = default!;
 
     private const string DeployableSlotPrefix = "deployable-";
 
@@ -31,12 +30,15 @@ public partial class SharedModSuitSystem
         SubscribeLocalEvent<ModSuitPartDeployableComponent, ClothingGotUnequippedEvent>(OnDeployableUnequipped);
         SubscribeLocalEvent<ModSuitPartDeployableComponent, ModuleGetUserEvent>(OnDeployableGetUser);
 
+        SubscribeLocalEvent<ModSuitPartDeployableComponent, ModuleAddedContainerEvent>(OnDeployableModuleAdded);
+        SubscribeLocalEvent<ModSuitPartDeployableComponent, ModuleRemovedContainerEvent>(OnDeployableModuleRemoved);
+
         SubscribeLocalEvent<ModSuitDeployedPartComponent, BeingUnequippedAttemptEvent>(OnDeployedUnequipAttempt);
 
         SubscribeLocalEvent<ModSuitDeployableInventoryComponent, ComponentInit>(OnDeployableInventoryInit);
         SubscribeLocalEvent<ModSuitDeployableInventoryComponent, ComponentRemove>(OnDeployableInventoryRemoved);
-        SubscribeLocalEvent<ModSuitDeployableInventoryComponent, ModSuitDeployablePartBeforeEquippedEvent>(OnDeployableInventoryBeforeEquipped);
-        SubscribeLocalEvent<ModSuitDeployableInventoryComponent, ModSuitDeployablePartUnequippedEvent>(OnDeployableInventoryUnequipped);
+        SubscribeLocalEvent<ModSuitDeployableInventoryComponent, ModSuitDeployablePartBeforeDeployedEvent>(OnDeployableInventoryBeforeDeployed);
+        SubscribeLocalEvent<ModSuitDeployableInventoryComponent, ModSuitDeployablePartUndeployedEvent>(OnDeployableInventoryUndeployed);
     }
 
     #region Deployable
@@ -51,8 +53,11 @@ public partial class SharedModSuitSystem
         var i = 1;
         foreach (var (slot, part) in ent.Comp.DeployedParts)
         {
-            var ev = new ModSuitDeployablePartUnequippedEvent(ent.Owner, ent.Comp.Wearer, slot, i++);
-            RaiseLocalEvent(part, ev);
+            var partEv = new ModSuitDeployablePartUndeployedEvent(ent.Owner, ent.Comp.Wearer, slot, i);
+            RaiseLocalEvent(part, partEv);
+
+            var suitEv = new ModSuitPartDeployableUndeployedEvent(part, ent.Comp.Wearer, slot, i++);
+            RaiseLocalEvent(ent.Owner, suitEv);
 
             if (_net.IsServer)
                 Del(part);
@@ -64,9 +69,6 @@ public partial class SharedModSuitSystem
 
     private void OnDeployableEquipped(Entity<ModSuitPartDeployableComponent> ent, ref ClothingGotEquippedEvent args)
     {
-        if (!_timing.IsFirstTimePredicted)
-            return;
-
         ent.Comp.Wearer = args.Wearer;
 
         var inventoryComp = CompOrNull<InventoryComponent>(args.Wearer);
@@ -89,38 +91,59 @@ public partial class SharedModSuitSystem
             if (container.ContainedEntity is not { } part)
                 continue;
 
-            var beforeEv = new ModSuitDeployablePartBeforeEquippedEvent(ent.Owner, args.Wearer, slot, i++);
+            var beforeEv = new ModSuitDeployablePartBeforeDeployedEvent(ent.Owner, args.Wearer, slot, i++);
             RaiseLocalEvent(part, beforeEv);
 
             if (!_inventory.TryEquip(args.Wearer, part, slot, true, true, true, inventoryComp))
             {
-                var failedEv = new ModSuitDeployablePartUnequippedEvent(ent.Owner, args.Wearer, slot, 0);
-                RaiseLocalEvent(part, failedEv);
+                var failedPartEv = new ModSuitDeployablePartUndeployedEvent(ent.Owner, args.Wearer, slot, 0);
+                RaiseLocalEvent(part, failedPartEv);
+
+                var failedSuitEv = new ModSuitPartDeployableUndeployedEvent(part, args.Wearer, slot, 0);
+                RaiseLocalEvent(ent.Owner, failedSuitEv);
 
                 Container.Insert(part, container);
                 continue;
             }
 
-            ent.Comp.DeployedParts.Add(slot, part);
+            ent.Comp.DeployedParts[slot] = part;
 
-            var afterEv = new ModSuitDeployablePartDeployedEvent(ent.Owner, args.Wearer, slot, i);
-            RaiseLocalEvent(part, afterEv);
+            var afterPartEv = new ModSuitDeployablePartDeployedEvent(ent.Owner, args.Wearer, slot, i);
+            RaiseLocalEvent(part, afterPartEv);
+
+            var afterSuitEv = new ModSuitPartDeployableDeployedEvent(part, args.Wearer, slot, i);
+            RaiseLocalEvent(ent.Owner, afterSuitEv);
         }
+
+        Dirty(ent);
     }
 
     private void OnDeployableUnequipped(Entity<ModSuitPartDeployableComponent> ent, ref ClothingGotUnequippedEvent args)
     {
-        if (!_timing.IsFirstTimePredicted)
-            return;
-
-        ent.Comp.Wearer = null;
         UndeployAll(ent, args.Wearer);
+        ent.Comp.Wearer = null;
         Dirty(ent);
     }
 
     private void OnDeployableGetUser(Entity<ModSuitPartDeployableComponent> ent, ref ModuleGetUserEvent args)
     {
-        args.User = ent.Comp.Wearer;
+        args.User ??= ent.Comp.Wearer;
+    }
+
+    private void OnDeployableModuleAdded(Entity<ModSuitPartDeployableComponent> ent, ref ModuleAddedContainerEvent args)
+    {
+        _item.VisualsChanged(ent.Owner);
+
+        foreach (var part in GetAllParts(ent!))
+            _item.VisualsChanged(part);
+    }
+
+    private void OnDeployableModuleRemoved(Entity<ModSuitPartDeployableComponent> ent, ref ModuleRemovedContainerEvent args)
+    {
+        _item.VisualsChanged(ent.Owner);
+
+        foreach (var part in GetAllParts(ent!))
+            _item.VisualsChanged(part);
     }
 
     private void OnDeployedUnequipAttempt(Entity<ModSuitDeployedPartComponent> ent, ref BeingUnequippedAttemptEvent args)
@@ -128,18 +151,22 @@ public partial class SharedModSuitSystem
         args.Cancel();
     }
 
-    internal void UndeployAll(Entity<ModSuitPartDeployableComponent> ent, Entity<InventoryComponent?> wearer)
+    private void UndeployAll(Entity<ModSuitPartDeployableComponent> ent, Entity<InventoryComponent?> wearer)
     {
         var i = 1;
         foreach (var (slot, part) in ent.Comp.DeployedParts)
         {
-            _inventory.TryUnequip(wearer.Owner, slot, true, true, true, wearer.Comp);
+            if (_inventory.TryUnequip(wearer.Owner, slot, true, true, true, wearer.Comp))
+            {
+                var container = ent.Comp.DeployableContainers[slot];
+                Container.Insert(part, container);
+            }
 
-            var container = ent.Comp.DeployableContainers[slot];
-            Container.Insert(part, container);
+            var partEv = new ModSuitDeployablePartUndeployedEvent(ent.Owner, wearer.Owner, slot, i);
+            RaiseLocalEvent(part, partEv);
 
-            var ev = new ModSuitDeployablePartUnequippedEvent(ent.Owner, wearer.Owner, slot, i++);
-            RaiseLocalEvent(part, ev);
+            var suitEv = new ModSuitPartDeployableUndeployedEvent(part, wearer.Owner, slot, i++);
+            RaiseLocalEvent(ent.Owner, suitEv);
         }
 
         ent.Comp.DeployedParts.Clear();
@@ -179,6 +206,40 @@ public partial class SharedModSuitSystem
         return GetDeployedParts(ent).Concat(GetDeployableParts(ent));
     }
 
+    [PublicAPI]
+    public bool TryGetDeployedPart(Entity<ModSuitPartDeployableComponent?> ent, ModSuitPartType type, [NotNullWhen(true)] out EntityUid? foundPart)
+    {
+        var parts = GetDeployedParts(ent);
+        parts = parts.Append(ent.Owner);
+        return TryGetPart(parts, type, out foundPart);
+    }
+
+    [PublicAPI]
+    public bool TryGetDeployablePart(Entity<ModSuitPartDeployableComponent?> ent, ModSuitPartType type, [NotNullWhen(true)] out EntityUid? foundPart)
+    {
+        var parts = GetDeployableParts(ent);
+        parts = parts.Append(ent.Owner);
+        return TryGetPart(parts, type, out foundPart);
+    }
+
+    private bool TryGetPart(IEnumerable<EntityUid> parts, ModSuitPartType type, [NotNullWhen(true)] out EntityUid? foundPart)
+    {
+        foreach (var part in parts)
+        {
+            if (!TryComp<ModSuitPartTypeComponent>(part, out var typeComp))
+                continue;
+
+            if (typeComp.Type != type)
+                continue;
+
+            foundPart = part;
+            return true;
+        }
+
+        foundPart = null;
+        return false;
+    }
+
     #endregion
 
     #region Inventory
@@ -193,20 +254,29 @@ public partial class SharedModSuitSystem
         Container.ShutdownContainer(ent.Comp.StoredItem);
     }
 
-    private void OnDeployableInventoryBeforeEquipped(Entity<ModSuitDeployableInventoryComponent> ent, ref ModSuitDeployablePartBeforeEquippedEvent args)
+    private void OnDeployableInventoryBeforeDeployed(Entity<ModSuitDeployableInventoryComponent> ent, ref ModSuitDeployablePartBeforeDeployedEvent args)
     {
         Container.EmptyContainer(ent.Comp.StoredItem, true);
 
-        if (!_inventory.TryGetSlotEntity(args.Wearer, args.Slot, out var slotEntity))
+        if (args.Wearer is not { } wearer)
             return;
 
-        _inventory.TryUnequip(args.Wearer, args.Slot, true, true, true);
+        if (!_inventory.TryGetSlotEntity(wearer, args.Slot, out var slotEntity))
+            return;
+
+        if (TerminatingOrDeleted(slotEntity))
+            return;
+
+        _inventory.TryUnequip(wearer, args.Slot, true, true, true);
         Container.Insert(slotEntity.Value, ent.Comp.StoredItem);
     }
 
-    private void OnDeployableInventoryUnequipped(Entity<ModSuitDeployableInventoryComponent> ent, ref ModSuitDeployablePartUnequippedEvent args)
+    private void OnDeployableInventoryUndeployed(Entity<ModSuitDeployableInventoryComponent> ent, ref ModSuitDeployablePartUndeployedEvent args)
     {
         if (ent.Comp.StoredItem?.ContainedEntity is not { } containedEntity)
+            return;
+
+        if (TerminatingOrDeleted(containedEntity))
             return;
 
         if (args.Wearer is not { } wearer)

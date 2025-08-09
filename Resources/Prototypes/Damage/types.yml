@@ -29,6 +29,12 @@
   armorFlatPrice: 30
 
 - type: damageType
+  id: Necrosis
+  name: damage-type-necrosis
+  armorCoefficientPrice: 5
+  armorFlatPrice: 30
+
+- type: damageType
   id: Caustic
   name: damage-type-caustic
   armorCoefficientPrice: 5

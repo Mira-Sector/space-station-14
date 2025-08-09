@@ -16,7 +16,7 @@
       - id: ClothingOuterWinterWarden
       - id: RubberStampWarden
       - id: DoorRemoteArmory
-      - id: ClothingOuterHardsuitWarden
+      - id: ClothingBackpackModSuitWardenFilled
       - id: HoloprojectorSecurity
       - id: BookSpaceLaw
       - id: ClothingBackpackElectropack

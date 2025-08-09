@@ -1,5 +1,6 @@
 - type: entity
   id: ClothingShoesModSuitBase
+  description: The boots of a deployed MOD suit.
   abstract: true
   categories: [ HideSpawnMenu ]
   components:
@@ -9,6 +10,9 @@
     autoGenerateVisuals: false
     slots:
     - feet
+  - type: OptionalPressureProtection
+  - type: ProtectedFromStepTriggers
+    slots: WITHOUT_POCKET
   - type: Appearance
   - type: Tag
     tags:
@@ -46,72 +50,84 @@
       false:
         sprite: Clothing/Shoes/ModSuits/advanced.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
 
 - type: entity
-  id: ClothingShoesModSuitApocrphal
+  id: ClothingShoesModSuitWarden
   parent: ClothingShoesModSuitBase
   categories: [ HideSpawnMenu ]
-  name: apocryphal MOD boots
+  name: warden's MOD boots
   components:
   - type: Sprite
-    sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
+    sprite: Clothing/Shoes/ModSuits/warden.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
+      - sprite: Clothing/Shoes/ModSuits/warden.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
+      - sprite: Clothing/Shoes/ModSuits/warden.rsi
         state: icon
     clothingLayers:
       true:
         shoes:
-        - sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
+        - sprite: Clothing/Shoes/ModSuits/warden.rsi
           state: equipped-FEET-sealed
       false:
         shoes:
-        - sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
+        - sprite: Clothing/Shoes/ModSuits/warden.rsi
           state: equipped-FEET
     uiLayer:
       true:
-        sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
+        sprite: Clothing/Shoes/ModSuits/warden.rsi
         state: equipped-FEET-sealed
       false:
-        sprite: Clothing/Shoes/ModSuits/apocryphal.rsi
+        sprite: Clothing/Shoes/ModSuits/warden.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
 
 - type: entity
-  id: ClothingShoesModSuitAsteroid
+  id: ClothingShoesModSuitSalvage
   parent: ClothingShoesModSuitBase
   categories: [ HideSpawnMenu ]
-  name: asteroid MOD boots
+  name: salvage MOD boots
   components:
   - type: Sprite
-    sprite: Clothing/Shoes/ModSuits/asteroid.rsi
+    sprite: Clothing/Shoes/ModSuits/salvage.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Shoes/ModSuits/asteroid.rsi
+      - sprite: Clothing/Shoes/ModSuits/salvage.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Shoes/ModSuits/asteroid.rsi
+      - sprite: Clothing/Shoes/ModSuits/salvage.rsi
         state: icon
     clothingLayers:
       true:
         shoes:
-        - sprite: Clothing/Shoes/ModSuits/asteroid.rsi
+        - sprite: Clothing/Shoes/ModSuits/salvage.rsi
           state: equipped-FEET-sealed
       false:
         shoes:
-        - sprite: Clothing/Shoes/ModSuits/asteroid.rsi
+        - sprite: Clothing/Shoes/ModSuits/salvage.rsi
           state: equipped-FEET
     uiLayer:
       true:
-        sprite: Clothing/Shoes/ModSuits/asteroid.rsi
+        sprite: Clothing/Shoes/ModSuits/salvage.rsi
         state: equipped-FEET-sealed
       false:
-        sprite: Clothing/Shoes/ModSuits/asteroid.rsi
+        sprite: Clothing/Shoes/ModSuits/salvage.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitAtmospheric
@@ -145,39 +161,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/atmospheric.rsi
         state: equipped-FEET
-
-- type: entity
-  id: ClothingShoesModSuitChrono
-  parent: ClothingShoesModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: chrono MOD boots
-  components:
-  - type: Sprite
-    sprite: Clothing/Shoes/ModSuits/chrono.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Shoes/ModSuits/chrono.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Shoes/ModSuits/chrono.rsi
-        state: icon
-    clothingLayers:
-      true:
-        shoes:
-        - sprite: Clothing/Shoes/ModSuits/chrono.rsi
-          state: equipped-FEET-sealed
-      false:
-        shoes:
-        - sprite: Clothing/Shoes/ModSuits/chrono.rsi
-          state: equipped-FEET
-    uiLayer:
-      true:
-        sprite: Clothing/Shoes/ModSuits/chrono.rsi
-        state: equipped-FEET-sealed
-      false:
-        sprite: Clothing/Shoes/ModSuits/chrono.rsi
-        state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitCivilian
@@ -211,6 +198,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/civilian.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitCorporate
@@ -244,39 +235,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/corporate.rsi
         state: equipped-FEET
-
-- type: entity
-  id: ClothingShoesModSuitCorpsman
-  parent: ClothingShoesModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: corpsman MOD boots
-  components:
-  - type: Sprite
-    sprite: Clothing/Shoes/ModSuits/corpsman.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Shoes/ModSuits/corpsman.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Shoes/ModSuits/corpsman.rsi
-        state: icon
-    clothingLayers:
-      true:
-        shoes:
-        - sprite: Clothing/Shoes/ModSuits/corpsman.rsi
-          state: equipped-FEET-sealed
-      false:
-        shoes:
-        - sprite: Clothing/Shoes/ModSuits/corpsman.rsi
-          state: equipped-FEET
-    uiLayer:
-      true:
-        sprite: Clothing/Shoes/ModSuits/corpsman.rsi
-        state: equipped-FEET-sealed
-      false:
-        sprite: Clothing/Shoes/ModSuits/corpsman.rsi
-        state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitCosmohonk
@@ -310,39 +272,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/cosmohonk.rsi
         state: equipped-FEET
-
-- type: entity
-  id: ClothingShoesModSuitDebug
-  parent: ClothingShoesModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: debug MOD boots
-  components:
-  - type: Sprite
-    sprite: Clothing/Shoes/ModSuits/debug.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Shoes/ModSuits/debug.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Shoes/ModSuits/debug.rsi
-        state: icon
-    clothingLayers:
-      true:
-        shoes:
-        - sprite: Clothing/Shoes/ModSuits/debug.rsi
-          state: equipped-FEET-sealed
-      false:
-        shoes:
-        - sprite: Clothing/Shoes/ModSuits/debug.rsi
-          state: equipped-FEET
-    uiLayer:
-      true:
-        sprite: Clothing/Shoes/ModSuits/debug.rsi
-        state: equipped-FEET-sealed
-      false:
-        sprite: Clothing/Shoes/ModSuits/debug.rsi
-        state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitElite
@@ -376,6 +309,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/elite.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitEnchanted
@@ -409,6 +346,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/enchanted.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.27
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitEngineering
@@ -442,43 +383,14 @@
       false:
         sprite: Clothing/Shoes/ModSuits/engineering.rsi
         state: equipped-FEET
-
-- type: entity
-  id: ClothingShoesModSuitGlitch
-  parent: ClothingShoesModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: glitch MOD boots
-  components:
-  - type: Sprite
-    sprite: Clothing/Shoes/ModSuits/glitch.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Shoes/ModSuits/glitch.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Shoes/ModSuits/glitch.rsi
-        state: icon
-    clothingLayers:
-      true:
-        shoes:
-        - sprite: Clothing/Shoes/ModSuits/glitch.rsi
-          state: equipped-FEET-sealed
-      false:
-        shoes:
-        - sprite: Clothing/Shoes/ModSuits/glitch.rsi
-          state: equipped-FEET
-    uiLayer:
-      true:
-        sprite: Clothing/Shoes/ModSuits/glitch.rsi
-        state: equipped-FEET-sealed
-      false:
-        sprite: Clothing/Shoes/ModSuits/glitch.rsi
-        state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.1
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitHonkerative
-  parent: ClothingShoesModSuitBase
+  parent: ClothingShoesModSuitSyndicate
   categories: [ HideSpawnMenu ]
   name: honkerative MOD boots
   components:
@@ -510,37 +422,41 @@
         state: equipped-FEET
 
 - type: entity
-  id: ClothingShoesModSuitInfiltrator
+  id: ClothingShoesModSuitSyndieCommander
   parent: ClothingShoesModSuitBase
   categories: [ HideSpawnMenu ]
-  name: infiltrator MOD boots
+  name: syndicate commander MOD boots
   components:
   - type: Sprite
-    sprite: Clothing/Shoes/ModSuits/infiltrator.rsi
+    sprite: Clothing/Shoes/ModSuits/syndiecommander.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Shoes/ModSuits/infiltrator.rsi
+      - sprite: Clothing/Shoes/ModSuits/syndiecommander.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Shoes/ModSuits/infiltrator.rsi
+      - sprite: Clothing/Shoes/ModSuits/syndiecommander.rsi
         state: icon
     clothingLayers:
       true:
         shoes:
-        - sprite: Clothing/Shoes/ModSuits/infiltrator.rsi
+        - sprite: Clothing/Shoes/ModSuits/syndiecommander.rsi
           state: equipped-FEET-sealed
       false:
         shoes:
-        - sprite: Clothing/Shoes/ModSuits/infiltrator.rsi
+        - sprite: Clothing/Shoes/ModSuits/syndiecommander.rsi
           state: equipped-FEET
     uiLayer:
       true:
-        sprite: Clothing/Shoes/ModSuits/infiltrator.rsi
+        sprite: Clothing/Shoes/ModSuits/syndiecommander.rsi
         state: equipped-FEET-sealed
       false:
-        sprite: Clothing/Shoes/ModSuits/infiltrator.rsi
+        sprite: Clothing/Shoes/ModSuits/syndiecommander.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitInquisitory
@@ -576,37 +492,41 @@
         state: equipped-FEET
 
 - type: entity
-  id: ClothingShoesModSuitInterdyne
+  id: ClothingShoesModSuitBrigmedic
   parent: ClothingShoesModSuitBase
   categories: [ HideSpawnMenu ]
-  name: interdyne MOD boots
+  name: brigmedic MOD boots
   components:
   - type: Sprite
-    sprite: Clothing/Shoes/ModSuits/interdyne.rsi
+    sprite: Clothing/Shoes/ModSuits/brigmedic.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Shoes/ModSuits/interdyne.rsi
+      - sprite: Clothing/Shoes/ModSuits/brigmedic.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Shoes/ModSuits/interdyne.rsi
+      - sprite: Clothing/Shoes/ModSuits/brigmedic.rsi
         state: icon
     clothingLayers:
       true:
         shoes:
-        - sprite: Clothing/Shoes/ModSuits/interdyne.rsi
+        - sprite: Clothing/Shoes/ModSuits/brigmedic.rsi
           state: equipped-FEET-sealed
       false:
         shoes:
-        - sprite: Clothing/Shoes/ModSuits/interdyne.rsi
+        - sprite: Clothing/Shoes/ModSuits/brigmedic.rsi
           state: equipped-FEET
     uiLayer:
       true:
-        sprite: Clothing/Shoes/ModSuits/interdyne.rsi
+        sprite: Clothing/Shoes/ModSuits/brigmedic.rsi
         state: equipped-FEET-sealed
       false:
-        sprite: Clothing/Shoes/ModSuits/interdyne.rsi
+        sprite: Clothing/Shoes/ModSuits/brigmedic.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitLoader
@@ -642,37 +562,41 @@
         state: equipped-FEET
 
 - type: entity
-  id: ClothingShoesModSuitMagnate
+  id: ClothingShoesModSuitCaptain
   parent: ClothingShoesModSuitBase
   categories: [ HideSpawnMenu ]
-  name: magnate MOD boots
+  name: captain MOD boots
   components:
   - type: Sprite
-    sprite: Clothing/Shoes/ModSuits/magnate.rsi
+    sprite: Clothing/Shoes/ModSuits/captain.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Shoes/ModSuits/magnate.rsi
+      - sprite: Clothing/Shoes/ModSuits/captain.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Shoes/ModSuits/magnate.rsi
+      - sprite: Clothing/Shoes/ModSuits/captain.rsi
         state: icon
     clothingLayers:
       true:
         shoes:
-        - sprite: Clothing/Shoes/ModSuits/magnate.rsi
+        - sprite: Clothing/Shoes/ModSuits/captain.rsi
           state: equipped-FEET-sealed
       false:
         shoes:
-        - sprite: Clothing/Shoes/ModSuits/magnate.rsi
+        - sprite: Clothing/Shoes/ModSuits/captain.rsi
           state: equipped-FEET
     uiLayer:
       true:
-        sprite: Clothing/Shoes/ModSuits/magnate.rsi
+        sprite: Clothing/Shoes/ModSuits/captain.rsi
         state: equipped-FEET-sealed
       false:
-        sprite: Clothing/Shoes/ModSuits/magnate.rsi
+        sprite: Clothing/Shoes/ModSuits/captain.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitMedical
@@ -706,39 +630,47 @@
       false:
         sprite: Clothing/Shoes/ModSuits/medical.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
 
 - type: entity
-  id: ClothingShoesModSuitMining
+  id: ClothingShoesModSuitLuxury
   parent: ClothingShoesModSuitBase
   categories: [ HideSpawnMenu ]
-  name: mining MOD boots
+  name: luxury MOD boots
   components:
   - type: Sprite
-    sprite: Clothing/Shoes/ModSuits/mining.rsi
+    sprite: Clothing/Shoes/ModSuits/luxury.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/Shoes/ModSuits/mining.rsi
+      - sprite: Clothing/Shoes/ModSuits/luxury.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/Shoes/ModSuits/mining.rsi
+      - sprite: Clothing/Shoes/ModSuits/luxury.rsi
         state: icon
     clothingLayers:
       true:
         shoes:
-        - sprite: Clothing/Shoes/ModSuits/mining.rsi
+        - sprite: Clothing/Shoes/ModSuits/luxury.rsi
           state: equipped-FEET-sealed
       false:
         shoes:
-        - sprite: Clothing/Shoes/ModSuits/mining.rsi
+        - sprite: Clothing/Shoes/ModSuits/luxury.rsi
           state: equipped-FEET
     uiLayer:
       true:
-        sprite: Clothing/Shoes/ModSuits/mining.rsi
+        sprite: Clothing/Shoes/ModSuits/luxury.rsi
         state: equipped-FEET-sealed
       false:
-        sprite: Clothing/Shoes/ModSuits/mining.rsi
+        sprite: Clothing/Shoes/ModSuits/luxury.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitNinja
@@ -772,39 +704,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/ninja.rsi
         state: equipped-FEET
-
-- type: entity
-  id: ClothingShoesModSuitPrototype
-  parent: ClothingShoesModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: prototype MOD boots
-  components:
-  - type: Sprite
-    sprite: Clothing/Shoes/ModSuits/prototype.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/Shoes/ModSuits/prototype.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/Shoes/ModSuits/prototype.rsi
-        state: icon
-    clothingLayers:
-      true:
-        shoes:
-        - sprite: Clothing/Shoes/ModSuits/prototype.rsi
-          state: equipped-FEET-sealed
-      false:
-        shoes:
-        - sprite: Clothing/Shoes/ModSuits/prototype.rsi
-          state: equipped-FEET
-    uiLayer:
-      true:
-        sprite: Clothing/Shoes/ModSuits/prototype.rsi
-        state: equipped-FEET-sealed
-      false:
-        sprite: Clothing/Shoes/ModSuits/prototype.rsi
-        state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitRescue
@@ -838,6 +741,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/rescue.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitResearch
@@ -871,6 +778,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/research.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.60
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitResponsory
@@ -904,6 +815,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/responsory.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitSafeguard
@@ -937,6 +852,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/safeguard.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.45
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitSecurity
@@ -970,6 +889,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/security.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.525
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitStandard
@@ -1003,6 +926,10 @@
       false:
         sprite: Clothing/Shoes/ModSuits/standard.rsi
         state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
 
 - type: entity
   id: ClothingShoesModSuitSyndicate
@@ -1035,4 +962,41 @@
         state: equipped-FEET-sealed
       false:
         sprite: Clothing/Shoes/ModSuits/syndicate.rsi
+        state: equipped-FEET
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
+
+- type: entity
+  id: ClothingShoesModSuitSyndicateMedic
+  parent: ClothingShoesModSuitSyndicate
+  categories: [ HideSpawnMenu ]
+  name: syndicate medic MOD boots
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/ModSuits/glitch.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/Shoes/ModSuits/glitch.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/Shoes/ModSuits/glitch.rsi
+        state: icon
+    clothingLayers:
+      true:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/glitch.rsi
+          state: equipped-FEET-sealed
+      false:
+        shoes:
+        - sprite: Clothing/Shoes/ModSuits/glitch.rsi
+          state: equipped-FEET
+    uiLayer:
+      true:
+        sprite: Clothing/Shoes/ModSuits/glitch.rsi
+        state: equipped-FEET-sealed
+      false:
+        sprite: Clothing/Shoes/ModSuits/glitch.rsi
         state: equipped-FEET

@@ -1,3 +1,4 @@
+#admin plushies
 - type: entity
   parent: BasePlushie
   id: PlushieSillyAmy
@@ -137,6 +138,8 @@
       head:
       - state: equipped-HELMET
 
+#miscellaneous plushies
+
 - type: entity
   parent: BasePlushie
   id: PlushieCreature
@@ -179,6 +182,52 @@
     sound:
       collection: BikeHorn
   - type: MultiHandedItem
+
+#non-admins
+
+- type: entity
+  parent: BasePlushie
+  id: PlushieAlexia
+  name: alexia trainer plushie
+  description: A cute stuffed toy that resembles someone that takes their job too seriously.
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/MiraPlushies/alexia.rsi
+    state: icon
+  - type: EmitSoundOnUse
+    sound:
+      collection: FemaleScreams
+  - type: EmitSoundOnLand
+    sound:
+      collection: FemaleScreams
+  - type: EmitSoundOnActivate
+    sound:
+      collection: FemaleScreams
+  - type: EmitSoundOnTrigger
+    sound:
+      collection: FemaleScreams
+  - type: EmitSoundOnCollide
+    sound:
+      collection: FemaleScreams
+  - type: Food
+    requiresSpecialDigestion: true
+    useSound:
+      collection: FemaleScreams
+  - type: MeleeWeapon
+    wideAnimationRotation: 180
+    soundHit:
+      collection: FemaleScreams
+  - type: Clothing
+    quickEquip: false
+    sprite: Objects/Fun/MiraPlushies/alexia.rsi
+    slots:
+    - HEAD
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET
+        offset: "0, 0.03"
+
+#others
 
 - type: entity
   parent: ToySword

@@ -7,7 +7,7 @@
                MinSize="1210 700">
     <BoxContainer Orientation="Vertical">
         <BoxContainer Orientation="Horizontal" VerticalExpand="True" HorizontalExpand="True">
-            <ui:CrewMonitoringNavMapControl Name="NavMap" HorizontalExpand="True" VerticalExpand="True" Margin="5 20"/>
+            <ui:CrewMonitoringNavMapControl Name="NavMap" HorizontalExpand="True" VerticalExpand="True" Margin="5 20" Access="Public"/>
             <BoxContainer Orientation="Vertical" Margin="0 0 10 0">
                 <controls:StripeBack>
                     <PanelContainer>

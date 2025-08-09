@@ -25,6 +25,8 @@ using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
+using Content.Shared.Surgery.Events;
+using Content.Shared.Surgery.Systems;
 
 namespace Content.Shared.Buckle;
 
@@ -33,7 +35,7 @@ public abstract partial class SharedBuckleSystem
     public static ProtoId<AlertCategoryPrototype> BuckledAlertCategory = "Buckled";
 
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
-    [Dependency] private readonly ActionBlockerSystem _actionBlocker = default!;
+    [Dependency] private readonly SharedSurgerySystem _surgerySystem = default!;
 
     private void InitializeBuckle()
     {
@@ -55,6 +57,8 @@ public abstract partial class SharedBuckleSystem
         SubscribeLocalEvent<BuckleComponent, StandAttemptEvent>(OnBuckleStandAttempt);
         SubscribeLocalEvent<BuckleComponent, ThrowPushbackAttemptEvent>(OnBuckleThrowPushbackAttempt);
         SubscribeLocalEvent<BuckleComponent, UpdateCanMoveEvent>(OnBuckleUpdateCanMove);
+
+        SubscribeLocalEvent<BuckleComponent, GetSurgeryUiSourceEvent>(OnBuckleGetSurgerySource);
 
         SubscribeLocalEvent<BuckleComponent, BuckleDoAfterEvent>(OnBuckleDoafter);
         SubscribeLocalEvent<BuckleComponent, DoAfterAttemptEvent<BuckleDoAfterEvent>>((uid, comp, ev) =>
@@ -201,6 +205,17 @@ public abstract partial class SharedBuckleSystem
     {
         if (component.Buckled)
             args.Cancel();
+    }
+
+    private void OnBuckleGetSurgerySource(EntityUid uid, BuckleComponent component, ref GetSurgeryUiSourceEvent args)
+    {
+        if (args.Source != null)
+            return;
+
+        if (component.BuckledTo is not { } buckledTo)
+            return;
+
+        _surgerySystem.TryGetUiEntity(buckledTo, out args.Source);
     }
 
     public bool IsBuckled(EntityUid uid, BuckleComponent? component = null)
@@ -543,7 +558,7 @@ public abstract partial class SharedBuckleSystem
             if (!_interaction.InRangeUnobstructed(user.Value, strap.Owner, buckle.Comp.Range, popup: popup))
                 return false;
 
-            if (user.Value != buckle.Owner && !_actionBlocker.CanComplexInteract(user.Value))
+            if (user.Value != buckle.Owner && !ActionBlocker.CanComplexInteract(user.Value))
                 return false;
         }
 

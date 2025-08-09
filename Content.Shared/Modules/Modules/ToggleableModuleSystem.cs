@@ -9,12 +9,8 @@ namespace Content.Shared.Modules.Modules;
 public sealed partial class ToggleableModuleSystem : EntitySystem
 {
     [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly ModuleContainedSystem _moduleContained = default!;
+    [Dependency] private readonly SharedModuleSystem _module = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
-
-    // not stored on the component as its an abstract component
-    internal Dictionary<NetEntity, TimeSpan> NextMessage = [];
-    internal static readonly TimeSpan MessageDelay = TimeSpan.FromSeconds(0.25f);
 
     public override void Initialize()
     {
@@ -27,9 +23,7 @@ public sealed partial class ToggleableModuleSystem : EntitySystem
 
     private void OnRemoved(Entity<ToggleableModuleComponent> ent, ref ModuleRemovedContainerEvent args)
     {
-        ent.Comp.Toggled = false;
-        Dirty(ent);
-        RaiseToggleEvents(ent, null);
+        RaiseToggleEvents(ent!, false, null);
     }
 
     private void OnEnabled(Entity<ToggleableModuleComponent> ent, ref ModuleEnabledEvent args)
@@ -71,7 +65,7 @@ public sealed partial class ToggleableModuleSystem : EntitySystem
         if (ent.Comp.Toggled == toggle)
             return;
 
-        if (!_moduleContained.TryGetContainer(ent.Owner, out var container))
+        if (!_module.TryGetContainer(ent.Owner, out var container))
             return;
 
         var beforeEv = new ModuleToggleAttemptEvent(toggle, container.Value, user);
@@ -82,29 +76,15 @@ public sealed partial class ToggleableModuleSystem : EntitySystem
             if (user == null || beforeEv.Reason == null)
                 return;
 
-            var netUser = GetNetEntity(user.Value);
-
-            if (NextMessage.TryGetValue(netUser, out var nextMessage))
-            {
-                if (nextMessage > _timing.CurTime)
-                    return;
-            }
-
-            nextMessage = _timing.CurTime + MessageDelay;
-            NextMessage[netUser] = nextMessage;
+            if (ent.Comp.NextMessage > _timing.CurTime)
+                return;
 
             _popup.PopupPredicted(Loc.GetString(beforeEv.Reason), ent.Owner, user);
+            ent.Comp.NextMessage = _timing.CurTime + ent.Comp.MessageDelay;
             return;
         }
 
-        ent.Comp.Toggled = toggle;
-        Dirty(ent);
-        RaiseToggleEvents((ent.Owner, ent.Comp), user);
-    }
-
-    private void RaiseToggleEvents(Entity<ToggleableModuleComponent> ent, EntityUid? user)
-    {
-        RaiseToggleEvents(ent.AsNullable(), ent.Comp.Toggled, user);
+        RaiseToggleEvents(ent, toggle, null);
     }
 
     [PublicAPI]
@@ -113,7 +93,7 @@ public sealed partial class ToggleableModuleSystem : EntitySystem
         if (!Resolve(ent.Owner, ref ent.Comp))
             return;
 
-        if (!_moduleContained.TryGetContainer(ent.Owner, out var container))
+        if (!_module.TryGetContainer(ent.Owner, out var container))
             return;
 
         if (toggled)

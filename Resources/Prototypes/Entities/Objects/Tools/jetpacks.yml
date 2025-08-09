@@ -154,6 +154,8 @@
     sprite: Objects/Tanks/Jetpacks/black.rsi
     slots:
       - Back
+  - type: StaticPrice
+    price: 1000
 
 # Filled black
 - type: entity
@@ -195,8 +197,6 @@
   - type: Tag
     tags:
     - HighRiskItem
-  - type: StealTarget
-    stealGroup: JetpackCaptainFilled
 
 # Filled captain
 - type: entity

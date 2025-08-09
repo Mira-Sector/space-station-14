@@ -133,3 +133,8 @@
   name: signal-port-name-teleport-receiver
   description: signal-port-description-teleport-receiver
   defaultLinks: [ TeleportSender ]
+
+- type: sinkPort
+  id: SurgeryUiSink
+  name: signal-port-name-surgery-ui-sink
+  description: signal-port-description-surgery-ui-sink

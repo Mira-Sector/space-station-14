@@ -21,5 +21,5 @@ public sealed partial class MagbootsComponent : Component
     /// Slot the clothing has to be worn in to work.
     /// </summary>
     [DataField]
-    public string Slot = "shoes";
+    public string? Slot = "shoes";
 }

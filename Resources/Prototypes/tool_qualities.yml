@@ -81,3 +81,10 @@
   toolName: tool-quality-clamping-tool-name
   spawn: Hemostat
   icon: { sprite: Objects/Specific/Medical/Surgery/scissors.rsi, state: hemostat }
+
+- type: tool
+  id: Cauterizing
+  name: tool-quality-cauterizing-name
+  toolName: tool-quality-cauterizing-tool-name
+  spawn: Cautery
+  icon: { sprite: Objects/Specific/Medical/Surgery/cautery.rsi, state: cautery }

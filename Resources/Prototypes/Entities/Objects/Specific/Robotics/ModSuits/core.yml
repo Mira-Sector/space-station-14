@@ -1,6 +1,7 @@
 - type: entity
   id: ModSuitCoreStandard
   name: standard MOD core
+  description: The heart of a MODsuit. Used in construction.
   parent: BaseItem
   components:
   - type: Sprite

@@ -23,7 +23,7 @@ public abstract class SharedMagicMirrorSystem : EntitySystem
 
     private void OnMagicMirrorInteract(Entity<MagicMirrorComponent> mirror, ref AfterInteractEvent args)
     {
-        if (!args.CanReach || args.Target == null)
+        if (!mirror.Comp.ActivateOnInteract || args.CanReach || args.Target == null)
             return;
 
         UpdateInterface(mirror, args.Target.Value, mirror);

@@ -2,10 +2,13 @@ using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using Content.Shared.Tag;
+using Robust.Shared.Audio.Systems;
 using Robust.Shared.GameStates;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
+using Robust.Shared.Timing;
+using Dependency = Robust.Shared.IoC.DependencyAttribute;
 
 namespace Content.Shared.Pinpointer;
 
@@ -22,8 +25,11 @@ public abstract class SharedNavMapSystem : EntitySystem
     public const int WallMask = AllDirMask << (int) NavMapChunkType.Wall;
     public const int FloorMask = AllDirMask << (int) NavMapChunkType.Floor;
 
-    [Robust.Shared.IoC.Dependency] private readonly TagSystem _tagSystem = default!;
-    [Robust.Shared.IoC.Dependency] private readonly INetManager _net = default!;
+    [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private readonly INetManager _net = default!;
+    [Dependency] private readonly TagSystem _tagSystem = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly SharedTransformSystem _transform = default!;
 
     private static readonly ProtoId<TagPrototype>[] WallTags = {"Wall", "Window"};
     private EntityQuery<NavMapDoorComponent> _doorQuery;
@@ -34,6 +40,7 @@ public abstract class SharedNavMapSystem : EntitySystem
 
         // Data handling events
         SubscribeLocalEvent<NavMapComponent, ComponentGetState>(OnGetState);
+        SubscribeAllEvent<NavMapWarpAttemptMessage>(OnWarpAttempt);
         _doorQuery = GetEntityQuery<NavMapDoorComponent>();
     }
 
@@ -164,6 +171,28 @@ public abstract class SharedNavMapSystem : EntitySystem
         args.State = new NavMapDeltaState(chunks, component.Beacons, component.RegionProperties, new(component.Chunks.Keys));
     }
 
+    private void OnWarpAttempt(NavMapWarpAttemptMessage args)
+    {
+        var uid = GetEntity(args.User);
+        if (!TryComp<NavMapWarperComponent>(uid, out var warperComp))
+            return;
+
+        if (_timing.CurTime < warperComp.NextWarp)
+            return;
+
+        var ev = new GetNavMapWarpEntity(uid);
+        RaiseLocalEvent(uid, ev);
+
+        warperComp.NextWarp = _timing.CurTime + warperComp.WarpDelay;
+        Dirty(uid, warperComp);
+
+        if (ev.Cancelled)
+            return;
+
+        _transform.SetWorldPosition(ev.Entity, args.WorldPosition);
+        _audio.PlayLocal(warperComp.Sound, ev.Entity, uid);
+    }
+
     #endregion
 
     #region: System messages
@@ -260,4 +289,17 @@ public abstract class SharedNavMapSystem : EntitySystem
     }
 
     #endregion
+}
+
+[Serializable, NetSerializable]
+public sealed partial class NavMapWarpAttemptMessage(NetEntity user, Vector2 worldPosition) : BoundUserInterfaceMessage
+{
+    public readonly NetEntity User = user;
+    public readonly Vector2 WorldPosition = worldPosition;
+}
+
+
+public sealed partial class GetNavMapWarpEntity(EntityUid entity) : CancellableEntityEventArgs
+{
+    public EntityUid Entity = entity;
 }

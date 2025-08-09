@@ -95,3 +95,6 @@ signal-port-description-teleportr-receiver = Teleporter signal receiver
 
 signal-port-name-teleport-sender = Console
 signal-port-description-teleport-sender = Teleporter console signal sender
+
+signal-port-name-surgery-ui-sink = Surgery Scanner Sink
+signal-port-description-surgery-ui-sink = Surgery scanner body sink.

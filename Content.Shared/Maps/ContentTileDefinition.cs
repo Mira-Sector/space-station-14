@@ -1,6 +1,7 @@
 using Content.Shared.Atmos;
 using Content.Shared.Light.Components;
 using Content.Shared.Movement.Systems;
+using Content.Shared.Silicons.StationAi;
 using Content.Shared.Tools;
 using Robust.Shared.Audio;
 using Robust.Shared.Map;
@@ -127,6 +128,8 @@ namespace Content.Shared.Maps
         /// Is this tile immune to RCD deconstruct.
         /// </summary>
         [DataField("indestructible")] public bool Indestructible = false;
+
+        [DataField] public StationAiVisionTileVisuals? StationAiVisuals;
 
         public void AssignTileId(ushort id)
         {

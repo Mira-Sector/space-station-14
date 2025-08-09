@@ -23,6 +23,7 @@
       true:
         head:
         - state: equipped-HELMET-visor
+          shader: unshaded
   - type: AddComponentContainerModule
     components:
     - type: PointLight
@@ -36,3 +37,83 @@
     blacklist:
       components:
       - FlashlightModule
+
+- type: entity
+  id: ModSuitModuleFlashlightAdvanced
+  parent: ModSuitModuleFlashlight
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: FlashlightModule
+    color: "#daffad"
+
+- type: entity
+  id: ModSuitModuleFlashlightSalvage
+  parent: ModSuitModuleFlashlight
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: FlashlightModule
+    color: "#daffad"
+
+- type: entity
+  id: ModSuitModuleFlashlightAtmos
+  parent: ModSuitModuleFlashlight
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: FlashlightModule
+    color: "#adffe6"
+
+- type: entity
+  id: ModSuitModuleFlashlightCorporate
+  parent: ModSuitModuleFlashlight
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: FlashlightModule
+    color: cyan
+
+- type: entity
+  id: ModSuitModuleFlashlightEnchanted
+  parent: ModSuitModuleFlashlight
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: FlashlightModule
+    color: "#ffadfb"
+
+- type: entity
+  id: ModSuitModuleFlashlightEngineering
+  parent: ModSuitModuleFlashlight
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: FlashlightModule
+    color: "#f4ffad"
+
+- type: entity
+  id: ModSuitModuleFlashlightMedical
+  parent: ModSuitModuleFlashlight
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: FlashlightModule
+    color: "#00FFFF"
+
+- type: entity
+  id: ModSuitModuleFlashlightSecurity
+  parent: ModSuitModuleFlashlight
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: FlashlightModule
+    color: "#ffeead"
+
+- type: entity
+  id: ModSuitModuleFlashlightResearch
+  parent: ModSuitModuleFlashlight
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: FlashlightModule
+    color: "#d6adff"
+
+- type: entity
+  id: ModSuitModuleFlashlightSyndie
+  parent: ModSuitModuleFlashlight
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: FlashlightModule
+    color: green

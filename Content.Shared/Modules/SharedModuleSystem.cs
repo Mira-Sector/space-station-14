@@ -1,11 +1,14 @@
+using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Item;
 using Content.Shared.Modules.Components;
 using Content.Shared.Modules.Components.Modules;
 using Content.Shared.Modules.Events;
 using Content.Shared.Modules.ModSuit;
+using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
 using Content.Shared.Modules.ModSuit.UI;
-using Content.Shared.Modules.Modules;
+using Content.Shared.Modules.ModSuit.UI.Modules;
 using Content.Shared.Popups;
 using Content.Shared.Whitelist;
 using JetBrains.Annotations;
@@ -18,10 +21,10 @@ public abstract partial class SharedModuleSystem : EntitySystem
 {
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
-    [Dependency] private readonly SharedModSuitSystem _modSuit = default!;
-    [Dependency] private readonly ModuleContainedSystem _moduleContained = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
+    [Dependency] private readonly SharedItemSystem _item = default!;
     [Dependency] private readonly INetManager _net = default!;
+    [Dependency] private readonly SharedModSuitSystem _modSuit = default!;
+    [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
 
     /// <inheritdoc/>
@@ -35,11 +38,15 @@ public abstract partial class SharedModuleSystem : EntitySystem
         InitializeSlot();
 
         SubscribeLocalEvent<ModuleContainerComponent, ComponentInit>(OnContainerInit);
-        SubscribeLocalEvent<ModuleContainerComponent, ContainerIsInsertingAttemptEvent>(OnContainerAttempt);
+
+        SubscribeLocalEvent<ModuleContainerComponent, ContainerIsInsertingAttemptEvent>(OnContainerInsertAttempt);
+        SubscribeLocalEvent<ModuleContainerComponent, ContainerIsRemovingAttemptEvent>(OnContainerRemoveAttempt);
+
         SubscribeLocalEvent<ModuleContainerComponent, EntInsertedIntoContainerMessage>(OnContainerInserted);
         SubscribeLocalEvent<ModuleContainerComponent, EntRemovedFromContainerMessage>(OnContainerRemoved);
 
-        SubscribeLocalEvent<ModuleContainerComponent, ModSuitGetUiEntriesEvent>(OnGetModSuitUiEntry);
+        SubscribeLocalEvent<ModuleContainerComponent, ModSuitGetUiEntriesEvent>(OnContainerGetModSuitUiEntry);
+        SubscribeLocalEvent<ModuleContainedComponent, ModuleRelayedEvent<ModSuitGetUiEntriesEvent>>(OnModuleGetModSuitUiEntry);
 
         SubscribeAllEvent<ModSuitEjectButtonMessage>(OnModSuitEjectButton);
     }
@@ -55,7 +62,7 @@ public abstract partial class SharedModuleSystem : EntitySystem
         ent.Comp.Modules = _container.EnsureContainer<Container>(ent.Owner, ent.Comp.ModuleContainerId);
     }
 
-    private void OnContainerAttempt(Entity<ModuleContainerComponent> ent, ref ContainerIsInsertingAttemptEvent args)
+    private void OnContainerInsertAttempt(Entity<ModuleContainerComponent> ent, ref ContainerIsInsertingAttemptEvent args)
     {
         if (args.Cancelled)
             return;
@@ -81,7 +88,42 @@ public abstract partial class SharedModuleSystem : EntitySystem
             return;
         }
 
-        var moduleEv = new ModuleAddingAttemptContainerEvent(ent.Owner);
+        var moduleEv = new ModuleAddingAttemptEvent(ent.Owner);
+        RaiseLocalEvent(args.EntityUid, moduleEv);
+
+        if (moduleEv.Cancelled)
+        {
+            if (_net.IsServer && moduleEv.Reason != null)
+                _popup.PopupEntity(Loc.GetString(moduleEv.Reason), ent.Owner);
+
+            args.Cancel();
+            return;
+        }
+    }
+
+    private void OnContainerRemoveAttempt(Entity<ModuleContainerComponent> ent, ref ContainerIsRemovingAttemptEvent args)
+    {
+        if (args.Cancelled)
+            return;
+
+        if (args.Container.ID != ent.Comp.ModuleContainerId)
+            return;
+
+        // no whitelist check as how else did it get in here?
+
+        var containerEv = new ModuleContainerModuleRemovingAttemptEvent(args.EntityUid);
+        RaiseLocalEvent(ent.Owner, containerEv);
+
+        if (containerEv.Cancelled)
+        {
+            if (_net.IsServer && containerEv.Reason != null)
+                _popup.PopupEntity(Loc.GetString(containerEv.Reason), ent.Owner);
+
+            args.Cancel();
+            return;
+        }
+
+        var moduleEv = new ModuleRemovingAttemptEvent(ent.Owner);
         RaiseLocalEvent(args.EntityUid, moduleEv);
 
         if (moduleEv.Cancelled)
@@ -99,11 +141,17 @@ public abstract partial class SharedModuleSystem : EntitySystem
         if (args.Container.ID != ent.Comp.ModuleContainerId)
             return;
 
+        var contained = EnsureComp<ModuleContainedComponent>(args.Entity);
+        contained.Container = ent.Owner;
+        Dirty(args.Entity, contained);
+
         var containerEv = new ModuleContainerModuleAddedEvent(args.Entity);
         RaiseLocalEvent(ent.Owner, containerEv);
 
         var moduleEv = new ModuleAddedContainerEvent(ent.Owner);
         RaiseLocalEvent(args.Entity, moduleEv);
+
+        _item.VisualsChanged(ent.Owner);
     }
 
     private void OnContainerRemoved(Entity<ModuleContainerComponent> ent, ref EntRemovedFromContainerMessage args)
@@ -116,9 +164,13 @@ public abstract partial class SharedModuleSystem : EntitySystem
 
         var moduleEv = new ModuleRemovedContainerEvent(ent.Owner);
         RaiseLocalEvent(args.Entity, moduleEv);
+
+        RemComp<ModuleContainedComponent>(args.Entity);
+
+        _item.VisualsChanged(ent.Owner);
     }
 
-    private void OnGetModSuitUiEntry(Entity<ModuleContainerComponent> ent, ref ModSuitGetUiEntriesEvent args)
+    private void OnContainerGetModSuitUiEntry(Entity<ModuleContainerComponent> ent, ref ModSuitGetUiEntriesEvent args)
     {
         // add a blank one so we override incase there is no more modules
         foreach (var entry in args.Entries)
@@ -131,19 +183,60 @@ public abstract partial class SharedModuleSystem : EntitySystem
         RelayToModules(ent, ref args);
     }
 
+    private ModSuitBaseModuleBuiEntry GetDefaultModSuitBui(Entity<ModuleContainedComponent> ent)
+    {
+        return new ModSuitBaseModuleBuiEntry(CompOrNull<ModSuitModuleComplexityComponent>(ent.Owner)?.Complexity);
+    }
+
+    private void OnModuleGetModSuitUiEntry(Entity<ModuleContainedComponent> ent, ref ModuleRelayedEvent<ModSuitGetUiEntriesEvent> args)
+    {
+        ModSuitModuleBuiEntry? foundEntry = null;
+
+        foreach (var entry in args.Args.Entries)
+        {
+            if (entry is not ModSuitModuleBuiEntry moduleEntry)
+                continue;
+
+            foundEntry = moduleEntry;
+            break;
+        }
+
+        if (foundEntry == null)
+            return; // should never happen as the modsuit adds a blank one to reset any lingering modules
+
+        var ev = new ModSuitGetModuleUiEvent();
+        RaiseLocalEvent(ent.Owner, ev);
+
+        var netEntity = GetNetEntity(ent.Owner);
+        var buiEntry = GetDefaultModSuitBui(ent);
+
+        foreach (var entry in ev.BuiEntries)
+        {
+            if (entry.Priority < buiEntry.Priority)
+                continue;
+
+            buiEntry = entry;
+        }
+
+        var newModules = new KeyValuePair<NetEntity, ModSuitBaseModuleBuiEntry>[foundEntry.Modules.Length + 1];
+        Array.Copy(foundEntry.Modules, newModules, foundEntry.Modules.Length);
+        newModules[^1] = KeyValuePair.Create(netEntity, buiEntry);
+        foundEntry.Modules = newModules;
+    }
+
     private void OnModSuitEjectButton(ModSuitEjectButtonMessage args)
     {
         var module = GetEntity(args.Module);
         var container = GetEntity(args.Container);
 
-        if (_moduleContained.GetContainer(module) != container)
+        if (GetContainer(module) != container)
             return;
 
         if (!TryComp<ModuleContainerComponent>(container, out var moduleContainer))
             return;
 
         _container.Remove(module, moduleContainer.Modules);
-        _hands.TryPickup(GetEntity(args.User), module);
+        _hands.TryPickupAnyHand(GetEntity(args.User), module);
     }
 
     [PublicAPI]
@@ -166,7 +259,7 @@ public abstract partial class SharedModuleSystem : EntitySystem
     [PublicAPI]
     public void RaiseEventToContainer<T>(Entity<ModuleContainedComponent?> ent, T ev) where T : notnull
     {
-        if (_moduleContained.TryGetContainer(ent, out var container))
+        if (TryGetContainer(ent, out var container))
             RaiseLocalEvent(container.Value, ev);
     }
 
@@ -174,5 +267,41 @@ public abstract partial class SharedModuleSystem : EntitySystem
     public void UpdateUis(EntityUid uid)
     {
         _modSuit.UpdateUI(uid);
+    }
+
+    [PublicAPI]
+    public bool TryGetContainer(Entity<ModuleContainedComponent?> ent, [NotNullWhen(true)] out EntityUid? container)
+    {
+        container = null;
+
+        if (!Resolve(ent.Owner, ref ent.Comp))
+            return false;
+
+        container = ent.Comp.Container;
+        return container != null;
+    }
+
+    [PublicAPI]
+    public EntityUid? GetContainer(Entity<ModuleContainedComponent?> ent)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp, false))
+            return null;
+
+        return ent.Comp.Container;
+    }
+
+    [PublicAPI]
+    public bool TryGetUser(Entity<ModuleContainedComponent?> ent, [NotNullWhen(true)] out EntityUid? user)
+    {
+        user = null;
+
+        if (!Resolve(ent.Owner, ref ent.Comp))
+            return false;
+
+        var ev = new ModuleGetUserEvent();
+        RaiseLocalEvent(ent.Comp.Container, ev);
+
+        user = ev.User;
+        return ev.User != null;
     }
 }

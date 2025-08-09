@@ -1,13 +1,7 @@
 namespace Content.Shared.Modules.Events;
 
-public sealed partial class ModuleContainerRelayedEvent<T> : EntityEventArgs
+public sealed partial class ModuleContainerRelayedEvent<T>(T args, EntityUid module) : EntityEventArgs
 {
-    public T Args;
-    public readonly EntityUid Module;
-
-    public ModuleContainerRelayedEvent(T args, EntityUid module)
-    {
-        Args = args;
-        Module = module;
-    }
+    public T Args = args;
+    public readonly EntityUid Module = module;
 }
