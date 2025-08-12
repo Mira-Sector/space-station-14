@@ -14,10 +14,13 @@ public sealed partial class SurgeryNodeDetailsTab : PanelContainer
     {
         RobustXamlLoader.Load(this);
 
-        Name = special.Name(receiver, body, limb, part);
+        if (special.Name(receiver, body, limb, part, out var name))
+            Name = name;
 
-        var icon = special.GetIcon(receiver, body, limb, part);
-        SpecialIcon.Texture = icon == null ? null : sprite.Frame0(icon);
-        SpecialDescription.Text = special.Description(receiver, body, limb, part);
+        if (special.GetIcon(receiver, body, limb, part, out var icon))
+            SpecialIcon.Texture = sprite.Frame0(icon);
+
+        if (special.Description(receiver, body, limb, part, out var description))
+            SpecialDescription.Text = description;
     }
 }

@@ -130,18 +130,21 @@ public sealed partial class ItemSlot : SurgerySpecial
         }
     }
 
-    public override string Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override bool Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart, [NotNullWhen(true)] out string? name)
     {
-        return Loc.GetString("surgery-special-item-slot-name");
+        name = Loc.GetString("surgery-special-item-slot-name");
+        return true;
     }
 
-    public override string Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override bool Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart, [NotNullWhen(true)] out string? description)
     {
-        return Loc.GetString("surgery-special-item-slot-desc");
+        description = Loc.GetString("surgery-special-item-slot-desc");
+        return true;
     }
 
-    public override SpriteSpecifier? GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override bool GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart, [NotNullWhen(true)] out SpriteSpecifier? icon)
     {
-        return Icon;
+        icon = Icon;
+        return true;
     }
 }

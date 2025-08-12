@@ -9,7 +9,7 @@ using Robust.Shared.Utility;
 namespace Content.Shared.Surgery.Specials;
 
 [UsedImplicitly, Serializable, NetSerializable]
-public sealed partial class AddComponentLimb : SurgerySpecial
+public sealed partial class RemoveComponentLimb : SurgerySpecial
 {
     [DataField(required: true)]
     [NonSerialized]
@@ -32,7 +32,7 @@ public sealed partial class AddComponentLimb : SurgerySpecial
             return;
 
         var entMan = IoCManager.Resolve<IEntityManager>();
-        entMan.AddComponents(limb.Value, Components);
+        entMan.RemoveComponents(limb.Value, Components);
     }
 
     public override bool Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart, [NotNullWhen(true)] out string? name)

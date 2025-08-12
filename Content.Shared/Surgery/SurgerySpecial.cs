@@ -41,9 +41,9 @@ public abstract partial class SurgerySpecial
 
     #region UI
 
-    public abstract string Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart);
-    public abstract string Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart);
-    public abstract SpriteSpecifier? GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart);
+    public abstract bool Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart, [NotNullWhen(true)] out string? name);
+    public abstract bool Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart, [NotNullWhen(true)] out string? description);
+    public abstract bool GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart, [NotNullWhen(true)] out SpriteSpecifier? icon);
 
     #endregion
 }

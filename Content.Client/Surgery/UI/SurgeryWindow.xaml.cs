@@ -1,7 +1,6 @@
 using Content.Client.UserInterface.Controls;
 using Content.Shared.Body.Organ;
 using Content.Shared.Body.Part;
-using Content.Shared.Body.Systems;
 using Content.Shared.Surgery;
 using Content.Shared.Surgery.Components;
 using Content.Shared.Surgery.Systems;
@@ -19,7 +18,6 @@ public sealed partial class SurgeryWindow : FancyWindow
     [Dependency] private readonly IEntityManager _entityManager = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
 
-    private readonly SharedBodySystem _bodySystem;
     private readonly SpriteSystem _spriteSystem;
 
     private ISurgeryReceiver? _receiver;
@@ -33,7 +31,6 @@ public sealed partial class SurgeryWindow : FancyWindow
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
 
-        _bodySystem = _entityManager.System<SharedBodySystem>();
         _spriteSystem = _entityManager.System<SpriteSystem>();
 
         GraphView.NodeClicked += OnNodeClicked;
@@ -58,6 +55,7 @@ public sealed partial class SurgeryWindow : FancyWindow
         if (target == null)
         {
             _receiver = null;
+            _receiverUid = null;
             _bodyPart = null;
             GraphView.ChangeGraph(null, null, null, null, null);
             UpdateSurgeries();
@@ -85,7 +83,7 @@ public sealed partial class SurgeryWindow : FancyWindow
                 var organReceiver = _entityManager.GetComponent<SurgeryReceiverComponent>(organ);
 
                 var organButton = new SurgeryOrganButton(organReceiver, organComp.OrganType, _prototypeManager, _spriteSystem);
-                organButton.OnToggled += args => OnReceiverButtonPressed(receiver, organ, limb, part, args);
+                organButton.OnToggled += args => OnReceiverButtonPressed(organReceiver, organ, limb, part, args);
                 organButtons.Add(organButton);
             }
         }
@@ -141,6 +139,7 @@ public sealed partial class SurgeryWindow : FancyWindow
         if (!args.Pressed)
         {
             _receiver = null;
+            _receiverUid = null;
             _bodyPart = null;
             _limb = null;
             UpdateSurgeries();

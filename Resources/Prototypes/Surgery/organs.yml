@@ -5,6 +5,10 @@
   startingNode: Start
   nodes:
   - id: Start
+    special:
+    - !type:RemoveComponentLimb
+      components:
+      - type: AllowOrganSurgery
     edges:
     - connection: Scalpel1
       requirement: !type:ToolRequirement
@@ -42,6 +46,9 @@
   - id: Scalpel2
     special:
     - !type:OrganManipulation
+    - !type:AddComponentLimb
+      components:
+      - type: AllowOrganSurgery
     edges:
     - connection: Start
       requirement: !type:ToolRequirement

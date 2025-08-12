@@ -452,12 +452,24 @@ public abstract partial class SharedSurgerySystem : EntitySystem
 
         ent.Comp.Organs.Add(args.Organ);
         Dirty(ent);
+
+        if (!TryGetUiEntity(ent.Owner, out var ui))
+            return;
+
+        UpdateUi(ui.Value, ent.Owner);
     }
 
     private void OnOrganSurgeryOrganRemoved(Entity<AllowOrganSurgeryComponent> ent, ref OrganRemovedLimbEvent args)
     {
-        if (ent.Comp.Organs.Remove(args.Organ))
-            Dirty(ent);
+        if (!ent.Comp.Organs.Remove(args.Organ))
+            return;
+
+        Dirty(ent);
+
+        if (!TryGetUiEntity(ent.Owner, out var ui))
+            return;
+
+        UpdateUi(ui.Value, ent.Owner);
     }
 
 

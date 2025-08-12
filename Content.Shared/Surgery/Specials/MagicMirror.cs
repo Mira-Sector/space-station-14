@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Body.Part;
 using Content.Shared.MagicMirror;
 using JetBrains.Annotations;
@@ -52,18 +53,21 @@ public sealed partial class MagicMirror : SurgerySpecial
         return SurgeryInteractionState.UserInterface;
     }
 
-    public override string Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override bool Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart, [NotNullWhen(true)] out string? name)
     {
-        return Loc.GetString("surgery-special-magic-mirror-name");
+        name = Loc.GetString("surgery-special-magic-mirror-name");
+        return true;
     }
 
-    public override string Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override bool Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart, [NotNullWhen(true)] out string? description)
     {
-        return Loc.GetString("surgery-special-magic-mirror-desc");
+        description = Loc.GetString("surgery-special-magic-mirror-desc");
+        return true;
     }
 
-    public override SpriteSpecifier? GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override bool GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart, [NotNullWhen(true)] out SpriteSpecifier? icon)
     {
-        return Icon;
+        icon = Icon;
+        return true;
     }
 }

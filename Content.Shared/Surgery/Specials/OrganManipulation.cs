@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Body.Organ;
 using Content.Shared.Body.Part;
 using Content.Shared.Surgery.Systems;
@@ -27,24 +28,27 @@ public sealed partial class OrganManipulation : SurgerySpecial
         return SurgeryInteractionState.UserInterface;
     }
 
-    public override string Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override bool Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart, [NotNullWhen(true)] out string? name)
     {
-        return Loc.GetString("surgery-special-organ-manipulation-name");
+        name = Loc.GetString("surgery-special-organ-manipulation-name");
+        return true;
     }
 
-    public override string Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override bool Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart, [NotNullWhen(true)] out string? description)
     {
-        return Loc.GetString("surgery-special-organ-manipulation-desc", ("part", Loc.GetString(SurgeryHelper.GetBodyPartLoc(bodyPart))));
+        description = Loc.GetString("surgery-special-organ-manipulation-desc", ("part", Loc.GetString(SurgeryHelper.GetBodyPartLoc(bodyPart))));
+        return true;
     }
 
-    public override SpriteSpecifier? GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override bool GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart, [NotNullWhen(true)] out SpriteSpecifier? icon)
     {
-        return bodyPart.Type switch
+        icon = bodyPart.Type switch
         {
             BodyPartType.Head => new SpriteSpecifier.Rsi(RsiPath, "organ-head"),
             BodyPartType.Torso => new SpriteSpecifier.Rsi(RsiPath, "organ-torso"),
             _ => throw new NotImplementedException()
         };
 
+        return true;
     }
 }
