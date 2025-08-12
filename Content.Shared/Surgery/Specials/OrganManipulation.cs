@@ -12,9 +12,9 @@ public sealed partial class OrganManipulation : SurgerySpecial
 {
     private static readonly ResPath RsiPath = new("/Textures/Interface/surgery_icons.rsi");
 
-    public override SurgeryInteractionState Interacted(SurgerySpecialInteractionPhase phase, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
+    public override SurgeryInteractionState Interacted(SurgerySpecialInteractionPhase phase, EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
     {
-        base.Interacted(phase, body, limb, user, used, bodyPart, out ui, out bodyUi);
+        base.Interacted(phase, receiver, body, limb, user, used, bodyPart, out ui, out bodyUi);
 
         // affects surgery so do before all else
         if (phase != SurgerySpecialInteractionPhase.BeforeGraph)
@@ -27,17 +27,17 @@ public sealed partial class OrganManipulation : SurgerySpecial
         return SurgeryInteractionState.UserInterface;
     }
 
-    public override string Name(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override string Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
     {
         return Loc.GetString("surgery-special-organ-manipulation-name");
     }
 
-    public override string Description(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override string Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
     {
         return Loc.GetString("surgery-special-organ-manipulation-desc", ("part", Loc.GetString(SurgeryHelper.GetBodyPartLoc(bodyPart))));
     }
 
-    public override SpriteSpecifier? GetIcon(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override SpriteSpecifier? GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
     {
         return bodyPart.Type switch
         {

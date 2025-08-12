@@ -23,9 +23,9 @@ public sealed partial class AddComponentLimb : SurgerySpecial
     [DataField(required: true)]
     public SpriteSpecifier Icon;
 
-    public override void NodeReached(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
+    public override void NodeReached(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
     {
-        base.NodeReached(body, limb, user, used, bodyPart, out ui, out bodyUi);
+        base.NodeReached(receiver, body, limb, user, used, bodyPart, out ui, out bodyUi);
 
         if (limb == null)
             return;
@@ -34,17 +34,17 @@ public sealed partial class AddComponentLimb : SurgerySpecial
         entMan.AddComponents(limb.Value, Components);
     }
 
-    public override string Name(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override string Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
     {
         return Loc.GetString(NameLoc, ("part", Loc.GetString(SurgeryHelper.GetBodyPartLoc(bodyPart))));
     }
 
-    public override string Description(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override string Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
     {
         return Loc.GetString(DescLoc, ("part", Loc.GetString(SurgeryHelper.GetBodyPartLoc(bodyPart))));
     }
 
-    public override SpriteSpecifier? GetIcon(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override SpriteSpecifier? GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
     {
         return Icon;
     }
