@@ -20,6 +20,7 @@ public sealed partial class SurgeryWindow : FancyWindow
     private readonly SpriteSystem _sprite;
 
     private ISurgeryReceiver? _receiver;
+    private EntityUid? _receiverUid;
     private BodyPart? _bodyPart;
     private EntityUid? _body;
     private EntityUid? _limb;
@@ -54,16 +55,16 @@ public sealed partial class SurgeryWindow : FancyWindow
         {
             _receiver = null;
             _bodyPart = null;
-            GraphView.ChangeGraph(null, null, null, null);
+            GraphView.ChangeGraph(null, null, null, null, null);
             UpdateSurgeries();
             return;
         }
 
         foreach (var (limb, part, receiver) in GetLimbSurgeries(target.Value))
         {
-            var button = new SurgeryLimbButton(receiver, part, _sprite);
-            button.OnToggled += args => OnLimbButtonPressed(receiver, limb, part, args);
-            LimbButtons.AddChild(button);
+            var limbButton = new SurgeryLimbButton(receiver, part, _sprite);
+            limbButton.OnToggled += args => OnLimbButtonPressed(receiver, limb, part, args);
+            LimbButtons.AddChild(limbButton);
         }
 
         UpdateSurgeries();
@@ -117,21 +118,22 @@ public sealed partial class SurgeryWindow : FancyWindow
             _bodyPart = null;
             _limb = null;
             UpdateSurgeries();
-            GraphView.ChangeGraph(null, null, null, null);
+            GraphView.ChangeGraph(null, null, null, null, null);
             return;
         }
 
         _receiver = receiver;
+        _receiverUid = limb ?? _body;
         _bodyPart = part;
         _limb = limb;
         UpdateSurgeries();
-        GraphView.ChangeGraph(_receiver.Graph, _body, _limb, _bodyPart);
+        GraphView.ChangeGraph(_receiver.Graph, _receiverUid, _body, _limb, _bodyPart);
 
         GraphView.CurrentNode = _receiver.CurrentNode;
 
         foreach (var control in LimbButtons.Children)
         {
-            if (control is not SurgeryLimbButton button)
+            if (control is not BaseSurgeryReceiverButton button)
                 continue;
 
             if (button.Receiver != receiver)
@@ -206,14 +208,14 @@ public sealed partial class SurgeryWindow : FancyWindow
     private void OnNodeClicked(SurgeryNode node)
     {
         GraphDetails.RemoveAllChildren();
-        var details = new SurgeryNodeDetails(node, (_limb ?? _body)!.Value, _body, _limb, _bodyPart!);
+        var details = new SurgeryNodeDetails(node, _receiverUid!.Value, _body, _limb, _bodyPart!);
         GraphDetails.AddChild(details);
     }
 
     private void OnEdgeClicked(SurgeryEdge edge)
     {
         GraphDetails.RemoveAllChildren();
-        var details = new SurgeryEdgeDetails(edge, (_limb ?? _body)!.Value, _body, _limb, _bodyPart!);
+        var details = new SurgeryEdgeDetails(edge, _receiverUid!.Value, _body, _limb, _bodyPart!);
         GraphDetails.AddChild(details);
     }
 }
