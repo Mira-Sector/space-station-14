@@ -6,5 +6,5 @@ namespace Content.Shared.Surgery.Pain;
 [Serializable, NetSerializable]
 public abstract partial class SurgeryPainRequirement
 {
-    public abstract bool RequirementMet(IEntityManager entity, EntityUid? body, EntityUid? limb, EntityUid? used);
+    public abstract bool RequirementMet(IEntityManager entity, EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid? used);
 }

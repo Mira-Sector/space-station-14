@@ -14,14 +14,14 @@ public sealed partial class SurgeryEdgeDetails : PanelContainer
 
     private readonly SpriteSystem _sprite;
 
-    public SurgeryEdgeDetails(SurgeryEdge edge, EntityUid? body, EntityUid? limb, BodyPart part) : base()
+    public SurgeryEdgeDetails(SurgeryEdge edge, EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart part) : base()
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
         _sprite = _entity.System<SpriteSystem>();
 
         Tabs.RemoveAllChildren();
-        var tab = new SurgeryEdgeDetailsTab(edge.Requirement, body, limb, part, _sprite);
+        var tab = new SurgeryEdgeDetailsTab(edge.Requirement, receiver, body, limb, part, _sprite);
         Tabs.AddChild(tab);
 
         Tabs.Visible = Tabs.ChildCount > 0;
