@@ -1,6 +1,5 @@
 using Content.Shared.Body.Events;
 using Content.Shared.Body.Part;
-using Content.Shared.Body.Systems;
 using Content.Shared.Damage.DamageSelector;
 using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
@@ -13,17 +12,22 @@ namespace Content.Shared.Surgery.Systems;
 
 public abstract partial class SharedSurgerySystem : EntitySystem
 {
-    [Dependency] private readonly SharedBodySystem _body = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] protected readonly SharedUserInterfaceSystem Ui = default!;
+
+    private EntityQuery<SurgeryReceiverComponent> _receiverQuery;
+    private EntityQuery<BodyPartComponent> _bodyPartQuery;
 
     public override void Initialize()
     {
         base.Initialize();
 
         InitializeUI();
+
+        _receiverQuery = GetEntityQuery<SurgeryReceiverComponent>();
+        _bodyPartQuery = GetEntityQuery<BodyPartComponent>();
 
         SubscribeLocalEvent<SurgeryReceiverComponent, ComponentInit>((u, c, a) => OnLimbInit(u, c));
         SubscribeLocalEvent<SurgeryReceiverBodyComponent, ComponentInit>((u, c, a) => OnBodyInit(u, c));
@@ -49,7 +53,7 @@ public abstract partial class SharedSurgerySystem : EntitySystem
 
     private void OnLimbInit(EntityUid uid, SurgeryReceiverComponent component, BodyPartComponent? bodyPartComp = null)
     {
-        if (!Resolve(uid, ref bodyPartComp))
+        if (!_bodyPartQuery.Resolve(uid, ref bodyPartComp))
             return;
 
         component.Graph = MergeGraphs(component.AvailableSurgeries);
@@ -103,7 +107,7 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         if (args.Handled)
             return;
 
-        if (!TryComp<BodyPartComponent>(uid, out var bodyPartComp))
+        if (!_bodyPartQuery.TryComp(uid, out var bodyPartComp))
             return;
 
         BodyPart bodyPart = new(bodyPartComp.PartType, bodyPartComp.Symmetry);
@@ -145,10 +149,10 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         {
             var limb = GetEntity(netLimb);
 
-            if (!TryComp<SurgeryReceiverComponent>(limb, out var surgeryComp))
+            if (!_receiverQuery.TryComp(limb, out var surgeryComp))
                 continue;
 
-            if (!TryComp<BodyPartComponent>(limb, out var partComp) || partComp.Body != uid)
+            if (!_bodyPartQuery.TryComp(limb, out var partComp) || partComp.Body != uid)
                 continue;
 
             if (bodyPart.Type != damageSelectorComp.SelectedPart.Type)
@@ -280,7 +284,7 @@ public abstract partial class SharedSurgerySystem : EntitySystem
             return;
         }
 
-        if (!TryComp<BodyPartComponent>(uid, out var bodyPartComp))
+        if (!_bodyPartQuery.TryComp(uid, out var bodyPartComp))
             return;
 
         if (args.BodyPart.Type != bodyPartComp.PartType || args.BodyPart.Side != bodyPartComp.Symmetry)
@@ -324,7 +328,7 @@ public abstract partial class SharedSurgerySystem : EntitySystem
             return;
         }
 
-        if (!TryComp<BodyPartComponent>(uid, out var bodyPartComp))
+        if (!_bodyPartQuery.TryComp(uid, out var bodyPartComp))
             return;
 
         if (args.BodyPart.Type != bodyPartComp.PartType || args.BodyPart.Side != bodyPartComp.Symmetry)
