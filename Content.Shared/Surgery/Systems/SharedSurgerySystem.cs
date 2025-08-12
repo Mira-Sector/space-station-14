@@ -35,7 +35,7 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         SubscribeLocalEvent<SurgeryReceiverComponent, ComponentInit>((u, c, a) => OnLimbInit(u, c));
         SubscribeLocalEvent<SurgeryReceiverBodyComponent, ComponentInit>((u, c, a) => OnBodyInit(u, c));
 
-        SubscribeLocalEvent<SurgeryReceiverComponent, LimbInitEvent>((u, c, a) => OnLimbInit(u, c, a.Part.Comp));
+        SubscribeLocalEvent<SurgeryReceiverComponent, LimbInitEvent>((u, c, a) => OnLimbInit(u, c));
         SubscribeLocalEvent<SurgeryReceiverBodyComponent, BodyInitEvent>((u, c, a) => OnBodyInit(u, c));
 
         SubscribeLocalEvent<SurgeryReceiverBodyComponent, BodyPartAddedEvent>(OnBodyPartAdded);
@@ -58,11 +58,8 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         SubscribeLocalEvent<AllowOrganSurgeryComponent, OrganRemovedLimbEvent>(OnOrganSurgeryOrganRemoved);
     }
 
-    private void OnLimbInit(EntityUid uid, SurgeryReceiverComponent component, BodyPartComponent? bodyPartComp = null)
+    private void OnLimbInit(EntityUid uid, SurgeryReceiverComponent component)
     {
-        if (!_bodyPartQuery.Resolve(uid, ref bodyPartComp))
-            return;
-
         component.Graph = MergeGraphs(component.AvailableSurgeries);
         component.Graph.TryGetStaringNode(out var startingNode);
         component.CurrentNode = startingNode;

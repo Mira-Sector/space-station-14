@@ -59,6 +59,9 @@
     requiredStates:
     - Wounded
     - Dead
+  - type: SurgeryReceiver
+    availableSurgeries:
+    - OrganHealHeart
   - type: Temperature
   - type: Perishable
     rotAfter: 360

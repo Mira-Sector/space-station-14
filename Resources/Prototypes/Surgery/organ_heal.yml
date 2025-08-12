@@ -1,0 +1,31 @@
+# cant use scalpel at all as that will close the limb
+- type: surgery
+  id: OrganHealHeart
+  name: surgery-organ-heal-name
+  description: surgery-organ-heal-desc
+  startingNode: Start
+  nodes:
+  - id: Start
+    edges:
+    - connection: Retractor
+      requirement: !type:ToolRequirement
+        pain:
+        - BasicNoDamage
+        quality: Retracting
+  - id: Retractor
+    edges:
+    - connection: Hemostat
+      requirement: !type:ToolRequirement
+        pain:
+        - BasicNoDamage
+        quality: Clamping
+  - id: Hemostat
+    special:
+    - !type:BodyDamage
+        damage: -10
+    edges:
+    - connection: Start
+      requirement: !type:ToolRequirement
+        pain:
+        - BasicLightDamage
+        quality: Clamping
