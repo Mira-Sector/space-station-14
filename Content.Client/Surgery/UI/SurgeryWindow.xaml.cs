@@ -1,5 +1,7 @@
 using Content.Client.UserInterface.Controls;
+using Content.Shared.Body.Organ;
 using Content.Shared.Body.Part;
+using Content.Shared.Body.Systems;
 using Content.Shared.Surgery;
 using Content.Shared.Surgery.Components;
 using Content.Shared.Surgery.Systems;
@@ -17,7 +19,8 @@ public sealed partial class SurgeryWindow : FancyWindow
     [Dependency] private readonly IEntityManager _entityManager = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
 
-    private readonly SpriteSystem _sprite;
+    private readonly SharedBodySystem _bodySystem;
+    private readonly SpriteSystem _spriteSystem;
 
     private ISurgeryReceiver? _receiver;
     private EntityUid? _receiverUid;
@@ -30,7 +33,8 @@ public sealed partial class SurgeryWindow : FancyWindow
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
 
-        _sprite = _entityManager.System<SpriteSystem>();
+        _bodySystem = _entityManager.System<SharedBodySystem>();
+        _spriteSystem = _entityManager.System<SpriteSystem>();
 
         GraphView.NodeClicked += OnNodeClicked;
         GraphView.EdgeClicked += OnEdgeClicked;
@@ -60,12 +64,34 @@ public sealed partial class SurgeryWindow : FancyWindow
             return;
         }
 
+        // this is done so they arent intermingled with limb buttons
+        List<SurgeryOrganButton> organButtons = [];
+
         foreach (var (limb, part, receiver) in GetLimbSurgeries(target.Value))
         {
-            var limbButton = new SurgeryLimbButton(receiver, part, _sprite);
-            limbButton.OnToggled += args => OnLimbButtonPressed(receiver, limb, part, args);
+            var limbButton = new SurgeryLimbButton(receiver, part, _spriteSystem);
+            limbButton.OnToggled += args => OnReceiverButtonPressed(receiver, limb, limb, part, args);
             LimbButtons.AddChild(limbButton);
+
+            if (limb == null)
+                continue;
+
+            if (!_entityManager.TryGetComponent<AllowOrganSurgeryComponent>(limb.Value, out var allowOrganSurgery))
+                continue;
+
+            foreach (var organ in allowOrganSurgery.Organs)
+            {
+                var organComp = _entityManager.GetComponent<OrganComponent>(organ);
+                var organReceiver = _entityManager.GetComponent<SurgeryReceiverComponent>(organ);
+
+                var organButton = new SurgeryOrganButton(organReceiver, organComp.OrganType, _prototypeManager, _spriteSystem);
+                organButton.OnToggled += args => OnReceiverButtonPressed(receiver, organ, limb, part, args);
+                organButtons.Add(organButton);
+            }
         }
+
+        foreach (var organButton in organButtons)
+            LimbButtons.AddChild(organButton);
 
         UpdateSurgeries();
     }
@@ -110,7 +136,7 @@ public sealed partial class SurgeryWindow : FancyWindow
         }
     }
 
-    private void OnLimbButtonPressed(ISurgeryReceiver receiver, EntityUid? limb, BodyPart part, BaseButton.ButtonToggledEventArgs args)
+    private void OnReceiverButtonPressed(ISurgeryReceiver receiver, EntityUid? receiverUid, EntityUid? limb, BodyPart part, BaseButton.ButtonToggledEventArgs args)
     {
         if (!args.Pressed)
         {
@@ -123,7 +149,7 @@ public sealed partial class SurgeryWindow : FancyWindow
         }
 
         _receiver = receiver;
-        _receiverUid = limb ?? _body;
+        _receiverUid = receiverUid;
         _bodyPart = part;
         _limb = limb;
         UpdateSurgeries();
