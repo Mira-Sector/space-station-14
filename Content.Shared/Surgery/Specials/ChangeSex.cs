@@ -14,9 +14,9 @@ public sealed partial class ChangeSex : SurgerySpecial
 
     private static readonly SpriteSpecifier.Rsi Icon = new(new("/Textures/Interface/surgery_icons.rsi"), "sex");
 
-    public override void NodeReached(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
+    public override void NodeReached(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
     {
-        base.NodeReached(body, limb, user, used, bodyPart, out ui, out bodyUi);
+        base.NodeReached(receiver, body, limb, user, used, bodyPart, out ui, out bodyUi);
 
         if (body == null)
             return;
@@ -42,12 +42,12 @@ public sealed partial class ChangeSex : SurgerySpecial
         return;
     }
 
-    public override string Name(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override string Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
     {
         return Loc.GetString("surgery-special-change-sex-name");
     }
 
-    public override string Description(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override string Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
     {
         if (ForcedSex is { } sex)
             return Loc.GetString("surgery-special-change-sex-desc", ("sex", sex));
@@ -55,7 +55,7 @@ public sealed partial class ChangeSex : SurgerySpecial
             return Loc.GetString("surgery-special-change-sex-swap-desc");
     }
 
-    public override SpriteSpecifier? GetIcon(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override SpriteSpecifier? GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
     {
         return Icon;
     }

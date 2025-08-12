@@ -11,7 +11,7 @@ public sealed partial class Sleeping : SurgeryPainRequirement
     [DataField]
     public bool AllowNonForced;
 
-    public override bool RequirementMet(IEntityManager entity, EntityUid? body, EntityUid? limb, EntityUid? used)
+    public override bool RequirementMet(IEntityManager entity, EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid? used)
     {
         if (body == null)
             return false;

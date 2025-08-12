@@ -28,16 +28,16 @@ public sealed partial class ItemSlot : SurgerySpecial
 
     private static readonly SpriteSpecifier.Rsi Icon = new(new("/Textures/Interface/surgery_icons.rsi"), "item_slot");
 
-    public override void NodeReached(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
+    public override void NodeReached(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
     {
-        base.NodeReached(body, limb, user, used, bodyPart, out ui, out bodyUi);
+        base.NodeReached(receiver, body, limb, user, used, bodyPart, out ui, out bodyUi);
 
         var entity = IoCManager.Resolve<IEntityManager>();
         var containerSys = entity.System<SharedContainerSystem>();
-        containerSys.EnsureContainer<ContainerSlot>((limb ?? body)!.Value, SlotId);
+        containerSys.EnsureContainer<ContainerSlot>(receiver, SlotId);
     }
 
-    public override SurgeryInteractionState Interacted(SurgerySpecialInteractionPhase phase, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
+    public override SurgeryInteractionState Interacted(SurgerySpecialInteractionPhase phase, EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
     {
         ui = null;
         bodyUi = false;
@@ -48,7 +48,7 @@ public sealed partial class ItemSlot : SurgerySpecial
 
         var entity = IoCManager.Resolve<IEntityManager>();
         var containerSys = entity.System<SharedContainerSystem>();
-        if (!containerSys.TryGetContainer((limb ?? body)!.Value, SlotId, out var baseContainer) || baseContainer is not ContainerSlot container)
+        if (!containerSys.TryGetContainer(receiver, SlotId, out var baseContainer) || baseContainer is not ContainerSlot container)
             return SurgeryInteractionState.Failed;
 
         if (used == null)
@@ -82,16 +82,16 @@ public sealed partial class ItemSlot : SurgerySpecial
         return SurgeryInteractionState.Failed;
     }
 
-    public override bool StartDoAfter(SharedDoAfterSystem doAfter, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
+    public override bool StartDoAfter(SharedDoAfterSystem doAfter, EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
     {
         doAfterId = null;
 
         var entity = IoCManager.Resolve<IEntityManager>();
         var containerSys = entity.System<SharedContainerSystem>();
-        if (!containerSys.TryGetContainer((limb ?? body)!.Value, SlotId, out var baseContainer) || baseContainer is not ContainerSlot container)
+        if (!containerSys.TryGetContainer(receiver, SlotId, out var baseContainer) || baseContainer is not ContainerSlot)
             return false;
 
-        var doAfterArgs = new DoAfterArgs(entity, user, Delay!.Value, new SurgerySpecialDoAfterEvent(this, bodyPart), limb, used: tool)
+        var doAfterArgs = new DoAfterArgs(entity, user, Delay!.Value, new SurgerySpecialDoAfterEvent(this, bodyPart), receiver, used: tool)
         {
             BreakOnMove = true,
             NeedHand = true,
@@ -102,7 +102,7 @@ public sealed partial class ItemSlot : SurgerySpecial
         return doAfter.TryStartDoAfter(doAfterArgs, out doAfterId);
     }
 
-    public override void OnDoAfter(EntityUid? body, EntityUid? limb, SurgerySpecialDoAfterEvent args)
+    public override void OnDoAfter(EntityUid receiver, EntityUid? body, EntityUid? limb, SurgerySpecialDoAfterEvent args)
     {
         var entity = IoCManager.Resolve<IEntityManager>();
         var containerSys = entity.System<SharedContainerSystem>();
@@ -130,17 +130,17 @@ public sealed partial class ItemSlot : SurgerySpecial
         }
     }
 
-    public override string Name(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override string Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
     {
         return Loc.GetString("surgery-special-item-slot-name");
     }
 
-    public override string Description(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override string Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
     {
         return Loc.GetString("surgery-special-item-slot-desc");
     }
 
-    public override SpriteSpecifier? GetIcon(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override SpriteSpecifier? GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
     {
         return Icon;
     }
