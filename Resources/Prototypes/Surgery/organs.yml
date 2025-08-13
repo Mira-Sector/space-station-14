@@ -54,7 +54,7 @@
       requirement: !type:ToolRequirement
         pain:
         - BasicLightDamage
-        quality: Slicing
+        quality: Cauterizing
 
 - type: surgery
   id: CavityImplant

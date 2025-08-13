@@ -1,4 +1,4 @@
-# cant use scalpel at all as that will close the limb
+# cant use cauterizing at all as that will close the limb
 - type: surgery
   id: OrganHealHeart
   name: surgery-organ-heal-name
@@ -7,12 +7,12 @@
   nodes:
   - id: Start
     edges:
-    - connection: Retractor
+    - connection: Scalpel
       requirement: !type:ToolRequirement
         pain:
         - BasicNoDamage
-        quality: Retracting
-  - id: Retractor
+        quality: Slicing
+  - id: Scalpel
     edges:
     - connection: Hemostat
       requirement: !type:ToolRequirement
