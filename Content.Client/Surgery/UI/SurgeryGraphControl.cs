@@ -236,6 +236,9 @@ public sealed partial class SurgeryGraphControl : Control
             return;
         }
 
+        GraphOffset = Vector2.Zero;
+        Scale = Vector2.One;
+
         _layerMap = AssignLayers(_graph);
         _orderedLayers = ReduceCrossings(_layerMap, _graph);
         _nodePositions = AssignCoordinates(_orderedLayers);
