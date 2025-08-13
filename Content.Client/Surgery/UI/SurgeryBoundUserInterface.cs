@@ -1,12 +1,14 @@
 using Content.Shared.Surgery.Components;
 using Content.Shared.Surgery.UI;
 using Robust.Client.UserInterface;
+using Robust.Shared.Timing;
 
 namespace Content.Client.Surgery.UI;
 
 public sealed partial class SurgeryBoundUserInterface : BoundUserInterface
 {
     [Dependency] private readonly IEntityManager _entityManager = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
 
     private SurgeryWindow? _window;
 
@@ -28,6 +30,9 @@ public sealed partial class SurgeryBoundUserInterface : BoundUserInterface
     protected override void UpdateState(BoundUserInterfaceState state)
     {
         base.UpdateState(state);
+
+        if (!_timing.IsFirstTimePredicted)
+            return;
 
         if (state is not SurgeryBoundUserInterfaceState surgeryState)
             return;
