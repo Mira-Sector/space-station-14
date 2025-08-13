@@ -521,15 +521,23 @@ public abstract partial class SharedSurgerySystem : EntitySystem
     {
         ui = null;
 
-        foreach (var (_, (doAfterNetUser, requirement)) in receiver.EdgeDoAfters)
+        foreach (var ((doAfterNetUid, doAfterIndex), (doAfterNetUser, requirement)) in receiver.EdgeDoAfters)
         {
+            var doAfterId = new DoAfterId(GetEntity(doAfterNetUid), doAfterIndex);
+
+            if (_doAfter.GetStatus(doAfterId) != DoAfterStatus.Running)
+                continue;
+
             if (requirement != edge.Requirement)
                 continue;
 
             var doAfterUser = GetEntity(doAfterNetUser);
 
-            if (doAfterUser == user)
-                return SurgeryInteractionState.DoAfter;
+            if (doAfterUser != user)
+                continue;
+
+            _doAfter.Cancel(doAfterId);
+            return SurgeryInteractionState.DoAfter;
         }
 
         var requirementsPassed = edge.Requirement.RequirementMet(receiverUid, body, limb, user, used, bodyPart, out ui);
