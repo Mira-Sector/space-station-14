@@ -1,4 +1,4 @@
-
+using Robust.Shared.Prototypes;
 using Robust.Shared.Audio;
 
 namespace Content.Shared.Teleportation.Components;
@@ -33,6 +33,9 @@ public sealed partial class TeleporterComponent : Component
 
     [DataField]
     public string TeleportFromEffect;
+
+    [DataField]
+    public EntProtoId PortalProto = "PortalArtifact";
 
     [DataField]
     public string TeleportEffect = "EffectFlashBluespace";

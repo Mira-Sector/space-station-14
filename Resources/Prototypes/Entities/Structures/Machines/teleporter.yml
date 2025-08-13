@@ -64,6 +64,7 @@
     energy: 1.5
     color: "#ffffff"
   - type: LitOnPowered
+  - type: TeleporterComponent
 
 - type: entity
   id: TeleporterScience
