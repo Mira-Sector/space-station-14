@@ -528,10 +528,8 @@ public abstract partial class SharedSurgerySystem : EntitySystem
 
             var doAfterUser = GetEntity(doAfterNetUser);
 
-            // yes its passed
-            // its valid as we are already doing something
             if (doAfterUser == user)
-                return SurgeryInteractionState.Passed;
+                return SurgeryInteractionState.DoAfter;
         }
 
         var requirementsPassed = edge.Requirement.RequirementMet(receiverUid, body, limb, user, used, bodyPart, out ui);

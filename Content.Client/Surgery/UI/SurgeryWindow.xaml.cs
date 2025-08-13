@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Client.UserInterface.Controls;
 using Content.Shared.Body.Organ;
 using Content.Shared.Body.Part;
@@ -39,7 +40,25 @@ public sealed partial class SurgeryWindow : FancyWindow
 
     public void UpdateState(Entity<SurgeryReceiverBodyComponent>? target)
     {
-        if (_body == (EntityUid?)target)
+        _body = target;
+
+        if (target == null)
+        {
+            _receiver = null;
+            _receiverUid = null;
+            _bodyPart = null;
+
+            LimbButtons.RemoveAllChildren();
+            GraphDetails.RemoveAllChildren();
+
+            GraphView.ChangeGraph(null, null, null, null, null);
+            UpdateSurgeries();
+            return;
+        }
+
+        var buttons = GetSurgeryReceiverButtons(target.Value);
+
+        if (_body == (EntityUid?)target && buttons.Count() == LimbButtons.ChildCount)
         {
             if (_receiver != null)
                 GraphView.CurrentNode = _receiver.CurrentNode;
@@ -47,29 +66,26 @@ public sealed partial class SurgeryWindow : FancyWindow
             return;
         }
 
-        _body = target;
-
         LimbButtons.RemoveAllChildren();
         GraphDetails.RemoveAllChildren();
+        GraphView.ChangeGraph(null, null, null, null, null);
 
-        if (target == null)
-        {
-            _receiver = null;
-            _receiverUid = null;
-            _bodyPart = null;
-            GraphView.ChangeGraph(null, null, null, null, null);
-            UpdateSurgeries();
-            return;
-        }
+        foreach (var button in buttons)
+            LimbButtons.AddChild(button);
 
+        UpdateSurgeries();
+    }
+
+    private IEnumerable<BaseSurgeryReceiverButton> GetSurgeryReceiverButtons(Entity<SurgeryReceiverBodyComponent> target)
+    {
         // this is done so they arent intermingled with limb buttons
         List<SurgeryOrganButton> organButtons = [];
 
-        foreach (var (limb, part, receiver) in GetLimbSurgeries(target.Value))
+        foreach (var (limb, part, receiver) in GetLimbSurgeries(target))
         {
             var limbButton = new SurgeryLimbButton(receiver, part, _spriteSystem);
             limbButton.OnToggled += args => OnReceiverButtonPressed(receiver, limb, limb, part, args);
-            LimbButtons.AddChild(limbButton);
+            yield return limbButton;
 
             if (limb == null)
                 continue;
@@ -89,9 +105,7 @@ public sealed partial class SurgeryWindow : FancyWindow
         }
 
         foreach (var organButton in organButtons)
-            LimbButtons.AddChild(organButton);
-
-        UpdateSurgeries();
+            yield return organButton;
     }
 
     private IEnumerable<(EntityUid?, BodyPart, ISurgeryReceiver)> GetLimbSurgeries(Entity<SurgeryReceiverBodyComponent> target)
