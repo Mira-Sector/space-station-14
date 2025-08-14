@@ -738,7 +738,7 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         }
     }
 
-    private void GetBodyAndLimb(EntityUid uid, out EntityUid? limb, out EntityUid? body, out BodyPart? bodyPart)
+    public void GetBodyAndLimb(EntityUid uid, out EntityUid? limb, out EntityUid? body, out BodyPart? bodyPart)
     {
         if (_bodyPartQuery.TryComp(uid, out var bodyPartComp))
         {

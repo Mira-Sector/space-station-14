@@ -1,22 +1,25 @@
+using Content.Shared.Buckle;
 using Content.Shared.Buckle.Components;
 using Content.Shared.DeviceLinking.Events;
 using Content.Shared.Surgery.Components;
 using Content.Shared.Surgery.Events;
 using Content.Shared.Surgery.UI;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+using System.Numerics;
 
 namespace Content.Shared.Surgery.Systems;
 
 public abstract partial class SharedSurgerySystem
 {
+    [Dependency] private readonly EntityLookupSystem _lookup = default!;
+
     private void InitializeUI()
     {
         SubscribeLocalEvent<SurgeryUserInterfaceLinkedSourceComponent, StrappedEvent>(OnLinkedSourceStrapped);
         SubscribeLocalEvent<SurgeryUserInterfaceLinkedSourceComponent, UnstrappedEvent>(OnLinkedSourceUnstrapped);
 
-        SubscribeLocalEvent<SurgeryUserInterfaceLinkedSinkComponent, GetSurgeryUiTargetEvent>(OnLinkedSinkGetTarget);
-        SubscribeLocalEvent<SurgeryUserInterfaceLinkedSourceComponent, GetSurgeryUiTargetEvent>(OnLinkedSourceGetTarget);
+        SubscribeLocalEvent<SurgeryUserInterfaceLinkedSinkComponent, GetSurgeryUiTargetEvent>(OnLinkedSinkGetTarget, before: [typeof(SharedBuckleSystem)]);
+        SubscribeLocalEvent<SurgeryUserInterfaceSourceRangeComponent, GetSurgeryUiTargetEvent>(OnSourceRangeGetTarget, before: [typeof(SharedBuckleSystem)]);
 
         SubscribeLocalEvent<SurgeryUserInterfaceLinkedSinkComponent, GetSurgeryUiSourceEvent>(OnLinkedSinkGetSource);
         SubscribeLocalEvent<SurgeryUserInterfaceLinkedSourceComponent, GetSurgeryUiSourceEvent>(OnLinkedSourceGetSource);
@@ -69,15 +72,27 @@ public abstract partial class SharedSurgerySystem
         args.Target = target;
     }
 
-    private void OnLinkedSourceGetTarget(Entity<SurgeryUserInterfaceLinkedSourceComponent> ent, ref GetSurgeryUiTargetEvent args)
+    private void OnSourceRangeGetTarget(Entity<SurgeryUserInterfaceSourceRangeComponent> ent, ref GetSurgeryUiTargetEvent args)
     {
-        if (!TryComp<StrapComponent>(ent.Owner, out var strap))
+        if (args.Target != null)
             return;
 
-        if (strap.BuckledEntities.Count != 1)
-            return;
+        EntityUid? closestMatch = null;
+        var closestPosSquared = float.MaxValue;
 
-        args.Target = strap.BuckledEntities.First();
+        foreach (var entity in _lookup.GetEntitiesInRange<SurgeryReceiverComponent>(Transform(ent.Owner).Coordinates, ent.Comp.Range, SurgeryUserInterfaceSourceRangeComponent.Flags))
+        {
+            var pos = Vector2.Abs(Transform(entity).LocalPosition);
+            var posSquared = pos.LengthSquared();
+
+            if (posSquared > closestPosSquared)
+                continue;
+
+            closestPosSquared = posSquared;
+            closestMatch = entity;
+        }
+
+        args.Target = closestMatch;
     }
 
     private void OnLinkedSinkGetSource(Entity<SurgeryUserInterfaceLinkedSinkComponent> ent, ref GetSurgeryUiSourceEvent args)
