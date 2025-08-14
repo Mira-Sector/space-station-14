@@ -60,7 +60,7 @@ public sealed partial class SurgeryWindow : FancyWindow
 
         var buttons = GetSurgeryReceiverButtons(target.Value);
 
-        if (_body == target && buttons.Count() == LimbButtons.ChildCount)
+        if ((_body == target || _receiverUid == target) && buttons.Count() == LimbButtons.ChildCount)
         {
             if (_receiver != null)
                 GraphView.CurrentNode = _receiver.CurrentNode;
