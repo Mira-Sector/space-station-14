@@ -32,6 +32,13 @@
     sprite: Mobs/Species/Slime/organs.rsi
     layers:
     - state: brain-slime
+      map: [ "enum.ToggleableVisuals.Layer" ]
+  - type: GenericVisualizer
+    visuals:
+      enum.ToggleableVisuals.Enabled:
+        enum.ToggleableVisuals.Layer:
+          True: { state: brain-slime }
+          False: { state: brain-slime }
   - type: SolutionContainerManager
     solutions:
       stomach:
@@ -45,6 +52,9 @@
         reagents:
         - ReagentId: Slime
           Quantity: 10
+  - type: SurgeryReceiver
+    availableSurgeries:
+    - OrganHealHeart
   - type: Item
     size: Small
     heldPrefix: brain
@@ -92,6 +102,8 @@
   name: slime kidneys
   description: "Filters toxins from the bloodstream."
   components:
+  - type: Sprite
+    sprite: Mobs/Species/Human/organs.rsi
   - type: Metabolizer
     maxReagents: 6
     metabolizerTypes: [ Slime ]
