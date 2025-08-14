@@ -23,6 +23,12 @@
         },
         {
             "name": "item_slot"
+        },
+        {
+            "name": "bodydamage-damage"
+        },
+        {
+            "name": "bodydamage-heal"
         }
     ]
 }
