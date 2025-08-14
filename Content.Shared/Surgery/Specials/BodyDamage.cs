@@ -16,7 +16,7 @@ public sealed partial class BodyDamage : SurgerySpecial
 
     private static readonly ResPath RsiPath = new("/Textures/Interface/surgery_icons.rsi");
 
-    public override void NodeReached(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
+    public override void NodeReached(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart? bodyPart, out Enum? ui, out bool bodyUi)
     {
         base.NodeReached(receiver, body, limb, user, used, bodyPart, out ui, out bodyUi);
 
@@ -26,19 +26,19 @@ public sealed partial class BodyDamage : SurgerySpecial
         return;
     }
 
-    public override bool Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart, [NotNullWhen(true)] out string? name)
+    public override bool Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart, [NotNullWhen(true)] out string? name)
     {
         name = Loc.GetString("surgery-special-body-damage-name", ("deltasign", FixedPoint2.Sign(Damage)));
         return true;
     }
 
-    public override bool Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart, [NotNullWhen(true)] out string? description)
+    public override bool Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart, [NotNullWhen(true)] out string? description)
     {
         description = Loc.GetString("surgery-special-body-damage-desc", ("amount", MathF.Abs(Damage.Float())), ("deltasign", FixedPoint2.Sign(Damage)));
         return true;
     }
 
-    public override bool GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart, [NotNullWhen(true)] out SpriteSpecifier? icon)
+    public override bool GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart, [NotNullWhen(true)] out SpriteSpecifier? icon)
     {
         if (Damage > 0)
             icon = new SpriteSpecifier.Rsi(RsiPath, "bodydamage-damage");

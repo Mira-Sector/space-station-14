@@ -4,7 +4,7 @@ using Content.Shared.Inventory;
 namespace Content.Shared.Surgery.Events;
 
 [ByRefEvent]
-public sealed partial class SurgeryInteractionAttemptEvent(EntityUid? body, EntityUid? limb, EntityUid? used, EntityUid user, BodyPart part) : CancellableEntityEventArgs, IInventoryRelayEvent
+public sealed partial class SurgeryInteractionAttemptEvent(EntityUid? body, EntityUid? limb, EntityUid? used, EntityUid user, BodyPart? part) : CancellableEntityEventArgs, IInventoryRelayEvent
 {
     public SlotFlags TargetSlots { get; } = SlotFlags.WITHOUT_POCKET;
 
@@ -14,7 +14,7 @@ public sealed partial class SurgeryInteractionAttemptEvent(EntityUid? body, Enti
     public readonly EntityUid? Used = used;
     public readonly EntityUid User = user;
 
-    public readonly BodyPart Part = part;
+    public readonly BodyPart? Part = part;
 
     public string? Reason;
 }

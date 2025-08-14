@@ -21,12 +21,12 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
     [DataField]
     public TimeSpan? Delay = TimeSpan.FromSeconds(1f);
 
-    public override string Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override string Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart)
     {
         return Loc.GetString("surgery-requirement-tool-name");
     }
 
-    public override string Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override string Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart)
     {
         var prototypes = IoCManager.Resolve<IPrototypeManager>();
 
@@ -35,14 +35,14 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
         return Loc.GetString("surgery-requirement-tool-desc", ("tool", qualityName));
     }
 
-    public override SpriteSpecifier? GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override SpriteSpecifier? GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart)
     {
         var prototypes = IoCManager.Resolve<IPrototypeManager>();
 
         return prototypes.Index(Quality).Icon;
     }
 
-    public override SurgeryInteractionState RequirementMet(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui, bool test = false)
+    public override SurgeryInteractionState RequirementMet(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart? bodyPart, out Enum? ui, bool test = false)
     {
         ui = null;
 
@@ -58,7 +58,7 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
         return SurgeryInteractionState.Failed;
     }
 
-    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
+    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart? bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
     {
         doAfterId = null;
 

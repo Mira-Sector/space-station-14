@@ -10,7 +10,7 @@ namespace Content.Client.Surgery.UI;
 [GenerateTypedNameReferences]
 public sealed partial class SurgeryEdgeDetailsTab : PanelContainer
 {
-    public SurgeryEdgeDetailsTab(SurgeryEdgeRequirement requirement, EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart part, SpriteSystem sprite) : base()
+    public SurgeryEdgeDetailsTab(SurgeryEdgeRequirement requirement, EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? part, SpriteSystem sprite) : base()
     {
         RobustXamlLoader.Load(this);
 

@@ -24,7 +24,7 @@ public sealed partial class RemoveComponentLimb : SurgerySpecial
     [DataField]
     public SpriteSpecifier? Icon;
 
-    public override void NodeReached(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
+    public override void NodeReached(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart? bodyPart, out Enum? ui, out bool bodyUi)
     {
         base.NodeReached(receiver, body, limb, user, used, bodyPart, out ui, out bodyUi);
 
@@ -35,7 +35,7 @@ public sealed partial class RemoveComponentLimb : SurgerySpecial
         entMan.RemoveComponents(limb.Value, Components);
     }
 
-    public override bool Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart, [NotNullWhen(true)] out string? name)
+    public override bool Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart, [NotNullWhen(true)] out string? name)
     {
         if (NameLoc == null)
         {
@@ -49,7 +49,7 @@ public sealed partial class RemoveComponentLimb : SurgerySpecial
         }
     }
 
-    public override bool Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart, [NotNullWhen(true)] out string? description)
+    public override bool Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart, [NotNullWhen(true)] out string? description)
     {
         if (DescLoc == null)
         {
@@ -63,7 +63,7 @@ public sealed partial class RemoveComponentLimb : SurgerySpecial
         }
     }
 
-    public override bool GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart, [NotNullWhen(true)] out SpriteSpecifier? icon)
+    public override bool GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart, [NotNullWhen(true)] out SpriteSpecifier? icon)
     {
         if (Icon == null)
         {

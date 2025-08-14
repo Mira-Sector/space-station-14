@@ -22,22 +22,22 @@ public sealed partial class BodyPartRequirement : SurgeryEdgeRequirement
     [DataField]
     public bool RequireAiming = true;
 
-    public override string Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override string Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart)
     {
         return Loc.GetString("surgery-requirement-body-part-name");
     }
 
-    public override string Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override string Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart)
     {
         return Loc.GetString("surgery-requirement-body-part-desc", ("part", Loc.GetString(SurgeryHelper.GetBodyPartLoc(bodyPart))));
     }
 
-    public override SpriteSpecifier? GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override SpriteSpecifier? GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart)
     {
         return new SpriteSpecifier.Rsi(IconRsi, SurgeryHelper.BodyPartIconState(bodyPart));
     }
 
-    public override SurgeryInteractionState RequirementMet(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui, bool test = false)
+    public override SurgeryInteractionState RequirementMet(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart? bodyPart, out Enum? ui, bool test = false)
     {
         ui = null;
 
@@ -78,7 +78,7 @@ public sealed partial class BodyPartRequirement : SurgeryEdgeRequirement
         return SurgeryInteractionState.DoAfter;
     }
 
-    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
+    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart? bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
     {
         doAfterId = null;
 

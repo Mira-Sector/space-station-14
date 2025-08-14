@@ -247,14 +247,14 @@ public sealed partial class SurgeryWindow : FancyWindow
     private void OnNodeClicked(SurgeryNode node)
     {
         GraphDetails.RemoveAllChildren();
-        var details = new SurgeryNodeDetails(node, _receiverUid!.Value, _body, _limb, _bodyPart!);
+        var details = new SurgeryNodeDetails(node, _receiverUid!.Value, _body, _limb, _bodyPart);
         GraphDetails.AddChild(details);
     }
 
     private void OnEdgeClicked(SurgeryEdge edge)
     {
         GraphDetails.RemoveAllChildren();
-        var details = new SurgeryEdgeDetails(edge, _receiverUid!.Value, _body, _limb, _bodyPart!);
+        var details = new SurgeryEdgeDetails(edge, _receiverUid!.Value, _body, _limb, _bodyPart);
         GraphDetails.AddChild(details);
     }
 }

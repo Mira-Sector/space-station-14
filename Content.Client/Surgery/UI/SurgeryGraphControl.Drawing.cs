@@ -245,7 +245,7 @@ public sealed partial class SurgeryGraphControl
             icons.EnsureCapacity(node.Special.Count);
             foreach (var special in node.Special)
             {
-                if (special.GetIcon(_receiver!.Value, _body, _limb, _bodyPart!, out var sprite))
+                if (special.GetIcon(_receiver!.Value, _body, _limb, _bodyPart, out var sprite))
                     icons.Add(_sprite.Frame0(sprite));
             }
 
@@ -284,7 +284,7 @@ public sealed partial class SurgeryGraphControl
     {
         if (!_edgeIcons.TryGetValue(edge, out var icon))
         {
-            var sprite = edge.Requirement.GetIcon(_receiver!.Value, _body, _limb, _bodyPart!);
+            var sprite = edge.Requirement.GetIcon(_receiver!.Value, _body, _limb, _bodyPart);
             icon = sprite == null ? null : _sprite.Frame0(sprite);
             _edgeIcons[edge] = icon;
         }

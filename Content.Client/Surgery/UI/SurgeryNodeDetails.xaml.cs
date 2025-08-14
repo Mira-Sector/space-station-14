@@ -14,7 +14,7 @@ public sealed partial class SurgeryNodeDetails : PanelContainer
 
     private readonly SpriteSystem _sprite;
 
-    public SurgeryNodeDetails(SurgeryNode node, EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart part) : base()
+    public SurgeryNodeDetails(SurgeryNode node, EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? part) : base()
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
