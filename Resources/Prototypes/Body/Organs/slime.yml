@@ -52,9 +52,6 @@
         reagents:
         - ReagentId: Slime
           Quantity: 10
-  - type: SurgeryReceiver
-    availableSurgeries:
-    - OrganHealHeart
   - type: Item
     size: Small
     heldPrefix: brain

@@ -61,7 +61,7 @@
     - Dead
   - type: SurgeryReceiver
     availableSurgeries:
-    - OrganHealHeart
+    - OrganHeal
   - type: Temperature
   - type: Perishable
     rotAfter: 360
@@ -126,7 +126,7 @@
           Quantity: 5
   - type: SurgeryReceiver
     availableSurgeries:
-    - OrganHealLungs
+    - OrganHeal
   - type: Temperature
   - type: Perishable
     rotAfter: 990
@@ -186,7 +186,7 @@
     - id: Drink
   - type: SurgeryReceiver
     availableSurgeries:
-    - OrganHealStomach
+    - OrganHeal
   - type: Temperature
   - type: Perishable
     rotAfter: 780
@@ -245,7 +245,7 @@
   - type: MetabolizerDelayOnBodyDamage
   - type: SurgeryReceiver
     availableSurgeries:
-    - OrganHealLiver
+    - OrganHeal
   - type: Temperature
   - type: Perishable
     rotAfter: 900
@@ -302,7 +302,7 @@
     - Dead
   - type: SurgeryReceiver
     availableSurgeries:
-    - OrganHealKidneys
+    - OrganHeal
   - type: Temperature
   - type: Perishable
     rotAfter: 900
@@ -351,7 +351,7 @@
         Poison: 2.5
   - type: SurgeryReceiver
     availableSurgeries:
-    - OrganHealAppendix
+    - OrganHeal
   - type: Temperature
   - type: Perishable
     rotAfter: 900
