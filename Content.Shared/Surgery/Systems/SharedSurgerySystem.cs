@@ -10,6 +10,7 @@ using Content.Shared.Popups;
 using Content.Shared.Surgery.Components;
 using Content.Shared.Surgery.Events;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Timing;
 
 namespace Content.Shared.Surgery.Systems;
 
@@ -17,6 +18,7 @@ public abstract partial class SharedSurgerySystem : EntitySystem
 {
     [Dependency] private readonly SharedBodySystem _body = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] protected readonly SharedUserInterfaceSystem Ui = default!;
@@ -59,6 +61,13 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         SubscribeLocalEvent<AllowOrganSurgeryComponent, ComponentInit>(OnOrganSurgeryInit);
         SubscribeLocalEvent<AllowOrganSurgeryComponent, OrganAddedLimbEvent>(OnOrganSurgeryOrganAdded);
         SubscribeLocalEvent<AllowOrganSurgeryComponent, OrganRemovedLimbEvent>(OnOrganSurgeryOrganRemoved);
+    }
+
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+
+        UpdateUi(frameTime);
     }
 
     private void OnLimbInit(EntityUid uid, SurgeryReceiverComponent component)

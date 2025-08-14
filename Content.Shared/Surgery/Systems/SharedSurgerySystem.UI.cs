@@ -40,6 +40,31 @@ public abstract partial class SharedSurgerySystem
         });
     }
 
+    private void UpdateUi(float frameTime)
+    {
+        var query = EntityQueryEnumerator<SurgeryUserInterfaceSourceRangeComponent>();
+        while (query.MoveNext(out var sourceRangeUid, out var sourceRangeComp))
+        {
+            if (_timing.CurTime < sourceRangeComp.RangeCheckNextUpdate)
+                continue;
+
+            sourceRangeComp.RangeCheckNextUpdate += sourceRangeComp.RangeCheckUpdateDelay;
+
+            var closestMatch = SourceRangeGetTarget((sourceRangeUid, sourceRangeComp));
+            if (sourceRangeComp.LastInRange == closestMatch)
+            {
+                Dirty(sourceRangeUid, sourceRangeComp);
+                continue;
+            }
+
+            sourceRangeComp.LastInRange = closestMatch;
+            Dirty(sourceRangeUid, sourceRangeComp);
+
+            if (TryGetUiEntity(sourceRangeUid, out var ui))
+                UpdateUi(ui.Value, closestMatch);
+        }
+    }
+
     private void OnUiOpened(Entity<SurgeryUserInterfaceComponent> ent, ref BoundUIOpenedEvent args)
     {
         TryGetTarget(ent.Owner, out var target);
@@ -78,6 +103,19 @@ public abstract partial class SharedSurgerySystem
         if (args.Target != null)
             return;
 
+        var closestMatch = SourceRangeGetTarget(ent);
+
+        if (closestMatch != null && ent.Comp.LastInRange != closestMatch)
+        {
+            ent.Comp.LastInRange = closestMatch;
+            Dirty(ent);
+        }
+
+        args.Target = closestMatch;
+    }
+
+    private EntityUid? SourceRangeGetTarget(Entity<SurgeryUserInterfaceSourceRangeComponent> ent)
+    {
         EntityUid? closestMatch = null;
         var closestPosSquared = float.MaxValue;
 
@@ -93,7 +131,7 @@ public abstract partial class SharedSurgerySystem
             closestMatch = entity;
         }
 
-        args.Target = closestMatch;
+        return closestMatch;
     }
 
     private void OnLinkedSinkGetSource(Entity<SurgeryUserInterfaceLinkedSinkComponent> ent, ref GetSurgeryUiSourceEvent args)
