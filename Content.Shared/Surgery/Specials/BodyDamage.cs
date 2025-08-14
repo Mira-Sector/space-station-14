@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Content.Shared.Body.Damage.Components;
 using Content.Shared.Body.Damage.Systems;
 using Content.Shared.Body.Part;
 using Content.Shared.FixedPoint;
@@ -14,6 +15,9 @@ public sealed partial class BodyDamage : SurgerySpecial
     [DataField(required: true)]
     public FixedPoint2 Damage;
 
+    [DataField]
+    public HashSet<BodyDamageState> RequiredStates = [BodyDamageState.Alive, BodyDamageState.Wounded];
+
     private static readonly ResPath RsiPath = new("/Textures/Interface/surgery_icons.rsi");
 
     public override void NodeReached(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart? bodyPart, out Enum? ui, out bool bodyUi)
@@ -21,6 +25,13 @@ public sealed partial class BodyDamage : SurgerySpecial
         base.NodeReached(receiver, body, limb, user, used, bodyPart, out ui, out bodyUi);
 
         var entity = IoCManager.Resolve<IEntityManager>();
+
+        if (entity.TryGetComponent<BodyDamageThresholdsComponent>(receiver, out var thresholdsComp))
+        {
+            if (!RequiredStates.Contains(thresholdsComp.CurrentState))
+                return;
+        }
+
         var bodyDamage = entity.System<BodyDamageableSystem>();
         bodyDamage.ChangeDamage(receiver, Damage);
         return;
