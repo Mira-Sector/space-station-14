@@ -722,19 +722,19 @@ public abstract partial class SharedSurgerySystem : EntitySystem
 
     private void RaiseNodeModifiedEvents(EntityUid receiverUid, EntityUid? limb, EntityUid? body, ISurgeryReceiver receiver, SurgeryNode previousNode, SurgeryNode currentNode, SurgeryEdge edge)
     {
-        var receiverEv = new SurgeryCurrentNodeModifiedEvent(previousNode, currentNode, edge, receiver.Graph);
-        RaiseLocalEvent(receiverUid, ref receiverEv);
+        var receiverEv = new SurgeryCurrentNodeModifiedEvent(receiverUid, limb, body, previousNode, currentNode, edge, receiver.Graph);
+        RaiseLocalEvent(receiverUid, ref receiverEv, true);
 
         if (limb != null && receiverUid != limb.Value)
         {
-            var limbEv = new SurgeryCurrentNodeModifiedEvent(previousNode, currentNode, edge, receiver.Graph);
-            RaiseLocalEvent(limb.Value, ref limbEv);
+            var limbEv = new SurgeryCurrentNodeModifiedEvent(receiverUid, limb, body, previousNode, currentNode, edge, receiver.Graph);
+            RaiseLocalEvent(limb.Value, ref limbEv, true);
         }
 
         if (body != null)
         {
-            var bodyEv = new SurgeryBodyCurrentNodeModifiedEvent(previousNode, currentNode, edge, receiver.Graph);
-            RaiseLocalEvent(body.Value, ref bodyEv);
+            var bodyEv = new SurgeryBodyCurrentNodeModifiedEvent(receiverUid, limb, body, previousNode, currentNode, edge, receiver.Graph);
+            RaiseLocalEvent(body.Value, ref bodyEv, true);
         }
     }
 

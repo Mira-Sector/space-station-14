@@ -12,6 +12,7 @@ namespace Content.Shared.Surgery.Systems;
 public abstract partial class SharedSurgerySystem
 {
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
+    [Dependency] private readonly SharedTransformSystem _transform = default!;
 
     private void InitializeUI()
     {
@@ -30,8 +31,8 @@ public abstract partial class SharedSurgerySystem
         SubscribeLocalEvent<SurgeryUserInterfaceLinkedSinkComponent, PortDisconnectedEvent>(OnSinkDisconnected);
         SubscribeLocalEvent<SurgeryUserInterfaceLinkedSourceComponent, PortDisconnectedEvent>(OnSourceDisconnected);
 
-        SubscribeLocalEvent<SurgeryReceiverComponent, SurgeryCurrentNodeModifiedEvent>(OnNodeModified);
-        SubscribeLocalEvent<SurgeryReceiverBodyComponent, SurgeryBodyCurrentNodeModifiedEvent>(OnBodyNodeModified);
+        SubscribeLocalEvent<SurgeryCurrentNodeModifiedEvent>(OnNodeModified);
+        SubscribeLocalEvent<SurgeryBodyCurrentNodeModifiedEvent>(OnBodyNodeModified);
 
         Subs.BuiEvents<SurgeryUserInterfaceComponent>(SurgeryUiKey.Key, subs =>
         {
@@ -141,20 +142,46 @@ public abstract partial class SharedSurgerySystem
         Dirty(ent);
     }
 
-    private void OnNodeModified(Entity<SurgeryReceiverComponent> ent, ref SurgeryCurrentNodeModifiedEvent args)
+    private void OnNodeModified(ref SurgeryCurrentNodeModifiedEvent args)
     {
-        if (!TryGetUiEntity(ent.Owner, out var ui))
+        if (TryGetUiEntity(args.Receiver, out var ui))
+        {
+            UpdateUi(ui.Value, args.Receiver);
             return;
+        }
 
-        UpdateUi(ui.Value, ent.Owner);
+        SourceRangeUpdateUi(args.Receiver);
     }
 
-    private void OnBodyNodeModified(Entity<SurgeryReceiverBodyComponent> ent, ref SurgeryBodyCurrentNodeModifiedEvent args)
+    private void OnBodyNodeModified(ref SurgeryBodyCurrentNodeModifiedEvent args)
     {
-        if (!TryGetUiEntity(ent.Owner, out var ui))
+        if (args.Body == null)
             return;
 
-        UpdateUi(ui.Value, ent.Owner);
+        if (TryGetUiEntity(args.Body.Value, out var ui))
+        {
+            UpdateUi(ui.Value, args.Body.Value);
+            return;
+        }
+
+        SourceRangeUpdateUi(args.Body.Value);
+    }
+
+    private void SourceRangeUpdateUi(EntityUid target)
+    {
+        var targetPos = Transform(target).Coordinates;
+
+        var query = EntityQueryEnumerator<SurgeryUserInterfaceSourceRangeComponent>();
+        while (query.MoveNext(out var sourceRangeUid, out var sourceRangeComp))
+        {
+            var sourceRangePos = Transform(sourceRangeUid).Coordinates;
+
+            if (!_transform.InRange(sourceRangePos, targetPos, sourceRangeComp.Range))
+                continue;
+
+            if (TryGetUiEntity(sourceRangeUid, out var ui))
+                UpdateUi(ui.Value, target);
+        }
     }
 
     private void UpdateUi(EntityUid ui, EntityUid? target)

@@ -1,4 +1,4 @@
 namespace Content.Shared.Surgery.Events;
 
 [ByRefEvent]
-public sealed partial class SurgeryBodyCurrentNodeModifiedEvent(SurgeryNode previousNode, SurgeryNode currentNode, SurgeryEdge edge, SurgeryGraph graph) : BaseSurgeryCurrentNodeModifiedEvent(previousNode, currentNode, edge, graph);
+public sealed partial class SurgeryBodyCurrentNodeModifiedEvent(EntityUid receiver, EntityUid? limb, EntityUid? body, SurgeryNode previousNode, SurgeryNode currentNode, SurgeryEdge edge, SurgeryGraph graph) : BaseSurgeryCurrentNodeModifiedEvent(receiver, limb, body, previousNode, currentNode, edge, graph);
