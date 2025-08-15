@@ -1,9 +1,10 @@
-﻿using System.Linq;
+using System.Linq;
 using Content.Shared.Buckle.Components;
 using Content.Shared.Construction;
 using Content.Shared.Destructible;
 using Content.Shared.Foldable;
 using Content.Shared.Storage;
+using Content.Shared.Surgery.Events;
 using Robust.Shared.Containers;
 
 namespace Content.Shared.Buckle;
@@ -23,6 +24,8 @@ public abstract partial class SharedBuckleSystem
 
         SubscribeLocalEvent<StrapComponent, FoldAttemptEvent>(OnAttemptFold);
         SubscribeLocalEvent<StrapComponent, MachineDeconstructedEvent>((e, c, _) => StrapRemoveAll(e, c));
+
+        SubscribeLocalEvent<StrapComponent, GetSurgeryUiTargetEvent>(OnStrapGetSurgeryUiTarget);
     }
 
     private void OnStrapStartup(EntityUid uid, StrapComponent component, ComponentStartup args)
@@ -54,6 +57,17 @@ public abstract partial class SharedBuckleSystem
             return;
 
         args.Cancelled = component.BuckledEntities.Count != 0;
+    }
+
+    private void OnStrapGetSurgeryUiTarget(EntityUid uid, StrapComponent component, ref GetSurgeryUiTargetEvent args)
+    {
+        if (args.Target != null)
+            return;
+
+        if (component.BuckledEntities.Count != 1)
+            return;
+
+        args.Target = component.BuckledEntities.First();
     }
 
     /// <summary>

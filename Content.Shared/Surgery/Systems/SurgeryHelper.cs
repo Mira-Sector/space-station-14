@@ -4,9 +4,9 @@ namespace Content.Shared.Surgery.Systems;
 
 public static class SurgeryHelper
 {
-    public static LocId GetBodyPartLoc(BodyPart part)
+    public static LocId GetBodyPartLoc(BodyPart? part)
     {
-        return part.Type switch
+        return part?.Type switch
         {
             BodyPartType.Head => part.Side switch
             {
@@ -34,9 +34,9 @@ public static class SurgeryHelper
         };
     }
 
-    public static string BodyPartIconState(BodyPart part)
+    public static string BodyPartIconState(BodyPart? part)
     {
-        return part.Type switch
+        return part?.Type switch
         {
             BodyPartType.Head => part.Side switch
             {

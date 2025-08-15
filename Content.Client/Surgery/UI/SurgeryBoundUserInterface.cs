@@ -1,16 +1,17 @@
-using Content.Shared.Surgery.Components;
 using Content.Shared.Surgery.UI;
 using Robust.Client.UserInterface;
+using Robust.Shared.Timing;
 
 namespace Content.Client.Surgery.UI;
 
 public sealed partial class SurgeryBoundUserInterface : BoundUserInterface
 {
     [Dependency] private readonly IEntityManager _entityManager = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
 
     private SurgeryWindow? _window;
 
-    private Entity<SurgeryReceiverBodyComponent>? _target = null;
+    private EntityUid? _target = null;
 
     public SurgeryBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
@@ -29,15 +30,13 @@ public sealed partial class SurgeryBoundUserInterface : BoundUserInterface
     {
         base.UpdateState(state);
 
+        if (!_timing.IsFirstTimePredicted)
+            return;
+
         if (state is not SurgeryBoundUserInterfaceState surgeryState)
             return;
 
-        var targetUid = _entityManager.GetEntity(surgeryState.Target);
-        if (_entityManager.TryGetComponent<SurgeryReceiverBodyComponent>(targetUid, out var receiverBodyComponent))
-            _target = (targetUid.Value, receiverBodyComponent);
-        else
-            _target = null;
-
+        _target = _entityManager.GetEntity(surgeryState.Target);
         _window?.UpdateState(_target);
     }
 }

@@ -1,6 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
+using Content.Shared.Body.Damage.Components;
+using Content.Shared.Body.Damage.Systems;
 using Content.Shared.Body.Part;
-using Content.Shared.Humanoid;
+using Content.Shared.FixedPoint;
 using JetBrains.Annotations;
 using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
@@ -8,60 +10,52 @@ using Robust.Shared.Utility;
 namespace Content.Shared.Surgery.Specials;
 
 [UsedImplicitly, Serializable, NetSerializable]
-public sealed partial class ChangeSex : SurgerySpecial
+public sealed partial class BodyDamage : SurgerySpecial
 {
-    [DataField]
-    public Sex? ForcedSex;
+    [DataField(required: true)]
+    public FixedPoint2 Damage;
 
-    private static readonly SpriteSpecifier.Rsi Icon = new(new("/Textures/Interface/surgery_icons.rsi"), "sex");
+    [DataField]
+    public HashSet<BodyDamageState> RequiredStates = [BodyDamageState.Alive, BodyDamageState.Wounded];
+
+    private static readonly ResPath RsiPath = new("/Textures/Interface/surgery_icons.rsi");
 
     public override void NodeReached(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart? bodyPart, out Enum? ui, out bool bodyUi)
     {
         base.NodeReached(receiver, body, limb, user, used, bodyPart, out ui, out bodyUi);
 
-        if (body == null)
-            return;
-
         var entity = IoCManager.Resolve<IEntityManager>();
 
-        if (!entity.TryGetComponent<HumanoidAppearanceComponent>(body.Value, out var humanoidAppearance))
-            return;
-
-        var humanoid = entity.System<SharedHumanoidAppearanceSystem>();
-
-        if (ForcedSex is not { } sex)
+        if (entity.TryGetComponent<BodyDamageThresholdsComponent>(receiver, out var thresholdsComp))
         {
-            sex = humanoidAppearance.Sex switch
-            {
-                Sex.Male => Sex.Female,
-                Sex.Female => Sex.Male,
-                _ => Sex.Unsexed,
-            };
+            if (!RequiredStates.Contains(thresholdsComp.CurrentState))
+                return;
         }
 
-        humanoid.SetSex(body.Value, sex, true, humanoidAppearance);
+        var bodyDamage = entity.System<BodyDamageableSystem>();
+        bodyDamage.ChangeDamage(receiver, Damage);
         return;
     }
 
     public override bool Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart, [NotNullWhen(true)] out string? name)
     {
-        name = Loc.GetString("surgery-special-change-sex-name");
+        name = Loc.GetString("surgery-special-body-damage-name", ("deltasign", FixedPoint2.Sign(Damage)));
         return true;
     }
 
     public override bool Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart, [NotNullWhen(true)] out string? description)
     {
-        if (ForcedSex is { } sex)
-            description = Loc.GetString("surgery-special-change-sex-desc", ("sex", sex));
-        else
-            description = Loc.GetString("surgery-special-change-sex-swap-desc");
-
+        description = Loc.GetString("surgery-special-body-damage-desc", ("amount", MathF.Abs(Damage.Float())), ("deltasign", FixedPoint2.Sign(Damage)));
         return true;
     }
 
     public override bool GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart, [NotNullWhen(true)] out SpriteSpecifier? icon)
     {
-        icon = Icon;
+        if (Damage > 0)
+            icon = new SpriteSpecifier.Rsi(RsiPath, "bodydamage-damage");
+        else
+            icon = new SpriteSpecifier.Rsi(RsiPath, "bodydamage-heal");
+
         return true;
     }
 }

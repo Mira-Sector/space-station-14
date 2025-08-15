@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Body.Part;
 using Content.Shared.MagicMirror;
 using JetBrains.Annotations;
@@ -11,7 +12,7 @@ public sealed partial class MagicMirror : SurgerySpecial
 {
     private static readonly SpriteSpecifier.Rsi Icon = new(new("/Textures/Objects/Tools/scissors.rsi"), "icon");
 
-    public override void NodeReached(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
+    public override void NodeReached(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart? bodyPart, out Enum? ui, out bool bodyUi)
     {
         ui = null;
         bodyUi = false;
@@ -25,7 +26,7 @@ public sealed partial class MagicMirror : SurgerySpecial
         entity.Dirty(body.Value, magicMirror);
     }
 
-    public override void NodeLeft(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
+    public override void NodeLeft(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart? bodyPart, out Enum? ui, out bool bodyUi)
     {
         ui = null;
         bodyUi = false;
@@ -36,7 +37,7 @@ public sealed partial class MagicMirror : SurgerySpecial
         entity.RemoveComponent<MagicMirrorComponent>(body.Value);
     }
 
-    public override SurgeryInteractionState Interacted(SurgerySpecialInteractionPhase phase, EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
+    public override SurgeryInteractionState Interacted(SurgerySpecialInteractionPhase phase, EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart? bodyPart, out Enum? ui, out bool bodyUi)
     {
         base.Interacted(phase, receiver, body, limb, user, used, bodyPart, out ui, out bodyUi);
 
@@ -52,18 +53,21 @@ public sealed partial class MagicMirror : SurgerySpecial
         return SurgeryInteractionState.UserInterface;
     }
 
-    public override string Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override bool Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart, [NotNullWhen(true)] out string? name)
     {
-        return Loc.GetString("surgery-special-magic-mirror-name");
+        name = Loc.GetString("surgery-special-magic-mirror-name");
+        return true;
     }
 
-    public override string Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override bool Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart, [NotNullWhen(true)] out string? description)
     {
-        return Loc.GetString("surgery-special-magic-mirror-desc");
+        description = Loc.GetString("surgery-special-magic-mirror-desc");
+        return true;
     }
 
-    public override SpriteSpecifier? GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override bool GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart, [NotNullWhen(true)] out SpriteSpecifier? icon)
     {
-        return Icon;
+        icon = Icon;
+        return true;
     }
 }

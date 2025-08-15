@@ -72,6 +72,7 @@ public sealed partial class SurgeryGraphControl : Control
 
     public SurgeryNode? CurrentNode;
 
+    private EntityUid? _receiver;
     private EntityUid? _body;
     private EntityUid? _limb;
     private BodyPart? _bodyPart;
@@ -218,12 +219,13 @@ public sealed partial class SurgeryGraphControl : Control
         );
     }
 
-    public void ChangeGraph(SurgeryGraph? graph, EntityUid? body, EntityUid? limb, BodyPart? bodyPart)
+    public void ChangeGraph(SurgeryGraph? graph, EntityUid? receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart)
     {
         if (_graph == graph)
             return;
 
         _graph = graph;
+        _receiver = receiver;
         _body = body;
         _limb = limb;
         _bodyPart = bodyPart;
@@ -233,6 +235,9 @@ public sealed partial class SurgeryGraphControl : Control
             _nodePositions = null;
             return;
         }
+
+        GraphOffset = Vector2.Zero;
+        Scale = Vector2.One;
 
         _layerMap = AssignLayers(_graph);
         _orderedLayers = ReduceCrossings(_layerMap, _graph);

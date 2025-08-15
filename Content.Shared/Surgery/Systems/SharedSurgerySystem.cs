@@ -1,4 +1,6 @@
+using System.Linq;
 using Content.Shared.Body.Events;
+using Content.Shared.Body.Organ;
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
 using Content.Shared.Damage.DamageSelector;
@@ -8,6 +10,7 @@ using Content.Shared.Popups;
 using Content.Shared.Surgery.Components;
 using Content.Shared.Surgery.Events;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Timing;
 
 namespace Content.Shared.Surgery.Systems;
 
@@ -15,9 +18,14 @@ public abstract partial class SharedSurgerySystem : EntitySystem
 {
     [Dependency] private readonly SharedBodySystem _body = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] protected readonly SharedUserInterfaceSystem Ui = default!;
+
+    private EntityQuery<SurgeryReceiverComponent> _receiverQuery;
+    private EntityQuery<BodyPartComponent> _bodyPartQuery;
+    private EntityQuery<OrganComponent> _organQuery;
 
     public override void Initialize()
     {
@@ -25,10 +33,14 @@ public abstract partial class SharedSurgerySystem : EntitySystem
 
         InitializeUI();
 
+        _receiverQuery = GetEntityQuery<SurgeryReceiverComponent>();
+        _bodyPartQuery = GetEntityQuery<BodyPartComponent>();
+        _organQuery = GetEntityQuery<OrganComponent>();
+
         SubscribeLocalEvent<SurgeryReceiverComponent, ComponentInit>((u, c, a) => OnLimbInit(u, c));
         SubscribeLocalEvent<SurgeryReceiverBodyComponent, ComponentInit>((u, c, a) => OnBodyInit(u, c));
 
-        SubscribeLocalEvent<SurgeryReceiverComponent, LimbInitEvent>((u, c, a) => OnLimbInit(u, c, a.Part.Comp));
+        SubscribeLocalEvent<SurgeryReceiverComponent, LimbInitEvent>((u, c, a) => OnLimbInit(u, c));
         SubscribeLocalEvent<SurgeryReceiverBodyComponent, BodyInitEvent>((u, c, a) => OnBodyInit(u, c));
 
         SubscribeLocalEvent<SurgeryReceiverBodyComponent, BodyPartAddedEvent>(OnBodyPartAdded);
@@ -45,13 +57,21 @@ public abstract partial class SharedSurgerySystem : EntitySystem
 
         SubscribeLocalEvent<SurgeryReceiverComponent, SurgerySpecialDoAfterEvent>(OnLimbSpecialDoAfter);
         SubscribeLocalEvent<SurgeryReceiverBodyComponent, SurgerySpecialDoAfterEvent>(OnBodySpecialDoAfter);
+
+        SubscribeLocalEvent<AllowOrganSurgeryComponent, ComponentInit>(OnOrganSurgeryInit);
+        SubscribeLocalEvent<AllowOrganSurgeryComponent, OrganAddedLimbEvent>(OnOrganSurgeryOrganAdded);
+        SubscribeLocalEvent<AllowOrganSurgeryComponent, OrganRemovedLimbEvent>(OnOrganSurgeryOrganRemoved);
     }
 
-    private void OnLimbInit(EntityUid uid, SurgeryReceiverComponent component, BodyPartComponent? bodyPartComp = null)
+    public override void Update(float frameTime)
     {
-        if (!Resolve(uid, ref bodyPartComp))
-            return;
+        base.Update(frameTime);
 
+        UpdateUi(frameTime);
+    }
+
+    private void OnLimbInit(EntityUid uid, SurgeryReceiverComponent component)
+    {
         component.Graph = MergeGraphs(component.AvailableSurgeries);
         component.Graph.TryGetStaringNode(out var startingNode);
         component.CurrentNode = startingNode;
@@ -103,31 +123,58 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         if (args.Handled)
             return;
 
-        if (!TryComp<BodyPartComponent>(uid, out var bodyPartComp))
+        GetBodyAndLimb(uid, out var limb, out var body, out var bodyPart);
+
+        if (!PreCheck(uid, component, limb, body, used, user, bodyPart))
             return;
 
-        BodyPart bodyPart = new(bodyPartComp.PartType, bodyPartComp.Symmetry);
-
-        if (!PreCheck(uid, component, uid, bodyPartComp.Body, used, user, bodyPart))
-            return;
-
-        if (DoInteractSpecials(SurgerySpecialInteractionPhase.BeforeGraph, uid, component, bodyPartComp.Body, uid, user, used, bodyPart))
+        if (DoInteractSpecials(SurgerySpecialInteractionPhase.BeforeGraph, uid, component, body, limb, user, used, bodyPart))
         {
             args.Handled = true;
             return;
         }
 
-        if (TryTraverseGraph(uid, component, uid, bodyPartComp.Body, user, used, bodyPart))
+        if (TryTraverseGraph(uid, component, limb, body, user, used, bodyPart))
         {
             Dirty(uid, component);
             args.Handled = true;
             return;
         }
 
-        if (DoInteractSpecials(SurgerySpecialInteractionPhase.AfterGraph, uid, component, bodyPartComp.Body, uid, user, used, bodyPart))
+        if (DoInteractSpecials(SurgerySpecialInteractionPhase.AfterGraph, uid, component, body, limb, user, used, bodyPart))
         {
             args.Handled = true;
             return;
+        }
+
+        if (!TryComp<AllowOrganSurgeryComponent>(uid, out var allowOrganSurgery))
+            return;
+
+        foreach (var organ in allowOrganSurgery.Organs)
+        {
+            var receiver = _receiverQuery.GetComponent(organ);
+
+            if (!PreCheck(organ, receiver, limb, body, used, user, bodyPart))
+                return;
+
+            if (DoInteractSpecials(SurgerySpecialInteractionPhase.BeforeGraph, organ, receiver, body, limb, user, used, bodyPart))
+            {
+                args.Handled = true;
+                return;
+            }
+
+            if (TryTraverseGraph(organ, receiver, limb, body, user, used, bodyPart))
+            {
+                Dirty(organ, receiver);
+                args.Handled = true;
+                return;
+            }
+
+            if (DoInteractSpecials(SurgerySpecialInteractionPhase.AfterGraph, organ, receiver, body, limb, user, used, bodyPart))
+            {
+                args.Handled = true;
+                return;
+            }
         }
     }
 
@@ -145,10 +192,10 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         {
             var limb = GetEntity(netLimb);
 
-            if (!TryComp<SurgeryReceiverComponent>(limb, out var surgeryComp))
+            if (!_receiverQuery.TryComp(limb, out var surgeryComp))
                 continue;
 
-            if (!TryComp<BodyPartComponent>(limb, out var partComp) || partComp.Body != uid)
+            if (!_bodyPartQuery.TryComp(limb, out var partComp) || partComp.Body != uid)
                 continue;
 
             if (bodyPart.Type != damageSelectorComp.SelectedPart.Type)
@@ -181,6 +228,37 @@ public abstract partial class SharedSurgerySystem : EntitySystem
             {
                 args.Handled = true;
                 return;
+            }
+
+            if (!TryComp<AllowOrganSurgeryComponent>(limb, out var allowOrganSurgery))
+                continue;
+
+            foreach (var organ in allowOrganSurgery.Organs)
+            {
+                if (!_receiverQuery.TryComp(organ, out var organReceiver))
+                    continue;
+
+                if (!PreCheck(organ, organReceiver, limb, uid, used, user, damageSelectorComp.SelectedPart))
+                    return;
+
+                if (DoInteractSpecials(SurgerySpecialInteractionPhase.BeforeGraph, organ, surgeryComp, uid, limb, user, used, bodyPart))
+                {
+                    args.Handled = true;
+                    return;
+                }
+
+                if (TryTraverseGraph(organ, organReceiver, limb, uid, user, used, bodyPart))
+                {
+                    Dirty(organ, organReceiver);
+                    args.Handled = true;
+                    return;
+                }
+
+                if (DoInteractSpecials(SurgerySpecialInteractionPhase.AfterGraph, organ, organReceiver, uid, limb, user, used, bodyPart))
+                {
+                    args.Handled = true;
+                    return;
+                }
             }
         }
 
@@ -219,7 +297,7 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         }
     }
 
-    private bool PreCheck(EntityUid receiverUid, ISurgeryReceiver receiver, EntityUid? limb, EntityUid? body, EntityUid? used, EntityUid user, BodyPart bodyPart)
+    private bool PreCheck(EntityUid receiverUid, ISurgeryReceiver receiver, EntityUid? limb, EntityUid? body, EntityUid? used, EntityUid user, BodyPart? bodyPart)
     {
         var ev = new SurgeryInteractionAttemptEvent(body, limb, used, user, bodyPart);
         RaiseLocalEvent(receiverUid, ref ev);
@@ -276,17 +354,11 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         {
             var netDoAfterId = (GetNetEntity(args.DoAfter.Id.Uid), args.DoAfter.Id.Index);
             component.EdgeDoAfters.Remove(netDoAfterId);
-
             return;
         }
 
-        if (!TryComp<BodyPartComponent>(uid, out var bodyPartComp))
-            return;
-
-        if (args.BodyPart.Type != bodyPartComp.PartType || args.BodyPart.Side != bodyPartComp.Symmetry)
-            return;
-
-        OnEdgeRequirementDoAfter(uid, uid, bodyPartComp.Body, component, args);
+        GetBodyAndLimb(uid, out var limb, out var body, out _);
+        OnEdgeRequirementDoAfter(uid, limb, body, component, args);
     }
 
     private void OnEdgeRequirementDoAfter(EntityUid receiverUid, EntityUid? limb, EntityUid? body, ISurgeryReceiver surgeryReceiver, SurgeryEdgeRequirementDoAfterEvent args)
@@ -320,17 +392,13 @@ public abstract partial class SharedSurgerySystem : EntitySystem
 
         if (args.Cancelled)
         {
-            CancelSpecialDoAfter(component, GetNetEntity(args.User), args.User, args.Special);
+            var netUser = GetNetEntity(args.User);
+            CancelSpecialDoAfter(component, netUser, args.User, args.Special);
             return;
         }
 
-        if (!TryComp<BodyPartComponent>(uid, out var bodyPartComp))
-            return;
-
-        if (args.BodyPart.Type != bodyPartComp.PartType || args.BodyPart.Side != bodyPartComp.Symmetry)
-            return;
-
-        OnSpecialDoAfter(uid, uid, bodyPartComp.Body, args);
+        GetBodyAndLimb(uid, out var limb, out var body, out _);
+        OnSpecialDoAfter(uid, limb, body, args);
     }
 
     private void OnBodySpecialDoAfter(EntityUid uid, SurgeryReceiverBodyComponent component, SurgerySpecialDoAfterEvent args)
@@ -340,7 +408,7 @@ public abstract partial class SharedSurgerySystem : EntitySystem
 
         foreach (var surgeries in component.Surgeries)
         {
-            if (args.BodyPart.Type != surgeries.BodyPart.Type || args.BodyPart.Side != surgeries.BodyPart.Side)
+            if (args.BodyPart?.Type != surgeries.BodyPart.Type || args.BodyPart.Side != surgeries.BodyPart.Side)
                 continue;
 
             if (args.Cancelled)
@@ -358,7 +426,50 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         args.Special.OnDoAfter(receiver, body, limb, args);
     }
 
-    public bool TryTraverseGraph(EntityUid receiverUid, ISurgeryReceiver receiver, EntityUid? limb, EntityUid? body, EntityUid user, EntityUid? used, BodyPart bodyPart)
+    private void OnOrganSurgeryInit(Entity<AllowOrganSurgeryComponent> ent, ref ComponentInit args)
+    {
+        var organs = _body.GetPartOrgans(ent.Owner);
+
+        ent.Comp.Organs.EnsureCapacity(organs.Count());
+
+        foreach (var (organ, _) in organs)
+        {
+            if (_receiverQuery.HasComp(organ))
+                ent.Comp.Organs.Add(organ);
+        }
+
+        Dirty(ent);
+    }
+
+    private void OnOrganSurgeryOrganAdded(Entity<AllowOrganSurgeryComponent> ent, ref OrganAddedLimbEvent args)
+    {
+        if (!_receiverQuery.HasComp(args.Organ))
+            return;
+
+        ent.Comp.Organs.Add(args.Organ);
+        Dirty(ent);
+
+        if (!TryGetUiEntity(ent.Owner, out var ui))
+            return;
+
+        UpdateUi(ui.Value, ent.Owner);
+    }
+
+    private void OnOrganSurgeryOrganRemoved(Entity<AllowOrganSurgeryComponent> ent, ref OrganRemovedLimbEvent args)
+    {
+        if (!ent.Comp.Organs.Remove(args.Organ))
+            return;
+
+        Dirty(ent);
+
+        if (!TryGetUiEntity(ent.Owner, out var ui))
+            return;
+
+        UpdateUi(ui.Value, ent.Owner);
+    }
+
+
+    public bool TryTraverseGraph(EntityUid receiverUid, ISurgeryReceiver receiver, EntityUid? limb, EntityUid? body, EntityUid user, EntityUid? used, BodyPart? bodyPart)
     {
         if (receiver.CurrentNode == null)
         {
@@ -405,21 +516,27 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         return false;
     }
 
-    public SurgeryInteractionState TryEdge(EntityUid receiverUid, ISurgeryReceiver receiver, SurgeryEdge edge, EntityUid? limb, EntityUid? body, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui)
+    public SurgeryInteractionState TryEdge(EntityUid receiverUid, ISurgeryReceiver receiver, SurgeryEdge edge, EntityUid? limb, EntityUid? body, EntityUid user, EntityUid? used, BodyPart? bodyPart, out Enum? ui)
     {
         ui = null;
 
-        foreach (var (_, (doAfterNetUser, requirement)) in receiver.EdgeDoAfters)
+        foreach (var ((doAfterNetUid, doAfterIndex), (doAfterNetUser, requirement)) in receiver.EdgeDoAfters)
         {
+            var doAfterId = new DoAfterId(GetEntity(doAfterNetUid), doAfterIndex);
+
+            if (_doAfter.GetStatus(doAfterId) != DoAfterStatus.Running)
+                continue;
+
             if (requirement != edge.Requirement)
                 continue;
 
             var doAfterUser = GetEntity(doAfterNetUser);
 
-            // yes its passed
-            // its valid as we are already doing something
-            if (doAfterUser == user)
-                return SurgeryInteractionState.Passed;
+            if (doAfterUser != user)
+                continue;
+
+            _doAfter.Cancel(doAfterId);
+            return SurgeryInteractionState.DoAfter;
         }
 
         var requirementsPassed = edge.Requirement.RequirementMet(receiverUid, body, limb, user, used, bodyPart, out ui);
@@ -464,7 +581,7 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         return SurgeryInteractionState.Passed;
     }
 
-    private void DoNodeReachedSpecials(EntityUid receiverUid, ISurgeryReceiver receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
+    private void DoNodeReachedSpecials(EntityUid receiverUid, ISurgeryReceiver receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart? bodyPart)
     {
         if (receiver.CurrentNode?.Special is not { } specials)
             return;
@@ -485,7 +602,7 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         }
     }
 
-    private void DoNodeLeftSpecials(EntityUid receiverUid, ISurgeryReceiver receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
+    private void DoNodeLeftSpecials(EntityUid receiverUid, ISurgeryReceiver receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart? bodyPart)
     {
         if (receiver.CurrentNode?.Special is not { } specials)
             return;
@@ -506,7 +623,7 @@ public abstract partial class SharedSurgerySystem : EntitySystem
         }
     }
 
-    private bool DoInteractSpecials(SurgerySpecialInteractionPhase phase, EntityUid receiverUid, ISurgeryReceiver receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart)
+    private bool DoInteractSpecials(SurgerySpecialInteractionPhase phase, EntityUid receiverUid, ISurgeryReceiver receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart? bodyPart)
     {
         if (receiver.CurrentNode?.Special is not { } specials)
             return false;
@@ -614,19 +731,45 @@ public abstract partial class SharedSurgerySystem : EntitySystem
 
     private void RaiseNodeModifiedEvents(EntityUid receiverUid, EntityUid? limb, EntityUid? body, ISurgeryReceiver receiver, SurgeryNode previousNode, SurgeryNode currentNode, SurgeryEdge edge)
     {
-        var receiverEv = new SurgeryCurrentNodeModifiedEvent(previousNode, currentNode, edge, receiver.Graph);
-        RaiseLocalEvent(receiverUid, ref receiverEv);
+        var receiverEv = new SurgeryCurrentNodeModifiedEvent(receiverUid, limb, body, previousNode, currentNode, edge, receiver.Graph);
+        RaiseLocalEvent(receiverUid, ref receiverEv, true);
 
         if (limb != null && receiverUid != limb.Value)
         {
-            var limbEv = new SurgeryCurrentNodeModifiedEvent(previousNode, currentNode, edge, receiver.Graph);
-            RaiseLocalEvent(limb.Value, ref limbEv);
+            var limbEv = new SurgeryCurrentNodeModifiedEvent(receiverUid, limb, body, previousNode, currentNode, edge, receiver.Graph);
+            RaiseLocalEvent(limb.Value, ref limbEv, true);
         }
 
         if (body != null)
         {
-            var bodyEv = new SurgeryBodyCurrentNodeModifiedEvent(previousNode, currentNode, edge, receiver.Graph);
-            RaiseLocalEvent(body.Value, ref bodyEv);
+            var bodyEv = new SurgeryBodyCurrentNodeModifiedEvent(receiverUid, limb, body, previousNode, currentNode, edge, receiver.Graph);
+            RaiseLocalEvent(body.Value, ref bodyEv, true);
+        }
+    }
+
+    public void GetBodyAndLimb(EntityUid uid, out EntityUid? limb, out EntityUid? body, out BodyPart? bodyPart)
+    {
+        if (_bodyPartQuery.TryComp(uid, out var bodyPartComp))
+        {
+            limb = uid;
+            body = bodyPartComp.Body;
+            bodyPart = new BodyPart(bodyPartComp.PartType, bodyPartComp.Symmetry);
+        }
+        else if (_organQuery.TryComp(uid, out var organComp))
+        {
+            limb = organComp.BodyPart;
+            body = organComp.Body;
+
+            if (_bodyPartQuery.TryComp(organComp.BodyPart, out bodyPartComp))
+                bodyPart = new BodyPart(bodyPartComp.PartType, bodyPartComp.Symmetry);
+            else
+                bodyPart = null;
+        }
+        else
+        {
+            limb = null;
+            body = null;
+            bodyPart = null;
         }
     }
 }
