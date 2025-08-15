@@ -9,6 +9,9 @@
   - type: ModSuitComplexityLimit
     maxComplexity: 15
   - type: ModSuitSealable
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.1
   - type: ModuleContainer
     whitelist:
       tags:
@@ -16,7 +19,6 @@
   - type: ModuleContainerAddOnInteract
   - type: ModuleContainerRequireWirePanel
   - type: ModuleContainerPower
-    baseRate: 0.5
   - type: PowerCellDraw
   - type: PowerCellSlot
     fitsInCharger: false
@@ -447,8 +449,9 @@
       gloves: ClothingHandsModSuitCosmohonk
       head: ClothingHeadModSuitCosmohonk
       shoes: ClothingShoesModSuitCosmohonk
-  - type: ModuleContainerPower
-    baseRate: 0.125
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.025
   - type: ClothingSpeedModifier
     walkModifier: 0.9
     sprintModifier: 0.9
@@ -845,8 +848,9 @@
       gloves: ClothingHandsModSuitBrigmedic
       head: ClothingHeadModSuitBrigmedic
       shoes: ClothingShoesModSuitBrigmedic
-  - type: ModuleContainerPower
-    baseRate: 0.7
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.14
   - type: ClothingSpeedModifier
     walkModifier: 0.65
     sprintModifier: 0.65
@@ -1026,8 +1030,9 @@
       gloves: ClothingHandsModSuitMedical
       head: ClothingHeadModSuitMedical
       shoes: ClothingShoesModSuitMedical
-  - type: ModuleContainerPower
-    baseRate: 0.7
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.14
   - type: ClothingSpeedModifier
     walkModifier: 0.95
     sprintModifier: 0.95
@@ -1092,8 +1097,9 @@
       shoes: ClothingShoesModSuitLuxury
   - type: ModSuitComplexityLimit
     maxComplexity: 13
-  - type: ModuleContainerPower
-    baseRate: 1
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.2
   - type: ClothingSpeedModifier
     walkModifier: 0.9
     sprintModifier: 0.9
@@ -1213,8 +1219,9 @@
       gloves: ClothingHandsModSuitRescue
       head: ClothingHeadModSuitRescue
       shoes: ClothingShoesModSuitRescue
-  - type: ModuleContainerPower
-    baseRate: 0.7
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.14
   - type: ClothingSpeedModifier
     walkModifier: 0.95
     sprintModifier: 0.95

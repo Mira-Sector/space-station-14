@@ -5,6 +5,9 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: ModSuitSealable
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.1
   - type: ModSuitDeployableInventory
   - type: Clothing
     autoGenerateVisuals: false
@@ -403,6 +406,9 @@
             Slash: 0.9
             Piercing: 0.9
             Caustic: 0.8
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.025
 
 - type: entity
   id: ClothingOuterModSuitElite
@@ -751,6 +757,9 @@
             Slash: 0.8
             Piercing: 0.7
             Radiation: 0.9
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.14
 
 - type: entity
   id: ClothingOuterModSuitLoader
@@ -891,6 +900,9 @@
             Caustic: 0.1
     - type: ZombificationResistance
       zombificationResistanceCoefficient: 0.4
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.14
 
 - type: entity
   id: ClothingOuterModSuitLuxury
@@ -947,6 +959,9 @@
             Heat: 0.9
             Radiation: 0.5
             Caustic: 0.8
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.2
 
 - type: entity
   id: ClothingOuterModSuitNinja
@@ -1050,6 +1065,9 @@
             Heat: 0.90
             Radiation: 0.75
             Caustic: 0.5
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.14
 
 - type: entity
   id: ClothingOuterModSuitResearch

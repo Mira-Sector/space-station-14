@@ -34,6 +34,10 @@ public partial class SharedModSuitSystem
         SubscribeLocalEvent<ModSuitSealableComponent, ModSuitGetUiEntriesEvent>(OnSealableGetUiEntries);
         SubscribeLocalEvent<ModSuitSealableComponent, ModSuitDeployableRelayedEvent<ModSuitGetUiEntriesEvent>>((u, c, a) => OnSealableGetUiEntries((u, c), ref a.Args));
 
+        SubscribeLocalEvent<ModSuitSealablePowerDrawComponent, ModSuitDeployableRelayedEvent<ModuleContainerGetBasePowerDrawRate>>(OnSealablePowerGetPowerDraw);
+        SubscribeLocalEvent<ModSuitSealablePowerDrawComponent, ModSuitSealedEvent>(OnSealablePowerSealed);
+        SubscribeLocalEvent<ModSuitSealablePowerDrawComponent, ModSuitUnsealedEvent>(OnSealablePowerUnsealed);
+
         SubscribeLocalEvent<ToggleableComponentModSuitPartDeployableAllSealedComponent, ModSuitContainerPartSealedEvent>(OnToggleComponentSealed);
         SubscribeLocalEvent<ToggleableComponentModSuitPartDeployableAllSealedComponent, ModSuitContainerPartUnsealedEvent>(OnToggleComponentUnsealed);
 
@@ -147,6 +151,29 @@ public partial class SharedModSuitSystem
             Array.Copy(foundEntry.Parts, insertIndex, parts, insertIndex + 1, foundEntry.Parts.Length - insertIndex);
 
         foundEntry.Parts = parts;
+    }
+
+    private void OnSealablePowerGetPowerDraw(Entity<ModSuitSealablePowerDrawComponent> ent, ref ModSuitDeployableRelayedEvent<ModuleContainerGetBasePowerDrawRate> args)
+    {
+        var isSealed = IsSealed(ent.Owner);
+        if (ent.Comp.PowerDraw.TryGetValue(isSealed, out var powerDraw))
+            args.Args.BaseRate += powerDraw;
+    }
+
+    private void OnSealablePowerSealed(Entity<ModSuitSealablePowerDrawComponent> ent, ref ModSuitSealedEvent args)
+    {
+        if (TryComp<ModSuitDeployedPartComponent>(ent.Owner, out var deployedPart))
+            _module.UpdatePowerDraw(deployedPart.Suit);
+        else if (HasComp<ModSuitPartDeployableComponent>(ent.Owner))
+            _module.UpdatePowerDraw(ent.Owner);
+    }
+
+    private void OnSealablePowerUnsealed(Entity<ModSuitSealablePowerDrawComponent> ent, ref ModSuitUnsealedEvent args)
+    {
+        if (TryComp<ModSuitDeployedPartComponent>(ent.Owner, out var deployedPart))
+            _module.UpdatePowerDraw(deployedPart.Suit);
+        else if (HasComp<ModSuitPartDeployableComponent>(ent.Owner))
+            _module.UpdatePowerDraw(ent.Owner);
     }
 
     private void OnToggleComponentSealed(Entity<ToggleableComponentModSuitPartDeployableAllSealedComponent> ent, ref ModSuitContainerPartSealedEvent args)
