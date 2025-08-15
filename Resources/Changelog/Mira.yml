@@ -2055,7 +2055,7 @@ Entries:
   time: '2025-08-14T14:50:50.0000000+00:00'
 - author: Doctor-Cpu
   changes:
-  - message: Added the organ repair surgery to organs
+  - message: Added the organ healing surgery to organs
     type: Add
   - message: Organs and limbs ontop of an operating table can now have their surgery graph shown on the computer
     type: Tweak
