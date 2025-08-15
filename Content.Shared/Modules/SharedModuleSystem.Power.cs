@@ -87,7 +87,8 @@ public partial class SharedModuleSystem
         var ev = new GetModulePowerDrawEvent();
         RaiseEventToModules((ent.Owner, ent.Comp2), ev);
 
-        var draw = ent.Comp1.BaseRate + ev.Additional;
+        var baseRate = GetBaseRate(ent!);
+        var draw = baseRate + ev.Additional;
         return draw;
     }
 
@@ -97,6 +98,9 @@ public partial class SharedModuleSystem
         if (!Resolve(ent.Owner, ref ent.Comp))
             return 0f;
 
-        return ent.Comp.BaseRate;
+        var ev = new ModuleContainerGetBasePowerDrawRate(ent.Comp.BaseRate);
+        RaiseLocalEvent(ent.Owner, ref ev);
+
+        return ev.BaseRate;
     }
 }
