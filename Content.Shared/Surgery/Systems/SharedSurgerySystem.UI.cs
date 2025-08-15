@@ -19,8 +19,8 @@ public abstract partial class SharedSurgerySystem
         SubscribeLocalEvent<SurgeryUserInterfaceLinkedSourceComponent, StrappedEvent>(OnLinkedSourceStrapped);
         SubscribeLocalEvent<SurgeryUserInterfaceLinkedSourceComponent, UnstrappedEvent>(OnLinkedSourceUnstrapped);
 
-        SubscribeLocalEvent<SurgeryUserInterfaceLinkedSinkComponent, GetSurgeryUiTargetEvent>(OnLinkedSinkGetTarget, before: [typeof(SharedBuckleSystem)]);
-        SubscribeLocalEvent<SurgeryUserInterfaceSourceRangeComponent, GetSurgeryUiTargetEvent>(OnSourceRangeGetTarget, before: [typeof(SharedBuckleSystem)]);
+        SubscribeLocalEvent<SurgeryUserInterfaceLinkedSinkComponent, GetSurgeryUiTargetEvent>(OnLinkedSinkGetTarget, after: [typeof(SharedBuckleSystem)]);
+        SubscribeLocalEvent<SurgeryUserInterfaceSourceRangeComponent, GetSurgeryUiTargetEvent>(OnSourceRangeGetTarget, after: [typeof(SharedBuckleSystem)]);
 
         SubscribeLocalEvent<SurgeryUserInterfaceLinkedSinkComponent, GetSurgeryUiSourceEvent>(OnLinkedSinkGetSource);
         SubscribeLocalEvent<SurgeryUserInterfaceLinkedSourceComponent, GetSurgeryUiSourceEvent>(OnLinkedSourceGetSource);
@@ -51,17 +51,17 @@ public abstract partial class SharedSurgerySystem
             sourceRangeComp.RangeCheckNextUpdate += sourceRangeComp.RangeCheckUpdateDelay;
 
             var closestMatch = SourceRangeGetTarget((sourceRangeUid, sourceRangeComp));
-            if (sourceRangeComp.LastInRange == closestMatch)
+            sourceRangeComp.LastInRange = closestMatch;
+
+            // dont want to bulldoze the surgery ui with 2 potential targets from other comps
+            // range has lower priority due to update ordering
+            if (TryGetTarget(sourceRangeUid, out var otherTarget) && otherTarget == closestMatch)
             {
-                Dirty(sourceRangeUid, sourceRangeComp);
-                continue;
+                if (TryGetUiEntity(sourceRangeUid, out var ui))
+                    UpdateUi(ui.Value, closestMatch);
             }
 
-            sourceRangeComp.LastInRange = closestMatch;
             Dirty(sourceRangeUid, sourceRangeComp);
-
-            if (TryGetUiEntity(sourceRangeUid, out var ui))
-                UpdateUi(ui.Value, closestMatch);
         }
     }
 
@@ -103,15 +103,7 @@ public abstract partial class SharedSurgerySystem
         if (args.Target != null)
             return;
 
-        var closestMatch = SourceRangeGetTarget(ent);
-
-        if (closestMatch != null && ent.Comp.LastInRange != closestMatch)
-        {
-            ent.Comp.LastInRange = closestMatch;
-            Dirty(ent);
-        }
-
-        args.Target = closestMatch;
+        args.Target = ent.Comp.LastInRange;
     }
 
     private EntityUid? SourceRangeGetTarget(Entity<SurgeryUserInterfaceSourceRangeComponent> ent)
@@ -182,6 +174,12 @@ public abstract partial class SharedSurgerySystem
 
     private void OnNodeModified(ref SurgeryCurrentNodeModifiedEvent args)
     {
+        GetBodyAndLimb(args.Receiver, out _, out var body, out _);
+
+        // handled in separate event
+        if (body != null)
+            return;
+
         if (TryGetUiEntity(args.Receiver, out var ui))
         {
             UpdateUi(ui.Value, args.Receiver);
