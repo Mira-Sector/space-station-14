@@ -8,6 +8,7 @@
   - type: ModSuitSealablePowerDraw
     powerDraw:
       true: 0.1
+      false: 0.075
   - type: ModSuitDeployableInventory
   - type: Clothing
     autoGenerateVisuals: false
@@ -409,6 +410,7 @@
   - type: ModSuitSealablePowerDraw
     powerDraw:
       true: 0.025
+      false: 0.01875
 
 - type: entity
   id: ClothingOuterModSuitElite
@@ -760,6 +762,7 @@
   - type: ModSuitSealablePowerDraw
     powerDraw:
       true: 0.14
+      false: 0.105
 
 - type: entity
   id: ClothingOuterModSuitLoader
@@ -903,6 +906,7 @@
   - type: ModSuitSealablePowerDraw
     powerDraw:
       true: 0.14
+      false: 0.105
 
 - type: entity
   id: ClothingOuterModSuitLuxury
@@ -962,6 +966,7 @@
   - type: ModSuitSealablePowerDraw
     powerDraw:
       true: 0.2
+      false: 0.15
 
 - type: entity
   id: ClothingOuterModSuitNinja
@@ -1068,6 +1073,7 @@
   - type: ModSuitSealablePowerDraw
     powerDraw:
       true: 0.14
+      false: 0.105
 
 - type: entity
   id: ClothingOuterModSuitResearch

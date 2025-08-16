@@ -12,6 +12,7 @@
   - type: ModSuitSealablePowerDraw
     powerDraw:
       true: 0.1
+      false: 0.075
   - type: ModuleContainer
     whitelist:
       tags:
@@ -452,6 +453,7 @@
   - type: ModSuitSealablePowerDraw
     powerDraw:
       true: 0.025
+      false: 0.01875
   - type: ClothingSpeedModifier
     walkModifier: 0.9
     sprintModifier: 0.9
@@ -851,6 +853,7 @@
   - type: ModSuitSealablePowerDraw
     powerDraw:
       true: 0.14
+      false: 0.105
   - type: ClothingSpeedModifier
     walkModifier: 0.65
     sprintModifier: 0.65
@@ -1033,6 +1036,7 @@
   - type: ModSuitSealablePowerDraw
     powerDraw:
       true: 0.14
+      false: 0.105
   - type: ClothingSpeedModifier
     walkModifier: 0.95
     sprintModifier: 0.95
@@ -1100,6 +1104,7 @@
   - type: ModSuitSealablePowerDraw
     powerDraw:
       true: 0.2
+      false: 0.15
   - type: ClothingSpeedModifier
     walkModifier: 0.9
     sprintModifier: 0.9
@@ -1222,6 +1227,7 @@
   - type: ModSuitSealablePowerDraw
     powerDraw:
       true: 0.14
+      false: 0.105
   - type: ClothingSpeedModifier
     walkModifier: 0.95
     sprintModifier: 0.95
