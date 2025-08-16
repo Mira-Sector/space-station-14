@@ -21,6 +21,7 @@
   - type: ModuleContainerRequireWirePanel
   - type: ModuleContainerPower
   - type: PowerCellDraw
+    enabled: false
   - type: PowerCellSlot
     fitsInCharger: false
   - type: ModSuitUserInterface
