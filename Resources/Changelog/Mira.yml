@@ -2063,3 +2063,11 @@ Entries:
     type: Tweak
   id: 284
   time: '2025-08-15T17:50:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Modsuit power draw is now based off sealed parts. A fully sealed modsuit has the same power draw as before
+    type: Tweak
+  - message: Unsealed modsuit parts have half the power draw
+    type: Tweak
+  id: 285
+  time: '2025-08-16T01:40:50.0000000+00:00'
