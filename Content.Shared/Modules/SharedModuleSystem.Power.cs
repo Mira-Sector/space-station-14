@@ -16,6 +16,8 @@ public partial class SharedModuleSystem
 
     private void InitializePower()
     {
+        SubscribeLocalEvent<ModuleContainerPowerComponent, ComponentStartup>(OnPowerInit);
+
         SubscribeLocalEvent<ModuleContainerPowerComponent, ClothingGotEquippedEvent>(OnPowerEquipped);
         SubscribeLocalEvent<ModuleContainerPowerComponent, ClothingGotUnequippedEvent>(OnPowerUnequipped);
 
@@ -26,6 +28,11 @@ public partial class SharedModuleSystem
 
         SubscribeLocalEvent<ModuleContainerPowerComponent, ModSuitSealAttemptEvent>(OnPowerSealAttempt);
         SubscribeLocalEvent<ModuleContainerPowerComponent, ModSuitDeployedPartRelayedEvent<ModSuitSealAttemptEvent>>(OnPowerSealAttemptRelayed);
+    }
+
+    private void OnPowerInit(Entity<ModuleContainerPowerComponent> ent, ref ComponentStartup args)
+    {
+        UpdatePowerDraw((ent.Owner, ent.Comp));
     }
 
     private void OnPowerEquipped(Entity<ModuleContainerPowerComponent> ent, ref ClothingGotEquippedEvent args)
