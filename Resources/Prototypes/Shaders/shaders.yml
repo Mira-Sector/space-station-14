@@ -143,4 +143,4 @@
 - type: shader
   id: SolarFlare
   kind: source
-  path: "/Textures/Shaders/stealth.swsl"
+  path: "/Textures/Shaders/solar_flare.swsl"
