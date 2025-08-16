@@ -256,11 +256,24 @@ public abstract partial class SharedModuleSystem : EntitySystem
             RaiseLocalEvent(module, ev);
     }
 
+    public void RaiseEventToModules<T>(Entity<ModuleContainerComponent?> ent, ref T ev) where T : notnull
+    {
+        foreach (var module in GetModules(ent))
+            RaiseLocalEvent(module, ref ev);
+    }
+
     [PublicAPI]
     public void RaiseEventToContainer<T>(Entity<ModuleContainedComponent?> ent, T ev) where T : notnull
     {
         if (TryGetContainer(ent, out var container))
             RaiseLocalEvent(container.Value, ev);
+    }
+
+    [PublicAPI]
+    public void RaiseEventToContainer<T>(Entity<ModuleContainedComponent?> ent, ref T ev) where T : notnull
+    {
+        if (TryGetContainer(ent, out var container))
+            RaiseLocalEvent(container.Value, ref ev);
     }
 
     [PublicAPI]

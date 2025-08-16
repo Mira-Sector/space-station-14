@@ -8,5 +8,5 @@ modsuit-interface-eject = Eject
 
 modsuit-interface-complexity = Complexity: {$complexity}/{$max}
 
-modsuit-interface-charge = Charge: {NATURALPERCENT($charge, 0)}
+modsuit-interface-charge = Charge: {NATURALPERCENT($charge, 1)}
 modsuit-interface-no-cell = No cell

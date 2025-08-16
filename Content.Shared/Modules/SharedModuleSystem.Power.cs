@@ -16,6 +16,8 @@ public partial class SharedModuleSystem
 
     private void InitializePower()
     {
+        SubscribeLocalEvent<ModuleContainerPowerComponent, ComponentStartup>(OnPowerInit);
+
         SubscribeLocalEvent<ModuleContainerPowerComponent, ClothingGotEquippedEvent>(OnPowerEquipped);
         SubscribeLocalEvent<ModuleContainerPowerComponent, ClothingGotUnequippedEvent>(OnPowerUnequipped);
 
@@ -26,6 +28,11 @@ public partial class SharedModuleSystem
 
         SubscribeLocalEvent<ModuleContainerPowerComponent, ModSuitSealAttemptEvent>(OnPowerSealAttempt);
         SubscribeLocalEvent<ModuleContainerPowerComponent, ModSuitDeployedPartRelayedEvent<ModSuitSealAttemptEvent>>(OnPowerSealAttemptRelayed);
+    }
+
+    private void OnPowerInit(Entity<ModuleContainerPowerComponent> ent, ref ComponentStartup args)
+    {
+        UpdatePowerDraw((ent.Owner, ent.Comp));
     }
 
     private void OnPowerEquipped(Entity<ModuleContainerPowerComponent> ent, ref ClothingGotEquippedEvent args)
@@ -87,7 +94,8 @@ public partial class SharedModuleSystem
         var ev = new GetModulePowerDrawEvent();
         RaiseEventToModules((ent.Owner, ent.Comp2), ev);
 
-        var draw = ent.Comp1.BaseRate + ev.Additional;
+        var baseRate = GetBaseRate(ent!);
+        var draw = baseRate + ev.Additional;
         return draw;
     }
 
@@ -97,6 +105,9 @@ public partial class SharedModuleSystem
         if (!Resolve(ent.Owner, ref ent.Comp))
             return 0f;
 
-        return ent.Comp.BaseRate;
+        var ev = new ModuleContainerGetBasePowerDrawRate(ent.Comp.BaseRate);
+        RaiseLocalEvent(ent.Owner, ref ev);
+
+        return ev.BaseRate;
     }
 }

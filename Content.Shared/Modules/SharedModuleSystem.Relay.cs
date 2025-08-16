@@ -23,12 +23,12 @@ public partial class SharedModuleSystem
     public void RelayToModules<T>(Entity<ModuleContainerComponent> ent, ref T args)
     {
         var ev = new ModuleRelayedEvent<T>(args, ent.Owner);
-        RaiseEventToModules((ent.Owner, ent.Comp), ev);
+        RaiseEventToModules((ent.Owner, ent.Comp), ref ev);
     }
 
     public void RelayToContainer<T>(Entity<ModuleContainedComponent> ent, ref T args)
     {
         var ev = new ModuleContainerRelayedEvent<T>(args, ent.Owner);
-        RaiseEventToContainer((ent.Owner, ent.Comp), ev);
+        RaiseEventToContainer((ent.Owner, ent.Comp), ref ev);
     }
 }
