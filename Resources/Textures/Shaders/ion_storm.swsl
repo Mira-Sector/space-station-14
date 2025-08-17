@@ -1,0 +1,9 @@
+uniform highp float seed;
+
+highp float rand(highp float x) {
+    return fract(sin(x) * seed * 43758.5453123);
+}
+
+void fragment() {
+    COLOR = vec4(1.0, 0.0, 0.0, 1.0);
+}

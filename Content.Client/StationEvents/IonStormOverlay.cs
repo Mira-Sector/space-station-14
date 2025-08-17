@@ -1,5 +1,4 @@
 using System.Numerics;
-using Content.Client.Parallax;
 using Robust.Client.Graphics;
 using Robust.Shared.Enums;
 using Robust.Shared.Map;
@@ -8,42 +7,33 @@ using Robust.Shared.Random;
 
 namespace Content.Client.StationEvents;
 
-public sealed class SolarFlareOverlay : Overlay
+public sealed class IonStormOverlay : Overlay
 {
-    public override OverlaySpace Space => OverlaySpace.WorldSpaceBelowWorld;
-
-    private const float OffsetMinMagnitude = 1.414213562f;
-    private const float OffsetMaxMagnitude = 1.5f;
+    public override OverlaySpace Space => OverlaySpace.WorldSpaceBelowFOV;
 
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
 
+    public HashSet<MapId> Maps = [];
+
     private readonly ShaderInstance _shader;
 
-    public SolarFlareOverlay() : base()
+    public IonStormOverlay() : base()
     {
         IoCManager.InjectDependencies(this);
+        ZIndex = 128;
 
-        ZIndex = ParallaxSystem.ParallaxZIndex + 1;
-
-        _shader = _prototype.Index<ShaderPrototype>("SolarFlare").InstanceUnique();
+        _shader = _prototype.Index<ShaderPrototype>("IonStorm").InstanceUnique();
         _shader.SetParameter("seed", _random.NextFloat());
-        _shader.SetParameter("offset", _random.NextVector2(OffsetMinMagnitude, OffsetMaxMagnitude));
     }
 
     protected override bool BeforeDraw(in OverlayDrawArgs args)
     {
-        if (args.MapId == MapId.Nullspace)
-            return false;
-
-        return true;
+        return Maps.Contains(args.MapId);
     }
 
     protected override void Draw(in OverlayDrawArgs args)
     {
-        if (args.MapId == MapId.Nullspace)
-            return;
-
         args.WorldHandle.SetTransform(Matrix3x2.Identity);
         args.WorldHandle.UseShader(_shader);
         args.WorldHandle.DrawRect(args.WorldBounds, Color.White);
