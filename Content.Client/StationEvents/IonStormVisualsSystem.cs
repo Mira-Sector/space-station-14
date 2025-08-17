@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Shared.Station.Components;
 using Content.Shared.StationEvents.Events;
 using Robust.Client.Graphics;
@@ -62,6 +63,9 @@ public sealed partial class IonStormVisualsSystem : EntitySystem
     private void OnIonStorm(IonStormedEvent args)
     {
         var station = GetEntity(args.Station);
+
+        if (!_overlay.Maps.Any())
+            _overlay.NewDirection();
 
         // station data isnt in shared so you get this fuck you
         var query = EntityQueryEnumerator<StationMemberComponent>();
