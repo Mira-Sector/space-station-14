@@ -2071,3 +2071,11 @@ Entries:
     type: Tweak
   id: 285
   time: '2025-08-16T01:40:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: An ion storm now has a brief cloud visual
+    type: Add
+  - message: Solar flares are now visual in space
+    type: Add
+  id: 286
+  time: '2025-08-18T16:40:50.0000000+00:00'
