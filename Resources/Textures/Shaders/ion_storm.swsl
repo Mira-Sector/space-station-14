@@ -3,7 +3,7 @@ uniform highp float alpha;
 uniform highp float seed;
 uniform highp vec2 direction;
 
-const highp float NOISE_INTENSITY = 0.2;
+const highp float NOISE_INTENSITY = 0.8;
 const highp float NOISE_SCALE = 4096.0;
 
 const highp float GRADIENT_AMPLITUDE = 0.5;

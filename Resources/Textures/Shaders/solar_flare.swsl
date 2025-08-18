@@ -22,7 +22,7 @@ const highp vec3 COLOR_END = vec3(0.0, 1.0, 0.5);
 
 const highp float FLARE_SMOOTHNESS = 0.2;
 
-const highp float CENTER_SIZE = 2;
+const highp float CENTER_SIZE = 2.0;
 
 highp float rand(highp float x) {
     return fract(sin(x) * seed * 43758.5453123);
@@ -49,7 +49,7 @@ void fragment() {
 
     highp float transparency = mix(MAX_ALPHA, MIN_ALPHA, flareEffect);
 
-    vec3 color = mix(COLOR_START, COLOR_END, aura);
+    highp vec3 color = mix(COLOR_START, COLOR_END, aura);
 
     color = mix(color, COLOR_CENTER, smoothstep(0.0, CENTER_SIZE, dist));
 
