@@ -1,5 +1,3 @@
-light_mode unshaded;
-
 uniform sampler2D noise;
 uniform highp float alpha;
 uniform highp float seed;

@@ -9,12 +9,13 @@ using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using System.Linq;
 using System.Numerics;
+using DrawDepth = Content.Shared.DrawDepth.DrawDepth;
 
 namespace Content.Client.StationEvents;
 
 public sealed class IonStormOverlay : Overlay
 {
-    public override OverlaySpace Space => OverlaySpace.WorldSpaceBelowFOV;
+    public override OverlaySpace Space => OverlaySpace.WorldSpaceEntities;
 
     [Dependency] private readonly IEntityManager _entity = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;
@@ -46,7 +47,7 @@ public sealed class IonStormOverlay : Overlay
         _parallax = _entity.System<ParallaxSystem>();
         _sprite = _entity.System<SpriteSystem>();
 
-        ZIndex = 128;
+        ZIndex = (int)DrawDepth.BelowWalls;
 
         var sprite = new SpriteSpecifier.Texture(NoiseTexturePath);
         _noiseTexture = _sprite.Frame0(sprite);
