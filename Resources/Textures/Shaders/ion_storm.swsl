@@ -10,6 +10,7 @@ const highp float NOISE_SCALE = 4096.0;
 
 const highp vec3 COLOR_A = vec3(0.0, 0.0, 1.0);
 const highp vec3 COLOR_B = vec3(0.5, 0.0, 0.5);
+const highp float ALPHA_SCALE = 0.15;
 
 highp float rand(highp float x) {
     return fract(sin(x) * seed * 43758.5453123);
@@ -28,5 +29,5 @@ void fragment() {
     gradientFactor = clamp(gradientFactor, 0.0, 1.0);
 
     highp vec4 texColor = zTextureSpec(noise, UV);
-    COLOR = vec4(mix(COLOR_A, COLOR_B, gradientFactor), texColor.a * alpha);
+    COLOR = vec4(mix(COLOR_A, COLOR_B, gradientFactor), texColor.a * alpha * ALPHA_SCALE);
 }
