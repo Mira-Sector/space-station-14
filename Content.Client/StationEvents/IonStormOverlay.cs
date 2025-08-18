@@ -29,7 +29,7 @@ public sealed class IonStormOverlay : Overlay
     private readonly Texture _noiseTexture;
 
     private static readonly ResPath NoiseTexturePath = new("/Textures/Parallaxes/noise.png");
-    private const float NoiseTextureScale = 2f;
+    private const float NoiseTextureScale = 0.5f;
 
     private Vector2 _direction;
     private float _speed;
@@ -64,10 +64,8 @@ public sealed class IonStormOverlay : Overlay
         args.WorldHandle.UseShader(null);
 
         _shader.SetParameter("noise", _noiseTexture);
-
         args.WorldHandle.UseShader(_shader);
-        var position = args.Viewport.Eye?.Position.Position ?? Vector2.Zero;
-        _parallax.DrawParallax(args.WorldHandle, args.WorldAABB, _noiseTexture, _timing.RealTime, position, _direction * _speed, NoiseTextureScale);
+        _parallax.DrawParallax(args.WorldHandle, args.WorldAABB, _noiseTexture, _timing.RealTime, Vector2.Zero, _direction * _speed, NoiseTextureScale);
         args.WorldHandle.UseShader(null);
     }
 
