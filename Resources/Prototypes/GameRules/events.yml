@@ -384,8 +384,8 @@
     startAudio:
       path: /Audio/Announcements/Default/attention.ogg
     announcementStart: Attention
-    duration: 120
-    maxDuration: 240
+    duration: 10
+    maxDuration: 12
   - type: SolarFlareRule
     onlyJamHeadsets: true
     affectedChannels:

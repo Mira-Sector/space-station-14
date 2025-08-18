@@ -1,6 +1,7 @@
 light_mode unshaded;
 
 uniform highp float seed;
+uniform highp float alpha;
 uniform highp vec2 offset;
 
 const highp float NOISE_OFFSET = 57.0;
@@ -52,5 +53,5 @@ void fragment() {
 
     color = mix(color, COLOR_CENTER, smoothstep(0.0, CENTER_SIZE, dist));
 
-    COLOR = vec4(color, aura * transparency);
+    COLOR = vec4(color, alpha * aura * transparency);
 }

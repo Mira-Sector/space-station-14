@@ -14,11 +14,16 @@ public sealed class SolarFlareOverlay : Overlay
 
     private const float OffsetMinMagnitude = 1.414213562f;
     private const float OffsetMaxMagnitude = 1.5f;
+    private const float FadeSpeed = 0.5f;
+    private const float HiddenAlphaThreshold = 0.01f;
 
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
 
     private readonly ShaderInstance _shader;
+
+    private float _alpha;
+    public SolarFlareVisualsFadeState FadeState { get; private set; }
 
     public SolarFlareOverlay() : base()
     {
@@ -33,20 +38,51 @@ public sealed class SolarFlareOverlay : Overlay
 
     protected override bool BeforeDraw(in OverlayDrawArgs args)
     {
-        if (args.MapId == MapId.Nullspace)
-            return false;
-
-        return true;
+        return args.MapId != MapId.Nullspace;
     }
 
     protected override void Draw(in OverlayDrawArgs args)
     {
-        if (args.MapId == MapId.Nullspace)
-            return;
+        _shader.SetParameter("alpha", _alpha);
 
         args.WorldHandle.SetTransform(Matrix3x2.Identity);
         args.WorldHandle.UseShader(_shader);
         args.WorldHandle.DrawRect(args.WorldBounds, Color.White);
         args.WorldHandle.UseShader(null);
     }
+
+    public void UpdateAlpha(float frameTime)
+    {
+        switch (FadeState)
+        {
+            case SolarFlareVisualsFadeState.FadeIn:
+                _alpha += FadeSpeed * frameTime;
+                if (_alpha >= 1f)
+                {
+                    _alpha = 1f;
+                    FadeState = SolarFlareVisualsFadeState.None;
+                }
+                break;
+            case SolarFlareVisualsFadeState.FadeOut:
+                _alpha -= FadeSpeed * frameTime;
+                if (_alpha <= 0f)
+                {
+                    _alpha = 0f;
+                    FadeState = SolarFlareVisualsFadeState.None;
+                }
+                break;
+        }
+    }
+
+    public void StartFadeIn()
+    {
+        FadeState = SolarFlareVisualsFadeState.FadeIn;
+    }
+
+    public void StartFadeOut()
+    {
+        FadeState = SolarFlareVisualsFadeState.FadeOut;
+    }
+
+    public bool IsVisible() => _alpha > HiddenAlphaThreshold;
 }
