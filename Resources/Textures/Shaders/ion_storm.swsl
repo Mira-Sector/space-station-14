@@ -1,6 +1,7 @@
 light_mode unshaded;
 
 uniform sampler2D noise;
+uniform highp float alpha;
 uniform highp float seed;
 uniform highp vec2 direction;
 
@@ -27,5 +28,5 @@ void fragment() {
     gradientFactor = clamp(gradientFactor, 0.0, 1.0);
 
     highp vec4 texColor = zTextureSpec(noise, UV);
-    COLOR = vec4(mix(COLOR_A, COLOR_B, gradientFactor), texColor.a);
+    COLOR = vec4(mix(COLOR_A, COLOR_B, gradientFactor), texColor.a * alpha);
 }

@@ -7,6 +7,7 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using System.Linq;
 using System.Numerics;
 
 namespace Content.Client.StationEvents;
@@ -23,19 +24,21 @@ public sealed class IonStormOverlay : Overlay
     private readonly ParallaxSystem _parallax;
     private readonly SpriteSystem _sprite;
 
-    public HashSet<MapId> Maps = [];
-
     private readonly ShaderInstance _shader;
     private readonly Texture _noiseTexture;
 
     private static readonly ResPath NoiseTexturePath = new("/Textures/Parallaxes/noise.png");
     private const float NoiseTextureScale = 0.5f;
 
+    private readonly HashSet<MapId> _maps = [];
     private Vector2 _direction;
     private float _speed;
+    private readonly Dictionary<MapId, float> _alphas = [];
 
     private const float MinSpeed = 1f;
     private const float MaxSpeed = 2.5f;
+    private const float FadeSpeed = 2.5f;
+    private const float HiddenAlphaThreshold = 0.01f;
 
     public IonStormOverlay() : base()
     {
@@ -55,18 +58,36 @@ public sealed class IonStormOverlay : Overlay
 
     protected override bool BeforeDraw(in OverlayDrawArgs args)
     {
-        return Maps.Contains(args.MapId);
+        return IsVisible(args.MapId);
     }
 
     protected override void Draw(in OverlayDrawArgs args)
     {
+        var alpha = _alphas[args.MapId];
+        _shader.SetParameter("alpha", alpha);
+        _shader.SetParameter("noise", _noiseTexture);
+
         args.WorldHandle.SetTransform(Matrix3x2.Identity);
         args.WorldHandle.UseShader(null);
 
-        _shader.SetParameter("noise", _noiseTexture);
         args.WorldHandle.UseShader(_shader);
         _parallax.DrawParallax(args.WorldHandle, args.WorldAABB, _noiseTexture, _timing.RealTime, Vector2.Zero, _direction * _speed, NoiseTextureScale);
         args.WorldHandle.UseShader(null);
+    }
+
+    public void AddMap(MapId map)
+    {
+        if (_maps.Any())
+            NewDirection();
+
+        _maps.Add(map);
+        _alphas[map] = 0f;
+    }
+
+    public void RemoveMap(MapId map)
+    {
+        _maps.Remove(map);
+        _alphas.Remove(map);
     }
 
     public void NewDirection()
@@ -75,4 +96,20 @@ public sealed class IonStormOverlay : Overlay
         _direction = _random.NextVector2().Normalized();
         _shader.SetParameter("direction", _direction);
     }
+
+    public void UpdateFade(MapId mapId, float frameTime, bool active)
+    {
+        var alpha = _alphas[mapId];
+
+        var target = active ? 1f : 0f;
+
+        if (alpha < target)
+            alpha = Math.Min(alpha + FadeSpeed * frameTime, target);
+        else if (alpha > target)
+            alpha = Math.Max(alpha - FadeSpeed * frameTime, target);
+
+        _alphas[mapId] = alpha;
+    }
+
+    public bool IsVisible(MapId mapId) => _alphas.TryGetValue(mapId, out var alpha) && alpha > HiddenAlphaThreshold;
 }

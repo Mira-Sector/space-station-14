@@ -1,4 +1,3 @@
-using System.Linq;
 using Content.Shared.Station.Components;
 using Content.Shared.StationEvents.Events;
 using Robust.Client.Graphics;
@@ -39,15 +38,27 @@ public sealed partial class IonStormVisualsSystem : EntitySystem
 
         foreach (var (station, endTime) in _ionStormEnds)
         {
-            if (endTime > _timing.CurTime)
-                continue;
-
-            _overlay.Maps.Remove(station);
-            toRemove.Add(station);
+            var stillActive = endTime > _timing.CurTime;
+            if (!stillActive && !_overlay.IsVisible(station))
+                toRemove.Add(station);
         }
 
         foreach (var station in toRemove)
+        {
             _ionStormEnds.Remove(station);
+            _overlay.RemoveMap(station);
+        }
+    }
+
+    public override void FrameUpdate(float frameTime)
+    {
+        base.FrameUpdate(frameTime);
+
+        foreach (var (station, endTime) in _ionStormEnds)
+        {
+            var stillActive = endTime > _timing.CurTime;
+            _overlay.UpdateFade(station, frameTime, stillActive);
+        }
     }
 
     private void OnPlayerAttached(LocalPlayerAttachedEvent args)
@@ -64,9 +75,6 @@ public sealed partial class IonStormVisualsSystem : EntitySystem
     {
         var station = GetEntity(args.Station);
 
-        if (!_overlay.Maps.Any())
-            _overlay.NewDirection();
-
         // station data isnt in shared so you get this fuck you
         var query = EntityQueryEnumerator<StationMemberComponent>();
         while (query.MoveNext(out var grid, out var stationMember))
@@ -76,7 +84,7 @@ public sealed partial class IonStormVisualsSystem : EntitySystem
 
             var map = Transform(grid).MapID;
 
-            _overlay.Maps.Add(map);
+            _overlay.AddMap(map);
             _ionStormEnds[map] = _timing.CurTime + IonStormLength;
         }
     }
