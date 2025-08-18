@@ -16,7 +16,7 @@ public sealed partial class IonStormVisualsSystem : EntitySystem
     private readonly Dictionary<MapId, TimeSpan> _ionStormEnds = [];
     private IonStormOverlay _overlay = default!;
 
-    private static readonly TimeSpan IonStormLength = TimeSpan.FromSeconds(3.5);
+    private static readonly TimeSpan IonStormLength = TimeSpan.FromSeconds(2.5);
 
     public override void Initialize()
     {
