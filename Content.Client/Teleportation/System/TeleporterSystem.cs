@@ -5,11 +5,6 @@ namespace Content.Client.Teleportation.System;
 
 public sealed class TeleporterSystem : SharedTeleporterSystem
 {
-    public void Initialize()
-    {
-
-    }
-
     public void OnTeleportButtonPressed()
     {
 

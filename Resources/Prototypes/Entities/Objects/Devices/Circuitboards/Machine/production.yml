@@ -1349,8 +1349,7 @@
       Cable: 10
       CableHV: 5
       Manipulator: 5
-      Steel: 5
-      Glass: 5
+      Glass: 1
     tagRequirements:
       AnomalyCore: #accepts any anomaly core, inert or active
         amount: 1

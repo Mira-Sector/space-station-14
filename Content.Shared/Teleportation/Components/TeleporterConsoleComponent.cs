@@ -16,7 +16,10 @@ public sealed partial class TeleporterConsoleComponent : Component
     public NetEntity? LinkedTeleporter;
 
     [DataField]
-    public SoundSpecifier? RechargedSound = new SoundPathSpecifier("/Audio/Machines/scan_finish.ogg");
+    public SoundSpecifier? TeleportRechargedSound = new SoundPathSpecifier("/Audio/Machines/scan_finish.ogg");
+
+    [DataField]
+    public SoundSpecifier? TeleportBeginSound = new SoundPathSpecifier("/Audio/Machines/scan_finish.ogg");
 
     /// <summary>
     /// The machine linking port for the Teleporter

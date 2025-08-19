@@ -168,8 +168,8 @@
   name: signal-port-name-teleport-sender
   description: signal-port-description-teleport-sender
   defaultLinks: [ TeleportReceiver ]
-  
- - type: sourcePort
+
+- type: sourcePort
   id: SurgeryUiSource
   name: signal-port-name-surgery-ui-source
   description: signal-port-description-surgery-ui-source
