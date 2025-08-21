@@ -20,5 +20,5 @@ public sealed partial class MovedByPressureComponent : Component
     public float? StunForceThreshold = 4f;
 
     [DataField]
-    public TimeSpan StunTimePerNormalizedWind = TimeSpan.FromSeconds(0.2f);
+    public TimeSpan StunDurationPerForce = TimeSpan.FromSeconds(0.2f);
 }
