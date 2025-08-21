@@ -1,6 +1,7 @@
 using Content.Server.Atmos.Components;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
+using Content.Shared.Mobs;
 using Robust.Shared.Audio;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Components;
@@ -131,7 +132,7 @@ public sealed partial class AtmosphereSystem
         _nextWindSound += SpaceWindSoundCooldown;
     }
 
-    private void ProcessSpaceWindFromSingleTile(Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent, TransformComponent> ent, TileAtmosphere startTile)
+    private void ProcessSpaceWindPressureFromSingleTile(Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent, TransformComponent> ent, TileAtmosphere startTile)
     {
         Queue<(TileAtmosphere, int)> propagationQueue = [];
         HashSet<TileAtmosphere> visited = [];
@@ -142,7 +143,10 @@ public sealed partial class AtmosphereSystem
         while (propagationQueue.TryDequeue(out var current))
         {
             var (tile, layer) = current;
-            ProcessSpaceWindTile(ent, tile, propagationQueue, visited, layer);
+            if (layer > Atmospherics.SpaceWindLayerPropergation)
+                continue;
+
+            ProcessSpaceWindPressureTile(ent, tile, propagationQueue, visited, layer);
         }
 
         foreach (var tile in visited)
@@ -158,9 +162,8 @@ public sealed partial class AtmosphereSystem
         }
     }
 
-    private void ProcessSpaceWindTile(Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent, TransformComponent> ent, TileAtmosphere tile, Queue<(TileAtmosphere, int)> queue, HashSet<TileAtmosphere> visited, int currentLayer)
+    private void ProcessSpaceWindPressureTile(Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent, TransformComponent> ent, TileAtmosphere tile, Queue<(TileAtmosphere, int)> queue, HashSet<TileAtmosphere> visited, int currentLayer)
     {
-
         var selfPressure = tile.Air?.Pressure ?? 0f;
 
         for (var i = 0; i < Atmospherics.Directions; i++)
@@ -268,6 +271,20 @@ public sealed partial class AtmosphereSystem
                     queue.Enqueue(adj);
             }
         }
+    }
+
+    private void ProcessSpaceWindNormalizationTile(Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent, TransformComponent> ent, TileAtmosphere tile)
+    {
+        var normal = tile.SpaceWind.Wind.Normalized();
+        var length = tile.SpaceWind.Wind.Length();
+
+        if (length == 0)
+            length = 1;
+        else
+            length *= Atmospherics.SpaceWindNormalizationFactor;
+
+        var newVec = normal * length;
+        tile.SpaceWind.Wind = newVec;
     }
 
     private static void CapWindByPressure(TileAtmosphere tile, float pressure)

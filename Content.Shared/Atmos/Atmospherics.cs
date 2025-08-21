@@ -200,6 +200,11 @@ namespace Content.Shared.Atmos
         /// </summary>
         public const int SpaceWindLayerPropergation = 4;
 
+        /// <summary>
+        ///     The factor used when scaling wind gradiaully to 0.
+        /// </summary>
+        public const float SpaceWindNormalizationFactor = 0.9f;
+
         #endregion
 
         /// <summary>
