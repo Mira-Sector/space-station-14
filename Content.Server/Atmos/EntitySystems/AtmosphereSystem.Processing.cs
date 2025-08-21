@@ -378,7 +378,7 @@ namespace Content.Server.Atmos.EntitySystems
             return true;
         }
 
-        private bool ProcessSpaceWind(
+        private bool ProcessSpaceWindPressure(
             Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent, TransformComponent> ent)
         {
             if (!ent.Comp1.ProcessingPaused)
@@ -387,7 +387,7 @@ namespace Content.Server.Atmos.EntitySystems
             var number = 0;
             while (ent.Comp1.CurrentRunTiles.TryDequeue(out var spaceWind))
             {
-                ProcessSpaceWindFromSingleTile(ent, spaceWind);
+                ProcessSpaceWindPressureFromSingleTile(ent, spaceWind);
 
                 if (number++ < LagCheckIterations)
                     continue;
@@ -397,6 +397,29 @@ namespace Content.Server.Atmos.EntitySystems
                     return false;
             }
 
+            return true;
+        }
+
+        private bool ProcessSpaceWindNormalization(
+            Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent, TransformComponent> ent)
+        {
+            if (!ent.Comp1.ProcessingPaused)
+                QueueRunTiles(ent.Comp1.CurrentRunTiles, ent.Comp1.SpaceWindTiles);
+
+            var number = 0;
+            while (ent.Comp1.CurrentRunTiles.TryDequeue(out var spaceWind))
+            {
+                ProcessSpaceWindNormalizationTile(ent, spaceWind);
+
+                if (number++ < LagCheckIterations)
+                    continue;
+
+                number = 0;
+                if (_simulationStopwatch.Elapsed.TotalMilliseconds >= AtmosMaxProcessTime)
+                    return false;
+            }
+
+            ent.Comp1.SpaceWindTiles.Clear();
             return true;
         }
 
@@ -622,7 +645,7 @@ namespace Content.Server.Atmos.EntitySystems
                         atmosphere.State = ExcitedGroups
                             ? AtmosphereProcessingState.ExcitedGroups
                             : SpaceWind
-                                ? AtmosphereProcessingState.SpaceWind
+                                ? AtmosphereProcessingState.SpaceWindPressure
                                 : AtmosphereProcessingState.Hotspots;
                         continue;
                     case AtmosphereProcessingState.ExcitedGroups:
@@ -633,10 +656,20 @@ namespace Content.Server.Atmos.EntitySystems
                         }
 
                         atmosphere.ProcessingPaused = false;
-                        atmosphere.State = SpaceWind ? AtmosphereProcessingState.SpaceWind : AtmosphereProcessingState.Hotspots;
+                        atmosphere.State = SpaceWind ? AtmosphereProcessingState.SpaceWindPressure : AtmosphereProcessingState.Hotspots;
                         continue;
-                    case AtmosphereProcessingState.SpaceWind:
-                        if (!ProcessSpaceWind(ent))
+                    case AtmosphereProcessingState.SpaceWindPressure:
+                        if (!ProcessSpaceWindPressure(ent))
+                        {
+                            atmosphere.ProcessingPaused = true;
+                            return;
+                        }
+
+                        atmosphere.ProcessingPaused = false;
+                        atmosphere.State = AtmosphereProcessingState.SpaceWindNormalization;
+                        continue;
+                    case AtmosphereProcessingState.SpaceWindNormalization:
+                        if (!ProcessSpaceWindNormalization(ent))
                         {
                             atmosphere.ProcessingPaused = true;
                             return;
@@ -709,7 +742,8 @@ namespace Content.Server.Atmos.EntitySystems
         TileEqualize,
         ActiveTiles,
         ExcitedGroups,
-        SpaceWind,
+        SpaceWindPressure,
+        SpaceWindNormalization,
         Hotspots,
         Superconductivity,
         PipeNet,
