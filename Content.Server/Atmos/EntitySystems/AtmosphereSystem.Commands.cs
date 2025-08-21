@@ -137,7 +137,7 @@ public sealed partial class AtmosphereSystem
         atmos.ExcitedGroups.Clear();
         atmos.HotspotTiles.Clear();
         atmos.SuperconductivityTiles.Clear();
-        atmos.HighPressureDelta.Clear();
+        atmos.SpaceWindTiles.Clear();
         atmos.CurrentRunTiles.Clear();
         atmos.CurrentRunExcitedGroups.Clear();
         atmos.InvalidatedCoords.Clear();

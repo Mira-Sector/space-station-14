@@ -94,7 +94,9 @@ public sealed partial class AtmosphereSystem
                 newTileAtmosphere.HeatCapacity = tileAtmosphere.HeatCapacity;
                 newTileAtmosphere.Temperature = tileAtmosphere.Temperature;
                 newTileAtmosphere.PressureDifference = tileAtmosphere.PressureDifference;
-                newTileAtmosphere.PressureDirection = tileAtmosphere.PressureDirection;
+
+                if (SpaceWind)
+                    newGridAtmos.SpaceWindTiles.Add(newTileAtmosphere);
 
                 // TODO ATMOS: Somehow force GasTileOverlaySystem to perform an update *right now, right here.*
                 // The reason why is that right now, gas will flicker until the next GasTileOverlay update.

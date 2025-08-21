@@ -79,24 +79,7 @@ namespace Content.Server.Atmos.EntitySystems
                 }
 
                 if (shouldShareAir)
-                {
-                    var difference = Share(tile, enemyTile, adjacentTileLength);
-
-                    // Monstermos already handles this, so let's not handle it ourselves.
-                    if (!MonstermosEqualization)
-                    {
-                        if (difference >= 0)
-                        {
-                            ConsiderPressureDifference(gridAtmosphere, tile, direction, difference);
-                        }
-                        else
-                        {
-                            ConsiderPressureDifference(gridAtmosphere, enemyTile, i.ToOppositeDir(), -difference);
-                        }
-                    }
-
                     LastShareCheck(tile);
-                }
             }
 
             if(tile.Air != null)

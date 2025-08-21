@@ -56,10 +56,10 @@ namespace Content.Server.Atmos.Components
         public int SuperconductivityTilesCount => SuperconductivityTiles.Count;
 
         [ViewVariables]
-        public HashSet<TileAtmosphere> HighPressureDelta = new(1000);
+        public readonly HashSet<TileAtmosphere> SpaceWindTiles = new(1000);
 
         [ViewVariables]
-        public int HighPressureDeltaCount => HighPressureDelta.Count;
+        public int SpaceWindTilesCount => SpaceWindTiles.Count;
 
         [ViewVariables]
         public readonly HashSet<IPipeNet> PipeNets = new();

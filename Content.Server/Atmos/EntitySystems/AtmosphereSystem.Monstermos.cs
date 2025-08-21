@@ -428,7 +428,6 @@ namespace Content.Server.Atmos.EntitySystems
                 else
                 {
                     _depressurizeSpaceTiles[spaceTileCount++] = otherTile;
-                    otherTile.PressureSpecificTarget = otherTile;
                 }
 
                 if (tileCount < limit && spaceTileCount < limit)
@@ -475,7 +474,6 @@ namespace Content.Server.Atmos.EntitySystems
 
                     tile2.MonstermosInfo.CurrentTransferDirection = j.ToOppositeDir();
                     tile2.MonstermosInfo.CurrentTransferAmount = 0.0f;
-                    tile2.PressureSpecificTarget = otherTile.PressureSpecificTarget;
                     tile2.MonstermosInfo.LastSlowQueueCycle = queueCycleSlow;
                     _depressurizeProgressionOrder[progressionCount++] = tile2;
                 }
@@ -487,7 +485,6 @@ namespace Content.Server.Atmos.EntitySystems
                 var otherTile = _depressurizeProgressionOrder[i];
                 if (otherTile?.Air == null) { continue;}
                 if (otherTile.MonstermosInfo.CurrentTransferDirection == AtmosDirection.Invalid) continue;
-                gridAtmosphere.HighPressureDelta.Add(otherTile);
                 AddActiveTile(gridAtmosphere, otherTile);
                 var otherTile2 = otherTile.AdjacentTiles[otherTile.MonstermosInfo.CurrentTransferDirection.ToIndex()];
                 if (otherTile2?.Air == null)
@@ -516,13 +513,12 @@ namespace Content.Server.Atmos.EntitySystems
                 otherTile.MonstermosInfo.CurrentTransferAmount += sum;
                 otherTile2.MonstermosInfo.CurrentTransferAmount += otherTile.MonstermosInfo.CurrentTransferAmount;
                 otherTile.PressureDifference = otherTile.MonstermosInfo.CurrentTransferAmount;
-                otherTile.PressureDirection = otherTile.MonstermosInfo.CurrentTransferDirection;
+
+                if (SpaceWind)
+                    ent.Comp1.SpaceWindTiles.Add(otherTile);
 
                 if (otherTile2.MonstermosInfo.CurrentTransferDirection == AtmosDirection.Invalid)
-                {
                     otherTile2.PressureDifference = otherTile2.MonstermosInfo.CurrentTransferAmount;
-                    otherTile2.PressureDirection = otherTile.MonstermosInfo.CurrentTransferDirection;
-                }
 
                 if (otherTile.Air != null && otherTile.Air.Pressure - sum > SpacingMinGas * 0.1f)
                 {
@@ -637,7 +633,6 @@ namespace Content.Server.Atmos.EntitySystems
                 Merge(otherTile.Air, tile.Air.Remove(amount));
                 InvalidateVisuals(ent, tile);
                 InvalidateVisuals(ent, otherTile);
-                ConsiderPressureDifference(ent, tile, direction, amount);
             }
         }
 
