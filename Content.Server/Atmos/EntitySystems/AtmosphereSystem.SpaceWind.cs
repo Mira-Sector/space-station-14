@@ -3,7 +3,9 @@ using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
 using Robust.Shared.Audio;
 using Robust.Shared.Map.Components;
+using Robust.Shared.Physics.Components;
 using Robust.Shared.Prototypes;
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 
 namespace Content.Server.Atmos.EntitySystems;
@@ -13,28 +15,72 @@ public sealed partial class AtmosphereSystem
     private static readonly ProtoId<SoundCollectionPrototype> DefaultSpaceWindSounds = "SpaceWind";
     public SoundSpecifier? SpaceWindSound { get; private set; } = new SoundCollectionSpecifier(DefaultSpaceWindSounds, AudioParams.Default.WithVariation(0.125f));
 
-    private EntityQuery<MovedByPressureComponent> _movedByPressureQuery;
-
     private TimeSpan _nextWindSound;
 
-    private void InitializeSpaceWind()
+    private void UpdateSpaceWind(float frameTime)
     {
-        _movedByPressureQuery = GetEntityQuery<MovedByPressureComponent>();
+        UpdateSpaceWindMovable(frameTime);
+        UpdateSpaceWindSound();
     }
 
-    private void UpdateSpaceWind(float frameTime)
+    private void UpdateSpaceWindMovable(float frameTime)
+    {
+        var query = EntityQueryEnumerator<MovedByPressureComponent, TransformComponent, PhysicsComponent>();
+        while (query.MoveNext(out var uid, out var moved, out var xform, out var physics))
+        {
+            if (TryGetMovableTileWind((uid, xform), out var wind))
+            {
+                // clamp
+                if (wind.Value.IsLongerThan(SpaceWindMaxVelocity))
+                    moved.CurrentWind = wind.Value.Normalized() * SpaceWindMaxVelocity;
+                else
+                    moved.CurrentWind = wind.Value;
+
+                Dirty(uid, moved);
+            }
+
+            UpdateSpaceWindMovableEntity((uid, moved, xform, physics), frameTime);
+        }
+    }
+
+    private bool TryGetMovableTileWind(Entity<TransformComponent> ent, [NotNullWhen(true)] out Vector2? wind)
+    {
+        wind = null;
+
+        if (_simulationPaused)
+            return false;
+
+        if (ent.Comp.GridUid is not { } grid)
+            return false;
+
+        if (!_atmosQuery.TryComp(grid, out var mapAtmos))
+            return false;
+
+        if (!_mapGridQuery.TryComp(grid, out var mapGrid))
+            return false;
+
+        if (!TransformSystem.TryGetGridTilePosition(ent!, out var indices))
+            return false;
+
+        if (!mapAtmos.Tiles.TryGetValue(indices, out var tileAtmos))
+            return false;
+
+        wind = tileAtmos.SpaceWind.Wind;
+        return true;
+    }
+
+    private void UpdateSpaceWindSound()
     {
         if (_simulationPaused)
             return;
 
-        if (_nextWindSound > _gameTiming.CurTime)
+        if (_nextWindSound > GameTiming.CurTime)
             return;
 
         var query = EntityQueryEnumerator<GridAtmosphereComponent, MapGridComponent>();
         while (query.MoveNext(out var grid, out var gridAtmos, out var mapGrid))
         {
-            HashSet<Vector2i> soundBlockedTiles = [];
-            soundBlockedTiles.EnsureCapacity(gridAtmos.SpaceWindSoundTilesCount * SpaceWindSoundRange * Atmospherics.Directions);
+            HashSet<Vector2i> soundBlockedTiles = new(gridAtmos.SpaceWindSoundTilesCount * SpaceWindSoundRange * Atmospherics.Directions);
 
             foreach (var tile in gridAtmos.SpaceWindSoundTiles)
             {

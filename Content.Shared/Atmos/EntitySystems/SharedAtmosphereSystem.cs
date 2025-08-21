@@ -1,15 +1,19 @@
-using Content.Shared.Atmos.Components;
 using Content.Shared.Atmos.Prototypes;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Systems;
+using Robust.Shared.Physics.Systems;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Timing;
 
 namespace Content.Shared.Atmos.EntitySystems
 {
     public abstract partial class SharedAtmosphereSystem : EntitySystem
     {
+        [Dependency] protected readonly IGameTiming GameTiming = default!;
         [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
         [Dependency] private readonly SharedInternalsSystem _internals = default!;
+        [Dependency] private readonly SharedPhysicsSystem _physics = default!;
+        [Dependency] protected readonly SharedTransformSystem TransformSystem = default!;
 
         private EntityQuery<InternalsComponent> _internalsQuery;
 
