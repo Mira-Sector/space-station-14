@@ -30,6 +30,24 @@ public sealed partial class CCVars
         CVarDef.Create("atmos.space_wind_vacuum_multiplier", 2f, CVar.SERVERONLY);
 
     /// <summary>
+    ///     Minimum wind magnitude to play wind sounds
+    /// </summary>
+    public static readonly CVarDef<float> SpaceWindMinSoundMagnitude =
+        CVarDef.Create("atmos.space_wind_min_sound_magnitude", 10f, CVar.SERVERONLY);
+
+    /// <summary>
+    ///     Delay between wind sounds.
+    /// </summary>
+    public static readonly CVarDef<float> SpaceWindSoundCooldown =
+        CVarDef.Create("atmos.space_wind_sound_cooldown", 4f, CVar.SERVERONLY);
+
+    /// <summary>
+    ///     Range the space wind sound blocks other nearby potential sound sources.
+    /// </summary>
+    public static readonly CVarDef<int> SpaceWindSoundRange =
+        CVarDef.Create("atmos.space_wind_sound_range", 24, CVar.SERVERONLY);
+
+    /// <summary>
     ///     The maximum velocity (not force) that may be applied to an object by atmospheric pressure differences.
     ///     Useful to prevent clipping through objects.
     /// </summary>

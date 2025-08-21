@@ -62,6 +62,12 @@ namespace Content.Server.Atmos.Components
         public int SpaceWindTilesCount => SpaceWindTiles.Count;
 
         [ViewVariables]
+        public readonly List<TileAtmosphere> SpaceWindSoundTiles = new(100);
+
+        [ViewVariables]
+        public int SpaceWindSoundTilesCount => SpaceWindSoundTiles.Count;
+
+        [ViewVariables]
         public readonly HashSet<IPipeNet> PipeNets = new();
 
         [ViewVariables]
