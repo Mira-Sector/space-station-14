@@ -27,7 +27,7 @@ public sealed partial class CCVars
     ///     Multiplier applied to space wind when an adjacent tile is space.
     /// </summary>
     public static readonly CVarDef<float> SpaceWindVacuumMultiplier =
-        CVarDef.Create("atmos.space_wind_vacuum_multiplier", 2f, CVar.SERVERONLY);
+        CVarDef.Create("atmos.space_wind_vacuum_multiplier", 10f, CVar.SERVERONLY);
 
     /// <summary>
     ///     Minimum wind magnitude to play wind sounds

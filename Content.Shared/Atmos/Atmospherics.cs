@@ -193,6 +193,15 @@ namespace Content.Shared.Atmos
 
         #endregion
 
+        #region Space Wind
+
+        /// <summary>
+        ///     Number of times a tile can be processed in one atmos tick.
+        /// </summary>
+        public const int SpaceWindLayerPropergation = 4;
+
+        #endregion
+
         /// <summary>
         ///     Hard limit for zone-based tile equalization.
         /// </summary>

@@ -387,7 +387,7 @@ namespace Content.Server.Atmos.EntitySystems
             var number = 0;
             while (ent.Comp1.CurrentRunTiles.TryDequeue(out var spaceWind))
             {
-                ProcessSpaceWindTile(ent, spaceWind);
+                ProcessSpaceWindFromSingleTile(ent, spaceWind);
 
                 if (number++ < LagCheckIterations)
                     continue;

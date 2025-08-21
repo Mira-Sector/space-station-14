@@ -24,7 +24,7 @@ public abstract partial class SharedAtmosphereSystem
             var stunForceDelta = stunForceThreshold * stunForceThreshold - pushForce.LengthSquared();
 
             if (stunForceDelta > 0)
-                _stun.TryKnockdown(ent.Owner, ent.Comp1.StunTimePerNormalizedWind * stunForceDelta, true);
+                _stun.TryKnockdown(ent.Owner, ent.Comp1.StunDurationPerForce * stunForceDelta, true);
         }
 
         _physics.ApplyLinearImpulse(ent.Owner, pushForce * ent.Comp3.Mass, body: ent.Comp3);
