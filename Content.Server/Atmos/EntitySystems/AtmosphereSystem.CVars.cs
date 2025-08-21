@@ -11,6 +11,9 @@ namespace Content.Server.Atmos.EntitySystems
         public float SpaceWindFlowRate { get; private set; }
         public float SpaceWindBreachThreshold { get; private set; }
         public float SpaceWindVacuumMultiplier { get; private set; }
+        public float SpaceWindMinSoundMagnitude { get; private set; }
+        public TimeSpan SpaceWindSoundCooldown { get; private set; }
+        public int SpaceWindSoundRange { get; private set; }
         public float SpaceWindMaxVelocity { get; private set; }
         public bool MonstermosEqualization { get; private set; }
         public bool MonstermosDepressurization { get; private set; }
@@ -40,6 +43,9 @@ namespace Content.Server.Atmos.EntitySystems
             Subs.CVar(_cfg, CCVars.SpaceWindFlowRate, value => SpaceWindFlowRate = value, true);
             Subs.CVar(_cfg, CCVars.SpaceWindBreachThreshold, value => SpaceWindBreachThreshold = value, true);
             Subs.CVar(_cfg, CCVars.SpaceWindVacuumMultiplier, value => SpaceWindVacuumMultiplier = value, true);
+            Subs.CVar(_cfg, CCVars.SpaceWindMinSoundMagnitude, value => SpaceWindMinSoundMagnitude = value, true);
+            Subs.CVar(_cfg, CCVars.SpaceWindSoundCooldown, value => SpaceWindSoundCooldown = TimeSpan.FromSeconds(value), true);
+            Subs.CVar(_cfg, CCVars.SpaceWindSoundRange, value => SpaceWindSoundRange = value, true);
             Subs.CVar(_cfg, CCVars.SpaceWindMaxVelocity, value => SpaceWindMaxVelocity = value, true);
             Subs.CVar(_cfg, CCVars.MonstermosEqualization, value => MonstermosEqualization = value, true);
             Subs.CVar(_cfg, CCVars.MonstermosDepressurization, value => MonstermosDepressurization = value, true);
