@@ -381,39 +381,26 @@ namespace Content.Server.Atmos.EntitySystems
             return true;
         }
 
-        private bool ProcessHighPressureDelta(Entity<GridAtmosphereComponent> ent)
+        private bool ProcessSpaceWind(
+            Entity<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent, TransformComponent> ent)
         {
-            var atmosphere = ent.Comp;
-            if (!atmosphere.ProcessingPaused)
-                QueueRunTiles(atmosphere.CurrentRunTiles, atmosphere.HighPressureDelta);
-
-            // Note: This is still processed even if space wind is turned off since this handles playing the sounds.
+            if (!ent.Comp1.ProcessingPaused)
+                QueueRunTiles(ent.Comp1.CurrentRunTiles, ent.Comp1.SpaceWindTiles);
 
             var number = 0;
-            var bodies = EntityManager.GetEntityQuery<PhysicsComponent>();
-            var xforms = EntityManager.GetEntityQuery<TransformComponent>();
-            var metas = EntityManager.GetEntityQuery<MetaDataComponent>();
-            var pressureQuery = EntityManager.GetEntityQuery<MovedByPressureComponent>();
-
-            while (atmosphere.CurrentRunTiles.TryDequeue(out var tile))
+            while (ent.Comp1.CurrentRunTiles.TryDequeue(out var spaceWind))
             {
-                HighPressureMovements(ent, tile, bodies, xforms, pressureQuery, metas);
-                tile.PressureDifference = 0f;
-                tile.LastPressureDirection = tile.PressureDirection;
-                tile.PressureDirection = AtmosDirection.Invalid;
-                tile.PressureSpecificTarget = null;
-                atmosphere.HighPressureDelta.Remove(tile);
+                ProcessSpaceWindTile(ent, spaceWind);
 
                 if (number++ < LagCheckIterations)
                     continue;
+
                 number = 0;
-                // Process the rest next time.
                 if (_simulationStopwatch.Elapsed.TotalMilliseconds >= AtmosMaxProcessTime)
-                {
                     return false;
-                }
             }
 
+            ent.Comp1.SpaceWindTiles.Clear();
             return true;
         }
 
@@ -512,6 +499,8 @@ namespace Content.Server.Atmos.EntitySystems
                 num--;
             if (!Superconduction)
                 num--;
+            if (!SpaceWind)
+                num--;
             return num * AtmosTime;
         }
 
@@ -562,7 +551,7 @@ namespace Content.Server.Atmos.EntitySystems
                 _currentRunAtmosphere.Clear();
 
                 var query = EntityQueryEnumerator<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent, TransformComponent>();
-                while (query.MoveNext(out var uid, out var atmos, out var overlay, out var grid, out var xform ))
+                while (query.MoveNext(out var uid, out var atmos, out var overlay, out var grid, out var xform))
                 {
                     _currentRunAtmosphere.Add((uid, atmos, overlay, grid, xform));
                 }
@@ -634,7 +623,11 @@ namespace Content.Server.Atmos.EntitySystems
 
                         atmosphere.ProcessingPaused = false;
                         // Next state depends on whether excited groups are enabled or not.
-                        atmosphere.State = ExcitedGroups ? AtmosphereProcessingState.ExcitedGroups : AtmosphereProcessingState.HighPressureDelta;
+                        atmosphere.State = ExcitedGroups
+                            ? AtmosphereProcessingState.ExcitedGroups
+                            : SpaceWind
+                                ? AtmosphereProcessingState.SpaceWind
+                                : AtmosphereProcessingState.Hotspots;
                         continue;
                     case AtmosphereProcessingState.ExcitedGroups:
                         if (!ProcessExcitedGroups(ent))
@@ -644,10 +637,10 @@ namespace Content.Server.Atmos.EntitySystems
                         }
 
                         atmosphere.ProcessingPaused = false;
-                        atmosphere.State = AtmosphereProcessingState.HighPressureDelta;
+                        atmosphere.State = SpaceWind ? AtmosphereProcessingState.SpaceWind : AtmosphereProcessingState.Hotspots;
                         continue;
-                    case AtmosphereProcessingState.HighPressureDelta:
-                        if (!ProcessHighPressureDelta((ent, ent)))
+                    case AtmosphereProcessingState.SpaceWind:
+                        if (!ProcessSpaceWind(ent))
                         {
                             atmosphere.ProcessingPaused = true;
                             return;
@@ -720,7 +713,7 @@ namespace Content.Server.Atmos.EntitySystems
         TileEqualize,
         ActiveTiles,
         ExcitedGroups,
-        HighPressureDelta,
+        SpaceWind,
         Hotspots,
         Superconductivity,
         PipeNet,

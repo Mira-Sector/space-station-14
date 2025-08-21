@@ -1,4 +1,4 @@
-﻿using Robust.Shared.Configuration;
+using Robust.Shared.Configuration;
 
 namespace Content.Shared.CCVar;
 
@@ -8,19 +8,26 @@ public sealed partial class CCVars
     ///     Whether gas differences will move entities.
     /// </summary>
     public static readonly CVarDef<bool> SpaceWind =
-        CVarDef.Create("atmos.space_wind", false, CVar.SERVERONLY);
+        CVarDef.Create("atmos.space_wind", true, CVar.SERVERONLY);
 
     /// <summary>
-    ///     Divisor from maxForce (pressureDifference * 2.25f) to force applied on objects.
+    ///     How much pressure difference turns into wind each atmos tick.
     /// </summary>
-    public static readonly CVarDef<float> SpaceWindPressureForceDivisorThrow =
-        CVarDef.Create("atmos.space_wind_pressure_force_divisor_throw", 15f, CVar.SERVERONLY);
+    public static readonly CVarDef<float> SpaceWindFlowRate =
+        CVarDef.Create("atmos.space_wind_flow_rate", 0.25f, CVar.SERVERONLY);
 
     /// <summary>
-    ///     Divisor from maxForce (pressureDifference * 2.25f) to force applied on objects.
+    ///     Pressure difference (in kPa) at which wind flow saturates to max strength.
+    ///     Lower values make hull breaches equalize more violently.
     /// </summary>
-    public static readonly CVarDef<float> SpaceWindPressureForceDivisorPush =
-        CVarDef.Create("atmos.space_wind_pressure_force_divisor_push", 2500f, CVar.SERVERONLY);
+    public static readonly CVarDef<float> SpaceWindBreachThreshold =
+        CVarDef.Create("atmos.space_wind_breach_threshold", 100f, CVar.SERVERONLY);
+
+    /// <summary>
+    ///     Multiplier applied to space wind when an adjacent tile is space.
+    /// </summary>
+    public static readonly CVarDef<float> SpaceWindVacuumMultiplier =
+        CVarDef.Create("atmos.space_wind_vacuum_multiplier", 2f, CVar.SERVERONLY);
 
     /// <summary>
     ///     The maximum velocity (not force) that may be applied to an object by atmospheric pressure differences.
@@ -28,13 +35,6 @@ public sealed partial class CCVars
     /// </summary>
     public static readonly CVarDef<float> SpaceWindMaxVelocity =
         CVarDef.Create("atmos.space_wind_max_velocity", 30f, CVar.SERVERONLY);
-
-    /// <summary>
-    ///     The maximum force that may be applied to an object by pushing (i.e. not throwing) atmospheric pressure differences.
-    ///     A "throwing" atmospheric pressure difference ignores this limit, but not the max. velocity limit.
-    /// </summary>
-    public static readonly CVarDef<float> SpaceWindMaxPushForce =
-        CVarDef.Create("atmos.space_wind_max_push_force", 20f, CVar.SERVERONLY);
 
     /// <summary>
     ///     Whether monstermos tile equalization is enabled.
