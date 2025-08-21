@@ -5,7 +5,6 @@ using Content.Shared.Atmos.Components;
 using Content.Shared.Maps;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
-using Robust.Shared.Physics.Components;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
@@ -13,8 +12,6 @@ namespace Content.Server.Atmos.EntitySystems
 {
     public sealed partial class AtmosphereSystem
     {
-        [Dependency] private readonly IGameTiming _gameTiming = default!;
-
         private readonly Stopwatch _simulationStopwatch = new();
 
         /// <summary>
@@ -518,7 +515,7 @@ namespace Content.Server.Atmos.EntitySystems
                 }
             }
 
-            var time = _gameTiming.CurTime;
+            var time = GameTiming.CurTime;
             var number = 0;
             var ev = new AtmosDeviceUpdateEvent(RealAtmosTime(), (ent, ent.Comp1, ent.Comp2), map);
             while (atmosphere.CurrentRunAtmosDevices.TryDequeue(out var device))
