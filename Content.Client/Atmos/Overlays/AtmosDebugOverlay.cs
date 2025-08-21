@@ -194,7 +194,10 @@ public sealed class AtmosDebugOverlay : Overlay
         Vector2 center,
         Color color)
     {
-        handle.DrawLine(center, dir + center, color);
+        if (dir.Length() < 0.01f)
+            return;
+
+        handle.DrawLine(center, center + dir, color);
     }
 
     private void DrawTooltip(in OverlayDrawArgs args)
