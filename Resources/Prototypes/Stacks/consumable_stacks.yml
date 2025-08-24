@@ -89,4 +89,4 @@
   name: stack-sunflower-seeds
   icon: { sprite: /Textures/Objects/Specific/Hydroponics/sunflower.rsi, state: seed_produce }
   spawn: ProduceSunflowerSeeds
-  maxCount: 50
+  maxCount: 30
