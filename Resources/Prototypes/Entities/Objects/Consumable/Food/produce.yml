@@ -3525,4 +3525,5 @@
       Taco: Sunflower Seeds
       Burger: Sunflower Seeds
   - type: Stack
+    stackType: ProduceSunflowerSeeds
     count: 1
