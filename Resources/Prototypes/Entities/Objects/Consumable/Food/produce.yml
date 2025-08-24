@@ -3055,7 +3055,7 @@
     spawned:
     - id: ClothingHeadHatSunflowerRing
     - id: ProduceSunflowerSeeds
-      amount: 10
+      amount: 5
   - type: Tag
     tags:
     - Flower
