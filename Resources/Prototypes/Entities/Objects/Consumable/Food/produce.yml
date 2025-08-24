@@ -3054,6 +3054,8 @@
     butcheringType: Knife
     spawned:
     - id: ClothingHeadHatSunflowerRing
+    - id: ProduceSunflowerSeeds
+      amount: 10
   - type: Tag
     tags:
     - Flower
@@ -3493,3 +3495,34 @@
     rotAccumulator: 9001
   - type: RotInto
     entity: FoodSpaceshroom
+
+- type: entity
+  name: sunflower seeds
+  description: Delicious seeds that you can eat, distinct from what is dispensed from the seed vendor.
+  id: ProduceSunflowerSeeds
+  parent: FoodProduceBase
+  components:
+  - type: FlavorProfile
+    flavors:
+    - oily
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/sunflower.rsi
+    state: seed_produce
+  - type: Food
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 5
+        reagents:
+        - ReagentId: Oil
+          Quantity: 2.5
+        - ReagentId: Nutriment
+          Quantity: 1.25
+        - ReagentId: Vitamin
+          Quantity: 1.25
+  - type: FoodSequenceElement
+    entries:
+      Taco: Sunflower Seeds
+      Burger: Sunflower Seeds
+  - type: Stack
+    count: 1

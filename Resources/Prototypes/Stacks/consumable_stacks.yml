@@ -83,3 +83,10 @@
   name: stack-dried-rainbow-cannabis-leaves
   icon: { sprite: /Textures/Objects/Specific/Hydroponics/rainbow_cannabis.rsi, state: dried }
   spawn: LeavesCannabisRainbowDried
+
+- type: stack
+  id: ProduceSunflowerSeeds
+  name: stack-sunflower-seeds
+  icon: { sprite: /Textures/Objects/Specific/Hydroponics/sunflower.rsi, state: seed_produce }
+  spawn: ProduceSunflowerSeeds
+  maxCount: 50
