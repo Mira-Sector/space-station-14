@@ -1,20 +1,25 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "news_read by Misha_Unity, crew_manifest by Phill101, nano_task by Janet Blackquill <uhhadd@gmail.com>",
-    "size": {
-      "x": 32,
-      "y": 32
+    "copyright": "news_read by Misha_Unity, crew_manifest by Phill101, nano_task by Janet Blackquill <uhhadd@gmail.com>, power_two by Doctor-Cpu",
+    "size":
+    {
+        "x": 32,
+        "y": 32
     },
-    "states": [
-      {
-        "name": "news_read"
-      },
-      {
-        "name": "crew_manifest"
-      },
-      {
-        "name": "nano_task"
-      }
+    "states":
+    [
+        {
+            "name": "news_read"
+        },
+        {
+            "name": "crew_manifest"
+        },
+        {
+            "name": "nano_task"
+        },
+        {
+            "name": "power_two"
+       }
     ]
 }

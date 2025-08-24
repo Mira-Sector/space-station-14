@@ -101,3 +101,7 @@ wanted-list-status-label = [color=darkgray]status:[/color] {$status ->
 wanted-list-history-table-time-col = Time
 wanted-list-history-table-reason-col = Crime
 wanted-list-history-table-initiator-col = Initiator
+
+# power two game cartridge
+power-two-program-name = Powers of Two
+power-two-cell-value-wrapper = [bold][color=white]{$value}[/color][/bold]

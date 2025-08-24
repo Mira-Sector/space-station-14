@@ -1,0 +1,15 @@
+<PanelContainer
+    xmlns="https://spacestation14.io">
+    <PanelContainer
+        Name="Cell"
+        Margin="2"
+        Access="Public"
+        HorizontalExpand="True"
+        VerticalExpand="True">
+        <RichTextLabel
+            Name="ValueText"
+            Access="Public"
+            HorizontalAlignment="Center"
+            HorizontalExpand="True"/>
+    </PanelContainer>
+</PanelContainer>
