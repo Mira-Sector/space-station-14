@@ -24,6 +24,7 @@ public sealed partial class PowerTwoUiFragment : PanelContainer
     public Action? OnNewGame;
 
     private TimeSpan _startTime;
+    private TimeSpan? _endTime;
 
     private const float MinDragDistance = 64f;
     private const float MinDragDistanceSquared = MinDragDistance * MinDragDistance;
@@ -43,7 +44,8 @@ public sealed partial class PowerTwoUiFragment : PanelContainer
     {
         base.Draw(handle);
 
-        var timeTaken = _timing.CurTime - _startTime;
+        var endTime = _endTime ?? _timing.CurTime;
+        var timeTaken = endTime - _startTime;
         var timeText = Loc.GetString("power-two-time", ("minutes", MathF.Floor(timeTaken.Minutes)), ("seconds", timeTaken.Seconds));
         TimeText.SetMarkup(timeText);
     }
@@ -72,8 +74,12 @@ public sealed partial class PowerTwoUiFragment : PanelContainer
         }
 
         if (gameState == PowerTwoGameState.InGame)
+        {
+            _endTime = null;
             return;
+        }
 
+        _endTime = _timing.CurTime;
         var timeDelta = _timing.CurTime - startTime;
 
         var text = gameState switch
