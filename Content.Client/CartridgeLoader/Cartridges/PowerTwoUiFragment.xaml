@@ -51,10 +51,19 @@
                 </BoxContainer>
             </controls:StripeBack>
             <BoxContainer
+                Orientation="Vertical"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Bottom"
                 HorizontalExpand="True"
                 VerticalExpand="True">
+                <Button
+                    Name="ToggleSound"
+                    ToggleMode="True"
+                    Text="{Loc 'power-two-sound-on'}"
+                    TextAlign="Center"
+                    Access="Public"
+                    Margin="2"
+                    HorizontalExpand="True"/>
                 <cartridges:PowerTwoUiNewGameButton
                     Name="NewGame"
                     Access="Public"

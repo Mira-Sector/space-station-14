@@ -1,3 +1,4 @@
+using Content.Shared.PDA;
 using Content.Shared.Random.Helpers;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
@@ -8,6 +9,7 @@ namespace Content.Shared.CartridgeLoader.Cartridges;
 public abstract partial class SharedPowerTwoCartridgeSystem : EntitySystem
 {
     [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private readonly SharedRingerSystem _ringer = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
 
     public override void Initialize()
@@ -35,6 +37,11 @@ public abstract partial class SharedPowerTwoCartridgeSystem : EntitySystem
             Move(ent, movement.Direction);
             UpdateUi(ent, GetEntity(args.LoaderUid));
         }
+        else if (args is PowerTwoUiToggleSoundMessageEvent sound)
+        {
+            UpdatePlaySounds(ent, sound.Enable);
+            UpdateUi(ent, GetEntity(args.LoaderUid));
+        }
         else if (args is PowerTwoUiNewGameMessageEvent)
         {
             NewGame(ent);
@@ -56,11 +63,61 @@ public abstract partial class SharedPowerTwoCartridgeSystem : EntitySystem
     {
     }
 
+    private void PlaySound(Entity<PowerTwoCartridgeComponent, CartridgeComponent?> ent, int cellValue)
+    {
+        if (!ent.Comp1.PlaySounds)
+            return;
+
+        if (!Resolve(ent.Owner, ref ent.Comp2))
+            return;
+
+        if (ent.Comp2.LoaderUid is not { } loader)
+            return;
+
+        var normalized = Math.Log2(cellValue) / Math.Log2(ent.Comp1.WinningScore);
+        var totalNotes = Enum.GetValues<Note>().Length;
+        var noteIndex = (int)Math.Round(normalized * (totalNotes - 1));
+        var note = (Note)noteIndex;
+
+        _ringer.PlayNote(loader, note);
+    }
+
+    private void ChangeGameState(Entity<PowerTwoCartridgeComponent, CartridgeComponent?> ent, PowerTwoGameState state)
+    {
+        if (ent.Comp1.GameState == state)
+            return;
+
+        ent.Comp1.GameState = state;
+        Dirty(ent.Owner, ent.Comp1);
+
+        if (!ent.Comp1.PlaySounds)
+            return;
+
+        if (ent.Comp1.StateSongs.TryGetValue(state, out var song))
+        {
+            if (!Resolve(ent.Owner, ref ent.Comp2))
+                return;
+
+            if (ent.Comp2.LoaderUid is not { } loader)
+                return;
+
+            _ringer.PlaySong(loader, song);
+        }
+    }
+
+    private void UpdatePlaySounds(Entity<PowerTwoCartridgeComponent> ent, bool enable)
+    {
+        if (ent.Comp.PlaySounds == enable)
+            return;
+
+        ent.Comp.PlaySounds = enable;
+        Dirty(ent);
+        return;
+    }
+
     protected void NewGame(Entity<PowerTwoCartridgeComponent> ent)
     {
-        ent.Comp.GameState = PowerTwoGameState.InGame;
         ent.Comp.StartTime = _timing.CurTime;
-
         ent.Comp.Grid = new int?[ConvertToFlattenedIndex(ent.Comp.GridSize, ent.Comp.GridSize)];
 
         // cant be null as we just made a new grid
@@ -68,7 +125,7 @@ public abstract partial class SharedPowerTwoCartridgeSystem : EntitySystem
         var newScore = GetStartingValue(ent);
         var newIndex = ConvertToFlattenedIndex(newCoords, ent.Comp.GridSize);
         ent.Comp.Grid[newIndex] = newScore;
-        Dirty(ent);
+        ChangeGameState(ent, PowerTwoGameState.InGame);
     }
 
     protected void Move(Entity<PowerTwoCartridgeComponent> ent, PowerTwoDirection dir)
@@ -87,7 +144,7 @@ public abstract partial class SharedPowerTwoCartridgeSystem : EntitySystem
             if (flip)
                 Array.Reverse(line);
 
-            var mergedLine = MergeLine(line);
+            var mergedLine = MergeLine(ent, line);
 
             if (flip)
                 Array.Reverse(mergedLine);
@@ -101,8 +158,7 @@ public abstract partial class SharedPowerTwoCartridgeSystem : EntitySystem
 
         if (ent.Comp.Grid.Any(cell => cell >= ent.Comp.WinningScore))
         {
-            ent.Comp.GameState = PowerTwoGameState.Won;
-            Dirty(ent);
+            ChangeGameState(ent, PowerTwoGameState.Won);
             return;
         }
 
@@ -115,10 +171,10 @@ public abstract partial class SharedPowerTwoCartridgeSystem : EntitySystem
             return;
         }
 
-        if (!HasValidMoves(ent))
-            ent.Comp.GameState = PowerTwoGameState.GameOver;
+        if (HasValidMoves(ent))
+            Dirty(ent);
 
-        Dirty(ent);
+        ChangeGameState(ent, PowerTwoGameState.GameOver);
     }
 
     private static int?[] ExtractLine(int?[] grid, Vector2i gridSize, int index, PowerTwoDirectionAxis axis)
@@ -171,7 +227,7 @@ public abstract partial class SharedPowerTwoCartridgeSystem : EntitySystem
         }
     }
 
-    private static int?[] MergeLine(int?[] line)
+    private int?[] MergeLine(Entity<PowerTwoCartridgeComponent> ent, int?[] line)
     {
         var length = line.Length;
         var merged = new int?[length];
@@ -196,6 +252,8 @@ public abstract partial class SharedPowerTwoCartridgeSystem : EntitySystem
             // is this the last element and is the current tile equal to the next tile?
             if (i < compactCount - 1 && compact[i] == compact[i + 1])
             {
+                PlaySound(ent, compact[i]);
+
                 // combine
                 merged[writeIndex] = compact[i] * 2;
                 writeIndex++;

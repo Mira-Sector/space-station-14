@@ -13,6 +13,9 @@ public sealed partial class RingerComponent : Component
     [DataField, AutoNetworkedField]
     public Note[] Ringtone = new Note[SharedRingerSystem.RingtoneLength];
 
+    [ViewVariables, AutoNetworkedField]
+    public Queue<Note> CurrentRingtone = [];
+
     /// <summary>
     /// The last time this ringer's ringtone was set.
     /// </summary>
@@ -30,12 +33,6 @@ public sealed partial class RingerComponent : Component
     /// </summary>
     [DataField]
     public TimeSpan Cooldown = TimeSpan.FromMilliseconds(250);
-
-    /// <summary>
-    /// Keeps track of how many notes have elapsed if the ringer component is playing.
-    /// </summary>
-    [DataField, AutoNetworkedField]
-    public int NoteCount;
 
     /// <summary>
     /// How far the sound projects in metres.

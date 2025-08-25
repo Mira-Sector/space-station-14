@@ -21,6 +21,7 @@ public sealed partial class PowerTwoUiFragment : PanelContainer
     private PowerTwoGameState _gameState;
 
     public Action<PowerTwoDirection>? OnDragged;
+    public Action<bool>? OnToggleSound;
     public Action? OnNewGame;
 
     private TimeSpan _startTime;
@@ -38,6 +39,7 @@ public sealed partial class PowerTwoUiFragment : PanelContainer
         Popup.SetPositionLast();
 
         NewGame.OnPressed += _ => OnNewGame?.Invoke();
+        ToggleSound.OnToggled += args => OnToggleSound?.Invoke(!args.Pressed);
     }
 
     protected override void Draw(DrawingHandleScreen handle)
@@ -50,13 +52,16 @@ public sealed partial class PowerTwoUiFragment : PanelContainer
         TimeText.SetMarkup(timeText);
     }
 
-    public void UpdateState(PowerTwoGameState gameState, int?[] grid, Vector2i gridSize, int maxValue, TimeSpan startTime)
+    public void UpdateState(PowerTwoGameState gameState, int?[] grid, Vector2i gridSize, int maxValue, TimeSpan startTime, bool playSound)
     {
         _gameState = gameState;
         _startTime = startTime;
 
         GameGridRows.RemoveAllChildren();
         Popup.RemoveAllChildren();
+
+        ToggleSound.Text = playSound ? Loc.GetString("power-two-sound-on") : Loc.GetString("power-two-sound-off");
+        ToggleSound.Pressed = !playSound;
 
         for (var y = 0; y < gridSize.Y; y++)
         {

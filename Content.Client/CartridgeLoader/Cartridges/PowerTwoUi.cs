@@ -24,6 +24,12 @@ public sealed partial class PowerTwoUi : UIFragment
             SendUiMessage(message, userInterface);
         };
 
+        _fragment.OnToggleSound += enable =>
+        {
+            var message = new PowerTwoUiToggleSoundMessageEvent(enable);
+            SendUiMessage(message, userInterface);
+        };
+
         _fragment.OnNewGame += () =>
         {
             var message = new PowerTwoUiNewGameMessageEvent();
@@ -36,7 +42,7 @@ public sealed partial class PowerTwoUi : UIFragment
         if (state is not PowerTwoUiState cast)
             return;
 
-        _fragment?.UpdateState(cast.GameState, cast.Grid, cast.GridSize, cast.MaxValue, cast.StartTime);
+        _fragment?.UpdateState(cast.GameState, cast.Grid, cast.GridSize, cast.MaxValue, cast.StartTime, cast.PlaySound);
     }
 
     private static void SendUiMessage(CartridgeMessageEvent message, BoundUserInterface userInterface)

@@ -230,3 +230,9 @@
   - type: UIFragment
     ui: !type:PowerTwoUi
   - type: PowerTwoCartridge
+    startingScores:
+      2: 0.9
+      4: 0.1
+    stateSongs:
+      GameOver: [E, D, C]
+      Won: [C, E, G, C]

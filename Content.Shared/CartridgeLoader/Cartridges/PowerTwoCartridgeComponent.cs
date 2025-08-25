@@ -1,3 +1,4 @@
+using Content.Shared.PDA;
 using Robust.Shared.GameStates;
 
 namespace Content.Shared.CartridgeLoader.Cartridges;
@@ -14,16 +15,18 @@ public sealed partial class PowerTwoCartridgeComponent : Component
     [ViewVariables, AutoNetworkedField]
     public int?[] Grid;
 
-    [DataField]
-    public Dictionary<int, float> StartingScores = new()
-    {
-        { 2, 0.9f },
-        { 4, 0.1f }
-    };
+    [DataField(required: true)]
+    public Dictionary<int, float> StartingScores = [];
 
     [DataField]
     public int WinningScore = 2048;
 
     [ViewVariables, AutoNetworkedField]
     public TimeSpan StartTime;
+
+    [DataField]
+    public Dictionary<PowerTwoGameState, Note[]> StateSongs = [];
+
+    [ViewVariables, AutoNetworkedField]
+    public bool PlaySounds = true;
 }
