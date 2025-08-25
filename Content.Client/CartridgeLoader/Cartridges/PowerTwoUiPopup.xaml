@@ -1,5 +1,6 @@
 <PanelContainer
     xmlns="https://spacestation14.io"
+    xmlns:cartridges="clr-namespace:Content.Client.CartridgeLoader.Cartridges"
     HorizontalAlignment="Stretch"
     VerticalAlignment="Stretch"
     StyleClasses="PdaBackground">
@@ -17,5 +18,9 @@
             Access="Public"
             HorizontalAlignment="Center"
             HorizontalExpand="True"/>
+        <cartridges:PowerTwoUiNewGameButton
+            Name="NewGame"
+            Access="Public"
+            Margin="8"/>
     </BoxContainer>
 </PanelContainer>

@@ -33,6 +33,11 @@ public abstract partial class SharedPowerTwoCartridgeSystem : EntitySystem
             Move(ent, movement.Direction);
             UpdateUi(ent, GetEntity(args.LoaderUid));
         }
+        else if (args is PowerTwoUiNewGameMessageEvent)
+        {
+            NewGame(ent);
+            UpdateUi(ent, GetEntity(args.LoaderUid));
+        }
     }
 
     protected virtual void UpdateUi(Entity<PowerTwoCartridgeComponent> ent, EntityUid loader)

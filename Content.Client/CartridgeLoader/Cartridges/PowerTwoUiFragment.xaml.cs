@@ -19,6 +19,7 @@ public sealed partial class PowerTwoUiFragment : PanelContainer
     private PowerTwoGameState _gameState;
 
     public Action<PowerTwoDirection>? OnDragged;
+    public Action? OnNewGame;
 
     public PowerTwoUiFragment() : base()
     {
@@ -27,6 +28,8 @@ public sealed partial class PowerTwoUiFragment : PanelContainer
         MouseFilter = MouseFilterMode.Stop;
 
         Popup.SetPositionLast();
+
+        NewGame.OnPressed += _ => OnNewGame?.Invoke();
     }
 
     public void UpdateState(PowerTwoGameState gameState, int?[] grid, Vector2i gridSize, int maxValue, TimeSpan startTime)
@@ -64,6 +67,7 @@ public sealed partial class PowerTwoUiFragment : PanelContainer
         };
 
         var popup = new PowerTwoUiPopup(text, timeDelta);
+        popup.NewGame.OnPressed += _ => OnNewGame?.Invoke();
         Popup.AddChild(popup);
     }
 

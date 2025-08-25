@@ -20,9 +20,14 @@ public sealed partial class PowerTwoUi : UIFragment
 
         _fragment.OnDragged += dir =>
         {
-            var movementMessage = new PowerTwoUiMoveMessageEvent(dir);
-            var message = new CartridgeUiMessage(movementMessage);
-            userInterface.SendPredictedMessage(message);
+            var message = new PowerTwoUiMoveMessageEvent(dir);
+            SendUiMessage(message, userInterface);
+        };
+
+        _fragment.OnNewGame += () =>
+        {
+            var message = new PowerTwoUiNewGameMessageEvent();
+            SendUiMessage(message, userInterface);
         };
     }
 
@@ -32,5 +37,11 @@ public sealed partial class PowerTwoUi : UIFragment
             return;
 
         _fragment?.UpdateState(cast.GameState, cast.Grid, cast.GridSize, cast.MaxValue, cast.StartTime);
+    }
+
+    private static void SendUiMessage(CartridgeMessageEvent message, BoundUserInterface userInterface)
+    {
+        var cartridgeMessage = new CartridgeUiMessage(message);
+        userInterface.SendPredictedMessage(cartridgeMessage);
     }
 }
