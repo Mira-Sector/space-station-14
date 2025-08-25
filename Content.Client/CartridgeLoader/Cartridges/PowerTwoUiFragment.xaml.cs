@@ -4,26 +4,37 @@ using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Input;
+using Robust.Shared.Timing;
 using System.Numerics;
 
 namespace Content.Client.CartridgeLoader.Cartridges;
 
 [GenerateTypedNameReferences]
-public sealed partial class PowerTwoUiFragment : BoxContainer
+public sealed partial class PowerTwoUiFragment : PanelContainer
 {
+    [Dependency] private readonly IGameTiming _timing = default!;
+
     private Vector2 _dragStart;
+
+    private PowerTwoGameState _gameState;
 
     public Action<PowerTwoDirection>? OnDragged;
 
     public PowerTwoUiFragment() : base()
     {
         RobustXamlLoader.Load(this);
+        IoCManager.InjectDependencies(this);
         MouseFilter = MouseFilterMode.Stop;
+
+        Popup.SetPositionLast();
     }
 
-    public void UpdateState(int?[] grid, Vector2i gridSize, int maxValue)
+    public void UpdateState(PowerTwoGameState gameState, int?[] grid, Vector2i gridSize, int maxValue, TimeSpan startTime)
     {
+        _gameState = gameState;
+
         GameGridRows.RemoveAllChildren();
+        Popup.RemoveAllChildren();
 
         for (var y = 0; y < gridSize.Y; y++)
         {
@@ -39,11 +50,29 @@ public sealed partial class PowerTwoUiFragment : BoxContainer
 
             GameGridRows.AddChild(row);
         }
+
+        if (gameState == PowerTwoGameState.InGame)
+            return;
+
+        var timeDelta = _timing.CurTime - startTime;
+
+        var text = gameState switch
+        {
+            PowerTwoGameState.GameOver => Loc.GetString("power-two-popup-game-over"),
+            PowerTwoGameState.Win => Loc.GetString("power-two-popup-win"),
+            _ => throw new NotImplementedException()
+        };
+
+        var popup = new PowerTwoUiPopup(text, timeDelta);
+        Popup.AddChild(popup);
     }
 
     protected override void KeyBindDown(GUIBoundKeyEventArgs args)
     {
         base.KeyBindDown(args);
+
+        if (_gameState != PowerTwoGameState.InGame)
+            return;
 
         if (args.Function != EngineKeyFunctions.UIClick)
             return;
@@ -54,6 +83,9 @@ public sealed partial class PowerTwoUiFragment : BoxContainer
     protected override void KeyBindUp(GUIBoundKeyEventArgs args)
     {
         base.KeyBindUp(args);
+
+        if (_gameState != PowerTwoGameState.InGame)
+            return;
 
         if (args.Function != EngineKeyFunctions.UIClick)
             return;

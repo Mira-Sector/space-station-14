@@ -1,5 +1,6 @@
 using Content.Shared.Random.Helpers;
 using Robust.Shared.Random;
+using Robust.Shared.Timing;
 using System.Linq;
 
 namespace Content.Shared.CartridgeLoader.Cartridges;
@@ -7,6 +8,7 @@ namespace Content.Shared.CartridgeLoader.Cartridges;
 public abstract partial class SharedPowerTwoCartridgeSystem : EntitySystem
 {
     [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
 
     public override void Initialize()
     {
@@ -23,11 +25,14 @@ public abstract partial class SharedPowerTwoCartridgeSystem : EntitySystem
 
     private void OnUiMessage(Entity<PowerTwoCartridgeComponent> ent, ref CartridgeMessageEvent args)
     {
-        if (args is not PowerTwoUiMoveMessageEvent message)
-            return;
+        if (args is PowerTwoUiMoveMessageEvent movement)
+        {
+            if (ent.Comp.GameState != PowerTwoGameState.InGame)
+                return;
 
-        Move(ent, message.Direction);
-        UpdateUi(ent, GetEntity(args.LoaderUid));
+            Move(ent, movement.Direction);
+            UpdateUi(ent, GetEntity(args.LoaderUid));
+        }
     }
 
     protected virtual void UpdateUi(Entity<PowerTwoCartridgeComponent> ent, EntityUid loader)
@@ -36,6 +41,9 @@ public abstract partial class SharedPowerTwoCartridgeSystem : EntitySystem
 
     protected void NewGame(Entity<PowerTwoCartridgeComponent> ent)
     {
+        ent.Comp.GameState = PowerTwoGameState.InGame;
+        ent.Comp.StartTime = _timing.CurTime;
+
         ent.Comp.Grid = new int?[ConvertToFlattenedIndex(ent.Comp.GridSize, ent.Comp.GridSize)];
 
         // cant be null as we just made a new grid
@@ -83,7 +91,9 @@ public abstract partial class SharedPowerTwoCartridgeSystem : EntitySystem
             return;
         }
 
-        // TODO: handle gameover
+        if (!HasValidMoves(ent))
+            ent.Comp.GameState = PowerTwoGameState.GameOver;
+
         Dirty(ent);
     }
 
@@ -206,6 +216,40 @@ public abstract partial class SharedPowerTwoCartridgeSystem : EntitySystem
                     yield return new(x, y);
             }
         }
+    }
+
+    private static bool HasValidMoves(Entity<PowerTwoCartridgeComponent> ent)
+    {
+        for (var x = 0; x < ent.Comp.GridSize.X; x++)
+        {
+            for (var y = 0; y < ent.Comp.GridSize.Y; y++)
+            {
+                var index = ConvertToFlattenedIndex(new Vector2i(x, y), ent.Comp.GridSize);
+                var value = ent.Comp.Grid[index];
+                if (value == null)
+                    return true; // empty space exists, move possible
+
+                // check neighbors for merge possibility
+                var neighbors = new[]
+                {
+                    new Vector2i(x + 1, y),
+                    new Vector2i(x, y + 1)
+                };
+
+                foreach (var n in neighbors)
+                {
+                    if (n.X < ent.Comp.GridSize.X && n.Y < ent.Comp.GridSize.Y)
+                    {
+                        var neighborIndex = ConvertToFlattenedIndex(n, ent.Comp.GridSize);
+                        if (ent.Comp.Grid[neighborIndex] == value)
+                            return true; // merge possible
+                    }
+                }
+            }
+        }
+
+        // no moves left
+        return false;
     }
 
     // no serializing multi-dim arrays so this is needed

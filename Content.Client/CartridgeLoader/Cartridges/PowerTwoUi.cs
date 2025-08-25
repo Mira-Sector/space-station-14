@@ -31,6 +31,6 @@ public sealed partial class PowerTwoUi : UIFragment
         if (state is not PowerTwoUiState cast)
             return;
 
-        _fragment?.UpdateState(cast.Grid, cast.GridSize, cast.MaxValue);
+        _fragment?.UpdateState(cast.GameState, cast.Grid, cast.GridSize, cast.MaxValue, cast.StartTime);
     }
 }

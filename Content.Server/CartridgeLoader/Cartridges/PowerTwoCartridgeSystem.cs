@@ -23,7 +23,7 @@ public sealed partial class PowerTwoCartridgeSystem : SharedPowerTwoCartridgeSys
 
     protected override void UpdateUi(Entity<PowerTwoCartridgeComponent> ent, EntityUid loader)
     {
-        var state = new PowerTwoUiState(ent.Comp.Grid, ent.Comp.GridSize, ent.Comp.WinningScore);
+        var state = new PowerTwoUiState(ent.Comp.GameState, ent.Comp.Grid, ent.Comp.GridSize, ent.Comp.WinningScore, ent.Comp.StartTime);
         _cartridgeLoader.UpdateCartridgeUiState(loader, state);
     }
 }

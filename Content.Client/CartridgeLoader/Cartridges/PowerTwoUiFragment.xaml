@@ -1,17 +1,27 @@
-<BoxContainer
+<PanelContainer
     xmlns="https://spacestation14.io"
-    Align="Center">
+    HorizontalAlignment="Center"
+    VerticalAlignment="Center">
     <PanelContainer
-        StyleClasses="PanelBackgroundBaseDark"
-        HorizontalAlignment="Center"
-        VerticalAlignment="Center">
-        <BoxContainer
-            Name="GameGridRows"
-            Access="Public"
-            Orientation="Vertical"
-            Align="Center"
-            VerticalExpand="True"
-            HorizontalExpand="True"
-            Margin="4"/>
+        Name="Popup"
+        Access="Public"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"/>
+    <PanelContainer
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">
+        <PanelContainer
+            StyleClasses="PanelBackgroundBaseDark"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <BoxContainer
+                Name="GameGridRows"
+                Access="Public"
+                Orientation="Vertical"
+                Align="Center"
+                VerticalExpand="True"
+                HorizontalExpand="True"
+                Margin="4"/>
+        </PanelContainer>
     </PanelContainer>
-</BoxContainer>
+</PanelContainer>

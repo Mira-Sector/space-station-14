@@ -1,0 +1,21 @@
+<PanelContainer
+    xmlns="https://spacestation14.io"
+    HorizontalAlignment="Stretch"
+    VerticalAlignment="Stretch"
+    StyleClasses="PdaBackground">
+    <BoxContainer
+        Orientation="Vertical"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center">
+        <RichTextLabel
+            Name="Header"
+            Access="Public"
+            HorizontalAlignment="Center"
+            HorizontalExpand="True"/>
+        <RichTextLabel
+            Name="Time"
+            Access="Public"
+            HorizontalAlignment="Center"
+            HorizontalExpand="True"/>
+    </BoxContainer>
+</PanelContainer>

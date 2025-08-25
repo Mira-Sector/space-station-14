@@ -5,6 +5,9 @@ namespace Content.Shared.CartridgeLoader.Cartridges;
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class PowerTwoCartridgeComponent : Component
 {
+    [ViewVariables, AutoNetworkedField]
+    public PowerTwoGameState GameState;
+
     [DataField]
     public Vector2i GridSize = new(4, 4);
 
@@ -20,4 +23,7 @@ public sealed partial class PowerTwoCartridgeComponent : Component
 
     [DataField]
     public int WinningScore = 2048;
+
+    [ViewVariables, AutoNetworkedField]
+    public TimeSpan StartTime;
 }
