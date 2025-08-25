@@ -16,6 +16,8 @@ public abstract partial class SharedPowerTwoCartridgeSystem : EntitySystem
 
         SubscribeLocalEvent<PowerTwoCartridgeComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<PowerTwoCartridgeComponent, CartridgeMessageEvent>(OnUiMessage);
+        SubscribeLocalEvent<PowerTwoCartridgeComponent, CartridgeActivatedEvent>(OnUiActivated);
+        SubscribeLocalEvent<PowerTwoCartridgeComponent, CartridgeUiReadyEvent>(OnUiReady);
     }
 
     private void OnInit(Entity<PowerTwoCartridgeComponent> ent, ref ComponentInit args)
@@ -38,6 +40,16 @@ public abstract partial class SharedPowerTwoCartridgeSystem : EntitySystem
             NewGame(ent);
             UpdateUi(ent, GetEntity(args.LoaderUid));
         }
+    }
+
+    private void OnUiActivated(Entity<PowerTwoCartridgeComponent> ent, ref CartridgeActivatedEvent args)
+    {
+        NewGame(ent);
+    }
+
+    private void OnUiReady(Entity<PowerTwoCartridgeComponent> ent, ref CartridgeUiReadyEvent args)
+    {
+        UpdateUi(ent, args.Loader);
     }
 
     protected virtual void UpdateUi(Entity<PowerTwoCartridgeComponent> ent, EntityUid loader)
