@@ -104,6 +104,7 @@ wanted-list-history-table-initiator-col = Initiator
 
 # power two game cartridge
 power-two-program-name = Powers of Two
+power-two-time = Time: {$minutes}:{$seconds}
 power-two-cell-value-wrapper = [bold][color=black]{$value}[/color][/bold]
 power-two-popup-game-over = [font size=16][bold]Game Over![/bold][/font]
 power-two-popup-win = [font size=16][bold]You Win![/bold][/font]
