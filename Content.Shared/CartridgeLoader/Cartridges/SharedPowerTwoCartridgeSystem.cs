@@ -87,6 +87,13 @@ public abstract partial class SharedPowerTwoCartridgeSystem : EntitySystem
         if (!moved)
             return;
 
+        if (ent.Comp.Grid.Any(cell => cell >= ent.Comp.WinningScore))
+        {
+            ent.Comp.GameState = PowerTwoGameState.Won;
+            Dirty(ent);
+            return;
+        }
+
         if (NewUnblockedPieceCoords(ent) is { } newCoords)
         {
             var newValue = GetStartingValue(ent);

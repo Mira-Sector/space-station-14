@@ -62,7 +62,7 @@ public sealed partial class PowerTwoUiFragment : PanelContainer
         var text = gameState switch
         {
             PowerTwoGameState.GameOver => Loc.GetString("power-two-popup-game-over"),
-            PowerTwoGameState.Win => Loc.GetString("power-two-popup-win"),
+            PowerTwoGameState.Won => Loc.GetString("power-two-popup-win"),
             _ => throw new NotImplementedException()
         };
 

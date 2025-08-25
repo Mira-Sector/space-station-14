@@ -7,5 +7,5 @@ public enum PowerTwoGameState : byte
 {
     InGame,
     GameOver,
-    Win
+    Won
 }
