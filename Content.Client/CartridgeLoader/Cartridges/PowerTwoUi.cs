@@ -1,4 +1,5 @@
 using Content.Client.UserInterface.Fragments;
+using Content.Shared.CartridgeLoader;
 using Content.Shared.CartridgeLoader.Cartridges;
 using Robust.Client.UserInterface;
 
@@ -16,6 +17,13 @@ public sealed partial class PowerTwoUi : UIFragment
     public override void Setup(BoundUserInterface userInterface, EntityUid? fragmentOwner)
     {
         _fragment = new PowerTwoUiFragment();
+
+        _fragment.OnDragged += dir =>
+        {
+            var movementMessage = new PowerTwoUiMoveMessageEvent(dir);
+            var message = new CartridgeUiMessage(movementMessage);
+            userInterface.SendPredictedMessage(message);
+        };
     }
 
     public override void UpdateState(BoundUserInterfaceState state)

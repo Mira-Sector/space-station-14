@@ -27,6 +27,11 @@ public abstract partial class SharedPowerTwoCartridgeSystem : EntitySystem
             return;
 
         Move(ent, message.Direction);
+        UpdateUi(ent, GetEntity(args.LoaderUid));
+    }
+
+    protected virtual void UpdateUi(Entity<PowerTwoCartridgeComponent> ent, EntityUid loader)
+    {
     }
 
     protected void NewGame(Entity<PowerTwoCartridgeComponent> ent)
@@ -75,6 +80,7 @@ public abstract partial class SharedPowerTwoCartridgeSystem : EntitySystem
             var newIndex = ConvertToFlattenedIndex(newCoords, ent.Comp.GridSize);
             ent.Comp.Grid[newIndex] = newValue;
             Dirty(ent);
+            return;
         }
 
         // TODO: handle gameover
@@ -186,7 +192,7 @@ public abstract partial class SharedPowerTwoCartridgeSystem : EntitySystem
 
     private int GetStartingValue(Entity<PowerTwoCartridgeComponent> ent)
     {
-        return _random.Pick(ent.Comp.StaringScores);
+        return _random.Pick(ent.Comp.StartingScores);
     }
 
     private static IEnumerable<Vector2i> UnblockedPositions(Entity<PowerTwoCartridgeComponent> ent)

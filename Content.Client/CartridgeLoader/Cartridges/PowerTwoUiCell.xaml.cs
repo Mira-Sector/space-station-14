@@ -26,7 +26,7 @@ public sealed partial class PowerTwoUiCell : PanelContainer
             var text = Loc.GetString("power-two-cell-value-wrapper", ("value", value.Value));
             ValueText.SetMarkup(text);
 
-            var color = Color.InterpolateBetween(MinColor, MaxColor, value.Value / maxValue);
+            var color = Color.InterpolateBetween(MinColor, MaxColor, (float)(Math.Log2(value.Value) / Math.Log2(maxValue)));
             Cell.ModulateSelfOverride = color;
         }
     }

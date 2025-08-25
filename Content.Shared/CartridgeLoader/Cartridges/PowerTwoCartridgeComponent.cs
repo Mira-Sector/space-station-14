@@ -6,13 +6,13 @@ namespace Content.Shared.CartridgeLoader.Cartridges;
 public sealed partial class PowerTwoCartridgeComponent : Component
 {
     [DataField]
-    public Vector2i GridSize = new(8, 8);
+    public Vector2i GridSize = new(4, 4);
 
     [ViewVariables, AutoNetworkedField]
     public int?[] Grid;
 
     [DataField]
-    public Dictionary<int, float> StaringScores = new()
+    public Dictionary<int, float> StartingScores = new()
     {
         { 2, 0.9f },
         { 4, 0.1f }

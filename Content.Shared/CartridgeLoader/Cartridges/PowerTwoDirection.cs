@@ -1,4 +1,5 @@
 using Robust.Shared.Serialization;
+using System.Numerics;
 
 namespace Content.Shared.CartridgeLoader.Cartridges;
 
@@ -52,5 +53,13 @@ public static class PowerTwoDirectionHelpers
             PowerTwoDirection.Right => true,
             _ => throw new NotImplementedException()
         };
+    }
+
+    public static PowerTwoDirection GetPowerTwoDir(this Vector2 dir)
+    {
+        if (Math.Abs(dir.X) > Math.Abs(dir.Y))
+            return dir.X > 0 ? PowerTwoDirection.Right : PowerTwoDirection.Left;
+        else
+            return dir.Y > 0 ? PowerTwoDirection.Down : PowerTwoDirection.Up;
     }
 }

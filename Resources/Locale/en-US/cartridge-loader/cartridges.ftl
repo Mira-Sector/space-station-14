@@ -104,4 +104,4 @@ wanted-list-history-table-initiator-col = Initiator
 
 # power two game cartridge
 power-two-program-name = Powers of Two
-power-two-cell-value-wrapper = [bold][color=white]{$value}[/color][/bold]
+power-two-cell-value-wrapper = [bold][color=black]{$value}[/color][/bold]
