@@ -2079,3 +2079,9 @@ Entries:
     type: Add
   id: 286
   time: '2025-08-18T16:40:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added the Powers of Two PDA cartridge. It can be found in maints.
+    type: Add
+  id: 287
+  time: '2025-08-25T16:40:50.0000000+00:00'
