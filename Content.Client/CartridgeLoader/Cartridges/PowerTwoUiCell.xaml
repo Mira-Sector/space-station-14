@@ -2,10 +2,12 @@
     xmlns="https://spacestation14.io">
     <PanelContainer
         Name="Cell"
-        Margin="2"
+        SetSize="32 32"
+        Margin="4"
         Access="Public"
         HorizontalExpand="True"
-        VerticalExpand="True">
+        VerticalExpand="True"
+        StyleClasses="PdaBackground">
         <RichTextLabel
             Name="ValueText"
             Access="Public"

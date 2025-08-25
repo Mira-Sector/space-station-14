@@ -1,10 +1,17 @@
 <BoxContainer
-    xmlns="https://spacestation14.io">
-    <BoxContainer
-        Name="GameGridRows"
-        Access="Public"
-        Orientation="Vertical"
-        VerticalExpand="True"
-        HorizontalExpand="True"
-        Margin="4"/>
+    xmlns="https://spacestation14.io"
+    Align="Center">
+    <PanelContainer
+        StyleClasses="PanelBackgroundBaseDark"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center">
+        <BoxContainer
+            Name="GameGridRows"
+            Access="Public"
+            Orientation="Vertical"
+            Align="Center"
+            VerticalExpand="True"
+            HorizontalExpand="True"
+            Margin="4"/>
+    </PanelContainer>
 </BoxContainer>
