@@ -1,0 +1,4 @@
+<Button
+    xmlns="https://spacestation14.io"
+    Text="{Loc 'power-two-popup-new-game-button'}"
+    TextAlign="Center"/>

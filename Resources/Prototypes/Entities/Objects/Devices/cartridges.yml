@@ -212,3 +212,27 @@
         sprite: Objects/Specific/Hydroponics/plant_analyzer.rsi
         state: icon
     - type: PlantScanCartridge
+
+- type: entity
+  parent: BaseItem
+  id: PowerTwoCartridge
+  name: '"Powers of Two" cartridge'
+  description: The hip new game all the kids on the block have installed.
+  components:
+  - type: Sprite
+    sprite: Objects/Devices/cartridge.rsi
+    state: cart-2
+  - type: Cartridge
+    programName: power-two-program-name
+    icon:
+      sprite: Interface/Misc/program_icons.rsi
+      state: power_two
+  - type: UIFragment
+    ui: !type:PowerTwoUi
+  - type: PowerTwoCartridge
+    startingScores:
+      2: 0.9
+      4: 0.1
+    stateSongs:
+      GameOver: [E, D, C]
+      Won: [C, E, G, C]
