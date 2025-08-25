@@ -26,7 +26,7 @@ public sealed partial class PowerTwoUiFragment : PanelContainer
     private TimeSpan _startTime;
     private TimeSpan? _endTime;
 
-    private const float MinDragDistance = 64f;
+    private const float MinDragDistance = 32f;
     private const float MinDragDistanceSquared = MinDragDistance * MinDragDistance;
 
     public PowerTwoUiFragment() : base()
