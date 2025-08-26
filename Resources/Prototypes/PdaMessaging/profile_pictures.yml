@@ -4,3 +4,17 @@
   sprite:
     sprite: Interface/PdaMessaging/profile_pictures.rsi
     state: urist
+
+- type: chatProfilePicture
+  id: Tider
+  name: pda-messaging-profile-picture-tider-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: tider
+
+- type: chatProfilePicture
+  id: Ian
+  name: pda-messaging-profile-picture-ian-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: ian
