@@ -1,4 +1,5 @@
 using Content.Shared.PDA.Messaging.Messages;
+using Content.Shared.PDA.Messaging.Recipients;
 using Robust.Shared.GameStates;
 
 namespace Content.Shared.PDA.Messaging.Components;
@@ -7,11 +8,14 @@ namespace Content.Shared.PDA.Messaging.Components;
 public sealed partial class PdaMessagingHistoryComponent : Component
 {
     [DataField, AutoNetworkedField]
-    public IChatMessage[] Messages { get; set; } = [];
+    public Dictionary<IChatRecipient, TimeSpan> LastMessage = [];
 
     [DataField, AutoNetworkedField]
-    public int MaxHistory { get; set; } = 64;
+    public Dictionary<IChatRecipient, IChatMessage[]> Messages = [];
 
     [DataField, AutoNetworkedField]
-    public int MessageCount { get; set; }
+    public int MaxHistory = 64;
+
+    [DataField, AutoNetworkedField]
+    public Dictionary<IChatRecipient, int> MessageCount = [];
 }
