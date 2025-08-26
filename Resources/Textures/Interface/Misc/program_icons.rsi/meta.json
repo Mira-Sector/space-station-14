@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "news_read by Misha_Unity, crew_manifest by Phill101, nano_task by Janet Blackquill <uhhadd@gmail.com>, power_two by Doctor-Cpu",
+    "copyright": "news_read by Misha_Unity, crew_manifest by Phill101, nano_task by Janet Blackquill <uhhadd@gmail.com>, power_two and chat by Doctor-Cpu",
     "size":
     {
         "x": 32,
@@ -20,6 +20,9 @@
         },
         {
             "name": "power_two"
-       }
+        },
+        {
+            "name": "chat"
+        }
     ]
 }
