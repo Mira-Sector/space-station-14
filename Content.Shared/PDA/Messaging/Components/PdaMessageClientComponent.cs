@@ -8,4 +8,10 @@ public sealed partial class PdaMessagingClientComponent : Component
 {
     [ViewVariables, AutoNetworkedField]
     public ChatRecipientProfile Profile;
+
+    [ViewVariables, AutoNetworkedField]
+    public EntityUid? Server;
+
+    [ViewVariables, AutoNetworkedField]
+    public HashSet<IChatRecipient> AvailableRecipients = [];
 }

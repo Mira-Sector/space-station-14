@@ -6,7 +6,6 @@ public interface IChatMessage
 {
     IChatRecipient Sender { get; set; }
     IChatRecipient Recipient { get; set; }
-    NetEntity Server { get; set; }
 
     string GetNotificationText();
 }

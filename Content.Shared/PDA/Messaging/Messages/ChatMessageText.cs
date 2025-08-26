@@ -14,9 +14,6 @@ public sealed partial class ChatMessageText : IChatMessage
     public IChatRecipient Recipient { get; set; }
 
     [DataField]
-    public NetEntity Server { get; set; }
-
-    [DataField]
     public string Contents;
 
     public string GetNotificationText() => Contents;

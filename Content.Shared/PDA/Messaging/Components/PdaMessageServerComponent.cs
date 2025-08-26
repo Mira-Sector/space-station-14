@@ -1,6 +1,11 @@
+using Content.Shared.PDA.Messaging.Recipients;
 using Robust.Shared.GameStates;
 
 namespace Content.Shared.PDA.Messaging.Components;
 
-[RegisterComponent, NetworkedComponent]
-public sealed partial class PdaMessagingServerComponent : Component;
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+public sealed partial class PdaMessagingServerComponent : Component
+{
+    [ViewVariables, AutoNetworkedField]
+    public HashSet<ChatRecipientProfile> Profiles = [];
+}
