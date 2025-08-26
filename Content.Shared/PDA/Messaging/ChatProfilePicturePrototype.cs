@@ -6,8 +6,9 @@ namespace Content.Shared.PDA.Messaging;
 [Prototype]
 public sealed partial class ChatProfilePicturePrototype : IPrototype
 {
+    [ViewVariables]
     [IdDataField]
-    public string ID { get; set; } = default!;
+    public string ID { get; private set; } = default!;
 
     [DataField(required: true)]
     public LocId Name;

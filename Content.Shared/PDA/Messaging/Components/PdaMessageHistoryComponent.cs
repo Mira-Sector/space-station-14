@@ -7,10 +7,10 @@ namespace Content.Shared.PDA.Messaging.Components;
 public sealed partial class PdaMessagingHistoryComponent : Component
 {
     [DataField, AutoNetworkedField]
-    public IChatMessage[] Messages { get; set; }
+    public IChatMessage[] Messages { get; set; } = [];
 
     [DataField, AutoNetworkedField]
-    public int MaxHistory { get; set; }
+    public int MaxHistory { get; set; } = 64;
 
     [DataField, AutoNetworkedField]
     public int MessageCount { get; set; }

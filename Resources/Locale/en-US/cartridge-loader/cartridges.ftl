@@ -112,3 +112,6 @@ power-two-popup-time = You wasted {$minutes} minutes and {$seconds} seconds.
 power-two-popup-new-game-button = New Game
 power-two-sound-on = ♫ Toggle Sound
 power-two-sound-off =  ̶♫̶ Toggle Sound
+
+# chat cartridge
+chat-program-name = Chat

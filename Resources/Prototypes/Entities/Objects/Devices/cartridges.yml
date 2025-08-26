@@ -236,3 +236,21 @@
     stateSongs:
       GameOver: [E, D, C]
       Won: [C, E, G, C]
+
+- type: entity
+  parent: BaseItem
+  id: ChatCartridge
+  name: chat cartridge
+  description: A program for socializing with the station's crew.
+  components:
+  - type: Sprite
+    sprite: Objects/Devices/cartridge.rsi
+    state: cart-chat
+  - type: Cartridge
+    programName: chat-program-name
+    icon:
+      sprite: Interface/Misc/program_icons.rsi
+      state: chat
+  - type: PdaMessagingClient
+  - type: PdaMessagingHistory
+  - type: ChatCartridge

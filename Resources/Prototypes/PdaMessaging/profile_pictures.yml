@@ -1,0 +1,6 @@
+- type: chatProfilePicture
+  id: Urist
+  name: pda-messaging-profile-picture-urist-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: urist

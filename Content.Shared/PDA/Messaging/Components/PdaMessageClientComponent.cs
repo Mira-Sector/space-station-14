@@ -6,6 +6,6 @@ namespace Content.Shared.PDA.Messaging.Components;
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class PdaMessagingClientComponent : Component
 {
-    [DataField, AutoNetworkedField]
+    [ViewVariables, AutoNetworkedField]
     public ChatRecipientProfile Profile;
 }

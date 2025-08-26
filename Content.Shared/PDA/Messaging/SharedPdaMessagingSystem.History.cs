@@ -12,11 +12,10 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
 
     private void OnHistoryInit(Entity<PdaMessagingHistoryComponent> ent, ref ComponentInit args)
     {
-        // already data
-        if (ent.Comp.MessageCount > 0)
-            return;
-
+        var oldData = ent.Comp.Messages;
         ent.Comp.Messages = new IChatMessage[ent.Comp.MaxHistory];
+
+        Array.Copy(oldData, ent.Comp.Messages, ent.Comp.MessageCount);
         ent.Comp.MessageCount = 0;
         Dirty(ent);
     }

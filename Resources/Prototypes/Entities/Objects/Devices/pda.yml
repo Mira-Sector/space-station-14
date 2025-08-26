@@ -79,6 +79,7 @@
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
     preinstalled:
+      - ChatCartridge
       - CrewManifestCartridge
       - NotekeeperCartridge
       - NanoTaskCartridge
@@ -151,6 +152,7 @@
   components:
   - type: CartridgeLoader
     preinstalled:
+    - ChatCartridge
     - CrewManifestCartridge
     - NotekeeperCartridge
     - NanoTaskCartridge
@@ -165,6 +167,7 @@
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
     preinstalled:
+      - ChatCartridge
       - CrewManifestCartridge
       - NotekeeperCartridge
       - NanoTaskCartridge
@@ -515,6 +518,7 @@
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
     preinstalled:
+      - ChatCartridge
       - CrewManifestCartridge
       - NotekeeperCartridge
       - NanoTaskCartridge
@@ -735,6 +739,7 @@
     state: pda-cmo
   - type: CartridgeLoader
     preinstalled:
+    - ChatCartridge
     - CrewManifestCartridge
     - NotekeeperCartridge
     - NanoTaskCartridge
@@ -872,6 +877,7 @@
     state: pda-hos
   - type: CartridgeLoader
     preinstalled:
+    - ChatCartridge
     - CrewManifestCartridge
     - NotekeeperCartridge
     - NanoTaskCartridge
@@ -941,6 +947,7 @@
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
     preinstalled:
+      - ChatCartridge
       - CrewManifestCartridge
       - NotekeeperCartridge
       - NanoTaskCartridge
@@ -968,6 +975,7 @@
     uiKey: enum.PdaUiKey.Key
     notificationsEnabled: false
     preinstalled:
+      - ChatCartridge
       - CrewManifestCartridge
       - NotekeeperCartridge
       - NanoTaskCartridge
@@ -1093,6 +1101,7 @@
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
     preinstalled:
+      - ChatCartridge
       - NotekeeperCartridge
       - NanoTaskCartridge
 
@@ -1119,6 +1128,7 @@
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
     preinstalled:
+      - ChatCartridge
       - CrewManifestCartridge
       - NotekeeperCartridge
       - NanoTaskCartridge
@@ -1291,6 +1301,7 @@
     state: pda-detective
   - type: CartridgeLoader
     preinstalled:
+    - ChatCartridge
     - CrewManifestCartridge
     - NotekeeperCartridge
     - NanoTaskCartridge
@@ -1319,6 +1330,7 @@
     state: pda-brigmedic
   - type: CartridgeLoader
     preinstalled:
+    - ChatCartridge
     - CrewManifestCartridge
     - NotekeeperCartridge
     - NanoTaskCartridge
@@ -1487,6 +1499,7 @@
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
     preinstalled:
+      - ChatCartridge
       - NotekeeperCartridge
       - NanoTaskCartridge
       - MedTekCartridge
