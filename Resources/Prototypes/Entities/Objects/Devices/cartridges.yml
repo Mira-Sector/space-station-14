@@ -251,6 +251,9 @@
     icon:
       sprite: Interface/Misc/program_icons.rsi
       state: chat
+  - type: UIFragment
+    ui: !type:ChatUi
   - type: PdaMessagingClient
   - type: PdaMessagingHistory
   - type: ChatCartridge
+  - type: StationTracker
