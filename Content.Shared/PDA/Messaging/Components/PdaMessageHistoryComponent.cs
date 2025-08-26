@@ -13,7 +13,7 @@ public sealed partial class PdaMessagingHistoryComponent : Component
     [DataField, AutoNetworkedField]
     public Dictionary<IChatRecipient, IChatMessage[]> Messages = [];
 
-    [DataField, AutoNetworkedField]
+    [DataField]
     public int MaxHistory = 64;
 
     [DataField, AutoNetworkedField]

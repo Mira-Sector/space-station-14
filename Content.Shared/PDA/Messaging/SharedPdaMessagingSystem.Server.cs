@@ -20,9 +20,16 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
 
         var ev = new PdaMessageNewServerAvailableEvent(ent.Owner, station);
         RaiseLocalEvent(ref ev);
+
+        var query = EntityQueryEnumerator<PdaMessagingClientComponent>();
+        while (query.MoveNext(out var uid, out var comp))
+        {
+            if (comp.Server == ent.Owner)
+                AddServerProfile(ent!, comp.Profile);
+        }
     }
 
-    private void OnServerNewProfileFromClient(PdaMessageNewProfileClientEvent args)
+    private void OnServerNewProfileFromClient(ref PdaMessageNewProfileClientEvent args)
     {
         if (_station.GetCurrentStation(args.Client) is not { } station)
             return;

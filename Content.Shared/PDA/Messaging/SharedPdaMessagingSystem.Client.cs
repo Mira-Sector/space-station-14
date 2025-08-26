@@ -28,7 +28,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         UpdateClientProfile(ent!, GetDefaultProfile(ent));
     }
 
-    private void OnClientNewServerAvailable(PdaMessageNewServerAvailableEvent args)
+    private void OnClientNewServerAvailable(ref PdaMessageNewServerAvailableEvent args)
     {
         var query = EntityQueryEnumerator<PdaMessagingClientComponent>();
         while (query.MoveNext(out var uid, out var comp))
@@ -43,7 +43,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         }
     }
 
-    private void OnClientNewProfileFromServer(PdaMessageNewProfileServerEvent args)
+    private void OnClientNewProfileFromServer(ref PdaMessageNewProfileServerEvent args)
     {
         var query = EntityQueryEnumerator<PdaMessagingClientComponent>();
         while (query.MoveNext(out var uid, out var comp))
