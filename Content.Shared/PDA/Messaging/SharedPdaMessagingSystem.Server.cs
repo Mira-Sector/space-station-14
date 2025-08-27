@@ -1,6 +1,7 @@
 using Content.Shared.PDA.Messaging.Components;
 using Content.Shared.PDA.Messaging.Events;
 using Content.Shared.PDA.Messaging.Recipients;
+using Content.Shared.Station;
 using Content.Shared.Station.Components;
 
 namespace Content.Shared.PDA.Messaging;
@@ -9,12 +10,13 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
 {
     private void InitializeServer()
     {
-        SubscribeLocalEvent<PdaMessagingServerComponent, ComponentInit>(OnServerInit);
+        SubscribeLocalEvent<PdaMessagingServerComponent, MapInitEvent>(OnServerInit, after: [typeof(SharedStationSystem)]);
+        SubscribeLocalEvent<PdaMessagingServerComponent, ComponentRemove>(OnServerRemoved);
 
         SubscribeLocalEvent<PdaMessageNewProfileClientEvent>(OnServerNewProfileFromClient);
     }
 
-    private void OnServerInit(Entity<PdaMessagingServerComponent> ent, ref ComponentInit args)
+    private void OnServerInit(Entity<PdaMessagingServerComponent> ent, ref MapInitEvent args)
     {
         var station = _station.GetCurrentStation(ent.Owner);
 
@@ -27,6 +29,14 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
             if (comp.Server == ent.Owner)
                 AddServerProfile(ent!, comp.Profile);
         }
+    }
+
+    private void OnServerRemoved(Entity<PdaMessagingServerComponent> ent, ref ComponentRemove args)
+    {
+        var station = _station.GetCurrentStation(ent.Owner);
+
+        var ev = new PdaMessageServerRemovedEvent(ent.Owner, station);
+        RaiseLocalEvent(ref ev);
     }
 
     private void OnServerNewProfileFromClient(ref PdaMessageNewProfileClientEvent args)

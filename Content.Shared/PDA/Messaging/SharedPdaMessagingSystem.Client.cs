@@ -1,6 +1,7 @@
 using Content.Shared.PDA.Messaging.Components;
 using Content.Shared.PDA.Messaging.Events;
 using Content.Shared.PDA.Messaging.Recipients;
+using Content.Shared.Station;
 using Robust.Shared.Utility;
 
 namespace Content.Shared.PDA.Messaging;
@@ -9,13 +10,14 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
 {
     private void InitializeClient()
     {
-        SubscribeLocalEvent<PdaMessagingClientComponent, ComponentInit>(OnClientInit);
+        SubscribeLocalEvent<PdaMessagingClientComponent, MapInitEvent>(OnClientInit, after: [typeof(SharedStationSystem)]);
 
         SubscribeLocalEvent<PdaMessageNewServerAvailableEvent>(OnClientNewServerAvailable);
+        SubscribeLocalEvent<PdaMessageServerRemovedEvent>(OnClientServerRemoved);
         SubscribeLocalEvent<PdaMessageNewProfileServerEvent>(OnClientNewProfileFromServer);
     }
 
-    private void OnClientInit(Entity<PdaMessagingClientComponent> ent, ref ComponentInit args)
+    private void OnClientInit(Entity<PdaMessagingClientComponent> ent, ref MapInitEvent args)
     {
         // if a server already exists provide a sane default
         // so the user isnt baffled why it isnt working
@@ -26,6 +28,10 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         }
 
         UpdateClientProfile(ent!, GetDefaultProfile(ent));
+    }
+
+    private void OnClientRemoved(Entity<PdaMessagingClientComponent> ent, ref ComponentRemove args)
+    {
     }
 
     private void OnClientNewServerAvailable(ref PdaMessageNewServerAvailableEvent args)
@@ -40,6 +46,23 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
 
             comp.Server = args.Server;
             Dirty(uid, comp);
+        }
+    }
+
+    private void OnClientServerRemoved(ref PdaMessageServerRemovedEvent args)
+    {
+        var query = EntityQueryEnumerator<PdaMessagingClientComponent>();
+        while (query.MoveNext(out var uid, out var comp))
+        {
+            if (comp.Server != args.Server)
+                continue;
+
+            if (_station.GetCurrentStation(uid) is not { } station)
+                continue;
+
+            // try and provide a new server if it exists
+            var servers = GetStationServers(station);
+            comp.Server = servers.FirstOrNull();
         }
     }
 
