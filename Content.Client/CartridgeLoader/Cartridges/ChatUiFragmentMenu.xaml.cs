@@ -13,7 +13,9 @@ public sealed partial class ChatUiFragmentMenu : PanelContainer, IChatUiFragment
     [Dependency] private readonly IEntityManager _entity = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;
 
-    public ChatUiFragmentMenu(HashSet<IChatRecipient> recipients)
+    public Action<IChatRecipient>? OnRecipientClicked;
+
+    public ChatUiFragmentMenu(IChatRecipient[] recipients)
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
@@ -24,6 +26,8 @@ public sealed partial class ChatUiFragmentMenu : PanelContainer, IChatUiFragment
         {
             var entry = new ChatUiFragmentContactEntry(recipient, _prototype, sprite);
             Recipients.AddChild(entry);
+
+            entry.OnPressed += _ => OnRecipientClicked?.Invoke(recipient);
         }
     }
 }

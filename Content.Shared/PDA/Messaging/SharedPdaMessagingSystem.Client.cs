@@ -99,4 +99,32 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         ent.Comp.AvailableRecipients.Add(recipient);
         Dirty(ent);
     }
+
+    public IEnumerable<IChatRecipient> GetClientRecipients(Entity<PdaMessagingClientComponent?, PdaMessagingHistoryComponent?> ent)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp1))
+            yield break;
+
+        if (Resolve(ent.Owner, ref ent.Comp2, false))
+        {
+            var remaining = ent.Comp1.AvailableRecipients;
+
+            // add our most recently messaged first
+            var recent = GetSortedRecentlyMessaged((ent.Owner, ent.Comp2));
+            foreach (var recipient in recent)
+            {
+                yield return recipient;
+                remaining.Remove(recipient);
+            }
+
+            // add any contacts with no messages at the end with a radnom order
+            foreach (var recipient in remaining)
+                yield return recipient;
+        }
+        else
+        {
+            foreach (var recipient in ent.Comp1.AvailableRecipients)
+                yield return recipient;
+        }
+    }
 }

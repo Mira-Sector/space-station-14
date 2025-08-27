@@ -4,7 +4,7 @@ using Robust.Shared.Serialization;
 namespace Content.Shared.CartridgeLoader.Cartridges;
 
 [Serializable, NetSerializable]
-public sealed class ChatUiState(HashSet<IChatRecipient> recipients) : BoundUserInterfaceState
+public sealed class ChatUiState(IChatRecipient[] recipients) : BoundUserInterfaceState
 {
-    public readonly HashSet<IChatRecipient> Recipients = recipients;
+    public readonly IChatRecipient[] Recipients = recipients;
 }

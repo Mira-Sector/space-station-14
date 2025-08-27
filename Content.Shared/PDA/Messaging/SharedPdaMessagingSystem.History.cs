@@ -10,7 +10,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
     {
     }
 
-    public IEnumerable<IChatRecipient> GetRecipients(Entity<PdaMessagingHistoryComponent?> ent)
+    public IEnumerable<IChatRecipient> GetSortedRecentlyMessaged(Entity<PdaMessagingHistoryComponent?> ent)
     {
         if (!Resolve(ent.Owner, ref ent.Comp))
             yield break;

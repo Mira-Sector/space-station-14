@@ -15,7 +15,7 @@ public sealed partial class ChatUi : UIFragment
 
     public override void Setup(BoundUserInterface userInterface, EntityUid? fragmentOwner)
     {
-        _fragment = new ChatUiFragment();
+        _fragment = new ChatUiFragment(fragmentOwner!.Value);
     }
 
     public override void UpdateState(BoundUserInterfaceState state)

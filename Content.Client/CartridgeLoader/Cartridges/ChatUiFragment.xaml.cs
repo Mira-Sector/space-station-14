@@ -11,21 +11,24 @@ public sealed partial class ChatUiFragment : PanelContainer
 {
     public Action<IChatMessage>? OnSendMessage;
 
+    private readonly EntityUid _cartridge;
     private ChatUiMode _uiMode;
 
-    private HashSet<IChatRecipient> _recipients = [];
+    private IChatRecipient[] _recipients = [];
 
-    public ChatUiFragment()
+    public ChatUiFragment(EntityUid cartridge)
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
+
+        _cartridge = cartridge;
 
         Popup.SetPositionLast();
 
         ChangeMode(ChatUiMode.Menu);
     }
 
-    public void UpdateState(HashSet<IChatRecipient> recipients)
+    public void UpdateState(IChatRecipient[] recipients)
     {
         _recipients = recipients;
         ChangeMode(_uiMode);
