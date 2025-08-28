@@ -25,7 +25,7 @@ public abstract partial class SharedChatCartridgeSystem : EntitySystem
         if (args is not ChatUiMessageEvent message)
             return;
 
-        RaiseLocalEvent(ent.Owner, message.Payload);
+        message.Payload.RunAction(EntityManager);
     }
 
     protected virtual void UpdateUi(Entity<ChatCartridgeComponent, PdaMessagingClientComponent?> ent, EntityUid loader)

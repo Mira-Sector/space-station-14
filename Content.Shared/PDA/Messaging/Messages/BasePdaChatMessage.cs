@@ -1,8 +1,10 @@
 using Content.Shared.PDA.Messaging.Recipients;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared.PDA.Messaging.Messages;
 
 [ImplicitDataDefinitionForInheritors]
+[Serializable, NetSerializable]
 public abstract partial class BasePdaChatMessage
 {
     [DataField]

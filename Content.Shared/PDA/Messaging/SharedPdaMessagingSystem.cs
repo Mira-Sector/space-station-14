@@ -4,6 +4,7 @@ using Content.Shared.PDA.Messaging.Recipients;
 using Content.Shared.Station;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Robust.Shared.Timing;
 
 namespace Content.Shared.PDA.Messaging;
 
@@ -11,6 +12,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
 {
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedStationSystem _station = default!;
 
     private FrozenDictionary<ProtoId<PdaChatProfilePicturePrototype>, PdaChatProfilePicturePrototype> _profilePictures = default!;

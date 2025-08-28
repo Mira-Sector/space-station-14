@@ -21,6 +21,7 @@ public sealed partial class ChatUiFragment : PanelContainer
     private readonly NetEntity _netCartridge; // so much shit references it
     private ChatUiMode _uiMode;
     private IPdaChatRecipient _recipient = default!; // not nullable as never accessed when this isnt valid
+    private PdaChatRecipientProfile _profile = default!;
 
     private Dictionary<IPdaChatRecipient, BasePdaChatMessage[]> _messages = [];
 
@@ -38,9 +39,10 @@ public sealed partial class ChatUiFragment : PanelContainer
         ChangeMode(ChatUiMode.Menu);
     }
 
-    public void UpdateState(Dictionary<IPdaChatRecipient, BasePdaChatMessage[]> messages)
+    public void UpdateState(PdaChatRecipientProfile profile, Dictionary<IPdaChatRecipient, BasePdaChatMessage[]> messages)
     {
         _messages = messages;
+        _profile = profile;
         ChangeMode(_uiMode);
     }
 
@@ -65,8 +67,10 @@ public sealed partial class ChatUiFragment : PanelContainer
 
             case ChatUiMode.Chat:
                 var messages = _messages[_recipient];
-                var chat = new ChatUiFragmentChat(_recipient, messages, _prototype);
+                var chat = new ChatUiFragmentChat(_recipient, _profile, messages, _prototype);
                 Content.AddChild(chat);
+
+                chat.OnMessageSent += message => SendUiMessage(new PdaMessageSendMessageSourceEvent(_netCartridge, message));
                 break;
         }
     }

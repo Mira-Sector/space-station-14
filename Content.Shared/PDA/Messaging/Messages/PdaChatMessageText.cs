@@ -2,8 +2,9 @@ using Robust.Shared.Serialization;
 
 namespace Content.Shared.PDA.Messaging.Messages;
 
+[DataDefinition]
 [Serializable, NetSerializable]
-public abstract partial class SharedPdaChatMessageText : BasePdaChatMessage
+public sealed partial class PdaChatMessageText : BasePdaChatMessage
 {
     [DataField]
     public string Contents;

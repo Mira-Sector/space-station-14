@@ -9,13 +9,14 @@ namespace Content.Client.CartridgeLoader.Cartridges;
 [GenerateTypedNameReferences]
 public sealed partial class ChatUiFragmentMessageWrapper : BoxContainer
 {
-    public ChatUiFragmentMessageWrapper(BasePdaChatMessage message)
+    public ChatUiFragmentMessageWrapper(BasePdaChatMessage message, IClientPdaChatMessageFactory pdaChatMessageFactory)
     {
         RobustXamlLoader.Load(this);
 
         Sender.Text = Loc.GetString(message.Sender.GetUiName());
 
-        var control = ((IClientPdaChatMessage)message).GetUiControl();
+        var client = pdaChatMessageFactory.Create(message);
+        var control = client.GetUiControl();
         Content.AddChild(control);
     }
 }

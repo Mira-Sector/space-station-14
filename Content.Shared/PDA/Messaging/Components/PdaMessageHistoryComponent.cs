@@ -18,4 +18,7 @@ public sealed partial class PdaMessagingHistoryComponent : Component
 
     [DataField, AutoNetworkedField]
     public Dictionary<IPdaChatRecipient, int> MessageCount = [];
+
+    [DataField, AutoNetworkedField]
+    public Dictionary<IPdaChatRecipient, int> MessageIndex = [];
 }

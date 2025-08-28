@@ -41,4 +41,17 @@
             VerticalExpand="True"
             Access="Public"/>
     </ScrollContainer>
+    <PanelContainer
+        StyleClasses="LowDivider"/>
+    <BoxContainer
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Top"
+        HorizontalExpand="True">
+        <LineEdit
+            Name="TextInput"
+            PlaceHolder="{Loc 'pda-messaging-text-message-placeholder'}"
+            Margin="8"
+            HorizontalExpand="True"
+            Access="Public"/>
+    </BoxContainer>
 </BoxContainer>

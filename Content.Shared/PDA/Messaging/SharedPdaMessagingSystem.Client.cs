@@ -11,6 +11,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
     private void InitializeClient()
     {
         SubscribeLocalEvent<PdaMessagingClientComponent, MapInitEvent>(OnClientInit, after: [typeof(SharedStationSystem)]);
+        SubscribeLocalEvent<PdaMessagingClientComponent, PdaMessageSendMessageSourceEvent>(OnClientSendMessageSource);
 
         SubscribeLocalEvent<PdaMessageNewServerAvailableEvent>(OnClientNewServerAvailable);
         SubscribeLocalEvent<PdaMessageServerRemovedEvent>(OnClientServerRemoved);
@@ -29,6 +30,29 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
 
         UpdateClientProfile(ent!, GetDefaultProfile(ent));
     }
+
+    private void OnClientSendMessageSource(Entity<PdaMessagingClientComponent> ent, ref PdaMessageSendMessageSourceEvent args)
+    {
+        if (ent.Comp.Server is not { } server)
+            return;
+
+        var sourceAttemptEv = new PdaMessageSendAttemptSourceEvent(server, args.Message);
+        RaiseLocalEvent(ent.Owner, sourceAttemptEv);
+        if (sourceAttemptEv.Cancelled)
+            return;
+
+        var serverAttemptEv = new PdaMessageSendAttemptServerEvent(ent, args.Message);
+        RaiseLocalEvent(server, serverAttemptEv);
+        if (serverAttemptEv.Cancelled)
+            return;
+
+        var sourceEv = new PdaMessageSentMessageSourceEvent(server, args.Message);
+        RaiseLocalEvent(ent.Owner, ref sourceEv);
+
+        var serverEv = new PdaMessageSentMessageServerEvent(ent, args.Message);
+        RaiseLocalEvent(server, ref serverEv);
+    }
+
 
     private void OnClientNewServerAvailable(ref PdaMessageNewServerAvailableEvent args)
     {
