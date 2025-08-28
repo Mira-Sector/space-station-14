@@ -7,11 +7,11 @@ namespace Content.Shared.PDA.Messaging.Components;
 public sealed partial class PdaMessagingClientComponent : Component
 {
     [ViewVariables, AutoNetworkedField]
-    public ChatRecipientProfile Profile;
+    public PdaChatRecipientProfile Profile;
 
     [ViewVariables, AutoNetworkedField]
     public EntityUid? Server;
 
     [ViewVariables, AutoNetworkedField]
-    public HashSet<IChatRecipient> AvailableRecipients = [];
+    public HashSet<IPdaChatRecipient> AvailableRecipients = [];
 }

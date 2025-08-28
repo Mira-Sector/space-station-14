@@ -58,7 +58,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         }
     }
 
-    public void AddServerProfile(Entity<PdaMessagingServerComponent?> ent, ChatRecipientProfile profile)
+    public void AddServerProfile(Entity<PdaMessagingServerComponent?> ent, PdaChatRecipientProfile profile)
     {
         if (!Resolve(ent.Owner, ref ent.Comp))
             return;

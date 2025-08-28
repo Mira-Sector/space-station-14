@@ -13,9 +13,9 @@ public sealed partial class ChatUiFragmentChat : BoxContainer, IChatUiFragmentMo
 {
     [Dependency] private readonly IEntityManager _entity = default!;
 
-    public Action<IChatRecipient>? OnRecipientClicked;
+    public Action<IPdaChatRecipient>? OnRecipientClicked;
 
-    public ChatUiFragmentChat(IChatRecipient recipient, IChatMessage[] messages, IPrototypeManager prototype)
+    public ChatUiFragmentChat(IPdaChatRecipient recipient, BasePdaChatMessage[] messages, IPrototypeManager prototype)
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
@@ -24,5 +24,11 @@ public sealed partial class ChatUiFragmentChat : BoxContainer, IChatUiFragmentMo
 
         ContactIcon.Texture = sprite.Frame0(recipient.GetUiIcon(prototype));
         ContactName.Text = Loc.GetString(recipient.GetUiName());
+
+        foreach (var message in messages)
+        {
+            var wrapper = new ChatUiFragmentMessageWrapper(message);
+            Messages.AddChild(wrapper);
+        }
     }
 }

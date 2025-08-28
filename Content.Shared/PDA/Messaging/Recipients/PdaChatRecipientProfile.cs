@@ -6,13 +6,13 @@ namespace Content.Shared.PDA.Messaging.Recipients;
 
 [Serializable, NetSerializable]
 [DataDefinition]
-public sealed partial class ChatRecipientProfile : IChatRecipient
+public sealed partial class PdaChatRecipientProfile : IPdaChatRecipient
 {
     [DataField]
     public string Name;
 
     [DataField]
-    public ProtoId<ChatProfilePicturePrototype> Picture;
+    public ProtoId<PdaChatProfilePicturePrototype> Picture;
 
     public SpriteSpecifier GetUiIcon(IPrototypeManager prototype)
     {

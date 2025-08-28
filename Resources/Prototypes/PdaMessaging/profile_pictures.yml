@@ -1,18 +1,18 @@
-- type: chatProfilePicture
+- type: pdaChatProfilePicture
   id: Urist
   name: pda-messaging-profile-picture-urist-name
   sprite:
     sprite: Interface/PdaMessaging/profile_pictures.rsi
     state: urist
 
-- type: chatProfilePicture
+- type: pdaChatProfilePicture
   id: Tider
   name: pda-messaging-profile-picture-tider-name
   sprite:
     sprite: Interface/PdaMessaging/profile_pictures.rsi
     state: tider
 
-- type: chatProfilePicture
+- type: pdaChatProfilePicture
   id: Ian
   name: pda-messaging-profile-picture-ian-name
   sprite:

@@ -30,10 +30,6 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         UpdateClientProfile(ent!, GetDefaultProfile(ent));
     }
 
-    private void OnClientRemoved(Entity<PdaMessagingClientComponent> ent, ref ComponentRemove args)
-    {
-    }
-
     private void OnClientNewServerAvailable(ref PdaMessageNewServerAvailableEvent args)
     {
         var query = EntityQueryEnumerator<PdaMessagingClientComponent>();
@@ -76,7 +72,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         }
     }
 
-    public void UpdateClientProfile(Entity<PdaMessagingClientComponent?> ent, ChatRecipientProfile profile)
+    public void UpdateClientProfile(Entity<PdaMessagingClientComponent?> ent, PdaChatRecipientProfile profile)
     {
         if (!Resolve(ent.Owner, ref ent.Comp))
             return;
@@ -88,7 +84,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         RaiseLocalEvent(ref ev);
     }
 
-    public void AddClientRecipient(Entity<PdaMessagingClientComponent?> ent, IChatRecipient recipient)
+    public void AddClientRecipient(Entity<PdaMessagingClientComponent?> ent, IPdaChatRecipient recipient)
     {
         if (!Resolve(ent.Owner, ref ent.Comp))
             return;
@@ -100,7 +96,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         Dirty(ent);
     }
 
-    public IEnumerable<IChatRecipient> GetClientRecipients(Entity<PdaMessagingClientComponent?, PdaMessagingHistoryComponent?> ent)
+    public IEnumerable<IPdaChatRecipient> GetClientRecipients(Entity<PdaMessagingClientComponent?, PdaMessagingHistoryComponent?> ent)
     {
         if (!Resolve(ent.Owner, ref ent.Comp1))
             yield break;

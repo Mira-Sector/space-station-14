@@ -17,14 +17,12 @@ public sealed partial class ChatUiFragment : PanelContainer
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     private readonly BoundUserInterface _userInterface = default!;
 
-    public Action<IChatMessage>? OnSendMessage;
-
     private readonly EntityUid _cartridge;
     private readonly NetEntity _netCartridge; // so much shit references it
     private ChatUiMode _uiMode;
-    private IChatRecipient _recipient = default!; // not nullable as never accessed when this isnt valid
+    private IPdaChatRecipient _recipient = default!; // not nullable as never accessed when this isnt valid
 
-    private Dictionary<IChatRecipient, IChatMessage[]> _messages = [];
+    private Dictionary<IPdaChatRecipient, BasePdaChatMessage[]> _messages = [];
 
     public ChatUiFragment(BoundUserInterface userInterface, EntityUid cartridge)
     {
@@ -40,7 +38,7 @@ public sealed partial class ChatUiFragment : PanelContainer
         ChangeMode(ChatUiMode.Menu);
     }
 
-    public void UpdateState(Dictionary<IChatRecipient, IChatMessage[]> messages)
+    public void UpdateState(Dictionary<IPdaChatRecipient, BasePdaChatMessage[]> messages)
     {
         _messages = messages;
         ChangeMode(_uiMode);

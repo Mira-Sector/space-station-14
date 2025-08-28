@@ -13,7 +13,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly SharedStationSystem _station = default!;
 
-    private FrozenDictionary<ProtoId<ChatProfilePicturePrototype>, ChatProfilePicturePrototype> _profilePictures = default!;
+    private FrozenDictionary<ProtoId<PdaChatProfilePicturePrototype>, PdaChatProfilePicturePrototype> _profilePictures = default!;
 
     public override void Initialize()
     {
@@ -30,14 +30,14 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
 
     private void OnPrototypeReload(PrototypesReloadedEventArgs args)
     {
-        if (args.WasModified<ChatProfilePicturePrototype>())
+        if (args.WasModified<PdaChatProfilePicturePrototype>())
             UpdateCachedProfilePictures();
     }
 
     private void UpdateCachedProfilePictures()
     {
-        var protos = _prototype.GetInstances<ChatProfilePicturePrototype>();
-        Dictionary<ProtoId<ChatProfilePicturePrototype>, ChatProfilePicturePrototype> newDict = [];
+        var protos = _prototype.GetInstances<PdaChatProfilePicturePrototype>();
+        Dictionary<ProtoId<PdaChatProfilePicturePrototype>, PdaChatProfilePicturePrototype> newDict = [];
         newDict.EnsureCapacity(protos.Count);
         foreach (var (id, proto) in protos)
             newDict[id] = proto;
@@ -45,7 +45,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         _profilePictures = newDict.ToFrozenDictionary();
     }
 
-    private ChatRecipientProfile GetDefaultProfile(Entity<PdaMessagingClientComponent> ent)
+    private PdaChatRecipientProfile GetDefaultProfile(Entity<PdaMessagingClientComponent> ent)
     {
         var (id, proto) = _random.Pick(_profilePictures);
         var name = proto.Name; // TODO: fetch the pda owners name via an event

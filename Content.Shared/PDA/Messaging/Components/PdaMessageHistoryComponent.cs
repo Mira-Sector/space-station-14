@@ -8,14 +8,14 @@ namespace Content.Shared.PDA.Messaging.Components;
 public sealed partial class PdaMessagingHistoryComponent : Component
 {
     [DataField, AutoNetworkedField]
-    public Dictionary<IChatRecipient, TimeSpan> LastMessage = [];
+    public Dictionary<IPdaChatRecipient, TimeSpan> LastMessage = [];
 
     [DataField, AutoNetworkedField]
-    public Dictionary<IChatRecipient, IChatMessage[]> Messages = [];
+    public Dictionary<IPdaChatRecipient, BasePdaChatMessage[]> Messages = [];
 
     [DataField]
     public int MaxHistory = 64;
 
     [DataField, AutoNetworkedField]
-    public Dictionary<IChatRecipient, int> MessageCount = [];
+    public Dictionary<IPdaChatRecipient, int> MessageCount = [];
 }

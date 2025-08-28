@@ -8,16 +8,16 @@ namespace Content.Shared.PDA.Messaging.Recipients;
 
 [Serializable, NetSerializable]
 [DataDefinition]
-public sealed partial class ChatRecipientGroup : IChatRecipient
+public sealed partial class PdaChatRecipientGroup : IPdaChatRecipient
 {
     [DataField]
     public string? Name;
 
     [DataField]
-    public ProtoId<ChatProfilePicturePrototype>? Picture;
+    public ProtoId<PdaChatProfilePicturePrototype>? Picture;
 
     [DataField]
-    public HashSet<ChatRecipientProfile> Members = [];
+    public HashSet<PdaChatRecipientProfile> Members = [];
 
     public SpriteSpecifier GetUiIcon(IPrototypeManager prototype)
     {

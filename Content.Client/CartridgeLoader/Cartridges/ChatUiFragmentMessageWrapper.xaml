@@ -1,0 +1,21 @@
+<BoxContainer
+    xmlns="https://spacestation14.io"
+    Margin="2"
+    Orientation="Vertical"
+    HorizontalAlignment="Stretch"
+    VerticalAlignment="Top"
+    HorizontalExpand="True"
+    VerticalExpand="True">
+    <Label
+        Name="Sender"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Center"
+        Access="Public"/>
+    <PanelContainer
+        Name="Content"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        HorizontalExpand="True"
+        VerticalExpand="True"
+        Access="Public"/>
+</BoxContainer>

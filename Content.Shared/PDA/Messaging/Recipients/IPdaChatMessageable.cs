@@ -3,7 +3,7 @@ using Robust.Shared.Utility;
 
 namespace Content.Shared.PDA.Messaging.Recipients;
 
-public interface IChatRecipient
+public interface IPdaChatRecipient
 {
     SpriteSpecifier GetUiIcon(IPrototypeManager prototype);
     string GetUiName();

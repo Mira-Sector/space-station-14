@@ -4,7 +4,7 @@ using Robust.Shared.Utility;
 namespace Content.Shared.PDA.Messaging;
 
 [Prototype]
-public sealed partial class ChatProfilePicturePrototype : IPrototype
+public sealed partial class PdaChatProfilePicturePrototype : IPrototype
 {
     [ViewVariables]
     [IdDataField]

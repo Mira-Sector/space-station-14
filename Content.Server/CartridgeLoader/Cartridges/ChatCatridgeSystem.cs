@@ -13,7 +13,7 @@ public sealed partial class ChatCartridgeSystem : SharedChatCartridgeSystem
     protected override void UpdateUi(Entity<ChatCartridgeComponent, PdaMessagingClientComponent?> ent, EntityUid loader)
     {
         var recipients = PdaMessaging.GetClientRecipients((ent.Owner, ent.Comp2));
-        Dictionary<IChatRecipient, IChatMessage[]> messages = new(recipients.Count());
+        Dictionary<IPdaChatRecipient, BasePdaChatMessage[]> messages = new(recipients.Count());
         foreach (var recipient in recipients)
             messages[recipient] = PdaMessaging.GetHistory(ent.Owner, recipient).ToArray();
 

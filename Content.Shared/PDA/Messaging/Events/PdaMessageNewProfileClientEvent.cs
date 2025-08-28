@@ -3,4 +3,4 @@ using Content.Shared.PDA.Messaging.Recipients;
 namespace Content.Shared.PDA.Messaging.Events;
 
 [ByRefEvent]
-public readonly record struct PdaMessageNewProfileClientEvent(EntityUid Client, ChatRecipientProfile Profile);
+public readonly record struct PdaMessageNewProfileClientEvent(EntityUid Client, PdaChatRecipientProfile Profile);
