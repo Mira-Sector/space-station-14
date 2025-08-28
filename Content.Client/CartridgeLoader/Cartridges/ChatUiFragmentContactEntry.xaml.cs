@@ -15,6 +15,7 @@ public sealed partial class ChatUiFragmentContactEntry : Button
         RobustXamlLoader.Load(this);
 
         Icon.Texture = sprite.Frame0(recipient.GetUiIcon(prototype));
-        Label.Text = Loc.GetString(recipient.GetUiName());
+        Name.Text = Loc.GetString(recipient.GetUiName());
+        Id.Text = Loc.GetString("pda-messaging-contact-id-wrapper", ("id", recipient.Id));
     }
 }

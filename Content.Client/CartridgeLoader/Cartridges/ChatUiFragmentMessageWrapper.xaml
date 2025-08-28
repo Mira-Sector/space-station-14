@@ -6,11 +6,23 @@
     VerticalAlignment="Top"
     HorizontalExpand="True"
     VerticalExpand="True">
-    <Label
-        Name="Sender"
+    <BoxContainer
         HorizontalAlignment="Left"
-        VerticalAlignment="Center"
-        Access="Public"/>
+        VerticalAlignment="Top"
+        HorizontalExpand="True">
+        <Label
+            Name="SenderName"
+            Margin="2"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Access="Public"/>
+        <Label
+            Name="SenderId"
+            Margin="2"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Access="Public"/>
+    </BoxContainer>
     <PanelContainer
         Name="Content"
         HorizontalAlignment="Stretch"

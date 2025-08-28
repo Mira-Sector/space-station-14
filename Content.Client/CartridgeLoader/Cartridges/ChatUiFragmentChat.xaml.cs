@@ -27,6 +27,7 @@ public sealed partial class ChatUiFragmentChat : BoxContainer, IChatUiFragmentMo
 
         ContactIcon.Texture = sprite.Frame0(recipient.GetUiIcon(prototype));
         ContactName.Text = Loc.GetString(recipient.GetUiName());
+        ContactId.Text = Loc.GetString("pda-messaging-contact-id-wrapper", ("id", recipient.Id));
 
         TextInput.OnTextEntered += args =>
         {

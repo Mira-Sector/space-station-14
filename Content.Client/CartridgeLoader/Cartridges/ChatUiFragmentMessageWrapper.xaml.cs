@@ -13,7 +13,8 @@ public sealed partial class ChatUiFragmentMessageWrapper : BoxContainer
     {
         RobustXamlLoader.Load(this);
 
-        Sender.Text = Loc.GetString(message.Sender.GetUiName());
+        SenderName.Text = Loc.GetString(message.Sender.GetUiName());
+        SenderId.Text = Loc.GetString("pda-messaging-contact-id-wrapper", ("id", message.Sender.Id));
 
         var client = pdaChatMessageFactory.Create(message);
         var control = client.GetUiControl();

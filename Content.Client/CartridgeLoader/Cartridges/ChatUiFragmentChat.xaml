@@ -20,7 +20,13 @@
                 Access="Public"/>
             <Label
                 Name="ContactName"
-                Margin="8"
+                Margin="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Access="Public"/>
+            <Label
+                Name="ContactId"
+                Margin="2"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Access="Public"/>
