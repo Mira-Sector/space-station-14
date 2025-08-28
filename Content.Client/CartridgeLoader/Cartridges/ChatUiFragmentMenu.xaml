@@ -1,34 +1,28 @@
-<PanelContainer
+<BoxContainer
     xmlns="https://spacestation14.io"
+    Margin="8"
+    Orientation="Vertical"
     HorizontalAlignment="Stretch"
     VerticalAlignment="Stretch"
     HorizontalExpand="True"
     VerticalExpand="True">
-    <BoxContainer
+    <Label
+        Text="{Loc 'pda-messaging-contacts-heading'}"
+        Align="Center"/>
+    <PanelContainer
         Margin="8"
-        Orientation="Vertical"
-        HorizontalAlignment="Stretch"
-        VerticalAlignment="Stretch"
-        HorizontalExpand="True"
-        VerticalExpand="True">
-        <Label
-            Text="{Loc 'pda-messaging-contacts-heading'}"
-            Align="Center"/>
-        <PanelContainer
-            Margin="8"
-            StyleClasses="LowDivider"/>
-        <ScrollContainer
+        StyleClasses="LowDivider"/>
+    <ScrollContainer
+        VerticalExpand="True"
+        HScrollEnabled="False"
+        ReturnMeasure="True">
+        <BoxContainer
+            Name="Recipients"
+            Orientation="Vertical"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            HorizontalExpand="True"
             VerticalExpand="True"
-            HScrollEnabled="False"
-            ReturnMeasure="True">
-            <BoxContainer
-                Name="Recipients"
-                Orientation="Vertical"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                HorizontalExpand="True"
-                VerticalExpand="True"
-                Access="Public"/>
-        </ScrollContainer>
-    </BoxContainer>
-</PanelContainer>
+            Access="Public"/>
+    </ScrollContainer>
+</BoxContainer>

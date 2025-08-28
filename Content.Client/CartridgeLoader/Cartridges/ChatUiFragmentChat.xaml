@@ -1,0 +1,31 @@
+<BoxContainer
+    xmlns="https://spacestation14.io"
+    Orientation="Vertical"
+    HorizontalAlignment="Stretch"
+    VerticalAlignment="Stretch"
+    HorizontalExpand="True"
+    VerticalExpand="True">
+    <PanelContainer
+        StyleClasses="PanelBackgroundBaseDark">
+        <BoxContainer
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            HorizontalExpand="True">
+            <TextureRect
+                Name="ContactIcon"
+                Stretch="Tile"
+                Margin="8"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Access="Public"/>
+            <Label
+                Name="ContactName"
+                Margin="8"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Access="Public"/>
+        </BoxContainer>
+    </PanelContainer>
+    <PanelContainer
+        StyleClasses="LowDivider"/>
+</BoxContainer>
