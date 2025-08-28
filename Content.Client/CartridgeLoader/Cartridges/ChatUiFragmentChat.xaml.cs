@@ -18,7 +18,7 @@ public sealed partial class ChatUiFragmentChat : BoxContainer, IChatUiFragmentMo
 
     public Action<BasePdaChatMessage>? OnMessageSent;
 
-    public ChatUiFragmentChat(IPdaChatRecipient recipient, PdaChatRecipientProfile profile, BasePdaChatMessage[] messages, IPrototypeManager prototype)
+    public ChatUiFragmentChat(BasePdaChatMessageable recipient, PdaChatRecipientProfile profile, BasePdaChatMessage[] messages, IPrototypeManager prototype)
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);

@@ -12,9 +12,9 @@ public sealed partial class ChatUiFragmentMenu : BoxContainer, IChatUiFragmentMo
 {
     [Dependency] private readonly IEntityManager _entity = default!;
 
-    public Action<IPdaChatRecipient>? OnRecipientClicked;
+    public Action<BasePdaChatMessageable>? OnRecipientClicked;
 
-    public ChatUiFragmentMenu(IEnumerable<IPdaChatRecipient> recipients, IPrototypeManager prototype)
+    public ChatUiFragmentMenu(IEnumerable<BasePdaChatMessageable> recipients, IPrototypeManager prototype)
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);

@@ -13,5 +13,5 @@ public sealed partial class PdaMessagingClientComponent : Component
     public EntityUid? Server;
 
     [ViewVariables, AutoNetworkedField]
-    public HashSet<IPdaChatRecipient> AvailableRecipients = [];
+    public HashSet<BasePdaChatMessageable> AvailableRecipients = [];
 }

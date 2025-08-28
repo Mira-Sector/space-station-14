@@ -46,12 +46,12 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         Dirty(ent);
     }
 
-    public IEnumerable<IPdaChatRecipient> GetSortedRecentlyMessaged(Entity<PdaMessagingHistoryComponent?> ent)
+    public IEnumerable<BasePdaChatMessageable> GetSortedRecentlyMessaged(Entity<PdaMessagingHistoryComponent?> ent)
     {
         if (!Resolve(ent.Owner, ref ent.Comp))
             yield break;
 
-        SortedDictionary<TimeSpan, List<IPdaChatRecipient>> times = [];
+        SortedDictionary<TimeSpan, List<BasePdaChatMessageable>> times = [];
         foreach (var (recipient, time) in ent.Comp.LastMessage)
         {
             if (!times.TryGetValue(time, out var recipients))
@@ -68,7 +68,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         }
     }
 
-    public IEnumerable<BasePdaChatMessage> GetHistory(Entity<PdaMessagingHistoryComponent?> ent, IPdaChatRecipient recipient)
+    public IEnumerable<BasePdaChatMessage> GetHistory(Entity<PdaMessagingHistoryComponent?> ent, BasePdaChatMessageable recipient)
     {
         if (!Resolve(ent.Owner, ref ent.Comp))
             yield break;

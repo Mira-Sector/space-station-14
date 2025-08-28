@@ -16,7 +16,7 @@ public sealed partial class ChatCartridgeSystem : SharedChatCartridgeSystem
             return;
 
         var recipients = PdaMessaging.GetClientRecipients((ent.Owner, ent.Comp2));
-        Dictionary<IPdaChatRecipient, BasePdaChatMessage[]> messages = new(recipients.Count());
+        Dictionary<BasePdaChatMessageable, BasePdaChatMessage[]> messages = new(recipients.Count());
         foreach (var recipient in recipients)
             messages[recipient] = PdaMessaging.GetHistory(ent.Owner, recipient).ToArray();
 

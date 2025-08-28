@@ -8,7 +8,7 @@ namespace Content.Shared.PDA.Messaging.Recipients;
 
 [Serializable, NetSerializable]
 [DataDefinition]
-public sealed partial class PdaChatRecipientGroup : IPdaChatRecipient
+public sealed partial class PdaChatRecipientGroup : BasePdaChatMessageable
 {
     [DataField]
     public string? Name;
@@ -19,7 +19,9 @@ public sealed partial class PdaChatRecipientGroup : IPdaChatRecipient
     [DataField]
     public HashSet<PdaChatRecipientProfile> Members = [];
 
-    public SpriteSpecifier GetUiIcon(IPrototypeManager prototype)
+    public override string Prefix() => "GRP";
+
+    public override SpriteSpecifier GetUiIcon(IPrototypeManager prototype)
     {
         if (Picture is { } picture)
         {
@@ -31,12 +33,12 @@ public sealed partial class PdaChatRecipientGroup : IPdaChatRecipient
         return member.GetUiIcon(prototype);
     }
 
-    public string GetUiName()
+    public override string GetUiName()
     {
         return Name ?? GetGenericName();
     }
 
-    public string GetNotificationText()
+    public override string GetNotificationText()
     {
         return Name ?? GetGenericName();
     }

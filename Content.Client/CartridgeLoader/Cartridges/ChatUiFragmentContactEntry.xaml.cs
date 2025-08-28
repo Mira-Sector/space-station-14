@@ -10,7 +10,7 @@ namespace Content.Client.CartridgeLoader.Cartridges;
 [GenerateTypedNameReferences]
 public sealed partial class ChatUiFragmentContactEntry : Button
 {
-    public ChatUiFragmentContactEntry(IPdaChatRecipient recipient, IPrototypeManager prototype, SpriteSystem sprite)
+    public ChatUiFragmentContactEntry(BasePdaChatMessageable recipient, IPrototypeManager prototype, SpriteSystem sprite)
     {
         RobustXamlLoader.Load(this);
 

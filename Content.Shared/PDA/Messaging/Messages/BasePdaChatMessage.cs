@@ -11,7 +11,7 @@ public abstract partial class BasePdaChatMessage
     public PdaChatRecipientProfile Sender;
 
     [DataField]
-    public IPdaChatRecipient Recipient;
+    public BasePdaChatMessageable Recipient;
 
     public abstract string GetNotificationText();
 }

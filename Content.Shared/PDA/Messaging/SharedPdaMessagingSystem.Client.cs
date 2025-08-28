@@ -11,6 +11,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
     private void InitializeClient()
     {
         SubscribeLocalEvent<PdaMessagingClientComponent, MapInitEvent>(OnClientInit, after: [typeof(SharedStationSystem)]);
+
         SubscribeLocalEvent<PdaMessagingClientComponent, PdaMessageSendMessageSourceEvent>(OnClientSendMessageSource);
 
         SubscribeLocalEvent<PdaMessageNewServerAvailableEvent>(OnClientNewServerAvailable);
@@ -108,7 +109,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         RaiseLocalEvent(ref ev);
     }
 
-    public void AddClientRecipient(Entity<PdaMessagingClientComponent?> ent, IPdaChatRecipient recipient)
+    public void AddClientRecipient(Entity<PdaMessagingClientComponent?> ent, BasePdaChatMessageable recipient)
     {
         if (!Resolve(ent.Owner, ref ent.Comp))
             return;
@@ -120,7 +121,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         Dirty(ent);
     }
 
-    public IEnumerable<IPdaChatRecipient> GetClientRecipients(Entity<PdaMessagingClientComponent?, PdaMessagingHistoryComponent?> ent)
+    public IEnumerable<BasePdaChatMessageable> GetClientRecipients(Entity<PdaMessagingClientComponent?, PdaMessagingHistoryComponent?> ent)
     {
         if (!Resolve(ent.Owner, ref ent.Comp1))
             yield break;
