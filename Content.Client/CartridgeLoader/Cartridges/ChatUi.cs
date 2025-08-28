@@ -21,6 +21,6 @@ public sealed partial class ChatUi : UIFragment
     public override void UpdateState(BoundUserInterfaceState state)
     {
         if (state is ChatUiState cast)
-            _fragment?.UpdateRecipients(cast.Recipients);
+            _fragment?.UpdateState(cast.Messages);
     }
 }

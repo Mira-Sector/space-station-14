@@ -12,11 +12,20 @@ public abstract partial class SharedChatCartridgeSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<ChatCartridgeComponent, CartridgeUiReadyEvent>(OnUiReady);
+        SubscribeLocalEvent<ChatCartridgeComponent, CartridgeMessageEvent>(OnUiMessage);
     }
 
     private void OnUiReady(Entity<ChatCartridgeComponent> ent, ref CartridgeUiReadyEvent args)
     {
         UpdateUi(ent, args.Loader);
+    }
+
+    private void OnUiMessage(Entity<ChatCartridgeComponent> ent, ref CartridgeMessageEvent args)
+    {
+        if (args is not ChatUiMessageEvent message)
+            return;
+
+        RaiseLocalEvent(ent.Owner, message.Payload);
     }
 
     protected virtual void UpdateUi(Entity<ChatCartridgeComponent, PdaMessagingClientComponent?> ent, EntityUid loader)

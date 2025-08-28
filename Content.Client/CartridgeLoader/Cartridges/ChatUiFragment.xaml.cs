@@ -22,7 +22,7 @@ public sealed partial class ChatUiFragment : PanelContainer
     private ChatUiMode _uiMode;
     private IChatRecipient? _recipient;
 
-    private IChatRecipient[] _recipients = [];
+    private Dictionary<IChatRecipient, IChatMessage[]> _messages = [];
 
     public ChatUiFragment(BoundUserInterface userInterface, EntityUid cartridge)
     {
@@ -38,9 +38,9 @@ public sealed partial class ChatUiFragment : PanelContainer
         ChangeMode(ChatUiMode.Menu);
     }
 
-    public void UpdateRecipients(IChatRecipient[] recipients)
+    public void UpdateState(Dictionary<IChatRecipient, IChatMessage[]> messages)
     {
-        _recipients = recipients;
+        _messages = messages;
         ChangeMode(_uiMode);
     }
 
@@ -53,13 +53,12 @@ public sealed partial class ChatUiFragment : PanelContainer
         switch (mode)
         {
             case ChatUiMode.Menu:
-                var menu = new ChatUiFragmentMenu(_recipients);
+                var menu = new ChatUiFragmentMenu(_messages.Keys);
                 Content.AddChild(menu);
 
                 menu.OnRecipientClicked += recipient =>
                 {
                     _recipient = recipient;
-                    SendUiMessage(new PdaMessageRequestMessageHistoryMessage(_netCartridge, recipient));
                     ChangeMode(ChatUiMode.Chat);
                 };
                 break;

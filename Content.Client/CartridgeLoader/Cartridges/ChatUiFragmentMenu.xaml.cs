@@ -15,7 +15,7 @@ public sealed partial class ChatUiFragmentMenu : PanelContainer, IChatUiFragment
 
     public Action<IChatRecipient>? OnRecipientClicked;
 
-    public ChatUiFragmentMenu(IChatRecipient[] recipients)
+    public ChatUiFragmentMenu(IEnumerable<IChatRecipient> recipients)
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);

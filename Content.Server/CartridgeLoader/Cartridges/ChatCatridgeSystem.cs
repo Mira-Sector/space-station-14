@@ -1,6 +1,8 @@
 using System.Linq;
 using Content.Shared.CartridgeLoader.Cartridges;
 using Content.Shared.PDA.Messaging.Components;
+using Content.Shared.PDA.Messaging.Messages;
+using Content.Shared.PDA.Messaging.Recipients;
 
 namespace Content.Server.CartridgeLoader.Cartridges;
 
@@ -10,8 +12,12 @@ public sealed partial class ChatCartridgeSystem : SharedChatCartridgeSystem
 
     protected override void UpdateUi(Entity<ChatCartridgeComponent, PdaMessagingClientComponent?> ent, EntityUid loader)
     {
-        var recipients = PdaMessaging.GetClientRecipients((ent.Owner, ent.Comp2)).ToArray();
-        var state = new ChatUiState(recipients);
+        var recipients = PdaMessaging.GetClientRecipients((ent.Owner, ent.Comp2));
+        Dictionary<IChatRecipient, IChatMessage[]> messages = new(recipients.Count());
+        foreach (var recipient in recipients)
+            messages[recipient] = PdaMessaging.GetHistory(ent.Owner, recipient).ToArray();
+
+        var state = new ChatUiState(messages);
         _cartridgeLoader.UpdateCartridgeUiState(loader, state);
     }
 }
