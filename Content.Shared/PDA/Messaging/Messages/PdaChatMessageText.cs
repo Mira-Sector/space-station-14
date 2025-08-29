@@ -10,4 +10,12 @@ public sealed partial class PdaChatMessageText : BasePdaChatMessage
     public string Contents;
 
     public override string GetNotificationText() => Contents;
+
+    public override LocId GetHeaderWrapper(bool plural)
+    {
+        if (plural)
+            return "pda-messaging-header-wrapper-text-plural";
+        else
+            return "pda-messaging-header-wrapper-text";
+    }
 }

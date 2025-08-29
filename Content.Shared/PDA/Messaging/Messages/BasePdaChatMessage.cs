@@ -14,4 +14,5 @@ public abstract partial class BasePdaChatMessage
     public BasePdaChatMessageable Recipient;
 
     public abstract string GetNotificationText();
+    public abstract LocId GetHeaderWrapper(bool plural);
 }

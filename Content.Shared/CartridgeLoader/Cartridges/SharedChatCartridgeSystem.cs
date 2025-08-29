@@ -1,6 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
 using Content.Shared.PDA.Messaging;
 using Content.Shared.PDA.Messaging.Components;
 using Content.Shared.PDA.Messaging.Events;
+using Content.Shared.PDA.Messaging.Messages;
 
 namespace Content.Shared.CartridgeLoader.Cartridges;
 
@@ -42,6 +44,7 @@ public abstract partial class SharedChatCartridgeSystem : EntitySystem
     private void OnReplicatedMessageClient(Entity<ChatCartridgeComponent> ent, ref PdaMessageReplicatedMessageClientEvent args)
     {
         UpdateUi(ent);
+        PlayNotification(ent, args.Message);
     }
 
     private void OnReceiveRecipients(Entity<ChatCartridgeComponent> ent, ref PdaMessageClientReceiveRecipientsEvent args)
@@ -49,18 +52,38 @@ public abstract partial class SharedChatCartridgeSystem : EntitySystem
         UpdateUi(ent);
     }
 
+    protected void PlayNotification(Entity<ChatCartridgeComponent> ent, BasePdaChatMessage message)
+    {
+        if (!TryGetLoader(ent.Owner, out var loader))
+            return;
+
+        PlayNotification(ent, loader.Value, message);
+    }
+
+    protected virtual void PlayNotification(Entity<ChatCartridgeComponent> ent, EntityUid loader, BasePdaChatMessage message)
+    {
+    }
+
     protected void UpdateUi(Entity<ChatCartridgeComponent, PdaMessagingClientComponent?> ent)
     {
-        if (!TryComp<CartridgeComponent>(ent.Owner, out var cartridge))
+        if (!TryGetLoader(ent.Owner, out var loader))
             return;
 
-        if (cartridge.LoaderUid is not { } loader)
-            return;
-
-        UpdateUi(ent, loader);
+        UpdateUi(ent, loader.Value);
     }
 
     protected virtual void UpdateUi(Entity<ChatCartridgeComponent, PdaMessagingClientComponent?> ent, EntityUid loader)
     {
+    }
+
+    protected bool TryGetLoader(Entity<CartridgeComponent?> ent, [NotNullWhen(true)] out EntityUid? loader)
+    {
+        loader = null;
+
+        if (!Resolve(ent.Owner, ref ent.Comp, false))
+            return false;
+
+        loader = ent.Comp.LoaderUid;
+        return loader != null;
     }
 }

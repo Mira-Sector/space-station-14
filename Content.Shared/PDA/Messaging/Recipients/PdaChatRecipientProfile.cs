@@ -31,5 +31,11 @@ public sealed partial class PdaChatRecipientProfile : BasePdaChatMessageable
     }
 
     public override string GetUiName() => Name;
-    public override string GetNotificationText() => Name;
+
+    public override string GetNotificationText()
+    {
+        var name = Loc.GetString(Name);
+        var id = Loc.GetString("pda-messaging-contact-id-wrapper", ("id", Id));
+        return $"{name} {id}";
+    }
 }

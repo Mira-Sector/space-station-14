@@ -10,6 +10,15 @@ public sealed partial class ChatCartridgeSystem : SharedChatCartridgeSystem
 {
     [Dependency] private readonly CartridgeLoaderSystem _cartridgeLoader = default!;
 
+    protected override void PlayNotification(Entity<ChatCartridgeComponent> ent, EntityUid loader, BasePdaChatMessage message)
+    {
+        var plural = message.Sender != message.Recipient.GetRecipientMessageable(message);
+        var headerWrapper = message.GetHeaderWrapper(plural);
+        var header = Loc.GetString(headerWrapper, ("sender", message.Sender.GetNotificationText()), ("receivers", message.Recipient.GetNotificationText()));
+        var content = message.GetNotificationText();
+        _cartridgeLoader.SendNotification(loader, header, content);
+    }
+
     protected override void UpdateUi(Entity<ChatCartridgeComponent, PdaMessagingClientComponent?> ent, EntityUid loader)
     {
         if (!Resolve(ent.Owner, ref ent.Comp2))
