@@ -1,5 +1,6 @@
 <BoxContainer
     xmlns="https://spacestation14.io"
+    xmlns:cartridges="clr-namespace:Content.Client.CartridgeLoader.Cartridges"
     Orientation="Vertical"
     HorizontalAlignment="Stretch"
     VerticalAlignment="Stretch"
@@ -8,27 +9,34 @@
     <PanelContainer
         StyleClasses="PanelBackgroundBaseDark">
         <BoxContainer
-            HorizontalAlignment="Center"
+            HorizontalAlignment="Stretch"
             VerticalAlignment="Top"
             HorizontalExpand="True">
             <TextureRect
                 Name="ContactIcon"
                 Stretch="Tile"
                 Margin="8"
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Access="Public"/>
             <Label
                 Name="ContactName"
                 Margin="2"
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Access="Public"/>
             <Label
                 Name="ContactId"
                 Margin="2"
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Left"
                 VerticalAlignment="Center"
+                Access="Public"/>
+            <cartridges:ChatUiFragmentHomeButton
+                Name="HomeButton"
+                Margin="8"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                HorizontalExpand="True"
                 Access="Public"/>
         </BoxContainer>
     </PanelContainer>

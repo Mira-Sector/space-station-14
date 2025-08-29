@@ -1,0 +1,10 @@
+<Button
+    xmlns="https://spacestation14.io">
+    <TextureRect
+        Name="Icon"
+        Stretch="Tile"
+        Margin="8"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Access="Public"/>
+</Button>

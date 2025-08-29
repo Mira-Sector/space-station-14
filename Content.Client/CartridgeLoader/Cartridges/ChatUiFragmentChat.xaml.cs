@@ -15,8 +15,9 @@ public sealed partial class ChatUiFragmentChat : BoxContainer, IChatUiFragmentMo
     [Dependency] private readonly IEntityManager _entity = default!;
     [Dependency] private readonly IClientPdaChatMessageFactory _pdaChatMessageFactory = default!;
 
-
     public Action<BasePdaChatMessage>? OnMessageSent;
+
+    public Action? OnHomeButtonPressed;
 
     public ChatUiFragmentChat(BasePdaChatMessageable recipient, PdaChatRecipientProfile profile, BasePdaChatMessage[] messages, IPrototypeManager prototype)
     {
@@ -42,6 +43,8 @@ public sealed partial class ChatUiFragmentChat : BoxContainer, IChatUiFragmentMo
 
             TextInput.Clear();
         };
+
+        HomeButton.OnPressed += _ => OnHomeButtonPressed?.Invoke();
 
         foreach (var message in messages)
         {

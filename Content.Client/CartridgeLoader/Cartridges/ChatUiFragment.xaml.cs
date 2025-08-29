@@ -20,10 +20,13 @@ public sealed partial class ChatUiFragment : PanelContainer
     private readonly EntityUid _cartridge;
     private readonly NetEntity _netCartridge; // so much shit references it
     private ChatUiMode _uiMode;
-    private BasePdaChatMessageable _recipient = default!; // not nullable as never accessed when this isnt valid
+    private BasePdaChatMessageable? _recipient = null;
     private PdaChatRecipientProfile _profile = default!;
 
     private Dictionary<BasePdaChatMessageable, BasePdaChatMessage[]> _messages = [];
+
+    public Action<BasePdaChatMessageable?>? OnRecipientChanged;
+    public Action<ChatUiMode>? OnModeChanged;
 
     public ChatUiFragment(BoundUserInterface userInterface, EntityUid cartridge)
     {
@@ -46,7 +49,7 @@ public sealed partial class ChatUiFragment : PanelContainer
         ChangeMode(_uiMode);
     }
 
-    private void ChangeMode(ChatUiMode mode)
+    public void ChangeMode(ChatUiMode mode)
     {
         _uiMode = mode;
 
@@ -60,19 +63,28 @@ public sealed partial class ChatUiFragment : PanelContainer
 
                 menu.OnRecipientClicked += recipient =>
                 {
-                    _recipient = recipient;
+                    ChangeRecipient(recipient);
                     ChangeMode(ChatUiMode.Chat);
                 };
                 break;
 
             case ChatUiMode.Chat:
-                var messages = _messages[_recipient];
-                var chat = new ChatUiFragmentChat(_recipient, _profile, messages, _prototype);
+                var messages = _messages[_recipient!];
+                var chat = new ChatUiFragmentChat(_recipient!, _profile, messages, _prototype);
                 Content.AddChild(chat);
 
                 chat.OnMessageSent += message => SendUiMessage(new PdaMessageSendMessageSourceEvent(_netCartridge, message));
+                chat.OnHomeButtonPressed += () => ChangeMode(ChatUiMode.Menu);
                 break;
         }
+
+        OnModeChanged?.Invoke(mode);
+    }
+
+    public void ChangeRecipient(BasePdaChatMessageable? recipient)
+    {
+        _recipient = recipient;
+        OnRecipientChanged?.Invoke(recipient);
     }
 
     private void SendUiMessage(IPdaMessagePayload payload)
