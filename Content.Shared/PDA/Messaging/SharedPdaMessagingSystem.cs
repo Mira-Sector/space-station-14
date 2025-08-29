@@ -19,6 +19,10 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
     private FrozenDictionary<ProtoId<PdaChatProfilePicturePrototype>, PdaChatProfilePicturePrototype> _profilePictures = default!;
     private readonly Dictionary<string, List<int>> _messageableIdsCounters = [];
 
+    protected EntityQuery<PdaMessagingClientComponent> ClientQuery;
+    protected EntityQuery<PdaMessagingServerComponent> ServerQuery;
+    protected EntityQuery<PdaMessagingHistoryComponent> HistoryQuery;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -26,6 +30,10 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         InitializeClient();
         InitializeServer();
         InitializeHistory();
+
+        ClientQuery = GetEntityQuery<PdaMessagingClientComponent>();
+        ServerQuery = GetEntityQuery<PdaMessagingServerComponent>();
+        HistoryQuery = GetEntityQuery<PdaMessagingHistoryComponent>();
 
         UpdateCachedProfilePictures();
 

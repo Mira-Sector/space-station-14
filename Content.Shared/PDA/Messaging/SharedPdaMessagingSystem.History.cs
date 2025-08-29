@@ -55,7 +55,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
 
     public IEnumerable<BasePdaChatMessageable> GetSortedRecentlyMessaged(Entity<PdaMessagingHistoryComponent?> ent)
     {
-        if (!Resolve(ent.Owner, ref ent.Comp))
+        if (!HistoryQuery.Resolve(ent.Owner, ref ent.Comp))
             yield break;
 
         SortedDictionary<TimeSpan, List<BasePdaChatMessageable>> times = [];
@@ -77,7 +77,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
 
     public IEnumerable<BasePdaChatMessage> GetHistory(Entity<PdaMessagingHistoryComponent?> ent, BasePdaChatMessageable recipient)
     {
-        if (!Resolve(ent.Owner, ref ent.Comp))
+        if (!HistoryQuery.Resolve(ent.Owner, ref ent.Comp))
             yield break;
 
         if (!ent.Comp.Messages.TryGetValue(recipient, out var messages))

@@ -14,15 +14,13 @@
         StyleClasses="LowDivider"/>
     <ScrollContainer
         VerticalExpand="True"
-        HScrollEnabled="False"
-        ReturnMeasure="True">
+        HScrollEnabled="False">
         <BoxContainer
             Name="Recipients"
             Orientation="Vertical"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             HorizontalExpand="True"
-            VerticalExpand="True"
             Access="Public"/>
     </ScrollContainer>
 </BoxContainer>
