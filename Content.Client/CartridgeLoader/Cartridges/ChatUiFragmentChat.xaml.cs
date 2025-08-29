@@ -20,8 +20,10 @@ public sealed partial class ChatUiFragmentChat : BoxContainer, IChatUiFragmentMo
     private readonly SpriteSystem _sprite;
 
     public Action<BasePdaChatMessage>? OnMessageSent;
-
     public Action? OnHomeButtonPressed;
+
+    private BasePdaChatMessageable _recipient = default!;
+    private PdaChatRecipientProfile _profile = default!;
 
     private bool _isScrollingToBottom;
 
@@ -33,27 +35,31 @@ public sealed partial class ChatUiFragmentChat : BoxContainer, IChatUiFragmentMo
         _sprite = _entity.System<SpriteSystem>();
 
         HomeButton.OnPressed += _ => OnHomeButtonPressed?.Invoke();
-    }
-
-    public void UpdateState(BasePdaChatMessageable recipient, PdaChatRecipientProfile profile, BasePdaChatMessage[] messages, IPrototypeManager prototype)
-    {
-        ContactIcon.Texture = _sprite.Frame0(recipient.GetUiIcon(prototype));
-        ContactName.Text = Loc.GetString(recipient.GetUiName());
-        ContactId.Text = Loc.GetString("pda-messaging-contact-id-wrapper", ("id", recipient.Id));
 
         TextInput.OnTextEntered += args =>
         {
             var message = new PdaChatMessageText()
             {
                 Contents = args.Text,
-                Sender = profile,
-                Recipient = recipient,
+                Sender = _profile,
+                Recipient = _recipient,
             };
 
             OnMessageSent?.Invoke(message);
 
             TextInput.Clear();
         };
+
+    }
+
+    public void UpdateState(BasePdaChatMessageable recipient, PdaChatRecipientProfile profile, BasePdaChatMessage[] messages, IPrototypeManager prototype)
+    {
+        _recipient = recipient;
+        _profile = profile;
+
+        ContactIcon.Texture = _sprite.Frame0(recipient.GetUiIcon(prototype));
+        ContactName.Text = Loc.GetString(recipient.GetUiName());
+        ContactId.Text = Loc.GetString("pda-messaging-contact-id-wrapper", ("id", recipient.Id));
 
         Messages.RemoveAllChildren();
 
