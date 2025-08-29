@@ -13,7 +13,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         SubscribeLocalEvent<PdaMessagingClientComponent, MapInitEvent>(OnClientInit, after: [typeof(SharedStationSystem)]);
         SubscribeLocalEvent<PdaMessagingClientComponent, ComponentRemove>(OnClientRemove);
 
-        SubscribeLocalEvent<PdaMessagingClientComponent, PdaMessageNewClientSendRecipients>(OnClientNewReceiveRecipients);
+        SubscribeLocalEvent<PdaMessagingClientComponent, PdaMessageClientReceiveRecipientsEvent>(OnClientReceiveRecipients);
         SubscribeLocalEvent<PdaMessagingClientComponent, PdaMessageSendMessageSourceEvent>(OnClientSendMessageSource);
 
         SubscribeLocalEvent<PdaMessageNewServerAvailableEvent>(OnClientNewServerAvailable);
@@ -24,28 +24,23 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
     private void OnClientInit(Entity<PdaMessagingClientComponent> ent, ref MapInitEvent args)
     {
         var profile = GetDefaultProfile(ent);
+        UpdateClientProfile(ent!, profile);
 
         // if a server already exists provide a sane default
         // so the user isnt baffled why it isnt working
         if (_station.GetCurrentStation(ent.Owner) is { } station)
         {
             var servers = GetStationServers(station);
-            ent.Comp.Server = servers.FirstOrNull();
+            UpdateClientConnectedServer(ent!, servers.FirstOrNull());
         }
-
-        UpdateClientProfile(ent!, profile);
-
-        var ev = new PdaMessageClientConnectedEvent(ent.Owner, profile);
-        RaiseLocalEvent(ref ev);
     }
 
     private void OnClientRemove(Entity<PdaMessagingClientComponent> ent, ref ComponentRemove args)
     {
-        var ev = new PdaMessageClientDisconnectedEvent(ent.Owner, ent.Comp.Profile);
-        RaiseLocalEvent(ref ev);
+        UpdateClientConnectedServer(ent!, null);
     }
 
-    private void OnClientNewReceiveRecipients(Entity<PdaMessagingClientComponent> ent, ref PdaMessageNewClientSendRecipients args)
+    private void OnClientReceiveRecipients(Entity<PdaMessagingClientComponent> ent, ref PdaMessageClientReceiveRecipientsEvent args)
     {
         ent.Comp.AvailableRecipients = args.Recipients;
         Dirty(ent);
@@ -126,6 +121,27 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
 
         var ev = new PdaMessageNewProfileClientEvent(ent.Owner, profile);
         RaiseLocalEvent(ref ev);
+    }
+
+    public void UpdateClientConnectedServer(Entity<PdaMessagingClientComponent?> ent, EntityUid? server)
+    {
+        if (!ClientQuery.Resolve(ent.Owner, ref ent.Comp))
+            return;
+
+        if (ent.Comp.Server is { } oldServer)
+        {
+            var disconnectEv = new PdaMessageClientDisconnectedEvent(ent.Owner, ent.Comp.Profile);
+            RaiseLocalEvent(oldServer, ref disconnectEv);
+        }
+
+        ent.Comp.Server = server;
+        Dirty(ent);
+
+        if (server is { } newServer)
+        {
+            var connectEv = new PdaMessageClientConnectedEvent(ent.Owner, ent.Comp.Profile);
+            RaiseLocalEvent(newServer, ref connectEv);
+        }
     }
 
     public void AddClientRecipient(Entity<PdaMessagingClientComponent?> ent, BasePdaChatMessageable recipient)

@@ -14,8 +14,8 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         SubscribeLocalEvent<PdaMessagingServerComponent, MapInitEvent>(OnServerInit, after: [typeof(SharedStationSystem)]);
         SubscribeLocalEvent<PdaMessagingServerComponent, ComponentRemove>(OnServerRemoved);
 
-        SubscribeLocalEvent<PdaMessageClientConnectedEvent>(OnServerClientConnected);
-        SubscribeLocalEvent<PdaMessageClientDisconnectedEvent>(OnServerClientDisconnected);
+        SubscribeLocalEvent<PdaMessagingServerComponent, PdaMessageClientConnectedEvent>(OnServerClientConnected);
+        SubscribeLocalEvent<PdaMessagingServerComponent, PdaMessageClientDisconnectedEvent>(OnServerClientDisconnected);
 
         SubscribeLocalEvent<PdaMessageNewProfileClientEvent>(OnServerNewProfileFromClient);
     }
@@ -43,40 +43,20 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         RaiseLocalEvent(ref ev);
     }
 
-    private void OnServerClientConnected(ref PdaMessageClientConnectedEvent args)
+    private void OnServerClientConnected(Entity<PdaMessagingServerComponent> ent, ref PdaMessageClientConnectedEvent args)
     {
-        var query = EntityQueryEnumerator<PdaMessagingServerComponent>();
-        while (query.MoveNext(out var uid, out var comp))
-        {
-            if (comp.Profiles.ContainsKey(args.Profile))
-                continue;
+        ent.Comp.Profiles[args.Profile] = args.Client;
+        Dirty(ent);
 
-            comp.Profiles[args.Profile] = args.Client;
-            Dirty(uid, comp);
-        }
-
-        if (!ClientQuery.TryComp(args.Client, out var clientComp))
-            return;
-
-        if (clientComp.Server is not { } server)
-            return;
-
-        var recipients = GetServerRecipients(server).ToHashSet();
-        var ev = new PdaMessageNewClientSendRecipients(recipients);
-        RaiseLocalEvent(args.Client, ref ev);
+        ServerUpdateConnectedClientsRecipients(ent);
     }
 
-    private void OnServerClientDisconnected(ref PdaMessageClientDisconnectedEvent args)
+    private void OnServerClientDisconnected(Entity<PdaMessagingServerComponent> ent, ref PdaMessageClientDisconnectedEvent args)
     {
-        var query = EntityQueryEnumerator<PdaMessagingServerComponent>();
-        while (query.MoveNext(out var uid, out var comp))
-        {
-            if (comp.Profiles.ContainsKey(args.Profile))
-                continue;
+        ent.Comp.Profiles[args.Profile] = null;
+        Dirty(ent);
 
-            comp.Profiles[args.Profile] = null;
-            Dirty(uid, comp);
-        }
+        ServerUpdateConnectedClientsRecipients(ent);
     }
 
     private void OnServerNewProfileFromClient(ref PdaMessageNewProfileClientEvent args)
@@ -86,6 +66,20 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
 
         foreach (var server in GetStationServers(station))
             AddServerProfile(server!, args.Profile, args.Client);
+    }
+
+    private void ServerUpdateConnectedClientsRecipients(Entity<PdaMessagingServerComponent> ent)
+    {
+        var recipients = GetServerRecipients(ent!).ToHashSet();
+        var ev = new PdaMessageClientReceiveRecipientsEvent(recipients);
+
+        foreach (var (_, profileClient) in ent.Comp.Profiles)
+        {
+            if (profileClient is not { } client)
+                continue;
+
+            RaiseLocalEvent(client, ref ev);
+        }
     }
 
     public IEnumerable<Entity<PdaMessagingServerComponent>> GetStationServers(EntityUid station)
