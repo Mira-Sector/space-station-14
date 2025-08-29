@@ -13,6 +13,9 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         SubscribeLocalEvent<PdaMessagingServerComponent, MapInitEvent>(OnServerInit, after: [typeof(SharedStationSystem)]);
         SubscribeLocalEvent<PdaMessagingServerComponent, ComponentRemove>(OnServerRemoved);
 
+        SubscribeLocalEvent<PdaMessageClientCreatedEvent>(OnServerClientCreated);
+        SubscribeLocalEvent<PdaMessageClientRemovedEvent>(OnServerClientRemoved);
+
         SubscribeLocalEvent<PdaMessageNewProfileClientEvent>(OnServerNewProfileFromClient);
     }
 
@@ -37,6 +40,32 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
 
         var ev = new PdaMessageServerRemovedEvent(ent.Owner, station);
         RaiseLocalEvent(ref ev);
+    }
+
+    private void OnServerClientCreated(ref PdaMessageClientCreatedEvent args)
+    {
+        var query = EntityQueryEnumerator<PdaMessagingServerComponent>();
+        while (query.MoveNext(out var uid, out var comp))
+        {
+            if (comp.Profiles.ContainsKey(args.Profile))
+                continue;
+
+            comp.Profiles[args.Profile] = args.Client;
+            Dirty(uid, comp);
+        }
+    }
+
+    private void OnServerClientRemoved(ref PdaMessageClientRemovedEvent args)
+    {
+        var query = EntityQueryEnumerator<PdaMessagingServerComponent>();
+        while (query.MoveNext(out var uid, out var comp))
+        {
+            if (comp.Profiles.ContainsKey(args.Profile))
+                continue;
+
+            comp.Profiles[args.Profile] = null;
+            Dirty(uid, comp);
+        }
     }
 
     private void OnServerNewProfileFromClient(ref PdaMessageNewProfileClientEvent args)

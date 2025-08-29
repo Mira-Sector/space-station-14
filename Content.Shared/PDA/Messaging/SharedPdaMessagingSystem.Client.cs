@@ -11,6 +11,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
     private void InitializeClient()
     {
         SubscribeLocalEvent<PdaMessagingClientComponent, MapInitEvent>(OnClientInit, after: [typeof(SharedStationSystem)]);
+        SubscribeLocalEvent<PdaMessagingClientComponent, ComponentRemove>(OnClientRemove);
 
         SubscribeLocalEvent<PdaMessagingClientComponent, PdaMessageSendMessageSourceEvent>(OnClientSendMessageSource);
 
@@ -29,7 +30,16 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
             ent.Comp.Server = servers.FirstOrNull();
         }
 
-        UpdateClientProfile(ent!, GetDefaultProfile(ent));
+        var profile = GetDefaultProfile(ent);
+        UpdateClientProfile(ent!, profile);
+        var ev = new PdaMessageClientCreatedEvent(ent.Owner, profile);
+        RaiseLocalEvent(ref ev);
+    }
+
+    private void OnClientRemove(Entity<PdaMessagingClientComponent> ent, ref ComponentRemove args)
+    {
+        var ev = new PdaMessageClientRemovedEvent(ent.Owner, ent.Comp.Profile);
+        RaiseLocalEvent(ref ev);
     }
 
     private void OnClientSendMessageSource(Entity<PdaMessagingClientComponent> ent, ref PdaMessageSendMessageSourceEvent args)
