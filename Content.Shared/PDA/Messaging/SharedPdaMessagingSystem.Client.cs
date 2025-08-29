@@ -1,5 +1,6 @@
 using Content.Shared.PDA.Messaging.Components;
 using Content.Shared.PDA.Messaging.Events;
+using Content.Shared.PDA.Messaging.Messages;
 using Content.Shared.PDA.Messaging.Recipients;
 using Content.Shared.Station;
 using Robust.Shared.Utility;
@@ -42,7 +43,10 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
 
     private void OnClientReceiveRecipients(Entity<PdaMessagingClientComponent> ent, ref PdaMessageClientReceiveRecipientsEvent args)
     {
-        ent.Comp.AvailableRecipients = args.Recipients;
+        var recipients = args.Recipients;
+        recipients.Remove(ent.Comp.Profile); // no sending messages to yourself
+
+        ent.Comp.AvailableRecipients = recipients;
         Dirty(ent);
     }
 
