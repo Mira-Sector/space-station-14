@@ -1,3 +1,4 @@
+using Content.Shared.PDA.Messaging.Messages;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
@@ -15,6 +16,13 @@ public sealed partial class PdaChatRecipientProfile : BasePdaChatMessageable
     public ProtoId<PdaChatProfilePicturePrototype> Picture;
 
     public override string Prefix() => "CLT";
+
+    public override IEnumerable<PdaChatRecipientProfile> GetRecipients()
+    {
+        yield return this;
+    }
+
+    public override BasePdaChatMessageable GetRecipientMessageable(BasePdaChatMessage message) => message.Sender;
 
     public override SpriteSpecifier GetUiIcon(IPrototypeManager prototype)
     {

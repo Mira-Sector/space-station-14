@@ -5,7 +5,6 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
 using System.Collections.Frozen;
-using System.Linq;
 using System.Text;
 
 namespace Content.Shared.PDA.Messaging;

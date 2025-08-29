@@ -27,7 +27,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         while (query.MoveNext(out var uid, out var comp))
         {
             if (comp.Server == ent.Owner)
-                AddServerProfile(ent!, comp.Profile);
+                AddServerProfile(ent!, comp.Profile, uid);
         }
     }
 
@@ -45,7 +45,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
             return;
 
         foreach (var server in GetStationServers(station))
-            AddServerProfile(server!, args.Profile);
+            AddServerProfile(server!, args.Profile, args.Client);
     }
 
     public IEnumerable<Entity<PdaMessagingServerComponent>> GetStationServers(EntityUid station)
@@ -58,18 +58,18 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         }
     }
 
-    public void AddServerProfile(Entity<PdaMessagingServerComponent?> ent, PdaChatRecipientProfile profile)
+    public void AddServerProfile(Entity<PdaMessagingServerComponent?> ent, PdaChatRecipientProfile profile, EntityUid? client)
     {
         if (!Resolve(ent.Owner, ref ent.Comp))
             return;
 
-        if (ent.Comp.Profiles.Contains(profile))
+        if (ent.Comp.Profiles.ContainsKey(profile))
             return;
 
-        ent.Comp.Profiles.Add(profile);
+        ent.Comp.Profiles[profile] = client;
         Dirty(ent);
 
-        var ev = new PdaMessageNewProfileServerEvent(ent.Owner, profile);
+        var ev = new PdaMessageNewProfileServerEvent(ent.Owner, profile, client);
         RaiseLocalEvent(ref ev);
     }
 }

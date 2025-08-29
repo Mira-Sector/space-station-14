@@ -11,38 +11,45 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
     {
         SubscribeLocalEvent<PdaMessagingHistoryComponent, PdaMessageSentMessageSourceEvent>(OnHistoryMessageSentSource);
         SubscribeLocalEvent<PdaMessagingHistoryComponent, PdaMessageSentMessageServerEvent>(OnHistoryMessageSentServer);
+        SubscribeLocalEvent<PdaMessagingHistoryComponent, PdaMessageReplicatedMessageClientEvent>(OnHistoryMessageReplicatedClient);
     }
 
     private void OnHistoryMessageSentSource(Entity<PdaMessagingHistoryComponent> ent, ref PdaMessageSentMessageSourceEvent args)
     {
-        UpdateHistory(ent, args.Message);
+        UpdateHistory(ent, args.Message, args.Message.Recipient);
     }
 
     private void OnHistoryMessageSentServer(Entity<PdaMessagingHistoryComponent> ent, ref PdaMessageSentMessageServerEvent args)
     {
-        UpdateHistory(ent, args.Message);
+        UpdateHistory(ent, args.Message, args.Message.Recipient);
     }
 
-    private void UpdateHistory(Entity<PdaMessagingHistoryComponent> ent, BasePdaChatMessage message)
+    private void OnHistoryMessageReplicatedClient(Entity<PdaMessagingHistoryComponent> ent, ref PdaMessageReplicatedMessageClientEvent args)
     {
-        if (!ent.Comp.Messages.TryGetValue(message.Recipient, out var messages))
+        var toUpdate = args.Message.Recipient.GetRecipientMessageable(args.Message);
+        UpdateHistory(ent, args.Message, toUpdate);
+    }
+
+    private void UpdateHistory(Entity<PdaMessagingHistoryComponent> ent, BasePdaChatMessage message, BasePdaChatMessageable toUpdate)
+    {
+        if (!ent.Comp.Messages.TryGetValue(toUpdate, out var messages))
         {
             messages = new BasePdaChatMessage[ent.Comp.MaxHistory];
-            ent.Comp.Messages[message.Recipient] = messages;
-            ent.Comp.MessageCount[message.Recipient] = 0;
-            ent.Comp.MessageIndex[message.Recipient] = 0;
+            ent.Comp.Messages[toUpdate] = messages;
+            ent.Comp.MessageCount[toUpdate] = 0;
+            ent.Comp.MessageIndex[toUpdate] = 0;
         }
 
-        var index = ent.Comp.MessageIndex[message.Recipient];
-        var count = ent.Comp.MessageCount[message.Recipient];
+        var index = ent.Comp.MessageIndex[toUpdate];
+        var count = ent.Comp.MessageCount[toUpdate];
 
         messages[index] = message;
-        ent.Comp.MessageIndex[message.Recipient] = (index + 1) % ent.Comp.MaxHistory;
+        ent.Comp.MessageIndex[toUpdate] = (index + 1) % ent.Comp.MaxHistory;
 
         if (count < ent.Comp.MaxHistory)
-            ent.Comp.MessageCount[message.Recipient] = count + 1;
+            ent.Comp.MessageCount[toUpdate] = count + 1;
 
-        ent.Comp.LastMessage[message.Recipient] = _timing.CurTime;
+        ent.Comp.LastMessage[toUpdate] = _timing.CurTime;
         Dirty(ent);
     }
 

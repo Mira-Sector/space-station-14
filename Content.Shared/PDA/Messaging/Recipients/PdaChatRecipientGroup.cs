@@ -1,8 +1,9 @@
-using System.Linq;
 using Content.Shared.Localizations;
+using Content.Shared.PDA.Messaging.Messages;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
+using System.Linq;
 
 namespace Content.Shared.PDA.Messaging.Recipients;
 
@@ -20,6 +21,14 @@ public sealed partial class PdaChatRecipientGroup : BasePdaChatMessageable
     public HashSet<PdaChatRecipientProfile> Members = [];
 
     public override string Prefix() => "GRP";
+
+    public override IEnumerable<PdaChatRecipientProfile> GetRecipients()
+    {
+        foreach (var member in Members)
+            yield return member;
+    }
+
+    public override BasePdaChatMessageable GetRecipientMessageable(BasePdaChatMessage message) => this;
 
     public override SpriteSpecifier GetUiIcon(IPrototypeManager prototype)
     {

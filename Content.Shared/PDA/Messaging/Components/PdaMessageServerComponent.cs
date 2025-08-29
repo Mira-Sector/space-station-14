@@ -7,5 +7,5 @@ namespace Content.Shared.PDA.Messaging.Components;
 public sealed partial class PdaMessagingServerComponent : Component
 {
     [ViewVariables, AutoNetworkedField]
-    public HashSet<PdaChatRecipientProfile> Profiles = [];
+    public Dictionary<PdaChatRecipientProfile, EntityUid?> Profiles = [];
 }

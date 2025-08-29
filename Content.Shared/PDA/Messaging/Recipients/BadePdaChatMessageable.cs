@@ -1,3 +1,4 @@
+using Content.Shared.PDA.Messaging.Messages;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
@@ -15,6 +16,9 @@ public abstract partial class BasePdaChatMessageable
     public string Id = default!;
 
     public abstract string Prefix();
+
+    public abstract IEnumerable<PdaChatRecipientProfile> GetRecipients();
+    public abstract BasePdaChatMessageable GetRecipientMessageable(BasePdaChatMessage message);
 
     public abstract SpriteSpecifier GetUiIcon(IPrototypeManager prototype);
     public abstract string GetUiName();
