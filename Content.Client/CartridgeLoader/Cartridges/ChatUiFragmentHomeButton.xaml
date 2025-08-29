@@ -3,7 +3,7 @@
     <TextureRect
         Name="Icon"
         Stretch="Tile"
-        Margin="8"
+        Margin="2"
         HorizontalAlignment="Center"
         VerticalAlignment="Center"
         Access="Public"/>

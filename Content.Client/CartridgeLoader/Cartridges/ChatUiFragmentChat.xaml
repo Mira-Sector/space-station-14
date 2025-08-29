@@ -7,7 +7,7 @@
     HorizontalExpand="True"
     VerticalExpand="True">
     <PanelContainer
-        StyleClasses="PanelBackgroundBaseDark">
+        StyleClasses="PanelBackgroundLight">
         <BoxContainer
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top"
@@ -43,8 +43,10 @@
     <PanelContainer
         StyleClasses="LowDivider"/>
     <ScrollContainer
+        Name="Scroll"
         VerticalExpand="True"
-        HScrollEnabled="False">
+        HScrollEnabled="False"
+        Access="Public">
         <BoxContainer
             Name="Messages"
             Orientation="Vertical"
@@ -57,15 +59,18 @@
         HorizontalExpand="True">
         <PanelContainer
             StyleClasses="LowDivider"/>
-        <BoxContainer
-            HorizontalAlignment="Stretch"
-            HorizontalExpand="True">
-            <LineEdit
-                Name="TextInput"
-                PlaceHolder="{Loc 'pda-messaging-text-message-placeholder'}"
-                Margin="8"
-                HorizontalExpand="True"
-                Access="Public"/>
-        </BoxContainer>
+        <PanelContainer
+            StyleClasses="PanelBackgroundBaseDark">
+            <BoxContainer
+                HorizontalAlignment="Stretch"
+                HorizontalExpand="True">
+                <LineEdit
+                    Name="TextInput"
+                    PlaceHolder="{Loc 'pda-messaging-text-message-placeholder'}"
+                    Margin="8"
+                    HorizontalExpand="True"
+                    Access="Public"/>
+            </BoxContainer>
+        </PanelContainer>
     </BoxContainer>
 </BoxContainer>

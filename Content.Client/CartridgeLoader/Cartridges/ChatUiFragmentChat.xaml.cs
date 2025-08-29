@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Numerics;
 using Content.Client.PDA.Messaging.Messages;
 using Content.Shared.PDA.Messaging.Messages;
 using Content.Shared.PDA.Messaging.Recipients;
@@ -6,6 +8,7 @@ using Robust.Client.GameObjects;
 using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Timing;
 
 namespace Content.Client.CartridgeLoader.Cartridges;
 
@@ -18,6 +21,8 @@ public sealed partial class ChatUiFragmentChat : BoxContainer, IChatUiFragmentMo
     public Action<BasePdaChatMessage>? OnMessageSent;
 
     public Action? OnHomeButtonPressed;
+
+    private bool _isScrollingToBottom;
 
     public ChatUiFragmentChat(BasePdaChatMessageable recipient, PdaChatRecipientProfile profile, BasePdaChatMessage[] messages, IPrototypeManager prototype)
     {
@@ -51,5 +56,23 @@ public sealed partial class ChatUiFragmentChat : BoxContainer, IChatUiFragmentMo
             var wrapper = new ChatUiFragmentMessageWrapper(message, _pdaChatMessageFactory);
             Messages.AddChild(wrapper);
         }
+
+        _isScrollingToBottom = messages.Any();
+    }
+
+    protected override void FrameUpdate(FrameEventArgs args)
+    {
+        base.FrameUpdate(args);
+
+        if (!_isScrollingToBottom)
+            return;
+
+        // not initialized
+        if (Messages.Height <= 0)
+            return;
+
+        _isScrollingToBottom = false;
+        var maxScroll = new Vector2(0, Messages.Height);
+        Scroll.SetScrollValue(maxScroll);
     }
 }
