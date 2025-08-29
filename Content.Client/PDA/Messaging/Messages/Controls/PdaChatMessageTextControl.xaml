@@ -4,7 +4,7 @@
     VerticalAlignment="Stretch"
     HorizontalExpand="True"
     VerticalExpand="True">
-    <Label
+    <RichTextLabel
         Name="Content"
         HorizontalAlignment="Left"
         VerticalAlignment="Center"
