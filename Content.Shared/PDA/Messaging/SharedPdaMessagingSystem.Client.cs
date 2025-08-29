@@ -1,6 +1,5 @@
 using Content.Shared.PDA.Messaging.Components;
 using Content.Shared.PDA.Messaging.Events;
-using Content.Shared.PDA.Messaging.Messages;
 using Content.Shared.PDA.Messaging.Recipients;
 using Content.Shared.Station;
 using Robust.Shared.Utility;
@@ -83,8 +82,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
             if (comp.Server != null)
                 continue;
 
-            comp.Server = args.Server;
-            Dirty(uid, comp);
+            UpdateClientConnectedServer((uid, comp), args.Server);
         }
     }
 
@@ -101,7 +99,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
 
             // try and provide a new server if it exists
             var servers = GetStationServers(station);
-            comp.Server = servers.FirstOrNull();
+            UpdateClientConnectedServer((uid, comp), servers.FirstOrNull());
         }
     }
 
