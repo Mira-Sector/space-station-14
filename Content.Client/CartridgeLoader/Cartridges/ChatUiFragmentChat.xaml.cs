@@ -1,5 +1,3 @@
-using System.Linq;
-using System.Numerics;
 using Content.Client.PDA.Messaging.Messages;
 using Content.Shared.PDA.Messaging.Messages;
 using Content.Shared.PDA.Messaging.Recipients;
@@ -9,6 +7,8 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
+using System.Linq;
+using System.Numerics;
 
 namespace Content.Client.CartridgeLoader.Cartridges;
 
@@ -17,6 +17,7 @@ public sealed partial class ChatUiFragmentChat : BoxContainer, IChatUiFragmentMo
 {
     [Dependency] private readonly IEntityManager _entity = default!;
     [Dependency] private readonly IClientPdaChatMessageFactory _pdaChatMessageFactory = default!;
+    private readonly SpriteSystem _sprite;
 
     public Action<BasePdaChatMessage>? OnMessageSent;
 
@@ -24,14 +25,19 @@ public sealed partial class ChatUiFragmentChat : BoxContainer, IChatUiFragmentMo
 
     private bool _isScrollingToBottom;
 
-    public ChatUiFragmentChat(BasePdaChatMessageable recipient, PdaChatRecipientProfile profile, BasePdaChatMessage[] messages, IPrototypeManager prototype)
+    public ChatUiFragmentChat()
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
 
-        var sprite = _entity.System<SpriteSystem>();
+        _sprite = _entity.System<SpriteSystem>();
 
-        ContactIcon.Texture = sprite.Frame0(recipient.GetUiIcon(prototype));
+        HomeButton.OnPressed += _ => OnHomeButtonPressed?.Invoke();
+    }
+
+    public void UpdateState(BasePdaChatMessageable recipient, PdaChatRecipientProfile profile, BasePdaChatMessage[] messages, IPrototypeManager prototype)
+    {
+        ContactIcon.Texture = _sprite.Frame0(recipient.GetUiIcon(prototype));
         ContactName.Text = Loc.GetString(recipient.GetUiName());
         ContactId.Text = Loc.GetString("pda-messaging-contact-id-wrapper", ("id", recipient.Id));
 
@@ -49,7 +55,7 @@ public sealed partial class ChatUiFragmentChat : BoxContainer, IChatUiFragmentMo
             TextInput.Clear();
         };
 
-        HomeButton.OnPressed += _ => OnHomeButtonPressed?.Invoke();
+        Messages.RemoveAllChildren();
 
         foreach (var message in messages)
         {

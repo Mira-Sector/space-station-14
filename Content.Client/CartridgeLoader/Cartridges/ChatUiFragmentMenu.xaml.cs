@@ -11,19 +11,25 @@ namespace Content.Client.CartridgeLoader.Cartridges;
 public sealed partial class ChatUiFragmentMenu : BoxContainer, IChatUiFragmentMode
 {
     [Dependency] private readonly IEntityManager _entity = default!;
+    private readonly SpriteSystem _sprite;
 
     public Action<BasePdaChatMessageable>? OnRecipientClicked;
 
-    public ChatUiFragmentMenu(IEnumerable<BasePdaChatMessageable> recipients, IPrototypeManager prototype)
+    public ChatUiFragmentMenu()
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
 
-        var sprite = _entity.System<SpriteSystem>();
+        _sprite = _entity.System<SpriteSystem>();
+    }
+
+    public void UpdateState(IEnumerable<BasePdaChatMessageable> recipients, IPrototypeManager prototype)
+    {
+        Recipients.RemoveAllChildren();
 
         foreach (var recipient in recipients)
         {
-            var entry = new ChatUiFragmentContactEntry(recipient, prototype, sprite);
+            var entry = new ChatUiFragmentContactEntry(recipient, prototype, _sprite);
             Recipients.AddChild(entry);
 
             entry.OnPressed += _ => OnRecipientClicked?.Invoke(recipient);
