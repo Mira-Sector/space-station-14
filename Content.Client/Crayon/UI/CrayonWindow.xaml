@@ -1,4 +1,4 @@
-﻿<DefaultWindow xmlns="https://spacestation14.io"
+<DefaultWindow xmlns="https://spacestation14.io"
             Title="{Loc 'crayon-window-title'}"
             MinSize="450 500"
             SetSize="450 500">

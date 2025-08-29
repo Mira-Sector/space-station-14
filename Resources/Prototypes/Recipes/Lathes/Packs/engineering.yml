@@ -92,5 +92,6 @@
   - PortableGeneratorJrPacmanMachineCircuitboard
   - EmitterCircuitboard
   - TelecomServerCircuitboard
+  - PdaMessageServerCircuitboard
   - SMESAdvancedMachineCircuitboard
   - HolopadMachineCircuitboard

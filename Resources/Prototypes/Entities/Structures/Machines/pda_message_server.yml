@@ -1,0 +1,38 @@
+- type: entity
+  parent: [ BaseMachinePowered, ConstructibleMachine ]
+  id: PdaMessageServer
+  name: PDA messaging server
+  description: The middle-man in PDA communication. Holds a history of every chat message sent. # not every but close enough...
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/server.rsi
+    layers:
+      - state: server-off
+      - state: server-on
+        visible: false
+        map: ["enum.PowerDeviceVisualLayers.Powered"]
+      - state: variant-pda
+      - state: server_o
+        map: ["enum.WiresVisualLayers.MaintenancePanel"]
+  - type: PdaMessagingServer
+  - type: PdaMessagingHistory
+    maxHistory: 256 # boosted as this is the main reference
+  - type: StationTracker
+  - type: Machine
+    board: PdaMessageServerCircuitboard
+  - type: GenericVisualizer
+    visuals:
+      enum.PowerDeviceVisuals.Powered:
+        enum.PowerDeviceVisualLayers.Powered:
+          True: { visible: true }
+          False: { visible: false }
+  - type: Appearance
+  - type: AmbientOnPowered
+  - type: AmbientSound
+    volume: -9
+    range: 5
+    enabled: false
+    sound:
+      path: /Audio/Ambience/Objects/server_fans.ogg
+  - type: WiresVisuals
+  - type: WiresPanel

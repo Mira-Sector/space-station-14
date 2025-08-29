@@ -52,6 +52,7 @@
   - SurveillanceCameraMonitorCircuitboard
   - SurveillanceWirelessCameraMonitorCircuitboard
   - TelecomServerCircuitboard
+  - PdaMessageServerCircuitboard
   - HolopadMachineCircuitboard
 
 - type: technology

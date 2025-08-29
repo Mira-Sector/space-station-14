@@ -25,6 +25,7 @@ using Content.Shared.Administration.Managers;
 using Content.Shared.Chat;
 using Content.Shared.Players.PlayTimeTracking;
 using Content.Shared.Players.RateLimiting;
+using Content.Client.PDA.Messaging.Messages;
 
 namespace Content.Client.IoC
 {
@@ -62,6 +63,7 @@ namespace Content.Client.IoC
             collection.Register<SharedPlayerRateLimitManager, PlayerRateLimitManager>();
             collection.Register<TitleWindowManager>();
             collection.Register<ClientsidePlaytimeTrackingManager>();
+            collection.Register<IClientPdaChatMessageFactory, ClientPdaChatMessageFactory>();
         }
     }
 }
