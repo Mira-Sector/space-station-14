@@ -128,6 +128,9 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         if (!ClientQuery.Resolve(ent.Owner, ref ent.Comp))
             return;
 
+        if (ent.Comp.Server == server)
+            return;
+
         if (ent.Comp.Server is { } oldServer)
         {
             var disconnectEv = new PdaMessageClientDisconnectedEvent(ent.Owner, ent.Comp.Profile);

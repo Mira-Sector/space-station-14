@@ -17,6 +17,8 @@ public abstract partial class SharedChatCartridgeSystem : EntitySystem
 
         SubscribeLocalEvent<ChatCartridgeComponent, PdaMessageSendMessageSourceEvent>(OnSentMessageSource, after: [typeof(SharedPdaMessagingSystem)]);
         SubscribeLocalEvent<ChatCartridgeComponent, PdaMessageReplicatedMessageClientEvent>(OnReplicatedMessageClient, after: [typeof(SharedPdaMessagingSystem)]);
+
+        SubscribeLocalEvent<ChatCartridgeComponent, PdaMessageClientReceiveRecipientsEvent>(OnReceiveRecipients);
     }
 
     private void OnUiReady(Entity<ChatCartridgeComponent> ent, ref CartridgeUiReadyEvent args)
@@ -38,6 +40,11 @@ public abstract partial class SharedChatCartridgeSystem : EntitySystem
     }
 
     private void OnReplicatedMessageClient(Entity<ChatCartridgeComponent> ent, ref PdaMessageReplicatedMessageClientEvent args)
+    {
+        UpdateUi(ent);
+    }
+
+    private void OnReceiveRecipients(Entity<ChatCartridgeComponent> ent, ref PdaMessageClientReceiveRecipientsEvent args)
     {
         UpdateUi(ent);
     }
