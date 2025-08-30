@@ -42,8 +42,9 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
 
     private void OnClientReceiveRecipients(Entity<PdaMessagingClientComponent> ent, ref PdaMessageClientReceiveRecipientsEvent args)
     {
-        var recipients = args.Recipients;
-        recipients.Remove(ent.Comp.Profile); // no sending messages to yourself
+        // no sending messages to yourself
+        HashSet<BasePdaChatMessageable> recipients = [.. args.Recipients];
+        recipients.Remove(ent.Comp.Profile);
 
         ent.Comp.AvailableRecipients = recipients;
         Dirty(ent);

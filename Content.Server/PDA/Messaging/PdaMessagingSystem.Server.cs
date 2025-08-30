@@ -1,7 +1,7 @@
-using System.Linq;
 using Content.Shared.PDA.Messaging;
 using Content.Shared.PDA.Messaging.Components;
 using Content.Shared.PDA.Messaging.Events;
+using System.Linq;
 
 namespace Content.Server.PDA.Messaging;
 
