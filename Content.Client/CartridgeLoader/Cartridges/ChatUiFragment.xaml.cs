@@ -73,6 +73,8 @@ public sealed partial class ChatUiFragment : PanelContainer
                 menu.UpdateState(_messages.Keys, _prototype);
                 Content.AddChild(menu);
 
+                ChangeRecipient(null);
+
                 menu.OnSettingsButtonPressed += () => ChangeMode(ChatUiMode.Settings);
 
                 menu.OnRecipientClicked += recipient =>
@@ -84,10 +86,17 @@ public sealed partial class ChatUiFragment : PanelContainer
 
             case ChatUiMode.Settings:
                 var settings = new ChatUiFragmentSettings();
-                settings.UpdateState();
+                settings.UpdateState(_recipient);
                 Content.AddChild(settings);
 
+                ChangeRecipient(null);
+
                 settings.OnHomeButtonPressed += () => ChangeMode(ChatUiMode.Menu);
+                settings.OnBackButtonPressed += recipient =>
+                {
+                    ChangeRecipient(recipient);
+                    ChangeMode(ChatUiMode.Chat);
+                };
                 break;
 
             case ChatUiMode.Chat:
@@ -116,7 +125,7 @@ public sealed partial class ChatUiFragment : PanelContainer
 
             case ChatUiMode.Settings:
                 var settings = GetContent<ChatUiFragmentSettings>();
-                settings!.UpdateState();
+                settings!.UpdateState(_recipient);
                 break;
 
             case ChatUiMode.Chat:

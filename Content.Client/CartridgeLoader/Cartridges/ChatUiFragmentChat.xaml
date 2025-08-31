@@ -8,6 +8,7 @@
     VerticalExpand="True">
     <PanelContainer
         StyleClasses="PanelBackgroundLight"
+        SetHeight="64"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Center"
         HorizontalExpand="True">
@@ -35,20 +36,21 @@
                 Access="Public"/>
         </BoxContainer>
         <BoxContainer
+            Margin="8"
             HorizontalAlignment="Right"
             VerticalAlignment="Stretch">
             <cartridges:ChatUiFragmentSettingsButton
                 Name="SettingsButton"
-                Margin="8"
+                Margin="8 0"
                 HorizontalAlignment="Right"
-                VerticalAlignment="Stretch"
+                VerticalAlignment="Center"
                 VerticalExpand="True"
                 Access="Public"/>
             <cartridges:ChatUiFragmentHomeButton
                 Name="HomeButton"
-                Margin="8"
+                Margin="8 0"
                 HorizontalAlignment="Right"
-                VerticalAlignment="Stretch"
+                VerticalAlignment="Center"
                 VerticalExpand="True"
                 Access="Public"/>
         </BoxContainer>
