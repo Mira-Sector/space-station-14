@@ -14,6 +14,7 @@ public sealed partial class ChatUiFragmentMenu : BoxContainer, IChatUiFragmentMo
     private readonly SpriteSystem _sprite;
 
     public Action<BasePdaChatMessageable>? OnRecipientClicked;
+    public Action? OnSettingsButtonPressed;
 
     public ChatUiFragmentMenu()
     {
@@ -21,6 +22,8 @@ public sealed partial class ChatUiFragmentMenu : BoxContainer, IChatUiFragmentMo
         IoCManager.InjectDependencies(this);
 
         _sprite = _entity.System<SpriteSystem>();
+
+        SettingsButton.OnPressed += _ => OnSettingsButtonPressed?.Invoke();
     }
 
     public void UpdateState(IEnumerable<BasePdaChatMessageable> recipients, IPrototypeManager prototype)

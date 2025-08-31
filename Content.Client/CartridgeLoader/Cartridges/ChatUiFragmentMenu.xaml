@@ -1,14 +1,37 @@
 <BoxContainer
     xmlns="https://spacestation14.io"
+    xmlns:cartridges="clr-namespace:Content.Client.CartridgeLoader.Cartridges"
     Margin="8"
     Orientation="Vertical"
     HorizontalAlignment="Stretch"
     VerticalAlignment="Stretch"
     HorizontalExpand="True"
     VerticalExpand="True">
-    <Label
-        Text="{Loc 'pda-messaging-contacts-heading'}"
-        Align="Center"/>
+    <PanelContainer
+        Margin="4"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        HorizontalExpand="True">
+        <BoxContainer
+            HorizontalAlignment="Center"
+            VerticalAlignment="Stretch"
+            VerticalExpand="True">
+            <Label
+                Text="{Loc 'pda-messaging-contacts-heading'}"
+                Align="Center"/>
+        </BoxContainer>
+        <BoxContainer
+            HorizontalAlignment="Right"
+            VerticalAlignment="Stretch"
+            VerticalExpand="True">
+            <cartridges:ChatUiFragmentSettingsButton
+                Name="SettingsButton"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Stretch"
+                VerticalExpand="True"
+                Access="Public"/>
+        </BoxContainer>
+    </PanelContainer>
     <PanelContainer
         Margin="8"
         StyleClasses="LowDivider"/>

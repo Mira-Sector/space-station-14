@@ -18,9 +18,11 @@ public sealed partial class ChatUiFragment : PanelContainer
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     private readonly BoundUserInterface _userInterface = default!;
 
+    [ViewVariables]
+    private ChatUiMode _uiMode;
+
     private readonly EntityUid _cartridge;
     private readonly NetEntity _netCartridge; // so much shit references it
-    private ChatUiMode _uiMode;
     private BasePdaChatMessageable? _recipient = null;
     private PdaChatRecipientProfile _profile = default!;
 
@@ -71,11 +73,21 @@ public sealed partial class ChatUiFragment : PanelContainer
                 menu.UpdateState(_messages.Keys, _prototype);
                 Content.AddChild(menu);
 
+                menu.OnSettingsButtonPressed += () => ChangeMode(ChatUiMode.Settings);
+
                 menu.OnRecipientClicked += recipient =>
                 {
                     ChangeRecipient(recipient);
                     ChangeMode(ChatUiMode.Chat);
                 };
+                break;
+
+            case ChatUiMode.Settings:
+                var settings = new ChatUiFragmentSettings();
+                settings.UpdateState();
+                Content.AddChild(settings);
+
+                settings.OnHomeButtonPressed += () => ChangeMode(ChatUiMode.Menu);
                 break;
 
             case ChatUiMode.Chat:
@@ -86,6 +98,7 @@ public sealed partial class ChatUiFragment : PanelContainer
 
                 chat.OnMessageSent += message => SendUiMessage(new PdaMessageSendMessageSourceEvent(_netCartridge, message));
                 chat.OnHomeButtonPressed += () => ChangeMode(ChatUiMode.Menu);
+                chat.OnSettingsButtonPressed += () => ChangeMode(ChatUiMode.Settings);
                 break;
         }
 
@@ -99,6 +112,11 @@ public sealed partial class ChatUiFragment : PanelContainer
             case ChatUiMode.Menu:
                 var menu = GetContent<ChatUiFragmentMenu>();
                 menu!.UpdateState(_messages.Keys, _prototype);
+                break;
+
+            case ChatUiMode.Settings:
+                var settings = GetContent<ChatUiFragmentSettings>();
+                settings!.UpdateState();
                 break;
 
             case ChatUiMode.Chat:

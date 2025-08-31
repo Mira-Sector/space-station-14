@@ -21,6 +21,7 @@ public sealed partial class ChatUiFragmentChat : BoxContainer, IChatUiFragmentMo
 
     public Action<BasePdaChatMessage>? OnMessageSent;
     public Action? OnHomeButtonPressed;
+    public Action? OnSettingsButtonPressed;
 
     private BasePdaChatMessageable _recipient = default!;
     private PdaChatRecipientProfile _profile = default!;
@@ -35,6 +36,7 @@ public sealed partial class ChatUiFragmentChat : BoxContainer, IChatUiFragmentMo
         _sprite = _entity.System<SpriteSystem>();
 
         HomeButton.OnPressed += _ => OnHomeButtonPressed?.Invoke();
+        SettingsButton.OnPressed += _ => OnSettingsButtonPressed?.Invoke();
 
         TextInput.OnTextEntered += args =>
         {

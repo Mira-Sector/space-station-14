@@ -7,15 +7,15 @@ using Robust.Shared.Utility;
 namespace Content.Client.CartridgeLoader.Cartridges;
 
 [GenerateTypedNameReferences]
-public sealed partial class ChatUiFragmentHomeButton : ContainerButton
+public sealed partial class ChatUiFragmentSettingsButton : ContainerButton
 {
     [Dependency] private readonly IEntityManager _entity = default!;
 
-    private const string TexturePath = "/Textures/Interface/home.png";
+    private const string TexturePath = "/Textures/Interface/VerbIcons/settings.svg.192dpi.png";
     private static readonly ResPath Path = new(TexturePath);
     private static readonly SpriteSpecifier IconSprite = new SpriteSpecifier.Texture(Path);
 
-    public ChatUiFragmentHomeButton()
+    public ChatUiFragmentSettingsButton()
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);

@@ -7,11 +7,13 @@
     HorizontalExpand="True"
     VerticalExpand="True">
     <PanelContainer
-        StyleClasses="PanelBackgroundLight">
+        StyleClasses="PanelBackgroundLight"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Center"
+        HorizontalExpand="True">
         <BoxContainer
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Top"
-            HorizontalExpand="True">
+            HorizontalAlignment="Left"
+            VerticalAlignment="Stretch">
             <TextureRect
                 Name="ContactIcon"
                 Stretch="Tile"
@@ -31,12 +33,23 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Access="Public"/>
+        </BoxContainer>
+        <BoxContainer
+            HorizontalAlignment="Right"
+            VerticalAlignment="Stretch">
+            <cartridges:ChatUiFragmentSettingsButton
+                Name="SettingsButton"
+                Margin="8"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Stretch"
+                VerticalExpand="True"
+                Access="Public"/>
             <cartridges:ChatUiFragmentHomeButton
                 Name="HomeButton"
                 Margin="8"
                 HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                HorizontalExpand="True"
+                VerticalAlignment="Stretch"
+                VerticalExpand="True"
                 Access="Public"/>
         </BoxContainer>
     </PanelContainer>
