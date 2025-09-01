@@ -3,7 +3,7 @@
     <TextureRect
         Name="CurrentIcon"
         Stretch="KeepAspectCentered"
-        TextureScale="1.5 1.5"
+        TextureScale="2 2"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"
         HorizontalExpand="True"

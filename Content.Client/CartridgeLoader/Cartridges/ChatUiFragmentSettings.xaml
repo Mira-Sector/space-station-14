@@ -1,6 +1,7 @@
 <BoxContainer
     xmlns="https://spacestation14.io"
     xmlns:cartridges="clr-namespace:Content.Client.CartridgeLoader.Cartridges"
+    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
     Orientation="Vertical"
     HorizontalAlignment="Stretch"
     VerticalAlignment="Stretch"
@@ -58,23 +59,37 @@
             HorizontalExpand="True">
             <cartridges:ChatUiFragmentSettingsHeader
                 Text="{Loc 'pda-messaging-settings-heading-profile'}"/>
-            <BoxContainer
-                Margin="16"
-                HorizontalAlignment="Left"
-                HorizontalExpand="True">
-                <cartridges:ChatUiFragmentProfilePictureSelector
-                    Name="ProfileIconSelector"
+                <PanelContainer
                     Margin="8"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Access="Public"/>
-                <Label
-                    Name="ProfileName"
-                    Margin="2"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Access="Public"/>
-            </BoxContainer>
+                    StyleClasses="PanelBackgroundBaseDark"
+                    HorizontalAlignment="Center"
+                    HorizontalExpand="False">
+                    <BoxContainer
+                        Margin="4"
+                        HorizontalAlignment="Center"
+                        HorizontalExpand="False">
+                        <PanelContainer
+                            StyleClasses="LowDivider"/>
+                        <controls:StripeBack
+                            HasMargins="False">
+                            <cartridges:ChatUiFragmentProfilePictureSelector
+                                Name="ProfileIconSelector"
+                                Margin="4"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Access="Public"/>
+                        </controls:StripeBack>
+                        <PanelContainer
+                            StyleClasses="LowDivider"/>
+                        <PanelContainer
+                            Margin="8"/>
+                        <Label
+                            Name="ProfileName"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Access="Public"/>
+                    </BoxContainer>
+                </PanelContainer>
         </BoxContainer>
     </ScrollContainer>
 </BoxContainer>
