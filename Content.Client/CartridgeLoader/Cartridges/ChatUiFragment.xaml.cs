@@ -54,10 +54,10 @@ public sealed partial class ChatUiFragment : PanelContainer
 
     public void ChangeMode(ChatUiMode mode)
     {
-        if (_uiMode == mode)
-            UpdateMode(mode);
-        else
+        if (_uiMode != mode)
             InitMode(mode);
+
+        UpdateMode(mode);
     }
 
     private void InitMode(ChatUiMode mode)
@@ -65,51 +65,52 @@ public sealed partial class ChatUiFragment : PanelContainer
         _uiMode = mode;
 
         Content.RemoveAllChildren();
+        Popup.RemoveAllChildren();
 
-        switch (mode)
+        IChatUiFragmentMode control = mode switch
         {
-            case ChatUiMode.Menu:
-                var menu = new ChatUiFragmentMenu();
-                menu.UpdateState(_messages.Keys, _prototype);
-                Content.AddChild(menu);
-
-                ChangeRecipient(null);
-
-                menu.OnSettingsButtonPressed += () => ChangeMode(ChatUiMode.Settings);
-
-                menu.OnRecipientClicked += recipient =>
+            ChatUiMode.Menu =>
+                new ChatUiFragmentMenu
                 {
-                    ChangeRecipient(recipient);
-                    ChangeMode(ChatUiMode.Chat);
-                };
-                break;
+                    OnSettingsButtonPressed = () => ChangeMode(ChatUiMode.Settings),
+                    OnRecipientClicked = recipient =>
+                    {
+                        ChangeRecipient(recipient);
+                        ChangeMode(ChatUiMode.Chat);
+                    }
+                },
 
-            case ChatUiMode.Settings:
-                var settings = new ChatUiFragmentSettings();
-                settings.UpdateState(_recipient);
-                Content.AddChild(settings);
-
-                ChangeRecipient(null);
-
-                settings.OnHomeButtonPressed += () => ChangeMode(ChatUiMode.Menu);
-                settings.OnBackButtonPressed += recipient =>
+            ChatUiMode.Settings =>
+                new ChatUiFragmentSettings
                 {
-                    ChangeRecipient(recipient);
-                    ChangeMode(ChatUiMode.Chat);
-                };
-                break;
+                    OnHomeButtonPressed = () => ChangeMode(ChatUiMode.Menu),
+                    OnBackButtonPressed = recipient =>
+                    {
+                        ChangeRecipient(recipient);
+                        ChangeMode(ChatUiMode.Chat);
+                    }
+                },
 
-            case ChatUiMode.Chat:
-                var messages = _messages[_recipient!];
-                var chat = new ChatUiFragmentChat();
-                chat.UpdateState(_recipient!, _profile, messages, _prototype);
-                Content.AddChild(chat);
+            ChatUiMode.Chat =>
+                new ChatUiFragmentChat
+                {
+                    OnMessageSent = message => SendUiMessage(new PdaMessageSendMessageSourceEvent(_netCartridge, message)),
+                    OnHomeButtonPressed = () => ChangeMode(ChatUiMode.Menu),
+                    OnSettingsButtonPressed = () => ChangeMode(ChatUiMode.Settings)
+                },
 
-                chat.OnMessageSent += message => SendUiMessage(new PdaMessageSendMessageSourceEvent(_netCartridge, message));
-                chat.OnHomeButtonPressed += () => ChangeMode(ChatUiMode.Menu);
-                chat.OnSettingsButtonPressed += () => ChangeMode(ChatUiMode.Settings);
-                break;
-        }
+            _ => throw new NotImplementedException(),
+        };
+
+        Content.AddChild((Control)control);
+
+        control.OnPopupAdd += popup =>
+        {
+            Popup.RemoveAllChildren();
+            Popup.AddChild(popup);
+
+            popup.OnClosePopup += () => Popup.RemoveAllChildren();
+        };
 
         OnModeChanged?.Invoke(mode);
     }
@@ -120,25 +121,25 @@ public sealed partial class ChatUiFragment : PanelContainer
         {
             case ChatUiMode.Menu:
                 var menu = GetContent<ChatUiFragmentMenu>();
-                menu!.UpdateState(_messages.Keys, _prototype);
+                menu.UpdateState(_messages.Keys, _prototype);
                 break;
 
             case ChatUiMode.Settings:
                 var settings = GetContent<ChatUiFragmentSettings>();
-                settings!.UpdateState(_recipient);
+                settings.UpdateState(_profile, _recipient);
                 break;
 
             case ChatUiMode.Chat:
                 var messages = _messages[_recipient!];
                 var chat = GetContent<ChatUiFragmentChat>();
-                chat!.UpdateState(_recipient!, _profile, messages, _prototype);
+                chat.UpdateState(_recipient!, _profile, messages, _prototype);
                 break;
         }
 
         OnModeChanged?.Invoke(mode);
     }
 
-    private T? GetContent<T>() where T : Control
+    private T GetContent<T>() where T : IChatUiFragmentMode
     {
         foreach (var child in Content.Children)
         {
@@ -146,7 +147,7 @@ public sealed partial class ChatUiFragment : PanelContainer
                 return control;
         }
 
-        return null;
+        return default!;
     }
 
     public void ChangeRecipient(BasePdaChatMessageable? recipient)

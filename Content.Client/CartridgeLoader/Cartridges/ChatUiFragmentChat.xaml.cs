@@ -23,6 +23,8 @@ public sealed partial class ChatUiFragmentChat : BoxContainer, IChatUiFragmentMo
     public Action? OnHomeButtonPressed;
     public Action? OnSettingsButtonPressed;
 
+    public Action<BaseChatUiFragmentPopup>? OnPopupAdd { get; set; }
+
     private BasePdaChatMessageable _recipient = default!;
     private PdaChatRecipientProfile _profile = default!;
 

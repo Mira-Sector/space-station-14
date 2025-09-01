@@ -11,19 +11,26 @@ public sealed partial class ChatUiFragmentSettings : BoxContainer, IChatUiFragme
     public Action<BasePdaChatMessageable>? OnBackButtonPressed;
     public Action? OnHomeButtonPressed;
 
+    public Action<BaseChatUiFragmentPopup>? OnPopupAdd { get; set; }
+
     private BasePdaChatMessageable? _recipient;
 
     public ChatUiFragmentSettings()
     {
         RobustXamlLoader.Load(this);
+        IoCManager.InjectDependencies(this);
 
         HomeButton.OnPressed += _ => OnHomeButtonPressed?.Invoke();
         BackButton.OnPressed += _ => OnBackButtonPressed?.Invoke(_recipient!);
+        ProfileIconSelector.OnNewPopup += popup => OnPopupAdd?.Invoke(popup);
     }
 
-    public void UpdateState(BasePdaChatMessageable? recipient)
+    public void UpdateState(PdaChatRecipientProfile profile, BasePdaChatMessageable? recipient)
     {
         _recipient = recipient;
         BackButton.Visible = recipient != null;
+
+        ProfileIconSelector.CurrentPicture = profile.Picture;
+        ProfileName.Text = Loc.GetString(profile.GetUiName());
     }
 }

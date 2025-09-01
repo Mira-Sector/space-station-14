@@ -1,6 +1,7 @@
 using Content.Shared.PDA.Messaging.Components;
 using Content.Shared.PDA.Messaging.Recipients;
 using Content.Shared.Station;
+using JetBrains.Annotations;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
@@ -104,4 +105,6 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
 
         return id.ToString();
     }
+
+    public FrozenDictionary<ProtoId<PdaChatProfilePicturePrototype>, PdaChatProfilePicturePrototype> GetSelectableProfilePictures() => _profilePictures;
 }

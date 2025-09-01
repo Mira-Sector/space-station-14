@@ -48,4 +48,33 @@
     </PanelContainer>
     <PanelContainer
         StyleClasses="LowDivider"/>
+    <ScrollContainer
+        VerticalExpand="True"
+        HScrollEnabled="False">
+        <BoxContainer
+            Orientation="Vertical"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            HorizontalExpand="True">
+            <cartridges:ChatUiFragmentSettingsHeader
+                Text="{Loc 'pda-messaging-settings-heading-profile'}"/>
+            <BoxContainer
+                Margin="16"
+                HorizontalAlignment="Left"
+                HorizontalExpand="True">
+                <cartridges:ChatUiFragmentProfilePictureSelector
+                    Name="ProfileIconSelector"
+                    Margin="8"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Access="Public"/>
+                <Label
+                    Name="ProfileName"
+                    Margin="2"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Access="Public"/>
+            </BoxContainer>
+        </BoxContainer>
+    </ScrollContainer>
 </BoxContainer>

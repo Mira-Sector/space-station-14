@@ -1,0 +1,19 @@
+<BoxContainer
+    xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+    Orientation="Vertical"
+    HorizontalAlignment="Stretch"
+    VerticalAlignment="Stretch"
+    HorizontalExpand="True">
+    <controls:StripeBack
+        HorizontalAlignment="Center"
+        HorizontalExpand="False">
+        <Label
+            Name="HeaderText"
+            Align="Center"
+            Margin="16 2"
+            Access="Public"/>
+    </controls:StripeBack>
+    <PanelContainer
+        StyleClasses="LowDivider"/>
+</BoxContainer>

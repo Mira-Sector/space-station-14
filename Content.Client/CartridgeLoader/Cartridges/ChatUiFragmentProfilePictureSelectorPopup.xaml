@@ -1,0 +1,11 @@
+<cartridges:BaseChatUiFragmentPopup
+    xmlns="https://spacestation14.io"
+    xmlns:cartridges="clr-namespace:Content.Client.CartridgeLoader.Cartridges">
+    <GridContainer
+        Name="Grid"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        HorizontalExpand="True"
+        VerticalExpand="True"
+        Access="Public"/>
+</cartridges:BaseChatUiFragmentPopup>

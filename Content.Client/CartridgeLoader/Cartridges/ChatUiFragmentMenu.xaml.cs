@@ -16,6 +16,8 @@ public sealed partial class ChatUiFragmentMenu : BoxContainer, IChatUiFragmentMo
     public Action<BasePdaChatMessageable>? OnRecipientClicked;
     public Action? OnSettingsButtonPressed;
 
+    public Action<BaseChatUiFragmentPopup>? OnPopupAdd { get; set; }
+
     public ChatUiFragmentMenu()
     {
         RobustXamlLoader.Load(this);

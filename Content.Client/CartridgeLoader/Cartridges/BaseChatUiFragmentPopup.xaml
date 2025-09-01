@@ -1,0 +1,5 @@
+<PanelContainer
+    xmlns="https://spacestation14.io"
+    HorizontalAlignment="Stretch"
+    VerticalAlignment="Stretch"
+    StyleClasses="PdaBackground"/>
