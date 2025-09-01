@@ -18,3 +18,17 @@
   sprite:
     sprite: Interface/PdaMessaging/profile_pictures.rsi
     state: ian
+
+- type: pdaChatProfilePicture
+  id: Lizard
+  name: pda-messaging-profile-picture-lizard-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: lizard
+
+- type: pdaChatProfilePicture
+  id: Star
+  name: pda-messaging-profile-picture-star-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: star
