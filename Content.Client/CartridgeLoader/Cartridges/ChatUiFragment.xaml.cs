@@ -28,8 +28,8 @@ public sealed partial class ChatUiFragment : PanelContainer
 
     private Dictionary<BasePdaChatMessageable, BasePdaChatMessage[]> _messages = [];
 
-    public Action<BasePdaChatMessageable?>? OnRecipientChanged;
-    public Action<ChatUiMode>? OnModeChanged;
+    public event Action<BasePdaChatMessageable?>? OnRecipientChanged;
+    public event Action<ChatUiMode>? OnModeChanged;
 
     public ChatUiFragment(BoundUserInterface userInterface, EntityUid cartridge)
     {
@@ -67,44 +67,10 @@ public sealed partial class ChatUiFragment : PanelContainer
         Content.RemoveAllChildren();
         Popup.RemoveAllChildren();
 
-        IChatUiFragmentMode control = mode switch
-        {
-            ChatUiMode.Menu =>
-                new ChatUiFragmentMenu
-                {
-                    OnSettingsButtonPressed = () => ChangeMode(ChatUiMode.Settings),
-                    OnRecipientClicked = recipient =>
-                    {
-                        ChangeRecipient(recipient);
-                        ChangeMode(ChatUiMode.Chat);
-                    }
-                },
+        var (control, fragment) = GetNewModeControl(mode);
+        Content.AddChild(control);
 
-            ChatUiMode.Settings =>
-                new ChatUiFragmentSettings
-                {
-                    OnHomeButtonPressed = () => ChangeMode(ChatUiMode.Menu),
-                    OnBackButtonPressed = recipient =>
-                    {
-                        ChangeRecipient(recipient);
-                        ChangeMode(ChatUiMode.Chat);
-                    }
-                },
-
-            ChatUiMode.Chat =>
-                new ChatUiFragmentChat
-                {
-                    OnMessageSent = message => SendUiMessage(new PdaMessageSendMessageSourceEvent(_netCartridge, message)),
-                    OnHomeButtonPressed = () => ChangeMode(ChatUiMode.Menu),
-                    OnSettingsButtonPressed = () => ChangeMode(ChatUiMode.Settings)
-                },
-
-            _ => throw new NotImplementedException(),
-        };
-
-        Content.AddChild((Control)control);
-
-        control.OnPopupAdd += popup =>
+        fragment.OnPopupAdd += popup =>
         {
             Popup.RemoveAllChildren();
             Popup.AddChild(popup);
@@ -137,6 +103,45 @@ public sealed partial class ChatUiFragment : PanelContainer
         }
 
         OnModeChanged?.Invoke(mode);
+    }
+
+    private (Control, IChatUiFragmentMode) GetNewModeControl(ChatUiMode mode)
+    {
+        switch (mode)
+        {
+            case ChatUiMode.Menu:
+                var menu = new ChatUiFragmentMenu();
+                menu.OnSettingsButtonPressed += () => ChangeMode(ChatUiMode.Settings);
+                menu.OnRecipientClicked += recipient =>
+                {
+                    ChangeRecipient(recipient);
+                    ChangeMode(ChatUiMode.Chat);
+                };
+
+                return (menu, menu);
+
+            case ChatUiMode.Settings:
+                var settings = new ChatUiFragmentSettings();
+                settings.OnHomeButtonPressed += () => ChangeMode(ChatUiMode.Menu);
+                settings.OnBackButtonPressed += recipient =>
+                {
+                    ChangeRecipient(recipient);
+                    ChangeMode(ChatUiMode.Chat);
+                };
+
+                return (settings, settings);
+
+            case ChatUiMode.Chat:
+                var chat = new ChatUiFragmentChat();
+                chat.OnMessageSent += message => SendUiMessage(new PdaMessageSendMessageSourceEvent(_netCartridge, message));
+                chat.OnHomeButtonPressed += () => ChangeMode(ChatUiMode.Menu);
+                chat.OnSettingsButtonPressed += () => ChangeMode(ChatUiMode.Settings);
+
+                return (chat, chat);
+
+            default:
+                throw new NotImplementedException();
+        }
     }
 
     private T GetContent<T>() where T : IChatUiFragmentMode

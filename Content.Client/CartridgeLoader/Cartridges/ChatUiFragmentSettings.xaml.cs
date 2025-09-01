@@ -8,10 +8,10 @@ namespace Content.Client.CartridgeLoader.Cartridges;
 [GenerateTypedNameReferences]
 public sealed partial class ChatUiFragmentSettings : BoxContainer, IChatUiFragmentMode
 {
-    public Action<BasePdaChatMessageable>? OnBackButtonPressed;
-    public Action? OnHomeButtonPressed;
+    public event Action<BasePdaChatMessageable>? OnBackButtonPressed;
+    public event Action? OnHomeButtonPressed;
 
-    public Action<BaseChatUiFragmentPopup>? OnPopupAdd { get; set; }
+    public event Action<BaseChatUiFragmentPopup>? OnPopupAdd;
 
     private BasePdaChatMessageable? _recipient;
 

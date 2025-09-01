@@ -19,11 +19,11 @@ public sealed partial class ChatUiFragmentChat : BoxContainer, IChatUiFragmentMo
     [Dependency] private readonly IClientPdaChatMessageFactory _pdaChatMessageFactory = default!;
     private readonly SpriteSystem _sprite;
 
-    public Action<BasePdaChatMessage>? OnMessageSent;
-    public Action? OnHomeButtonPressed;
-    public Action? OnSettingsButtonPressed;
+    public event Action<BasePdaChatMessage>? OnMessageSent;
+    public event Action? OnHomeButtonPressed;
+    public event Action? OnSettingsButtonPressed;
 
-    public Action<BaseChatUiFragmentPopup>? OnPopupAdd { get; set; }
+    public event Action<BaseChatUiFragmentPopup>? OnPopupAdd;
 
     private BasePdaChatMessageable _recipient = default!;
     private PdaChatRecipientProfile _profile = default!;

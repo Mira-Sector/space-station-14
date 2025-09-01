@@ -10,6 +10,8 @@ namespace Content.Client.CartridgeLoader.Cartridges;
 [GenerateTypedNameReferences]
 public sealed partial class ChatUiFragmentProfilePictureSelectorPopup : BaseChatUiFragmentPopup
 {
+    public event Action<ProtoId<PdaChatProfilePicturePrototype>>? OnProfilePictureSelected;
+
     public ChatUiFragmentProfilePictureSelectorPopup(FrozenDictionary<ProtoId<PdaChatProfilePicturePrototype>, PdaChatProfilePicturePrototype> pictures, SpriteSystem sprite)
     {
         RobustXamlLoader.Load(this);
@@ -21,9 +23,14 @@ public sealed partial class ChatUiFragmentProfilePictureSelectorPopup : BaseChat
         foreach (var (id, proto) in pictures)
         {
             var button = new ChatUiFragmentProfilePictureSelectorPopupButton(proto, sprite);
-            Grid.AddChild(button);
 
-            button.OnPressed += _ => OnClosePopup?.Invoke();
+            button.OnPressed += _ =>
+            {
+                OnClosePopup?.Invoke();
+                OnProfilePictureSelected?.Invoke(id);
+            };
+
+            Grid.AddChild(button);
         }
     }
 

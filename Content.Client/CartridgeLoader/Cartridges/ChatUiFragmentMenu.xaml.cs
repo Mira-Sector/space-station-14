@@ -13,10 +13,10 @@ public sealed partial class ChatUiFragmentMenu : BoxContainer, IChatUiFragmentMo
     [Dependency] private readonly IEntityManager _entity = default!;
     private readonly SpriteSystem _sprite;
 
-    public Action<BasePdaChatMessageable>? OnRecipientClicked;
-    public Action? OnSettingsButtonPressed;
+    public event Action<BasePdaChatMessageable>? OnRecipientClicked;
+    public event Action? OnSettingsButtonPressed;
 
-    public Action<BaseChatUiFragmentPopup>? OnPopupAdd { get; set; }
+    public event Action<BaseChatUiFragmentPopup>? OnPopupAdd;
 
     public ChatUiFragmentMenu()
     {

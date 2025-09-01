@@ -16,8 +16,8 @@ public sealed partial class ChatUiFragmentProfilePictureSelector : ContainerButt
     private readonly PdaMessagingSystem _pdaMessaging;
     private readonly SpriteSystem _sprite;
 
-    public Action<ProtoId<PdaChatProfilePicturePrototype>>? OnPicturePicked;
-    public Action<BaseChatUiFragmentPopup>? OnNewPopup;
+    public event Action<ProtoId<PdaChatProfilePicturePrototype>>? OnProfilePicturePicked;
+    public event Action<BaseChatUiFragmentPopup>? OnNewPopup;
 
     public ProtoId<PdaChatProfilePicturePrototype> CurrentPicture
     {
@@ -46,6 +46,8 @@ public sealed partial class ChatUiFragmentProfilePictureSelector : ContainerButt
     {
         var selectable = _pdaMessaging.GetSelectableProfilePictures();
         var popup = new ChatUiFragmentProfilePictureSelectorPopup(selectable, _sprite);
+        popup.OnProfilePictureSelected += picture => OnProfilePicturePicked?.Invoke(picture);
+
         OnNewPopup?.Invoke(popup);
     }
 }
