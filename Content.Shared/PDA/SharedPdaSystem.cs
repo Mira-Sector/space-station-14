@@ -15,12 +15,14 @@ namespace Content.Shared.PDA
 
             SubscribeLocalEvent<PdaComponent, ComponentInit>(OnComponentInit);
             SubscribeLocalEvent<PdaComponent, ComponentRemove>(OnComponentRemove);
+            SubscribeLocalEvent<PdaComponent, MapInitEvent>(OnMapInit);
 
             SubscribeLocalEvent<PdaComponent, EntInsertedIntoContainerMessage>(OnItemInserted);
             SubscribeLocalEvent<PdaComponent, EntRemovedFromContainerMessage>(OnItemRemoved);
 
             SubscribeLocalEvent<PdaComponent, GetAdditionalAccessEvent>(OnGetAdditionalAccess);
         }
+
         protected virtual void OnComponentInit(EntityUid uid, PdaComponent pda, ComponentInit args)
         {
             if (pda.IdCard != null)
@@ -40,18 +42,29 @@ namespace Content.Shared.PDA
             ItemSlotsSystem.RemoveItemSlot(uid, pda.PaiSlot);
         }
 
+        private void OnMapInit(EntityUid uid, PdaComponent pda, MapInitEvent args)
+        {
+            var ev = new PdaOwnerChangedEvent(pda.PdaOwner, pda.OwnerName);
+            RaiseLocalEvent(uid, ref ev);
+        }
+
         protected virtual void OnItemInserted(EntityUid uid, PdaComponent pda, EntInsertedIntoContainerMessage args)
         {
-            if (args.Container.ID == PdaComponent.PdaIdSlotId)
-                pda.ContainedId = args.Entity;
+            if (args.Container.ID != PdaComponent.PdaIdSlotId)
+                return;
 
+            pda.ContainedId = args.Entity;
+            Dirty(uid, pda);
             UpdatePdaAppearance(uid, pda);
         }
 
         protected virtual void OnItemRemoved(EntityUid uid, PdaComponent pda, EntRemovedFromContainerMessage args)
         {
-            if (args.Container.ID == pda.IdSlot.ID)
-                pda.ContainedId = null;
+            if (args.Container.ID != pda.IdSlot.ID)
+                return;
+
+            pda.ContainedId = null;
+            Dirty(uid, pda);
 
             UpdatePdaAppearance(uid, pda);
         }
