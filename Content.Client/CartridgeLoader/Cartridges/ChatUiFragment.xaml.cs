@@ -128,6 +128,7 @@ public sealed partial class ChatUiFragment : PanelContainer
                     ChangeRecipient(recipient);
                     ChangeMode(ChatUiMode.Chat);
                 };
+                settings.OnProfilePicturePicked += picture => SendUiMessage(new PdaMessageClientUpdateProfilePictureEvent(_netCartridge, picture));
 
                 return (settings, settings);
 
