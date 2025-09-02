@@ -5,6 +5,8 @@ using Content.Server.PDA;
 using Content.Shared.CartridgeLoader;
 using Content.Shared.DeviceNetwork.Events;
 using Content.Shared.Interaction;
+using Content.Shared.PDA;
+using Content.Shared.PDA.Messaging.Events;
 using Robust.Server.Containers;
 using Robust.Server.GameObjects;
 using Robust.Shared.Containers;
@@ -29,6 +31,9 @@ public sealed class CartridgeLoaderSystem : SharedCartridgeLoaderSystem
         SubscribeLocalEvent<CartridgeLoaderComponent, AfterInteractEvent>(OnUsed);
         SubscribeLocalEvent<CartridgeLoaderComponent, CartridgeLoaderUiMessage>(OnLoaderUiMessage);
         SubscribeLocalEvent<CartridgeLoaderComponent, CartridgeUiMessage>(OnUiMessage);
+        SubscribeLocalEvent<CartridgeLoaderComponent, PdaOwnerChangedEvent>(OnPdaOwnerChanged);
+
+        SubscribeLocalEvent<CartridgeComponent, PdaMessageGetClientNameEvent>(OnPdaGetClientName);
     }
 
     public IReadOnlyList<EntityUid> GetInstalled(EntityUid uid, ContainerManagerComponent? comp = null)
@@ -211,10 +216,10 @@ public sealed class CartridgeLoaderSystem : SharedCartridgeLoaderSystem
         if (!TryComp(installedProgram, out CartridgeComponent? cartridge))
             return false;
 
+        cartridge.LoaderUid = loaderUid;
         _containerSystem.Insert(installedProgram, container);
 
         UpdateCartridgeInstallationStatus(installedProgram, deinstallable ? InstallationStatus.Installed : InstallationStatus.Readonly, cartridge);
-        cartridge.LoaderUid = loaderUid;
 
         RaiseLocalEvent(installedProgram, new CartridgeAddedEvent(loaderUid));
         UpdateUserInterfaceState(loaderUid, loader);
@@ -305,6 +310,7 @@ public sealed class CartridgeLoaderSystem : SharedCartridgeLoaderSystem
             RaiseLocalEvent(cartridgeUid, new CartridgeActivatedEvent(loaderUid));
 
         loader.BackgroundPrograms.Add(cartridgeUid);
+        Dirty(loaderUid, loader);
     }
 
     /// <summary>
@@ -322,6 +328,7 @@ public sealed class CartridgeLoaderSystem : SharedCartridgeLoaderSystem
             RaiseLocalEvent(cartridgeUid, new CartridgeDeactivatedEvent(loaderUid));
 
         loader.BackgroundPrograms.Remove(cartridgeUid);
+        Dirty(loaderUid, loader);
     }
 
     public void SendNotification(EntityUid loaderUid, string header, string message, CartridgeLoaderComponent? loader = default!)
@@ -435,6 +442,16 @@ public sealed class CartridgeLoaderSystem : SharedCartridgeLoaderSystem
         RelayEvent(component, cartridgeEvent, true);
     }
 
+    private void OnPdaOwnerChanged(EntityUid uid, CartridgeLoaderComponent component, ref PdaOwnerChangedEvent args)
+    {
+        RelayEvent(component, args);
+    }
+
+    private void OnPdaGetClientName(EntityUid uid, CartridgeComponent component, ref PdaMessageGetClientNameEvent args)
+    {
+        RelayEventToLoader(component, args);
+    }
+
     /// <summary>
     /// Relays events to the currently active program and and programs running in the background.
     /// Skips background programs if "skipBackgroundPrograms" is set to true
@@ -458,6 +475,14 @@ public sealed class CartridgeLoaderSystem : SharedCartridgeLoaderSystem
 
             RaiseLocalEvent(program, args);
         }
+    }
+
+    private void RelayEventToLoader<TEvent>(CartridgeComponent cartridge, TEvent args) where TEvent : notnull
+    {
+        if (cartridge.LoaderUid is not { } loader)
+            return;
+
+        RaiseLocalEvent(loader, args);
     }
 
     /// <summary>

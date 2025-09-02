@@ -3,12 +3,37 @@ using Content.Shared.CartridgeLoader.Cartridges;
 using Content.Shared.PDA.Messaging.Components;
 using Content.Shared.PDA.Messaging.Messages;
 using Content.Shared.PDA.Messaging.Recipients;
+using Robust.Shared.Containers;
 
 namespace Content.Server.CartridgeLoader.Cartridges;
 
 public sealed partial class ChatCartridgeSystem : SharedChatCartridgeSystem
 {
     [Dependency] private readonly CartridgeLoaderSystem _cartridgeLoader = default!;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        SubscribeLocalEvent<ChatCartridgeComponent, EntGotInsertedIntoContainerMessage>(OnInserted);
+        SubscribeLocalEvent<ChatCartridgeComponent, EntGotRemovedFromContainerMessage>(OnRemoved);
+    }
+
+    private void OnInserted(Entity<ChatCartridgeComponent> ent, ref EntGotInsertedIntoContainerMessage args)
+    {
+        if (!TryGetLoader(ent.Owner, out var loader))
+            return;
+
+        _cartridgeLoader.RegisterBackgroundProgram(loader.Value, ent.Owner);
+    }
+
+    private void OnRemoved(Entity<ChatCartridgeComponent> ent, ref EntGotRemovedFromContainerMessage args)
+    {
+        if (!TryGetLoader(ent.Owner, out var loader))
+            return;
+
+        _cartridgeLoader.UnregisterBackgroundProgram(loader.Value, ent.Owner);
+    }
 
     protected override void PlayNotification(Entity<ChatCartridgeComponent> ent, EntityUid loader, BasePdaChatMessage message)
     {

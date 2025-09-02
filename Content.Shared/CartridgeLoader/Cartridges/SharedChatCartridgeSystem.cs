@@ -1,8 +1,8 @@
-using System.Diagnostics.CodeAnalysis;
 using Content.Shared.PDA.Messaging;
 using Content.Shared.PDA.Messaging.Components;
 using Content.Shared.PDA.Messaging.Events;
 using Content.Shared.PDA.Messaging.Messages;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Content.Shared.CartridgeLoader.Cartridges;
 
