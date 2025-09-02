@@ -1,10 +1,11 @@
 using Content.Shared.DeviceLinking;
 using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
+using Robust.Shared.GameStates;
 
 namespace Content.Shared.Teleportation.Components;
 
-[RegisterComponent, AutoGenerateComponentState(true)]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState(true)]
 
 public sealed partial class TeleporterConsoleComponent : Component
 {
@@ -12,8 +13,14 @@ public sealed partial class TeleporterConsoleComponent : Component
     /// The analyzer entity the console is linked.
     /// Can be null if not linked.
     /// </summary>
-    [DataField, AutoNetworkedField]
+    [DataField, AutoNetworkedField, ViewVariables]
     public NetEntity? LinkedTeleporter;
+
+    /// <summary>
+    /// largest coordinate value allowed for teleporting.
+    /// </summary>
+    [DataField]
+    public int MaxRange = 20000;
 
     [DataField]
     public SoundSpecifier? TeleportRechargedSound = new SoundPathSpecifier("/Audio/Machines/scan_finish.ogg");
@@ -26,4 +33,5 @@ public sealed partial class TeleporterConsoleComponent : Component
     /// </summary>
     [DataField]
     public ProtoId<SourcePortPrototype> LinkingPort = "TeleportSender";
+
 }

@@ -87,7 +87,7 @@
   - type: TwoStageTrigger
     triggerDelay: 5 #gets replaced by TeleporterSystem
     components:
-    #- type: TeleportOnTrigger #TeleportOnTrigger gets specifically added by TeleportSystem, for some reason it doesn't accept new targets work if it already exists
+    #- type: TeleportOnTrigger #TeleportOnTrigger gets specifically added by TeleportSystem, for some reason it doesn't accept new targets if it already exists
     - type: SoundOnTrigger #sound gets drowned out by the baseline EffectFlashTeleportFinish so this is here for more covert teleports.
       removeOnTrigger: true
       sound:
@@ -135,7 +135,6 @@
     softness: 1
     offset: "0, 0"
 
-
 - type: entity
   id: TeleportFromEffect
   parent: BaseTeleportEffect
@@ -171,4 +170,3 @@
       radius: 5
       softness: 1
       offset: "0, 0"
-

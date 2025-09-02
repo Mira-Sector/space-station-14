@@ -1,5 +1,7 @@
-//using Content.Shared.Teleportation.Systems;
+//using Content.Server.Teleportation.Systems;
 using Content.Shared.Teleportation.Components;
+using Content.Shared.DeviceLinking;
+using Content.Shared.DeviceLinking.Events;
 using Content.Shared.Interaction;
 using Content.Shared.Explosion.Components;
 using Robust.Shared.Map;
@@ -14,10 +16,72 @@ public abstract class SharedTeleporterSystem : EntitySystem
     {
         base.Initialize();
         Log.Debug("Shared Teleporter Online");
+        SubscribeLocalEvent<TeleporterComponent, MapInitEvent>(OnMapInit);
 
-        //SubscribeLocalEvent<TeleporterComponent, ActivateInWorldEvent>(OnInteract);
-        //SubscribeLocalEvent<TeleportOnTrigger, TriggerEvent>(OnTeleport);
         //GotEmaggedEvent
+        SubscribeLocalEvent<TeleporterConsoleComponent, TeleporterActivateMessage>(OnTeleportStart);
+        SubscribeLocalEvent<TeleporterConsoleComponent, NewLinkEvent>(OnNewLink);
+        SubscribeLocalEvent<TeleporterConsoleComponent, PortDisconnectedEvent>(OnPortDisconnected);
+    }
+
+    public void OnTeleportStart(Entity<TeleporterConsoleComponent> ent, ref TeleporterActivateMessage args)
+    {
+        Log.Debug($"TELEPORT! {args.Coords}");
+        if (!TryGetEntity(ent.Comp.LinkedTeleporter, out var teleNetEnt) || !TryComp<TeleporterComponent>(teleNetEnt, out var teleComp))
+            return; //if no linked teleporter, can't teleport.
+
+        var teleEnt = teleNetEnt ?? EntityUid.Invalid; //de-nullable teleNetEnt to prevent RaiseLocalEvent getting upset.
+        Log.Debug(teleEnt.Id.ToString());
+
+        //(teleComp.Tpx, teleComp.Tpy) = args.Coords;
+        //teleComp.TeleportSend = args.Send;
+        RaiseLocalEvent(teleEnt, args);
+    }
+
+    private void OnMapInit(Entity<TeleporterComponent> ent, ref MapInitEvent args) //stolen from SharedArtifactAnalyzerSystem
+    {
+        if (!TryComp<DeviceLinkSinkComponent>(ent, out var sink))
+            return;
+
+        foreach (var source in sink.LinkedSources)
+        {
+            if (!TryComp<TeleporterConsoleComponent>(source, out var console))
+                continue;
+
+            console.LinkedTeleporter = GetNetEntity(ent);
+            ent.Comp.LinkedConsole = source;
+            Dirty(source, console);
+            Dirty(ent);
+            break;
+        }
+    }
+
+    private void OnNewLink(Entity<TeleporterConsoleComponent> ent, ref NewLinkEvent args) //stolen from SharedArtifactAnalyzerSystem
+    {
+        if (!TryComp<TeleporterComponent>(args.Sink, out var teleporter))
+            return;
+
+        ent.Comp.LinkedTeleporter = GetNetEntity(args.Sink);
+        teleporter.LinkedConsole = ent;
+        Dirty(args.Sink, teleporter);
+        Dirty(ent);
+    }
+
+    private void OnPortDisconnected(Entity<TeleporterConsoleComponent> ent, ref PortDisconnectedEvent args) //stolen from SharedArtifactAnalyzerSystem
+    {
+        var teleporterNetEntity = ent.Comp.LinkedTeleporter;
+        if (args.Port != ent.Comp.LinkingPort || teleporterNetEntity == null)
+            return;
+
+        var teleporterUid = GetEntity(teleporterNetEntity);
+        if (TryComp<TeleporterComponent>(teleporterUid, out var teleporter))
+        {
+            teleporter.LinkedConsole = null;
+            Dirty(teleporterUid.Value, teleporter);
+        }
+
+        ent.Comp.LinkedTeleporter = null;
+        Dirty(ent);
     }
     /*
     private void OnInteract(Entity<TeleporterComponent> ent, ref ActivateInWorldEvent args)

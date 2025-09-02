@@ -1626,6 +1626,18 @@
     range: 10
     ports:
       - TeleportSender
+  - type: TeleporterConsole
+  - type: ActiveRadio
+    channels:
+    - Science
+  - type: ActivatableUI
+    key: enum.TeleporterConsoleUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.TeleporterConsoleUiKey.Key:
+        type: TeleporterConsoleBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
   - type: ApcPowerReceiver
     powerLoad: 1000
   - type: Computer
