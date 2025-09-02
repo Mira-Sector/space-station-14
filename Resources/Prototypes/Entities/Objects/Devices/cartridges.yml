@@ -240,7 +240,7 @@
 - type: entity
   parent: BaseItem
   id: ChatCartridge
-  name: chat cartridge
+  name: Spacebook
   description: A program for socializing with the station's crew.
   components:
   - type: Sprite

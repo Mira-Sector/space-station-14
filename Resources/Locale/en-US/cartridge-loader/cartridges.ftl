@@ -114,4 +114,4 @@ power-two-sound-on = ♫ Toggle Sound
 power-two-sound-off =  ̶♫̶ Toggle Sound
 
 # chat cartridge
-chat-program-name = Chat
+chat-program-name = Spacebook
