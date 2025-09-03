@@ -975,7 +975,6 @@
     uiKey: enum.PdaUiKey.Key
     notificationsEnabled: false
     preinstalled:
-      - ChatCartridge
       - CrewManifestCartridge
       - NotekeeperCartridge
       - NanoTaskCartridge
