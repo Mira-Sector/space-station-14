@@ -4,6 +4,7 @@ using Content.Shared.PDA.Messaging.Events;
 using Content.Shared.PDA.Messaging.Recipients;
 using Content.Shared.Station;
 using Robust.Shared.Utility;
+using System.Linq;
 
 namespace Content.Shared.PDA.Messaging;
 
@@ -22,6 +23,10 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         SubscribeLocalEvent<PdaMessagingClientComponent, PdaMessageSendMessageSourceEvent>(OnClientSendMessageSource);
 
         SubscribeLocalEvent<PdaMessagingClientComponent, PdaMessageClientUpdateProfilePictureEvent>(OnClientUpdateProfilePicture);
+        SubscribeLocalEvent<PdaMessagingClientComponent, PdaMessageClientUpdateConnectedServerEvent>(OnClientUpdateConnectedServer);
+
+        SubscribeLocalEvent<PdaMessagingClientComponent, PdaMessageClientServerConnectedEvent>(OnClientServerConnected);
+        SubscribeLocalEvent<PdaMessagingClientComponent, PdaMessageClientServerDisconnectedEvent>(OnClientServerDisconnected);
 
         SubscribeLocalEvent<PdaMessageNewServerAvailableEvent>(OnClientNewServerAvailable);
         SubscribeLocalEvent<PdaMessageServerRemovedEvent>(OnClientServerRemoved);
@@ -114,6 +119,36 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         RaiseLocalEvent(server, ref ev);
     }
 
+    private void OnClientUpdateConnectedServer(Entity<PdaMessagingClientComponent> ent, ref PdaMessageClientUpdateConnectedServerEvent args)
+    {
+        var server = GetEntity(args.Server);
+        if (ent.Comp.Server == server)
+            return;
+
+        // check if we can actually connect to it
+        if (server != null)
+        {
+            if (_station.GetCurrentStation(ent.Owner) is not { } station)
+                return;
+
+            var availableServers = GetStationServersUid(station).ToHashSet();
+            if (!availableServers.Contains(server.Value))
+                return;
+        }
+
+        UpdateClientConnectedServer(ent!, server);
+    }
+
+    private void OnClientServerConnected(Entity<PdaMessagingClientComponent> ent, ref PdaMessageClientServerConnectedEvent args)
+    {
+    }
+
+    private void OnClientServerDisconnected(Entity<PdaMessagingClientComponent> ent, ref PdaMessageClientServerDisconnectedEvent args)
+    {
+        ent.Comp.AvailableRecipients.Clear();
+        Dirty(ent);
+    }
+
     private void OnClientNewServerAvailable(ref PdaMessageNewServerAvailableEvent args)
     {
         var query = EntityQueryEnumerator<PdaMessagingClientComponent>();
@@ -182,27 +217,36 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         RaiseLocalEvent(ref ev);
     }
 
-    public void UpdateClientConnectedServer(Entity<PdaMessagingClientComponent?> ent, EntityUid? server)
+    public void UpdateClientConnectedServer(Entity<PdaMessagingClientComponent?> ent, EntityUid? newServer)
     {
         if (!ClientQuery.Resolve(ent.Owner, ref ent.Comp))
             return;
 
-        if (ent.Comp.Server == server)
+        if (ent.Comp.Server == newServer)
             return;
 
-        if (ent.Comp.Server is { } oldServer)
-        {
-            var disconnectEv = new PdaMessageClientDisconnectedEvent(ent.Owner, ent.Comp.Profile);
-            RaiseLocalEvent(oldServer, ref disconnectEv);
-        }
+        var transferringServer = newServer != null;
 
-        ent.Comp.Server = server;
+        var oldServer = ent.Comp.Server;
+        ent.Comp.Server = newServer;
         Dirty(ent);
 
-        if (server is { } newServer)
+        if (oldServer != null)
         {
-            var connectEv = new PdaMessageClientConnectedEvent(ent.Owner, ent.Comp.Profile);
-            RaiseLocalEvent(newServer, ref connectEv);
+            var serverDisconnectEv = new PdaMessageServerClientDisconnectedEvent(ent.Owner, ent.Comp.Profile);
+            RaiseLocalEvent(oldServer.Value, ref serverDisconnectEv);
+
+            var clientDisconnectEv = new PdaMessageClientServerDisconnectedEvent(oldServer.Value, transferringServer);
+            RaiseLocalEvent(ent.Owner, ref clientDisconnectEv);
+        }
+
+        if (newServer != null)
+        {
+            var serverConnectEv = new PdaMessageServerClientConnectedEvent(ent.Owner, ent.Comp.Profile);
+            RaiseLocalEvent(newServer.Value, ref serverConnectEv);
+
+            var clientConnectEv = new PdaMessageClientServerConnectedEvent(newServer.Value, transferringServer);
+            RaiseLocalEvent(ent.Owner, ref clientConnectEv);
         }
     }
 

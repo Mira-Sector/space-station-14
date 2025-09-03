@@ -16,13 +16,13 @@ public sealed partial class ChatUiFragmentSettings : BoxContainer, IChatUiFragme
 
     public event Action<ProtoId<PdaChatProfilePicturePrototype>>? OnProfilePicturePicked;
 
-    public event Action<NetEntity>? OnServerChangePicked;
+    public event Action<NetEntity?>? OnServerChangePicked;
 
     public event Action<BaseChatUiFragmentPopup>? OnPopupAdd;
 
     private BasePdaChatMessageable? _recipient;
 
-    private NetEntity[] _serverIds = [];
+    private NetEntity?[] _serverIds = [];
 
     public ChatUiFragmentSettings()
     {
@@ -51,18 +51,24 @@ public sealed partial class ChatUiFragmentSettings : BoxContainer, IChatUiFragme
         ServerSelectionNone.Visible = !anyServers;
         if (anyServers)
         {
-            _serverIds = new NetEntity[servers.Count];
+            _serverIds = new NetEntity?[servers.Count + 1];
 
             var i = 0;
+
+            AddServerSelection(null, Loc.GetString("pda-messaging-settings-current-server-none"), i++, currentServer);
+
             foreach (var (server, serverId) in servers)
-            {
-                ServerSelection.AddItem(serverId, i);
-
-                if (server == currentServer)
-                    ServerSelection.SelectId(i);
-
-                _serverIds[i++] = server;
-            }
+                AddServerSelection(server, serverId, i++, currentServer);
         }
+    }
+
+    private void AddServerSelection(NetEntity? server, string name, int id, NetEntity? currentServer)
+    {
+        ServerSelection.AddItem(name, id);
+
+        if (server == currentServer)
+            ServerSelection.SelectId(id);
+
+        _serverIds[id++] = server;
     }
 }

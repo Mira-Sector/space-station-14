@@ -134,6 +134,7 @@ public sealed partial class ChatUiFragment : PanelContainer
                     ChangeMode(ChatUiMode.Chat);
                 };
                 settings.OnProfilePicturePicked += picture => SendUiMessage(new PdaMessageClientUpdateProfilePictureEvent(_netCartridge, picture));
+                settings.OnServerChangePicked += server => SendUiMessage(new PdaMessageClientUpdateConnectedServerEvent(_netCartridge, server));
 
                 return (settings, settings);
 

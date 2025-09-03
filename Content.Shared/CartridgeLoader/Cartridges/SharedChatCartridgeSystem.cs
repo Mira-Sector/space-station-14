@@ -21,6 +21,9 @@ public abstract partial class SharedChatCartridgeSystem : EntitySystem
         SubscribeLocalEvent<ChatCartridgeComponent, PdaMessageReplicatedMessageClientEvent>(OnReplicatedMessageClient, after: [typeof(SharedPdaMessagingSystem)]);
 
         SubscribeLocalEvent<ChatCartridgeComponent, PdaMessageClientReceiveRecipientsEvent>(OnReceiveRecipients, after: [typeof(SharedPdaMessagingSystem)]);
+
+        SubscribeLocalEvent<ChatCartridgeComponent, PdaMessageClientServerConnectedEvent>(OnServerConnected, after: [typeof(SharedPdaMessagingSystem)]);
+        SubscribeLocalEvent<ChatCartridgeComponent, PdaMessageClientServerDisconnectedEvent>(OnServerDisconnected, after: [typeof(SharedPdaMessagingSystem)]);
     }
 
     private void OnUiReady(Entity<ChatCartridgeComponent> ent, ref CartridgeUiReadyEvent args)
@@ -50,6 +53,17 @@ public abstract partial class SharedChatCartridgeSystem : EntitySystem
     private void OnReceiveRecipients(Entity<ChatCartridgeComponent> ent, ref PdaMessageClientReceiveRecipientsEvent args)
     {
         UpdateUi(ent);
+    }
+
+    private void OnServerConnected(Entity<ChatCartridgeComponent> ent, ref PdaMessageClientServerConnectedEvent args)
+    {
+        UpdateUi(ent);
+    }
+
+    private void OnServerDisconnected(Entity<ChatCartridgeComponent> ent, ref PdaMessageClientServerDisconnectedEvent args)
+    {
+        if (!args.Transferred)
+            UpdateUi(ent);
     }
 
     protected void PlayNotification(Entity<ChatCartridgeComponent> ent, BasePdaChatMessage message)
