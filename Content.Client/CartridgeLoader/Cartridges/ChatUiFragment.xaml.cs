@@ -54,6 +54,19 @@ public sealed partial class ChatUiFragment : PanelContainer
         _profile = profile;
         _availableServers = availableServers;
         _currentServer = currentServer;
+
+        if (_recipient != null)
+        {
+            foreach (var messageable in messages.Keys)
+            {
+                if (_recipient.Id != messageable.Id)
+                    continue;
+
+                ChangeRecipient(messageable);
+                break;
+            }
+        }
+
         ChangeMode(_uiMode);
     }
 
