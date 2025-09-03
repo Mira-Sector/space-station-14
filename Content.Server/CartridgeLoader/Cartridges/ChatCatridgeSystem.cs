@@ -54,7 +54,11 @@ public sealed partial class ChatCartridgeSystem : SharedChatCartridgeSystem
         foreach (var recipient in recipients)
             messages[recipient] = PdaMessaging.GetHistory(ent.Owner, recipient).ToArray();
 
-        var state = new ChatUiState(ent.Comp2.Profile, messages);
+        Dictionary<NetEntity, string> availableServers = [];
+
+        var currentServer = GetNetEntity(ent.Comp2.Server);
+
+        var state = new ChatUiState(ent.Comp2.Profile, messages, availableServers, currentServer);
         _cartridgeLoader.UpdateCartridgeUiState(loader, state);
     }
 }

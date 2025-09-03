@@ -28,6 +28,9 @@ public sealed partial class ChatUiFragment : PanelContainer
 
     private Dictionary<BasePdaChatMessageable, BasePdaChatMessage[]> _messages = [];
 
+    private Dictionary<NetEntity, string> _availableServers = [];
+    private NetEntity? _currentServer = null;
+
     public event Action<BasePdaChatMessageable?>? OnRecipientChanged;
     public event Action<ChatUiMode>? OnModeChanged;
 
@@ -45,10 +48,12 @@ public sealed partial class ChatUiFragment : PanelContainer
         InitMode(ChatUiMode.Menu);
     }
 
-    public void UpdateState(PdaChatRecipientProfile profile, Dictionary<BasePdaChatMessageable, BasePdaChatMessage[]> messages)
+    public void UpdateState(PdaChatRecipientProfile profile, Dictionary<BasePdaChatMessageable, BasePdaChatMessage[]> messages, Dictionary<NetEntity, string> availableServers, NetEntity? currentServer)
     {
         _messages = messages;
         _profile = profile;
+        _availableServers = availableServers;
+        _currentServer = currentServer;
         ChangeMode(_uiMode);
     }
 
@@ -92,7 +97,7 @@ public sealed partial class ChatUiFragment : PanelContainer
 
             case ChatUiMode.Settings:
                 var settings = GetContent<ChatUiFragmentSettings>();
-                settings.UpdateState(_profile, _recipient);
+                settings.UpdateState(_profile, _recipient, _availableServers, _currentServer);
                 break;
 
             case ChatUiMode.Chat:

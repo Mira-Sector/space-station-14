@@ -59,37 +59,68 @@
             HorizontalExpand="True">
             <cartridges:ChatUiFragmentSettingsHeader
                 Text="{Loc 'pda-messaging-settings-heading-profile'}"/>
-                <PanelContainer
-                    Margin="8"
-                    StyleClasses="PanelBackgroundBaseDark"
+            <PanelContainer
+                Margin="8"
+                StyleClasses="PanelBackgroundBaseDark"
+                HorizontalAlignment="Center"
+                HorizontalExpand="False">
+                <BoxContainer
+                    Margin="4"
                     HorizontalAlignment="Center"
                     HorizontalExpand="False">
-                    <BoxContainer
-                        Margin="4"
-                        HorizontalAlignment="Center"
-                        HorizontalExpand="False">
-                        <PanelContainer
-                            StyleClasses="LowDivider"/>
-                        <controls:StripeBack
-                            HasMargins="False">
-                            <cartridges:ChatUiFragmentProfilePictureSelector
-                                Name="ProfileIconSelector"
-                                Margin="4"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Access="Public"/>
-                        </controls:StripeBack>
-                        <PanelContainer
-                            StyleClasses="LowDivider"/>
-                        <PanelContainer
-                            Margin="8"/>
-                        <Label
-                            Name="ProfileName"
-                            HorizontalAlignment="Right"
+                    <PanelContainer
+                        StyleClasses="LowDivider"/>
+                    <controls:StripeBack
+                        HasMargins="False">
+                        <cartridges:ChatUiFragmentProfilePictureSelector
+                            Name="ProfileIconSelector"
+                            Margin="4"
+                            HorizontalAlignment="Left"
                             VerticalAlignment="Center"
                             Access="Public"/>
-                    </BoxContainer>
-                </PanelContainer>
+                    </controls:StripeBack>
+                    <PanelContainer
+                        StyleClasses="LowDivider"/>
+                    <PanelContainer
+                        Margin="8"/>
+                    <Label
+                        Name="ProfileName"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Access="Public"/>
+                </BoxContainer>
+            </PanelContainer>
+            <cartridges:ChatUiFragmentSettingsHeader
+                Text="{Loc 'pda-messaging-settings-heading-server'}"/>
+            <PanelContainer
+                Margin="8"
+                StyleClasses="PanelBackgroundBaseDark"
+                HorizontalAlignment="Center"
+                HorizontalExpand="False">
+                <BoxContainer
+                    Margin="4"
+                    HorizontalAlignment="Center"
+                    HorizontalExpand="False">
+                    <Label
+                        Text="{Loc 'pda-messaging-settings-current-server'}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"/>
+                    <PanelContainer
+                        Margin="8"/>
+                    <OptionButton
+                        Name="ServerSelection"
+                        Visible="False"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Access="Public"/>
+                    <Label
+                        Name="ServerSelectionNone"
+                        Text="{Loc 'pda-messaging-settings-current-server-none'}"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Access="Public"/>
+                </BoxContainer>
+            </PanelContainer>
         </BoxContainer>
     </ScrollContainer>
 </BoxContainer>

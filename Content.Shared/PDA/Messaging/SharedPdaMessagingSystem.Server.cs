@@ -25,6 +25,9 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
 
     private void OnServerInit(Entity<PdaMessagingServerComponent> ent, ref MapInitEvent args)
     {
+        ent.Comp.Id = CreateMessageableId(PdaMessagingServerComponent.IdPrefix);
+        Dirty(ent);
+
         var station = _station.GetCurrentStation(ent.Owner);
 
         var ev = new PdaMessageNewServerAvailableEvent(ent.Owner, station);
