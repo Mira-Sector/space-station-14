@@ -2,6 +2,7 @@ using Content.Shared.CartridgeLoader.Cartridges;
 using Content.Shared.PDA.Messaging.Components;
 using Content.Shared.PDA.Messaging.Messages;
 using Content.Shared.PDA.Messaging.Recipients;
+using Content.Shared.Station;
 using Robust.Shared.Containers;
 using System.Linq;
 
@@ -9,6 +10,7 @@ namespace Content.Server.CartridgeLoader.Cartridges;
 
 public sealed partial class ChatCartridgeSystem : SharedChatCartridgeSystem
 {
+    [Dependency] private readonly SharedStationSystem _station = default!;
     [Dependency] private readonly CartridgeLoaderSystem _cartridgeLoader = default!;
 
     public override void Initialize()
@@ -54,7 +56,22 @@ public sealed partial class ChatCartridgeSystem : SharedChatCartridgeSystem
         foreach (var recipient in recipients)
             messages[recipient] = PdaMessaging.GetHistory(ent.Owner, recipient).ToArray();
 
-        Dictionary<NetEntity, string> availableServers = [];
+        Dictionary<NetEntity, string> availableServers;
+        if (_station.GetCurrentStation(ent.Owner) is { } station)
+        {
+            var servers = PdaMessaging.GetStationServers(station);
+            availableServers = new(servers.Count());
+
+            foreach (var server in servers)
+            {
+                var netServer = GetNetEntity(server);
+                availableServers[netServer] = server.Comp.Id;
+            }
+        }
+        else
+        {
+            availableServers = [];
+        }
 
         var currentServer = GetNetEntity(ent.Comp2.Server);
 
