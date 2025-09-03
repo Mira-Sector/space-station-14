@@ -7,6 +7,5 @@
     <RichTextLabel
         Name="Content"
         HorizontalAlignment="Left"
-        VerticalAlignment="Center"
-        Access="Public"/>
+        VerticalAlignment="Center"/>
 </PanelContainer>

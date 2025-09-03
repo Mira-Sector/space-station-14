@@ -30,8 +30,7 @@
                 Margin="8 0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
-                VerticalExpand="True"
-                Access="Public"/>
+                VerticalExpand="True"/>
         </BoxContainer>
     </PanelContainer>
     <PanelContainer
@@ -44,7 +43,6 @@
             Orientation="Vertical"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
-            HorizontalExpand="True"
-            Access="Public"/>
+            HorizontalExpand="True"/>
     </ScrollContainer>
 </BoxContainer>

@@ -11,8 +11,7 @@
         <Label
             Name="HeaderText"
             Align="Center"
-            Margin="16 2"
-            Access="Public"/>
+            Margin="16 2"/>
     </controls:StripeBack>
     <PanelContainer
         StyleClasses="LowDivider"/>

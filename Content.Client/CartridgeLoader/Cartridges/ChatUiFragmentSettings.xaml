@@ -23,8 +23,7 @@
                 Margin="8 0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                VerticalExpand="True"
-                Access="Public"/>
+                VerticalExpand="True"/>
         </BoxContainer>
         <BoxContainer
             HorizontalAlignment="Center"
@@ -43,8 +42,7 @@
                 Margin="8 0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
-                VerticalExpand="True"
-                Access="Public"/>
+                VerticalExpand="True"/>
         </BoxContainer>
     </PanelContainer>
     <PanelContainer
@@ -76,8 +74,7 @@
                             Name="ProfileIconSelector"
                             Margin="4"
                             HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Access="Public"/>
+                            VerticalAlignment="Center"/>
                     </controls:StripeBack>
                     <PanelContainer
                         StyleClasses="LowDivider"/>
@@ -86,8 +83,7 @@
                     <Label
                         Name="ProfileName"
                         HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Access="Public"/>
+                        VerticalAlignment="Center"/>
                 </BoxContainer>
             </PanelContainer>
             <cartridges:ChatUiFragmentSettingsHeader
@@ -111,14 +107,12 @@
                         Name="ServerSelection"
                         Visible="False"
                         HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Access="Public"/>
+                        VerticalAlignment="Center"/>
                     <Label
                         Name="ServerSelectionNone"
                         Text="{Loc 'pda-messaging-settings-current-server-none'}"
                         HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Access="Public"/>
+                        VerticalAlignment="Center"/>
                 </BoxContainer>
             </PanelContainer>
         </BoxContainer>

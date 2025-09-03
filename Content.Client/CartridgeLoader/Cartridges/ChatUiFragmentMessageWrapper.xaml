@@ -11,14 +11,12 @@
             Name="SenderName"
             Margin="2"
             HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            Access="Public"/>
+            VerticalAlignment="Center"/>
         <Label
             Name="SenderId"
             Margin="2"
             HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            Access="Public"/>
+            VerticalAlignment="Center"/>
     </BoxContainer>
     <PanelContainer
         Margin="4"
@@ -28,6 +26,5 @@
         HorizontalAlignment="Left"
         VerticalAlignment="Stretch"
         HorizontalExpand="True"
-        VerticalExpand="True"
-        Access="Public"/>
+        VerticalExpand="True"/>
 </BoxContainer>

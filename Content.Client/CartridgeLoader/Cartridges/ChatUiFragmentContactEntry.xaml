@@ -13,8 +13,7 @@
             Name="Icon"
             Stretch="Tile"
             HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            Access="Public"/>
+            VerticalAlignment="Center"/>
         <PanelContainer
             Margin="8 0"
             StyleClasses="LowDivider"/>
@@ -22,13 +21,11 @@
             Name="Name"
             Margin="2"
             HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            Access="Public"/>
+            VerticalAlignment="Center"/>
         <Label
             Name="Id"
             Margin="2"
             HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            Access="Public"/>
+            VerticalAlignment="Center"/>
     </BoxContainer>
 </Button>

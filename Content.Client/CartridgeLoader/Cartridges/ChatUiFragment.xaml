@@ -8,14 +8,12 @@
     VerticalExpand="True">
     <PanelContainer
         Name="Popup"
-        Access="Public"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"
         HorizontalExpand="True"
         VerticalExpand="True"/>
     <PanelContainer
         Name="Content"
-        Access="Public"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"
         HorizontalExpand="True"

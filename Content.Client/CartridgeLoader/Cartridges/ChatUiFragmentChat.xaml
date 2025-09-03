@@ -20,20 +20,17 @@
                 Stretch="Tile"
                 Margin="8"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Access="Public"/>
+                VerticalAlignment="Center"/>
             <Label
                 Name="ContactName"
                 Margin="2"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Access="Public"/>
+                VerticalAlignment="Center"/>
             <Label
                 Name="ContactId"
                 Margin="2"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Access="Public"/>
+                VerticalAlignment="Center"/>
         </BoxContainer>
         <BoxContainer
             Margin="8"
@@ -44,15 +41,13 @@
                 Margin="8 0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
-                VerticalExpand="True"
-                Access="Public"/>
+                VerticalExpand="True"/>
             <cartridges:ChatUiFragmentHomeButton
                 Name="HomeButton"
                 Margin="8 0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
-                VerticalExpand="True"
-                Access="Public"/>
+                VerticalExpand="True"/>
         </BoxContainer>
     </PanelContainer>
     <PanelContainer
@@ -60,12 +55,10 @@
     <ScrollContainer
         Name="Scroll"
         VerticalExpand="True"
-        HScrollEnabled="False"
-        Access="Public">
+        HScrollEnabled="False">
         <BoxContainer
             Name="Messages"
-            Orientation="Vertical"
-            Access="Public"/>
+            Orientation="Vertical"/>
     </ScrollContainer>
     <BoxContainer
         Orientation="Vertical"
@@ -83,8 +76,7 @@
                     Name="TextInput"
                     PlaceHolder="{Loc 'pda-messaging-text-message-placeholder'}"
                     Margin="8"
-                    HorizontalExpand="True"
-                    Access="Public"/>
+                    HorizontalExpand="True"/>
             </BoxContainer>
         </PanelContainer>
     </BoxContainer>
