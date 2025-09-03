@@ -140,10 +140,10 @@ namespace Content.Server.PDA
             pda.PdaOwner = owner;
             Dirty(uid, pda);
 
+            UpdatePdaUi(uid, pda);
+
             var ev = new PdaOwnerChangedEvent(pda.PdaOwner, pda.OwnerName);
             RaiseLocalEvent(uid, ref ev);
-
-            UpdatePdaUi(uid, pda);
         }
 
         private void OnStationRenamed(StationRenamedEvent ev)

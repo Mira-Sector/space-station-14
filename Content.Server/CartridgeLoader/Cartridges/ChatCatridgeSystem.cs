@@ -1,9 +1,9 @@
-using System.Linq;
 using Content.Shared.CartridgeLoader.Cartridges;
 using Content.Shared.PDA.Messaging.Components;
 using Content.Shared.PDA.Messaging.Messages;
 using Content.Shared.PDA.Messaging.Recipients;
 using Robust.Shared.Containers;
+using System.Linq;
 
 namespace Content.Server.CartridgeLoader.Cartridges;
 

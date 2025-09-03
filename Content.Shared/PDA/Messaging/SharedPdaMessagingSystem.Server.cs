@@ -18,6 +18,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         SubscribeLocalEvent<PdaMessagingServerComponent, PdaMessageClientDisconnectedEvent>(OnServerClientDisconnected);
 
         SubscribeLocalEvent<PdaMessagingServerComponent, PdaMessageServerUpdateProfilePictureEvent>(OnServerUpdateProfilePicture);
+        SubscribeLocalEvent<PdaMessagingServerComponent, PdaMessageServerUpdateNameEvent>(OnServerUpdateName);
 
         SubscribeLocalEvent<PdaMessageNewProfileClientEvent>(OnServerNewProfileFromClient);
     }
@@ -69,6 +70,20 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
                 continue;
 
             profile.Picture = args.ProfilePicture;
+            Dirty(ent);
+            ServerUpdateConnectedClientsRecipients(ent);
+            return;
+        }
+    }
+
+    private void OnServerUpdateName(Entity<PdaMessagingServerComponent> ent, ref PdaMessageServerUpdateNameEvent args)
+    {
+        foreach (var (profile, client) in ent.Comp.Profiles)
+        {
+            if (client != args.Client)
+                continue;
+
+            profile.Name = args.Name;
             Dirty(ent);
             ServerUpdateConnectedClientsRecipients(ent);
             return;

@@ -1,7 +1,7 @@
 using Content.Shared.PDA.Messaging.Components;
+using Content.Shared.PDA.Messaging.Events;
 using Content.Shared.PDA.Messaging.Recipients;
 using Content.Shared.Station;
-using JetBrains.Annotations;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
@@ -61,15 +61,23 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
     private PdaChatRecipientProfile GetDefaultProfile(Entity<PdaMessagingClientComponent> ent)
     {
         var (id, proto) = _random.Pick(_profilePictures);
-        var name = proto.Name; // TODO: fetch the pda owners name via an event
+
         var profile = new PdaChatRecipientProfile()
         {
-            Name = name,
+            Name = GetProfileName(ent, proto),
             Picture = id
         };
 
         profile.Id = CreateMessageableId(profile.Prefix());
         return profile;
+    }
+
+    private string GetProfileName(Entity<PdaMessagingClientComponent> ent, PdaChatProfilePicturePrototype proto)
+    {
+        var ev = new PdaMessageGetClientNameEvent();
+        RaiseLocalEvent(ent.Owner, ref ev);
+
+        return ev.Name ?? proto.Name;
     }
 
     private string CreateMessageableId(string prefix)

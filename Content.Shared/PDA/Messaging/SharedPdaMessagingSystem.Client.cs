@@ -1,3 +1,4 @@
+using Content.Shared.CartridgeLoader;
 using Content.Shared.PDA.Messaging.Components;
 using Content.Shared.PDA.Messaging.Events;
 using Content.Shared.PDA.Messaging.Recipients;
@@ -12,6 +13,10 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
     {
         SubscribeLocalEvent<PdaMessagingClientComponent, MapInitEvent>(OnClientInit, after: [typeof(SharedStationSystem)]);
         SubscribeLocalEvent<PdaMessagingClientComponent, ComponentRemove>(OnClientRemove);
+
+        SubscribeLocalEvent<PdaMessagingClientComponent, CartridgeAddedEvent>(OnClientAdded);
+
+        SubscribeLocalEvent<PdaMessagingClientComponent, PdaOwnerChangedEvent>(OnClientPdaOwnerChanged);
 
         SubscribeLocalEvent<PdaMessagingClientComponent, PdaMessageClientReceiveRecipientsEvent>(OnClientReceiveRecipients);
         SubscribeLocalEvent<PdaMessagingClientComponent, PdaMessageSendMessageSourceEvent>(OnClientSendMessageSource);
@@ -42,11 +47,31 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         UpdateClientConnectedServer(ent!, null);
     }
 
+    private void OnClientAdded(Entity<PdaMessagingClientComponent> ent, ref CartridgeAddedEvent args)
+    {
+        UpdateClientProfileName(ent);
+    }
+
+    private void OnClientPdaOwnerChanged(Entity<PdaMessagingClientComponent> ent, ref PdaOwnerChangedEvent args)
+    {
+        UpdateClientProfileName(ent);
+    }
+
     private void OnClientReceiveRecipients(Entity<PdaMessagingClientComponent> ent, ref PdaMessageClientReceiveRecipientsEvent args)
     {
         // no sending messages to yourself
         HashSet<BasePdaChatMessageable> recipients = [.. args.Recipients];
-        recipients.Remove(ent.Comp.Profile);
+        foreach (var recipient in args.Recipients)
+        {
+            if (recipient.Id != ent.Comp.Profile.Id)
+                continue;
+
+            recipients.Remove(recipient);
+
+            // update our own profile if needed
+            ent.Comp.Profile = (PdaChatRecipientProfile)recipient;
+            break;
+        }
 
         ent.Comp.AvailableRecipients = recipients;
         Dirty(ent);
@@ -128,6 +153,21 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
             if (comp.Server == args.Server)
                 AddClientRecipient((uid, comp), args.Profile);
         }
+    }
+
+    private void UpdateClientProfileName(Entity<PdaMessagingClientComponent> ent)
+    {
+        if (ent.Comp.Server is not { } server)
+            return;
+
+        var profilePicture = _profilePictures[ent.Comp.Profile.Picture];
+        var newName = GetProfileName(ent, profilePicture);
+
+        if (ent.Comp.Profile.Name == newName)
+            return;
+
+        var ev = new PdaMessageServerUpdateNameEvent(ent.Owner, newName);
+        RaiseLocalEvent(server, ref ev);
     }
 
     public void UpdateClientProfile(Entity<PdaMessagingClientComponent?> ent, PdaChatRecipientProfile profile)

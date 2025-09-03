@@ -449,7 +449,7 @@ public sealed class CartridgeLoaderSystem : SharedCartridgeLoaderSystem
 
     private void OnPdaGetClientName(EntityUid uid, CartridgeComponent component, ref PdaMessageGetClientNameEvent args)
     {
-        RelayEventToLoader(component, args);
+        RelayEventToLoader(component, ref args);
     }
 
     /// <summary>
@@ -477,12 +477,12 @@ public sealed class CartridgeLoaderSystem : SharedCartridgeLoaderSystem
         }
     }
 
-    private void RelayEventToLoader<TEvent>(CartridgeComponent cartridge, TEvent args) where TEvent : notnull
+    private void RelayEventToLoader<TEvent>(CartridgeComponent cartridge, ref TEvent args) where TEvent : notnull
     {
         if (cartridge.LoaderUid is not { } loader)
             return;
 
-        RaiseLocalEvent(loader, args);
+        RaiseLocalEvent(loader, ref args);
     }
 
     /// <summary>
