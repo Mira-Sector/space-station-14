@@ -49,7 +49,7 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
         if (count < ent.Comp.MaxHistory)
             ent.Comp.MessageCount[toUpdate] = count + 1;
 
-        ent.Comp.LastMessage[toUpdate] = _timing.CurTime;
+        ent.Comp.LastMessage[toUpdate] = message.SentAt;
         Dirty(ent);
     }
 

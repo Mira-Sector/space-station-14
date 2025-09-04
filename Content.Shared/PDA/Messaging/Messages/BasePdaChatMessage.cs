@@ -13,6 +13,9 @@ public abstract partial class BasePdaChatMessage
     [DataField]
     public BasePdaChatMessageable Recipient;
 
+    [DataField]
+    public TimeSpan SentAt;
+
     public abstract string GetNotificationText();
     public abstract LocId GetHeaderWrapper(bool plural);
 }

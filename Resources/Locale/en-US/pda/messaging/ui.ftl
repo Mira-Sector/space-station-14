@@ -1,5 +1,6 @@
 pda-messaging-contacts-heading = Contacts
 pda-messaging-contact-id-wrapper = ({$id})
+pda-messaging-contact-time-wrapper = {$hours}:{$minutes}
 pda-messaging-text-message-placeholder = Message
 
 pda-messaging-settings-heading = Settings

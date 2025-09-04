@@ -17,6 +17,7 @@ public sealed partial class ChatUiFragmentChat : BoxContainer, IChatUiFragmentMo
 {
     [Dependency] private readonly IEntityManager _entity = default!;
     [Dependency] private readonly IClientPdaChatMessageFactory _pdaChatMessageFactory = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
     private readonly SpriteSystem _sprite;
 
     public event Action<BasePdaChatMessage>? OnMessageSent;
@@ -47,6 +48,7 @@ public sealed partial class ChatUiFragmentChat : BoxContainer, IChatUiFragmentMo
                 Contents = args.Text,
                 Sender = _profile,
                 Recipient = _recipient,
+                SentAt = _timing.CurTime,
             };
 
             OnMessageSent?.Invoke(message);
@@ -67,8 +69,19 @@ public sealed partial class ChatUiFragmentChat : BoxContainer, IChatUiFragmentMo
 
         Messages.RemoveAllChildren();
 
+        int? lastTime = null;
+
         foreach (var message in messages)
         {
+            // not a comparison because of the overflow at the hour mark
+            // we still want to keep showing new headers
+            if (lastTime != message.SentAt.Minutes)
+            {
+                lastTime = message.SentAt.Minutes;
+                var header = new ChatUiFragmentMessageTimeHeader(message.SentAt);
+                Messages.AddChild(header);
+            }
+
             var wrapper = new ChatUiFragmentMessageWrapper(message, _pdaChatMessageFactory);
             Messages.AddChild(wrapper);
         }
