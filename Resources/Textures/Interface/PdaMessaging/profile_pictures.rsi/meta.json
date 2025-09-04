@@ -6,14 +6,23 @@
         "y": 32
     },
     "license": "CC-BY-NC-SA-3.0",
-    "copyright": "urist, tider, ian by Doctor-Cpu, lizard, star by SillyAmy",
+    "copyright": "ai, bar, baton, beach, gun, ian, mime, music, pickaxe, tesla, tider, trans, urist, xmas by Doctor-Cpu, lizard, star by SillyAmy",
     "states":
     [
         {
-            "name": "urist"
+            "name": "ai"
         },
         {
-            "name": "tider"
+            "name": "bar"
+        },
+        {
+            "name": "baton"
+        },
+        {
+            "name": "beach"
+        },
+        {
+            "name": "gun"
         },
         {
             "name": "ian"
@@ -22,7 +31,31 @@
             "name": "lizard"
         },
         {
+            "name": "mime"
+        },
+        {
+            "name": "music"
+        },
+        {
+            "name": "pickaxe"
+        },
+        {
             "name": "star"
+        },
+        {
+            "name": "tesla"
+        },
+        {
+            "name": "tider"
+        },
+        {
+            "name": "trans"
+        },
+        {
+            "name": "urist"
+        },
+        {
+            "name": "xmas"
         }
     ]
 }
