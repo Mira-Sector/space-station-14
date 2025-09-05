@@ -1,0 +1,11 @@
+<PanelContainer
+    xmlns="https://spacestation14.io"
+    HorizontalAlignment="Stretch"
+    VerticalAlignment="Stretch"
+    HorizontalExpand="True"
+    VerticalExpand="True">
+    <RichTextLabel
+        Name="Content"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Center"/>
+</PanelContainer>

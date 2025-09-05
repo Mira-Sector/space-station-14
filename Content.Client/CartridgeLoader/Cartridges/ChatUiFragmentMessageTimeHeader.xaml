@@ -1,0 +1,15 @@
+<BoxContainer
+    xmlns="https://spacestation14.io"
+    Orientation="Vertical"
+    Margin="16 4"
+    HorizontalAlignment="Stretch"
+    VerticalAlignment="Center"
+    HorizontalExpand="True">
+    <Label
+        Name="Time"
+        Margin="4"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"/>
+    <PanelContainer
+        StyleClasses="LowDivider"/>
+</BoxContainer>
