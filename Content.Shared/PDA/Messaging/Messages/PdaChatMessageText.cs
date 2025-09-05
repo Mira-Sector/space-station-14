@@ -1,4 +1,5 @@
 using Robust.Shared.Serialization;
+using Robust.Shared.Utility;
 
 namespace Content.Shared.PDA.Messaging.Messages;
 
@@ -22,7 +23,7 @@ public sealed partial class PdaChatMessageText : BasePdaChatMessage
         return true;
     }
 
-    public override string GetNotificationText() => Contents;
+    public override string GetNotificationText() => FormattedMessage.RemoveMarkupPermissive(Contents);
 
     public override LocId GetHeaderWrapper(bool plural)
     {
