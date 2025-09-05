@@ -153,7 +153,11 @@ public sealed partial class ChatUiFragment : PanelContainer
 
             case ChatUiMode.Chat:
                 var chat = new ChatUiFragmentChat();
-                chat.OnMessageSent += message => SendUiMessage(new PdaMessageSendMessageSourceEvent(_netCartridge, message));
+                chat.OnMessageSent += message =>
+                {
+                    if (message.IsValid())
+                        SendUiMessage(new PdaMessageSendMessageSourceEvent(_netCartridge, message));
+                };
                 chat.OnHomeButtonPressed += () => ChangeMode(ChatUiMode.Menu);
                 chat.OnSettingsButtonPressed += () => ChangeMode(ChatUiMode.Settings);
 

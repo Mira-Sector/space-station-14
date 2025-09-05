@@ -16,6 +16,7 @@ public abstract partial class BasePdaChatMessage
     [DataField]
     public TimeSpan SentAt;
 
+    public abstract bool IsValid();
     public abstract string GetNotificationText();
     public abstract LocId GetHeaderWrapper(bool plural);
 }

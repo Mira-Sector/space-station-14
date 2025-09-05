@@ -84,6 +84,9 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
 
     private void OnClientSendMessageSource(Entity<PdaMessagingClientComponent> ent, ref PdaMessageSendMessageSourceEvent args)
     {
+        if (!args.Message.IsValid())
+            return;
+
         if (ent.Comp.Server is not { } server)
             return;
 
