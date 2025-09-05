@@ -27,6 +27,13 @@
     state: beach
 
 - type: pdaChatProfilePicture
+  id: Carp
+  name: pda-messaging-profile-picture-carp-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: carp
+
+- type: pdaChatProfilePicture
   id: Gun
   name: pda-messaging-profile-picture-gun-name
   sprite:
@@ -62,11 +69,25 @@
     state: music
 
 - type: pdaChatProfilePicture
+  id: Nanotrasen
+  name: pda-messaging-profile-picture-nanotrasen-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: nanotrasen
+
+- type: pdaChatProfilePicture
   id: Pickaxe
   name: pda-messaging-profile-picture-pickaxe-name
   sprite:
     sprite: Interface/PdaMessaging/profile_pictures.rsi
     state: pickaxe
+
+- type: pdaChatProfilePicture
+  id: Space
+  name: pda-messaging-profile-picture-space-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: space
 
 - type: pdaChatProfilePicture
   id: Star
