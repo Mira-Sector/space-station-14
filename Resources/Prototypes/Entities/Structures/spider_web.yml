@@ -29,8 +29,10 @@
         Heat: 5
     coldDamage: {}
     coldDamageThreshold: 0
+  - type: AtmosExposed
   - type: Flammable
     fireSpread: true
+    igniteFromHeat: true
     damage:
       types:
         Heat: 5
