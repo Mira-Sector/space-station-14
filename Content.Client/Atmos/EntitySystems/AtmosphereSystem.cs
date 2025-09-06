@@ -20,7 +20,7 @@ public sealed class AtmosphereSystem : SharedAtmosphereSystem
 
         var spaceWind = EntityQueryEnumerator<MovedByPressureComponent, TransformComponent, PhysicsComponent>();
         while (spaceWind.MoveNext(out var uid, out var moved, out var xform, out var physics))
-            UpdateSpaceWindMovableEntity((uid, moved, xform, physics), frameTime);
+            UpdateSpaceWindMovableEntity((uid, moved, xform, physics));
     }
 
     private void OnMapHandleState(EntityUid uid, MapAtmosphereComponent component, ref ComponentHandleState args)

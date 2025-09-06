@@ -9,12 +9,12 @@ public abstract partial class SharedAtmosphereSystem
 {
     [Dependency] private readonly SharedStunSystem _stun = default!;
 
-    protected void UpdateSpaceWindMovableEntity(Entity<MovedByPressureComponent, TransformComponent, PhysicsComponent> ent, float frameTime)
+    protected void UpdateSpaceWindMovableEntity(Entity<MovedByPressureComponent, TransformComponent, PhysicsComponent> ent)
     {
         if (!IsMovableByWind(ent!))
             return;
 
-        var pushForce = ent.Comp1.CurrentWind * frameTime;
+        var pushForce = ent.Comp1.CurrentWind;
 
         if (pushForce.LengthSquared() < MovedByPressureComponent.MinPushForceSquared)
             return;
