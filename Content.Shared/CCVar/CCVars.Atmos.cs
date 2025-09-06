@@ -17,19 +17,6 @@ public sealed partial class CCVars
         CVarDef.Create("atmos.space_wind_flow_rate", 0.25f, CVar.SERVERONLY);
 
     /// <summary>
-    ///     Pressure difference (in kPa) at which wind flow saturates to max strength.
-    ///     Lower values make hull breaches equalize more violently.
-    /// </summary>
-    public static readonly CVarDef<float> SpaceWindBreachThreshold =
-        CVarDef.Create("atmos.space_wind_breach_threshold", 100f, CVar.SERVERONLY);
-
-    /// <summary>
-    ///     Multiplier applied to space wind when an adjacent tile is space.
-    /// </summary>
-    public static readonly CVarDef<float> SpaceWindVacuumMultiplier =
-        CVarDef.Create("atmos.space_wind_vacuum_multiplier", 10f, CVar.SERVERONLY);
-
-    /// <summary>
     ///     Minimum wind magnitude to play wind sounds
     /// </summary>
     public static readonly CVarDef<float> SpaceWindMinSoundMagnitude =

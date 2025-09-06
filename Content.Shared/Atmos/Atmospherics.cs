@@ -196,11 +196,6 @@ namespace Content.Shared.Atmos
         #region Space Wind
 
         /// <summary>
-        ///     Number of times a tile can be processed in one atmos tick.
-        /// </summary>
-        public const int SpaceWindLayerPropergation = 4;
-
-        /// <summary>
         ///     The factor used when scaling wind gradiaully to 0.
         /// </summary>
         public const float SpaceWindNormalizationFactor = 0.9f;

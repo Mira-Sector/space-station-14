@@ -9,8 +9,6 @@ namespace Content.Server.Atmos.EntitySystems
 
         public bool SpaceWind { get; private set; }
         public float SpaceWindFlowRate { get; private set; }
-        public float SpaceWindBreachThreshold { get; private set; }
-        public float SpaceWindVacuumMultiplier { get; private set; }
         public float SpaceWindMinSoundMagnitude { get; private set; }
         public TimeSpan SpaceWindSoundCooldown { get; private set; }
         public int SpaceWindSoundRange { get; private set; }
@@ -41,8 +39,6 @@ namespace Content.Server.Atmos.EntitySystems
         {
             Subs.CVar(_cfg, CCVars.SpaceWind, value => SpaceWind = value, true);
             Subs.CVar(_cfg, CCVars.SpaceWindFlowRate, value => SpaceWindFlowRate = value, true);
-            Subs.CVar(_cfg, CCVars.SpaceWindBreachThreshold, value => SpaceWindBreachThreshold = value, true);
-            Subs.CVar(_cfg, CCVars.SpaceWindVacuumMultiplier, value => SpaceWindVacuumMultiplier = value, true);
             Subs.CVar(_cfg, CCVars.SpaceWindMinSoundMagnitude, value => SpaceWindMinSoundMagnitude = value, true);
             Subs.CVar(_cfg, CCVars.SpaceWindSoundCooldown, value => SpaceWindSoundCooldown = TimeSpan.FromSeconds(value), true);
             Subs.CVar(_cfg, CCVars.SpaceWindSoundRange, value => SpaceWindSoundRange = value, true);
