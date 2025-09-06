@@ -42,6 +42,12 @@ public sealed partial class CCVars
         CVarDef.Create("atmos.space_wind_max_velocity", 30f, CVar.SERVERONLY);
 
     /// <summary>
+    ///     Strength of the vacuum suction effect pulling air toward empty or space tiles.
+    /// </summary>
+    public static readonly CVarDef<float> SpaceWindVacuumPull =
+        CVarDef.Create("atmos.space_wind_vacuum_pull", 10f, CVar.SERVERONLY);
+
+    /// <summary>
     ///     Whether monstermos tile equalization is enabled.
     /// </summary>
     public static readonly CVarDef<bool> MonstermosEqualization =

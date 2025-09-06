@@ -30,6 +30,8 @@ public sealed partial class AtmosphereSystem
         {
             if (TryGetMovableTileWind((uid, xform), out var wind))
             {
+                wind *= frameTime;
+
                 // clamp
                 if (wind.Value.IsLongerThan(SpaceWindMaxVelocity))
                     moved.CurrentWind = wind.Value.Normalized() * SpaceWindMaxVelocity;
@@ -53,10 +55,7 @@ public sealed partial class AtmosphereSystem
         if (ent.Comp.GridUid is not { } grid)
             return false;
 
-        if (!_atmosQuery.TryComp(grid, out var mapAtmos))
-            return false;
-
-        if (!_mapGridQuery.TryComp(grid, out var mapGrid))
+        if (!_atmosQuery.TryComp(grid, out var mapAtmos) || !_mapGridQuery.TryComp(grid, out var mapGrid))
             return false;
 
         if (!TransformSystem.TryGetGridTilePosition(ent!, out var indices, mapGrid))
@@ -66,6 +65,20 @@ public sealed partial class AtmosphereSystem
             return false;
 
         wind = tileAtmos.SpaceWind.Wind;
+
+        // suction if this tile is adjacent to space
+        for (var i = 0; i < Atmospherics.Directions; i++)
+        {
+            var neighbor = tileAtmos.AdjacentTiles[i];
+            var dir = (AtmosDirection)(1 << i);
+            var dirVec = dir.CardinalToIntVec();
+
+            var blocked = tileAtmos.AirtightData.BlockedDirections.IsFlagSet(dir);
+
+            if (!blocked && (neighbor == null || !neighbor.AirtightData.BlockedDirections.IsFlagSet(dir.GetOpposite())))
+                wind += dirVec * SpaceWindVacuumPull;
+        }
+
         return true;
     }
 
@@ -139,12 +152,21 @@ public sealed partial class AtmosphereSystem
         for (var i = 0; i < Atmospherics.Directions; i++)
         {
             var direction = (AtmosDirection)(1 << i);
-            var neighbor = tile.AdjacentTiles[i];
-            if (neighbor == null)
+
+            // skip airtight directions
+            if (tile.AirtightData.BlockedDirections.IsFlagSet(direction))
                 continue;
 
-            var neighborPressure = neighbor.Air?.Pressure ?? 0f;
+            var neighbor = tile.AdjacentTiles[i];
             var dirVec = direction.CardinalToIntVec();
+
+            if (tile.Space || neighbor == null || neighbor.Space || neighbor.AirtightData.BlockedDirections.IsFlagSet(direction.GetOpposite()))
+            {
+                tile.SpaceWind.PendingWind += dirVec * SpaceWindVacuumPull;
+                continue;
+            }
+
+            var neighborPressure = neighbor.Air?.Pressure ?? 0f;
 
             tile.SpaceWind.PendingWind += dirVec * (tilePressure - neighborPressure);
         }
