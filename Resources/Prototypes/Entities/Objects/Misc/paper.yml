@@ -8,8 +8,10 @@
     - Document
     - Paper
   - type: Appearance
+  - type: AtmosExposed
   - type: Flammable
     fireSpread: true
+    igniteFromHeat: true
     alwaysCombustible: true
     damage:
       types:
@@ -441,11 +443,13 @@
     - Trash
     - Document
   #- type: Appearance, hide stamp marks until we have some kind of displacement
+  - type: AtmosExposed
   - type: Flammable
     fireSpread: true
     canResistFire: false
     alwaysCombustible: true
     canExtinguish: true
+    igniteFromHeat: true
     damage:
       types:
         Heat: 1

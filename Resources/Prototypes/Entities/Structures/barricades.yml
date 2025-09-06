@@ -61,8 +61,10 @@
   - type: Tag
     tags:
     - Wooden
+  - type: AtmosExposed
   - type: Flammable
     fireSpread: true
+    igniteFromHeat: true
     damage:
       types:
         Heat: 3 #per second, scales with number of fire 'stacks'
@@ -112,8 +114,10 @@
   - type: Tag
     tags:
     - Wooden
+  - type: AtmosExposed
   - type: Flammable
     fireSpread: true
+    igniteFromHeat: true
     damage:
       types:
         Heat: 3 #per second, scales with number of fire 'stacks'
