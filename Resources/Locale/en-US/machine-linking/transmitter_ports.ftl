@@ -73,5 +73,11 @@ signal-port-description-power-discharging = This port is invoked with HIGH when 
 signal-port-name-item-detected = Detected
 signal-port-description-item-detected = This port is invoked whenever the transmitter detects an item.
 
+signal-port-name-teleport-sender = Console
+signal-port-description-teleport-sender = Teleporter console signal sender
+
+signal-port-name-teleport-beacon-sender = Beacon
+signal-port-description-teleport-beacon-sender = Teleport Beacon Coordinate signal sender
+
 signal-port-name-surgery-ui-source = Surgery Scanner Source
 signal-port-description-surgery-ui-source = Surgery scanner body source.

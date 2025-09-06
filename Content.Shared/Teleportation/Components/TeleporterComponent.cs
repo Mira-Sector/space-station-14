@@ -2,6 +2,7 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
+using Robust.Shared.Map;
 
 namespace Content.Shared.Teleportation.Components;
 /// <summary>
@@ -23,7 +24,7 @@ public sealed partial class TeleporterComponent : Component
     /// </summary>
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer))]
     [AutoNetworkedField, AutoPausedField]
-    public TimeSpan RechargeDuration = TimeSpan.FromSeconds(60);
+    public TimeSpan RechargeDuration = TimeSpan.FromSeconds(10);
 
     /// <summary>
     /// Entity Spawned at Teleport Start Point
@@ -63,11 +64,7 @@ public sealed partial class TeleporterComponent : Component
     /// </summary>
     public bool TeleportSend = true;
 
-    [DataField]
-    public float Tpx = 5f;
-
-    [DataField]
-    public float Tpy = 0f;
+    public MapCoordinates Target;
 
     /// <summary>
     /// The corresponding Teleporter Console entity this teleporter is linked to.
@@ -77,8 +74,8 @@ public sealed partial class TeleporterComponent : Component
     public EntityUid? LinkedConsole;
 
     /// <summary>
-    /// Marker, is teleporter ready to teleport again?
+    /// Marker, is teleporter ready to teleport again? If recharging indicates time left.
     /// </summary>
     [ViewVariables(VVAccess.ReadWrite)]
-    public bool ReadyToTeleport = false;
+    public TimeSpan ReadyToTeleport = TimeSpan.FromSeconds(5);
 }

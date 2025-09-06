@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using Robust.Shared.Serialization;
+using Content.Shared.Teleportation.Components;
 
 namespace Content.Shared.Teleportation;
 
@@ -19,8 +20,9 @@ public sealed class TeleporterActivateMessage(Vector2 coords, bool send) : Bound
     public bool Send = send;
 }
 
-public sealed class TeleporterActivateBeaconMessage(NetEntity link, bool send) : BoundUserInterfaceMessage
+[Serializable, NetSerializable]
+public sealed class TeleporterActivateBeaconMessage(TeleportPoint beacon, bool send) : BoundUserInterfaceMessage
 {
-    public NetEntity Link = link;
+    public TeleportPoint Beacon = beacon;
     public bool Send = send;
 }

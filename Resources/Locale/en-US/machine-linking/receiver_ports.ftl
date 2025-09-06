@@ -93,8 +93,8 @@ signal-port-description-logic-enable = Only loads the input signal into the memo
 signal-port-name-teleport-receiver = Teleporter
 signal-port-description-teleportr-receiver = Teleporter signal receiver
 
-signal-port-name-teleport-sender = Console
-signal-port-description-teleport-sender = Teleporter console signal sender
+signal-port-name-teleport-beacon-receiver = Console
+signal-port-description-teleport-beacon-receiver = Teleport Beacon coordinate signal receiver
 
 signal-port-name-surgery-ui-sink = Surgery Scanner Sink
 signal-port-description-surgery-ui-sink = Surgery scanner body sink.

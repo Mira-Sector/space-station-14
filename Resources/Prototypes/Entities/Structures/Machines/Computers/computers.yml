@@ -1626,6 +1626,9 @@
     range: 10
     ports:
       - TeleportSender
+  - type: DeviceLinkSink
+    ports:
+      - TeleportBeaconReceiver
   - type: TeleporterConsole
   - type: ActiveRadio
     channels:

@@ -13,7 +13,7 @@
   id: FultonBeacon
   parent: BaseFoldable
   name: fulton beacon
-  description: Beacon to receive fulton extractions, can be linked to teleporters to allow them to target it.
+  description: Beacon to receive fulton extractions.
   components:
     - type: Physics
       bodyType: Dynamic
@@ -38,7 +38,6 @@
     - type: Clickable
     - type: InteractionOutline
     - type: FultonBeacon
-    - type: TeleporterBeacon
     - type: Appearance
     - type: GenericVisualizer
       visuals:

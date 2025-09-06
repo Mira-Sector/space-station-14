@@ -132,7 +132,11 @@
   id: TeleportReceiver
   name: signal-port-name-teleport-receiver
   description: signal-port-description-teleport-receiver
-  defaultLinks: [ TeleportSender ]
+
+- type: sinkPort
+  id: TeleportBeaconReceiver
+  name: signal-port-name-teleport-beacon-receiver
+  description: signal-port-description-teleport-beacon-receiver
 
 - type: sinkPort
   id: SurgeryUiSink

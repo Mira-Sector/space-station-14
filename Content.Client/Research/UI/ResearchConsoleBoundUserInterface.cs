@@ -21,6 +21,9 @@ public sealed class ResearchConsoleBoundUserInterface : BoundUserInterface
         base.Open();
 
         var owner = Owner;
+        var logMan = IoCManager.Resolve<ILogManager>();
+        var log = logMan.RootSawmill;
+        log.Debug($"ScienceUI");
 
         _consoleMenu = this.CreateWindow<ResearchConsoleMenu>();
         _consoleMenu.SetEntity(owner);

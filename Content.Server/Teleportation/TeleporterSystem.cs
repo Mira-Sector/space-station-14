@@ -16,31 +16,44 @@ public sealed class TeleporterSystem : SharedTeleporterSystem
     {
         base.Initialize();
 
-        Log.Debug("Server Teleporter Online");
-
-        SubscribeLocalEvent<TeleporterComponent, ActivateInWorldEvent>(OnInteract);
-        SubscribeLocalEvent<TeleporterComponent, TeleporterActivateMessage>(OnConsoleActivate);
+        //SubscribeLocalEvent<TeleporterComponent, TeleporterActivateMessage>(OnConsoleActivate);
         //SubscribeLocalEvent<TeleportOnTrigger, TriggerEvent>(OnTeleport);
+        SubscribeLocalEvent<TeleporterComponent, TeleporterActivateMessage>(TeleportCustom);
+        SubscribeLocalEvent<TeleporterComponent, TeleporterActivateBeaconMessage>(TeleportBeacon);
         //GotEmaggedEvent
     }
-    private void OnConsoleActivate(Entity<TeleporterComponent> ent, ref TeleporterActivateMessage args)
+
+    public override void Update(float frameTime)
     {
-        (ent.Comp.Tpx, ent.Comp.Tpy) = args.Coords;
-        ent.Comp.TeleportSend = args.Send;
+        base.Update(frameTime);
+
+        var query = EntityQueryEnumerator<TeleporterComponent>();
+        while (query.MoveNext(out var uid, out var teleporter))
+        {
+            if (teleporter.ReadyToTeleport.TotalSeconds <= 0)
+                continue;
+
+            teleporter.ReadyToTeleport -= TimeSpan.FromSeconds(frameTime);
+        }
+    }
+
+    public void TeleportBeacon(Entity<TeleporterComponent> ent, ref TeleporterActivateBeaconMessage args)
+    {
         Teleport(ent);
     }
 
-    private void OnInteract(Entity<TeleporterComponent> ent, ref ActivateInWorldEvent args)
+    public void TeleportCustom(Entity<TeleporterComponent> ent, ref TeleporterActivateMessage args)
     {
-        var tp = Transform(ent);
-        var coords = _transform.ToMapCoordinates(tp.Coordinates);
-        (ent.Comp.Tpx, ent.Comp.Tpy) = (coords.X + 5, coords.Y + 5);
-        ent.Comp.TeleportSend = !ent.Comp.TeleportSend;
         Teleport(ent);
     }
 
     public void Teleport(Entity<TeleporterComponent> ent)
     {
+        if (ent.Comp.ReadyToTeleport.TotalSeconds > 0) //nuh uh
+            return;
+
+        ent.Comp.ReadyToTeleport = ent.Comp.ChargeDuration;
+
         var startEffect = ent.Comp.TeleportFromEffect; //default Send teleport, Teleporter to Target
         var endEffect = ent.Comp.TeleportToEffect;
 
@@ -62,11 +75,11 @@ public sealed class TeleporterSystem : SharedTeleporterSystem
             Log.Debug("Teleporter Start Portal did not have TwoStageTriggerComponent");
             return;
         }
-        tpStart.TriggerDelay = ent.Comp.ChargeDuration; //set duration to component-specific time
+        tpStart.TriggerDelay = ent.Comp.ChargeDuration; //set duration to component-specific time*/
 
-        Log.Debug($"{ent.Comp.Tpx.ToString()},{ent.Comp.Tpx.ToString()}");
+        //Log.Debug($"{ent.Comp.Tpx.ToString()},{ent.Comp.Tpx.ToString()}");
 
-        var tpCoords = new MapCoordinates(ent.Comp.Tpx, ent.Comp.Tpy, tp.MapID); //coordinates of target, need to be able to replace MapId for beacons
+        var tpCoords = ent.Comp.Target; //coordinates of target, need to be able to replace MapId for beacons
 
         Spawn(ent.Comp.TeleportStartEffect, tpCoords); //flash start effect
         var endPortal = Spawn(endEffect, tpCoords); //put second portal on target GPS Coords or Entity.
@@ -77,7 +90,7 @@ public sealed class TeleporterSystem : SharedTeleporterSystem
             Log.Debug("Teleporter End Portal did not have TwoStageTriggerComponent");
             return;
         }
-        tpEnd.TriggerDelay = ent.Comp.ChargeDuration; //set duration to component-specific time
+        tpEnd.TriggerDelay = ent.Comp.ChargeDuration; //set duration to component-specific time*/
 
         if (ent.Comp.TeleportSend == true)
         {

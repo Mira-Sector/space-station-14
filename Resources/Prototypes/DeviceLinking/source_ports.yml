@@ -170,6 +170,12 @@
   defaultLinks: [ TeleportReceiver ]
 
 - type: sourcePort
+  id: TeleportBeaconSender
+  name: signal-port-name-teleport-beacon-sender
+  description: signal-port-description-teleport-beacon-sender
+  defaultLinks: [ TeleportBeaconReceiver ]
+
+- type: sourcePort
   id: SurgeryUiSource
   name: signal-port-name-surgery-ui-source
   description: signal-port-description-surgery-ui-source

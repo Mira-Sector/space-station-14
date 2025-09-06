@@ -34,4 +34,7 @@ public sealed partial class TeleporterConsoleComponent : Component
     [DataField]
     public ProtoId<SourcePortPrototype> LinkingPort = "TeleportSender";
 
+    [ViewVariables]
+    public HashSet<TeleportPoint> BeaconList = new();
+
 }

@@ -6,6 +6,7 @@ using Robust.Client.UserInterface;
 using Content.Shared.Destructible;
 namespace Content.Client.Teleportation.Ui;
 
+
 public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
 {
     [ViewVariables]
@@ -15,9 +16,11 @@ public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
     {
     }
 
-    public readonly string ErrInsufficient = Loc.GetString("teleporter-summary-insufficient");
-    public readonly string ErrReady = Loc.GetString("teleporter-summary-custom");
-    public readonly string ErrBigRange = Loc.GetString("teleporter-summary-bigrange");
+    public readonly string SumInsufficient = Loc.GetString("teleporter-summary-insufficient");
+    public readonly string SumBigRange = Loc.GetString("teleporter-summary-bigrange");
+    public readonly string SumReady = Loc.GetString("teleporter-summary-custom");
+    public readonly string SumBeacon = Loc.GetString("teleporter-summary-beacon");
+
     protected override void Open()
     {
         base.Open();
@@ -32,79 +35,111 @@ public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
             var (uid, meta) = EntMan.GetEntityData(teleComp.LinkedTeleporter ?? NetEntity.Invalid);
             _menu.LinkedTeleporter = meta.EntityName;
         }
+
         int coordX = 0;
         int coordY = 0;
         bool coordXValid = false;
         bool coordYValid = false;
+        bool beaconValid = false;
+        TeleportPoint selectedBeacon = new TeleportPoint();
+        var logMan = IoCManager.Resolve<ILogManager>();
+        var log = logMan.RootSawmill;
+        log.Debug($"UI");
+        _menu.UpdateTeleportButtons(false);
+        _menu.Beacons = teleComp.BeaconList;
+        _menu.AddBeaconButtons();
 
-        //_menu.BeaconList = teleComp.BeaconList;
-        //_menu.AddBeaconButtons();
         _menu.OnCoordsXChanged += (text) =>
         {
+            beaconValid = false;
             if (int.TryParse(text, out int coord)) //check if valid integer, if not, purge!
             {
                 if (Math.Abs(coord) < teleComp.MaxRange) //limit maximum value, currently absolute coordinate value rather than actual range.
                 {
                     coordX = coord;
                     coordXValid = true;
-                    if (coordYValid)
-                        _menu.UpdateTeleportSummary(ErrReady + CoordString(coordX, coordY)); //both are valid, so indicate ready to teleport
                 }
                 else
                 {
                     _menu.SetCoordsX("");
+                    _menu.UpdateTeleportSummary(SumBigRange + " " + teleComp.MaxRange.ToString());
                     coordYValid = false;
-                    _menu.UpdateTeleportSummary(ErrBigRange + " " + teleComp.MaxRange.ToString());
+
                 }
             }
             else
             {
                 _menu.SetCoordsX("");
-                _menu.UpdateTeleportSummary(ErrInsufficient);
+                _menu.UpdateTeleportSummary(SumInsufficient);
                 coordYValid = false;
             }
+
+            if (coordXValid && coordYValid)
+                _menu.UpdateTeleportSummary(SumReady + CoordString(coordX, coordY)); //both are valid, so indicate ready to teleport
+
+            _menu.UpdateTeleportButtons(coordXValid && coordYValid);
         };
 
         _menu.OnCoordsYChanged += (text) =>
         {
+            beaconValid = false;
             if (int.TryParse(text, out int coord)) //check if valid integer, if not, purge!
             {
                 if (Math.Abs(coord) < teleComp.MaxRange) //limit maximum value, currently absolute coordinate value rather than actual range.
                 {
                     coordY = coord;
                     coordYValid = true;
-                    if (coordXValid)
-                        _menu.UpdateTeleportSummary(ErrReady + CoordString(coordX, coordY)); //both are valid, so indicate ready to teleport
                 }
                 else
                 {
                     _menu.SetCoordsY("");
-                    _menu.UpdateTeleportSummary(ErrBigRange + " " + teleComp.MaxRange.ToString());
+                    _menu.UpdateTeleportSummary(SumBigRange + " " + teleComp.MaxRange.ToString());
                     coordYValid = false;
                 }
             }
             else
             {
                 _menu.SetCoordsY("");
-                _menu.UpdateTeleportSummary(ErrInsufficient);
+                _menu.UpdateTeleportSummary(SumInsufficient);
                 coordYValid = false;
             }
+
+            if (coordXValid && coordYValid)
+                _menu.UpdateTeleportSummary(SumReady + CoordString(coordX, coordY)); //both are valid, so indicate ready to teleport
+
+            _menu.UpdateTeleportButtons(coordXValid && coordYValid);
         };
 
-        _menu.SendClicked += (link, send) =>
+        _menu.SendClicked += (send) =>
         { //for beacons have an if that is true if beacon selected and false if not. If true, use a seperate activate message.
             if (coordXValid == true && coordYValid == true) //require values to be input before teleport can be sent
                 SendPredictedMessage(new TeleporterActivateMessage(new Vector2(coordX, coordY), send));
             else
-                _menu.UpdateTeleportSummary(ErrInsufficient);
+            {
+                if (beaconValid == true)
+                    SendPredictedMessage(new TeleporterActivateBeaconMessage(selectedBeacon, send));
+            }
         };
 
-        _menu.ReceiveClicked += (link, send) =>
+        _menu.ReceiveClicked += (send) =>
         {
             if (coordXValid == true && coordYValid == true) //require values to be input before teleporter can be sent
                 SendPredictedMessage(new TeleporterActivateMessage(new Vector2(coordX, coordY), send));
             else
-                _menu.UpdateTeleportSummary(ErrInsufficient);
+            {
+                if (beaconValid == true)
+                    SendPredictedMessage(new TeleporterActivateBeaconMessage(selectedBeacon, send));
+            }
+        };
+
+        _menu.BeaconClicked += (beacon) =>
+        {
+            _menu.SetCoordsX(""); _menu.SetCoordsY("");
+            coordXValid = false; coordYValid = false;
+            _menu.UpdateTeleportButtons(true);
+            _menu.UpdateTeleportSummary(SumBeacon + " " + beacon.Location);
+            beaconValid = true;
+            selectedBeacon = beacon;
         };
 
     }
