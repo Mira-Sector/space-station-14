@@ -1,0 +1,92 @@
+- type: entity
+  id: BaseTeleportEffect
+  abstract: true
+  components:
+  - type: Clickable
+  - type: TriggerOnSpawn
+  - type: TwoStageTrigger
+    triggerDelay: 5 #gets replaced by TeleporterSystem
+    components:
+    #- type: TeleportOnTrigger #TeleportOnTrigger gets specifically added by TeleportSystem, for some reason it doesn't accept new targets if it already exists
+    - type: SoundOnTrigger #sound gets drowned out by the baseline EffectFlashTeleportFinish so this is here for more covert teleports.
+      removeOnTrigger: true
+      sound:
+        path: /Audio/Effects/Grenades/Supermatter/supermatter_start.ogg
+        volume: 5
+    - type: SpawnOnTrigger
+      proto: EffectFlashTeleportFinish #gets replaced by TeleporterSystem
+    - type: DeleteOnTrigger
+
+- type: entity
+  id: TeleportToEffect
+  parent: BaseTeleportEffect
+  name: bluespace distortion
+  description: Something's about to arrive...
+  components:
+  - type: SoundOnTrigger
+    removeOnTrigger: true
+    sound:
+      path: /Audio/Effects/Grenades/Supermatter/whitehole_start.ogg
+      volume: 5
+  - type: AnchorOnTrigger
+    removeOnTrigger: true
+  - type: WarpPoint #it's there if you can catch it for the few seconds it'll exist
+    location: Teleportation Warp Point
+    follow: true
+  - type: AmbientSound
+    enabled: true
+    volume: -5
+    range: 10
+    sound:
+      path: /Audio/Effects/Grenades/Supermatter/whitehole_loop.ogg
+  - type: GravityWell
+    maxRange: 2.5
+    baseRadialAcceleration: -1
+    baseTangentialAcceleration: -0.25
+    gravPulsePeriod: 0.03
+  - type: SingularityDistortion
+    intensity: -75
+    falloffPower: 1.5
+  - type: PointLight
+    enabled: true
+    color: "#ffffff"
+    energy: 5
+    radius: 5
+    softness: 1
+    offset: "0, 0"
+
+- type: entity
+  id: TeleportFromEffect
+  parent: BaseTeleportEffect
+  name: bluespace distortion
+  description: Reality pushed through a pinhole.
+  components:
+    - type: SoundOnTrigger
+      removeOnTrigger: true
+      sound:
+        path: /Audio/Effects/Grenades/Supermatter/supermatter_start.ogg
+        volume: 5
+    - type: AnchorOnTrigger
+      removeOnTrigger: true
+    - type: AmbientSound
+      enabled: true
+      volume: -5
+      range: 10
+      sound:
+        path: /Audio/Effects/Grenades/Supermatter/supermatter_loop.ogg
+    - type: GravityWell
+      maxRange: 2.5
+      baseRadialAcceleration: 1
+      baseTangentialAcceleration: 0.25
+      gravPulsePeriod: 0.03
+      minRange: 0.075
+    - type: SingularityDistortion
+      intensity: 75
+      falloffPower: 1.5
+    - type: PointLight
+      enabled: true
+      color: "#ffaa44"
+      energy: 5
+      radius: 5
+      softness: 1
+      offset: "0, 0"

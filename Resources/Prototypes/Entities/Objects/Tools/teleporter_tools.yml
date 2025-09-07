@@ -1,0 +1,67 @@
+- type: entity
+  id: BaseTeleportBeacon #for items that can act as beacons
+  abstract: true
+  components:
+    - type: TeleporterBeacon
+    - type: NameIdentifier
+      group: CargoTelepads
+
+- type: entity
+  id: BaseTeleportBeaconStatic #for structures that can act as beacons
+  abstract: true
+  parent: BaseTeleportBeacon
+  components:
+    - type: DeviceList
+    - type: DeviceNetwork
+      deviceNetId: Wired
+      receiveFrequencyId: BasicDevice
+    - type: DeviceLinkSource
+      range: 20000 #can't link across different maps but should be able to function once set up?
+      ports:
+        - TeleportBeaconSender
+
+- type: entity
+  id: TeleportBeacon
+  parent: BaseTeleportBeacon
+  name: teleport beacon
+  description: Can be linked to a Teleporter Console, allowing it to be targeted over any distance. Must be anchored.
+  components:
+    - type: Physics
+      bodyType: Dynamic
+    - type: Fixtures
+      fixtures:
+        fix1:
+          shape:
+            !type:PhysShapeAabb
+            bounds: "-0.25,-0.4,0.25,0.1"
+          density: 20
+          mask:
+            - Impassable
+    - type: Item
+      size: Normal
+      inhandVisuals:
+        left:
+        - state: inhand-left-beacon
+        right:
+        - state: inhand-right-beacon
+    - type: Anchorable
+    - type: TeleporterBeacon
+      ValidBeacon: false
+    - type: Clickable
+    - type: InteractionOutline
+    - type: Appearance
+    - type: GenericVisualizer
+      visuals:
+        enum.AnchorVisuals.Anchored:
+          anchorLayer:
+            True: { state: extraction_point }
+            False: { state: folded_extraction}
+    - type: Sprite
+      sprite: Objects/Tools/fulton.rsi
+      drawdepth: SmallObjects
+      noRot: true
+      layers:
+        - state: extraction_point
+          map: [ "anchorLayer" ]
+
+
