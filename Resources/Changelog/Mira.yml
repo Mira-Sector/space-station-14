@@ -2097,3 +2097,15 @@ Entries:
     type: Add
   id: 289
   time: '2025-09-06T07:30:50.0000000+00:00'
+- author: SpiffyCodes
+  changes:
+  - message: reworked tele/camms on the map Mir.
+    type: Tweak
+  id: 289
+  time: '2025-09-07T17:28:00.0000000+00:00'
+- author: SpiffyCodes
+  changes:
+  - message: reworked cargo and salv on the map Mir.
+    type: Tweak
+  id: 289
+  time: '2025-09-07T17:28:00.0000000+00:00'
