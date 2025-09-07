@@ -20,14 +20,10 @@ public sealed partial class TeleporterConsoleUI : FancyWindow
     public event Action<string>? OnCoordsXChanged;
     public event Action<string>? OnCoordsYChanged;
 
-    public string? LinkedTeleporter;
-
     public TeleporterConsoleUI()
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
-        if (LinkedTeleporter != null)
-            LinkLabel.Text = LinkedTeleporter;
 
         //CoordsX.OnTextEntered += e => OnCoordsXChanged?.Invoke(e.Text);
         CoordsX.OnFocusExit += e => OnCoordsXChanged?.Invoke(e.Text);
@@ -55,14 +51,20 @@ public sealed partial class TeleporterConsoleUI : FancyWindow
                 TextAlign = Label.AlignMode.Right,
                 HorizontalAlignment = HAlignment.Center,
                 VerticalAlignment = VAlignment.Center,
+                HorizontalExpand = true,
                 SizeFlagsStretchRatio = 1,
-                MinSize = new Vector2(250, 20),
+                MinSize = new Vector2(300, 20),
                 ClipText = true,
             };
 
             currentButtonRef.OnPressed += _ => BeaconClicked?.Invoke(beacon);
             BeaconButtonContainer.AddChild(currentButtonRef);
         }
+    }
+
+    public void SetLinkName(string link)
+    {
+        LinkLabel.Text = link;
     }
 
     public void SetCoordsX(string x)

@@ -86,12 +86,14 @@ public abstract class SharedTeleporterBeaconSystem : EntitySystem
     {
         if (TryComp<AnchorableComponent>(ent, out var _)) //if it can be anchored, it needs to be to be valid (although if this is called on it it probably is)
             ent.Comp.ValidBeacon = args.Transform.Anchored;
+        Dirty(ent);
     }
 
     private void OnBeaconStart(Entity<TeleporterBeaconComponent> ent, ref ComponentStartup args)
     {
         if (TryComp<AnchorableComponent>(ent, out var _)) //if it can be anchored, it needs to be to be valid
             ent.Comp.ValidBeacon = Transform(ent).Anchored;
+        Dirty(ent);
     }
 
 }

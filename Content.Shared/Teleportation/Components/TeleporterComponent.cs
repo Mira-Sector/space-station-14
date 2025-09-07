@@ -16,14 +16,14 @@ public sealed partial class TeleporterComponent : Component
     /// The amount of time the teleporter charges for before teleporting
     /// </summary>
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer))]
-    [AutoNetworkedField, AutoPausedField]
+    [AutoNetworkedField, AutoPausedField, ViewVariables(VVAccess.ReadWrite)]
     public TimeSpan ChargeDuration = TimeSpan.FromSeconds(0.25);
 
     /// <summary>
     /// The amount of time after the teleporter has teleported before it can be used again
     /// </summary>
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer))]
-    [AutoNetworkedField, AutoPausedField]
+    [AutoNetworkedField, AutoPausedField, ViewVariables(VVAccess.ReadWrite)]
     public TimeSpan RechargeDuration = TimeSpan.FromSeconds(1);
 
     /// <summary>
@@ -50,6 +50,44 @@ public sealed partial class TeleporterComponent : Component
     public string TeleportFinishEffect = "EffectFlashTeleportFinish";
 
     /// <summary>
+    /// The corresponding Teleporter Console entity this teleporter is linked to.
+    /// Can be null if not linked.
+    /// </summary>
+    [DataField, ViewVariables, AutoNetworkedField]
+    public EntityUid? LinkedConsole;
+
+    /// <summary>
+    /// Marker, is teleporter ready to teleport again? If recharging indicates time left.
+    /// </summary>
+    [DataField(customTypeSerializer: typeof(TimeOffsetSerializer))]
+    [AutoNetworkedField, AutoPausedField, ViewVariables(VVAccess.ReadWrite)]
+    public TimeSpan ReadyToTeleport = TimeSpan.FromSeconds(5);
+
+    /// <summary>
+    /// Chance of an Anomalous Incident occuring from a Teleportation event. Chance is per teleporter entity.
+    /// </summary>
+    [DataField, ViewVariables]
+    public float IncidentChance = 0f;
+
+    /// <summary>
+    /// Severity Multiplier of Anomalous incidents. High Severity increases the likelyhood of very significant events.
+    /// </summary>
+    [DataField, ViewVariables]
+    public float IncidentMultiplier = 1f;
+
+    /// <summary>
+    /// Randomness of Teleportation arrival
+    /// </summary>
+    [DataField, ViewVariables]
+    public float TeleportScatterRange = 0.75f;
+
+    /// <summary>
+    /// Radius from centre of teleportation within which entities will be teleported
+    /// </summary>
+    [DataField, ViewVariables]
+    public float TeleportRadius = 1.5f;
+
+    /// <summary>
     /// TeleportFrom Entity
     /// </summary>
     public EntityUid TeleportFrom;
@@ -68,41 +106,4 @@ public sealed partial class TeleporterComponent : Component
     /// Target portal location
     /// </summary>
     public MapCoordinates Target;
-
-    /// <summary>
-    /// The corresponding Teleporter Console entity this teleporter is linked to.
-    /// Can be null if not linked.
-    /// </summary>
-    [ViewVariables, AutoNetworkedField]
-    public EntityUid? LinkedConsole;
-
-    /// <summary>
-    /// Marker, is teleporter ready to teleport again? If recharging indicates time left.
-    /// </summary>
-    [ViewVariables(VVAccess.ReadWrite)]
-    public TimeSpan ReadyToTeleport = TimeSpan.FromSeconds(5);
-
-    /// <summary>
-    /// Chance of an Anomalous Incident occuring from a Teleportation event. Chance is per teleporter entity.
-    /// </summary>
-    [DataField]
-    public float IncidentChance = 0f;
-
-    /// <summary>
-    /// Severity Multiplier of Anomalous incidents. High Severity increases the likelyhood of very significant events.
-    /// </summary>
-    [DataField]
-    public float IncidentMultiplier = 1f;
-
-    /// <summary>
-    /// Randomness of Teleportation arrival
-    /// </summary>
-    [DataField]
-    public float TeleportScatterRange = 0.75f;
-
-    /// <summary>
-    /// Radius from centre of teleportation within which entities will be teleported
-    /// </summary>
-    [DataField]
-    public float TeleportRadius = 1.5f;
 }

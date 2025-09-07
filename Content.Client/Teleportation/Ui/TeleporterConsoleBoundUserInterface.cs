@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Content.Shared.Ninja.Systems;
 using Content.Shared.Teleportation;
 using Content.Shared.Teleportation.Components;
 using Robust.Client.UserInterface;
@@ -27,10 +28,14 @@ public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
         if (!EntMan.TryGetComponent<TeleporterConsoleComponent>(Owner, out var teleComp))
             return;
 
-        if (teleComp.LinkedTeleporter != null)
+        if (teleComp.LinkedTeleporter != null) //set link name
         {
             var (uid, meta) = EntMan.GetEntityData(teleComp.LinkedTeleporter ?? NetEntity.Invalid);
-            _menu.LinkedTeleporter = meta.EntityName;
+            _menu.SetLinkName(Loc.GetString("teleporter-linked-to") + " " + meta.EntityName);
+        }
+        else
+        {
+            _menu.SetLinkName(Loc.GetString("teleporter-linked-to") + " " + Loc.GetString("teleporter-linked-default"));
         }
 
         int coordX = 0;

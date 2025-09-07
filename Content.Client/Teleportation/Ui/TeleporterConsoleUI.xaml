@@ -3,13 +3,12 @@
     xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
     xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
     Title = "{Loc 'teleporter-console-window-title'}"
-    MinSize="300 450"
-    SetSize="300 450">
-    <BoxContainer Orientation="Vertical" VerticalExpand="False" HorizontalExpand="False">
+    MinSize="350 450"
+    SetSize="350 450">
+    <BoxContainer Orientation="Vertical" VerticalExpand="False" HorizontalExpand="True">
          <BoxContainer Orientation="Horizontal">
+            <Label Name="LinkLabel" Text="{Loc 'teleporter-linked-default'}" VerticalAlignment="Top" Margin="10 5 10 0" StyleClasses="LabelSubText" />
             <SpriteView OverrideDirection="South" Scale="2 2" Name="LinkSprite" Access="Public" SetSize="16 16" />
-            <Label Text="{Loc 'teleporter-linked-to'}" VerticalAlignment="Top" StyleClasses="LabelSubText" />
-            <Label Name="LinkLabel" Text="{Loc 'teleporter-linked-default'}" VerticalAlignment="Top" StyleClasses="LabelSubText" />
         </BoxContainer>
         <Label Text="{Loc 'teleporter-coordinates-title'}" HorizontalAlignment="Center" Margin="10 5 10 0" ReservesSpace="False"/>
         <BoxContainer Orientation="Horizontal" HorizontalExpand="True" >
@@ -33,11 +32,10 @@
                 </ScrollContainer>
             </PanelContainer>
         </BoxContainer>
-        <Label Text="{Loc 'teleporter-activate-title'}" HorizontalAlignment="Center" Margin="10 5 10 0" ReservesSpace="False"/>
-        <Label Name="SummaryLabel" Text="{Loc 'teleporter-summary-insufficient'}" StyleClasses="LabelSubText" />
+        <Label Name="SummaryLabel" Text="{Loc 'teleporter-summary-insufficient'}" HorizontalAlignment="Center" Margin="10 5 10 0" StyleClasses="LabelSubText" />
         <BoxContainer Orientation="Horizontal" HorizontalAlignment="Center" HorizontalExpand="True" SizeFlagsStretchRatio="0.4">
-            <Button Name="SendToButton" Text="{Loc 'teleporter-send-button'}" MinWidth="100" MinHeight="50" Disabled = "true"/>
-            <Button Name="ReceiveFromButton" Text="{Loc 'teleporter-receive-button'}" MinWidth="100" MinHeight="50" Disabled="true"/>
+            <Button Name="SendToButton" Text="{Loc 'teleporter-send-button'}" MinWidth="100" MinHeight="50" Disabled = "true" Margin="5 5 5 5"/>
+            <Button Name="ReceiveFromButton" Text="{Loc 'teleporter-receive-button'}" MinWidth="100" MinHeight="50" Disabled="true" Margin="5 5 5 5"/>
         </BoxContainer>
     </BoxContainer>
 </controls:FancyWindow>

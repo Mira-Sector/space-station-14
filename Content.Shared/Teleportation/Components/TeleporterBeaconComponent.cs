@@ -16,6 +16,6 @@ public sealed partial class TeleporterBeaconComponent : Component
     /// <summary>
     /// Whether or not a beacon is valid for teleporters to target, might be changed for example if an anchorable beacon isn't anchored
     /// </summary>
-    [ViewVariables]
+    [DataField, ViewVariables, AutoNetworkedField]
     public bool ValidBeacon = true;
 }

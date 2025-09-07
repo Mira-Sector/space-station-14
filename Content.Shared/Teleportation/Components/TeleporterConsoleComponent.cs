@@ -32,7 +32,7 @@ public sealed partial class TeleporterConsoleComponent : Component
     [DataField]
     public ProtoId<SourcePortPrototype> LinkingPort = "TeleportSender";
 
-    [ViewVariables]
+    [DataField, ViewVariables, AutoNetworkedField]
     public HashSet<TeleportPoint> BeaconList = new();
 
     /// <summary>

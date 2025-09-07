@@ -468,9 +468,6 @@
   result: WashingMachineCircuitboard
 
 - type: latheRecipe
-  parent: [ BaseCircuitboardRecipe, BaseResearchMachineRecipeCategory ]
+  parent: [ BaseSilverCircuitboardRecipe, BaseResearchMachineRecipeCategory ]
   id: TeleporterScienceMachineCircuitboard
   result: TeleporterScienceMachineCircuitboard
-  materials:
-    Gold: 200
-    Silver: 200

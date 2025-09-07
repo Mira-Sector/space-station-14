@@ -5,6 +5,7 @@
   recipes:
   - AnomalyScanner
   - NodeScanner
+  - TeleportBeacon
 
 - type: latheRecipePack
   id: ScienceBoardsStatic

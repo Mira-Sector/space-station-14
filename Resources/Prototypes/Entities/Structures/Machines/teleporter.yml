@@ -76,7 +76,7 @@
     board: TeleporterScienceMachineCircuitboard
   - type: Teleporter
     chargeDuration: 5
-    IncidentChance: 15
+    IncidentChance: 0.15
 
 - type: entity
   id: BaseTeleportEffect
@@ -195,7 +195,7 @@
 
 - type: entity
   id: TeleportBeacon
-  parent: [BaseFoldable, BaseTeleportBeacon]
+  parent: BaseTeleportBeacon
   name: teleport beacon
   description: Can be linked to a Teleporter Console, allowing it to be targeted over any distance. Must be anchored.
   components:

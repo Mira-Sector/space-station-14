@@ -1,13 +1,11 @@
 using Content.Shared.Teleportation;
 using Content.Shared.Teleportation.Systems;
 using Content.Shared.Teleportation.Components;
-using Content.Shared.Interaction;
 using Content.Shared.Explosion.Components;
 using Content.Shared.Emag.Systems;
 using Content.Server.Explosion.Components.OnTrigger;
 using Content.Server.Radio.EntitySystems;
 using Content.Server.Pinpointer;
-using Robust.Shared.Map;
 
 namespace Content.Server.Teleportation;
 
@@ -18,6 +16,7 @@ public sealed class TeleporterSystem : SharedTeleporterSystem
     [Dependency] private readonly RadioSystem _radio = default!;
     [Dependency] private readonly EmagSystem _emag = default!;
     [Dependency] private readonly NavMapSystem _navMap = default!;
+    [Dependency] private readonly SharedMapSystem _maps = default!;
     public override void Initialize()
     {
         base.Initialize();
@@ -26,7 +25,6 @@ public sealed class TeleporterSystem : SharedTeleporterSystem
         SubscribeLocalEvent<TeleporterComponent, TeleporterActivateBeaconMessage>(TeleportBeacon);
         //GotEmaggedEvent
     }
-    
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
@@ -77,14 +75,13 @@ public sealed class TeleporterSystem : SharedTeleporterSystem
         //Prototype
         Spawn(ent.Comp.TeleportBeginEffect, tp.Coordinates); //flash start effect
         var sourcePortal = Spawn(sourceEffect, tp.Coordinates); //put source portal on Teleporter
-        if (!TryComp<TwoStageTriggerComponent>(sourcePortal, out var tpStart))
+        if (!TryComp<TwoStageTriggerComponent>(sourcePortal, out var tpStart)) //twpstagetrigger breaks all machine AI's if networked so can't dirty it.
         {
             QueueDel(sourcePortal); //no Twostagetrigger, no ride
             Log.Debug("Teleporter Start Portal did not have TwoStageTriggerComponent");
             return;
         }
         tpStart.TriggerDelay = ent.Comp.ChargeDuration; //set duration to component-specific time*/
-        Dirty(sourcePortal, tpStart);
 
         //Log.Debug($"{ent.Comp.Tpx.ToString()},{ent.Comp.Tpx.ToString()}");
 
@@ -100,7 +97,6 @@ public sealed class TeleporterSystem : SharedTeleporterSystem
             return;
         }
         tpEnd.TriggerDelay = ent.Comp.ChargeDuration; //set duration to component-specific time*/
-        Dirty(targetPortal, tpEnd);
 
         if (ent.Comp.TeleportSend == true)
         {   //send from Source to Target
@@ -146,11 +142,13 @@ public sealed class TeleporterSystem : SharedTeleporterSystem
             string proximity = _navMap.GetNearestBeaconString((targetSafe, Transform(targetSafe)));
 
             var message = Loc.GetString(
-                "teleport-console-activate",
+                "teleporter-console-activate",
                 ("send", ent.Comp.TeleportSend),
                 ("targetName", location),
-                ("target", ent.Comp.Target.Position),
-                ("proximity", proximity)
+                ("X", ent.Comp.Target.Position.X.ToString("0")),
+                ("Y", ent.Comp.Target.Position.Y.ToString("0")),
+                ("proximity", proximity),
+                ("map", _maps.TryGetMap(ent.Comp.Target.MapId, out var mapEnt) ? Name(mapEnt ?? EntityUid.Invalid) : Loc.GetString("teleporter-location-unknown"))
             );
             _radio.SendRadioMessage(console, message, consoleComp.AnnouncementChannel, console, escapeMarkup: false);
         }

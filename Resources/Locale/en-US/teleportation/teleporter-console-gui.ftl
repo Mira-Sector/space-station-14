@@ -16,7 +16,9 @@ teleporter-target-custom = target
 teleporter-console-activate = Initiating Teleportation {$send ->
     [true] to
     *[false] from
-    } {targetName} at {target}, {proximity}.
+    } {$targetName} at ({$X}, {$Y}) {$proximity} of {$map}.
+
+teleporter-location-unknown = Unknown Location
 
 teleporter-beacon-self = (Self)
 beacon-linked = Teleporter Beacon Linked

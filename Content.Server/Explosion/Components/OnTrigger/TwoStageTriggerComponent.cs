@@ -1,13 +1,12 @@
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
-using Robust.Shared.GameStates;
 
 namespace Content.Server.Explosion.Components.OnTrigger;
 
 /// <summary>
 /// After being triggered applies the specified components and runs triggers again.
 /// </summary>
-[RegisterComponent, AutoGenerateComponentPause, NetworkedComponent]
+[RegisterComponent, AutoGenerateComponentPause]
 public sealed partial class TwoStageTriggerComponent : Component
 {
     /// <summary>
