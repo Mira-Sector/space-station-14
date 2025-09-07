@@ -1,4 +1,5 @@
 using Robust.Shared.GameStates;
+using Content.Shared.Teleportation.Components; 
 
 namespace Content.Shared.Explosion.Components;
 /// <summary>
@@ -20,13 +21,14 @@ public sealed partial class TeleportOnTriggerComponent : Component
     public EntityUid? TeleportTo;
 
     /// <summary>
-    /// Randomness of Teleportation arrival
+    /// Teleporter-Specific Info to guide how teleportation will play out
+    /// if not present, a new one is generated. Useful for if this function is used outside of teleporters
     /// </summary>
-    public float TeleportScatterRange = 0.75f;
-
     [DataField]
-    public float TeleportRadius = 1.5f;
+    public TeleporterComponent Teleporter = new();
 
-    [DataField]
-    public float TeleportIncidentChance = 0.15f;
+    /// <summary>
+    /// Uid of the Teleporter if there is one, just used to sent an event home when it's all done
+    /// </summary>
+    public EntityUid? TeleporterUid;
 }

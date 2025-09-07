@@ -1,14 +1,21 @@
-//using Content.Server.Teleportation.Systems;
 using Content.Shared.Teleportation.Components;
+using Content.Shared.Construction.Components;
 using Content.Shared.DeviceLinking;
 using Content.Shared.DeviceLinking.Events;
+using Content.Shared.Emag.Systems;
 using Content.Shared.Interaction;
-using Content.Shared.Explosion.Components;
 using Content.Shared.Popups;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
+using Robust.Shared.Timing;
 
 namespace Content.Shared.Teleportation.Systems;
+
+public record struct BeforeTeleportEvent(EntityUid Teleporter, bool Cancelled = false);
+
+public record struct AfterTeleportEvent(EntityUid To, EntityUid From);
+
+public record struct TeleportIncidentEvent(float IncidentMult);
 
 public abstract class SharedTeleporterSystem : EntitySystem
 {
@@ -16,28 +23,30 @@ public abstract class SharedTeleporterSystem : EntitySystem
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] protected readonly SharedAudioSystem Audio = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly EmagSystem _emag = default!;
 
     public override void Initialize()
     {
         base.Initialize();
-        Log.Debug("Shared Teleporter Online");
-        SubscribeLocalEvent<TeleporterComponent, MapInitEvent>(OnMapInit);
 
-        //GotEmaggedEvent
-        SubscribeLocalEvent<TeleporterConsoleComponent, ComponentStartup>(OnConsoleStart);
+        SubscribeLocalEvent<TeleporterComponent, MapInitEvent>(OnMapInit);
+        SubscribeLocalEvent<TeleporterComponent, GotEmaggedEvent>(OnTeleporterEmagged);
+
         SubscribeLocalEvent<TeleporterConsoleComponent, TeleporterActivateMessage>(OnTeleportStart);
         SubscribeLocalEvent<TeleporterConsoleComponent, TeleporterActivateBeaconMessage>(OnTeleportBeaconStart);
         SubscribeLocalEvent<TeleporterConsoleComponent, NewLinkEvent>(OnNewLink);
         SubscribeLocalEvent<TeleporterConsoleComponent, PortDisconnectedEvent>(OnPortDisconnected);
-
-        SubscribeLocalEvent<TeleporterBeaconComponent, AfterInteractEvent>(OnBeaconInteract);
-        SubscribeLocalEvent<TeleporterBeaconComponent, NewLinkEvent>(OnNewBeaconLink);
+        SubscribeLocalEvent<TeleporterConsoleComponent, GotEmaggedEvent>(OnConsoleEmagged);
     }
 
     public void OnTeleportStart(Entity<TeleporterConsoleComponent> ent, ref TeleporterActivateMessage args)
     {
         if (!TryGetEntity(ent.Comp.LinkedTeleporter, out var teleNetEnt) || !TryComp<TeleporterComponent>(teleNetEnt, out var teleComp))
             return; //if no linked teleporter, can't teleport.
+
+        //if (!_timing.IsFirstTimePredicted) //prevent it getting spammed
+        //    return;
 
         var teleEnt = teleNetEnt ?? EntityUid.Invalid; //de-nullable teleNetEnt to prevent RaiseLocalEvent getting upset.
         var tp = Transform(teleEnt); //get transform of the teleporter for MapID
@@ -52,50 +61,15 @@ public abstract class SharedTeleporterSystem : EntitySystem
         if (!TryGetEntity(ent.Comp.LinkedTeleporter, out var teleNetEnt) || !TryComp<TeleporterComponent>(teleNetEnt, out var teleComp))
             return; //if no linked teleporter, can't teleport.
 
+        //if (!_timing.IsFirstTimePredicted) //prevent it getting spammed
+        //    return;
+
         var teleEnt = teleNetEnt ?? EntityUid.Invalid; //de-nullable teleNetEnt to prevent RaiseLocalEvent getting upset.
         var tp = Transform(GetEntity(args.Beacon.TelePoint)); //get transform of the beacon
         teleComp.Target = _transform.ToMapCoordinates(tp.Coordinates); //coordinates of target, need to be able to replace MapId for beacons
         teleComp.TeleportSend = args.Send;
         Dirty(teleEnt, teleComp);
         RaiseLocalEvent(teleEnt, args);
-    }
-
-    private void OnBeaconInteract(Entity<TeleporterBeaconComponent> ent, ref AfterInteractEvent args)
-    {
-        if (args.Target == null || args.Handled || !args.CanReach)
-            return;
-
-        args.Handled = true;
-
-        if (TryComp<TeleporterConsoleComponent>(args.Target, out var console))
-        {
-            var newBeacon = new TeleportPoint(Name(ent.Owner), GetNetEntity(ent.Owner));
-            if (!console.BeaconList.Contains(newBeacon))
-            {
-                console.BeaconList.Add(newBeacon);
-                Audio.PlayPvs(ent.Comp.LinkSound, ent.Owner);
-                _popup.PopupEntity(Loc.GetString("beacon-linked"), ent.Owner, args.User);
-            }
-            else
-            {
-                //console.BeaconList.Remove(newBeacon); //if name of beacon has changed, won't clear.
-                //Audio.PlayPvs(ent.Comp.LinkSound, ent.Owner);
-                //_popup.PopupEntity(Loc.GetString("beacon-unlinked"), ent.Owner, args.User);
-            }
-
-            Dirty(args.Target ?? EntityUid.Invalid, console); //denullable to make happy, if args.Target was actually null it shouldn't get here.
-            Dirty(ent);
-            Log.Debug($"{args.Handled} {args.Target} {ent}");
-        }
-    }
-
-    private void OnConsoleStart(Entity<TeleporterConsoleComponent> ent, ref ComponentStartup args)
-    {
-        if (TryComp<TeleporterBeaconComponent>(ent, out var beacon)) //if entity is both a console and a beacon, adds itself to its own beaconlist.
-        {
-            ent.Comp.BeaconList.Add(new TeleportPoint(Name(ent) + " " + Loc.GetString("teleporter-beacon-self"), GetNetEntity(ent)));
-            Dirty(ent, beacon);
-        }
     }
 
     private void OnMapInit(Entity<TeleporterComponent> ent, ref MapInitEvent args) //stolen from SharedArtifactAnalyzerSystem
@@ -113,17 +87,6 @@ public abstract class SharedTeleporterSystem : EntitySystem
             Dirty(source, console);
             Dirty(ent);
             break;
-        }
-    }
-
-    private void OnNewBeaconLink(Entity<TeleporterBeaconComponent> ent, ref NewLinkEvent args)
-    {
-        Log.Debug($"{args.Sink}");
-        if (TryComp<TeleporterConsoleComponent>(args.Sink, out var beacon)) //link teleporter beacon to teleporter console
-        { //adds both if link has teleportercomponent and teleporterbeaconcomponent?
-            beacon.BeaconList.Add(new TeleportPoint(Name(args.Sink), GetNetEntity(args.Sink)));
-            Dirty(args.Sink, beacon);
-            Dirty(ent);
         }
     }
 
@@ -153,5 +116,29 @@ public abstract class SharedTeleporterSystem : EntitySystem
             ent.Comp.LinkedTeleporter = null;
             Dirty(ent);
         }
+    }
+    private void OnConsoleEmagged(Entity<TeleporterConsoleComponent> ent, ref GotEmaggedEvent args)
+    {
+        if (!_emag.CompareFlag(args.Type, EmagType.Interaction))
+            return;
+
+        if (_emag.CheckFlag(ent, EmagType.Interaction))
+            return;
+
+        args.Handled = true;
+    }
+
+    private void OnTeleporterEmagged(Entity<TeleporterComponent> ent, ref GotEmaggedEvent args)
+    {
+        if (!_emag.CompareFlag(args.Type, EmagType.Interaction))
+            return;
+
+        if (_emag.CheckFlag(ent, EmagType.Interaction))
+            return;
+
+        ent.Comp.IncidentChance = 1; //makes teleportation spicy
+        ent.Comp.IncidentMultiplier = 2;
+
+        args.Handled = true;
     }
 }

@@ -1,11 +1,9 @@
 ﻿using System.Numerics;
-using System.Collections.Immutable;
 using Content.Shared.Teleportation;
 using Content.Shared.Teleportation.Components;
 using Robust.Client.UserInterface;
-using Content.Shared.Destructible;
-namespace Content.Client.Teleportation.Ui;
 
+namespace Content.Client.Teleportation.Ui;
 
 public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
 {
@@ -15,7 +13,6 @@ public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
     public TeleporterConsoleBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
     }
-
     public readonly string SumInsufficient = Loc.GetString("teleporter-summary-insufficient");
     public readonly string SumBigRange = Loc.GetString("teleporter-summary-bigrange");
     public readonly string SumReady = Loc.GetString("teleporter-summary-custom");
@@ -42,11 +39,9 @@ public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
         bool coordYValid = false;
         bool beaconValid = false;
         TeleportPoint selectedBeacon = new TeleportPoint();
-        var logMan = IoCManager.Resolve<ILogManager>();
-        var log = logMan.RootSawmill;
-        log.Debug($"UI");
+
         _menu.UpdateTeleportButtons(false);
-        _menu.Beacons = teleComp.BeaconList;
+        _menu.Beacons = GetValidBeacons(teleComp.BeaconList);
         _menu.AddBeaconButtons();
 
         _menu.OnCoordsXChanged += (text) =>
@@ -143,10 +138,24 @@ public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
         };
 
     }
-
     public string CoordString(int x, int y)
     {
         return " (" + x.ToString() + ", " + y.ToString() + ")";
+    }
+
+    public HashSet<TeleportPoint> GetValidBeacons(HashSet<TeleportPoint> totalList) //get valid beacons only, also make sure beacons exist!
+    {
+        HashSet<TeleportPoint> validList = new();
+        foreach (var beacon in totalList)
+        {
+            if (!EntMan.TryGetEntity(beacon.TelePoint, out var beaconEnt)) //does the entity exist?
+                continue;
+            if (!EntMan.TryGetComponent<TeleporterBeaconComponent>(beaconEnt, out var beaconComp)) //if it does, does the component exist?
+                continue;
+            if (beaconComp.ValidBeacon) //if it does, is it a valid beacon?
+                validList.Add(beacon);
+        }
+        return validList;
     }
 
 }

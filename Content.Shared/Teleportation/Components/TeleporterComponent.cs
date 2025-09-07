@@ -17,14 +17,14 @@ public sealed partial class TeleporterComponent : Component
     /// </summary>
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer))]
     [AutoNetworkedField, AutoPausedField]
-    public TimeSpan ChargeDuration = TimeSpan.FromSeconds(5);
+    public TimeSpan ChargeDuration = TimeSpan.FromSeconds(0.25);
 
     /// <summary>
     /// The amount of time after the teleporter has teleported before it can be used again
     /// </summary>
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer))]
     [AutoNetworkedField, AutoPausedField]
-    public TimeSpan RechargeDuration = TimeSpan.FromSeconds(10);
+    public TimeSpan RechargeDuration = TimeSpan.FromSeconds(1);
 
     /// <summary>
     /// Entity Spawned at Teleport Start Point
@@ -41,13 +41,13 @@ public sealed partial class TeleporterComponent : Component
     /// Effect produced when teleport entities spawn
     /// </summary>
     [DataField]
-    public string TeleportStartEffect = "EffectGravityPulse";
+    public string TeleportBeginEffect = "EffectGravityPulse";
 
     /// <summary>
-    /// Effect produced when teleport ends
+    /// Effect produced when teleport finishes
     /// </summary>
     [DataField]
-    public string TeleportEndEffect = "EffectFlashTeleportFinish";
+    public string TeleportFinishEffect = "EffectFlashTeleportFinish";
 
     /// <summary>
     /// TeleportFrom Entity
@@ -64,6 +64,9 @@ public sealed partial class TeleporterComponent : Component
     /// </summary>
     public bool TeleportSend = true;
 
+    /// <summary>
+    /// Target portal location
+    /// </summary>
     public MapCoordinates Target;
 
     /// <summary>
@@ -78,4 +81,28 @@ public sealed partial class TeleporterComponent : Component
     /// </summary>
     [ViewVariables(VVAccess.ReadWrite)]
     public TimeSpan ReadyToTeleport = TimeSpan.FromSeconds(5);
+
+    /// <summary>
+    /// Chance of an Anomalous Incident occuring from a Teleportation event. Chance is per teleporter entity.
+    /// </summary>
+    [DataField]
+    public float IncidentChance = 0f;
+
+    /// <summary>
+    /// Severity Multiplier of Anomalous incidents. High Severity increases the likelyhood of very significant events.
+    /// </summary>
+    [DataField]
+    public float IncidentMultiplier = 1f;
+
+    /// <summary>
+    /// Randomness of Teleportation arrival
+    /// </summary>
+    [DataField]
+    public float TeleportScatterRange = 0.75f;
+
+    /// <summary>
+    /// Radius from centre of teleportation within which entities will be teleported
+    /// </summary>
+    [DataField]
+    public float TeleportRadius = 1.5f;
 }

@@ -1,8 +1,10 @@
-﻿<DefaultWindow xmlns="https://spacestation14.io"
-            xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
-            Title = "{Loc 'teleporter-console-window-title'}"
-            MinSize="300 450"
-            SetSize="300 450">
+﻿<controls:FancyWindow 
+    xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    Title = "{Loc 'teleporter-console-window-title'}"
+    MinSize="300 450"
+    SetSize="300 450">
     <BoxContainer Orientation="Vertical" VerticalExpand="False" HorizontalExpand="False">
          <BoxContainer Orientation="Horizontal">
             <SpriteView OverrideDirection="South" Scale="2 2" Name="LinkSprite" Access="Public" SetSize="16 16" />
@@ -38,4 +40,4 @@
             <Button Name="ReceiveFromButton" Text="{Loc 'teleporter-receive-button'}" MinWidth="100" MinHeight="50" Disabled="true"/>
         </BoxContainer>
     </BoxContainer>
-</DefaultWindow>
+</controls:FancyWindow>

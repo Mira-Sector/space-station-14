@@ -12,6 +12,12 @@ teleporter-summary-bigrange = Teleport Coordinates too large, maximum
 teleporter-summary-custom = Targeting Location:
 teleporter-summary-beacon = Targeting Beacon:
 
+teleporter-target-custom = target
+teleporter-console-activate = Initiating Teleportation {$send ->
+    [true] to
+    *[false] from
+    } {targetName} at {target}, {proximity}.
+
 teleporter-beacon-self = (Self)
 beacon-linked = Teleporter Beacon Linked
 beacon-unlinked = Teleporter Beacon Unlinked

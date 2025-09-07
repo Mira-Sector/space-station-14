@@ -66,7 +66,6 @@
   - type: LitOnPowered
   - type: Teleporter
 
-
 - type: entity
   id: TeleporterScience
   parent: [BaseTeleporter, BaseTeleportBeaconStatic]
@@ -76,14 +75,14 @@
   - type: Machine
     board: TeleporterScienceMachineCircuitboard
   - type: Teleporter
-    tpx: 5
-    chargeDuration: 15
-
+    chargeDuration: 5
+    IncidentChance: 15
 
 - type: entity
   id: BaseTeleportEffect
   abstract: true
   components:
+  - type: Clickable
   - type: TriggerOnSpawn
   - type: TwoStageTrigger
     triggerDelay: 5 #gets replaced by TeleporterSystem
@@ -111,7 +110,7 @@
       volume: 5
   - type: AnchorOnTrigger
     removeOnTrigger: true
-  - type: WarpPoint
+  - type: WarpPoint #it's there if you can catch it for the few seconds it'll exist
     location: Teleportation Warp Point
     follow: true
   - type: AmbientSound
@@ -198,7 +197,7 @@
   id: TeleportBeacon
   parent: [BaseFoldable, BaseTeleportBeacon]
   name: teleport beacon
-  description: Can be linked to a Teleporter Console, allowing it to be targeted over any distance.
+  description: Can be linked to a Teleporter Console, allowing it to be targeted over any distance. Must be anchored.
   components:
     - type: Physics
       bodyType: Dynamic
@@ -218,23 +217,24 @@
         - state: inhand-left-beacon
         right:
         - state: inhand-right-beacon
-    - type: Foldable
-      folded: true
+    - type: Anchorable
+    - type: TeleporterBeacon
+      ValidBeacon: false
     - type: Clickable
     - type: InteractionOutline
     - type: Appearance
     - type: GenericVisualizer
       visuals:
-        enum.FoldedVisuals.State:
-          foldedLayer:
-            True: { state: folded_extraction }
-            False: { state: extraction_point }
+        enum.AnchorVisuals.Anchored:
+          anchorLayer:
+            True: { state: extraction_point }
+            False: { state: folded_extraction}
     - type: Sprite
       sprite: Objects/Tools/fulton.rsi
       drawdepth: SmallObjects
       noRot: true
       layers:
         - state: extraction_point
-          map: [ "foldedLayer" ]
+          map: [ "anchorLayer" ]
 
 

@@ -1,4 +1,5 @@
 using Content.Shared.DeviceLinking;
+using Content.Shared.Radio;
 using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
 using Robust.Shared.GameStates;
@@ -25,9 +26,6 @@ public sealed partial class TeleporterConsoleComponent : Component
     [DataField]
     public SoundSpecifier? TeleportRechargedSound = new SoundPathSpecifier("/Audio/Machines/scan_finish.ogg");
 
-    [DataField]
-    public SoundSpecifier? TeleportBeginSound = new SoundPathSpecifier("/Audio/Machines/scan_finish.ogg");
-
     /// <summary>
     /// The machine linking port for the Teleporter
     /// </summary>
@@ -36,5 +34,11 @@ public sealed partial class TeleporterConsoleComponent : Component
 
     [ViewVariables]
     public HashSet<TeleportPoint> BeaconList = new();
+
+    /// <summary>
+    /// The radio channel that that teleporation events are broadcast to
+    /// </summary>
+    [DataField, ViewVariables(VVAccess.ReadWrite)]
+    public ProtoId<RadioChannelPrototype> AnnouncementChannel = "Science";
 
 }
