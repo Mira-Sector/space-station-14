@@ -33,7 +33,7 @@ public abstract class SharedTeleporterBeaconSystem : EntitySystem
         }
     }
 
-    private void OnBeaconInteract(Entity<TeleporterBeaconComponent> ent, ref AfterInteractEvent args)
+    private void OnBeaconInteract(Entity<TeleporterBeaconComponent> ent, ref AfterInteractEvent args) //when beacon is used on a console, add it to the console's beaconlist
     {
         if (args.Target == null || args.Handled || !args.CanReach)
             return;
@@ -43,7 +43,7 @@ public abstract class SharedTeleporterBeaconSystem : EntitySystem
         if (!_timing.IsFirstTimePredicted) //prevent it getting spammed
             return;
 
-        if (TryComp<TeleporterConsoleComponent>(args.Target, out var console))
+        if (TryComp<TeleporterConsoleComponent>(args.Target, out var console)) //does target have consolecomponent
         {
             var newBeacon = new TeleportPoint(Name(ent.Owner), GetNetEntity(ent.Owner));
             var present = false;
@@ -51,30 +51,29 @@ public abstract class SharedTeleporterBeaconSystem : EntitySystem
             {
                 if (beacon.TelePoint == newBeacon.TelePoint)
                     present = true;
-            }
+            } //check all netentities in beaconlist to see if the interafcter is already there.
 
-            if (present == false)
+            if (present == false) //if not found, add to beaconlist
             {
                 console.BeaconList.Add(newBeacon);
                 Audio.PlayPvs(ent.Comp.LinkSound, ent.Owner);
                 _popup.PopupEntity(Loc.GetString("beacon-linked"), ent.Owner, args.User);
             }
-            else
+            else //if found, remove from beaconlist
             {
                 console.BeaconList.Remove(newBeacon);
                 Audio.PlayPvs(ent.Comp.LinkSound, ent.Owner);
                 _popup.PopupEntity(Loc.GetString("beacon-unlinked"), ent.Owner, args.User);
             }
-            Log.Debug($"{args.Handled} {args.Target} {ent}");
+
             Dirty(args.Target ?? EntityUid.Invalid, console); //denullable to make happy, if args.Target was actually null it shouldn't get here.
             Dirty(ent);
         }
     }
     private void OnNewBeaconLink(Entity<TeleporterBeaconComponent> ent, ref NewLinkEvent args) //links added via link system, used for static objects
     {
-        Log.Debug($"{args.Sink} {args.Source}");
         if (TryComp<TeleporterConsoleComponent>(args.Sink, out var beacon)) //link teleporter beacon to teleporter console
-        { //adds both if link has teleportercomponent and teleporterbeaconcomponent?
+        {
             beacon.BeaconList.Add(new TeleportPoint(Name(ent.Owner), GetNetEntity(ent.Owner)));
             Audio.PlayPvs(ent.Comp.LinkSound, ent.Owner);
             Dirty(args.Sink, beacon);
@@ -82,7 +81,7 @@ public abstract class SharedTeleporterBeaconSystem : EntitySystem
         }
     }
 
-    private void OnAnchorChange(Entity<TeleporterBeaconComponent> ent, ref AnchorStateChangedEvent args)
+    private void OnAnchorChange(Entity<TeleporterBeaconComponent> ent, ref AnchorStateChangedEvent args) 
     {
         if (TryComp<AnchorableComponent>(ent, out var _)) //if it can be anchored, it needs to be to be valid (although if this is called on it it probably is)
             ent.Comp.ValidBeacon = args.Transform.Anchored;

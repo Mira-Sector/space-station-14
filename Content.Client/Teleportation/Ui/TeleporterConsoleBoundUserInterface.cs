@@ -31,7 +31,7 @@ public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
         if (teleComp.LinkedTeleporter != null) //set link name
         {
             var (uid, meta) = EntMan.GetEntityData(teleComp.LinkedTeleporter ?? NetEntity.Invalid);
-            _menu.SetLinkName(Loc.GetString("teleporter-linked-to") + " " + meta.EntityName);
+            _menu.SetLinkName(Loc.GetString("teleporter-linked-to") + " " + meta.EntityName); //kind of want a sprite here as well
         }
         else
         {
@@ -51,27 +51,26 @@ public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
 
         _menu.OnCoordsXChanged += (text) =>
         {
-            beaconValid = false;
+            beaconValid = false; //if typing in text, invalidate beacon teleport
             if (int.TryParse(text, out int coord)) //check if valid integer, if not, purge!
             {
                 if (Math.Abs(coord) < teleComp.MaxRange) //limit maximum value, currently absolute coordinate value rather than actual range.
                 {
                     coordX = coord;
-                    coordXValid = true;
+                    coordXValid = true; //if integer in range, valid
                 }
                 else
                 {
                     _menu.SetCoordsX("");
                     _menu.UpdateTeleportSummary(SumBigRange + " " + teleComp.MaxRange.ToString());
-                    coordYValid = false;
-
+                    coordYValid = false; //not in range, invalid
                 }
             }
             else
             {
                 _menu.SetCoordsX("");
                 _menu.UpdateTeleportSummary(SumInsufficient);
-                coordYValid = false;
+                coordYValid = false; //not integer, invalid
             }
 
             if (coordXValid && coordYValid)
@@ -82,26 +81,26 @@ public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
 
         _menu.OnCoordsYChanged += (text) =>
         {
-            beaconValid = false;
+            beaconValid = false; //if typing in text, invalidate beacon teleport
             if (int.TryParse(text, out int coord)) //check if valid integer, if not, purge!
             {
                 if (Math.Abs(coord) < teleComp.MaxRange) //limit maximum value, currently absolute coordinate value rather than actual range.
                 {
                     coordY = coord;
-                    coordYValid = true;
+                    coordYValid = true; //if integer in range, valid
                 }
                 else
                 {
                     _menu.SetCoordsY("");
                     _menu.UpdateTeleportSummary(SumBigRange + " " + teleComp.MaxRange.ToString());
-                    coordYValid = false;
+                    coordYValid = false;  //not in range, invalid
                 }
             }
             else
             {
                 _menu.SetCoordsY("");
                 _menu.UpdateTeleportSummary(SumInsufficient);
-                coordYValid = false;
+                coordYValid = false; //not integer, invalid
             }
 
             if (coordXValid && coordYValid)
@@ -134,7 +133,7 @@ public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
 
         _menu.BeaconClicked += (beacon) =>
         {
-            _menu.SetCoordsX(""); _menu.SetCoordsY("");
+            _menu.SetCoordsX(""); _menu.SetCoordsY(""); //if clicking a beacon, invalidate coordinate teleport
             coordXValid = false; coordYValid = false;
             _menu.UpdateTeleportButtons(true);
             _menu.UpdateTeleportSummary(SumBeacon + " " + beacon.Location);

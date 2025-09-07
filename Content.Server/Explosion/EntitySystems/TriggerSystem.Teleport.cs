@@ -32,13 +32,10 @@ namespace Content.Server.Explosion.EntitySystems
             var tpFrom = ent.Comp.TeleportFrom ?? ent.Owner; //denullable, shouldn't happen
             var tpTo = ent.Comp.TeleportTo ?? ent.Owner; //denullable, shouldn't happen
 
-            //Log.Debug($"from: {tpFrom.Id.ToString()}");
-            //Log.Debug($"to: {tpTo.Id.ToString()}");
-
             var entities = _lookup.GetEntitiesInRange(tpFrom, ent.Comp.Teleporter.TeleportRadius, flags: LookupFlags.Uncontained); //get everything in teleport radius range that isn't in a container
             int entCount = 0;
             int incidentCount = 0;
-            foreach (var tp in entities)
+            foreach (var tp in entities) //for each entity in list of detected entities
             {
                 if (!_physicsQuery.HasComp(tp)) //if it hasn't got physics, skip it, it's probably not meant to be teleported.
                     continue;

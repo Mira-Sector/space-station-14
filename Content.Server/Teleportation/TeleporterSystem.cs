@@ -25,7 +25,7 @@ public sealed class TeleporterSystem : SharedTeleporterSystem
         SubscribeLocalEvent<TeleporterComponent, TeleporterActivateBeaconMessage>(TeleportBeacon);
         //GotEmaggedEvent
     }
-    public override void Update(float frameTime)
+    public override void Update(float frameTime) // need to actually make this work
     {
         base.Update(frameTime);
 
@@ -51,7 +51,7 @@ public sealed class TeleporterSystem : SharedTeleporterSystem
         OnTeleportSpeak(ent, Loc.GetString("teleport-target-custom"));
     }
 
-    public void Teleport(Entity<TeleporterComponent> ent)
+    public void Teleport(Entity<TeleporterComponent> ent) //could probably move a decent chunk of this to shared but it doesn't really need predicting that much.
     {
         if (ent.Comp.ReadyToTeleport.TotalSeconds > 0) //nuh uh, we recharging
             return;
@@ -75,7 +75,7 @@ public sealed class TeleporterSystem : SharedTeleporterSystem
         //Prototype
         Spawn(ent.Comp.TeleportBeginEffect, tp.Coordinates); //flash start effect
         var sourcePortal = Spawn(sourceEffect, tp.Coordinates); //put source portal on Teleporter
-        if (!TryComp<TwoStageTriggerComponent>(sourcePortal, out var tpStart)) //twpstagetrigger breaks all machine AI's if networked so can't dirty it.
+        if (!TryComp<TwoStageTriggerComponent>(sourcePortal, out var tpStart)) //twostagetrigger breaks all machine AI's if networked so can't dirty it.
         {
             QueueDel(sourcePortal); //no Twostagetrigger, no ride
             Log.Debug("Teleporter Start Portal did not have TwoStageTriggerComponent");
@@ -128,15 +128,14 @@ public sealed class TeleporterSystem : SharedTeleporterSystem
 
     public void OnTeleportSpeak(Entity<TeleporterComponent> ent, string location) //say over radio that the teleportation is underway.
     {
-        //Loc.GetString("teleporter-initiate", send
         var console = ent.Comp.LinkedConsole ?? EntityUid.Invalid; //denullable
-        if (!TryComp<TeleporterConsoleComponent>(console, out var consoleComp))
+        if (!TryComp<TeleporterConsoleComponent>(console, out var consoleComp)) //console should be linked to get here
             return;
 
-        if (!_emag.CheckFlag(ent.Owner, EmagType.Interaction))
+        if (!_emag.CheckFlag(ent.Owner, EmagType.Interaction)) //no speak if emagged
         {
-            var target = ent.Comp.TeleportSend ? ent.Comp.TeleportTo : ent.Comp.TeleportFrom;
-            if (target == null)
+            var target = ent.Comp.TeleportSend ? ent.Comp.TeleportTo : ent.Comp.TeleportFrom; //if TeleportSend is true, TeleportTo is target, if false, TeleportFrom is target.
+            if (target == null) //null if entityUid's of TeleportTo/From not set, shouldn't happen but we cancel anyway.
                 return;
             var targetSafe = target ?? EntityUid.Invalid; //denullable
             string proximity = _navMap.GetNearestBeaconString((targetSafe, Transform(targetSafe)));
@@ -149,7 +148,7 @@ public sealed class TeleporterSystem : SharedTeleporterSystem
                 ("Y", ent.Comp.Target.Position.Y.ToString("0")),
                 ("proximity", proximity),
                 ("map", _maps.TryGetMap(ent.Comp.Target.MapId, out var mapEnt) ? Name(mapEnt ?? EntityUid.Invalid) : Loc.GetString("teleporter-location-unknown"))
-            );
+            );                                                                  //if mapEnt is null the other option would have been chosen so safe denullable
             _radio.SendRadioMessage(console, message, consoleComp.AnnouncementChannel, console, escapeMarkup: false);
         }
     }

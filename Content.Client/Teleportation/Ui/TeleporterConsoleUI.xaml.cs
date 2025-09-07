@@ -25,18 +25,15 @@ public sealed partial class TeleporterConsoleUI : FancyWindow
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
 
-        //CoordsX.OnTextEntered += e => OnCoordsXChanged?.Invoke(e.Text);
         CoordsX.OnFocusExit += e => OnCoordsXChanged?.Invoke(e.Text);
 
-        //CoordsY.OnTextEntered += e => OnCoordsYChanged?.Invoke(e.Text);
         CoordsY.OnFocusExit += e => OnCoordsYChanged?.Invoke(e.Text);
 
-        //BeaconButton.OnPressed += _ => BeaconClicked.invoke();
         SendToButton.OnPressed += _ => SendClicked?.Invoke(true);
         ReceiveFromButton.OnPressed += _ => ReceiveClicked?.Invoke(false);
     }
 
-    public void AddBeaconButtons()
+    public void AddBeaconButtons() //adds beacon buttons, these have already been checked for validity, so add away.
     {
         var logMan = IoCManager.Resolve<ILogManager>();
         var log = logMan.RootSawmill;
@@ -62,24 +59,24 @@ public sealed partial class TeleporterConsoleUI : FancyWindow
         }
     }
 
-    public void SetLinkName(string link)
+    public void SetLinkName(string link) //updates teleporter link name
     {
         LinkLabel.Text = link;
     }
 
-    public void SetCoordsX(string x)
+    public void SetCoordsX(string x) //updates X Coordinate text
     {
         CoordsX.Text = x;
     }
-    public void SetCoordsY(string y)
+    public void SetCoordsY(string y) //updates Y Coordinate text
     {
         CoordsY.Text = y;
     }
-    public void UpdateTeleportSummary(string summary)
+    public void UpdateTeleportSummary(string summary) //updates Teleport Summary
     {
         SummaryLabel.Text = summary;
     }
-    public void UpdateTeleportButtons(bool valid)
+    public void UpdateTeleportButtons(bool valid) //enables/disables teleporter buttons
     {
         SendToButton.Disabled = !valid;
         ReceiveFromButton.Disabled = !valid;

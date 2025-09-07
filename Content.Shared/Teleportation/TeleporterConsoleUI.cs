@@ -10,8 +10,10 @@ public enum TeleporterConsoleUiKey : byte
     Key
 }
 
+//Should really combine these two activate messages into a set of MapCoordinates, a send bool, and a Location name
+
 /// <summary>
-/// Sends message to request that the linked teleporter is activated if it exists.
+/// Sends message to request that the linked teleporter is activated if it exists. Teleports to a custom location.
 /// </summary>
 [Serializable, NetSerializable]
 public sealed class TeleporterActivateMessage(Vector2 coords, bool send) : BoundUserInterfaceMessage
@@ -20,6 +22,10 @@ public sealed class TeleporterActivateMessage(Vector2 coords, bool send) : Bound
     public bool Send = send;
 }
 
+
+/// <summary>
+/// Sends message to request that the linked teleporter is activated if it exists. Teleports to a beacon.
+/// </summary>
 [Serializable, NetSerializable]
 public sealed class TeleporterActivateBeaconMessage(TeleportPoint beacon, bool send) : BoundUserInterfaceMessage
 {
