@@ -4,8 +4,8 @@ meta:
   engineVersion: 264.0.0
   forkId: ""
   forkVersion: ""
-  time: 08/02/2025 18:12:40
-  entityCount: 9127
+  time: 08/14/2025 22:29:37
+  entityCount: 9124
 maps:
 - 119
 grids:
@@ -3975,146 +3975,6 @@ entities:
     - type: Transform
       pos: 56.554256,64.417366
       parent: 1
-- proto: ActionToggleBlock
-  entities:
-  - uid: 2255
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 3967
-  - uid: 2257
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 3991
-  - uid: 2281
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 3977
-  - uid: 2282
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 3978
-  - uid: 3997
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 3990
-  - uid: 4265
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 4264
-- proto: ActionToggleInternals
-  entities:
-  - uid: 2090
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 3979
-  - uid: 2124
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 3980
-  - uid: 3311
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 6121
-  - uid: 3330
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 6122
-  - uid: 3342
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 6123
-  - uid: 5873
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 5871
-  - uid: 5876
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 5874
-- proto: ActionToggleJetpack
-  entities:
-  - uid: 2020
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 3979
-  - uid: 2123
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 3980
-  - uid: 3310
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 6121
-  - uid: 3312
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 6122
-  - uid: 3334
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 6123
-  - uid: 5872
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 5871
-  - uid: 5875
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 5874
-- proto: ActionToggleLight
-  entities:
-  - uid: 4005
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 5815
-  - uid: 4717
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 4716
 - proto: AirAlarm
   entities:
   - uid: 888
@@ -5146,21 +5006,6 @@ entities:
         3261:
         - - DoorStatus
           - DoorBolt
-- proto: AirlockExternal
-  entities:
-  - uid: 1530
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 80.5,98.5
-      parent: 1
-    - type: DeviceLinkSink
-      invokeCounter: 1
-    - type: DeviceLinkSource
-      linkedPorts:
-        1528:
-        - - DoorStatus
-          - DoorBolt
 - proto: AirlockExternalEngineeringLocked
   entities:
   - uid: 1479
@@ -5417,19 +5262,6 @@ entities:
           - DoorBolt
 - proto: AirlockExternalGlassLocked
   entities:
-  - uid: 1528
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 81.5,99.5
-      parent: 1
-    - type: DeviceLinkSink
-      invokeCounter: 2
-    - type: DeviceLinkSource
-      linkedPorts:
-        1530:
-        - - DoorStatus
-          - DoorBolt
   - uid: 3052
     components:
     - type: Transform
@@ -5440,6 +5272,20 @@ entities:
     - type: DeviceLinkSource
       linkedPorts:
         4035:
+        - - DoorStatus
+          - DoorBolt
+- proto: AirlockExternalGlassResearchLocked
+  entities:
+  - uid: 1166
+    components:
+    - type: Transform
+      pos: 81.5,99.5
+      parent: 1
+    - type: DeviceLinkSink
+      invokeCounter: 1
+    - type: DeviceLinkSource
+      linkedPorts:
+        240:
         - - DoorStatus
           - DoorBolt
 - proto: AirlockExternalGlassShuttleArrivals
@@ -5520,6 +5366,20 @@ entities:
     - type: DeviceLinkSource
       linkedPorts:
         3052:
+        - - DoorStatus
+          - DoorBolt
+- proto: AirlockExternalResearchLocked
+  entities:
+  - uid: 240
+    components:
+    - type: Transform
+      pos: 80.5,98.5
+      parent: 1
+    - type: DeviceLinkSink
+      invokeCounter: 1
+    - type: DeviceLinkSource
+      linkedPorts:
+        1166:
         - - DoorStatus
           - DoorBolt
 - proto: AirlockFreezerLocked
@@ -28446,27 +28306,6 @@ entities:
     - type: Transform
       pos: 79.484,76.02787
       parent: 1
-- proto: FlashlightSeclite
-  entities:
-  - uid: 4716
-    components:
-    - type: Transform
-      pos: 47.52804,58.829117
-      parent: 1
-    - type: HandheldLight
-      toggleActionEntity: 4717
-    - type: ContainerContainer
-      containers:
-        cell_slot: !type:ContainerSlot
-          showEnts: False
-          occludes: True
-          ent: null
-        actions: !type:Container
-          showEnts: False
-          occludes: True
-          ents:
-          - 4717
-    - type: ActionsContainer
 - proto: FlippoLighter
   entities:
   - uid: 5964
@@ -43105,20 +42944,10 @@ entities:
     - type: Transform
       pos: 73.5,102.5
       parent: 1
-  - uid: 1256
-    components:
-    - type: Transform
-      pos: 73.5,101.5
-      parent: 1
   - uid: 1258
     components:
     - type: Transform
       pos: 73.5,100.5
-      parent: 1
-  - uid: 1260
-    components:
-    - type: Transform
-      pos: 73.5,99.5
       parent: 1
   - uid: 1262
     components:
@@ -43197,6 +43026,11 @@ entities:
     - type: Transform
       pos: 75.5,101.5
       parent: 1
+  - uid: 1364
+    components:
+    - type: Transform
+      pos: 73.5,101.5
+      parent: 1
   - uid: 1365
     components:
     - type: Transform
@@ -43206,6 +43040,11 @@ entities:
     components:
     - type: Transform
       pos: 76.5,103.5
+      parent: 1
+  - uid: 1375
+    components:
+    - type: Transform
+      pos: 75.5,99.5
       parent: 1
   - uid: 1385
     components:
@@ -43226,12 +43065,6 @@ entities:
     components:
     - type: Transform
       pos: 76.5,105.5
-      parent: 1
-  - uid: 1414
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 75.5,99.5
       parent: 1
   - uid: 1415
     components:
@@ -47195,122 +47028,6 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 58.5,65.5
       parent: 1
-- proto: JetpackMiniFilled
-  entities:
-  - uid: 5871
-    components:
-    - type: Transform
-      pos: 82.47846,38.46482
-      parent: 1
-    - type: GasTank
-      toggleActionEntity: 5873
-    - type: Jetpack
-      toggleActionEntity: 5872
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 5872
-          - 5873
-  - uid: 5874
-    components:
-    - type: Transform
-      pos: 82.4993,38.756485
-      parent: 1
-    - type: GasTank
-      toggleActionEntity: 5876
-    - type: Jetpack
-      toggleActionEntity: 5875
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 5875
-          - 5876
-  - uid: 6121
-    components:
-    - type: Transform
-      pos: 67.77692,61.348766
-      parent: 1
-    - type: GasTank
-      toggleActionEntity: 3311
-    - type: Jetpack
-      toggleActionEntity: 3310
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 3310
-          - 3311
-  - uid: 6122
-    components:
-    - type: Transform
-      pos: 67.74567,61.536266
-      parent: 1
-    - type: GasTank
-      toggleActionEntity: 3330
-    - type: Jetpack
-      toggleActionEntity: 3312
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 3312
-          - 3330
-  - uid: 6123
-    components:
-    - type: Transform
-      pos: 67.80817,61.755016
-      parent: 1
-    - type: GasTank
-      toggleActionEntity: 3342
-    - type: Jetpack
-      toggleActionEntity: 3334
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 3334
-          - 3342
-- proto: JetpackSecurityFilled
-  entities:
-  - uid: 3979
-    components:
-    - type: Transform
-      pos: 69.14194,70.542175
-      parent: 1
-    - type: GasTank
-      toggleActionEntity: 2090
-    - type: Jetpack
-      toggleActionEntity: 2020
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 2020
-          - 2090
-  - uid: 3980
-    components:
-    - type: Transform
-      pos: 69.162766,70.823425
-      parent: 1
-    - type: GasTank
-      toggleActionEntity: 2124
-    - type: Jetpack
-      toggleActionEntity: 2123
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 2123
-          - 2124
 - proto: KitchenKnife
   entities:
   - uid: 2018
@@ -47389,35 +47106,6 @@ entities:
     - type: Transform
       pos: 47.750267,58.086487
       parent: 1
-- proto: LampGold
-  entities:
-  - uid: 3602
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 83.244064,95.143135
-      parent: 1
-  - uid: 5815
-    components:
-    - type: Transform
-      pos: 68.2155,43.944153
-      parent: 1
-    - type: HandheldLight
-      toggleActionEntity: 4005
-    - type: ContainerContainer
-      containers:
-        cell_slot: !type:ContainerSlot
-          showEnts: False
-          occludes: True
-          ent: null
-        actions: !type:Container
-          showEnts: False
-          occludes: True
-          ents:
-          - 4005
-    - type: Physics
-      canCollide: True
-    - type: ActionsContainer
   - uid: 6528
     components:
     - type: Transform
@@ -47589,30 +47277,6 @@ entities:
         - - Pressed
           - Toggle
         4772:
-        - - Pressed
-          - Toggle
-- proto: LockableButtonResearch
-  entities:
-  - uid: 8995
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 82.5,99.5
-      parent: 1
-    - type: DeviceLinkSource
-      linkedPorts:
-        1528:
-        - - Pressed
-          - Toggle
-  - uid: 8996
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 82.5,98.5
-      parent: 1
-    - type: DeviceLinkSource
-      linkedPorts:
-        1528:
         - - Pressed
           - Toggle
 - proto: LockableButtonSalvage
@@ -52080,6 +51744,11 @@ entities:
     - type: Transform
       pos: 71.5,16.5
       parent: 1
+  - uid: 1214
+    components:
+    - type: Transform
+      pos: 75.5,99.5
+      parent: 1
   - uid: 1241
     components:
     - type: Transform
@@ -52105,6 +51774,21 @@ entities:
     - type: Transform
       pos: 73.5,103.5
       parent: 1
+  - uid: 1255
+    components:
+    - type: Transform
+      pos: 75.5,100.5
+      parent: 1
+  - uid: 1257
+    components:
+    - type: Transform
+      pos: 72.5,101.5
+      parent: 1
+  - uid: 1260
+    components:
+    - type: Transform
+      pos: 71.5,101.5
+      parent: 1
   - uid: 1273
     components:
     - type: Transform
@@ -52125,6 +51809,11 @@ entities:
     - type: Transform
       pos: 74.5,16.5
       parent: 1
+  - uid: 1362
+    components:
+    - type: Transform
+      pos: 70.5,101.5
+      parent: 1
   - uid: 1408
     components:
     - type: Transform
@@ -52135,6 +51824,11 @@ entities:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 73.5,102.5
+      parent: 1
+  - uid: 1414
+    components:
+    - type: Transform
+      pos: 75.5,101.5
       parent: 1
   - uid: 1426
     components:
@@ -52168,11 +51862,26 @@ entities:
     - type: Transform
       pos: 78.5,26.5
       parent: 1
+  - uid: 1528
+    components:
+    - type: Transform
+      pos: 78.5,102.5
+      parent: 1
+  - uid: 1530
+    components:
+    - type: Transform
+      pos: 77.5,102.5
+      parent: 1
   - uid: 1539
     components:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: 49.5,32.5
+      parent: 1
+  - uid: 1707
+    components:
+    - type: Transform
+      pos: 73.5,100.5
       parent: 1
   - uid: 1761
     components:
@@ -52233,6 +51942,16 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 64.5,103.5
+      parent: 1
+  - uid: 3717
+    components:
+    - type: Transform
+      pos: 73.5,101.5
+      parent: 1
+  - uid: 3718
+    components:
+    - type: Transform
+      pos: 69.5,101.5
       parent: 1
   - uid: 4058
     components:
@@ -52305,12 +52024,6 @@ entities:
     components:
     - type: Transform
       pos: 48.5,89.5
-      parent: 1
-  - uid: 240
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 71.5,101.5
       parent: 1
   - uid: 249
     components:
@@ -52584,28 +52297,6 @@ entities:
     - type: Transform
       pos: 70.5,34.5
       parent: 1
-  - uid: 1166
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 69.5,101.5
-      parent: 1
-  - uid: 1214
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 70.5,101.5
-      parent: 1
-  - uid: 1255
-    components:
-    - type: Transform
-      pos: 73.5,101.5
-      parent: 1
-  - uid: 1257
-    components:
-    - type: Transform
-      pos: 73.5,100.5
-      parent: 1
   - uid: 1261
     components:
     - type: Transform
@@ -52642,21 +52333,6 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 67.5,60.5
-      parent: 1
-  - uid: 1362
-    components:
-    - type: Transform
-      pos: 75.5,101.5
-      parent: 1
-  - uid: 1364
-    components:
-    - type: Transform
-      pos: 75.5,100.5
-      parent: 1
-  - uid: 1375
-    components:
-    - type: Transform
-      pos: 77.5,102.5
       parent: 1
   - uid: 1412
     components:
@@ -52803,11 +52479,6 @@ entities:
     components:
     - type: Transform
       pos: 82.5,49.5
-      parent: 1
-  - uid: 1707
-    components:
-    - type: Transform
-      pos: 78.5,102.5
       parent: 1
   - uid: 1723
     components:
@@ -52958,18 +52629,6 @@ entities:
       rot: 3.141592653589793 rad
       pos: 73.5,93.5
       parent: 1
-  - uid: 3717
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 75.5,99.5
-      parent: 1
-  - uid: 3718
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 73.5,99.5
-      parent: 1
   - uid: 3791
     components:
     - type: Transform
@@ -53103,12 +52762,6 @@ entities:
       rot: 3.141592653589793 rad
       pos: 58.5,75.5
       parent: 1
-  - uid: 6248
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 72.5,101.5
-      parent: 1
   - uid: 6256
     components:
     - type: Transform
@@ -53237,90 +52890,6 @@ entities:
     - type: Transform
       pos: 84.69609,28.338928
       parent: 1
-- proto: RiotBulletShield
-  entities:
-  - uid: 3967
-    components:
-    - type: Transform
-      pos: 68.68389,70.779976
-      parent: 1
-    - type: Blocking
-      blockingToggleActionEntity: 2255
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 2255
-  - uid: 3990
-    components:
-    - type: Transform
-      pos: 68.69191,70.67581
-      parent: 1
-    - type: Blocking
-      blockingToggleActionEntity: 3997
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 3997
-- proto: RiotLaserShield
-  entities:
-  - uid: 3991
-    components:
-    - type: Transform
-      pos: 68.73134,70.64544
-      parent: 1
-    - type: Blocking
-      blockingToggleActionEntity: 2257
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 2257
-  - uid: 4264
-    components:
-    - type: Transform
-      pos: 68.73134,70.541275
-      parent: 1
-    - type: Blocking
-      blockingToggleActionEntity: 4265
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 4265
-- proto: RiotShield
-  entities:
-  - uid: 3977
-    components:
-    - type: Transform
-      pos: 68.381805,70.70706
-      parent: 1
-    - type: Blocking
-      blockingToggleActionEntity: 2281
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 2281
-  - uid: 3978
-    components:
-    - type: Transform
-      pos: 68.37941,70.61331
-      parent: 1
-    - type: Blocking
-      blockingToggleActionEntity: 2282
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 2282
 - proto: RobocopCircuitBoard
   entities:
   - uid: 8956
@@ -61664,6 +61233,11 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 61.5,95.5
       parent: 1
+  - uid: 1256
+    components:
+    - type: Transform
+      pos: 73.5,99.5
+      parent: 1
   - uid: 1263
     components:
     - type: Transform
@@ -65874,7 +65448,7 @@ entities:
       pos: 55.5,56.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -67746.85
+      secondsUntilStateChange: -68948.18
       state: Opening
 - proto: WoodenBench
   entities:
