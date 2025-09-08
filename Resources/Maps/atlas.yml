@@ -4,8 +4,8 @@ meta:
   engineVersion: 264.0.0
   forkId: ""
   forkVersion: ""
-  time: 08/02/2025 23:29:51
-  entityCount: 9172
+  time: 09/08/2025 06:48:55
+  entityCount: 9170
 maps:
 - 4
 grids:
@@ -20171,12 +20171,6 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 20.5,-17.5
       parent: 30
-  - uid: 2930
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 25.5,-7.5
-      parent: 30
   - uid: 3352
     components:
     - type: Transform
@@ -28187,13 +28181,6 @@ entities:
       parent: 30
 - proto: FoodBoxDonut
   entities:
-  - uid: 584
-    components:
-    - type: Transform
-      pos: 26.574675,-6.3743386
-      parent: 30
-    - type: Physics
-      canCollide: False
   - uid: 2296
     components:
     - type: Transform
@@ -49741,6 +49728,13 @@ entities:
     - type: Transform
       pos: -35.499245,23.614101
       parent: 30
+- proto: PdaMessageServer
+  entities:
+  - uid: 582
+    components:
+    - type: Transform
+      pos: 25.5,-6.5
+      parent: 30
 - proto: Pen
   entities:
   - uid: 8459
@@ -57797,11 +57791,6 @@ entities:
     - type: Transform
       pos: 24.5,8.5
       parent: 30
-  - uid: 582
-    components:
-    - type: Transform
-      pos: 26.5,-6.5
-      parent: 30
   - uid: 753
     components:
     - type: Transform
@@ -59220,10 +59209,8 @@ entities:
   entities:
   - uid: 581
     components:
-    - type: MetaData
-      name: Hot drinks machine
     - type: Transform
-      pos: 25.5,-6.5
+      pos: 26.5,-6.5
       parent: 30
   - uid: 1329
     components:
