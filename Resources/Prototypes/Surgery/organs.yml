@@ -47,7 +47,7 @@
       requirement: !type:ToolRequirement
         pain:
         - BasicLightDamage
-        quality: Slicing
+        quality: Cauterizing
 
 - type: surgery
   id: CavityImplant
@@ -98,3 +98,35 @@
         pain:
         - BasicLightBurnDamage
         quality: Cauterizing
+
+# cant use cauterizing at all as that will close the limb
+- type: surgery
+  id: OrganHeal
+  name: surgery-organ-heal-name
+  description: surgery-organ-heal-desc
+  startingNode: Start
+  nodes:
+  - id: Start
+    edges:
+    - connection: Scalpel
+      requirement: !type:ToolRequirement
+        pain:
+        - BasicLightDamage
+        quality: Slicing
+  - id: Scalpel
+    edges:
+    - connection: Hemostat
+      requirement: !type:ToolRequirement
+        pain:
+        - BasicNoDamage
+        quality: Clamping
+  - id: Hemostat
+    special:
+    - !type:BodyDamage
+        damage: -10
+    edges:
+    - connection: Start
+      requirement: !type:ToolRequirement
+        pain:
+        - BasicNoDamage
+        quality: Clamping

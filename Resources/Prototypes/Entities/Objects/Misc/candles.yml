@@ -28,6 +28,7 @@
           volume: 10
     - type: UseDelay
     - type: ExtinguishableSetCollisionWake
+    - type: AtmosExposed
     - type: Flammable
       fireSpread: false
       canResistFire: false
@@ -35,6 +36,7 @@
       canExtinguish: true
       firestacksOnIgnite: 3.0
       firestackFade: -0.01
+      igniteFromHeat: true
       damage:
         types:
           Heat: 0.1

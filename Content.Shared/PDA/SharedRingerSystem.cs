@@ -1,7 +1,6 @@
-using Content.Shared.Mind;
+using System.Linq;
 using Content.Shared.PDA.Ringer;
 using Content.Shared.Popups;
-using Content.Shared.Roles;
 using Content.Shared.Store;
 using JetBrains.Annotations;
 using Robust.Shared.Audio;
@@ -43,8 +42,8 @@ public abstract class SharedRingerSystem : EntitySystem
     /// <inheritdoc/>
     public override void Update(float frameTime)
     {
-        var ringerQuery = EntityQueryEnumerator<RingerComponent, TransformComponent>();
-        while (ringerQuery.MoveNext(out var uid, out var ringer, out var xform))
+        var ringerQuery = EntityQueryEnumerator<RingerComponent>();
+        while (ringerQuery.MoveNext(out var uid, out var ringer))
         {
             if (!ringer.Active || !ringer.NextNoteTime.HasValue)
                 continue;
@@ -55,45 +54,32 @@ public abstract class SharedRingerSystem : EntitySystem
             if (curTime < ringer.NextNoteTime.Value)
                 continue;
 
-            // Play the note
-            // We only do this on the server because otherwise the sound either dupes or blends into a mess
-            // There's no easy way to figure out which player started it, so that we can exclude them from the list
-            // and play it separately with PlayLocal, so that it's actually predicted
-            if (_net.IsServer)
+            if (ringer.CurrentRingtone.TryDequeue(out var note))
             {
-                _audio.PlayEntity(
-                    GetSound(ringer.Ringtone[ringer.NoteCount]),
-                    Filter.Empty().AddInRange(_xform.GetMapCoordinates(uid, xform), ringer.Range),
-                    uid,
-                    true,
-                    AudioParams.Default.WithMaxDistance(ringer.Range).WithVolume(ringer.Volume)
-                );
+                PlayNote((uid, ringer), note);
+
+                // Schedule next note
+                ringer.NextNoteTime = curTime + TimeSpan.FromSeconds(NoteDelay);
+
+                // Dirty the fields we just changed
+                DirtyFields(uid,
+                    ringer,
+                    null,
+                    nameof(RingerComponent.NextNoteTime),
+                    nameof(RingerComponent.CurrentRingtone));
             }
 
-            // Schedule next note
-            ringer.NextNoteTime = curTime + TimeSpan.FromSeconds(NoteDelay);
-            ringer.NoteCount++;
-
-            // Dirty the fields we just changed
-            DirtyFields(uid,
-                ringer,
-                null,
-                nameof(RingerComponent.NextNoteTime),
-                nameof(RingerComponent.NoteCount));
-
             // Check if we've finished playing all notes
-            if (ringer.NoteCount >= RingtoneLength)
+            if (!ringer.CurrentRingtone.Any())
             {
                 ringer.Active = false;
                 ringer.NextNoteTime = null;
-                ringer.NoteCount = 0;
 
                 DirtyFields(uid,
                     ringer,
                     null,
                     nameof(RingerComponent.Active),
-                    nameof(RingerComponent.NextNoteTime),
-                    nameof(RingerComponent.NoteCount));
+                    nameof(RingerComponent.NextNoteTime));
 
                 UpdateRingerUi((uid, ringer));
             }
@@ -101,6 +87,46 @@ public abstract class SharedRingerSystem : EntitySystem
     }
 
     #region Public API
+
+    public void PlayNote(Entity<RingerComponent?> ent, Note note)
+    {
+        if (!Resolve(ent, ref ent.Comp))
+            return;
+
+        // We only do this on the server because otherwise the sound either dupes or blends into a mess
+        // There's no easy way to figure out which player started it, so that we can exclude them from the list
+        // and play it separately with PlayLocal, so that it's actually predicted
+        if (!_net.IsServer)
+            return;
+
+        _audio.PlayEntity(
+            GetSound(note),
+            Filter.Empty().AddInRange(_xform.GetMapCoordinates(ent.Owner), ent.Comp.Range),
+            ent.Owner,
+            true,
+            AudioParams.Default.WithMaxDistance(ent.Comp.Range).WithVolume(ent.Comp.Volume)
+        );
+    }
+
+    public void PlaySong(Entity<RingerComponent?> ent, Note[] song)
+    {
+        if (!Resolve(ent, ref ent.Comp))
+            return;
+
+        ent.Comp.Active = true;
+        ent.Comp.NextNoteTime = _timing.CurTime;
+
+        ent.Comp.CurrentRingtone.Clear();
+        ent.Comp.CurrentRingtone.EnsureCapacity(song.Length);
+        foreach (var note in song)
+            ent.Comp.CurrentRingtone.Enqueue(note);
+
+        DirtyFields(ent!,
+            null,
+            nameof(RingerComponent.NextNoteTime),
+            nameof(RingerComponent.Active),
+            nameof(RingerComponent.CurrentRingtone));
+    }
 
     /// <summary>
     /// Plays the ringtone on the device with the given RingerComponent.
@@ -202,10 +228,7 @@ public abstract class SharedRingerSystem : EntitySystem
         if (ent.Comp.Active)
             return;
 
-        ent.Comp.Active = true;
-        ent.Comp.NoteCount = 0;
-        ent.Comp.NextNoteTime = _timing.CurTime;
-
+        PlaySong(ent!, ent.Comp.Ringtone);
         UpdateRingerUi(ent);
 
         _popup.PopupPredicted(Loc.GetString("comp-ringer-vibration-popup"),
@@ -214,12 +237,6 @@ public abstract class SharedRingerSystem : EntitySystem
             Filter.Pvs(ent, 0.05f),
             false,
             PopupType.Medium);
-
-        DirtyFields(ent.AsNullable(),
-            null,
-            nameof(RingerComponent.NextNoteTime),
-            nameof(RingerComponent.Active),
-            nameof(RingerComponent.NoteCount));
     }
 
     /// <summary>

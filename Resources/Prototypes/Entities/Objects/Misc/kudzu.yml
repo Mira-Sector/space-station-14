@@ -63,6 +63,7 @@
       coldDamageThreshold: 0
     - type: Flammable
       fireSpread: true #If you walk into incredibly dense, flaming vines, you can expect to burn.
+      igniteFromHeat: true
       damage:
         types:
           Heat: 3
@@ -233,6 +234,7 @@
           Blunt: 0.10 #per second, scales with pressure and other constants.
     - type: Flammable
       fireSpread: true
+      igniteFromHeat: true
       damage:
        types:
          Heat: 3

@@ -6,6 +6,7 @@ namespace Content.Shared.Modules.ModSuit;
 public abstract partial class SharedModSuitSystem : EntitySystem
 {
     [Dependency] protected readonly SharedAppearanceSystem Appearance = default!;
+    [Dependency] private readonly SharedModuleSystem _module = default!;
     [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
 

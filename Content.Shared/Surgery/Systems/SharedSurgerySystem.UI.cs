@@ -1,22 +1,26 @@
+using Content.Shared.Buckle;
 using Content.Shared.Buckle.Components;
 using Content.Shared.DeviceLinking.Events;
 using Content.Shared.Surgery.Components;
 using Content.Shared.Surgery.Events;
 using Content.Shared.Surgery.UI;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+using System.Numerics;
 
 namespace Content.Shared.Surgery.Systems;
 
 public abstract partial class SharedSurgerySystem
 {
+    [Dependency] private readonly EntityLookupSystem _lookup = default!;
+    [Dependency] private readonly SharedTransformSystem _transform = default!;
+
     private void InitializeUI()
     {
         SubscribeLocalEvent<SurgeryUserInterfaceLinkedSourceComponent, StrappedEvent>(OnLinkedSourceStrapped);
         SubscribeLocalEvent<SurgeryUserInterfaceLinkedSourceComponent, UnstrappedEvent>(OnLinkedSourceUnstrapped);
 
-        SubscribeLocalEvent<SurgeryUserInterfaceLinkedSinkComponent, GetSurgeryUiTargetEvent>(OnLinkedSinkGetTarget);
-        SubscribeLocalEvent<SurgeryUserInterfaceLinkedSourceComponent, GetSurgeryUiTargetEvent>(OnLinkedSourceGetTarget);
+        SubscribeLocalEvent<SurgeryUserInterfaceLinkedSinkComponent, GetSurgeryUiTargetEvent>(OnLinkedSinkGetTarget, after: [typeof(SharedBuckleSystem)]);
+        SubscribeLocalEvent<SurgeryUserInterfaceSourceRangeComponent, GetSurgeryUiTargetEvent>(OnSourceRangeGetTarget, after: [typeof(SharedBuckleSystem)]);
 
         SubscribeLocalEvent<SurgeryUserInterfaceLinkedSinkComponent, GetSurgeryUiSourceEvent>(OnLinkedSinkGetSource);
         SubscribeLocalEvent<SurgeryUserInterfaceLinkedSourceComponent, GetSurgeryUiSourceEvent>(OnLinkedSourceGetSource);
@@ -27,13 +31,38 @@ public abstract partial class SharedSurgerySystem
         SubscribeLocalEvent<SurgeryUserInterfaceLinkedSinkComponent, PortDisconnectedEvent>(OnSinkDisconnected);
         SubscribeLocalEvent<SurgeryUserInterfaceLinkedSourceComponent, PortDisconnectedEvent>(OnSourceDisconnected);
 
-        SubscribeLocalEvent<SurgeryReceiverComponent, SurgeryCurrentNodeModifiedEvent>(OnNodeModified);
-        SubscribeLocalEvent<SurgeryReceiverBodyComponent, SurgeryBodyCurrentNodeModifiedEvent>(OnBodyNodeModified);
+        SubscribeLocalEvent<SurgeryCurrentNodeModifiedEvent>(OnNodeModified);
+        SubscribeLocalEvent<SurgeryBodyCurrentNodeModifiedEvent>(OnBodyNodeModified);
 
         Subs.BuiEvents<SurgeryUserInterfaceComponent>(SurgeryUiKey.Key, subs =>
         {
             subs.Event<BoundUIOpenedEvent>(OnUiOpened);
         });
+    }
+
+    private void UpdateUi(float frameTime)
+    {
+        var query = EntityQueryEnumerator<SurgeryUserInterfaceSourceRangeComponent>();
+        while (query.MoveNext(out var sourceRangeUid, out var sourceRangeComp))
+        {
+            if (_timing.CurTime < sourceRangeComp.RangeCheckNextUpdate)
+                continue;
+
+            sourceRangeComp.RangeCheckNextUpdate += sourceRangeComp.RangeCheckUpdateDelay;
+
+            var closestMatch = SourceRangeGetTarget((sourceRangeUid, sourceRangeComp));
+            sourceRangeComp.LastInRange = closestMatch;
+
+            // dont want to bulldoze the surgery ui with 2 potential targets from other comps
+            // range has lower priority due to update ordering
+            if (TryGetTarget(sourceRangeUid, out var otherTarget) && otherTarget == closestMatch)
+            {
+                if (TryGetUiEntity(sourceRangeUid, out var ui))
+                    UpdateUi(ui.Value, closestMatch);
+            }
+
+            Dirty(sourceRangeUid, sourceRangeComp);
+        }
     }
 
     private void OnUiOpened(Entity<SurgeryUserInterfaceComponent> ent, ref BoundUIOpenedEvent args)
@@ -69,15 +98,32 @@ public abstract partial class SharedSurgerySystem
         args.Target = target;
     }
 
-    private void OnLinkedSourceGetTarget(Entity<SurgeryUserInterfaceLinkedSourceComponent> ent, ref GetSurgeryUiTargetEvent args)
+    private void OnSourceRangeGetTarget(Entity<SurgeryUserInterfaceSourceRangeComponent> ent, ref GetSurgeryUiTargetEvent args)
     {
-        if (!TryComp<StrapComponent>(ent.Owner, out var strap))
+        if (args.Target != null)
             return;
 
-        if (strap.BuckledEntities.Count != 1)
-            return;
+        args.Target = ent.Comp.LastInRange;
+    }
 
-        args.Target = strap.BuckledEntities.First();
+    private EntityUid? SourceRangeGetTarget(Entity<SurgeryUserInterfaceSourceRangeComponent> ent)
+    {
+        EntityUid? closestMatch = null;
+        var closestPosSquared = float.MaxValue;
+
+        foreach (var entity in _lookup.GetEntitiesInRange<SurgeryReceiverComponent>(Transform(ent.Owner).Coordinates, ent.Comp.Range, SurgeryUserInterfaceSourceRangeComponent.Flags))
+        {
+            var pos = Vector2.Abs(Transform(entity).LocalPosition);
+            var posSquared = pos.LengthSquared();
+
+            if (posSquared > closestPosSquared)
+                continue;
+
+            closestPosSquared = posSquared;
+            closestMatch = entity;
+        }
+
+        return closestMatch;
     }
 
     private void OnLinkedSinkGetSource(Entity<SurgeryUserInterfaceLinkedSinkComponent> ent, ref GetSurgeryUiSourceEvent args)
@@ -126,20 +172,52 @@ public abstract partial class SharedSurgerySystem
         Dirty(ent);
     }
 
-    private void OnNodeModified(Entity<SurgeryReceiverComponent> ent, ref SurgeryCurrentNodeModifiedEvent args)
+    private void OnNodeModified(ref SurgeryCurrentNodeModifiedEvent args)
     {
-        if (!TryGetUiEntity(ent.Owner, out var ui))
+        GetBodyAndLimb(args.Receiver, out _, out var body, out _);
+
+        // handled in separate event
+        if (body != null)
             return;
 
-        UpdateUi(ui.Value, ent.Owner);
+        if (TryGetUiEntity(args.Receiver, out var ui))
+        {
+            UpdateUi(ui.Value, args.Receiver);
+            return;
+        }
+
+        SourceRangeUpdateUi(args.Receiver);
     }
 
-    private void OnBodyNodeModified(Entity<SurgeryReceiverBodyComponent> ent, ref SurgeryBodyCurrentNodeModifiedEvent args)
+    private void OnBodyNodeModified(ref SurgeryBodyCurrentNodeModifiedEvent args)
     {
-        if (!TryGetUiEntity(ent.Owner, out var ui))
+        if (args.Body == null)
             return;
 
-        UpdateUi(ui.Value, ent.Owner);
+        if (TryGetUiEntity(args.Body.Value, out var ui))
+        {
+            UpdateUi(ui.Value, args.Body.Value);
+            return;
+        }
+
+        SourceRangeUpdateUi(args.Body.Value);
+    }
+
+    private void SourceRangeUpdateUi(EntityUid target)
+    {
+        var targetPos = Transform(target).Coordinates;
+
+        var query = EntityQueryEnumerator<SurgeryUserInterfaceSourceRangeComponent>();
+        while (query.MoveNext(out var sourceRangeUid, out var sourceRangeComp))
+        {
+            var sourceRangePos = Transform(sourceRangeUid).Coordinates;
+
+            if (!_transform.InRange(sourceRangePos, targetPos, sourceRangeComp.Range))
+                continue;
+
+            if (TryGetUiEntity(sourceRangeUid, out var ui))
+                UpdateUi(ui.Value, target);
+        }
     }
 
     private void UpdateUi(EntityUid ui, EntityUid? target)

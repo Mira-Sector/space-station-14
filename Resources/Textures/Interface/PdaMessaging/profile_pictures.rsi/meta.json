@@ -1,0 +1,70 @@
+{
+    "version": 1,
+    "size":
+    {
+        "x": 32,
+        "y": 32
+    },
+    "license": "CC-BY-NC-SA-3.0",
+    "copyright": "ai, bar, baton, beach, carp, gun, ian, mime, music, nanotrasen, pickaxe, space, tesla, tider, trans, urist, xmas by Doctor-Cpu, lizard, star by SillyAmy",
+    "states":
+    [
+        {
+            "name": "ai"
+        },
+        {
+            "name": "bar"
+        },
+        {
+            "name": "baton"
+        },
+        {
+            "name": "beach"
+        },
+        {
+            "name": "carp"
+        },
+        {
+            "name": "gun"
+        },
+        {
+            "name": "ian"
+        },
+        {
+            "name": "lizard"
+        },
+        {
+            "name": "mime"
+        },
+        {
+            "name": "music"
+        },
+        {
+            "name": "nanotrasen"
+        },
+        {
+            "name": "pickaxe"
+        },
+        {
+            "name": "space"
+        },
+        {
+            "name": "star"
+        },
+        {
+            "name": "tesla"
+        },
+        {
+            "name": "tider"
+        },
+        {
+            "name": "trans"
+        },
+        {
+            "name": "urist"
+        },
+        {
+            "name": "xmas"
+        }
+    ]
+}

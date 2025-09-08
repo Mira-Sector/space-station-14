@@ -9,8 +9,8 @@ void fragment() {
     tex.a *= alpha;
     lowp vec3 base = tex.rgb * color.rgb;
 
-    float cycle = fract(UV.y * float(lineCount));
-    float mask  = step(0.5, cycle) * scanlineIntensity;
+    highp float cycle = fract(UV.y * float(lineCount));
+    highp float mask  = step(0.5, cycle) * scanlineIntensity;
 
     lowp vec3 col = base * mix(vec3(1.0), scanlineColor.rgb, mask);
 

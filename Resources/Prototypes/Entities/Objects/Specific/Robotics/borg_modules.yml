@@ -765,6 +765,26 @@
   - type: BorgModuleIcon
     icon: { sprite: Interface/Actions/actions_borg.rsi, state: adv-chem-module }
 
+- type: entity
+  id: BorgModuleSurgery
+  parent: [ BaseBorgModuleMedical, BaseProviderBorgModule ]
+  name: surgery tools cyborg module
+  description: A medical cyborg module that allows you to turn fellow crew members into nuggets.
+  components:
+  - type: Sprite
+    layers:
+    - state: medical
+    - state: icon-surgery
+  - type: ItemBorgModule
+    items:
+    - Scalpel
+    - Hemostat
+    - Retractor
+    - Saw
+    - Cautery
+  - type: BorgModuleIcon
+    icon: { sprite: Interface/Actions/actions_borg.rsi, state: surgery-module }
+
 # science modules
 # todo: if science ever gets their own custom robot, add more "sci" modules.
 - type: entity

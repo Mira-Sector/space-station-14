@@ -1,0 +1,31 @@
+<Button
+    xmlns="https://spacestation14.io"
+    Margin="8"
+    HorizontalAlignment="Stretch"
+    VerticalAlignment="Center"
+    HorizontalExpand="True">
+    <BoxContainer
+        Margin="4"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Center"
+        HorizontalExpand="True">
+        <TextureRect
+            Name="Icon"
+            Stretch="Tile"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"/>
+        <PanelContainer
+            Margin="8 0"
+            StyleClasses="LowDivider"/>
+        <Label
+            Name="Name"
+            Margin="2"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"/>
+        <Label
+            Name="Id"
+            Margin="2"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"/>
+    </BoxContainer>
+</Button>

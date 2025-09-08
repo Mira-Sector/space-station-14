@@ -103,7 +103,14 @@ namespace Content.Server.PDA
             base.OnItemInserted(uid, pda, args);
             var id = CompOrNull<IdCardComponent>(pda.ContainedId);
             if (id != null)
+            {
                 pda.OwnerName = id.FullName;
+                Dirty(uid, pda);
+
+                var ev = new PdaOwnerChangedEvent(pda.PdaOwner, pda.OwnerName);
+                RaiseLocalEvent(uid, ref ev);
+            }
+
             UpdatePdaUi(uid, pda);
         }
 
@@ -123,6 +130,7 @@ namespace Content.Server.PDA
         private void OnLightToggle(EntityUid uid, PdaComponent pda, LightToggleEvent args)
         {
             pda.FlashlightOn = args.IsOn;
+            Dirty(uid, pda);
             UpdatePdaUi(uid, pda);
         }
 
@@ -130,7 +138,12 @@ namespace Content.Server.PDA
         {
             pda.OwnerName = ownerName;
             pda.PdaOwner = owner;
+            Dirty(uid, pda);
+
             UpdatePdaUi(uid, pda);
+
+            var ev = new PdaOwnerChangedEvent(pda.PdaOwner, pda.OwnerName);
+            RaiseLocalEvent(uid, ref ev);
         }
 
         private void OnStationRenamed(StationRenamedEvent ev)
@@ -297,6 +310,7 @@ namespace Content.Server.PDA
         {
             var station = _station.GetOwningStation(uid);
             pda.StationName = station is null ? null : Name(station.Value);
+            Dirty(uid, pda);
         }
 
         private void UpdateAlertLevel(EntityUid uid, PdaComponent pda)
@@ -308,6 +322,8 @@ namespace Content.Server.PDA
             pda.StationAlertLevel = alertComp.CurrentLevel;
             if (alertComp.AlertLevels.Levels.TryGetValue(alertComp.CurrentLevel, out var details))
                 pda.StationAlertColor = details.Color;
+
+            Dirty(uid, pda);
         }
 
         private string? GetDeviceNetAddress(EntityUid uid)

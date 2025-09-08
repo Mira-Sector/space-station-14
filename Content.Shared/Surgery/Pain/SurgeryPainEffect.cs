@@ -6,5 +6,5 @@ namespace Content.Shared.Surgery.Pain;
 [Serializable, NetSerializable]
 public abstract partial class SurgeryPainEffect
 {
-    public abstract void DoEffect(IEntityManager entity, EntityUid? body, EntityUid? limb, EntityUid? used);
+    public abstract void DoEffect(IEntityManager entity, EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid? used);
 }

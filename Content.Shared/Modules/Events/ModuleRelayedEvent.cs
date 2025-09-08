@@ -1,6 +1,7 @@
 namespace Content.Shared.Modules.Events;
 
-public sealed partial class ModuleRelayedEvent<T>(T args, EntityUid moduleOwner) : EntityEventArgs
+[ByRefEvent]
+public struct ModuleRelayedEvent<T>(T args, EntityUid moduleOwner)
 {
     public T Args = args;
     public readonly EntityUid ModuleOwner = moduleOwner;

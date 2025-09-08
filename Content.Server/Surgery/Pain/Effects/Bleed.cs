@@ -5,7 +5,7 @@ namespace Content.Server.Surgery.Pain.Effects;
 
 public sealed partial class Bleed : SharedBleed
 {
-    public override void DoEffect(IEntityManager entity, EntityUid? body, EntityUid? limb, EntityUid? used)
+    public override void DoEffect(IEntityManager entity, EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid? used)
     {
         if (body == null)
             return;

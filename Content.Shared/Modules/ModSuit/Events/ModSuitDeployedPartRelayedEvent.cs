@@ -1,6 +1,7 @@
 namespace Content.Shared.Modules.ModSuit.Events;
 
-public sealed partial class ModSuitDeployedPartRelayedEvent<T>(T args, EntityUid part) : EntityEventArgs
+[ByRefEvent]
+public struct ModSuitDeployedPartRelayedEvent<T>(T args, EntityUid part)
 {
     public T Args = args;
     public readonly EntityUid Part = part;

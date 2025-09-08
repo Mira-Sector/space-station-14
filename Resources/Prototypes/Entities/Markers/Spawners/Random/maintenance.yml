@@ -287,13 +287,14 @@
       - id: ModularReceiver
       - id: WeaponFlareGun
       - id: BarberScissors
+      - id: PowerTwoCartridge
       - !type:GroupSelector
         children:
         - id: DrinkSpaceGlue
         - id: DrinkSpaceLube
       # Rare Group
     - !type:GroupSelector
-      weight: 2
+      weight: 3
       children:
       - id: Binoculars
       - id: LanternFlash

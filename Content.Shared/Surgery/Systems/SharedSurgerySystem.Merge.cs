@@ -92,6 +92,8 @@ public abstract partial class SharedSurgerySystem
     {
         GetMatchingEdges(sourceNode, mergedNode, out var matches, out var missing);
 
+        mergedNode.Special.UnionWith(sourceNode.Special);
+
         foreach (var (sourceEdge, mergedEdge) in matches)
         {
             if (!sourceGraph.TryFindNode(sourceEdge.Connection, out var nextSourceNode))
@@ -141,9 +143,6 @@ public abstract partial class SharedSurgerySystem
     {
         matching = [];
         missing = [];
-
-        if (!sourceNode.Special.SetEquals(mergedNode.Special))
-            return;
 
         foreach (var edge in sourceNode.Edges)
         {

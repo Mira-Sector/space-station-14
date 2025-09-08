@@ -9,9 +9,9 @@ public sealed partial class SurgeryEdgeRequirementDoAfterEvent : DoAfterEvent
 {
     public SurgeryEdge TargetEdge { get; private set; }
 
-    public BodyPart BodyPart { get; private set; }
+    public BodyPart? BodyPart { get; private set; }
 
-    public SurgeryEdgeRequirementDoAfterEvent(SurgeryEdge targetEdge, BodyPart bodyPart)
+    public SurgeryEdgeRequirementDoAfterEvent(SurgeryEdge targetEdge, BodyPart? bodyPart)
     {
         TargetEdge = targetEdge;
         BodyPart = bodyPart;

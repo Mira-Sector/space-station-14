@@ -10,14 +10,17 @@ namespace Content.Client.Surgery.UI;
 [GenerateTypedNameReferences]
 public sealed partial class SurgeryNodeDetailsTab : PanelContainer
 {
-    public SurgeryNodeDetailsTab(SurgerySpecial special, EntityUid? body, EntityUid? limb, BodyPart part, SpriteSystem sprite) : base()
+    public SurgeryNodeDetailsTab(SurgerySpecial special, EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? part, SpriteSystem sprite) : base()
     {
         RobustXamlLoader.Load(this);
 
-        Name = special.Name(body, limb, part);
+        if (special.Name(receiver, body, limb, part, out var name))
+            Name = name;
 
-        var icon = special.GetIcon(body, limb, part);
-        SpecialIcon.Texture = icon == null ? null : sprite.Frame0(icon);
-        SpecialDescription.Text = special.Description(body, limb, part);
+        if (special.GetIcon(receiver, body, limb, part, out var icon))
+            SpecialIcon.Texture = sprite.Frame0(icon);
+
+        if (special.Description(receiver, body, limb, part, out var description))
+            SpecialDescription.Text = description;
     }
 }

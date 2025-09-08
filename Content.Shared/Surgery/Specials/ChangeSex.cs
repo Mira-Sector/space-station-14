@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Body.Part;
 using Content.Shared.Humanoid;
 using JetBrains.Annotations;
@@ -14,9 +15,9 @@ public sealed partial class ChangeSex : SurgerySpecial
 
     private static readonly SpriteSpecifier.Rsi Icon = new(new("/Textures/Interface/surgery_icons.rsi"), "sex");
 
-    public override void NodeReached(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart bodyPart, out Enum? ui, out bool bodyUi)
+    public override void NodeReached(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? used, BodyPart? bodyPart, out Enum? ui, out bool bodyUi)
     {
-        base.NodeReached(body, limb, user, used, bodyPart, out ui, out bodyUi);
+        base.NodeReached(receiver, body, limb, user, used, bodyPart, out ui, out bodyUi);
 
         if (body == null)
             return;
@@ -42,21 +43,25 @@ public sealed partial class ChangeSex : SurgerySpecial
         return;
     }
 
-    public override string Name(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override bool Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart, [NotNullWhen(true)] out string? name)
     {
-        return Loc.GetString("surgery-special-change-sex-name");
+        name = Loc.GetString("surgery-special-change-sex-name");
+        return true;
     }
 
-    public override string Description(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override bool Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart, [NotNullWhen(true)] out string? description)
     {
         if (ForcedSex is { } sex)
-            return Loc.GetString("surgery-special-change-sex-desc", ("sex", sex));
+            description = Loc.GetString("surgery-special-change-sex-desc", ("sex", sex));
         else
-            return Loc.GetString("surgery-special-change-sex-swap-desc");
+            description = Loc.GetString("surgery-special-change-sex-swap-desc");
+
+        return true;
     }
 
-    public override SpriteSpecifier? GetIcon(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override bool GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart, [NotNullWhen(true)] out SpriteSpecifier? icon)
     {
-        return Icon;
+        icon = Icon;
+        return true;
     }
 }

@@ -387,6 +387,8 @@ public sealed partial class StationSystem : SharedStationSystem
 
         var stationMember = EnsureComp<StationMemberComponent>(mapGrid);
         stationMember.Station = station;
+        Dirty(mapGrid, stationMember);
+
         stationData.Grids.Add(mapGrid);
 
         RaiseLocalEvent(station, new StationGridAddedEvent(mapGrid, station, false), true);

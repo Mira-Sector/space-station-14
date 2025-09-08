@@ -9,9 +9,9 @@ public sealed partial class SurgerySpecialDoAfterEvent : DoAfterEvent
 {
     public SurgerySpecial Special { get; private set; }
 
-    public BodyPart BodyPart { get; private set; }
+    public BodyPart? BodyPart { get; private set; }
 
-    public SurgerySpecialDoAfterEvent(SurgerySpecial special, BodyPart bodyPart)
+    public SurgerySpecialDoAfterEvent(SurgerySpecial special, BodyPart? bodyPart)
     {
         Special = special;
         BodyPart = bodyPart;

@@ -2039,3 +2039,73 @@ Entries:
     type: Fix
   id: 281
   time: '2025-08-09T04:15:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: The xray effect now properly renders objects
+    type: Fix
+  - message: The xray effect is now performant
+    type: Tweak
+  id: 282
+  time: '2025-08-09T23:50:50.0000000+00:00'
+- author: Anurath
+  changes:
+  - message: The medical borg now has a surgery tool module
+    type: Add
+  id: 283
+  time: '2025-08-14T14:50:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added the organ healing surgery to organs
+    type: Add
+  - message: Organs and limbs ontop of an operating table can now have their surgery graph shown on the computer
+    type: Tweak
+  - message: Surgery related do-afters can be cancelled by doing the same trigger
+    type: Tweak
+  id: 284
+  time: '2025-08-15T17:50:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Modsuit power draw is now based off sealed parts. A fully sealed modsuit has the same power draw as before
+    type: Tweak
+  - message: Unsealed modsuit parts have half the power draw
+    type: Tweak
+  id: 285
+  time: '2025-08-16T01:40:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: An ion storm now has a brief cloud visual
+    type: Add
+  - message: Solar flares are now visual in space
+    type: Add
+  id: 286
+  time: '2025-08-18T16:40:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added the Powers of Two PDA cartridge. It can be found in maints.
+    type: Add
+  id: 287
+  time: '2025-08-25T16:40:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added spacebook, a way to message people via your PDA.
+    type: Add
+  id: 288
+  time: '2025-09-06T00:30:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Hot air causes paper and kudzu to ignite
+    type: Add
+  id: 289
+  time: '2025-09-06T07:30:50.0000000+00:00'
+- author: SpiffyCodes
+  changes:
+  - message: reworked tele/camms on the map Mir.
+    type: Tweak
+  id: 289
+  time: '2025-09-07T17:28:00.0000000+00:00'
+- author: SpiffyCodes
+  changes:
+  - message: reworked cargo and salv on the map Mir.
+    type: Tweak
+  id: 289
+  time: '2025-09-07T17:28:00.0000000+00:00'
