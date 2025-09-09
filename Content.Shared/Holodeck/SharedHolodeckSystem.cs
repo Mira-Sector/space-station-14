@@ -19,7 +19,14 @@ public abstract partial class SharedHolodeckSystem : EntitySystem
     {
         base.Initialize();
 
+        SubscribeLocalEvent<HolodeckSpawnerComponent, ComponentInit>(OnSpawnerInit);
         SubscribeLocalEvent<HolodeckSpawnerComponent, ComponentRemove>(OnSpawnerRemove);
+    }
+
+    private void OnSpawnerInit(Entity<HolodeckSpawnerComponent> ent, ref ComponentInit args)
+    {
+        ent.Comp.Center = Transform(ent.Owner).Coordinates;
+        Dirty(ent);
     }
 
     private void OnSpawnerRemove(Entity<HolodeckSpawnerComponent> ent, ref ComponentRemove args)
@@ -36,38 +43,44 @@ public abstract partial class SharedHolodeckSystem : EntitySystem
         Dirty(ent);
     }
 
-    public bool IsScenarioSpawnable(Entity<HolodeckSpawnerComponent?> ent, HolodeckScenarioPrototype scenario)
+    public bool IsScenarioSpawnable(Entity<HolodeckSpawnerComponent?> ent, HolodeckScenarioPrototype scenario, out List<Box2i>? adjustedBounds)
     {
+        adjustedBounds = null;
+
         if (!Resolve(ent.Owner, ref ent.Comp))
             return false;
 
         var centerVec = ent.Comp.Center.ToVector2i(EntityManager, _mapMan, _xform);
 
-        if (scenario.RequiredSpace.Any())
+        if (scenario.RequiredSpace is { } requiredSpace)
         {
-            if (!CheckScenarioSpace(ent!, scenario, centerVec))
+            // no grid so no available tiles
+            if (_xform.GetGrid(ent.Comp.Center) is not { } grid)
+                return false;
+
+            if (!TryComp<MapGridComponent>(grid, out var gridComp))
+                return false;
+
+            if (!CheckScenarioSpace(requiredSpace, centerVec, (grid, gridComp), ref adjustedBounds))
                 return false;
         }
 
         return true;
     }
 
-    private bool CheckScenarioSpace(Entity<HolodeckSpawnerComponent> ent, HolodeckScenarioPrototype scenario, Vector2i centerVec)
+    private bool CheckScenarioSpace(List<Box2i> requiredSpace, Vector2i centerVec, Entity<MapGridComponent> grid, ref List<Box2i>? adjustedBounds)
     {
-        // no grid so no available tiles
-        if (_xform.GetGrid(ent.Comp.Center) is not { } grid)
-            return false;
+        adjustedBounds = new(requiredSpace.Count);
 
-        if (!TryComp<MapGridComponent>(grid, out var gridComp))
-            return false;
-
-        foreach (var box in scenario.RequiredSpace)
+        foreach (var box in requiredSpace)
         {
             var boxRelative = box.Translated(centerVec);
-            var tiles = _map.GetLocalTilesIntersecting(grid, gridComp, boxRelative);
+            adjustedBounds.Add(boxRelative);
 
-            // no available tiles, it is space
-            if (!tiles.Any())
+            var expectedTileCount = box.Width * box.Height;
+            var tiles = _map.GetLocalTilesIntersecting(grid.Owner, grid.Comp, boxRelative);
+
+            if (tiles.Count() != expectedTileCount)
                 return false;
 
             foreach (var tile in tiles)

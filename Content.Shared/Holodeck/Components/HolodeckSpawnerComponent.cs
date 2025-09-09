@@ -6,9 +6,9 @@ namespace Content.Shared.Holodeck.Components;
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class HolodeckSpawnerComponent : Component
 {
-    [DataField, AutoNetworkedField]
+    [ViewVariables, AutoNetworkedField]
     public EntityCoordinates Center;
 
-    [DataField, AutoNetworkedField]
+    [ViewVariables, AutoNetworkedField]
     public List<EntityUid> Spawned = [];
 }

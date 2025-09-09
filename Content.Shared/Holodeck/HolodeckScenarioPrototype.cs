@@ -9,5 +9,5 @@ public sealed partial class HolodeckScenarioPrototype : IPrototype
     public string ID { get; } = default!;
 
     [DataField]
-    public List<Box2i> RequiredSpace = [];
+    public List<Box2i>? RequiredSpace;
 }
