@@ -45,7 +45,7 @@ public sealed class CargoTest
                     if (Ignored.Contains(proto.ID))
                         continue;
 
-                    var ent = entManager.SpawnEntity(proto.Product, testMap.MapCoords);
+                    var ent = entManager.SpawnEntity(proto.ID, testMap.MapCoords);
                     var price = pricing.GetPrice(ent);
 
                     Assert.That(price, Is.AtMost(proto.Cost), $"Found arbitrage on {proto.ID} cargo product! Cost is {proto.Cost} but sell is {price}!");
@@ -79,7 +79,7 @@ public sealed class CargoTest
             {
                 foreach (var proto in protoManager.EnumeratePrototypes<CargoProductPrototype>())
                 {
-                    var ent = entManager.SpawnEntity(proto.Product, new MapCoordinates(Vector2.Zero, mapId));
+                    var ent = entManager.SpawnEntity(proto.ID, new MapCoordinates(Vector2.Zero, mapId));
 
                     foreach (var bounty in bounties)
                     {
