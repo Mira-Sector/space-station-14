@@ -1,0 +1,47 @@
+using System.Linq;
+using Content.Shared.Holodeck.Components;
+using Robust.Shared.Map;
+using Robust.Shared.Prototypes;
+
+namespace Content.Shared.Holodeck;
+
+public abstract partial class SharedHolodeckSystem : EntitySystem
+{
+    [Dependency] private readonly IMapManager _mapMan = default!;
+    [Dependency] private readonly SharedMapSystem _map = default!;
+    [Dependency] private readonly IPrototypeManager _prototype = default!;
+    [Dependency] private readonly SharedTransformSystem _xform = default!;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+    }
+
+    public bool IsScenarioSpawnable(Entity<HolodeckSpawnerComponent?> ent, HolodeckScenarioPrototype scenario)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp))
+            return false;
+
+        var centerVec = ent.Comp.Center.ToVector2i(EntityManager, _mapMan, _xform);
+
+        if (scenario.RequiredSpace.Any())
+        {
+            if (!CheckScenarioSpace(ent!, scenario, centerVec))
+                return false;
+        }
+
+        return true;
+    }
+
+    private bool CheckScenarioSpace(Entity<HolodeckSpawnerComponent> ent, HolodeckScenarioPrototype scenario, Vector2i centerVec)
+    {
+        if (_xform.GetGrid(ent.Comp.Center) is not { } grid)
+            return false;
+
+        foreach (var box in scenario.RequiredSpace)
+        {
+            var boxRelative = box.Translated(centerVec);
+            var tiles = _map.GetLocalTilesIntersecting();
+        }
+    }
+}

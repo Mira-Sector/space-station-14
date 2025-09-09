@@ -131,6 +131,8 @@ namespace Content.Shared.Maps
 
         [DataField] public StationAiVisionTileVisuals? StationAiVisuals;
 
+        [DataField] public bool AllowHolodeck;
+
         public void AssignTileId(ushort id)
         {
             TileId = id;
