@@ -61,15 +61,17 @@ public abstract partial class SharedHolodeckSystem : EntitySystem
             if (!TryComp<MapGridComponent>(grid, out var gridComp))
                 return false;
 
-            if (!CheckScenarioSpace(requiredSpace, centerVec, (grid, gridComp), ref adjustedBounds))
+            if (GetScenarioMissingTiles(requiredSpace, centerVec, (grid, gridComp), ref adjustedBounds).Any())
                 return false;
         }
 
         return true;
     }
 
-    private bool CheckScenarioSpace(List<Box2i> requiredSpace, Vector2i centerVec, Entity<MapGridComponent> grid, ref List<Box2i>? adjustedBounds)
+    private HashSet<Vector2i> GetScenarioMissingTiles(List<Box2i> requiredSpace, Vector2i centerVec, Entity<MapGridComponent> grid, ref List<Box2i>? adjustedBounds)
     {
+        HashSet<Vector2i> missing = [];
+
         adjustedBounds = new(requiredSpace.Count);
 
         foreach (var box in requiredSpace)
@@ -78,20 +80,22 @@ public abstract partial class SharedHolodeckSystem : EntitySystem
             adjustedBounds.Add(boxRelative);
 
             var expectedTileCount = box.Width * box.Height;
-            var tiles = _map.GetLocalTilesIntersecting(grid.Owner, grid.Comp, boxRelative);
+            var tiles = _map.GetLocalTilesIntersecting(grid.Owner, grid.Comp, boxRelative, false);
 
-            if (tiles.Count() != expectedTileCount)
-                return false;
+            missing.EnsureCapacity(missing.Count + expectedTileCount);
 
             foreach (var tile in tiles)
             {
-                if (!tile.Tile.GetContentTileDefinition(_tileDefinitions).AllowHolodeck)
-                    return false;
+                if (tile.Tile.IsEmpty || !tile.Tile.GetContentTileDefinition(_tileDefinitions).AllowHolodeck)
+                {
+                    missing.Add(tile.GridIndices);
+                    continue;
+                }
 
-                //TODO: check nothing like walls is blocked
+                //TODO: check nothing like walls is blocking
             }
         }
 
-        return true;
+        return missing;
     }
 }
