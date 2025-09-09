@@ -1600,3 +1600,32 @@
     containers:
       circuit_holder: !type:ContainerSlot
       board: !type:Container
+
+- type: entity
+  parent: BaseComputerAiAccess
+  id: ComputerHolodeck
+  name: holodeck console
+  description: Used to control the scenarios on the holodeck.
+  components:
+  - type: Sprite
+    layers:
+    - map: ["computerLayerBody"]
+      state: computer
+    - map: ["computerLayerKeyboard"]
+      state: generic_keyboard
+    - map: ["computerLayerScreen"]
+      state: holocontrol
+    - map: ["computerLayerKeys"]
+      state: generic_keys
+    - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
+      state: generic_panel_open
+  - type: Computer
+    board: HolodeckCircuitboard
+  - type: HolodeckSpawner
+  - type: ActivatableUIRequiresVision
+  - type: Transform
+    anchored: true
+  - type: UserInterface
+    interfaces:
+        enum.WiresUiKey.Key:
+          type: WiresBoundUserInterface
