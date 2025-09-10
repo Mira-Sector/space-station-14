@@ -1,5 +1,5 @@
 - type: entity
-  id: CigarCase
+  id: CigarCaseEmpty
   parent: [ BaseStorageItem, BaseBagOpenClose ]
   name: cigar case
   description: A case for holding your cigars when you are not smoking them.
@@ -44,10 +44,6 @@
     shape:
     - 0,0,2,1
     storedRotation: 90
-  - type: StorageFill
-    contents:
-    - id: Cigar
-      amount: 8
   - type: ItemCounter
     count:
       tags: [Cigar]
@@ -62,6 +58,16 @@
     - cigar7
     - cigar8
   - type: Appearance
+
+- type: entity
+  id: CigarCase
+  parent: CigarCaseEmpty
+  suffix: Filled
+  components:
+  - type: StorageFill
+    contents:
+    - id: Cigar
+      amount: 8
 
 - type: entity
   id: CigarGoldCase
