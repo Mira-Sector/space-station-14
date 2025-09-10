@@ -8,4 +8,6 @@
             Name="Scenarios"
             Orientation="Vertical"/>
     </ScrollContainer>
+    <controls:GridView
+        Name="GridView"/>
 </controls:FancyWindow>

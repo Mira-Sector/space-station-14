@@ -12,6 +12,7 @@ public sealed partial class HolodeckSpawnerWindow : FancyWindow
 {
     [Dependency] private readonly IEntityManager _entity = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;
+    private readonly HolodeckSystem _holodeck;
 
     private static readonly ButtonGroup ScenarioButtonGroup = new();
 
@@ -19,6 +20,8 @@ public sealed partial class HolodeckSpawnerWindow : FancyWindow
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
+
+        _holodeck = _entity.System<HolodeckSystem>();
     }
 
     public void UpdateState(EntityUid spawner, HolodeckSpawnerBoundUserInterfaceState state)
@@ -30,6 +33,12 @@ public sealed partial class HolodeckSpawnerWindow : FancyWindow
             var button = new HolodeckScenarioButton(scenario, _prototype)
             {
                 Group = ScenarioButtonGroup
+            };
+
+            button.OnPressed += _ =>
+            {
+                if (_holodeck.TryGetScenarioGrid(scenario, out var grid))
+                    GridView.SetGrid(grid);
             };
 
             Scenarios.AddChild(button);

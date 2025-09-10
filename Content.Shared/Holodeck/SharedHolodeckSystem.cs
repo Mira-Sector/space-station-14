@@ -1,4 +1,5 @@
 using Content.Shared.Holodeck.Components;
+using Content.Shared.Holodeck.Ui;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Prototypes;
@@ -12,6 +13,7 @@ public abstract partial class SharedHolodeckSystem : EntitySystem
     [Dependency] private readonly IMapManager _map = default!;
     [Dependency] protected readonly IPrototypeManager Prototypes = default!;
     [Dependency] protected readonly SharedTransformSystem Xform = default!;
+    [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
 
     private const LookupFlags FloorLookupFlags = LookupFlags.Approximate | LookupFlags.Static;
 
@@ -21,6 +23,7 @@ public abstract partial class SharedHolodeckSystem : EntitySystem
 
         SubscribeLocalEvent<HolodeckSpawnerComponent, ComponentInit>(OnSpawnerInit);
         SubscribeLocalEvent<HolodeckSpawnerComponent, ComponentRemove>(OnSpawnerRemove);
+        SubscribeLocalEvent<HolodeckSpawnerComponent, BoundUIOpenedEvent>(OnSpawnerUiOpen);
     }
 
     private void OnSpawnerInit(Entity<HolodeckSpawnerComponent> ent, ref ComponentInit args)
@@ -32,6 +35,21 @@ public abstract partial class SharedHolodeckSystem : EntitySystem
     private void OnSpawnerRemove(Entity<HolodeckSpawnerComponent> ent, ref ComponentRemove args)
     {
         CleanupSpawned(ent);
+    }
+
+    private void OnSpawnerUiOpen(Entity<HolodeckSpawnerComponent> ent, ref BoundUIOpenedEvent args)
+    {
+        UpdateSpawnerUi(ent);
+    }
+
+    protected void UpdateSpawnerUi(Entity<HolodeckSpawnerComponent> ent)
+    {
+        if (!_ui.IsUiOpen(ent.Owner, HolodeckSpawnerUiKey.Key))
+            return;
+
+        var center = GetNetCoordinates(ent.Comp.Center);
+        var state = new HolodeckSpawnerBoundUserInterfaceState(center, ent.Comp.Scenarios);
+        _ui.SetUiState(ent.Owner, HolodeckSpawnerUiKey.Key, state);
     }
 
     private void CleanupSpawned(Entity<HolodeckSpawnerComponent> ent)

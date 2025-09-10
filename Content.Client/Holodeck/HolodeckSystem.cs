@@ -5,6 +5,7 @@ using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Prototypes;
 using System.Collections.Frozen;
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 
 namespace Content.Client.Holodeck;
@@ -14,7 +15,7 @@ public sealed partial class HolodeckSystem : SharedHolodeckSystem
     [Dependency] private readonly MapSystem _map = default!;
     [Dependency] private readonly MapLoaderSystem _mapLoader = default!;
 
-    private FrozenDictionary<ProtoId<HolodeckScenarioPrototype>, Entity<MapGridComponent>> _scenarioGrids = default!;
+    private FrozenDictionary<ProtoId<HolodeckScenarioPrototype>, Entity<MapGridComponent>>? _scenarioGrids;
     private (EntityUid, MapId)? _scenarioGridMap;
 
     public override void Initialize()
@@ -66,9 +67,29 @@ public sealed partial class HolodeckSystem : SharedHolodeckSystem
         // TODO: this doesnt cover converting existing usages to the new gridUid
         // its only called from admemes and testing so...
         // dont worry about it :3
-        foreach (var grid in _scenarioGrids.Values)
-            Del(grid);
+        if (_scenarioGrids != null)
+        {
+            foreach (var grid in _scenarioGrids.Values)
+                Del(grid);
+        }
 
         InitializeGrids();
+    }
+
+    public bool TryGetScenarioGrid(ProtoId<HolodeckScenarioPrototype> scenario, [NotNullWhen(true)] out Entity<MapGridComponent>? grid)
+    {
+        if (_scenarioGrids == null)
+            InitializeGrids();
+
+        if (_scenarioGrids!.TryGetValue(scenario, out var scenarioGrid))
+        {
+            grid = scenarioGrid;
+            return true;
+        }
+        else
+        {
+            grid = null;
+            return false;
+        }
     }
 }

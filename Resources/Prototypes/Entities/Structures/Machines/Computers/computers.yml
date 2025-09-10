@@ -1622,6 +1622,8 @@
   - type: Computer
     board: HolodeckCircuitboard
   - type: HolodeckSpawner
+    scenarios:
+    - debug
   - type: ActivatableUI
     key: enum.HolodeckSpawnerUiKey.Key
   - type: ActivatableUIRequiresVision
