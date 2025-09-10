@@ -1,0 +1,11 @@
+<controls:FancyWindow
+    xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls">
+    <ScrollContainer
+        VerticalExpand="True"
+        HScrollEnabled="False">
+        <BoxContainer
+            Name="Scenarios"
+            Orientation="Vertical"/>
+    </ScrollContainer>
+</controls:FancyWindow>

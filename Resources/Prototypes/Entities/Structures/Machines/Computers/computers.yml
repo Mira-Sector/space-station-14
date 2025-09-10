@@ -1622,10 +1622,14 @@
   - type: Computer
     board: HolodeckCircuitboard
   - type: HolodeckSpawner
+  - type: ActivatableUI
+    key: enum.HolodeckSpawnerUiKey.Key
   - type: ActivatableUIRequiresVision
   - type: Transform
     anchored: true
   - type: UserInterface
     interfaces:
+        enum.HolodeckSpawnerUiKey.Key:
+          type: HolodeckSpawnerBoundUserInterface
         enum.WiresUiKey.Key:
           type: WiresBoundUserInterface
