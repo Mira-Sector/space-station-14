@@ -10,8 +10,8 @@ public abstract partial class SharedHolodeckSystem : EntitySystem
 {
     [Dependency] private readonly EntityLookupSystem _entityLookup = default!;
     [Dependency] private readonly IMapManager _map = default!;
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
-    [Dependency] private readonly SharedTransformSystem _xform = default!;
+    [Dependency] protected readonly IPrototypeManager Prototypes = default!;
+    [Dependency] protected readonly SharedTransformSystem Xform = default!;
 
     private const LookupFlags FloorLookupFlags = LookupFlags.Approximate | LookupFlags.Static;
 
@@ -50,12 +50,12 @@ public abstract partial class SharedHolodeckSystem : EntitySystem
         if (!Resolve(ent.Owner, ref ent.Comp))
             return false;
 
-        var centerVec = ent.Comp.Center.ToVector2i(EntityManager, _map, _xform);
+        var centerVec = ent.Comp.Center.ToVector2i(EntityManager, _map, Xform);
 
         if (scenario.RequiredSpace is { } requiredSpace)
         {
             // no grid so no available tiles
-            if (_xform.GetGrid(ent.Comp.Center) is not { } grid)
+            if (Xform.GetGrid(ent.Comp.Center) is not { } grid)
                 return false;
 
             if (!TryComp<MapGridComponent>(grid, out var gridComp))
@@ -90,7 +90,7 @@ public abstract partial class SharedHolodeckSystem : EntitySystem
             foreach (var floor in floors)
             {
                 //TODO: check nothing like walls is blocking
-                var floorIndices = _xform.GetGridTilePositionOrDefault(floor.Owner, grid.Comp);
+                var floorIndices = Xform.GetGridTilePositionOrDefault(floor.Owner, grid.Comp);
                 found.Add(floorIndices);
             }
 
