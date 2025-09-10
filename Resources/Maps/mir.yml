@@ -39019,7 +39019,7 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 11.5,35.5
       parent: 2
-- proto: CigarCase
+- proto: CigarCaseEmpty
   entities:
   - uid: 13729
     components:
@@ -39029,16 +39029,16 @@ entities:
     - type: Storage
       storedItems:
         13730:
-          position: 2,0
+          position: 0,0
           _rotation: South
         13731:
-          position: 3,1
-          _rotation: South
-        13732:
           position: 1,0
           _rotation: South
+        13732:
+          position: 2,0
+          _rotation: South
         13733:
-          position: 0,0
+          position: 3,0
           _rotation: South
     - type: ContainerContainer
       containers:
@@ -39046,10 +39046,10 @@ entities:
           showEnts: False
           occludes: True
           ents:
-          - 13733
-          - 13731
           - 13730
+          - 13731
           - 13732
+          - 13733
 - proto: CigaretteBlackPepper
   entities:
   - uid: 5014

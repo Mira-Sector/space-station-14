@@ -231,6 +231,7 @@ public abstract partial class InteractionTest
         });
 
         // Ensure that the player only has one hand, so that they do not accidentally pick up deconstruction products
+        /*
         await Server.WaitPost(() =>
         {
             // I lost an hour of my life trying to track down how the hell interaction tests were breaking
@@ -243,7 +244,7 @@ public abstract partial class InteractionTest
                 SEntMan.DeleteEntity(hands[i].Id);
             }
         });
-
+        */
         // Change UI state to in-game.
         var state = Client.ResolveDependency<IStateManager>();
         await Client.WaitPost(() => state.RequestStateChange<GameplayState>());
