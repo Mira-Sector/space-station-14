@@ -10,6 +10,7 @@
   - type: Icon
     sprite: Structures/Holo/holodeck_floor.rsi
     state: full
+  - type: HolodeckFloor
   - type: IconSmooth
     key: full
     base: floor_

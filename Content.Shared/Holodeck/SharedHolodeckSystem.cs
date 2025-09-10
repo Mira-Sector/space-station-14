@@ -1,5 +1,4 @@
 using Content.Shared.Holodeck.Components;
-using Content.Shared.Maps;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Prototypes;
@@ -9,11 +8,12 @@ namespace Content.Shared.Holodeck;
 
 public abstract partial class SharedHolodeckSystem : EntitySystem
 {
-    [Dependency] private readonly IMapManager _mapMan = default!;
-    [Dependency] private readonly SharedMapSystem _map = default!;
+    [Dependency] private readonly EntityLookupSystem _entityLookup = default!;
+    [Dependency] private readonly IMapManager _map = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;
-    [Dependency] private readonly ITileDefinitionManager _tileDefinitions = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
+
+    private const LookupFlags FloorLookupFlags = LookupFlags.Approximate | LookupFlags.Static;
 
     public override void Initialize()
     {
@@ -50,7 +50,7 @@ public abstract partial class SharedHolodeckSystem : EntitySystem
         if (!Resolve(ent.Owner, ref ent.Comp))
             return false;
 
-        var centerVec = ent.Comp.Center.ToVector2i(EntityManager, _mapMan, _xform);
+        var centerVec = ent.Comp.Center.ToVector2i(EntityManager, _map, _xform);
 
         if (scenario.RequiredSpace is { } requiredSpace)
         {
@@ -70,6 +70,7 @@ public abstract partial class SharedHolodeckSystem : EntitySystem
 
     private HashSet<Vector2i> GetScenarioMissingTiles(List<Box2i> requiredSpace, Vector2i centerVec, Entity<MapGridComponent> grid, ref List<Box2i>? adjustedBounds)
     {
+        HashSet<Vector2i> found = [];
         HashSet<Vector2i> missing = [];
 
         adjustedBounds = new(requiredSpace.Count);
@@ -80,19 +81,27 @@ public abstract partial class SharedHolodeckSystem : EntitySystem
             adjustedBounds.Add(boxRelative);
 
             var expectedTileCount = box.Width * box.Height;
-            var tiles = _map.GetLocalTilesIntersecting(grid.Owner, grid.Comp, boxRelative, false);
+            HashSet<Entity<HolodeckFloorComponent>> floors = new(expectedTileCount);
+            _entityLookup.GetLocalEntitiesIntersecting(grid.Owner, boxRelative, floors, FloorLookupFlags);
 
+            found.EnsureCapacity(found.Count + expectedTileCount);
             missing.EnsureCapacity(missing.Count + expectedTileCount);
 
-            foreach (var tile in tiles)
+            foreach (var floor in floors)
             {
-                if (tile.Tile.IsEmpty || !tile.Tile.GetContentTileDefinition(_tileDefinitions).AllowHolodeck)
-                {
-                    missing.Add(tile.GridIndices);
-                    continue;
-                }
-
                 //TODO: check nothing like walls is blocking
+                var floorIndices = _xform.GetGridTilePositionOrDefault(floor.Owner, grid.Comp);
+                found.Add(floorIndices);
+            }
+
+            for (var x = boxRelative.Left; x <= boxRelative.Right; x++)
+            {
+                for (var y = boxRelative.Bottom; y <= boxRelative.Top; y++)
+                {
+                    var floorIndices = new Vector2i(x, y);
+                    if (!found.Contains(floorIndices))
+                        missing.Add(floorIndices);
+                }
             }
         }
 
