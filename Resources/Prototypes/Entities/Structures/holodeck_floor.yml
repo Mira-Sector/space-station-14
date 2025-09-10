@@ -1,0 +1,22 @@
+- type: entity
+  id: HolodeckFloor
+  parent: BaseStructure
+  name: holodeck floor
+  description: Projects images from the floor. Almost lifelike.
+  components:
+  - type: Sprite
+    sprite: Structures/Holo/holodeck_floor.rsi
+    drawdepth: FloorTiles
+  - type: Icon
+    sprite: Structures/Holo/holodeck_floor.rsi
+    state: full
+  - type: IconSmooth
+    key: full
+    base: floor_
+  - type: Physics
+    canCollide: false
+  - type: Fixtures
+  - type: TrayScanReveal
+  - type: Tag
+    tags:
+    - ForceFixRotations
