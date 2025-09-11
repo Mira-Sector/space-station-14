@@ -2101,11 +2101,17 @@ Entries:
   changes:
   - message: reworked tele/camms on the map Mir.
     type: Tweak
-  id: 289
+  id: 290
   time: '2025-09-07T17:28:00.0000000+00:00'
 - author: SpiffyCodes
   changes:
   - message: reworked cargo and salv on the map Mir.
     type: Tweak
-  id: 289
+  id: 291
   time: '2025-09-07T17:28:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: PDA messaging profile names now properly update
+    type: Fix
+  id: 292
+  time: '2025-09-11T14:30:00.0000000+00:00'
