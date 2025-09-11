@@ -52,9 +52,10 @@ public sealed partial class ChatCartridgeSystem : SharedChatCartridgeSystem
             return;
 
         var recipients = PdaMessaging.GetClientRecipients((ent.Owner, ent.Comp2));
-        Dictionary<BasePdaChatMessageable, BasePdaChatMessage[]> messages = new(recipients.Count());
+        var messages = new KeyValuePair<BasePdaChatMessageable, BasePdaChatMessage[]>[recipients.Count()];
+        var i = 0;
         foreach (var recipient in recipients)
-            messages[recipient] = PdaMessaging.GetHistory(ent.Owner, recipient).ToArray();
+            messages[i++] = KeyValuePair.Create(recipient, PdaMessaging.GetHistory(ent.Owner, recipient).ToArray());
 
         Dictionary<NetEntity, string> availableServers;
         if (_station.GetCurrentStation(ent.Owner) is { } station)
