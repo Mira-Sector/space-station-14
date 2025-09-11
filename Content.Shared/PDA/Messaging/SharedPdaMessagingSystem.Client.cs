@@ -195,17 +195,23 @@ public abstract partial class SharedPdaMessagingSystem : EntitySystem
 
     private void UpdateClientProfileName(Entity<PdaMessagingClientComponent> ent)
     {
-        if (ent.Comp.Server is not { } server)
-            return;
-
         var profilePicture = _profilePictures[ent.Comp.Profile.Picture];
         var newName = GetProfileName(ent, profilePicture);
 
         if (ent.Comp.Profile.Name == newName)
             return;
 
-        var ev = new PdaMessageServerUpdateNameEvent(ent.Owner, newName);
-        RaiseLocalEvent(server, ref ev);
+        ent.Comp.Profile.Name = newName;
+
+        if (ent.Comp.Server is { } server)
+        {
+            var ev = new PdaMessageServerUpdateNameEvent(ent.Owner, newName);
+            RaiseLocalEvent(server, ref ev);
+        }
+        else
+        {
+            Dirty(ent);
+        }
     }
 
     public void UpdateClientProfile(Entity<PdaMessagingClientComponent?> ent, PdaChatRecipientProfile profile)
