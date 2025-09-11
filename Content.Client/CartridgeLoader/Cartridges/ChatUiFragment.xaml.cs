@@ -26,6 +26,7 @@ public sealed partial class ChatUiFragment : PanelContainer
     private BasePdaChatMessageable? _recipient = null;
     private PdaChatRecipientProfile _profile = default!;
 
+    private BasePdaChatMessageable[] _messageable = [];
     private Dictionary<BasePdaChatMessageable, BasePdaChatMessage[]> _messages = [];
 
     private Dictionary<NetEntity, string> _availableServers = [];
@@ -48,16 +49,24 @@ public sealed partial class ChatUiFragment : PanelContainer
         InitMode(ChatUiMode.Menu);
     }
 
-    public void UpdateState(PdaChatRecipientProfile profile, Dictionary<BasePdaChatMessageable, BasePdaChatMessage[]> messages, Dictionary<NetEntity, string> availableServers, NetEntity? currentServer)
+    public void UpdateState(PdaChatRecipientProfile profile, KeyValuePair<BasePdaChatMessageable, BasePdaChatMessage[]>[] messages, Dictionary<NetEntity, string> availableServers, NetEntity? currentServer)
     {
-        _messages = messages;
+        _messageable = new BasePdaChatMessageable[messages.Length];
+        _messages = new(messages.Length);
+        for (var i = messages.Length - 1; i >= 0; i--)
+        {
+            var (recipient, message) = messages[i];
+            _messageable[i] = recipient;
+            _messages[recipient] = message;
+        }
+
         _profile = profile;
         _availableServers = availableServers;
         _currentServer = currentServer;
 
         if (_recipient != null)
         {
-            foreach (var messageable in messages.Keys)
+            foreach (var (messageable, _) in messages)
             {
                 if (_recipient.Id != messageable.Id)
                     continue;
@@ -105,7 +114,7 @@ public sealed partial class ChatUiFragment : PanelContainer
         {
             case ChatUiMode.Menu:
                 var menu = GetContent<ChatUiFragmentMenu>();
-                menu.UpdateState(_messages.Keys, _prototype);
+                menu.UpdateState(_messageable, _prototype);
                 break;
 
             case ChatUiMode.Settings:
