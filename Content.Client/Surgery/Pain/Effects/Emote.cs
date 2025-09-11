@@ -4,7 +4,7 @@ namespace Content.Client.Surgery.Pain.Effects;
 
 public sealed partial class Emote : SharedEmote
 {
-    public override void DoEffect(IEntityManager entity, EntityUid? body, EntityUid? limb, EntityUid? used)
+    public override void DoEffect(IEntityManager entity, EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid? used)
     {
     }
 }

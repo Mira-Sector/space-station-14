@@ -1,0 +1,132 @@
+- type: pdaChatProfilePicture
+  id: Ai
+  name: pda-messaging-profile-picture-ai-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: ai
+
+- type: pdaChatProfilePicture
+  id: Bar
+  name: pda-messaging-profile-picture-bar-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: bar
+
+- type: pdaChatProfilePicture
+  id: Baton
+  name: pda-messaging-profile-picture-baton-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: baton
+
+- type: pdaChatProfilePicture
+  id: Beach
+  name: pda-messaging-profile-picture-beach-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: beach
+
+- type: pdaChatProfilePicture
+  id: Carp
+  name: pda-messaging-profile-picture-carp-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: carp
+
+- type: pdaChatProfilePicture
+  id: Gun
+  name: pda-messaging-profile-picture-gun-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: gun
+
+- type: pdaChatProfilePicture
+  id: Ian
+  name: pda-messaging-profile-picture-ian-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: ian
+
+- type: pdaChatProfilePicture
+  id: Lizard
+  name: pda-messaging-profile-picture-lizard-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: lizard
+
+- type: pdaChatProfilePicture
+  id: Mime
+  name: pda-messaging-profile-picture-mime-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: mime
+
+- type: pdaChatProfilePicture
+  id: Music
+  name: pda-messaging-profile-picture-music-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: music
+
+- type: pdaChatProfilePicture
+  id: Nanotrasen
+  name: pda-messaging-profile-picture-nanotrasen-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: nanotrasen
+
+- type: pdaChatProfilePicture
+  id: Pickaxe
+  name: pda-messaging-profile-picture-pickaxe-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: pickaxe
+
+- type: pdaChatProfilePicture
+  id: Space
+  name: pda-messaging-profile-picture-space-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: space
+
+- type: pdaChatProfilePicture
+  id: Star
+  name: pda-messaging-profile-picture-star-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: star
+
+- type: pdaChatProfilePicture
+  id: Tesla
+  name: pda-messaging-profile-picture-tesla-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: tesla
+
+- type: pdaChatProfilePicture
+  id: Tider
+  name: pda-messaging-profile-picture-tider-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: tider
+
+- type: pdaChatProfilePicture
+  id: Trans
+  name: pda-messaging-profile-picture-trans-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: trans
+
+- type: pdaChatProfilePicture
+  id: Urist
+  name: pda-messaging-profile-picture-urist-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: urist
+
+- type: pdaChatProfilePicture
+  id: Xmas
+  name: pda-messaging-profile-picture-xmas-name
+  sprite:
+    sprite: Interface/PdaMessaging/profile_pictures.rsi
+    state: xmas

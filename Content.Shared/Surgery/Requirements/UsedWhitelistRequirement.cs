@@ -22,22 +22,22 @@ public sealed partial class UsedWhitelistRequirement : SurgeryEdgeRequirement
     [DataField]
     public TimeSpan? Delay;
 
-    public override string Name(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override string Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart)
     {
         return string.Empty;
     }
 
-    public override string Description(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override string Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart)
     {
         return string.Empty;
     }
 
-    public override SpriteSpecifier? GetIcon(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override SpriteSpecifier? GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart)
     {
         return null;
     }
 
-    public override SurgeryInteractionState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui, bool test = false)
+    public override SurgeryInteractionState RequirementMet(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart? bodyPart, out Enum? ui, bool test = false)
     {
         ui = null;
 
@@ -56,7 +56,7 @@ public sealed partial class UsedWhitelistRequirement : SurgeryEdgeRequirement
         return SurgeryInteractionState.DoAfter;
     }
 
-    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
+    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart? bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
     {
         doAfterId = null;
 

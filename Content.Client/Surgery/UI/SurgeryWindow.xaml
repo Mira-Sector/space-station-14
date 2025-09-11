@@ -32,13 +32,18 @@
             VerticalAlignment="Stretch"
             HorizontalExpand="True"
             VerticalExpand="True">
-            <BoxContainer
-                Name="LimbButtons"
-                Orientation="Vertical"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Margin="16"
-                Access="Public"/>
+            <ScrollContainer
+                VerticalExpand="True"
+                HScrollEnabled="False"
+                ReturnMeasure="True">
+                <BoxContainer
+                    Name="LimbButtons"
+                    Orientation="Vertical"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Margin="16"
+                    Access="Public"/>
+            </ScrollContainer>
             <PanelContainer StyleClasses="LowDivider"/>
             <PanelContainer
                 HorizontalExpand="True"
@@ -50,12 +55,17 @@
                     Access="Public"/>
             </PanelContainer>
             <PanelContainer StyleClasses="LowDivider"/>
-            <BoxContainer
-                Name="SurgeryButtons"
-                Orientation="Vertical"
-                HorizontalAlignment="Right"
-                Margin="16"
-                Access="Public"/>
+            <ScrollContainer
+                VerticalExpand="True"
+                HScrollEnabled="False"
+                ReturnMeasure="True">
+                <BoxContainer
+                    Name="SurgeryButtons"
+                    Orientation="Vertical"
+                    HorizontalAlignment="Right"
+                    Margin="16"
+                    Access="Public"/>
+            </ScrollContainer>
         </BoxContainer>
     </BoxContainer>
 </controls:FancyWindow>

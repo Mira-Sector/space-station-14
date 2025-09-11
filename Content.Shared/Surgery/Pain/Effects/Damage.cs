@@ -11,9 +11,9 @@ public sealed partial class Damage : SurgeryPainEffect
     [DataField("damage", required: true)]
     public DamageSpecifier DamageSpecifier;
 
-    public override void DoEffect(IEntityManager entity, EntityUid? body, EntityUid? limb, EntityUid? used)
+    public override void DoEffect(IEntityManager entity, EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid? used)
     {
         var damageSys = entity.System<DamageableSystem>();
-        damageSys.TryChangeDamage(limb ?? body, DamageSpecifier);
+        damageSys.TryChangeDamage(receiver, DamageSpecifier);
     }
 }

@@ -59,6 +59,9 @@
     requiredStates:
     - Wounded
     - Dead
+  - type: SurgeryReceiver
+    availableSurgeries:
+    - OrganHeal
   - type: Temperature
   - type: Perishable
     rotAfter: 360
@@ -121,6 +124,9 @@
         reagents:
         - ReagentId: UncookedAnimalProteins
           Quantity: 5
+  - type: SurgeryReceiver
+    availableSurgeries:
+    - OrganHeal
   - type: Temperature
   - type: Perishable
     rotAfter: 990
@@ -178,6 +184,9 @@
     groups:
     - id: Food
     - id: Drink
+  - type: SurgeryReceiver
+    availableSurgeries:
+    - OrganHeal
   - type: Temperature
   - type: Perishable
     rotAfter: 780
@@ -234,6 +243,9 @@
       types:
         Poison: 4
   - type: MetabolizerDelayOnBodyDamage
+  - type: SurgeryReceiver
+    availableSurgeries:
+    - OrganHeal
   - type: Temperature
   - type: Perishable
     rotAfter: 900
@@ -288,6 +300,9 @@
   - type: DisableMetabolisingOnBodyDamage
     requiredStates:
     - Dead
+  - type: SurgeryReceiver
+    availableSurgeries:
+    - OrganHeal
   - type: Temperature
   - type: Perishable
     rotAfter: 900
@@ -334,6 +349,9 @@
     damage:
       types:
         Poison: 2.5
+  - type: SurgeryReceiver
+    availableSurgeries:
+    - OrganHeal
   - type: Temperature
   - type: Perishable
     rotAfter: 900

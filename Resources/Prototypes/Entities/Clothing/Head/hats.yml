@@ -1347,8 +1347,10 @@
   - type: Tag
     tags:
     - HamsterWearable
+  - type: AtmosExposed
   - type: Flammable
     fireSpread: true
+    igniteFromHeat: true
     canResistFire: false
     alwaysCombustible: true
     canExtinguish: true

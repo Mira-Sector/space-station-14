@@ -113,6 +113,15 @@
 
 - type: entity
   parent: AirlockExternal
+  id: AirlockExternalResearchLocked
+  suffix: External, Science, Locked
+  components:
+  - type: ContainerFill
+    containers:
+      board: [ DoorElectronicsResearch ]
+
+- type: entity
+  parent: AirlockExternal
   id: AirlockExternalEngineeringLocked
   suffix: External, Engineering, Locked
   components:
@@ -570,6 +579,15 @@
       board: [ DoorElectronicsAtmospherics ]
   - type: Wires
     layoutId: AirlockEngineering
+
+- type: entity
+  parent: AirlockExternalGlass
+  id: AirlockExternalGlassResearchLocked
+  suffix: External, Glass, Science, Locked
+  components:
+  - type: ContainerFill
+    containers:
+      board: [ DoorElectronicsResearch ]
 
 - type: entity
   parent: AirlockServiceGlassLocked

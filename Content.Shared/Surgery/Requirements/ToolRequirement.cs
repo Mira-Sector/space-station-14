@@ -19,14 +19,14 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
     public ProtoId<ToolQualityPrototype> Quality;
 
     [DataField]
-    public TimeSpan Delay = TimeSpan.FromSeconds(1f);
+    public TimeSpan? Delay = TimeSpan.FromSeconds(1f);
 
-    public override string Name(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override string Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart)
     {
         return Loc.GetString("surgery-requirement-tool-name");
     }
 
-    public override string Description(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override string Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart)
     {
         var prototypes = IoCManager.Resolve<IPrototypeManager>();
 
@@ -35,14 +35,14 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
         return Loc.GetString("surgery-requirement-tool-desc", ("tool", qualityName));
     }
 
-    public override SpriteSpecifier? GetIcon(EntityUid? body, EntityUid? limb, BodyPart bodyPart)
+    public override SpriteSpecifier? GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart)
     {
         var prototypes = IoCManager.Resolve<IPrototypeManager>();
 
         return prototypes.Index(Quality).Icon;
     }
 
-    public override SurgeryInteractionState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui, bool test = false)
+    public override SurgeryInteractionState RequirementMet(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart? bodyPart, out Enum? ui, bool test = false)
     {
         ui = null;
 
@@ -53,25 +53,22 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
         var toolSystem = entMan.System<SharedToolSystem>();
 
         if (toolSystem.HasQuality(tool.Value, Quality))
-            return Delay > TimeSpan.Zero ? SurgeryInteractionState.DoAfter : SurgeryInteractionState.Passed;
+            return Delay == null ? SurgeryInteractionState.Passed : SurgeryInteractionState.DoAfter;
 
         return SurgeryInteractionState.Failed;
     }
 
-    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
+    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart? bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
     {
         doAfterId = null;
 
         if (tool == null)
             return false;
 
-        if ((body ?? limb) == null)
-            return false;
-
         var entMan = IoCManager.Resolve<IEntityManager>();
         var toolSystem = entMan.System<SharedToolSystem>();
 
-        return toolSystem.UseTool(tool.Value, user, limb ?? body, Delay, [Quality], new SurgeryEdgeRequirementDoAfterEvent(targetEdge, bodyPart), out doAfterId, requireDown: body != null ? true : null);
+        return toolSystem.UseTool(tool.Value, user, receiver, Delay!.Value, [Quality], new SurgeryEdgeRequirementDoAfterEvent(targetEdge, bodyPart), out doAfterId, requireDown: body != null ? true : null);
     }
 
     public override bool RequirementsMatch(SurgeryEdgeRequirement other, [NotNullWhen(true)] out SurgeryEdgeRequirement? merged)
@@ -84,10 +81,27 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
         if (Quality != otherTool.Quality)
             return false;
 
+        TimeSpan? delay;
+
+        if (Delay == null)
+        {
+            if (otherTool.Delay == null)
+                delay = null;
+            else
+                delay = otherTool.Delay.Value;
+        }
+        else
+        {
+            if (otherTool.Delay == null)
+                delay = Delay.Value;
+            else
+                delay = TimeSpan.FromSeconds(Math.Min(Delay.Value.TotalSeconds, otherTool.Delay.Value.TotalSeconds));
+        }
+
         merged = new ToolRequirement()
         {
             Quality = Quality,
-            Delay = TimeSpan.FromSeconds(Math.Min(Delay.TotalSeconds, otherTool.Delay.TotalSeconds)) //use the shortest delay
+            Delay = delay
         };
 
 # if DEBUG

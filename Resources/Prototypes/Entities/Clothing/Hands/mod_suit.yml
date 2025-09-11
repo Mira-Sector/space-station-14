@@ -10,6 +10,10 @@
       damageProtection:
         flatReductions:
           Heat: 10 # the average lightbulb only does around four damage!
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.1
+      false: 0.05
   - type: ModSuitDeployableInventory
   - type: OptionalPressureProtection
   - type: Clothing
@@ -279,6 +283,10 @@
     - type: PressureProtection
       highPressureMultiplier: 0.525
       lowPressureMultiplier: 1000
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.025
+      false: 0.0125
 
 - type: entity
   id: ClothingHandsModSuitElite
@@ -530,6 +538,10 @@
     - type: PressureProtection
       highPressureMultiplier: 0.6
       lowPressureMultiplier: 1000
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.14
+      false: 0.07
 
 - type: entity
   id: ClothingHandsModSuitLoader
@@ -637,6 +649,10 @@
     - type: PressureProtection
       highPressureMultiplier: 0.6
       lowPressureMultiplier: 1000
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.14
+      false: 0.07
 
 - type: entity
   id: ClothingHandsModSuitLuxury
@@ -674,6 +690,10 @@
     - type: PressureProtection
       highPressureMultiplier: 0.525
       lowPressureMultiplier: 1000
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.2
+      false: 0.1
 
 - type: entity
   id: ClothingHandsModSuitNinja
@@ -748,6 +768,10 @@
     - type: PressureProtection
       highPressureMultiplier: 0.6
       lowPressureMultiplier: 1000
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.14
+      false: 0.07
 
 - type: entity
   id: ClothingHandsModSuitResearch

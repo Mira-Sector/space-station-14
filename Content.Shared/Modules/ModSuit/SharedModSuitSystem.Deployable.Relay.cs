@@ -1,3 +1,4 @@
+using Content.Shared.Modules.Events;
 using Content.Shared.Modules.ModSuit.Components;
 using Content.Shared.Modules.ModSuit.Events;
 using Content.Shared.PowerCell;
@@ -10,6 +11,7 @@ public partial class SharedModSuitSystem
     private void InitializeDeployableRelay()
     {
         SubscribeLocalEvent<ModSuitPartDeployableComponent, ModSuitGetUiEntriesEvent>(RelayToAllParts);
+        SubscribeLocalEvent<ModSuitPartDeployableComponent, ModuleContainerGetBasePowerDrawRate>(RelayToAllPartsAndSuit);
         SubscribeLocalEvent<ModSuitPartDeployableComponent, PowerCellSlotEmptyEvent>(RelayToDeployedPartsAndSuit);
 
         SubscribeLocalEvent<ModSuitDeployedPartComponent, ModSuitSealAttemptEvent>(RelayToSuit);
@@ -21,7 +23,8 @@ public partial class SharedModSuitSystem
         foreach (var part in GetDeployedParts(ent!))
         {
             var ev = new ModSuitDeployableRelayedEvent<T>(args, ent.Owner, partNumber++);
-            RaiseLocalEvent(part, ev);
+            RaiseLocalEvent(part, ref ev);
+            args = ev.Args;
         }
     }
 
@@ -30,12 +33,14 @@ public partial class SharedModSuitSystem
         var partNumber = 0;
 
         var suitEv = new ModSuitDeployableRelayedEvent<T>(args, ent.Owner, partNumber++);
-        RaiseLocalEvent(ent.Owner, suitEv);
+        RaiseLocalEvent(ent.Owner, ref suitEv);
+        args = suitEv.Args;
 
         foreach (var part in GetDeployedParts(ent!))
         {
             var partEv = new ModSuitDeployableRelayedEvent<T>(args, ent.Owner, partNumber++);
-            RaiseLocalEvent(part, partEv);
+            RaiseLocalEvent(part, ref partEv);
+            args = partEv.Args;
         }
     }
 
@@ -45,7 +50,8 @@ public partial class SharedModSuitSystem
         foreach (var part in GetDeployedParts(ent!))
         {
             var ev = new ModSuitDeployableRelayedEvent<T>(args, ent.Owner, partNumber++);
-            RaiseLocalEvent(part, ev);
+            RaiseLocalEvent(part, ref ev);
+            args = ev.Args;
         }
     }
 
@@ -54,12 +60,14 @@ public partial class SharedModSuitSystem
         var partNumber = 0;
 
         var suitEv = new ModSuitDeployableRelayedEvent<T>(args, ent.Owner, partNumber++);
-        RaiseLocalEvent(ent.Owner, suitEv);
+        RaiseLocalEvent(ent.Owner, ref suitEv);
+        args = suitEv.Args;
 
         foreach (var part in GetDeployedParts(ent!))
         {
             var partEv = new ModSuitDeployableRelayedEvent<T>(args, ent.Owner, partNumber++);
-            RaiseLocalEvent(part, partEv);
+            RaiseLocalEvent(part, ref partEv);
+            args = partEv.Args;
         }
     }
 
@@ -69,7 +77,8 @@ public partial class SharedModSuitSystem
         foreach (var part in GetAllParts(ent!))
         {
             var ev = new ModSuitDeployableRelayedEvent<T>(args, ent.Owner, partNumber++);
-            RaiseLocalEvent(part, ev);
+            RaiseLocalEvent(part, ref ev);
+            args = ev.Args;
         }
     }
 
@@ -78,19 +87,21 @@ public partial class SharedModSuitSystem
         var partNumber = 0;
 
         var suitEv = new ModSuitDeployableRelayedEvent<T>(args, ent.Owner, partNumber++);
-        RaiseLocalEvent(ent.Owner, suitEv);
+        RaiseLocalEvent(ent.Owner, ref suitEv);
+        args = suitEv.Args;
 
         foreach (var part in GetAllParts(ent!))
         {
             var partEv = new ModSuitDeployableRelayedEvent<T>(args, ent.Owner, partNumber++);
-            RaiseLocalEvent(part, partEv);
+            RaiseLocalEvent(part, ref partEv);
+            args = partEv.Args;
         }
     }
 
     protected void RelayToSuit<T>(Entity<ModSuitDeployedPartComponent> ent, ref T args)
     {
         var ev = new ModSuitDeployedPartRelayedEvent<T>(args, ent.Owner);
-        RaiseEventToSuit((ent.Owner, ent.Comp), ev);
+        RaiseEventToSuit((ent.Owner, ent.Comp), ref ev);
     }
 
     [PublicAPI]

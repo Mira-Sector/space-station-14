@@ -434,6 +434,11 @@
 # Comms and Cameras
 - type: latheRecipe
   parent: [ BaseCircuitboardRecipe, BaseEngineeringMachineRecipeCategory ]
+  id: PdaMessageServerCircuitboard
+  result: PdaMessageServerCircuitboard
+
+- type: latheRecipe
+  parent: [ BaseCircuitboardRecipe, BaseEngineeringMachineRecipeCategory ]
   id: TelecomServerCircuitboard
   result: TelecomServerCircuitboard
 

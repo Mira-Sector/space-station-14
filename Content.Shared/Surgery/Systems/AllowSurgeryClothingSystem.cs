@@ -27,6 +27,9 @@ public sealed partial class AllowSurgeryClothingSystem : EntitySystem
         if (args.Cancelled)
             return;
 
+        if (args.Part == null)
+            return;
+
         HashSet<BodyPartType> allowedParts = [];
         allowedParts.EnsureCapacity(Enum.GetValues<BodyPartType>().Length);
 

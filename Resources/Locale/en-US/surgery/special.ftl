@@ -14,3 +14,14 @@ surgery-special-magic-mirror-desc = Allows changing the patients appearance.
 
 surgery-special-item-slot-name = Item Slot
 surgery-special-item-slot-desc = Allows removing or adding an item to a slot.
+
+surgery-special-body-damage-name =
+    { $deltasign ->
+        [-1] Heal Organ Damage
+        *[1] Deal Organ Damage
+    }
+surgery-special-body-damage-desc =
+    { $deltasign ->
+        [-1] Heals {NATURALFIXED($amount, 2)} organ damage
+        *[1] Deals {NATURALFIXED($amount, 2)} organ damage
+    }

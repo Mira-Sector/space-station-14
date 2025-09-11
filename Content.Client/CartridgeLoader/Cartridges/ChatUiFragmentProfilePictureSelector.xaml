@@ -1,0 +1,11 @@
+<ContainerButton
+    xmlns="https://spacestation14.io">
+    <TextureRect
+        Name="CurrentIcon"
+        Stretch="KeepAspectCentered"
+        TextureScale="2 2"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        HorizontalExpand="True"
+        VerticalExpand="True"/>
+</ContainerButton>
