@@ -1,5 +1,6 @@
 <Button
     xmlns="https://spacestation14.io"
+    xmlns:cartridges="clr-namespace:Content.Client.CartridgeLoader.Cartridges"
     Margin="8"
     HorizontalAlignment="Stretch"
     VerticalAlignment="Center"
@@ -31,11 +32,8 @@
         Margin="4"
         HorizontalAlignment="Right"
         VerticalAlignment="Center">
-        <Label
-            Name="UnreadCount"
-            Margin="2"
-            Visible="False"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"/>
+        <cartridges:ChatUiFragmentContactEntryUnreadMarker
+            Name="UnreadMarker"
+            Visible="False"/>
     </BoxContainer>
 </Button>

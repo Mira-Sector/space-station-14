@@ -1,0 +1,16 @@
+<PanelContainer
+    xmlns="https://spacestation14.io">
+    <TextureRect
+        Name="Icon"
+        Stretch="KeepAspectCentered"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        HorizontalExpand="True"
+        VerticalExpand="True">
+        <Label
+            Name="UnreadCount"
+            Margin="2"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"/>
+    </TextureRect>
+</PanelContainer>

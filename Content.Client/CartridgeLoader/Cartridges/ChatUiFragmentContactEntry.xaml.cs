@@ -18,7 +18,6 @@ public sealed partial class ChatUiFragmentContactEntry : Button
         Name.Text = Loc.GetString(recipient.GetUiName());
         Id.Text = Loc.GetString("pda-messaging-contact-id-wrapper", ("id", recipient.Id));
 
-        UnreadCount.Text = Loc.GetString("pda-messaging-contact-unread-count-wrapper", ("count", unreadMessages));
-        UnreadCount.Visible = unreadMessages > 0;
+        UnreadMarker.UpdateUnreadCount(unreadMessages);
     }
 }
