@@ -28,6 +28,7 @@ public sealed partial class ChatUiFragment : PanelContainer
 
     private BasePdaChatMessageable[] _messageable = [];
     private Dictionary<BasePdaChatMessageable, BasePdaChatMessage[]> _messages = [];
+    private Dictionary<BasePdaChatMessageable, int> _unreadMessageCount = [];
 
     private Dictionary<NetEntity, string> _availableServers = [];
     private NetEntity? _currentServer = null;
@@ -49,24 +50,26 @@ public sealed partial class ChatUiFragment : PanelContainer
         InitMode(ChatUiMode.Menu);
     }
 
-    public void UpdateState(PdaChatRecipientProfile profile, KeyValuePair<BasePdaChatMessageable, BasePdaChatMessage[]>[] messages, Dictionary<NetEntity, string> availableServers, NetEntity? currentServer)
+    public void UpdateState(ChatUiState state)
     {
-        _messageable = new BasePdaChatMessageable[messages.Length];
-        _messages = new(messages.Length);
-        for (var i = messages.Length - 1; i >= 0; i--)
+        _messageable = new BasePdaChatMessageable[state.Messages.Length];
+        _messages = new(state.Messages.Length);
+        for (var i = state.Messages.Length - 1; i >= 0; i--)
         {
-            var (recipient, message) = messages[i];
+            var (recipient, message) = state.Messages[i];
             _messageable[i] = recipient;
             _messages[recipient] = message;
         }
 
-        _profile = profile;
-        _availableServers = availableServers;
-        _currentServer = currentServer;
+        _unreadMessageCount = state.UnreadMessageCount;
+
+        _profile = state.Profile;
+        _availableServers = state.AvailableServers;
+        _currentServer = state.CurrentServer;
 
         if (_recipient != null)
         {
-            foreach (var (messageable, _) in messages)
+            foreach (var (messageable, _) in state.Messages)
             {
                 if (_recipient.Id != messageable.Id)
                     continue;
@@ -114,7 +117,7 @@ public sealed partial class ChatUiFragment : PanelContainer
         {
             case ChatUiMode.Menu:
                 var menu = GetContent<ChatUiFragmentMenu>();
-                menu.UpdateState(_messageable, _prototype);
+                menu.UpdateState(_messageable, _unreadMessageCount, _prototype);
                 break;
 
             case ChatUiMode.Settings:

@@ -46,6 +46,12 @@ public abstract partial class SharedChatCartridgeSystem : EntitySystem
 
     private void OnReplicatedMessageClient(Entity<ChatCartridgeComponent> ent, ref PdaMessageReplicatedMessageClientEvent args)
     {
+        if (!ent.Comp.UnreadMessageCount.ContainsKey(args.Message.Sender))
+            ent.Comp.UnreadMessageCount[args.Message.Sender] = 0;
+
+        ent.Comp.UnreadMessageCount[args.Message.Sender]++;
+        Dirty(ent);
+
         UpdateUi(ent);
         PlayNotification(ent, args.Message);
     }

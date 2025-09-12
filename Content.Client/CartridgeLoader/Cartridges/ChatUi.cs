@@ -43,6 +43,6 @@ public sealed partial class ChatUi : UIFragment
 
     private void SetState(ChatUiState state)
     {
-        _fragment?.UpdateState(state.Profile, state.Messages, state.AvailableServers, state.CurrentServer);
+        _fragment?.UpdateState(state);
     }
 }

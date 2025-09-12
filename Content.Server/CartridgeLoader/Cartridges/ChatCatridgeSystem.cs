@@ -76,7 +76,7 @@ public sealed partial class ChatCartridgeSystem : SharedChatCartridgeSystem
 
         var currentServer = GetNetEntity(ent.Comp2.Server);
 
-        var state = new ChatUiState(ent.Comp2.Profile, messages, availableServers, currentServer);
+        var state = new ChatUiState(ent.Comp2.Profile, messages, ent.Comp1.UnreadMessageCount, availableServers, currentServer);
         _cartridgeLoader.UpdateCartridgeUiState(loader, state);
     }
 }

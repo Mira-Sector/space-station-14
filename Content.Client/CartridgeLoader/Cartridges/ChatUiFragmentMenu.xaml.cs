@@ -28,13 +28,16 @@ public sealed partial class ChatUiFragmentMenu : BoxContainer, IChatUiFragmentMo
         SettingsButton.OnPressed += _ => OnSettingsButtonPressed?.Invoke();
     }
 
-    public void UpdateState(IEnumerable<BasePdaChatMessageable> recipients, IPrototypeManager prototype)
+    public void UpdateState(IEnumerable<BasePdaChatMessageable> recipients, Dictionary<BasePdaChatMessageable, int> unreadMessageCount, IPrototypeManager prototype)
     {
         Recipients.RemoveAllChildren();
 
         foreach (var recipient in recipients)
         {
-            var entry = new ChatUiFragmentContactEntry(recipient, prototype, _sprite);
+            if (!unreadMessageCount.TryGetValue(recipient, out var unreadMessages))
+                unreadMessages = 0;
+
+            var entry = new ChatUiFragmentContactEntry(recipient, unreadMessages, prototype, _sprite);
             Recipients.AddChild(entry);
 
             entry.OnPressed += _ => OnRecipientClicked?.Invoke(recipient);

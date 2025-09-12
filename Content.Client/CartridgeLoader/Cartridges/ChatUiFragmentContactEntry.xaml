@@ -6,9 +6,8 @@
     HorizontalExpand="True">
     <BoxContainer
         Margin="4"
-        HorizontalAlignment="Stretch"
-        VerticalAlignment="Center"
-        HorizontalExpand="True">
+        HorizontalAlignment="Left"
+        VerticalAlignment="Center">
         <TextureRect
             Name="Icon"
             Stretch="Tile"
@@ -26,6 +25,17 @@
             Name="Id"
             Margin="2"
             HorizontalAlignment="Left"
+            VerticalAlignment="Center"/>
+    </BoxContainer>
+    <BoxContainer
+        Margin="4"
+        HorizontalAlignment="Right"
+        VerticalAlignment="Center">
+        <Label
+            Name="UnreadCount"
+            Margin="2"
+            Visible="False"
+            HorizontalAlignment="Right"
             VerticalAlignment="Center"/>
     </BoxContainer>
 </Button>
