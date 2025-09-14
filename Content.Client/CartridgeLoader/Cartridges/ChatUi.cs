@@ -1,4 +1,5 @@
 using Content.Client.UserInterface.Fragments;
+using Content.Shared.CartridgeLoader;
 using Content.Shared.CartridgeLoader.Cartridges;
 using Content.Shared.PDA.Messaging.Recipients;
 using Robust.Client.UserInterface;
@@ -21,7 +22,7 @@ public sealed partial class ChatUi : UIFragment
 
     public override void Setup(BoundUserInterface userInterface, EntityUid? fragmentOwner)
     {
-        _fragment = new ChatUiFragment(userInterface, fragmentOwner!.Value);
+        _fragment = new ChatUiFragment(fragmentOwner!.Value);
 
         if (_lastState != null)
             SetState(_lastState);
@@ -30,6 +31,12 @@ public sealed partial class ChatUi : UIFragment
         _fragment.ChangeMode(_uiMode);
         _fragment.OnRecipientChanged += recipient => _recipient = recipient;
         _fragment.OnModeChanged += mode => _uiMode = mode;
+        _fragment.OnPayloadSend += payload =>
+        {
+            var message = new ChatUiMessageEvent(payload);
+            var cartridgeMessage = new CartridgeUiMessage(message);
+            userInterface.SendMessage(cartridgeMessage);
+        };
     }
 
     public override void UpdateState(BoundUserInterfaceState state)

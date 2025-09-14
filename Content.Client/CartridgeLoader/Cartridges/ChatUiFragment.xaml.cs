@@ -1,4 +1,3 @@
-using Content.Shared.CartridgeLoader;
 using Content.Shared.CartridgeLoader.Cartridges;
 using Content.Shared.PDA.Messaging.Events;
 using Content.Shared.PDA.Messaging.Messages;
@@ -16,7 +15,6 @@ public sealed partial class ChatUiFragment : PanelContainer
 {
     [Dependency] private readonly IEntityManager _entity = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;
-    private readonly BoundUserInterface _userInterface = default!;
 
     [ViewVariables]
     private ChatUiMode _uiMode;
@@ -35,13 +33,13 @@ public sealed partial class ChatUiFragment : PanelContainer
 
     public event Action<BasePdaChatMessageable?>? OnRecipientChanged;
     public event Action<ChatUiMode>? OnModeChanged;
+    public event Action<IPdaMessagePayload>? OnPayloadSend;
 
-    public ChatUiFragment(BoundUserInterface userInterface, EntityUid cartridge)
+    public ChatUiFragment(EntityUid cartridge)
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
 
-        _userInterface = userInterface;
         _cartridge = cartridge;
         _netCartridge = _entity.GetNetEntity(cartridge);
 
@@ -144,6 +142,9 @@ public sealed partial class ChatUiFragment : PanelContainer
                 menu.OnSettingsButtonPressed += () => ChangeMode(ChatUiMode.Settings);
                 menu.OnRecipientClicked += recipient =>
                 {
+                    if (_unreadMessageCount.TryGetValue(recipient, out var count) && count > 0)
+                        SendUiMessage(new ChatCartridgeClearUnreadMessageCountEvent(_netCartridge, recipient));
+
                     ChangeRecipient(recipient);
                     ChangeMode(ChatUiMode.Chat);
                 };
@@ -199,8 +200,6 @@ public sealed partial class ChatUiFragment : PanelContainer
 
     private void SendUiMessage(IPdaMessagePayload payload)
     {
-        var message = new ChatUiMessageEvent(payload);
-        var cartridgeMessage = new CartridgeUiMessage(message);
-        _userInterface.SendPredictedMessage(cartridgeMessage);
+        OnPayloadSend?.Invoke(payload);
     }
 }

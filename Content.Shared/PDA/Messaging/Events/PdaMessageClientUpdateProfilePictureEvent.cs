@@ -8,10 +8,4 @@ public sealed partial class PdaMessageClientUpdateProfilePictureEvent(NetEntity 
 {
     public NetEntity Client { get; } = client;
     public readonly ProtoId<PdaChatProfilePicturePrototype> ProfilePicture = profilePicture;
-
-    public void RunAction(IEntityManager entity)
-    {
-        var client = entity.GetEntity(Client);
-        entity.EventBus.RaiseLocalEvent(client, this);
-    }
 }

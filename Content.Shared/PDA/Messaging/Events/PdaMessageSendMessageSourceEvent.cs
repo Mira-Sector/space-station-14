@@ -8,10 +8,4 @@ public sealed partial class PdaMessageSendMessageSourceEvent(NetEntity client, B
 {
     public NetEntity Client { get; } = client;
     public readonly BasePdaChatMessage Message = message;
-
-    public void RunAction(IEntityManager entity)
-    {
-        var client = entity.GetEntity(Client);
-        entity.EventBus.RaiseLocalEvent(client, this);
-    }
 }

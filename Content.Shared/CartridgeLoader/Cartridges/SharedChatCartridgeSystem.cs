@@ -17,6 +17,8 @@ public abstract partial class SharedChatCartridgeSystem : EntitySystem
         SubscribeLocalEvent<ChatCartridgeComponent, CartridgeUiReadyEvent>(OnUiReady);
         SubscribeLocalEvent<ChatCartridgeComponent, CartridgeMessageEvent>(OnUiMessage);
 
+        SubscribeLocalEvent<ChatCartridgeComponent, ChatCartridgeClearUnreadMessageCountEvent>(OnClearUnreadMessageCount);
+
         SubscribeLocalEvent<ChatCartridgeComponent, PdaMessageSendMessageSourceEvent>(OnSentMessageSource, after: [typeof(SharedPdaMessagingSystem)]);
         SubscribeLocalEvent<ChatCartridgeComponent, PdaMessageReplicatedMessageClientEvent>(OnReplicatedMessageClient, after: [typeof(SharedPdaMessagingSystem)]);
 
@@ -37,6 +39,15 @@ public abstract partial class SharedChatCartridgeSystem : EntitySystem
             return;
 
         message.Payload.RunAction(EntityManager);
+    }
+
+    private void OnClearUnreadMessageCount(Entity<ChatCartridgeComponent> ent, ref ChatCartridgeClearUnreadMessageCountEvent args)
+    {
+        if (!ent.Comp.UnreadMessageCount.ContainsKey(args.Contact))
+            return;
+
+        ent.Comp.UnreadMessageCount.Remove(args.Contact);
+        UpdateUi(ent);
     }
 
     private void OnSentMessageSource(Entity<ChatCartridgeComponent> ent, ref PdaMessageSendMessageSourceEvent args)
