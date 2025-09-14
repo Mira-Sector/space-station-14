@@ -33,4 +33,9 @@ public abstract partial class BasePdaChatMessageable
     {
         return Id.GetHashCode();
     }
+
+    public BasePdaChatMessageable(BasePdaChatMessageable messageable)
+    {
+        Id = messageable.Id;
+    }
 }

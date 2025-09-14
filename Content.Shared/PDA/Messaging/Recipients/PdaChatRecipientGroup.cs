@@ -9,7 +9,7 @@ namespace Content.Shared.PDA.Messaging.Recipients;
 
 [Serializable, NetSerializable]
 [DataDefinition]
-public sealed partial class PdaChatRecipientGroup : BasePdaChatMessageable
+public sealed partial class PdaChatRecipientGroup : BasePdaChatMessageable, IRobustCloneable<PdaChatRecipientGroup>
 {
     [DataField]
     public string? Name;
@@ -55,5 +55,17 @@ public sealed partial class PdaChatRecipientGroup : BasePdaChatMessageable
     private string GetGenericName()
     {
         return ContentLocalizationManager.FormatList(Members.Select(x => x.Name).ToList());
+    }
+
+    public PdaChatRecipientGroup Clone()
+    {
+        return new PdaChatRecipientGroup(this);
+    }
+
+    public PdaChatRecipientGroup(PdaChatRecipientGroup messageable) : base(messageable)
+    {
+        Name = messageable.Name;
+        Picture = messageable.Picture;
+        Members = messageable.Members;
     }
 }

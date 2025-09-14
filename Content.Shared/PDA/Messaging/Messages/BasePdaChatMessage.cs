@@ -19,4 +19,11 @@ public abstract partial class BasePdaChatMessage
     public abstract bool IsValid();
     public abstract string GetNotificationText();
     public abstract LocId GetHeaderWrapper(bool plural);
+
+    public BasePdaChatMessage(BasePdaChatMessage message)
+    {
+        Sender = message.Sender;
+        Recipient = message.Recipient;
+        SentAt = message.SentAt;
+    }
 }
