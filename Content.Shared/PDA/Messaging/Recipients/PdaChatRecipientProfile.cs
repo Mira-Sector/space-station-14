@@ -7,7 +7,7 @@ namespace Content.Shared.PDA.Messaging.Recipients;
 
 [Serializable, NetSerializable]
 [DataDefinition]
-public sealed partial class PdaChatRecipientProfile : BasePdaChatMessageable
+public sealed partial class PdaChatRecipientProfile : BasePdaChatMessageable, IRobustCloneable<PdaChatRecipientProfile>
 {
     [DataField]
     public string Name;
@@ -37,5 +37,16 @@ public sealed partial class PdaChatRecipientProfile : BasePdaChatMessageable
         var name = Loc.GetString(Name);
         var id = Loc.GetString("pda-messaging-contact-id-wrapper", ("id", Id));
         return $"{name} {id}";
+    }
+
+    public PdaChatRecipientProfile Clone()
+    {
+        return new PdaChatRecipientProfile(this);
+    }
+
+    public PdaChatRecipientProfile(PdaChatRecipientProfile messageable) : base(messageable)
+    {
+        Name = messageable.Name;
+        Picture = messageable.Name;
     }
 }
