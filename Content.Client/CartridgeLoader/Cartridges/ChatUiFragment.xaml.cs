@@ -1,4 +1,3 @@
-using Content.Shared.CartridgeLoader;
 using Content.Shared.CartridgeLoader.Cartridges;
 using Content.Shared.PDA.Messaging.Events;
 using Content.Shared.PDA.Messaging.Messages;
@@ -16,7 +15,6 @@ public sealed partial class ChatUiFragment : PanelContainer
 {
     [Dependency] private readonly IEntityManager _entity = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;
-    private readonly BoundUserInterface _userInterface = default!;
 
     [ViewVariables]
     private ChatUiMode _uiMode;
@@ -28,19 +26,20 @@ public sealed partial class ChatUiFragment : PanelContainer
 
     private BasePdaChatMessageable[] _messageable = [];
     private Dictionary<BasePdaChatMessageable, BasePdaChatMessage[]> _messages = [];
+    private Dictionary<BasePdaChatMessageable, int> _unreadMessageCount = [];
 
     private Dictionary<NetEntity, string> _availableServers = [];
     private NetEntity? _currentServer = null;
 
     public event Action<BasePdaChatMessageable?>? OnRecipientChanged;
     public event Action<ChatUiMode>? OnModeChanged;
+    public event Action<IPdaMessagePayload>? OnPayloadSend;
 
-    public ChatUiFragment(BoundUserInterface userInterface, EntityUid cartridge)
+    public ChatUiFragment(EntityUid cartridge)
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
 
-        _userInterface = userInterface;
         _cartridge = cartridge;
         _netCartridge = _entity.GetNetEntity(cartridge);
 
@@ -49,24 +48,26 @@ public sealed partial class ChatUiFragment : PanelContainer
         InitMode(ChatUiMode.Menu);
     }
 
-    public void UpdateState(PdaChatRecipientProfile profile, KeyValuePair<BasePdaChatMessageable, BasePdaChatMessage[]>[] messages, Dictionary<NetEntity, string> availableServers, NetEntity? currentServer)
+    public void UpdateState(ChatUiState state)
     {
-        _messageable = new BasePdaChatMessageable[messages.Length];
-        _messages = new(messages.Length);
-        for (var i = messages.Length - 1; i >= 0; i--)
+        _messageable = new BasePdaChatMessageable[state.Messages.Length];
+        _messages = new(state.Messages.Length);
+        for (var i = state.Messages.Length - 1; i >= 0; i--)
         {
-            var (recipient, message) = messages[i];
+            var (recipient, message) = state.Messages[i];
             _messageable[i] = recipient;
             _messages[recipient] = message;
         }
 
-        _profile = profile;
-        _availableServers = availableServers;
-        _currentServer = currentServer;
+        _unreadMessageCount = state.UnreadMessageCount;
+
+        _profile = state.Profile;
+        _availableServers = state.AvailableServers;
+        _currentServer = state.CurrentServer;
 
         if (_recipient != null)
         {
-            foreach (var (messageable, _) in messages)
+            foreach (var (messageable, _) in state.Messages)
             {
                 if (_recipient.Id != messageable.Id)
                     continue;
@@ -114,7 +115,7 @@ public sealed partial class ChatUiFragment : PanelContainer
         {
             case ChatUiMode.Menu:
                 var menu = GetContent<ChatUiFragmentMenu>();
-                menu.UpdateState(_messageable, _prototype);
+                menu.UpdateState(_messageable, _unreadMessageCount, _prototype);
                 break;
 
             case ChatUiMode.Settings:
@@ -145,6 +146,7 @@ public sealed partial class ChatUiFragment : PanelContainer
                     ChangeMode(ChatUiMode.Chat);
                 };
 
+                ChangeRecipient(null);
                 return (menu, menu);
 
             case ChatUiMode.Settings:
@@ -190,14 +192,17 @@ public sealed partial class ChatUiFragment : PanelContainer
 
     public void ChangeRecipient(BasePdaChatMessageable? recipient)
     {
+        if (_recipient == recipient)
+            return;
+
         _recipient = recipient;
         OnRecipientChanged?.Invoke(recipient);
+
+        SendUiMessage(new ChatCartridgeRecipientClickedEvent(_netCartridge, recipient));
     }
 
     private void SendUiMessage(IPdaMessagePayload payload)
     {
-        var message = new ChatUiMessageEvent(payload);
-        var cartridgeMessage = new CartridgeUiMessage(message);
-        _userInterface.SendPredictedMessage(cartridgeMessage);
+        OnPayloadSend?.Invoke(payload);
     }
 }

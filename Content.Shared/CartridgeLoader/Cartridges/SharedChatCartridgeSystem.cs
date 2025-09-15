@@ -14,8 +14,11 @@ public abstract partial class SharedChatCartridgeSystem : EntitySystem
     {
         base.Initialize();
 
+        SubscribeLocalEvent<ChatCartridgeComponent, CartridgeDeactivatedEvent>(OnDeactivated);
         SubscribeLocalEvent<ChatCartridgeComponent, CartridgeUiReadyEvent>(OnUiReady);
         SubscribeLocalEvent<ChatCartridgeComponent, CartridgeMessageEvent>(OnUiMessage);
+
+        SubscribeLocalEvent<ChatCartridgeComponent, ChatCartridgeRecipientClickedEvent>(OnRecipientClicked);
 
         SubscribeLocalEvent<ChatCartridgeComponent, PdaMessageSendMessageSourceEvent>(OnSentMessageSource, after: [typeof(SharedPdaMessagingSystem)]);
         SubscribeLocalEvent<ChatCartridgeComponent, PdaMessageReplicatedMessageClientEvent>(OnReplicatedMessageClient, after: [typeof(SharedPdaMessagingSystem)]);
@@ -24,6 +27,15 @@ public abstract partial class SharedChatCartridgeSystem : EntitySystem
 
         SubscribeLocalEvent<ChatCartridgeComponent, PdaMessageClientServerConnectedEvent>(OnServerConnected, after: [typeof(SharedPdaMessagingSystem)]);
         SubscribeLocalEvent<ChatCartridgeComponent, PdaMessageClientServerDisconnectedEvent>(OnServerDisconnected, after: [typeof(SharedPdaMessagingSystem)]);
+    }
+
+    private void OnDeactivated(Entity<ChatCartridgeComponent> ent, ref CartridgeDeactivatedEvent args)
+    {
+        if (ent.Comp.SelectedRecipient == null)
+            return;
+
+        ent.Comp.SelectedRecipient = null;
+        Dirty(ent);
     }
 
     private void OnUiReady(Entity<ChatCartridgeComponent> ent, ref CartridgeUiReadyEvent args)
@@ -39,6 +51,21 @@ public abstract partial class SharedChatCartridgeSystem : EntitySystem
         message.Payload.RunAction(EntityManager);
     }
 
+    private void OnRecipientClicked(Entity<ChatCartridgeComponent> ent, ref ChatCartridgeRecipientClickedEvent args)
+    {
+        ent.Comp.SelectedRecipient = args.Contact;
+
+        if (args.Contact is null || !ent.Comp.UnreadMessageCount.ContainsKey(args.Contact))
+        {
+            Dirty(ent);
+            return;
+        }
+
+        ent.Comp.UnreadMessageCount.Remove(args.Contact);
+        Dirty(ent);
+        UpdateUi(ent);
+    }
+
     private void OnSentMessageSource(Entity<ChatCartridgeComponent> ent, ref PdaMessageSendMessageSourceEvent args)
     {
         UpdateUi(ent);
@@ -46,6 +73,17 @@ public abstract partial class SharedChatCartridgeSystem : EntitySystem
 
     private void OnReplicatedMessageClient(Entity<ChatCartridgeComponent> ent, ref PdaMessageReplicatedMessageClientEvent args)
     {
+        // we are currently looking at their messages
+        // doesnt make sense to be unread
+        if (args.Message.Sender != ent.Comp.SelectedRecipient)
+        {
+            if (!ent.Comp.UnreadMessageCount.ContainsKey(args.Message.Sender))
+                ent.Comp.UnreadMessageCount[args.Message.Sender] = 0;
+
+            ent.Comp.UnreadMessageCount[args.Message.Sender]++;
+            Dirty(ent);
+        }
+
         UpdateUi(ent);
         PlayNotification(ent, args.Message);
     }

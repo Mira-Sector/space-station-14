@@ -29,6 +29,22 @@ public abstract partial class BasePdaChatMessageable
         return obj is BasePdaChatMessageable other && Id == other.Id;
     }
 
+    public static bool operator ==(BasePdaChatMessageable? a, BasePdaChatMessageable? b)
+    {
+        if (a is not null)
+            return a.Equals(b);
+        else
+            return b is null;
+    }
+
+    public static bool operator !=(BasePdaChatMessageable? a, BasePdaChatMessageable? b)
+    {
+        if (a is not null)
+            return !a.Equals(b);
+        else
+            return b is not null;
+    }
+
     public override int GetHashCode()
     {
         return Id.GetHashCode();
