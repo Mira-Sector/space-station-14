@@ -35,7 +35,7 @@ public sealed partial class ChatUi : UIFragment
         {
             var message = new ChatUiMessageEvent(payload);
             var cartridgeMessage = new CartridgeUiMessage(message);
-            userInterface.SendMessage(cartridgeMessage);
+            userInterface.SendPredictedMessage(cartridgeMessage);
         };
     }
 

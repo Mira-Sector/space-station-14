@@ -9,4 +9,10 @@ public sealed partial class ChatCartridgeClearUnreadMessageCountEvent(NetEntity 
 {
     public NetEntity Client { get; } = client;
     public readonly BasePdaChatMessageable Contact = contact;
+
+    public void RunAction(IEntityManager entity)
+    {
+        var client = entity.GetEntity(Client);
+        entity.EventBus.RaiseLocalEvent(client, this);
+    }
 }

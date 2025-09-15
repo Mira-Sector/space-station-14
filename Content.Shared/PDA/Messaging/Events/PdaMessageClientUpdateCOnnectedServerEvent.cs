@@ -7,4 +7,10 @@ public sealed partial class PdaMessageClientUpdateConnectedServerEvent(NetEntity
 {
     public NetEntity Client { get; } = client;
     public readonly NetEntity? Server = server;
+
+    public void RunAction(IEntityManager entity)
+    {
+        var client = entity.GetEntity(Client);
+        entity.EventBus.RaiseLocalEvent(client, this);
+    }
 }
