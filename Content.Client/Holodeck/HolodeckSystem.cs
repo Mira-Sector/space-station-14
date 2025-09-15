@@ -20,6 +20,9 @@ public sealed partial class HolodeckSystem : SharedHolodeckSystem
     private FrozenDictionary<ProtoId<HolodeckScenarioPrototype>, Entity<EyeComponent>>? _scenarioEyes;
     private (EntityUid, MapId)? _scenarioGridMap;
 
+    // dont @ me
+    private const float AdditionalGridOffset = 16f;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -54,7 +57,7 @@ public sealed partial class HolodeckSystem : SharedHolodeckSystem
             var aabb = grid.Value.Comp.LocalAABB.Translated(gridPos);
             var bb = new Box2Rotated(aabb, gridRot, gridPos).CalcBoundingBox();
 
-            gridOffset += new Vector2(bb.Width, 0f);
+            gridOffset.X += bb.Width + AdditionalGridOffset;
 
             scenarioGrids[scenarioId] = grid.Value;
 
