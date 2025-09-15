@@ -55,7 +55,7 @@ public abstract partial class SharedChatCartridgeSystem : EntitySystem
     {
         ent.Comp.SelectedRecipient = args.Contact;
 
-        if (!ent.Comp.UnreadMessageCount.ContainsKey(args.Contact))
+        if (args.Contact is null || !ent.Comp.UnreadMessageCount.ContainsKey(args.Contact))
         {
             Dirty(ent);
             return;

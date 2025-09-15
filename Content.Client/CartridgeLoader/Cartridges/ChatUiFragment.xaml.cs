@@ -142,12 +142,11 @@ public sealed partial class ChatUiFragment : PanelContainer
                 menu.OnSettingsButtonPressed += () => ChangeMode(ChatUiMode.Settings);
                 menu.OnRecipientClicked += recipient =>
                 {
-                    SendUiMessage(new ChatCartridgeRecipientClickedEvent(_netCartridge, recipient));
-
                     ChangeRecipient(recipient);
                     ChangeMode(ChatUiMode.Chat);
                 };
 
+                ChangeRecipient(null);
                 return (menu, menu);
 
             case ChatUiMode.Settings:
@@ -193,8 +192,13 @@ public sealed partial class ChatUiFragment : PanelContainer
 
     public void ChangeRecipient(BasePdaChatMessageable? recipient)
     {
+        if (_recipient == recipient)
+            return;
+
         _recipient = recipient;
         OnRecipientChanged?.Invoke(recipient);
+
+        SendUiMessage(new ChatCartridgeRecipientClickedEvent(_netCartridge, recipient));
     }
 
     private void SendUiMessage(IPdaMessagePayload payload)
