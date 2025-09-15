@@ -142,8 +142,7 @@ public sealed partial class ChatUiFragment : PanelContainer
                 menu.OnSettingsButtonPressed += () => ChangeMode(ChatUiMode.Settings);
                 menu.OnRecipientClicked += recipient =>
                 {
-                    if (_unreadMessageCount.TryGetValue(recipient, out var count) && count > 0)
-                        SendUiMessage(new ChatCartridgeClearUnreadMessageCountEvent(_netCartridge, recipient));
+                    SendUiMessage(new ChatCartridgeRecipientClickedEvent(_netCartridge, recipient));
 
                     ChangeRecipient(recipient);
                     ChangeMode(ChatUiMode.Chat);

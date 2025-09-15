@@ -8,4 +8,7 @@ public sealed partial class ChatCartridgeComponent : Component
 {
     [ViewVariables, AutoNetworkedField]
     public Dictionary<BasePdaChatMessageable, int> UnreadMessageCount = [];
+
+    [ViewVariables, AutoNetworkedField]
+    public BasePdaChatMessageable? SelectedRecipient;
 }
