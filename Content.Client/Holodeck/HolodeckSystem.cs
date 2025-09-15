@@ -12,10 +12,12 @@ namespace Content.Client.Holodeck;
 
 public sealed partial class HolodeckSystem : SharedHolodeckSystem
 {
+    [Dependency] private readonly EyeSystem _eye = default!;
     [Dependency] private readonly MapSystem _map = default!;
     [Dependency] private readonly MapLoaderSystem _mapLoader = default!;
 
     private FrozenDictionary<ProtoId<HolodeckScenarioPrototype>, Entity<MapGridComponent>>? _scenarioGrids;
+    private FrozenDictionary<ProtoId<HolodeckScenarioPrototype>, Entity<EyeComponent>>? _scenarioEyes;
     private (EntityUid, MapId)? _scenarioGridMap;
 
     public override void Initialize()
@@ -35,6 +37,7 @@ public sealed partial class HolodeckSystem : SharedHolodeckSystem
     {
         var scenarios = Prototypes.GetInstances<HolodeckScenarioPrototype>();
         Dictionary<ProtoId<HolodeckScenarioPrototype>, Entity<MapGridComponent>> scenarioGrids = new(scenarios.Count);
+        Dictionary<ProtoId<HolodeckScenarioPrototype>, Entity<EyeComponent>> scenarioEyes = new(scenarios.Count);
 
         if (_scenarioGridMap == null)
             InitializeGridsMap();
@@ -54,9 +57,27 @@ public sealed partial class HolodeckSystem : SharedHolodeckSystem
             gridOffset += new Vector2(bb.Width, 0f);
 
             scenarioGrids[scenarioId] = grid.Value;
+
+            var eyeCoords = new EntityCoordinates(grid.Value, grid.Value.Comp.LocalAABB.Center);
+            var eyeZoom = grid.Value.Comp.LocalAABB.Size;
+
+            // ensure 1:1 zoom ratio
+            if (eyeZoom.X > eyeZoom.Y)
+                eyeZoom.Y = eyeZoom.X;
+            else
+                eyeZoom.X = eyeZoom.Y;
+
+            var eye = SpawnAtPosition(null, eyeCoords);
+            var eyeComp = AddComp<EyeComponent>(eye);
+            _eye.SetZoom(eye, eyeZoom, eyeComp);
+            _eye.SetDrawFov(eye, false, eyeComp);
+            _eye.SetDrawFov(eye, false, eyeComp);
+
+            scenarioEyes[scenarioId] = (eye, eyeComp);
         }
 
         _scenarioGrids = scenarioGrids.ToFrozenDictionary();
+        _scenarioEyes = scenarioEyes.ToFrozenDictionary();
     }
 
     private void OnPrototypeReload(PrototypesReloadedEventArgs args)
@@ -89,6 +110,23 @@ public sealed partial class HolodeckSystem : SharedHolodeckSystem
         else
         {
             grid = null;
+            return false;
+        }
+    }
+
+    public bool TryGetScenarioEye(ProtoId<HolodeckScenarioPrototype> scenario, [NotNullWhen(true)] out Entity<EyeComponent>? eye)
+    {
+        if (_scenarioEyes == null)
+            InitializeGrids();
+
+        if (_scenarioEyes!.TryGetValue(scenario, out var scenarioEye))
+        {
+            eye = scenarioEye;
+            return true;
+        }
+        else
+        {
+            eye = null;
             return false;
         }
     }

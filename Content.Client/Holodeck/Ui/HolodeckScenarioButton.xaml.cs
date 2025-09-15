@@ -7,10 +7,11 @@ using Robust.Shared.Prototypes;
 namespace Content.Client.Holodeck.Ui;
 
 [GenerateTypedNameReferences]
-public sealed partial class HolodeckScenarioButton : ContainerButton
+public sealed partial class HolodeckScenarioButton : Button
 {
     public HolodeckScenarioButton(ProtoId<HolodeckScenarioPrototype> scenarioId, IPrototypeManager prototype)
     {
         RobustXamlLoader.Load(this);
+        Text = scenarioId.Id;
     }
 }
