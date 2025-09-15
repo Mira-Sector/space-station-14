@@ -37,8 +37,7 @@ public sealed partial class HolodeckSpawnerWindow : FancyWindow
 
             button.OnPressed += _ =>
             {
-                if (_holodeck.TryGetScenarioGrid(scenario, out var grid))
-                    GridView.SetGrid(grid);
+                //if (_holodeck.TryGetScenarioGrid(scenario, out var grid))
             };
 
             Scenarios.AddChild(button);
