@@ -14,6 +14,8 @@ public sealed partial class HolodeckSpawnerBoundUserInterface(EntityUid owner, E
 
         _window = this.CreateWindow<HolodeckSpawnerWindow>();
         _window.SetInfoFromEntity(EntMan, Owner);
+
+        _window.OnScenarioPicked += scenario => SendMessage(new HolodeckSpawnerScenarioPickedMessage(scenario));
     }
 
     protected override void UpdateState(BoundUserInterfaceState state)

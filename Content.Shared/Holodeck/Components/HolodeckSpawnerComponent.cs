@@ -13,6 +13,9 @@ public sealed partial class HolodeckSpawnerComponent : Component
     [ViewVariables, AutoNetworkedField]
     public List<EntityUid> Spawned = [];
 
+    [ViewVariables, AutoNetworkedField]
+    public HolodeckSpawnedScenarioData? SpawnedScenarioData;
+
     [DataField, AutoNetworkedField]
     public List<ProtoId<HolodeckScenarioPrototype>> Scenarios = [];
 }

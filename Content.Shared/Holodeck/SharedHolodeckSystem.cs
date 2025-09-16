@@ -48,7 +48,7 @@ public abstract partial class SharedHolodeckSystem : EntitySystem
             return;
 
         var center = GetNetCoordinates(ent.Comp.Center);
-        var state = new HolodeckSpawnerBoundUserInterfaceState(center, ent.Comp.Scenarios);
+        var state = new HolodeckSpawnerBoundUserInterfaceState(center, ent.Comp.SpawnedScenarioData?.Prototype, ent.Comp.Scenarios);
         _ui.SetUiState(ent.Owner, HolodeckSpawnerUiKey.Key, state);
     }
 

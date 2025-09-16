@@ -19,6 +19,8 @@ public sealed partial class HolodeckSpawnerWindow : FancyWindow
 
     private ProtoId<HolodeckScenarioPrototype>? _selectedScenario;
 
+    public event Action<ProtoId<HolodeckScenarioPrototype>?>? OnScenarioPicked;
+
     public HolodeckSpawnerWindow()
     {
         RobustXamlLoader.Load(this);
@@ -29,6 +31,7 @@ public sealed partial class HolodeckSpawnerWindow : FancyWindow
 
     public void UpdateState(EntityUid spawner, HolodeckSpawnerBoundUserInterfaceState state)
     {
+        _selectedScenario = state.SelectedScenario;
         Scenarios.RemoveAllChildren();
 
         foreach (var scenario in state.Scenarios)
@@ -37,6 +40,9 @@ public sealed partial class HolodeckSpawnerWindow : FancyWindow
             {
                 Group = ScenarioButtonGroup
             };
+
+            if (_selectedScenario == scenario)
+                button.Pressed = true;
 
             button.OnPressed += _ => SetSelectedScenario(scenario);
 
@@ -53,8 +59,14 @@ public sealed partial class HolodeckSpawnerWindow : FancyWindow
 
         _selectedScenario = scenario;
 
-        var isNull = scenario == null;
+        OnScenarioPicked?.Invoke(scenario);
 
+        SetViewportScenario(scenario);
+    }
+
+    private void SetViewportScenario(ProtoId<HolodeckScenarioPrototype>? scenario)
+    {
+        var isNull = scenario == null;
         GridViewport.Visible = !isNull;
 
         if (isNull)
