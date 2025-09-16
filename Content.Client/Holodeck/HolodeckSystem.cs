@@ -1,5 +1,6 @@
 using Content.Shared.Holodeck;
 using Robust.Client.GameObjects;
+using Robust.Client.Graphics;
 using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
@@ -17,7 +18,7 @@ public sealed partial class HolodeckSystem : SharedHolodeckSystem
     [Dependency] private readonly MapLoaderSystem _mapLoader = default!;
 
     private FrozenDictionary<ProtoId<HolodeckScenarioPrototype>, Entity<MapGridComponent>>? _scenarioGrids;
-    private FrozenDictionary<ProtoId<HolodeckScenarioPrototype>, Entity<EyeComponent>>? _scenarioEyes;
+    private FrozenDictionary<ProtoId<HolodeckScenarioPrototype>, (Entity<EyeComponent>, Vector2i)>? _scenarioEyes;
     private (EntityUid, MapId)? _scenarioGridMap;
 
     // dont @ me
@@ -40,7 +41,7 @@ public sealed partial class HolodeckSystem : SharedHolodeckSystem
     {
         var scenarios = Prototypes.GetInstances<HolodeckScenarioPrototype>();
         Dictionary<ProtoId<HolodeckScenarioPrototype>, Entity<MapGridComponent>> scenarioGrids = new(scenarios.Count);
-        Dictionary<ProtoId<HolodeckScenarioPrototype>, Entity<EyeComponent>> scenarioEyes = new(scenarios.Count);
+        Dictionary<ProtoId<HolodeckScenarioPrototype>, (Entity<EyeComponent>, Vector2i)> scenarioEyes = new(scenarios.Count);
 
         if (_scenarioGridMap == null)
             InitializeGridsMap();
@@ -62,7 +63,8 @@ public sealed partial class HolodeckSystem : SharedHolodeckSystem
             scenarioGrids[scenarioId] = grid.Value;
 
             var eyeCoords = new EntityCoordinates(grid.Value, grid.Value.Comp.LocalAABB.Center);
-            var eyeZoom = grid.Value.Comp.LocalAABB.Size;
+            var eyeZoomFloat = grid.Value.Comp.LocalAABB.Size * EyeManager.PixelsPerMeter;
+            var eyeZoom = new Vector2i((int)eyeZoomFloat.X, (int)eyeZoomFloat.Y);
 
             // ensure 1:1 zoom ratio
             if (eyeZoom.X > eyeZoom.Y)
@@ -72,11 +74,10 @@ public sealed partial class HolodeckSystem : SharedHolodeckSystem
 
             var eye = SpawnAtPosition(null, eyeCoords);
             var eyeComp = AddComp<EyeComponent>(eye);
-            _eye.SetZoom(eye, eyeZoom, eyeComp);
             _eye.SetDrawFov(eye, false, eyeComp);
             _eye.SetDrawFov(eye, false, eyeComp);
 
-            scenarioEyes[scenarioId] = (eye, eyeComp);
+            scenarioEyes[scenarioId] = ((eye, eyeComp), eyeZoom);
         }
 
         _scenarioGrids = scenarioGrids.ToFrozenDictionary();
@@ -117,7 +118,7 @@ public sealed partial class HolodeckSystem : SharedHolodeckSystem
         }
     }
 
-    public bool TryGetScenarioEye(ProtoId<HolodeckScenarioPrototype> scenario, [NotNullWhen(true)] out Entity<EyeComponent>? eye)
+    public bool TryGetScenarioEye(ProtoId<HolodeckScenarioPrototype> scenario, [NotNullWhen(true)] out (Entity<EyeComponent>, Vector2i)? eye)
     {
         if (_scenarioEyes == null)
             InitializeGrids();

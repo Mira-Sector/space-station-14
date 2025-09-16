@@ -17,7 +17,7 @@
         </ScrollContainer>
         <viewport:ScalingViewport
             Name="GridViewport"
-            RenderScaleMode="FloorInt"
+            RenderScaleMode="Fixed"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             HorizontalExpand="True"
