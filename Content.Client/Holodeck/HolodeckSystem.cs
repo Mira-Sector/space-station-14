@@ -75,7 +75,7 @@ public sealed partial class HolodeckSystem : SharedHolodeckSystem
             var eye = SpawnAtPosition(null, eyeCoords);
             var eyeComp = AddComp<EyeComponent>(eye);
             _eye.SetDrawFov(eye, false, eyeComp);
-            _eye.SetDrawFov(eye, false, eyeComp);
+            _eye.SetDrawLight((eye, eyeComp), false);
 
             scenarioEyes[scenarioId] = ((eye, eyeComp), eyeZoom);
         }
