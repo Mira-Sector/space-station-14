@@ -1,0 +1,17 @@
+using Robust.Shared.Prototypes;
+using Robust.Shared.Utility;
+
+namespace Content.Shared.Holodeck;
+
+[Prototype]
+public sealed partial class HolodeckScenarioPrototype : IPrototype
+{
+    [IdDataField]
+    public string ID { get; } = default!;
+
+    [DataField]
+    public List<Box2i>? RequiredSpace;
+
+    [DataField(required: true)]
+    public ResPath Grid = default!;
+}

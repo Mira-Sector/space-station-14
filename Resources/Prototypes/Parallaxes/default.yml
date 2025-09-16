@@ -2,6 +2,15 @@
   id: Blank
 
 - type: parallax
+  id: Ui
+  layers:
+    - texture:
+        !type:GeneratedParallaxTextureSource
+        id: "Ui"
+        configPath: "/Prototypes/Parallaxes/parallax_config_ui.toml"
+      slowness: 0
+
+- type: parallax
   id: Default
   layers:
     - texture:

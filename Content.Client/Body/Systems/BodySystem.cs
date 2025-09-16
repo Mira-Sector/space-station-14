@@ -53,6 +53,8 @@ public sealed class BodySystem : SharedBodySystem
             {
                 // 1 indexed
                 // we programming in lua or some shit??
+                // yes apparently
+                // what the fuck was i smoking
                 var percentage = (float) (damageableComp.TotalDamage / deadThreshold);
                 offset = (SegmentCount * percentage);
 
