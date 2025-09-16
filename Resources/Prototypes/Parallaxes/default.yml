@@ -2,6 +2,13 @@
   id: Blank
 
 - type: parallax
+  id: Ui
+  layers:
+    - texture:
+        !type:SolidColorParallaxTextureSource
+      modulate: "#25252a"
+
+- type: parallax
   id: Default
   layers:
     - texture:

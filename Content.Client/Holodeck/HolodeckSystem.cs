@@ -1,4 +1,6 @@
+using Content.Client.Parallax.Data;
 using Content.Shared.Holodeck;
+using Content.Shared.Parallax;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Shared.EntitySerialization.Systems;
@@ -24,6 +26,8 @@ public sealed partial class HolodeckSystem : SharedHolodeckSystem
     // dont @ me
     private const float AdditionalGridOffset = 16f;
 
+    private static readonly ProtoId<ParallaxPrototype> GridParallax = "Ui";
+
     public override void Initialize()
     {
         base.Initialize();
@@ -35,6 +39,9 @@ public sealed partial class HolodeckSystem : SharedHolodeckSystem
     {
         var uid = _map.CreateMap(out var mapId, false);
         _scenarioGridMap = (uid, mapId);
+
+        // jank as viewports have a black background so we override it with the ui color instead
+        EnsureComp<ParallaxComponent>(uid).Parallax = GridParallax;
     }
 
     private void InitializeGrids()
