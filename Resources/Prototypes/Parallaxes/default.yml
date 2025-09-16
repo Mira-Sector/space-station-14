@@ -5,8 +5,10 @@
   id: Ui
   layers:
     - texture:
-        !type:SolidColorParallaxTextureSource
-      modulate: "#25252a"
+        !type:GeneratedParallaxTextureSource
+        id: "Ui"
+        configPath: "/Prototypes/Parallaxes/parallax_config_ui.toml"
+      slowness: 0
 
 - type: parallax
   id: Default

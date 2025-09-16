@@ -66,8 +66,5 @@ public sealed partial class ParallaxLayerConfig
     [DataField("scrolling")] public Vector2 Scrolling = Vector2.Zero;
 
     [DataField("shader")] public string? Shader = "unshaded";
-
-    [DataField]
-    public Color? Modulate;
 }
 
