@@ -66,12 +66,6 @@ public sealed partial class HolodeckSystem : SharedHolodeckSystem
             var eyeZoomFloat = grid.Value.Comp.LocalAABB.Size * EyeManager.PixelsPerMeter;
             var eyeZoom = new Vector2i((int)eyeZoomFloat.X, (int)eyeZoomFloat.Y);
 
-            // ensure 1:1 zoom ratio
-            if (eyeZoom.X > eyeZoom.Y)
-                eyeZoom.Y = eyeZoom.X;
-            else
-                eyeZoom.X = eyeZoom.Y;
-
             var eye = SpawnAtPosition(null, eyeCoords);
             var eyeComp = AddComp<EyeComponent>(eye);
             _eye.SetDrawFov(eye, false, eyeComp);
