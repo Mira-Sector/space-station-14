@@ -1,16 +1,17 @@
 ﻿using System.Numerics;
-using Content.Shared.Teleportation;
 using Content.Shared.Teleportation.Components;
+using Content.Shared.Telescience.Components;
+using Content.Shared.Telescience;
 using Robust.Client.UserInterface;
 
-namespace Content.Client.Teleportation.Ui;
+namespace Content.Client.Telescience.Ui;
 
-public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
+public sealed class TeleframeConsoleBoundUserInterface : BoundUserInterface
 {
     [ViewVariables]
-    private TeleporterConsoleUI? _menu;
+    private TeleframeConsoleUI? _menu;
 
-    public TeleporterConsoleBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
+    public TeleframeConsoleBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
     }
 
@@ -18,19 +19,19 @@ public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
     {
         base.Open();
 
-        _menu = this.CreateWindow<TeleporterConsoleUI>();
+        _menu = this.CreateWindow<TeleframeConsoleUI>();
 
-        if (!EntMan.TryGetComponent<TeleporterConsoleComponent>(Owner, out var teleComp))
+        if (!EntMan.TryGetComponent<TeleframeConsoleComponent>(Owner, out var teleComp))
             return;
 
-        if (teleComp.LinkedTeleporter != null) //set link name
+        if (teleComp.LinkedTeleframe != null) //set link name
         {
-            var (uid, meta) = EntMan.GetEntityData(teleComp.LinkedTeleporter ?? NetEntity.Invalid);
-            _menu.SetLinkName(Loc.GetString("teleporter-linked-to", ("name", meta.EntityName))); //kind of want a sprite here as well
+            var (uid, meta) = EntMan.GetEntityData(teleComp.LinkedTeleframe ?? NetEntity.Invalid);
+            _menu.SetLinkName(Loc.GetString("Teleframe-linked-to", ("name", meta.EntityName))); //kind of want a sprite here as well
         }
         else
         {
-            _menu.SetLinkName(Loc.GetString("teleporter-linked-to", ("name", Loc.GetString("teleporter-linked-default"))));
+            _menu.SetLinkName(Loc.GetString("Teleframe-linked-to", ("name", Loc.GetString("Teleframe-linked-default"))));
         }
 
         var coordX = 0;
@@ -54,12 +55,12 @@ public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
             }
             else
             {
-                _menu.UpdateTeleportSummary(Loc.GetString("teleporter-summary-bigrange", ("range", teleComp.MaxRange.ToString()!)));
+                _menu.UpdateTeleportSummary(Loc.GetString("Teleframe-summary-bigrange", ("range", teleComp.MaxRange.ToString()!)));
                 coordYValid = false; //not in range, invalid
             }
 
             if (coordXValid && coordYValid)
-                _menu.UpdateTeleportSummary(Loc.GetString("teleporter-summary-custom", ("X", coordX), ("Y", coordY))); //both are valid, so indicate ready to teleport
+                _menu.UpdateTeleportSummary(Loc.GetString("Teleframe-summary-custom", ("X", coordX), ("Y", coordY))); //both are valid, so indicate ready to teleport
 
             _menu.UpdateTeleportButtons(coordXValid && coordYValid);
         };
@@ -74,12 +75,12 @@ public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
             }
             else
             {
-                _menu.UpdateTeleportSummary(Loc.GetString("teleporter-summary-bigrange", ("range", teleComp.MaxRange.ToString()!)));
+                _menu.UpdateTeleportSummary(Loc.GetString("Teleframe-summary-bigrange", ("range", teleComp.MaxRange.ToString()!)));
                 coordYValid = false;  //not in range, invalid
             }
 
             if (coordXValid && coordYValid)
-                _menu.UpdateTeleportSummary(Loc.GetString("teleporter-summary-custom", ("X", coordX), ("Y", coordY))); //both are valid, so indicate ready to teleport
+                _menu.UpdateTeleportSummary(Loc.GetString("Teleframe-summary-custom", ("X", coordX), ("Y", coordY))); //both are valid, so indicate ready to teleport
 
             _menu.UpdateTeleportButtons(coordXValid && coordYValid);
         };
@@ -87,22 +88,22 @@ public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
         _menu.SendClicked += (send) =>
         { //for beacons have an if that is true if beacon selected and false if not. If true, use a seperate activate message.
             if (coordXValid == true && coordYValid == true) //require values to be input before teleport can be sent
-                SendPredictedMessage(new TeleporterActivateMessage(new Vector2(coordX, coordY), send));
+                SendPredictedMessage(new TeleframeActivateMessage(new Vector2(coordX, coordY), send));
             else
             {
                 if (beaconValid == true)
-                    SendPredictedMessage(new TeleporterActivateBeaconMessage(selectedBeacon, send));
+                    SendPredictedMessage(new TeleframeActivateBeaconMessage(selectedBeacon, send));
             }
         };
 
         _menu.ReceiveClicked += (send) =>
         {
-            if (coordXValid == true && coordYValid == true) //require values to be input before teleporter can be sent
-                SendPredictedMessage(new TeleporterActivateMessage(new Vector2(coordX, coordY), send));
+            if (coordXValid == true && coordYValid == true) //require values to be input before Teleframe can be sent
+                SendPredictedMessage(new TeleframeActivateMessage(new Vector2(coordX, coordY), send));
             else
             {
                 if (beaconValid == true)
-                    SendPredictedMessage(new TeleporterActivateBeaconMessage(selectedBeacon, send));
+                    SendPredictedMessage(new TeleframeActivateBeaconMessage(selectedBeacon, send));
             }
         };
 
@@ -111,7 +112,7 @@ public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
             _menu.SetCoordsX(int.Parse("")); _menu.SetCoordsY(int.Parse("")); //if clicking a beacon, invalidate coordinate teleport
             coordXValid = false; coordYValid = false;
             _menu.UpdateTeleportButtons(true);
-            _menu.UpdateTeleportSummary(Loc.GetString("teleporter-summary-beacon", ("beacon", beacon.Location)));
+            _menu.UpdateTeleportSummary(Loc.GetString("Teleframe-summary-beacon", ("beacon", beacon.Location)));
             beaconValid = true;
             selectedBeacon = beacon;
         };
@@ -125,7 +126,7 @@ public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
         {
             if (!EntMan.TryGetEntity(beacon.TelePoint, out var beaconEnt)) //does the entity exist?
                 continue;
-            if (!EntMan.TryGetComponent<TeleporterBeaconComponent>(beaconEnt, out var beaconComp)) //if it does, does the component exist?
+            if (!EntMan.TryGetComponent<TeleframeBeaconComponent>(beaconEnt, out var beaconComp)) //if it does, does the component exist?
                 continue;
             if (beaconComp.ValidBeacon) //if it does, is it a valid beacon?
                 validList.Add(beacon);

@@ -1,3 +1,4 @@
+using Content.Shared.Telescience.Components;
 using Content.Shared.Teleportation.Components;
 using Content.Shared.Construction.Components;
 using Content.Shared.DeviceLinking.Events;
@@ -6,9 +7,9 @@ using Content.Shared.Popups;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Timing;
 
-namespace Content.Shared.Teleportation.Systems;
+namespace Content.Shared.Telescience.Systems;
 
-public abstract class SharedTeleporterBeaconSystem : EntitySystem
+public abstract class SharedTeleframeBeaconSystem : EntitySystem
 {
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] protected readonly SharedAudioSystem Audio = default!;
@@ -16,24 +17,24 @@ public abstract class SharedTeleporterBeaconSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
-        SubscribeLocalEvent<TeleporterConsoleComponent, ComponentStartup>(OnConsoleStart);
+        SubscribeLocalEvent<TeleframeConsoleComponent, ComponentStartup>(OnConsoleStart);
 
-        SubscribeLocalEvent<TeleporterBeaconComponent, AfterInteractEvent>(OnBeaconInteract);
-        SubscribeLocalEvent<TeleporterBeaconComponent, NewLinkEvent>(OnNewBeaconLink);
-        SubscribeLocalEvent<TeleporterBeaconComponent, AnchorStateChangedEvent>(OnAnchorChange);
-        SubscribeLocalEvent<TeleporterBeaconComponent, ComponentStartup>(OnBeaconStart); //consider AnchorEntity and Unanchor Entity using an alt action like Fultonn to auto-anchor
+        SubscribeLocalEvent<TeleframeBeaconComponent, AfterInteractEvent>(OnBeaconInteract);
+        SubscribeLocalEvent<TeleframeBeaconComponent, NewLinkEvent>(OnNewBeaconLink);
+        SubscribeLocalEvent<TeleframeBeaconComponent, AnchorStateChangedEvent>(OnAnchorChange);
+        SubscribeLocalEvent<TeleframeBeaconComponent, ComponentStartup>(OnBeaconStart); //consider AnchorEntity and Unanchor Entity using an alt action like Fultonn to auto-anchor
     }
 
-    private void OnConsoleStart(Entity<TeleporterConsoleComponent> ent, ref ComponentStartup args)
+    private void OnConsoleStart(Entity<TeleframeConsoleComponent> ent, ref ComponentStartup args)
     {
-        if (TryComp<TeleporterBeaconComponent>(ent, out var beacon)) //if entity is both a console and a beacon, adds itself to its own beaconlist.
+        if (TryComp<TeleframeBeaconComponent>(ent, out var beacon)) //if entity is both a console and a beacon, adds itself to its own beaconlist.
         {
-            ent.Comp.BeaconList.Add(new TeleportPoint(Loc.GetString("teleporter-beacon-self", ("name", Name(ent))), GetNetEntity(ent)));
+            ent.Comp.BeaconList.Add(new TeleportPoint(Loc.GetString("Teleframe-beacon-self", ("name", Name(ent))), GetNetEntity(ent)));
             Dirty(ent, beacon);
         }
     }
 
-    private void OnBeaconInteract(Entity<TeleporterBeaconComponent> ent, ref AfterInteractEvent args) //when beacon is used on a console, add it to the console's beaconlist
+    private void OnBeaconInteract(Entity<TeleframeBeaconComponent> ent, ref AfterInteractEvent args) //when beacon is used on a console, add it to the console's beaconlist
     {
         if (args.Handled || !args.CanReach || args.Target == null)
             return;
@@ -43,7 +44,7 @@ public abstract class SharedTeleporterBeaconSystem : EntitySystem
         if (!_timing.IsFirstTimePredicted) //prevent it getting spammed
             return;
 
-        if (TryComp<TeleporterConsoleComponent>(args.Target, out var console)) //does target have consolecomponent
+        if (TryComp<TeleframeConsoleComponent>(args.Target, out var console)) //does target have consolecomponent
         {
             var newBeacon = new TeleportPoint(Name(ent.Owner), GetNetEntity(ent.Owner));
             var present = false;
@@ -70,9 +71,9 @@ public abstract class SharedTeleporterBeaconSystem : EntitySystem
             Dirty(ent);
         }
     }
-    private void OnNewBeaconLink(Entity<TeleporterBeaconComponent> ent, ref NewLinkEvent args) //links added via link system, used for static objects
+    private void OnNewBeaconLink(Entity<TeleframeBeaconComponent> ent, ref NewLinkEvent args) //links added via link system, used for static objects
     {
-        if (TryComp<TeleporterConsoleComponent>(args.Sink, out var beacon)) //link teleporter beacon to teleporter console
+        if (TryComp<TeleframeConsoleComponent>(args.Sink, out var beacon)) //link Teleframe beacon to Teleframe console
         {
             beacon.BeaconList.Add(new TeleportPoint(Name(ent.Owner), GetNetEntity(ent.Owner)));
             Audio.PlayPvs(ent.Comp.LinkSound, ent.Owner);
@@ -81,7 +82,7 @@ public abstract class SharedTeleporterBeaconSystem : EntitySystem
         }
     }
 
-    private void OnAnchorChange(Entity<TeleporterBeaconComponent> ent, ref AnchorStateChangedEvent args)
+    private void OnAnchorChange(Entity<TeleframeBeaconComponent> ent, ref AnchorStateChangedEvent args)
     {
         if (HasComp<AnchorableComponent>(ent)) //if it can be anchored, it needs to be to be valid (although if this is called it probably is)
         {
@@ -90,7 +91,7 @@ public abstract class SharedTeleporterBeaconSystem : EntitySystem
         }
     }
 
-    private void OnBeaconStart(Entity<TeleporterBeaconComponent> ent, ref ComponentStartup args)
+    private void OnBeaconStart(Entity<TeleframeBeaconComponent> ent, ref ComponentStartup args)
     {
         if (HasComp<AnchorableComponent>(ent)) //if it can be anchored, it needs to be to be valid
         {

@@ -12,8 +12,8 @@
         </BoxContainer>
         <Label Text="{Loc 'teleporter-coordinates-title'}" HorizontalAlignment="Center" Margin="10 5 10 0" ReservesSpace="False"/>
         <BoxContainer Orientation="Horizontal" HorizontalExpand="True" >
-            <FloatSpinBox Name="CoordsX" PlaceHolder="X" HorizontalExpand="True" Margin="2 4" Disabled="True"/>
-            <FloatSpinBox Name="CoordsY" PlaceHolder="X" HorizontalExpand="True" Margin="2 4" Disabled="True"/>
+            <FloatSpinBox Name="CoordsX" HorizontalExpand="True" Margin="2 4" />
+            <FloatSpinBox Name="CoordsY" HorizontalExpand="True" Margin="2 4" />
         </BoxContainer>
         <Label Text="{Loc 'teleporter-beacons-title'}" HorizontalAlignment="Center" Margin="10 5 10 0" ReservesSpace="False"/>
         <BoxContainer Orientation="Vertical" HorizontalExpand="True" SizeFlagsStretchRatio="0.4" MinHeight="150" VerticalExpand="True">

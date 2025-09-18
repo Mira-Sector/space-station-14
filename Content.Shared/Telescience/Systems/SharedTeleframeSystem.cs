@@ -1,4 +1,5 @@
-using Content.Shared.Teleportation.Components;
+using Content.Shared.Telescience.Components;
+using Content.Shared.Teleportation.Systems;
 using Content.Shared.Construction.Components;
 using Content.Shared.Database;
 using Content.Shared.DeviceLinking;
@@ -15,17 +16,17 @@ using Robust.Shared.Physics.Components;
 using Robust.Shared.Random;
 using System.Numerics;
 
-namespace Content.Shared.Teleportation.Systems;
+namespace Content.Shared.Telescience.Systems;
 
-public record struct BeforeTeleportEvent(EntityUid Teleporter, bool Cancelled = false);
+public record struct BeforeTeleportEvent(EntityUid Teleframe, bool Cancelled = false);
 
 public record struct AfterTeleportEvent(EntityUid To, EntityUid From);
 
 public record struct TeleportIncidentEvent(float IncidentMult);
 
-public record struct TeleporterConsoleSpeak(string Message, bool Radio, bool Voice);
+public record struct TeleframeConsoleSpeak(string Message, bool Radio, bool Voice);
 
-public abstract class SharedTeleporterSystem : EntitySystem
+public abstract class SharedTeleframeSystem : EntitySystem
 {
     [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
     [Dependency] private readonly LinkedEntitySystem _link = default!;
@@ -42,14 +43,14 @@ public abstract class SharedTeleporterSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<TeleporterComponent, MapInitEvent>(OnMapInit);
-        SubscribeLocalEvent<TeleporterComponent, GotEmaggedEvent>(OnTeleporterEmagged);
+        SubscribeLocalEvent<TeleframeComponent, MapInitEvent>(OnMapInit);
+        SubscribeLocalEvent<TeleframeComponent, GotEmaggedEvent>(OnTeleframeEmagged);
 
-        SubscribeLocalEvent<TeleporterConsoleComponent, TeleporterActivateMessage>(OnTeleportStart);
-        SubscribeLocalEvent<TeleporterConsoleComponent, TeleporterActivateBeaconMessage>(OnTeleportBeaconStart);
-        SubscribeLocalEvent<TeleporterConsoleComponent, NewLinkEvent>(OnNewLink);
-        SubscribeLocalEvent<TeleporterConsoleComponent, PortDisconnectedEvent>(OnPortDisconnected);
-        SubscribeLocalEvent<TeleporterConsoleComponent, GotEmaggedEvent>(OnConsoleEmagged);
+        SubscribeLocalEvent<TeleframeConsoleComponent, TeleframeActivateMessage>(OnTeleportStart);
+        SubscribeLocalEvent<TeleframeConsoleComponent, TeleframeActivateBeaconMessage>(OnTeleportBeaconStart);
+        SubscribeLocalEvent<TeleframeConsoleComponent, NewLinkEvent>(OnNewLink);
+        SubscribeLocalEvent<TeleframeConsoleComponent, PortDisconnectedEvent>(OnPortDisconnected);
+        SubscribeLocalEvent<TeleframeConsoleComponent, GotEmaggedEvent>(OnConsoleEmagged);
 
         _physicsQuery = GetEntityQuery<PhysicsComponent>();
     }
@@ -58,25 +59,25 @@ public abstract class SharedTeleporterSystem : EntitySystem
     {
         base.Update(frameTime);
 
-        var queryCharge = EntityQueryEnumerator<TeleporterChargingComponent, TeleporterComponent>();
-        while (queryCharge.MoveNext(out var uid, out var charge, out var teleporter))
+        var queryCharge = EntityQueryEnumerator<TeleframeChargingComponent, TeleframeComponent>();
+        while (queryCharge.MoveNext(out var uid, out var charge, out var teleframe))
         {
             if (Timing.CurTime < charge.EndTime)
                 continue;
-            EndTeleportCharge((uid, teleporter), (uid, charge));
+            EndTeleportCharge((uid, teleframe), (uid, charge));
         }
 
-        var queryRecharge = EntityQueryEnumerator<TeleporterRechargingComponent, TeleporterComponent>();
-        while (queryRecharge.MoveNext(out var uid, out var recharge, out var teleporter))
+        var queryRecharge = EntityQueryEnumerator<TeleframeRechargingComponent, TeleframeComponent>();
+        while (queryRecharge.MoveNext(out var uid, out var recharge, out var teleframe))
         {
             if (Timing.CurTime < recharge.EndTime)
                 continue;
-            EndTeleportRecharge((uid, teleporter), (uid, recharge));
+            EndTeleportRecharge((uid, teleframe), (uid, recharge));
         }
 
     }
 
-    public void EndTeleportCharge(Entity<TeleporterComponent> ent, Entity<TeleporterChargingComponent> charge)
+    public void EndTeleportCharge(Entity<TeleframeComponent> ent, Entity<TeleframeChargingComponent> charge)
     {
         if (Exists(ent.Comp.TeleportFrom) && Exists(ent.Comp.TeleportTo)) //final check that these two exist to teleport from and to
         {
@@ -89,11 +90,11 @@ public abstract class SharedTeleporterSystem : EntitySystem
         else
             TeleportFail(ent, charge.Comp.FailReason);
 
-        if (charge.Comp.WillExplode == true) //and afterwards, if the teleporter should explode, it does.
+        if (charge.Comp.WillExplode == true) //and afterwards, if the Teleframe should explode, it does.
             Log.Debug("explode");
 
-        RemCompDeferred<TeleporterChargingComponent>(ent); //stop charging
-        var rechargeComp = AddComp<TeleporterRechargingComponent>(ent); //start recharging
+        RemCompDeferred<TeleframeChargingComponent>(ent); //stop charging
+        var rechargeComp = AddComp<TeleframeRechargingComponent>(ent); //start recharging
         rechargeComp.Duration = ent.Comp.RechargeDuration;
         rechargeComp.EndTime = ent.Comp.RechargeDuration + Timing.CurTime;
     }
@@ -102,7 +103,7 @@ public abstract class SharedTeleporterSystem : EntitySystem
     /// Teleportation has failed, clean up teleportation entities
     /// also summon some l̶i̶g̶h̶t̶n̶i̶n̶g̶ smoke, for fun.
     /// </summary>
-    public void TeleportFail(Entity<TeleporterComponent> ent, string failReason)
+    public void TeleportFail(Entity<TeleframeComponent> ent, string failReason)
     {
         EntityManager.PredictedQueueDeleteEntity(ent.Comp.TeleportFrom);
         EntityManager.PredictedQueueDeleteEntity(ent.Comp.TeleportTo);
@@ -112,27 +113,27 @@ public abstract class SharedTeleporterSystem : EntitySystem
         SpawnAtPosition("WizardSmoke", pos); //and a pop of smoke
 
         if (ent.Comp.LinkedConsole != null) //raise event to have console say what the error is
-            RaiseLocalEvent(ent.Comp.LinkedConsole ?? EntityUid.Invalid, new TeleporterConsoleSpeak(
+            RaiseLocalEvent(ent.Comp.LinkedConsole ?? EntityUid.Invalid, new TeleframeConsoleSpeak(
                 Loc.GetString("teleport-fail", ("reason", Loc.GetString("teleport-fail-" + failReason))),
                 false, true));
     }
 
-    public void EndTeleportRecharge(Entity<TeleporterComponent> ent, Entity<TeleporterRechargingComponent> charge)
+    public void EndTeleportRecharge(Entity<TeleframeComponent> ent, Entity<TeleframeRechargingComponent> charge)
     {
         ent.Comp.ReadyToTeleport = true;
-        RemCompDeferred<TeleporterRechargingComponent>(ent);
+        RemCompDeferred<TeleframeRechargingComponent>(ent);
     }
 
-    public void OnTeleportStart(Entity<TeleporterConsoleComponent> ent, ref TeleporterActivateMessage args)
+    public void OnTeleportStart(Entity<TeleframeConsoleComponent> ent, ref TeleframeActivateMessage args)
     {
-        if (!TryGetEntity(ent.Comp.LinkedTeleporter, out var teleNetEnt) || !TryComp<TeleporterComponent>(teleNetEnt, out var teleComp))
-            return; //if no linked teleporter, can't teleport.
+        if (!TryGetEntity(ent.Comp.LinkedTeleframe, out var teleNetEnt) || !TryComp<TeleframeComponent>(teleNetEnt, out var teleComp))
+            return; //if no linked Teleframe, can't teleport.
 
         //if (!_timing.IsFirstTimePredicted) //prevent it getting spammed
         //    return;
 
         var teleEnt = teleNetEnt ?? EntityUid.Invalid; //de-nullable teleNetEnt to prevent RaiseLocalEvent getting upset.
-        var tp = Transform(teleEnt); //get transform of the teleporter for MapID
+        var tp = Transform(teleEnt); //get transform of the Teleframe for MapID
         teleComp.Target = new MapCoordinates(args.Coords, tp.MapID); //coordinates of target, need to be able to replace MapId for beacons
         teleComp.TeleportSend = args.Send;
         Dirty(teleEnt, teleComp);
@@ -140,10 +141,10 @@ public abstract class SharedTeleporterSystem : EntitySystem
         Teleport((teleEnt, teleComp));
     }
 
-    public void OnTeleportBeaconStart(Entity<TeleporterConsoleComponent> ent, ref TeleporterActivateBeaconMessage args)
+    public void OnTeleportBeaconStart(Entity<TeleframeConsoleComponent> ent, ref TeleframeActivateBeaconMessage args)
     {
-        if (!TryGetEntity(ent.Comp.LinkedTeleporter, out var teleNetEnt) || !TryComp<TeleporterComponent>(teleNetEnt, out var teleComp))
-            return; //if no linked teleporter, can't teleport.
+        if (!TryGetEntity(ent.Comp.LinkedTeleframe, out var teleNetEnt) || !TryComp<TeleframeComponent>(teleNetEnt, out var teleComp))
+            return; //if no linked Teleframe, can't teleport.
 
         //if (!_timing.IsFirstTimePredicted) //prevent it getting spammed
         //    return;
@@ -157,34 +158,34 @@ public abstract class SharedTeleporterSystem : EntitySystem
         Teleport((teleEnt, teleComp));
     }
 
-    public void Teleport(Entity<TeleporterComponent> ent) //could probably move a decent chunk of this to shared but it doesn't really need predicting that much.
+    public void Teleport(Entity<TeleframeComponent> ent) //could probably move a decent chunk of this to shared but it doesn't really need predicting that much.
     {
-        if (HasComp<TeleporterChargingComponent>(ent) || HasComp<TeleporterRechargingComponent>(ent)) //nuh uh, we recharging
+        if (HasComp<TeleframeChargingComponent>(ent) || HasComp<TeleframeRechargingComponent>(ent)) //nuh uh, we recharging
             return;
 
         var ev = new BeforeTeleportEvent(ent);
         RaiseLocalEvent(ent, ev);
 
-        var sourceEffect = ent.Comp.TeleportFromEffect; //default Send teleport, Teleporter From Source to Target
+        var sourceEffect = ent.Comp.TeleportFromEffect; //default Send teleport, Teleframe From Source to Target
         var targetEffect = ent.Comp.TeleportToEffect;
 
         //set charge duration before spawning, tryget from protoID?
 
-        if (ent.Comp.TeleportSend != true) //if not the case, reverse. Target to Teleporter.
+        if (ent.Comp.TeleportSend != true) //if not the case, reverse. Target to Teleframe.
         {
-            sourceEffect = ent.Comp.TeleportToEffect; //alternative teleporter, Teleporter to Source from Target
+            sourceEffect = ent.Comp.TeleportToEffect; //alternative Teleframe, Teleframe to Source from Target
             targetEffect = ent.Comp.TeleportFromEffect;
         }
 
-        var tp = Transform(ent); //get transform of the teleporter
+        var tp = Transform(ent); //get transform of the Teleframe
         //Prototype
         Spawn(ent.Comp.TeleportBeginEffect, tp.Coordinates); //flash start effect
-        var sourcePortal = Spawn(sourceEffect, tp.Coordinates); //put source portal on Teleporter
+        var sourcePortal = Spawn(sourceEffect, tp.Coordinates); //put source portal on Teleframe
 
         /*if (!TryComp<TwoStageTriggerComponent>(sourcePortal, out var tpStart)) //twostagetrigger breaks all machine AI's if networked so can't dirty it.
         {
             QueueDel(sourcePortal); //no Twostagetrigger, no ride
-            Log.Debug("Teleporter Start Portal did not have TwoStageTriggerComponent");
+            Log.Debug("Teleframe Start Portal did not have TwoStageTriggerComponent");
             return;
         }
         tpStart.TriggerDelay = ent.Comp.ChargeDuration; //set duration to component-specific time
@@ -201,7 +202,7 @@ public abstract class SharedTeleporterSystem : EntitySystem
         {
             QueueDel(sourcePortal);
             QueueDel(targetPortal); //no Twostagetrigger, no ride
-            Log.Debug("Teleporter End Portal did not have TwoStageTriggerComponent");
+            Log.Debug("Teleframe End Portal did not have TwoStageTriggerComponent");
             return;
         }
         tpEnd.TriggerDelay = ent.Comp.ChargeDuration; //set duration to component-specific time
@@ -212,7 +213,7 @@ public abstract class SharedTeleporterSystem : EntitySystem
             EnsureComp<TeleportOnTriggerComponent>(sourcePortal, out var portalComp);
             portalComp.TeleportFrom = sourcePortal;
             portalComp.TeleportTo = targetPortal;
-            portalComp.Teleporter = ent;
+            portalComp.Teleframe = ent;
             ent.Comp.TeleportFrom = sourcePortal;
             ent.Comp.TeleportTo = targetPortal;
             Dirty(sourcePortal, portalComp);
@@ -222,7 +223,7 @@ public abstract class SharedTeleporterSystem : EntitySystem
             EnsureComp<TeleportOnTriggerComponent>(targetPortal, out var portalComp);
             portalComp.TeleportFrom = targetPortal;
             portalComp.TeleportTo = sourcePortal;
-            portalComp.Teleporter = ent;
+            portalComp.Teleframe = ent;
             ent.Comp.TeleportFrom = targetPortal;
             ent.Comp.TeleportTo = sourcePortal;
             Dirty(targetPortal, portalComp);
@@ -235,25 +236,25 @@ public abstract class SharedTeleporterSystem : EntitySystem
 
 
         ent.Comp.ReadyToTeleport = false;
-        var chargeComp = AddComp<TeleporterChargingComponent>(ent);
+        var chargeComp = AddComp<TeleframeChargingComponent>(ent);
         chargeComp.Duration = ent.Comp.ChargeDuration;
         chargeComp.EndTime = ent.Comp.ChargeDuration + Timing.CurTime;
     }
 
     /// <summary>
-    /// If teleporter and console were linked during map creation, add that link at the start of the round
+    /// If Teleframe and console were linked during map creation, add that link at the start of the round
     /// </summary>
-    private void OnMapInit(Entity<TeleporterComponent> ent, ref MapInitEvent args) //stolen from SharedArtifactAnalyzerSystem
+    private void OnMapInit(Entity<TeleframeComponent> ent, ref MapInitEvent args) //stolen from SharedArtifactAnalyzerSystem
     {
         if (!TryComp<DeviceLinkSinkComponent>(ent, out var sink))
             return;
 
         foreach (var source in sink.LinkedSources)
         {
-            if (!TryComp<TeleporterConsoleComponent>(source, out var console))
+            if (!TryComp<TeleframeConsoleComponent>(source, out var console))
                 continue;
 
-            console.LinkedTeleporter = GetNetEntity(ent);
+            console.LinkedTeleframe = GetNetEntity(ent);
             ent.Comp.LinkedConsole = source;
             Dirty(source, console);
             Dirty(ent);
@@ -262,35 +263,35 @@ public abstract class SharedTeleporterSystem : EntitySystem
     }
 
     /// <summary>
-    /// links both teleporter console and teleporter
+    /// links both Teleframe console and Teleframe
     /// </summary>
-    private void OnNewLink(Entity<TeleporterConsoleComponent> ent, ref NewLinkEvent args) //stolen from SharedArtifactAnalyzerSystem
+    private void OnNewLink(Entity<TeleframeConsoleComponent> ent, ref NewLinkEvent args) //stolen from SharedArtifactAnalyzerSystem
     {
-        if (TryComp<TeleporterComponent>(args.Sink, out var teleporter)) //link teleporter to teleporter console
+        if (TryComp<TeleframeComponent>(args.Sink, out var tp)) //link Teleframe to Teleframe console
         {
-            ent.Comp.LinkedTeleporter = GetNetEntity(args.Sink);
-            teleporter.LinkedConsole = ent;
-            Dirty(args.Sink, teleporter);
+            ent.Comp.LinkedTeleframe = GetNetEntity(args.Sink);
+            tp.LinkedConsole = ent;
+            Dirty(args.Sink, tp);
             Dirty(ent);
         }
     }
 
     /// <summary>
-    /// Disconnects Teleporter Console and Teleporter, setting both sides' Linked variables to null
+    /// Disconnects Teleframe Console and Teleframe, setting both sides' Linked variables to null
     /// </summary>
-    private void OnPortDisconnected(Entity<TeleporterConsoleComponent> ent, ref PortDisconnectedEvent args) //stolen from SharedArtifactAnalyzerSystem
+    private void OnPortDisconnected(Entity<TeleframeConsoleComponent> ent, ref PortDisconnectedEvent args) //stolen from SharedArtifactAnalyzerSystem
     {
-        var teleporterNetEntity = ent.Comp.LinkedTeleporter;
-        if (args.Port == ent.Comp.LinkingPort && teleporterNetEntity != null)
+        var tpNetEntity = ent.Comp.LinkedTeleframe;
+        if (args.Port == ent.Comp.LinkingPort && tpNetEntity != null)
         {
-            var teleporterUid = GetEntity(teleporterNetEntity);
-            if (TryComp<TeleporterComponent>(teleporterUid, out var teleporter))
+            var tpUid = GetEntity(tpNetEntity);
+            if (TryComp<TeleframeComponent>(tpUid, out var tp))
             {
-                teleporter.LinkedConsole = null;
-                Dirty(teleporterUid.Value, teleporter);
+                tp.LinkedConsole = null;
+                Dirty(tpUid.Value, tp);
             }
 
-            ent.Comp.LinkedTeleporter = null;
+            ent.Comp.LinkedTeleframe = null;
             Dirty(ent);
         }
     }
@@ -298,7 +299,7 @@ public abstract class SharedTeleporterSystem : EntitySystem
     /// <summary>
     /// Adds the emag flag
     /// </summary>
-    private void OnConsoleEmagged(Entity<TeleporterConsoleComponent> ent, ref GotEmaggedEvent args)
+    private void OnConsoleEmagged(Entity<TeleframeConsoleComponent> ent, ref GotEmaggedEvent args)
     {
         if (!_emag.CompareFlag(args.Type, EmagType.Interaction))
             return;
@@ -310,9 +311,9 @@ public abstract class SharedTeleporterSystem : EntitySystem
     }
 
     /// <summary>
-    /// Adds the emag flag to the teleporter, makes the teleporter more dangerous, cumulative with any other effect that does that.
+    /// Adds the emag flag to the Teleframe, makes the Teleframe more dangerous, cumulative with any other effect that does that.
     /// </summary>
-    private void OnTeleporterEmagged(Entity<TeleporterComponent> ent, ref GotEmaggedEvent args)
+    private void OnTeleframeEmagged(Entity<TeleframeComponent> ent, ref GotEmaggedEvent args)
     {
         if (!_emag.CompareFlag(args.Type, EmagType.Interaction))
             return;
@@ -326,11 +327,11 @@ public abstract class SharedTeleporterSystem : EntitySystem
         args.Handled = true;
     }
 
-    private void OnTeleport(Entity<TeleporterComponent> ent)
+    private void OnTeleport(Entity<TeleframeComponent> ent)
     {
-        if (ent.Comp.TeleportFrom == null) //backup for if no TeleporterFrom selecter, choose the Owner.
+        if (ent.Comp.TeleportFrom == null) //backup for if no TeleframeFrom selecter, choose the Owner.
             ent.Comp.TeleportFrom = ent.Owner;
-        if (ent.Comp.TeleportTo == null) //backup for if no Teleporter To, choose Teleport From to just teleport in place
+        if (ent.Comp.TeleportTo == null) //backup for if no Teleframe To, choose Teleport From to just teleport in place
             ent.Comp.TeleportTo = ent.Comp.TeleportFrom;
 
         var tpFrom = ent.Comp.TeleportFrom ?? ent.Owner; //denullable, shouldn't happen
@@ -346,10 +347,10 @@ public abstract class SharedTeleporterSystem : EntitySystem
 
             var tpEnt = Transform(tp);
 
-            if (tpEnt.Anchored == true) //if it's anchored, skip it. We don't want to be teleporting the teleporter itself. Or the station's walls.
+            if (tpEnt.Anchored == true) //if it's anchored, skip it. We don't want to be teleporting the Teleframe itself. Or the station's walls.
                 continue;
 
-            _transform.DropNextTo(tp, tpTo); //bit scuffed but because the map the target will be on won't neccisarily be the same as the teleporter we first drop them next to the target THEN scatter.
+            _transform.DropNextTo(tp, tpTo); //bit scuffed but because the map the target will be on won't neccisarily be the same as the Teleframe we first drop them next to the target THEN scatter.
             var scatterpos = new Vector2(
                 _transform.ToMapCoordinates(tpEnt.Coordinates).X + _random.NextFloat(-ent.Comp.TeleportScatterRange, ent.Comp.TeleportScatterRange),
                 _transform.ToMapCoordinates(tpEnt.Coordinates).Y + _random.NextFloat(-ent.Comp.TeleportScatterRange, ent.Comp.TeleportScatterRange));

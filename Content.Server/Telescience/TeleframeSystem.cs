@@ -1,6 +1,7 @@
-using Content.Shared.Teleportation;
+using Content.Shared.Telescience;
+using Content.Shared.Telescience.Systems;
 using Content.Shared.Teleportation.Systems;
-using Content.Shared.Teleportation.Components;
+using Content.Shared.Telescience.Components;
 using Content.Shared.Explosion.Components;
 using Content.Shared.Emag.Systems;
 using Content.Server.Explosion.Components.OnTrigger;
@@ -9,9 +10,9 @@ using Content.Server.Pinpointer;
 using Content.Server.Chat.Systems;
 
 
-namespace Content.Server.Teleportation;
+namespace Content.Server.Telescience;
 
-public sealed class TeleporterSystem : SharedTeleporterSystem
+public sealed class TeleframeSystem : SharedTeleframeSystem
 {
     [Dependency] private readonly LinkedEntitySystem _link = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
@@ -24,30 +25,30 @@ public sealed class TeleporterSystem : SharedTeleporterSystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<TeleporterComponent, TeleporterActivateMessage>(TeleportCustom);
-        SubscribeLocalEvent<TeleporterComponent, TeleporterActivateBeaconMessage>(TeleportBeacon);
+        SubscribeLocalEvent<TeleframeComponent, TeleframeActivateMessage>(TeleportCustom);
+        SubscribeLocalEvent<TeleframeComponent, TeleframeActivateBeaconMessage>(TeleportBeacon);
 
-        SubscribeLocalEvent<TeleporterConsoleComponent, TeleporterConsoleSpeak>(OnSpeak);
+        SubscribeLocalEvent<TeleframeConsoleComponent, TeleframeConsoleSpeak>(OnSpeak);
         //GotEmaggedEvent
     }
 
-    public void TeleportBeacon(Entity<TeleporterComponent> ent, ref TeleporterActivateBeaconMessage args)
+    public void TeleportBeacon(Entity<TeleframeComponent> ent, ref TeleframeActivateBeaconMessage args)
     {
         Teleport(ent);
         if (ent.Comp.LinkedConsole != null) //raise event to have console say what the error is
-            RaiseLocalEvent(ent.Comp.LinkedConsole ?? EntityUid.Invalid, new TeleporterConsoleSpeak(
+            RaiseLocalEvent(ent.Comp.LinkedConsole ?? EntityUid.Invalid, new TeleframeConsoleSpeak(
                 args.Beacon.Location,
                 true, true));
         OnTeleportSpeak(ent, args.Beacon.Location);
     }
 
-    public void TeleportCustom(Entity<TeleporterComponent> ent, ref TeleporterActivateMessage args)
+    public void TeleportCustom(Entity<TeleframeComponent> ent, ref TeleframeActivateMessage args)
     {
         Teleport(ent);
-        OnTeleportSpeak(ent, Loc.GetString("teleporter-target-custom"));
+        OnTeleportSpeak(ent, Loc.GetString("Teleframe-target-custom"));
     }
 
-    public void OnTeleportSpeak(Entity<TeleporterComponent> ent, string location) //say over radio that the teleportation is underway.
+    public void OnTeleportSpeak(Entity<TeleframeComponent> ent, string location) //say over radio that the teleportation is underway.
     {
         if (ent.Comp.LinkedConsole == null) //no point if no console
             return;
@@ -59,20 +60,20 @@ public sealed class TeleporterSystem : SharedTeleporterSystem
         string proximity = _navMap.GetNearestBeaconString((targetSafe, Transform(targetSafe)));
 
         var message = Loc.GetString(
-            "teleporter-console-activate",
+            "Teleframe-console-activate",
             ("send", ent.Comp.TeleportSend),
             ("targetName", location),
             ("X", ent.Comp.Target.Position.X.ToString("0")),
             ("Y", ent.Comp.Target.Position.Y.ToString("0")),
             ("proximity", proximity),
-            ("map", _maps.TryGetMap(ent.Comp.Target.MapId, out var mapEnt) ? Name(mapEnt ?? EntityUid.Invalid) : Loc.GetString("teleporter-location-unknown"))
+            ("map", _maps.TryGetMap(ent.Comp.Target.MapId, out var mapEnt) ? Name(mapEnt ?? EntityUid.Invalid) : Loc.GetString("Teleframe-location-unknown"))
         );                                                                  //if mapEnt is null the other option would have been chosen so safe denullable
 
-        RaiseLocalEvent(ent.Comp.LinkedConsole ?? EntityUid.Invalid, new TeleporterConsoleSpeak(message, true, true));
+        RaiseLocalEvent(ent.Comp.LinkedConsole ?? EntityUid.Invalid, new TeleframeConsoleSpeak(message, true, true));
 
     }
 
-    public void OnSpeak(Entity<TeleporterConsoleComponent> ent, ref TeleporterConsoleSpeak args)
+    public void OnSpeak(Entity<TeleframeConsoleComponent> ent, ref TeleframeConsoleSpeak args)
     {
         if (!_emag.CheckFlag(ent.Owner, EmagType.Interaction)) //no speak if emagged
         {

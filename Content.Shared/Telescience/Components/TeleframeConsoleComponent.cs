@@ -1,21 +1,23 @@
 using Content.Shared.DeviceLinking;
 using Content.Shared.Radio;
+using Content.Shared.Teleportation.Components;
 using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
 using Robust.Shared.GameStates;
 
-namespace Content.Shared.Teleportation.Components;
+
+namespace Content.Shared.Telescience.Components;
 
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState(true)]
 
-public sealed partial class TeleporterConsoleComponent : Component
+public sealed partial class TeleframeConsoleComponent : Component
 {
     /// <summary>
     /// The analyzer entity the console is linked.
     /// Can be null if not linked.
     /// </summary>
     [DataField, AutoNetworkedField, ViewVariables]
-    public NetEntity? LinkedTeleporter;
+    public NetEntity? LinkedTeleframe;
 
     /// <summary>
     /// largest coordinate value allowed for teleporting.
@@ -27,7 +29,7 @@ public sealed partial class TeleporterConsoleComponent : Component
     public SoundSpecifier? TeleportRechargedSound = new SoundPathSpecifier("/Audio/Machines/scan_finish.ogg");
 
     /// <summary>
-    /// The machine linking port for the Teleporter
+    /// The machine linking port for the Teleframe
     /// </summary>
     [DataField]
     public ProtoId<SourcePortPrototype> LinkingPort = "TeleportSender";

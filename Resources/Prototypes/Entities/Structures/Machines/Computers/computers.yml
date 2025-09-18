@@ -1604,8 +1604,8 @@
 - type: entity
   id: ComputerTeleporter
   parent: BaseComputerAiAccess
-  name: teleporter console
-  description: Links to a teleporter to set its coordinates.
+  name: experimental teleframe console
+  description: Links to a teleframe to set its coordinates.
   components:
   - type: Sprite
     layers:
@@ -1629,16 +1629,16 @@
   - type: DeviceLinkSink
     ports:
       - TeleportBeaconReceiver
-  - type: TeleporterConsole
+  - type: TeleframeConsole
   - type: ActiveRadio
     channels:
     - Science
   - type: ActivatableUI
-    key: enum.TeleporterConsoleUiKey.Key
+    key: enum.TeleframeConsoleUiKey.Key
   - type: UserInterface
     interfaces:
-      enum.TeleporterConsoleUiKey.Key:
-        type: TeleporterConsoleBoundUserInterface
+      enum.TeleframeConsoleUiKey.Key:
+        type: TeleframeConsoleBoundUserInterface
       enum.WiresUiKey.Key:
         type: WiresBoundUserInterface
   - type: ApcPowerReceiver

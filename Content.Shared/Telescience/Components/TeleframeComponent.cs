@@ -4,23 +4,23 @@ using Robust.Shared.GameStates;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 using Robust.Shared.Map;
 
-namespace Content.Shared.Teleportation.Components;
+namespace Content.Shared.Telescience.Components;
 /// <summary>
-/// A machine that is combined and linked to the <see cref="TeleporterConsoleComponent"/>
+/// A machine that is combined and linked to the <see cref="TeleframeConsoleComponent"/>
 /// in order to teleport entities.
 /// </summary>
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState(true)]
-public sealed partial class TeleporterComponent : Component
+public sealed partial class TeleframeComponent : Component
 {
     /// <summary>
-    /// The amount of time the teleporter charges for before teleporting
+    /// The amount of time the Teleframe charges for before teleporting
     /// </summary>
     [DataField]
     [AutoNetworkedField, ViewVariables(VVAccess.ReadWrite)]
     public TimeSpan ChargeDuration = TimeSpan.FromSeconds(0.25);
 
     /// <summary>
-    /// The amount of time after the teleporter has teleported before it can be used again
+    /// The amount of time after the Teleframe has teleported before it can be used again
     /// </summary>
     [DataField]
     [AutoNetworkedField, ViewVariables(VVAccess.ReadWrite)]
@@ -50,19 +50,19 @@ public sealed partial class TeleporterComponent : Component
     public string TeleportFinishEffect = "EffectFlashTeleportFinish";
 
     /// <summary>
-    /// The corresponding Teleporter Console entity this teleporter is linked to.
+    /// The corresponding Teleframe Console entity this Teleframe is linked to.
     /// Can be null if not linked.
     /// </summary>
     [DataField, ViewVariables, AutoNetworkedField]
     public EntityUid? LinkedConsole;
 
     /// <summary>
-    /// Marker, is teleporter ready to teleport again?
+    /// Marker, is Teleframe ready to teleport again?
     /// </summary>
     public bool ReadyToTeleport;
 
     /// <summary>
-    /// Chance of an Anomalous Incident occuring from a Teleportation event. Chance is per teleporter entity.
+    /// Chance of an Anomalous Incident occuring from a Teleportation event. Chance is per Teleframe entity.
     /// </summary>
     [DataField, ViewVariables]
     public float IncidentChance = 0f;
@@ -96,7 +96,7 @@ public sealed partial class TeleporterComponent : Component
     public EntityUid? TeleportTo;
 
     /// <summary>
-    /// Direction of Teleport Process. "Send" is Teleporter to Target (true), "Receive" is Target to Teleporter (false).
+    /// Direction of Teleport Process. "Send" is Teleframe to Target (true), "Receive" is Target to Teleframe (false).
     /// </summary>
     public bool TeleportSend = true;
 

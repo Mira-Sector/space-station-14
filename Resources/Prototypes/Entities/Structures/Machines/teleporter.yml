@@ -64,16 +64,16 @@
     energy: 1.5
     color: "#ffffff"
   - type: LitOnPowered
-  - type: Teleporter
+  - type: Teleframe
 
 - type: entity
   id: TeleporterScience
   parent: [BaseTeleporter, BaseTeleportBeaconStatic]
-  name: teleframe core
+  name: experimental teleframe core
   description: The core of an advanced device that rips holes in reality for near-instanteous travel. With time and material its capabilities can be expanded. Safety not guaranteed.
   components:
   - type: Machine
     board: TeleporterScienceMachineCircuitboard
-  - type: Teleporter
+  - type: Teleframe
     chargeDuration: 5
     IncidentChance: 0.15

@@ -2,7 +2,7 @@
   id: BaseTeleportBeacon #for items that can act as beacons
   abstract: true
   components:
-    - type: TeleporterBeacon
+    - type: TeleframeBeacon
     - type: NameIdentifier
       group: CargoTelepads
 
@@ -24,7 +24,7 @@
   id: TeleportBeacon
   parent: BaseTeleportBeacon
   name: teleport beacon
-  description: Can be linked to a Teleporter Console, allowing it to be targeted over any distance. Must be anchored.
+  description: Can be linked to a Teleframe Console, allowing it to be targeted over any distance. Must be anchored.
   components:
     - type: Physics
       bodyType: Dynamic
@@ -45,7 +45,7 @@
         right:
         - state: inhand-right-beacon
     - type: Anchorable
-    - type: TeleporterBeacon
+    - type: TeleframeBeacon
       ValidBeacon: false
     - type: Clickable
     - type: InteractionOutline

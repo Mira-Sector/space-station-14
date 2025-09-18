@@ -1,14 +1,14 @@
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
-namespace Content.Shared.Teleportation.Components;
+namespace Content.Shared.Telescience.Components;
 
 /// <summary>
-/// Tracker for a charging teleporter
-/// <seealso cref="TeleporterComponent"/>
+/// Tracker for a charging Teleframe
+/// <seealso cref="TeleframeComponent"/>
 /// </summary>
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState(true), AutoGenerateComponentPause]
-public sealed partial class TeleporterChargingComponent : Component
+public sealed partial class TeleframeChargingComponent : Component
 {
     /// <summary>
     /// when charge will finish
@@ -25,7 +25,7 @@ public sealed partial class TeleporterChargingComponent : Component
     public TimeSpan Duration;
 
     /// <summary>
-    /// Rolled at start of charge, if above set value, teleporter explodes after teleportation.
+    /// Rolled at start of charge, if above set value, Teleframe explodes after teleportation.
     /// Explosion size scales with incident multiplier
     /// </summary>
     [DataField, AutoNetworkedField]

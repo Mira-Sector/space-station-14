@@ -1,5 +1,5 @@
 using Robust.Shared.GameStates;
-using Content.Shared.Teleportation.Components; 
+using Content.Shared.Telescience.Components;
 
 namespace Content.Shared.Explosion.Components;
 /// <summary>
@@ -25,7 +25,7 @@ public sealed partial class TeleportOnTriggerComponent : Component
     /// if not present, a new one is generated. Useful for if this function is used outside of teleporters
     /// </summary>
     [DataField]
-    public TeleporterComponent Teleporter = new();
+    public TeleframeComponent Teleporter = new();
 
     /// <summary>
     /// Uid of the Teleporter if there is one, just used to sent an event home when it's all done
