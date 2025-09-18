@@ -317,6 +317,15 @@
 
 - type: entity
   parent: BaseSign
+  id: SignTeleSci
+  name: tele-science lab sign
+  description: A sign indicating the tele-science lab.
+  components:
+  - type: Sprite
+    state: telesci
+
+- type: entity
+  parent: BaseSign
   id: SignAtmos
   name: atmos sign
   description: A sign indicating the atmospherics area.
