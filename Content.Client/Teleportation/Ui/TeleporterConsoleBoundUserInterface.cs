@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using Content.Shared.Ninja.Systems;
 using Content.Shared.Teleportation;
 using Content.Shared.Teleportation.Components;
 using Robust.Client.UserInterface;
@@ -14,10 +13,6 @@ public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
     public TeleporterConsoleBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
     }
-    public readonly string SumInsufficient = Loc.GetString("teleporter-summary-insufficient");
-    public readonly string SumBigRange = Loc.GetString("teleporter-summary-bigrange");
-    public readonly string SumReady = Loc.GetString("teleporter-summary-custom");
-    public readonly string SumBeacon = Loc.GetString("teleporter-summary-beacon");
 
     protected override void Open()
     {
@@ -31,80 +26,60 @@ public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
         if (teleComp.LinkedTeleporter != null) //set link name
         {
             var (uid, meta) = EntMan.GetEntityData(teleComp.LinkedTeleporter ?? NetEntity.Invalid);
-            _menu.SetLinkName(Loc.GetString("teleporter-linked-to") + " " + meta.EntityName); //kind of want a sprite here as well
+            _menu.SetLinkName(Loc.GetString("teleporter-linked-to", ("name", meta.EntityName))); //kind of want a sprite here as well
         }
         else
         {
-            _menu.SetLinkName(Loc.GetString("teleporter-linked-to") + " " + Loc.GetString("teleporter-linked-default"));
+            _menu.SetLinkName(Loc.GetString("teleporter-linked-to", ("name", Loc.GetString("teleporter-linked-default"))));
         }
 
-        int coordX = 0;
-        int coordY = 0;
-        bool coordXValid = false;
-        bool coordYValid = false;
-        bool beaconValid = false;
+        var coordX = 0;
+        var coordY = 0;
+        var coordXValid = false;
+        var coordYValid = false;
+        var beaconValid = false;
         TeleportPoint selectedBeacon = new TeleportPoint();
 
         _menu.UpdateTeleportButtons(false);
         _menu.Beacons = GetValidBeacons(teleComp.BeaconList);
         _menu.AddBeaconButtons();
 
-        _menu.OnCoordsXChanged += (text) =>
+        _menu.OnCoordsXChanged += (coord) =>
         {
             beaconValid = false; //if typing in text, invalidate beacon teleport
-            if (int.TryParse(text, out int coord)) //check if valid integer, if not, purge!
+            if (teleComp.MaxRange == null || Math.Abs(coord) < teleComp.MaxRange) //limit maximum value, currently absolute coordinate value rather than actual range.
             {
-                if (Math.Abs(coord) < teleComp.MaxRange) //limit maximum value, currently absolute coordinate value rather than actual range.
-                {
-                    coordX = coord;
-                    coordXValid = true; //if integer in range, valid
-                }
-                else
-                {
-                    _menu.SetCoordsX("");
-                    _menu.UpdateTeleportSummary(SumBigRange + " " + teleComp.MaxRange.ToString());
-                    coordYValid = false; //not in range, invalid
-                }
+                coordX = coord;
+                coordXValid = true; //if integer in range, valid
             }
             else
             {
-                _menu.SetCoordsX("");
-                _menu.UpdateTeleportSummary(SumInsufficient);
-                coordYValid = false; //not integer, invalid
+                _menu.UpdateTeleportSummary(Loc.GetString("teleporter-summary-bigrange", ("range", teleComp.MaxRange.ToString()!)));
+                coordYValid = false; //not in range, invalid
             }
 
             if (coordXValid && coordYValid)
-                _menu.UpdateTeleportSummary(SumReady + CoordString(coordX, coordY)); //both are valid, so indicate ready to teleport
+                _menu.UpdateTeleportSummary(Loc.GetString("teleporter-summary-custom", ("X", coordX), ("Y", coordY))); //both are valid, so indicate ready to teleport
 
             _menu.UpdateTeleportButtons(coordXValid && coordYValid);
         };
 
-        _menu.OnCoordsYChanged += (text) =>
+        _menu.OnCoordsYChanged += (coord) =>
         {
             beaconValid = false; //if typing in text, invalidate beacon teleport
-            if (int.TryParse(text, out int coord)) //check if valid integer, if not, purge!
+            if (teleComp.MaxRange == null || Math.Abs(coord) < teleComp.MaxRange) //limit maximum value, currently absolute coordinate value rather than actual range.
             {
-                if (Math.Abs(coord) < teleComp.MaxRange) //limit maximum value, currently absolute coordinate value rather than actual range.
-                {
-                    coordY = coord;
-                    coordYValid = true; //if integer in range, valid
-                }
-                else
-                {
-                    _menu.SetCoordsY("");
-                    _menu.UpdateTeleportSummary(SumBigRange + " " + teleComp.MaxRange.ToString());
-                    coordYValid = false;  //not in range, invalid
-                }
+                coordY = coord;
+                coordYValid = true; //if integer in range, valid
             }
             else
             {
-                _menu.SetCoordsY("");
-                _menu.UpdateTeleportSummary(SumInsufficient);
-                coordYValid = false; //not integer, invalid
+                _menu.UpdateTeleportSummary(Loc.GetString("teleporter-summary-bigrange", ("range", teleComp.MaxRange.ToString()!)));
+                coordYValid = false;  //not in range, invalid
             }
 
             if (coordXValid && coordYValid)
-                _menu.UpdateTeleportSummary(SumReady + CoordString(coordX, coordY)); //both are valid, so indicate ready to teleport
+                _menu.UpdateTeleportSummary(Loc.GetString("teleporter-summary-custom", ("X", coordX), ("Y", coordY))); //both are valid, so indicate ready to teleport
 
             _menu.UpdateTeleportButtons(coordXValid && coordYValid);
         };
@@ -133,18 +108,14 @@ public sealed class TeleporterConsoleBoundUserInterface : BoundUserInterface
 
         _menu.BeaconClicked += (beacon) =>
         {
-            _menu.SetCoordsX(""); _menu.SetCoordsY(""); //if clicking a beacon, invalidate coordinate teleport
+            _menu.SetCoordsX(int.Parse("")); _menu.SetCoordsY(int.Parse("")); //if clicking a beacon, invalidate coordinate teleport
             coordXValid = false; coordYValid = false;
             _menu.UpdateTeleportButtons(true);
-            _menu.UpdateTeleportSummary(SumBeacon + " " + beacon.Location);
+            _menu.UpdateTeleportSummary(Loc.GetString("teleporter-summary-beacon", ("beacon", beacon.Location)));
             beaconValid = true;
             selectedBeacon = beacon;
         };
 
-    }
-    public string CoordString(int x, int y)
-    {
-        return " (" + x.ToString() + ", " + y.ToString() + ")";
     }
 
     public HashSet<TeleportPoint> GetValidBeacons(HashSet<TeleportPoint> totalList) //get valid beacons only, also make sure beacons exist!

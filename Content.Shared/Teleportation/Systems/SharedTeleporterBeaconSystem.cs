@@ -28,14 +28,14 @@ public abstract class SharedTeleporterBeaconSystem : EntitySystem
     {
         if (TryComp<TeleporterBeaconComponent>(ent, out var beacon)) //if entity is both a console and a beacon, adds itself to its own beaconlist.
         {
-            ent.Comp.BeaconList.Add(new TeleportPoint(Name(ent) + " " + Loc.GetString("teleporter-beacon-self"), GetNetEntity(ent)));
+            ent.Comp.BeaconList.Add(new TeleportPoint(Loc.GetString("teleporter-beacon-self", ("name", Name(ent))), GetNetEntity(ent)));
             Dirty(ent, beacon);
         }
     }
 
     private void OnBeaconInteract(Entity<TeleporterBeaconComponent> ent, ref AfterInteractEvent args) //when beacon is used on a console, add it to the console's beaconlist
     {
-        if (args.Target == null || args.Handled || !args.CanReach)
+        if (args.Handled || !args.CanReach || args.Target == null)
             return;
 
         args.Handled = true;
@@ -81,18 +81,22 @@ public abstract class SharedTeleporterBeaconSystem : EntitySystem
         }
     }
 
-    private void OnAnchorChange(Entity<TeleporterBeaconComponent> ent, ref AnchorStateChangedEvent args) 
+    private void OnAnchorChange(Entity<TeleporterBeaconComponent> ent, ref AnchorStateChangedEvent args)
     {
-        if (TryComp<AnchorableComponent>(ent, out var _)) //if it can be anchored, it needs to be to be valid (although if this is called on it it probably is)
+        if (HasComp<AnchorableComponent>(ent)) //if it can be anchored, it needs to be to be valid (although if this is called it probably is)
+        {
             ent.Comp.ValidBeacon = args.Transform.Anchored;
-        Dirty(ent);
+            Dirty(ent);
+        }
     }
 
     private void OnBeaconStart(Entity<TeleporterBeaconComponent> ent, ref ComponentStartup args)
     {
-        if (TryComp<AnchorableComponent>(ent, out var _)) //if it can be anchored, it needs to be to be valid
+        if (HasComp<AnchorableComponent>(ent)) //if it can be anchored, it needs to be to be valid
+        {
             ent.Comp.ValidBeacon = Transform(ent).Anchored;
-        Dirty(ent);
+            Dirty(ent);
+        }
     }
 
 }

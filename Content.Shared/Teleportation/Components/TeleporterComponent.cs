@@ -9,21 +9,21 @@ namespace Content.Shared.Teleportation.Components;
 /// A machine that is combined and linked to the <see cref="TeleporterConsoleComponent"/>
 /// in order to teleport entities.
 /// </summary>
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState(true), AutoGenerateComponentPause]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState(true)]
 public sealed partial class TeleporterComponent : Component
 {
     /// <summary>
     /// The amount of time the teleporter charges for before teleporting
     /// </summary>
-    [DataField(customTypeSerializer: typeof(TimeOffsetSerializer))]
-    [AutoNetworkedField, AutoPausedField, ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
+    [AutoNetworkedField, ViewVariables(VVAccess.ReadWrite)]
     public TimeSpan ChargeDuration = TimeSpan.FromSeconds(0.25);
 
     /// <summary>
     /// The amount of time after the teleporter has teleported before it can be used again
     /// </summary>
-    [DataField(customTypeSerializer: typeof(TimeOffsetSerializer))]
-    [AutoNetworkedField, AutoPausedField, ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
+    [AutoNetworkedField, ViewVariables(VVAccess.ReadWrite)]
     public TimeSpan RechargeDuration = TimeSpan.FromSeconds(1);
 
     /// <summary>
@@ -57,11 +57,9 @@ public sealed partial class TeleporterComponent : Component
     public EntityUid? LinkedConsole;
 
     /// <summary>
-    /// Marker, is teleporter ready to teleport again? If recharging indicates time left.
+    /// Marker, is teleporter ready to teleport again?
     /// </summary>
-    [DataField(customTypeSerializer: typeof(TimeOffsetSerializer))]
-    [AutoNetworkedField, AutoPausedField, ViewVariables(VVAccess.ReadWrite)]
-    public TimeSpan ReadyToTeleport = TimeSpan.FromSeconds(5);
+    public bool ReadyToTeleport;
 
     /// <summary>
     /// Chance of an Anomalous Incident occuring from a Teleportation event. Chance is per teleporter entity.
@@ -90,7 +88,7 @@ public sealed partial class TeleporterComponent : Component
     /// <summary>
     /// TeleportFrom Entity
     /// </summary>
-    public EntityUid TeleportFrom;
+    public EntityUid? TeleportFrom;
 
     /// <summary>
     /// TeleportTo Entity

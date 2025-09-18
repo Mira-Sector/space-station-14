@@ -21,7 +21,7 @@ public sealed partial class TeleporterConsoleComponent : Component
     /// largest coordinate value allowed for teleporting.
     /// </summary>
     [DataField]
-    public int MaxRange = 20000;
+    public int? MaxRange = null;
 
     [DataField]
     public SoundSpecifier? TeleportRechargedSound = new SoundPathSpecifier("/Audio/Machines/scan_finish.ogg");

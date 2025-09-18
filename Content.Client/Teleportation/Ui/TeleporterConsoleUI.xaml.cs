@@ -17,17 +17,17 @@ public sealed partial class TeleporterConsoleUI : FancyWindow
     public event Action<bool>? SendClicked;
     public event Action<bool>? ReceiveClicked;
     public event Action<TeleportPoint>? BeaconClicked;
-    public event Action<string>? OnCoordsXChanged;
-    public event Action<string>? OnCoordsYChanged;
+    public event Action<int>? OnCoordsXChanged;
+    public event Action<int>? OnCoordsYChanged;
 
     public TeleporterConsoleUI()
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
 
-        CoordsX.OnFocusExit += e => OnCoordsXChanged?.Invoke(e.Text);
+        CoordsX.OnValueChanged += e => OnCoordsXChanged?.Invoke((int)e.Value);
 
-        CoordsY.OnFocusExit += e => OnCoordsYChanged?.Invoke(e.Text);
+        CoordsY.OnValueChanged += e => OnCoordsYChanged?.Invoke((int)e.Value);
 
         SendToButton.OnPressed += _ => SendClicked?.Invoke(true);
         ReceiveFromButton.OnPressed += _ => ReceiveClicked?.Invoke(false);
@@ -53,7 +53,6 @@ public sealed partial class TeleporterConsoleUI : FancyWindow
                 MinSize = new Vector2(300, 20),
                 ClipText = true,
             };
-
             currentButtonRef.OnPressed += _ => BeaconClicked?.Invoke(beacon);
             BeaconButtonContainer.AddChild(currentButtonRef);
         }
@@ -64,13 +63,13 @@ public sealed partial class TeleporterConsoleUI : FancyWindow
         LinkLabel.Text = link;
     }
 
-    public void SetCoordsX(string x) //updates X Coordinate text
+    public void SetCoordsX(int x) //updates X Coordinate text
     {
-        CoordsX.Text = x;
+        CoordsX.Value = x;
     }
-    public void SetCoordsY(string y) //updates Y Coordinate text
+    public void SetCoordsY(int y) //updates Y Coordinate text
     {
-        CoordsY.Text = y;
+        CoordsY.Value = y;
     }
     public void UpdateTeleportSummary(string summary) //updates Teleport Summary
     {
