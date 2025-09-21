@@ -43,4 +43,10 @@ public sealed partial class TeleframeConsoleComponent : Component
     [DataField, ViewVariables(VVAccess.ReadWrite)]
     public ProtoId<RadioChannelPrototype> AnnouncementChannel = "Science";
 
+    /// <summary>
+    /// AnnouncementChannel gets upset if it's nullable so this variable decides whether the console will actually speak or not
+    /// </summary>
+    [DataField, ViewVariables(VVAccess.ReadWrite)]
+    public bool NoRadio = true;
+
 }

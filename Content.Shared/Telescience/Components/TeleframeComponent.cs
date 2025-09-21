@@ -30,24 +30,24 @@ public sealed partial class TeleframeComponent : Component
     /// Entity Spawned at Teleport Start Point
     /// </summary>
     [DataField]
-    public EntProtoId TeleportFromEffect = "TeleportFromEffect";
+    public EntProtoId? TeleportFromEffect = "TeleportFromEffect";
     /// <summary>
     /// Entity Spawned at Teleport End Point
     /// </summary>
     [DataField]
-    public EntProtoId TeleportToEffect = "TeleportToEffect";
+    public EntProtoId? TeleportToEffect = "TeleportToEffect";
 
     /// <summary>
     /// Effect produced when teleport entities spawn
     /// </summary>
     [DataField]
-    public string TeleportBeginEffect = "EffectGravityPulse";
+    public EntProtoId? TeleportBeginEffect = null;
 
     /// <summary>
     /// Effect produced when teleport finishes
     /// </summary>
     [DataField]
-    public string TeleportFinishEffect = "EffectFlashTeleportFinish";
+    public EntProtoId? TeleportFinishEffect = null;
 
     /// <summary>
     /// The corresponding Teleframe Console entity this Teleframe is linked to.
@@ -59,13 +59,13 @@ public sealed partial class TeleframeComponent : Component
     /// <summary>
     /// Marker, is Teleframe ready to teleport again?
     /// </summary>
-    public bool ReadyToTeleport;
+    public bool ReadyToTeleport = true;
 
     /// <summary>
     /// Chance of an Anomalous Incident occuring from a Teleportation event. Chance is per Teleframe entity.
     /// </summary>
     [DataField, ViewVariables]
-    public float IncidentChance = 0f;
+    public float IncidentChance = 0.00f;
 
     /// <summary>
     /// Severity Multiplier of Anomalous incidents. High Severity increases the likelyhood of very significant events.

@@ -1604,8 +1604,8 @@
 - type: entity
   id: ComputerTeleporter
   parent: BaseComputerAiAccess
-  name: experimental teleframe console
-  description: Links to a teleframe to set its coordinates.
+  name: teleframe console
+  description: Links to a teleframe to set its coordinates, keeps quiet.
   components:
   - type: Sprite
     layers:
@@ -1630,9 +1630,7 @@
     ports:
       - TeleportBeaconReceiver
   - type: TeleframeConsole
-  - type: ActiveRadio
-    channels:
-    - Science
+    maxRange: 20000
   - type: ActivatableUI
     key: enum.TeleframeConsoleUiKey.Key
   - type: UserInterface
@@ -1644,9 +1642,26 @@
   - type: ApcPowerReceiver
     powerLoad: 1000
   - type: Computer
-    board: ComputerTeleporterCircuitboard
-  - type: AccessReader
-    access: [ [ "Research" ] ]
   - type: ContainerContainer
     containers:
       board: !type:Container
+  - type: Speech
+    speechVerb: Robotic
+
+- type: entity
+  id: ComputerTeleporterScience
+  parent: ComputerTeleporter
+  suffix: Research
+  name: teleframe console
+  description: Links to a teleframe to set its coordinates.
+  components:
+    - type: AccessReader
+      access: [ [ "Research" ] ]
+    - type: ActiveRadio
+      channels:
+      - Science
+    - type: Computer
+      board: ComputerTeleporterCircuitboard
+    - type: TeleframeConsole
+      maxRange: 20000
+      noRadio: false

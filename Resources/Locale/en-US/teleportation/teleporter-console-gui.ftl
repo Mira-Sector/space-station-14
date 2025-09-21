@@ -1,11 +1,15 @@
-teleporter-console-window-title = Teleporter Console
+teleporter-console-window-title = Teleframe Console
 teleporter-coordinates-title = Set Custom Coordinates
 teleporter-beacons-title = Set Coordinates from Beacon
-teleporter-activate-title = Teleporter Activation
+teleporter-activate-title = Teleframe Activation
 teleporter-send-button = Send
 teleporter-receive-button = Receive
-teleporter-linked-to = Linked To: {$name}
+teleporter-linked-to = Linked To: {$name} ({$state})
 teleporter-linked-default =  None
+
+teleporter-active = charged
+teleporter-charging = charging ({$time})
+teleporter-recharging = recharging ({$time})
 
 teleporter-summary-insufficient = Insufficient Data to Teleport
 teleporter-summary-bigrange = Teleport Coordinates too large, maximum {$range}
@@ -29,5 +33,6 @@ teleport-fail-unknown = Unknown
 teleport-fail-nolink = Bluespace Link Damaged
 teleport-fail-EMP = Electromagnetic Interference
 teleport-fail-power = Insufficient Charge
-teleport-fail-boom = Catastrophic Error
+teleport-fail-boom = CATASTROPHIC ERROR
+
 

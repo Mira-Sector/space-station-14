@@ -76,4 +76,38 @@
     board: TeleporterScienceMachineCircuitboard
   - type: Teleframe
     chargeDuration: 5
-    IncidentChance: 0.15
+    rechargeDuration: 20
+    incidentChance: 0.15
+    teleportBeginEffect: EffectGravityPulse
+    teleportFinishEffect: EffectFlashTeleportFinish
+
+- type: entity
+  id: TeleporterSyndicate
+  parent: [BaseTeleporter, BaseTeleportBeaconStatic]
+  name: cybersun TP-X covert teleframe core
+  description: A modification of stolen Nanotrasen blueprints, used in covert infiltration. Often outfitted with advanced upgrades.
+  components:
+  - type: Teleframe
+    teleportBeginEffect: EffectGravityPulse
+    chargeDuration: 5
+    rechargeDuration: 10
+    incidentChance: 0.10
+    incidentMultiplier: 0.50
+    teleportScatterRange: 0.5
+  #- type: Foldable
+
+- type: entity
+  id: TeleporterCC
+  parent: [BaseTeleporter, BaseTeleportBeaconStatic]
+  name: centcomm hyperframe core
+  description: A precise tool for the uppermost echelons of Central Command, allowing for rapid deployment and extraction of critical assets. Unfathomably Expensive.
+  components:
+  - type: Teleframe
+    chargeDuration: 0.1
+    rechargeDuration: 0.5
+    incidentChance: 0
+    incidentMultiplier: 0
+    teleportScatterRange: 0.25
+    teleportRange: 0.45
+    teleportToEffect: TeleportToEffectQuiet
+    teleportFromEffect: TeleportFromEffectQuiet
