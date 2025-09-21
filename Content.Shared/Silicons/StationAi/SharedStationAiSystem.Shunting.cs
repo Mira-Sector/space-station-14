@@ -8,8 +8,6 @@ namespace Content.Shared.Silicons.StationAi;
 
 public abstract partial class SharedStationAiSystem
 {
-    [Dependency] private readonly SharedDoAfterSystem _doafterSystem = default!;
-
     private const string ShuntingContainer = "shunting";
 
     private void InitializeShunting()
@@ -39,7 +37,7 @@ public abstract partial class SharedStationAiSystem
         if (canShuntComp.ShuntedContainer != null)
             return;
 
-        _doafterSystem.TryStartDoAfter(new DoAfterArgs(EntityManager, args.User, component.Delay, new StationAiShuntingEvent(), uid, uid, progressBarOverride: uid));
+        _doAfter.TryStartDoAfter(new DoAfterArgs(EntityManager, args.User, component.Delay, new StationAiShuntingEvent(), uid, uid, progressBarOverride: uid));
     }
 
     private void OnShunt(EntityUid uid, StationAiShuntingComponent component, StationAiShuntingEvent args)

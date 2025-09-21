@@ -1,4 +1,4 @@
-using Content.Server.Body.Components;
+using Content.Shared.Body.Components;
 using Content.Shared.Destructible;
 using Content.Shared.Fluids.Components;
 using Robust.Shared.Prototypes;

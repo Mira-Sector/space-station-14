@@ -28,5 +28,5 @@ public sealed partial class VocalOrganComponent : Component, IVocalComponent
     public EntityUid? ScreamActionEntity { get; set; }
 
     [ViewVariables, AutoNetworkedField]
-    public EmoteSoundsPrototype? EmoteSounds { get; set; }
+    public ProtoId<EmoteSoundsPrototype>? EmoteSounds { get; set; }
 }

@@ -5,7 +5,6 @@ using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
 using Content.Shared.Atmos.Piping.Crawling.Components;
 using Content.Shared.Atmos.Piping.Crawling.Systems;
-using Content.Shared.Maps;
 using Content.Shared.NodeContainer;
 using Robust.Server.GameObjects;
 using Robust.Shared.Audio.Systems;
@@ -123,15 +122,17 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
     private void UpdatePipeConnections(Entity<PipeCrawlingPipeComponent> ent)
     {
         var pipeLayers = GetPipeLayers(ent.Owner);
-        var pipeTile = Transform(ent.Owner).Coordinates.GetTileRef()?.GridIndices;
 
         ent.Comp.ConnectedPipes.Clear();
 
-        if (pipeTile == null)
+        var xform = Transform(ent.Owner);
+        if (xform.GridUid is not { } gridUid || !TryComp<MapGridComponent>(gridUid, out var gridComp))
         {
             Dirty(ent);
             return;
         }
+
+        var pipeTile = _map.GetTileRef((gridUid, gridComp), xform.Coordinates).GridIndices;
 
         if (HasComp<PipeCrawlingPipeBlockComponent>(ent.Owner))
         {
@@ -145,7 +146,15 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
                 continue;
 
             var neighborLayers = GetPipeLayers(neighbor);
-            var neighborTile = Transform(neighbor).Coordinates.GetTileRef()?.GridIndices;
+
+            var neighborXform = Transform(ent.Owner);
+            if (neighborXform.GridUid is not { } neighborGridUid || !TryComp<MapGridComponent>(neighborGridUid, out var neighborGridComp))
+            {
+                Dirty(ent);
+                return;
+            }
+
+            var neighborTile = _map.GetTileRef((gridUid, gridComp), neighborXform.Coordinates).GridIndices;
 
             foreach (var (connectedLayer, connectedDirections) in GetPotentialConnections(pipeLayers, neighborLayers))
             {
@@ -159,7 +168,7 @@ public sealed partial class PipeCrawlingSystem : SharedPipeCrawlingSystem
                 {
                     // check the direction points at our neighbor
                     var directionVec = DirectionExtensions.ToIntVec(connectedDirection);
-                    var expectedNeighborPos = pipeTile.Value + directionVec;
+                    var expectedNeighborPos = pipeTile + directionVec;
                     if (neighborTile == expectedNeighborPos)
                         connections[connectedDirection] = GetNetEntity(neighbor);
                 }

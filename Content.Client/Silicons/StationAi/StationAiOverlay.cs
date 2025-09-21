@@ -16,12 +16,16 @@ namespace Content.Client.Silicons.StationAi;
 
 public sealed class StationAiOverlay : Overlay
 {
+    private static readonly ProtoId<ShaderPrototype> CameraStaticShader = "CameraStatic";
+    private static readonly ProtoId<ShaderPrototype> StencilMaskShader = "StencilMask";
+    private static readonly ProtoId<ShaderPrototype> StencilDrawShader = "StencilDraw";
+
     [Dependency] private readonly IClyde _clyde = default!;
     [Dependency] private readonly IEntityManager _entManager = default!;
-    [Dependency] private readonly ITileDefinitionManager _tileDefinitions = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly IPlayerManager _player = default!;
     [Dependency] private readonly IPrototypeManager _proto = default!;
+    private readonly TurfSystem _turf;
 
     public override OverlaySpace Space => OverlaySpace.WorldSpace;
 
@@ -46,6 +50,8 @@ public sealed class StationAiOverlay : Overlay
     public StationAiOverlay()
     {
         IoCManager.InjectDependencies(this);
+
+        _turf = _entManager.System<TurfSystem>();
 
         _visionVisualsQuery = _entManager.GetEntityQuery<StationAiVisionVisualsComponent>();
         _appearanceQuery = _entManager.GetEntityQuery<AppearanceComponent>();
@@ -182,7 +188,7 @@ public sealed class StationAiOverlay : Overlay
                     if (!maps.TryGetTileRef(gridUid, grid, tileIndices.Value, out var tile))
                         continue;
 
-                    var tileDef = tile.GetContentTileDefinition(_tileDefinitions);
+                    var tileDef = _turf.GetContentTileDefinition(tile);
                     if (tileDef.StationAiVisuals is not { } aiVisuals)
                         continue;
 
@@ -227,7 +233,7 @@ public sealed class StationAiOverlay : Overlay
             () =>
             {
                 worldHandle.SetTransform(invMatrix);
-                var shader = _proto.Index<ShaderPrototype>("CameraStatic").Instance();
+                var shader = _proto.Index(CameraStaticShader).Instance();
                 worldHandle.UseShader(shader);
                 worldHandle.DrawRect(worldBounds, Color.White);
             },
@@ -298,11 +304,11 @@ public sealed class StationAiOverlay : Overlay
     private void DrawStencils(DrawingHandleWorld worldHandle, Box2Rotated worldBounds)
     {
         // Use the lighting as a mask
-        worldHandle.UseShader(_proto.Index<ShaderPrototype>("StencilMask").Instance());
+        worldHandle.UseShader(_proto.Index(StencilMaskShader).Instance());
         worldHandle.DrawTextureRect(_stencilTexture!.Texture, worldBounds);
 
         // Draw the static
-        worldHandle.UseShader(_proto.Index<ShaderPrototype>("StencilDraw").Instance());
+        worldHandle.UseShader(_proto.Index(StencilDrawShader).Instance());
         worldHandle.DrawTextureRect(_staticTexture!.Texture, worldBounds);
     }
 
