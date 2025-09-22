@@ -31,4 +31,13 @@ public sealed partial class TeleframeRechargingComponent : Component
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer))]
     [AutoNetworkedField, AutoPausedField, ViewVariables(VVAccess.ReadWrite)]
     public TimeSpan Duration;
+
+    /// <summary>
+    /// pause recharge, such as if there's a lack of power
+    /// </summary>
+    [DataField, ViewVariables(VVAccess.ReadWrite), AutoNetworkedField]
+    public bool Pause = false;
+
+    [DataField, ViewVariables, AutoNetworkedField]
+    public TimeSpan PauseTime;
 }

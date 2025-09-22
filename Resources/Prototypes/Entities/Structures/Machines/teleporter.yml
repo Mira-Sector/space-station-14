@@ -18,17 +18,12 @@
         shape:
           !type:PhysShapeAabb
           bounds: "-0.45,-0.45,0.45,0.00"
-        density: 190
+        density: 200
         mask:
           - MachineMask
   - type: Sprite
     sprite: Structures/cargo_telepad.rsi
     drawdepth: HighFloorObjects
-    layers:
-    - state: offline
-    - state: idle
-      map: ["enum.PowerDeviceVisualLayers.Powered"]
-      shader: unshaded
   - type: Damageable
     damageContainer: StructuralInorganic
     damageModifierSet: StructuralMetallicStrong
@@ -40,7 +35,6 @@
     ports:
       - TeleportReceiver
   - type: PowerConsumer #set power draw in teleport component, add/remove when teleporter powers on/off. See EmitterSystem for example.
-    drawRate: 50 #for now, generic amount
     voltage: High
   - type: NodeContainer
     examinable: true
@@ -49,12 +43,6 @@
         !type:CableDeviceNode
         nodeGroupID: HVPower
   - type: Appearance
-  - type: GenericVisualizer
-    visuals:
-      enum.PowerDeviceVisuals.Powered:
-        enum.PowerDeviceVisualLayers.Powered:
-          True: { visible: true }
-          False: { visible: false }
   - type: CollideOnAnchor
   - type: NameIdentifier
     group: CargoTelepads
@@ -80,6 +68,23 @@
     incidentChance: 0.15
     teleportBeginEffect: EffectGravityPulse
     teleportFinishEffect: EffectFlashTeleportFinish
+  - type: Sprite
+    sprite: Structures/teleframe.rsi
+    drawdepth: HighFloorObjects
+    layers:
+    - state: offline
+    - state: idle
+      map: ["enum.TeleframeVisualState.On"]
+      shader: unshaded
+      visible: true
+    - state: beam
+      map: ["enum.TeleframeVisualState.Charging"]
+      shader: unshaded
+      visible: false
+    - state: recharging
+      map: ["enum.TeleframeVisualState.Recharging"]
+      shader: unshaded
+      visible: false
 
 - type: entity
   id: TeleporterSyndicate
@@ -94,12 +99,28 @@
     incidentChance: 0.10
     incidentMultiplier: 0.50
     teleportScatterRange: 0.5
-  #- type: Foldable
+  - type: Sprite
+    sprite: Structures/teleframe_syndicate.rsi
+    drawdepth: HighFloorObjects
+    layers:
+    - state: offline
+    - state: idle
+      map: ["enum.TeleframeVisualState.On"]
+      shader: unshaded
+      visible: true
+    - state: beam
+      map: ["enum.TeleframeVisualState.Charging"]
+      shader: unshaded
+      visible: false
+    - state: recharging
+      map: ["enum.TeleframeVisualState.Recharging"]
+      shader: unshaded
+      visible: false
 
 - type: entity
   id: TeleporterCC
   parent: [BaseTeleporter, BaseTeleportBeaconStatic]
-  name: centcomm hyperframe core
+  name: hyperframe core
   description: A precise tool for the uppermost echelons of Central Command, allowing for rapid deployment and extraction of critical assets. Unfathomably Expensive.
   components:
   - type: Teleframe
@@ -111,3 +132,20 @@
     teleportRange: 0.45
     teleportToEffect: TeleportToEffectQuiet
     teleportFromEffect: TeleportFromEffectQuiet
+  - type: Sprite
+    sprite: Structures/teleframe.rsi
+    drawdepth: HighFloorObjects
+    layers:
+    - state: offline
+    - state: idle
+      map: ["enum.TeleframeVisualState.On"]
+      shader: unshaded
+      visible: true
+    - state: beam
+      map: ["enum.TeleframeVisualState.Charging"]
+      shader: unshaded
+      visible: false
+    - state: recharging
+      map: ["enum.TeleframeVisualState.Recharging"]
+      shader: unshaded
+      visible: false

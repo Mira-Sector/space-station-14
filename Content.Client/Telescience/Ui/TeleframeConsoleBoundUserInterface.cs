@@ -3,6 +3,7 @@ using Content.Shared.Teleportation.Components;
 using Content.Shared.Telescience.Components;
 using Content.Shared.Telescience;
 using Robust.Client.UserInterface;
+using Robust.Shared.Timing;
 using Content.Shared.Atmos.Components;
 
 namespace Content.Client.Telescience.Ui;
@@ -11,6 +12,8 @@ public sealed class TeleframeConsoleBoundUserInterface : BoundUserInterface
 {
     [ViewVariables]
     private TeleframeConsoleUI? _menu;
+
+    [Dependency] private readonly IGameTiming _timing = default!;
 
     public TeleframeConsoleBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
@@ -25,16 +28,6 @@ public sealed class TeleframeConsoleBoundUserInterface : BoundUserInterface
         if (!EntMan.TryGetComponent<TeleframeConsoleComponent>(Owner, out var teleComp))
             return;
 
-        if (teleComp.LinkedTeleframe != null) //set link name
-        {
-            var (uid, meta) = EntMan.GetEntityData(teleComp.LinkedTeleframe ?? NetEntity.Invalid);
-            _menu.SetLinkName(Loc.GetString("teleporter-linked-to", ("name", meta.EntityName), ("state", GetChargeState(uid)))); //kind of want a sprite here as well
-        }
-        else
-        {
-            _menu.SetLinkName(Loc.GetString("teleporter-linked-to", ("name", Loc.GetString("teleporter-linked-default"))));
-        }
-
         var coordX = 0;
         var coordY = 0;
         var coordXValid = false;
@@ -42,13 +35,14 @@ public sealed class TeleframeConsoleBoundUserInterface : BoundUserInterface
         var beaconValid = false;
         TeleportPoint selectedBeacon = new TeleportPoint();
 
-        _menu.UpdateTeleportButtons(false);
         _menu.Beacons = GetValidBeacons(teleComp.BeaconList);
         _menu.AddBeaconButtons();
+        TeleportCheck(_menu, false, Loc.GetString("teleporter-summary-insufficient"));
 
         _menu.OnCoordsXChanged += (coord) =>
         {
             beaconValid = false; //if typing in text, invalidate beacon teleport
+            var message = Loc.GetString("teleporter-summary-insufficient");
             if (teleComp.MaxRange == null || Math.Abs(coord) < teleComp.MaxRange) //limit maximum value, currently absolute coordinate value rather than actual range.
             {
                 coordX = coord;
@@ -56,19 +50,20 @@ public sealed class TeleframeConsoleBoundUserInterface : BoundUserInterface
             }
             else
             {
-                _menu.UpdateTeleportSummary(Loc.GetString("teleporter-summary-bigrange", ("range", teleComp.MaxRange.ToString()!)));
+                message = Loc.GetString("teleporter-summary-bigrange", ("range", teleComp.MaxRange.ToString()!));
                 coordYValid = false; //not in range, invalid
             }
 
             if (coordXValid && coordYValid)
-                _menu.UpdateTeleportSummary(Loc.GetString("teleporter-summary-custom", ("X", coordX), ("Y", coordY))); //both are valid, so indicate ready to teleport
+                message = Loc.GetString("teleporter-summary-custom", ("X", coordX), ("Y", coordY)); //both are valid, so indicate ready to teleport
 
-            _menu.UpdateTeleportButtons(coordXValid && coordYValid);
+            TeleportCheck(_menu, coordXValid && coordYValid, message);
         };
 
         _menu.OnCoordsYChanged += (coord) =>
         {
             beaconValid = false; //if typing in text, invalidate beacon teleport
+            var message = Loc.GetString("teleporter-summary-insufficient");
             if (teleComp.MaxRange == null || Math.Abs(coord) < teleComp.MaxRange) //limit maximum value, currently absolute coordinate value rather than actual range.
             {
                 coordY = coord;
@@ -76,14 +71,14 @@ public sealed class TeleframeConsoleBoundUserInterface : BoundUserInterface
             }
             else
             {
-                _menu.UpdateTeleportSummary(Loc.GetString("teleporter-summary-bigrange", ("range", teleComp.MaxRange.ToString()!)));
+                message = Loc.GetString("teleporter-summary-bigrange", ("range", teleComp.MaxRange.ToString()!));
                 coordYValid = false;  //not in range, invalid
             }
 
             if (coordXValid && coordYValid)
-                _menu.UpdateTeleportSummary(Loc.GetString("teleporter-summary-custom", ("X", coordX), ("Y", coordY))); //both are valid, so indicate ready to teleport
+                message = Loc.GetString("teleporter-summary-custom", ("X", coordX), ("Y", coordY)); //both are valid, so indicate ready to teleport
 
-            _menu.UpdateTeleportButtons(coordXValid && coordYValid);
+            TeleportCheck(_menu, coordXValid && coordYValid, message);
         };
 
         _menu.SendClicked += (send) =>
@@ -112,12 +107,15 @@ public sealed class TeleframeConsoleBoundUserInterface : BoundUserInterface
         {
             _menu.SetCoordsX(int.Parse("")); _menu.SetCoordsY(int.Parse("")); //if clicking a beacon, invalidate coordinate teleport
             coordXValid = false; coordYValid = false;
-            _menu.UpdateTeleportButtons(true);
-            _menu.UpdateTeleportSummary(Loc.GetString("teleporter-summary-beacon", ("beacon", beacon.Location)));
+            TeleportCheck(_menu, true, Loc.GetString("teleporter-summary-beacon", ("beacon", beacon.Location)));
             beaconValid = true;
             selectedBeacon = beacon;
         };
 
+        _menu.RefreshClicked += (valid, summary) =>
+        {
+            TeleportCheck(_menu, !valid, summary);
+        };
     }
 
     public HashSet<TeleportPoint> GetValidBeacons(HashSet<TeleportPoint> totalList) //get valid beacons only, also make sure beacons exist!
@@ -135,21 +133,60 @@ public sealed class TeleframeConsoleBoundUserInterface : BoundUserInterface
         return validList;
     }
 
-    public string GetChargeState(EntityUid uid)
+    public string GetChargeState(EntityUid uid, TeleframeComponent tpComp)
     {
+        if (tpComp.IsPowered == false)
+            return Loc.GetString("teleporter-unpowered");
+
         if (EntMan.TryGetComponent<TeleframeChargingComponent>(uid, out var charge))
         {
-            var timeLeft = (charge.EndTime - charge.Duration).TotalSeconds;
+            var timeLeft = (int)(charge.EndTime - _timing.CurTime).TotalSeconds;
             return Loc.GetString("teleporter-charging", ("time", timeLeft));
         }
 
         if (EntMan.TryGetComponent<TeleframeRechargingComponent>(uid, out var recharge))
         {
-            var timeLeft = (recharge.EndTime - recharge.Duration).TotalSeconds;
-            return Loc.GetString("teleporter-charging", ("time", timeLeft));
+            var timeLeft = (int)(recharge.EndTime - _timing.CurTime).TotalSeconds;
+            return Loc.GetString("teleporter-recharging", ("time", timeLeft));
         }
 
         return Loc.GetString("teleporter-active");
+    }
+    //check if teleportation console and linked teleframe are valid
+    //return true if they are (doesn't mean teleportation is possible)
+    //check should be performed any time teleportation possibility changes
+    //check should be performed consistently outside this too, not sure how to do that, could just add a refresh button.
+    public bool TeleportCheck(TeleframeConsoleUI menu, bool buttons, string message)
+    {
+        if (!EntMan.TryGetComponent<TeleframeConsoleComponent>(Owner, out var teleComp))
+            return false;
+
+        if (teleComp.LinkedTeleframe != null) //set link name
+        {
+            var (uid, meta) = EntMan.GetEntityData(teleComp.LinkedTeleframe ?? NetEntity.Invalid);
+            if (!EntMan.TryGetComponent<TeleframeComponent>(uid, out var tpComp))
+                return false;
+
+            menu.SetLinkName(Loc.GetString("teleporter-linked-to", ("name", meta.EntityName), ("state", GetChargeState(uid, tpComp)))); //kind of want a sprite here as well
+
+            if (tpComp.IsPowered == false || tpComp.ReadyToTeleport == false)
+            {
+                menu.UpdateTeleportButtons(false);
+                menu.UpdateTeleportSummary(Loc.GetString("teleporter-summary-notready"));
+                return true;
+            }
+        }
+        else
+        {
+            menu.SetLinkName(Loc.GetString("teleporter-linked-to", ("name", Loc.GetString("teleporter-linked-default")), ("state", Loc.GetString("teleporter-linked-default"))));
+            menu.UpdateTeleportButtons(false);
+            menu.UpdateTeleportSummary(Loc.GetString("teleporter-summary-unavailable"));
+            return true;
+        }
+
+        menu.UpdateTeleportButtons(buttons);
+        menu.UpdateTeleportSummary(message);
+        return true;
     }
 
 }

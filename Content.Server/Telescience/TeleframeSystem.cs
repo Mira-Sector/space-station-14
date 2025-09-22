@@ -4,11 +4,14 @@ using Content.Shared.Teleportation.Systems;
 using Content.Shared.Telescience.Components;
 using Content.Shared.Explosion.Components;
 using Content.Shared.Database;
+using Content.Shared.Examine;
 using Content.Shared.Emag.Systems;
 using Content.Server.Administration.Logs;
 using Content.Server.Explosion.EntitySystems;
 using Content.Server.Radio.EntitySystems;
 using Content.Server.Pinpointer;
+using Content.Server.Power.Components;
+using Content.Server.Power.EntitySystems;
 using Content.Server.Chat.Systems;
 using Robust.Shared.Random;
 using Robust.Shared.Physics.Components;
@@ -36,9 +39,15 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         SubscribeLocalEvent<TeleframeComponent, TeleframeActivateMessage>(TeleportCustom);
         SubscribeLocalEvent<TeleframeComponent, TeleframeActivateBeaconMessage>(TeleportBeacon);
         SubscribeLocalEvent<TeleframeComponent, AfterTeleportEvent>(OnTeleportFinish);
+        SubscribeLocalEvent<TeleframeComponent, PowerConsumerReceivedChanged>(ReceivedChanged);
+        SubscribeLocalEvent<TeleframeComponent, AnchorStateChangedEvent>(OnAnchorStateChanged);
+        SubscribeLocalEvent<TeleframeComponent, ExaminedEvent>(OnExamined);
+        SubscribeLocalEvent<TeleframeComponent, ComponentStartup>(OnStartup);
 
         SubscribeLocalEvent<TeleframeConsoleComponent, TeleframeConsoleSpeak>(OnSpeak);
-        //GotEmaggedEvent
+
+        SubscribeLocalEvent<TeleframeChargingComponent, ComponentStartup>(OnChargeStart);
+
         _physicsQuery = GetEntityQuery<PhysicsComponent>();
     }
 
@@ -54,62 +63,82 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         {
             if (Timing.CurTime < charge.EndTime)
                 continue;
-            EndTeleportCharge((uid, teleframe), (uid, charge));
+            EndTeleportCharge((uid, teleframe), charge);
         }
         //search for Teleframe entities with the TeleframeRechargingComponent and check if they've reached the end of their timer.
         var queryRecharge = EntityQueryEnumerator<TeleframeRechargingComponent, TeleframeComponent>();
         while (queryRecharge.MoveNext(out var uid, out var recharge, out var teleframe))
         {
-            if (Timing.CurTime < recharge.EndTime)
+            if (Timing.CurTime < recharge.EndTime || recharge.Pause == true)
                 continue;
-            EndTeleportRecharge((uid, teleframe), (uid, recharge));
+            EndTeleportRecharge((uid, teleframe), recharge);
+        }
+        //search for Teleframe entities in general and update their appearences. Might be laggy?
+        var query = EntityQueryEnumerator<TeleframeComponent>();
+        while (query.MoveNext(out var uid, out var teleframe))
+        {
+            UpdateAppearance((uid, teleframe));
         }
 
     }
 
     public void TeleportBeacon(Entity<TeleframeComponent> ent, ref TeleframeActivateBeaconMessage args)
     {
-        StartTeleport(ent);
-        OnTeleportSpeak(ent, args.Beacon.Location);
+        if (StartTeleport(ent) == true)
+            OnTeleportSpeak(ent, args.Beacon.Location);
     }
 
     public void TeleportCustom(Entity<TeleframeComponent> ent, ref TeleframeActivateMessage args)
     {
-        StartTeleport(ent);
-        OnTeleportSpeak(ent, Loc.GetString("teleporter-target-custom"));
+        if (StartTeleport(ent) == true)
+            OnTeleportSpeak(ent, Loc.GetString("teleporter-target-custom"));
+    }
+
+    private void OnChargeStart(Entity<TeleframeChargingComponent> ent, ref ComponentStartup args)
+    {
+        if (TryComp<TeleframeComponent>(ent, out var teleComp))
+            UpdateAppearance((ent.Owner, teleComp));
     }
 
     /// <summary>
     /// When Teleport Charge completes, check whether Teleportation is allowed
     /// </summary>
-    public void EndTeleportCharge(Entity<TeleframeComponent> ent, Entity<TeleframeChargingComponent> charge)
+    public void EndTeleportCharge(Entity<TeleframeComponent> ent, TeleframeChargingComponent charge)
     {
         if (!Timing.IsFirstTimePredicted) //prevent it getting spammed
             return;
 
         if (!Exists(ent.Comp.TeleportFrom) || !Exists(ent.Comp.TeleportTo)) //final check that these two exist to teleport from and to
         {
-            charge.Comp.TeleportSuccess = false; //if either doesn't obvs you can't teleport
-            charge.Comp.FailReason = "nolink";
+            charge.TeleportSuccess = false; //if either doesn't obvs you can't teleport
+            charge.FailReason = "nolink";
         }
 
-        if (charge.Comp.TeleportSuccess == true) //if teleport is still good to go, engage
+        if (charge.TeleportSuccess == true) //if teleport is still good to go, engage
         {
             OnTeleport(ent); //teleport
         }
         else
         {
-            TeleportFail(ent, charge.Comp.FailReason); //if not, say why
+            TeleportFail(ent, charge.FailReason); //if not, say why
         }
 
-        if (charge.Comp.WillExplode == true) //and afterwards, if the Teleframe should explode, it does.
+        if (charge.WillExplode == true) //and afterwards, if the Teleframe should explode, it does.
             Log.Debug("explode");
 
         RemCompDeferred<TeleframeChargingComponent>(ent); //stop charging
-        var rechargeComp = AddComp<TeleframeRechargingComponent>(ent); //start recharging
-        rechargeComp.Duration = ent.Comp.RechargeDuration;
-        rechargeComp.EndTime = ent.Comp.RechargeDuration + Timing.CurTime;
-        Dirty(ent, rechargeComp);
+        if (!HasComp<TeleframeRechargingComponent>(ent))
+        {
+            var rechargeComp = AddComp<TeleframeRechargingComponent>(ent); //start recharging
+            rechargeComp.Duration = ent.Comp.RechargeDuration;
+            rechargeComp.EndTime = ent.Comp.RechargeDuration + Timing.CurTime;
+            Dirty(ent, rechargeComp);
+        }
+
+        if (TryComp<PowerConsumerComponent>(ent, out var powerConsumer))
+            powerConsumer.DrawRate = ent.Comp.PowerUseActive; // set to high power draw to recharge
+
+        UpdateAppearance(ent);
     }
 
     ///<summary>
@@ -131,7 +160,7 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
                 true, true));
     }
 
-    public void EndTeleportRecharge(Entity<TeleframeComponent> ent, Entity<TeleframeRechargingComponent> recharge)
+    public void EndTeleportRecharge(Entity<TeleframeComponent> ent, TeleframeRechargingComponent recharge)
     {
         ent.Comp.ReadyToTeleport = true;
         if (ent.Comp.LinkedConsole != null)
@@ -142,6 +171,10 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
             }
         }
         RemCompDeferred<TeleframeRechargingComponent>(ent);
+        if (TryComp<PowerConsumerComponent>(ent, out var powerConsumer))
+            powerConsumer.DrawRate = ent.Comp.PowerUseIdle; // recharge end so idle power
+
+        Dirty(ent);
     }
 
     /// <summary>
@@ -149,17 +182,17 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
     /// In server because prediction causes it to spam portals regardless of what i do to stop it
     /// </summary>
     /// <param name="ent"></param>
-    public void StartTeleport(Entity<TeleframeComponent> ent)
+    public bool StartTeleport(Entity<TeleframeComponent> ent)
     {
         if (!Timing.IsFirstTimePredicted) //prevent it getting spammed
-            return;
+            return false;
 
         Log.Debug("StartTeleport");
         if (ent.Comp.ReadyToTeleport != true || HasComp<TeleframeChargingComponent>(ent) || HasComp<TeleframeRechargingComponent>(ent)) //nuh uh, we recharging
-            return;
+            return false;
 
-        if (ent.Comp.TeleportTo != null || ent.Comp.TeleportFrom != null)
-            return;
+        //if (ent.Comp.TeleportTo != null || ent.Comp.TeleportFrom != null)
+        //    return false;
 
         var ev = new BeforeTeleportEvent(ent);
         RaiseLocalEvent(ent, ev);
@@ -204,6 +237,7 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         chargeComp.Duration = ent.Comp.ChargeDuration;
         chargeComp.EndTime = ent.Comp.ChargeDuration + Timing.CurTime;
         Dirty(ent, chargeComp);
+        return true;
     }
 
     /// <summary>
@@ -285,7 +319,7 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         if (ent.Comp.LinkedConsole == null) //no point if no console
             return;
 
-        if (ent.Comp.TeleportTo == null || ent.Comp.TeleportFrom == null) //if teleport entities don't exist, exit.
+        if (!Exists(ent.Comp.TeleportTo) || !Exists(ent.Comp.TeleportFrom)) //if teleport entities don't exist, exit.
             return;
 
         var target = ent.Comp.TeleportSend ? ent.Comp.TeleportTo : ent.Comp.TeleportFrom; //if TeleportSend is true, TeleportTo is target, if false, TeleportFrom is target.
@@ -319,6 +353,114 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
                 _radio.SendRadioMessage(ent.Owner, args.Message, ent.Comp.AnnouncementChannel!, ent.Owner, escapeMarkup: false);
         }
     }
+    private void OnStartup(Entity<TeleframeComponent> ent, ref ComponentStartup args)
+    {
+        if (TryComp<PowerConsumerComponent>(ent, out var powerConsume))
+        {
+            if (powerConsume.ReceivedPower < powerConsume.DrawRate)
+            {
+                PowerOff(ent);
+            }
+            else
+            {
+                PowerOn(ent);
+            }
+        }
+    }
+
+    private void ReceivedChanged(Entity<TeleframeComponent> ent, ref PowerConsumerReceivedChanged args)
+    {
+        Log.Debug($"{args.ReceivedPower}, {args.DrawRate}");
 
 
+        if (args.ReceivedPower < args.DrawRate)
+        {
+            if (TryComp<TeleframeRechargingComponent>(ent, out var rechargeComp) && args.ReceivedPower > 0) //if recharging and there is some power, don't turn off, just wait.
+            {
+                rechargeComp.Pause = true;
+                rechargeComp.PauseTime = rechargeComp.EndTime - Timing.CurTime;
+            }
+            else
+            {
+                PowerOff(ent);
+            }
+        }
+        else
+        {
+            PowerOn(ent);
+        }
+    }
+
+    private void PowerOff(Entity<TeleframeComponent> ent)
+    {
+        ent.Comp.IsPowered = false;
+        if (TryComp<PowerConsumerComponent>(ent, out var powerConsumer))
+            powerConsumer.DrawRate = 1; //draw rate is 1 rather than 0 as this means when power is applied a PowerConsumerRecievedChanged event fires to update power again.
+
+        if (TryComp<TeleframeChargingComponent>(ent, out var chargeComp))
+        {
+            chargeComp.TeleportSuccess = false;
+            chargeComp.FailReason = Loc.GetString("teleport-fail-power");
+            EndTeleportCharge(ent, chargeComp);
+        }
+
+        if (TryComp<TeleframeRechargingComponent>(ent, out var rechargeComp)) 
+        {
+            rechargeComp.Pause = true;
+            rechargeComp.PauseTime = rechargeComp.EndTime - Timing.CurTime;
+        }
+
+        UpdateAppearance(ent);
+        Dirty(ent);
+    }
+
+    private void PowerOn(Entity<TeleframeComponent> ent)
+    {
+        ent.Comp.IsPowered = true;
+
+        if (TryComp<TeleframeRechargingComponent>(ent, out var rechargeComp))
+        {
+            rechargeComp.Pause = false;
+            rechargeComp.EndTime = Timing.CurTime + rechargeComp.PauseTime;
+            rechargeComp.PauseTime = TimeSpan.FromSeconds(0);
+            if (TryComp<PowerConsumerComponent>(ent, out var powerConsumer))
+                powerConsumer.DrawRate = ent.Comp.PowerUseActive; // set to high power draw as still recharging
+        }
+        else
+        {
+            if (TryComp<PowerConsumerComponent>(ent, out var powerConsumer))
+                powerConsumer.DrawRate = ent.Comp.PowerUseIdle; // set to active power draw
+        }
+
+        UpdateAppearance(ent);
+        Dirty(ent);
+    }
+
+    private void OnAnchorStateChanged(Entity<TeleframeComponent> ent, ref AnchorStateChangedEvent args)
+    {
+        if (args.Anchored)
+            return;
+
+        PowerOff(ent);
+    }
+    private void OnExamined(Entity<TeleframeComponent> ent, ref ExaminedEvent args)
+    {
+        if (ent.Comp.IsPowered == true)
+        {
+            args.PushMarkup(Loc.GetString("power-receiver-component-on-examine-main", ("stateText", Loc.GetString("power-receiver-component-on-examine-powered"))));
+            if (HasComp<TeleframeChargingComponent>(ent))
+            {
+                args.PushMarkup(Loc.GetString("teleporter-examine-charging"));
+            }
+
+            if (HasComp<TeleframeRechargingComponent>(ent))
+            {
+                args.PushMarkup(Loc.GetString("teleporter-examine-recharging"));
+            }
+        }
+        else
+        {
+            args.PushMarkup(Loc.GetString("power-receiver-component-on-examine-main", ("stateText", Loc.GetString("power-receiver-component-on-examine-unpowered"))));
+        }
+    }
 }

@@ -9,6 +9,7 @@ using Content.Shared.Popups;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Timing;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Spawners;
 using Robust.Shared.Physics.Components;
 
@@ -32,6 +33,7 @@ public abstract class SharedTeleframeSystem : EntitySystem
     [Dependency] protected readonly SharedAudioSystem Audio = default!;
     [Dependency] protected readonly IGameTiming Timing = default!;
     [Dependency] private readonly EmagSystem _emag = default!;
+    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
 
     public override void Initialize()
     {
@@ -39,6 +41,7 @@ public abstract class SharedTeleframeSystem : EntitySystem
 
         SubscribeLocalEvent<TeleframeComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<TeleframeComponent, GotEmaggedEvent>(OnTeleframeEmagged);
+
 
         SubscribeLocalEvent<TeleframeConsoleComponent, TeleframeActivateMessage>(OnTeleportStart);
         SubscribeLocalEvent<TeleframeConsoleComponent, TeleframeActivateBeaconMessage>(OnTeleportBeaconStart);
@@ -54,6 +57,9 @@ public abstract class SharedTeleframeSystem : EntitySystem
         Log.Debug("Teleport Start");
         if (!TryGetEntity(ent.Comp.LinkedTeleframe, out var teleNetEnt) || !TryComp<TeleframeComponent>(teleNetEnt, out var teleComp))
             return; //if no linked Teleframe, can't teleport.
+
+        if (teleComp.IsPowered == false || teleComp.ReadyToTeleport == false)
+            return;
 
         var teleEnt = teleNetEnt ?? EntityUid.Invalid; //de-nullable teleNetEnt to prevent RaiseLocalEvent getting upset.
         var tp = Transform(teleEnt); //get transform of the Teleframe for MapID
@@ -71,6 +77,9 @@ public abstract class SharedTeleframeSystem : EntitySystem
 
         if (!TryGetEntity(ent.Comp.LinkedTeleframe, out var teleNetEnt) || !TryComp<TeleframeComponent>(teleNetEnt, out var teleComp))
             return; //if no linked Teleframe, can't teleport.
+
+        if (teleComp.IsPowered == false || teleComp.ReadyToTeleport == false)
+            return;
 
         var teleEnt = teleNetEnt ?? EntityUid.Invalid; //de-nullable teleNetEnt to prevent RaiseLocalEvent getting upset.
         var tp = Transform(GetEntity(args.Beacon.TelePoint)); //get transform of the beacon
@@ -166,4 +175,30 @@ public abstract class SharedTeleframeSystem : EntitySystem
 
         args.Handled = true;
     }
+
+    protected void UpdateAppearance(Entity<TeleframeComponent> ent)
+    {
+        TeleframeVisualState state;
+        if (ent.Comp.IsPowered == true)
+        {
+            state = TeleframeVisualState.On;
+            if (HasComp<TeleframeChargingComponent>(ent))
+            {
+                state = TeleframeVisualState.Charging;
+            }
+
+            if (HasComp<TeleframeRechargingComponent>(ent))
+            {
+                state = TeleframeVisualState.Recharging;
+            }
+        }
+        else
+        {
+            state = TeleframeVisualState.Off;
+        }
+
+        _appearance.SetData(ent.Owner, TeleframeVisuals.VisualState, state);
+        Dirty(ent);
+    }
+
 }

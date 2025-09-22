@@ -18,6 +18,7 @@ public sealed partial class TeleframeConsoleUI : FancyWindow
     public event Action<bool>? SendClicked;
     public event Action<bool>? ReceiveClicked;
     public event Action<TeleportPoint>? BeaconClicked;
+    public event Action<bool, string>? RefreshClicked;
     public event Action<int>? OnCoordsXChanged;
     public event Action<int>? OnCoordsYChanged;
 
@@ -32,6 +33,7 @@ public sealed partial class TeleframeConsoleUI : FancyWindow
 
         SendToButton.OnPressed += _ => SendClicked?.Invoke(true);
         ReceiveFromButton.OnPressed += _ => ReceiveClicked?.Invoke(false);
+        RefreshButton.OnPressed += _ => RefreshClicked?.Invoke(SendToButton.Disabled, SummaryLabel.Text!);
     }
 
     public void AddBeaconButtons() //adds beacon buttons, these have already been checked for validity, so add away.
