@@ -38,14 +38,11 @@ public sealed partial class TeleframeConsoleUI : FancyWindow
 
     public void AddBeaconButtons() //adds beacon buttons, these have already been checked for validity, so add away.
     {
-        var logMan = IoCManager.Resolve<ILogManager>();
-        var log = logMan.RootSawmill;
-
         foreach (var beacon in Beacons)
         {
             var name = beacon.Location;
             var teleportPoint = beacon.TelePoint;
-            var currentButtonRef = new Button
+            var currentButtonRef = new Button //really want square buttons it looks cooler
             {
                 Text = name,
                 TextAlign = Label.AlignMode.Right,
@@ -53,7 +50,9 @@ public sealed partial class TeleframeConsoleUI : FancyWindow
                 VerticalAlignment = VAlignment.Center,
                 HorizontalExpand = true,
                 SizeFlagsStretchRatio = 1,
-                MinSize = new Vector2(300, 20),
+                MinSize = new Vector2(295, 20),
+                SetSize = new Vector2(495, 20),
+                //StyleClasses= "ButtonSquare",
                 ClipText = true,
             };
             currentButtonRef.OnPressed += _ => BeaconClicked?.Invoke(beacon);

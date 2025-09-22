@@ -8,6 +8,7 @@ using Content.Shared.Examine;
 using Content.Shared.Emag.Systems;
 using Content.Server.Administration.Logs;
 using Content.Server.Explosion.EntitySystems;
+using Content.Server.Lightning;
 using Content.Server.Radio.EntitySystems;
 using Content.Server.Pinpointer;
 using Content.Server.Power.Components;
@@ -31,6 +32,7 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly IAdminLogManager _adminLogger = default!;
+    [Dependency] private readonly LightningSystem _lightning = default!;
     private EntityQuery<PhysicsComponent> _physicsQuery; // declare the variable for the query
     public override void Initialize()
     {
@@ -82,18 +84,27 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
 
     }
 
+    /// <summary>
+    /// Begin teleportation to/from beacon
+    /// </summary>
     public void TeleportBeacon(Entity<TeleframeComponent> ent, ref TeleframeActivateBeaconMessage args)
     {
         if (StartTeleport(ent) == true)
             OnTeleportSpeak(ent, args.Beacon.Location);
     }
 
+    /// <summary>
+    /// Begin teleportation to/from custom location
+    /// </summary>
     public void TeleportCustom(Entity<TeleframeComponent> ent, ref TeleframeActivateMessage args)
     {
         if (StartTeleport(ent) == true)
             OnTeleportSpeak(ent, Loc.GetString("teleporter-target-custom"));
     }
 
+    /// <summary>
+    /// update charge appearance
+    /// </summary>
     private void OnChargeStart(Entity<TeleframeChargingComponent> ent, ref ComponentStartup args)
     {
         if (TryComp<TeleframeComponent>(ent, out var teleComp))
@@ -124,7 +135,7 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         }
 
         if (charge.WillExplode == true) //and afterwards, if the Teleframe should explode, it does.
-            Log.Debug("explode");
+            TeleframeExplode(ent);
 
         RemCompDeferred<TeleframeChargingComponent>(ent); //stop charging
         if (!HasComp<TeleframeRechargingComponent>(ent))
@@ -160,6 +171,18 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
                 true, true));
     }
 
+    ///<summary>
+    /// Just fucking explode, lightning bolt number equal to incident multiplier
+    ///</summary>
+    public void TeleframeExplode(Entity<TeleframeComponent> ent)
+    {
+        _lightning.ShootRandomLightnings(ent.Owner, ent.Comp.IncidentMultiplier * 3, (int)Math.Ceiling(ent.Comp.IncidentMultiplier));
+    }
+    /// <summary>
+    /// Recharge is done, indicate this to player at console and reset power draw levels
+    /// </summary>
+    /// <param name="ent"></param>
+    /// <param name="recharge"></param>
     public void EndTeleportRecharge(Entity<TeleframeComponent> ent, TeleframeRechargingComponent recharge)
     {
         ent.Comp.ReadyToTeleport = true;
@@ -187,7 +210,6 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         if (!Timing.IsFirstTimePredicted) //prevent it getting spammed
             return false;
 
-        Log.Debug("StartTeleport");
         if (ent.Comp.ReadyToTeleport != true || HasComp<TeleframeChargingComponent>(ent) || HasComp<TeleframeRechargingComponent>(ent)) //nuh uh, we recharging
             return false;
 
@@ -231,7 +253,6 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
 
         //add power draw here
         //add teleportbegin event here?
-        Log.Debug("TeleframeCharging");
         ent.Comp.ReadyToTeleport = false;
         var chargeComp = AddComp<TeleframeChargingComponent>(ent);
         chargeComp.Duration = ent.Comp.ChargeDuration;
@@ -252,7 +273,6 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
     /// <param name="ent">TeleframeComponent Entity</param>
     private void OnTeleport(Entity<TeleframeComponent> ent)
     {
-        Log.Debug("OnTeleport");
         if (ent.Comp.TeleportFrom == null) //backup for if no TeleportFrom selecter, choose the Owner.
             ent.Comp.TeleportFrom = ent.Owner;
         if (ent.Comp.TeleportTo == null) //backup for if no TeleportTo, choose Teleport From to just teleport in place
@@ -298,6 +318,9 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         _adminLogger.Add(LogType.Teleport, $"{ToPrettyString(ent.Owner)} has teleported {entCount} entities from {_transform.ToMapCoordinates(from.Coordinates)} to {_transform.ToMapCoordinates(target.Coordinates)} with {incidentCount} incidents");
     }
 
+    /// <summary>
+    /// clean up after teleportation finish
+    /// </summary>
     public void OnTeleportFinish(Entity<TeleframeComponent> ent, ref AfterTeleportEvent args)
     {
         //check upgrades here
@@ -305,16 +328,19 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         Spawn(ent.Comp.TeleportFinishEffect, args.To); //finish effects
         Spawn(ent.Comp.TeleportFinishEffect, args.From);
 
-        if (ent.Comp.TeleportTo != null) //teleport effects have built in despawn on triggers
+        if (Exists(ent.Comp.TeleportTo)) //teleport effects have built in despawn on triggers, so call those to end gracefully
             RaiseLocalEvent(ent.Comp.TeleportTo ?? EntityUid.Invalid, new TriggerEvent(ent.Comp.TeleportTo ?? EntityUid.Invalid));
-        if (ent.Comp.TeleportFrom != null)
+        if (Exists(ent.Comp.TeleportFrom))
             RaiseLocalEvent(ent.Comp.TeleportFrom ?? EntityUid.Invalid, new TriggerEvent(ent.Comp.TeleportTo ?? EntityUid.Invalid));
 
         ent.Comp.TeleportTo = null; //clean up
         ent.Comp.TeleportFrom = null;
     }
 
-    public void OnTeleportSpeak(Entity<TeleframeComponent> ent, string location) //say over radio that the teleportation is underway.
+    /// <summary>
+    /// prepare message to say over radio/voice that the teleportation is underway
+    /// </summary>
+    public void OnTeleportSpeak(Entity<TeleframeComponent> ent, string location)
     {
         if (ent.Comp.LinkedConsole == null) //no point if no console
             return;
@@ -343,16 +369,23 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
 
     }
 
+    /// <summary>
+    /// checks if speec is allowed, if it is, let console speak
+    /// </summary>
     public void OnSpeak(Entity<TeleframeConsoleComponent> ent, ref TeleframeConsoleSpeak args)
     {
         if (!_emag.CheckFlag(ent.Owner, EmagType.Interaction)) //no speak if emagged
         {
             if (args.Voice == true) //speak vocally
                 _chat.TrySendInGameICMessage(ent.Owner, args.Message, InGameICChatType.Speak, hideChat: true);
-            if (args.Radio == true && ent.Comp.NoRadio == true) //speak over radio
+            if (args.Radio == true && ent.Comp.NoRadio == false) //speak over radio
                 _radio.SendRadioMessage(ent.Owner, args.Message, ent.Comp.AnnouncementChannel!, ent.Owner, escapeMarkup: false);
         }
     }
+
+    /// <summary>
+    /// checks power situation when spawned
+    /// </summary>
     private void OnStartup(Entity<TeleframeComponent> ent, ref ComponentStartup args)
     {
         if (TryComp<PowerConsumerComponent>(ent, out var powerConsume))
@@ -368,11 +401,11 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         }
     }
 
+    /// <summary>
+    /// Checks power situation if received amount changes
+    /// </summary>
     private void ReceivedChanged(Entity<TeleframeComponent> ent, ref PowerConsumerReceivedChanged args)
     {
-        Log.Debug($"{args.ReceivedPower}, {args.DrawRate}");
-
-
         if (args.ReceivedPower < args.DrawRate)
         {
             if (TryComp<TeleframeRechargingComponent>(ent, out var rechargeComp) && args.ReceivedPower > 0) //if recharging and there is some power, don't turn off, just wait.
@@ -391,6 +424,9 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         }
     }
 
+    /// <summary>
+    /// turn off teleframe, interrupt charge and fail it, and pause recharge if it wasn't caught before now
+    /// </summary>
     private void PowerOff(Entity<TeleframeComponent> ent)
     {
         ent.Comp.IsPowered = false;
@@ -404,7 +440,7 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
             EndTeleportCharge(ent, chargeComp);
         }
 
-        if (TryComp<TeleframeRechargingComponent>(ent, out var rechargeComp)) 
+        if (TryComp<TeleframeRechargingComponent>(ent, out var rechargeComp))
         {
             rechargeComp.Pause = true;
             rechargeComp.PauseTime = rechargeComp.EndTime - Timing.CurTime;
@@ -414,6 +450,9 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         Dirty(ent);
     }
 
+    /// <summary>
+    /// power on teleframe, unpause recharge if it was there.
+    /// </summary>
     private void PowerOn(Entity<TeleframeComponent> ent)
     {
         ent.Comp.IsPowered = true;
@@ -436,6 +475,9 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         Dirty(ent);
     }
 
+    /// <summary>
+    /// immediately turn off if unanchored
+    /// </summary>
     private void OnAnchorStateChanged(Entity<TeleframeComponent> ent, ref AnchorStateChangedEvent args)
     {
         if (args.Anchored)
@@ -443,6 +485,10 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
 
         PowerOff(ent);
     }
+
+    /// <summary>
+    /// tell user power status and charge level
+    /// </summary>
     private void OnExamined(Entity<TeleframeComponent> ent, ref ExaminedEvent args)
     {
         if (ent.Comp.IsPowered == true)

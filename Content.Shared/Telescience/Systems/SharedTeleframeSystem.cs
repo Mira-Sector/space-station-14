@@ -34,6 +34,7 @@ public abstract class SharedTeleframeSystem : EntitySystem
     [Dependency] protected readonly IGameTiming Timing = default!;
     [Dependency] private readonly EmagSystem _emag = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private readonly SharedPointLightSystem _lights = default!;
 
     public override void Initialize()
     {
@@ -54,7 +55,6 @@ public abstract class SharedTeleframeSystem : EntitySystem
         if (!Timing.IsFirstTimePredicted) //prevent it getting spammed
             return;
 
-        Log.Debug("Teleport Start");
         if (!TryGetEntity(ent.Comp.LinkedTeleframe, out var teleNetEnt) || !TryComp<TeleframeComponent>(teleNetEnt, out var teleComp))
             return; //if no linked Teleframe, can't teleport.
 
@@ -67,7 +67,6 @@ public abstract class SharedTeleframeSystem : EntitySystem
         teleComp.TeleportSend = args.Send;
         Dirty(teleEnt, teleComp);
         RaiseLocalEvent(teleEnt, args); //raise a message on the Teleframe itself, used in generating teleport speech
-        //Teleport((teleEnt, teleComp)); //begin teleportation
     }
 
     public void OnTeleportBeaconStart(Entity<TeleframeConsoleComponent> ent, ref TeleframeActivateBeaconMessage args)
@@ -87,7 +86,6 @@ public abstract class SharedTeleframeSystem : EntitySystem
         teleComp.TeleportSend = args.Send;
         Dirty(teleEnt, teleComp);
         RaiseLocalEvent(teleEnt, args); //raise a message on the Teleframe itself, used in generating teleport speech
-        //Teleport((teleEnt, teleComp));
     }
 
     /// <summary>
@@ -176,6 +174,12 @@ public abstract class SharedTeleframeSystem : EntitySystem
         args.Handled = true;
     }
 
+    /// <summary>
+    /// update teleframe appearence between on, off, charged, and recharged
+    /// also enables/disables lights
+    /// </summary>
+    /// <param name="ent"></param>S
+
     protected void UpdateAppearance(Entity<TeleframeComponent> ent)
     {
         TeleframeVisualState state;
@@ -196,6 +200,9 @@ public abstract class SharedTeleframeSystem : EntitySystem
         {
             state = TeleframeVisualState.Off;
         }
+
+        if (_lights.TryGetLight(ent.Owner, out var light))
+            _lights.SetEnabled(ent.Owner, ent.Comp.IsPowered);
 
         _appearance.SetData(ent.Owner, TeleframeVisuals.VisualState, state);
         Dirty(ent);

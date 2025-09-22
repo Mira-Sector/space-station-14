@@ -84,32 +84,44 @@ public sealed class TeleframeConsoleBoundUserInterface : BoundUserInterface
         _menu.SendClicked += (send) =>
         { //for beacons have an if that is true if beacon selected and false if not. If true, use a seperate activate message.
             if (coordXValid == true && coordYValid == true) //require values to be input before teleport can be sent
+            {
                 SendPredictedMessage(new TeleframeActivateMessage(new Vector2(coordX, coordY), send));
+                TeleportCheck(_menu, false, Loc.GetString("teleporter-summary-notready"));
+            }
             else
             {
                 if (beaconValid == true)
+                {
                     SendPredictedMessage(new TeleframeActivateBeaconMessage(selectedBeacon, send));
+                    TeleportCheck(_menu, false, Loc.GetString("teleporter-summary-notready"));
+                }
             }
         };
 
         _menu.ReceiveClicked += (send) =>
         {
             if (coordXValid == true && coordYValid == true) //require values to be input before Teleframe can be sent
+            {
                 SendPredictedMessage(new TeleframeActivateMessage(new Vector2(coordX, coordY), send));
+                TeleportCheck(_menu, false, Loc.GetString("teleporter-summary-notready"));
+            }
             else
             {
                 if (beaconValid == true)
+                {
                     SendPredictedMessage(new TeleframeActivateBeaconMessage(selectedBeacon, send));
+                    TeleportCheck(_menu, false, Loc.GetString("teleporter-summary-notready"));
+                }
             }
         };
 
         _menu.BeaconClicked += (beacon) =>
         {
-            _menu.SetCoordsX(int.Parse("")); _menu.SetCoordsY(int.Parse("")); //if clicking a beacon, invalidate coordinate teleport
+            _menu.SetCoordsX(0); _menu.SetCoordsY(0); //if clicking a beacon, invalidate coordinate teleport
             coordXValid = false; coordYValid = false;
-            TeleportCheck(_menu, true, Loc.GetString("teleporter-summary-beacon", ("beacon", beacon.Location)));
             beaconValid = true;
             selectedBeacon = beacon;
+            TeleportCheck(_menu, true, Loc.GetString("teleporter-summary-beacon", ("beacon", beacon.Location)));
         };
 
         _menu.RefreshClicked += (valid, summary) =>

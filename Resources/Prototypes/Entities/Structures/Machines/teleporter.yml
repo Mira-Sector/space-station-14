@@ -48,10 +48,9 @@
     group: CargoTelepads
   - type: AnimationPlayer
   - type: PointLight
-    radius: 1.5
+    radius: 1
     energy: 1.5
-    color: "#ffffff"
-  - type: LitOnPowered
+    color: "#00fff2"
   - type: Teleframe
 
 - type: entity
@@ -85,6 +84,7 @@
       map: ["enum.TeleframeVisualState.Recharging"]
       shader: unshaded
       visible: false
+    - type: LightningTarget
 
 - type: entity
   id: TeleporterSyndicate
@@ -99,6 +99,8 @@
     incidentChance: 0.10
     incidentMultiplier: 0.50
     teleportScatterRange: 0.5
+    teleportToEffect: TeleportToEffectQuiet
+    teleportFromEffect: TeleportFromEffectQuiet
   - type: Sprite
     sprite: Structures/teleframe_syndicate.rsi
     drawdepth: HighFloorObjects
@@ -116,6 +118,10 @@
       map: ["enum.TeleframeVisualState.Recharging"]
       shader: unshaded
       visible: false
+  - type: PointLight
+    radius: 2
+    energy: 1.5
+    color: "#9c0000"
 
 - type: entity
   id: TeleporterCC
@@ -124,19 +130,20 @@
   description: A precise tool for the uppermost echelons of Central Command, allowing for rapid deployment and extraction of critical assets. Unfathomably Expensive.
   components:
   - type: Teleframe
-    chargeDuration: 0.1
-    rechargeDuration: 0.5
+    chargeDuration: 0.15
+    rechargeDuration: 1
     incidentChance: 0
     incidentMultiplier: 0
     teleportScatterRange: 0.25
     teleportRange: 0.45
+    powerUseActive: 500
     teleportToEffect: TeleportToEffectQuiet
     teleportFromEffect: TeleportFromEffectQuiet
   - type: Sprite
     sprite: Structures/teleframe.rsi
     drawdepth: HighFloorObjects
     layers:
-    - state: offline
+    - state: offline_cc
     - state: idle
       map: ["enum.TeleframeVisualState.On"]
       shader: unshaded

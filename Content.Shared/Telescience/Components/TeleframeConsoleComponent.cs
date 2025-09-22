@@ -26,7 +26,7 @@ public sealed partial class TeleframeConsoleComponent : Component
     public int? MaxRange = null;
 
     [DataField]
-    public SoundSpecifier? TeleportRechargedSound = new SoundPathSpecifier("/Audio/Machines/scan_finish.ogg");
+    public SoundSpecifier? TeleportRechargedSound = new SoundPathSpecifier("/Audio/Machines/scan_finish.ogg", AudioParams.Default.WithVolume(-4f));
 
     /// <summary>
     /// The machine linking port for the Teleframe

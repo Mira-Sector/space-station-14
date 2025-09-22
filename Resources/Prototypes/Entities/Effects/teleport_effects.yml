@@ -96,13 +96,13 @@
   - type: EmitSoundOnSpawn
     sound:
       path: /Audio/Effects/Grenades/Supermatter/whitehole_start.ogg
-      volume: 1
-      range: 4
+      volume: -5
+      range: 2
   - type: SoundOnTrigger #send trigger event to delete with sound
     removeOnTrigger: true
     sound:
       path: /Audio/Effects/Grenades/Supermatter/supermatter_end.ogg
-      volume: 1
+      volume: -3
       range: 4
   - type: AmbientSound
     enabled: true
@@ -136,13 +136,13 @@
     - type: EmitSoundOnSpawn
       sound:
         path: /Audio/Effects/Grenades/Supermatter/supermatter_start.ogg
-        volume: 1
-        range: 4
+        volume: -5
+        range: 2
     - type: SoundOnTrigger #send trigger event to delete with sound
       removeOnTrigger: true
       sound:
         path: /Audio/Effects/Grenades/Supermatter/supermatter_end.ogg
-        volume: 1
+        volume: -3
         range: 4
     - type: AmbientSound
       enabled: true
@@ -166,3 +166,4 @@
       radius: 1
       softness: 1
       offset: "0, 0"
+

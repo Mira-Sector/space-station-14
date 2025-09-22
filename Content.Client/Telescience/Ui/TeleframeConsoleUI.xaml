@@ -5,7 +5,7 @@
     Title = "{Loc 'teleporter-console-window-title'}"
     MinSize="300 500"
     SetSize="500 500">
-    <BoxContainer Orientation="Vertical" VerticalExpand="False" HorizontalExpand="True">
+    <BoxContainer Name="UI" Orientation="Vertical" VerticalExpand="False" HorizontalExpand="True">
          <BoxContainer Orientation="Horizontal">
             <Button Name="RefreshButton" Text="{Loc 'teleporter-refresh-button'}" MinWidth="50" Margin="5 5 5 5"/>
             <!--<SpriteView OverrideDirection="South" Scale="2 2" Name="LinkSprite" Access="Public" SetSize="16 16" />-->
@@ -23,7 +23,7 @@
                     <gfx:StyleBoxFlat BackgroundColor="#1B1B1E" />
                 </PanelContainer.PanelOverride>
                 <ScrollContainer Name="BeaconList" VerticalExpand="True" HorizontalExpand="True" HScrollEnabled="False">
-                    <BoxContainer Name="BeaconButtonContainer" Orientation="Vertical" VerticalExpand="True" SeparationOverride="5"> 
+                    <BoxContainer Name="BeaconButtonContainer" Orientation="Vertical" VerticalExpand="True" SeparationOverride="5">
                         <!-- Beacons are listed here dynamically -->
                     </BoxContainer>
                 </ScrollContainer>
