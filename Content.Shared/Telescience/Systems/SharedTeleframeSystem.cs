@@ -1,28 +1,16 @@
 using Content.Shared.Telescience.Components;
 using Content.Shared.Teleportation.Systems;
-using Content.Shared.Construction.Components;
 using Content.Shared.DeviceLinking;
 using Content.Shared.DeviceLinking.Events;
 using Content.Shared.Emag.Systems;
-using Content.Shared.Interaction;
+using Content.Shared.Examine;
 using Content.Shared.Popups;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
+using Robust.Shared.Random;
 using Robust.Shared.Timing;
-using Robust.Shared.GameObjects;
-using Robust.Shared.Spawners;
-using Robust.Shared.Physics.Components;
-
 
 namespace Content.Shared.Telescience.Systems;
-
-public record struct BeforeTeleportEvent(EntityUid Teleframe, bool Cancelled = false);
-
-public record struct AfterTeleportEvent(MapCoordinates To, MapCoordinates From);
-
-public record struct TeleportIncidentEvent(float IncidentMult);
-
-public record struct TeleframeConsoleSpeak(string Message, bool Radio, bool Voice);
 
 public abstract class SharedTeleframeSystem : EntitySystem
 {
@@ -35,6 +23,7 @@ public abstract class SharedTeleframeSystem : EntitySystem
     [Dependency] private readonly EmagSystem _emag = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedPointLightSystem _lights = default!;
+    [Dependency] protected readonly IRobustRandom Random = default!;
 
     public override void Initialize()
     {
@@ -42,7 +31,7 @@ public abstract class SharedTeleframeSystem : EntitySystem
 
         SubscribeLocalEvent<TeleframeComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<TeleframeComponent, GotEmaggedEvent>(OnTeleframeEmagged);
-
+        SubscribeLocalEvent<TeleframeComponent, ExaminedEvent>(OnExamined);
 
         SubscribeLocalEvent<TeleframeConsoleComponent, TeleframeActivateMessage>(OnTeleportStart);
         SubscribeLocalEvent<TeleframeConsoleComponent, TeleframeActivateBeaconMessage>(OnTeleportBeaconStart);
@@ -55,18 +44,28 @@ public abstract class SharedTeleframeSystem : EntitySystem
         if (!Timing.IsFirstTimePredicted) //prevent it getting spammed
             return;
 
+        var consoleCoords = Transform(ent).Coordinates;
+
         if (!TryGetEntity(ent.Comp.LinkedTeleframe, out var teleNetEnt) || !TryComp<TeleframeComponent>(teleNetEnt, out var teleComp))
             return; //if no linked Teleframe, can't teleport.
 
         if (teleComp.IsPowered == false || teleComp.ReadyToTeleport == false)
             return;
 
-        var teleEnt = teleNetEnt ?? EntityUid.Invalid; //de-nullable teleNetEnt to prevent RaiseLocalEvent getting upset.
-        var tp = Transform(teleEnt); //get transform of the Teleframe for MapID
-        teleComp.Target = new MapCoordinates(args.Coords, tp.MapID); //coordinates of target, need to be able to replace MapId for beacons
+        var teleEnt = teleNetEnt!.Value;                                //de-nullable teleNetEnt to prevent RaiseLocalEvent getting upset.
+        var tp = Transform(teleEnt);                                    //get transform of the Teleframe for MapID
+        teleComp.Target = new MapCoordinates(args.Coords, tp.MapID);    //coordinates of target, need to be able to replace MapId for beacons
         teleComp.TeleportSend = args.Send;
-        Dirty(teleEnt, teleComp);
-        RaiseLocalEvent(teleEnt, args); //raise a message on the Teleframe itself, used in generating teleport speech
+
+        if (ent.Comp.MaxRange == null || args.Coords.X <= Math.Abs(consoleCoords.X + (float)ent.Comp.MaxRange) && args.Coords.Y <= Math.Abs(consoleCoords.Y + (float)ent.Comp.MaxRange))
+        {   //check max range on custom coordinates, beacons dont have this limitation.
+            Dirty(teleEnt, teleComp);
+            RaiseLocalEvent(teleEnt, args); //raise a message on the Teleframe itself, used in generating teleport speech
+        }
+        else
+        {
+            return;
+        }
     }
 
     public void OnTeleportBeaconStart(Entity<TeleframeConsoleComponent> ent, ref TeleframeActivateBeaconMessage args)
@@ -80,9 +79,9 @@ public abstract class SharedTeleframeSystem : EntitySystem
         if (teleComp.IsPowered == false || teleComp.ReadyToTeleport == false)
             return;
 
-        var teleEnt = teleNetEnt ?? EntityUid.Invalid; //de-nullable teleNetEnt to prevent RaiseLocalEvent getting upset.
-        var tp = Transform(GetEntity(args.Beacon.TelePoint)); //get transform of the beacon
-        teleComp.Target = _transform.ToMapCoordinates(tp.Coordinates); //coordinates of target, need to be able to replace MapId for beacons
+        var teleEnt = teleNetEnt!.Value;                                //de-nullable teleNetEnt to prevent RaiseLocalEvent getting upset.
+        var tp = Transform(GetEntity(args.Beacon.TelePoint));           //get transform of the beacon
+        teleComp.Target = _transform.ToMapCoordinates(tp.Coordinates);  //coordinates of target, need to be able to replace MapId for beacons
         teleComp.TeleportSend = args.Send;
         Dirty(teleEnt, teleComp);
         RaiseLocalEvent(teleEnt, args); //raise a message on the Teleframe itself, used in generating teleport speech
@@ -168,8 +167,8 @@ public abstract class SharedTeleframeSystem : EntitySystem
         if (_emag.CheckFlag(ent, EmagType.Interaction))
             return;
 
-        ent.Comp.IncidentChance += 1; //guarenteed chance of incidents
-        ent.Comp.IncidentMultiplier += 2; //and they'll be very spicy
+        ent.Comp.IncidentChance += 1;       //guarenteed chance of incidents
+        ent.Comp.IncidentMultiplier += 2;   //and they'll be very spicy
 
         args.Handled = true;
     }
@@ -183,15 +182,15 @@ public abstract class SharedTeleframeSystem : EntitySystem
     protected void UpdateAppearance(Entity<TeleframeComponent> ent)
     {
         TeleframeVisualState state;
-        if (ent.Comp.IsPowered == true)
+        if (ent.Comp.IsPowered == true) //check if powered, set to on state
         {
             state = TeleframeVisualState.On;
-            if (HasComp<TeleframeChargingComponent>(ent))
+            if (HasComp<TeleframeChargingComponent>(ent)) //override if charged
             {
                 state = TeleframeVisualState.Charging;
             }
 
-            if (HasComp<TeleframeRechargingComponent>(ent))
+            if (HasComp<TeleframeRechargingComponent>(ent)) //override if recharged, this state takes highest priority
             {
                 state = TeleframeVisualState.Recharging;
             }
@@ -201,11 +200,51 @@ public abstract class SharedTeleframeSystem : EntitySystem
             state = TeleframeVisualState.Off;
         }
 
-        if (_lights.TryGetLight(ent.Owner, out var light))
+        if (_lights.TryGetLight(ent.Owner, out var light)) //set light whilst here
+        {
             _lights.SetEnabled(ent.Owner, ent.Comp.IsPowered);
+            Dirty(ent.Owner, light);
+        }
 
         _appearance.SetData(ent.Owner, TeleframeVisuals.VisualState, state);
         Dirty(ent);
+    }
+
+    /// <summary>
+    /// tell user power status and charge level
+    /// </summary>
+    private void OnExamined(Entity<TeleframeComponent> ent, ref ExaminedEvent args)
+    {
+        if (ent.Comp.IsPowered == true) //manually apply power level descriptions
+        {
+            args.PushMarkup(Loc.GetString("power-receiver-component-on-examine-main", ("stateText", Loc.GetString("power-receiver-component-on-examine-powered"))));
+            if (HasComp<TeleframeChargingComponent>(ent))
+            {
+                args.PushMarkup(Loc.GetString("teleporter-examine-charging"));
+            }
+
+            if (HasComp<TeleframeRechargingComponent>(ent))
+            {
+                args.PushMarkup(Loc.GetString("teleporter-examine-recharging"));
+            }
+        }
+        else
+        {
+            args.PushMarkup(Loc.GetString("power-receiver-component-on-examine-main", ("stateText", Loc.GetString("power-receiver-component-on-examine-unpowered"))));
+        }
+    }
+
+    protected (bool, float) RollForIncident(Entity<TeleframeComponent> ent)
+    {
+        var roll = Random.NextFloat(0, 1);
+        if (roll < ent.Comp.IncidentChance)
+        {
+            return (true, Random.NextFloat(0, 1) * ent.Comp.IncidentMultiplier);
+        }
+        else
+        {
+            return (false, 0);
+        }
     }
 
 }

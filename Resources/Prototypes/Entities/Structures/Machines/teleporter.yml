@@ -22,8 +22,21 @@
         mask:
           - MachineMask
   - type: Sprite
-    sprite: Structures/cargo_telepad.rsi
+    sprite: Structures/teleframe.rsi
+    noRot: true
     drawdepth: HighFloorObjects
+    layers:
+    - state: offline
+    - state: idle
+      map: ["TeleframeVisualState"]
+  - type: GenericVisualizer
+    visuals:
+      enum.TeleframeVisuals.VisualState:
+        TeleframeVisualState:
+          On:         { state: idle, visible: true }
+          Charging:   { state: beam, visible: true  }
+          Recharging: { state: recharging, visible: true  }
+          Off:        { state: offline, visible: false }
   - type: Damageable
     damageContainer: StructuralInorganic
     damageModifierSet: StructuralMetallicStrong
@@ -55,7 +68,7 @@
 
 - type: entity
   id: TeleporterScience
-  parent: [BaseTeleporter, BaseTeleportBeaconStatic]
+  parent: [BaseTeleporter, BaseTeleportBeacon]
   name: experimental teleframe core
   description: The core of an advanced device that rips holes in reality for near-instanteous travel. With time and material its capabilities can be expanded. Safety not guaranteed.
   components:
@@ -67,28 +80,12 @@
     incidentChance: 0.15
     teleportBeginEffect: EffectGravityPulse
     teleportFinishEffect: EffectFlashTeleportFinish
-  - type: Sprite
-    sprite: Structures/teleframe.rsi
-    drawdepth: HighFloorObjects
-    layers:
-    - state: offline
-    - state: idle
-      map: ["enum.TeleframeVisualState.On"]
-      shader: unshaded
-      visible: true
-    - state: beam
-      map: ["enum.TeleframeVisualState.Charging"]
-      shader: unshaded
-      visible: false
-    - state: recharging
-      map: ["enum.TeleframeVisualState.Recharging"]
-      shader: unshaded
-      visible: false
-    - type: LightningTarget
+    explosionScore: 2.1 #if Emagged 30% explosion chance per use
+  - type: LightningTarget
 
 - type: entity
   id: TeleporterSyndicate
-  parent: [BaseTeleporter, BaseTeleportBeaconStatic]
+  parent: [BaseTeleporter, BaseTeleportBeacon]
   name: cybersun TP-X covert teleframe core
   description: A modification of stolen Nanotrasen blueprints, used in covert infiltration. Often outfitted with advanced upgrades.
   components:
@@ -101,23 +98,15 @@
     teleportScatterRange: 0.5
     teleportToEffect: TeleportToEffectQuiet
     teleportFromEffect: TeleportFromEffectQuiet
+    explosionScore: 2.4 #if Emagged 20% explosion chance per use
   - type: Sprite
     sprite: Structures/teleframe_syndicate.rsi
     drawdepth: HighFloorObjects
     layers:
     - state: offline
     - state: idle
-      map: ["enum.TeleframeVisualState.On"]
+      map: ["TeleframeVisualState"]
       shader: unshaded
-      visible: true
-    - state: beam
-      map: ["enum.TeleframeVisualState.Charging"]
-      shader: unshaded
-      visible: false
-    - state: recharging
-      map: ["enum.TeleframeVisualState.Recharging"]
-      shader: unshaded
-      visible: false
   - type: PointLight
     radius: 2
     energy: 1.5
@@ -125,15 +114,15 @@
 
 - type: entity
   id: TeleporterCC
-  parent: [BaseTeleporter, BaseTeleportBeaconStatic]
+  parent: [BaseTeleporter, BaseTeleportBeacon]
   name: hyperframe core
   description: A precise tool for the uppermost echelons of Central Command, allowing for rapid deployment and extraction of critical assets. Unfathomably Expensive.
   components:
   - type: Teleframe
     chargeDuration: 0.15
     rechargeDuration: 1
-    incidentChance: 0
-    incidentMultiplier: 0
+    incidentChance: -10
+    incidentMultiplier: -10
     teleportScatterRange: 0.25
     teleportRange: 0.45
     powerUseActive: 500
@@ -145,14 +134,5 @@
     layers:
     - state: offline_cc
     - state: idle
-      map: ["enum.TeleframeVisualState.On"]
+      map: ["TeleframeVisualState"]
       shader: unshaded
-      visible: true
-    - state: beam
-      map: ["enum.TeleframeVisualState.Charging"]
-      shader: unshaded
-      visible: false
-    - state: recharging
-      map: ["enum.TeleframeVisualState.Recharging"]
-      shader: unshaded
-      visible: false

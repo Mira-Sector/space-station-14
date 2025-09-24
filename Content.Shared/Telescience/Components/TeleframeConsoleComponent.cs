@@ -8,7 +8,7 @@ using Robust.Shared.GameStates;
 
 namespace Content.Shared.Telescience.Components;
 
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState(true)]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 
 public sealed partial class TeleframeConsoleComponent : Component
 {
@@ -41,12 +41,5 @@ public sealed partial class TeleframeConsoleComponent : Component
     /// The radio channel that that teleporation events are broadcast to
     /// </summary>
     [DataField, ViewVariables(VVAccess.ReadWrite)]
-    public ProtoId<RadioChannelPrototype> AnnouncementChannel = "Science";
-
-    /// <summary>
-    /// AnnouncementChannel gets upset if it's nullable so this variable decides whether the console will actually speak or not
-    /// </summary>
-    [DataField, ViewVariables(VVAccess.ReadWrite)]
-    public bool NoRadio = true;
-
+    public ProtoId<RadioChannelPrototype>? AnnouncementChannel = null;
 }

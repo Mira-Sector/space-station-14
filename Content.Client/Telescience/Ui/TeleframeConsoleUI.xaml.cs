@@ -51,7 +51,7 @@ public sealed partial class TeleframeConsoleUI : FancyWindow
                 HorizontalExpand = true,
                 SizeFlagsStretchRatio = 1,
                 MinSize = new Vector2(295, 20),
-                SetSize = new Vector2(495, 20),
+                SetSize = new Vector2(495, 30),
                 //StyleClasses= "ButtonSquare",
                 ClipText = true,
             };

@@ -227,4 +227,16 @@
     Steel: 500
     Glass: 300
     Plasma: 100
-    
+
+- type: latheRecipe
+  id: HandHeldTeleframeConsoleEmpty
+  result: HandHeldTeleframeConsoleEmpty
+  categories: 
+  - Tools
+  completetime: 5
+  materials: 
+    Steel: 800
+    Glass: 400
+    Silver: 100
+    Plasma: 100  
+

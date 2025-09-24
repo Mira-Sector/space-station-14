@@ -86,6 +86,14 @@ public sealed partial class TeleframeComponent : Component
     [DataField, ViewVariables(VVAccess.ReadWrite)]
     public int PowerUseIdle = 50;
 
+    /// <summary>
+    /// score that must be met or exceeded for the teleframe to explode due to a random incident, incidentMult*(1d100/100)
+    /// avoid setting below 1.
+    /// </summary>
+    [DataField, ViewVariables(VVAccess.ReadWrite)]
+
+    public float ExplosionScore = 1000f;
+
     //##########################################
 
     /// <summary>
@@ -135,7 +143,7 @@ public enum TeleframeVisuals : byte
 }
 
 [NetSerializable, Serializable]
-public enum TeleframeVisualState
+public enum TeleframeVisualState : byte
 {
     On,
     Charging,

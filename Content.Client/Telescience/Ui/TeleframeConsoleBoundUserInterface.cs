@@ -4,7 +4,7 @@ using Content.Shared.Telescience.Components;
 using Content.Shared.Telescience;
 using Robust.Client.UserInterface;
 using Robust.Shared.Timing;
-using Content.Shared.Atmos.Components;
+using Robust.Client.GameObjects;
 
 namespace Content.Client.Telescience.Ui;
 
@@ -12,11 +12,14 @@ public sealed class TeleframeConsoleBoundUserInterface : BoundUserInterface
 {
     [ViewVariables]
     private TeleframeConsoleUI? _menu;
-
+    private readonly IEntityManager _entMan;
+    private readonly SharedTransformSystem _transform;
     [Dependency] private readonly IGameTiming _timing = default!;
 
     public TeleframeConsoleBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
+        _entMan = IoCManager.Resolve<IEntityManager>();
+        _transform = _entMan.System<TransformSystem>();
     }
 
     protected override void Open()
@@ -28,12 +31,17 @@ public sealed class TeleframeConsoleBoundUserInterface : BoundUserInterface
         if (!EntMan.TryGetComponent<TeleframeConsoleComponent>(Owner, out var teleComp))
             return;
 
+        if (!EntMan.TryGetComponent<TransformComponent>(Owner, out var transComp))
+            return;
+
+        var pos = _transform.GetMapCoordinates(Owner, xform: transComp); //get map coordinates for max range and setting map ID for custom coordinates
         var coordX = 0;
         var coordY = 0;
         var coordXValid = false;
         var coordYValid = false;
         var beaconValid = false;
         TeleportPoint selectedBeacon = new TeleportPoint();
+
 
         _menu.Beacons = GetValidBeacons(teleComp.BeaconList);
         _menu.AddBeaconButtons();
@@ -43,7 +51,7 @@ public sealed class TeleframeConsoleBoundUserInterface : BoundUserInterface
         {
             beaconValid = false; //if typing in text, invalidate beacon teleport
             var message = Loc.GetString("teleporter-summary-insufficient");
-            if (teleComp.MaxRange == null || Math.Abs(coord) < teleComp.MaxRange) //limit maximum value, currently absolute coordinate value rather than actual range.
+            if (teleComp.MaxRange == null || Math.Abs(coord) < Math.Abs(pos.X + (float)teleComp.MaxRange)) //range from console rather than teleporter because it's simpler to code.
             {
                 coordX = coord;
                 coordXValid = true; //if integer in range, valid
@@ -64,7 +72,7 @@ public sealed class TeleframeConsoleBoundUserInterface : BoundUserInterface
         {
             beaconValid = false; //if typing in text, invalidate beacon teleport
             var message = Loc.GetString("teleporter-summary-insufficient");
-            if (teleComp.MaxRange == null || Math.Abs(coord) < teleComp.MaxRange) //limit maximum value, currently absolute coordinate value rather than actual range.
+            if (teleComp.MaxRange == null || Math.Abs(coord) < Math.Abs(pos.Y + (float)teleComp.MaxRange)) //range from console rather than teleporter because it's simpler to code.
             {
                 coordY = coord;
                 coordYValid = true; //if integer in range, valid

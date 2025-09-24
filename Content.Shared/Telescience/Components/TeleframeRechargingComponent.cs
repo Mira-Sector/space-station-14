@@ -28,8 +28,8 @@ public sealed partial class TeleframeRechargingComponent : Component
     /// <summary>
     /// total charge time
     /// </summary>
-    [DataField(customTypeSerializer: typeof(TimeOffsetSerializer))]
-    [AutoNetworkedField, AutoPausedField, ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
+    [ViewVariables(VVAccess.ReadWrite)]
     public TimeSpan Duration;
 
     /// <summary>

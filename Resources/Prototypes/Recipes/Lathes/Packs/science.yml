@@ -41,6 +41,7 @@
   - SignallerAdvanced
   - DeviceQuantumSpinInverter
   - DeviceDesynchronizer
+  - HandHeldTeleframeConsoleEmpty
 
 - type: latheRecipePack
   id: ScienceClothing

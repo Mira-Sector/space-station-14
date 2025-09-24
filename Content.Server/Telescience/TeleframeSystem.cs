@@ -2,9 +2,7 @@ using Content.Shared.Telescience;
 using Content.Shared.Telescience.Systems;
 using Content.Shared.Teleportation.Systems;
 using Content.Shared.Telescience.Components;
-using Content.Shared.Explosion.Components;
 using Content.Shared.Database;
-using Content.Shared.Examine;
 using Content.Shared.Emag.Systems;
 using Content.Server.Administration.Logs;
 using Content.Server.Explosion.EntitySystems;
@@ -14,7 +12,6 @@ using Content.Server.Pinpointer;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
 using Content.Server.Chat.Systems;
-using Robust.Shared.Random;
 using Robust.Shared.Physics.Components;
 using System.Numerics;
 
@@ -30,7 +27,6 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
     [Dependency] private readonly SharedMapSystem _maps = default!;
     [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly IAdminLogManager _adminLogger = default!;
     [Dependency] private readonly LightningSystem _lightning = default!;
     private EntityQuery<PhysicsComponent> _physicsQuery; // declare the variable for the query
@@ -43,12 +39,12 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         SubscribeLocalEvent<TeleframeComponent, AfterTeleportEvent>(OnTeleportFinish);
         SubscribeLocalEvent<TeleframeComponent, PowerConsumerReceivedChanged>(ReceivedChanged);
         SubscribeLocalEvent<TeleframeComponent, AnchorStateChangedEvent>(OnAnchorStateChanged);
-        SubscribeLocalEvent<TeleframeComponent, ExaminedEvent>(OnExamined);
         SubscribeLocalEvent<TeleframeComponent, ComponentStartup>(OnStartup);
 
         SubscribeLocalEvent<TeleframeConsoleComponent, TeleframeConsoleSpeak>(OnSpeak);
 
         SubscribeLocalEvent<TeleframeChargingComponent, ComponentStartup>(OnChargeStart);
+        SubscribeLocalEvent<TeleframeRechargingComponent, ComponentShutdown>(OnRechargeEnd);
 
         _physicsQuery = GetEntityQuery<PhysicsComponent>();
     }
@@ -75,13 +71,6 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
                 continue;
             EndTeleportRecharge((uid, teleframe), recharge);
         }
-        //search for Teleframe entities in general and update their appearences. Might be laggy?
-        var query = EntityQueryEnumerator<TeleframeComponent>();
-        while (query.MoveNext(out var uid, out var teleframe))
-        {
-            UpdateAppearance((uid, teleframe));
-        }
-
     }
 
     /// <summary>
@@ -90,7 +79,7 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
     public void TeleportBeacon(Entity<TeleframeComponent> ent, ref TeleframeActivateBeaconMessage args)
     {
         if (StartTeleport(ent) == true)
-            OnTeleportSpeak(ent, args.Beacon.Location);
+            OnTeleportSpeak(ent, args.Beacon.Location); //if teelportation successful, speak
     }
 
     /// <summary>
@@ -99,7 +88,7 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
     public void TeleportCustom(Entity<TeleframeComponent> ent, ref TeleframeActivateMessage args)
     {
         if (StartTeleport(ent) == true)
-            OnTeleportSpeak(ent, Loc.GetString("teleporter-target-custom"));
+            OnTeleportSpeak(ent, Loc.GetString("teleporter-target-custom")); //if teleportation successful, speak
     }
 
     /// <summary>
@@ -107,8 +96,13 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
     /// </summary>
     private void OnChargeStart(Entity<TeleframeChargingComponent> ent, ref ComponentStartup args)
     {
-        if (TryComp<TeleframeComponent>(ent, out var teleComp))
+        if (TryComp<TeleframeComponent>(ent, out var teleComp)) //when charging starts, update appearance to charge animation
             UpdateAppearance((ent.Owner, teleComp));
+    }
+    private void OnRechargeEnd(Entity<TeleframeRechargingComponent> ent, ref ComponentShutdown args)
+    {
+        if (TryComp<TeleframeComponent>(ent, out var teleComp)) //when recharging ends, update apperarance to on animation
+            UpdateAppearance((ent.Owner, teleComp));            //recharge component isn't removed if teleframe is depowered
     }
 
     /// <summary>
@@ -133,6 +127,10 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         {
             TeleportFail(ent, charge.FailReason); //if not, say why
         }
+
+        var (roll, score) = RollForIncident(ent); //safe teleportation? Not on my watch
+        if (roll == true && score > ent.Comp.ExplosionScore)
+            charge.WillExplode = true;
 
         if (charge.WillExplode == true) //and afterwards, if the Teleframe should explode, it does.
             TeleframeExplode(ent);
@@ -166,7 +164,7 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         SpawnAtPosition("WizardSmoke", pos); //and a pop of smoke
 
         if (ent.Comp.LinkedConsole != null) //raise event to have console say what the error is
-            RaiseLocalEvent(ent.Comp.LinkedConsole ?? EntityUid.Invalid, new TeleframeConsoleSpeak(
+            RaiseLocalEvent(ent.Comp.LinkedConsole!.Value, new TeleframeConsoleSpeak(
                 Loc.GetString("teleport-fail", ("reason", Loc.GetString("teleport-fail-" + failReason))),
                 true, true));
     }
@@ -178,6 +176,7 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
     {
         _lightning.ShootRandomLightnings(ent.Owner, ent.Comp.IncidentMultiplier * 3, (int)Math.Ceiling(ent.Comp.IncidentMultiplier));
     }
+
     /// <summary>
     /// Recharge is done, indicate this to player at console and reset power draw levels
     /// </summary>
@@ -190,7 +189,7 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         {
             if (TryComp<TeleframeConsoleComponent>(ent.Comp.LinkedConsole, out var consoleComp))
             {
-                Audio.PlayPvs(consoleComp.TeleportRechargedSound, ent.Comp.LinkedConsole ?? EntityUid.Invalid);
+                Audio.PlayPvs(consoleComp.TeleportRechargedSound, ent.Comp.LinkedConsole!.Value);
             }
         }
         RemCompDeferred<TeleframeRechargingComponent>(ent);
@@ -213,11 +212,10 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         if (ent.Comp.ReadyToTeleport != true || HasComp<TeleframeChargingComponent>(ent) || HasComp<TeleframeRechargingComponent>(ent)) //nuh uh, we recharging
             return false;
 
-        //if (ent.Comp.TeleportTo != null || ent.Comp.TeleportFrom != null)
-        //    return false;
+        var tp = Transform(ent); //get transform of the Teleframe
 
         var ev = new BeforeTeleportEvent(ent);
-        RaiseLocalEvent(ent, ev);
+        RaiseLocalEvent(ent, ref ev);
 
         var sourceEffect = ent.Comp.TeleportFromEffect; //default Send teleport, Teleport From Source to Target
         var targetEffect = ent.Comp.TeleportToEffect;
@@ -228,7 +226,6 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
             targetEffect = ent.Comp.TeleportFromEffect;
         }
 
-        var tp = Transform(ent); //get transform of the Teleframe
         //Prototype
         Spawn(ent.Comp.TeleportBeginEffect, tp.Coordinates); //flash start effect
         var sourcePortal = Spawn(sourceEffect, tp.Coordinates); //put source portal on Teleframe
@@ -287,6 +284,8 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         int incidentCount = 0;
         var tpToCoords = _transform.ToMapCoordinates(Transform(tpTo).Coordinates); //have to use map coordinates as these entities will be deleted after teleportation concludes
         var tpFromCoords = _transform.ToMapCoordinates(Transform(tpFrom).Coordinates);
+        var afterTeleport = new AfterTeleportEvent(tpToCoords, tpFromCoords);
+
         foreach (var tp in entities) //for each entity in list of detected entities
         {
             if (!_physicsQuery.HasComp(tp)) //if it hasn't got physics, skip it, it's probably not meant to be teleported.
@@ -299,20 +298,22 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
 
             _transform.DropNextTo(tp, tpTo); //bit scuffed but because the map the target will be on won't neccisarily be the same as the Teleframe we first drop them next to the target THEN scatter.
             var scatterpos = new Vector2( //create scatter coordinates as teleported entities' X and Y values +/- scatter range.
-                _transform.ToMapCoordinates(tpEnt.Coordinates).X + _random.NextFloat(-ent.Comp.TeleportScatterRange, ent.Comp.TeleportScatterRange),
-                _transform.ToMapCoordinates(tpEnt.Coordinates).Y + _random.NextFloat(-ent.Comp.TeleportScatterRange, ent.Comp.TeleportScatterRange));
+                _transform.ToMapCoordinates(tpEnt.Coordinates).X + Random.NextFloat(-ent.Comp.TeleportScatterRange, ent.Comp.TeleportScatterRange),
+                _transform.ToMapCoordinates(tpEnt.Coordinates).Y + Random.NextFloat(-ent.Comp.TeleportScatterRange, ent.Comp.TeleportScatterRange));
 
             _transform.SetWorldPosition(tp, scatterpos); //set final position after scatter
-            RaiseLocalEvent(tp, new AfterTeleportEvent(tpToCoords, tpFromCoords)); //send that teleported entity an event to do something with
+            RaiseLocalEvent(tp, ref afterTeleport); //send that teleported entity an event to do something with
 
-            if (_random.NextFloat(0, 1) < ent.Comp.IncidentChance) //roll for teleport incident
+            var (roll, score) = RollForIncident(ent);
+            if (roll == true) //roll for teleport incident
             {
-                RaiseLocalEvent(tp, new TeleportIncidentEvent(ent.Comp.IncidentMultiplier)); //send a teleport incident to do something fun with
+                var teleportIncident = new TeleportIncidentEvent(score, ent.Comp.IncidentMultiplier);
+                RaiseLocalEvent(tp, ref teleportIncident); //send a teleport incident to do something fun with
                 incidentCount += 1;
             }
             entCount += 1; //iterate number of teleported entities for admin logging purposes
         }
-        RaiseLocalEvent(ent.Owner, new AfterTeleportEvent(tpToCoords, tpFromCoords)); //send the teleporter itself an AfterTeleportEvent
+        RaiseLocalEvent(ent.Owner, ref afterTeleport); //send the teleporter itself an AfterTeleportEvent
         var target = Transform(tpTo);
         var from = Transform(tpFrom);
         _adminLogger.Add(LogType.Teleport, $"{ToPrettyString(ent.Owner)} has teleported {entCount} entities from {_transform.ToMapCoordinates(from.Coordinates)} to {_transform.ToMapCoordinates(target.Coordinates)} with {incidentCount} incidents");
@@ -329,9 +330,9 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         Spawn(ent.Comp.TeleportFinishEffect, args.From);
 
         if (Exists(ent.Comp.TeleportTo)) //teleport effects have built in despawn on triggers, so call those to end gracefully
-            RaiseLocalEvent(ent.Comp.TeleportTo ?? EntityUid.Invalid, new TriggerEvent(ent.Comp.TeleportTo ?? EntityUid.Invalid));
+            RaiseLocalEvent(ent.Comp.TeleportTo!.Value, new TriggerEvent(ent.Comp.TeleportTo!.Value));
         if (Exists(ent.Comp.TeleportFrom))
-            RaiseLocalEvent(ent.Comp.TeleportFrom ?? EntityUid.Invalid, new TriggerEvent(ent.Comp.TeleportTo ?? EntityUid.Invalid));
+            RaiseLocalEvent(ent.Comp.TeleportFrom!.Value, new TriggerEvent(ent.Comp.TeleportTo!.Value));
 
         ent.Comp.TeleportTo = null; //clean up
         ent.Comp.TeleportFrom = null;
@@ -351,7 +352,7 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         var target = ent.Comp.TeleportSend ? ent.Comp.TeleportTo : ent.Comp.TeleportFrom; //if TeleportSend is true, TeleportTo is target, if false, TeleportFrom is target.
         if (target == null) //null if entityUid's of TeleportTo/From not set, shouldn't happen but we cancel anyway.
             return;
-        var targetSafe = target ?? EntityUid.Invalid; //denullable
+        var targetSafe = target!.Value; //denullable
         string proximity = _navMap.GetNearestBeaconString((targetSafe, Transform(targetSafe)));
 
         var message = Loc.GetString(
@@ -361,16 +362,16 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
             ("X", ent.Comp.Target.Position.X.ToString("0")),
             ("Y", ent.Comp.Target.Position.Y.ToString("0")),
             ("proximity", proximity), //contains colour data, which messes with spoken notifications
-            ("map", _maps.TryGetMap(ent.Comp.Target.MapId, out var mapEnt) ? Name(mapEnt ?? EntityUid.Invalid) : Loc.GetString("teleporter-location-unknown"))
+            ("map", _maps.TryGetMap(ent.Comp.Target.MapId, out var mapEnt) ? Name(mapEnt!.Value) : Loc.GetString("teleporter-location-unknown"))
         );                                                                  //if mapEnt is null the other option would have been chosen so safe denullable
 
-        var linkedConsoleSafe = ent.Comp.LinkedConsole ?? EntityUid.Invalid;
+        var linkedConsoleSafe = ent.Comp.LinkedConsole!.Value;
         RaiseLocalEvent(linkedConsoleSafe, new TeleframeConsoleSpeak(message, true, true));
 
     }
 
     /// <summary>
-    /// checks if speec is allowed, if it is, let console speak
+    /// checks if speech is allowed, if it is, let console speak
     /// </summary>
     public void OnSpeak(Entity<TeleframeConsoleComponent> ent, ref TeleframeConsoleSpeak args)
     {
@@ -378,8 +379,8 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         {
             if (args.Voice == true) //speak vocally
                 _chat.TrySendInGameICMessage(ent.Owner, args.Message, InGameICChatType.Speak, hideChat: true);
-            if (args.Radio == true && ent.Comp.NoRadio == false) //speak over radio
-                _radio.SendRadioMessage(ent.Owner, args.Message, ent.Comp.AnnouncementChannel!, ent.Owner, escapeMarkup: false);
+            if (args.Radio == true && ent.Comp.AnnouncementChannel != null) //speak over radio
+                _radio.SendRadioMessage(ent.Owner, args.Message, ent.Comp.AnnouncementChannel!.Value, ent.Owner, escapeMarkup: false);
         }
     }
 
@@ -484,29 +485,5 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
             return;
 
         PowerOff(ent);
-    }
-
-    /// <summary>
-    /// tell user power status and charge level
-    /// </summary>
-    private void OnExamined(Entity<TeleframeComponent> ent, ref ExaminedEvent args)
-    {
-        if (ent.Comp.IsPowered == true)
-        {
-            args.PushMarkup(Loc.GetString("power-receiver-component-on-examine-main", ("stateText", Loc.GetString("power-receiver-component-on-examine-powered"))));
-            if (HasComp<TeleframeChargingComponent>(ent))
-            {
-                args.PushMarkup(Loc.GetString("teleporter-examine-charging"));
-            }
-
-            if (HasComp<TeleframeRechargingComponent>(ent))
-            {
-                args.PushMarkup(Loc.GetString("teleporter-examine-recharging"));
-            }
-        }
-        else
-        {
-            args.PushMarkup(Loc.GetString("power-receiver-component-on-examine-main", ("stateText", Loc.GetString("power-receiver-component-on-examine-unpowered"))));
-        }
     }
 }
