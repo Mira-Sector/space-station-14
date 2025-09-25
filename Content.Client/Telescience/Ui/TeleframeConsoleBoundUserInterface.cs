@@ -1,4 +1,4 @@
-﻿using Content.Shared.Teleportation.Components;
+using Content.Shared.Teleportation.Components;
 using Content.Shared.Telescience.Components;
 using Content.Shared.Telescience;
 using Robust.Client.UserInterface;
@@ -12,7 +12,7 @@ namespace Content.Client.Telescience.Ui;
 public sealed class TeleframeConsoleBoundUserInterface : BoundUserInterface
 {
     [ViewVariables]
-    private TeleframeConsoleUI? _menu;
+    private TeleframeConsoleWindow? _menu;
     private readonly IEntityManager _entMan;
     private readonly SharedTransformSystem _transform;
     [Dependency] private readonly IGameTiming _timing = default!;
@@ -27,21 +27,20 @@ public sealed class TeleframeConsoleBoundUserInterface : BoundUserInterface
     {
         base.Open();
 
-        _menu = this.CreateWindow<TeleframeConsoleUI>();
+        _menu = this.CreateWindow<TeleframeConsoleWindow>();
 
         if (!EntMan.TryGetComponent<TeleframeConsoleComponent>(Owner, out var teleComp))
             return;
 
-        if (!EntMan.TryGetComponent<TransformComponent>(Owner, out var transComp))
-            return;
+        var xform = EntMan.GetComponent<TransformComponent>(Owner);
 
-        var pos = _transform.GetMapCoordinates(Owner, xform: transComp); //get map coordinates for max range and setting map ID for custom coordinates
+        var pos = _transform.GetMapCoordinates(Owner, xform: xform); //get map coordinates for max range and setting map ID for custom coordinates
         var coordX = 0;
         var coordY = 0;
         var coordXValid = false;
         var coordYValid = false;
         var beaconValid = false;
-        TeleportPoint selectedBeacon = new TeleportPoint();
+        TeleportPoint selectedBeacon = new();
 
 
         _menu.Beacons = GetValidBeacons(teleComp.BeaconList);
@@ -184,7 +183,7 @@ public sealed class TeleframeConsoleBoundUserInterface : BoundUserInterface
     //return true if they are (doesn't mean teleportation is possible)
     //check should be performed any time teleportation possibility changes
     //check should be performed consistently outside this too, not sure how to do that, could just add a refresh button.
-    public bool TeleportCheck(TeleframeConsoleUI menu, bool buttons, string message)
+    public bool TeleportCheck(TeleframeConsoleWindow menu, bool buttons, string message)
     {
         if (!EntMan.TryGetComponent<TeleframeConsoleComponent>(Owner, out var teleComp))
             return false;

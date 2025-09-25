@@ -1,4 +1,4 @@
-﻿using Content.Shared.Teleportation.Systems;
+using Content.Shared.Teleportation.Systems;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
@@ -55,12 +55,13 @@ public partial record struct TeleportPoint
 {
     [DataField]
     public string Location;
+
     [DataField]
     public NetEntity TelePoint;
 
-    public TeleportPoint(string Location, NetEntity TelePoint)
+    public TeleportPoint(string location, NetEntity telePoint)
     {
-        this.Location = Location;
-        this.TelePoint = TelePoint;
+        Location = location;
+        TelePoint = telePoint;
     }
 }

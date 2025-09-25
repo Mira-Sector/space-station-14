@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using Content.Client.UserInterface.Controls;
 using Content.Shared.Teleportation.Components;
 using Content.Shared.Telescience.Components;
@@ -11,7 +11,7 @@ using Robust.Client.UserInterface.Controls;
 namespace Content.Client.Telescience.Ui;
 
 [GenerateTypedNameReferences]
-public sealed partial class TeleframeConsoleUI : FancyWindow
+public sealed partial class TeleframeConsoleWindow : FancyWindow
 {
     public HashSet<TeleportPoint> Beacons = new();
     //public Vector2 Coordinates = new Vector2(0, 0);
@@ -22,7 +22,7 @@ public sealed partial class TeleframeConsoleUI : FancyWindow
     public event Action<int>? OnCoordsXChanged;
     public event Action<int>? OnCoordsYChanged;
 
-    public TeleframeConsoleUI()
+    public TeleframeConsoleWindow()
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
