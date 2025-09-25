@@ -6,6 +6,8 @@ using Content.Shared.Interaction;
 using Content.Shared.Popups;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Timing;
+using Robust.Shared.Map;
+using Robust.Shared.GameObjects;
 
 namespace Content.Shared.Telescience.Systems;
 
@@ -14,24 +16,15 @@ public abstract class SharedTeleframeBeaconSystem : EntitySystem
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] protected readonly SharedAudioSystem Audio = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly SharedTransformSystem _transform = default!;
     public override void Initialize()
     {
         base.Initialize();
-        SubscribeLocalEvent<TeleframeConsoleComponent, ComponentStartup>(OnConsoleStart);
 
         SubscribeLocalEvent<TeleframeBeaconComponent, AfterInteractEvent>(OnBeaconInteract);
         SubscribeLocalEvent<TeleframeBeaconComponent, NewLinkEvent>(OnNewBeaconLink);
         SubscribeLocalEvent<TeleframeBeaconComponent, AnchorStateChangedEvent>(OnAnchorChange);
-        SubscribeLocalEvent<TeleframeBeaconComponent, ComponentStartup>(OnBeaconStart); //consider AnchorEntity and Unanchor Entity using an alt action like Fultonn to auto-anchor
-    }
-
-    private void OnConsoleStart(Entity<TeleframeConsoleComponent> ent, ref ComponentStartup args)
-    {
-        if (TryComp<TeleframeBeaconComponent>(ent, out var beacon)) //if entity is both a console and a beacon, adds itself to its own beaconlist.
-        {
-            ent.Comp.BeaconList.Add(new TeleportPoint(Loc.GetString("Teleporter-beacon-self", ("name", Name(ent))), GetNetEntity(ent)));
-            Dirty(ent, beacon);
-        }
+        SubscribeLocalEvent<TeleframeBeaconComponent, ComponentStartup>(OnBeaconStart); //consider AnchorEntity and Unanchor Entity using an alt action like Fulton to auto-anchor
     }
 
     private void OnBeaconInteract(Entity<TeleframeBeaconComponent> ent, ref AfterInteractEvent args) //when beacon is used on a console, add it to the console's beaconlist
@@ -75,7 +68,10 @@ public abstract class SharedTeleframeBeaconSystem : EntitySystem
     {
         if (TryComp<TeleframeConsoleComponent>(args.Sink, out var beacon)) //link Teleframe beacon to Teleframe console
         {
-            beacon.BeaconList.Add(new TeleportPoint(Name(ent.Owner), GetNetEntity(ent.Owner)));
+            if (ent.Owner == args.Sink) //if we're linking to ourselves, indicate such for QoL
+                beacon.BeaconList.Add(new TeleportPoint(Loc.GetString("teleporter-beacon-self", ("name", Name(ent.Owner))), GetNetEntity(ent.Owner)));
+            else
+                beacon.BeaconList.Add(new TeleportPoint(Name(ent.Owner), GetNetEntity(ent.Owner)));
             Audio.PlayPvs(ent.Comp.LinkSound, ent.Owner);
             Dirty(args.Sink, beacon);
             Dirty(ent);

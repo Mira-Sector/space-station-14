@@ -33,58 +33,46 @@ public abstract class SharedTeleframeSystem : EntitySystem
         SubscribeLocalEvent<TeleframeComponent, GotEmaggedEvent>(OnTeleframeEmagged);
         SubscribeLocalEvent<TeleframeComponent, ExaminedEvent>(OnExamined);
 
-        SubscribeLocalEvent<TeleframeConsoleComponent, TeleframeActivateMessage>(OnTeleportStart);
-        SubscribeLocalEvent<TeleframeConsoleComponent, TeleframeActivateBeaconMessage>(OnTeleportBeaconStart);
+        SubscribeLocalEvent<TeleframeConsoleComponent, TeleframeActivateMessage>(OnTeleportActivate);
         SubscribeLocalEvent<TeleframeConsoleComponent, NewLinkEvent>(OnNewLink);
         SubscribeLocalEvent<TeleframeConsoleComponent, PortDisconnectedEvent>(OnPortDisconnected);
         SubscribeLocalEvent<TeleframeConsoleComponent, GotEmaggedEvent>(OnConsoleEmagged);
     }
-    public void OnTeleportStart(Entity<TeleframeConsoleComponent> ent, ref TeleframeActivateMessage args)
+    public virtual void OnTeleportSpeak(Entity<TeleframeComponent> ent, string location) { }
+    public virtual bool StartTeleport(Entity<TeleframeComponent> ent) { return false; }
+
+    /// <summary>
+    /// The initial setup function for teleporting
+    /// No need to inform player of fails here as client has the same blockers that do so
+    /// </summary>
+    /// <param name="ent"></param>
+    /// <param name="args"></param>
+    public void OnTeleportActivate(Entity<TeleframeConsoleComponent> ent, ref TeleframeActivateMessage args)
     {
         if (!Timing.IsFirstTimePredicted) //prevent it getting spammed
             return;
 
-        var consoleCoords = Transform(ent).Coordinates;
-
-        if (!TryGetEntity(ent.Comp.LinkedTeleframe, out var teleNetEnt) || !TryComp<TeleframeComponent>(teleNetEnt, out var teleComp))
-            return; //if no linked Teleframe, can't teleport.
+        if (ent.Comp.LinkedTeleframe == null || !TryGetEntity(ent.Comp.LinkedTeleframe, out var teleEnt) || !TryComp<TeleframeComponent>(teleEnt, out var teleComp))
+            return; //if null, nonexistent, or lacking teleframe component, return
 
         if (teleComp.IsPowered == false || teleComp.ReadyToTeleport == false)
-            return;
+            return; //if the teleframe isn't powered or ready, return
 
-        var teleEnt = teleNetEnt!.Value;                                //de-nullable teleNetEnt to prevent RaiseLocalEvent getting upset.
-        var tp = Transform(teleEnt);                                    //get transform of the Teleframe for MapID
-        teleComp.Target = new MapCoordinates(args.Coords, tp.MapID);    //coordinates of target, need to be able to replace MapId for beacons
-        teleComp.TeleportSend = args.Send;
-
-        if (ent.Comp.MaxRange == null || args.Coords.X <= Math.Abs(consoleCoords.X + (float)ent.Comp.MaxRange) && args.Coords.Y <= Math.Abs(consoleCoords.Y + (float)ent.Comp.MaxRange))
-        {   //check max range on custom coordinates, beacons dont have this limitation.
-            Dirty(teleEnt, teleComp);
-            RaiseLocalEvent(teleEnt, args); //raise a message on the Teleframe itself, used in generating teleport speech
+        var consoleCoords = Transform(ent).Coordinates;
+        if (ent.Comp.MaxRange == null || args.RangeBypass == true || //teleport beacons ignore range limits
+        args.Coords.X <= Math.Abs(consoleCoords.X + (float)ent.Comp.MaxRange) && args.Coords.Y <= Math.Abs(consoleCoords.Y + (float)ent.Comp.MaxRange))
+        {   //is teleport target coords within MaxRange of current coords
+            teleComp.Target = args.Coords; //if successful, update everything
+            teleComp.TeleportSend = args.Send;
+            Dirty(teleEnt!.Value, teleComp);
+            //RaiseLocalEvent(teleEnt!.Value, args); //raise a message on the Teleframe itself, used in preparing a teleport speech
+            if (StartTeleport((teleEnt!.Value, teleComp)) == true)
+                OnTeleportSpeak((teleEnt!.Value, teleComp), args.Name);
         }
         else
         {
-            return;
+            return; //if requirements not met, return
         }
-    }
-
-    public void OnTeleportBeaconStart(Entity<TeleframeConsoleComponent> ent, ref TeleframeActivateBeaconMessage args)
-    {
-        if (!Timing.IsFirstTimePredicted) //prevent it getting spammed
-            return;
-
-        if (!TryGetEntity(ent.Comp.LinkedTeleframe, out var teleNetEnt) || !TryComp<TeleframeComponent>(teleNetEnt, out var teleComp))
-            return; //if no linked Teleframe, can't teleport.
-
-        if (teleComp.IsPowered == false || teleComp.ReadyToTeleport == false)
-            return;
-
-        var teleEnt = teleNetEnt!.Value;                                //de-nullable teleNetEnt to prevent RaiseLocalEvent getting upset.
-        var tp = Transform(GetEntity(args.Beacon.TelePoint));           //get transform of the beacon
-        teleComp.Target = _transform.ToMapCoordinates(tp.Coordinates);  //coordinates of target, need to be able to replace MapId for beacons
-        teleComp.TeleportSend = args.Send;
-        Dirty(teleEnt, teleComp);
-        RaiseLocalEvent(teleEnt, args); //raise a message on the Teleframe itself, used in generating teleport speech
     }
 
     /// <summary>

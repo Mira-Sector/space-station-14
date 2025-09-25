@@ -12,6 +12,7 @@ using Content.Server.Pinpointer;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
 using Content.Server.Chat.Systems;
+using Content.Server.Explosion.Components;
 using Robust.Shared.Physics.Components;
 using System.Numerics;
 
@@ -34,8 +35,7 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<TeleframeComponent, TeleframeActivateMessage>(TeleportCustom);
-        SubscribeLocalEvent<TeleframeComponent, TeleframeActivateBeaconMessage>(TeleportBeacon);
+        SubscribeLocalEvent<TeleframeComponent, TeleframeActivateMessage>(OnActivate);
         SubscribeLocalEvent<TeleframeComponent, AfterTeleportEvent>(OnTeleportFinish);
         SubscribeLocalEvent<TeleframeComponent, PowerConsumerReceivedChanged>(ReceivedChanged);
         SubscribeLocalEvent<TeleframeComponent, AnchorStateChangedEvent>(OnAnchorStateChanged);
@@ -73,22 +73,9 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         }
     }
 
-    /// <summary>
-    /// Begin teleportation to/from beacon
-    /// </summary>
-    public void TeleportBeacon(Entity<TeleframeComponent> ent, ref TeleframeActivateBeaconMessage args)
+    private void OnActivate(Entity<TeleframeComponent> ent, ref TeleframeActivateMessage args)
     {
-        if (StartTeleport(ent) == true)
-            OnTeleportSpeak(ent, args.Beacon.Location); //if teelportation successful, speak
-    }
-
-    /// <summary>
-    /// Begin teleportation to/from custom location
-    /// </summary>
-    public void TeleportCustom(Entity<TeleframeComponent> ent, ref TeleframeActivateMessage args)
-    {
-        if (StartTeleport(ent) == true)
-            OnTeleportSpeak(ent, Loc.GetString("teleporter-target-custom")); //if teleportation successful, speak
+        OnTeleportSpeak(ent, args.Name);
     }
 
     /// <summary>
@@ -147,6 +134,7 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         if (TryComp<PowerConsumerComponent>(ent, out var powerConsumer))
             powerConsumer.DrawRate = ent.Comp.PowerUseActive; // set to high power draw to recharge
 
+        Dirty(ent);
         UpdateAppearance(ent);
     }
 
@@ -204,7 +192,7 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
     /// In server because prediction causes it to spam portals regardless of what i do to stop it
     /// </summary>
     /// <param name="ent"></param>
-    public bool StartTeleport(Entity<TeleframeComponent> ent)
+    public override bool StartTeleport(Entity<TeleframeComponent> ent)
     {
         if (!Timing.IsFirstTimePredicted) //prevent it getting spammed
             return false;
@@ -233,6 +221,8 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         //Log.Debug($"{ent.Comp.Tpx.ToString()},{ent.Comp.Tpx.ToString()}");
 
         var tpCoords = ent.Comp.Target; //coordinates of target
+
+        Log.Debug(tpCoords.Position.ToString());
 
         Spawn(ent.Comp.TeleportBeginEffect, tpCoords); //flash start effect
         var targetPortal = Spawn(targetEffect, tpCoords); //put target portal on target Coords.
@@ -270,9 +260,9 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
     /// <param name="ent">TeleframeComponent Entity</param>
     private void OnTeleport(Entity<TeleframeComponent> ent)
     {
-        if (ent.Comp.TeleportFrom == null) //backup for if no TeleportFrom selecter, choose the Owner.
+        if (!Exists(ent.Comp.TeleportFrom)) //backup for if no TeleportFrom selecter, choose the Owner.
             ent.Comp.TeleportFrom = ent.Owner;
-        if (ent.Comp.TeleportTo == null) //backup for if no TeleportTo, choose Teleport From to just teleport in place
+        if (!Exists(ent.Comp.TeleportTo)) //backup for if no TeleportTo, choose Teleport From to just teleport in place
             ent.Comp.TeleportTo = ent.Comp.TeleportFrom;
 
         var tpFrom = ent.Comp.TeleportFrom ?? ent.Owner; //denullable, shouldn't happen
@@ -330,9 +320,15 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         Spawn(ent.Comp.TeleportFinishEffect, args.From);
 
         if (Exists(ent.Comp.TeleportTo)) //teleport effects have built in despawn on triggers, so call those to end gracefully
+        {
+            EnsureComp<DeleteOnTriggerComponent>(ent.Comp.TeleportTo!.Value); //if it doesn't have it for some reason now it does
             RaiseLocalEvent(ent.Comp.TeleportTo!.Value, new TriggerEvent(ent.Comp.TeleportTo!.Value));
+        }
         if (Exists(ent.Comp.TeleportFrom))
+        {
+            EnsureComp<DeleteOnTriggerComponent>(ent.Comp.TeleportFrom!.Value);
             RaiseLocalEvent(ent.Comp.TeleportFrom!.Value, new TriggerEvent(ent.Comp.TeleportTo!.Value));
+        }
 
         ent.Comp.TeleportTo = null; //clean up
         ent.Comp.TeleportFrom = null;
@@ -341,7 +337,7 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
     /// <summary>
     /// prepare message to say over radio/voice that the teleportation is underway
     /// </summary>
-    public void OnTeleportSpeak(Entity<TeleframeComponent> ent, string location)
+    public override void OnTeleportSpeak(Entity<TeleframeComponent> ent, string location)
     {
         if (ent.Comp.LinkedConsole == null) //no point if no console
             return;

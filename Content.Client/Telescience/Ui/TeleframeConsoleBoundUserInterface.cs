@@ -1,10 +1,11 @@
-﻿using System.Numerics;
-using Content.Shared.Teleportation.Components;
+﻿using Content.Shared.Teleportation.Components;
 using Content.Shared.Telescience.Components;
 using Content.Shared.Telescience;
 using Robust.Client.UserInterface;
-using Robust.Shared.Timing;
 using Robust.Client.GameObjects;
+using Robust.Shared.Timing;
+using Robust.Shared.Map;
+using System.Numerics;
 
 namespace Content.Client.Telescience.Ui;
 
@@ -93,14 +94,14 @@ public sealed class TeleframeConsoleBoundUserInterface : BoundUserInterface
         { //for beacons have an if that is true if beacon selected and false if not. If true, use a seperate activate message.
             if (coordXValid == true && coordYValid == true) //require values to be input before teleport can be sent
             {
-                SendPredictedMessage(new TeleframeActivateMessage(new Vector2(coordX, coordY), send));
+                SendPredictedMessage(new TeleframeActivateMessage(new MapCoordinates(new Vector2(coordX, coordY), pos.MapId), Loc.GetString("teleporter-target-custom"), send));
                 TeleportCheck(_menu, false, Loc.GetString("teleporter-summary-notready"));
             }
             else
             {
                 if (beaconValid == true)
                 {
-                    SendPredictedMessage(new TeleframeActivateBeaconMessage(selectedBeacon, send));
+                    SendPredictedMessage(new TeleframeActivateMessage(_transform.GetMapCoordinates(EntMan.GetEntity(selectedBeacon.TelePoint)), selectedBeacon.Location, send, true));
                     TeleportCheck(_menu, false, Loc.GetString("teleporter-summary-notready"));
                 }
             }
@@ -110,14 +111,14 @@ public sealed class TeleframeConsoleBoundUserInterface : BoundUserInterface
         {
             if (coordXValid == true && coordYValid == true) //require values to be input before Teleframe can be sent
             {
-                SendPredictedMessage(new TeleframeActivateMessage(new Vector2(coordX, coordY), send));
+                SendPredictedMessage(new TeleframeActivateMessage(new MapCoordinates(new Vector2(coordX, coordY), pos.MapId), Loc.GetString("teleporter-target-custom"), send));
                 TeleportCheck(_menu, false, Loc.GetString("teleporter-summary-notready"));
             }
             else
             {
                 if (beaconValid == true)
                 {
-                    SendPredictedMessage(new TeleframeActivateBeaconMessage(selectedBeacon, send));
+                    SendPredictedMessage(new TeleframeActivateMessage(_transform.GetMapCoordinates(EntMan.GetEntity(selectedBeacon.TelePoint)), selectedBeacon.Location, send, true));
                     TeleportCheck(_menu, false, Loc.GetString("teleporter-summary-notready"));
                 }
             }
@@ -183,7 +184,7 @@ public sealed class TeleframeConsoleBoundUserInterface : BoundUserInterface
 
         if (teleComp.LinkedTeleframe != null) //set link name
         {
-            var (uid, meta) = EntMan.GetEntityData(teleComp.LinkedTeleframe ?? NetEntity.Invalid);
+            var (uid, meta) = EntMan.GetEntityData(teleComp.LinkedTeleframe!.Value);
             if (!EntMan.TryGetComponent<TeleframeComponent>(uid, out var tpComp))
                 return false;
 

@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
-using Robust.Shared.Serialization;
 using Content.Shared.Teleportation.Components;
+using Robust.Shared.Serialization;
+using Robust.Shared.Map;
 
 namespace Content.Shared.Telescience;
 
@@ -10,25 +11,15 @@ public enum TeleframeConsoleUiKey : byte
     Key
 }
 
-//Should really combine these two activate messages into a set of MapCoordinates, a send bool, and a Location name
-
 /// <summary>
-/// Sends message to request that the linked Teleframe is activated if it exists. Teleports to a custom location.
+/// Sends message to request that the linked Teleframe is activated if it exists.
+/// EntityCoordinates are not Serializable so we make do
 /// </summary>
 [Serializable, NetSerializable]
-public sealed class TeleframeActivateMessage(Vector2 coords, bool send) : BoundUserInterfaceMessage
+public sealed class TeleframeActivateMessage(MapCoordinates coords, string name, bool send, bool rangeBypass = false) : BoundUserInterfaceMessage
 {
-    public Vector2 Coords = coords;
-    public bool Send = send;
-}
-
-
-/// <summary>
-/// Sends message to request that the linked Teleframe is activated if it exists. Teleports to a beacon.
-/// </summary>
-[Serializable, NetSerializable]
-public sealed class TeleframeActivateBeaconMessage(TeleportPoint beacon, bool send) : BoundUserInterfaceMessage
-{
-    public TeleportPoint Beacon = beacon;
-    public bool Send = send;
+    public MapCoordinates Coords = coords;
+    public string Name = name;  // name of target, may be seperate from entity name
+    public bool Send = send; //whether sending (true) or receiving (false)
+    public bool RangeBypass = rangeBypass; //whether to ignore range limits (for beacons)
 }

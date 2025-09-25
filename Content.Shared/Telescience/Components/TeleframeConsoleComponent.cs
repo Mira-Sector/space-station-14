@@ -4,6 +4,8 @@ using Content.Shared.Teleportation.Components;
 using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
 using Robust.Shared.GameStates;
+using Robust.Shared.Map;
+using Robust.Shared.Serialization;
 
 
 namespace Content.Shared.Telescience.Components;
@@ -35,7 +37,7 @@ public sealed partial class TeleframeConsoleComponent : Component
     public ProtoId<SourcePortPrototype> LinkingPort = "TeleportSender";
 
     [DataField, ViewVariables, AutoNetworkedField]
-    public HashSet<TeleportPoint> BeaconList = new();
+    public HashSet<TeleportPoint> BeaconList = new(); //times switching between TeleportPoint and NetCoordinates: 4
 
     /// <summary>
     /// The radio channel that that teleporation events are broadcast to

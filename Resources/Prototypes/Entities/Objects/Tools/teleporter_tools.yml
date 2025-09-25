@@ -117,8 +117,6 @@
         type: TeleframeConsoleBoundUserInterface
       enum.WiresUiKey.Key:
         type: WiresBoundUserInterface
-  - type: ApcPowerReceiver
-    powerLoad: 1000
   - type: Computer
   - type: ContainerContainer
     containers:
@@ -129,13 +127,14 @@
     drawRate: 1.5
   - type: ToggleCellDraw
   - type: StaticPrice
-    price: 150
+    price: 200
 
 - type: entity
   name: handheld teleframe console
   parent: HandHeldTeleframeConsole
   id: HandHeldTeleframeConsoleEmpty
   description: A miniaturised teleframe console with built-in teleport beacon.
+  suffix: Empty
   components:
   - type: ItemSlots
     slots:

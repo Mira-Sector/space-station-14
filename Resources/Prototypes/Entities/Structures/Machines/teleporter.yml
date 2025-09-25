@@ -136,3 +136,25 @@
     - state: idle
       map: ["TeleframeVisualState"]
       shader: unshaded
+
+- type: entity
+  id: TeleporterMoff
+  parent: TeleporterCC
+  name: mothroachframe
+  suffix: Admeme
+  description: This is beyond science.
+  components:
+  - type: Teleframe
+    chargeDuration: 4
+    rechargeDuration: 5
+    incidentChance: -10
+    incidentMultiplier: -10
+    teleportScatterRange: 0.25
+    teleportRange: 1
+    powerUseActive: 500
+    teleportToEffect: MobMothroach #these entities can be anything that doesn't despawn too quickly
+    teleportFromEffect: MobMothroach #they'll delete themselves after teleportation concludes
+    teleportBeginEffect: EffectGravityPulse #so can these but they don't delete themselves automatically
+    teleportFinishEffect: EffectFlashTeleportFinish
+
+
