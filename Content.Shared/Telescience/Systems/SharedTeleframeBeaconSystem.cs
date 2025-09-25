@@ -45,7 +45,7 @@ public abstract class SharedTeleframeBeaconSystem : EntitySystem
             {                                          //could do that override thingy but...eeh I don't think this is exactly performance deleting
                 if (beacon.TelePoint == newBeacon.TelePoint)
                     present = true;
-            } //check all netentities in beaconlist to see if the interafcter is already there.
+            } //check all netentities in beaconlist to see if the interacter is already there.
 
             if (present == false) //if not found, add to beaconlist
             {
@@ -69,12 +69,13 @@ public abstract class SharedTeleframeBeaconSystem : EntitySystem
         if (TryComp<TeleframeConsoleComponent>(args.Sink, out var beacon)) //link Teleframe beacon to Teleframe console
         {
             if (ent.Owner == args.Sink) //if we're linking to ourselves, indicate such for QoL
-                beacon.BeaconList.Add(new TeleportPoint(Loc.GetString("teleporter-beacon-self", ("name", Name(ent.Owner))), GetNetEntity(ent.Owner)));
-            else
-                beacon.BeaconList.Add(new TeleportPoint(Name(ent.Owner), GetNetEntity(ent.Owner)));
+                return;
+
+            beacon.BeaconList.Add(new TeleportPoint(Name(ent.Owner), GetNetEntity(ent.Owner)));
             Audio.PlayPvs(ent.Comp.LinkSound, ent.Owner);
-            Dirty(args.Sink, beacon);
             Dirty(ent);
+            Dirty(args.Sink, beacon);
+
         }
     }
 
@@ -93,6 +94,11 @@ public abstract class SharedTeleframeBeaconSystem : EntitySystem
         {
             ent.Comp.ValidBeacon = Transform(ent).Anchored;
             Dirty(ent);
+        }
+        if (TryComp<TeleframeConsoleComponent>(ent, out var consoleComp)) //if it is also a teleframe console, adds itself to its own list
+        {
+            consoleComp.BeaconList.Add(new TeleportPoint(Loc.GetString("teleporter-beacon-self", ("name", Name(ent.Owner))), GetNetEntity(ent.Owner)));
+            Dirty(ent.Owner, consoleComp);
         }
     }
 

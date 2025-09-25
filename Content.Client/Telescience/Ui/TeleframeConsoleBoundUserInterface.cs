@@ -167,8 +167,15 @@ public sealed class TeleframeConsoleBoundUserInterface : BoundUserInterface
 
         if (EntMan.TryGetComponent<TeleframeRechargingComponent>(uid, out var recharge))
         {
-            var timeLeft = (int)(recharge.EndTime - _timing.CurTime).TotalSeconds;
-            return Loc.GetString("teleporter-recharging", ("time", timeLeft));
+            if (recharge.Pause == false)
+            {
+                var timeLeft = (int)(recharge.EndTime - _timing.CurTime).TotalSeconds;
+                return Loc.GetString("teleporter-recharging", ("time", timeLeft));
+            }
+            else
+            {
+                return Loc.GetString("teleporter-recharging", ("time", "paused"));
+            }
         }
 
         return Loc.GetString("teleporter-active");

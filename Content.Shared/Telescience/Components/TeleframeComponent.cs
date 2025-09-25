@@ -78,13 +78,13 @@ public sealed partial class TeleframeComponent : Component
     /// Power draw when actively charging/recharging
     /// </summary>
     [DataField, ViewVariables(VVAccess.ReadWrite)]
-    public int PowerUseActive = 5000;
+    public int PowerUseActive = 10000;
 
     /// <summary>
     /// Power draw when idle
     /// </summary>
     [DataField, ViewVariables(VVAccess.ReadWrite)]
-    public int PowerUseIdle = 50;
+    public int PowerUseIdle = 1000;
 
     /// <summary>
     /// score that must be met or exceeded for the teleframe to explode due to a random incident, incidentMult*(1d100/100)

@@ -15,6 +15,7 @@ using Content.Server.Chat.Systems;
 using Content.Server.Explosion.Components;
 using Robust.Shared.Physics.Components;
 using System.Numerics;
+using Robust.Shared.Utility;
 
 namespace Content.Server.Telescience;
 
@@ -84,12 +85,21 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
     private void OnChargeStart(Entity<TeleframeChargingComponent> ent, ref ComponentStartup args)
     {
         if (TryComp<TeleframeComponent>(ent, out var teleComp)) //when charging starts, update appearance to charge animation
+        {
             UpdateAppearance((ent.Owner, teleComp));
+            if (TryComp<PowerConsumerComponent>(ent, out var powerConsumer))
+            {
+                powerConsumer.DrawRate = teleComp.PowerUseActive; // set to high power draw, it actually takes a while to build up due to high demand so this preps for recharge
+            }
+        }
+
     }
     private void OnRechargeEnd(Entity<TeleframeRechargingComponent> ent, ref ComponentShutdown args)
     {
         if (TryComp<TeleframeComponent>(ent, out var teleComp)) //when recharging ends, update apperarance to on animation
+        {
             UpdateAppearance((ent.Owner, teleComp));            //recharge component isn't removed if teleframe is depowered
+        }
     }
 
     /// <summary>
@@ -131,10 +141,6 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
             Dirty(ent, rechargeComp);
         }
 
-        if (TryComp<PowerConsumerComponent>(ent, out var powerConsumer))
-            powerConsumer.DrawRate = ent.Comp.PowerUseActive; // set to high power draw to recharge
-
-        Dirty(ent);
         UpdateAppearance(ent);
     }
 
@@ -184,7 +190,7 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         if (TryComp<PowerConsumerComponent>(ent, out var powerConsumer))
             powerConsumer.DrawRate = ent.Comp.PowerUseIdle; // recharge end so idle power
 
-        Dirty(ent);
+        UpdateAppearance(ent);
     }
 
     /// <summary>
@@ -374,7 +380,7 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         if (!_emag.CheckFlag(ent.Owner, EmagType.Interaction)) //no speak if emagged
         {
             if (args.Voice == true) //speak vocally
-                _chat.TrySendInGameICMessage(ent.Owner, args.Message, InGameICChatType.Speak, hideChat: true);
+                _chat.TrySendInGameICMessage(ent.Owner, FormattedMessage.RemoveMarkupOrThrow(args.Message), InGameICChatType.Speak, hideChat: true);
             if (args.Radio == true && ent.Comp.AnnouncementChannel != null) //speak over radio
                 _radio.SendRadioMessage(ent.Owner, args.Message, ent.Comp.AnnouncementChannel!.Value, ent.Owner, escapeMarkup: false);
         }
@@ -403,16 +409,18 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
     /// </summary>
     private void ReceivedChanged(Entity<TeleframeComponent> ent, ref PowerConsumerReceivedChanged args)
     {
-        if (args.ReceivedPower < args.DrawRate)
+        if (Math.Ceiling(args.ReceivedPower) < Math.Floor(args.DrawRate)) //floating point errors at large values
         {
             if (TryComp<TeleframeRechargingComponent>(ent, out var rechargeComp) && args.ReceivedPower > 0) //if recharging and there is some power, don't turn off, just wait.
             {
                 rechargeComp.Pause = true;
                 rechargeComp.PauseTime = rechargeComp.EndTime - Timing.CurTime;
+                Dirty(ent.Owner, rechargeComp);
             }
             else
             {
-                PowerOff(ent);
+                if (args.ReceivedPower <= 0)
+                    PowerOff(ent);
             }
         }
         else
@@ -435,12 +443,14 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
             chargeComp.TeleportSuccess = false;
             chargeComp.FailReason = Loc.GetString("teleport-fail-power");
             EndTeleportCharge(ent, chargeComp);
+            Dirty(ent.Owner, chargeComp);
         }
 
         if (TryComp<TeleframeRechargingComponent>(ent, out var rechargeComp))
         {
             rechargeComp.Pause = true;
             rechargeComp.PauseTime = rechargeComp.EndTime - Timing.CurTime;
+            Dirty(ent.Owner, rechargeComp);
         }
 
         UpdateAppearance(ent);
@@ -453,14 +463,20 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
     private void PowerOn(Entity<TeleframeComponent> ent)
     {
         ent.Comp.IsPowered = true;
+        if (HasComp<TeleframeChargingComponent>(ent))
+            return;
 
         if (TryComp<TeleframeRechargingComponent>(ent, out var rechargeComp))
         {
-            rechargeComp.Pause = false;
-            rechargeComp.EndTime = Timing.CurTime + rechargeComp.PauseTime;
-            rechargeComp.PauseTime = TimeSpan.FromSeconds(0);
-            if (TryComp<PowerConsumerComponent>(ent, out var powerConsumer))
-                powerConsumer.DrawRate = ent.Comp.PowerUseActive; // set to high power draw as still recharging
+            if (rechargeComp.Pause == true)
+            {
+                rechargeComp.Pause = false;
+                rechargeComp.EndTime = Timing.CurTime + rechargeComp.PauseTime;
+                rechargeComp.PauseTime = TimeSpan.FromSeconds(0);
+                if (TryComp<PowerConsumerComponent>(ent, out var powerConsumer))
+                    powerConsumer.DrawRate = ent.Comp.PowerUseActive; // set to high power draw as still recharging
+                Dirty(ent.Owner, rechargeComp);
+            }
         }
         else
         {

@@ -80,6 +80,7 @@
     incidentChance: 0.15
     teleportBeginEffect: EffectGravityPulse
     teleportFinishEffect: EffectFlashTeleportFinish
+    powerUseActive: 20000
     explosionScore: 2.1 #if Emagged 30% explosion chance per use
   - type: LightningTarget
 
@@ -98,6 +99,7 @@
     teleportScatterRange: 0.5
     teleportToEffect: TeleportToEffectQuiet
     teleportFromEffect: TeleportFromEffectQuiet
+    powerUseActive: 5000
     explosionScore: 2.4 #if Emagged 20% explosion chance per use
   - type: Sprite
     sprite: Structures/teleframe_syndicate.rsi

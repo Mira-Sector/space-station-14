@@ -13,8 +13,10 @@ teleporter-charging = charging ({$time})
 teleporter-recharging = recharging ({$time})
 teleporter-unpowered = unpowered
 
-teleporter-examine-charging = the teleframe is charging
-teleporter-examine-recharging = the teleframe is recharging
+
+teleporter-examine-charging = the teleframe is charging.
+teleporter-examine-recharging = the teleframe is recharging.
+teleporter-examine-recharging-paused = the teleframe has insufficient power to recharge.
 
 teleporter-summary-insufficient = Insufficient Data to Teleport
 teleporter-summary-bigrange = Teleport Coordinates too large, maximum {$range}

@@ -194,7 +194,7 @@ public abstract class SharedTeleframeSystem : EntitySystem
             Dirty(ent.Owner, light);
         }
 
-        _appearance.SetData(ent.Owner, TeleframeVisuals.VisualState, state);
+        _appearance.SetData(ent.Owner, TeleframeVisuals.VisualState, state); //Dirties itself
         Dirty(ent);
     }
 
@@ -211,9 +211,12 @@ public abstract class SharedTeleframeSystem : EntitySystem
                 args.PushMarkup(Loc.GetString("teleporter-examine-charging"));
             }
 
-            if (HasComp<TeleframeRechargingComponent>(ent))
+            if (TryComp<TeleframeRechargingComponent>(ent, out var rechargeComp))
             {
-                args.PushMarkup(Loc.GetString("teleporter-examine-recharging"));
+                if (rechargeComp.Pause == false)
+                    args.PushMarkup(Loc.GetString("teleporter-examine-recharging"));
+                else
+                    args.PushMarkup(Loc.GetString("teleporter-examine-recharging-paused"));
             }
         }
         else
