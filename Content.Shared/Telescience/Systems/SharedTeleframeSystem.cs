@@ -9,12 +9,12 @@ using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using Content.Shared.Telescience.Ui;
 
 namespace Content.Shared.Telescience.Systems;
 
 public abstract class SharedTeleframeSystem : EntitySystem
 {
-
     [Dependency] private readonly LinkedEntitySystem _link = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
@@ -38,8 +38,6 @@ public abstract class SharedTeleframeSystem : EntitySystem
         SubscribeLocalEvent<TeleframeConsoleComponent, PortDisconnectedEvent>(OnPortDisconnected);
         SubscribeLocalEvent<TeleframeConsoleComponent, GotEmaggedEvent>(OnConsoleEmagged);
     }
-    public virtual void OnTeleportSpeak(Entity<TeleframeComponent> ent, string location) { }
-    public virtual bool StartTeleport(Entity<TeleframeComponent> ent) { return false; }
 
     /// <summary>
     /// The initial setup function for teleporting
@@ -63,11 +61,10 @@ public abstract class SharedTeleframeSystem : EntitySystem
         args.Coords.X <= Math.Abs(consoleCoords.X + (float)ent.Comp.MaxRange) && args.Coords.Y <= Math.Abs(consoleCoords.Y + (float)ent.Comp.MaxRange))
         {   //is teleport target coords within MaxRange of current coords
             teleComp.Target = args.Coords; //if successful, update everything
-            teleComp.TeleportSend = args.Send;
-            Dirty(teleEnt!.Value, teleComp);
-            //RaiseLocalEvent(teleEnt!.Value, args); //raise a message on the Teleframe itself, used in preparing a teleport speech
-            if (StartTeleport((teleEnt!.Value, teleComp)) == true)
+            if (StartTeleport((teleEnt!.Value, teleComp), args.Mode))
                 OnTeleportSpeak((teleEnt!.Value, teleComp), args.Name);
+
+            Dirty(teleEnt!.Value, teleComp);
         }
         else
         {
@@ -159,6 +156,15 @@ public abstract class SharedTeleframeSystem : EntitySystem
         ent.Comp.IncidentMultiplier += 2;   //and they'll be very spicy
 
         args.Handled = true;
+    }
+
+    public virtual void OnTeleportSpeak(Entity<TeleframeComponent> ent, string location)
+    {
+    }
+
+    public virtual bool StartTeleport(Entity<TeleframeComponent> ent, TeleframeActivationMode mode)
+    {
+        return false;
     }
 
     /// <summary>

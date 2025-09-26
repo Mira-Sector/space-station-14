@@ -1,5 +1,6 @@
 using Content.Shared.Telescience;
 using Content.Shared.Telescience.Systems;
+using Content.Shared.Telescience.Ui;
 using Content.Shared.Teleportation.Systems;
 using Content.Shared.Telescience.Components;
 using Content.Shared.Database;
@@ -31,7 +32,9 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
     [Dependency] private readonly IAdminLogManager _adminLogger = default!;
     [Dependency] private readonly LightningSystem _lightning = default!;
-    private EntityQuery<PhysicsComponent> _physicsQuery; // declare the variable for the query
+
+    private EntityQuery<PhysicsComponent> _physicsQuery;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -84,22 +87,18 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
     /// </summary>
     private void OnChargeStart(Entity<TeleframeChargingComponent> ent, ref ComponentStartup args)
     {
-        if (TryComp<TeleframeComponent>(ent, out var teleComp)) //when charging starts, update appearance to charge animation
-        {
-            UpdateAppearance((ent.Owner, teleComp));
-            if (TryComp<PowerConsumerComponent>(ent, out var powerConsumer))
-            {
-                powerConsumer.DrawRate = teleComp.PowerUseActive; // set to high power draw, it actually takes a while to build up due to high demand so this preps for recharge
-            }
-        }
+        if (!TryComp<TeleframeComponent>(ent, out var teleComp)) //when charging starts, update appearance to charge animation
+            return;
+
+        UpdateAppearance((ent.Owner, teleComp));
+        if (TryComp<PowerConsumerComponent>(ent, out var powerConsumer))
+            powerConsumer.DrawRate = teleComp.PowerUseActive; // set to high power draw, it actually takes a while to build up due to high demand so this preps for recharge
 
     }
     private void OnRechargeEnd(Entity<TeleframeRechargingComponent> ent, ref ComponentShutdown args)
     {
         if (TryComp<TeleframeComponent>(ent, out var teleComp)) //when recharging ends, update apperarance to on animation
-        {
             UpdateAppearance((ent.Owner, teleComp));            //recharge component isn't removed if teleframe is depowered
-        }
     }
 
     /// <summary>
@@ -110,20 +109,16 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         if (!Timing.IsFirstTimePredicted) //prevent it getting spammed
             return;
 
-        if (!Exists(ent.Comp.TeleportFrom) || !Exists(ent.Comp.TeleportTo)) //final check that these two exist to teleport from and to
+        if (ent.Comp.ActiveTeleportInfo == null)
         {
             charge.TeleportSuccess = false; //if either doesn't obvs you can't teleport
             charge.FailReason = "nolink";
         }
 
-        if (charge.TeleportSuccess == true) //if teleport is still good to go, engage
-        {
+        if (charge.TeleportSuccess) //if teleport is still good to go, engage
             OnTeleport(ent); //teleport
-        }
         else
-        {
             TeleportFail(ent, charge.FailReason); //if not, say why
-        }
 
         var (roll, score) = RollForIncident(ent); //safe teleportation? Not on my watch
         if (roll == true && score > ent.Comp.ExplosionScore)
@@ -150,8 +145,11 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
     /// </summary>
     public void TeleportFail(Entity<TeleframeComponent> ent, string failReason)
     {
-        EntityManager.PredictedQueueDeleteEntity(ent.Comp.TeleportFrom); //these handle the entity being null so no need for further checks
-        EntityManager.PredictedQueueDeleteEntity(ent.Comp.TeleportTo);
+        if (ent.Comp.ActiveTeleportInfo is { } teleInfo)
+        {
+            PredictedQueueDel(GetEntity(teleInfo.From));
+            PredictedQueueDel(GetEntity(teleInfo.To));
+        }
 
         var pos = Transform(ent).Coordinates;
         SpawnAtPosition("EffectFlashBluespace", pos); //flash
@@ -198,7 +196,7 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
     /// In server because prediction causes it to spam portals regardless of what i do to stop it
     /// </summary>
     /// <param name="ent"></param>
-    public override bool StartTeleport(Entity<TeleframeComponent> ent)
+    public override bool StartTeleport(Entity<TeleframeComponent> ent, TeleframeActivationMode mode)
     {
         if (!Timing.IsFirstTimePredicted) //prevent it getting spammed
             return false;
@@ -211,38 +209,23 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         var ev = new BeforeTeleportEvent(ent);
         RaiseLocalEvent(ent, ref ev);
 
-        var sourceEffect = ent.Comp.TeleportFromEffect; //default Send teleport, Teleport From Source to Target
-        var targetEffect = ent.Comp.TeleportToEffect;
+        var sourceEffect = ent.Comp.TeleportModeEffects.GetValueOrDefault(mode);
+        var targetEffect = ent.Comp.TeleportModeEffects.GetValueOrDefault(mode.GetOpposite());
 
-        if (ent.Comp.TeleportSend != true) //if not the case, reverse.
-        {
-            sourceEffect = ent.Comp.TeleportToEffect; //opposite, Teleport to Source from Target
-            targetEffect = ent.Comp.TeleportFromEffect;
-        }
-
-        //Prototype
         Spawn(ent.Comp.TeleportBeginEffect, tp.Coordinates); //flash start effect
         var sourcePortal = Spawn(sourceEffect, tp.Coordinates); //put source portal on Teleframe
 
-        //Log.Debug($"{ent.Comp.Tpx.ToString()},{ent.Comp.Tpx.ToString()}");
-
         var tpCoords = ent.Comp.Target; //coordinates of target
-
-        Log.Debug(tpCoords.Position.ToString());
 
         Spawn(ent.Comp.TeleportBeginEffect, tpCoords); //flash start effect
         var targetPortal = Spawn(targetEffect, tpCoords); //put target portal on target Coords.
 
-        if (ent.Comp.TeleportSend == true)
-        {   //send from Source to Target
-            ent.Comp.TeleportFrom = sourcePortal;
-            ent.Comp.TeleportTo = targetPortal;
-        }
-        else
-        {   //send to Source from Target
-            ent.Comp.TeleportTo = sourcePortal;
-            ent.Comp.TeleportFrom = targetPortal;
-        }
+        ent.Comp.ActiveTeleportInfo = mode switch
+        {
+            TeleframeActivationMode.Send => new TeleframeActiveTeleportInfo(mode, GetNetEntity(targetPortal), GetNetEntity(sourcePortal)),
+            TeleframeActivationMode.Receive => new TeleframeActiveTeleportInfo(mode, GetNetEntity(sourcePortal), GetNetEntity(targetPortal)),
+            _ => throw new NotImplementedException()
+        };
 
         //add power draw here
         //add teleportbegin event here?
@@ -266,18 +249,16 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
     /// <param name="ent">TeleframeComponent Entity</param>
     private void OnTeleport(Entity<TeleframeComponent> ent)
     {
-        if (!Exists(ent.Comp.TeleportFrom)) //backup for if no TeleportFrom selecter, choose the Owner.
-            ent.Comp.TeleportFrom = ent.Owner;
-        if (!Exists(ent.Comp.TeleportTo)) //backup for if no TeleportTo, choose Teleport From to just teleport in place
-            ent.Comp.TeleportTo = ent.Comp.TeleportFrom;
+        if (ent.Comp.ActiveTeleportInfo is not { } teleInfo)
+            return;
 
-        var tpFrom = ent.Comp.TeleportFrom ?? ent.Owner; //denullable, shouldn't happen
-        var tpTo = ent.Comp.TeleportTo ?? ent.Owner; //denullable, shouldn't happen
+        var tpFrom = GetEntity(teleInfo.From);
+        var tpTo = GetEntity(teleInfo.To);
 
         var entities = _lookup.GetEntitiesInRange(tpFrom, ent.Comp.TeleportRadius, flags: LookupFlags.Uncontained); //get everything in teleport radius range that isn't in a container
         //getting from inside a container would result in teleporting organs outside of the body, or machine parts outside of machines, this is not good.
-        int entCount = 0;
-        int incidentCount = 0;
+        var entCount = 0;
+        var incidentCount = 0;
         var tpToCoords = _transform.ToMapCoordinates(Transform(tpTo).Coordinates); //have to use map coordinates as these entities will be deleted after teleportation concludes
         var tpFromCoords = _transform.ToMapCoordinates(Transform(tpFrom).Coordinates);
         var afterTeleport = new AfterTeleportEvent(tpToCoords, tpFromCoords);
@@ -325,19 +306,20 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         Spawn(ent.Comp.TeleportFinishEffect, args.To); //finish effects
         Spawn(ent.Comp.TeleportFinishEffect, args.From);
 
-        if (Exists(ent.Comp.TeleportTo)) //teleport effects have built in despawn on triggers, so call those to end gracefully
+        if (ent.Comp.ActiveTeleportInfo is { } teleInfo)
         {
-            EnsureComp<DeleteOnTriggerComponent>(ent.Comp.TeleportTo!.Value); //if it doesn't have it for some reason now it does
-            RaiseLocalEvent(ent.Comp.TeleportTo!.Value, new TriggerEvent(ent.Comp.TeleportTo!.Value));
-        }
-        if (Exists(ent.Comp.TeleportFrom))
-        {
-            EnsureComp<DeleteOnTriggerComponent>(ent.Comp.TeleportFrom!.Value);
-            RaiseLocalEvent(ent.Comp.TeleportFrom!.Value, new TriggerEvent(ent.Comp.TeleportTo!.Value));
+            var tpTo = GetEntity(teleInfo.To);
+            EnsureComp<DeleteOnTriggerComponent>(tpTo); //if it doesn't have it for some reason now it does
+            RaiseLocalEvent(tpTo, new TriggerEvent(tpTo));
+
+            var tpFrom = GetEntity(teleInfo.From);
+            EnsureComp<DeleteOnTriggerComponent>(tpFrom);
+            RaiseLocalEvent(tpFrom, new TriggerEvent(tpTo));
         }
 
-        ent.Comp.TeleportTo = null; //clean up
-        ent.Comp.TeleportFrom = null;
+        //clean up
+        ent.Comp.ActiveTeleportInfo = null;
+        Dirty(ent);
     }
 
     /// <summary>
@@ -348,18 +330,21 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
         if (ent.Comp.LinkedConsole == null) //no point if no console
             return;
 
-        if (!Exists(ent.Comp.TeleportTo) || !Exists(ent.Comp.TeleportFrom)) //if teleport entities don't exist, exit.
+        if (ent.Comp.ActiveTeleportInfo is not { } teleInfo)
             return;
 
-        var target = ent.Comp.TeleportSend ? ent.Comp.TeleportTo : ent.Comp.TeleportFrom; //if TeleportSend is true, TeleportTo is target, if false, TeleportFrom is target.
-        if (target == null) //null if entityUid's of TeleportTo/From not set, shouldn't happen but we cancel anyway.
-            return;
-        var targetSafe = target!.Value; //denullable
-        string proximity = _navMap.GetNearestBeaconString((targetSafe, Transform(targetSafe)));
+        var target = teleInfo.Mode switch
+        {
+            TeleframeActivationMode.Send => GetEntity(teleInfo.To),
+            TeleframeActivationMode.Receive => GetEntity(teleInfo.From),
+            _ => throw new NotImplementedException()
+        };
+
+        var proximity = _navMap.GetNearestBeaconString((target, Transform(target)));
 
         var message = Loc.GetString(
             "teleporter-console-activate",
-            ("send", ent.Comp.TeleportSend),
+            ("send", teleInfo.Mode),
             ("targetName", location),
             ("X", ent.Comp.Target.Position.X.ToString("0")),
             ("Y", ent.Comp.Target.Position.Y.ToString("0")),
@@ -369,7 +354,6 @@ public sealed class TeleframeSystem : SharedTeleframeSystem
 
         var linkedConsoleSafe = ent.Comp.LinkedConsole!.Value;
         RaiseLocalEvent(linkedConsoleSafe, new TeleframeConsoleSpeak(message, true, true));
-
     }
 
     /// <summary>

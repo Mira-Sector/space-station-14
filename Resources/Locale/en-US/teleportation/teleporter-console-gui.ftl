@@ -27,8 +27,8 @@ teleporter-summary-unavailable = Teleporter Not Available
 
 teleporter-target-custom = target
 teleporter-console-activate = Initiating Teleportation {$send ->
-    [true] to
-    *[false] from
+    [Send] to
+    *[Receive] from
     } {$targetName} at ({$X}, {$Y}) {$proximity} of {$map}.
 
 teleporter-location-unknown = Unknown Location
