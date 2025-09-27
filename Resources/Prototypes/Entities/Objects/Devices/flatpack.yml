@@ -266,3 +266,24 @@
     guides:
     - Botany
     - Chemicals
+
+- type: entity
+  parent: BaseFlatpack
+  id: TeleporterScienceFlatpack
+  name: teleframe core flatpack
+  description: A flatpack used for constructing a teleframe core. It seems warm.
+  components:
+  - type: Flatpack
+    entity: TeleporterScience
+  - type: StaticPrice
+    price: 5000
+
+- type: entity
+  parent: BaseFlatpack
+  id: ComputerTeleporterFlatpack
+  name: teleporter console flatpack
+  description: A flatpack used for constructing a teleporter console.
+  components:
+  - type: Flatpack
+    entity: ComputerTeleporter
+

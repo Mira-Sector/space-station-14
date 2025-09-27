@@ -109,6 +109,7 @@
   cost: 10000
   recipeUnlocks:
   - DeviceQuantumSpinInverter
+  - HandHeldTeleframeConsoleEmpty
 
 - type: technology
   id: BluespaceTimeManipulation

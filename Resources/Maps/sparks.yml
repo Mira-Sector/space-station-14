@@ -4,8 +4,8 @@ meta:
   engineVersion: 264.0.0
   forkId: ""
   forkVersion: ""
-  time: 09/09/2025 00:16:48
-  entityCount: 9245
+  time: 09/25/2025 21:51:05
+  entityCount: 9240
 maps:
 - 1
 grids:
@@ -60,7 +60,7 @@ entities:
   - uid: 1
     components:
     - type: MetaData
-      name: Map Entity
+      name: NTSC-Sparks
     - type: Transform
     - type: Map
       mapPaused: True
@@ -589,6 +589,7 @@ entities:
           decals:
             1962: 79,101
             2248: 79,102
+            2315: 78,101
         - node:
             color: '#37789BFF'
             id: BrickTileWhiteCornerNw
@@ -655,6 +656,7 @@ entities:
           decals:
             2250: 77,102
             2251: 76,101
+            2314: 77,101
         - node:
             color: '#37789BFF'
             id: BrickTileWhiteCornerSe
@@ -706,6 +708,7 @@ entities:
             id: BrickTileWhiteCornerSe
           decals:
             1963: 79,99
+            2317: 78,100
         - node:
             color: '#37789BFF'
             id: BrickTileWhiteCornerSw
@@ -758,6 +761,7 @@ entities:
             id: BrickTileWhiteCornerSw
           decals:
             2253: 76,99
+            2316: 77,100
         - node:
             color: '#4B709CFF'
             id: BrickTileWhiteEndE
@@ -3316,7 +3320,7 @@ entities:
             1: 3663
           12,23:
             0: 4096
-            5: 238
+            2: 238
             1: 49152
           10,25:
             0: 34824
@@ -3379,10 +3383,10 @@ entities:
             0: 275
             1: 19976
           14,6:
-            2: 224
-            3: 57344
+            3: 224
+            4: 57344
           14,7:
-            4: 224
+            5: 224
           14,8:
             1: 61166
           15,5:
@@ -3499,7 +3503,7 @@ entities:
             1: 65520
           12,22:
             1: 238
-            5: 57344
+            2: 57344
           13,21:
             1: 43567
           13,22:
@@ -3599,9 +3603,9 @@ entities:
             1: 24339
             0: 8
           17,6:
-            2: 57568
+            3: 57568
           17,7:
-            2: 224
+            3: 224
           17,8:
             1: 28927
           18,5:
@@ -3968,55 +3972,55 @@ entities:
           - 0
           - 0
         - volume: 2500
-          temperature: 293.15
-          moles:
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-        - volume: 2500
-          temperature: 293.15
-          moles:
-          - 0
-          - 6666.982
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-        - volume: 2500
-          temperature: 293.15
-          moles:
-          - 6666.982
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-          - 0
-        - volume: 2500
           temperature: 235
           moles:
           - 27.225372
           - 102.419266
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+        - volume: 2500
+          temperature: 293.15
+          moles:
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+        - volume: 2500
+          temperature: 293.15
+          moles:
+          - 0
+          - 6666.982
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+        - volume: 2500
+          temperature: 293.15
+          moles:
+          - 6666.982
+          - 0
           - 0
           - 0
           - 0
@@ -6903,6 +6907,8 @@ entities:
         shunting: !type:ContainerSlot {}
   - uid: 2676
     components:
+    - type: MetaData
+      name: Telescience APC
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 80.5,100.5
@@ -7222,13 +7228,6 @@ entities:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 61.42974,53.779415
-      parent: 2
-- proto: BarricadeBlock
-  entities:
-  - uid: 9199
-    components:
-    - type: Transform
-      pos: 80.5,98.5
       parent: 2
 - proto: BarSign
   entities:
@@ -12443,26 +12442,22 @@ entities:
     - type: Transform
       pos: 71.712845,100.74917
       parent: 2
-- proto: CableApcStack1
-  entities:
-  - uid: 9196
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 82.26841,97.86467
-      parent: 2
-  - uid: 9197
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 82.66424,97.61467
-      parent: 2
 - proto: CableHV
   entities:
   - uid: 14
     components:
     - type: Transform
       pos: 75.5,91.5
+      parent: 2
+  - uid: 122
+    components:
+    - type: Transform
+      pos: 85.5,98.5
+      parent: 2
+  - uid: 719
+    components:
+    - type: Transform
+      pos: 85.5,101.5
       parent: 2
   - uid: 1385
     components:
@@ -15628,6 +15623,11 @@ entities:
     - type: Transform
       pos: 68.5,93.5
       parent: 2
+  - uid: 2701
+    components:
+    - type: Transform
+      pos: 84.5,101.5
+      parent: 2
   - uid: 3053
     components:
     - type: Transform
@@ -15692,6 +15692,11 @@ entities:
     components:
     - type: Transform
       pos: 78.5,91.5
+      parent: 2
+  - uid: 9086
+    components:
+    - type: Transform
+      pos: 86.5,98.5
       parent: 2
   - uid: 9097
     components:
@@ -15768,20 +15773,20 @@ entities:
     - type: Transform
       pos: 83.5,100.5
       parent: 2
-  - uid: 9138
-    components:
-    - type: Transform
-      pos: 85.5,100.5
-      parent: 2
   - uid: 9139
     components:
     - type: Transform
-      pos: 85.5,99.5
+      pos: 86.5,99.5
       parent: 2
   - uid: 9140
     components:
     - type: Transform
-      pos: 85.5,98.5
+      pos: 86.5,101.5
+      parent: 2
+  - uid: 9198
+    components:
+    - type: Transform
+      pos: 86.5,100.5
       parent: 2
 - proto: CableHVStack
   entities:
@@ -18140,6 +18145,12 @@ entities:
     components:
     - type: Transform
       pos: 51.5,34.5
+      parent: 2
+  - uid: 2698
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 84.5,101.5
       parent: 2
 - proto: Candle
   entities:
@@ -22049,13 +22060,6 @@ entities:
     - type: Physics
       canCollide: False
     - type: InsideEntityStorage
-- proto: ClothingOuterSuitEmergency
-  entities:
-  - uid: 9125
-    components:
-    - type: Transform
-      pos: 84.392456,101.646576
-      parent: 2
 - proto: ClothingShoesBootsMagSci
   entities:
   - uid: 3181
@@ -22417,14 +22421,6 @@ entities:
       parent: 2
     - type: SurgeryUserInterfaceLinkedSink
       source: 6343
-- proto: ComputerBroken
-  entities:
-  - uid: 5888
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 82.5,97.5
-      parent: 2
 - proto: ComputerCargoBounty
   entities:
   - uid: 3231
@@ -22529,14 +22525,6 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 73.5,76.5
       parent: 2
-- proto: ComputerFrame
-  entities:
-  - uid: 7690
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 81.5,97.5
-      parent: 2
 - proto: ComputerFundingAllocation
   entities:
   - uid: 3246
@@ -22616,6 +22604,12 @@ entities:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: 51.5,35.5
+      parent: 2
+  - uid: 5888
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 81.5,97.5
       parent: 2
 - proto: ComputerResearchAndDevelopment
   entities:
@@ -22768,6 +22762,21 @@ entities:
       rot: 3.141592653589793 rad
       pos: 81.5,95.5
       parent: 2
+- proto: ComputerTeleporterScience
+  entities:
+  - uid: 7690
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 82.5,97.5
+      parent: 2
+    - type: TeleframeConsole
+      linkedTeleframe: 9138
+    - type: DeviceLinkSource
+      linkedPorts:
+        9138:
+        - - TeleportSender
+          - TeleportReceiver
 - proto: ConvertAltarSpawner
   entities:
   - uid: 3279
@@ -26331,11 +26340,6 @@ entities:
       parent: 2
 - proto: EmergencyNitrogenTankFilled
   entities:
-  - uid: 2698
-    components:
-    - type: Transform
-      pos: 85.00704,101.53198
-      parent: 2
   - uid: 3866
     components:
     - type: Transform
@@ -26348,11 +26352,6 @@ entities:
       parent: 2
 - proto: EmergencyOxygenTankFilled
   entities:
-  - uid: 719
-    components:
-    - type: Transform
-      pos: 84.798706,101.552826
-      parent: 2
   - uid: 3868
     components:
     - type: Transform
@@ -47002,6 +47001,11 @@ entities:
     - type: Transform
       pos: 87.79814,31.298893
       parent: 2
+  - uid: 9125
+    components:
+    - type: Transform
+      pos: 84.75657,101.51756
+      parent: 2
 - proto: HandheldHealthAnalyzer
   entities:
   - uid: 6071
@@ -48373,13 +48377,6 @@ entities:
     - type: Transform
       pos: 55.5,82.5
       parent: 2
-- proto: MachineFrame
-  entities:
-  - uid: 2701
-    components:
-    - type: Transform
-      pos: 85.5,98.5
-      parent: 2
 - proto: MachineMaterialSilo
   entities:
   - uid: 6243
@@ -49692,14 +49689,6 @@ entities:
     - type: Physics
       canCollide: False
     - type: InsideEntityStorage
-  - uid: 5887
-    components:
-    - type: MetaData
-      desc: Its tiny hands are trying their best
-      name: busy moth plushie
-    - type: Transform
-      pos: 86.3624,98.70032
-      parent: 2
 - proto: PlushieSharkBlue
   entities:
   - uid: 6416
@@ -49973,13 +49962,6 @@ entities:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 79.5,79.5
-      parent: 2
-- proto: PosterLegitScience
-  entities:
-  - uid: 8303
-    components:
-    - type: Transform
-      pos: 80.5,99.5
       parent: 2
 - proto: PosterLegitSecWatch
   entities:
@@ -53669,29 +53651,12 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 53.826862,11.239277
       parent: 2
-  - uid: 9202
-    components:
-    - type: Transform
-      pos: 86.810074,98.75009
-      parent: 2
 - proto: ScrapGlass
   entities:
   - uid: 7108
     components:
     - type: Transform
       pos: 68.63829,43.0373
-      parent: 2
-  - uid: 9200
-    components:
-    - type: Transform
-      pos: 86.28924,97.90634
-      parent: 2
-- proto: ScrapTube
-  entities:
-  - uid: 9201
-    components:
-    - type: Transform
-      pos: 84.76841,98.66676
       parent: 2
 - proto: Screen
   entities:
@@ -53751,6 +53716,12 @@ entities:
     - type: Transform
       pos: 66.5,69.5
       parent: 2
+    - type: TechnologyDatabase
+      supportedDisciplines:
+      - Industrial
+      - Arsenal
+      - Experimental
+      - CivilianServices
 - proto: SeedExtractor
   entities:
   - uid: 7118
@@ -53774,11 +53745,6 @@ entities:
     components:
     - type: Transform
       pos: 81.12664,87.242966
-      parent: 2
-  - uid: 9198
-    components:
-    - type: Transform
-      pos: 82.67466,97.92717
       parent: 2
 - proto: SheetGlass
   entities:
@@ -55029,6 +54995,13 @@ entities:
     - type: Transform
       pos: 53.5,37.5
       parent: 2
+- proto: SignTeleSci
+  entities:
+  - uid: 9136
+    components:
+    - type: Transform
+      pos: 80.5,99.5
+      parent: 2
 - proto: SignVault
   entities:
   - uid: 7249
@@ -55167,6 +55140,11 @@ entities:
     components:
     - type: Transform
       pos: 51.5,33.5
+      parent: 2
+  - uid: 8303
+    components:
+    - type: Transform
+      pos: 85.5,101.5
       parent: 2
 - proto: SMESMachineCircuitboard
   entities:
@@ -58093,11 +58071,6 @@ entities:
     - type: Transform
       pos: 69.5,70.5
       parent: 2
-  - uid: 9136
-    components:
-    - type: Transform
-      pos: 85.5,101.5
-      parent: 2
 - proto: TableWood
   entities:
   - uid: 2522
@@ -58403,6 +58376,33 @@ entities:
     - type: Transform
       pos: 51.5,39.5
       parent: 2
+- proto: TeleportBeacon
+  entities:
+  - uid: 5887
+    components:
+    - type: Transform
+      pos: 84.21704,101.47075
+      parent: 2
+    - type: TeleframeBeacon
+      validBeacon: False
+  - uid: 9197
+    components:
+    - type: Transform
+      pos: 84.477455,101.47075
+      parent: 2
+    - type: TeleframeBeacon
+      validBeacon: False
+- proto: TeleporterScience
+  entities:
+  - uid: 9138
+    components:
+    - type: Transform
+      pos: 85.5,98.5
+      parent: 2
+    - type: Teleframe
+      linkedConsole: 7690
+    - type: PowerConsumer
+      drawRate: 1000
 - proto: Thruster
   entities:
   - uid: 7759
@@ -58915,11 +58915,6 @@ entities:
       parent: 2
 - proto: ToolboxMechanicalFilled
   entities:
-  - uid: 122
-    components:
-    - type: Transform
-      pos: 85.43072,101.634796
-      parent: 2
   - uid: 7841
     components:
     - type: Transform
@@ -59922,6 +59917,12 @@ entities:
     - type: Transform
       pos: 72.5,53.5
       parent: 2
+    - type: TechnologyDatabase
+      supportedDisciplines:
+      - Industrial
+      - Arsenal
+      - Experimental
+      - CivilianServices
 - proto: VehicleKeyJanicart
   entities:
   - uid: 7908
@@ -66158,7 +66159,7 @@ entities:
       pos: 55.5,56.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -78838.23
+      secondsUntilStateChange: -79510.63
       state: Opening
 - proto: WoodenBench
   entities:
@@ -66204,10 +66205,5 @@ entities:
     components:
     - type: Transform
       pos: 79.70232,23.467133
-      parent: 2
-  - uid: 9086
-    components:
-    - type: Transform
-      pos: 86.13323,98.596146
       parent: 2
 ...
