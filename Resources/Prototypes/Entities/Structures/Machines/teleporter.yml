@@ -99,8 +99,8 @@
     incidentMultiplier: 0.50
     teleportScatterRange: 0.5
     teleportModeEffects:
-      Send: "TeleportFromEffectQuiet"
-      Receive: "TeleportToEffectQuiet"
+      Send: TeleportFromEffectQuiet
+      Receive: TeleportToEffectQuiet
     powerUseActive: 5000
     explosionScore: 2.4 #if Emagged 20% explosion chance per use
   - type: Sprite
@@ -131,8 +131,8 @@
     teleportRange: 0.45
     powerUseActive: 500
     teleportModeEffects:
-      Send: "TeleportFromEffectQuiet"
-      Receive: "TeleportToEffectQuiet"
+      Send: TeleportFromEffectQuiet
+      Receive: TeleportToEffectQuiet
   - type: Sprite
     sprite: Structures/teleframe.rsi
     drawdepth: HighFloorObjects
@@ -157,8 +157,9 @@
     teleportScatterRange: 0.25
     teleportRange: 1
     powerUseActive: 500
-    teleportToEffect: MobMothroach #these entities can be anything that doesn't despawn too quickly
-    teleportFromEffect: MobMothroach #they'll delete themselves after teleportation concludes
+    teleportModeEffects:
+      Send: MobMothroach #these entities can be anything that doesn't despawn too quickly
+      Receive: MobMothroach #they'll delete themselves after teleportation concludes
     teleportBeginEffect: EffectGravityPulse #so can these but they don't delete themselves automatically
     teleportFinishEffect: EffectFlashTeleportFinish
 
