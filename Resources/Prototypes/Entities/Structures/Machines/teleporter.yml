@@ -78,8 +78,9 @@
     chargeDuration: 5
     rechargeDuration: 20
     incidentChance: 0.15
-    teleportBeginEffect: EffectGravityPulse
-    teleportFinishEffect: EffectFlashTeleportFinish
+    teleportModeEffects:
+      Send: "TeleportFromEffect"
+      Receive: "TeleportToEffect"
     powerUseActive: 20000
     explosionScore: 2.1 #if Emagged 30% explosion chance per use
   - type: LightningTarget
@@ -97,8 +98,9 @@
     incidentChance: 0.10
     incidentMultiplier: 0.50
     teleportScatterRange: 0.5
-    teleportToEffect: TeleportToEffectQuiet
-    teleportFromEffect: TeleportFromEffectQuiet
+    teleportModeEffects:
+      Send: "TeleportFromEffectQuiet"
+      Receive: "TeleportToEffectQuiet"
     powerUseActive: 5000
     explosionScore: 2.4 #if Emagged 20% explosion chance per use
   - type: Sprite
@@ -128,8 +130,9 @@
     teleportScatterRange: 0.25
     teleportRange: 0.45
     powerUseActive: 500
-    teleportToEffect: TeleportToEffectQuiet
-    teleportFromEffect: TeleportFromEffectQuiet
+    teleportModeEffects:
+      Send: "TeleportFromEffectQuiet"
+      Receive: "TeleportToEffectQuiet"
   - type: Sprite
     sprite: Structures/teleframe.rsi
     drawdepth: HighFloorObjects
