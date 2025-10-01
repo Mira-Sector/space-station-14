@@ -1664,4 +1664,7 @@
       board: ComputerTeleporterCircuitboard
     - type: TeleframeConsole
       maxRange: 20000
+    - type: TeleframeConsoleRadio
       announcementChannel: Science
+      speakIc: true
+

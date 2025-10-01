@@ -4,4 +4,4 @@ namespace Content.Shared.Telescience.Events;
 /// Event raised on the frame that are to experience a teleport incident
 /// </summary>
 [ByRefEvent]
-public record struct TelescienceFrameIncidentEvent(float Score, float IncidentMult);
+public record struct TeleframeIncidentEvent(float Score, float IncidentMult);

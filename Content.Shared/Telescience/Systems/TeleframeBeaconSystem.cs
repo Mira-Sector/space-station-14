@@ -27,13 +27,13 @@ public sealed partial class TeleframeBeaconSystem : EntitySystem
 
     private void OnBeaconInteract(Entity<TeleframeBeaconComponent> ent, ref AfterInteractEvent args) //when beacon is used on a console, add it to the console's beaconlist
     {
+        if (!_timing.IsFirstTimePredicted) //prevent it getting spammed
+            return;
+
         if (args.Handled || !args.CanReach || args.Target == null)
             return;
 
         args.Handled = true;
-
-        if (!_timing.IsFirstTimePredicted) //prevent it getting spammed
-            return;
 
         if (TryComp<TeleframeConsoleComponent>(args.Target, out var console)) //does target have consolecomponent
         {
@@ -48,14 +48,14 @@ public sealed partial class TeleframeBeaconSystem : EntitySystem
             if (!present) //if not found, add to beaconlist
             {
                 console.BeaconList.Add(newBeacon);
-                _audio.PlayPvs(ent.Comp.LinkSound, ent.Owner);
-                _popup.PopupEntity(Loc.GetString("beacon-linked"), ent.Owner, args.User);
+                _audio.PlayPredicted(ent.Comp.LinkSound, args.Used, args.User);
+                _popup.PopupPredicted(Loc.GetString("beacon-linked"), args.Used, args.User);
             }
             else //if found, remove from beaconlist
             {
                 console.BeaconList.Remove(newBeacon);
-                _audio.PlayPvs(ent.Comp.LinkSound, ent.Owner);
-                _popup.PopupEntity(Loc.GetString("beacon-unlinked"), ent.Owner, args.User);
+                _audio.PlayPredicted(ent.Comp.LinkSound, args.Used, args.User);
+                _popup.PopupPredicted(Loc.GetString("beacon-unlinked"), args.Used, args.User);
             }
 
             Dirty(args.Target!.Value, console); //denullable to make happy, if args.Target was actually null it shouldn't get here.

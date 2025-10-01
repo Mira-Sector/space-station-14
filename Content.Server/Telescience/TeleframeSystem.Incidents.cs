@@ -1,5 +1,6 @@
 using Content.Server.Lightning;
 using Content.Shared.Telescience;
+using Content.Shared.Emag.Systems;
 using Content.Shared.Telescience.Systems;
 
 namespace Content.Server.Telescience;
@@ -14,9 +15,9 @@ public sealed partial class TeleframeSystem : SharedTeleframeSystem
     /// <remarks>
     /// Remove this and replace with an incident prototype
     /// </remarks>
-    protected override void TeleframeIncidentExplode(Entity<TeleframeIncidentLiableComponent> ent)
+    protected override void TeleframeIncidentExplode(Entity<TeleframeIncidentLiableComponent> ent, float severity)
     {
-        // TODO: remove magic number
-        _lightning.ShootRandomLightnings(ent.Owner, ent.Comp.IncidentMultiplier * 3, (int)Math.Ceiling(ent.Comp.IncidentMultiplier));
+        var multiplier = _emag.CheckFlag(ent.Owner, EmagType.Interaction) ? ent.Comp.EmagIncidentMultiplier + ent.Comp.IncidentMultiplier : ent.Comp.IncidentMultiplier;
+        _lightning.ShootRandomLightnings(ent.Owner, multiplier * severity, (int)Math.Ceiling(multiplier * severity));
     }
 }

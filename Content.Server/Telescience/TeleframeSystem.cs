@@ -96,7 +96,7 @@ public sealed partial class TeleframeSystem : SharedTeleframeSystem
         if (ent.Comp1.ActiveTeleportInfo == null)
         {
             ent.Comp2.TeleportSuccess = false; //if either doesn't obvs you can't teleport
-            failReason = "teleport-failure-nolink";
+            failReason = "teleport-fail-nolink";
         }
 
         if (ent.Comp2.TeleportSuccess) //if teleport is still good to go, engage
@@ -104,11 +104,8 @@ public sealed partial class TeleframeSystem : SharedTeleframeSystem
         else
             TeleportFail(ent, failReason); //if not, say why
 
-        if (HasComp<TeleframeRechargingComponent>(ent))
-        {
-            RemCompDeferred<TeleframeChargingComponent>(ent); //stop charging
-        }
-        else
+        RemCompDeferred<TeleframeChargingComponent>(ent); //stop charging
+        if (!HasComp<TeleframeRechargingComponent>(ent)) //
         {
             var rechargeComp = AddComp<TeleframeRechargingComponent>(ent); //start recharging
             rechargeComp.Duration = ent.Comp1.RechargeDuration;
@@ -137,15 +134,13 @@ public sealed partial class TeleframeSystem : SharedTeleframeSystem
 
         var reasonWrapped = Loc.GetString("teleport-fail", ("reason", failReason));
 
-        var ev = new TelescienceFrameTeleportFailedEvent(reasonWrapped);
+        var ev = new TeleframeTeleportFailedEvent(reasonWrapped);
         RaiseLocalEvent(ent.Owner, ref ev);
     }
 
     /// <summary>
     /// Recharge is done, indicate this to player at console and reset power draw levels
     /// </summary>
-    /// <param name="ent"></param>
-    /// <param name="recharge"></param>
     public void EndTeleportRecharge(Entity<TeleframeComponent> ent, TeleframeRechargingComponent recharge)
     {
         ent.Comp.ReadyToTeleport = true;
@@ -167,7 +162,6 @@ public sealed partial class TeleframeSystem : SharedTeleframeSystem
     /// Teleportation Startup
     /// In server because prediction causes it to spam portals regardless of what i do to stop it
     /// </summary>
-    /// <param name="ent"></param>
     protected override bool StartTeleport(Entity<TeleframeComponent> ent, TeleframeActivationMode mode, MapCoordinates target)
     {
         if (!Timing.IsFirstTimePredicted) //prevent it getting spammed
@@ -177,9 +171,6 @@ public sealed partial class TeleframeSystem : SharedTeleframeSystem
             return false;
 
         var tp = Transform(ent); //get transform of the Teleframe
-
-        var ev = new TelescienceFrameCanTeleportEvent(ent);
-        RaiseLocalEvent(ent, ref ev);
 
         var sourceEffect = ent.Comp.TeleportModeEffects.GetValueOrDefault(mode);
         var targetEffect = ent.Comp.TeleportModeEffects.GetValueOrDefault(mode.GetOpposite());
@@ -203,6 +194,10 @@ public sealed partial class TeleframeSystem : SharedTeleframeSystem
         var chargeComp = AddComp<TeleframeChargingComponent>(ent);
         chargeComp.Duration = ent.Comp.ChargeDuration;
         chargeComp.EndTime = ent.Comp.ChargeDuration + Timing.CurTime;
+
+        var ev = new TeleframeCanTeleportEvent(ent, target);
+        RaiseLocalEvent(ent, ref ev);
+
         Dirty(ent, chargeComp);
         return true;
     }
@@ -244,11 +239,8 @@ public sealed partial class TeleframeSystem : SharedTeleframeSystem
 
             _transform.SetWorldPosition(tp, scatterpos); //set final position after scatter
 
-            var frameEv = new TelescienceFrameTeleportedEvent(tp, tpToCoords, tpFromCoords);
+            var frameEv = new TeleframeTeleportedEvent(tp, tpToCoords, tpFromCoords); //raise teleport event on teleported entity
             RaiseLocalEvent(ent.Owner, ref frameEv);
-
-            var tpEv = new TelescienceUserTeleportedEvent(ent.Owner, tpToCoords, tpFromCoords);
-            RaiseLocalEvent(tp, ref tpEv);
 
             teleported.Add(tp);
         }
@@ -257,7 +249,7 @@ public sealed partial class TeleframeSystem : SharedTeleframeSystem
         var from = Transform(tpFrom);
         _adminLogger.Add(LogType.Teleport, $"{ToPrettyString(ent.Owner)} has teleported {teleported.Count} entities from {_transform.ToMapCoordinates(from.Coordinates)} to {_transform.ToMapCoordinates(target.Coordinates)}.");
 
-        var frameFinishEv = new TelescienceFrameTeleportedAllEvent(teleported, tpToCoords, tpFromCoords);
+        var frameFinishEv = new TeleframeTeleportedAllEvent(teleported, tpToCoords, tpFromCoords);
         RaiseLocalEvent(ent.Owner, ref frameFinishEv);
 
         Spawn(ent.Comp.TeleportFinishEffect, tpToCoords); //finish effects

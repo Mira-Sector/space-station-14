@@ -8,28 +8,28 @@ public abstract partial class SharedTeleframeSystem : EntitySystem
 {
     protected virtual void InitializeIncidents()
     {
-        SubscribeLocalEvent<TeleframeIncidentLiableComponent, TelescienceFrameTeleportedAllEvent>(OnIncidentTeleported);
-        SubscribeLocalEvent<TeleframeIncidentLiableComponent, TelescienceFrameTeleportFailedEvent>(OnIncidentFailed);
+        SubscribeLocalEvent<TeleframeIncidentLiableComponent, TeleframeTeleportedAllEvent>(OnIncidentTeleported);
+        SubscribeLocalEvent<TeleframeIncidentLiableComponent, TeleframeTeleportFailedEvent>(OnIncidentFailed);
 
         SubscribeLocalEvent<TeleframeIncidentLiableComponent, GotEmaggedEvent>(OnIncidentEmagged);
     }
 
-    private void OnIncidentTeleported(Entity<TeleframeIncidentLiableComponent> ent, ref TelescienceFrameTeleportedAllEvent args)
+    private void OnIncidentTeleported(Entity<TeleframeIncidentLiableComponent> ent, ref TeleframeTeleportedAllEvent args)
     {
         if (!TryRollForIncident(ent, out var severity))
             return;
 
-        //TODO: raise TelescienceFrameIncidentEvent and TelescienceUserIncidentEvent when incidents are refactored
+        //TODO: raise TeleframeIncidentEvent and TeleframeUserIncidentEvent when incidents are refactored
 
-        TeleframeIncidentExplode(ent);
+        TeleframeIncidentExplode(ent, severity!.Value);
     }
 
-    private void OnIncidentFailed(Entity<TeleframeIncidentLiableComponent> ent, ref TelescienceFrameTeleportFailedEvent args)
+    private void OnIncidentFailed(Entity<TeleframeIncidentLiableComponent> ent, ref TeleframeTeleportFailedEvent args)
     {
         if (!TryRollForIncident(ent, out var severity))
             return;
 
-        TeleframeIncidentExplode(ent);
+        TeleframeIncidentExplode(ent, severity!.Value);
     }
 
     /// <summary>
@@ -50,10 +50,12 @@ public abstract partial class SharedTeleframeSystem : EntitySystem
     {
         var roll = Random.NextFloat();
 
-        var chance = _emag.CheckFlag(ent.Owner, EmagType.Interaction) ? ent.Comp.EmagIncidentChance : ent.Comp.IncidentChance;
+        var chance = _emag.CheckFlag(ent.Owner, EmagType.Interaction) ? ent.Comp.EmagIncidentChance + ent.Comp.IncidentChance : ent.Comp.IncidentChance;
+        var multiplier = _emag.CheckFlag(ent.Owner, EmagType.Interaction) ? ent.Comp.EmagIncidentMultiplier + ent.Comp.IncidentMultiplier : ent.Comp.IncidentMultiplier;
+
         if (roll < chance)
         {
-            severity = Random.NextFloat() * ent.Comp.IncidentMultiplier;
+            severity = Random.NextFloat() * multiplier;
             return true;
         }
 
@@ -61,7 +63,7 @@ public abstract partial class SharedTeleframeSystem : EntitySystem
         return false;
     }
 
-    protected virtual void TeleframeIncidentExplode(Entity<TeleframeIncidentLiableComponent> ent)
+    protected virtual void TeleframeIncidentExplode(Entity<TeleframeIncidentLiableComponent> ent, float severity)
     {
     }
 }

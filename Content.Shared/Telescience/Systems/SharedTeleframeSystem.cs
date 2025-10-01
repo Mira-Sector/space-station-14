@@ -42,8 +42,6 @@ public abstract partial class SharedTeleframeSystem : EntitySystem
     /// The initial setup function for teleporting
     /// No need to inform player of fails here as client has the same blockers that do so
     /// </summary>
-    /// <param name="ent"></param>
-    /// <param name="args"></param>
     private void OnTeleportActivate(Entity<TeleframeConsoleComponent> ent, ref TeleframeActivateMessage args)
     {
         if (!Timing.IsFirstTimePredicted) //prevent it getting spammed

@@ -20,30 +20,35 @@ public sealed partial class TeleframeSystem : SharedTeleframeSystem
     {
         base.InitializeRadio();
 
-        SubscribeLocalEvent<TeleframeConsoleRadioComponent, TelescienceFrameConsoleRelayEvent<TelescienceFrameTeleportedAllEvent>>(OnRadioTeleported);
+        SubscribeLocalEvent<TeleframeConsoleRadioComponent, TeleframeToConsoleRelayEvent<TeleframeCanTeleportEvent>>(OnRadioTeleported);
     }
 
     // in server as nav beacons arent in shared, no idea why as it uses nothing from the server
-    private void OnRadioTeleported(Entity<TeleframeConsoleRadioComponent> ent, ref TelescienceFrameConsoleRelayEvent<TelescienceFrameTeleportedAllEvent> args)
+    /// <summary>
+    /// Prepare to send teleport initiation message, gets target and constructs message around its location
+    /// </summary>
+    private void OnRadioTeleported(Entity<TeleframeConsoleRadioComponent> ent, ref TeleframeToConsoleRelayEvent<TeleframeCanTeleportEvent> args)
     {
         if (args.Frame.Comp.ActiveTeleportInfo is not { } teleInfo)
             return;
 
-        var proximity = _navMap.GetNearestBeaconString(args.Args.To);
+        var proximity = _navMap.GetNearestBeaconString(args.Args.Target);
 
         var message = Loc.GetString(
             "teleporter-console-activate",
             ("send", teleInfo.Mode),
             ("targetName", Identity.Entity(args.Frame.Owner, EntityManager)),
-            ("X", args.Args.To.Position.X.ToString("0")),
-            ("Y", args.Args.To.Position.Y.ToString("0")),
+            ("X", args.Args.Target.Position.X.ToString("0")),
+            ("Y", args.Args.Target.Position.Y.ToString("0")),
             ("proximity", proximity), //contains colour data, which messes with spoken notifications
-            ("map", _maps.TryGetMap(args.Args.To.MapId, out var mapEnt) ? Name(mapEnt!.Value) : Loc.GetString("teleporter-location-unknown"))
+            ("map", _maps.TryGetMap(args.Args.Target.MapId, out var mapEnt) ? Name(mapEnt!.Value) : Loc.GetString("teleporter-location-unknown"))
         );                                                                  //if mapEnt is null the other option would have been chosen so safe denullable
 
         SendRadioMessage(ent, message);
     }
-
+    ///<summary>
+    /// Sends radio and/or IC messages as long as the parent device isn't emagged.
+    /// </summary>
     protected override void SendRadioMessage(Entity<TeleframeConsoleRadioComponent> ent, string message)
     {
         //no speak if emagged

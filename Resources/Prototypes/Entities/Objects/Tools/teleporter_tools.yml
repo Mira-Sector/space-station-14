@@ -66,8 +66,8 @@
   suffix: Anchored
   description: Can be linked to a teleframe console, allowing it to be targeted over any distance. Must be anchored.
   components:
-    - type: Transform
-      anchored: true
+  - type: Transform
+    anchored: true
 
 - type: entity
   name: handheld teleframe console
@@ -128,6 +128,9 @@
   - type: ToggleCellDraw
   - type: StaticPrice
     price: 200
+  - type: TeleframeConsoleRadio
+    announcementChannel: Science
+    speakIc: true
 
 - type: entity
   name: handheld teleframe console

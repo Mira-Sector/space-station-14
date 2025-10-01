@@ -17,6 +17,11 @@ public sealed partial class TeleframeIncidentLiableComponent : Component
     [DataField]
     public float IncidentMultiplier = 1f;
 
+    //potentially with upgrades, emagging could be considered an invisible "upgrade" that can't be gotten rid of and these will be moved to there.
+
     [DataField]
-    public float EmagIncidentChance = 10f;
+    public float EmagIncidentChance = 1f;
+
+    [DataField]
+    public float EmagIncidentMultiplier = 2f;
 }

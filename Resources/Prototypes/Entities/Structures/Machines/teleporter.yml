@@ -77,11 +77,9 @@
   - type: Teleframe
     chargeDuration: 5
     rechargeDuration: 20
-  - type: TeleframeIncidentLiable
-    incidentChance: 0.15
     teleportModeEffects:
-      Send: "TeleportFromEffect"
-      Receive: "TeleportToEffect"
+      Send: TeleportFromEffect
+      Receive: TeleportToEffect
     powerUseActive: 20000
     explosionScore: 2.1 #if Emagged 30% explosion chance per use
   - type: TeleframeIncidentLiable
@@ -123,7 +121,7 @@
 - type: entity
   id: TeleporterCC
   parent: [BaseTeleporter, BaseTeleportBeacon]
-  name: hyperframe core
+  name: central command hyperframe core
   description: A precise tool for the uppermost echelons of Central Command, allowing for rapid deployment and extraction of critical assets. Unfathomably Expensive.
   components:
   - type: Teleframe
@@ -135,9 +133,6 @@
     teleportModeEffects:
       Send: TeleportFromEffectQuiet
       Receive: TeleportToEffectQuiet
-  - type: TeleframeIncidentLiable
-    incidentChance: -10
-    incidentMultiplier: -10
   - type: Sprite
     sprite: Structures/teleframe.rsi
     drawdepth: HighFloorObjects
@@ -165,6 +160,3 @@
       Receive: MobMothroach #they'll delete themselves after teleportation concludes
     teleportBeginEffect: EffectGravityPulse #so can these but they don't delete themselves automatically
     teleportFinishEffect: EffectFlashTeleportFinish
-  - type: TeleframeIncidentLiable
-    incidentChance: -10
-    incidentMultiplier: -10

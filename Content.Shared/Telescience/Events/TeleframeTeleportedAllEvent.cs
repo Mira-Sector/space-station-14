@@ -6,4 +6,4 @@ namespace Content.Shared.Telescience.Events;
 ///Event raised just after on the teleframe just after teleporting every possible entity
 /// </summary>
 [ByRefEvent]
-public readonly record struct TelescienceFrameTeleportedAllEvent(List<EntityUid> Teleported, MapCoordinates To, MapCoordinates From);
+public readonly record struct TeleframeTeleportedAllEvent(List<EntityUid> Teleported, MapCoordinates To, MapCoordinates From);

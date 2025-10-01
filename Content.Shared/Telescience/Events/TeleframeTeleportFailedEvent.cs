@@ -4,4 +4,4 @@ namespace Content.Shared.Telescience.Events;
 ///Event raised on the teleframe when failing to teleport
 /// </summary>
 [ByRefEvent]
-public readonly record struct TelescienceFrameTeleportFailedEvent(string Reason);
+public readonly record struct TeleframeTeleportFailedEvent(string Reason);
