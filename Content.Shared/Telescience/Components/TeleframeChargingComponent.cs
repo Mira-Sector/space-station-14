@@ -14,22 +14,14 @@ public sealed partial class TeleframeChargingComponent : Component
     /// when charge will finish
     /// </summary>
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer))]
-    [AutoNetworkedField, AutoPausedField, ViewVariables(VVAccess.ReadWrite)]
+    [AutoNetworkedField, AutoPausedField]
     public TimeSpan EndTime;
 
     /// <summary>
     /// total charge time
     /// </summary>
     [DataField]
-    [ViewVariables(VVAccess.ReadWrite)]
     public TimeSpan Duration;
-
-    /// <summary>
-    /// Rolled at start of charge, if above set value, Teleframe explodes after teleportation.
-    /// Explosion size scales with incident multiplier
-    /// </summary>
-    [DataField, AutoNetworkedField]
-    public bool WillExplode = false;
 
     /// <summary>
     /// if false, teleportation doesn't continue
@@ -39,8 +31,8 @@ public sealed partial class TeleframeChargingComponent : Component
     public bool TeleportSuccess = true;
 
     /// <summary>
-    /// suffix to message stated by console on failiure reason, added onto "teleport-failiure-"
+    /// Message stated by console on failure reason
     /// </summary>
     [DataField]
-    public string FailReason = "unknown";
+    public LocId FailReason = "teleport-failure-unknown";
 }

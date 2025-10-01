@@ -159,9 +159,9 @@ public sealed partial class TeleframeConsoleWindow : FancyWindow
     //check should be performed consistently outside this too, not sure how to do that, could just add a refresh button.
     private bool TeleportCheck(Entity<TeleframeConsoleComponent> ent, bool buttons, string message)
     {
-        if (ent.Comp.LinkedTeleframe != null) //set link name
+        if (ent.Comp.LinkedTeleframe is { } linked)
         {
-            var (linked, meta) = _entMan.GetEntityData(ent.Comp.LinkedTeleframe.Value);
+            var meta = _entMan.GetComponent<MetaDataComponent>(linked);
             if (!_entMan.TryGetComponent<TeleframeComponent>(linked, out var tpComp))
                 return false;
 

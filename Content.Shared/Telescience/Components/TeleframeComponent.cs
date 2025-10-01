@@ -1,7 +1,6 @@
 using Robust.Shared.Prototypes;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
-using Robust.Shared.Map;
 
 namespace Content.Shared.Telescience.Components;
 
@@ -44,18 +43,6 @@ public sealed partial class TeleframeComponent : Component
     /// </summary>
     [DataField]
     public EntProtoId? TeleportFinishEffect = null;
-
-    /// <summary>
-    /// Chance of an Anomalous Incident occurring from a Teleportation event. Chance is per Teleported entity.
-    /// </summary>
-    [DataField]
-    public float IncidentChance = 0.00f;
-
-    /// <summary>
-    /// Severity Multiplier of Anomalous incidents. High Severity increases the likelyhood of very significant events.
-    /// </summary>
-    [DataField]
-    public float IncidentMultiplier = 1f;
 
     /// <summary>
     /// Randomness of Teleportation arrival positions entities will be placed +/- of this value from exact target
@@ -112,12 +99,6 @@ public sealed partial class TeleframeComponent : Component
 
     [ViewVariables, AutoNetworkedField]
     public TeleframeActiveTeleportInfo? ActiveTeleportInfo;
-
-    /// <summary>
-    /// Target portal location
-    /// </summary>
-    [ViewVariables]
-    public MapCoordinates Target;
 }
 
 [NetSerializable, Serializable]

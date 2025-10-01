@@ -1,23 +1,19 @@
 using Content.Shared.Telescience.Components;
-using Content.Shared.Teleportation.Systems;
 using Content.Shared.DeviceLinking;
 using Content.Shared.DeviceLinking.Events;
 using Content.Shared.Emag.Systems;
 using Content.Shared.Examine;
-using Content.Shared.Popups;
 using Robust.Shared.Audio.Systems;
-using Robust.Shared.Map;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
 using Content.Shared.Telescience.Ui;
+using Robust.Shared.Map;
 
 namespace Content.Shared.Telescience.Systems;
 
-public abstract class SharedTeleframeSystem : EntitySystem
+public abstract partial class SharedTeleframeSystem : EntitySystem
 {
-    [Dependency] private readonly LinkedEntitySystem _link = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] protected readonly SharedAudioSystem Audio = default!;
     [Dependency] protected readonly IGameTiming Timing = default!;
     [Dependency] private readonly EmagSystem _emag = default!;
@@ -29,8 +25,11 @@ public abstract class SharedTeleframeSystem : EntitySystem
     {
         base.Initialize();
 
+        InitializeIncidents();
+        InitializeRelay();
+        InitializeRadio();
+
         SubscribeLocalEvent<TeleframeComponent, MapInitEvent>(OnMapInit);
-        SubscribeLocalEvent<TeleframeComponent, GotEmaggedEvent>(OnTeleframeEmagged);
         SubscribeLocalEvent<TeleframeComponent, ExaminedEvent>(OnExamined);
 
         SubscribeLocalEvent<TeleframeConsoleComponent, TeleframeActivateMessage>(OnTeleportActivate);
@@ -45,31 +44,35 @@ public abstract class SharedTeleframeSystem : EntitySystem
     /// </summary>
     /// <param name="ent"></param>
     /// <param name="args"></param>
-    public void OnTeleportActivate(Entity<TeleframeConsoleComponent> ent, ref TeleframeActivateMessage args)
+    private void OnTeleportActivate(Entity<TeleframeConsoleComponent> ent, ref TeleframeActivateMessage args)
     {
         if (!Timing.IsFirstTimePredicted) //prevent it getting spammed
             return;
 
-        if (ent.Comp.LinkedTeleframe == null || !TryGetEntity(ent.Comp.LinkedTeleframe, out var teleEnt) || !TryComp<TeleframeComponent>(teleEnt, out var teleComp))
+        if (ent.Comp.LinkedTeleframe is not { } teleEnt || !TryComp<TeleframeComponent>(teleEnt, out var teleComp))
             return; //if null, nonexistent, or lacking teleframe component, return
 
-        if (teleComp.IsPowered == false || teleComp.ReadyToTeleport == false)
+        if (!teleComp.IsPowered || !teleComp.ReadyToTeleport)
             return; //if the teleframe isn't powered or ready, return
 
         var consoleCoords = Transform(ent).Coordinates;
-        if (ent.Comp.MaxRange == null || args.RangeBypass == true || //teleport beacons ignore range limits
-        args.Coords.X <= Math.Abs(consoleCoords.X + (float)ent.Comp.MaxRange) && args.Coords.Y <= Math.Abs(consoleCoords.Y + (float)ent.Comp.MaxRange))
-        {   //is teleport target coords within MaxRange of current coords
-            teleComp.Target = args.Coords; //if successful, update everything
-            if (StartTeleport((teleEnt!.Value, teleComp), args.Mode))
-                OnTeleportSpeak((teleEnt!.Value, teleComp), args.Name);
 
-            Dirty(teleEnt!.Value, teleComp);
-        }
-        else
+        // this should not be blindly trusting the client
+        // TODO: proper validation of input
+        if (!args.RangeBypass && ent.Comp.MaxRange is { } maxRange)
         {
-            return; //if requirements not met, return
+            if (args.Coords.MapId != _transform.GetMapId(consoleCoords))
+                return;
+
+            var adjustedPos = args.Coords.Offset(consoleCoords.Position);
+            if (adjustedPos.Position.LengthSquared() > maxRange * maxRange)
+                return;
         }
+
+        if (!StartTeleport((teleEnt, teleComp), args.Mode, args.Coords))
+            return;
+
+        Dirty(teleEnt, teleComp);
     }
 
     /// <summary>
@@ -85,7 +88,7 @@ public abstract class SharedTeleframeSystem : EntitySystem
             if (!TryComp<TeleframeConsoleComponent>(source, out var console))
                 continue;
 
-            console.LinkedTeleframe = GetNetEntity(ent);
+            console.LinkedTeleframe = ent.Owner;
             ent.Comp.LinkedConsole = source;
             Dirty(source, console);
             Dirty(ent);
@@ -100,7 +103,7 @@ public abstract class SharedTeleframeSystem : EntitySystem
     {
         if (TryComp<TeleframeComponent>(args.Sink, out var tp)) //link Teleframe to Teleframe console
         {
-            ent.Comp.LinkedTeleframe = GetNetEntity(args.Sink);
+            ent.Comp.LinkedTeleframe = args.Sink;
             tp.LinkedConsole = ent;
             Dirty(args.Sink, tp);
             Dirty(ent);
@@ -112,10 +115,9 @@ public abstract class SharedTeleframeSystem : EntitySystem
     /// </summary>
     private void OnPortDisconnected(Entity<TeleframeConsoleComponent> ent, ref PortDisconnectedEvent args) //stolen from SharedArtifactAnalyzerSystem
     {
-        var tpNetEntity = ent.Comp.LinkedTeleframe;
-        if (args.Port == ent.Comp.LinkingPort && tpNetEntity != null)
+        var tpUid = ent.Comp.LinkedTeleframe;
+        if (args.Port == ent.Comp.LinkingPort && tpUid != null)
         {
-            var tpUid = GetEntity(tpNetEntity);
             if (TryComp<TeleframeComponent>(tpUid, out var tp))
             {
                 tp.LinkedConsole = null;
@@ -141,34 +143,13 @@ public abstract class SharedTeleframeSystem : EntitySystem
         args.Handled = true;
     }
 
-    /// <summary>
-    /// Adds the emag flag to the Teleframe, makes the Teleframe more dangerous, cumulative with any other effect that does that.
-    /// </summary>
-    private void OnTeleframeEmagged(Entity<TeleframeComponent> ent, ref GotEmaggedEvent args)
-    {
-        if (!_emag.CompareFlag(args.Type, EmagType.Interaction))
-            return;
-
-        if (_emag.CheckFlag(ent, EmagType.Interaction))
-            return;
-
-        ent.Comp.IncidentChance += 1;       //guarenteed chance of incidents
-        ent.Comp.IncidentMultiplier += 2;   //and they'll be very spicy
-
-        args.Handled = true;
-    }
-
-    public virtual void OnTeleportSpeak(Entity<TeleframeComponent> ent, string location)
-    {
-    }
-
-    public virtual bool StartTeleport(Entity<TeleframeComponent> ent, TeleframeActivationMode mode)
+    protected virtual bool StartTeleport(Entity<TeleframeComponent> ent, TeleframeActivationMode mode, MapCoordinates target)
     {
         return false;
     }
 
     /// <summary>
-    /// update teleframe appearence between on, off, charged, and recharged
+    /// update teleframe appearance between on, off, charged, and recharged
     /// also enables/disables lights
     /// </summary>
     /// <param name="ent"></param>S
@@ -230,18 +211,4 @@ public abstract class SharedTeleframeSystem : EntitySystem
             args.PushMarkup(Loc.GetString("power-receiver-component-on-examine-main", ("stateText", Loc.GetString("power-receiver-component-on-examine-unpowered"))));
         }
     }
-
-    protected (bool, float) RollForIncident(Entity<TeleframeComponent> ent)
-    {
-        var roll = Random.NextFloat(0, 1);
-        if (roll < ent.Comp.IncidentChance)
-        {
-            return (true, Random.NextFloat(0, 1) * ent.Comp.IncidentMultiplier);
-        }
-        else
-        {
-            return (false, 0);
-        }
-    }
-
 }

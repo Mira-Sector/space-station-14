@@ -1,17 +1,12 @@
 using Content.Shared.DeviceLinking;
-using Content.Shared.Radio;
 using Content.Shared.Teleportation.Components;
 using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
 using Robust.Shared.GameStates;
-using Robust.Shared.Map;
-using Robust.Shared.Serialization;
-
 
 namespace Content.Shared.Telescience.Components;
 
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
-
 public sealed partial class TeleframeConsoleComponent : Component
 {
     /// <summary>
@@ -19,7 +14,7 @@ public sealed partial class TeleframeConsoleComponent : Component
     /// Can be null if not linked.
     /// </summary>
     [DataField, AutoNetworkedField, ViewVariables]
-    public NetEntity? LinkedTeleframe;
+    public EntityUid? LinkedTeleframe;
 
     /// <summary>
     /// largest coordinate value allowed for teleporting.
@@ -38,10 +33,4 @@ public sealed partial class TeleframeConsoleComponent : Component
 
     [DataField, ViewVariables, AutoNetworkedField]
     public HashSet<TeleportPoint> BeaconList = new(); //times switching between TeleportPoint and NetCoordinates: 4
-
-    /// <summary>
-    /// The radio channel that that teleporation events are broadcast to
-    /// </summary>
-    [DataField, ViewVariables(VVAccess.ReadWrite)]
-    public ProtoId<RadioChannelPrototype>? AnnouncementChannel = null;
 }

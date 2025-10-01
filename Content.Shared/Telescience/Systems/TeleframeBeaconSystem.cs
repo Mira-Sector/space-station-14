@@ -6,17 +6,15 @@ using Content.Shared.Interaction;
 using Content.Shared.Popups;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Timing;
-using Robust.Shared.Map;
-using Robust.Shared.GameObjects;
 
 namespace Content.Shared.Telescience.Systems;
 
-public abstract class SharedTeleframeBeaconSystem : EntitySystem
+public sealed partial class TeleframeBeaconSystem : EntitySystem
 {
     [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] protected readonly SharedAudioSystem Audio = default!;
+    [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -47,16 +45,16 @@ public abstract class SharedTeleframeBeaconSystem : EntitySystem
                     present = true;
             } //check all netentities in beaconlist to see if the interacter is already there.
 
-            if (present == false) //if not found, add to beaconlist
+            if (!present) //if not found, add to beaconlist
             {
                 console.BeaconList.Add(newBeacon);
-                Audio.PlayPvs(ent.Comp.LinkSound, ent.Owner);
+                _audio.PlayPvs(ent.Comp.LinkSound, ent.Owner);
                 _popup.PopupEntity(Loc.GetString("beacon-linked"), ent.Owner, args.User);
             }
             else //if found, remove from beaconlist
             {
                 console.BeaconList.Remove(newBeacon);
-                Audio.PlayPvs(ent.Comp.LinkSound, ent.Owner);
+                _audio.PlayPvs(ent.Comp.LinkSound, ent.Owner);
                 _popup.PopupEntity(Loc.GetString("beacon-unlinked"), ent.Owner, args.User);
             }
 
@@ -64,28 +62,28 @@ public abstract class SharedTeleframeBeaconSystem : EntitySystem
             Dirty(ent);
         }
     }
+
     private void OnNewBeaconLink(Entity<TeleframeBeaconComponent> ent, ref NewLinkEvent args) //links added via link system, used for static objects
     {
-        if (TryComp<TeleframeConsoleComponent>(args.Sink, out var beacon)) //link Teleframe beacon to Teleframe console
-        {
-            if (ent.Owner == args.Sink) //if we're linking to ourselves, indicate such for QoL
-                return;
+        if (!TryComp<TeleframeConsoleComponent>(args.Sink, out var beacon)) //link Teleframe beacon to Teleframe console
+            return;
 
-            beacon.BeaconList.Add(new TeleportPoint(Name(ent.Owner), GetNetEntity(ent.Owner)));
-            Audio.PlayPvs(ent.Comp.LinkSound, ent.Owner);
-            Dirty(ent);
-            Dirty(args.Sink, beacon);
+        if (ent.Owner == args.Sink) //if we're linking to ourselves, indicate such for QoL
+            return;
 
-        }
+        beacon.BeaconList.Add(new TeleportPoint(Name(ent.Owner), GetNetEntity(ent.Owner)));
+        _audio.PlayPvs(ent.Comp.LinkSound, ent.Owner);
+        Dirty(ent);
+        Dirty(args.Sink, beacon);
     }
 
     private void OnAnchorChange(Entity<TeleframeBeaconComponent> ent, ref AnchorStateChangedEvent args)
     {
-        if (HasComp<AnchorableComponent>(ent)) //if it can be anchored, it needs to be to be valid (although if this is called it probably is)
-        {
-            ent.Comp.ValidBeacon = args.Transform.Anchored;
-            Dirty(ent);
-        }
+        if (!HasComp<AnchorableComponent>(ent)) //if it can be anchored, it needs to be to be valid (although if this is called it probably is)
+            return;
+
+        ent.Comp.ValidBeacon = args.Transform.Anchored;
+        Dirty(ent);
     }
 
     private void OnBeaconStart(Entity<TeleframeBeaconComponent> ent, ref ComponentStartup args)
@@ -95,6 +93,7 @@ public abstract class SharedTeleframeBeaconSystem : EntitySystem
             ent.Comp.ValidBeacon = Transform(ent).Anchored;
             Dirty(ent);
         }
+
         if (TryComp<TeleframeConsoleComponent>(ent, out var consoleComp)) //if it is also a teleframe console, adds itself to its own list
         {
             consoleComp.BeaconList.Add(new TeleportPoint(Loc.GetString("teleporter-beacon-self", ("name", Name(ent.Owner))), GetNetEntity(ent.Owner)));

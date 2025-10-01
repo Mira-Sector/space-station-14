@@ -22,22 +22,21 @@ public sealed partial class TeleframeRechargingComponent : Component
     /// when charge will finish
     /// </summary>
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer))]
-    [AutoNetworkedField, AutoPausedField, ViewVariables(VVAccess.ReadWrite)]
+    [AutoNetworkedField, AutoPausedField]
     public TimeSpan EndTime;
 
     /// <summary>
     /// total charge time
     /// </summary>
     [DataField]
-    [ViewVariables(VVAccess.ReadWrite)]
     public TimeSpan Duration;
 
     /// <summary>
     /// pause recharge, such as if there's a lack of power
     /// </summary>
-    [DataField, ViewVariables(VVAccess.ReadWrite), AutoNetworkedField]
+    [DataField, AutoNetworkedField]
     public bool Pause = false;
 
-    [DataField, ViewVariables, AutoNetworkedField]
+    [DataField, AutoNetworkedField]
     public TimeSpan PauseTime;
 }

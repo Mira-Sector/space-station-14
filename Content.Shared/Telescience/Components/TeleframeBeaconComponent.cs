@@ -10,7 +10,7 @@ namespace Content.Shared.Telescience.Components;
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class TeleframeBeaconComponent : Component
 {
-    [ViewVariables(VVAccess.ReadWrite), DataField("soundLink"), AutoNetworkedField]
+    [DataField("soundLink"), AutoNetworkedField]
     public SoundSpecifier? LinkSound = new SoundPathSpecifier("/Audio/Items/beep.ogg");
 
     /// <summary>
