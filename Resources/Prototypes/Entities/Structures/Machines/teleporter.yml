@@ -1,0 +1,162 @@
+- type: entity
+  id: BaseTeleporter
+  parent: [ SmallConstructibleMachine, BaseMachine ]
+  name: Abstract Teleporter
+  description: Abstractly teleporting you since 2599.
+  abstract: true
+  components:
+  - type: InteractionOutline
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Transform
+    anchored: true
+    noRot: true
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.00"
+        density: 200
+        mask:
+          - MachineMask
+  - type: Sprite
+    sprite: Structures/teleframe.rsi
+    noRot: true
+    drawdepth: HighFloorObjects
+    layers:
+    - state: offline
+    - state: idle
+      map: ["TeleframeVisualState"]
+  - type: GenericVisualizer
+    visuals:
+      enum.TeleframeVisuals.VisualState:
+        TeleframeVisualState:
+          On:         { state: idle, visible: true }
+          Charging:   { state: beam, visible: true  }
+          Recharging: { state: recharging, visible: true  }
+          Off:        { state: offline, visible: false }
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallicStrong
+  - type: DeviceList
+  - type: DeviceNetwork
+    deviceNetId: Wired
+    receiveFrequencyId: BasicDevice
+  - type: DeviceLinkSink
+    ports:
+      - TeleportReceiver
+  - type: PowerConsumer #set power draw in teleport component, add/remove when teleporter powers on/off. See EmitterSystem for example.
+    voltage: High
+  - type: NodeContainer
+    examinable: true
+    nodes:
+      input:
+        !type:CableDeviceNode
+        nodeGroupID: HVPower
+  - type: Appearance
+  - type: CollideOnAnchor
+  - type: NameIdentifier
+    group: CargoTelepads
+  - type: AnimationPlayer
+  - type: PointLight
+    radius: 1
+    energy: 1.5
+    color: "#00fff2"
+  - type: Teleframe
+
+- type: entity
+  id: TeleporterScience
+  parent: [BaseTeleporter, BaseTeleportBeacon]
+  name: experimental teleframe core
+  description: The core of an advanced device that rips holes in reality for near-instanteous travel. With time and material its capabilities can be expanded. Safety not guaranteed.
+  components:
+  - type: Machine
+    board: TeleporterScienceMachineCircuitboard
+  - type: Teleframe
+    chargeDuration: 5
+    rechargeDuration: 20
+    teleportModeEffects:
+      Send: TeleportFromEffect
+      Receive: TeleportToEffect
+    powerUseActive: 20000
+    explosionScore: 2.1 #if Emagged 30% explosion chance per use
+  - type: TeleframeIncidentLiable
+    incidentChance: 0.15
+  - type: LightningTarget
+
+- type: entity
+  id: TeleporterSyndicate
+  parent: [BaseTeleporter, BaseTeleportBeacon]
+  name: cybersun TP-X covert teleframe core
+  description: A modification of stolen Nanotrasen blueprints, used in covert infiltration. Often outfitted with advanced upgrades.
+  components:
+  - type: Teleframe
+    teleportBeginEffect: EffectGravityPulse
+    chargeDuration: 5
+    rechargeDuration: 10
+    teleportScatterRange: 0.5
+    teleportModeEffects:
+      Send: TeleportFromEffectQuiet
+      Receive: TeleportToEffectQuiet
+    powerUseActive: 5000
+    explosionScore: 2.4 #if Emagged 20% explosion chance per use
+  - type: TeleframeIncidentLiable
+    incidentChance: 0.10
+    incidentMultiplier: 0.50
+  - type: Sprite
+    sprite: Structures/teleframe_syndicate.rsi
+    drawdepth: HighFloorObjects
+    layers:
+    - state: offline
+    - state: idle
+      map: ["TeleframeVisualState"]
+      shader: unshaded
+  - type: PointLight
+    radius: 2
+    energy: 1.5
+    color: "#9c0000"
+
+- type: entity
+  id: TeleporterCC
+  parent: [BaseTeleporter, BaseTeleportBeacon]
+  name: central command hyperframe core
+  description: A precise tool for the uppermost echelons of Central Command, allowing for rapid deployment and extraction of critical assets. Unfathomably Expensive.
+  components:
+  - type: Teleframe
+    chargeDuration: 0.15
+    rechargeDuration: 1
+    teleportScatterRange: 0.25
+    teleportRange: 0.45
+    powerUseActive: 500
+    teleportModeEffects:
+      Send: TeleportFromEffectQuiet
+      Receive: TeleportToEffectQuiet
+  - type: Sprite
+    sprite: Structures/teleframe.rsi
+    drawdepth: HighFloorObjects
+    layers:
+    - state: offline_cc
+    - state: idle
+      map: ["TeleframeVisualState"]
+      shader: unshaded
+
+- type: entity
+  id: TeleporterMoff
+  parent: TeleporterCC
+  name: mothroachframe
+  suffix: Admeme
+  description: This is beyond science.
+  components:
+  - type: Teleframe
+    chargeDuration: 4
+    rechargeDuration: 5
+    teleportScatterRange: 0.25
+    teleportRange: 1
+    powerUseActive: 500
+    teleportModeEffects:
+      Send: MobMothroach #these entities can be anything that doesn't despawn too quickly
+      Receive: MobMothroach #they'll delete themselves after teleportation concludes
+    teleportBeginEffect: EffectGravityPulse #so can these but they don't delete themselves automatically
+    teleportFinishEffect: EffectFlashTeleportFinish

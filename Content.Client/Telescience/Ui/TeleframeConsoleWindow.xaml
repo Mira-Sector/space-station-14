@@ -1,0 +1,105 @@
+<controls:FancyWindow
+    xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    Title = "{Loc 'teleporter-console-window-title'}"
+    MinSize="300 500"
+    SetSize="500 500">
+    <BoxContainer
+        Name="UI"
+        Orientation="Vertical"
+        VerticalExpand="False"
+        HorizontalExpand="True">
+         <BoxContainer
+            Orientation="Horizontal">
+            <Button
+                Name="RefreshButton"
+                Text="{Loc 'teleporter-refresh-button'}"
+                MinWidth="50"
+                Margin="5"/>
+            <!--<SpriteView OverrideDirection="South" Scale="2 2" Name="LinkSprite" Access="Public" SetSize="16 16" />-->
+            <Label
+                Name="LinkLabel"
+                Text="{Loc 'teleporter-linked-default'}"
+                VerticalAlignment="Top"
+                Margin="5 5 5 0"
+                StyleClasses="LabelSubText"/>
+        </BoxContainer>
+        <Label
+            Text="{Loc 'teleporter-coordinates-title'}"
+            HorizontalAlignment="Center"
+            Margin="10 5 10 0"
+            ReservesSpace="False"/>
+        <BoxContainer
+            Orientation="Horizontal"
+            HorizontalExpand="True">
+            <FloatSpinBox
+                Name="CoordsX"
+                HorizontalExpand="True"
+                Margin="2 4"/>
+            <FloatSpinBox
+                Name="CoordsY"
+             HorizontalExpand="True"
+                Margin="2 4"/>
+        </BoxContainer>
+        <Label
+            Text="{Loc 'teleporter-beacons-title'}"
+            HorizontalAlignment="Center"
+            Margin="10 5 10 0"
+            ReservesSpace="False"/>
+        <BoxContainer
+            Orientation="Vertical"
+            HorizontalExpand="True"
+            SizeFlagsStretchRatio="0.4"
+            MinHeight="150"
+            VerticalExpand="True">
+            <PanelContainer
+                HorizontalExpand="True"
+                VerticalExpand="True">
+                <PanelContainer.PanelOverride>
+                    <gfx:StyleBoxFlat
+                        BackgroundColor="#1B1B1E"/>
+                </PanelContainer.PanelOverride>
+                <ScrollContainer
+                    Name="BeaconList"
+                    VerticalExpand="True"
+                    HorizontalExpand="True"
+                    HScrollEnabled="False">
+                    <BoxContainer
+                        Name="BeaconButtonContainer"
+                        Orientation="Vertical"
+                        VerticalExpand="True"
+                        SeparationOverride="5">
+                        <!-- Beacons are listed here dynamically -->
+                    </BoxContainer>
+                </ScrollContainer>
+            </PanelContainer>
+        </BoxContainer>
+        <Label
+            Name="SummaryLabel"
+            Text="{Loc 'teleporter-summary-insufficient'}"
+            HorizontalAlignment="Center"
+            Margin="10 5 10 0"
+            StyleClasses="LabelSubText" />
+        <BoxContainer
+            Orientation="Horizontal"
+            HorizontalAlignment="Center"
+            HorizontalExpand="True"
+            SizeFlagsStretchRatio="0.4">
+            <Button
+                Name="SendToButton"
+                Text="{Loc 'teleporter-send-button'}"
+                MinWidth="125"
+                MinHeight="50"
+                Disabled = "True"
+                Margin="5"/>
+            <Button
+                Name="ReceiveFromButton"
+                Text="{Loc 'teleporter-receive-button'}"
+                MinWidth="125"
+                MinHeight="50"
+                Disabled="True"
+                Margin="5"/>
+        </BoxContainer>
+    </BoxContainer>
+</controls:FancyWindow>
