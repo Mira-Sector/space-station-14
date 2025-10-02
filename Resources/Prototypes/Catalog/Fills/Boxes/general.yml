@@ -222,16 +222,28 @@
 - type: entity
   name: hatsune miku day bag
   parent: ClothingBackpackDuffel
-  id: BoxPerformer
+  id: BoxPerformerMiku
   description: Happy Hatsune Miku Day!
   components:
   - type: StorageFill
     contents:
-      - id: ClothingShoesBootsPerformer
-      - id: ClothingUniformJumpskirtPerformer
-      - id: ClothingHeadPerformerWig
+      - id: ClothingShoesBootsPerformerMiku
+      - id: ClothingUniformJumpskirtPerformerMiku
+      - id: ClothingHeadPerformerMikuWig
       - id: FoodMealMemoryleek
         amount: 2
+
+- type: entity
+  name: kasane teto outfit bag
+  parent: ClothingBackpackDuffel
+  id: BoxPerformerTeto
+  description: The red one in cosplay form.
+  components:
+  - type: StorageFill
+    contents:
+      - id: ClothingShoesBootsPerformerTeto
+      - id: ClothingUniformJumpskirtPerformerTeto
+      - id: ClothingHeadPerformerTetoWig
 
 - type: entity
   name: flare box
