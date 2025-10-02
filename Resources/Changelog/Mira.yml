@@ -2121,3 +2121,9 @@ Entries:
     type: Add
   id: 293
   time: '2025-09-15T13:30:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: Added the Experimental Teleframe, a mostly-safe teleporter, in addition to a console and teleport beacons to use with it.
+    type: Add
+  id: 294
+  time: '2025-10-02T15:00:00.0000000+00:00'
