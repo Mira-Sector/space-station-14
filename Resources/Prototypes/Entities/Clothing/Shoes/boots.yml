@@ -38,13 +38,24 @@
 - type: entity
   parent: ClothingShoesBaseButcherable
   id: ClothingShoesBootsPerformerMiku
-  name: performer's boots
+  name: miku's boots
   description: These boots provide great traction for when you're up on stage.
   components:
   - type: Sprite
     sprite: Clothing/Shoes/Boots/performer-miku.rsi
   - type: Clothing
     sprite: Clothing/Shoes/Boots/performer-miku.rsi
+
+- type: entity
+  parent: ClothingShoesBaseButcherable
+  id: ClothingShoesBootsPerformerTeto
+  name: teto's boots
+  description: Perfect for strutting into the spotlight with style and attitude.
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/Boots/performer-teto.rsi
+  - type: Clothing
+    sprite: Clothing/Shoes/Boots/performer-teto.rsi
 
 - type: entity
   parent: [ClothingShoesMilitaryBase, BaseSecurityContraband]

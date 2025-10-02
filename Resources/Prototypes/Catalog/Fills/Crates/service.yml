@@ -101,6 +101,9 @@
     - id: ClothingUniformJumpskirtPerformerMiku
     - id: ClothingShoesBootsPerformerMiku
     - id: ClothingHeadPerformerMikuWig
+    - id: ClothingUniformJumpskirtPerformerTeto
+    - id: ClothingShoesBootsPerformerTeto
+    - id: ClothingHeadPerformerTetoWig
     - id: ClothingOuterSuitMonkey
     - id: ClothingHeadHatAnimalMonkey
     - id: ClothingNeckCloakMoth

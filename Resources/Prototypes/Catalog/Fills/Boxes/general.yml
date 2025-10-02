@@ -234,6 +234,18 @@
         amount: 2
 
 - type: entity
+  name: kasane teto outfit bag
+  parent: ClothingBackpackDuffel
+  id: BoxPerformerTeto
+  description: The red one in cosplay form.
+  components:
+  - type: StorageFill
+    contents:
+      - id: ClothingShoesBootsPerformerTeto
+      - id: ClothingUniformJumpskirtPerformerTeto
+      - id: ClothingHeadPerformerTetoWig
+
+- type: entity
   name: flare box
   parent: BoxCardboard
   id: BoxFlare

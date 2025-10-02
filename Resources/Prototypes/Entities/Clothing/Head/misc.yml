@@ -389,13 +389,29 @@
 - type: entity
   parent: ClothingHeadBase
   id: ClothingHeadPerformerMikuWig
-  name: performer's wig
+  name: mikus's wig
   description: On a closer inspection, it appears that it is made from optic fiber.
   components:
   - type: Sprite
     sprite: Clothing/Head/Misc/performer-miku-wig.rsi
   - type: Clothing
     sprite: Clothing/Head/Misc/performer-miku-wig.rsi
+  - type: HideLayerClothing
+    slots:
+    - Hair
+    - HeadTop
+    - HeadSide
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadPerformerTetoWig
+  name: teto's wig
+  description: "Seems to be powered by pure autotune—bold, electric, and ready to take the stage."
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Misc/performer-teto-wig.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Misc/performer-teto-wig.rsi
   - type: HideLayerClothing
     slots:
     - Hair
