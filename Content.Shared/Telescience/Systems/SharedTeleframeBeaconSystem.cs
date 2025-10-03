@@ -4,22 +4,19 @@ using Content.Shared.Construction.Components;
 using Content.Shared.DeviceLinking.Events;
 using Content.Shared.Interaction;
 using Content.Shared.Popups;
-using Content.Shared.UserInterface;
 using Robust.Shared.Audio.Systems;
-using Robust.Shared.GameStates;
 using Robust.Shared.Timing;
-using Robust.Shared.Player;
-
+using Robust.Shared.GameStates;
+using Content.Shared.Beam.Components;
 
 namespace Content.Shared.Telescience.Systems;
 
-public abstract partial class SharedTeleframeBeaconSystem : EntitySystem
+public sealed partial class SharedTeleframeBeaconSystem : EntitySystem
 {
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedPvsOverrideSystem _pvs = default!;
-    [Dependency] private readonly ActorSystem _act = default!;
 
     public override void Initialize()
     {
@@ -29,8 +26,6 @@ public abstract partial class SharedTeleframeBeaconSystem : EntitySystem
         SubscribeLocalEvent<TeleframeBeaconComponent, NewLinkEvent>(OnNewBeaconLink);
         SubscribeLocalEvent<TeleframeBeaconComponent, AnchorStateChangedEvent>(OnAnchorChange);
         SubscribeLocalEvent<TeleframeBeaconComponent, ComponentStartup>(OnBeaconStart); //consider AnchorEntity and Unanchor Entity using an alt action like Fulton to auto-anchor
-
-        SubscribeLocalEvent<TeleframeConsoleComponent, BeforeActivatableUIOpenEvent>(OnUiOpen);
     }
 
     private void OnBeaconInteract(Entity<TeleframeBeaconComponent> ent, ref AfterInteractEvent args) //when beacon is used on a console, add it to the console's beaconlist
@@ -55,14 +50,12 @@ public abstract partial class SharedTeleframeBeaconSystem : EntitySystem
 
             if (!present) //if not found, add to beaconlist
             {
-                _pvs.AddGlobalOverride(ent.Owner);
                 console.BeaconList.Add(newBeacon);
                 _audio.PlayPredicted(ent.Comp.LinkSound, args.Used, args.User);
                 _popup.PopupPredicted(Loc.GetString("beacon-linked"), args.Used, args.User);
             }
             else //if found, remove from beaconlist
             {
-
                 console.BeaconList.Remove(newBeacon);
                 _audio.PlayPredicted(ent.Comp.LinkSound, args.Used, args.User);
                 _popup.PopupPredicted(Loc.GetString("beacon-unlinked"), args.Used, args.User);
@@ -81,6 +74,7 @@ public abstract partial class SharedTeleframeBeaconSystem : EntitySystem
         if (ent.Owner == args.Sink) //if we're linking to ourselves, indicate such for QoL
             return;
 
+        //_pvs.AddGlobalOverride(ent.Owner);
         beacon.BeaconList.Add(new TeleportPoint(Name(ent.Owner), GetNetEntity(ent.Owner)));
         _audio.PlayPvs(ent.Comp.LinkSound, ent.Owner);
         Dirty(ent);
@@ -111,17 +105,5 @@ public abstract partial class SharedTeleframeBeaconSystem : EntitySystem
         }
     }
 
-    private void OnUiOpen(Entity<TeleframeConsoleComponent> ent, ref BeforeActivatableUIOpenEvent args)
-    {
-        foreach (var beacon in ent.Comp.BeaconList)
-        {
-            if (!TryGetEntity(beacon.TelePoint, out var beaconEnt))
-                ent.Comp.BeaconList.Remove(beacon); //do some housecleaning and remove beacons that have been deleted outright.
-            else
-            {
-                if (_act.TryGetSession(args.User, out var session)) //one would assume someone interacting with a UI is a player
-                    _pvs.AddSessionOverride(beaconEnt!.Value, session!);
-            }
-        }
-    }
+
 }

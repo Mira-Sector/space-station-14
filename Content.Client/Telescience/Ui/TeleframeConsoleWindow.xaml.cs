@@ -113,6 +113,10 @@ public sealed partial class TeleframeConsoleWindow : FancyWindow
     //get valid beacons only, also make sure beacons exist!
     private IEnumerable<TeleportPoint> GetValidBeacons(IEnumerable<TeleportPoint> totalList)
     {
+        var logMan = IoCManager.Resolve<ILogManager>();
+        var log = logMan.RootSawmill;
+
+        log.Debug("check");
         foreach (var beacon in totalList)
         {
             if (!_entMan.TryGetEntity(beacon.TelePoint, out var beaconEnt))
