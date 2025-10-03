@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Emag.Systems;
 using Content.Shared.Telescience.Events;
+using Content.Shared.Telescience.Components;
 
 namespace Content.Shared.Telescience.Systems;
 
@@ -20,8 +21,8 @@ public abstract partial class SharedTeleframeSystem : EntitySystem
             return;
 
         //TODO: raise TeleframeIncidentEvent and TeleframeUserIncidentEvent when incidents are refactored
-
-        TeleframeIncidentExplode(ent, severity!.Value);
+        if (TryComp<TeleframeComponent>(ent, out var teleComp) && severity > teleComp.ExplosionScore)
+            TeleframeIncidentExplode(ent, severity!.Value);
     }
 
     private void OnIncidentFailed(Entity<TeleframeIncidentLiableComponent> ent, ref TeleframeTeleportFailedEvent args)
@@ -29,7 +30,8 @@ public abstract partial class SharedTeleframeSystem : EntitySystem
         if (!TryRollForIncident(ent, out var severity))
             return;
 
-        TeleframeIncidentExplode(ent, severity!.Value);
+        if (TryComp<TeleframeComponent>(ent, out var teleComp) && severity > teleComp.ExplosionScore)
+            TeleframeIncidentExplode(ent, severity!.Value);
     }
 
     /// <summary>

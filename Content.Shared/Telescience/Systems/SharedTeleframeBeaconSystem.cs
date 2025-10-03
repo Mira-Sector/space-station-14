@@ -6,14 +6,17 @@ using Content.Shared.Interaction;
 using Content.Shared.Popups;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Timing;
+using Robust.Shared.GameStates;
+using Content.Shared.Beam.Components;
 
 namespace Content.Shared.Telescience.Systems;
 
-public sealed partial class TeleframeBeaconSystem : EntitySystem
+public sealed partial class SharedTeleframeBeaconSystem : EntitySystem
 {
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly SharedPvsOverrideSystem _pvs = default!;
 
     public override void Initialize()
     {
@@ -71,6 +74,7 @@ public sealed partial class TeleframeBeaconSystem : EntitySystem
         if (ent.Owner == args.Sink) //if we're linking to ourselves, indicate such for QoL
             return;
 
+        //_pvs.AddGlobalOverride(ent.Owner);
         beacon.BeaconList.Add(new TeleportPoint(Name(ent.Owner), GetNetEntity(ent.Owner)));
         _audio.PlayPvs(ent.Comp.LinkSound, ent.Owner);
         Dirty(ent);
@@ -100,5 +104,6 @@ public sealed partial class TeleframeBeaconSystem : EntitySystem
             Dirty(ent.Owner, consoleComp);
         }
     }
+
 
 }
