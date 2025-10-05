@@ -77,6 +77,8 @@
   - type: Teleframe
     chargeDuration: 5
     rechargeDuration: 20
+    TeleportBeginEffect: EffectGravityPulse
+    TeleportFinishEffect: EffectFlashTeleportFinish
     teleportModeEffects:
       Send: TeleportFromEffect
       Receive: TeleportToEffect

@@ -1,5 +1,4 @@
 using Content.Shared.Telescience.Systems;
-
 namespace Content.Client.Telescience;
 
 /// <summary>
