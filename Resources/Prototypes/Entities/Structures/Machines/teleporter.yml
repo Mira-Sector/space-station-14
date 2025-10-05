@@ -65,6 +65,16 @@
     energy: 1.5
     color: "#00fff2"
   - type: Teleframe
+    blacklist: #anchored or physics-less entities are already prevented from teleporting, this is for other things
+      components:
+      - Singularity
+      - TeslaEnergyBall
+      - NoFTL
+      tags:
+      - TeleportImmune
+      - Diagonal
+      - Wall
+      - Window
 
 - type: entity
   id: TeleporterScience
@@ -77,8 +87,8 @@
   - type: Teleframe
     chargeDuration: 5
     rechargeDuration: 20
-    TeleportBeginEffect: EffectGravityPulse
-    TeleportFinishEffect: EffectFlashTeleportFinish
+    teleportBeginEffect: EffectGravityPulse
+    teleportFinishEffect: EffectFlashTeleportFinish
     teleportModeEffects:
       Send: TeleportFromEffect
       Receive: TeleportToEffect

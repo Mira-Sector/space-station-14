@@ -12,11 +12,6 @@
         HorizontalExpand="True">
          <BoxContainer
             Orientation="Horizontal">
-            <Button
-                Name="RefreshButton"
-                Text="{Loc 'teleporter-refresh-button'}"
-                MinWidth="50"
-                Margin="5"/>
             <!--<SpriteView OverrideDirection="South" Scale="2 2" Name="LinkSprite" Access="Public" SetSize="16 16" />-->
             <Label
                 Name="LinkLabel"

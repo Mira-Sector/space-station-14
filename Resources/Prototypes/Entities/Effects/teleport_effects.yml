@@ -15,7 +15,23 @@
     sound:
       path: /Audio/Effects/Grenades/Supermatter/supermatter_end.ogg
       volume: 5
+  - type: Physics
+    bodyType: Dynamic
+    fixedRotation: false
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.25,-0.25,0.25,0.25"
+        density: 20
+        mask:
+        - ItemMask
   - type: DeleteOnTrigger
+  - type: Tag
+    tags:
+    - TeleportImmune
+
 
 - type: entity
   id: TeleportToEffect

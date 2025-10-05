@@ -9,6 +9,7 @@ using Content.Shared.Telescience.Systems;
 using Content.Shared.Telescience.Components;
 using Content.Shared.Database;
 using Content.Shared.Emag.Systems;
+using Content.Shared.Whitelist;
 using Robust.Shared.Map;
 using System.Numerics;
 
@@ -21,6 +22,7 @@ public sealed partial class TeleframeSystem : SharedTeleframeSystem
     [Dependency] private readonly SharedMapSystem _maps = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
     [Dependency] private readonly IAdminLogManager _adminLogger = default!;
+    [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
 
     private const LookupFlags RangeFlags = LookupFlags.Approximate | LookupFlags.Dynamic | LookupFlags.Sundries;
 
@@ -93,10 +95,10 @@ public sealed partial class TeleframeSystem : SharedTeleframeSystem
 
         var failReason = ent.Comp2.FailReason;
 
-        if (ent.Comp1.ActiveTeleportInfo == null)
-        {
-            ent.Comp2.TeleportSuccess = false; //if either doesn't obvs you can't teleport
-            failReason = "teleport-fail-nolink";
+        if (ent.Comp1.ActiveTeleportInfo == null || ent.Comp1.ActiveTeleportInfo is not { } teleInfo || !Exists(GetEntity(teleInfo.From)) || !Exists(GetEntity(teleInfo.To)))
+        { //is active teleport info null, is the teleport info empty, do either teleport entity not exist
+            ent.Comp2.TeleportSuccess = false; //if either teleport entity doesn't exist obvs you can't teleport
+            failReason = Loc.GetString("teleport-fail-nolink");
         }
 
         if (ent.Comp2.TeleportSuccess) //if teleport is still good to go, engage
@@ -188,6 +190,24 @@ public sealed partial class TeleframeSystem : SharedTeleframeSystem
             _ => throw new NotImplementedException()
         };
 
+        //prevent teleportation if receiving portal is not on a grid
+        if (mode == TeleframeActivationMode.Send)
+        {
+            if (_transform.GetGrid(targetPortal) == null)
+            {
+                TeleportFail(ent, Loc.GetString("teleport-fail-nogrid"));
+                return false;
+            }
+        }
+        else
+        {
+            if (_transform.GetGrid(sourcePortal) == null)
+            {
+                TeleportFail(ent, Loc.GetString("teleport-fail-nogrid"));
+                return false;
+            }
+        }
+
         //add power draw here
         //add teleportbegin event here?
         ent.Comp.ReadyToTeleport = false;
@@ -232,7 +252,10 @@ public sealed partial class TeleframeSystem : SharedTeleframeSystem
             if (tpEnt.Anchored) //if it's anchored, skip it. We don't want to be teleporting the Teleframe itself. Or the station's walls.
                 continue;
 
-            _transform.DropNextTo(tp, tpTo); //bit scuffed but because the map the target will be on won't neccisarily be the same as the Teleframe we first drop them next to the target THEN scatter.
+            if (_whitelistSystem.IsBlacklistPass(ent.Comp.Blacklist, tp)) //if it's on the blacklist, skip it. Don't teleport things like the singularity.
+                continue;
+
+            _transform.DropNextTo(tp, tpTo); //bit scuffed but because the map the target will be on won't neccisarily be the same as the Teleframe's we first drop them next to the target THEN scatter.
             var scatterpos = new Vector2( //create scatter coordinates as teleported entities' X and Y values +/- scatter range.
                 _transform.ToMapCoordinates(tpEnt.Coordinates).X + Random.NextFloat(-ent.Comp.TeleportScatterRange, ent.Comp.TeleportScatterRange),
                 _transform.ToMapCoordinates(tpEnt.Coordinates).Y + Random.NextFloat(-ent.Comp.TeleportScatterRange, ent.Comp.TeleportScatterRange));
