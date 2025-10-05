@@ -4,7 +4,7 @@ meta:
   engineVersion: 264.0.0
   forkId: ""
   forkVersion: ""
-  time: 10/05/2025 16:07:35
+  time: 10/05/2025 16:32:11
   entityCount: 13265
 maps:
 - 12281
@@ -6752,7 +6752,7 @@ entities:
       pos: -3.5,20.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -25615.053
+      secondsUntilStateChange: -25911.752
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -29479,6 +29479,20 @@ entities:
       rot: 3.141592653589793 rad
       pos: -26.5,-13.5
       parent: 1
+    - type: TeleframeConsole
+      beaconList:
+      - telePoint: 11957
+        location: experimental teleframe core
+      - telePoint: 3294
+        location: teleport beacon
+      - telePoint: 3293
+        location: teleport beacon
+      linkedTeleframe: 11957
+    - type: DeviceLinkSource
+      linkedPorts:
+        11957:
+        - - TeleportSender
+          - TeleportReceiver
 - proto: ConveyorBelt
   entities:
   - uid: 610
@@ -29793,13 +29807,14 @@ entities:
           showEnts: False
           occludes: True
           ents:
-          - 13168
           - 13163
-          - 13164
-          - 13165
-          - 13166
-          - 13167
           - 13169
+          - 13167
+          - 13166
+          - 13165
+          - 13164
+          - 13168
+          - 13259
         paper_label: !type:ContainerSlot
           showEnts: False
           occludes: True
@@ -35187,10 +35202,10 @@ entities:
     - type: Transform
       pos: 5.5,29.5
       parent: 1
-  - uid: 13263
+  - uid: 13265
     components:
     - type: Transform
-      pos: 1.5,21.5
+      pos: 1.5,20.5
       parent: 1
 - proto: DresserCaptainFilled
   entities:
@@ -66521,7 +66536,7 @@ entities:
       pos: -14.5,18.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -22975.64
+      secondsUntilStateChange: -23272.34
       state: Opening
   - uid: 10970
     components:
@@ -66530,7 +66545,7 @@ entities:
       pos: -14.5,20.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -23061.14
+      secondsUntilStateChange: -23357.84
       state: Opening
   - uid: 10971
     components:
@@ -66539,7 +66554,7 @@ entities:
       pos: -14.5,21.5
       parent: 1
     - type: Door
-      secondsUntilStateChange: -23060.541
+      secondsUntilStateChange: -23357.24
       state: Opening
 - proto: HospitalCurtainsOpen
   entities:
@@ -70363,8 +70378,10 @@ entities:
   - uid: 13259
     components:
     - type: Transform
-      pos: -11.426035,-49.47927
-      parent: 1
+      parent: 13162
+    - type: Physics
+      canCollide: False
+    - type: InsideEntityStorage
   - uid: 13261
     components:
     - type: Transform
@@ -78899,10 +78916,10 @@ entities:
       parent: 1
 - proto: SpawnMobCorgi
   entities:
-  - uid: 13260
+  - uid: 13263
     components:
     - type: Transform
-      pos: 1.5,21.5
+      pos: 1.5,20.5
       parent: 1
 - proto: SpawnMobCrabAtmos
   entities:
@@ -82238,6 +82255,14 @@ entities:
     - type: Transform
       pos: -24.5,-12.5
       parent: 1
+    - type: DeviceLinkSource
+      linkedPorts:
+        1847:
+        - - TeleportBeaconSender
+          - TeleportBeaconReceiver
+        11957:
+        - - TeleportBeaconSender
+          - TeleportReceiver
     - type: Physics
       bodyType: Static
   - uid: 3294
@@ -82245,6 +82270,14 @@ entities:
     - type: Transform
       pos: -24.5,-13.5
       parent: 1
+    - type: DeviceLinkSource
+      linkedPorts:
+        11957:
+        - - TeleportBeaconSender
+          - TeleportReceiver
+        1847:
+        - - TeleportBeaconSender
+          - TeleportBeaconReceiver
     - type: Physics
       bodyType: Static
 - proto: TeleporterScience
@@ -82254,6 +82287,13 @@ entities:
     - type: Transform
       pos: -30.5,-12.5
       parent: 1
+    - type: Teleframe
+      linkedConsole: 1847
+    - type: DeviceLinkSource
+      linkedPorts:
+        1847:
+        - - TeleportBeaconSender
+          - TeleportBeaconReceiver
     - type: PointLight
       enabled: False
     - type: PowerConsumer
@@ -82467,10 +82507,10 @@ entities:
       parent: 1
 - proto: ToyIan
   entities:
-  - uid: 13265
+  - uid: 13260
     components:
     - type: Transform
-      pos: 1.7608621,21.3378
+      pos: 1.8246357,20.378508
       parent: 1
 - proto: TrashBananaPeel
   entities:
