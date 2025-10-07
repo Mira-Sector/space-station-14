@@ -11,6 +11,7 @@ using Robust.Client.Graphics;
 using Robust.Client.Player;
 using Robust.Shared.Map;
 using Robust.Shared.Timing;
+using Content.Shared.IdentityManagement;
 
 namespace Content.Client.Telescience.Ui;
 
@@ -27,6 +28,7 @@ public sealed partial class TeleframeConsoleWindow : FancyWindow
     private readonly SharedTransformSystem _transform;
     private HashSet<TeleportPoint>? _knownBeacons;
     private Entity<TeleframeConsoleComponent, TransformComponent>? _console;
+    private EntityUid? _user;
     private MapCoordinates? _coords;
     private TeleportPoint? _currentBeacon;
     private Vector2i? _currentCoords;
@@ -50,21 +52,23 @@ public sealed partial class TeleframeConsoleWindow : FancyWindow
     protected override void Draw(DrawingHandleScreen handle)
     {
         base.Draw(handle);
+
         _accumulator -= (float)_timing.FrameTime.TotalSeconds;
         if (_accumulator <= 0f)
         {
             _accumulator = MathF.Max(0f, _accumulator + UpdateRate);
-            UpdateState(_console!.Value);
+            UpdateState(_console!.Value, _user!.Value);
         }
     }
 
-    public void UpdateState(Entity<TeleframeConsoleComponent, TransformComponent> ent)
+    public void UpdateState(Entity<TeleframeConsoleComponent, TransformComponent> ent, EntityUid? user)
     {
         _console = ent;
+        _user = user;
 
         _coords = _transform.GetMapCoordinates(ent.Owner, ent.Comp2);
 
-        TeleportCheck(ent, false, "", false);
+        TeleportCheck(ent, false, null, false);
     }
 
     private void OnCoordsChanged(Vector2i coords)
@@ -108,14 +112,12 @@ public sealed partial class TeleframeConsoleWindow : FancyWindow
     private void SendActivateMessage(TeleframeActivationMode mode)
     {
         //check accesses
-        if (_playerManager.LocalSession?.AttachedEntity == null || _console == null) //check player and console are not null
+        if (_user == null || _console == null) //check player and console are not null
             return;
 
-        var player = _playerManager.LocalSession.AttachedEntity;  //get player
-
-        if (!_accessReaderSystem.IsAllowed(player.Value, _console.Value)) //check player has the right access
+        if (!_accessReaderSystem.IsAllowed(_user.Value, _console.Value)) //check player has the right access
         {
-            _popupSystem.PopupClient(Loc.GetString("teleport-console-access-denied"), _console.Value, player.Value);
+            _popupSystem.PopupClient(Loc.GetString("teleport-console-access-denied"), Identity.Entity(_console.Value, _entMan, _user.Value), Identity.Entity(_user.Value, _entMan, _user.Value));
             return; //if not tell them
         }
 
@@ -180,7 +182,7 @@ public sealed partial class TeleframeConsoleWindow : FancyWindow
     //return true if they are (doesn't mean teleportation is possible)
     //check should be performed any time teleportation possibility changes
     //check should be performed consistently outside this too, not sure how to do that, could just add a refresh button.
-    private bool TeleportCheck(Entity<TeleframeConsoleComponent> ent, bool buttons, string message, bool change = true)
+    private bool TeleportCheck(Entity<TeleframeConsoleComponent> ent, bool buttons, string? message, bool change = true)
     {
         if (_knownBeacons == null || !Equals(_knownBeacons, ent.Comp.BeaconList))
         {
@@ -203,7 +205,6 @@ public sealed partial class TeleframeConsoleWindow : FancyWindow
                 UpdateTeleportSummary(Loc.GetString("teleporter-summary-notready"));
                 return true;
             }
-
         }
         else
         {
@@ -213,11 +214,14 @@ public sealed partial class TeleframeConsoleWindow : FancyWindow
             return true;
         }
 
-        if (change == true) //change for specific updates but not for continuous draw checks
+        if (change) //change for specific updates but not for continuous draw checks
         {
             UpdateTeleportButtons(buttons);
-            UpdateTeleportSummary(message);
+
+            if (message != null)
+                UpdateTeleportSummary(message);
         }
+
         return true;
     }
 
