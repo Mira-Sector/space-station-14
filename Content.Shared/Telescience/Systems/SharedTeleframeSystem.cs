@@ -223,28 +223,23 @@ public abstract partial class SharedTeleframeSystem : EntitySystem
     /// </summary>
     private void OnUiOpen(Entity<TeleframeConsoleComponent> ent, ref BoundUIOpenedEvent args)
     {
-        if (!Timing.IsFirstTimePredicted) //prevent it getting spammed
+        if (!args.UiKey.Equals(TeleframeConsoleUiKey.Key))
             return;
+
+        if (!_player.TryGetSessionByEntity(args.Actor, out var session)) //one would assume someone interacting with a UI is a player
+            return;
+
         foreach (var beacon in ent.Comp.BeaconList)
         {
-            if (!TryGetEntity(beacon.TelePoint, out var beaconEnt))
-                ent.Comp.BeaconList.Remove(beacon); //do some housecleaning and remove beacons that have been deleted outright.
+            if (TryGetEntity(beacon.TelePoint, out var beaconEnt))
+                _pvs.AddSessionOverride(beaconEnt.Value, session);
             else
-            {
-                if (TryComp<TeleframeBeaconComponent>(beaconEnt, out var beaconComp))
-                {
-                    if (_player.TryGetSessionByEntity(args.Actor, out var session)) //one would assume someone interacting with a UI is a player
-                        _pvs.AddSessionOverride(beaconEnt!.Value, session!);
+                ent.Comp.BeaconList.Remove(beacon); //do some housecleaning and remove beacons that have been deleted outright.
 
-                    Dirty(beaconEnt!.Value, beaconComp);
-                }
-            }
             if (ent.Comp.LinkedTeleframe != null)
-            {
-                if (_player.TryGetSessionByEntity(args.Actor, out var session)) //one would assume someone interacting with a UI is a player
-                    _pvs.AddSessionOverride(ent.Comp.LinkedTeleframe!.Value, session!);
-            }
+                _pvs.AddSessionOverride(ent.Comp.LinkedTeleframe.Value, session);
         }
+
         Dirty(ent);
     }
 
@@ -253,25 +248,23 @@ public abstract partial class SharedTeleframeSystem : EntitySystem
     /// </summary>
     private void OnUiClosed(Entity<TeleframeConsoleComponent> ent, ref BoundUIClosedEvent args)
     {
-        if (!Timing.IsFirstTimePredicted) //prevent it getting spammed
+        if (!args.UiKey.Equals(TeleframeConsoleUiKey.Key))
+            return;
+
+        if (!_player.TryGetSessionByEntity(args.Actor, out var session)) //one would assume someone interacting with a UI is a player
             return;
 
         foreach (var beacon in ent.Comp.BeaconList)
         {
-            if (!TryGetEntity(beacon.TelePoint, out var beaconEnt))
-                ent.Comp.BeaconList.Remove(beacon); //do some housecleaning and remove beacons that have been deleted outright.
+            if (TryGetEntity(beacon.TelePoint, out var beaconEnt))
+                _pvs.RemoveSessionOverride(beaconEnt.Value, session);
             else
-            {
-                if (_player.TryGetSessionByEntity(args.Actor, out var session)) //one would assume someone interacting with a UI is a player
-                    _pvs.RemoveSessionOverride(beaconEnt!.Value, session!);
-            }
+                ent.Comp.BeaconList.Remove(beacon); //do some housecleaning and remove beacons that have been deleted outright.
         }
 
         if (ent.Comp.LinkedTeleframe != null)
-        {
-            if (_player.TryGetSessionByEntity(args.Actor, out var session)) //one would assume someone interacting with a UI is a player
-                _pvs.RemoveSessionOverride(ent.Comp.LinkedTeleframe!.Value, session!);
-        }
+            _pvs.RemoveSessionOverride(ent.Comp.LinkedTeleframe.Value, session);
+
         Dirty(ent);
     }
 }
