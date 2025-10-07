@@ -2133,3 +2133,9 @@ Entries:
     type: Add
   id: 295
   time: '2025-10-02T23:00:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: Teleport beacons no longer have finite range
+    type: Fix
+  id: 296
+  time: '2025-10-07T16:50:00.0000000+00:00'
