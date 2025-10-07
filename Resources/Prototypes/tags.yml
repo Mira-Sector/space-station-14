@@ -1417,6 +1417,9 @@
   id: Taser
 
 - type: Tag
+  id: TeleportImmune #won't be teleported by a teleframe
+
+- type: Tag
   id: TimerBrigElectronics
 
 - type: Tag

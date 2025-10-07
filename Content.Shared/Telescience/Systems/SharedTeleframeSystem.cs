@@ -1,4 +1,5 @@
 using Content.Shared.Telescience.Components;
+using Content.Shared.Telescience.Ui;
 using Content.Shared.DeviceLinking;
 using Content.Shared.DeviceLinking.Events;
 using Content.Shared.Emag.Systems;
@@ -6,8 +7,9 @@ using Content.Shared.Examine;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
-using Content.Shared.Telescience.Ui;
 using Robust.Shared.Map;
+using Robust.Shared.GameStates;
+using Robust.Shared.Player;
 
 namespace Content.Shared.Telescience.Systems;
 
@@ -20,6 +22,8 @@ public abstract partial class SharedTeleframeSystem : EntitySystem
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedPointLightSystem _lights = default!;
     [Dependency] protected readonly IRobustRandom Random = default!;
+    [Dependency] private readonly SharedPvsOverrideSystem _pvs = default!;
+    [Dependency] private readonly ISharedPlayerManager _player = default!;
 
     public override void Initialize()
     {
@@ -36,6 +40,10 @@ public abstract partial class SharedTeleframeSystem : EntitySystem
         SubscribeLocalEvent<TeleframeConsoleComponent, NewLinkEvent>(OnNewLink);
         SubscribeLocalEvent<TeleframeConsoleComponent, PortDisconnectedEvent>(OnPortDisconnected);
         SubscribeLocalEvent<TeleframeConsoleComponent, GotEmaggedEvent>(OnConsoleEmagged);
+
+        SubscribeLocalEvent<TeleframeConsoleComponent, BoundUIOpenedEvent>(OnUiOpen);
+        SubscribeLocalEvent<TeleframeConsoleComponent, BoundUIClosedEvent>(OnUiClosed);
+
     }
 
     /// <summary>
@@ -208,5 +216,55 @@ public abstract partial class SharedTeleframeSystem : EntitySystem
         {
             args.PushMarkup(Loc.GetString("power-receiver-component-on-examine-main", ("stateText", Loc.GetString("power-receiver-component-on-examine-unpowered"))));
         }
+    }
+
+    /// <summary>
+    /// on opening UI add beacons to pvs override list so client can see them outside of view range
+    /// </summary>
+    private void OnUiOpen(Entity<TeleframeConsoleComponent> ent, ref BoundUIOpenedEvent args)
+    {
+        if (!args.UiKey.Equals(TeleframeConsoleUiKey.Key))
+            return;
+
+        if (!_player.TryGetSessionByEntity(args.Actor, out var session)) //one would assume someone interacting with a UI is a player
+            return;
+
+        foreach (var beacon in ent.Comp.BeaconList)
+        {
+            if (TryGetEntity(beacon.TelePoint, out var beaconEnt))
+                _pvs.AddSessionOverride(beaconEnt.Value, session);
+            else
+                ent.Comp.BeaconList.Remove(beacon); //do some housecleaning and remove beacons that have been deleted outright.
+
+            if (ent.Comp.LinkedTeleframe != null)
+                _pvs.AddSessionOverride(ent.Comp.LinkedTeleframe.Value, session);
+        }
+
+        Dirty(ent);
+    }
+
+    /// <summary>
+    /// on closing UI remove beacons from pvs list again
+    /// </summary>
+    private void OnUiClosed(Entity<TeleframeConsoleComponent> ent, ref BoundUIClosedEvent args)
+    {
+        if (!args.UiKey.Equals(TeleframeConsoleUiKey.Key))
+            return;
+
+        if (!_player.TryGetSessionByEntity(args.Actor, out var session)) //one would assume someone interacting with a UI is a player
+            return;
+
+        foreach (var beacon in ent.Comp.BeaconList)
+        {
+            if (TryGetEntity(beacon.TelePoint, out var beaconEnt))
+                _pvs.RemoveSessionOverride(beaconEnt.Value, session);
+            else
+                ent.Comp.BeaconList.Remove(beacon); //do some housecleaning and remove beacons that have been deleted outright.
+        }
+
+        if (ent.Comp.LinkedTeleframe != null)
+            _pvs.RemoveSessionOverride(ent.Comp.LinkedTeleframe.Value, session);
+
+        Dirty(ent);
     }
 }

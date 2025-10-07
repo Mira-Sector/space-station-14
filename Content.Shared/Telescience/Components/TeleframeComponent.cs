@@ -1,3 +1,4 @@
+using Content.Shared.Whitelist;
 using Robust.Shared.Prototypes;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
@@ -75,6 +76,13 @@ public sealed partial class TeleframeComponent : Component
     /// </summary>
     [DataField]
     public float ExplosionScore = 1000f;
+
+    /// <summary>
+    /// Blacklisted Tags and Components that won't be teleported
+    /// Amusing things that haven't been included: Observers
+    /// </summary>
+    [DataField]
+    public EntityWhitelist? Blacklist;
 
     //##########################################
 

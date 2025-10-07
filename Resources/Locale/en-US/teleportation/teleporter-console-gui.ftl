@@ -42,6 +42,10 @@ teleport-fail-unknown = Unknown
 teleport-fail-nolink = Bluespace Link Damaged
 teleport-fail-EMP = Electromagnetic Interference
 teleport-fail-power = Insufficient Charge
+teleport-fail-nogrid = Destination in Free Space
+teleport-fail-collide = Matter Collision Detected
 teleport-fail-boom = CATASTROPHIC ERROR
+
+teleport-console-access-denied = Access Denied
 
 

@@ -19,7 +19,7 @@ public sealed class TeleframeConsoleBoundUserInterface(EntityUid owner, Enum uiK
 
         var xform = EntMan.GetComponent<TransformComponent>(Owner);
 
-        _window.UpdateState((Owner, teleComp, xform));
+        _window.UpdateState((Owner, teleComp, xform), PlayerManager.LocalEntity);
 
         _window.OnActivated += SendPredictedMessage;
     }

@@ -101,4 +101,5 @@ public sealed partial class TeleframeBeaconSystem : EntitySystem
         }
     }
 
+
 }

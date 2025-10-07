@@ -16,23 +16,12 @@
 
 - type: entity
   id: TeleportBeacon
-  parent: BaseTeleportBeacon
+  parent: [BaseTeleportBeacon, BaseItem]
   name: teleport beacon
   description: Can be linked to a teleframe console, allowing it to be targeted over any distance. Must be anchored.
   components:
-    - type: Physics
-      bodyType: Dynamic
-    - type: Fixtures
-      fixtures:
-        fix1:
-          shape:
-            !type:PhysShapeAabb
-            bounds: "-0.25,-0.4,0.25,0.1"
-          density: 20
-          mask:
-            - Impassable
     - type: Item
-      size: Normal
+      size: Small
       inhandVisuals:
         left:
         - state: inhand-left
@@ -42,8 +31,6 @@
       delay: 0.5
     - type: TeleframeBeacon
       ValidBeacon: false
-    - type: Clickable
-    - type: InteractionOutline
     - type: Appearance
     - type: GenericVisualizer
       visuals:
@@ -77,6 +64,7 @@
   components:
   - type: Item
     sprite: Objects/Tools/handheld_teleframe_console.rsi
+    size: Normal
   - type: Sprite
     sprite: Objects/Tools/handheld_teleframe_console.rsi
     state: icon
