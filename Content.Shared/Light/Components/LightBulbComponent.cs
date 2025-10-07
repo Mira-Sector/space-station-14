@@ -73,6 +73,19 @@ public sealed partial class LightBulbComponent : Component
     [ViewVariables(VVAccess.ReadWrite)]
     public SoundSpecifier BreakSound = new SoundCollectionSpecifier("GlassBreak", AudioParams.Default.WithVolume(-6f));
 
+    #region Shadows
+
+    [DataField]
+    public int ShadowRadius = 4;
+
+    [DataField]
+    public float ShadowIntensity = 5f;
+
+    [DataField]
+    public Vector2i ShadowOffset;
+
+    #endregion
+
     #region Appearance
 
     /// <summary>

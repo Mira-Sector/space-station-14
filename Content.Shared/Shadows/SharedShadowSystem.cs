@@ -185,4 +185,40 @@ public abstract partial class SharedShadowSystem : EntitySystem
         var strength = MathF.Min(totalStrength, 1f);
         return new ShadowData(dirNorm, strength);
     }
+
+    public void SetRadius(Entity<ShadowCasterComponent?> ent, int radius)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp))
+            return;
+
+        if (ent.Comp.Radius == radius)
+            return;
+
+        ent.Comp.Radius = radius;
+        Dirty(ent);
+    }
+
+    public void SetIntensity(Entity<ShadowCasterComponent?> ent, float intensity)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp))
+            return;
+
+        if (ent.Comp.Intensity == intensity)
+            return;
+
+        ent.Comp.Intensity = intensity;
+        Dirty(ent);
+    }
+
+    public void SetOffset(Entity<ShadowCasterComponent?> ent, Vector2i offset)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp))
+            return;
+
+        if (ent.Comp.Offset == offset)
+            return;
+
+        ent.Comp.Offset = offset;
+        Dirty(ent);
+    }
 }
