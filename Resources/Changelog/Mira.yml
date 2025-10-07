@@ -2137,5 +2137,13 @@ Entries:
   changes:
   - message: Teleport beacons no longer have finite range
     type: Fix
+  - message: You can no longer teleport singularities and walls
+    type: Fix
   id: 296
   time: '2025-10-07T16:50:00.0000000+00:00'
+- author: Henry
+  changes:
+  - message: Crusher daggers are orderable from cargo
+    type: Add
+  id: 297
+  time: '2025-10-07T17:00:00.0000000+00:00'
