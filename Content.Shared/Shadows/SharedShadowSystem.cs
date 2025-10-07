@@ -130,7 +130,8 @@ public abstract partial class SharedShadowSystem : EntitySystem
 
         // special case
         // prevent nans
-        ent.Comp.ShadowMap[new(0, 0)] = new ShadowData(Vector2.Zero, ent.Comp.Intensity);
+        var origin = new Vector2i(0, 0);
+        shadowMap[origin] = new ShadowData(Vector2.Zero, ent.Comp.Intensity);
 
         ent.Comp.ShadowMap = shadowMap;
         Dirty(ent);

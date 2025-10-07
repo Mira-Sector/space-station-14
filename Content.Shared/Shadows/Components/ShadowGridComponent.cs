@@ -3,7 +3,7 @@ using Robust.Shared.GameStates;
 namespace Content.Shared.Shadows.Components;
 
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
-[Access(typeof(SharedShadowSystem))]
+[Access(typeof(SharedShadowSystem), Other = AccessPermissions.ReadExecute)]
 public sealed partial class ShadowGridComponent : Component
 {
     [ViewVariables, AutoNetworkedField]
