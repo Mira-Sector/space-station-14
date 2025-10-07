@@ -12,6 +12,7 @@ using Content.Shared.Emag.Systems;
 using Content.Shared.Whitelist;
 using Robust.Shared.Map;
 using System.Numerics;
+using SQLitePCL;
 
 namespace Content.Server.Telescience;
 
@@ -191,21 +192,27 @@ public sealed partial class TeleframeSystem : SharedTeleframeSystem
         };
 
         //prevent teleportation if receiving portal is not on a grid
-        if (mode == TeleframeActivationMode.Send)
+        switch (mode)
         {
-            if (_transform.GetGrid(targetPortal) == null)
-            {
-                TeleportFail(ent, Loc.GetString("teleport-fail-nogrid"));
-                return false;
-            }
-        }
-        else
-        {
-            if (_transform.GetGrid(sourcePortal) == null)
-            {
-                TeleportFail(ent, Loc.GetString("teleport-fail-nogrid"));
-                return false;
-            }
+            case TeleframeActivationMode.Send:
+                if (_transform.GetGrid(targetPortal) == null)
+                {
+                    TeleportFail(ent, Loc.GetString("teleport-fail-nogrid"));
+                    return false;
+                }
+
+                break;
+            case TeleframeActivationMode.Receive:
+                if (_transform.GetGrid(sourcePortal) == null)
+                {
+                    TeleportFail(ent, Loc.GetString("teleport-fail-nogrid"));
+                    return false;
+                }
+
+                break;
+
+            default:
+                throw new NotImplementedException();
         }
 
         //add power draw here
