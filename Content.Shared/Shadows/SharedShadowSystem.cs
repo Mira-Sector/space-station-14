@@ -140,24 +140,28 @@ public abstract partial class SharedShadowSystem : EntitySystem
     private void GenerateGridShadow(Entity<ShadowGridComponent> ent)
     {
         var estimatedCells = 0f;
+        List<Entity<ShadowCasterComponent>> casters = new(ent.Comp.Casters.Count);
         foreach (var casterUid in ent.Comp.Casters)
         {
+            if (!Initialized(casterUid))
+                continue;
+
             if (!CasterQuery.TryComp(casterUid, out var caster))
                 continue;
 
             estimatedCells += MathF.PI * caster.Radius * caster.Radius;
+            casters.Add((casterUid, caster));
         }
         ent.Comp.ShadowMap.EnsureCapacity((int)Math.Ceiling(estimatedCells));
         ent.Comp.ShadowMap.Clear();
 
-        foreach (var caster in ent.Comp.Casters)
+        foreach (var caster in casters)
         {
-            var casterComp = CasterQuery.Comp(caster);
             var pos = Transform(caster).LocalPosition;
 
-            var basePos = new Vector2i((int)MathF.Round(pos.X + casterComp.Offset.X), (int)MathF.Round(pos.Y + casterComp.Offset.Y));
+            var basePos = new Vector2i((int)MathF.Round(pos.X + caster.Comp.Offset.X), (int)MathF.Round(pos.Y + caster.Comp.Offset.Y));
 
-            foreach (var (localOffset, shadow) in casterComp.ShadowMap)
+            foreach (var (localOffset, shadow) in caster.Comp.ShadowMap)
             {
                 var worldPos = basePos + localOffset;
 
