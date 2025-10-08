@@ -9,7 +9,6 @@ public abstract partial class SharedShadowSystem : EntitySystem
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] protected readonly SharedTransformSystem Xform = default!;
 
-    private const float MinStrength = 0.001f;
     private const float MinRecalculateDistance = 0.1f;
     private const float MinRecalculateDistanceSquared = MinRecalculateDistance * MinRecalculateDistance;
 
@@ -102,7 +101,7 @@ public abstract partial class SharedShadowSystem : EntitySystem
 
     private void GenerateCasterShadow(Entity<ShadowCasterComponent> ent)
     {
-        if (ent.Comp.Radius < MinRecalculateDistance || ent.Comp.Intensity < MinStrength)
+        if (ent.Comp.Radius < MinRecalculateDistance || ent.Comp.Intensity < ShadowData.MinStrength)
         {
             ent.Comp.ShadowMap = [];
             Dirty(ent);
@@ -167,27 +166,13 @@ public abstract partial class SharedShadowSystem : EntitySystem
 
                 // combine if a shadow already exists here
                 if (ent.Comp.ShadowMap.TryGetValue(worldPos, out var existing))
-                    ent.Comp.ShadowMap[worldPos] = CombineShadow(existing, shadow);
+                    ent.Comp.ShadowMap[worldPos] = ShadowData.Combine(existing, shadow);
                 else
                     ent.Comp.ShadowMap[worldPos] = shadow;
             }
         }
 
         Dirty(ent);
-    }
-
-    private static ShadowData CombineShadow(ShadowData a, ShadowData b)
-    {
-        var totalStrength = a.Strength + b.Strength;
-        if (totalStrength < MinStrength)
-            return new ShadowData(Vector2.Zero, 0f);
-
-        // weighted direction average
-        var weightedDir = (a.Direction * a.Strength + b.Direction * b.Strength) / totalStrength;
-        var dirNorm = weightedDir.Normalized();
-
-        var strength = MathF.Min(totalStrength, 1f);
-        return new ShadowData(dirNorm, strength);
     }
 
     public void SetRadius(Entity<ShadowCasterComponent?> ent, int radius)
