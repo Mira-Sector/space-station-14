@@ -3,12 +3,14 @@ using Content.Shared.Shadows.Components;
 using Content.Shared.Shadows.Events;
 using Robust.Client.Graphics;
 using Robust.Shared.Player;
+using Robust.Shared.Random;
 
 namespace Content.Client.Shadows;
 
 public sealed partial class ShadowSystem : SharedShadowSystem
 {
     [Dependency] private readonly IOverlayManager _overlayManager = default!;
+    [Dependency] private readonly IRobustRandom _random = default!;
 
     private ShadowOverlay _overlay = default!;
     private ShadowDebugOverlay _debugOverlay = default!;
@@ -26,7 +28,7 @@ public sealed partial class ShadowSystem : SharedShadowSystem
         SubscribeNetworkEvent<ToggleShadowDebugOverlayEvent>(OnToggleDebug);
 
         _overlay = new(EntityManager);
-        _debugOverlay = new(EntityManager);
+        _debugOverlay = new(EntityManager, _random);
     }
 
     public override void Shutdown()
@@ -48,7 +50,6 @@ public sealed partial class ShadowSystem : SharedShadowSystem
     private void OnPlayerDetach(LocalPlayerDetachedEvent args)
     {
         _overlayManager.RemoveOverlay(_overlay);
-        _overlayManager.RemoveOverlay(_debugOverlay);
     }
 
     private void OnShadowInit(Entity<HasShadowComponent> ent, ref ComponentInit args)
