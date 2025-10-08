@@ -76,7 +76,7 @@ public sealed partial class LightBulbComponent : Component
     #region Shadows
 
     [DataField]
-    public int ShadowRadius = 4;
+    public int ShadowRadius = 8;
 
     [DataField]
     public float ShadowIntensity = 0.8f;

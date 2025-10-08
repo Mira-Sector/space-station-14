@@ -9,7 +9,7 @@ namespace Content.Shared.Shadows.Components;
 public sealed partial class ShadowCasterComponent : Component
 {
     [DataField]
-    public int Radius = 4;
+    public int Radius = 8;
 
     [DataField]
     public float Intensity = 0.8f;
