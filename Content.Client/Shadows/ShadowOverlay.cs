@@ -95,31 +95,48 @@ public sealed partial class ShadowOverlay : Overlay
         var fx = ent.Comp.LocalPosition.X - x0;
         var fy = ent.Comp.LocalPosition.Y - y0;
 
-        var has00 = grid.Comp.ShadowMap.TryGetValue(new(x0, y0), out var s00);
-        var has10 = grid.Comp.ShadowMap.TryGetValue(new(x1, y0), out var s10);
-        var has01 = grid.Comp.ShadowMap.TryGetValue(new(x0, y1), out var s01);
-        var has11 = grid.Comp.ShadowMap.TryGetValue(new(x1, y1), out var s11);
+        var corners = new (Vector2i pos, float weight)[]
+        {
+            (new Vector2i(x0, y0), (1 - fx) * (1 - fy)),
+            (new Vector2i(x1, y0), fx * (1 - fy)),
+            (new Vector2i(x0, y1), (1 - fx) * fy),
+            (new Vector2i(x1, y1), fx * fy)
+        };
 
-        if (!has00 && !has10 && !has01 && !has11)
+        var sumX = 0f;
+        var sumY = 0f;
+        var totalStrength = 0f;
+
+        foreach (var (pos, weight) in corners)
+        {
+            if (weight <= 0f)
+                continue;
+
+            if (!grid.Comp.ShadowMap.TryGetValue(pos, out var shadow))
+                continue;
+
+            // weight by both distance factor and shadow strength
+            var w = shadow.Strength * weight;
+            sumX += shadow.Direction.X * w;
+            sumY += shadow.Direction.Y * w;
+            totalStrength += w;
+        }
+
+        if (totalStrength <= 0f)
             return null;
 
-        if (!has00)
-            s00 = ShadowData.Empty;
-        if (!has10)
-            s10 = ShadowData.Empty;
-        if (!has01)
-            s01 = ShadowData.Empty;
-        if (!has11)
-            s11 = ShadowData.Empty;
+        var dir = new Vector2(sumX, sumY);
+        if (dir.LengthSquared() > ShadowData.MinDirLengthSquared)
+            dir = dir.Normalized();
+        else
+            dir = Vector2.Zero;
 
-        var sx0 = ShadowData.Lerp(s00, s10, fx);
-        var sx1 = ShadowData.Lerp(s01, s11, fx);
-        var data = ShadowData.Lerp(sx0, sx1, fy);
-
-        if (data.Strength < ShadowData.MinStrength)
+        // average strength
+        var strength = Math.Min(totalStrength / corners.Length, 1f);
+        if (strength < ShadowData.MinStrength)
             return null;
 
-        return data;
+        return new ShadowData(dir, strength);
     }
 
     public void AddEntity(EntityUid toAdd)

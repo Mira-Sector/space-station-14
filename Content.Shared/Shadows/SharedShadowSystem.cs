@@ -101,7 +101,7 @@ public abstract partial class SharedShadowSystem : EntitySystem
 
     private void GenerateCasterShadow(Entity<ShadowCasterComponent> ent)
     {
-        if (ent.Comp.Radius < MinRecalculateDistance || ent.Comp.Intensity < ShadowData.MinStrength)
+        if (ent.Comp.Radius < MinRecalculateDistance || ent.Comp.Intensity < ShadowData.MinIntensity)
         {
             ent.Comp.ShadowMap = [];
             Dirty(ent);

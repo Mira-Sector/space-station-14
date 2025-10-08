@@ -9,7 +9,10 @@ public readonly record struct ShadowData(Vector2 Direction, float Strength)
     public static readonly ShadowData Empty = new(Vector2.Zero, 0f);
 
     public const float MinStrength = 0.01f;
+    public const float MinIntensity = 0.01f;
     public const float MaxAngle = MathF.PI / 3f;
+    public const float MinDirLength = 0.01f;
+    public const float MinDirLengthSquared = MinDirLength * MinDirLength;
     public static readonly Color Color = Color.Black;
 
     public static ShadowData Combine(ShadowData a, ShadowData b)
