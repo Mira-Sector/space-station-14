@@ -59,6 +59,7 @@ public sealed partial class ShadowOverlay : Overlay
 
             var angle = MathF.Atan2(data.Direction.Y, data.Direction.X);
 
+            var prevColor = sprite.Color;
             var prevMatty = sprite.LocalMatrix;
 
             var bounds = _sprite.GetLocalBounds((target, sprite));
@@ -70,8 +71,12 @@ public sealed partial class ShadowOverlay : Overlay
             var matty = pivotTranslation * skew * pivotTranslationBack * prevMatty;
             sprite.LocalMatrix = matty;
 
+            var color = ShadowData.Color.WithAlpha(prevColor.A * data.Strength);
+            _sprite.SetColor((target, sprite), color);
+
             _sprite.RenderSprite((target, sprite), args.WorldHandle, eyeRot, worldRot, worldPos);
 
+            _sprite.SetColor((target, sprite), prevColor);
             sprite.LocalMatrix = prevMatty;
         }
 
