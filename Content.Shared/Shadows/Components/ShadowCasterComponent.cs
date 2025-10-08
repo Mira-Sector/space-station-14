@@ -12,7 +12,7 @@ public sealed partial class ShadowCasterComponent : Component
     public int Radius = 4;
 
     [DataField]
-    public float Intensity = 5f;
+    public float Intensity = 0.8f;
 
     [DataField]
     public Vector2i Offset;
