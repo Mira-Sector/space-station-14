@@ -63,12 +63,13 @@ public sealed partial class ShadowOverlay : Overlay
             var prevMatty = sprite.LocalMatrix;
 
             var bounds = _sprite.GetLocalBounds((target, sprite));
-            var pivot = new Vector2(bounds.Size.X / 2f, bounds.Size.Y); // pivot on bottom center;
-            var pivotTranslation = Matrix3x2.CreateTranslation(pivot);
-            var pivotTranslationBack = Matrix3x2.CreateTranslation(-pivot);
+            var pivot = new Vector2(bounds.Center.X, bounds.Bottom); // pivot on bottom center;
+            var pivotTranslation = Matrix3x2.CreateTranslation(-pivot);
+            var pivotTranslationBack = Matrix3x2.CreateTranslation(pivot);
             var skew = Matrix3x2.CreateSkew(MathF.Tan(angle), 0f);
+            var scale = Matrix3x2.CreateScale(1f, MathF.Abs(data.Direction.Y));
 
-            var matty = pivotTranslation * skew * pivotTranslationBack * prevMatty;
+            var matty = pivotTranslation * scale * skew * pivotTranslationBack * prevMatty;
             sprite.LocalMatrix = matty;
 
             var color = ShadowData.Color.WithAlpha(prevColor.A * data.Strength);
