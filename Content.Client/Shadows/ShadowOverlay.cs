@@ -72,7 +72,8 @@ public sealed partial class ShadowOverlay : Overlay
             var matty = pivotTranslation * scale * skew * pivotTranslationBack * prevMatty;
             sprite.LocalMatrix = matty;
 
-            var color = ShadowData.Color.WithAlpha(prevColor.A * data.Strength);
+            var alpha = 1f - data.Strength;
+            var color = ShadowData.Color.WithAlpha(prevColor.A * alpha);
             _sprite.SetColor((target, sprite), color);
 
             _sprite.RenderSprite((target, sprite), args.WorldHandle, eyeRot, worldRot, worldPos);

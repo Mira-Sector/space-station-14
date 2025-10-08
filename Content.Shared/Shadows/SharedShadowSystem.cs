@@ -121,16 +121,16 @@ public abstract partial class SharedShadowSystem : EntitySystem
                     continue;
 
                 var pos = new Vector2i(x, y);
-                var angle = new Vector2(x, y).Normalized();
-                var strength = Math.Clamp(1f - dist / ent.Comp.Radius, 0f, 1f) * ent.Comp.Intensity;
-                shadowMap[pos] = new ShadowData(angle, strength);
+                var direction = new Vector2(x, y).Normalized();
+                var angleFromVertical = MathF.Acos(Math.Clamp(direction.Y, -1f, 1f));
+                var falloff = MathF.Max(0f, 1f - angleFromVertical / ShadowData.MaxAngle);
+
+                var attenuation = 1f - dist / ent.Comp.Radius;
+
+                var strength = Math.Clamp(falloff * attenuation * ent.Comp.Intensity, 0f, 1f);
+                shadowMap[pos] = new ShadowData(direction, strength);
             }
         }
-
-        // special case
-        // prevent nans
-        var origin = new Vector2i(0, 0);
-        shadowMap[origin] = new ShadowData(Vector2.Zero, ent.Comp.Intensity);
 
         ent.Comp.ShadowMap = shadowMap;
         Dirty(ent);
