@@ -19,6 +19,7 @@ using Content.Shared.Jittering;
 using Content.Shared.Maps;
 using Content.Shared.NodeContainer;
 using Content.Shared.NodeContainer.NodeGroups;
+using Content.Shared.Nutrition;
 using Content.Shared.Popups;
 using Content.Shared.Speech.EntitySystems;
 using Content.Shared.StatusEffect;
@@ -87,6 +88,7 @@ public sealed class ElectrocutionSystem : SharedElectrocutionSystem
         SubscribeLocalEvent<ElectrifiedComponent, AttackedEvent>(OnElectrifiedAttacked);
         SubscribeLocalEvent<ElectrifiedComponent, InteractHandEvent>(OnElectrifiedHandInteract);
         SubscribeLocalEvent<ElectrifiedComponent, InteractUsingEvent>(OnElectrifiedInteractUsing);
+        SubscribeLocalEvent<ElectrifiedComponent, AfterFullyEatenEvent>(OnElectrifiedEaten);
         SubscribeLocalEvent<RandomInsulationComponent, MapInitEvent>(OnRandomInsulationMapInit);
         SubscribeLocalEvent<PoweredLightComponent, AttackedEvent>(OnLightAttacked);
 
@@ -164,7 +166,7 @@ public sealed class ElectrocutionSystem : SharedElectrocutionSystem
     private void OnElectrifiedStartCollide(EntityUid uid, ElectrifiedComponent electrified, ref StartCollideEvent args)
     {
         if (electrified.OnBump)
-            TryDoElectrifiedAct(uid, args.OtherEntity, 1, electrified);
+            TryDoElectrifiedAct(uid, args.OtherEntity, 1, electrified: electrified);
     }
 
     private void OnElectrifiedAttacked(EntityUid uid, ElectrifiedComponent electrified, AttackedEvent args)
@@ -175,13 +177,13 @@ public sealed class ElectrocutionSystem : SharedElectrocutionSystem
         if (_meleeWeapon.GetDamage(args.Used, args.User).Empty)
             return;
 
-        TryDoElectrifiedAct(uid, args.User, 1, electrified);
+        TryDoElectrifiedAct(uid, args.User, 1, electrified: electrified);
     }
 
     private void OnElectrifiedHandInteract(EntityUid uid, ElectrifiedComponent electrified, InteractHandEvent args)
     {
         if (electrified.OnHandInteract)
-            TryDoElectrifiedAct(uid, args.User, 1, electrified);
+            TryDoElectrifiedAct(uid, args.User, 1, electrified: electrified);
     }
 
     private void OnLightAttacked(EntityUid uid, PoweredLightComponent component, AttackedEvent args)
@@ -204,11 +206,17 @@ public sealed class ElectrocutionSystem : SharedElectrocutionSystem
             ? insulation.Coefficient
             : 1;
 
-        TryDoElectrifiedAct(uid, args.User, siemens, electrified);
+        TryDoElectrifiedAct(uid, args.User, siemens, electrified: electrified);
+    }
+
+    private void OnElectrifiedEaten(Entity<ElectrifiedComponent> ent, ref AfterFullyEatenEvent args)
+    {
+        TryDoElectrifiedAct(ent.Owner, args.User, 1, true, ent.Comp);
     }
 
     public bool TryDoElectrifiedAct(EntityUid uid, EntityUid targetUid,
         float siemens = 1,
+        bool ignoreInsulation = false,
         ElectrifiedComponent? electrified = null,
         NodeContainerComponent? nodeContainer = null,
         TransformComponent? transform = null)
@@ -226,57 +234,59 @@ public sealed class ElectrocutionSystem : SharedElectrocutionSystem
         _appearance.SetData(uid, ElectrifiedVisuals.ShowSparks, true);
 
         siemens *= electrified.SiemensCoefficient;
-        if (!DoCommonElectrocutionAttempt(targetUid, uid, ref siemens) || siemens <= 0)
+        if (!DoCommonElectrocutionAttempt(targetUid, uid, ref siemens, ignoreInsulation) || siemens <= 0)
             return false; // If electrocution would fail, do nothing.
+
+        var lastRet = true;
 
         var targets = new List<(EntityUid entity, int depth)>();
         GetChainedElectrocutionTargets(targetUid, targets);
         if (!electrified.RequirePower || electrified.UsesApcPower)
         {
-            var lastRet = true;
             for (var i = targets.Count - 1; i >= 0; i--)
             {
                 var (entity, depth) = targets[i];
                 lastRet = TryDoElectrocution(
                     entity,
                     uid,
-                    (int) (electrified.ShockDamage * MathF.Pow(RecursiveDamageMultiplier, depth)),
+                    (int)(electrified.ShockDamage * MathF.Pow(RecursiveDamageMultiplier, depth)),
                     TimeSpan.FromSeconds(electrified.ShockTime * MathF.Pow(RecursiveTimeMultiplier, depth)),
                     true,
-                    electrified.SiemensCoefficient
+                    electrified.SiemensCoefficient,
+                    ignoreInsulation: ignoreInsulation
                 );
             }
+
             return lastRet;
         }
 
         var node = PoweredNode(uid, electrified, nodeContainer);
-        if (node?.NodeGroup is not IBasePowerNet powerNode ||
-        electrified.WireDamageType == null ||
-        !electrified.WireDamageType.ContainsKey(node.NodeGroupID) ||
-        electrified.WireDamageType[node.NodeGroupID] is not ElectrocutionType wireDamageType)
+        if (node?.NodeGroup is not IBasePowerNet powerNode)
             return false;
 
+        if (electrified.WireDamageType == null || !electrified.WireDamageType.TryGetValue(node.NodeGroupID, out var value) || value is not ElectrocutionType wireDamageType)
+            return false;
+
+        for (var i = targets.Count - 1; i >= 0; i--)
         {
-            var lastRet = true;
-            for (var i = targets.Count - 1; i >= 0; i--)
-            {
-                var (entity, depth) = targets[i];
-                wireDamageType.Electrocution(EntityManager, _prototypeManager, entity, uid, electrified, powerNode, out var damage, out var time);
+            var (entity, depth) = targets[i];
+            wireDamageType.Electrocution(EntityManager, _prototypeManager, entity, uid, electrified, powerNode, out var damage, out var time);
 
-                damage *= (int) Math.Round(MathF.Pow(RecursiveDamageMultiplier, depth));
-                time *= MathF.Pow(RecursiveDamageMultiplier, depth);
+            damage *= (int)Math.Round(MathF.Pow(RecursiveDamageMultiplier, depth));
+            time *= MathF.Pow(RecursiveDamageMultiplier, depth);
 
-                lastRet = TryDoElectrocutionPowered(
-                    entity,
-                    uid,
-                    node,
-                    damage,
-                    TimeSpan.FromSeconds(time),
-                    true,
-                    electrified.SiemensCoefficient);
-            }
-            return lastRet;
+            lastRet = TryDoElectrocutionPowered(
+                entity,
+                uid,
+                node,
+                damage,
+                TimeSpan.FromSeconds(time),
+                true,
+                electrified.SiemensCoefficient,
+                ignoreInsulation);
         }
+
+        return lastRet;
     }
 
     private Node? PoweredNode(EntityUid uid, ElectrifiedComponent electrified, NodeContainerComponent? nodeContainer = null)
@@ -319,10 +329,11 @@ public sealed class ElectrocutionSystem : SharedElectrocutionSystem
         TimeSpan time,
         bool refresh,
         float siemensCoefficient = 1f,
+        bool ignoreInsulation = false,
         StatusEffectsComponent? statusEffects = null,
         TransformComponent? sourceTransform = null)
     {
-        if (!DoCommonElectrocutionAttempt(uid, sourceUid, ref siemensCoefficient))
+        if (!DoCommonElectrocutionAttempt(uid, sourceUid, ref siemensCoefficient, ignoreInsulation))
             return false;
 
         if (!DoCommonElectrocution(uid, sourceUid, shockDamage, time, refresh, siemensCoefficient, statusEffects))
