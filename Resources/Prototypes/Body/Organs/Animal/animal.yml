@@ -94,6 +94,12 @@
   - type: Item
     size: Small
     heldPrefix: stomach
+  - type: Stomach
+    specialDigestible:
+      components:
+      - Cable
+      tags:
+      - CableCoil
 
 - type: entity
   id: OrganAnimalLiver

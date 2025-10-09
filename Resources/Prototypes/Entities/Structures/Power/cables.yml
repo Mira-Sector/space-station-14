@@ -26,6 +26,7 @@
     damageContainer: Inorganic
     damageModifierSet: Metallic
   - type: Food
+    requiresSpecialDigestion: true
     delay: 5
     forceFeedDelay: 7
   - type: BadFood
