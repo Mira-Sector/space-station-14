@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using Robust.Shared.Serialization;
 
@@ -158,6 +158,22 @@ namespace Content.Shared.Atmos
         public static bool IsFlagSet(this AtmosDirection direction, AtmosDirection other)
         {
             return (direction & other) == other;
+        }
+
+        public static Vector2i DirectionToIntVec(this AtmosDirection dir)
+        {
+            var vec = Vector2i.Zero;
+
+            if (dir.HasFlag(AtmosDirection.North))
+                vec.Y -= 1;
+            if (dir.HasFlag(AtmosDirection.South))
+                vec.Y += 1;
+            if (dir.HasFlag(AtmosDirection.East))
+                vec.X += 1;
+            if (dir.HasFlag(AtmosDirection.West))
+                vec.X -= 1;
+
+            return vec;
         }
 
         public static Vector2i CardinalToIntVec(this AtmosDirection dir)
