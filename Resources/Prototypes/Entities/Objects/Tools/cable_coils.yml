@@ -23,6 +23,8 @@
   - type: Food
     delay: 5
     forceFeedDelay: 7
+  - type: BadFood
+    chance: 0.3
   - type: CablePlacer
   - type: Clickable
   - type: StaticPrice
