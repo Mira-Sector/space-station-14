@@ -9,4 +9,6 @@ namespace Content.Server.Nutrition.Components;
 [RegisterComponent, Access(typeof(FoodSystem))]
 public sealed partial class BadFoodComponent : Component
 {
+    [DataField]
+    public float Chance = 0f;
 }

@@ -25,6 +25,12 @@
   - type: Damageable
     damageContainer: Inorganic
     damageModifierSet: Metallic
+  - type: Food
+    requiresSpecialDigestion: true
+    delay: 5
+    forceFeedDelay: 7
+  - type: BadFood
+    chance: 0.3
   - type: Destructible
     thresholds:
     - trigger:
@@ -100,6 +106,16 @@
     range: 2
     sound:
       path: /Audio/Ambience/Objects/emf_buzz.ogg
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: Iron
+          Quantity: 3
+        - ReagentId: Copper
+          Quantity: 2
+        - ReagentId: Carbon #steel-reinforced
+          Quantity: 1
 
 - type: entity
   id: CableHVUncuttable
@@ -154,6 +170,14 @@
   - type: CableVisualizer
     statePrefix: mvcable_
     extraLayerPrefix: mvstripes_
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: Iron
+          Quantity: 3
+        - ReagentId: Copper
+          Quantity: 2
 
 - type: entity
   id: CableMVUncuttable
@@ -209,6 +233,14 @@
         acts: [ "Destruction" ]
   - type: CableVisualizer
     statePrefix: lvcable_
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: Iron
+          Quantity: 3
+        - ReagentId: Copper
+          Quantity: 2
 
 - type: entity
   id: CableApcExtensionUncuttable

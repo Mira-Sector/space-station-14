@@ -21,7 +21,7 @@
       - left_leg
       organs:
         lungs: OrganAnimalLungs
-        stomach: OrganAnimalStomach
+        stomach: OrganMouseStomach
         liver: OrganAnimalLiver
         heart: OrganAnimalHeart
         kidneys: OrganAnimalKidneys
