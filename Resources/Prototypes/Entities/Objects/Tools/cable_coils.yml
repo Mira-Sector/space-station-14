@@ -21,6 +21,8 @@
     size: Small
     storedRotation: -90
   - type: Food
+    delay: 5
+    forceFeedDelay: 7
   - type: CablePlacer
   - type: Clickable
   - type: StaticPrice
