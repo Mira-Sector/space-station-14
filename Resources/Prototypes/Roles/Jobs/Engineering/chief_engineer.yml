@@ -41,7 +41,6 @@
     eyes: ClothingEyesGlassesMeson
     ears: ClothingHeadsetCE
     belt: ClothingBeltUtilityEngineering
-    gloves: ClothingHandsGlovesColorYellow
   storage:
     back:
     - Telescopicbaton

@@ -27,7 +27,6 @@
     id: AtmosPDA
     belt: ClothingBeltUtilityEngineering
     ears: ClothingHeadsetEngineering
-    gloves: ClothingHandsGlovesColorYellow
   #storage:
     #back:
     #- Stuff
