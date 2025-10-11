@@ -156,8 +156,6 @@
     - id: GasAnalyzer
     - id: MedkitOxygenFilled
     - id: HolofanProjector
-    - id: RCD
-    - id: RCDAmmo
     - id: AirGrenade
 
 - type: entityTable
@@ -199,8 +197,6 @@
     - id: ClothingHandsGlovesColorYellow
     - id: ClothingMaskGas
     - id: trayScanner
-    - id: RCD
-    - id: RCDAmmo
     - id: MetalFoamGrenade
 
 - type: entityTable
