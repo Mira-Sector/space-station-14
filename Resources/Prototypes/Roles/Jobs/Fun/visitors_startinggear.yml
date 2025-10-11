@@ -508,8 +508,7 @@
     ears: ClothingHeadsetEngineering
     eyes: ClothingEyesGlassesMeson
     outerClothing: ClothingOuterWinterEngi
-    pocket1: RCD
-    pocket2: RCDAmmo
+    pocket1: InflatableWallStack
   inhand:
   - trayScanner
   - CableApcStack
@@ -526,8 +525,8 @@
     back: ClothingBackpackDuffelEngineering
     ears: ClothingHeadsetEngineering
     eyes: ClothingEyesGlassesMeson
-    pocket1: RCD
-    pocket2: RCDAmmo
+    pocket1: InflatableWallStack
+    pocket2: trayScanner
   inhand:
   - SheetSteel
   - SheetGlass
