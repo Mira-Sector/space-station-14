@@ -197,8 +197,19 @@ public sealed class NPCUtilitySystem : EntitySystem
                 // no mouse don't eat the uranium-235
                 if (avoidBadFood && TryComp<BadFoodComponent>(targetUid, out var badFood))
                 {
-                    if (!_random.Prob(badFood.Chance))
+                    var cannot = EnsureComp<BadFoodCannotEatComponent>(owner);
+
+                    var protoId = Prototype(targetUid)?.ID;
+                    if (protoId != null && cannot.CannotEat.Contains(protoId))
                         return 0f;
+
+                    if (!_random.Prob(badFood.Chance))
+                    {
+                        if (protoId != null)
+                            cannot.CannotEat.Add(protoId);
+
+                        return 0f;
+                    }
                 }
 
                 return 1f;
