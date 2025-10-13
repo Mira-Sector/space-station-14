@@ -33,7 +33,7 @@ public sealed partial class ElevatorEntranceComponent : Component
     public TimeSpan? NextTeleport;
 
     [ViewVariables, AutoNetworkedField]
-    public HashSet<NetEntity>? NextTeleportEntities;
+    public HashSet<EntityUid>? NextTeleportEntities;
 
     [DataField]
     public ProtoId<SourcePortPrototype> DelayPort = "ElevatorEntranceDelayed";

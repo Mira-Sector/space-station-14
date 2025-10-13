@@ -13,5 +13,5 @@ public sealed partial class ElevatorMusicComponent : Component
     [ViewVariables, AutoNetworkedField]
     public float NextPlayOffset;
 
-    public (EntityUid, AudioComponent)? SoundEntity;
+    public Entity<AudioComponent>? SoundEntity;
 }
