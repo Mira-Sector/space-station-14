@@ -19,6 +19,12 @@
   - type: DeviceLinkSink
     ports:
       - ElevatorFloorChange
+  - type: DeviceLinkSource
+    ports:
+      - ElevatorEntranceDelayed
+      - ElevatorEntranceFinished
+      - ElevatorExitDelayed
+      - ElevatorExitFinished
   - type: StepTrigger
     intersectRatio: 0.9
     requiredTriggeredSpeed: 0

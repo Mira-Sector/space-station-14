@@ -24,7 +24,11 @@ public sealed partial class ElevatorSystem : SharedElevatorSystem
         if (args.Port != component.InputPort)
             return;
 
-        CollisionTeleport(uid, component);
+        if (!TryComp<ElevatorEntranceComponent>(uid, out var entrance))
+            return;
+
+        Teleport(uid, entrance, component.Collided);
+        component.Collided.Clear();
     }
 
     private void OnMapInit(EntityUid uid, ElevatorStationComponent component, MapInitEvent args)

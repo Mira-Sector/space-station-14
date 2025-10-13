@@ -81,3 +81,15 @@ signal-port-description-teleport-beacon-sender = Teleport Beacon Coordinate sign
 
 signal-port-name-surgery-ui-source = Surgery Scanner Source
 signal-port-description-surgery-ui-source = Surgery scanner body source.
+
+signal-port-name-elevator-entrance-delayed = Floor confirmed (Entrance)
+signal-port-description-elevator-entrance-delayed = Someone in the elevator has requested to go up.
+
+signal-port-name-elevator-exit-delayed = Floor confirmed (Exit)
+signal-port-description-elevator-exit-delayed = Someone on the other side has requested to go up.
+
+signal-port-name-elevator-entrance-finished = Floor arrived (Entrance)
+signal-port-description-elevator-entrance-finished = Someone who started on our elevator arrived at their destination.
+
+signal-port-name-elevator-exit-finished = Floor arrived (Exit)
+signal-port-description-elevator-exit-finished = Someone has ended their journey on us.
