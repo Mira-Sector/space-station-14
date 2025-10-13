@@ -1,3 +1,4 @@
+using Content.Shared.DeviceLinking;
 using Robust.Shared.Map;
 using Robust.Shared.Physics.Events;
 using System.Numerics;
@@ -6,16 +7,23 @@ namespace Content.Shared.Elevator;
 
 public abstract partial class SharedElevatorSystem : EntitySystem
 {
+    [Dependency] private readonly SharedDeviceLinkSystem _deviceLink = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
 
     public override void Initialize()
     {
         base.Initialize();
 
+        SubscribeLocalEvent<ElevatorCollisionComponent, ComponentInit>(OnCollisionInit);
         SubscribeLocalEvent<ElevatorCollisionComponent, StartCollideEvent>(OnStartCollide);
         SubscribeLocalEvent<ElevatorCollisionComponent, EndCollideEvent>(OnEndCollide);
 
         SubscribeLocalEvent<ElevatorExitComponent, ElevatorTeleportEvent>(OnTeleport);
+    }
+
+    private void OnCollisionInit(EntityUid uid, ElevatorCollisionComponent component, ComponentInit args)
+    {
+        _deviceLink.EnsureSinkPorts(uid, component.InputPort);
     }
 
     private void OnStartCollide(EntityUid uid, ElevatorCollisionComponent component, ref StartCollideEvent args)
@@ -23,6 +31,8 @@ public abstract partial class SharedElevatorSystem : EntitySystem
         if (args.OurFixtureId != component.CollisionId)
             return;
 
+        // purposfully dont store the offset
+        // they are likely to move about whilst still being in the collision
         component.Collided.Add(GetNetEntity(args.OtherEntity));
     }
 
@@ -32,6 +42,24 @@ public abstract partial class SharedElevatorSystem : EntitySystem
             return;
 
         component.Collided.Remove(GetNetEntity(args.OtherEntity));
+    }
+
+    protected void Teleport(EntityUid uid, ElevatorEntranceComponent component, Dictionary<NetEntity, Vector2> entities)
+    {
+        if (component.Exit is not {} exitUid)
+            return;
+
+        if (component.StartingMap is not {} entranceMap)
+            return;
+
+        if (!TryComp<ElevatorExitComponent>(exitUid, out var exitComp))
+            return;
+
+        if (exitComp.StartingMap is not {} exitMap)
+            return;
+
+        var ev = new ElevatorTeleportEvent(entities, GetNetEntity(entranceMap), GetNetEntity(exitMap));
+        RaiseLocalEvent(exitUid, ev);
     }
 
     private void OnTeleport(EntityUid uid, ElevatorExitComponent component, ElevatorTeleportEvent args)
@@ -51,21 +79,4 @@ public abstract partial class SharedElevatorSystem : EntitySystem
         }
     }
 
-    private void Teleport(EntityUid uid, ElevatorEntranceComponent component, Dictionary<NetEntity, Vector2> entities)
-    {
-        if (component.Exit is not {} exitUid)
-            return;
-
-        if (component.StartingMap is not {} entranceMap)
-            return;
-
-        if (!TryComp<ElevatorExitComponent>(exitUid, out var exitComp))
-            return;
-
-        if (exitComp.StartingMap is not {} exitMap)
-            return;
-
-        var ev = new ElevatorTeleportEvent(entities, GetNetEntity(entranceMap), GetNetEntity(exitMap));
-        RaiseLocalEvent(exitUid, ev);
-    }
 }

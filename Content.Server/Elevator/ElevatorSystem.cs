@@ -1,7 +1,9 @@
+using Content.Server.DeviceLinking.Events;
 using Content.Server.Station.Systems;
 using Content.Shared.Elevator;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map;
+using System.Numerics;
 
 namespace Conent.Server.Elevator;
 
@@ -14,7 +16,32 @@ public sealed partial class ElevatorSystem : SharedElevatorSystem
 
     public override void Initialize()
     {
+        SubscribeLocalEvent<ElevatorCollisionComponent, SignalReceivedEvent>(OnCollisionSignal);
         SubscribeLocalEvent<ElevatorStationComponent, MapInitEvent>(OnMapInit);
+    }
+
+    private void OnCollisionSignal(EntityUid uid, ElevatorCollisionComponent component, ref SignalReceivedEvent args)
+    {
+        if (args.Port != component.InputPort)
+            return;
+
+        if (!TryComp<ElevatorEntranceComponent>(uid, out var entrance))
+            return;
+
+        if (component.Collided.Count <= 0)
+            return;
+
+        var coords = Transform(uid).Coordinates.Position;
+
+        Dictionary<NetEntity, Vector2> entities = new();
+        foreach (var entity in component.Collided)
+        {
+            var entCoords = Transform(GetEntity(entity)).Coordinates.Position;
+
+            entities.Add(entity, Vector2.Subtract(coords, entCoords));
+        }
+
+        Teleport(uid, entrance, entities);
     }
 
     private void OnMapInit(EntityUid uid, ElevatorStationComponent component, MapInitEvent args)

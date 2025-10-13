@@ -98,3 +98,6 @@ signal-port-description-teleport-beacon-receiver = Teleport Beacon coordinate si
 
 signal-port-name-surgery-ui-sink = Surgery Scanner Sink
 signal-port-description-surgery-ui-sink = Surgery scanner body sink.
+
+signal-port-name-elevator-floor-change = Change floor
+signal-port-description-elevator-floor-change = Makes the lift go vroom!
