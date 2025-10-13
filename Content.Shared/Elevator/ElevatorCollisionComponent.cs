@@ -8,7 +8,7 @@ namespace Content.Shared.Elevator;
 public sealed partial class ElevatorCollisionComponent : Component
 {
     [ViewVariables, AutoNetworkedField]
-    public HashSet<NetEntity> Collided = new();
+    public HashSet<EntityUid> Collided = [];
 
     [DataField]
     public ProtoId<SinkPortPrototype> InputPort = "ElevatorFloorChange";

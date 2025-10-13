@@ -1,7 +1,10 @@
 using Content.Shared.DeviceLinking;
+using Content.Shared.DeviceLinking.Events;
 using Content.Shared.StepTrigger.Systems;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
+using Robust.Shared.EntitySerialization;
+using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Timing;
 using System.Numerics;
@@ -12,9 +15,16 @@ public abstract partial class SharedElevatorSystem : EntitySystem
 {
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedDeviceLinkSystem _deviceLink = default!;
-    [Dependency] protected readonly SharedMapSystem _map = default!;
+    [Dependency] private readonly SharedMapSystem _map = default!;
+    [Dependency] private readonly MapLoaderSystem _mapLoader = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
+    [Dependency] private readonly MetaDataSystem _metaData = default!;
+
+    private static readonly DeserializationOptions MapLoadOptions = new()
+    {
+        InitializeMaps = true
+    };
 
     public override void Initialize()
     {
@@ -23,10 +33,13 @@ public abstract partial class SharedElevatorSystem : EntitySystem
         SubscribeLocalEvent<ElevatorEntranceComponent, ComponentInit>(OnEntranceInit);
         SubscribeLocalEvent<ElevatorEntranceComponent, ElevatorAttemptTeleportEvent>(OnAttemptTeleport);
 
+        SubscribeLocalEvent<ElevatorStationComponent, MapInitEvent>(OnMapInit);
+
         SubscribeLocalEvent<ElevatorExitComponent, ComponentInit>(OnExitInit);
         SubscribeLocalEvent<ElevatorExitComponent, ElevatorTeleportEvent>(OnTeleport);
 
         SubscribeLocalEvent<ElevatorCollisionComponent, ComponentInit>(OnCollisionInit);
+        SubscribeLocalEvent<ElevatorCollisionComponent, SignalReceivedEvent>(OnCollisionSignal);
         SubscribeLocalEvent<ElevatorCollisionComponent, StepTriggerAttemptEvent>(OnStepTriggerAttempt);
         SubscribeLocalEvent<ElevatorCollisionComponent, StepTriggeredOnEvent>(OnStartCollide);
         SubscribeLocalEvent<ElevatorCollisionComponent, StepTriggeredOffEvent>(OnEndCollide);
@@ -44,7 +57,7 @@ public abstract partial class SharedElevatorSystem : EntitySystem
 
         while (entranceQuery.MoveNext(out var entranceUid, out var entranceComp))
         {
-            if (entranceComp.NextTeleport is not {} nextTeleport)
+            if (entranceComp.NextTeleport is not { } nextTeleport)
                 continue;
 
             if (nextTeleport > _timing.CurTime)
@@ -53,16 +66,16 @@ public abstract partial class SharedElevatorSystem : EntitySystem
             if (entranceComp.NextTeleportEntities == null)
                 continue;
 
-            if (entranceComp.StartingMap is not {} entranceMap)
+            if (entranceComp.StartingMap is not { } entranceMap)
                 continue;
 
-            if (entranceComp.Exit is not {} exitUid)
+            if (entranceComp.Exit is not { } exitUid)
                 continue;
 
             if (!TryComp<ElevatorExitComponent>(exitUid, out var exitComp))
                 continue;
 
-            if (exitComp.StartingMap is not {} exitMap)
+            if (exitComp.StartingMap is not { } exitMap)
                 continue;
 
             _deviceLink.InvokePort(entranceUid, entranceComp.FinishedPort);
@@ -91,36 +104,36 @@ public abstract partial class SharedElevatorSystem : EntitySystem
 
     private void OnStepTriggerAttempt(EntityUid uid, ElevatorCollisionComponent component, ref StepTriggerAttemptEvent args)
     {
-        args.Continue = !component.Collided.Contains(GetNetEntity(args.Tripper));
+        args.Continue = !component.Collided.Contains(args.Tripper);
     }
 
     private void OnStartCollide(EntityUid uid, ElevatorCollisionComponent component, ref StepTriggeredOnEvent args)
     {
-        // purposfully dont store the offset
+        // purposefully dont store the offset
         // they are likely to move about whilst still being in the collision
-        component.Collided.Add(GetNetEntity(args.Tripper));
+        component.Collided.Add(args.Tripper);
     }
 
     private void OnEndCollide(EntityUid uid, ElevatorCollisionComponent component, ref StepTriggeredOffEvent args)
     {
-        component.Collided.Remove(GetNetEntity(args.Tripper));
+        component.Collided.Remove(args.Tripper);
     }
 
-    protected void Teleport(EntityUid uid, ElevatorEntranceComponent component, HashSet<NetEntity> entities)
+    protected void Teleport(EntityUid uid, ElevatorEntranceComponent component, HashSet<EntityUid> entities)
     {
-        if (component.Exit is not {} exitUid)
+        if (component.Exit is not { } exitUid)
             return;
 
-        if (component.StartingMap is not {} entranceMap)
+        if (component.StartingMap is not { } entranceMap)
             return;
 
         if (!TryComp<ElevatorExitComponent>(exitUid, out var exitComp))
             return;
 
-        if (exitComp.StartingMap is not {} exitMap)
+        if (exitComp.StartingMap is not { } exitMap)
             return;
 
-        var ev = new ElevatorAttemptTeleportEvent(entities, entranceMap, exitMap);
+        var ev = new ElevatorAttemptTeleportEvent(GetNetEntitySet(entities), entranceMap, exitMap);
         RaiseLocalEvent(exitUid, ev);
     }
 
@@ -130,7 +143,7 @@ public abstract partial class SharedElevatorSystem : EntitySystem
         if (component.NextTeleportEntities != null)
             return;
 
-        if (component.Exit is not {} exit)
+        if (component.Exit is not { } exit)
             return;
 
         if (component.Delay == null)
@@ -213,5 +226,89 @@ public abstract partial class SharedElevatorSystem : EntitySystem
 
         _audio.Stop(soundUid);
         component.SoundEntity = null;
+    }
+
+    private void OnCollisionSignal(EntityUid uid, ElevatorCollisionComponent component, ref SignalReceivedEvent args)
+    {
+        if (args.Port != component.InputPort)
+            return;
+
+        if (!TryComp<ElevatorEntranceComponent>(uid, out var entrance))
+            return;
+
+        Teleport(uid, entrance, component.Collided);
+        component.Collided.Clear();
+    }
+
+    private void OnMapInit(EntityUid uid, ElevatorStationComponent component, MapInitEvent args)
+    {
+        foreach (var (key, path) in component.ElevatorMapPaths)
+        {
+            _map.CreateMap(out var mapId);
+            if (!_mapLoader.TryLoadMapWithId(mapId, path, out var map, out _, MapLoadOptions))
+            {
+                _map.DeleteMap(mapId);
+                continue;
+            }
+
+            _metaData.SetEntityName(map.Value, key);
+            component.ElevatorMaps.Add(key, mapId);
+        }
+
+        var entranceQuery = EntityQueryEnumerator<ElevatorEntranceComponent>();
+        var exitQuery = EntityQueryEnumerator<ElevatorExitComponent>();
+
+        // construct a dictionary for faster lookups
+        Dictionary<MapId, Dictionary<string, EntityUid>> mapToExitId = [];
+        while (exitQuery.MoveNext(out var exitUid, out var exitComp))
+        {
+            var map = Transform(exitUid).MapID;
+
+            if (map == MapId.Nullspace)
+                continue;
+
+            exitComp.StartingMap = map;
+
+            if (mapToExitId.TryGetValue(map, out var exitIds))
+            {
+                exitIds.Add(exitComp.ExitId, exitUid);
+            }
+            else
+            {
+                Dictionary<string, EntityUid> newExitIds = new();
+                newExitIds.Add(exitComp.ExitId, exitUid);
+                mapToExitId.Add(map, newExitIds);
+            }
+        }
+
+        while (entranceQuery.MoveNext(out var entranceUid, out var entranceComp))
+        {
+            var map = Transform(entranceUid).MapID;
+
+            if (map == MapId.Nullspace)
+                continue;
+
+            if (!component.ElevatorMaps.TryGetValue(entranceComp.ElevatorMapKey, out var netMap))
+            {
+                Log.Error($"Failed to load elevator key {entranceComp.ElevatorMapKey} on {ToPrettyString(entranceUid)}.");
+                continue;
+            }
+
+            if (!mapToExitId.TryGetValue(netMap, out var exitIds))
+            {
+                Log.Error($"Cannot find map {map} in mapToExitId.");
+                continue;
+            }
+
+            if (!exitIds.TryGetValue(entranceComp.ExitId, out var exit))
+            {
+                Log.Error($"Cannot find {entranceComp.ExitId} on map {map}.");
+                continue;
+            }
+
+            entranceComp.ElevatorMap = netMap;
+            entranceComp.StartingMap = map;
+            entranceComp.Exit = exit;
+        }
     }
 }
