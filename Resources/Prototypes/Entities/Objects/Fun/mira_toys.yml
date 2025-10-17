@@ -227,6 +227,25 @@
       - state: equipped-HELMET
         offset: "0, 0.03"
 
+- type: entity
+  parent: PlushieMoth
+  id: PlushieWikson
+  name: wikson sparks plushie
+  description: Woven from the finest horrifically mutated cotton, may contain traces of Nocturine.
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/MiraPlushies/wikson.rsi
+    state: icon
+  - type: Clothing
+    quickEquip: false
+    sprite: Objects/Fun/MiraPlushies/wikson.rsi
+    slots:
+    - HEAD
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET
+        offset: "0, 0.03"
+
 #others
 
 - type: entity

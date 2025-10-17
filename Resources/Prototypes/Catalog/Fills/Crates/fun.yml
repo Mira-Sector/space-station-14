@@ -50,6 +50,7 @@
     - id: PlushieCreature
     - id: PlushieClownothing
     - id: PlushieAlexia
+    - id: PlushieWikson
 
 - type: entityTable
   id: AllPottedPlantsTable
