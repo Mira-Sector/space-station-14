@@ -2153,3 +2153,9 @@ Entries:
     type: Add
   id: 298
   time: '2025-10-09T01:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Lowered mice wire eating chance from 30% to 5%
+    type: Tweak
+  id: 299
+  time: '2025-10-17T14:40:00.0000000+00:00'
