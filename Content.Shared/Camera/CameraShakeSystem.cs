@@ -105,7 +105,9 @@ public sealed partial class CameraShakeSystem : EntitySystem
         var noiseVec = _random.NextVector2();
 
         var dirWeight = 1 - entry.NoiseWeight;
-        var mixed = Vector2.Normalize(entry.Direction * dirWeight + noiseVec * entry.NoiseWeight);
+        var weightedDir = entry.Direction.IsValid() ? entry.Direction * dirWeight : Vector2.Zero;
+        var weightedNoise = noiseVec * entry.NoiseWeight; // no need to check its valid. its normalized
+        var mixed = Vector2.Normalize(weightedDir + weightedNoise);
         return mixed * magnitude;
     }
 
