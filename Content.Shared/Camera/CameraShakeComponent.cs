@@ -1,6 +1,6 @@
+using Content.Shared.Camera.ShakeData;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
-using System.Numerics;
 
 namespace Content.Shared.Camera;
 
@@ -15,7 +15,7 @@ public sealed partial class CameraShakeComponent : Component
 public struct CameraShakeEntry
 {
     [ViewVariables]
-    public Vector2 Direction;
+    public ICameraShakeData DirectionData;
 
     [ViewVariables]
     public float MinMagnitude;

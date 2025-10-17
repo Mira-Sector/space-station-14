@@ -1,4 +1,6 @@
+using Content.Shared.Camera.ShakeData;
 using Content.Shared.Movement.Systems;
+using Robust.Shared.Map;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
 using JetBrains.Annotations;
@@ -79,14 +81,17 @@ public sealed partial class CameraShakeSystem : EntitySystem
     {
         var vec = Vector2.Zero;
         foreach (var entry in ent.Comp.Entries)
-            vec += GetEntryOffset(entry);
+            vec += GetEntryOffset(ent, entry);
 
         return vec;
     }
 
-    private Vector2 GetEntryOffset(CameraShakeEntry entry)
+    private Vector2 GetEntryOffset(Entity<CameraShakeComponent> ent, CameraShakeEntry entry)
     {
         if (entry.Duration <= TimeSpan.Zero)
+            return Vector2.Zero;
+
+        if (!entry.DirectionData.TryGetDirection(ent, EntityManager, out var entryDir))
             return Vector2.Zero;
 
         var progress = (float)(entry.Elapsed.TotalSeconds / entry.Duration.TotalSeconds);
@@ -105,15 +110,65 @@ public sealed partial class CameraShakeSystem : EntitySystem
         var noiseVec = _random.NextVector2();
 
         var dirWeight = 1 - entry.NoiseWeight;
-        var weightedDir = entry.Direction.IsValid() ? entry.Direction * dirWeight : Vector2.Zero;
-        var weightedNoise = noiseVec * entry.NoiseWeight; // no need to check its valid. its normalized
+        var weightedDir = entryDir * dirWeight;
+        var weightedNoise = noiseVec * entry.NoiseWeight;
         var mixed = Vector2.Normalize(weightedDir + weightedNoise);
         return mixed * magnitude;
     }
 
     [PublicAPI]
-    public void ShakeCamera(EntityUid uid,
+    public void ShakeCameraDirection(EntityUid uid,
         Vector2 direction,
+        float minMagnitude,
+        float maxMagnitude,
+        float noiseWeight,
+        TimeSpan duration,
+        float frequency)
+    {
+        var data = new CameraShakeDirectionData()
+        {
+            Direction = direction
+        };
+
+        ShakeCamera(uid, data, minMagnitude, maxMagnitude, noiseWeight, duration, frequency);
+    }
+
+    [PublicAPI]
+    public void ShakeCameraEntity(EntityUid uid,
+        EntityUid target,
+        float minMagnitude,
+        float maxMagnitude,
+        float noiseWeight,
+        TimeSpan duration,
+        float frequency)
+    {
+        var data = new CameraShakeEntityData()
+        {
+            Target = target
+        };
+
+        ShakeCamera(uid, data, minMagnitude, maxMagnitude, noiseWeight, duration, frequency);
+    }
+
+    [PublicAPI]
+    public void ShakeCameraPosition(EntityUid uid,
+        EntityCoordinates coords,
+        float minMagnitude,
+        float maxMagnitude,
+        float noiseWeight,
+        TimeSpan duration,
+        float frequency)
+    {
+        var data = new CameraShakePositionalData()
+        {
+            Position = coords
+        };
+
+        ShakeCamera(uid, data, minMagnitude, maxMagnitude, noiseWeight, duration, frequency);
+    }
+
+    private void ShakeCamera(EntityUid uid,
+        ICameraShakeData data,
         float minMagnitude,
         float maxMagnitude,
         float noiseWeight,
@@ -122,7 +177,7 @@ public sealed partial class CameraShakeSystem : EntitySystem
     {
         var entry = new CameraShakeEntry()
         {
-            Direction = direction,
+            DirectionData = data,
             MinMagnitude = minMagnitude,
             MaxMagnitude = maxMagnitude,
             NoiseWeight = noiseWeight,
