@@ -21,11 +21,12 @@
     size: Small
     storedRotation: -90
   - type: Food
+    transferAmount: 10
     requiresSpecialDigestion: true
     delay: 5
     forceFeedDelay: 7
   - type: BadFood
-    chance: 0.3
+    chance: 0.05
   - type: CablePlacer
   - type: Clickable
   - type: StaticPrice

@@ -26,11 +26,12 @@
     damageContainer: Inorganic
     damageModifierSet: Metallic
   - type: Food
+    transferAmount: 10
     requiresSpecialDigestion: true
     delay: 5
     forceFeedDelay: 7
   - type: BadFood
-    chance: 0.3
+    chance: 0.05
   - type: Destructible
     thresholds:
     - trigger:
