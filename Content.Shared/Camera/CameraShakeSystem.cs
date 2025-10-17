@@ -142,6 +142,18 @@ public sealed partial class CameraShakeSystem : EntitySystem
         TimeSpan duration,
         float frequency)
     {
+        ShakeCameraEntity(uid, GetNetEntity(target), minMagnitude, maxMagnitude, noiseWeight, duration, frequency);
+    }
+
+    [PublicAPI]
+    public void ShakeCameraEntity(EntityUid uid,
+        NetEntity target,
+        float minMagnitude,
+        float maxMagnitude,
+        float noiseWeight,
+        TimeSpan duration,
+        float frequency)
+    {
         var data = new CameraShakeEntityData()
         {
             Target = target
@@ -153,6 +165,18 @@ public sealed partial class CameraShakeSystem : EntitySystem
     [PublicAPI]
     public void ShakeCameraPosition(EntityUid uid,
         EntityCoordinates coords,
+        float minMagnitude,
+        float maxMagnitude,
+        float noiseWeight,
+        TimeSpan duration,
+        float frequency)
+    {
+        ShakeCameraPosition(uid, GetNetCoordinates(coords), minMagnitude, maxMagnitude, noiseWeight, duration, frequency);
+    }
+
+    [PublicAPI]
+    public void ShakeCameraPosition(EntityUid uid,
+        NetCoordinates coords,
         float minMagnitude,
         float maxMagnitude,
         float noiseWeight,
