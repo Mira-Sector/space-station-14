@@ -48,7 +48,7 @@ public abstract partial class SharedShadowSystem : EntitySystem
 
             comp.LastRecalculationPos = xform.LocalPosition;
 
-            if (EnsureComp<ShadowGridComponent>(grid, out var gridComp) && gridComp.Casters.Contains(uid))
+            if (EnsureComp<ShadowGridComponent>(grid, out var gridComp) || gridComp.Casters.Contains(uid))
                 GenerateGridShadow((grid, gridComp));
         }
     }

@@ -13,7 +13,9 @@ public sealed partial class ShadowSystem : SharedShadowSystem
     [Dependency] private readonly IRobustRandom _random = default!;
 
     private ShadowOverlay _overlay = default!;
+#if DEBUG
     private ShadowDebugOverlay _debugOverlay = default!;
+#endif
 
     public override void Initialize()
     {

@@ -22,6 +22,9 @@ public sealed partial class ShadowOverlay : Overlay
 
     private readonly HashSet<EntityUid> _toRender = [];
 
+    private const float MaxScaleY = 1.5f;
+    private const float MaxTan = 2f;
+
     public ShadowOverlay(IEntityManager entity) : base()
     {
         ZIndex = 100;
@@ -54,10 +57,10 @@ public sealed partial class ShadowOverlay : Overlay
             var worldPos = _xform.GetWorldPosition(xform);
             var worldRot = _xform.GetWorldRotation(xform);
 
-            if (GetInterpulatedShadow((target, xform), (xform.GridUid.Value, grid)) is not { } data)
+            if (GetInterpulatedShadow((target, xform), (xform.GridUid.Value, grid), eyeRot) is not { } data)
                 continue;
 
-            var angle = MathF.Atan2(data.Direction.Y, data.Direction.X);
+            var angle = MathF.Atan2(data.Direction.Y, data.Direction.X) * data.Strength;
 
             var prevColor = sprite.Color;
             var prevMatty = sprite.LocalMatrix;
@@ -66,8 +69,10 @@ public sealed partial class ShadowOverlay : Overlay
             var pivot = new Vector2(bounds.Center.X, bounds.Bottom); // pivot on bottom center;
             var pivotTranslation = Matrix3x2.CreateTranslation(-pivot);
             var pivotTranslationBack = Matrix3x2.CreateTranslation(pivot);
-            var skew = Matrix3x2.CreateSkew(MathF.Tan(angle), 0f);
-            var scale = Matrix3x2.CreateScale(1f, MathF.Abs(data.Direction.Y));
+            var tan = Math.Clamp(MathF.Tan(angle), -MaxTan, MaxTan);
+            var skew = Matrix3x2.CreateSkew(tan, 0f);
+            var scaleY = Math.Clamp(MathF.Abs(data.Direction.Y), 0f, MaxScaleY);
+            var scale = Matrix3x2.CreateScale(1f, scaleY);
 
             var matty = pivotTranslation * scale * skew * pivotTranslationBack * prevMatty;
             sprite.LocalMatrix = matty;
@@ -85,7 +90,7 @@ public sealed partial class ShadowOverlay : Overlay
         args.WorldHandle.SetTransform(Matrix3x2.Identity);
     }
 
-    private static ShadowData? GetInterpulatedShadow(Entity<TransformComponent> ent, Entity<ShadowGridComponent> grid)
+    private static ShadowData? GetInterpulatedShadow(Entity<TransformComponent> ent, Entity<ShadowGridComponent> grid, Angle eyeRot)
     {
         var x0 = (int)MathF.Floor(ent.Comp.LocalPosition.X);
         var y0 = (int)MathF.Floor(ent.Comp.LocalPosition.Y);
@@ -133,10 +138,17 @@ public sealed partial class ShadowOverlay : Overlay
 
         // average strength
         var strength = Math.Min(totalStrength / corners.Length, 1f);
-        if (strength < ShadowData.MinStrength)
+        if (strength < ShadowData.FadeStart)
             return null;
 
-        return new ShadowData(dir, strength);
+        if (strength < ShadowData.FadeEnd)
+        {
+            var t = (strength - ShadowData.FadeStart) / (ShadowData.FadeEnd - ShadowData.FadeStart);
+            dir *= t;
+            strength *= t;
+        }
+
+        return new ShadowData(eyeRot.RotateVec(dir), strength);
     }
 
     public void AddEntity(EntityUid toAdd)

@@ -8,6 +8,8 @@ public readonly record struct ShadowData(Vector2 Direction, float Strength)
 {
     public static readonly ShadowData Empty = new(Vector2.Zero, 0f);
 
+    public const float FadeStart = 0.05f;
+    public const float FadeEnd = 0.1f;
     public const float MinStrength = 0.01f;
     public const float MinIntensity = 0.01f;
     public const float MaxAngle = MathF.PI / 3f;
