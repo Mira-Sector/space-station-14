@@ -1,3 +1,4 @@
+#if DEBUG
 using Content.Shared.Shadows;
 using Content.Shared.Shadows.Components;
 using Robust.Client.GameObjects;
@@ -81,3 +82,4 @@ public sealed partial class ShadowDebugOverlay : Overlay
         args.WorldHandle.SetTransform(Matrix3x2.Identity);
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if DEBUG
 using Content.Server.Administration;
 using Content.Shared.Administration;
 using Robust.Shared.Console;
@@ -19,3 +20,4 @@ public sealed class ShowShadowDebugCommand : LocalizedEntityCommands
         _shadow.ToggleDebugOverlay(player);
     }
 }
+#endif

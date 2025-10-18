@@ -28,7 +28,9 @@ public sealed partial class ShadowSystem : SharedShadowSystem
         SubscribeNetworkEvent<ToggleShadowDebugOverlayEvent>(OnToggleDebug);
 
         _overlay = new(EntityManager);
+#if DEBUG
         _debugOverlay = new(EntityManager, _random);
+#endif
     }
 
     public override void Shutdown()
@@ -38,8 +40,10 @@ public sealed partial class ShadowSystem : SharedShadowSystem
         _overlayManager.RemoveOverlay(_overlay);
         _overlay.Dispose();
 
+#if DEBUG
         _overlayManager.RemoveOverlay(_debugOverlay);
         _debugOverlay.Dispose();
+#endif
     }
 
     private void OnPlayerAttach(LocalPlayerAttachedEvent args)
@@ -62,6 +66,7 @@ public sealed partial class ShadowSystem : SharedShadowSystem
         _overlay.RemoveEntity(ent.Owner);
     }
 
+#if DEBUG
     private void OnToggleDebug(ToggleShadowDebugOverlayEvent args)
     {
         if (_overlayManager.HasOverlay<ShadowDebugOverlay>())
@@ -69,4 +74,5 @@ public sealed partial class ShadowSystem : SharedShadowSystem
         else
             _overlayManager.AddOverlay(_debugOverlay);
     }
+#endif
 }
