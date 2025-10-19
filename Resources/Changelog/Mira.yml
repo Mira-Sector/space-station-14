@@ -2159,3 +2159,9 @@ Entries:
     type: Tweak
   id: 299
   time: '2025-10-17T14:40:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Added Wilkson Sparks plushie.
+    type: Add
+  id: 300
+  time: '2025-10-19T17:00:00.0000000+00:00'
