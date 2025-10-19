@@ -233,7 +233,7 @@ Entries:
     type: Add
   id: 36
   time: '2024-07-21T16:36:00.0000000+00:00'
-- author: lordofgab
+- author: SillyAmy
   changes:
   - message: made more gay flags
     type: Add
@@ -1211,7 +1211,7 @@ Entries:
     type: Fix
   id: 178
   time: '2025-02-17T22:10:00.0000000+00:00'
-- author: Doctor-Cpu, Anurath, aspiffyfellow, Mehnix, Sentient Salad, lordofgab
+- author: Doctor-Cpu, Anurath, aspiffyfellow, Mehnix, Sentient Salad, SillyAmy
   changes:
   - message: New central command map
     type: Add
