@@ -25,7 +25,7 @@ public sealed partial class ShadowOverlay : Overlay
 
     private const float MaxScaleY = 1.5f;
     private const float MaxTan = 2f;
-    private const float Blur = 16f;
+    private const float Blur = 2f;
 
     public ShadowOverlay(IEntityManager entity, IClyde clyde) : base()
     {
@@ -119,7 +119,7 @@ public sealed partial class ShadowOverlay : Overlay
                 _sprite.SetColor((target, sprite), prevColor);
                 sprite.LocalMatrix = prevMatty;
             }
-        }, Color.Transparent);
+        }, ShadowData.Color.WithAlpha(0f)); // prevent halos
 
         var blurredTarget = _clyde.CreateRenderTarget(
             viewport.RenderTarget.Size,
