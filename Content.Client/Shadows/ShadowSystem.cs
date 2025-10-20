@@ -30,7 +30,7 @@ public sealed partial class ShadowSystem : SharedShadowSystem
 
         SubscribeNetworkEvent<ToggleShadowDebugOverlayEvent>(OnToggleDebug);
 
-        _overlay = new(EntityManager, _clyde);
+        _overlay = new(this, EntityManager, _clyde);
 #if DEBUG
         _debugOverlay = new(EntityManager, _random);
 #endif

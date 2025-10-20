@@ -14,6 +14,7 @@ public sealed partial class ShadowOverlay : Overlay
 
     private readonly IEntityManager _entity;
     private readonly IClyde _clyde;
+    private readonly ShadowSystem _shadow;
     private readonly SpriteSystem _sprite;
     private readonly TransformSystem _xform;
 
@@ -27,12 +28,13 @@ public sealed partial class ShadowOverlay : Overlay
     private const float MaxTan = 2f;
     private const float Blur = 2f;
 
-    public ShadowOverlay(IEntityManager entity, IClyde clyde) : base()
+    public ShadowOverlay(ShadowSystem shadow, IEntityManager entity, IClyde clyde) : base()
     {
         ZIndex = 100;
 
         _entity = entity;
         _clyde = clyde;
+        _shadow = shadow;
         _sprite = _entity.System<SpriteSystem>();
         _xform = _entity.System<TransformSystem>();
         _spriteQuery = _entity.GetEntityQuery<SpriteComponent>();
@@ -132,7 +134,7 @@ public sealed partial class ShadowOverlay : Overlay
         world.DrawTextureRect(blurredTarget.Texture, args.WorldBounds);
     }
 
-    private static ShadowData? GetInterpulatedShadow(Entity<TransformComponent> ent, Entity<ShadowGridComponent> grid, Angle eyeRot)
+    private ShadowData? GetInterpulatedShadow(Entity<TransformComponent> ent, Entity<ShadowGridComponent> grid, Angle eyeRot)
     {
         var x0 = (int)MathF.Floor(ent.Comp.LocalPosition.X);
         var y0 = (int)MathF.Floor(ent.Comp.LocalPosition.Y);
@@ -163,7 +165,8 @@ public sealed partial class ShadowOverlay : Overlay
             if (weight <= 0f)
                 continue;
 
-            if (!grid.Comp.ShadowMap.TryGetValue(pos, out var shadow))
+            var chunk = _shadow.GetOrCreateChunk(grid, pos);
+            if (!chunk.ShadowMap.TryGetValue(pos, out var shadow))
                 continue;
 
             // weight by both distance factor and shadow strength

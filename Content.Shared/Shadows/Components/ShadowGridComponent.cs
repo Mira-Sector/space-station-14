@@ -6,9 +6,11 @@ namespace Content.Shared.Shadows.Components;
 [Access(typeof(SharedShadowSystem), Other = AccessPermissions.ReadExecute)]
 public sealed partial class ShadowGridComponent : Component
 {
+    public const int ChunkSize = 16;
+
     [ViewVariables, AutoNetworkedField]
     public HashSet<EntityUid> Casters = [];
 
     [ViewVariables, AutoNetworkedField]
-    public Dictionary<Vector2i, ShadowData> ShadowMap = [];
+    public Dictionary<Vector2i, ShadowChunk> Chunks = [];
 }

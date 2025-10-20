@@ -1,6 +1,7 @@
 using Content.Shared.Shadows.Components;
 using Robust.Shared.Timing;
 using System.Numerics;
+using JetBrains.Annotations;
 
 namespace Content.Shared.Shadows;
 
@@ -9,7 +10,7 @@ public abstract partial class SharedShadowSystem : EntitySystem
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] protected readonly SharedTransformSystem Xform = default!;
 
-    private const float MinRecalculateDistance = 0.1f;
+    private const float MinRecalculateDistance = 0.8f;
     private const float MinRecalculateDistanceSquared = MinRecalculateDistance * MinRecalculateDistance;
 
     protected EntityQuery<ShadowCasterComponent> CasterQuery;
@@ -138,7 +139,6 @@ public abstract partial class SharedShadowSystem : EntitySystem
 
     private void GenerateGridShadow(Entity<ShadowGridComponent> ent)
     {
-        var estimatedCells = 0f;
         List<Entity<ShadowCasterComponent>> casters = new(ent.Comp.Casters.Count);
         foreach (var casterUid in ent.Comp.Casters)
         {
@@ -148,11 +148,8 @@ public abstract partial class SharedShadowSystem : EntitySystem
             if (!CasterQuery.TryComp(casterUid, out var caster))
                 continue;
 
-            estimatedCells += MathF.PI * caster.Radius * caster.Radius;
             casters.Add((casterUid, caster));
         }
-        ent.Comp.ShadowMap.EnsureCapacity((int)Math.Ceiling(estimatedCells));
-        ent.Comp.ShadowMap.Clear();
 
         foreach (var caster in casters)
         {
@@ -162,18 +159,20 @@ public abstract partial class SharedShadowSystem : EntitySystem
             foreach (var (localOffset, shadow) in caster.Comp.ShadowMap)
             {
                 var worldPos = basePos + localOffset;
+                var chunk = GetOrCreateChunk(ent, worldPos);
 
                 // combine if a shadow already exists here
-                if (ent.Comp.ShadowMap.TryGetValue(worldPos, out var existing))
-                    ent.Comp.ShadowMap[worldPos] = ShadowData.Combine(existing, shadow);
+                if (chunk.ShadowMap.TryGetValue(worldPos, out var existing))
+                    chunk.ShadowMap[worldPos] = ShadowData.Combine(existing, shadow);
                 else
-                    ent.Comp.ShadowMap[worldPos] = shadow;
+                    chunk.ShadowMap[worldPos] = shadow;
             }
         }
 
         Dirty(ent);
     }
 
+    [PublicAPI]
     public void SetRadius(Entity<ShadowCasterComponent?> ent, int radius)
     {
         if (!Resolve(ent.Owner, ref ent.Comp))
@@ -186,6 +185,7 @@ public abstract partial class SharedShadowSystem : EntitySystem
         Dirty(ent);
     }
 
+    [PublicAPI]
     public void SetIntensity(Entity<ShadowCasterComponent?> ent, float intensity)
     {
         if (!Resolve(ent.Owner, ref ent.Comp))
@@ -198,6 +198,7 @@ public abstract partial class SharedShadowSystem : EntitySystem
         Dirty(ent);
     }
 
+    [PublicAPI]
     public void SetOffset(Entity<ShadowCasterComponent?> ent, Vector2i offset)
     {
         if (!Resolve(ent.Owner, ref ent.Comp))
@@ -208,5 +209,17 @@ public abstract partial class SharedShadowSystem : EntitySystem
 
         ent.Comp.Offset = offset;
         Dirty(ent);
+    }
+
+    [PublicAPI]
+    public ShadowChunk GetOrCreateChunk(Entity<ShadowGridComponent> ent, Vector2i tilePos)
+    {
+        var chunkPos = new Vector2i(tilePos.X / ShadowGridComponent.ChunkSize, tilePos.Y / ShadowGridComponent.ChunkSize);
+        if (!ent.Comp.Chunks.TryGetValue(chunkPos, out var chunk))
+        {
+            chunk = new ShadowChunk(chunkPos);
+            ent.Comp.Chunks[chunkPos] = chunk;
+        }
+        return chunk;
     }
 }

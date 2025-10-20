@@ -36,16 +36,27 @@ public sealed partial class ShadowDebugOverlay : Overlay
             var matty = _transform.GetWorldMatrix(uid);
             args.WorldHandle.SetTransform(matty);
 
-            foreach (var (indices, data) in shadow.ShadowMap)
+            foreach (var chunk in shadow.Chunks.Values)
             {
-                var bounds = _lookup.GetLocalBounds(indices, grid.TileSize);
-                var alpha = 1f - data.Strength;
-                var color = ShadowData.Color.WithAlpha(alpha);
-                args.WorldHandle.DrawRect(bounds, color);
+                foreach (var (indices, data) in chunk.ShadowMap)
+                {
+                    var bounds = _lookup.GetLocalBounds(indices, grid.TileSize);
+                    var alpha = 1f - data.Strength;
+                    var color = ShadowData.Color.WithAlpha(alpha);
+                    args.WorldHandle.DrawRect(bounds, color);
 
-                var start = bounds.Center;
-                var end = start + data.Direction / 2f;
-                args.WorldHandle.DrawLine(start, end, Color.Blue);
+                    var start = bounds.Center;
+                    var end = start + data.Direction / 2f;
+                    args.WorldHandle.DrawLine(start, end, Color.Blue);
+                }
+
+                var chunkBounds = new Box2(
+                    chunk.ChunkPos.X * ShadowGridComponent.ChunkSize,
+                    chunk.ChunkPos.Y * ShadowGridComponent.ChunkSize,
+                    (chunk.ChunkPos.X + 1) * ShadowGridComponent.ChunkSize,
+                    (chunk.ChunkPos.Y + 1) * ShadowGridComponent.ChunkSize
+                );
+                args.WorldHandle.DrawRect(chunkBounds, Color.Red, false);
             }
         }
 
