@@ -142,6 +142,10 @@ public sealed partial class ShadowOverlay : Overlay
         var fx = ent.Comp.LocalPosition.X - x0;
         var fy = ent.Comp.LocalPosition.Y - y0;
 
+        // smooth stepping
+        fx = fx * fx * (3 - 2 * fx);
+        fy = fy * fy * (3 - 2 * fy);
+
         var corners = new (Vector2i pos, float weight)[]
         {
             (new Vector2i(x0, y0), (1 - fx) * (1 - fy)),

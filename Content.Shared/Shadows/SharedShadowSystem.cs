@@ -156,9 +156,8 @@ public abstract partial class SharedShadowSystem : EntitySystem
 
         foreach (var caster in casters)
         {
-            var pos = Transform(caster).LocalPosition;
-
-            var basePos = new Vector2i((int)MathF.Round(pos.X + caster.Comp.Offset.X), (int)MathF.Round(pos.Y + caster.Comp.Offset.Y));
+            var pos = (Vector2i)Vector2.Round(Transform(caster).LocalPosition);
+            var basePos = pos + caster.Comp.Offset;
 
             foreach (var (localOffset, shadow) in caster.Comp.ShadowMap)
             {
