@@ -9,6 +9,7 @@ namespace Content.Client.Shadows;
 
 public sealed partial class ShadowSystem : SharedShadowSystem
 {
+    [Dependency] private readonly IClyde _clyde = default!;
     [Dependency] private readonly IOverlayManager _overlayManager = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
 
@@ -29,7 +30,7 @@ public sealed partial class ShadowSystem : SharedShadowSystem
 
         SubscribeNetworkEvent<ToggleShadowDebugOverlayEvent>(OnToggleDebug);
 
-        _overlay = new(EntityManager);
+        _overlay = new(EntityManager, _clyde);
 #if DEBUG
         _debugOverlay = new(EntityManager, _random);
 #endif

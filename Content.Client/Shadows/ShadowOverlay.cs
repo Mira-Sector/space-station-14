@@ -13,6 +13,7 @@ public sealed partial class ShadowOverlay : Overlay
     public override OverlaySpace Space => OverlaySpace.WorldSpaceBelowEntities;
 
     private readonly IEntityManager _entity;
+    private readonly IClyde _clyde;
     private readonly SpriteSystem _sprite;
     private readonly TransformSystem _xform;
 
@@ -24,12 +25,14 @@ public sealed partial class ShadowOverlay : Overlay
 
     private const float MaxScaleY = 1.5f;
     private const float MaxTan = 2f;
+    private const float Blur = 16f;
 
-    public ShadowOverlay(IEntityManager entity) : base()
+    public ShadowOverlay(IEntityManager entity, IClyde clyde) : base()
     {
         ZIndex = 100;
 
         _entity = entity;
+        _clyde = clyde;
         _sprite = _entity.System<SpriteSystem>();
         _xform = _entity.System<TransformSystem>();
         _spriteQuery = _entity.GetEntityQuery<SpriteComponent>();
@@ -44,68 +47,89 @@ public sealed partial class ShadowOverlay : Overlay
 
     protected override void Draw(in OverlayDrawArgs args)
     {
-        args.WorldHandle.SetTransform(Matrix3x2.Identity);
+        var viewport = args.Viewport;
+        var render = args.RenderHandle;
+        var world = args.WorldHandle;
 
-        foreach (var target in _toRender)
+        var eye = viewport.Eye!;
+        var eyeRot = eye.Rotation;
+        var eyeScale = viewport.RenderScale * eye.Scale;
+
+        var unblurredTarget = _clyde.CreateRenderTarget(
+            viewport.RenderTarget.Size,
+            new RenderTargetFormatParameters(RenderTargetColorFormat.Rgba8Srgb),
+            name: "shadow-unblurred");
+
+        world.SetTransform(Matrix3x2.Identity);
+
+        world.RenderInRenderTarget(unblurredTarget, () =>
         {
-            if (!_spriteQuery.TryComp(target, out var sprite))
-                continue;
+            foreach (var target in _toRender)
+            {
+                if (!_spriteQuery.TryComp(target, out var sprite))
+                    continue;
 
-            var xform = _xformQuery.GetComponent(target);
-            if (!_gridQuery.TryComp(xform.GridUid, out var grid))
-                continue;
+                var xform = _xformQuery.GetComponent(target);
+                if (!_gridQuery.TryComp(xform.GridUid, out var grid))
+                    continue;
 
-            var eye = args.Viewport.Eye!;
+                if (GetInterpulatedShadow((target, xform), (xform.GridUid.Value, grid), eyeRot) is not { } data)
+                    continue;
 
-            var eyeRot = eye.Rotation;
-            var eyeScale = args.Viewport.RenderScale * eye.Scale;
+                var worldPos = _xform.GetWorldPosition(xform);
+                var worldRot = _xform.GetWorldRotation(xform);
 
-            if (GetInterpulatedShadow((target, xform), (xform.GridUid.Value, grid), eyeRot) is not { } data)
-                continue;
+                var angle = MathF.Atan2(data.Direction.Y, data.Direction.X) * data.Strength;
 
-            var worldPos = _xform.GetWorldPosition(xform);
-            var worldRot = _xform.GetWorldRotation(xform);
+                var prevColor = sprite.Color;
+                var prevMatty = sprite.LocalMatrix;
 
-            var angle = MathF.Atan2(data.Direction.Y, data.Direction.X) * data.Strength;
+                var bounds = _sprite.GetLocalBounds((target, sprite));
+                var pivot = new Vector2(bounds.Center.X, bounds.Bottom); // pivot on bottom center;
+                var pivotTranslation = Matrix3x2.CreateTranslation(-pivot);
+                var pivotTranslationBack = Matrix3x2.CreateTranslation(pivot);
+                var tan = Math.Clamp(MathF.Tan(angle), -MaxTan, MaxTan);
+                var skew = Matrix3x2.CreateSkew(tan, 0f);
+                var scaleY = Math.Clamp(MathF.Abs(data.Direction.Y), 0f, MaxScaleY);
+                var scale = Matrix3x2.CreateScale(1f, scaleY);
 
-            var prevColor = sprite.Color;
-            var prevMatty = sprite.LocalMatrix;
+                var shadowMatrix = pivotTranslation * scale * skew * pivotTranslationBack;
+                sprite.LocalMatrix = shadowMatrix * prevMatty;
 
-            var bounds = _sprite.GetLocalBounds((target, sprite));
-            var pivot = new Vector2(bounds.Center.X, bounds.Bottom); // pivot on bottom center;
-            var pivotTranslation = Matrix3x2.CreateTranslation(-pivot);
-            var pivotTranslationBack = Matrix3x2.CreateTranslation(pivot);
-            var tan = Math.Clamp(MathF.Tan(angle), -MaxTan, MaxTan);
-            var skew = Matrix3x2.CreateSkew(tan, 0f);
-            var scaleY = Math.Clamp(MathF.Abs(data.Direction.Y), 0f, MaxScaleY);
-            var scale = Matrix3x2.CreateScale(1f, scaleY);
+                var alpha = 1f - data.Strength;
+                var color = ShadowData.Color.WithAlpha(prevColor.A * alpha);
+                _sprite.SetColor((target, sprite), color);
 
-            var shadowMatrix = pivotTranslation * scale * skew * pivotTranslationBack;
-            sprite.LocalMatrix = shadowMatrix * prevMatty;
+                /*
+                 * You may be reading this and wondering "Hey, what the fuck?"
+                 * Me too buddy.
+                 *
+                 * We explicitly use this drawing method as it correctly handles drawing inside of frame buffers.
+                 * Small problem however. Eye rotation in this method also fucking rotates the rendered sprite. Why???
+                 * To get around this we modify the world rotation to take into account the eye rotation so directions are
+                 * properly rendered.
+                 *
+                 * Fuck this shit im off to bed.
+                */
+                var invMatrix = viewport.RenderTarget.GetWorldToLocalMatrix(eye, viewport.RenderScale);
+                var localPos = Vector2.Transform(worldPos, invMatrix);
+                var localRot = eyeRot + worldRot;
+                render.DrawEntity(target, localPos, eyeScale, localRot, Angle.Zero, sprite: sprite, xform: xform, xformSystem: _xform);
 
-            var alpha = 1f - data.Strength;
-            var color = ShadowData.Color.WithAlpha(prevColor.A * alpha);
-            _sprite.SetColor((target, sprite), color);
+                _sprite.SetColor((target, sprite), prevColor);
+                sprite.LocalMatrix = prevMatty;
+            }
+        }, Color.Transparent);
 
-            /*
-             * You may be reading this and wondering "Hey, what the fuck?"
-             * Me too buddy.
-             *
-             * We explicitly use this drawing method as it correctly handles drawing inside of frame buffers.
-             * Small problem however. Eye rotation in this method also fucking rotates the rendered sprite. Why???
-             * To get around this we modify the world rotation to take into account the eye rotation so directions are
-             * properly rendered.
-             *
-             * Fuck this shit im off to bed.
-            */
-            var invMatrix = args.Viewport.RenderTarget.GetWorldToLocalMatrix(eye, args.Viewport.RenderScale);
-            var localPos = Vector2.Transform(worldPos, invMatrix);
-            var localRot = eyeRot + worldRot;
-            args.RenderHandle.DrawEntity(target, localPos, eyeScale, localRot, Angle.Zero, sprite: sprite, xform: xform, xformSystem: _xform);
+        var blurredTarget = _clyde.CreateRenderTarget(
+            viewport.RenderTarget.Size,
+            new RenderTargetFormatParameters(RenderTargetColorFormat.Rgba8Srgb),
+            name: "shadow-blurred");
 
-            _sprite.SetColor((target, sprite), prevColor);
-            sprite.LocalMatrix = prevMatty;
-        }
+        _clyde.BlurRenderTarget(viewport, unblurredTarget, blurredTarget, eye, Blur);
+
+        world.SetTransform(Matrix3x2.Identity);
+        world.DrawTextureRect(blurredTarget.Texture, args.WorldBounds);
     }
 
     private static ShadowData? GetInterpulatedShadow(Entity<TransformComponent> ent, Entity<ShadowGridComponent> grid, Angle eyeRot)
