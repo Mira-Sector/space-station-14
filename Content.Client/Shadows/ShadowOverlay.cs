@@ -44,6 +44,8 @@ public sealed partial class ShadowOverlay : Overlay
 
     protected override void Draw(in OverlayDrawArgs args)
     {
+        args.WorldHandle.SetTransform(Matrix3x2.Identity);
+
         foreach (var target in _toRender)
         {
             if (!_spriteQuery.TryComp(target, out var sprite))
@@ -53,12 +55,16 @@ public sealed partial class ShadowOverlay : Overlay
             if (!_gridQuery.TryComp(xform.GridUid, out var grid))
                 continue;
 
-            var eyeRot = args.Viewport.Eye?.Rotation ?? Angle.Zero;
-            var worldPos = _xform.GetWorldPosition(xform);
-            var worldRot = _xform.GetWorldRotation(xform);
+            var eye = args.Viewport.Eye!;
+
+            var eyeRot = eye.Rotation;
+            var eyeScale = args.Viewport.RenderScale * eye.Scale;
 
             if (GetInterpulatedShadow((target, xform), (xform.GridUid.Value, grid), eyeRot) is not { } data)
                 continue;
+
+            var worldPos = _xform.GetWorldPosition(xform);
+            var worldRot = _xform.GetWorldRotation(xform);
 
             var angle = MathF.Atan2(data.Direction.Y, data.Direction.X) * data.Strength;
 
@@ -74,20 +80,32 @@ public sealed partial class ShadowOverlay : Overlay
             var scaleY = Math.Clamp(MathF.Abs(data.Direction.Y), 0f, MaxScaleY);
             var scale = Matrix3x2.CreateScale(1f, scaleY);
 
-            var matty = pivotTranslation * scale * skew * pivotTranslationBack * prevMatty;
-            sprite.LocalMatrix = matty;
+            var shadowMatrix = pivotTranslation * scale * skew * pivotTranslationBack;
+            sprite.LocalMatrix = shadowMatrix * prevMatty;
 
             var alpha = 1f - data.Strength;
             var color = ShadowData.Color.WithAlpha(prevColor.A * alpha);
             _sprite.SetColor((target, sprite), color);
 
-            _sprite.RenderSprite((target, sprite), args.WorldHandle, eyeRot, worldRot, worldPos);
+            /*
+             * You may be reading this and wondering "Hey, what the fuck?"
+             * Me too buddy.
+             *
+             * We explicitly use this drawing method as it correctly handles drawing inside of frame buffers.
+             * Small problem however. Eye rotation in this method also fucking rotates the rendered sprite. Why???
+             * To get around this we modify the world rotation to take into account the eye rotation so directions are
+             * properly rendered.
+             *
+             * Fuck this shit im off to bed.
+            */
+            var invMatrix = args.Viewport.RenderTarget.GetWorldToLocalMatrix(eye, args.Viewport.RenderScale);
+            var localPos = Vector2.Transform(worldPos, invMatrix);
+            var localRot = eyeRot + worldRot;
+            args.RenderHandle.DrawEntity(target, localPos, eyeScale, localRot, Angle.Zero, sprite: sprite, xform: xform, xformSystem: _xform);
 
             _sprite.SetColor((target, sprite), prevColor);
             sprite.LocalMatrix = prevMatty;
         }
-
-        args.WorldHandle.SetTransform(Matrix3x2.Identity);
     }
 
     private static ShadowData? GetInterpulatedShadow(Entity<TransformComponent> ent, Entity<ShadowGridComponent> grid, Angle eyeRot)
