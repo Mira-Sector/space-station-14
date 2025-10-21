@@ -18,7 +18,13 @@ public sealed partial class ShadowCasterComponent : Component
     public Vector2i Offset;
 
     [ViewVariables, AutoNetworkedField]
+    public Dictionary<Vector2i, ShadowData> UnoccludedShadowMap;
+
+    [ViewVariables, AutoNetworkedField]
     public Dictionary<Vector2i, ShadowData> ShadowMap;
+
+    [ViewVariables, AutoNetworkedField]
+    public HashSet<Vector2i> PreviousOccluders = [];
 
     [DataField]
     public TimeSpan RecalculateDelay = TimeSpan.FromSeconds(0.5);

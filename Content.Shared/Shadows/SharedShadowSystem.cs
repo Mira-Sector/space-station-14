@@ -1,17 +1,25 @@
 using Content.Shared.Shadows.Components;
+using Content.Shared.Physics;
+using Robust.Shared.Physics;
+using Robust.Shared.Physics.Systems;
 using Robust.Shared.Timing;
-using System.Numerics;
 using JetBrains.Annotations;
+using System.Numerics;
+using System.Linq;
 
 namespace Content.Shared.Shadows;
 
 public abstract partial class SharedShadowSystem : EntitySystem
 {
+    [Dependency] private readonly EntityLookupSystem _lookup = default!;
+    [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] protected readonly SharedTransformSystem Xform = default!;
 
     private const float MinRecalculateDistance = 0.8f;
     private const float MinRecalculateDistanceSquared = MinRecalculateDistance * MinRecalculateDistance;
+
+    private const LookupFlags OcclusionLookupFlags = LookupFlags.Approximate | LookupFlags.Dynamic | LookupFlags.Static;
 
     protected EntityQuery<ShadowCasterComponent> CasterQuery;
 
@@ -45,12 +53,23 @@ public abstract partial class SharedShadowSystem : EntitySystem
                 continue;
 
             if ((xform.LocalPosition - comp.LastRecalculationPos).LengthSquared() < MinRecalculateDistanceSquared)
-                continue;
+            {
+                if (!TryUpdateCasterShadowOcclusion((uid, comp)))
+                    continue;
+            }
+            else
+            {
+                comp.PreviousOccluders = []; // we have moved so this is incorrect
+                if (!TryUpdateCasterShadowOcclusion((uid, comp)))
+                    continue;
+            }
 
             comp.LastRecalculationPos = xform.LocalPosition;
 
             if (EnsureComp<ShadowGridComponent>(grid, out var gridComp) || gridComp.Casters.Contains(uid))
                 GenerateGridShadow((grid, gridComp));
+
+            Dirty(uid, comp);
         }
     }
 
@@ -65,6 +84,7 @@ public abstract partial class SharedShadowSystem : EntitySystem
     private void OnCasterInit(Entity<ShadowCasterComponent> ent, ref ComponentInit args)
     {
         GenerateCasterShadow(ent);
+        TryUpdateCasterShadowOcclusion(ent);
     }
 
     private void OnCasterParentChanged(Entity<ShadowCasterComponent> ent, ref EntParentChangedMessage args)
@@ -102,9 +122,11 @@ public abstract partial class SharedShadowSystem : EntitySystem
 
     private void GenerateCasterShadow(Entity<ShadowCasterComponent> ent)
     {
-        if (ent.Comp.Radius < MinRecalculateDistance || ent.Comp.Intensity < ShadowData.MinIntensity)
+        ent.Comp.PreviousOccluders = [];
+
+        if (ent.Comp.Radius <= 0 || ent.Comp.Intensity < ShadowData.MinIntensity)
         {
-            ent.Comp.ShadowMap = [];
+            ent.Comp.UnoccludedShadowMap = [];
             Dirty(ent);
             return;
         }
@@ -133,8 +155,70 @@ public abstract partial class SharedShadowSystem : EntitySystem
             }
         }
 
-        ent.Comp.ShadowMap = shadowMap;
+        ent.Comp.UnoccludedShadowMap = shadowMap;
         Dirty(ent);
+    }
+
+    private bool TryUpdateCasterShadowOcclusion(Entity<ShadowCasterComponent> ent)
+    {
+        var casterXform = Transform(ent.Owner);
+        var occludersEnt = _lookup.GetEntitiesInRange<OccluderComponent>(casterXform.Coordinates, ent.Comp.Radius, OcclusionLookupFlags);
+
+        // fast pass
+        if (!occludersEnt.Any())
+        {
+            Dirty(ent);
+            return false;
+        }
+
+        HashSet<EntityUid> occluders = new(occludersEnt.Count);
+        HashSet<Vector2i> occludersPos = new(occludersEnt.Count);
+        foreach (var occluder in occludersEnt)
+        {
+            occluders.Add(occluder.Owner);
+            var occluderXform = Transform(occluder);
+            occludersPos.Add((Vector2i)occluderXform.LocalPosition);
+        }
+
+        // same occlusion as last time
+        if (ent.Comp.PreviousOccluders.SetEquals(occludersPos))
+            return false;
+
+        ent.Comp.ShadowMap = ent.Comp.UnoccludedShadowMap;
+        ent.Comp.PreviousOccluders = occludersPos;
+
+        var casterPos = Xform.GetWorldPosition(casterXform);
+        var angleStep = MathF.Tau / ent.Comp.Radius;
+        for (var i = -ent.Comp.Radius; i <= ent.Comp.Radius; i++)
+        {
+            var angle = new Angle(angleStep * i);
+            var dir = angle.ToVec();
+            var ray = new CollisionRay(casterPos, dir, (int)CollisionGroup.Opaque);
+            var results = _physics.IntersectRayWithPredicate(casterXform.MapID, ray, ent.Comp.Radius, e => occluders.Contains(e), true);
+            if (!results.Any())
+                continue;
+
+            var hit = results.First(); // return on first hit is true so only need to check one
+            var shadowMapPos = (Vector2i)(hit.HitPos - casterPos);
+
+            var blockDir = dir * -1;
+
+            var remainingDistance = ent.Comp.Radius - hit.Distance;
+            var currentPos = hit.HitPos;
+            while (remainingDistance > 0f)
+            {
+                var newShadowMapPos = (Vector2i)(currentPos - casterPos);
+
+                var existing = ent.Comp.ShadowMap[newShadowMapPos];
+                ent.Comp.ShadowMap[newShadowMapPos] = new ShadowData(existing.Direction, 0f);
+
+                currentPos += blockDir;
+                remainingDistance -= 1f;
+            }
+        }
+
+        Dirty(ent);
+        return true;
     }
 
     private void GenerateGridShadow(Entity<ShadowGridComponent> ent)
