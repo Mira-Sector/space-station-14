@@ -1,6 +1,7 @@
 using Content.Shared.Shadows.Components;
 using Content.Shared.Physics;
 using Robust.Shared.Physics;
+using Robust.Shared.Physics.Collision.Shapes;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Timing;
 using JetBrains.Annotations;
@@ -11,7 +12,7 @@ namespace Content.Shared.Shadows;
 
 public abstract partial class SharedShadowSystem : EntitySystem
 {
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
+    [Dependency] private readonly OccluderSystem _occluder = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] protected readonly SharedTransformSystem Xform = default!;
@@ -19,15 +20,12 @@ public abstract partial class SharedShadowSystem : EntitySystem
     private const float MinRecalculateDistance = 0.8f;
     private const float MinRecalculateDistanceSquared = MinRecalculateDistance * MinRecalculateDistance;
 
-    private const LookupFlags OcclusionLookupFlags = LookupFlags.Approximate | LookupFlags.Dynamic | LookupFlags.Static;
-
     protected EntityQuery<ShadowCasterComponent> CasterQuery;
 
     public override void Initialize()
     {
         base.Initialize();
 
-        SubscribeLocalEvent<ShadowCasterComponent, AfterAutoHandleStateEvent>(OnCasterHandleState);
         SubscribeLocalEvent<ShadowCasterComponent, ComponentInit>(OnCasterInit);
         SubscribeLocalEvent<ShadowCasterComponent, EntParentChangedMessage>(OnCasterParentChanged);
 
@@ -71,14 +69,6 @@ public abstract partial class SharedShadowSystem : EntitySystem
 
             Dirty(uid, comp);
         }
-    }
-
-    private void OnCasterHandleState(Entity<ShadowCasterComponent> ent, ref AfterAutoHandleStateEvent args)
-    {
-        if (Transform(ent.Owner).GridUid is not { } grid)
-            return;
-
-        EnsureComp<ShadowGridComponent>(grid);
     }
 
     private void OnCasterInit(Entity<ShadowCasterComponent> ent, ref ComponentInit args)
@@ -162,7 +152,12 @@ public abstract partial class SharedShadowSystem : EntitySystem
     private bool TryUpdateCasterShadowOcclusion(Entity<ShadowCasterComponent> ent)
     {
         var casterXform = Transform(ent.Owner);
-        var occludersEnt = _lookup.GetEntitiesInRange<OccluderComponent>(casterXform.Coordinates, ent.Comp.Radius, OcclusionLookupFlags);
+        var (casterPos, casterRot) = Xform.GetWorldPositionRotation(casterXform);
+
+        var circle = new PhysShapeCircle(ent.Comp.Radius, casterPos);
+        var aabb = circle.CalcLocalBounds();
+        var rotatedBox = new Box2Rotated(aabb, casterRot);
+        var occludersEnt = _occluder.QueryAabb(casterXform.MapID, rotatedBox);
 
         // fast pass
         if (!occludersEnt.Any())
@@ -175,8 +170,8 @@ public abstract partial class SharedShadowSystem : EntitySystem
         HashSet<Vector2i> occludersPos = new(occludersEnt.Count);
         foreach (var occluder in occludersEnt)
         {
-            occluders.Add(occluder.Owner);
-            var occluderXform = Transform(occluder);
+            occluders.Add(occluder.Uid);
+            var occluderXform = occluder.Transform;
             occludersPos.Add((Vector2i)occluderXform.LocalPosition);
         }
 
@@ -187,7 +182,6 @@ public abstract partial class SharedShadowSystem : EntitySystem
         ent.Comp.ShadowMap = ent.Comp.UnoccludedShadowMap;
         ent.Comp.PreviousOccluders = occludersPos;
 
-        var casterPos = Xform.GetWorldPosition(casterXform);
         var angleStep = MathF.Tau / ent.Comp.Radius;
         for (var i = -ent.Comp.Radius; i <= ent.Comp.Radius; i++)
         {

@@ -4,7 +4,7 @@ using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
 namespace Content.Shared.Shadows.Components;
 
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState(true), AutoGenerateComponentPause]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState, AutoGenerateComponentPause]
 [Access(typeof(SharedShadowSystem))]
 public sealed partial class ShadowCasterComponent : Component
 {
@@ -21,7 +21,7 @@ public sealed partial class ShadowCasterComponent : Component
     public Dictionary<Vector2i, ShadowData> UnoccludedShadowMap;
 
     [ViewVariables, AutoNetworkedField]
-    public Dictionary<Vector2i, ShadowData> ShadowMap;
+    public Dictionary<Vector2i, ShadowData> ShadowMap = [];
 
     [ViewVariables, AutoNetworkedField]
     public HashSet<Vector2i> PreviousOccluders = [];
