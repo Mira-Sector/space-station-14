@@ -27,7 +27,7 @@ public sealed partial class ShadowCasterComponent : Component
     public HashSet<Vector2i> PreviousOccluders = [];
 
     [DataField]
-    public TimeSpan RecalculateDelay = TimeSpan.FromSeconds(0.5);
+    public TimeSpan RecalculateDelay = TimeSpan.FromSeconds(1);
 
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoNetworkedField, AutoPausedField]
     public TimeSpan NextRecalculation;
