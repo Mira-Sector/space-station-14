@@ -4,7 +4,7 @@ namespace Content.Shared.Shadows.Components;
 
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 [Access(typeof(SharedShadowSystem), Other = AccessPermissions.ReadExecute)]
-public sealed partial class ShadowGridComponent : Component
+public sealed partial class ShadowTreeComponent : Component
 {
     public const int ChunkSize = 16;
 

@@ -29,7 +29,7 @@ public abstract partial class SharedShadowSystem : EntitySystem
         SubscribeLocalEvent<ShadowCasterComponent, ComponentInit>(OnCasterInit);
         SubscribeLocalEvent<ShadowCasterComponent, EntParentChangedMessage>(OnCasterParentChanged);
 
-        SubscribeLocalEvent<ShadowGridComponent, ComponentInit>(OnGridInit);
+        SubscribeLocalEvent<ShadowTreeComponent, ComponentInit>(OnGridInit);
 
         CasterQuery = GetEntityQuery<ShadowCasterComponent>();
     }
@@ -64,8 +64,8 @@ public abstract partial class SharedShadowSystem : EntitySystem
 
             comp.LastRecalculationPos = xform.LocalPosition;
 
-            if (EnsureComp<ShadowGridComponent>(grid, out var gridComp) || gridComp.Casters.Contains(uid))
-                GenerateGridShadow((grid, gridComp));
+            if (EnsureComp<ShadowTreeComponent>(grid, out var treeComp) || treeComp.Casters.Contains(uid))
+                GenerateGridShadow((grid, treeComp));
 
             Dirty(uid, comp);
         }
@@ -79,20 +79,20 @@ public abstract partial class SharedShadowSystem : EntitySystem
 
     private void OnCasterParentChanged(Entity<ShadowCasterComponent> ent, ref EntParentChangedMessage args)
     {
-        if (TryComp<ShadowGridComponent>(args.OldParent, out var oldGrid))
+        if (TryComp<ShadowTreeComponent>(args.OldParent, out var oldGrid))
         {
             if (oldGrid.Casters.Remove(ent.Owner))
                 GenerateGridShadow((args.OldParent.Value, oldGrid));
         }
 
-        if (TryComp<ShadowGridComponent>(args.Transform.GridUid, out var newGrid))
+        if (TryComp<ShadowTreeComponent>(args.Transform.GridUid, out var newGrid))
         {
             if (newGrid.Casters.Add(ent.Owner))
                 GenerateGridShadow((args.Transform.GridUid.Value, newGrid));
         }
     }
 
-    private void OnGridInit(Entity<ShadowGridComponent> ent, ref ComponentInit args)
+    private void OnGridInit(Entity<ShadowTreeComponent> ent, ref ComponentInit args)
     {
         var xform = Transform(ent.Owner);
 
@@ -215,7 +215,7 @@ public abstract partial class SharedShadowSystem : EntitySystem
         return true;
     }
 
-    private void GenerateGridShadow(Entity<ShadowGridComponent> ent)
+    private void GenerateGridShadow(Entity<ShadowTreeComponent> ent)
     {
         List<Entity<ShadowCasterComponent>> casters = new(ent.Comp.Casters.Count);
         foreach (var casterUid in ent.Comp.Casters)
@@ -290,9 +290,9 @@ public abstract partial class SharedShadowSystem : EntitySystem
     }
 
     [PublicAPI]
-    public ShadowChunk GetOrCreateChunk(Entity<ShadowGridComponent> ent, Vector2i tilePos)
+    public ShadowChunk GetOrCreateChunk(Entity<ShadowTreeComponent> ent, Vector2i tilePos)
     {
-        var chunkPos = new Vector2i(tilePos.X / ShadowGridComponent.ChunkSize, tilePos.Y / ShadowGridComponent.ChunkSize);
+        var chunkPos = new Vector2i(tilePos.X / ShadowTreeComponent.ChunkSize, tilePos.Y / ShadowTreeComponent.ChunkSize);
         if (!ent.Comp.Chunks.TryGetValue(chunkPos, out var chunk))
         {
             chunk = new ShadowChunk(chunkPos);
