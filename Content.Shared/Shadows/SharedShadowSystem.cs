@@ -7,6 +7,7 @@ using Robust.Shared.Timing;
 using JetBrains.Annotations;
 using System.Numerics;
 using System.Linq;
+using Robust.Shared.GameStates;
 
 namespace Content.Shared.Shadows;
 
@@ -30,6 +31,8 @@ public abstract partial class SharedShadowSystem : EntitySystem
         SubscribeLocalEvent<ShadowCasterComponent, EntParentChangedMessage>(OnCasterParentChanged);
 
         SubscribeLocalEvent<ShadowGridComponent, ComponentInit>(OnGridInit);
+        SubscribeLocalEvent<ShadowGridComponent, ComponentGetState>(OnGridGetState);
+        SubscribeLocalEvent<ShadowGridComponent, ComponentHandleState>(OnGridHandleState);
 
         CasterQuery = GetEntityQuery<ShadowCasterComponent>();
     }
@@ -108,6 +111,20 @@ public abstract partial class SharedShadowSystem : EntitySystem
         }
 
         GenerateGridShadow(ent);
+    }
+
+    private void OnGridGetState(Entity<ShadowGridComponent> ent, ref ComponentGetState args)
+    {
+        args.State = new ShadowGridState(GetNetEntitySet(ent.Comp.Casters), ent.Comp.Chunks);
+    }
+
+    private void OnGridHandleState(Entity<ShadowGridComponent> ent, ref ComponentHandleState args)
+    {
+        if (args.Current is not ShadowGridState state)
+            return;
+
+        ent.Comp.Casters = GetEntitySet(state.Casters);
+        ent.Comp.Chunks = state.Chunks;
     }
 
     private void GenerateCasterShadow(Entity<ShadowCasterComponent> ent)
