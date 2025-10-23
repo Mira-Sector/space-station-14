@@ -19,7 +19,7 @@ public sealed partial class ShadowOverlay : Overlay
     private readonly TransformSystem _xform;
 
     private readonly EntityQuery<SpriteComponent> _spriteQuery;
-    private readonly EntityQuery<ShadowTreeComponent> _treeQuery;
+    private readonly EntityQuery<ShadowGridComponent> _gridQuery;
     private readonly EntityQuery<TransformComponent> _xformQuery;
 
     private readonly HashSet<EntityUid> _toRender = [];
@@ -38,7 +38,7 @@ public sealed partial class ShadowOverlay : Overlay
         _sprite = _entity.System<SpriteSystem>();
         _xform = _entity.System<TransformSystem>();
         _spriteQuery = _entity.GetEntityQuery<SpriteComponent>();
-        _treeQuery = _entity.GetEntityQuery<ShadowTreeComponent>();
+        _gridQuery = _entity.GetEntityQuery<ShadowGridComponent>();
         _xformQuery = _entity.GetEntityQuery<TransformComponent>();
     }
 
@@ -72,10 +72,10 @@ public sealed partial class ShadowOverlay : Overlay
                     continue;
 
                 var xform = _xformQuery.GetComponent(target);
-                if (!_treeQuery.TryComp(xform.GridUid, out var tree))
+                if (!_gridQuery.TryComp(xform.GridUid, out var grid))
                     continue;
 
-                if (GetInterpulatedShadow((target, xform), (xform.GridUid.Value, tree), eyeRot) is not { } data)
+                if (GetInterpulatedShadow((target, xform), (xform.GridUid.Value, grid), eyeRot) is not { } data)
                     continue;
 
                 var worldPos = _xform.GetWorldPosition(xform);
@@ -134,7 +134,7 @@ public sealed partial class ShadowOverlay : Overlay
         world.DrawTextureRect(blurredTarget.Texture, args.WorldBounds);
     }
 
-    private ShadowData? GetInterpulatedShadow(Entity<TransformComponent> ent, Entity<ShadowTreeComponent> tree, Angle eyeRot)
+    private ShadowData? GetInterpulatedShadow(Entity<TransformComponent> ent, Entity<ShadowGridComponent> grid, Angle eyeRot)
     {
         var x0 = (int)MathF.Floor(ent.Comp.LocalPosition.X);
         var y0 = (int)MathF.Floor(ent.Comp.LocalPosition.Y);
@@ -165,7 +165,7 @@ public sealed partial class ShadowOverlay : Overlay
             if (weight <= 0f)
                 continue;
 
-            var chunk = _shadow.GetOrCreateChunk(tree, pos);
+            var chunk = _shadow.GetOrCreateChunk(grid, pos);
             if (!chunk.ShadowMap.TryGetValue(pos, out var shadow))
                 continue;
 
