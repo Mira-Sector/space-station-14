@@ -2,6 +2,7 @@ using Content.Shared.Shadows;
 using Content.Shared.Shadows.Components;
 using Content.Shared.Shadows.Events;
 using Robust.Client.Graphics;
+using Robust.Shared.GameStates;
 using Robust.Shared.Player;
 using Robust.Shared.Random;
 
@@ -27,6 +28,8 @@ public sealed partial class ShadowSystem : SharedShadowSystem
 
         SubscribeLocalEvent<HasShadowComponent, ComponentInit>(OnShadowInit);
         SubscribeLocalEvent<HasShadowComponent, ComponentRemove>(OnShadowRemove);
+
+        SubscribeLocalEvent<ShadowGridComponent, ComponentHandleState>(OnGridHandleState);
 
         SubscribeNetworkEvent<ToggleShadowDebugOverlayEvent>(OnToggleDebug);
 
@@ -67,6 +70,15 @@ public sealed partial class ShadowSystem : SharedShadowSystem
     private void OnShadowRemove(Entity<HasShadowComponent> ent, ref ComponentRemove args)
     {
         _overlay.RemoveEntity(ent.Owner);
+    }
+
+    private void OnGridHandleState(Entity<ShadowGridComponent> ent, ref ComponentHandleState args)
+    {
+        if (args.Current is not ShadowGridState state)
+            return;
+
+        ent.Comp.Casters = GetEntitySet(state.Casters);
+        ent.Comp.Chunks = state.Chunks;
     }
 
 #if DEBUG
