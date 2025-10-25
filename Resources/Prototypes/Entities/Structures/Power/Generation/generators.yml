@@ -50,6 +50,9 @@
     supplyRampRate: 500
     supplyRampTolerance: 500
   - type: Anchorable
+    ignoreCollisionsWhitelist:
+      tags:
+      - Directional
   - type: Pullable
   - type: Damageable
     damageContainer: StructuralInorganic

@@ -221,6 +221,9 @@
         name: power-cell-slot-component-slot-name-default
         startingItem: PowerCellMedium
   - type: Anchorable
+    ignoreCollisionsWhitelist:
+      tags:
+       - Directional
   - type: Damageable
     damageContainer: StructuralInorganic
     damageModifierSet: Metallic
@@ -244,6 +247,7 @@
     materialComposition:
       Glass: 500
       Steel: 200
+
 - type: entity
   name: broken floodlight
   id: FloodlightBroken
@@ -258,6 +262,9 @@
     sprite: Objects/Misc/Lights/lights.rsi
     state: floodlight-broken
   - type: Anchorable
+    ignoreCollisionsWhitelist:
+      tags:
+      - Directional
   - type: Damageable
     damageContainer: StructuralInorganic
     damageModifierSet: Metallic

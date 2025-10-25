@@ -7,6 +7,9 @@
   - type: StaticPrice
     price: 500
   - type: Anchorable
+    ignoreCollisionsWhitelist:
+      tags:
+      - Directional
   - type: InteractionOutline
   - type: Damageable
     damageContainer: StructuralInorganic

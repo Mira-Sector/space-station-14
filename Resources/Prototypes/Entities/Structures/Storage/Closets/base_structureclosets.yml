@@ -111,6 +111,10 @@
     stateBaseClosed: generic
     stateDoorOpen: generic_open
     stateDoorClosed: generic_door
+  - type: Anchorable
+    ignoreCollisionsWhitelist:
+      tags:
+      - Directional
   - type: StaticPrice
     price: 75
 
@@ -240,6 +244,9 @@
   - type: AccessReader
   - type: Lock
   - type: Anchorable
+    ignoreCollisionsWhitelist:
+      tags:
+      - Directional
     delay: 2
   - type: StaticPrice
     price: 80

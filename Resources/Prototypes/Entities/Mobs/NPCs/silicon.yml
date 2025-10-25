@@ -379,6 +379,9 @@
   - type: SentienceTarget
     flavorKind: station-event-random-sentience-flavor-mechanical
   - type: Anchorable
+    ignoreCollisionsWhitelist:
+      tags:
+      - Directional
   - type: InteractionPopup
     interactSuccessString: petting-success-medibot
     interactFailureString: petting-failure-medibot
@@ -559,6 +562,9 @@
   - type: SentienceTarget
     flavorKind: station-event-random-sentience-flavor-mechanical
   - type: Anchorable
+    ignoreCollisionsWhitelist:
+      tags:
+      - Directional
   - type: InteractionPopup
     interactSuccessString: petting-success-secbot
     interactFailureString: petting-failure-secbot

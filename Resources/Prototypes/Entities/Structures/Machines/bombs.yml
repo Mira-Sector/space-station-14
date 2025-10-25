@@ -31,6 +31,9 @@
       initialBeepDelay: 0
       beepSound: /Audio/Machines/timer.ogg
     - type: Anchorable
+      ignoreCollisionsWhitelist:
+      tags:
+      - Directional
       delay: 5
     - type: Fixtures
       fixtures:

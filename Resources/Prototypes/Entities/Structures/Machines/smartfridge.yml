@@ -60,6 +60,9 @@
         - MachineLayer
         density: 200
   - type: Anchorable
+    ignoreCollisionsWhitelist:
+      tags:
+      - Directional
     delay: 2
   - type: InteractionOutline
   - type: Destructible

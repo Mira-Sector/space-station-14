@@ -21,6 +21,9 @@
         - MidImpassable
         - LowImpassable
   - type: Anchorable
+    ignoreCollisionsWhitelist:
+      tags:
+      - Directional
     delay: 4
 
 - type: entity

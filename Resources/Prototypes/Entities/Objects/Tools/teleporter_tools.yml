@@ -29,6 +29,9 @@
         - state: inhand-right
     - type: Anchorable
       delay: 0.5
+      ignoreCollisionsWhitelist:
+        tags:
+        - Directional
     - type: TeleframeBeacon
       ValidBeacon: false
     - type: Appearance

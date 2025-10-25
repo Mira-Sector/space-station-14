@@ -10,6 +10,7 @@ using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Movement.Pulling.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Tools.Components;
+using Content.Shared.Whitelist;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Components;
@@ -32,6 +33,7 @@ public sealed partial class AnchorableSystem : EntitySystem
     [Dependency] private readonly SharedTransformSystem _transformSystem = default!;
     [Dependency] private readonly TagSystem _tagSystem = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
 
     private EntityQuery<PhysicsComponent> _physicsQuery;
 
@@ -133,7 +135,7 @@ public sealed partial class AnchorableSystem : EntitySystem
 
         var xform = Transform(uid);
         if (TryComp<PhysicsComponent>(uid, out var anchorBody) &&
-            !TileFree(xform.Coordinates, anchorBody))
+            !TileFree(xform.Coordinates, anchorBody, component.IgnoreCollisionsWhitelist))
         {
             _popup.PopupClient(Loc.GetString("anchorable-occupied"), uid, args.User);
             return;
@@ -228,7 +230,7 @@ public sealed partial class AnchorableSystem : EntitySystem
         _adminLogger.Add(LogType.Anchor, LogImpact.Low, $"{ToPrettyString(userUid):user} is trying to anchor {ToPrettyString(uid):entity} to {transform.Coordinates:targetlocation}");
 
         if (TryComp<PhysicsComponent>(uid, out var anchorBody) &&
-            !TileFree(transform.Coordinates, anchorBody))
+            !TileFree(transform.Coordinates, anchorBody, anchorable.IgnoreCollisionsWhitelist))
         {
             _popup.PopupClient(Loc.GetString("anchorable-occupied"), uid, userUid);
             return;
@@ -280,7 +282,7 @@ public sealed partial class AnchorableSystem : EntitySystem
     /// <summary>
     /// Returns true if no hard anchored entities exist on the coordinate tile that would collide with the provided physics body.
     /// </summary>
-    public bool TileFree(EntityCoordinates coordinates, PhysicsComponent anchorBody)
+    public bool TileFree(EntityCoordinates coordinates, PhysicsComponent anchorBody, EntityWhitelist? ignoreCollisionsWhitelist = null)
     {
         // Probably ignore CanCollide on the anchoring body?
         var gridUid = _transformSystem.GetGrid(coordinates);
@@ -289,22 +291,26 @@ public sealed partial class AnchorableSystem : EntitySystem
             return false;
 
         var tileIndices = _map.TileIndicesFor((gridUid.Value, grid), coordinates);
-        return TileFree((gridUid.Value, grid), tileIndices, anchorBody.CollisionLayer, anchorBody.CollisionMask);
+        return TileFree((gridUid.Value, grid), tileIndices, anchorBody.CollisionLayer, anchorBody.CollisionMask, ignoreCollisionsWhitelist);
     }
 
     /// <summary>
     /// Returns true if no hard anchored entities match the collision layer or mask specified.
     /// </summary>
     /// <param name="grid"></param>
-    public bool TileFree(Entity<MapGridComponent> grid, Vector2i gridIndices, int collisionLayer = 0, int collisionMask = 0)
+    public bool TileFree(Entity<MapGridComponent> grid, Vector2i gridIndices, int collisionLayer = 0, int collisionMask = 0, EntityWhitelist? ignoreCollisions = null)
     {
         var enumerator = _map.GetAnchoredEntitiesEnumerator(grid, grid.Comp, gridIndices);
-
         while (enumerator.MoveNext(out var ent))
         {
             if (!_physicsQuery.TryGetComponent(ent, out var body) ||
                 !body.CanCollide ||
                 !body.Hard)
+            {
+                continue;
+            }
+
+            if (_whitelistSystem.IsWhitelistPass(ignoreCollisions, ent!.Value))
             {
                 continue;
             }
