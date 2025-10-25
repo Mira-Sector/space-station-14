@@ -85,11 +85,13 @@ public abstract partial class SharedShadowSystem : EntitySystem
                 GenerateGridShadow((args.OldParent.Value, oldGrid));
         }
 
-        if (TryComp<ShadowGridComponent>(args.Transform.GridUid, out var newGrid))
-        {
-            if (newGrid.Casters.Add(ent.Owner))
-                GenerateGridShadow((args.Transform.GridUid.Value, newGrid));
-        }
+        if (args.Transform.GridUid is not { } newParent)
+            return;
+
+        var newGrid = EnsureComp<ShadowGridComponent>(newParent);
+
+        if (newGrid.Casters.Add(ent.Owner))
+            GenerateGridShadow((newParent, newGrid));
     }
 
     private void OnGridInit(Entity<ShadowGridComponent> ent, ref ComponentInit args)
