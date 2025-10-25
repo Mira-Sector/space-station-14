@@ -40,7 +40,11 @@ public sealed partial class ShadowSystem : SharedShadowSystem
 
         var chunksInRange = _chunking.GetChunksForSession(session, ShadowGridComponent.ChunkSize, _chunkIndexPool, _chunkViewerPool);
         if (!chunksInRange.TryGetValue(netGrid, out var chunkIndexes))
+        {
+            // blank
+            args.State = new ShadowGridState(GetNetEntitySet(ent.Comp.Casters), []);
             return;
+        }
 
         try
         {
@@ -54,6 +58,10 @@ public sealed partial class ShadowSystem : SharedShadowSystem
             }
 
             args.State = new ShadowGridState(GetNetEntitySet(ent.Comp.Casters), toSend);
+        }
+        catch
+        {
+            args.State = new ShadowGridState(GetNetEntitySet(ent.Comp.Casters), []);
         }
         finally
         {

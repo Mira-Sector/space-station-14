@@ -1,7 +1,6 @@
 using Content.Shared.Shadows.Components;
 using Content.Shared.Physics;
 using Robust.Shared.Physics;
-using Robust.Shared.Physics.Collision.Shapes;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Timing;
 using JetBrains.Annotations;
@@ -154,12 +153,11 @@ public abstract partial class SharedShadowSystem : EntitySystem
     private bool TryUpdateCasterShadowOcclusion(Entity<ShadowCasterComponent> ent)
     {
         var casterXform = Transform(ent.Owner);
-        var (casterPos, casterRot) = Xform.GetWorldPositionRotation(casterXform);
+        var casterPos = Xform.GetWorldPosition(casterXform);
 
-        var circle = new PhysShapeCircle(ent.Comp.Radius, casterPos);
-        var aabb = circle.CalcLocalBounds();
-        var rotatedBox = new Box2Rotated(aabb, casterRot);
-        var occludersEnt = _occluder.QueryAabb(casterXform.MapID, rotatedBox);
+        var vecRadius = new Vector2(ent.Comp.Radius);
+        var aabb = new Box2(casterPos - vecRadius, casterPos + vecRadius);
+        var occludersEnt = _occluder.QueryAabb(casterXform.MapID, aabb);
 
         // fast pass
         if (!occludersEnt.Any())
@@ -299,6 +297,7 @@ public abstract partial class SharedShadowSystem : EntitySystem
         {
             chunk = new ShadowChunk(chunkPos);
             ent.Comp.Chunks[chunkPos] = chunk;
+            Dirty(ent);
         }
         return chunk;
     }
