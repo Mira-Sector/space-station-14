@@ -22,9 +22,6 @@ namespace Content.Server.Atmos
         [ViewVariables]
         public float Temperature { get; set; } = Atmospherics.T20C;
 
-        [ViewVariables]
-        public TileAtmosphere? PressureSpecificTarget { get; set; }
-
         /// <summary>
         /// This is either the pressure difference, or the quantity of moles transferred if monstermos is enabled.
         /// </summary>
@@ -66,13 +63,6 @@ namespace Content.Server.Atmos
         public Hotspot Hotspot;
 
         [ViewVariables]
-        public AtmosDirection PressureDirection;
-
-        // For debug purposes.
-        [ViewVariables]
-        public AtmosDirection LastPressureDirection;
-
-        [ViewVariables]
         [Access(typeof(AtmosphereSystem))]
         public EntityUid GridIndex { get; set; }
 
@@ -81,6 +71,9 @@ namespace Content.Server.Atmos
 
         [ViewVariables]
         public ExcitedGroup? ExcitedGroup { get; set; }
+
+        [ViewVariables]
+        public SpaceWind SpaceWind;
 
         /// <summary>
         /// The air in this tile. If null, this tile is completely air-blocked.
