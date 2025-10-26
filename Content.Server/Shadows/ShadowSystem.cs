@@ -24,25 +24,25 @@ public sealed partial class ShadowSystem : SharedShadowSystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<ShadowGridComponent, ComponentGetState>(OnGridGetState);
+        SubscribeLocalEvent<ShadowTreeComponent, ComponentGetState>(OnGridGetState);
     }
 
-    private void OnGridGetState(Entity<ShadowGridComponent> ent, ref ComponentGetState args)
+    private void OnGridGetState(Entity<ShadowTreeComponent> ent, ref ComponentGetState args)
     {
         if (args.Player is not { } session)
         {
             // send full state
-            args.State = new ShadowGridState(GetNetEntitySet(ent.Comp.Casters), ent.Comp.Chunks);
+            args.State = new ShadowTreeState(GetNetEntitySet(ent.Comp.Casters), ent.Comp.Chunks);
             return;
         }
 
         var netGrid = GetNetEntity(ent.Owner);
 
-        var chunksInRange = _chunking.GetChunksForSession(session, ShadowGridComponent.ChunkSize, _chunkIndexPool, _chunkViewerPool);
+        var chunksInRange = _chunking.GetChunksForSession(session, ShadowTreeComponent.ChunkSize, _chunkIndexPool, _chunkViewerPool);
         if (!chunksInRange.TryGetValue(netGrid, out var chunkIndexes))
         {
             // blank
-            args.State = new ShadowGridState(GetNetEntitySet(ent.Comp.Casters), []);
+            args.State = new ShadowTreeState(GetNetEntitySet(ent.Comp.Casters), []);
             return;
         }
 
@@ -57,11 +57,11 @@ public sealed partial class ShadowSystem : SharedShadowSystem
                 toSend[chunkIndex] = chunk;
             }
 
-            args.State = new ShadowGridState(GetNetEntitySet(ent.Comp.Casters), toSend);
+            args.State = new ShadowTreeState(GetNetEntitySet(ent.Comp.Casters), toSend);
         }
         catch
         {
-            args.State = new ShadowGridState(GetNetEntitySet(ent.Comp.Casters), []);
+            args.State = new ShadowTreeState(GetNetEntitySet(ent.Comp.Casters), []);
         }
         finally
         {

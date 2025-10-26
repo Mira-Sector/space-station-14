@@ -30,13 +30,13 @@ public sealed partial class ShadowDebugOverlay : Overlay
 
     protected override void Draw(in OverlayDrawArgs args)
     {
-        var gridQuery = _entity.EntityQueryEnumerator<ShadowGridComponent, MapGridComponent>();
-        while (gridQuery.MoveNext(out var uid, out var shadow, out var grid))
+        var treeQuery = _entity.EntityQueryEnumerator<ShadowTreeComponent, MapGridComponent>();
+        while (treeQuery.MoveNext(out var uid, out var tree, out var grid))
         {
             var matty = _transform.GetWorldMatrix(uid);
             args.WorldHandle.SetTransform(matty);
 
-            foreach (var chunk in shadow.Chunks.Values)
+            foreach (var chunk in tree.Chunks.Values)
             {
                 foreach (var (indices, data) in chunk.ShadowMap)
                 {
@@ -51,10 +51,10 @@ public sealed partial class ShadowDebugOverlay : Overlay
                 }
 
                 var chunkBounds = new Box2(
-                    chunk.ChunkPos.X * ShadowGridComponent.ChunkSize,
-                    chunk.ChunkPos.Y * ShadowGridComponent.ChunkSize,
-                    (chunk.ChunkPos.X + 1) * ShadowGridComponent.ChunkSize,
-                    (chunk.ChunkPos.Y + 1) * ShadowGridComponent.ChunkSize
+                    chunk.ChunkPos.X * ShadowTreeComponent.ChunkSize,
+                    chunk.ChunkPos.Y * ShadowTreeComponent.ChunkSize,
+                    (chunk.ChunkPos.X + 1) * ShadowTreeComponent.ChunkSize,
+                    (chunk.ChunkPos.Y + 1) * ShadowTreeComponent.ChunkSize
                 );
                 args.WorldHandle.DrawRect(chunkBounds, Color.Red, false);
             }

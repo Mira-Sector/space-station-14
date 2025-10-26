@@ -29,7 +29,7 @@ public sealed partial class ShadowSystem : SharedShadowSystem
         SubscribeLocalEvent<HasShadowComponent, ComponentInit>(OnShadowInit);
         SubscribeLocalEvent<HasShadowComponent, ComponentRemove>(OnShadowRemove);
 
-        SubscribeLocalEvent<ShadowGridComponent, ComponentHandleState>(OnGridHandleState);
+        SubscribeLocalEvent<ShadowTreeComponent, ComponentHandleState>(OnGridHandleState);
 
         SubscribeNetworkEvent<ToggleShadowDebugOverlayEvent>(OnToggleDebug);
 
@@ -72,9 +72,9 @@ public sealed partial class ShadowSystem : SharedShadowSystem
         _overlay.RemoveEntity(ent.Owner);
     }
 
-    private void OnGridHandleState(Entity<ShadowGridComponent> ent, ref ComponentHandleState args)
+    private void OnGridHandleState(Entity<ShadowTreeComponent> ent, ref ComponentHandleState args)
     {
-        if (args.Current is not ShadowGridState state)
+        if (args.Current is not ShadowTreeState state)
             return;
 
         ent.Comp.Casters = GetEntitySet(state.Casters);
