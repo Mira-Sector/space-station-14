@@ -83,6 +83,8 @@ namespace Content.Server.Atmos.EntitySystems
 
             SubscribeLocalEvent<IgniteOnMeleeHitComponent, MeleeHitEvent>(OnMeleeHit);
 
+            SubscribeLocalEvent<IgniteOnAtmosExposedComponent, AtmosExposedUpdateEvent>(OnAtmosExposed);
+
             SubscribeLocalEvent<ExtinguishOnInteractComponent, ActivateInWorldEvent>(OnExtinguishActivateInWorld);
 
             SubscribeLocalEvent<IgniteOnHeatDamageComponent, DamageChangedEvent>(OnDamageChanged);
@@ -108,6 +110,40 @@ namespace Content.Server.Atmos.EntitySystems
                 if (component.FireStacks >= 0)
                     Ignite(entity, args.Weapon, flammable, args.User);
             }
+        }
+
+        private void OnAtmosExposed(EntityUid uid, IgniteOnAtmosExposedComponent component, ref AtmosExposedUpdateEvent args)
+        {
+            if (component.Gas.Temperature > args.GasMixture.Temperature)
+                return;
+
+            if (!TryComp<FlammableComponent>(uid, out var flammable))
+                return;
+
+            for (var i = 0; i < Atmospherics.TotalNumberOfGases; i++)
+            {
+                var targetMoles = component.Gas.GetMoles(i);
+                var atmosMoles = args.GasMixture.GetMoles(i);
+
+                if (targetMoles > atmosMoles)
+                    return;
+            }
+
+            if (component.Additive)
+            {
+                AdjustFireStacks(uid, component.FireStacks, flammable);
+            }
+            else if (flammable.FireStacks < component.FireStacks)
+            {
+                SetFireStacks(uid, component.FireStacks, flammable);
+            }
+            else
+            {
+                return;
+            }
+
+            if (component.FireStacks >= 0)
+                Ignite(uid, uid, flammable);
         }
 
         private void OnIgniteLand(EntityUid uid, IgniteOnCollideComponent component, ref LandEvent args)
