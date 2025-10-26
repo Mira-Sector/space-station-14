@@ -1,5 +1,6 @@
 using Content.Shared.Shadows.Components;
 using Content.Shared.Physics;
+using Robust.Shared.ComponentTrees;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Timing;
@@ -9,7 +10,7 @@ using System.Linq;
 
 namespace Content.Shared.Shadows;
 
-public abstract partial class SharedShadowSystem : EntitySystem
+public abstract partial class SharedShadowSystem : ComponentTreeSystem<ShadowTreeComponent, ShadowCasterComponent>
 {
     [Dependency] private readonly OccluderSystem _occluder = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
@@ -21,16 +22,17 @@ public abstract partial class SharedShadowSystem : EntitySystem
 
     protected EntityQuery<ShadowCasterComponent> CasterQuery;
 
+    protected override bool DoFrameUpdate { get; } = true;
+
+    protected override bool DoTickUpdate { get; } = true;
+
+    protected override bool Recursive { get; } = false;
+
     public override void Initialize()
     {
         base.Initialize();
 
         SubscribeLocalEvent<ShadowCasterComponent, ComponentInit>(OnCasterInit);
-        SubscribeLocalEvent<ShadowCasterComponent, EntParentChangedMessage>(OnCasterParentChanged);
-
-        SubscribeLocalEvent<ShadowTreeComponent, ComponentInit>(OnGridInit);
-
-        CasterQuery = GetEntityQuery<ShadowCasterComponent>();
     }
 
     public override void Update(float frameTime)
@@ -63,52 +65,22 @@ public abstract partial class SharedShadowSystem : EntitySystem
 
             comp.LastRecalculationPos = xform.LocalPosition;
 
-            if (EnsureComp<ShadowTreeComponent>(grid, out var treeComp) || treeComp.Casters.Contains(uid))
-                GenerateGridShadow((grid, treeComp));
-
+            var treeComp = Comp<ShadowTreeComponent>(grid);
+            GenerateGridShadow((grid, treeComp));
             Dirty(uid, comp);
         }
+    }
+
+    protected override Box2 ExtractAabb(in ComponentTreeEntry<ShadowCasterComponent> entry, Vector2 pos, Angle rot)
+    {
+        var vecRadius = new Vector2(entry.Component.Radius);
+        return new(pos - vecRadius, pos + vecRadius);
     }
 
     private void OnCasterInit(Entity<ShadowCasterComponent> ent, ref ComponentInit args)
     {
         GenerateCasterShadow(ent);
         TryUpdateCasterShadowOcclusion(ent);
-    }
-
-    private void OnCasterParentChanged(Entity<ShadowCasterComponent> ent, ref EntParentChangedMessage args)
-    {
-        if (TryComp<ShadowTreeComponent>(args.OldParent, out var oldGrid))
-        {
-            if (oldGrid.Casters.Remove(ent.Owner))
-                GenerateGridShadow((args.OldParent.Value, oldGrid));
-        }
-
-        if (args.Transform.GridUid is not { } newParent)
-            return;
-
-        var newGrid = EnsureComp<ShadowTreeComponent>(newParent);
-
-        if (newGrid.Casters.Add(ent.Owner))
-            GenerateGridShadow((newParent, newGrid));
-    }
-
-    private void OnGridInit(Entity<ShadowTreeComponent> ent, ref ComponentInit args)
-    {
-        var xform = Transform(ent.Owner);
-
-        ent.Comp.Casters = new(xform.ChildCount);
-
-        var children = xform.ChildEnumerator;
-        while (children.MoveNext(out var child))
-        {
-            if (!CasterQuery.HasComp(child))
-                continue;
-
-            ent.Comp.Casters.Add(child);
-        }
-
-        GenerateGridShadow(ent);
     }
 
     private void GenerateCasterShadow(Entity<ShadowCasterComponent> ent)
@@ -217,24 +189,18 @@ public abstract partial class SharedShadowSystem : EntitySystem
 
     private void GenerateGridShadow(Entity<ShadowTreeComponent> ent)
     {
-        List<Entity<ShadowCasterComponent>> casters = new(ent.Comp.Casters.Count);
-        foreach (var casterUid in ent.Comp.Casters)
+        var query = ent.Comp.Tree.GetEnumerator();
+        while (query.MoveNext())
         {
-            if (!Initialized(casterUid))
-                continue;
+            var current = query.Current;
+            var casterUid = current.Uid;
+            var casterComp = current.Component;
+            var xform = current.Transform;
 
-            if (!CasterQuery.TryComp(casterUid, out var caster))
-                continue;
+            var pos = (Vector2i)Vector2.Round(xform.LocalPosition);
+            var basePos = pos + casterComp.Offset;
 
-            casters.Add((casterUid, caster));
-        }
-
-        foreach (var caster in casters)
-        {
-            var pos = (Vector2i)Vector2.Round(Transform(caster).LocalPosition);
-            var basePos = pos + caster.Comp.Offset;
-
-            foreach (var (localOffset, shadow) in caster.Comp.ShadowMap)
+            foreach (var (localOffset, shadow) in casterComp.ShadowMap)
             {
                 var worldPos = basePos + localOffset;
                 var chunk = GetOrCreateChunk(ent, worldPos);

@@ -2,9 +2,9 @@ using Content.Shared.Chunking;
 using Content.Shared.Shadows;
 using Content.Shared.Shadows.Components;
 using Content.Shared.Shadows.Events;
-using Microsoft.Extensions.ObjectPool;
 using Robust.Shared.GameStates;
 using Robust.Shared.Player;
+using Microsoft.Extensions.ObjectPool;
 
 namespace Content.Server.Shadows;
 
@@ -32,7 +32,7 @@ public sealed partial class ShadowSystem : SharedShadowSystem
         if (args.Player is not { } session)
         {
             // send full state
-            args.State = new ShadowTreeState(GetNetEntitySet(ent.Comp.Casters), ent.Comp.Chunks);
+            args.State = new ShadowTreeState(ent.Comp.Chunks);
             return;
         }
 
@@ -53,7 +53,7 @@ public sealed partial class ShadowSystem : SharedShadowSystem
                 toSend[chunkIndex] = chunk;
             }
 
-            args.State = new ShadowTreeState(GetNetEntitySet(ent.Comp.Casters), toSend);
+            args.State = new ShadowTreeState(toSend);
         }
         finally
         {

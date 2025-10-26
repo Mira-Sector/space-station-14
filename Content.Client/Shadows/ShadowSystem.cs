@@ -77,7 +77,6 @@ public sealed partial class ShadowSystem : SharedShadowSystem
         if (args.Current is not ShadowTreeState state)
             return;
 
-        ent.Comp.Casters = GetEntitySet(state.Casters);
         ent.Comp.Chunks = state.Chunks;
     }
 

@@ -1,13 +1,23 @@
 using System.Numerics;
+using Robust.Shared.ComponentTrees;
 using Robust.Shared.GameStates;
+using Robust.Shared.Physics;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
 namespace Content.Shared.Shadows.Components;
 
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState, AutoGenerateComponentPause]
 [Access(typeof(SharedShadowSystem))]
-public sealed partial class ShadowCasterComponent : Component
+public sealed partial class ShadowCasterComponent : Component, IComponentTreeEntry<ShadowCasterComponent>
 {
+    public EntityUid? TreeUid { get; set; }
+
+    public DynamicTree<ComponentTreeEntry<ShadowCasterComponent>>? Tree { get; set; }
+
+    public bool AddToTree => true;
+
+    public bool TreeUpdateQueued { get; set; }
+
     [DataField]
     public int Radius = 8;
 
