@@ -4,8 +4,15 @@ using Robust.Shared.Serialization;
 namespace Content.Shared.Shadows;
 
 [Serializable, NetSerializable]
-public readonly record struct ShadowData(Vector2 Direction, float Strength)
+[DataDefinition]
+public sealed partial class ShadowData
 {
+    [ViewVariables]
+    public readonly Vector2 Direction;
+
+    [ViewVariables]
+    public readonly float Strength;
+
     public static readonly ShadowData Empty = new(Vector2.Zero, 0f);
 
     public const float FadeStart = 0.05f;
@@ -16,6 +23,12 @@ public readonly record struct ShadowData(Vector2 Direction, float Strength)
     public const float MinDirLength = 0.01f;
     public const float MinDirLengthSquared = MinDirLength * MinDirLength;
     public static readonly Color Color = Color.Black;
+
+    public ShadowData(Vector2 direction, float strength)
+    {
+        Direction = direction;
+        Strength = strength;
+    }
 
     public static ShadowData Combine(ShadowData a, ShadowData b)
     {

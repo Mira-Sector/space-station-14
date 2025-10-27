@@ -3,8 +3,18 @@ using Robust.Shared.Serialization;
 namespace Content.Shared.Shadows;
 
 [Serializable, NetSerializable]
-public readonly struct ShadowChunk(Vector2i chunkPos, int estimatedCapacity = 64)
+[DataDefinition]
+public sealed partial class ShadowChunk
 {
-    public readonly Vector2i ChunkPos = chunkPos;
-    public readonly Dictionary<Vector2i, ShadowData> ShadowMap = new(estimatedCapacity);
+    [ViewVariables]
+    public readonly Vector2i ChunkPos;
+
+    [ViewVariables]
+    public readonly Dictionary<Vector2i, ShadowData> ShadowMap;
+
+    public ShadowChunk(Vector2i chunkPos, int estimatedCapacity = 64)
+    {
+        ChunkPos = chunkPos;
+        ShadowMap = new(estimatedCapacity);
+    }
 }
