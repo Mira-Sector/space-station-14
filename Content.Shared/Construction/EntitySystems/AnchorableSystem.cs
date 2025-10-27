@@ -311,9 +311,7 @@ public sealed partial class AnchorableSystem : EntitySystem
             }
 
             if (_whitelistSystem.IsWhitelistPass(ignoreCollisions, ent!.Value))
-            {
                 continue;
-            }
 
             if ((body.CollisionMask & collisionLayer) != 0x0 ||
                 (body.CollisionLayer & collisionMask) != 0x0)

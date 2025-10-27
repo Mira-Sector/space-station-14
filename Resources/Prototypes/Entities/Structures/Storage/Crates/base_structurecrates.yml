@@ -94,10 +94,6 @@
     containers:
       - entity_storage
   - type: RequireProjectileTarget
-  - type: Anchorable
-    ignoreCollisionsWhitelist:
-      tags:
-      - Directional
 
 - type: entity
   parent: CrateGeneric

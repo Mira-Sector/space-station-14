@@ -112,9 +112,6 @@
     stateDoorOpen: generic_open
     stateDoorClosed: generic_door
   - type: Anchorable
-    ignoreCollisionsWhitelist:
-      tags:
-      - Directional
   - type: StaticPrice
     price: 75
 
