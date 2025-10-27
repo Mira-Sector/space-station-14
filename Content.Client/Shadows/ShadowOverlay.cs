@@ -180,10 +180,6 @@ public sealed partial class ShadowOverlay : Overlay
             return null;
 
         var dir = new Vector2(sumX, sumY);
-        if (dir.LengthSquared() > ShadowData.MinDirLengthSquared)
-            dir = dir.Normalized();
-        else
-            dir = Vector2.Zero;
 
         // average strength
         var strength = Math.Min(totalStrength / corners.Length, 1f);

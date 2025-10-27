@@ -107,7 +107,7 @@ public abstract partial class SharedShadowSystem : ComponentTreeSystem<ShadowTre
                     continue;
 
                 var pos = new Vector2i(x, y);
-                var direction = new Vector2(x, y).Normalized();
+                var direction = new Vector2(x, y);
                 var angleFromVertical = MathF.Acos(Math.Clamp(direction.Y, -1f, 1f));
                 var falloff = MathF.Max(0f, 1f - angleFromVertical / ShadowData.MaxAngle);
 

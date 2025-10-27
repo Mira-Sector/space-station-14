@@ -26,7 +26,11 @@ public sealed partial class ShadowData
 
     public ShadowData(Vector2 direction, float strength)
     {
-        Direction = direction;
+        if (direction.IsValid() && direction.LengthSquared() > MinDirLengthSquared)
+            Direction = Vector2.Normalize(direction);
+        else
+            Direction = Vector2.Zero;
+
         Strength = strength;
     }
 
@@ -37,11 +41,9 @@ public sealed partial class ShadowData
             return Empty;
 
         // weighted direction average
-        var weightedDir = (a.Direction * a.Strength + b.Direction * b.Strength) / totalStrength;
-        var dirNorm = weightedDir.Normalized();
-
+        var dir = (a.Direction * a.Strength + b.Direction * b.Strength) / totalStrength;
         var strength = MathF.Min(totalStrength, 1f);
-        return new ShadowData(dirNorm, strength);
+        return new ShadowData(dir, strength);
     }
 
     public static ShadowData Lerp(ShadowData a, ShadowData b, float t)
