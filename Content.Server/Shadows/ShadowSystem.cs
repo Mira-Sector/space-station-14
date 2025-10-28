@@ -36,6 +36,9 @@ public sealed partial class ShadowSystem : SharedShadowSystem
             return;
         }
 
+        args.State = new ShadowTreeState(ent.Comp.Chunks);
+        return;
+
         var netGrid = GetNetEntity(ent.Owner);
 
         var chunksInRange = _chunking.GetChunksForSession(session, ShadowTreeComponent.ChunkSize, _chunkIndexPool, _chunkViewerPool);
