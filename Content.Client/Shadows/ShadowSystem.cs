@@ -83,6 +83,8 @@ public sealed partial class ShadowSystem : SharedShadowSystem
 #if DEBUG
     private void OnToggleDebug(ToggleShadowDebugOverlayEvent args)
     {
+        _debugOverlay.ShowCasters = args.ShowCasters;
+
         if (_overlayManager.HasOverlay<ShadowDebugOverlay>())
             _overlayManager.RemoveOverlay(_debugOverlay);
         else

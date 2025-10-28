@@ -69,9 +69,9 @@ public sealed partial class ShadowSystem : SharedShadowSystem
     }
 
 #if DEBUG
-    public void ToggleDebugOverlay(ICommonSession session)
+    public void ToggleDebugOverlay(ICommonSession session, bool showCasters)
     {
-        var ev = new ToggleShadowDebugOverlayEvent();
+        var ev = new ToggleShadowDebugOverlayEvent(showCasters);
         RaiseNetworkEvent(ev, session);
     }
 #endif

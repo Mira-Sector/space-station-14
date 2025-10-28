@@ -17,7 +17,15 @@ public sealed class ShowShadowDebugCommand : LocalizedEntityCommands
         if (shell.Player is not { } player)
             return;
 
-        _shadow.ToggleDebugOverlay(player);
+        var showCasters = true;
+
+        if (args.Length <= 1)
+        {
+            if (!bool.TryParse(args[0], out showCasters))
+                return;
+        }
+
+        _shadow.ToggleDebugOverlay(player, showCasters);
     }
 }
 #endif

@@ -15,6 +15,8 @@ public sealed partial class ShadowDebugOverlay : Overlay
 {
     public override OverlaySpace Space => OverlaySpace.WorldSpace;
 
+    public bool ShowCasters = false;
+
     private readonly IEntityManager _entity;
     private readonly IRobustRandom _random;
     private readonly EntityLookupSystem _lookup;
@@ -58,6 +60,12 @@ public sealed partial class ShadowDebugOverlay : Overlay
                 );
                 args.WorldHandle.DrawRect(chunkBounds, Color.Red, false);
             }
+        }
+
+        if (!ShowCasters)
+        {
+            args.WorldHandle.SetTransform(Matrix3x2.Identity);
+            return;
         }
 
         var colors = Color.GetAllDefaultColors().ToList();
