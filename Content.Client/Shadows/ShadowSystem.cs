@@ -4,15 +4,12 @@ using Content.Shared.Shadows.Events;
 using Robust.Client.Graphics;
 using Robust.Shared.GameStates;
 using Robust.Shared.Player;
-using Robust.Shared.Random;
 
 namespace Content.Client.Shadows;
 
 public sealed partial class ShadowSystem : SharedShadowSystem
 {
-    [Dependency] private readonly IClyde _clyde = default!;
     [Dependency] private readonly IOverlayManager _overlayManager = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
 
     private ShadowOverlay _overlay = default!;
 #if DEBUG
@@ -33,9 +30,9 @@ public sealed partial class ShadowSystem : SharedShadowSystem
 
         SubscribeNetworkEvent<ToggleShadowDebugOverlayEvent>(OnToggleDebug);
 
-        _overlay = new(this, EntityManager, _clyde);
+        _overlay = new(this, EntityManager);
 #if DEBUG
-        _debugOverlay = new(EntityManager, _random);
+        _debugOverlay = new(EntityManager);
 #endif
     }
 

@@ -12,8 +12,9 @@ public sealed partial class ShadowOverlay : Overlay
 {
     public override OverlaySpace Space => OverlaySpace.WorldSpaceBelowEntities;
 
+    [Dependency] private readonly IClyde _clyde = default!;
+
     private readonly IEntityManager _entity;
-    private readonly IClyde _clyde;
     private readonly ShadowSystem _shadow;
     private readonly SpriteSystem _sprite;
     private readonly TransformSystem _xform;
@@ -28,12 +29,13 @@ public sealed partial class ShadowOverlay : Overlay
     private const float MaxTan = 2f;
     private const float Blur = 2f;
 
-    public ShadowOverlay(ShadowSystem shadow, IEntityManager entity, IClyde clyde) : base()
+    public ShadowOverlay(ShadowSystem shadow, IEntityManager entity) : base()
     {
         ZIndex = 100;
 
+        IoCManager.InjectDependencies(this);
+
         _entity = entity;
-        _clyde = clyde;
         _shadow = shadow;
         _sprite = _entity.System<SpriteSystem>();
         _xform = _entity.System<TransformSystem>();
