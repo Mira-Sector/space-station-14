@@ -92,7 +92,7 @@
           False: { state: gsensor0 }
 
 - type: entity
-  parent: [ BaseItem, RelaxedAnchoring ]
+  parent: [ BaseItem, BaseRelaxedAnchoring ]
   id: AirSensorAssembly
   name: air sensor assembly
   description: Air sensor assembly. An assembly of air sensors?

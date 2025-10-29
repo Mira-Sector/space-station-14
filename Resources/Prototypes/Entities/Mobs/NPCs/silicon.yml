@@ -343,7 +343,7 @@
   - MobSiliconBase
   - ShowMedicalIcons
   - StripableInventoryBase
-  - RelaxedAnchoring
+  - BaseRelaxedAnchoring
   id: MobMedibot
   name: medibot
   description: No substitute for a doctor, but better than nothing.
@@ -514,7 +514,7 @@
   - ShowSecurityIcons
   - StripableInventoryBase
   - BaseStunbaton
-  - RelaxedAnchoring
+  - BaseRelaxedAnchoring
   id: MobSecuritron
   name: securitron
   description: Tiders hate this one simple trick!

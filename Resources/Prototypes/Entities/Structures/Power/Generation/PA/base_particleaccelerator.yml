@@ -1,6 +1,6 @@
 - type: entity
   id: ParticleAcceleratorBase
-  parent: RelaxedAnchoring
+  parent: BaseRelaxedAnchoring
   abstract: true
   placement:
     mode: SnapgridCenter

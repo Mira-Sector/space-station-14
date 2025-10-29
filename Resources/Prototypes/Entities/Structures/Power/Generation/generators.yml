@@ -3,7 +3,7 @@
 - type: entity
   abstract: true
   id: BaseGenerator
-  parent: RelaxedAnchoring
+  parent: BaseRelaxedAnchoring
   description: A high efficiency thermoelectric generator.
   name: generator
   placement:
