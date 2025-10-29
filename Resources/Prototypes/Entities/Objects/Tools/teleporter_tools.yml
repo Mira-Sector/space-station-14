@@ -16,7 +16,7 @@
 
 - type: entity
   id: TeleportBeacon
-  parent: [BaseTeleportBeacon, BaseItem]
+  parent: [ BaseTeleportBeacon, BaseItem, BaseRelaxedAnchoring]
   name: teleport beacon
   description: Can be linked to a teleframe console, allowing it to be targeted over any distance. Must be anchored.
   components:

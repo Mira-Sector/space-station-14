@@ -114,6 +114,7 @@
   - type: Tag
     tags:
     - Wooden
+    - Directional
   - type: AtmosExposed
   - type: Flammable
     fireSpread: true
