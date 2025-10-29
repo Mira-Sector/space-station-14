@@ -343,6 +343,7 @@
   - MobSiliconBase
   - ShowMedicalIcons
   - StripableInventoryBase
+  - RelaxedAnchoring
   id: MobMedibot
   name: medibot
   description: No substitute for a doctor, but better than nothing.
@@ -379,9 +380,6 @@
   - type: SentienceTarget
     flavorKind: station-event-random-sentience-flavor-mechanical
   - type: Anchorable
-    ignoreCollisionsWhitelist:
-      tags:
-      - Directional
   - type: InteractionPopup
     interactSuccessString: petting-success-medibot
     interactFailureString: petting-failure-medibot
@@ -516,6 +514,7 @@
   - ShowSecurityIcons
   - StripableInventoryBase
   - BaseStunbaton
+  - RelaxedAnchoring
   id: MobSecuritron
   name: securitron
   description: Tiders hate this one simple trick!
@@ -562,9 +561,6 @@
   - type: SentienceTarget
     flavorKind: station-event-random-sentience-flavor-mechanical
   - type: Anchorable
-    ignoreCollisionsWhitelist:
-      tags:
-      - Directional
   - type: InteractionPopup
     interactSuccessString: petting-success-secbot
     interactFailureString: petting-failure-secbot

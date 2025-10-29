@@ -3,6 +3,7 @@
 - type: entity
   abstract: true
   id: BaseGenerator
+  parent: RelaxedAnchoring
   description: A high efficiency thermoelectric generator.
   name: generator
   placement:
@@ -50,9 +51,6 @@
     supplyRampRate: 500
     supplyRampTolerance: 500
   - type: Anchorable
-    ignoreCollisionsWhitelist:
-      tags:
-      - Directional
   - type: Pullable
   - type: Damageable
     damageContainer: StructuralInorganic

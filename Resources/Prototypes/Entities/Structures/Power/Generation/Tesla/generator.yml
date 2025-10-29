@@ -26,9 +26,6 @@
         layer:
         - Opaque
   - type: Anchorable
-    ignoreCollisionsWhitelist:
-      tags:
-      - Directional
   - type: GuideHelp
     guides:
     - TeslaEngine

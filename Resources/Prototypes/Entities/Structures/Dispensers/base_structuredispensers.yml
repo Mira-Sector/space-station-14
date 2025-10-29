@@ -1,7 +1,7 @@
 - type: entity
   abstract: true
   id: ReagentDispenserBase
-  parent: SmallConstructibleMachine
+  parent: [ SmallConstructibleMachine, RelaxedAnchoring ]
   placement:
     mode: SnapgridCenter
   components:
@@ -35,9 +35,6 @@
       enum.StorageUiKey.Key:
         type: StorageBoundUserInterface
   - type: Anchorable
-    ignoreCollisionsWhitelist:
-      tags:
-      - Directional
   - type: Pullable
   - type: Damageable
     damageContainer: StructuralInorganic

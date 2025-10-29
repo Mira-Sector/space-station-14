@@ -55,12 +55,10 @@
       - !type:DoActsBehavior
         acts: ["Breakage"]
   - type: Anchorable
-    ignoreCollisionsWhitelist:
-      tags:
-      - Directional
 
 - type: entity
   id: DebugBatteryStorage
+  parent: RelaxedAnchoring
   name: battery storage
   suffix: DEBUG
   placement:
@@ -91,12 +89,10 @@
         !type:CableDeviceNode
         nodeGroupID: HVPower
   - type: Anchorable
-    ignoreCollisionsWhitelist:
-      tags:
-      - Directional
 
 - type: entity
   id: DebugBatteryDischarger
+  parent: RelaxedAnchoring
   name: battery discharger
   suffix: DEBUG
   placement:
@@ -129,9 +125,6 @@
         nodeGroupID: HVPower
   - type: BatteryDischarger
   - type: Anchorable
-    ignoreCollisionsWhitelist:
-      tags:
-      - Directional
 
 - type: entity
   id: DebugSMES
@@ -162,6 +155,7 @@
 
 - type: entity
   id: DebugPowerReceiver
+  parent: RelaxedAnchoring
   name: power receiver
   suffix: DEBUG
   placement:
@@ -188,6 +182,3 @@
   - type: ApcPowerReceiver
   - type: ExtensionCableReceiver
   - type: Anchorable
-    ignoreCollisionsWhitelist:
-      tags:
-      - Directional

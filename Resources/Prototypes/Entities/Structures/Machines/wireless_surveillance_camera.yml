@@ -49,9 +49,6 @@
     - type: Machine
       board: SurveillanceWirelessCameraAnchoredCircuitboard
     - type: Anchorable
-      ignoreCollisionsWhitelist:
-      tags:
-      - Directional
     - type: Transform
       anchored: true
     - type: Physics
