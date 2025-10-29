@@ -1547,12 +1547,6 @@
   parent: BaseAiVisionSquare
   name: tiles-reinforced-glass-floor
   sprite: /Textures/Tiles/rglass.png
-  variants: 4
-  placementVariants:
-  - 1.0
-  - 1.0
-  - 1.0
-  - 1.0
   baseTurf: Plating
   isSubfloor: false
   deconstructTools: [ Prying ]

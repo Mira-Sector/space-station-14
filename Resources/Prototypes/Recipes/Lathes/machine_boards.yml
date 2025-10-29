@@ -471,3 +471,8 @@
   parent: BaseCircuitboardRecipe
   id: WashingMachineCircuitboard
   result: WashingMachineCircuitboard
+
+- type: latheRecipe
+  parent: [ BaseSilverCircuitboardRecipe, BaseResearchMachineRecipeCategory ]
+  id: TeleporterScienceMachineCircuitboard
+  result: TeleporterScienceMachineCircuitboard

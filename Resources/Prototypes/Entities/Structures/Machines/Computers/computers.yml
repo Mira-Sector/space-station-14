@@ -1600,3 +1600,71 @@
     containers:
       circuit_holder: !type:ContainerSlot
       board: !type:Container
+
+- type: entity
+  id: ComputerTeleporter
+  parent: BaseComputerAiAccess
+  name: teleframe console
+  description: Links to a teleframe to set its coordinates, keeps quiet.
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "computerLayerBody" ]
+      state: computer
+    - map: [ "computerLayerKeyboard" ]
+      state: generic_keyboard
+    - map: [ "computerLayerScreen" ]
+      state: telesci
+    - map: [ "computerLayerKeys" ]
+      state: telesci_key
+    - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
+      state: generic_panel_open
+  - type: DeviceList
+  - type: DeviceNetwork
+    deviceNetId: Wired
+  - type: DeviceLinkSource
+    range: 10
+    ports:
+      - TeleportSender
+  - type: DeviceLinkSink
+    ports:
+      - TeleportBeaconReceiver
+  - type: TeleframeConsole
+    maxRange: 20000
+  - type: ActivatableUI
+    key: enum.TeleframeConsoleUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.TeleframeConsoleUiKey.Key:
+        type: TeleframeConsoleBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: ApcPowerReceiver
+    powerLoad: 1000
+  - type: Computer
+  - type: ContainerContainer
+    containers:
+      board: !type:Container
+  - type: Speech
+    speechVerb: Robotic
+
+- type: entity
+  id: ComputerTeleporterScience
+  parent: ComputerTeleporter
+  suffix: Research
+  name: teleframe console
+  description: Links to a teleframe to set its coordinates.
+  components:
+    - type: AccessReader
+      access: [ [ "Research" ] ]
+    - type: ActiveRadio
+      channels:
+      - Science
+    - type: Computer
+      board: ComputerTeleporterCircuitboard
+    - type: TeleframeConsole
+      maxRange: 20000
+    - type: TeleframeConsoleRadio
+      announcementChannel: Science
+      speakIc: true
+

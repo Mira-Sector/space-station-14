@@ -233,7 +233,7 @@ Entries:
     type: Add
   id: 36
   time: '2024-07-21T16:36:00.0000000+00:00'
-- author: lordofgab
+- author: SillyAmy
   changes:
   - message: made more gay flags
     type: Add
@@ -1211,7 +1211,7 @@ Entries:
     type: Fix
   id: 178
   time: '2025-02-17T22:10:00.0000000+00:00'
-- author: Doctor-Cpu, Anurath, aspiffyfellow, Mehnix, Sentient Salad, lordofgab
+- author: Doctor-Cpu, Anurath, aspiffyfellow, Mehnix, Sentient Salad, SillyAmy
   changes:
   - message: New central command map
     type: Add
@@ -2121,3 +2121,47 @@ Entries:
     type: Add
   id: 293
   time: '2025-09-15T13:30:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: Added the Experimental Teleframe, a mostly-safe teleporter, in addition to a console and teleport beacons to use with it.
+    type: Add
+  id: 294
+  time: '2025-10-02T15:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added the kasane teto outfit
+    type: Add
+  id: 295
+  time: '2025-10-02T23:00:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: Teleport beacons no longer have finite range
+    type: Fix
+  - message: You can no longer teleport singularities and walls
+    type: Fix
+  id: 296
+  time: '2025-10-07T16:50:00.0000000+00:00'
+- author: Henry
+  changes:
+  - message: Crusher daggers are orderable from cargo
+    type: Add
+  id: 297
+  time: '2025-10-07T17:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Mice have a chance to randomly eat wires
+    type: Add
+  id: 298
+  time: '2025-10-09T01:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Lowered mice wire eating chance from 30% to 5%
+    type: Tweak
+  id: 299
+  time: '2025-10-17T14:40:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Added Wilkson Sparks plushie.
+    type: Add
+  id: 300
+  time: '2025-10-19T17:00:00.0000000+00:00'

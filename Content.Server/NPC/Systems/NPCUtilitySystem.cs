@@ -34,6 +34,8 @@ using Robust.Server.Containers;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 using System.Linq;
+using Robust.Shared.Random;
+using Content.Shared.Beam.Components;
 
 namespace Content.Server.NPC.Systems;
 
@@ -43,6 +45,7 @@ namespace Content.Server.NPC.Systems;
 public sealed class NPCUtilitySystem : EntitySystem
 {
     [Dependency] private readonly IPrototypeManager _proto = default!;
+    [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly SharedBodySystem _body = default!;
     [Dependency] private readonly ContainerSystem _container = default!;
     [Dependency] private readonly DrinkSystem _drink = default!;
@@ -194,8 +197,22 @@ public sealed class NPCUtilitySystem : EntitySystem
                     return 0f;
 
                 // no mouse don't eat the uranium-235
-                if (avoidBadFood && HasComp<BadFoodComponent>(targetUid))
-                    return 0f;
+                if (avoidBadFood && TryComp<BadFoodComponent>(targetUid, out var badFood))
+                {
+                    var cannot = EnsureComp<BadFoodCannotEatComponent>(owner);
+
+                    var protoId = Prototype(targetUid)?.ID;
+                    if (protoId != null && cannot.CannotEat.Contains(protoId))
+                        return 0f;
+
+                    if (!_random.Prob(badFood.Chance))
+                    {
+                        if (protoId != null)
+                            cannot.CannotEat.Add(protoId);
+
+                        return 0f;
+                    }
+                }
 
                 return 1f;
             }

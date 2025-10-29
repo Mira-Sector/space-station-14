@@ -100,9 +100,12 @@
   components:
   - type: StorageFill
     contents:
-    - id: ClothingUniformJumpskirtPerformer
-    - id: ClothingShoesBootsPerformer
-    - id: ClothingHeadPerformerWig
+    - id: ClothingUniformJumpskirtPerformerMiku
+    - id: ClothingShoesBootsPerformerMiku
+    - id: ClothingHeadPerformerMikuWig
+    - id: ClothingUniformJumpskirtPerformerTeto
+    - id: ClothingShoesBootsPerformerTeto
+    - id: ClothingHeadPerformerTetoWig
     - id: ClothingOuterSuitMonkey
     - id: ClothingHeadHatAnimalMonkey
     - id: ClothingNeckCloakMoth

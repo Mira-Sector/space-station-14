@@ -20,6 +20,13 @@
     sprite: Objects/Tools/cable-coils.rsi
     size: Small
     storedRotation: -90
+  - type: Food
+    transferAmount: 10
+    requiresSpecialDigestion: true
+    delay: 5
+    forceFeedDelay: 7
+  - type: BadFood
+    chance: 0.05
   - type: CablePlacer
   - type: Clickable
   - type: StaticPrice
@@ -60,10 +67,10 @@
     blockingWireType: HighVoltage
   - type: Appearance
   - type: Extractable
-    grindableSolutionName: hvcable
+    grindableSolutionName: food
   - type: SolutionContainerManager
     solutions:
-      hvcable:
+      food:
         reagents:
         - ReagentId: Iron
           Quantity: 3
@@ -127,10 +134,10 @@
     blockingWireType: MediumVoltage
   - type: Appearance
   - type: Extractable
-    grindableSolutionName: mvcable
+    grindableSolutionName: food
   - type: SolutionContainerManager
     solutions:
-      mvcable:
+      food:
         reagents:
         - ReagentId: Iron
           Quantity: 3
@@ -191,10 +198,10 @@
     blockingWireType: Apc
   - type: Appearance
   - type: Extractable
-    grindableSolutionName: lvcable
+    grindableSolutionName: food
   - type: SolutionContainerManager
     solutions:
-      lvcable:
+      food:
         reagents:
         - ReagentId: Iron
           Quantity: 3

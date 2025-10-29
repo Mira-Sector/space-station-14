@@ -5,6 +5,7 @@
   recipes:
   - AnomalyScanner
   - NodeScanner
+  - TeleportBeacon
 
 - type: latheRecipePack
   id: ScienceBoardsStatic
@@ -19,6 +20,8 @@
   - AnomalyVesselCircuitboard
   - AnalysisComputerCircuitboard
   - ArtifactAnalyzerMachineCircuitboard
+  - TeleporterScienceMachineCircuitboard
+  - ComputerTeleporterCircuitboard
 
 - type: latheRecipePack
   id: CircuitFloorsStatic
@@ -38,6 +41,7 @@
   - SignallerAdvanced
   - DeviceQuantumSpinInverter
   - DeviceDesynchronizer
+  - HandHeldTeleframeConsoleEmpty
 
 - type: latheRecipePack
   id: ScienceClothing

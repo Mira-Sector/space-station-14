@@ -9,5 +9,14 @@
   - type: TimedDespawn
     lifetime: 1
   - type: EmitSoundOnSpawn
-    sound: 
+    sound:
       path: /Audio/Effects/Lightning/lightningbolt.ogg
+
+- type: entity
+  id: EffectFlashTeleportFinish
+  parent: [ EffectFlashBluespace]
+  categories: [HideSpawnMenu]
+  components:
+  - type: TriggerOnSpawn
+  - type: SpawnOnTrigger
+    proto: EffectGravityPulse
