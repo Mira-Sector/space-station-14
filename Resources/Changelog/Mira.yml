@@ -2165,3 +2165,9 @@ Entries:
     type: Add
   id: 300
   time: '2025-10-19T17:00:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: You can anchor most machines and containers onto tiles with directional windows.
+    type: Tweak
+  id: 301
+  time: '2025-10-29T01:40:00.0000000+00:00'
