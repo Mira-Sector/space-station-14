@@ -201,8 +201,11 @@ public sealed class VocalSystem : EntitySystem
             return;
         }
 
+        if (!_proto.TryIndex(component.EmoteSounds, out var sounds))
+            return;
+
         // just play regular sound based on emote proto
-        args.Handled = _chat.TryPlayEmoteSound(performer, component.EmoteSounds, args.Emote);
+        args.Handled = _chat.TryPlayEmoteSound(performer, sounds, args.Emote);
     }
 
     private bool TryPlayScreamSound(IVocalComponent component, EntityUid performer)
@@ -213,18 +216,20 @@ public sealed class VocalSystem : EntitySystem
             return true;
         }
 
-        return _chat.TryPlayEmoteSound(performer, component.EmoteSounds, component.ScreamId);
+        if (!_proto.TryIndex(component.EmoteSounds, out var sounds))
+            return false;
+
+        return _chat.TryPlayEmoteSound(performer, sounds, component.ScreamId);
     }
 
-    public void LoadSounds(IVocalComponent component, Sex sex)
+    public static void LoadSounds(IVocalComponent component, Sex sex)
     {
         if (component.Sounds == null)
             return;
 
-        if (!component.Sounds.TryGetValue(sex, out var protoId))
+        if (!component.Sounds.TryGetValue(sex, out var sounds))
             return;
 
-        _proto.TryIndex(protoId, out var sounds);
         component.EmoteSounds = sounds;
     }
 

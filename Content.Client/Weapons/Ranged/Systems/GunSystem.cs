@@ -182,21 +182,21 @@ public sealed partial class GunSystem : SharedGunSystem
             if (_inputSystem.CmdStates.GetState(useKey) != BoundKeyState.Down && !gun.BurstActivated)
             {
                 if (gun.ShotCounter != 0)
-                    EntityManager.RaisePredictiveEvent(new RequestStopShootEvent { Gun = GetNetEntity(gunUid) });
-                continue;
+                    RaisePredictiveEvent(new RequestStopShootEvent { Gun = GetNetEntity(gunUid) });
+                return;
             }
 
             if (gun.NextFire > Timing.CurTime)
-                continue;
+                return;
 
             var mousePos = _eyeManager.PixelToMap(_inputManager.MouseScreenPosition);
 
             if (mousePos.MapId == MapId.Nullspace)
             {
                 if (gun.ShotCounter != 0)
-                    EntityManager.RaisePredictiveEvent(new RequestStopShootEvent { Gun = GetNetEntity(gunUid) });
+                    RaisePredictiveEvent(new RequestStopShootEvent { Gun = GetNetEntity(gunUid) });
 
-                continue;
+                return;
             }
 
             // Define target coordinates relative to gun entity, so that network latency on moving grids doesn't fuck up the target location.
@@ -208,7 +208,7 @@ public sealed partial class GunSystem : SharedGunSystem
 
             Log.Debug($"Sending shoot request tick {Timing.CurTick} / {Timing.CurTime}");
 
-            EntityManager.RaisePredictiveEvent(new RequestShootEvent
+            RaisePredictiveEvent(new RequestShootEvent
             {
                 Target = target,
                 Coordinates = GetNetCoordinates(coordinates),

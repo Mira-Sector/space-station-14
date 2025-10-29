@@ -10,21 +10,21 @@ public interface IVocalComponent
     /// <summary>
     ///     Emote sounds prototype id for each sex (not gender). Entities without <see cref="HumanoidComponent"/> considered to be <see cref="Sex.Unsexed"/>.
     /// </summary>
-    public Dictionary<Sex, ProtoId<EmoteSoundsPrototype>>? Sounds { get; set; }
+    Dictionary<Sex, ProtoId<EmoteSoundsPrototype>>? Sounds { get; set; }
 
-    public EntProtoId ScreamId { get; set; }
+    EntProtoId ScreamId { get; set; }
 
-    public SoundSpecifier Wilhelm { get; set; }
+    SoundSpecifier Wilhelm { get; set; }
 
-    public float WilhelmProbability { get; set; }
+    float WilhelmProbability { get; set; }
 
-    public EntProtoId? ScreamAction { get; set; }
+    EntProtoId? ScreamAction { get; set; }
 
-    public EntityUid? ScreamActionEntity { get; set; }
+    EntityUid? ScreamActionEntity { get; set; }
 
     /// <summary>
     ///     Currently loaded emote sounds prototype, based on entity sex.
     ///     Null if no valid prototype for entity sex was found.
     /// </summary>
-    public EmoteSoundsPrototype? EmoteSounds { get; set; }
+    ProtoId<EmoteSoundsPrototype>? EmoteSounds { get; set; }
 }
