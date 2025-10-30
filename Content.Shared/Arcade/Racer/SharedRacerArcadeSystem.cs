@@ -2,7 +2,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Arcade.Racer;
 
-public sealed partial class RacerArcadeSystem : EntitySystem
+public abstract partial class SharedRacerArcadeSystem : EntitySystem
 {
     [Dependency] private readonly IPrototypeManager _prototype = default!;
 
