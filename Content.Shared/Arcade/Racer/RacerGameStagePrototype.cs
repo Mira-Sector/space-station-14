@@ -1,3 +1,4 @@
+using Content.Shared.Arcade.Racer.Stage;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Arcade.Racer;
@@ -10,4 +11,7 @@ public sealed partial class RacerGameStagePrototype : IPrototype
 
     [DataField(required: true)]
     public RacerGameStageSkyData Sky = default!;
+
+    [DataField(required: true)]
+    public RacerArcadeStageGraph Graph = default!;
 }
