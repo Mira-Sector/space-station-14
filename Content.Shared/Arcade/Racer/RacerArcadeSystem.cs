@@ -1,7 +1,11 @@
+using Robust.Shared.Prototypes;
+
 namespace Content.Shared.Arcade.Racer;
 
 public sealed partial class RacerArcadeSystem : EntitySystem
 {
+    [Dependency] private readonly IPrototypeManager _prototype = default!;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -11,6 +15,11 @@ public sealed partial class RacerArcadeSystem : EntitySystem
 
     private void OnInit(Entity<RacerArcadeComponent> ent, ref ComponentInit args)
     {
-        ent.Comp.State = new(ent.Comp.StartingStage);
+        var startingStage = _prototype.Index(ent.Comp.StartingStage);
+        ent.Comp.State = new()
+        {
+            CurrentStage = ent.Comp.StartingStage,
+            CurrentNode = startingStage.Graph.Nodes[startingStage.Graph.StartingNode]
+        };
     }
 }
