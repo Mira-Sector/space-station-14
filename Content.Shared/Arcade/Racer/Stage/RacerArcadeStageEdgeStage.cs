@@ -5,7 +5,7 @@ namespace Content.Shared.Arcade.Racer.Stage;
 
 [Serializable, NetSerializable]
 [DataDefinition]
-public sealed partial class RacerArcadeStageStage : IRacerArcadeStageEdge
+public sealed partial class RacerArcadeStageEdgeStage : IRacerArcadeStageEdge
 {
     [DataField(required: true)]
     public ProtoId<RacerGameStagePrototype> StageId;

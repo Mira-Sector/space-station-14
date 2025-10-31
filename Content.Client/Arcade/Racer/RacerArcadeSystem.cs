@@ -39,7 +39,7 @@ public sealed partial class RacerArcadeSystem : SharedRacerArcadeSystem
 
     private void OnEditorStart(RacerArcadeEditorStartMessage args)
     {
-        StartEditingSession();
+        StartEditingSession(args.Data);
     }
 
     private void OnEditorStop(RacerArcadeEditorStopMessage args)
@@ -48,7 +48,7 @@ public sealed partial class RacerArcadeSystem : SharedRacerArcadeSystem
     }
 
     [PublicAPI]
-    public void StartEditingSession()
+    public void StartEditingSession(RacerGameStageEditorData? data = null)
     {
         if (_editingWindow != null)
             return;
@@ -61,6 +61,11 @@ public sealed partial class RacerArcadeSystem : SharedRacerArcadeSystem
         _editingWindow.Destroyed += _ => StopEditingSession();
 
         var root = _userInterface.CreateWindowRoot(_editingWindow);
+        var control = new RacerEditorControl();
+        root.AddChild(control);
+
+        data ??= RacerGameStageEditorData.Default;
+        control.SetEditorData(data);
     }
 
     [PublicAPI]

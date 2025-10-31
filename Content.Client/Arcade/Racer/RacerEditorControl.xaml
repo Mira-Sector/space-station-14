@@ -1,0 +1,15 @@
+<Control
+    xmlns="https://spacestation14.io"
+    xmlns:cc="clr-namespace:Content.Client.Arcade.Racer">
+    <BoxContainer
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        HorizontalExpand="True"
+        VerticalExpand="True">
+        <cc:RacerEditorViewportControl
+            Name="Editor"
+            HorizontalExpand="True"
+            VerticalExpand="True"
+            RectClipContent="True"/>
+    </BoxContainer>
+</Control>

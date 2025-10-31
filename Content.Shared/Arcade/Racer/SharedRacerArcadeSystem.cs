@@ -4,7 +4,7 @@ namespace Content.Shared.Arcade.Racer;
 
 public abstract partial class SharedRacerArcadeSystem : EntitySystem
 {
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
+    [Dependency] protected readonly IPrototypeManager PrototypeMan = default!;
 
     public override void Initialize()
     {
@@ -15,11 +15,11 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
 
     private void OnInit(Entity<RacerArcadeComponent> ent, ref ComponentInit args)
     {
-        var startingStage = _prototype.Index(ent.Comp.StartingStage);
+        var startingStage = PrototypeMan.Index(ent.Comp.StartingStage);
         ent.Comp.State = new()
         {
             CurrentStage = ent.Comp.StartingStage,
-            CurrentNode = startingStage.Graph.Nodes[startingStage.Graph.StartingNode]
+            CurrentNode = startingStage.Graph.Nodes[startingStage.Graph.StartingNode!]
         };
     }
 }
