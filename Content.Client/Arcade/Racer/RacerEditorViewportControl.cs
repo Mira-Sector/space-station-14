@@ -1,9 +1,7 @@
 using Content.Shared.Arcade.Racer;
 using Content.Shared.Arcade.Racer.Stage;
 using Robust.Client.GameObjects;
-using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
-using System.Linq;
 using System.Numerics;
 
 namespace Content.Client.Arcade.Racer;
@@ -13,17 +11,45 @@ public sealed partial class RacerEditorViewportControl : Control
     [Dependency] private readonly IEntityManager _entity = default!;
     private readonly SpriteSystem _sprite;
 
+    public Action<Vector2, Vector2>? OnGraphOffsetChanged;
+    public Action<Vector2>? OnMousePosChanged;
+
     private RacerGameStageEditorData? _data = null;
 
-    private const float NodeRadius = 4f;
+    private RacerArcadeStageNode? _selectedNode = null;
+    private Vector2? _dragOffset = null;
+
+    private Vector2 _offset = Vector2.Zero;
+    private Vector2 _scale = Vector2.One;
+
+    [ViewVariables]
+    public Vector2 Offset => _offset;
+
+    [ViewVariables]
+    public Vector2 Scale => _scale;
+
+    private bool _dragging = false;
+
+    private Matrix3x2 Transform => Matrix3x2.CreateTranslation(Offset) * Matrix3x2.CreateScale(Scale);
+    private Matrix3x2 InverseTransform => Matrix3x2.Invert(Transform, out var inverse) ? inverse : Matrix3x2.Identity;
+
+    private const float NodeRadius = 16f;
+    private static readonly Color SelectedNodeColor = Color.Red;
     private static readonly Color NodeColor = Color.Yellow;
 
     private static readonly Color StandardEdgeColor = Color.Green;
     private const int RenderableEdgeBezierSamples = 32;
 
+    private const float ScrollSensitivity = 8f;
+    private const float ScrollSensitivityMultiplier = 1 / ScrollSensitivity;
+    private const float MinZoom = 0.5f;
+    private const float MaxZoom = 4;
+
     public RacerEditorViewportControl() : base()
     {
         IoCManager.InjectDependencies(this);
+
+        MouseFilter = MouseFilterMode.Stop;
 
         _sprite = _entity.System<SpriteSystem>();
     }
@@ -33,105 +59,28 @@ public sealed partial class RacerEditorViewportControl : Control
         _data = data;
     }
 
-    protected override void Draw(DrawingHandleScreen handle)
+    public void SetOffset(Vector2 offset)
     {
-        base.Draw(handle);
-
-        if (_data is not { } data)
+        if (Offset == offset)
             return;
 
-        DrawSky(handle, data.Sky);
-        DrawGraph(handle, data.Graph);
+        _offset = offset;
+        InvalidateMeasure();
 
-        handle.SetTransform(Matrix3x2.Identity);
+        OnGraphOffsetChanged?.Invoke(Offset, Scale);
     }
 
-    private void DrawSky(DrawingHandleScreen handle, RacerGameStageSkyData data)
+    public void SetScale(Vector2 scale)
     {
-        var texture = _sprite.Frame0(data.Sprite);
-        handle.DrawTextureRect(texture, PixelSizeBox);
-    }
+        if (Scale == scale)
+            return;
 
-    private void DrawGraph(DrawingHandleScreen handle, RacerArcadeStageGraph graph)
-    {
-        // draw edges first
-        foreach (var node in graph.Nodes.Values)
-        {
-            foreach (var edge in node.Connections)
-            {
-                // not traversing to other graphs as we only edit a single graph
-                if (!graph.TryGetNextNode(edge, out var nextNode))
-                    continue;
+        _scale = new Vector2(
+            Math.Clamp(scale.X, MinZoom, MaxZoom),
+            Math.Clamp(scale.Y, MinZoom, MaxZoom)
+        );
+        InvalidateMeasure();
 
-                if (edge is IRacerArcadeStageRenderableEdge renderableEdge)
-                    DrawRenderableEdge(handle, renderableEdge, node.Position, nextNode.Position);
-                else
-                    DrawStandardEdgeEdge(handle, edge, node.Position, nextNode.Position);
-            }
-        }
-
-        foreach (var node in graph.Nodes.Values)
-            DrawNode(handle, node);
-    }
-
-    private static void DrawNode(DrawingHandleScreen handle, RacerArcadeStageNode node)
-    {
-        handle.DrawCircle(node.Position, NodeRadius, NodeColor);
-    }
-
-    private void DrawRenderableEdge(DrawingHandleScreen handle, IRacerArcadeStageRenderableEdge renderableEdge, Vector2 sourcePos, Vector2 nextPos)
-    {
-        // convert from relative to world positions
-        List<Vector2> points = new(renderableEdge.ControlPoints.Count);
-        foreach (var cp in renderableEdge.ControlPoints)
-            points.Add(cp + sourcePos);
-        points.Add(nextPos);
-
-        var sampled = SampleBezier(points, RenderableEdgeBezierSamples);
-
-        var texture = _sprite.Frame0(renderableEdge.Texture);
-        for (var i = 1; i < sampled.Count; i++)
-        {
-            var start = sampled[i - 1];
-            var end = sampled[i];
-
-            var segment = end - start;
-            var angle = MathF.Atan2(segment.Y, segment.X);
-            var rect = new UIBox2(start, end);
-
-            var matty = Matrix3x2.CreateRotation(angle, start);
-            handle.SetTransform(matty);
-            handle.DrawTextureRect(texture, rect);
-
-            handle.SetTransform(Matrix3x2.Identity);
-            handle.DrawLine(start, end, StandardEdgeColor);
-        }
-    }
-
-    private static void DrawStandardEdgeEdge(DrawingHandleScreen handle, IRacerArcadeStageEdge edge, Vector2 sourcePos, Vector2 nextPos)
-    {
-        handle.DrawLine(sourcePos, nextPos, StandardEdgeColor);
-    }
-
-    private static List<Vector2> SampleBezier(List<Vector2> points, int resolution)
-    {
-        List<Vector2> result = new(resolution + 1);
-        for (var i = 0; i <= resolution; i++)
-        {
-            var t = i / (float)resolution;
-            result.Add(EvaluateBezier(points, t));
-        }
-        return result;
-    }
-
-    private static Vector2 EvaluateBezier(List<Vector2> pts, float t)
-    {
-        var temp = pts.ToList();
-        for (var k = pts.Count - 1; k > 0; k--)
-        {
-            for (var i = 0; i < k; i++)
-                temp[i] = Vector2.Lerp(temp[i], temp[i + 1], t);
-        }
-        return temp[0];
+        OnGraphOffsetChanged?.Invoke(Offset, Scale);
     }
 }

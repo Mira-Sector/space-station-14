@@ -1,0 +1,8 @@
+<Popup
+    xmlns="https://spacestation14.io"
+    SetSize="512 128">
+    <LineEdit
+        Name="Input"
+        PlaceHolder="{Loc 'racer-editor-new-node-popup-placeholder'}"
+        Margin="32"/>
+</Popup>

@@ -2,6 +2,7 @@
     xmlns="https://spacestation14.io"
     xmlns:cc="clr-namespace:Content.Client.Arcade.Racer">
     <BoxContainer
+        Orientation="Vertical"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"
         HorizontalExpand="True"
@@ -11,5 +12,39 @@
             HorizontalExpand="True"
             VerticalExpand="True"
             RectClipContent="True"/>
+        <PanelContainer
+            StyleClasses="LowDivider"/>
+        <PanelContainer
+            StyleClasses="PanelBackgroundBaseDark">
+            <BoxContainer
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Bottom"
+                HorizontalExpand="True"
+                VerticalExpand="False">
+                <BoxContainer
+                    Orientation="Vertical"
+                    Margin="16"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Stretch"
+                    HorizontalExpand="False"
+                    VerticalExpand="True">
+                    <Label
+                        Name="MousePosition"
+                        Align="Left"
+                        VAlign="Center"/>
+                    <Label
+                        Name="GraphOffset"
+                        Align="Left"
+                        VAlign="Center"/>
+                </BoxContainer>
+                <Button
+                    Name="ViewReset"
+                    Text="{Loc 'racer-editor-view-reset'}"
+                    Margin="16"
+                    HorizontalExpand="True"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"/>
+            </BoxContainer>
+        </PanelContainer>
     </BoxContainer>
 </Control>
