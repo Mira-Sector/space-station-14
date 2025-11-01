@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
 using Content.Shared.Arcade.Racer.Stage;
@@ -28,17 +29,27 @@ public sealed partial class RacerEditorViewportControl
         return temp[0];
     }
 
-    private RacerArcadeStageNode? GetNodeAtPosition(Vector2 position)
+    private bool TryGetNodeAtPosition(Vector2 position, [NotNullWhen(true)] out string? nodeId, [NotNullWhen(true)] out RacerArcadeStageNode? node)
     {
         if (_data is not { } data)
-            return null;
-
-        foreach (var node in data.Graph.Nodes.Values)
         {
-            if (Vector2.Distance(position, node.Position) <= NodeRadius)
-                return node;
+            nodeId = null;
+            node = null;
+            return false;
         }
 
-        return null;
+        foreach (var (id, x) in data.Graph.Nodes)
+        {
+            if (Vector2.Distance(position, x.Position) > NodeRadius)
+                continue;
+
+            nodeId = id;
+            node = x;
+            return true;
+        }
+
+        nodeId = null;
+        node = null;
+        return false;
     }
 }

@@ -1,0 +1,30 @@
+<cc:RacerEditorViewportPopup
+    xmlns="https://spacestation14.io"
+    xmlns:cc="clr-namespace:Content.Client.Arcade.Racer"
+    SetSize="192 192">
+    <PanelContainer
+        StyleClasses="PanelBackgroundLight">
+        <BoxContainer
+            Orientation="Vertical"
+            Margin="8"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            HorizontalExpand="True"
+            VerticalExpand="True">
+            <Button
+                Name="StageButton"
+                Text="{Loc 'racer-editor-add-connection-stage'}"
+                Margin="8"
+                HorizontalExpand="True"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"/>
+            <Button
+                Name="NodeButton"
+                Text="{Loc 'racer-editor-add-connection-node'}"
+                Margin="8"
+                HorizontalExpand="True"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"/>
+        </BoxContainer>
+    </PanelContainer>
+</cc:RacerEditorViewportPopup>

@@ -1,0 +1,52 @@
+<cc:RacerEditorViewportPopup
+    xmlns="https://spacestation14.io"
+    xmlns:cc="clr-namespace:Content.Client.Arcade.Racer"
+    SetSize="256 384">
+    <PanelContainer
+        StyleClasses="PanelBackgroundBaseDark">
+        <BoxContainer
+            Orientation="Vertical"
+            Margin="8"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            HorizontalExpand="True"
+            VerticalExpand="True">
+            <Label
+                Name="NodeId"
+                Align="Center"
+                VAlign="Top"/>
+            <PanelContainer
+                Margin="8 0"
+                StyleClasses="LowDivider"/>
+            <BoxContainer
+                Orientation="Vertical"
+                Margin="8"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                HorizontalExpand="True"
+                VerticalExpand="True">
+                <Label
+                    Name="NodePosition"
+                    Align="Left"
+                    VAlign="Center"/>
+                <ScrollContainer
+                    VerticalExpand="True"
+                    HScrollEnabled="False">
+                    <BoxContainer
+                        Name="NodeConnections"
+                        Orientation="Vertical"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        HorizontalExpand="True"/>
+                </ScrollContainer>
+                <Button
+                    Name="NodeAddConnection"
+                    Text="{Loc 'racer-editor-edit-node-add-connection'}"
+                    Margin="16"
+                    HorizontalExpand="True"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"/>
+            </BoxContainer>
+        </BoxContainer>
+    </PanelContainer>
+</cc:RacerEditorViewportPopup>

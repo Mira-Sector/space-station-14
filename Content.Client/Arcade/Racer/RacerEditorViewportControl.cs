@@ -2,6 +2,7 @@ using Content.Shared.Arcade.Racer;
 using Content.Shared.Arcade.Racer.Stage;
 using Robust.Client.GameObjects;
 using Robust.Client.UserInterface;
+using Robust.Shared.Prototypes;
 using System.Numerics;
 
 namespace Content.Client.Arcade.Racer;
@@ -9,6 +10,7 @@ namespace Content.Client.Arcade.Racer;
 public sealed partial class RacerEditorViewportControl : Control
 {
     [Dependency] private readonly IEntityManager _entity = default!;
+    [Dependency] private readonly IPrototypeManager _prototype = default!;
     private readonly SpriteSystem _sprite;
 
     public Action<Vector2, Vector2>? OnGraphOffsetChanged;
@@ -29,6 +31,8 @@ public sealed partial class RacerEditorViewportControl : Control
     public Vector2 Scale => _scale;
 
     private bool _dragging = false;
+
+    private RacerEditorViewportPopup? _popup = null;
 
     private Matrix3x2 Transform => Matrix3x2.CreateTranslation(Offset) * Matrix3x2.CreateScale(Scale);
     private Matrix3x2 InverseTransform => Matrix3x2.Invert(Transform, out var inverse) ? inverse : Matrix3x2.Identity;

@@ -1,0 +1,61 @@
+<cc:RacerEditorViewportPopup
+    xmlns="https://spacestation14.io"
+    xmlns:cc="clr-namespace:Content.Client.Arcade.Racer"
+    SetSize="256 256">
+    <PanelContainer
+        StyleClasses="BackgroundDark">
+        <BoxContainer
+            Orientation="Vertical"
+            Margin="8"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            HorizontalExpand="True"
+            VerticalExpand="True">
+            <BoxContainer
+                Margin="8"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                HorizontalExpand="True"
+                VerticalExpand="True">
+                <Label
+                    Text="{Loc 'racer-editor-edit-edge-node-connection'}"
+                    Align="Left"
+                    VAlign="Center"/>
+                <Control
+                    HorizontalAlignment="Stretch"
+                    HorizontalExpand="True"/>
+                <OptionButton
+                    Name="EdgeConnection"
+                    HorizontalAlignment="Right"
+                    HorizontalExpand="True"/>
+            </BoxContainer>
+            <BoxContainer
+                Margin="8"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                HorizontalExpand="True"
+                VerticalExpand="True">
+                <Label
+                    Text="{Loc 'racer-editor-edit-edge-node-width'}"
+                    Align="Left"
+                    VAlign="Center"/>
+                <Control
+                    HorizontalAlignment="Stretch"
+                    HorizontalExpand="True"/>
+                <FloatSpinBox
+                    Name="EdgeWidth"
+                    HorizontalAlignment="Right"
+                    HorizontalExpand="True"/>
+            </BoxContainer>
+            <PanelContainer
+                Margin="8 16"
+                StyleClasses="LowDivider"/>
+            <Button
+                Name="EdgeSave"
+                Text="{Loc 'racer-editor-edit-edge-save'}"
+                HorizontalExpand="True"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"/>
+        </BoxContainer>
+    </PanelContainer>
+</cc:RacerEditorViewportPopup>

@@ -1,0 +1,15 @@
+<BoxContainer
+    xmlns="https://spacestation14.io"
+    Margin="8"
+    HorizontalAlignment="Stretch"
+    VerticalAlignment="Stretch"
+    HorizontalExpand="True"
+    VerticalExpand="True">
+    <Button
+        Name="RemoveConnection"
+        Text="{Loc 'racer-editor-edit-node-remove-connection'}"
+        Margin="0 16"
+        HorizontalExpand="True"
+        HorizontalAlignment="Right"
+        VerticalAlignment="Center"/>
+</BoxContainer>
