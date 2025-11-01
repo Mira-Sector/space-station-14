@@ -43,7 +43,6 @@ public abstract partial class SharedTeleframeSystem : EntitySystem
 
         SubscribeLocalEvent<TeleframeConsoleComponent, BoundUIOpenedEvent>(OnUiOpen);
         SubscribeLocalEvent<TeleframeConsoleComponent, BoundUIClosedEvent>(OnUiClosed);
-
     }
 
     /// <summary>
