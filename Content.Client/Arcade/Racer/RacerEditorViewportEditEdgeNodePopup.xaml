@@ -47,6 +47,24 @@
                     HorizontalAlignment="Right"
                     HorizontalExpand="True"/>
             </BoxContainer>
+            <BoxContainer
+                Margin="8"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                HorizontalExpand="True"
+                VerticalExpand="True">
+                <Label
+                    Text="{Loc 'racer-editor-edit-edge-node-texture'}"
+                    Align="Left"
+                    VAlign="Center"/>
+                <Control
+                    HorizontalAlignment="Stretch"
+                    HorizontalExpand="True"/>
+                <cc:RacerEditorViewportEdgeTextureButton
+                    Name="EdgeTexture"
+                    HorizontalAlignment="Right"
+                    HorizontalExpand="True"/>
+            </BoxContainer>
             <PanelContainer
                 Margin="8 16"
                 StyleClasses="LowDivider"/>

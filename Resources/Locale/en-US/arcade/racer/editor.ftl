@@ -18,3 +18,4 @@ racer-editor-edit-edge-save = Save
 
 racer-editor-edit-edge-node-connection = Connection:
 racer-editor-edit-edge-node-width = Width:
+racer-editor-edit-edge-node-texture = Texture:

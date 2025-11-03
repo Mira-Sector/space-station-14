@@ -1,0 +1,5 @@
+- type: racerGameEdgeTexture
+  id: PavedStripe
+  texture:
+    sprite: Interface/Racer/road.rsi
+    state: paved-stripe

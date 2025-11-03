@@ -1,5 +1,5 @@
+using Robust.Shared.Prototypes;
 using System.Numerics;
-using Robust.Shared.Utility;
 
 namespace Content.Shared.Arcade.Racer.Stage;
 
@@ -9,5 +9,5 @@ public interface IRacerArcadeStageRenderableEdge : IRacerArcadeStageEdge
 
     float Width { get; set; }
 
-    SpriteSpecifier Texture { get; set; }
+    ProtoId<RacerGameEdgeTexturePrototype>? Texture { get; set; }
 }

@@ -61,15 +61,20 @@ public sealed partial class RacerEditorViewportControl
 
     private void DrawRenderableEdge(DrawingHandleScreen handle, IRacerArcadeStageRenderableEdge renderableEdge, Vector2 sourcePos, Vector2 nextPos)
     {
+        if (!_prototype.TryIndex(renderableEdge.Texture, out var texture))
+        {
+            DrawStandardEdgeEdge(handle, renderableEdge, sourcePos, nextPos);
+            return;
+        }
+        var edgeTexture = _sprite.Frame0(texture.Texture);
+
         // convert from relative to world positions
-        List<Vector2> points = new(renderableEdge.ControlPoints.Count);
+        List<Vector2> points = new(renderableEdge.ControlPoints.Count + 1);
         foreach (var cp in renderableEdge.ControlPoints)
             points.Add(cp + sourcePos);
         points.Add(nextPos);
 
         var sampled = SampleBezier(points, RenderableEdgeBezierSamples);
-
-        var texture = _sprite.Frame0(renderableEdge.Texture);
         for (var i = 1; i < sampled.Count; i++)
         {
             var start = sampled[i - 1];
@@ -81,7 +86,7 @@ public sealed partial class RacerEditorViewportControl
 
             var matty = Transform * Matrix3x2.CreateRotation(angle, start);
             handle.SetTransform(matty);
-            handle.DrawTextureRect(texture, rect);
+            handle.DrawTextureRect(edgeTexture, rect);
 
             handle.SetTransform(Matrix3x2.Identity);
             handle.DrawLine(start, end, StandardEdgeColor);

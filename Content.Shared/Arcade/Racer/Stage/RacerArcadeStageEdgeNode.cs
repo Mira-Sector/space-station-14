@@ -1,6 +1,6 @@
-using System.Numerics;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
-using Robust.Shared.Utility;
+using System.Numerics;
 
 namespace Content.Shared.Arcade.Racer.Stage;
 
@@ -17,6 +17,6 @@ public sealed partial class RacerArcadeStageEdgeNode : IRacerArcadeStageRenderab
     [DataField(required: true)]
     public float Width { get; set; }
 
-    [DataField(required: true)]
-    public SpriteSpecifier Texture { get; set; }
+    [DataField]
+    public ProtoId<RacerGameEdgeTexturePrototype>? Texture { get; set; }
 }

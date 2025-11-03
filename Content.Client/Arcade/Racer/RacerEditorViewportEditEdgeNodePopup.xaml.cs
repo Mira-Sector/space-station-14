@@ -24,7 +24,6 @@ public sealed partial class RacerEditorViewportEditEdgeNodePopup : RacerEditorVi
 
             i++;
         }
-
         EdgeConnection.OnItemSelected += args =>
         {
             var selected = (string)args.Button.SelectedMetadata!;
@@ -32,6 +31,7 @@ public sealed partial class RacerEditorViewportEditEdgeNodePopup : RacerEditorVi
                 return;
 
             edge.ConnectionId = selected;
+            EdgeConnection.SelectId(args.Id);
         };
 
         EdgeWidth.IsValid += value => value >= 0;
@@ -41,6 +41,21 @@ public sealed partial class RacerEditorViewportEditEdgeNodePopup : RacerEditorVi
                 return;
 
             edge.Width = args.Value;
+        };
+
+        EdgeTexture.SetTexture(edge.Texture);
+        EdgeTexture.OnPopupCreated += OpenPopup;
+        EdgeTexture.OnPopupRemoved += args =>
+        {
+            args.Close();
+            RemoveChild(args);
+        };
+        EdgeTexture.OnTextureSelected += args =>
+        {
+            if (edge.Texture == args)
+                return;
+
+            edge.Texture = args;
         };
 
         EdgeSave.OnPressed += _ => OnEdgeModified?.Invoke(edge);
