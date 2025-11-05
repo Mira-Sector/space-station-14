@@ -14,6 +14,7 @@ public sealed partial class RacerEditorViewportControl : Control
     private readonly SpriteSystem _sprite;
 
     public Action<Vector2, Vector2>? OnGraphOffsetChanged;
+    public Action<uint>? OnGridSizeChanged;
     public Action<Vector2>? OnMousePosChanged;
 
     private RacerGameStageEditorData? _data = null;
@@ -23,12 +24,16 @@ public sealed partial class RacerEditorViewportControl : Control
 
     private Vector2 _offset = Vector2.Zero;
     private Vector2 _scale = Vector2.One;
+    private uint _gridSize = 16;
 
     [ViewVariables]
     public Vector2 Offset => _offset;
 
     [ViewVariables]
     public Vector2 Scale => _scale;
+
+    [ViewVariables]
+    public uint GridSize => _gridSize;
 
     private bool _dragging = false;
 
@@ -43,6 +48,11 @@ public sealed partial class RacerEditorViewportControl : Control
 
     private static readonly Color StandardEdgeColor = Color.Green;
     private const int RenderableEdgeBezierSamples = 32;
+
+    private static readonly Color GridBackgroundColor = Color.Black.WithAlpha(0.5f);
+    private static readonly Color GridColor = Color.LightSlateGray;
+    private static readonly Color Mul8GridColor = Color.SteelBlue;
+    private static readonly Color OriginGridColor = Color.Cyan;
 
     private const float ScrollSensitivity = 8f;
     private const float ScrollSensitivityMultiplier = 1 / ScrollSensitivity;
@@ -70,7 +80,6 @@ public sealed partial class RacerEditorViewportControl : Control
 
         _offset = offset;
         InvalidateMeasure();
-
         OnGraphOffsetChanged?.Invoke(Offset, Scale);
     }
 
@@ -84,7 +93,15 @@ public sealed partial class RacerEditorViewportControl : Control
             Math.Clamp(scale.Y, MinZoom, MaxZoom)
         );
         InvalidateMeasure();
-
         OnGraphOffsetChanged?.Invoke(Offset, Scale);
+    }
+
+    public void SetGridSize(uint gridSize)
+    {
+        if (GridSize == gridSize)
+            return;
+
+        _gridSize = Math.Max(gridSize, 1);
+        OnGridSizeChanged?.Invoke(GridSize);
     }
 }

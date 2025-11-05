@@ -1,4 +1,3 @@
-using Content.Shared.Arcade.Racer.Stage;
 using Content.Shared.Input;
 using Robust.Client.UserInterface;
 using Robust.Shared.Input;
@@ -39,6 +38,16 @@ public sealed partial class RacerEditorViewportControl
 
             return;
         }
+        else if (args.Function == ContentKeyFunctions.ZoomOut)
+        {
+            GridSizeStep(true);
+            return;
+        }
+        else if (args.Function == ContentKeyFunctions.ZoomIn)
+        {
+            GridSizeStep(false);
+            return;
+        }
     }
 
     protected override void KeyBindUp(GUIBoundKeyEventArgs args)
@@ -61,7 +70,9 @@ public sealed partial class RacerEditorViewportControl
 
         if (_selectedNode is { } selected && _dragOffset is { } dragOffset)
         {
-            selected.Position = graphPos + dragOffset;
+            var newNodePos = graphPos + dragOffset;
+            newNodePos = GetClosestGridPoint(newNodePos);
+            selected.Position = newNodePos;
         }
 
         if (_dragging)
@@ -81,57 +92,4 @@ public sealed partial class RacerEditorViewportControl
         SetOffset(args.RelativePosition - cursorGraphPosBeforeZoom * Scale);
     }
 
-    private void CreateNode(Vector2 position)
-    {
-        if (_data is not { } data)
-            return;
-
-        position = position.Rounded();
-
-        var popup = new RacerEditorViewportNewNodePopup();
-        popup.OnNewNodeName += args =>
-        {
-            if (data.Graph.Nodes.ContainsKey(args))
-                return;
-
-            var node = new RacerArcadeStageNode()
-            {
-                Position = position,
-                Connections = []
-            };
-            data.Graph.Nodes[args] = node;
-
-            // for convenience
-            // you literally never want to JUST add a node
-            EditNode(args, node);
-        };
-        AddPopup(popup);
-    }
-
-    private void EditNode(string id, RacerArcadeStageNode node)
-    {
-        if (_data is not { } data)
-            return;
-
-        var popup = new RacerEditorViewportEditNodePopup(id, node, data.Graph, _prototype);
-        popup.OnNodeEdited += newNode =>
-        {
-            data.Graph.Nodes[id] = newNode;
-        };
-        AddPopup(popup);
-    }
-
-    private void AddPopup(RacerEditorViewportPopup popup)
-    {
-        if (_popup is { } oldPopup)
-        {
-            oldPopup.Close();
-            RemoveChild(oldPopup);
-        }
-
-        _popup = popup;
-        var box = UIBox2.FromDimensions(UserInterfaceManager.MousePositionScaled.Position, Vector2.One);
-        popup.Open(box);
-        AddChild(popup);
-    }
 }

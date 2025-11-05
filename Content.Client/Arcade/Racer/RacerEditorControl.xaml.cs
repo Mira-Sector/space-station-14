@@ -27,6 +27,13 @@ public sealed partial class RacerEditorControl : Control
             );
         };
 
+        Editor.OnGridSizeChanged += grid =>
+        {
+            GridSize.Text = Loc.GetString("racer-editor-grid-size-info",
+                ("size", grid)
+            );
+        };
+
         Editor.OnMousePosChanged += pos =>
         {
             MousePosition.Text = Loc.GetString("racer-editor-mouse-pos-info",

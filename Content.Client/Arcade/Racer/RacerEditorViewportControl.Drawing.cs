@@ -15,6 +15,7 @@ public sealed partial class RacerEditorViewportControl
             return;
 
         DrawSky(handle, data.Sky);
+        DrawGrid(handle);
         DrawGraph(handle, data.Graph);
 
         handle.SetTransform(Matrix3x2.Identity);
@@ -25,6 +26,62 @@ public sealed partial class RacerEditorViewportControl
         handle.SetTransform(Matrix3x2.Identity);
         var texture = _sprite.Frame0(data.Sprite);
         handle.DrawTextureRect(texture, PixelSizeBox);
+    }
+
+    private void DrawGrid(DrawingHandleScreen handle)
+    {
+        handle.SetTransform(Matrix3x2.Identity);
+
+        handle.DrawRect(PixelSizeBox, GridBackgroundColor);
+
+        var topLeft = Vector2.Transform(Vector2.Zero, InverseTransform);
+        var bottomRight = Vector2.Transform(PixelSize, InverseTransform);
+
+        var gridStart = new Vector2(
+            MathF.Floor(topLeft.X / GridSize) * GridSize,
+            MathF.Floor(topLeft.Y / GridSize) * GridSize
+        );
+
+        var gridEnd = new Vector2(
+            MathF.Floor(bottomRight.X / GridSize) * GridSize,
+            MathF.Floor(bottomRight.Y / GridSize) * GridSize
+        );
+
+        for (var x = gridStart.X; x <= gridEnd.X; x += GridSize)
+        {
+            var from = new Vector2(x, topLeft.Y);
+            var to = new Vector2(x, bottomRight.Y);
+            var color = x / GridSize % 8 == 0 ? Mul8GridColor : GridColor;
+            DrawGridLine(handle, from, to, color);
+        }
+
+        for (var y = gridStart.Y; y <= gridEnd.Y; y += GridSize)
+        {
+            var from = new Vector2(topLeft.X, y);
+            var to = new Vector2(bottomRight.X, y);
+            var color = y / GridSize % 8 == 0 ? Mul8GridColor : GridColor;
+            DrawGridLine(handle, from, to, color);
+        }
+
+        {
+            var from = new Vector2(topLeft.X, 0);
+            var to = new Vector2(bottomRight.X, 0);
+            DrawGridLine(handle, from, to, OriginGridColor);
+        }
+
+        {
+            var from = new Vector2(0, topLeft.Y);
+            var to = new Vector2(0, bottomRight.Y);
+            DrawGridLine(handle, from, to, OriginGridColor);
+        }
+    }
+
+    private void DrawGridLine(DrawingHandleScreen handle, Vector2 from, Vector2 to, Color color)
+    {
+        from = Vector2.Transform(from, Transform);
+        to = Vector2.Transform(to, Transform);
+
+        handle.DrawLine(from, to, OriginGridColor);
     }
 
     private void DrawGraph(DrawingHandleScreen handle, RacerArcadeStageGraph graph)

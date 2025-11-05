@@ -29,6 +29,10 @@
                     HorizontalExpand="False"
                     VerticalExpand="True">
                     <Label
+                        Name="GridSize"
+                        Align="Left"
+                        VAlign="Center"/>
+                    <Label
                         Name="MousePosition"
                         Align="Left"
                         VAlign="Center"/>
