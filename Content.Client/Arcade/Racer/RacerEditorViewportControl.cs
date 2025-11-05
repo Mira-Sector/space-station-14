@@ -13,9 +13,9 @@ public sealed partial class RacerEditorViewportControl : Control
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     private readonly SpriteSystem _sprite;
 
-    public Action<Vector2, Vector2>? OnGraphOffsetChanged;
-    public Action<uint>? OnGridSizeChanged;
-    public Action<Vector2>? OnMousePosChanged;
+    public event Action<Vector2, Vector2>? OnGraphOffsetChanged;
+    public event Action<uint>? OnGridSizeChanged;
+    public event Action<Vector2>? OnMousePosChanged;
 
     private RacerGameStageEditorData? _data = null;
 
