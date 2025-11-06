@@ -8,6 +8,7 @@ racer-editor-new-node-popup-placeholder = Node ID
 
 racer-editor-edit-node-position = Position: ( X: {$X} Y: {$Y} )
 racer-editor-edit-node-add-connection = Add Connection
+racer-editor-edit-node-edit-connection = Edit
 racer-editor-edit-node-remove-connection = Remove
 
 racer-editor-add-connection-stage = Change Stage

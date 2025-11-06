@@ -6,10 +6,16 @@
     HorizontalExpand="True"
     VerticalExpand="True">
     <Button
+        Name="EditConnection"
+        Text="{Loc 'racer-editor-edit-node-edit-connection'}"
+        Margin="0 16"
+        HorizontalExpand="True"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Center"/>
+    <Button
         Name="RemoveConnection"
         Text="{Loc 'racer-editor-edit-node-remove-connection'}"
         Margin="0 16"
-        HorizontalExpand="True"
         HorizontalAlignment="Right"
         VerticalAlignment="Center"/>
 </BoxContainer>

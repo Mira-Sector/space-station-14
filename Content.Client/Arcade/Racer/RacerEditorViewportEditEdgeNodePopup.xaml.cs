@@ -35,6 +35,7 @@ public sealed partial class RacerEditorViewportEditEdgeNodePopup : RacerEditorVi
         };
 
         EdgeWidth.IsValid += value => value >= 0;
+        EdgeWidth.Value = edge.Width;
         EdgeWidth.OnValueChanged += args =>
         {
             if (edge.Width == args.Value)

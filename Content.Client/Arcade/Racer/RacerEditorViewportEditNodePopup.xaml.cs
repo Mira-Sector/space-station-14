@@ -18,7 +18,7 @@ public sealed partial class RacerEditorViewportEditNodePopup : RacerEditorViewpo
         NodeId.Text = id;
         NodePosition.Text = Loc.GetString("racer-editor-edit-node-position", ("X", node.Position.X), ("Y", node.Position.Y));
 
-        RefreshConnectionControls(node);
+        RefreshConnectionControls(node, graph, prototype);
 
         NodeAddConnection.OnPressed += _ =>
         {
@@ -26,23 +26,30 @@ public sealed partial class RacerEditorViewportEditNodePopup : RacerEditorViewpo
             popup.OnAddConnection += connection =>
             {
                 node.Connections.Add(connection);
-                RefreshConnectionControls(node);
+                RefreshConnectionControls(node, graph, prototype);
             };
             OpenPopup(popup);
         };
     }
 
-    private void RefreshConnectionControls(RacerArcadeStageNode node)
+    private void RefreshConnectionControls(RacerArcadeStageNode node, RacerArcadeStageGraph graph, IPrototypeManager prototype)
     {
         NodeConnections.RemoveAllChildren();
         var connections = node.Connections.ToList();
         foreach (var connection in connections)
         {
-            var connectionControl = new RacerEditorViewportEditNodePopupConnection(connection);
+            var connectionControl = new RacerEditorViewportEditNodePopupConnection(connection, graph, prototype);
+            connectionControl.OnAddPopup += OpenPopup;
+            connectionControl.OnConnectionModified += args =>
+            {
+                node.Connections.Remove(connection); // out with the old
+                node.Connections.Add(args); // and in with the new
+                RefreshConnectionControls(node, graph, prototype);
+            };
             connectionControl.OnRemoveConnection += () =>
             {
                 node.Connections.Remove(connection);
-                RefreshConnectionControls(node);
+                RefreshConnectionControls(node, graph, prototype);
             };
             NodeConnections.AddChild(connectionControl);
         }
