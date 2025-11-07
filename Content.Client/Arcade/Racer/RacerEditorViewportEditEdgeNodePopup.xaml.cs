@@ -33,6 +33,7 @@ public sealed partial class RacerEditorViewportEditEdgeNodePopup : RacerEditorVi
             edge.ConnectionId = selected;
             EdgeConnection.SelectId(args.Id);
         };
+        edge.ConnectionId = (string?)EdgeConnection.SelectedMetadata ?? edge.ConnectionId;
 
         EdgeWidth.IsValid += value => value >= 0;
         EdgeWidth.Value = edge.Width;

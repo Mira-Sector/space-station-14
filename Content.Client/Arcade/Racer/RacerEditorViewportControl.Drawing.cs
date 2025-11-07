@@ -1,7 +1,6 @@
 using Content.Shared.Arcade.Racer;
 using Content.Shared.Arcade.Racer.Stage;
 using Robust.Client.Graphics;
-using System.Linq;
 using System.Numerics;
 
 namespace Content.Client.Arcade.Racer;
