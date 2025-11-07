@@ -89,19 +89,16 @@ public sealed partial class RacerEditorViewportControl
     private void DrawGraph(DrawingHandleScreen handle, RacerArcadeStageGraph graph)
     {
         // draw edges first
-        foreach (var node in graph.Nodes.Values)
+        foreach (var (edge, node) in graph.GetConnections())
         {
-            foreach (var edge in node.Connections)
-            {
-                // not traversing to other graphs as we only edit a single graph
-                if (!graph.TryGetNextNode(edge, out var nextNode))
-                    continue;
+            // not traversing to other graphs as we only edit a single graph
+            if (!graph.TryGetNextNode(edge, out var nextNode))
+                continue;
 
-                if (edge is IRacerArcadeStageRenderableEdge renderableEdge)
-                    DrawRenderableEdge(handle, renderableEdge, node.Position, nextNode.Position);
-                else
-                    DrawStandardEdgeEdge(handle, edge, node.Position, nextNode.Position);
-            }
+            if (edge is IRacerArcadeStageRenderableEdge renderableEdge)
+                DrawRenderableEdge(handle, renderableEdge, node.Position, nextNode.Position);
+            else
+                DrawStandardEdgeEdge(handle, edge, node.Position, nextNode.Position);
         }
 
         foreach (var node in graph.Nodes.Values)

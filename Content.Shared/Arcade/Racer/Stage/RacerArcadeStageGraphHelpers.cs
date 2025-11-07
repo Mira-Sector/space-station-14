@@ -69,4 +69,13 @@ public static class RacerArcadeStageGraphHelpers
         node = null;
         return false;
     }
+
+    public static IEnumerable<(IRacerArcadeStageEdge Edge, RacerArcadeStageNode Parent)> GetConnections(this RacerArcadeStageGraph graph)
+    {
+        foreach (var node in graph.Nodes.Values)
+        {
+            foreach (var edge in node.Connections)
+                yield return (edge, node);
+        }
+    }
 }

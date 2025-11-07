@@ -63,46 +63,44 @@ public sealed partial class RacerEditorViewportControl
             return false;
 
         var closestDistance = float.MaxValue;
-        foreach (var node in data.Graph.Nodes.Values)
+
+        foreach (var (connection, node) in data.Graph.GetConnections())
         {
-            foreach (var connection in node.Connections)
+            if (!data.Graph.TryGetNextNode(connection, out var nextNode))
+                continue;
+
+            if (connection is IRacerArcadeStageRenderableEdge renderableEdge)
             {
-                if (!data.Graph.TryGetNextNode(connection, out var nextNode))
-                    continue;
+                List<Vector2> points = new(renderableEdge.ControlPoints.Count + 1);
+                foreach (var cp in renderableEdge.ControlPoints)
+                    points.Add(cp.Xy + node.Position);
+                points.Add(nextNode.Position);
 
-                if (connection is IRacerArcadeStageRenderableEdge renderableEdge)
+                var sampled = SampleBezier(points, RenderableEdgeBezierSamples);
+
+                for (var i = 1; i < sampled.Count; i++)
                 {
-                    List<Vector2> points = new(renderableEdge.ControlPoints.Count + 1);
-                    foreach (var cp in renderableEdge.ControlPoints)
-                        points.Add(cp.Xy + node.Position);
-                    points.Add(nextNode.Position);
+                    var prev = sampled[i - 1];
+                    var next = sampled[i];
 
-                    var sampled = SampleBezier(points, RenderableEdgeBezierSamples);
-
-                    for (var i = 1; i < sampled.Count; i++)
-                    {
-                        var prev = sampled[i - 1];
-                        var next = sampled[i];
-
-                        var dist = DistanceFromPointToSegment(position, prev, next);
-                        if (dist > closestDistance)
-                            continue;
-
-                        closestDistance = dist;
-                        edge = renderableEdge;
-                        nearestPoint = Vector2.Lerp(prev, next, 0.5f);
-                    }
-                }
-                else
-                {
-                    var dist = DistanceFromPointToSegment(position, node.Position, nextNode.Position);
+                    var dist = DistanceFromPointToSegment(position, prev, next);
                     if (dist > closestDistance)
                         continue;
 
                     closestDistance = dist;
-                    edge = connection;
-                    nearestPoint = Vector2.Lerp(node.Position, nextNode.Position, 0.5f);
+                    edge = renderableEdge;
+                    nearestPoint = Vector2.Lerp(prev, next, 0.5f);
                 }
+            }
+            else
+            {
+                var dist = DistanceFromPointToSegment(position, node.Position, nextNode.Position);
+                if (dist > closestDistance)
+                    continue;
+
+                closestDistance = dist;
+                edge = connection;
+                nearestPoint = Vector2.Lerp(node.Position, nextNode.Position, 0.5f);
             }
         }
 
