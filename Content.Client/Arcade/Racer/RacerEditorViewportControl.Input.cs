@@ -106,10 +106,7 @@ public sealed partial class RacerEditorViewportControl
     {
         base.MouseWheel(args);
 
-        var cursorGraphPosBeforeZoom = (args.RelativePixelPosition - Offset) / Scale;
-
         var delta = new Vector2(args.Delta.Y, args.Delta.Y) * ScrollSensitivityMultiplier;
         SetScale(Scale + delta);
-        SetOffset(args.RelativePosition - cursorGraphPosBeforeZoom * Scale);
     }
 }
