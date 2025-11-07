@@ -124,21 +124,7 @@ public sealed partial class RacerEditorViewportControl
         }
         var edgeTexture = _sprite.Frame0(texture.Texture);
 
-        List<Vector2> points;
-        if (renderableEdge.ControlPoints.Any())
-        {
-            // convert from relative to world positions
-            points = new(renderableEdge.ControlPoints.Count + 1);
-            foreach (var cp in renderableEdge.ControlPoints)
-                points.Add(cp.Xy + sourcePos);
-        }
-        else
-        {
-            points = new(2);
-            points.Add(sourcePos);
-        }
-        points.Add(nextPos);
-
+        var points = GetWorldSpaceEdgePoints(renderableEdge, sourcePos, nextPos);
         var sampled = SampleBezier(points, RenderableEdgeBezierSamples);
         for (var i = 1; i < sampled.Count; i++)
         {

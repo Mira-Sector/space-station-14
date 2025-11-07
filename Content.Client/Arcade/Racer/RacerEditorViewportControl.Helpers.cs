@@ -71,13 +71,8 @@ public sealed partial class RacerEditorViewportControl
 
             if (connection is IRacerArcadeStageRenderableEdge renderableEdge)
             {
-                List<Vector2> points = new(renderableEdge.ControlPoints.Count + 1);
-                foreach (var cp in renderableEdge.ControlPoints)
-                    points.Add(cp.Xy + node.Position);
-                points.Add(nextNode.Position);
-
+                var points = GetWorldSpaceEdgePoints(renderableEdge, node.Position, nextNode.Position);
                 var sampled = SampleBezier(points, RenderableEdgeBezierSamples);
-
                 for (var i = 1; i < sampled.Count; i++)
                 {
                     var prev = sampled[i - 1];
@@ -222,5 +217,23 @@ public sealed partial class RacerEditorViewportControl
         var t = Math.Clamp(Vector2.Dot(ap, ab) / Vector2.Dot(ab, ab), 0f, 1f);
         var closest = a + ab * t;
         return Vector2.Distance(point, closest);
+    }
+
+    private static List<Vector2> GetWorldSpaceEdgePoints(IRacerArcadeStageRenderableEdge edge, Vector2 sourceNode, Vector2 nextNode)
+    {
+        var points = new List<Vector2>(edge.ControlPoints.Count + 2);
+
+        if (edge.ControlPoints.Any())
+        {
+            foreach (var cp in edge.ControlPoints)
+                points.Add(cp.Xy + sourceNode);
+        }
+        else
+        {
+            points.Add(sourceNode);
+        }
+
+        points.Add(nextNode);
+        return points;
     }
 }
