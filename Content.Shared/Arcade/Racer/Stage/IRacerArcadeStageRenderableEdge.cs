@@ -1,11 +1,11 @@
 using Robust.Shared.Prototypes;
-using System.Numerics;
+using Vector3 = Robust.Shared.Maths.Vector3;
 
 namespace Content.Shared.Arcade.Racer.Stage;
 
 public interface IRacerArcadeStageRenderableEdge : IRacerArcadeStageEdge
 {
-    List<Vector2> ControlPoints { get; set; }
+    List<Vector3> ControlPoints { get; set; }
 
     float Width { get; set; }
 

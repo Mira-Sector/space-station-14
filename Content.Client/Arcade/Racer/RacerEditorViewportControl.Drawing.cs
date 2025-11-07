@@ -1,6 +1,7 @@
 using Content.Shared.Arcade.Racer;
 using Content.Shared.Arcade.Racer.Stage;
 using Robust.Client.Graphics;
+using System.Linq;
 using System.Numerics;
 
 namespace Content.Client.Arcade.Racer;
@@ -17,6 +18,7 @@ public sealed partial class RacerEditorViewportControl
         DrawSky(handle, data.Sky);
         DrawGrid(handle);
         DrawGraph(handle, data.Graph);
+        DrawEdgeControlPoints(handle, data.Graph);
 
         handle.SetTransform(Matrix3x2.Identity);
     }
@@ -125,10 +127,19 @@ public sealed partial class RacerEditorViewportControl
         }
         var edgeTexture = _sprite.Frame0(texture.Texture);
 
-        // convert from relative to world positions
-        List<Vector2> points = new(renderableEdge.ControlPoints.Count + 1);
-        foreach (var cp in renderableEdge.ControlPoints)
-            points.Add(cp + sourcePos);
+        List<Vector2> points;
+        if (renderableEdge.ControlPoints.Any())
+        {
+            // convert from relative to world positions
+            points = new(renderableEdge.ControlPoints.Count + 1);
+            foreach (var cp in renderableEdge.ControlPoints)
+                points.Add(cp.Xy + sourcePos);
+        }
+        else
+        {
+            points = new(2);
+            points.Add(sourcePos);
+        }
         points.Add(nextPos);
 
         var sampled = SampleBezier(points, RenderableEdgeBezierSamples);
@@ -153,7 +164,26 @@ public sealed partial class RacerEditorViewportControl
     private void DrawStandardEdgeEdge(DrawingHandleScreen handle, IRacerArcadeStageEdge edge, Vector2 sourcePos, Vector2 nextPos)
     {
         handle.SetTransform(Transform);
-        handle.DrawLine(sourcePos, nextPos, StandardEdgeColor);
+
+        if (_selectedEdge == edge)
+            handle.DrawLine(sourcePos, nextPos, SelectedEdgeColor);
+        else
+            handle.DrawLine(sourcePos, nextPos, StandardEdgeColor);
     }
 
+    private void DrawEdgeControlPoints(DrawingHandleScreen handle, RacerArcadeStageGraph graph)
+    {
+        if (_selectedEdge is not IRacerArcadeStageRenderableEdge edge)
+            return;
+
+        if (!graph.TryGetParentNode(edge, out var node))
+            return;
+
+        handle.SetTransform(Transform);
+        foreach (var cp in edge.ControlPoints)
+        {
+            var point = cp.Xy + node.Position;
+            handle.DrawCircle(point, ControlPointRadius, ControlPointColor);
+        }
+    }
 }

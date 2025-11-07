@@ -1,3 +1,4 @@
+using Content.Shared.Arcade.Racer.Stage;
 using Content.Shared.Input;
 using Robust.Client.UserInterface;
 using Robust.Shared.Input;
@@ -19,7 +20,17 @@ public sealed partial class RacerEditorViewportControl
             {
                 _dragging = false;
                 _selectedNode = node;
+                _selectedEdge = null;
                 _dragOffset = node.Position - graphPos;
+                return;
+            }
+
+            if (TryGetEdgeAtPosition(graphPos, out var edge, out _))
+            {
+                _dragging = false;
+                _selectedNode = null;
+                _selectedEdge = edge;
+                _dragOffset = null;
                 return;
             }
 
@@ -28,6 +39,15 @@ public sealed partial class RacerEditorViewportControl
         }
         else if (args.Function == EngineKeyFunctions.UIRightClick)
         {
+            if (TryGetEdgeAtPosition(graphPos, out var edge, out var nearest) && _selectedEdge == edge)
+            {
+                if (edge is IRacerArcadeStageRenderableEdge renderableEdge)
+                {
+                    AddControlPoint(renderableEdge, nearest.Value);
+                    return;
+                }
+            }
+
             CreateNode(graphPos);
             return;
         }
@@ -60,6 +80,7 @@ public sealed partial class RacerEditorViewportControl
         _dragging = false;
         _selectedNode = null;
         _dragOffset = null;
+        // no disabling edge as we spawn a control for editing control points
     }
 
     protected override void MouseMove(GUIMouseMoveEventArgs args)
@@ -91,5 +112,4 @@ public sealed partial class RacerEditorViewportControl
         SetScale(Scale + delta);
         SetOffset(args.RelativePosition - cursorGraphPosBeforeZoom * Scale);
     }
-
 }

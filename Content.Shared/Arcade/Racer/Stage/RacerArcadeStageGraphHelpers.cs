@@ -54,4 +54,19 @@ public static class RacerArcadeStageGraphHelpers
         nextNode = null;
         return false;
     }
+
+    public static bool TryGetParentNode(this RacerArcadeStageGraph graph, IRacerArcadeStageEdge edge, [NotNullWhen(true)] out RacerArcadeStageNode? node)
+    {
+        foreach (var x in graph.Nodes.Values)
+        {
+            if (!x.Connections.Contains(edge))
+                continue;
+
+            node = x;
+            return true;
+        }
+
+        node = null;
+        return false;
+    }
 }

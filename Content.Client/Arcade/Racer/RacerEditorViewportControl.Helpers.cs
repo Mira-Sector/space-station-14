@@ -2,6 +2,7 @@ using Content.Shared.Arcade.Racer.Stage;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
+using Vector3 = Robust.Shared.Maths.Vector3;
 
 namespace Content.Client.Arcade.Racer;
 
@@ -53,6 +54,65 @@ public sealed partial class RacerEditorViewportControl
         return false;
     }
 
+    private bool TryGetEdgeAtPosition(Vector2 position, [NotNullWhen(true)] out IRacerArcadeStageEdge? edge, [NotNullWhen(true)] out Vector2? nearestPoint)
+    {
+        edge = null;
+        nearestPoint = Vector2.Zero;
+
+        if (_data is not { } data)
+            return false;
+
+        var closestDistance = float.MaxValue;
+        foreach (var node in data.Graph.Nodes.Values)
+        {
+            foreach (var connection in node.Connections)
+            {
+                if (!data.Graph.TryGetNextNode(connection, out var nextNode))
+                    continue;
+
+                if (connection is IRacerArcadeStageRenderableEdge renderableEdge)
+                {
+                    List<Vector2> points = new(renderableEdge.ControlPoints.Count + 1);
+                    foreach (var cp in renderableEdge.ControlPoints)
+                        points.Add(cp.Xy + node.Position);
+                    points.Add(nextNode.Position);
+
+                    var sampled = SampleBezier(points, RenderableEdgeBezierSamples);
+
+                    for (var i = 1; i < sampled.Count; i++)
+                    {
+                        var prev = sampled[i - 1];
+                        var next = sampled[i];
+
+                        var dist = DistanceFromPointToSegment(position, prev, next);
+                        if (dist > closestDistance)
+                            continue;
+
+                        closestDistance = dist;
+                        edge = renderableEdge;
+                        nearestPoint = Vector2.Lerp(prev, next, 0.5f);
+                    }
+                }
+                else
+                {
+                    var dist = DistanceFromPointToSegment(position, node.Position, nextNode.Position);
+                    if (dist > closestDistance)
+                        continue;
+
+                    closestDistance = dist;
+                    edge = connection;
+                    nearestPoint = Vector2.Lerp(node.Position, nextNode.Position, 0.5f);
+                }
+            }
+        }
+
+        // only pick edges which are close
+        if (edge != null && closestDistance < EdgeSelectThreshold)
+            return true;
+
+        return false;
+    }
+
     private void CreateNode(Vector2 position)
     {
         if (_data is not { } data)
@@ -93,6 +153,38 @@ public sealed partial class RacerEditorViewportControl
         AddPopup(popup);
     }
 
+    private void AddControlPoint(IRacerArcadeStageRenderableEdge edge, Vector2 worldPosition)
+    {
+        if (_data is not { } data)
+            return;
+
+        if (!data.Graph.TryGetParentNode(edge, out var node))
+            return;
+
+        var localPos = worldPosition - node.Position;
+
+        var insertIndex = 0;
+        var bestDistance = float.MaxValue;
+        var z = 0f;
+        for (var i = 0; i < edge.ControlPoints.Count; i++)
+        {
+            var current = edge.ControlPoints[i];
+            var next = i + 1 < edge.ControlPoints.Count ? edge.ControlPoints[i + 1] : new Vector3(0f, 0f, current.Z);
+
+            var mid = (current + next) / 2f;
+            var dist = Vector2.Distance(localPos, mid.Xy);
+            if (dist > bestDistance)
+                continue;
+
+            bestDistance = dist;
+            insertIndex = i + 1;
+            z = mid.Z;
+        }
+
+        var cp = new Vector3(worldPosition.X, worldPosition.Y, z);
+        edge.ControlPoints.Insert(insertIndex, cp);
+    }
+
     private void AddPopup(RacerEditorViewportPopup popup)
     {
         if (_popup is { } oldPopup)
@@ -123,5 +215,14 @@ public sealed partial class RacerEditorViewportControl
         var closestX = MathF.Round(pos.X / GridSize) * GridSize;
         var closestY = MathF.Round(pos.Y / GridSize) * GridSize;
         return new Vector2(closestX, closestY);
+    }
+
+    private static float DistanceFromPointToSegment(Vector2 point, Vector2 a, Vector2 b)
+    {
+        var ab = b - a;
+        var ap = point - a;
+        var t = Math.Clamp(Vector2.Dot(ap, ab) / Vector2.Dot(ab, ab), 0f, 1f);
+        var closest = a + ab * t;
+        return Vector2.Distance(point, closest);
     }
 }

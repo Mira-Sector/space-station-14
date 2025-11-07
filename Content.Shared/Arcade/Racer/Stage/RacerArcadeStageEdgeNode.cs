@@ -1,6 +1,6 @@
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
-using System.Numerics;
+using Vector3 = Robust.Shared.Maths.Vector3;
 
 namespace Content.Shared.Arcade.Racer.Stage;
 
@@ -12,7 +12,7 @@ public sealed partial class RacerArcadeStageEdgeNode : IRacerArcadeStageRenderab
     public string ConnectionId;
 
     [DataField(required: true)]
-    public List<Vector2> ControlPoints { get; set; }
+    public List<Vector3> ControlPoints { get; set; }
 
     [DataField(required: true)]
     public float Width { get; set; }
