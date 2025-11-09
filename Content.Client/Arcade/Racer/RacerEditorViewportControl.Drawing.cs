@@ -123,22 +123,60 @@ public sealed partial class RacerEditorViewportControl
         }
         var edgeTexture = _sprite.Frame0(texture.Texture);
 
+        var pixelToWorldScale = renderableEdge.Width / edgeTexture.Width;
+        var textureWorldHeight = edgeTexture.Height * pixelToWorldScale;
+
+        var halfWidth = renderableEdge.Width * 0.5f;
+
         var points = GetWorldSpaceEdgePoints(renderableEdge, sourcePos, nextPos);
         var sampled = SampleBezier(points, RenderableEdgeBezierSamples);
+
+        var totalLength = 0f;
+        var distances = new float[sampled.Count];
         for (var i = 1; i < sampled.Count; i++)
         {
             var start = sampled[i - 1];
             var end = sampled[i];
 
-            var segment = end - start;
-            var angle = MathF.Atan2(segment.Y, segment.X) - MathHelper.PiOver2;
-            var rect = new UIBox2(start, end);
-            var matty = Matrix3x2.CreateRotation(angle, start) * Transform;
+            totalLength += Vector2.Distance(start, end);
+            distances[i] = totalLength;
+        }
+
+        var currentDistance = 0f;
+        while (currentDistance < totalLength)
+        {
+            var segIndex = 1;
+            while (segIndex < distances.Length && distances[segIndex] < currentDistance)
+                segIndex++;
+
+            if (segIndex >= distances.Length)
+                break;
+
+            var prev = sampled[segIndex - 1];
+            var next = sampled[segIndex];
+            var segLen = Vector2.Distance(prev, next);
+
+            var segStartDist = distances[segIndex - 1];
+            var t = (currentDistance - segStartDist) / segLen;
+            t = Math.Clamp(t, 0f, 1f);
+
+            var pos = Vector2.Lerp(prev, next, t);
+            var dir = (next - prev).Normalized();
+            var angle = MathF.Atan2(dir.Y, dir.X) - MathHelper.PiOver2;
+
+            var rect = new UIBox2(
+                -halfWidth, 0f,
+                halfWidth, textureWorldHeight
+            );
+
+            var matty = Matrix3x2.CreateRotation(angle) * Matrix3x2.CreateTranslation(pos) * Transform;
             handle.SetTransform(matty);
             handle.DrawTextureRect(edgeTexture, rect);
 
             handle.SetTransform(Transform);
-            handle.DrawLine(start, end, StandardEdgeColor);
+            handle.DrawLine(prev, next, StandardEdgeColor);
+
+            currentDistance += textureWorldHeight;
         }
     }
 
