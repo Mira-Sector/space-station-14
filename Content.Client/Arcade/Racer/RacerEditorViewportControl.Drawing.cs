@@ -131,14 +131,13 @@ public sealed partial class RacerEditorViewportControl
             var end = sampled[i];
 
             var segment = end - start;
-            var angle = MathF.Atan2(segment.Y, segment.X);
+            var angle = MathF.Atan2(segment.Y, segment.X) - MathHelper.PiOver2;
             var rect = new UIBox2(start, end);
-
-            var matty = Transform * Matrix3x2.CreateRotation(angle, start);
+            var matty = Matrix3x2.CreateRotation(angle, start) * Transform;
             handle.SetTransform(matty);
             handle.DrawTextureRect(edgeTexture, rect);
 
-            handle.SetTransform(Matrix3x2.Identity);
+            handle.SetTransform(Transform);
             handle.DrawLine(start, end, StandardEdgeColor);
         }
     }
