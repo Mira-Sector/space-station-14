@@ -3,6 +3,7 @@ using Content.Shared.Input;
 using Robust.Client.UserInterface;
 using Robust.Shared.Input;
 using System.Numerics;
+using Vector3 = Robust.Shared.Maths.Vector3;
 
 namespace Content.Client.Arcade.Racer;
 
@@ -21,8 +22,21 @@ public sealed partial class RacerEditorViewportControl
                 _dragging = false;
                 _selectedNode = node;
                 _selectedEdge = null;
+                _selectedControlPoint = null;
                 _dragOffset = node.Position - graphPos;
                 return;
+            }
+
+            if (_selectedEdge is IRacerArcadeStageRenderableEdge renderableEdge)
+            {
+                if (TryGetEdgeControlPointAtPosition(renderableEdge, graphPos, out var index, out var worldPos))
+                {
+                    _dragging = false;
+                    _selectedNode = null;
+                    _selectedControlPoint = index;
+                    _dragOffset = worldPos - graphPos;
+                    return;
+                }
             }
 
             if (TryGetEdgeAtPosition(graphPos, out var edge, out _))
@@ -30,6 +44,7 @@ public sealed partial class RacerEditorViewportControl
                 _dragging = false;
                 _selectedNode = null;
                 _selectedEdge = edge;
+                _selectedControlPoint = null;
                 _dragOffset = null;
                 return;
             }
@@ -86,6 +101,7 @@ public sealed partial class RacerEditorViewportControl
 
         _dragging = false;
         _selectedNode = null;
+        _selectedControlPoint = null;
         _dragOffset = null;
         // no disabling edge as we spawn a control for editing control points
     }
@@ -94,13 +110,28 @@ public sealed partial class RacerEditorViewportControl
     {
         base.MouseMove(args);
 
+        if (_data is not { } data)
+            return;
+
         var graphPos = Vector2.Transform(args.RelativePixelPosition, InverseTransform);
 
-        if (_selectedNode is { } selected && _dragOffset is { } dragOffset)
+        if (_dragOffset is { } dragOffset)
         {
-            var newNodePos = graphPos + dragOffset;
-            newNodePos = GetClosestGridPoint(newNodePos);
-            selected.Position = newNodePos;
+            var newPos = graphPos + dragOffset;
+            newPos = GetClosestGridPoint(newPos);
+            if (_selectedNode is { } node)
+                node.Position = newPos;
+
+            if (_selectedControlPoint is { } controlPoint && _selectedEdge is IRacerArcadeStageRenderableEdge renderableEdge)
+            {
+                if (data.Graph.TryGetParentNode(renderableEdge, out var parent))
+                {
+                    var cp = renderableEdge.ControlPoints[controlPoint];
+                    var newCpLocalPos = newPos - parent.Position;
+                    var newCpPos = new Vector3(newCpLocalPos.X, newCpLocalPos.Y, cp.Z);
+                    renderableEdge.ControlPoints[controlPoint] = newCpPos;
+                }
+            }
         }
 
         if (_dragging)

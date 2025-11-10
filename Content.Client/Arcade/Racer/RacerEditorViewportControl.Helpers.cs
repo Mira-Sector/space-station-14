@@ -107,6 +107,39 @@ public sealed partial class RacerEditorViewportControl
         return false;
     }
 
+    private bool TryGetEdgeControlPointAtPosition(IRacerArcadeStageRenderableEdge edge, Vector2 position, [NotNullWhen(true)] out int? index, [NotNullWhen(true)] out Vector2? worldPos)
+    {
+        if (_data is not { } data)
+        {
+            index = null;
+            worldPos = null;
+            return false;
+        }
+
+        if (!data.Graph.TryGetParentNode(edge, out var parent))
+        {
+            index = null;
+            worldPos = null;
+            return false;
+        }
+
+        for (var i = 0; i < edge.ControlPoints.Length; i++)
+        {
+            var cp = edge.ControlPoints[i];
+            var worldCp = cp.Xy + parent.Position;
+            if (Vector2.Distance(position, worldCp) > ControlPointRadius)
+                continue;
+
+            index = i;
+            worldPos = worldCp;
+            return true;
+        }
+
+        index = null;
+        worldPos = null;
+        return false;
+    }
+
     private void CreateNode(Vector2 position)
     {
         if (_data is not { } data)

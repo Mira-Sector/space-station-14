@@ -198,10 +198,15 @@ public sealed partial class RacerEditorViewportControl
             return;
 
         handle.SetTransform(Transform);
-        foreach (var cp in edge.ControlPoints)
+        for (var i = 0; i < edge.ControlPoints.Length; i++)
         {
+            var cp = edge.ControlPoints[i];
             var point = cp.Xy + node.Position;
-            handle.DrawCircle(point, ControlPointRadius, ControlPointColor);
+
+            if (_selectedControlPoint == i)
+                handle.DrawCircle(point, ControlPointRadius, SelectedControlPointColor);
+            else
+                handle.DrawCircle(point, ControlPointRadius, ControlPointColor);
         }
     }
 }

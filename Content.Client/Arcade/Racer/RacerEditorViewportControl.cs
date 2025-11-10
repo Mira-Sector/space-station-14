@@ -21,6 +21,7 @@ public sealed partial class RacerEditorViewportControl : Control
 
     private RacerArcadeStageNode? _selectedNode = null;
     private IRacerArcadeStageEdge? _selectedEdge = null;
+    private int? _selectedControlPoint = null;
     private Vector2? _dragOffset = null;
 
     private Vector2 _offset = Vector2.Zero;
@@ -50,6 +51,7 @@ public sealed partial class RacerEditorViewportControl : Control
     private const float EdgeSelectThreshold = 6f;
     private const float ControlPointRadius = 8f;
     private static readonly Color ControlPointColor = Color.Purple;
+    private static readonly Color SelectedControlPointColor = Color.Peru;
 
     private static readonly Color StandardEdgeColor = Color.Green;
     private static readonly Color SelectedEdgeColor = Color.Turquoise;
