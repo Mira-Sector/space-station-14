@@ -58,6 +58,13 @@ public sealed partial class RacerEditorViewportControl
 
             return;
         }
+        else if (args.Function == EngineKeyFunctions.TextDelete)
+        {
+            if (TryGetNodeAtPosition(graphPos, out var nodeId, out _))
+                DeleteNode(nodeId);
+
+            return;
+        }
         else if (args.Function == ContentKeyFunctions.ZoomOut)
         {
             GridSizeStep(true);

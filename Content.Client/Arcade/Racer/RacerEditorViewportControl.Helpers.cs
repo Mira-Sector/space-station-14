@@ -146,6 +146,38 @@ public sealed partial class RacerEditorViewportControl
         AddPopup(popup);
     }
 
+    private void DeleteNode(string id)
+    {
+        if (_data is not { } data)
+            return;
+
+        if (!data.Graph.Nodes.Remove(id))
+            return;
+
+        Dictionary<RacerArcadeStageNode, List<IRacerArcadeStageEdge>> toRemove = [];
+        foreach (var (edge, node) in data.Graph.GetConnections())
+        {
+            if (edge is not RacerArcadeStageEdgeNode edgeNode)
+                continue;
+
+            if (edgeNode.ConnectionId != id)
+                continue;
+
+            if (!toRemove.TryGetValue(node, out var edges))
+            {
+                edges = [];
+                toRemove[node] = edges;
+            }
+            edges.Add(edge);
+        }
+
+        foreach (var (node, edges) in toRemove)
+        {
+            foreach (var edge in edges)
+                node.Connections.Remove(edge);
+        }
+    }
+
     private void AddControlPoint(IRacerArcadeStageRenderableEdge edge, Vector2 worldPosition)
     {
         if (_data is not { } data)
