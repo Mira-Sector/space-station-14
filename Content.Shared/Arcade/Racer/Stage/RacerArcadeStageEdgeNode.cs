@@ -12,7 +12,7 @@ public sealed partial class RacerArcadeStageEdgeNode : IRacerArcadeStageRenderab
     public string ConnectionId;
 
     [DataField(required: true)]
-    public List<Vector3> ControlPoints { get; set; }
+    public Vector3[] ControlPoints { get; set; }
 
     [DataField(required: true)]
     public float Width { get; set; }

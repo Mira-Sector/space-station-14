@@ -8,21 +8,22 @@ namespace Content.Client.Arcade.Racer;
 
 public sealed partial class RacerEditorViewportControl
 {
-    private static List<Vector2> SampleBezier(List<Vector2> points, int resolution)
+    private static Vector2[] SampleBezier(Vector2[] points, int resolution)
     {
-        List<Vector2> result = new(resolution + 1);
+        var result = new Vector2[resolution + 1];
         for (var i = 0; i <= resolution; i++)
         {
             var t = i / (float)resolution;
-            result.Add(EvaluateBezier(points, t));
+            result[i] = EvaluateBezier(points, t);
         }
         return result;
     }
 
-    private static Vector2 EvaluateBezier(List<Vector2> pts, float t)
+    private static Vector2 EvaluateBezier(Vector2[] pts, float t)
     {
-        var temp = pts.ToList();
-        for (var k = pts.Count - 1; k > 0; k--)
+        var temp = new Vector2[pts.Length];
+        Array.Copy(pts, temp, pts.Length);
+        for (var k = pts.Length - 1; k > 0; k--)
         {
             for (var i = 0; i < k; i++)
                 temp[i] = Vector2.Lerp(temp[i], temp[i + 1], t);
@@ -73,7 +74,7 @@ public sealed partial class RacerEditorViewportControl
             {
                 var points = GetWorldSpaceEdgePoints(renderableEdge, node.Position, nextNode.Position);
                 var sampled = SampleBezier(points, RenderableEdgeBezierSamples);
-                for (var i = 1; i < sampled.Count; i++)
+                for (var i = 1; i < sampled.Length; i++)
                 {
                     var prev = sampled[i - 1];
                     var next = sampled[i];
@@ -193,10 +194,10 @@ public sealed partial class RacerEditorViewportControl
         var insertIndex = 0;
         var bestDistance = float.MaxValue;
         var z = 0f;
-        for (var i = 0; i < edge.ControlPoints.Count; i++)
+        for (var i = 0; i < edge.ControlPoints.Length; i++)
         {
             var current = edge.ControlPoints[i];
-            var next = i + 1 < edge.ControlPoints.Count ? edge.ControlPoints[i + 1] : new Vector3(0f, 0f, current.Z);
+            var next = i + 1 < edge.ControlPoints.Length ? edge.ControlPoints[i + 1] : new Vector3(0f, 0f, current.Z);
 
             var mid = (current + next) / 2f;
             var dist = Vector2.Distance(localPos, mid.Xy);
@@ -208,8 +209,19 @@ public sealed partial class RacerEditorViewportControl
             z = mid.Z;
         }
 
-        var cp = new Vector3(localPos.X, localPos.Y, z);
-        edge.ControlPoints.Insert(insertIndex, cp);
+        var newCp = new Vector3(localPos.X, localPos.Y, z);
+
+        var newControlPoints = new Vector3[edge.ControlPoints.Length + 1];
+
+        if (insertIndex > 0)
+            Array.Copy(edge.ControlPoints, 0, newControlPoints, 0, insertIndex);
+
+        newControlPoints[insertIndex] = newCp;
+
+        if (insertIndex < edge.ControlPoints.Length)
+            Array.Copy(edge.ControlPoints, insertIndex, newControlPoints, insertIndex + 1, edge.ControlPoints.Length - insertIndex);
+
+        edge.ControlPoints = newControlPoints;
     }
 
     private void AddPopup(RacerEditorViewportPopup popup)
@@ -253,17 +265,17 @@ public sealed partial class RacerEditorViewportControl
         return Vector2.Distance(point, closest);
     }
 
-    private static List<Vector2> GetWorldSpaceEdgePoints(IRacerArcadeStageRenderableEdge edge, Vector2 sourceNode, Vector2 nextNode)
+    private static Vector2[] GetWorldSpaceEdgePoints(IRacerArcadeStageRenderableEdge edge, Vector2 sourceNode, Vector2 nextNode)
     {
-        List<Vector2> points = new(edge.ControlPoints.Count + 2);
-        points.Add(sourceNode);
+        var points = new Vector2[edge.ControlPoints.Length + 2];
+        points[0] = sourceNode;
 
         if (edge.ControlPoints.Any())
         {
-            foreach (var cp in edge.ControlPoints)
-                points.Add(cp.Xy + sourceNode);
+            for (var i = 0; i < edge.ControlPoints.Length; i++)
+                points[i + 1] = edge.ControlPoints[i].Xy + sourceNode;
         }
-        points.Add(nextNode);
+        points[^1] = nextNode;
         return points;
     }
 }

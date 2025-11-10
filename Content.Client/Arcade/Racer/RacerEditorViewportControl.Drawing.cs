@@ -134,8 +134,8 @@ public sealed partial class RacerEditorViewportControl
         var color = _selectedEdge == renderableEdge ? SelectedEdgeColor : Color.White;
 
         var totalLength = 0f;
-        var distances = new float[sampled.Count];
-        for (var i = 1; i < sampled.Count; i++)
+        var distances = new float[sampled.Length];
+        for (var i = 1; i < sampled.Length; i++)
         {
             var start = sampled[i - 1];
             var end = sampled[i];
