@@ -85,6 +85,11 @@ public sealed partial class RacerEditorViewportControl : Control
         _data = data;
     }
 
+    public RacerGameStageEditorData GetData()
+    {
+        return _data!;
+    }
+
     public void SetOffset(Vector2 offset)
     {
         if (Offset == offset)

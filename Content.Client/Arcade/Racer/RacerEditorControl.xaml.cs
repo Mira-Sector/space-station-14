@@ -9,6 +9,9 @@ namespace Content.Client.Arcade.Racer;
 [GenerateTypedNameReferences]
 public sealed partial class RacerEditorControl : Control
 {
+    public event Action? OnExitPressed;
+    public event Action<RacerGameStageEditorData>? OnSavePressed;
+
     public RacerEditorControl() : base()
     {
         RobustXamlLoader.Load(this);
@@ -17,6 +20,14 @@ public sealed partial class RacerEditorControl : Control
         {
             Editor.SetScale(Vector2.One);
             Editor.SetOffset(Vector2.Zero);
+        };
+
+        Exit.OnPressed += _ => OnExitPressed?.Invoke();
+
+        Save.OnPressed += _ =>
+        {
+            var data = Editor.GetData();
+            OnSavePressed?.Invoke(data);
         };
 
         Editor.OnGraphOffsetChanged += (offset, scale) =>

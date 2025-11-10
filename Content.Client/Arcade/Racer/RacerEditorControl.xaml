@@ -26,7 +26,7 @@
                     Margin="16"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Stretch"
-                    HorizontalExpand="False"
+                    HorizontalExpand="True"
                     VerticalExpand="True">
                     <Label
                         Name="GridSize"
@@ -41,13 +41,41 @@
                         Align="Left"
                         VAlign="Center"/>
                 </BoxContainer>
-                <Button
-                    Name="ViewReset"
-                    Text="{Loc 'racer-editor-view-reset'}"
+                <BoxContainer
                     Margin="16"
-                    HorizontalExpand="True"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Stretch"
+                    HorizontalExpand="False"
+                    VerticalExpand="True">
+                    <Button
+                        Name="Exit"
+                        Text="{Loc 'racer-editor-exit'}"
+                        Margin="16"
+                        HorizontalExpand="True"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"/>
+                    <Button
+                        Name="Save"
+                        Text="{Loc 'racer-editor-save'}"
+                        Margin="16"
+                        HorizontalExpand="True"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"/>
+                </BoxContainer>
+                <BoxContainer
+                    Margin="16"
                     HorizontalAlignment="Right"
-                    VerticalAlignment="Center"/>
+                    VerticalAlignment="Stretch"
+                    HorizontalExpand="True"
+                    VerticalExpand="True">
+                    <Button
+                        Name="ViewReset"
+                        Text="{Loc 'racer-editor-view-reset'}"
+                        Margin="16"
+                        HorizontalExpand="True"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"/>
+                </BoxContainer>
             </BoxContainer>
         </PanelContainer>
     </BoxContainer>

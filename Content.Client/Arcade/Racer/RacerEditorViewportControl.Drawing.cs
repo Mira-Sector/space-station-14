@@ -1,7 +1,6 @@
 using Content.Shared.Arcade.Racer;
 using Content.Shared.Arcade.Racer.Stage;
 using Robust.Client.Graphics;
-using Robust.Client.UserInterface.Controls;
 using System.Numerics;
 using Vector3 = Robust.Shared.Maths.Vector3;
 

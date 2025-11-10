@@ -62,6 +62,12 @@ public sealed partial class RacerArcadeSystem : SharedRacerArcadeSystem
 
         var root = _userInterface.CreateWindowRoot(_editingWindow);
         var control = new RacerEditorControl();
+        control.OnExitPressed += StopEditingSession;
+        control.OnSavePressed += args =>
+        {
+            var ev = new RacerArcadeEditorSaveMessage(args);
+            RaiseNetworkEvent(ev);
+        };
         root.AddChild(control);
 
         data ??= RacerGameStageEditorData.Default;
