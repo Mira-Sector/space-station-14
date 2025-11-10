@@ -86,6 +86,36 @@ public sealed partial class RacerEditorViewportControl
 
             return;
         }
+        else if (args.Function == EngineKeyFunctions.CameraRotateLeft)
+        {
+            if (_selectedEdge is IRacerArcadeStageRenderableEdge renderableEdge)
+            {
+                if (TryGetEdgeControlPointAtPosition(renderableEdge, graphPos, out var index, out _))
+                    ControlPointHeightStep(renderableEdge, index.Value, false);
+            }
+
+            return;
+        }
+        else if (args.Function == EngineKeyFunctions.CameraRotateRight)
+        {
+            if (_selectedEdge is IRacerArcadeStageRenderableEdge renderableEdge)
+            {
+                if (TryGetEdgeControlPointAtPosition(renderableEdge, graphPos, out var index, out _))
+                    ControlPointHeightStep(renderableEdge, index.Value, true);
+            }
+
+            return;
+        }
+        else if (args.Function == EngineKeyFunctions.CameraReset)
+        {
+            if (_selectedEdge is IRacerArcadeStageRenderableEdge renderableEdge)
+            {
+                if (TryGetEdgeControlPointAtPosition(renderableEdge, graphPos, out var index, out _))
+                    renderableEdge.ControlPoints[index.Value].Z = 0f;
+            }
+
+            return;
+        }
         else if (args.Function == ContentKeyFunctions.ZoomOut)
         {
             GridSizeStep(true);

@@ -258,6 +258,12 @@ public sealed partial class RacerEditorViewportControl
         edge.ControlPoints = newControlPoints;
     }
 
+    private void ControlPointHeightStep(IRacerArcadeStageRenderableEdge edge, int index, bool positive)
+    {
+        var adjust = positive ? GridSize : -GridSize;
+        edge.ControlPoints[index].Z += adjust;
+    }
+
     private void DeleteControlPoint(IRacerArcadeStageRenderableEdge edge, int index)
     {
         var newCp = new Vector3[edge.ControlPoints.Length - 1];
