@@ -182,6 +182,12 @@ public sealed partial class RacerEditorViewportControl
         AddPopup(popup);
     }
 
+    private void NodeHeightStep(RacerArcadeStageNode node, bool positive)
+    {
+        var adjust = positive ? GridSize : -GridSize;
+        node.Position.Z += adjust;
+    }
+
     private void DeleteNode(string id)
     {
         if (_data is not { } data)

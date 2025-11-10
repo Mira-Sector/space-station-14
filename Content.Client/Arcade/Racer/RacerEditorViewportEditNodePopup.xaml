@@ -1,7 +1,7 @@
 <cc:RacerEditorViewportPopup
     xmlns="https://spacestation14.io"
     xmlns:cc="clr-namespace:Content.Client.Arcade.Racer"
-    SetSize="256 384">
+    SetSize="384 384">
     <PanelContainer
         StyleClasses="PanelBackgroundBaseDark">
         <BoxContainer
@@ -27,7 +27,7 @@
                 VerticalExpand="True">
                 <Label
                     Name="NodePosition"
-                    Align="Left"
+                    Align="Center"
                     VAlign="Center"/>
                 <ScrollContainer
                     VerticalExpand="True"

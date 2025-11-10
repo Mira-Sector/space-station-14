@@ -88,6 +88,12 @@ public sealed partial class RacerEditorViewportControl
         }
         else if (args.Function == EngineKeyFunctions.CameraRotateLeft)
         {
+            if (TryGetNodeAtPosition(graphPos, out _, out var node))
+            {
+                NodeHeightStep(node, false);
+                return;
+            }
+
             if (_selectedEdge is IRacerArcadeStageRenderableEdge renderableEdge)
             {
                 if (TryGetEdgeControlPointAtPosition(renderableEdge, graphPos, out var index, out _))
@@ -98,6 +104,12 @@ public sealed partial class RacerEditorViewportControl
         }
         else if (args.Function == EngineKeyFunctions.CameraRotateRight)
         {
+            if (TryGetNodeAtPosition(graphPos, out _, out var node))
+            {
+                NodeHeightStep(node, true);
+                return;
+            }
+
             if (_selectedEdge is IRacerArcadeStageRenderableEdge renderableEdge)
             {
                 if (TryGetEdgeControlPointAtPosition(renderableEdge, graphPos, out var index, out _))
@@ -108,6 +120,12 @@ public sealed partial class RacerEditorViewportControl
         }
         else if (args.Function == EngineKeyFunctions.CameraReset)
         {
+            if (TryGetNodeAtPosition(graphPos, out _, out var node))
+            {
+                node.Position.Z = 0f;
+                return;
+            }
+
             if (_selectedEdge is IRacerArcadeStageRenderableEdge renderableEdge)
             {
                 if (TryGetEdgeControlPointAtPosition(renderableEdge, graphPos, out var index, out _))
