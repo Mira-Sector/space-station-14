@@ -173,9 +173,6 @@ public sealed partial class RacerEditorViewportControl
             handle.SetTransform(matty);
             handle.DrawTextureRect(edgeTexture, rect);
 
-            handle.SetTransform(Transform);
-            handle.DrawLine(prev, next, StandardEdgeColor);
-
             currentDistance += textureWorldHeight;
         }
     }
