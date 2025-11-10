@@ -10,7 +10,7 @@ public sealed partial class RacerEditorViewportEditNodePopupAddConnectionPopup :
 {
     public event Action<IRacerArcadeStageEdge>? OnAddConnection;
 
-    public RacerEditorViewportEditNodePopupAddConnectionPopup(RacerArcadeStageGraph graph, IPrototypeManager prototype) : base()
+    public RacerEditorViewportEditNodePopupAddConnectionPopup(RacerArcadeStageGraph graph, string nodeId, IPrototypeManager prototype) : base()
     {
         RobustXamlLoader.Load(this);
 
@@ -39,7 +39,7 @@ public sealed partial class RacerEditorViewportEditNodePopupAddConnectionPopup :
                 Width = 1f,
             };
 
-            var popup = new RacerEditorViewportEditEdgeNodePopup(edge, graph);
+            var popup = new RacerEditorViewportEditEdgeNodePopup(edge, nodeId, graph);
             popup.OnEdgeModified += args =>
             {
                 OnAddConnection?.Invoke(args);

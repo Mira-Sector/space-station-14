@@ -18,38 +18,38 @@ public sealed partial class RacerEditorViewportEditNodePopup : RacerEditorViewpo
         NodeId.Text = id;
         NodePosition.Text = Loc.GetString("racer-editor-edit-node-position", ("X", node.Position.X), ("Y", node.Position.Y));
 
-        RefreshConnectionControls(node, graph, prototype);
+        RefreshConnectionControls(node, id, graph, prototype);
 
         NodeAddConnection.OnPressed += _ =>
         {
-            var popup = new RacerEditorViewportEditNodePopupAddConnectionPopup(graph, prototype);
+            var popup = new RacerEditorViewportEditNodePopupAddConnectionPopup(graph, id, prototype);
             popup.OnAddConnection += connection =>
             {
                 node.Connections.Add(connection);
-                RefreshConnectionControls(node, graph, prototype);
+                RefreshConnectionControls(node, id, graph, prototype);
             };
             OpenPopup(popup);
         };
     }
 
-    private void RefreshConnectionControls(RacerArcadeStageNode node, RacerArcadeStageGraph graph, IPrototypeManager prototype)
+    private void RefreshConnectionControls(RacerArcadeStageNode node, string nodeId, RacerArcadeStageGraph graph, IPrototypeManager prototype)
     {
         NodeConnections.RemoveAllChildren();
         var connections = node.Connections.ToList();
         foreach (var connection in connections)
         {
-            var connectionControl = new RacerEditorViewportEditNodePopupConnection(connection, graph, prototype);
+            var connectionControl = new RacerEditorViewportEditNodePopupConnection(connection, nodeId, graph, prototype);
             connectionControl.OnAddPopup += OpenPopup;
             connectionControl.OnConnectionModified += args =>
             {
                 node.Connections.Remove(connection); // out with the old
                 node.Connections.Add(args); // and in with the new
-                RefreshConnectionControls(node, graph, prototype);
+                RefreshConnectionControls(node, nodeId, graph, prototype);
             };
             connectionControl.OnRemoveConnection += () =>
             {
                 node.Connections.Remove(connection);
-                RefreshConnectionControls(node, graph, prototype);
+                RefreshConnectionControls(node, nodeId, graph, prototype);
             };
             NodeConnections.AddChild(connectionControl);
         }

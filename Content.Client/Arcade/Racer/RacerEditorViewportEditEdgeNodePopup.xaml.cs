@@ -9,17 +9,20 @@ public sealed partial class RacerEditorViewportEditEdgeNodePopup : RacerEditorVi
 {
     public event Action<RacerArcadeStageEdgeNode>? OnEdgeModified;
 
-    public RacerEditorViewportEditEdgeNodePopup(RacerArcadeStageEdgeNode edge, RacerArcadeStageGraph graph) : base()
+    public RacerEditorViewportEditEdgeNodePopup(RacerArcadeStageEdgeNode edge, string nodeId, RacerArcadeStageGraph graph) : base()
     {
         RobustXamlLoader.Load(this);
 
         var i = 0;
-        foreach (var nodeId in graph.Nodes.Keys)
+        foreach (var node in graph.Nodes.Keys)
         {
-            EdgeConnection.AddItem(nodeId, i);
-            EdgeConnection.SetItemMetadata(i, nodeId);
+            if (node == nodeId)
+                continue;
 
-            if (edge.ConnectionId == nodeId)
+            EdgeConnection.AddItem(node, i);
+            EdgeConnection.SetItemMetadata(i, node);
+
+            if (edge.ConnectionId == node)
                 EdgeConnection.SelectId(i);
 
             i++;

@@ -15,7 +15,7 @@ public sealed partial class RacerEditorViewportEditNodePopupConnection : BoxCont
 
     public event Action<IRacerArcadeStageEdge>? OnConnectionModified;
 
-    public RacerEditorViewportEditNodePopupConnection(IRacerArcadeStageEdge connection, RacerArcadeStageGraph graph, IPrototypeManager prototype) : base()
+    public RacerEditorViewportEditNodePopupConnection(IRacerArcadeStageEdge connection, string nodeId, RacerArcadeStageGraph graph, IPrototypeManager prototype) : base()
     {
         RobustXamlLoader.Load(this);
 
@@ -23,7 +23,7 @@ public sealed partial class RacerEditorViewportEditNodePopupConnection : BoxCont
         {
             var popup = connection switch
             {
-                RacerArcadeStageEdgeNode edgeNode => CreateNodePopup(edgeNode, graph),
+                RacerArcadeStageEdgeNode edgeNode => CreateNodePopup(edgeNode, nodeId, graph),
                 RacerArcadeStageEdgeStage edgeStage => CreateStagePopup(edgeStage, prototype),
                 _ => throw new NotImplementedException()
             };
@@ -34,9 +34,9 @@ public sealed partial class RacerEditorViewportEditNodePopupConnection : BoxCont
         RemoveConnection.OnPressed += _ => OnRemoveConnection?.Invoke();
     }
 
-    private RacerEditorViewportPopup CreateNodePopup(RacerArcadeStageEdgeNode edge, RacerArcadeStageGraph graph)
+    private RacerEditorViewportPopup CreateNodePopup(RacerArcadeStageEdgeNode edge, string nodeId, RacerArcadeStageGraph graph)
     {
-        var popup = new RacerEditorViewportEditEdgeNodePopup(edge, graph);
+        var popup = new RacerEditorViewportEditEdgeNodePopup(edge, nodeId, graph);
         popup.OnEdgeModified += args => OnConnectionModified?.Invoke(args);
         return popup;
     }
