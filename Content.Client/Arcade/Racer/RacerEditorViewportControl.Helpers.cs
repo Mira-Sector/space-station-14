@@ -128,7 +128,9 @@ public sealed partial class RacerEditorViewportControl
 
             // for convenience
             // you literally never want to JUST add a node
-            EditNode(args, node);
+            // first node is pointless however
+            if (data.Graph.Nodes.Count > 1)
+                EditNode(args, node);
         };
         AddPopup(popup);
     }
