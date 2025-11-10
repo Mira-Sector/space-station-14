@@ -209,6 +209,7 @@ public sealed partial class RacerEditorViewportControl
             z = mid.Z;
         }
 
+        localPos = GetClosestGridPoint(localPos);
         var newCp = new Vector3(localPos.X, localPos.Y, z);
 
         var newControlPoints = new Vector3[edge.ControlPoints.Length + 1];
