@@ -8,9 +8,9 @@ namespace Content.Client.Arcade.Racer;
 
 public sealed partial class RacerEditorViewportControl
 {
-    private static Vector2[] SampleBezier(Vector2[] points, int resolution)
+    private static Vector3[] SampleBezier(Vector3[] points, int resolution)
     {
-        var result = new Vector2[resolution + 1];
+        var result = new Vector3[resolution + 1];
         for (var i = 0; i <= resolution; i++)
         {
             var t = i / (float)resolution;
@@ -19,14 +19,14 @@ public sealed partial class RacerEditorViewportControl
         return result;
     }
 
-    private static Vector2 EvaluateBezier(Vector2[] pts, float t)
+    private static Vector3 EvaluateBezier(Vector3[] pts, float t)
     {
-        var temp = new Vector2[pts.Length];
+        var temp = new Vector3[pts.Length];
         Array.Copy(pts, temp, pts.Length);
         for (var k = pts.Length - 1; k > 0; k--)
         {
             for (var i = 0; i < k; i++)
-                temp[i] = Vector2.Lerp(temp[i], temp[i + 1], t);
+                temp[i] = Vector3.Lerp(temp[i], temp[i + 1], t);
         }
         return temp[0];
     }
@@ -42,7 +42,7 @@ public sealed partial class RacerEditorViewportControl
 
         foreach (var (id, x) in data.Graph.Nodes)
         {
-            if (Vector2.Distance(position, x.Position) > NodeRadius)
+            if (Vector2.Distance(position, x.Position.Xy) > NodeRadius)
                 continue;
 
             nodeId = id;
@@ -79,24 +79,24 @@ public sealed partial class RacerEditorViewportControl
                     var prev = sampled[i - 1];
                     var next = sampled[i];
 
-                    var dist = DistanceFromPointToSegment(position, prev, next);
+                    var dist = DistanceFromPointToSegment(position, prev.Xy, next.Xy);
                     if (dist > closestDistance)
                         continue;
 
                     closestDistance = dist;
                     edge = renderableEdge;
-                    nearestPoint = Vector2.Lerp(prev, next, 0.5f);
+                    nearestPoint = Vector2.Lerp(prev.Xy, next.Xy, 0.5f);
                 }
             }
             else
             {
-                var dist = DistanceFromPointToSegment(position, node.Position, nextNode.Position);
+                var dist = DistanceFromPointToSegment(position, node.Position.Xy, nextNode.Position.Xy);
                 if (dist > closestDistance)
                     continue;
 
                 closestDistance = dist;
                 edge = connection;
-                nearestPoint = Vector2.Lerp(node.Position, nextNode.Position, 0.5f);
+                nearestPoint = Vector2.Lerp(node.Position.Xy, nextNode.Position.Xy, 0.5f);
             }
         }
 
@@ -126,7 +126,7 @@ public sealed partial class RacerEditorViewportControl
         for (var i = 0; i < edge.ControlPoints.Length; i++)
         {
             var cp = edge.ControlPoints[i];
-            var worldCp = cp.Xy + parent.Position;
+            var worldCp = cp.Xy + parent.Position.Xy;
             if (Vector2.Distance(position, worldCp) > ControlPointRadius)
                 continue;
 
@@ -155,7 +155,7 @@ public sealed partial class RacerEditorViewportControl
 
             var node = new RacerArcadeStageNode()
             {
-                Position = position,
+                Position = new(position.X, position.Y, 0f),
                 Connections = []
             };
             data.Graph.Nodes[args] = node;
@@ -222,7 +222,7 @@ public sealed partial class RacerEditorViewportControl
         if (!data.Graph.TryGetParentNode(edge, out var node))
             return;
 
-        var localPos = worldPosition - node.Position;
+        var localPos = worldPosition - node.Position.Xy;
 
         var insertIndex = 0;
         var bestDistance = float.MaxValue;
@@ -230,7 +230,7 @@ public sealed partial class RacerEditorViewportControl
         for (var i = 0; i < edge.ControlPoints.Length; i++)
         {
             var current = edge.ControlPoints[i];
-            var next = i + 1 < edge.ControlPoints.Length ? edge.ControlPoints[i + 1] : new Vector3(0f, 0f, current.Z);
+            var next = i + 1 < edge.ControlPoints.Length ? edge.ControlPoints[i + 1] : new Vector3(0f, 0f, node.Position.Z);
 
             var mid = (current + next) / 2f;
             var dist = Vector2.Distance(localPos, mid.Xy);
@@ -318,15 +318,15 @@ public sealed partial class RacerEditorViewportControl
         return Vector2.Distance(point, closest);
     }
 
-    private static Vector2[] GetWorldSpaceEdgePoints(IRacerArcadeStageRenderableEdge edge, Vector2 sourceNode, Vector2 nextNode)
+    private static Vector3[] GetWorldSpaceEdgePoints(IRacerArcadeStageRenderableEdge edge, Vector3 sourceNode, Vector3 nextNode)
     {
-        var points = new Vector2[edge.ControlPoints.Length + 2];
+        var points = new Vector3[edge.ControlPoints.Length + 2];
         points[0] = sourceNode;
 
         if (edge.ControlPoints.Any())
         {
             for (var i = 0; i < edge.ControlPoints.Length; i++)
-                points[i + 1] = edge.ControlPoints[i].Xy + sourceNode;
+                points[i + 1] = edge.ControlPoints[i] + sourceNode;
         }
         points[^1] = nextNode;
         return points;

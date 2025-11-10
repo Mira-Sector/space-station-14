@@ -1,5 +1,5 @@
-using System.Numerics;
 using Robust.Shared.Serialization;
+using Vector3 = Robust.Shared.Maths.Vector3;
 
 namespace Content.Shared.Arcade.Racer.Stage;
 
@@ -11,5 +11,5 @@ public sealed partial class RacerArcadeStageNode
     public List<IRacerArcadeStageEdge> Connections = [];
 
     [DataField(required: true)]
-    public Vector2 Position;
+    public Vector3 Position;
 }

@@ -16,7 +16,11 @@ public sealed partial class RacerEditorViewportEditNodePopup : RacerEditorViewpo
         RobustXamlLoader.Load(this);
 
         NodeId.Text = id;
-        NodePosition.Text = Loc.GetString("racer-editor-edit-node-position", ("X", node.Position.X), ("Y", node.Position.Y));
+        NodePosition.Text = Loc.GetString("racer-editor-edit-node-position",
+            ("X", node.Position.X),
+            ("Y", node.Position.Y),
+            ("Z", node.Position.Z)
+        );
 
         RefreshConnectionControls(node, id, graph, prototype);
 

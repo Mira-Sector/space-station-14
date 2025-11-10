@@ -23,7 +23,7 @@ public sealed partial class RacerEditorViewportControl
                 _selectedNode = node;
                 _selectedEdge = null;
                 _selectedControlPoint = null;
-                _dragOffset = node.Position - graphPos;
+                _dragOffset = node.Position.Xy - graphPos;
                 return;
             }
 
@@ -156,14 +156,14 @@ public sealed partial class RacerEditorViewportControl
             var newPos = graphPos + dragOffset;
             newPos = GetClosestGridPoint(newPos);
             if (_selectedNode is { } node)
-                node.Position = newPos;
+                node.Position.Xy = newPos;
 
             if (_selectedControlPoint is { } controlPoint && _selectedEdge is IRacerArcadeStageRenderableEdge renderableEdge)
             {
                 if (data.Graph.TryGetParentNode(renderableEdge, out var parent))
                 {
                     var cp = renderableEdge.ControlPoints[controlPoint];
-                    var newCpLocalPos = newPos - parent.Position;
+                    var newCpLocalPos = newPos - parent.Position.Xy;
                     var newCpPos = new Vector3(newCpLocalPos.X, newCpLocalPos.Y, cp.Z);
                     renderableEdge.ControlPoints[controlPoint] = newCpPos;
                 }

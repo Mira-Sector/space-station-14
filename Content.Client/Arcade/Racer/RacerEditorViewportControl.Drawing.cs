@@ -2,6 +2,7 @@ using Content.Shared.Arcade.Racer;
 using Content.Shared.Arcade.Racer.Stage;
 using Robust.Client.Graphics;
 using System.Numerics;
+using Vector3 = Robust.Shared.Maths.Vector3;
 
 namespace Content.Client.Arcade.Racer;
 
@@ -109,12 +110,12 @@ public sealed partial class RacerEditorViewportControl
         handle.SetTransform(Transform);
 
         if (_selectedNode == node)
-            handle.DrawCircle(node.Position, NodeRadius, SelectedNodeColor);
+            handle.DrawCircle(node.Position.Xy, NodeRadius, SelectedNodeColor);
         else
-            handle.DrawCircle(node.Position, NodeRadius, NodeColor);
+            handle.DrawCircle(node.Position.Xy, NodeRadius, NodeColor);
     }
 
-    private void DrawRenderableEdge(DrawingHandleScreen handle, IRacerArcadeStageRenderableEdge renderableEdge, Vector2 sourcePos, Vector2 nextPos)
+    private void DrawRenderableEdge(DrawingHandleScreen handle, IRacerArcadeStageRenderableEdge renderableEdge, Vector3 sourcePos, Vector3 nextPos)
     {
         if (!_prototype.TryIndex(renderableEdge.Texture, out var texture))
         {
@@ -140,7 +141,7 @@ public sealed partial class RacerEditorViewportControl
             var start = sampled[i - 1];
             var end = sampled[i];
 
-            totalLength += Vector2.Distance(start, end);
+            totalLength += Vector2.Distance(start.Xy, end.Xy);
             distances[i] = totalLength;
         }
 
@@ -156,14 +157,14 @@ public sealed partial class RacerEditorViewportControl
 
             var prev = sampled[segIndex - 1];
             var next = sampled[segIndex];
-            var segLen = Vector2.Distance(prev, next);
+            var segLen = Vector2.Distance(prev.Xy, next.Xy);
 
             var segStartDist = distances[segIndex - 1];
             var t = (currentDistance - segStartDist) / segLen;
             t = Math.Clamp(t, 0f, 1f);
 
-            var pos = Vector2.Lerp(prev, next, t);
-            var dir = (next - prev).Normalized();
+            var pos = Vector2.Lerp(prev.Xy, next.Xy, t);
+            var dir = (next.Xy - prev.Xy).Normalized();
             var angle = MathF.Atan2(dir.Y, dir.X) - MathHelper.PiOver2;
 
             var rect = new UIBox2(
@@ -179,14 +180,14 @@ public sealed partial class RacerEditorViewportControl
         }
     }
 
-    private void DrawStandardEdgeEdge(DrawingHandleScreen handle, IRacerArcadeStageEdge edge, Vector2 sourcePos, Vector2 nextPos)
+    private void DrawStandardEdgeEdge(DrawingHandleScreen handle, IRacerArcadeStageEdge edge, Vector3 sourcePos, Vector3 nextPos)
     {
         handle.SetTransform(Transform);
 
         if (_selectedEdge == edge)
-            handle.DrawLine(sourcePos, nextPos, SelectedEdgeColor);
+            handle.DrawLine(sourcePos.Xy, nextPos.Xy, SelectedEdgeColor);
         else
-            handle.DrawLine(sourcePos, nextPos, StandardEdgeColor);
+            handle.DrawLine(sourcePos.Xy, nextPos.Xy, StandardEdgeColor);
     }
 
     private void DrawEdgeControlPoints(DrawingHandleScreen handle, RacerArcadeStageGraph graph)
@@ -201,12 +202,12 @@ public sealed partial class RacerEditorViewportControl
         for (var i = 0; i < edge.ControlPoints.Length; i++)
         {
             var cp = edge.ControlPoints[i];
-            var point = cp.Xy + node.Position;
+            var point = cp + node.Position;
 
             if (_selectedControlPoint == i)
-                handle.DrawCircle(point, ControlPointRadius, SelectedControlPointColor);
+                handle.DrawCircle(point.Xy, ControlPointRadius, SelectedControlPointColor);
             else
-                handle.DrawCircle(point, ControlPointRadius, ControlPointColor);
+                handle.DrawCircle(point.Xy, ControlPointRadius, ControlPointColor);
         }
     }
 }
