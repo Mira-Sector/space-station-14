@@ -258,6 +258,19 @@ public sealed partial class RacerEditorViewportControl
         edge.ControlPoints = newControlPoints;
     }
 
+    private void DeleteControlPoint(IRacerArcadeStageRenderableEdge edge, int index)
+    {
+        var newCp = new Vector3[edge.ControlPoints.Length - 1];
+
+        if (index > 0)
+            Array.Copy(edge.ControlPoints, 0, newCp, 0, index);
+
+        if (index < edge.ControlPoints.Length - 1)
+            Array.Copy(edge.ControlPoints, index + 1, newCp, index, edge.ControlPoints.Length - index - 1);
+
+        edge.ControlPoints = newCp;
+    }
+
     private void AddPopup(RacerEditorViewportPopup popup)
     {
         if (_popup is { } oldPopup)

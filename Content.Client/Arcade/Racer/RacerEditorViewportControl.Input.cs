@@ -78,6 +78,12 @@ public sealed partial class RacerEditorViewportControl
             if (TryGetNodeAtPosition(graphPos, out var nodeId, out _))
                 DeleteNode(nodeId);
 
+            if (_selectedEdge is IRacerArcadeStageRenderableEdge renderableEdge)
+            {
+                if (TryGetEdgeControlPointAtPosition(renderableEdge, graphPos, out var index, out _))
+                    DeleteControlPoint(renderableEdge, index.Value);
+            }
+
             return;
         }
         else if (args.Function == ContentKeyFunctions.ZoomOut)
