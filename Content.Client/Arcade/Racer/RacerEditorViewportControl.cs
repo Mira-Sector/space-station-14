@@ -62,6 +62,10 @@ public sealed partial class RacerEditorViewportControl : Control
     private static readonly Color Mul8GridColor = Color.SteelBlue;
     private static readonly Color OriginGridColor = Color.Cyan;
 
+    private static readonly Color ShadowLowTint = Color.DimGray.WithAlpha(0.3f);
+    private static readonly Color ShadowMidTint = Color.White;
+    private static readonly Color ShadowHighTint = Color.LightGray.WithAlpha(0.3f);
+
     private const float ScrollSensitivity = 8f;
     private const float ScrollSensitivityMultiplier = 1 / ScrollSensitivity;
     private const float MinZoom = 0.5f;

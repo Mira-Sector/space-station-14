@@ -337,4 +337,55 @@ public sealed partial class RacerEditorViewportControl
         points[^1] = nextNode;
         return points;
     }
+
+    private static (float minZ, float maxZ) GetHeightRange(RacerArcadeStageGraph graph)
+    {
+        var minZ = float.MaxValue;
+        var maxZ = float.MinValue;
+
+        foreach (var node in graph.Nodes.Values)
+        {
+            minZ = MathF.Min(minZ, node.Position.Z);
+            maxZ = MathF.Max(maxZ, node.Position.Z);
+
+            foreach (var edge in node.Connections)
+            {
+                if (edge is not IRacerArcadeStageRenderableEdge renderableEdge)
+                    continue;
+
+                if (!graph.TryGetNextNode(edge, out var nextNode))
+                    continue;
+
+                var points = GetWorldSpaceEdgePoints(renderableEdge, node.Position, nextNode.Position);
+                var sampled = SampleBezier(points, RenderableEdgeBezierSamples);
+                for (var i = 1; i < sampled.Length; i++)
+                {
+                    var prev = sampled[i - 1];
+                    var next = sampled[i];
+
+                    minZ = MathF.Min(minZ, prev.Z);
+                    maxZ = MathF.Max(maxZ, prev.Z);
+
+                    minZ = MathF.Min(minZ, next.Z);
+                    maxZ = MathF.Max(maxZ, next.Z);
+                }
+            }
+        }
+
+        return (minZ, maxZ);
+    }
+
+    private static Color MapHeightToColor(float height, float minZ, float maxZ)
+    {
+        if (minZ == maxZ)
+            return ShadowMidTint;
+
+        var t = (height - minZ) / (maxZ - minZ);
+        t = Math.Clamp(t, 0f, 1f);
+
+        if (t < 0.5f)
+            return Color.InterpolateBetween(ShadowMidTint, ShadowLowTint, t * 2);
+        else
+            return Color.InterpolateBetween(ShadowMidTint, ShadowHighTint, (t - 0.5f) * 2);
+    }
 }

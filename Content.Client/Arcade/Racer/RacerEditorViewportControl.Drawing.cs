@@ -1,6 +1,7 @@
 using Content.Shared.Arcade.Racer;
 using Content.Shared.Arcade.Racer.Stage;
 using Robust.Client.Graphics;
+using Robust.Client.UserInterface.Controls;
 using System.Numerics;
 using Vector3 = Robust.Shared.Maths.Vector3;
 
@@ -88,6 +89,8 @@ public sealed partial class RacerEditorViewportControl
 
     private void DrawGraph(DrawingHandleScreen handle, RacerArcadeStageGraph graph)
     {
+        var (minZ, maxZ) = GetHeightRange(graph);
+
         // draw edges first
         foreach (var (edge, node) in graph.GetConnections())
         {
@@ -96,26 +99,27 @@ public sealed partial class RacerEditorViewportControl
                 continue;
 
             if (edge is IRacerArcadeStageRenderableEdge renderableEdge)
-                DrawRenderableEdge(handle, renderableEdge, node.Position, nextNode.Position);
+                DrawRenderableEdge(handle, renderableEdge, node.Position, nextNode.Position, minZ, maxZ);
             else
                 DrawStandardEdgeEdge(handle, edge, node.Position, nextNode.Position);
         }
 
         foreach (var node in graph.Nodes.Values)
-            DrawNode(handle, node);
+            DrawNode(handle, node, minZ, maxZ);
     }
 
-    private void DrawNode(DrawingHandleScreen handle, RacerArcadeStageNode node)
+    private void DrawNode(DrawingHandleScreen handle, RacerArcadeStageNode node, float minZ, float maxZ)
     {
         handle.SetTransform(Transform);
 
-        if (_selectedNode == node)
-            handle.DrawCircle(node.Position.Xy, NodeRadius, SelectedNodeColor);
-        else
-            handle.DrawCircle(node.Position.Xy, NodeRadius, NodeColor);
+        var baseColor = _selectedNode == node ? SelectedNodeColor : NodeColor;
+        var heightColor = MapHeightToColor(node.Position.Z, minZ, maxZ);
+        var color = Color.Blend(baseColor, heightColor, Color.BlendFactor.SrcAlpha, Color.BlendFactor.OneMinusSrcAlpha);
+
+        handle.DrawCircle(node.Position.Xy, NodeRadius, color);
     }
 
-    private void DrawRenderableEdge(DrawingHandleScreen handle, IRacerArcadeStageRenderableEdge renderableEdge, Vector3 sourcePos, Vector3 nextPos)
+    private void DrawRenderableEdge(DrawingHandleScreen handle, IRacerArcadeStageRenderableEdge renderableEdge, Vector3 sourcePos, Vector3 nextPos, float minZ, float maxZ)
     {
         if (!_prototype.TryIndex(renderableEdge.Texture, out var texture))
         {
@@ -132,7 +136,7 @@ public sealed partial class RacerEditorViewportControl
         var points = GetWorldSpaceEdgePoints(renderableEdge, sourcePos, nextPos);
         var sampled = SampleBezier(points, RenderableEdgeBezierSamples);
 
-        var color = _selectedEdge == renderableEdge ? SelectedEdgeColor : Color.White;
+        var baseColor = _selectedEdge == renderableEdge ? SelectedEdgeColor : Color.White;
 
         var totalLength = 0f;
         var distances = new float[sampled.Length];
@@ -171,6 +175,10 @@ public sealed partial class RacerEditorViewportControl
                 -halfWidth, 0f,
                 halfWidth, textureWorldHeight
             );
+
+            var currentHeight = MathHelper.Lerp(prev.Z, next.Z, t);
+            var heightColor = MapHeightToColor(currentHeight, minZ, maxZ);
+            var color = Color.Blend(baseColor, heightColor, Color.BlendFactor.SrcAlpha, Color.BlendFactor.OneMinusSrcAlpha);
 
             var matty = Matrix3x2.CreateRotation(angle) * Matrix3x2.CreateTranslation(pos) * Transform;
             handle.SetTransform(matty);
