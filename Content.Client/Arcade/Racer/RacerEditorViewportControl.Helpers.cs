@@ -206,7 +206,7 @@ public sealed partial class RacerEditorViewportControl
             z = mid.Z;
         }
 
-        var cp = new Vector3(worldPosition.X, worldPosition.Y, z);
+        var cp = new Vector3(localPos.X, localPos.Y, z);
         edge.ControlPoints.Insert(insertIndex, cp);
     }
 
