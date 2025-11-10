@@ -131,6 +131,8 @@ public sealed partial class RacerEditorViewportControl
         var points = GetWorldSpaceEdgePoints(renderableEdge, sourcePos, nextPos);
         var sampled = SampleBezier(points, RenderableEdgeBezierSamples);
 
+        var color = _selectedEdge == renderableEdge ? SelectedEdgeColor : Color.White;
+
         var totalLength = 0f;
         var distances = new float[sampled.Count];
         for (var i = 1; i < sampled.Count; i++)
@@ -171,7 +173,7 @@ public sealed partial class RacerEditorViewportControl
 
             var matty = Matrix3x2.CreateRotation(angle) * Matrix3x2.CreateTranslation(pos) * Transform;
             handle.SetTransform(matty);
-            handle.DrawTextureRect(edgeTexture, rect);
+            handle.DrawTextureRect(edgeTexture, rect, color);
 
             currentDistance += textureWorldHeight;
         }
