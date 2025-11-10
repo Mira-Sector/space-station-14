@@ -255,18 +255,14 @@ public sealed partial class RacerEditorViewportControl
 
     private static List<Vector2> GetWorldSpaceEdgePoints(IRacerArcadeStageRenderableEdge edge, Vector2 sourceNode, Vector2 nextNode)
     {
-        var points = new List<Vector2>(edge.ControlPoints.Count + 2);
+        List<Vector2> points = new(edge.ControlPoints.Count + 2);
+        points.Add(sourceNode);
 
         if (edge.ControlPoints.Any())
         {
             foreach (var cp in edge.ControlPoints)
                 points.Add(cp.Xy + sourceNode);
         }
-        else
-        {
-            points.Add(sourceNode);
-        }
-
         points.Add(nextNode);
         return points;
     }
