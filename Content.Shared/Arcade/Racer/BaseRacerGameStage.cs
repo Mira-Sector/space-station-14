@@ -26,4 +26,14 @@ public abstract partial class BaseRacerGameStage
         };
         return proto;
     }
+
+    public RacerGameStageEditorData ToEditorData()
+    {
+        var data = new RacerGameStageEditorData()
+        {
+            Sky = Sky,
+            Graph = Graph
+        };
+        return data;
+    }
 }

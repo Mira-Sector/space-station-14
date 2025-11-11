@@ -7,10 +7,9 @@ using Robust.Shared.Player;
 using Robust.Shared.Serialization.Manager;
 using Robust.Shared.Serialization.Markdown.Mapping;
 using Robust.Shared.Serialization.Markdown.Sequence;
+using Robust.Shared.Serialization.Markdown.Value;
 using Robust.Shared.Utility;
 using JetBrains.Annotations;
-using System.IO;
-using Robust.Shared.Serialization.Markdown.Value;
 
 namespace Content.Server.Arcade.Racer;
 
@@ -78,7 +77,7 @@ public sealed partial class RacerArcadeSystem : SharedRacerArcadeSystem
     }
 
     [PublicAPI]
-    public void StartEditingSession(ICommonSession session, string id, ResPath path)
+    public void StartEditingSession(ICommonSession session, string id, ResPath path, RacerGameStageEditorData? data = null)
     {
         if (session.Status != SessionStatus.InGame)
             return;
@@ -86,23 +85,7 @@ public sealed partial class RacerArcadeSystem : SharedRacerArcadeSystem
         if (_editingSessions.ContainsKey(session))
             StopEditingSession(session);
 
-        RacerGameStageEditorData data;
-        if (_resource.TryContentFileRead(path, out var stream))
-        {
-            using var reader = new StreamReader(stream, EncodingHelpers.UTF8);
-            Dictionary<Type, HashSet<string>>? changed = [];
-            PrototypeMan.LoadFromStream(reader, false, changed);
-
-            if (!changed.TryGetValue(typeof(RacerGameStagePrototype), out var values))
-                return;
-
-            // TODO: this is incomplete
-            data = RacerGameStageEditorData.Default;
-        }
-        else
-        {
-            data = RacerGameStageEditorData.Default;
-        }
+        data ??= RacerGameStageEditorData.Default;
 
         _editingSessions[session] = (id, path);
         var ev = new RacerArcadeEditorStartMessage(data);
