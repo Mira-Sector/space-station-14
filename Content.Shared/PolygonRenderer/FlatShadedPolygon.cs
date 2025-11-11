@@ -1,5 +1,5 @@
-using System.Numerics;
 using Robust.Shared.Serialization;
+using System.Numerics;
 using Vector3 = Robust.Shared.Maths.Vector3;
 
 namespace Content.Shared.PolygonRenderer;
@@ -10,7 +10,8 @@ public sealed partial class FlatShadedPolygon : ColoredPolygon
     [DataField]
     public float MinBrightness = 0.2f;
 
-    public override (List<Vector2>, Color?) PolygonTo2D(Vector3 camera)
+    /*
+    public override (List<Vector2>, Color?) PolygonTo2D(Matrix4 camera)
     {
         var (vertices, _) = base.PolygonTo2D(camera);
 
@@ -29,6 +30,7 @@ public sealed partial class FlatShadedPolygon : ColoredPolygon
 
         return (vertices, finalColor);
     }
+    */
 
     public FlatShadedPolygon(Vector3[] vertices) : base(vertices)
     {

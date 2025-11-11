@@ -29,13 +29,12 @@ public abstract partial class Polygon
         return Vector3.Normalize(normal);
     }
 
-    public virtual (List<Vector2>, Color?) PolygonTo2D(Vector3 camera)
+    public virtual (List<Vector2>, Color?) PolygonTo2D(Matrix4 camera)
     {
-        List<Vector2> projectedPoints = [];
-
+        List<Vector2> projectedPoints = new(Vertices.Length);
         foreach (var vertex in Vertices)
         {
-            var relativePos = vertex - camera;
+            var relativePos = Vector3.Transform(vertex, camera);
             relativePos.Z += float.Epsilon; // prevent division by 0
 
             var projected = new Vector2()

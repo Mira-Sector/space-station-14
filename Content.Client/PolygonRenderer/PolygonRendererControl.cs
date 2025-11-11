@@ -15,7 +15,7 @@ public sealed partial class PolygonRendererControl : Control
     public PolygonModel[] Models = [];
 
     [ViewVariables]
-    public Vector3 Camera = new();
+    public Matrix4 Camera = Matrix4.Identity;
 
     private record TransformedPolygon(Polygon Polygon, Vector3[] TransformedVertices, float AvgDepth);
 

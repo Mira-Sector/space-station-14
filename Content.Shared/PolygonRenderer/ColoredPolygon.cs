@@ -10,7 +10,7 @@ public partial class ColoredPolygon : Polygon
     [DataField]
     public Color Color = Color.White;
 
-    public override (List<Vector2>, Color?) PolygonTo2D(Vector3 camera)
+    public override (List<Vector2>, Color?) PolygonTo2D(Matrix4 camera)
     {
         var (vertices, _) = base.PolygonTo2D(camera);
         return (vertices, Color);
