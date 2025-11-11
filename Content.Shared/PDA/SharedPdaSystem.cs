@@ -1,5 +1,6 @@
 using Content.Shared.Access.Components;
 using Content.Shared.Containers.ItemSlots;
+using Content.Shared.PDA.Messaging.Events;
 using Robust.Shared.Containers;
 
 namespace Content.Shared.PDA
@@ -20,7 +21,10 @@ namespace Content.Shared.PDA
             SubscribeLocalEvent<PdaComponent, EntRemovedFromContainerMessage>(OnItemRemoved);
 
             SubscribeLocalEvent<PdaComponent, GetAdditionalAccessEvent>(OnGetAdditionalAccess);
+
+            SubscribeLocalEvent<PdaComponent, PdaMessageGetClientNameEvent>(OnGetMessagingName);
         }
+
         protected virtual void OnComponentInit(EntityUid uid, PdaComponent pda, ComponentInit args)
         {
             if (pda.IdCard != null)
@@ -42,16 +46,21 @@ namespace Content.Shared.PDA
 
         protected virtual void OnItemInserted(EntityUid uid, PdaComponent pda, EntInsertedIntoContainerMessage args)
         {
-            if (args.Container.ID == PdaComponent.PdaIdSlotId)
-                pda.ContainedId = args.Entity;
+            if (args.Container.ID != PdaComponent.PdaIdSlotId)
+                return;
 
+            pda.ContainedId = args.Entity;
+            Dirty(uid, pda);
             UpdatePdaAppearance(uid, pda);
         }
 
         protected virtual void OnItemRemoved(EntityUid uid, PdaComponent pda, EntRemovedFromContainerMessage args)
         {
-            if (args.Container.ID == pda.IdSlot.ID)
-                pda.ContainedId = null;
+            if (args.Container.ID != pda.IdSlot.ID)
+                return;
+
+            pda.ContainedId = null;
+            Dirty(uid, pda);
 
             UpdatePdaAppearance(uid, pda);
         }
@@ -60,6 +69,11 @@ namespace Content.Shared.PDA
         {
             if (component.ContainedId is { } id)
                 args.Entities.Add(id);
+        }
+
+        private void OnGetMessagingName(EntityUid uid, PdaComponent component, ref PdaMessageGetClientNameEvent args)
+        {
+            args.Name ??= component.OwnerName;
         }
 
         private void UpdatePdaAppearance(EntityUid uid, PdaComponent pda)

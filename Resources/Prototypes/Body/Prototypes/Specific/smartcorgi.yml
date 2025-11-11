@@ -3,14 +3,23 @@
   name: corgi
   root: torso
   slots:
+    head:
+      part: CorgiHead
+      connections:
+      - torso
+      organs:
+        brain: OrganHumanBrain
+        eyes: OrganHumanEyes
+        ears: OrganHumanEars
+        tongue: OrganCorgiTongue
     torso:
-      part: TorsoAnimal
+      part: CorgiTorso
       connections:
       - righthand
       - lefthand
-      - legs
+      - right_leg
+      - left_leg
       organs:
-        brain: OrganHumanBrain # feels strange but it is what it is
         lungs: OrganAnimalLungs
         stomach: OrganAnimalStomach
         liver: OrganAnimalLiver
@@ -20,9 +29,15 @@
       part: LeftHandSmartCorgi
     righthand:
       part: RightHandSmartCorgi
-    legs:
-      part: LegsAnimal
+    right_leg:
+      part: CorgiRightLeg
       connections:
-      - feet
-    feet:
-      part: FeetAnimal
+      - right_foot
+    left_leg:
+      part: CorgiLeftLeg
+      connections:
+      - left_foot
+    right_foot:
+      part: CorgiRightFoot
+    left_foot:
+      part: CorgiLeftFoot

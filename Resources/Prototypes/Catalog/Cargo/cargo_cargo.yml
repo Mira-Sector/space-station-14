@@ -38,6 +38,6 @@
     state: icon
   data: !type:CargoProductItemData
     product: CrateCrusherDagger
-  cost: 2500
+  cost: 1000
   category: cargoproduct-category-name-cargo
-  group: marke
+  group: market

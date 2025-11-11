@@ -35,7 +35,7 @@
     state: base
   data: !type:CargoProductItemData
     product: CrateVendingMachineRestockClothesFilled
-  cost: 2480
+  cost: 2500
   category: cargoproduct-category-name-service
   group: market
 
@@ -179,6 +179,17 @@
   data: !type:CargoProductItemData
     product: CrateVendingMachineRestockSecTechFilled
   cost: 2200
+  category: cargoproduct-category-name-security
+  group: market
+
+- type: cargoProduct
+  id: VendingMachineRestockSustenance
+  icon:
+    sprite: Objects/Specific/Service/vending_machine_restock.rsi
+    state: base
+  data: !type:CargoProductItemData
+    product: CrateVendingMachineRestockSustenanceFilled
+  cost: 750
   category: cargoproduct-category-name-security
   group: market
 

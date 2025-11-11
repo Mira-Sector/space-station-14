@@ -135,6 +135,7 @@
   - type: EmagLatheRecipes
     emagStaticPacks:
     - SecurityAmmoStatic
+    - SecurityWeaponsStatic
   - type: BlueprintReceiver
     whitelist:
       tags:
@@ -195,6 +196,7 @@
     staticPacks:
     - ChemistryStatic
     - SurgeryStatic
+    - ScienceEquipmentStatic
     dynamicPacks:
     - AdvancedTools
     - ScienceEquipment
@@ -210,7 +212,7 @@
     - Instruments
     - Equipment
     - FauxTiles
-    - Cartridge
+    - Hydroponics
   - type: EmagLatheRecipes
     emagDynamicPacks:
     - SecurityAmmo
@@ -315,11 +317,14 @@
     - RoboticsStatic
     - BorgModulesStatic
     - BorgLimbsStatic
+    - ModSuitParts
+    - ModSuitModulesStatic
     dynamicPacks:
     - Robotics
     - BorgModules
     - MechParts
     - MechEquipment
+    - ModSuitModules
   - type: MaterialStorage
     whitelist:
       tags:
@@ -484,6 +489,7 @@
     - SurgeryStatic
     dynamicPacks:
     - Chemistry
+    - AdvancedMedical
   - type: Machine
     board: MedicalTechFabCircuitboard
   - type: StealTarget

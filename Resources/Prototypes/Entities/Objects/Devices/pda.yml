@@ -79,6 +79,7 @@
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
     preinstalled:
+      - ChatCartridge
       - CrewManifestCartridge
       - NotekeeperCartridge
       - NanoTaskCartridge
@@ -151,6 +152,7 @@
   components:
   - type: CartridgeLoader
     preinstalled:
+    - ChatCartridge
     - CrewManifestCartridge
     - NotekeeperCartridge
     - NanoTaskCartridge
@@ -165,6 +167,7 @@
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
     preinstalled:
+      - ChatCartridge
       - CrewManifestCartridge
       - NotekeeperCartridge
       - NanoTaskCartridge
@@ -515,6 +518,7 @@
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
     preinstalled:
+      - ChatCartridge
       - CrewManifestCartridge
       - NotekeeperCartridge
       - NanoTaskCartridge
@@ -733,6 +737,15 @@
     accentVColor: "#447987"
   - type: Icon
     state: pda-cmo
+  - type: CartridgeLoader
+    preinstalled:
+    - ChatCartridge
+    - CrewManifestCartridge
+    - NotekeeperCartridge
+    - NanoTaskCartridge
+    - NewsReaderCartridge
+    - WantedListCartridge
+    - AdvMedTekCartridge
 
 - type: entity
   parent: BaseMedicalPDA
@@ -864,6 +877,7 @@
     state: pda-hos
   - type: CartridgeLoader
     preinstalled:
+    - ChatCartridge
     - CrewManifestCartridge
     - NotekeeperCartridge
     - NanoTaskCartridge
@@ -933,11 +947,12 @@
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
     preinstalled:
+      - ChatCartridge
       - CrewManifestCartridge
       - NotekeeperCartridge
       - NanoTaskCartridge
       - NewsReaderCartridge
-      - MedTekCartridge
+      - AdvMedTekCartridge
       - WantedListCartridge
       - LogProbeCartridge
       - AstroNavCartridge
@@ -966,7 +981,7 @@
       - NewsReaderCartridge
       - LogProbeCartridge
       - WantedListCartridge
-      - MedTekCartridge
+      - AdvMedTekCartridge
       - AstroNavCartridge
       - PlantScanCartridge
   - type: Tag #  Ignore Chameleon tags
@@ -1085,6 +1100,7 @@
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
     preinstalled:
+      - ChatCartridge
       - NotekeeperCartridge
       - NanoTaskCartridge
 
@@ -1111,11 +1127,12 @@
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
     preinstalled:
+      - ChatCartridge
       - CrewManifestCartridge
       - NotekeeperCartridge
       - NanoTaskCartridge
       - NewsReaderCartridge
-      - MedTekCartridge
+      - AdvMedTekCartridge
       - WantedListCartridge
       - LogProbeCartridge
       - AstroNavCartridge
@@ -1283,6 +1300,7 @@
     state: pda-detective
   - type: CartridgeLoader
     preinstalled:
+    - ChatCartridge
     - CrewManifestCartridge
     - NotekeeperCartridge
     - NanoTaskCartridge
@@ -1311,6 +1329,7 @@
     state: pda-brigmedic
   - type: CartridgeLoader
     preinstalled:
+    - ChatCartridge
     - CrewManifestCartridge
     - NotekeeperCartridge
     - NanoTaskCartridge
@@ -1479,6 +1498,7 @@
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
     preinstalled:
+      - ChatCartridge
       - NotekeeperCartridge
       - NanoTaskCartridge
       - MedTekCartridge

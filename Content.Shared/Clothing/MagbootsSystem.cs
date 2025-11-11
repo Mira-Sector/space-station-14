@@ -32,14 +32,21 @@ public sealed class SharedMagbootsSystem : EntitySystem
 
     private void OnToggled(Entity<MagbootsComponent> ent, ref ItemToggledEvent args)
     {
-        var (uid, comp) = ent;
-        // only stick to the floor if being worn in the correct slot
-        if (_container.TryGetContainingContainer((uid, null, null), out var container) &&
-            _inventory.TryGetSlotEntity(container.Owner, comp.Slot, out var worn)
-            && uid == worn)
+        var user = args.User;
+
+        if (ent.Comp.Slot is { } slot)
         {
-            UpdateMagbootEffects(container.Owner, ent, args.Activated);
+            // only stick to the floor if being worn in the correct slot
+            if (!_container.TryGetContainingContainer((ent.Owner, null, null), out var container) ||
+                !_inventory.TryGetSlotEntity(container.Owner, slot, out var worn)
+                || ent.Owner != worn)
+                return;
+
+            user = container.Owner;
         }
+
+        if (user != null)
+            UpdateMagbootEffects(user.Value, ent, args.Activated);
     }
 
     private void OnGotUnequipped(Entity<MagbootsComponent> ent, ref ClothingGotUnequippedEvent args)

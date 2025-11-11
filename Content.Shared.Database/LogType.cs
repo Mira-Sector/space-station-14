@@ -476,6 +476,11 @@ public enum LogType
     ShuttleImpact = 102,
 
     /// <summary>
+    /// Events relating to midi playback.
+    /// </summary>
+    Instrument = 103,
+
+    /// <summary>
     /// A mimicker has learned a word off someone
     /// </summary>
     MimicLearned = int.MaxValue

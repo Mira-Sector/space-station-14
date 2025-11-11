@@ -41,6 +41,193 @@
       shader: unshaded
       visible: false
       map: ["enum.ElectrifiedLayers.Sparks"]
+  - type: StationAiVisionVisuals
+    blockTiles: true
+    noRotation: true
+    snapCardinals: true
+    appearanceData:
+      enum.DoorVisuals.State:
+        Open:
+          shapes:
+          - !type:StationAiVisionVisualsRect
+            rect: 0, 0, 1, 1
+            color: "#000000"
+
+          - !type:StationAiVisionVisualsVertex
+            start: 0, 0
+            end: 0, 1
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 1, 0
+            end: 1, 1
+            color: "#ff6600"
+
+          - !type:StationAiVisionVisualsVertex
+            start: 0.875, 0
+            end: 0.875, 0.1875
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.875, 0.1875
+            end: 0.9375, 0.1875
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.9375, 0.1875
+            end: 0.9375, 0.375
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.9375, 0.375
+            end: 0.875, 0.375
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.875, 1
+            end: 0.875, 0.8125
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.875, 0.8125
+            end: 0.9375, 0.8125
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.9375, 0.8125
+            end: 0.9375, 0.625
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.9375, 0.625
+            end: 0.875, 0.622
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.875, 0.622
+            end: 0.875, 0.375
+            color: "#ff6600"
+
+          - !type:StationAiVisionVisualsVertex
+            start: 0.0625, 0
+            end: 0.0625, 0.1875
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.0625, 0.1875
+            end: 0.125, 0.1875
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.125, 0.1875
+            end: 0.125, 0.375
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.125, 0.375
+            end: 0.0625, 0.375
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.0625, 1
+            end: 0.0625, 0.8125
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.0625, 0.8125
+            end: 0.125, 0.8125
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.125, 0.8125
+            end: 0.125, 0.625
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.125, 0.625
+            end: 0.0625, 0.622
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.0625, 0.622
+            end: 0.0625, 0.375
+            color: "#ff6600"
+
+        Closed:
+          shapes:
+          - !type:StationAiVisionVisualsRect
+            rect: 0, 0, 1, 1
+            color: "#000000"
+          - !type:StationAiVisionVisualsVertex
+            start: 0, 0
+            end: 1, 0
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 1, 0
+            end: 1, 1
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 1, 1
+            end: 0, 1
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0, 1
+            end: 0, 1
+            color: "#ff6600"
+
+          - !type:StationAiVisionVisualsVertex
+            start: 0.4375, 0
+            end: 0.4375, 0.1875
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.4375, 0.1875
+            end: 0.5625, 0.1875
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.5625, 0.1875
+            end: 0.5625, 0.375
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.5625, 0.375
+            end: 0.4375, 0.375
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.4375, 1
+            end: 0.4375, 0.8125
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.4375, 0.8125
+            end: 0.5625, 0.8125
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.5625, 0.8125
+            end: 0.5625, 0.625
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.5625, 0.625
+            end: 0.4375, 0.622
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.4375, 0.622
+            end: 0.4375, 0.375
+            color: "#ff6600"
+
+          - !type:StationAiVisionVisualsVertex
+            start: 0.25, 0.125
+            end: 0.25, 0.875
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.0625, 0.1875
+            end: 0.0625, 0.8125
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.25, 0.125
+            end: 0.0625, 0.1875
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.25, 0.875
+            end: 0.0625, 0.8125
+            color: "#ff6600"
+
+          - !type:StationAiVisionVisualsVertex
+            start: 0.75, 0.125
+            end: 0.75, 0.875
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.9375, 0.1875
+            end: 0.9375, 0.8125
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.75, 0.125
+            end: 0.9375, 0.1875
+            color: "#ff6600"
+          - !type:StationAiVisionVisualsVertex
+            start: 0.75, 0.875
+            end: 0.9375, 0.8125
+            color: "#ff6600"
   - type: AnimationPlayer
   - type: Physics
   - type: Fixtures

@@ -7,6 +7,8 @@ using Content.Shared.Body.Part;
 using Content.Shared.Body.Prototypes;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Mobs.Systems;
+using Content.Shared.Surgery.Events;
+using Content.Shared.Surgery.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
 
@@ -16,6 +18,7 @@ public partial class SharedBodySystem
 {
     [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
+    [Dependency] private readonly SharedSurgerySystem _surgery = default!;
     [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
 
     private void InitializeOrgans()
@@ -24,6 +27,7 @@ public partial class SharedBodySystem
         SubscribeLocalEvent<OrganReplaceableComponent, OrganSelectionButtonPressedMessage>(OnOrganButton);
 
         SubscribeLocalEvent<OrganComponent, IsRottingEvent>(OnOrganIsRotting);
+        SubscribeLocalEvent<OrganComponent, GetSurgeryUiSourceEvent>(OnOrganGetSurgerySource);
     }
 
     private void OnUIOpened(EntityUid uid, OrganReplaceableComponent component, BoundUIOpenedEvent args)
@@ -87,7 +91,7 @@ public partial class SharedBodySystem
         if (component.Body is not {} body)
             return;
 
-        if (_mobState.IsAlive(body))
+        if (!_mobState.IsDead(body))
         {
             args.Handled = true;
             return;
@@ -97,6 +101,17 @@ public partial class SharedBodySystem
         RaiseLocalEvent(body, ref ev);
 
         args.Handled = ev.Handled;
+    }
+
+    private void OnOrganGetSurgerySource(EntityUid uid, OrganComponent component, ref GetSurgeryUiSourceEvent args)
+    {
+        if (args.Source != null)
+            return;
+
+        if (component.BodyPart is not { } part)
+            return;
+
+        _surgery.TryGetUiEntity(part, out args.Source);
     }
 
     private void AddOrgan(

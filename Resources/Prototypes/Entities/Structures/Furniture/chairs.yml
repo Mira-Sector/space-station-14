@@ -1,6 +1,7 @@
 - type: entity
   name: chair
   id: SeatBase
+  parent: BaseRelaxedAnchoring
   abstract: true
   description: You sit in this. Either by will or force.
   placement:
@@ -479,3 +480,10 @@
   - type: StaticPrice
     price: 150
 
+- type: entity
+  parent: StoolBase
+  id: ChairXeno
+  name: xeno chair
+  components:
+  - type: Sprite
+    state: xeno-chair

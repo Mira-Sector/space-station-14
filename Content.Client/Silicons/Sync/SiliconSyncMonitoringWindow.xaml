@@ -24,7 +24,7 @@
                 <PanelContainer StyleClasses="LowDivider" />
 
                 <PanelContainer StyleClasses="WindowHeadingBackground">
-                    <ui:NavMapControl Name="NavMap" HorizontalExpand="True" VerticalExpand="True"/>
+                    <ui:NavMapControl Name="NavMap" HorizontalExpand="True" VerticalExpand="True" Access="Public"/>
                 </PanelContainer>
 
                 <PanelContainer StyleClasses="LowDivider" />

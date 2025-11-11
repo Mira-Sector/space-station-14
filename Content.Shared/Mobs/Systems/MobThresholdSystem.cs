@@ -25,7 +25,8 @@ public sealed class MobThresholdSystem : EntitySystem
         SubscribeLocalEvent<MobThresholdsComponent, ComponentShutdown>(MobThresholdShutdown);
         SubscribeLocalEvent<MobThresholdsComponent, ComponentStartup>(MobThresholdStartup);
         SubscribeLocalEvent<MobThresholdsComponent, DamageChangedEvent>(OnDamaged);
-        SubscribeLocalEvent<MobThresholdsComponent, LimbBodyRelayedEvent<DamageChangedEvent>>(OnBodyDamaged);
+        SubscribeLocalEvent<MobThresholdsComponent, OrganBodyRelayedEvent<DamageChangedEvent>>((u, c, a) => OnBodyDamaged(u, c, a.Args));
+        SubscribeLocalEvent<MobThresholdsComponent, LimbBodyRelayedEvent<DamageChangedEvent>>((u, c, a) => OnBodyDamaged(u, c, a.Args));
         SubscribeLocalEvent<MobThresholdsComponent, UpdateMobStateEvent>(OnUpdateMobState);
         SubscribeLocalEvent<MobThresholdsComponent, MobStateChangedEvent>(OnThresholdsMobState);
     }
@@ -451,14 +452,14 @@ public sealed class MobThresholdSystem : EntitySystem
         OnDamageEvent(target, thresholds, args.Damageable.Damage, args.Origin);
     }
 
-    private void OnBodyDamaged(EntityUid target, MobThresholdsComponent thresholds, LimbBodyRelayedEvent<DamageChangedEvent> args)
+    private void OnBodyDamaged(EntityUid target, MobThresholdsComponent thresholds, DamageChangedEvent args)
     {
         var bodyDamage = _body.GetBodyDamage(target);
 
         if (bodyDamage == null)
             return;
 
-        OnDamageEvent(target, thresholds, bodyDamage, args.Args.Origin);
+        OnDamageEvent(target, thresholds, bodyDamage, args.Origin);
     }
 
     private void OnDamageEvent(EntityUid target, MobThresholdsComponent thresholds, DamageSpecifier damage, EntityUid? origin = null)

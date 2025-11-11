@@ -1,0 +1,10 @@
+<Button
+    xmlns="https://spacestation14.io"
+    TextAlign="Right"
+    HorizontalAlignment="Center"
+    VerticalAlignment="Center"
+    HorizontalExpand="True"
+    SizeFlagsStretchRatio="1"
+    MinSize="295 20"
+    SetSize="495 30"
+    ClipText="True"/>

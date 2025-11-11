@@ -17,6 +17,7 @@ public sealed class SiliconSyncMonitoringBoundUserInterface : BoundUserInterface
         base.Open();
 
         _menu = this.CreateWindow<SiliconSyncMonitoringWindow>();
+        _menu.NavMap.NavMapWarpAttemptAction += SendPredictedMessage;
     }
 
     protected override void UpdateState(BoundUserInterfaceState state)

@@ -61,7 +61,7 @@
 - type: entity
   id: ModSuitModuleStorageBluespace
   parent: BaseModSuitModuleStorage
-  name: MOD Bluespace Storage Module
+  name: MOD bluespace storage module
   description: A storage system developed by Nanotrasen, these compartments employ miniaturized bluespace pockets for the ultimate in storage technology; regardless of the weight of objects put inside.
   components:
   - type: Sprite

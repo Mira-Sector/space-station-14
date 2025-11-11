@@ -1,0 +1,34 @@
+{
+    "version": 1,
+    "size":
+    {
+        "x": 32,
+        "y": 32
+    },
+    "license": "CC-BY-NC-SA-3.0",
+    "copyright": "Doctor-Cpu, with various sprites from tg.",
+    "states":
+    [
+        {
+            "name": "limb"
+        },
+        {
+            "name": "organ-head"
+        },
+        {
+            "name": "organ-torso"
+        },
+        {
+            "name": "sex"
+        },
+        {
+            "name": "item_slot"
+        },
+        {
+            "name": "bodydamage-damage"
+        },
+        {
+            "name": "bodydamage-heal"
+        }
+    ]
+}

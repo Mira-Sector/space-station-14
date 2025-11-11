@@ -68,8 +68,6 @@
         prob: 0.80
       - id: ClothingOuterHardsuitEVAPrisoner
         prob: 0.80
-      - id: ClothingOuterHardsuitVoidParamed
-        prob: 0.10
       - id: ClothingOuterRedRacoon
         prob: 0.10
       - id: ClothingOuterSanta
@@ -82,7 +80,7 @@
         prob: 0.25
       - id: OxygenTankFilled
         prob: 0.05
-        
+
 - type: entity
   id: CratePermaEscapeGun
   parent: CrateGenericSteel

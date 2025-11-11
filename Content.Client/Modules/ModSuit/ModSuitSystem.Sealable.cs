@@ -4,7 +4,6 @@ using Content.Shared.Item;
 using Content.Shared.Modules.ModSuit;
 using Content.Shared.Modules.ModSuit.Components;
 using Robust.Client.GameObjects;
-using Robust.Shared.Reflection;
 using System.Linq;
 
 namespace Content.Client.Modules.ModSuit;
@@ -12,16 +11,13 @@ namespace Content.Client.Modules.ModSuit;
 public partial class ModSuitSystem
 {
     [Dependency] private readonly SharedItemSystem _item = default!;
-    [Dependency] private readonly IReflectionManager _reflection = default!;
 
-    private string _layerPrefix = string.Empty;
+    private const string LayerPrefix = "modsuit-sealable-layers";
 
     private void InitializeSealable()
     {
         SubscribeLocalEvent<ModSuitSealableComponent, AppearanceChangeEvent>(OnSealableAppearanceChange);
         SubscribeLocalEvent<ModSuitSealableComponent, GetEquipmentVisualsEvent>(OnSealableClothingVisuals);
-
-        _layerPrefix = _reflection.GetEnumReference(ModSuitSealedLayers.Layer);
     }
 
     private void OnSealableAppearanceChange(Entity<ModSuitSealableComponent> ent, ref AppearanceChangeEvent args)
@@ -54,7 +50,7 @@ public partial class ModSuitSystem
         foreach (var layer in layers)
         {
             layer.MapKeys ??= [];
-            layer.MapKeys.Add(_layerPrefix);
+            layer.MapKeys.Add(LayerPrefix);
 
             ent.Comp.RevealedLayers.Add(sprite.AddLayer(layer));
         }
@@ -78,7 +74,7 @@ public partial class ModSuitSystem
         AddClothingLayers(ev.Layers, ref args);
     }
 
-    private void AddClothingLayers(List<PrototypeLayerData> layers, ref GetEquipmentVisualsEvent args)
+    private static void AddClothingLayers(List<PrototypeLayerData> layers, ref GetEquipmentVisualsEvent args)
     {
         List<(string, PrototypeLayerData)> toAdd = [];
 
@@ -89,11 +85,11 @@ public partial class ModSuitSystem
             var key = layer.MapKeys?.FirstOrDefault();
             if (key == null)
             {
-                key = $"{_layerPrefix}-{args.Slot}-{i + args.Layers.Count}";
+                key = $"{LayerPrefix}-{args.Slot}-{i + args.Layers.Count}";
             }
             else
             {
-                key = $"{_layerPrefix}-{args.Slot}-{key}";
+                key = $"{LayerPrefix}-{args.Slot}-{key}";
                 layer.MapKeys = [key];
             }
 

@@ -28,6 +28,7 @@ log-probe-printout-entry = #{$number} / {$time} / {$accessor}
 astro-nav-program-name = AstroNav
 
 med-tek-program-name = MedTek
+adv-med-tek-program-name = Advanced MedTek
 
 plant-scan-program-name = PlantScan
 
@@ -100,3 +101,17 @@ wanted-list-status-label = [color=darkgray]status:[/color] {$status ->
 wanted-list-history-table-time-col = Time
 wanted-list-history-table-reason-col = Crime
 wanted-list-history-table-initiator-col = Initiator
+
+# power two game cartridge
+power-two-program-name = Powers of Two
+power-two-time = Time: {$minutes}:{$seconds}
+power-two-cell-value-wrapper = [bold][color=black]{$value}[/color][/bold]
+power-two-popup-game-over = [font size=16][bold]Game Over![/bold][/font]
+power-two-popup-win = [font size=16][bold]You Win![/bold][/font]
+power-two-popup-time = You wasted {$minutes} minutes and {$seconds} seconds.
+power-two-popup-new-game-button = New Game
+power-two-sound-on = ♫ Toggle Sound
+power-two-sound-off =  ̶♫̶ Toggle Sound
+
+# chat cartridge
+chat-program-name = Spacebook

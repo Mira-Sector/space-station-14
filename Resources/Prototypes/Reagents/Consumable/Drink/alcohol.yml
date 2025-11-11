@@ -163,35 +163,31 @@
   metabolisms:
     Alcohol:
       effects:
-      - !type:HealthChange
+      - !type:BodyDamage
+        damage: 5
         conditions:
         - !type:ReagentThreshold
           min: 15
         - !type:OrganType
           type: Dwarf
           shouldHave: false
-        damage:
-          types:
-            Poison: 1
-      # dwarves take less toxin damage and heal a marginal amount of brute
-      - !type:HealthChange
+      # dwarves take less damage and heal a marginal amount of brute
+      - !type:BodyDamage
+        damage: 2
         conditions:
         - !type:ReagentThreshold
           min: 15
         - !type:OrganType
           type: Dwarf
-        damage:
-          types:
-            Poison: 0.2
       - !type:HealthChange
-        conditions:
-        - !type:ReagentThreshold
-          min: 15
-        - !type:OrganType
-          type: Dwarf
         damage:
           groups:
             Brute: -1
+        conditions:
+        - !type:ReagentThreshold
+          min: 15
+        - !type:OrganType
+          type: Dwarf
       - !type:ChemVomit
         probability: 0.04
         conditions:
@@ -2322,10 +2318,8 @@
         - !type:ReagentThreshold
           min: 5
         probability: 0.5
-      - !type:HealthChange
-        damage:
-          types:
-            Poison: .5
+      - !type:BodyDamage
+        damage: 5
       - !type:SatiateThirst
         factor: 1
       - !type:AdjustReagent
@@ -2519,25 +2513,21 @@
       effects:
       - !type:Drunk
         boozePower: 10
-      - !type:HealthChange
+      - !type:BodyDamage
+        damage: 10
         conditions:
         - !type:ReagentThreshold
           min: 6
         - !type:OrganType
           type: Dwarf
           shouldHave: false
-        damage:
-          types:
-            Poison: 2 # TODO: Figure out poison amount. Ethanol does 1, this does 2 but also metabolises almost 3 to 4 times as fast as ethanol. This would be more Liver damage when that time arrives.
-      - !type:HealthChange
+      - !type:BodyDamage
+        damage: 4
         conditions:
         - !type:ReagentThreshold
           min: 6
         - !type:OrganType
           type: Dwarf
-        damage:
-          types:
-            Poison: 0.4 # TODO: Might increase this, even though it's just double of ethanol from 0.2 to 0.4
       - !type:ChemVomit
         probability: 0.1 #TODO: Tweak vomit probability, maybe make this more violent and poisonous but the body aggressively purges it...
         conditions:

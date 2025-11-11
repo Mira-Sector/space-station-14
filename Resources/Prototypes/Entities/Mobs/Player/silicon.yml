@@ -84,6 +84,7 @@
   - type: StationAiCanHack
   - type: SiliconSyncableMaster
   - type: SiliconSyncableMasterLaw
+  - type: NavMapWarper
 
 - type: entity
   id: AiHeldIntellicard
@@ -221,6 +222,8 @@
     wattage: 50
   - type: StationAiCore
   - type: StationAiVision
+    occluded: false
+    range: 15.5
   - type: InteractionOutline
   - type: Sprite
     sprite: Mobs/Silicon/station_ai.rsi
@@ -370,6 +373,7 @@
       - GhostOnlyWarp
   - type: Eye
     pvsScale: 1.5
+  - type: StationAiRenderOverVision
   - type: Visibility
     layer: 2
   - type: Sprite

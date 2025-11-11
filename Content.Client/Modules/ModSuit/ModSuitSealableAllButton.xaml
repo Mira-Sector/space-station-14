@@ -12,7 +12,6 @@
         <Button
             Name="ButtonButton"
             Text="{Loc 'modsuit-interface-seal-all'}"
-            ToggleMode="True"
             HorizontalAlignment="Stretch"
             HorizontalExpand="True"
             TextAlign="Center"

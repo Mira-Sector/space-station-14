@@ -1,15 +1,16 @@
+#admin plushies
 - type: entity
   parent: BasePlushie
-  id: PlushieSolusHuman
+  id: PlushieSillyAmy
   name: gabriela solus plushie
   description: A cute stuffed toy that resembles a certain troublemaker.
   components:
   - type: Sprite
-    sprite: Objects/Fun/mira_plushies.rsi
-    state: plushie_sillyamy_human
+    sprite: Objects/Fun/MiraPlushies/sillyamy.rsi
+    state: icon
   - type: EmitSoundOnUse
     sound:
-      collection: FemaleScreams
+      path: /Audio/Voice/Slime/slime_squish.ogg
   - type: EmitSoundOnLand
     sound:
       collection: FemaleScreams
@@ -21,7 +22,7 @@
       collection: FemaleScreams
   - type: EmitSoundOnCollide
     sound:
-      collection: FemaleScreams
+      path: /Audio/Voice/Slime/slime_squish.ogg
   - type: Food
     requiresSpecialDigestion: true
     useSound:
@@ -30,20 +31,15 @@
     wideAnimationRotation: 180
     soundHit:
       collection: FemaleScreams
-
-- type: entity
-  parent: PlushieSolusHuman
-  id: PlushieSolusSlime
-  components:
-  - type: Sprite
-    sprite: Objects/Fun/mira_plushies.rsi
-    state: plushie_sillyamy_slime
-  - type: EmitSoundOnUse
-    sound:
-      path: /Audio/Voice/Slime/slime_squish.ogg
-  - type: EmitSoundOnCollide
-    sound:
-      path: /Audio/Voice/Slime/slime_squish.ogg
+  - type: Clothing
+    quickEquip: false
+    sprite: Objects/Fun/MiraPlushies/sillyamy.rsi
+    slots:
+    - HEAD
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET
+        offset: "0, 0.09"
 
 - type: entity
   parent: BasePlushie
@@ -52,8 +48,8 @@
   description: A cute stuffed toy that resembles a maintenance pill addict.
   components:
   - type: Sprite
-    sprite: Objects/Fun/mira_plushies.rsi
-    state: plushie_anurath
+    sprite: Objects/Fun/MiraPlushies/anurath.rsi
+    state: icon
   - type: EmitSoundOnUse
     sound:
       collection: MaleScreams
@@ -77,26 +73,52 @@
     wideAnimationRotation: 180
     soundHit:
       collection: MaleScreams
+  - type: Clothing
+    quickEquip: false
+    sprite: Objects/Fun/MiraPlushies/anurath.rsi
+    slots:
+    - HEAD
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET
+        offset: "0, 0.03"
 
 - type: entity
-  parent: PlushieSolusSlime
+  parent: PlushieSillyAmy
   id: PlushieGwen
   name: gwen riley plushie
   description: A cute stuffed toy that resembles a certain nerd.
   components:
   - type: Sprite
-    sprite: Objects/Fun/mira_plushies.rsi
-    state: plushie_gwen
+    sprite: Objects/Fun/MiraPlushies/gwen.rsi
+    state: icon
+  - type: Clothing
+    quickEquip: false
+    sprite: Objects/Fun/MiraPlushies/gwen.rsi
+    slots:
+    - HEAD
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET
+        offset: "0, 0.06"
 
 - type: entity
-  parent: PlushieSolusSlime
+  parent: PlushieSillyAmy
   id: PlushieSalad
   name: ashley jelly plushie
   description: Your best googa (friend).
   components:
   - type: Sprite
-    sprite: Objects/Fun/mira_plushies.rsi
-    state: plushie_salad
+    sprite: Objects/Fun/MiraPlushies/salad.rsi
+    state: icon
+  - type: Clothing
+    quickEquip: false
+    sprite: Objects/Fun/MiraPlushies/salad.rsi
+    slots:
+    - HEAD
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET
 
 - type: entity
   parent: PlushieMoth
@@ -105,8 +127,126 @@
   description: A cute stuffed toy that resembles a moth that probably has AA somehow.
   components:
   - type: Sprite
-    sprite: Objects/Fun/mira_plushies.rsi
-    state: plushie_wudanty
+    sprite: Objects/Fun/MiraPlushies/wudanty.rsi
+    state: icon
+  - type: Clothing
+    quickEquip: false
+    sprite: Objects/Fun/MiraPlushies/wudanty.rsi
+    slots:
+    - HEAD
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET
+
+#miscellaneous plushies
+
+- type: entity
+  parent: BasePlushie
+  id: PlushieCreature
+  name: creature plushie
+  description: Yippee! More pillow than plushie.
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/MiraPlushies/creature.rsi
+    state: icon
+  - type: EmitSoundOnUse
+    sound:
+      path: /Audio/Items/Toys/yippie.ogg
+  - type: EmitSoundOnActivate
+    sound:
+      path: /Audio/Items/Toys/yippie.ogg
+  - type: Clothing
+    quickEquip: false
+    sprite: Objects/Fun/MiraPlushies/creature.rsi
+    slots:
+    - HEAD
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET
+
+- type: entity
+  parent: BasePlushie
+  id: PlushieClownothing
+  name: clownothing plushie
+  description: When you look away, you can feel it staring at you...
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/MiraPlushies/clownothing.rsi
+    state: icon
+  - type: Item
+    size: Normal
+  - type: EmitSoundOnUse
+    sound:
+      collection: BikeHorn
+  - type: EmitSoundOnActivate
+    sound:
+      collection: BikeHorn
+  - type: MultiHandedItem
+
+#non-admins
+
+- type: entity
+  parent: BasePlushie
+  id: PlushieAlexia
+  name: alexia trainer plushie
+  description: A cute stuffed toy that resembles someone that takes their job too seriously.
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/MiraPlushies/alexia.rsi
+    state: icon
+  - type: EmitSoundOnUse
+    sound:
+      collection: FemaleScreams
+  - type: EmitSoundOnLand
+    sound:
+      collection: FemaleScreams
+  - type: EmitSoundOnActivate
+    sound:
+      collection: FemaleScreams
+  - type: EmitSoundOnTrigger
+    sound:
+      collection: FemaleScreams
+  - type: EmitSoundOnCollide
+    sound:
+      collection: FemaleScreams
+  - type: Food
+    requiresSpecialDigestion: true
+    useSound:
+      collection: FemaleScreams
+  - type: MeleeWeapon
+    wideAnimationRotation: 180
+    soundHit:
+      collection: FemaleScreams
+  - type: Clothing
+    quickEquip: false
+    sprite: Objects/Fun/MiraPlushies/alexia.rsi
+    slots:
+    - HEAD
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET
+        offset: "0, 0.03"
+
+- type: entity
+  parent: PlushieMoth
+  id: PlushieWikson
+  name: wikson sparks plushie
+  description: Woven from the finest horrifically mutated cotton, may contain traces of Nocturine.
+  components:
+  - type: Sprite
+    sprite: Objects/Fun/MiraPlushies/wikson.rsi
+    state: icon
+  - type: Clothing
+    quickEquip: false
+    sprite: Objects/Fun/MiraPlushies/wikson.rsi
+    slots:
+    - HEAD
+    clothingVisuals:
+      head:
+      - state: equipped-HELMET
+        offset: "0, 0.03"
+
+#others
 
 - type: entity
   parent: ToySword

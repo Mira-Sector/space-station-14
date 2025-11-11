@@ -211,6 +211,10 @@
   result: StasisBedMachineCircuitboard
 
 ## Science
+- type: latheRecipe
+  parent: [ BaseGoldCircuitboardRecipe, BaseResearchMachineRecipeCategory ]
+  id: ResearchAndDevelopmentServerMachineCircuitboard
+  result: ResearchAndDevelopmentServerMachineCircuitboard
 
 # Artifact
 - type: latheRecipe
@@ -430,6 +434,11 @@
 # Comms and Cameras
 - type: latheRecipe
   parent: [ BaseCircuitboardRecipe, BaseEngineeringMachineRecipeCategory ]
+  id: PdaMessageServerCircuitboard
+  result: PdaMessageServerCircuitboard
+
+- type: latheRecipe
+  parent: [ BaseCircuitboardRecipe, BaseEngineeringMachineRecipeCategory ]
   id: TelecomServerCircuitboard
   result: TelecomServerCircuitboard
 
@@ -462,3 +471,8 @@
   parent: BaseCircuitboardRecipe
   id: WashingMachineCircuitboard
   result: WashingMachineCircuitboard
+
+- type: latheRecipe
+  parent: [ BaseSilverCircuitboardRecipe, BaseResearchMachineRecipeCategory ]
+  id: TeleporterScienceMachineCircuitboard
+  result: TeleporterScienceMachineCircuitboard

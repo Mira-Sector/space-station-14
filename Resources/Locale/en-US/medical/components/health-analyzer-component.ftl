@@ -14,6 +14,7 @@ health-analyzer-window-entity-damage-total-text = Total Damage:
 
 health-analyzer-window-damage-group-text = {$damageGroup}: {$amount}
 health-analyzer-window-damage-type-text = {$damageType}: {$amount}
+health-analyzer-window-damage-organ-text = Damage: {$amount}
 
 health-analyzer-window-entity-unrevivable-text = [color=yellow]Unique body composition detected! Patient can not be resuscitated by normal means![/color]
 health-analyzer-window-entity-bleeding-text = [color=red]Patient has open wounds![/color]
@@ -21,6 +22,9 @@ health-analyzer-window-entity-bleeding-text = [color=red]Patient has open wounds
 health-analyzer-window-scan-mode-text = Scan Mode:
 health-analyzer-window-scan-mode-active = Active
 health-analyzer-window-scan-mode-inactive = Inactive
+
+health-analyzer-window-tab-body = Body
+health-analyzer-window-tab-organ = Organs
 
 health-analyzer-popup-scan-target = {CAPITALIZE(THE($user))} is trying to scan you!
 
@@ -33,3 +37,14 @@ health-analyzer-body-right-arm = Right Arm:
 health-analyzer-body-left-leg = Left Leg:
 health-analyzer-body-right-leg = Right Leg:
 health-analyzer-body-all = Overall:
+
+health-analyzer-body-brain = Brain:
+health-analyzer-body-tongue = Tongue:
+health-analyzer-body-ears = Ears:
+health-analyzer-body-heart = Heart:
+health-analyzer-body-lungs = Lungs:
+health-analyzer-body-eyes = Eyes:
+health-analyzer-body-liver = Liver:
+health-analyzer-body-stomach = Stomach:
+health-analyzer-body-kidneys = Kidneys:
+health-analyzer-body-appendix = Appendix:

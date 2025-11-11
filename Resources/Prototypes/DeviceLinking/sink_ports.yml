@@ -127,3 +127,18 @@
   id: SetParticleSigma
   name: signal-port-name-set-particle-sigma
   description: signal-port-description-set-particle-sigma
+
+- type: sinkPort
+  id: TeleportReceiver
+  name: signal-port-name-teleport-receiver
+  description: signal-port-description-teleport-receiver
+
+- type: sinkPort
+  id: TeleportBeaconReceiver
+  name: signal-port-name-teleport-beacon-receiver
+  description: signal-port-description-teleport-beacon-receiver
+
+- type: sinkPort
+  id: SurgeryUiSink
+  name: signal-port-name-surgery-ui-sink
+  description: signal-port-description-surgery-ui-sink

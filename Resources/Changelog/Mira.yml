@@ -233,7 +233,7 @@ Entries:
     type: Add
   id: 36
   time: '2024-07-21T16:36:00.0000000+00:00'
-- author: lordofgab
+- author: SillyAmy
   changes:
   - message: made more gay flags
     type: Add
@@ -1211,7 +1211,7 @@ Entries:
     type: Fix
   id: 178
   time: '2025-02-17T22:10:00.0000000+00:00'
-- author: Doctor-Cpu, Anurath, aspiffyfellow, Mehnix, Sentient Salad, lordofgab
+- author: Doctor-Cpu, Anurath, aspiffyfellow, Mehnix, Sentient Salad, SillyAmy
   changes:
   - message: New central command map
     type: Add
@@ -1787,3 +1787,387 @@ Entries:
     type: Tweak
   id: 254
   time: '2025-06-16T17:15:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: "'Further Knowledge' Tier 4 research, to unlock RND Server boards."
+    type: Add
+  - message: Consolidated some researches to make science smoother
+    type: Tweak
+  - message: Nanotransen's Byzantine bureaucracy may now randomly fund some or all of the station's departments for reasons unknowable
+    type: Add
+  id: 255
+  time: '2025-06-26T22:40:00.0000000+00:00'
+- author: Catazeus
+  changes:
+  - message: Add sustenance restock box and ability to order it. No more hungry prisoners
+    type: Add
+  id: 256
+  time: '2025-06-26T23:00:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Add the TBH creature and clownothing plushies
+    type: Add
+  - message: Inhands for Mira plushies
+    type: Add
+  - message: Mira plushies can be worn on the head
+    type: Add
+  id: 257
+  time: '2025-06-26T23:20:00.0000000+00:00'
+- author: SentientSalad
+  changes:
+  - message: Bullets now travel faster
+    type: Add
+  id: 258
+  time: '2025-07-02T01:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Limb damage selection has been reworked to be a keybind (n by default) and also toggled by clicking the limb doll
+    type: Tweak
+  - message: Improved the limb damage selection UI
+    type: Tweak
+  id: 259
+  time: '2025-07-02T07:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Floor mats now have inhands
+    type: Add
+  - message: Pathfinding AI are less likely to get stuck on floor mats
+    type: Fix
+  id: 260
+  time: '2025-07-04T15:00:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: Swab Applicator, allows re-using of swabs without cross contamination
+    type: Add
+  - message: Synthetic swabs, swabs that can be cleaned
+    type: Add
+  id: 261
+  time: '2025-07-06T15:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Readded thieving gloves to the uplink
+    type: Add
+  id: 261
+  time: '2025-07-07T22:50:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Added the Alexia plushie for winning the recent shuttle competition
+    type: Add
+  id: 262
+  time: '2025-07-07T22:55:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Diona now have a liver and kidneys
+    type: Add
+  - message: The kidneys are now responsible for the majority of chemical digestion rather than the heart
+    type: Add
+  - message: Added a new damage type, necrosis, which is taken when someone lacks a liver or a kidney
+    type: Add
+  - message: Necrosis damage recovery when a missing organ is replaced
+    type: Add
+  - message: Smoking deals lung damage
+    type: Add
+  - message: You no longer idly cough with no lung damage
+    type: Remove
+  - message: Alcohol poisoning now deals liver damage rather than poison damage
+    type: Tweak
+  - message: Vomiting on a damaged stomach now works
+    type: Fix
+  - message: Toggling a heart to beating now works
+    type: Fix
+  id: 263
+  time: '2025-07-07T23:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added a researchable advanced medical scanner capable of seeing organ damage
+    type: Add
+  - message: CMO starts with the advanced med-tek cartridge installed
+    type: Add
+  - message: Clicking on the progress bars in the health analyzer now shows the damage details ontop of clicking on the limb
+    type: Tweak
+  - message: Health analyzer UI has been shrunk
+    type: Tweak
+  id: 264
+  time: '2025-07-09T07:45:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Mobs no longer excessively vomit from minor stomach damage
+    type: Tweak
+  - message: Stomach damage only has a chance to vomit when actually digesting food
+    type: Fix
+  - message: Stomach damage vomiting only happens when a mob is alive
+    type: Fix
+  id: 265
+  time: '2025-07-10T08:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Defibrillating now requires a beating heart rather than one not beating
+    type: Fix
+  - message: Kidneys now arent disabled by default
+    type: Fix
+  id: 266
+  time: '2025-07-13T17:15:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: AI now get a basic station overview outside of the AIs view
+    type: Add
+  - message: Cameras now turn off vision with no power
+    type: Tweak
+  - message: AI eye now draws over the AIs view
+    type: Tweak
+  id: 267
+  time: '2025-07-15T10:15:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: AI can now press "Alternative activate item in world" on any UI with a navmap to warp to the location
+    type: Add
+  id: 268
+  time: '2025-07-15T13:30:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Necrosis damage no longer causes bleeding
+    type: Fix
+  - message: Smoking and alcohol poisoning damage have been increased
+    type: Tweak
+  id: 269
+  time: '2025-07-15T15:10:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Poison damage from a wounded liver now counts to to being crit/dead
+    type: Fix
+  id: 270
+  time: '2025-07-18T14:20:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Poison damage from a wounded liver now scales based on how damaged it is
+    type: Add
+  id: 271
+  time: '2025-07-18T16:50:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Health analyzer can now select overall damage again
+    type: Fix
+  id: 272
+  time: '2025-07-18T17:30:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Organs only rot when the body is dead
+    type: Tweak
+  - message: Organs get damaged when rotting reaches the second stage
+    type: Tweak
+  id: 273
+  time: '2025-07-18T21:15:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Slimes get kidneys
+    type: Fix
+  id: 274
+  time: '2025-07-19T17:25:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: A disabled heart no longer prevents defibrillation
+    type: Remove
+  - message: A dead heart prevents defibrillation
+    type: Add
+  - message: The body dying causes the heart to stop beating
+    type: Add
+  - message: Defibrillation causes the heart to beat
+    type: Add
+  - message: Epinephrine causes minor heart damage
+    type: Add
+  id: 275
+  time: '2025-07-20T01:30:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: The operating table can be linked to a body scanner computer
+    type: Add
+  - message: The body scanner computer can show a guide of surgery steps
+    type: Add
+  id: 276
+  time: '2025-07-27T17:30:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Surgery is now blocked by clothing
+    type: Add
+  - message: Doing surgery on a non sleeping patient causes them to scream and causes bloodloss
+    type: Add
+  id: 277
+  time: '2025-07-28T09:50:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added the sex reasignment surgery targeting the torso
+    type: Add
+  - message: Added the hair transplant surgery targeting the head to allow changing the patients hair
+    type: Add
+  - message: Added the cavity implant surgery targeting the torso to add and remove any small item
+    type: Add
+  id: 278
+  time: '2025-07-29T07:00:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Fixed thirst not improving after drinking
+    type: Fix
+  - message: Fix chemical metabolizing
+    type: Fix
+  - message: Temporarily reverted lung smoking damage
+    type: Remove
+  id: 279
+  time: '2025-07-30T17:00:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: MODsuits replace station hardsuits
+    type: Add
+  - message: MODsuit cores are orderable from cargo
+    type: Add
+  - message: Added the expanded storage research
+    type: Add
+  - message: Added the space propulsion research
+    type: Add
+  - message: Added the insulation research
+    type: Add
+  - message: Added the cloaking research
+    type: Add
+  id: 280
+  time: '2025-08-07T19:00:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Modsuits cannot be sealed with no power
+    type: Add
+  - message: Modsuits now unseal when power is lost
+    type: Add
+  - message: Modsuit modules can no longer be enabled with no power
+    type: Fix
+  id: 281
+  time: '2025-08-09T04:15:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: The xray effect now properly renders objects
+    type: Fix
+  - message: The xray effect is now performant
+    type: Tweak
+  id: 282
+  time: '2025-08-09T23:50:50.0000000+00:00'
+- author: Anurath
+  changes:
+  - message: The medical borg now has a surgery tool module
+    type: Add
+  id: 283
+  time: '2025-08-14T14:50:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added the organ healing surgery to organs
+    type: Add
+  - message: Organs and limbs ontop of an operating table can now have their surgery graph shown on the computer
+    type: Tweak
+  - message: Surgery related do-afters can be cancelled by doing the same trigger
+    type: Tweak
+  id: 284
+  time: '2025-08-15T17:50:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Modsuit power draw is now based off sealed parts. A fully sealed modsuit has the same power draw as before
+    type: Tweak
+  - message: Unsealed modsuit parts have half the power draw
+    type: Tweak
+  id: 285
+  time: '2025-08-16T01:40:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: An ion storm now has a brief cloud visual
+    type: Add
+  - message: Solar flares are now visual in space
+    type: Add
+  id: 286
+  time: '2025-08-18T16:40:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added the Powers of Two PDA cartridge. It can be found in maints.
+    type: Add
+  id: 287
+  time: '2025-08-25T16:40:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added spacebook, a way to message people via your PDA.
+    type: Add
+  id: 288
+  time: '2025-09-06T00:30:50.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Hot air causes paper and kudzu to ignite
+    type: Add
+  id: 289
+  time: '2025-09-06T07:30:50.0000000+00:00'
+- author: SpiffyCodes
+  changes:
+  - message: reworked tele/camms on the map Mir.
+    type: Tweak
+  id: 290
+  time: '2025-09-07T17:28:00.0000000+00:00'
+- author: SpiffyCodes
+  changes:
+  - message: reworked cargo and salv on the map Mir.
+    type: Tweak
+  id: 291
+  time: '2025-09-07T17:28:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: PDA messaging profile names now properly update
+    type: Fix
+  id: 292
+  time: '2025-09-11T14:30:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: PDA messaging ui now shows a counter for unread messages
+    type: Add
+  id: 293
+  time: '2025-09-15T13:30:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: Added the Experimental Teleframe, a mostly-safe teleporter, in addition to a console and teleport beacons to use with it.
+    type: Add
+  id: 294
+  time: '2025-10-02T15:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Added the kasane teto outfit
+    type: Add
+  id: 295
+  time: '2025-10-02T23:00:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: Teleport beacons no longer have finite range
+    type: Fix
+  - message: You can no longer teleport singularities and walls
+    type: Fix
+  id: 296
+  time: '2025-10-07T16:50:00.0000000+00:00'
+- author: Henry
+  changes:
+  - message: Crusher daggers are orderable from cargo
+    type: Add
+  id: 297
+  time: '2025-10-07T17:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Mice have a chance to randomly eat wires
+    type: Add
+  id: 298
+  time: '2025-10-09T01:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Lowered mice wire eating chance from 30% to 5%
+    type: Tweak
+  id: 299
+  time: '2025-10-17T14:40:00.0000000+00:00'
+- author: SillyAmy
+  changes:
+  - message: Added Wilkson Sparks plushie.
+    type: Add
+  id: 300
+  time: '2025-10-19T17:00:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: You can anchor most machines and containers onto tiles with directional windows.
+    type: Tweak
+  id: 301
+  time: '2025-10-29T01:40:00.0000000+00:00'

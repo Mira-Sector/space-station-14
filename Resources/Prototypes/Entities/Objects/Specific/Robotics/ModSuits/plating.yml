@@ -1,6 +1,7 @@
 - type: entity
   id: ModSuitPlatingStandard
   name: standard plating
+  description: The outer protective layer of a MODsuit.
   parent: BaseItem
   components:
   - type: Sprite
@@ -13,6 +14,7 @@
 - type: entity
   id: ModSuitPlatingEngineering
   name: engineering plating
+  description: The outer protective layer of a MODsuit. High radiation protection.
   parent: BaseItem
   components:
   - type: Sprite
@@ -25,6 +27,7 @@
 - type: entity
   id: ModSuitPlatingAtmospheric
   name: atmospheric plating
+  description: The outer protective layer of a MODsuit. Resistant to high heat.
   parent: BaseItem
   components:
   - type: Sprite
@@ -37,6 +40,7 @@
 - type: entity
   id: ModSuitPlatingMedical
   name: medical plating
+  description: The outer protective layer of a MODsuit sprayed in clinical white.
   parent: BaseItem
   components:
   - type: Sprite
@@ -49,6 +53,7 @@
 - type: entity
   id: ModSuitPlatingSecurity
   name: security plating
+  description: The outer protective layer of a MODsuit splashed in the red colors of security.
   parent: BaseItem
   components:
   - type: Sprite
@@ -61,6 +66,7 @@
 - type: entity
   id: ModSuitPlatingCosmohonk
   name: cosmohonk plating
+  description: The outer protective layer of a MODsuit. HONK!
   parent: BaseItem
   components:
   - type: Sprite

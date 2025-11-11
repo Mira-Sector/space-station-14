@@ -1,8 +1,12 @@
 using Content.Shared.Body.Part;
 using Content.Shared.DoAfter;
+using Content.Shared.Surgery.Events;
+using Content.Shared.Tools;
 using Content.Shared.Tools.Systems;
 using JetBrains.Annotations;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
+using Robust.Shared.Utility;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Content.Shared.Surgery.Requirements;
@@ -11,42 +15,60 @@ namespace Content.Shared.Surgery.Requirements;
 [Serializable, NetSerializable]
 public sealed partial class ToolRequirement : SurgeryEdgeRequirement
 {
-    [DataField]
-    public List<string> Qualities = new();
+    [DataField(required: true)]
+    public ProtoId<ToolQualityPrototype> Quality;
 
     [DataField]
-    public TimeSpan Delay = TimeSpan.FromSeconds(1f);
+    public TimeSpan? Delay = TimeSpan.FromSeconds(1f);
 
-    public override SurgeryEdgeState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
+    public override string Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart)
+    {
+        return Loc.GetString("surgery-requirement-tool-name");
+    }
+
+    public override string Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart)
+    {
+        var prototypes = IoCManager.Resolve<IPrototypeManager>();
+
+        var qualityName = Loc.GetString(prototypes.Index(Quality).Name);
+
+        return Loc.GetString("surgery-requirement-tool-desc", ("tool", qualityName));
+    }
+
+    public override SpriteSpecifier? GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart)
+    {
+        var prototypes = IoCManager.Resolve<IPrototypeManager>();
+
+        return prototypes.Index(Quality).Icon;
+    }
+
+    public override SurgeryInteractionState RequirementMet(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart? bodyPart, out Enum? ui, bool test = false)
     {
         ui = null;
 
         if (tool == null)
-            return SurgeryEdgeState.Failed;
+            return SurgeryInteractionState.Failed;
 
         var entMan = IoCManager.Resolve<IEntityManager>();
         var toolSystem = entMan.System<SharedToolSystem>();
 
-        if (toolSystem.HasAllQualities(tool.Value, Qualities))
-            return SurgeryEdgeState.DoAfter;
+        if (toolSystem.HasQuality(tool.Value, Quality))
+            return Delay == null ? SurgeryInteractionState.Passed : SurgeryInteractionState.DoAfter;
 
-        return SurgeryEdgeState.Failed;
+        return SurgeryInteractionState.Failed;
     }
 
-    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
+    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart? bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
     {
         doAfterId = null;
 
         if (tool == null)
             return false;
 
-        if ((body ?? limb) == null)
-            return false;
-
         var entMan = IoCManager.Resolve<IEntityManager>();
         var toolSystem = entMan.System<SharedToolSystem>();
 
-        return toolSystem.UseTool(tool.Value, user, limb ?? body, Delay, Qualities, new SurgeryDoAfterEvent(targetEdge, bodyPart), out doAfterId, requireDown: body != null ? true : null);
+        return toolSystem.UseTool(tool.Value, user, receiver, Delay!.Value, [Quality], new SurgeryEdgeRequirementDoAfterEvent(targetEdge, bodyPart), out doAfterId, requireDown: body != null ? true : null);
     }
 
     public override bool RequirementsMatch(SurgeryEdgeRequirement other, [NotNullWhen(true)] out SurgeryEdgeRequirement? merged)
@@ -56,30 +78,30 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
         if (other is not ToolRequirement otherTool)
             return false;
 
-        if (Qualities.Count != otherTool.Qualities.Count)
+        if (Quality != otherTool.Quality)
             return false;
 
-        foreach (var quality in Qualities)
+        TimeSpan? delay;
+
+        if (Delay == null)
         {
-            var matchFound = false;
-
-            foreach (var otherQuality in otherTool.Qualities)
-            {
-                if (quality != otherQuality)
-                    continue;
-
-                matchFound = true;
-                break;
-            }
-
-            if (!matchFound)
-                return false;
+            if (otherTool.Delay == null)
+                delay = null;
+            else
+                delay = otherTool.Delay.Value;
+        }
+        else
+        {
+            if (otherTool.Delay == null)
+                delay = Delay.Value;
+            else
+                delay = TimeSpan.FromSeconds(Math.Min(Delay.Value.TotalSeconds, otherTool.Delay.Value.TotalSeconds));
         }
 
         merged = new ToolRequirement()
         {
-            Qualities = Qualities,
-            Delay = TimeSpan.FromSeconds(Math.Min(Delay.TotalSeconds, otherTool.Delay.TotalSeconds)) //use the shortest delay
+            Quality = Quality,
+            Delay = delay
         };
 
 # if DEBUG
@@ -87,7 +109,7 @@ public sealed partial class ToolRequirement : SurgeryEdgeRequirement
         var log = logMan.RootSawmill;
 
         if (Delay != otherTool.Delay)
-            log.Warning($"Surgery ToolRequirement has mismatching delays of {Delay} and {otherTool.Delay} with {Qualities}.");
+            log.Warning($"Surgery ToolRequirement has mismatching delays of {Delay} and {otherTool.Delay} with {Quality}.");
 # endif
 
         return true;

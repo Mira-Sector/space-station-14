@@ -24,3 +24,31 @@
     - id: CrewMonitoringServerFlatpack
     - id: CrewMonitoringComputerFlatpack
       amount: 3
+
+- type: entity
+  id: CrateModSuitCoreStandard
+  parent: CrateScienceSecure
+  name: standard MODsuit core crate
+  description: Contains 2 standard MODsuit core to build a MODsuit. Requires Science access to open.
+  components:
+  - type: StorageFill
+    contents:
+      - id: ModSuitCoreStandard
+        amount: 2
+
+- type: entity
+  id: CrateScienceTeleporter
+  parent: CrateScienceSecure
+  name: teleframe installation crate
+  description: Contains a flatpack of an experimental teleframe core, a console to control it, and some useful peripherals for experimentation. Requires Science access to open.
+  components:
+  - type: StorageFill
+    contents:
+      - id: TeleporterScienceFlatpack
+        amount: 1
+      - id: ComputerTeleporterFlatpack
+        amount: 1
+      - id: TeleportBeacon
+        amount: 2
+      - id: Multitool
+        amount: 1

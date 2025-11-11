@@ -10,7 +10,7 @@ namespace Content.Shared.Modules.Modules;
 public sealed partial class JetpackModuleSystem : EntitySystem
 {
     [Dependency] private readonly SharedJetpackSystem _jetpack = default!;
-    [Dependency] private readonly ModuleContainedSystem _moduleContained = default!;
+    [Dependency] private readonly SharedModuleSystem _module = default!;
 
     public override void Initialize()
     {
@@ -68,7 +68,7 @@ public sealed partial class JetpackModuleSystem : EntitySystem
         if (!HasComp<PowerDrainModuleComponent>(ent.Owner))
             return true;
 
-        if (!_moduleContained.TryGetContainer(ent.Owner, out var container))
+        if (!_module.TryGetContainer(ent.Owner, out var container))
             return false;
 
         if (!TryComp<PowerCellDrawComponent>(container.Value, out var drawComp))

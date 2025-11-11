@@ -1,41 +1,132 @@
 - type: surgery
   id: OrganManipulation
+  name: surgery-organ-manipulation-name
+  description: surgery-organ-manipulation-desc
   startingNode: Start
   nodes:
   - id: Start
     edges:
     - connection: Scalpel1
       requirement: !type:ToolRequirement
-        qualities:
-        - Slicing
+        pain:
+        - BasicLightDamage
+        quality: Slicing
   - id: Scalpel1
     edges:
     - connection: Retractor
       requirement: !type:ToolRequirement
-        qualities:
-        - Retracting
+        pain:
+        - BasicNoDamage
+        quality: Retracting
   - id: Retractor
     edges:
     - connection: Saw
       requirement: !type:ToolRequirement
-        qualities:
-        - Sawing
+        pain:
+        - BasicHeavyDamage
+        quality: Sawing
   - id: Saw
     edges:
     - connection: Hemostat1
       requirement: !type:ToolRequirement
-        qualities:
-        - Clamping
+        pain:
+        - BasicNoDamage
+        quality: Clamping
   - id: Hemostat1
     edges:
     - connection: Scalpel2
       requirement: !type:ToolRequirement
-        qualities:
-        - Slicing
+        pain:
+        - BasicLightDamage
+        quality: Slicing
   - id: Scalpel2
+    special:
+    - !type:OrganManipulation
     edges:
-    - requirement: !type:OrganRequirement
     - connection: Start
       requirement: !type:ToolRequirement
-        qualities:
-        - Slicing
+        pain:
+        - BasicLightDamage
+        quality: Cauterizing
+
+- type: surgery
+  id: CavityImplant
+  name: surgery-cavity-implant-name
+  description: surgery-cavity-implant-desc
+  startingNode: Start
+  nodes:
+  - id: Start
+    edges:
+    - connection: Scalpel1
+      requirement: !type:ToolRequirement
+        pain:
+        - BasicLightDamage
+        quality: Slicing
+  - id: Scalpel1
+    edges:
+    - connection: Retractor
+      requirement: !type:ToolRequirement
+        pain:
+        - BasicNoDamage
+        quality: Retracting
+  - id: Retractor
+    edges:
+    - connection: Hemostat
+      requirement: !type:ToolRequirement
+        pain:
+        - BasicNoDamage
+        quality: Clamping
+  - id: Hemostat
+    edges:
+    - connection: Scalpel2
+      requirement: !type:ToolRequirement
+        pain:
+        - BasicLightDamage
+        quality: Slicing
+  - id: Scalpel2
+    special:
+    - !type:ItemSlot
+        slotId: cavity
+        delay: 0.5
+        whitelist:
+          sizes:
+          - Tiny
+          - Small
+    edges:
+    - connection: Start
+      requirement: !type:ToolRequirement
+        pain:
+        - BasicLightBurnDamage
+        quality: Cauterizing
+
+# cant use cauterizing at all as that will close the limb
+- type: surgery
+  id: OrganHeal
+  name: surgery-organ-heal-name
+  description: surgery-organ-heal-desc
+  startingNode: Start
+  nodes:
+  - id: Start
+    edges:
+    - connection: Scalpel
+      requirement: !type:ToolRequirement
+        pain:
+        - BasicLightDamage
+        quality: Slicing
+  - id: Scalpel
+    edges:
+    - connection: Hemostat
+      requirement: !type:ToolRequirement
+        pain:
+        - BasicNoDamage
+        quality: Clamping
+  - id: Hemostat
+    special:
+    - !type:BodyDamage
+        damage: -10
+    edges:
+    - connection: Start
+      requirement: !type:ToolRequirement
+        pain:
+        - BasicNoDamage
+        quality: Clamping

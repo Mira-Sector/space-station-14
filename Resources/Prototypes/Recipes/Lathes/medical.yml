@@ -83,6 +83,21 @@
     Steel: 500
 
 - type: latheRecipe
+  parent: Medkit
+  id: AdvancedHealthAnalyzer
+  result: HandheldHealthAnalyzer
+
+- type: latheRecipe
+  id: HandheldAdvancedHealthAnalyzer
+  result: HandheldAdvancedHealthAnalyzerUnpowered
+  categories:
+  - Tools
+  completetime: 8
+  materials:
+    Glass: 1000
+    Steel: 1000
+
+- type: latheRecipe
   id: ClothingHandsGlovesLatex
   result: ClothingHandsGlovesLatex
   completetime: 2

@@ -1,9 +1,12 @@
 using Content.Shared.Hands.Components;
+using Content.Shared.IdentityManagement;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Physics;
 using Content.Shared.Rotation;
+using Content.Shared.Surgery.Events;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Physics;
+using Robust.Shared.Physics.Dynamics.Contacts;
 using Robust.Shared.Physics.Systems;
 
 namespace Content.Shared.Standing;
@@ -22,6 +25,7 @@ public sealed class StandingStateSystem : EntitySystem
         base.Initialize();
         SubscribeLocalEvent<StandingStateComponent, AttemptMobCollideEvent>(OnMobCollide);
         SubscribeLocalEvent<StandingStateComponent, AttemptMobTargetCollideEvent>(OnMobTargetCollide);
+        SubscribeLocalEvent<StandingStateComponent, SurgeryInteractionAttemptEvent>(OnSurgeryInteractionAttempt);
     }
 
     private void OnMobTargetCollide(Entity<StandingStateComponent> ent, ref AttemptMobTargetCollideEvent args)
@@ -38,6 +42,18 @@ public sealed class StandingStateSystem : EntitySystem
         {
             args.Cancelled = true;
         }
+    }
+
+    private void OnSurgeryInteractionAttempt(Entity<StandingStateComponent> ent, ref SurgeryInteractionAttemptEvent args)
+    {
+        if (args.Cancelled)
+            return;
+
+        if (!ent.Comp.Standing)
+            return;
+
+        args.Reason = Loc.GetString("surgery-interaction-failure-standing", ("patient", Identity.Entity(ent.Owner, EntityManager)));
+        args.Cancel();
     }
 
     public bool IsDown(EntityUid uid, StandingStateComponent? standingState = null)

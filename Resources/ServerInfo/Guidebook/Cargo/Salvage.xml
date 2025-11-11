@@ -18,8 +18,7 @@
   Everything needed before leaving the station is provided inside Salvage's starting room. While Science can research better weapons and equipment, it is best to be equipped with something rather than nothing.
 
   <Box>
-    <GuideEntityEmbed Entity="ClothingOuterHardsuitSpatio"/>
-    <GuideEntityEmbed Entity="ClothingShoesBootsMag"/>
+    <GuideEntityEmbed Entity="ClothingBackpackModSuitSalvage"/>
     <GuideEntityEmbed Entity="VendingMachineTankDispenserEVA"/>
   </Box>
 

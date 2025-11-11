@@ -307,7 +307,10 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
 
         var cardId = idUid.Value;
         if (TryComp<PdaComponent>(idUid, out var pdaComponent) && pdaComponent.ContainedId != null)
+        {
             cardId = pdaComponent.ContainedId.Value;
+            Dirty(idUid.Value, pdaComponent);
+        }
 
         if (!TryComp<IdCardComponent>(cardId, out var card))
             return;

@@ -1,9 +1,14 @@
 - type: entity
   id: ClothingOuterModSuitBase
+  description: The chestplate of a deployed MOD suit.
   abstract: true
   categories: [ HideSpawnMenu ]
   components:
   - type: ModSuitSealable
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.1
+      false: 0.05
   - type: ModSuitDeployableInventory
   - type: Clothing
     autoGenerateVisuals: false
@@ -50,6 +55,9 @@
     - type: PressureProtection
       highPressureMultiplier: 0.02
       lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
     - type: FireProtection
       reduction: 0.8
     - type: ExplosionResistance
@@ -70,70 +78,115 @@
             Caustic: 0.7
 
 - type: entity
-  id: ClothingOuterModSuitApocrphal
+  id: ClothingOuterModSuitWarden
   parent: ClothingOuterModSuitBase
   categories: [ HideSpawnMenu ]
-  name: apocryphal MOD chestplate
+  name: warden's MOD chestplate
   components:
   - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/apocryphal.rsi
+    sprite: Clothing/OuterClothing/ModSuits/warden.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/OuterClothing/ModSuits/apocryphal.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/warden.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/OuterClothing/ModSuits/apocryphal.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/warden.rsi
         state: icon
     clothingLayers:
       true:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/apocryphal.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/warden.rsi
           state: equipped-OUTERCLOTHING-sealed
       false:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/apocryphal.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/warden.rsi
           state: equipped-OUTERCLOTHING
     uiLayer:
       true:
-        sprite: Clothing/OuterClothing/ModSuits/apocryphal.rsi
+        sprite: Clothing/OuterClothing/ModSuits/warden.rsi
         state: equipped-OUTERCLOTHING-sealed
       false:
-        sprite: Clothing/OuterClothing/ModSuits/apocryphal.rsi
+        sprite: Clothing/OuterClothing/ModSuits/warden.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.5
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.4
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.4
+            Slash: 0.5
+            Piercing: 0.6
+            Heat: 0.8
+            Caustic: 0.7
 
 - type: entity
-  id: ClothingOuterModSuitAsteroid
+  id: ClothingOuterModSuitSalvage
   parent: ClothingOuterModSuitBase
   categories: [ HideSpawnMenu ]
-  name: asteroid MOD chestplate
+  name: salvage MOD chestplate
   components:
   - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
+    sprite: Clothing/OuterClothing/ModSuits/salvage.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/salvage.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/salvage.rsi
         state: icon
     clothingLayers:
       true:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/salvage.rsi
           state: equipped-OUTERCLOTHING-sealed
       false:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/salvage.rsi
           state: equipped-OUTERCLOTHING
     uiLayer:
       true:
-        sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
+        sprite: Clothing/OuterClothing/ModSuits/salvage.rsi
         state: equipped-OUTERCLOTHING-sealed
       false:
-        sprite: Clothing/OuterClothing/ModSuits/asteroid.rsi
+        sprite: Clothing/OuterClothing/ModSuits/salvage.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.5
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.7
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.7
+            Slash: 0.6
+            Piercing: 0.7
+            Heat: 0.7
+            Radiation: 0.3
+            Caustic: 0.7
 
 - type: entity
   id: ClothingOuterModSuitAtmospheric
@@ -167,39 +220,30 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/atmospheric.rsi
         state: equipped-OUTERCLOTHING
-
-- type: entity
-  id: ClothingOuterModSuitChrono
-  parent: ClothingOuterModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: chrono MOD chestplate
-  components:
-  - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/chrono.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/OuterClothing/ModSuits/chrono.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/OuterClothing/ModSuits/chrono.rsi
-        state: icon
-    clothingLayers:
-      true:
-        outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/chrono.rsi
-          state: equipped-OUTERCLOTHING-sealed
-      false:
-        outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/chrono.rsi
-          state: equipped-OUTERCLOTHING
-    uiLayer:
-      true:
-        sprite: Clothing/OuterClothing/ModSuits/chrono.rsi
-        state: equipped-OUTERCLOTHING-sealed
-      false:
-        sprite: Clothing/OuterClothing/ModSuits/chrono.rsi
-        state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.001
+      coolingCoefficient: 0.001
+    - type: FireProtection
+      reduction: 0.8
+    - type: ExplosionResistance
+      damageCoefficient: 0.5
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.9
+            Slash: 0.9
+            Piercing: 0.9
+            Heat: 0.8
+            Radiation: 0.5
 
 - type: entity
   id: ClothingOuterModSuitCivilian
@@ -233,6 +277,26 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/civilian.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.90
+            Slash: 0.90
+            Piercing: 0.95
+            Heat: 0.90
+            Radiation: 0.25
 
 - type: entity
   id: ClothingOuterModSuitCorporate
@@ -266,39 +330,29 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/corporate.rsi
         state: equipped-OUTERCLOTHING
-
-- type: entity
-  id: ClothingOuterModSuitCorpsman
-  parent: ClothingOuterModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: corpsman MOD chestplate
-  components:
-  - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/corpsman.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/OuterClothing/ModSuits/corpsman.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/OuterClothing/ModSuits/corpsman.rsi
-        state: icon
-    clothingLayers:
-      true:
-        outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/corpsman.rsi
-          state: equipped-OUTERCLOTHING-sealed
-      false:
-        outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/corpsman.rsi
-          state: equipped-OUTERCLOTHING
-    uiLayer:
-      true:
-        sprite: Clothing/OuterClothing/ModSuits/corpsman.rsi
-        state: equipped-OUTERCLOTHING-sealed
-      false:
-        sprite: Clothing/OuterClothing/ModSuits/corpsman.rsi
-        state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.5
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.8
+            Slash: 0.8
+            Piercing: 0.6
+            Heat: 0.5
+            Radiation: 0.5
+            Caustic: 0.6
 
 - type: entity
   id: ClothingOuterModSuitCosmohonk
@@ -332,39 +386,31 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/cosmohonk.rsi
         state: equipped-OUTERCLOTHING
-
-- type: entity
-  id: ClothingOuterModSuitDebug
-  parent: ClothingOuterModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: debug MOD chestplate
-  components:
-  - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/debug.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/OuterClothing/ModSuits/debug.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/OuterClothing/ModSuits/debug.rsi
-        state: icon
-    clothingLayers:
-      true:
-        outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/debug.rsi
-          state: equipped-OUTERCLOTHING-sealed
-      false:
-        outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/debug.rsi
-          state: equipped-OUTERCLOTHING
-    uiLayer:
-      true:
-        sprite: Clothing/OuterClothing/ModSuits/debug.rsi
-        state: equipped-OUTERCLOTHING-sealed
-      false:
-        sprite: Clothing/OuterClothing/ModSuits/debug.rsi
-        state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.5
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.9
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.9
+            Slash: 0.9
+            Piercing: 0.9
+            Caustic: 0.8
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.025
+      false: 0.0125
 
 - type: entity
   id: ClothingOuterModSuitElite
@@ -398,6 +444,33 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/elite.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.001
+      coolingCoefficient: 0.001
+    - type: ExplosionResistance
+      damageCoefficient: 0.2
+    - type: FireProtection
+      reduction: 0.8
+    #- type: StaminaResistance
+    #  damageCoefficient: 0.6
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.6
+            Slash: 0.6
+            Piercing: 0.6
+            Heat: 0.2
+            Radiation: 0.01
+            Caustic: 0.5
 
 - type: entity
   id: ClothingOuterModSuitEnchanted
@@ -431,6 +504,29 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/enchanted.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.05
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.5
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.6
+            Slash: 0.6
+            Piercing: 0.4
+            Heat: 0.25
+            Radiation: 0.25
+            Caustic: 0.75
 
 - type: entity
   id: ClothingOuterModSuitEngineering
@@ -464,43 +560,33 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/engineering.rsi
         state: equipped-OUTERCLOTHING
-
-- type: entity
-  id: ClothingOuterModSuitGlitch
-  parent: ClothingOuterModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: glitch MOD chestplate
-  components:
-  - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
-        state: icon
-    clothingLayers:
-      true:
-        outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
-          state: equipped-OUTERCLOTHING-sealed
-      false:
-        outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
-          state: equipped-OUTERCLOTHING
-    uiLayer:
-      true:
-        sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
-        state: equipped-OUTERCLOTHING-sealed
-      false:
-        sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
-        state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.04
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.5
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.9
+            Slash: 0.9
+            Piercing: 0.9
+            Shock: 0.8
+            Caustic: 0.5
+            Radiation: 0.2
 
 - type: entity
   id: ClothingOuterModSuitHonkerative
-  parent: ClothingOuterModSuitBase
+  parent: ClothingOuterModSuitSyndicate
   categories: [ HideSpawnMenu ]
   name: honkerative MOD chestplate
   components:
@@ -532,37 +618,62 @@
         state: equipped-OUTERCLOTHING
 
 - type: entity
-  id: ClothingOuterModSuitInfiltrator
+  id: ClothingOuterModSuitSyndieCommander
   parent: ClothingOuterModSuitBase
   categories: [ HideSpawnMenu ]
-  name: infiltrator MOD chestplate
+  name: syndicate commander MOD chestplate
   components:
   - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
+    sprite: Clothing/OuterClothing/ModSuits/syndiecommander.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/syndiecommander.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/syndiecommander.rsi
         state: icon
     clothingLayers:
       true:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/syndiecommander.rsi
           state: equipped-OUTERCLOTHING-sealed
       false:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/syndiecommander.rsi
           state: equipped-OUTERCLOTHING
     uiLayer:
       true:
-        sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
+        sprite: Clothing/OuterClothing/ModSuits/syndiecommander.rsi
         state: equipped-OUTERCLOTHING-sealed
       false:
-        sprite: Clothing/OuterClothing/ModSuits/infiltrator.rsi
+        sprite: Clothing/OuterClothing/ModSuits/syndiecommander.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.05
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.5
+    #- type: StaminaResistance
+    #  damageCoefficient: 0.6
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.4
+            Slash: 0.4
+            Piercing: 0.3
+            Heat: 0.5
+            Radiation: 0.25
+            Caustic: 0.4
 
 - type: entity
   id: ClothingOuterModSuitInquisitory
@@ -598,37 +709,60 @@
         state: equipped-OUTERCLOTHING
 
 - type: entity
-  id: ClothingOuterModSuitInterdyne
+  id: ClothingOuterModSuitBrigmedic
   parent: ClothingOuterModSuitBase
   categories: [ HideSpawnMenu ]
-  name: interdyne MOD chestplate
+  name: brigmedic MOD chestplate
   components:
   - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
+    sprite: Clothing/OuterClothing/ModSuits/brigmedic.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/brigmedic.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/brigmedic.rsi
         state: icon
     clothingLayers:
       true:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/brigmedic.rsi
           state: equipped-OUTERCLOTHING-sealed
       false:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/brigmedic.rsi
           state: equipped-OUTERCLOTHING
     uiLayer:
       true:
-        sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
+        sprite: Clothing/OuterClothing/ModSuits/brigmedic.rsi
         state: equipped-OUTERCLOTHING-sealed
       false:
-        sprite: Clothing/OuterClothing/ModSuits/interdyne.rsi
+        sprite: Clothing/OuterClothing/ModSuits/brigmedic.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.8
+            Slash: 0.8
+            Piercing: 0.7
+            Radiation: 0.9
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.14
+      false: 0.07
 
 - type: entity
   id: ClothingOuterModSuitLoader
@@ -664,37 +798,60 @@
         state: equipped-OUTERCLOTHING
 
 - type: entity
-  id: ClothingOuterModSuitMagnate
+  id: ClothingOuterModSuitCaptain
   parent: ClothingOuterModSuitBase
   categories: [ HideSpawnMenu ]
-  name: magnate MOD chestplate
+  name: captain MOD chestplate
   components:
   - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
+    sprite: Clothing/OuterClothing/ModSuits/captain.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/captain.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/captain.rsi
         state: icon
     clothingLayers:
       true:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/captain.rsi
           state: equipped-OUTERCLOTHING-sealed
       false:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/captain.rsi
           state: equipped-OUTERCLOTHING
     uiLayer:
       true:
-        sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
+        sprite: Clothing/OuterClothing/ModSuits/captain.rsi
         state: equipped-OUTERCLOTHING-sealed
       false:
-        sprite: Clothing/OuterClothing/ModSuits/magnate.rsi
+        sprite: Clothing/OuterClothing/ModSuits/captain.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.5
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.8
+            Slash: 0.8
+            Piercing: 0.6
+            Heat: 0.5
+            Radiation: 0.5
+            Caustic: 0.6
 
 - type: entity
   id: ClothingOuterModSuitMedical
@@ -728,39 +885,88 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/medical.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Caustic: 0.1
+    - type: ZombificationResistance
+      zombificationResistanceCoefficient: 0.4
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.14
+      false: 0.07
 
 - type: entity
-  id: ClothingOuterModSuitMining
+  id: ClothingOuterModSuitLuxury
   parent: ClothingOuterModSuitBase
   categories: [ HideSpawnMenu ]
-  name: mining MOD chestplate
+  name: luxury MOD chestplate
   components:
   - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/mining.rsi
+    sprite: Clothing/OuterClothing/ModSuits/luxury.rsi
   - type: ModSuitSealable
     iconLayers:
       true:
-      - sprite: Clothing/OuterClothing/ModSuits/mining.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/luxury.rsi
         state: icon-sealed
       false:
-      - sprite: Clothing/OuterClothing/ModSuits/mining.rsi
+      - sprite: Clothing/OuterClothing/ModSuits/luxury.rsi
         state: icon
     clothingLayers:
       true:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/mining.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/luxury.rsi
           state: equipped-OUTERCLOTHING-sealed
       false:
         outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/mining.rsi
+        - sprite: Clothing/OuterClothing/ModSuits/luxury.rsi
           state: equipped-OUTERCLOTHING
     uiLayer:
       true:
-        sprite: Clothing/OuterClothing/ModSuits/mining.rsi
+        sprite: Clothing/OuterClothing/ModSuits/luxury.rsi
         state: equipped-OUTERCLOTHING-sealed
       false:
-        sprite: Clothing/OuterClothing/ModSuits/mining.rsi
+        sprite: Clothing/OuterClothing/ModSuits/luxury.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.5
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.9
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.9
+            Slash: 0.8
+            Piercing: 0.9
+            Heat: 0.9
+            Radiation: 0.5
+            Caustic: 0.8
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.2
+      false: 0.1
 
 - type: entity
   id: ClothingOuterModSuitNinja
@@ -794,39 +1000,25 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/ninja.rsi
         state: equipped-OUTERCLOTHING
-
-- type: entity
-  id: ClothingOuterModSuitPrototype
-  parent: ClothingOuterModSuitBase
-  categories: [ HideSpawnMenu ]
-  name: prototype MOD chestplate
-  components:
-  - type: Sprite
-    sprite: Clothing/OuterClothing/ModSuits/prototype.rsi
-  - type: ModSuitSealable
-    iconLayers:
-      true:
-      - sprite: Clothing/OuterClothing/ModSuits/prototype.rsi
-        state: icon-sealed
-      false:
-      - sprite: Clothing/OuterClothing/ModSuits/prototype.rsi
-        state: icon
-    clothingLayers:
-      true:
-        outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/prototype.rsi
-          state: equipped-OUTERCLOTHING-sealed
-      false:
-        outerClothing:
-        - sprite: Clothing/OuterClothing/ModSuits/prototype.rsi
-          state: equipped-OUTERCLOTHING
-    uiLayer:
-      true:
-        sprite: Clothing/OuterClothing/ModSuits/prototype.rsi
-        state: equipped-OUTERCLOTHING-sealed
-      false:
-        sprite: Clothing/OuterClothing/ModSuits/prototype.rsi
-        state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.8
+            Slash: 0.8
+            Piercing: 0.8
+            Heat: 0.8
 
 - type: entity
   id: ClothingOuterModSuitRescue
@@ -860,6 +1052,28 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/rescue.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.5
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.1
+      coolingCoefficient: 0.1
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Heat: 0.90
+            Radiation: 0.75
+            Caustic: 0.5
+  - type: ModSuitSealablePowerDraw
+    powerDraw:
+      true: 0.14
+      false: 0.07
 
 - type: entity
   id: ClothingOuterModSuitResearch
@@ -893,6 +1107,29 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/research.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.1
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.6
+            Slash: 0.8
+            Piercing: 0.9
+            Heat: 0.3
+            Radiation: 0.1
+            Caustic: 0.2
 
 - type: entity
   id: ClothingOuterModSuitResponsory
@@ -926,6 +1163,33 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/responsory.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.001
+      coolingCoefficient: 0.001
+    - type: ExplosionResistance
+      damageCoefficient: 0.2
+    - type: FireProtection
+      reduction: 0.8
+    - type: StaminaResistance
+      damageCoefficient: 0.15 # Needs 21 hits with a disabler to stun :godo:
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.1
+            Slash: 0.1
+            Piercing: 0.1
+            Heat: 0.1
+            Radiation: 0.1
+            Caustic: 0.1
 
 - type: entity
   id: ClothingOuterModSuitSafeguard
@@ -959,6 +1223,29 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/safeguard.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.45
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.5
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.6
+            Slash: 0.5
+            Piercing: 0.5
+            Heat: 0.8
+            Radiation: 0.5
+            Caustic: 0.6
 
 - type: entity
   id: ClothingOuterModSuitSecurity
@@ -992,6 +1279,28 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/security.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.5
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.4
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.6
+            Slash: 0.6
+            Piercing: 0.6
+            Heat: 0.8
+            Caustic: 0.7
 
 - type: entity
   id: ClothingOuterModSuitStandard
@@ -1025,6 +1334,26 @@
       false:
         sprite: Clothing/OuterClothing/ModSuits/standard.rsi
         state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.6
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.90
+            Slash: 0.90
+            Piercing: 0.95
+            Heat: 0.90
+            Radiation: 0.25
 
 - type: entity
   id: ClothingOuterModSuitSyndicate
@@ -1057,4 +1386,62 @@
         state: equipped-OUTERCLOTHING-sealed
       false:
         sprite: Clothing/OuterClothing/ModSuits/syndicate.rsi
+        state: equipped-OUTERCLOTHING
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.05
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: ExplosionResistance
+      damageCoefficient: 0.5
+    #- type: StaminaResistance
+    #  damageCoefficient: 0.75
+    - type: Armor
+      modifiers:
+      - parts:
+        - Torso
+        - Arm
+        - Leg
+        modifier:
+          coefficients:
+            Blunt: 0.5
+            Slash: 0.5
+            Piercing: 0.5
+            Heat: 0.5
+            Radiation: 0.5
+            Caustic: 0.5
+
+- type: entity
+  id: ClothingOuterModSuitSyndicateMedic
+  parent: ClothingOuterModSuitSyndicate
+  categories: [ HideSpawnMenu ]
+  name: syndicate medic MOD chestplate
+  components:
+  - type: Sprite
+    sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
+  - type: ModSuitSealable
+    iconLayers:
+      true:
+      - sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
+        state: icon-sealed
+      false:
+      - sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
+        state: icon
+    clothingLayers:
+      true:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
+          state: equipped-OUTERCLOTHING-sealed
+      false:
+        outerClothing:
+        - sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
+          state: equipped-OUTERCLOTHING
+    uiLayer:
+      true:
+        sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
+        state: equipped-OUTERCLOTHING-sealed
+      false:
+        sprite: Clothing/OuterClothing/ModSuits/glitch.rsi
         state: equipped-OUTERCLOTHING

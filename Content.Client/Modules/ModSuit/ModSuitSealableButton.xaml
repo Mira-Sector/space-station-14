@@ -4,7 +4,6 @@
         <Button
             Name="ButtonButton"
             Text="{Loc 'modsuit-interface-seal'}"
-            ToggleMode="True"
             Access="Public"/>
         <BoxContainer
             Margin="4"/>

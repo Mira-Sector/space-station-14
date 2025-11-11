@@ -8,40 +8,42 @@
     "license": "CC-BY-NC-SA-3.0",
     "copyright": "Doctor-Cpu",
     "states":
-    [{
-        "name": "head"
-    },
-    {
-        "name": "head-hover"
-    },
-    {
-        "name": "torso"
-    },
-    {
-        "name": "torso-hover"
-    },
-    {
-        "name": "l_arm"
-    },
-    {
-        "name": "l_arm-hover"
-    },
-    {
-        "name": "r_arm"
-    },
-    {
-        "name": "r_arm-hover"
-    },
-    {
-        "name": "l_leg"
-    },
-    {
-        "name": "l_leg-hover"
-    },
-    {
-        "name": "r_leg"
-    },
-    {
-        "name": "r_leg-hover"
-    }]
+    [
+        {
+            "name": "head"
+        },
+        {
+            "name": "head-hover"
+        },
+        {
+            "name": "torso"
+        },
+        {
+            "name": "torso-hover"
+        },
+        {
+            "name": "l_arm"
+        },
+        {
+            "name": "l_arm-hover"
+        },
+        {
+            "name": "r_arm"
+        },
+        {
+            "name": "r_arm-hover"
+        },
+        {
+            "name": "l_leg"
+        },
+        {
+            "name": "l_leg-hover"
+        },
+        {
+            "name": "r_leg"
+        },
+        {
+            "name": "r_leg-hover"
+        }
+    ]
 }

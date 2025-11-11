@@ -3,7 +3,7 @@ using Content.Shared.CartridgeLoader.Cartridges;
 
 namespace Content.Shared.CartridgeLoader.Cartridges;
 
-public abstract class SharedNanoTaskCartridgeSystem : EntitySystem
+public abstract partial class SharedNanoTaskCartridgeSystem : EntitySystem
 {
     public override void Initialize()
     {

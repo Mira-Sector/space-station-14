@@ -51,6 +51,8 @@
     price: 30
   - type: RequireWhitelistStorage
     whitelist:
+      components:
+      - ModSuitSealable
       tags:
       - Hardsuit
       - SuitEVA

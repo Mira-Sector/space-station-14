@@ -17,6 +17,7 @@ public sealed class PowerMonitoringConsoleBoundUserInterface : BoundUserInterfac
         _menu = this.CreateWindow<PowerMonitoringWindow>();
         _menu.SetEntity(Owner);
         _menu.SendPowerMonitoringConsoleMessageAction += SendPowerMonitoringConsoleMessage;
+        _menu.NavMap.NavMapWarpAttemptAction += SendPredictedMessage;
     }
 
     protected override void UpdateState(BoundUserInterfaceState state)

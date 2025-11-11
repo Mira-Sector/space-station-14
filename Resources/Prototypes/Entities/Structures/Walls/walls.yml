@@ -58,6 +58,44 @@
   id: BaseWall
   components:
   - type: Occluder # Breaks on diagonal walls
+  - type: StationAiVisionVisuals
+    blockTiles: true
+    shapes:
+    - !type:StationAiVisionVisualsRect
+      rect: 0, 0, 1, 1
+      color: "#000000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0
+      end: 1, 0
+      color: "#00f000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0
+      end: 0, 1
+      color: "#00f000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 1
+      end: 1, 0
+      color: "#00f000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 1
+      end: 0, 1
+      color: "#00f000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 1
+      end: 0, 1
+      color: "#00f000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0
+      end: 1, 1
+      color: "#00f000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.5, 0
+      end: 1, 0.5
+      color: "#00f000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0, 0.5
+      end: 0.5, 1
+      color: "#00f000"
 
 - type: entity
   abstract: true
@@ -91,6 +129,29 @@
         - FullTileMask
         layer:
         - WallLayer
+  - type: StationAiVisionVisuals
+    shapes:
+    - !type:StationAiVisionVisualsTri
+      point1: 0, 0
+      point2: 1, 1
+      point3: 1, 0
+      color: "#000000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 1
+      end: 0, 0
+      color: "#00f000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 0
+      end: 0.5, 0.5
+      color: "#00f000"
+    - !type:StationAiVisionVisualsVertex
+      start: 0.5, 0
+      end: 0.25, 0.25
+      color: "#00f000"
+    - !type:StationAiVisionVisualsVertex
+      start: 1, 0.5
+      end: 0.75, 0.75
+      color: "#00f000"
 
 - type: entity
   parent: BaseWall
@@ -1088,6 +1149,109 @@
         node: girder
       - !type:DoActsBehavior
         acts: ["Destruction"]
+
+- type: entity
+  parent: BaseWall
+  id: WallSolidChitin
+  name: solid chitin
+  components:
+  - type: Tag
+    tags:
+      - Wall
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 400
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalSlam
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalSlam
+      - !type:ChangeConstructionNodeBehavior
+        node: girder
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: Sprite
+    sprite: Structures/Walls/xeno.rsi
+  - type: Icon
+    sprite: Structures/Walls/xeno.rsi
+  - type: IconSmooth
+    key: chitin
+    base: solid
+  - type: Construction
+    graph: Girder
+    node: wallChitin
+  - type: RCDDeconstructable
+    cost: 6
+    delay: 8
+    fx: EffectRCDDeconstruct8
+
+- type: entity
+  parent: BaseWall
+  id: WallReinforcedChitin
+  name: reinforced chitin
+  components:
+  - type: Sprite
+    sprite: Structures/Walls/xeno.rsi
+  - type: Icon
+    sprite: Structures/Walls/xeno.rsi
+    state: rgeneric
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallicStrong
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 600
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalSlam
+    - trigger:
+        !type:DamageTrigger
+        damage: 400
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalSlam
+      - !type:ChangeConstructionNodeBehavior
+        node: girder
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ReinforcedWallVisuals.DeconstructionStage:
+        ReinforcedWallVisualLayers.Deconstruction:
+          -1: { visible: false }
+          0: { state: reinf_construct-0, visible: true}
+          1: { state: reinf_construct-1, visible: true}
+          2: { state: reinf_construct-2, visible: true}
+          3: { state: reinf_construct-3, visible: true}
+          4: { state: reinf_construct-4, visible: true}
+          5: { state: reinf_construct-5, visible: true}
+  - type: StaticPrice
+    price: 250
+  - type: RadiationBlocker
+    resistance: 5
+  - type: IconSmooth
+    key: chitin
+    base: reinf_over
+  - type: Construction
+    graph: Girder
+    node: reinforcedWallChitin
 
 - type: entity
   parent: BaseWall

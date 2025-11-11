@@ -1,0 +1,360 @@
+- type: entity
+  id: BaseOrganHeart
+  abstract: true
+  components:
+  - type: Sprite
+    layers:
+    - state: heart-on
+      map: [ "enum.ToggleableVisuals.Layer" ]
+  - type: Item
+    size: Small
+    heldPrefix: heart
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ToggleableVisuals.Enabled:
+        enum.ToggleableVisuals.Layer:
+          True: { state: heart-on }
+          False: { state: heart-off }
+  - type: Organ
+    organType: Heart
+  - type: Metabolizer
+    maxReagents: 2
+    metabolizerTypes:
+    - Human
+    groups:
+    - id: Heart
+  - type: BodyDamageable
+  - type: BodyDamageThresholds
+    thresholds:
+      Alive: 0
+      Wounded: 10
+      Dead: 120
+  - type: BodyDamageOnRot
+    minRotStage: 2
+    fullyRottenDamage: 120
+  - type: ItemToggle
+    activated: true # beating by default
+    onActivate: false
+  - type: ItemToggleExamineText
+    enabledText: heart-examine-beating
+    disabledText: heart-examine-not-beating
+  - type: ItemToggleOnDefibrillation
+    enable: true
+  - type: ItemToggleOnMobThresholds
+    mode: Disable
+    states:
+    - Dead
+  - type: ItemToggleOnBodyDamage
+    requiredStates:
+    - Dead
+  - type: OrganRequiredForDefibrillation
+  - type: OrganRequiredForRespiration
+  - type: DisableRespireOnItemToggle
+  - type: DefibrillationDisableOnBodyDamage
+    requiredStates:
+    - Dead
+    reason: defibrillator-heart-dead
+  - type: RespirationDelayOnBodyDamage
+    requiredStates:
+    - Wounded
+    - Dead
+  - type: SurgeryReceiver
+    availableSurgeries:
+    - OrganHeal
+  - type: Temperature
+  - type: Perishable
+    rotAfter: 360
+    molsPerSecondPerUnitMass: 0
+  - type: HealthAnalyzerBodyItem
+    progressBarLocation: TopLeft
+
+- type: entity
+  id: BaseOrganLungs
+  abstract: true
+  components:
+  - type: Sprite
+    layers:
+      - state: lung-l
+      - state: lung-r
+  - type: Item
+    size: Small
+    heldPrefix: lungs
+  - type: Organ
+    organType: Lungs
+  - type: Lung
+  - type: Metabolizer
+    removeEmpty: true
+    solutionOnBody: false
+    solution: "Lung"
+    metabolizerTypes: [ Human ]
+    groups:
+    - id: Gas
+      rateModifier: 100.0
+  - type: BodyDamageable
+  - type: BodyDamageThresholds
+    thresholds:
+      Alive: 0
+      Wounded: 10
+      Dead: 120
+  - type: BodyDamageOnRot
+    minRotStage: 2
+    fullyRottenDamage: 120
+  - type: CoughOnBodyDamage
+    minChance: 0
+    maxChance: 0.2
+  - type: OrganRequiredForRespiration
+  - type: DisableRespireOnBodyDamage
+    requiredStates:
+    - Dead
+  - type: RespirationDelayOnBodyDamage
+    requiredStates:
+    - Wounded
+  - type: SolutionContainerManager
+    solutions:
+      organ:
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 10
+      Lung:
+        maxVol: 100.0
+        canReact: false
+      food:
+        maxVol: 5
+        reagents:
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 5
+  - type: SurgeryReceiver
+    availableSurgeries:
+    - OrganHeal
+  - type: Temperature
+  - type: Perishable
+    rotAfter: 990
+    molsPerSecondPerUnitMass: 0
+  - type: CoughOnRespire
+  - type: HealthAnalyzerBodyItem
+    progressBarLocation: TopRight
+
+- type: entity
+  id: BaseOrganStomach
+  abstract: true
+  components:
+  - type: Sprite
+    state: stomach
+  - type: Item
+    size: Small
+    heldPrefix: stomach
+  - type: Organ
+    organType: Stomach
+  - type: BodyDamageable
+  - type: BodyDamageThresholds
+    thresholds:
+      Alive: 0
+      Wounded: 10
+      Dead: 100
+  - type: BodyDamageOnRot
+    minRotStage: 2
+    fullyRottenDamage: 100
+  - type: VomitOnBodyDamage
+    requiredStates:
+    - Wounded
+    - Dead
+    minProb: 0.01
+    maxProb: 0.5
+    scaleProbToDamage: 100
+  - type: MetabolizerDelayOnBodyDamage
+  - type: SolutionContainerManager
+    solutions:
+      stomach:
+        maxVol: 50
+      food:
+        maxVol: 5
+        reagents:
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 5
+  - type: Stomach
+  # The stomach metabolizes stuff like foods and drinks.
+  # TODO: Have it work off of the ent's solution container, and move this
+  # to intestines instead.
+  - type: Metabolizer
+    # mm yummy
+    maxReagents: 3
+    metabolizerTypes:
+    - Human
+    groups:
+    - id: Food
+    - id: Drink
+  - type: SurgeryReceiver
+    availableSurgeries:
+    - OrganHeal
+  - type: Temperature
+  - type: Perishable
+    rotAfter: 780
+    molsPerSecondPerUnitMass: 0
+  - type: HealthAnalyzerBodyItem
+    progressBarLocation: MiddleLeft
+
+- type: entity
+  id: BaseOrganLiver
+  abstract: true
+  components:
+  - type: Sprite
+    state: liver
+  - type: Organ
+    organType: Liver
+  - type: Item
+    size: Small
+    heldPrefix: liver
+  - type: Metabolizer # The liver metabolizes certain chemicals only, like alcohol.
+    maxReagents: 1
+    metabolizerTypes: [Human]
+    groups:
+    - id: Alcohol
+      rateModifier: 0.1 # removes alcohol very slowly along with the stomach removing it as a drink
+  - type: Damageable
+    damageContainer: Liver
+  - type: OrganMissingDamage
+    entries:
+    - damage:
+        types:
+          Necrosis: 0.2
+    - damage:
+        types:
+          Necrosis: -0.1
+      damageOn: Added
+      capToOrganType: true
+  - type: BodyDamageable
+  - type: BodyDamageThresholds
+    thresholds:
+      Alive: 0
+      Wounded: 40
+      Dead: 100
+  - type: BodyDamageOnRot
+    minRotStage: 2
+    fullyRottenDamage: 100
+  - type: DamageOnBodyDamage
+    requiredStates:
+    - Wounded
+    - Dead
+    scaleToState: Dead
+    mode: Damage
+    damageDelay: 1
+    damage:
+      types:
+        Poison: 4
+  - type: MetabolizerDelayOnBodyDamage
+  - type: SurgeryReceiver
+    availableSurgeries:
+    - OrganHeal
+  - type: Temperature
+  - type: Perishable
+    rotAfter: 900
+    molsPerSecondPerUnitMass: 0
+  - type: HealthAnalyzerBodyItem
+    progressBarLocation: MiddleRight
+
+- type: entity
+  id: BaseOrganKidneys
+  abstract: true
+  components:
+  - type: Sprite
+    layers:
+      - state: kidney-l
+      - state: kidney-r
+  - type: Organ
+    organType: Kidneys
+  - type: Item
+    size: Small
+    heldPrefix: kidneys
+  - type: Metabolizer
+    maxReagents: 2
+    removeEmpty: true
+    metabolizerTypes:
+      - Human
+    groups:
+    - id: Medicine
+    - id: Poison
+    - id: Narcotic
+  - type: OrganMissingDamage
+    entries:
+    - damage:
+        types:
+          Necrosis: 0.2
+    - damage:
+        types:
+          Necrosis: -0.1
+      damageOn: Added
+      capToOrganType: true
+  - type: BodyDamageable
+  - type: BodyDamageThresholds
+    thresholds:
+      Alive: 0
+      Wounded: 10
+      Dead: 100
+  - type: BodyDamageOnRot
+    minRotStage: 2
+    fullyRottenDamage: 100
+  - type: MetabolizerDelayOnBodyDamage
+    requiredStates:
+    - Wounded
+  - type: DisableMetabolisingOnBodyDamage
+    requiredStates:
+    - Dead
+  - type: SurgeryReceiver
+    availableSurgeries:
+    - OrganHeal
+  - type: Temperature
+  - type: Perishable
+    rotAfter: 900
+    molsPerSecondPerUnitMass: 0
+  - type: HealthAnalyzerBodyItem
+    progressBarLocation: BottomLeft
+
+- type: entity
+  id: BaseOrganAppendix
+  abstract: true
+  components:
+  - type: Organ
+    organType: Appendix
+  - type: Sprite
+    layers:
+    - map: [ "base" ]
+      state: appendix
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.BodyDamageThresholdVisuals.State:
+        base:
+          Alive: { state: appendix }
+          Wounded: { state: appendix }
+          Dead: { state: appendix-inflamed }
+  - type: BodyDamageable
+  - type: BodyDamageThresholds
+    thresholds:
+      Alive: 0
+      Wounded: 10
+      Dead: 80
+    examineText:
+      Alive: appendix-examine-not-burst
+      Wounded: appendix-examine-not-burst
+      Dead: appendix-examine-burst
+  - type: BodyDamageOnRot
+    minRotStage: 2
+    fullyRottenDamage: 80
+  - type: DamageOnBodyDamage
+    requiredStates:
+    - Dead # burst when dead
+    mode: Damage
+    damageDelay: 1
+    damage:
+      types:
+        Poison: 2.5
+  - type: SurgeryReceiver
+    availableSurgeries:
+    - OrganHeal
+  - type: Temperature
+  - type: Perishable
+    rotAfter: 900
+    molsPerSecondPerUnitMass: 0
+  - type: HealthAnalyzerBodyItem
+    progressBarLocation: BottomRight

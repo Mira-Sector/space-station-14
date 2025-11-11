@@ -1,9 +1,9 @@
-﻿using Content.Shared.Containers.ItemSlots;
+using Content.Shared.Containers.ItemSlots;
 using Robust.Shared.GameStates;
 
 namespace Content.Shared.CartridgeLoader;
 
-[RegisterComponent, NetworkedComponent]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class CartridgeLoaderComponent : Component
 {
     public const string CartridgeSlotId = "Cartridge-Slot";
@@ -26,7 +26,7 @@ public sealed partial class CartridgeLoaderComponent : Component
     /// <summary>
     /// The list of programs running in the background, listening to certain events
     /// </summary>
-    [ViewVariables]
+    [ViewVariables, AutoNetworkedField]
     public readonly List<EntityUid> BackgroundPrograms = new();
 
     /// <summary>

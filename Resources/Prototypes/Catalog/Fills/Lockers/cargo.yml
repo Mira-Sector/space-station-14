@@ -3,8 +3,7 @@
   table: !type:AllSelector
     children:
     - id: OxygenTankFilled
-    - id: ClothingShoesBootsMag
-    - id: ClothingOuterHardsuitSpatio
+    - id: ClothingBackpackModSuitSalvageFilled
     - id: ClothingMaskGasExplorer
 
 - type: entityTable

@@ -1,8 +1,10 @@
 using Content.Shared.Body.Part;
 using Content.Shared.DoAfter;
+using Content.Shared.Surgery.Events;
 using Content.Shared.Whitelist;
 using JetBrains.Annotations;
 using Robust.Shared.Serialization;
+using Robust.Shared.Utility;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Content.Shared.Surgery.Requirements;
@@ -20,26 +22,41 @@ public sealed partial class UsedWhitelistRequirement : SurgeryEdgeRequirement
     [DataField]
     public TimeSpan? Delay;
 
-    public override SurgeryEdgeState RequirementMet(EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, out Enum? ui)
+    public override string Name(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart)
+    {
+        return string.Empty;
+    }
+
+    public override string Description(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart)
+    {
+        return string.Empty;
+    }
+
+    public override SpriteSpecifier? GetIcon(EntityUid receiver, EntityUid? body, EntityUid? limb, BodyPart? bodyPart)
+    {
+        return null;
+    }
+
+    public override SurgeryInteractionState RequirementMet(EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart? bodyPart, out Enum? ui, bool test = false)
     {
         ui = null;
 
         if (tool == null)
-            return SurgeryEdgeState.Failed;
+            return SurgeryInteractionState.Failed;
 
         var entMan = IoCManager.Resolve<IEntityManager>();
         var whitelistSystem = entMan.System<EntityWhitelistSystem>();
 
         if (whitelistSystem.IsWhitelistFailOrNull(Whitelist, tool.Value) || whitelistSystem.IsBlacklistFail(BlackList, tool.Value))
-            return SurgeryEdgeState.Failed;
+            return SurgeryInteractionState.Failed;
 
         if (Delay == null)
-            return SurgeryEdgeState.Passed;
+            return SurgeryInteractionState.Passed;
 
-        return SurgeryEdgeState.DoAfter;
+        return SurgeryInteractionState.DoAfter;
     }
 
-    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
+    public override bool StartDoAfter(SharedDoAfterSystem doAfter, SurgeryEdge targetEdge, EntityUid receiver, EntityUid? body, EntityUid? limb, EntityUid user, EntityUid? tool, BodyPart? bodyPart, [NotNullWhen(true)] out DoAfterId? doAfterId)
     {
         doAfterId = null;
 
@@ -48,7 +65,7 @@ public sealed partial class UsedWhitelistRequirement : SurgeryEdgeRequirement
 
         var entMan = IoCManager.Resolve<IEntityManager>();
 
-        var doAfterArgs = new DoAfterArgs(entMan, user, Delay.Value, new SurgeryDoAfterEvent(targetEdge, bodyPart), limb, used: tool)
+        var doAfterArgs = new DoAfterArgs(entMan, user, Delay.Value, new SurgeryEdgeRequirementDoAfterEvent(targetEdge, bodyPart), limb, used: tool)
         {
             BreakOnMove = true,
             RequireDown = true

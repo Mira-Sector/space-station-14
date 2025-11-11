@@ -37,6 +37,8 @@
   - BoozeDispenserMachineCircuitboard
   - SodaDispenserMachineCircuitboard
   - WashingMachineCircuitboard
+  - SeedExtractorMachineCircuitboard
+  - HydroponicsTrayMachineCircuitboard
 
 - type: latheRecipePack
   id: HydroponicsStatic
@@ -65,9 +67,11 @@
   - PushHorn
 
 - type: latheRecipePack
-  id: Cartridge
+  id: Hydroponics
   recipes:
   - PlantScanCartridge
+  - SyntheticSwab
+  - SwabApplicator
 
 - type: latheRecipePack
   id: ServiceBoards

@@ -18,20 +18,26 @@ public partial class SharedModSuitSystem
 
     private void OnComplexityModuleAdded(Entity<ModSuitComplexityLimitComponent> ent, ref ModuleContainerModuleAddedEvent args)
     {
+        if (!_timing.IsFirstTimePredicted)
+            return;
+
         if (!TryComp<ModSuitModuleComplexityComponent>(args.Module, out var moduleComp))
             return;
 
         ent.Comp.Complexity += moduleComp.Complexity;
-        UpdateUI(ent.Owner);
+        Dirty(ent);
     }
 
     private void OnComplexityModuleRemoved(Entity<ModSuitComplexityLimitComponent> ent, ref ModuleContainerModuleRemovedEvent args)
     {
+        if (!_timing.IsFirstTimePredicted)
+            return;
+
         if (!TryComp<ModSuitModuleComplexityComponent>(args.Module, out var moduleComp))
             return;
 
         ent.Comp.Complexity -= moduleComp.Complexity;
-        UpdateUI(ent.Owner);
+        Dirty(ent);
     }
 
     private void OnComplexityModuleAttempt(Entity<ModSuitComplexityLimitComponent> ent, ref ModuleContainerModuleAddingAttemptEvent args)

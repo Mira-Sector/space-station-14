@@ -1,6 +1,13 @@
 ## Static
 
 - type: latheRecipePack
+  id: ScienceEquipmentStatic
+  recipes:
+  - AnomalyScanner
+  - NodeScanner
+  - TeleportBeacon
+
+- type: latheRecipePack
   id: ScienceBoardsStatic
   recipes:
   - ProtolatheMachineCircuitboard
@@ -9,6 +16,12 @@
   - ExosuitFabricatorMachineCircuitboard
   - CutterMachineCircuitboard
   - BorgChargerCircuitboard
+  - APECircuitboard
+  - AnomalyVesselCircuitboard
+  - AnalysisComputerCircuitboard
+  - ArtifactAnalyzerMachineCircuitboard
+  - TeleporterScienceMachineCircuitboard
+  - ComputerTeleporterCircuitboard
 
 - type: latheRecipePack
   id: CircuitFloorsStatic
@@ -22,14 +35,13 @@
 - type: latheRecipePack
   id: ScienceEquipment
   recipes:
-  - AnomalyScanner
-  - NodeScanner
   - AnomalyLocator
   - AnomalyLocatorWide
   - HoloprojectorField
   - SignallerAdvanced
   - DeviceQuantumSpinInverter
   - DeviceDesynchronizer
+  - HandHeldTeleframeConsoleEmpty
 
 - type: latheRecipePack
   id: ScienceClothing
@@ -98,6 +110,7 @@
   - APECircuitboard
   - ArtifactAnalyzerMachineCircuitboard
   - ArtifactCrusherMachineCircuitboard
+  - ResearchAndDevelopmentServerMachineCircuitboard
 
 - type: latheRecipePack
   id: CameraBoards

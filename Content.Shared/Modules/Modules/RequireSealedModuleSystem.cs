@@ -18,6 +18,9 @@ public sealed partial class RequireSealedModuleSystem : EntitySystem
 
         SubscribeLocalEvent<RequireSealedModuleComponent, ModuleToggleAttemptEvent>(OnToggleAttempt);
 
+        SubscribeLocalEvent<RequireSealedModuleComponent, ModuleAddedContainerEvent>(OnAdded);
+        SubscribeLocalEvent<RequireSealedModuleComponent, ModuleRemovedContainerEvent>(OnRemoved);
+
         SubscribeLocalEvent<RequireSealedModuleComponent, ModuleRelayedEvent<ModSuitContainerPartSealedEvent>>(OnSealed);
         SubscribeLocalEvent<RequireSealedModuleComponent, ModuleRelayedEvent<ModSuitContainerPartUnsealedEvent>>(OnUnsealed);
     }
@@ -32,6 +35,25 @@ public sealed partial class RequireSealedModuleSystem : EntitySystem
 
         args.Cancel();
         args.Reason = "module-toggle-failed-sealed";
+    }
+
+    private void OnAdded(Entity<RequireSealedModuleComponent> ent, ref ModuleAddedContainerEvent args)
+    {
+        if (!ent.Comp.EnableOnSealed)
+            return;
+
+        if (!CanEnable(ent, args.Container))
+            return;
+
+        _toggleableModule.RaiseToggleEvents(ent.Owner, true, null);
+    }
+
+    private void OnRemoved(Entity<RequireSealedModuleComponent> ent, ref ModuleRemovedContainerEvent args)
+    {
+        if (CanEnable(ent, args.Container))
+            return;
+
+        _toggleableModule.RaiseToggleEvents(ent.Owner, false, null);
     }
 
     private void OnSealed(Entity<RequireSealedModuleComponent> ent, ref ModuleRelayedEvent<ModSuitContainerPartSealedEvent> args)

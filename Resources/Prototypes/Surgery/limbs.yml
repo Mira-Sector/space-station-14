@@ -1,71 +1,88 @@
 - type: surgery
   id: LimbAmputation
+  name: surgery-limb-amputation-name
+  description: surgery-limb-amputation-desc
   startingNode: Start
   nodes:
   - id: Start
     edges:
     - connection: Scalpel1
       requirement: !type:ToolRequirement
-        qualities:
-        - Slicing
+        pain:
+        - BasicLightDamage
+        quality: Slicing
   - id: Scalpel1
     edges:
     - connection: Retractor
       requirement: !type:ToolRequirement
-        qualities:
-        - Retracting
+        pain:
+        - BasicNoDamage
+        quality: Retracting
   - id: Retractor
     edges:
     - connection: Hemostat1
       requirement: !type:ToolRequirement
-        qualities:
-        - Clamping
+        pain:
+        - BasicNoDamage
+        quality: Clamping
   - id: Hemostat1
     edges:
     - connection: Saw
       requirement: !type:ToolRequirement
-        qualities:
-        - Sawing
+        pain:
+        - BasicHeavyDamage
+        quality: Sawing
   - id: Saw
     edges:
     - connection: Hemostat2
       requirement: !type:ToolRequirement
-        qualities:
-        - Clamping
+        pain:
+        - BasicNoDamage
+        quality: Clamping
   - id: Hemostat2
     edges:
     - connection: Scalpel2
       requirement: !type:ToolRequirement
-        qualities:
-        - Slicing
+        pain:
+        - BasicLightDamage
+        quality: Slicing
   - id: Scalpel2
     edges:
     - connection: Start
       requirement: !type:LimbRequirement
+        pain:
+        - BasicNoDamage
 
 - type: surgery
   id: LimbReplacement
+  name: surgery-name-limb-replacement
+  description: surgery-desc-limb-replacement
   startingNode: Start
   nodes:
   - id: Start
     edges:
     - connection: Scalpel
       requirement: !type:ToolRequirement
-        qualities:
-        - Slicing
+        pain:
+        - BasicLightDamage
+        quality: Slicing
   - id: Scalpel
     edges:
     - connection: Retractor
       requirement: !type:ToolRequirement
-        qualities:
-        - Retracting
+        pain:
+        - BasicNoDamage
+        quality: Retracting
   - id: Retractor
     edges:
     - connection: Hemostat
       requirement: !type:ToolRequirement
-        qualities:
-        - Clamping
+        pain:
+        - BasicNoDamage
+        quality: Clamping
   - id: Hemostat
     edges:
     - connection: Start
       requirement: !type:LimbRequirement
+        pain:
+        - BasicNoDamage

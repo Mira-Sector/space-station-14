@@ -164,7 +164,7 @@
   id: FillAtmosphericsHardsuit
   table: !type:AllSelector
     children:
-    - id: ClothingOuterHardsuitAtmos
+    - id: ClothingBackpackModSuitAtmosphericFilled
     - id: OxygenTankFilled
     - id: ClothingMaskBreath
 
@@ -207,9 +207,8 @@
   id: FillEngineerHardsuit
   table: !type:AllSelector
     children:
-    - id: ClothingOuterHardsuitEngineering
+    - id: ClothingBackpackModSuitEngineeringFilled
     - id: OxygenTankFilled
-    - id: ClothingShoesBootsMag
     - id: ClothingMaskBreath
 
 - type: entity

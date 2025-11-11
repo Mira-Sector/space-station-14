@@ -1,11 +1,6 @@
 namespace Content.Shared.Modules.ModSuit.Events;
 
-public abstract partial class BaseModSuitContainerSealEvent : EntityEventArgs
+public abstract partial class BaseModSuitContainerSealEvent(EntityUid part) : EntityEventArgs
 {
-    public readonly EntityUid Part;
-
-    public BaseModSuitContainerSealEvent(EntityUid part)
-    {
-        Part = part;
-    }
+    public readonly EntityUid Part = part;
 }

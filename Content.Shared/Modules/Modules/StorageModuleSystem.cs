@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Shared.Modules.Components.Modules;
 using Content.Shared.Modules.Events;
 using Content.Shared.Storage;
@@ -45,30 +46,35 @@ public sealed partial class StorageModuleSystem : EntitySystem
         if (!TryComp<StorageComponent>(ent.Owner, out var moduleStorage))
             return;
 
-        EnsureComp<StorageComponent>(args.Container, out var containerStorage);
-        containerStorage.Grid = moduleStorage.Grid;
-        containerStorage.MaxItemSize = moduleStorage.MaxItemSize;
-        containerStorage.Whitelist = moduleStorage.Whitelist;
-        containerStorage.Blacklist = moduleStorage.Blacklist;
-        containerStorage.StorageInsertSound = moduleStorage.StorageInsertSound;
-        containerStorage.StorageRemoveSound = moduleStorage.StorageRemoveSound;
-        containerStorage.StorageOpenSound = moduleStorage.StorageOpenSound;
-        containerStorage.StorageCloseSound = moduleStorage.StorageOpenSound;
-        containerStorage.SavedLocations = moduleStorage.SavedLocations;
-
-        foreach (var item in new List<EntityUid>(ent.Comp.Items.ContainedEntities))
+        if (!TryComp<StorageComponent>(args.Container, out var containerStorage))
         {
-            var location = ent.Comp.Locations[item];
+            containerStorage = new StorageComponent
+            {
+                Grid = moduleStorage.Grid,
+                MaxItemSize = moduleStorage.MaxItemSize,
+                Whitelist = moduleStorage.Whitelist,
+                Blacklist = moduleStorage.Blacklist,
+                StorageInsertSound = moduleStorage.StorageInsertSound,
+                StorageRemoveSound = moduleStorage.StorageRemoveSound,
+                StorageOpenSound = moduleStorage.StorageOpenSound,
+                StorageCloseSound = moduleStorage.StorageOpenSound,
+                SavedLocations = moduleStorage.SavedLocations
+            };
 
-            _storage.InsertAt((args.Container, containerStorage), item, location, out _, null, false, false);
+            AddComp(args.Container, containerStorage);
         }
 
-        Dirty(args.Container, containerStorage);
+        var items = ent.Comp.Items.ContainedEntities.ToArray();
+        foreach (var item in items)
+        {
+            var location = ent.Comp.Locations[item];
+            _storage.InsertAt((args.Container, containerStorage), item, location, out _, null, false, false);
+        }
     }
 
     private void OnRemoved(Entity<StorageModuleComponent> ent, ref ModuleRemovedContainerEvent args)
     {
-        if (!_timing.IsFirstTimePredicted)
+        if (TerminatingOrDeleted(ent.Owner) || TerminatingOrDeleted(args.Container))
             return;
 
         if (!TryComp<StorageComponent>(args.Container, out var containerStorage))

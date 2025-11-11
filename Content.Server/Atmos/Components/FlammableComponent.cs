@@ -35,6 +35,9 @@ namespace Content.Server.Atmos.Components
         [DataField]
         public float MinIgnitionTemperature = 373.15f;
 
+        [DataField]
+        public bool IgniteFromHeat;
+
         [ViewVariables(VVAccess.ReadWrite)]
         [DataField]
         public bool FireSpread { get; private set; } = false;

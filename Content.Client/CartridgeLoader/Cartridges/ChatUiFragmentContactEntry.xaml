@@ -1,0 +1,39 @@
+<Button
+    xmlns="https://spacestation14.io"
+    xmlns:cartridges="clr-namespace:Content.Client.CartridgeLoader.Cartridges"
+    Margin="8"
+    HorizontalAlignment="Stretch"
+    VerticalAlignment="Center"
+    HorizontalExpand="True">
+    <BoxContainer
+        Margin="4"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Center">
+        <TextureRect
+            Name="Icon"
+            Stretch="Tile"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"/>
+        <PanelContainer
+            Margin="8 0"
+            StyleClasses="LowDivider"/>
+        <Label
+            Name="Name"
+            Margin="2"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"/>
+        <Label
+            Name="Id"
+            Margin="2"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"/>
+    </BoxContainer>
+    <BoxContainer
+        Margin="4"
+        HorizontalAlignment="Right"
+        VerticalAlignment="Center">
+        <cartridges:ChatUiFragmentContactEntryUnreadMarker
+            Name="UnreadMarker"
+            Visible="False"/>
+    </BoxContainer>
+</Button>

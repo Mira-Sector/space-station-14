@@ -35,6 +35,7 @@ using Robust.Shared.Serialization;
 using Robust.Shared.Timing;
 using System.Diagnostics.CodeAnalysis;
 using Robust.Shared.Utility;
+using Content.Shared.Pinpointer;
 
 namespace Content.Shared.Silicons.StationAi;
 
@@ -115,6 +116,8 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         SubscribeLocalEvent<StationAiCoreComponent, MapInitEvent>(OnAiMapInit);
         SubscribeLocalEvent<StationAiCoreComponent, ComponentShutdown>(OnAiShutdown);
         SubscribeLocalEvent<StationAiCoreComponent, GetVerbsEvent<Verb>>(OnCoreVerbs);
+
+        SubscribeLocalEvent<StationAiHeldComponent, GetNavMapWarpEntity>(OnNavMapWarp);
     }
 
     private void OnCoreVerbs(Entity<StationAiCoreComponent> ent, ref GetVerbsEvent<Verb> args)
@@ -367,6 +370,23 @@ public abstract partial class SharedStationAiSystem : EntitySystem
             args.Cancel();
     }
 
+    private void OnNavMapWarp(Entity<StationAiHeldComponent> ent, ref GetNavMapWarpEntity args)
+    {
+        if (args.Cancelled)
+            return;
+
+        if (!TryGetCore(ent, out var core) || core.Comp == null)
+            return;
+
+        if (!core.Comp.Remote || core.Comp.RemoteEntity == null)
+        {
+            args.Cancel();
+            return;
+        }
+
+        args.Entity = core.Comp.RemoteEntity.Value;
+    }
+
     private void OnAiShutdown(Entity<StationAiCoreComponent> ent, ref ComponentShutdown args)
     {
         // TODO: Tryqueuedel
@@ -376,6 +396,7 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         QueueDel(ent.Comp.RemoteEntity);
         ent.Comp.RemoteEntity = null;
     }
+
 
     protected virtual void OnCorePower(Entity<StationAiCoreComponent> ent, ref PowerChangedEvent args)
     {

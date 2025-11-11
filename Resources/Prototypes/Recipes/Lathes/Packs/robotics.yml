@@ -7,6 +7,7 @@
   - PositronicBrain
   - SciFlash
   - CyborgEndoskeleton
+  - ProximitySensor
 
 - type: latheRecipePack
   id: BorgModulesStatic
@@ -66,3 +67,39 @@
     - MechEquipmentGrabber
     - MechEquipmentHorn
     - MechEquipmentGrabberSmall
+
+- type: latheRecipePack
+  id: ModSuitParts
+  recipes:
+  - ModSuitConstructionShell
+  - ModSuitConstructionHelmet
+  - ModSuitConstructionChestplate
+  - ModSuitConstructionGauntlets
+  - ModSuitConstructionBoots
+  - ModSuitPlatingStandard
+  - ModSuitPlatingEngineering
+  - ModSuitPlatingAtmospheric
+  - ModSuitPlatingMedical
+  - ModSuitPlatingSecurity
+  - ModSuitPlatingCosmohonk
+
+- type: latheRecipePack
+  id: ModSuitModulesStatic
+  recipes:
+  - ModSuitModuleStorageNormal
+  - ModSuitModuleFlashlight
+
+- type: latheRecipePack
+  id: ModSuitModules
+  recipes:
+  - ModSuitModuleCloakPrototype
+  - ModSuitModuleJetpackNormal
+  - ModSuitModuleMagboots
+  - ModSuitModuleInsulation
+  - ModSuitModuleVisonMed
+  - ModSuitModuleVisonDiagnostic
+  - ModSuitModuleVisonSec
+  - ModSuitModuleVisonMeson
+  - ModSuitModuleVisonWelding
+  - ModSuitModuleStorageExpanded
+  - ModSuitModuleStorageBluespace
