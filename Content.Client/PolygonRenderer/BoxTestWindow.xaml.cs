@@ -14,18 +14,18 @@ public sealed partial class BoxTestWindow : FancyWindow
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
 
-    internal static readonly ProtoId<PolygonModelPrototype> BoxId = "TestBox";
-    internal PolygonModel Box;
+    private static readonly ProtoId<PolygonModelPrototype> BoxId = "TestBox";
+    private readonly PolygonModel _box;
 
-    internal const uint BoxCount = 3;
-    internal const float SpacePerBox = 0.25f;
+    private const uint BoxCount = 3;
+    private const float SpacePerBox = 0.25f;
 
-    internal const float UpdateRate = 1f / 30f;
-    internal float Accumulator;
+    private const float UpdateRate = 1f / 30f;
+    private float _accumulator;
 
-    internal float Rotation = 0f;
+    private float _rotation = 0f;
 
-    internal static readonly Vector3 Camera = new()
+    private static readonly Vector3 Camera = new()
     {
         X = -1,
         Y = -1,
@@ -37,19 +37,19 @@ public sealed partial class BoxTestWindow : FancyWindow
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
 
-        Box = _prototype.Index(BoxId);
+        _box = _prototype.Index(BoxId);
     }
 
     protected override void Draw(DrawingHandleScreen handle)
     {
         base.Draw(handle);
 
-        Accumulator -= (float)_timing.FrameTime.TotalSeconds;
-        if (Accumulator > 0f)
+        _accumulator -= (float)_timing.FrameTime.TotalSeconds;
+        if (_accumulator > 0f)
             return;
 
-        Accumulator = MathF.Max(0f, Accumulator + UpdateRate);
-        Rotation += UpdateRate;
+        _accumulator = MathF.Max(0f, _accumulator + UpdateRate);
+        _rotation += UpdateRate;
 
         var modelArray = new PolygonModel[BoxCount];
         for (var i = 0; i < BoxCount; i++)
@@ -59,16 +59,15 @@ public sealed partial class BoxTestWindow : FancyWindow
         Renderer.Camera = Camera;
     }
 
-    internal PolygonModel NewBox(int index)
+    private PolygonModel NewBox(int index)
     {
-        var newBox = new PolygonModel();
-        newBox.Polygons = Box.Polygons;
+        var newBox = new PolygonModel(_box.Polygons);
 
         var offset = index;
         if ((index & 1) == 1)
             offset += 1;
 
-        var rotation = new Vector3(Rotation * offset, index, Rotation * offset * 0.5f);
+        var rotation = new Vector3(_rotation * offset, index, _rotation * offset * 0.5f);
         var position = new Vector3(SpacePerBox * offset, 0f, 0f);
 
         if ((index & 1) == 1)

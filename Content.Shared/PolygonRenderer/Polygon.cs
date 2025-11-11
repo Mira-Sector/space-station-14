@@ -56,7 +56,7 @@ public abstract partial class Polygon
         Vertices = vertices;
     }
 
-    internal static void ValidateVertices(Vector3[] vertices)
+    private static void ValidateVertices(Vector3[] vertices)
     {
         if (vertices.Length != 3)
             throw new ArgumentException("Vertices array must contain exactly 3 elements", nameof(vertices));
