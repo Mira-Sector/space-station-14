@@ -3,3 +3,9 @@
   texture:
     sprite: Interface/Racer/road.rsi
     state: paved-stripe
+
+- type: racerGameEdgeTexture
+  id: Dirt
+  texture:
+    sprite: Interface/Racer/road.rsi
+    state: dirt

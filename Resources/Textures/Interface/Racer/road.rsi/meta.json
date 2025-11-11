@@ -13,6 +13,9 @@
             "name": "paved-stripe"
         },
         {
+            "name": "dirt"
+        },
+        {
             "name": "fallback"
         }
     ]
