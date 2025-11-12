@@ -2,7 +2,6 @@ using Content.Shared.PolygonRenderer;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
 using System.Linq;
-using System.Numerics;
 using JetBrains.Annotations;
 using Vector3 = Robust.Shared.Maths.Vector3;
 
@@ -17,7 +16,7 @@ public sealed partial class PolygonRendererControl : Control
     [ViewVariables]
     public Matrix4 Camera = Matrix4.Identity;
 
-    private record TransformedPolygon(Polygon Polygon, Vector3[] TransformedVertices, float AvgDepth);
+    private record struct TransformedPolygon(Polygon Polygon, Vector3[] TransformedVertices, float AvgDepth);
 
     protected override void Draw(DrawingHandleScreen handle)
     {
@@ -29,39 +28,37 @@ public sealed partial class PolygonRendererControl : Control
 
         foreach (var model in Models)
         {
-            var modelMatrix = Matrix4.Identity;
-            modelMatrix *= Matrix4.Scale(model.Scale);
-            modelMatrix *= Matrix4.CreateRotationX(model.Rotation.X)
-                * Matrix4.CreateRotationY(model.Rotation.Y)
-                * Matrix4.CreateRotationZ(model.Rotation.Z);
-            modelMatrix *= Matrix4.CreateTranslation(model.Position);
-
             transformedPolygons.EnsureCapacity(transformedPolygons.Count + model.Polygons.Count);
             foreach (var polygon in model.Polygons)
             {
-                var transformedVertices = new Vector3[3];
-                for (var i = 0; i < 3; i++)
-                    transformedVertices[i] = Vector3.Transform(polygon.Vertices[i], modelMatrix);
+                // prevent division by 0
+                // this is only a rough guide anyway
+                var avgDepth = float.Epsilon;
+                var transformedVertices = new Vector3[polygon.Vertices.Length];
+                for (var i = 0; i < transformedVertices.Length; i++)
+                {
+                    var transformed = Vector3.Transform(polygon.Vertices[i], model.ModelMatrix);
+                    transformedVertices[i] = transformed;
+                    avgDepth += transformed.Z;
+                }
+                avgDepth /= transformedVertices.Length;
 
-                polygon.Vertices = transformedVertices;
-
-                var avgDepth = (transformedVertices[0].Z + transformedVertices[1].Z + transformedVertices[2].Z) / 3f;
-                var transformed = new TransformedPolygon(polygon, transformedVertices, avgDepth);
-                transformedPolygons.Add(transformed);
+                var transformedPolygon = new TransformedPolygon(polygon, transformedVertices, avgDepth);
+                transformedPolygons.Add(transformedPolygon);
             }
         }
 
         var sortedPolygons = transformedPolygons.OrderByDescending(x => x.AvgDepth);
         foreach (var (polygon, transformedVertices, _) in sortedPolygons)
         {
-            polygon.Vertices = transformedVertices;
-            var (vertices, color) = polygon.PolygonTo2D(Camera);
+            var (vertices, color) = polygon.PolygonTo2D(transformedVertices, Camera);
+            if (color == null)
+                continue;
 
-            List<Vector2> scaledVertices = [];
-            foreach (var vertex in vertices)
-                scaledVertices.Add(vertex * PixelSize);
+            for (var i = 0; i < vertices.Length; i++)
+                vertices[i] *= PixelSize;
 
-            handle.DrawPrimitives(DrawPrimitiveTopology.TriangleList, scaledVertices, color!.Value);
+            handle.DrawPrimitives(DrawPrimitiveTopology.TriangleList, vertices, color.Value);
         }
     }
 }

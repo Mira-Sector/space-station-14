@@ -10,12 +10,11 @@ public abstract partial class Polygon
     [DataField]
     public Vector3[] Vertices = new Vector3[3];
 
-    public Vector3 Centroid => new()
-    {
-        X = (Vertices[0].X + Vertices[1].X + Vertices[2].X) / 3f,
-        Y = (Vertices[0].Y + Vertices[1].Y + Vertices[2].Y) / 3f,
-        Z = (Vertices[0].Z + Vertices[1].Z + Vertices[2].Z) / 3f
-    };
+    public Vector3 Centroid => new(
+        (Vertices[0].X + Vertices[1].X + Vertices[2].X) / 3f,
+        (Vertices[0].Y + Vertices[1].Y + Vertices[2].Y) / 3f,
+        (Vertices[0].Z + Vertices[1].Z + Vertices[2].Z) / 3f
+    );
 
     public Vector3 Normal()
     {
@@ -29,21 +28,17 @@ public abstract partial class Polygon
         return Vector3.Normalize(normal);
     }
 
-    public virtual (List<Vector2>, Color?) PolygonTo2D(Matrix4 camera)
+    public virtual (Vector2[], Color?) PolygonTo2D(Vector3[] transformedVertices, Matrix4 camera)
     {
-        List<Vector2> projectedPoints = new(Vertices.Length);
-        foreach (var vertex in Vertices)
+        var projectedPoints = new Vector2[transformedVertices.Length];
+        for (var i = 0; i < transformedVertices.Length; i++)
         {
+            var vertex = transformedVertices[i];
             var relativePos = Vector3.Transform(vertex, camera);
             relativePos.Z += float.Epsilon; // prevent division by 0
 
-            var projected = new Vector2()
-            {
-                X = relativePos.X / relativePos.Z,
-                Y = relativePos.Y / relativePos.Z
-            };
-
-            projectedPoints.Add(projected);
+            var projected = new Vector2(relativePos.X / relativePos.Z, relativePos.Y / relativePos.Z);
+            projectedPoints[i] = projected;
         }
 
         return (projectedPoints, Color.White);
