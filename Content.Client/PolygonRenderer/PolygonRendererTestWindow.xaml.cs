@@ -10,7 +10,7 @@ using Vector3 = Robust.Shared.Maths.Vector3;
 namespace Content.Client.PolygonRenderer;
 
 [GenerateTypedNameReferences]
-public sealed partial class BoxTestWindow : FancyWindow
+public sealed partial class PolygonRendererTestWindow : FancyWindow
 {
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
@@ -30,7 +30,7 @@ public sealed partial class BoxTestWindow : FancyWindow
     private static readonly Vector3 CameraPos = new(-1, -1, -2);
     private static readonly Matrix4 Camera = Matrix4.CreateTranslation(CameraPos);
 
-    public BoxTestWindow()
+    public PolygonRendererTestWindow()
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
