@@ -1,6 +1,0 @@
-- type: racerGameStage
-  id: Factory
-  sky:
-    sprite:
-      sprite: /Textures/Interface/Racer/skies.rsi
-      state: factory
