@@ -9,7 +9,8 @@ using Vector3 = Robust.Shared.Maths.Vector3;
 namespace Content.Client.PolygonRenderer;
 
 [UsedImplicitly]
-public sealed partial class PolygonRendererControl : Control
+[Virtual]
+public partial class PolygonRendererControl : Control
 {
     [ViewVariables]
     public PolygonModel[] Models = [];
@@ -19,6 +20,7 @@ public sealed partial class PolygonRendererControl : Control
 
     private record struct TransformedPolygon(List<Vector2> Vertices, Color Color, float AvgDepth);
 
+    [MustCallBase]
     protected override void Draw(DrawingHandleScreen handle)
     {
         base.Draw(handle);

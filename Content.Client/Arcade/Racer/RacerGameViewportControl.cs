@@ -1,12 +1,12 @@
+using Content.Client.PolygonRenderer;
 using Content.Shared.Arcade.Racer;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
-using Robust.Client.UserInterface;
 using Robust.Shared.Prototypes;
 
 namespace Content.Client.Arcade.Racer;
 
-public sealed partial class RacerGameViewportControl : Control
+public sealed partial class RacerGameViewportControl : PolygonRendererControl
 {
     [Dependency] private readonly IClyde _clyde = default!;
     [Dependency] private readonly IEntityManager _entity = default!;
@@ -24,8 +24,6 @@ public sealed partial class RacerGameViewportControl : Control
 
     protected override void Draw(DrawingHandleScreen handle)
     {
-        base.Draw(handle);
-
         if (_cabinet is not { } cabinet)
             return;
 
@@ -33,6 +31,8 @@ public sealed partial class RacerGameViewportControl : Control
 
         var currentStage = _prototype.Index(state.CurrentStage);
         DrawSky(handle, currentStage.Sky);
+
+        base.Draw(handle);
     }
 
     private void DrawSky(DrawingHandleScreen handle, RacerGameStageSkyData data)
