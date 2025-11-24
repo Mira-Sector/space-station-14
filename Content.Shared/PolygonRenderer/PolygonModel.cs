@@ -8,7 +8,7 @@ public partial class PolygonModel
     [DataField]
     public List<Polygon> Polygons;
 
-    [DataField]
+    [ViewVariables]
     public Matrix4 ModelMatrix = Matrix4.Identity;
 
     public PolygonModel(List<Polygon> polygons)

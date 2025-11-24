@@ -1,5 +1,6 @@
 using Content.Client.PolygonRenderer;
 using Content.Shared.Arcade.Racer;
+using Content.Shared.Arcade.Racer.Objects;
 using Content.Shared.Arcade.Racer.Stage;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
@@ -40,6 +41,7 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
         var currentStage = _prototype.Index(state.CurrentStage);
         DrawSky(handle, currentStage.Sky);
         DrawGraph(currentStage.Graph, state.CurrentNode);
+        DrawObjects(state.Objects);
 
         SetCameraMatrix(currentStage.Graph, state.CurrentNode);
 
@@ -57,6 +59,17 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
     {
         var trackModel = GraphToPolygonModel(graph, RenderableEdgeBezierSamples, RenderageEdgeDrawDistance, currentNode.Position);
         Models.Add(trackModel);
+    }
+
+    private void DrawObjects(List<BaseRacerGameObject> objects)
+    {
+        Models.EnsureCapacity(Models.Count + objects.Count);
+        foreach (var obj in objects)
+        {
+            var model = _prototype.Index(obj.Model);
+            model.ModelMatrix = Matrix4.CreateTranslation(obj.Position);
+            Models.Add(model);
+        }
     }
 
     private void SetCameraMatrix(RacerArcadeStageGraph graph, RacerArcadeStageNode currentNode)
