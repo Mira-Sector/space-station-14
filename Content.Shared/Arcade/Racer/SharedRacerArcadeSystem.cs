@@ -18,15 +18,19 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
     private void OnInit(Entity<RacerArcadeComponent> ent, ref ComponentInit args)
     {
         var startingStage = PrototypeMan.Index(ent.Comp.StartingStage);
+        var startingNode = startingStage.Graph.Nodes[startingStage.Graph.StartingNode!];
 
         List<BaseRacerGameObject> objects = new(1);
-        var player = new RacerGameVehiclePlayer();
+        var player = new RacerGameVehiclePlayer()
+        {
+            Position = startingNode.Position
+        };
         objects.Add(player);
 
         ent.Comp.State = new()
         {
             CurrentStage = ent.Comp.StartingStage,
-            CurrentNode = startingStage.Graph.Nodes[startingStage.Graph.StartingNode!],
+            CurrentNode = startingNode,
             Objects = objects,
             Player = player
         };

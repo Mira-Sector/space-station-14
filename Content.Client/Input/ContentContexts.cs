@@ -89,6 +89,13 @@ namespace Content.Client.Input
             human.AddFunction(ContentKeyFunctions.Arcade3);
             human.AddFunction(ContentKeyFunctions.ToggleCrawling);
             human.AddFunction(ContentKeyFunctions.DamagePartSelector);
+            human.AddFunction(ContentKeyFunctions.RacerPitchUp);
+            human.AddFunction(ContentKeyFunctions.RacerPitchDown);
+            human.AddFunction(ContentKeyFunctions.RacerTurnLeft);
+            human.AddFunction(ContentKeyFunctions.RacerTurnRight);
+            human.AddFunction(ContentKeyFunctions.RacerAirbrakeLeft);
+            human.AddFunction(ContentKeyFunctions.RacerAirbrakeRight);
+            human.AddFunction(ContentKeyFunctions.RacerAccelerate);
 
             // actions should be common (for ghosts, mobs, etc)
             common.AddFunction(ContentKeyFunctions.OpenActionsMenu);
