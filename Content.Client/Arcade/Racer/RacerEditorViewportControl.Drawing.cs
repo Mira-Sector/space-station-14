@@ -132,8 +132,8 @@ public sealed partial class RacerEditorViewportControl
 
         var halfWidth = renderableEdge.Width * 0.5f;
 
-        var points = GetWorldSpaceEdgePoints(renderableEdge, sourcePos, nextPos);
-        var sampled = SampleBezier(points, RenderableEdgeBezierSamples);
+        var points = RacerViewportControlHelpers.GetWorldSpaceEdgePoints(renderableEdge, sourcePos, nextPos);
+        var sampled = RacerViewportControlHelpers.SampleBezier(points, RenderableEdgeBezierSamples);
 
         var baseColor = _selectedEdge == renderableEdge ? SelectedEdgeColor : Color.White;
 

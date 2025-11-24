@@ -13,7 +13,7 @@ namespace Content.Client.PolygonRenderer;
 public partial class PolygonRendererControl : Control
 {
     [ViewVariables]
-    public PolygonModel[] Models = [];
+    public List<PolygonModel> Models = [];
 
     [ViewVariables]
     public Matrix4 Camera = Matrix4.Identity;

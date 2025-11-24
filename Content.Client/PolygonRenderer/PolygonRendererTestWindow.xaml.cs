@@ -18,7 +18,7 @@ public sealed partial class PolygonRendererTestWindow : FancyWindow
     private static readonly ProtoId<PolygonModelPrototype> BoxId = "TestBox";
     private readonly PolygonModel _box;
 
-    private const uint BoxCount = 3;
+    private const int BoxCount = 3;
     private const float SpacePerBox = 0.25f;
 
     private const float UpdateRate = 1f / 30f;
@@ -36,9 +36,9 @@ public sealed partial class PolygonRendererTestWindow : FancyWindow
 
         _box = _prototype.Index(BoxId);
         Renderer.Camera = Matrix4.LookAt(CameraPos, Vector3.Zero, Vector3.UnitZ);
-        Renderer.Models = new PolygonModel[BoxCount];
+        Renderer.Models = new(BoxCount);
         for (var i = 0; i < BoxCount; i++)
-            Renderer.Models[i] = NewBox(i);
+            Renderer.Models.Add(NewBox(i));
     }
 
     protected override void Draw(DrawingHandleScreen handle)
