@@ -28,16 +28,14 @@ public abstract partial class Polygon
         return Vector3.Normalize(normal);
     }
 
-    public virtual (Vector2[], Color?) PolygonTo2D(Vector3[] transformedVertices, Matrix4 camera)
+    public virtual (Vector2[], Color?) PolygonTo2D(Vector3[] cameraVertices, Matrix4 camera)
     {
-        var projectedPoints = new Vector2[transformedVertices.Length];
-        for (var i = 0; i < transformedVertices.Length; i++)
+        var projectedPoints = new Vector2[cameraVertices.Length];
+        for (var i = 0; i < cameraVertices.Length; i++)
         {
-            var vertex = transformedVertices[i];
-            var relativePos = Vector3.Transform(vertex, camera);
-            relativePos.Z += float.Epsilon; // prevent division by 0
-
-            var projected = new Vector2(relativePos.X / relativePos.Z, relativePos.Y / relativePos.Z);
+            var vertex = cameraVertices[i];
+            vertex.Z += float.Epsilon; // prevent division by 0
+            var projected = new Vector2(vertex.X / vertex.Z, vertex.Y / vertex.Z);
             projectedPoints[i] = projected;
         }
 

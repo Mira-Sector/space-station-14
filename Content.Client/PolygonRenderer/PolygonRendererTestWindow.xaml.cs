@@ -27,8 +27,7 @@ public sealed partial class PolygonRendererTestWindow : FancyWindow
     private Angle _rotation = Angle.Zero;
     private static readonly Angle RotationRate = new(0.01 / UpdateRate);
 
-    private static readonly Vector3 CameraPos = new(-1, -1, -2);
-    private static readonly Matrix4 Camera = Matrix4.CreateTranslation(CameraPos);
+    private static readonly Vector3 CameraPos = new(0, -2, 1);
 
     public PolygonRendererTestWindow()
     {
@@ -36,7 +35,7 @@ public sealed partial class PolygonRendererTestWindow : FancyWindow
         IoCManager.InjectDependencies(this);
 
         _box = _prototype.Index(BoxId);
-        Renderer.Camera = Camera;
+        Renderer.Camera = Matrix4.LookAt(CameraPos, Vector3.Zero, Vector3.UnitZ);
         Renderer.Models = new PolygonModel[BoxCount];
         for (var i = 0; i < BoxCount; i++)
             Renderer.Models[i] = NewBox(i);
@@ -69,11 +68,11 @@ public sealed partial class PolygonRendererTestWindow : FancyWindow
         if ((index & 1) == 1)
             offset += 1;
 
-        var position = new Vector3(SpacePerBox * offset, 0f, 0f);
+        var position = new Vector3(SpacePerBox * offset, SpacePerBox * index, 0f);
 
         if ((index & 1) == 1)
             position *= -1;
 
-        return Matrix4.CreateRotationX((float)_rotation) * Matrix4.CreateTranslation(position);
+        return Matrix4.CreateRotationZ((float)_rotation) * Matrix4.CreateTranslation(position);
     }
 }
