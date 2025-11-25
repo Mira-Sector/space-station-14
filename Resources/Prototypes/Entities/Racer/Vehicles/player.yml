@@ -1,0 +1,6 @@
+- type: entity
+  id: RacerVehiclePlayer
+  parent: BaseRacerVehicle
+  components:
+  - type: RacerArcadeObjectModel
+    model: RacerVehiclePlayer

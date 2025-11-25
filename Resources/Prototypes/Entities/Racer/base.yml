@@ -1,0 +1,5 @@
+- type: entity
+  abstract: true
+  id: BaseRacerObject
+  components:
+  - type: RacerArcadeObject
