@@ -67,4 +67,37 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
             yield return new FlatShadedPolygon([v0, v2, v3]);
         }
     }
+
+    private static Vector3 GetClosestPointOnTrack(
+        RacerArcadeStageGraph graph,
+        Vector3 playerPos,
+        int samplesPerEdge)
+    {
+        var closest = Vector3.Zero;
+        var bestDist = float.MaxValue;
+
+        foreach (var (edge, parent) in graph.GetConnections())
+        {
+            if (edge is not IRacerArcadeStageRenderableEdge renderableEdge)
+                continue;
+
+            if (!graph.TryGetNextNode(edge, out var nextNode))
+                continue;
+
+            var worldPoints = RacerViewportControlHelpers.GetWorldSpaceEdgePoints(renderableEdge, parent.Position, nextNode.Position);
+            var sampled = RacerViewportControlHelpers.SampleBezier(worldPoints, samplesPerEdge);
+
+            foreach (var p in sampled)
+            {
+                var d = (p - playerPos).LengthSquared;
+                if (d > bestDist)
+                    continue;
+
+                bestDist = d;
+                closest = p;
+            }
+        }
+
+        return closest;
+    }
 }

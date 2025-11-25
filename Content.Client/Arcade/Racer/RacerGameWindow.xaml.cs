@@ -8,16 +8,13 @@ namespace Content.Client.Arcade.Racer;
 [GenerateTypedNameReferences]
 public sealed partial class RacerGameWindow : FancyWindow
 {
-    private Entity<RacerArcadeComponent>? _cabinet;
-
     public RacerGameWindow() : base()
     {
         RobustXamlLoader.Load(this);
     }
 
-    public void SetCabinet(Entity<RacerArcadeComponent> cabinet)
+    public void SetCabinet(Entity<RacerArcadeComponent> cabinet, EntityUid viewer)
     {
-        _cabinet = cabinet;
-        Viewport.SetCabinet(cabinet);
+        Viewport.SetCabinet(cabinet, viewer);
     }
 }

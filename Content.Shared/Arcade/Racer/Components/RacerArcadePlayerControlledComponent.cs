@@ -7,4 +7,7 @@ public sealed partial class RacerArcadePlayerControlledComponent : Component
 {
     [ViewVariables, AutoNetworkedField]
     public EntityUid? Controller;
+
+    [DataField]
+    public Vector3 CameraOffset;
 }

@@ -17,10 +17,13 @@ public sealed partial class RacerGameBoundUserInterface : BoundUserInterface
     {
         base.Open();
 
+        if (PlayerManager.LocalEntity is not { } viewer)
+            return;
+
         if (!EntMan.TryGetComponent<RacerArcadeComponent>(Owner, out var racer))
             return;
 
         _window = this.CreateWindow<RacerGameWindow>();
-        _window.SetCabinet((Owner, racer));
+        _window.SetCabinet((Owner, racer), viewer);
     }
 }

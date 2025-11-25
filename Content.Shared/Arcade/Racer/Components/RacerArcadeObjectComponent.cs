@@ -7,4 +7,7 @@ public sealed partial class RacerArcadeObjectComponent : Component
 {
     [ViewVariables, AutoNetworkedField]
     public Vector3 Position;
+
+    [ViewVariables, AutoNetworkedField]
+    public Quaternion Rotation;
 }
