@@ -1,6 +1,6 @@
 using Content.Client.PolygonRenderer;
 using Content.Shared.Arcade.Racer;
-using Content.Shared.Arcade.Racer.Objects;
+using Content.Shared.Arcade.Racer.Components;
 using Content.Shared.Arcade.Racer.Stage;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
@@ -61,13 +61,21 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
         Models.Add(trackModel);
     }
 
-    private void DrawObjects(List<BaseRacerGameObject> objects)
+    private void DrawObjects(List<NetEntity> objects)
     {
         Models.EnsureCapacity(Models.Count + objects.Count);
-        foreach (var obj in objects)
+        foreach (var netObj in objects)
         {
-            var model = _prototype.Index(obj.Model);
-            model.ModelMatrix = Matrix4.CreateTranslation(obj.Position);
+            if (!_entity.TryGetEntity(netObj, out var obj))
+                continue;
+
+            if (!_entity.TryGetComponent<RacerArcadeObjectModelComponent>(obj, out var objModel))
+                continue;
+
+            var objData = _entity.GetComponent<RacerArcadeObjectComponent>(obj.Value);
+
+            var model = _prototype.Index(objModel.Model);
+            model.ModelMatrix = Matrix4.CreateTranslation(objData.Position);
             Models.Add(model);
         }
     }

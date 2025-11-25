@@ -1,4 +1,4 @@
-using Content.Shared.Arcade.Racer;
+using Content.Shared.Arcade.Racer.Components;
 using Robust.Client.UserInterface;
 
 namespace Content.Client.Arcade.Racer;

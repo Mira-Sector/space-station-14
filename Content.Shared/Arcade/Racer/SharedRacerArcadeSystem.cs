@@ -1,5 +1,4 @@
-using Content.Shared.Arcade.Racer.Objects;
-using Content.Shared.Arcade.Racer.Objects.Vehicles;
+using Content.Shared.Arcade.Racer.Components;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Arcade.Racer;
@@ -20,19 +19,12 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
         var startingStage = PrototypeMan.Index(ent.Comp.StartingStage);
         var startingNode = startingStage.Graph.Nodes[startingStage.Graph.StartingNode!];
 
-        List<BaseRacerGameObject> objects = new(1);
-        var player = new RacerGameVehiclePlayer()
-        {
-            Position = startingNode.Position
-        };
-        objects.Add(player);
-
+        List<EntityUid> objects = [];
         ent.Comp.State = new()
         {
             CurrentStage = ent.Comp.StartingStage,
             CurrentNode = startingNode,
-            Objects = objects,
-            Player = player
+            Objects = GetNetEntityList(objects)
         };
     }
 }
