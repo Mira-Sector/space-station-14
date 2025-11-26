@@ -1,11 +1,12 @@
 using Content.Shared.Arcade.Racer;
 using Content.Shared.Arcade.Racer.Messages;
+using Content.Shared.Arcade.Racer.Systems;
 using JetBrains.Annotations;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
 using Robust.Shared.Network;
 
-namespace Content.Client.Arcade.Racer;
+namespace Content.Client.Arcade.Racer.Systems;
 
 public sealed partial class RacerArcadeSystem : SharedRacerArcadeSystem
 {

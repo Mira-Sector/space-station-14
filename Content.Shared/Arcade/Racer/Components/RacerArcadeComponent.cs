@@ -10,8 +10,11 @@ public sealed partial class RacerArcadeComponent : Component
     public ProtoId<RacerGameStagePrototype> StartingStage;
 
     [DataField(required: true)]
-    public EntProtoId Player;
+    public EntProtoId PlayerShipId;
 
     [ViewVariables, AutoNetworkedField]
     public RacerGameState State;
+
+    [ViewVariables, AutoNetworkedField]
+    public List<EntityUid> Players = [];
 }

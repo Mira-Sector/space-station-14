@@ -1,4 +1,5 @@
 using Content.Client.PolygonRenderer;
+using Content.Client.Arcade.Racer.Systems;
 using Content.Shared.Arcade.Racer;
 using Content.Shared.Arcade.Racer.Components;
 using Content.Shared.Arcade.Racer.Stage;

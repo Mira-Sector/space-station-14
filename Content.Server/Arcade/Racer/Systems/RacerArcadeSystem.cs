@@ -1,5 +1,6 @@
 using Content.Shared.Arcade.Racer;
 using Content.Shared.Arcade.Racer.Messages;
+using Content.Shared.Arcade.Racer.Systems;
 using Robust.Server.Player;
 using Robust.Shared.ContentPack;
 using Robust.Shared.Enums;
@@ -11,7 +12,7 @@ using Robust.Shared.Serialization.Markdown.Value;
 using Robust.Shared.Utility;
 using JetBrains.Annotations;
 
-namespace Content.Server.Arcade.Racer;
+namespace Content.Server.Arcade.Racer.Systems;
 
 public sealed partial class RacerArcadeSystem : SharedRacerArcadeSystem
 {

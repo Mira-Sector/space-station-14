@@ -240,7 +240,7 @@
       visible: false
   - type: RacerArcade
     startingStage: Factory
-    player: RacerVehiclePlayer
+    playerShipId: RacerVehiclePlayer
   - type: ActivatableUI
     key: enum.RacerGameUiKey.Key
   - type: ActivatableUIRequiresPower

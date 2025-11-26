@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace Content.Shared.Arcade.Racer;
+namespace Content.Shared.Arcade.Racer.Systems;
 
 public abstract partial class SharedRacerArcadeSystem : EntitySystem
 {
@@ -16,6 +16,7 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<RacerArcadeComponent, AfterActivatableUIOpenEvent>(OnAfterUiOpen);
+        SubscribeLocalEvent<RacerArcadeComponent, BoundUIClosedEvent>(OnUiClose);
     }
 
     private void OnAfterUiOpen(Entity<RacerArcadeComponent> ent, ref AfterActivatableUIOpenEvent args)
@@ -34,22 +35,50 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
         NewGame(ent!, [args.Actor]);
     }
 
+    private void OnUiClose(Entity<RacerArcadeComponent> ent, ref BoundUIClosedEvent args)
+    {
+        if (!args.UiKey.Equals(RacerGameUiKey.Key))
+            return;
+
+        if (!TryComp<RacerArcadeGamerComponent>(args.Actor, out var gamer) || gamer.Cabinet != ent.Owner)
+            return;
+
+        RemComp(args.Actor, gamer);
+    }
+
     [PublicAPI]
-    public void NewGame(Entity<RacerArcadeComponent?> ent, IEnumerable<EntityUid> actors)
+    public void NewGame(Entity<RacerArcadeComponent?> ent, IEnumerable<EntityUid> players)
     {
         if (!Resolve(ent.Owner, ref ent.Comp))
             return;
 
+        if (ent.Comp.State != null)
+            EndGame(ent);
+
         var startingStage = PrototypeMan.Index(ent.Comp.StartingStage);
         var startingNode = startingStage.Graph.Nodes[startingStage.Graph.StartingNode!];
 
-        List<EntityUid> objects = new(actors.Count());
-        foreach (var actor in actors)
+        List<EntityUid> objects = new(players.Count());
+        ent.Comp.Players = new(players.Count());
+        foreach (var player in players)
         {
-            var player = Spawn(ent.Comp.Player);
-            Comp<RacerArcadeObjectComponent>(player).Position = startingNode.Position;
-            EnsureComp<RacerArcadePlayerControlledComponent>(player).Controller = actor;
-            objects.Add(player);
+            var ship = Spawn(ent.Comp.PlayerShipId);
+
+            EnsureComp<RacerArcadeObjectComponent>(ship, out var data);
+            data.Position = startingNode.Position;
+            Dirty(ship, data);
+
+            EnsureComp<RacerArcadePlayerControlledComponent>(ship, out var controlled);
+            controlled.Controller = player;
+            Dirty(ship, controlled);
+
+            objects.Add(ship);
+
+            EnsureComp<RacerArcadeGamerComponent>(player, out var gamer);
+            gamer.Cabinet = ent.Owner;
+            Dirty(player, gamer);
+
+            ent.Comp.Players.Add(player);
         }
 
         ent.Comp.State = new()
@@ -60,6 +89,16 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
         };
 
         Dirty(ent);
+    }
+
+    [PublicAPI]
+    public void EndGame(Entity<RacerArcadeComponent?> ent)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp))
+            return;
+
+        foreach (var player in ent.Comp.Players)
+            RemComp<RacerArcadeGamerComponent>(player);
     }
 
     [PublicAPI]
