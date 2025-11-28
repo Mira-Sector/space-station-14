@@ -1,3 +1,4 @@
+using Content.Shared.Arcade.Racer.Systems;
 using Robust.Shared.GameStates;
 
 namespace Content.Shared.Arcade.Racer.Components;
@@ -6,6 +7,7 @@ namespace Content.Shared.Arcade.Racer.Components;
 public sealed partial class RacerArcadePlayerControlledComponent : Component
 {
     [ViewVariables, AutoNetworkedField]
+    [Access(typeof(SharedRacerArcadeSystem))]
     public EntityUid? Controller;
 
     [DataField]

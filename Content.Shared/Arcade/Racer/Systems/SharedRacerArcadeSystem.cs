@@ -66,7 +66,7 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
 
             EnsureComp<RacerArcadeObjectComponent>(ship, out var data);
             data.Position = startingNode.Position;
-            Dirty(ship, data);
+            DirtyField(ship, data, nameof(RacerArcadeObjectComponent.Position));
 
             EnsureComp<RacerArcadePlayerControlledComponent>(ship, out var controlled);
             controlled.Controller = player;
