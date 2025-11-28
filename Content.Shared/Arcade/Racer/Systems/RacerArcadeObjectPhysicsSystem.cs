@@ -1,8 +1,10 @@
-using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Arcade.Racer.Components;
+using Content.Shared.Arcade.Racer.Events;
 using Content.Shared.Arcade.Racer.PhysShapes;
 using Content.Shared.Maths;
 using Robust.Shared.Timing;
+using JetBrains.Annotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Content.Shared.Arcade.Racer.Systems;
 
@@ -160,5 +162,21 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
 
         shapeIds = null;
         return false;
+    }
+
+    [PublicAPI]
+    public void UpdateVelocity(Entity<RacerArcadeObjectPhysicsComponent?> ent)
+    {
+        if (!_physics.Resolve(ent.Owner, ref ent.Comp))
+            return;
+
+        var ev = new RacerArcadeObjectPhysicsGetVelocityEvent();
+        RaiseLocalEvent(ent.Owner, ref ev);
+
+        ent.Comp.Velocity = ev.Velocity;
+        ent.Comp.AngularVelocity = ev.AngularVelocity;
+
+        DirtyField(ent.Owner, ent.Comp, nameof(RacerArcadeObjectPhysicsComponent.Velocity));
+        DirtyField(ent.Owner, ent.Comp, nameof(RacerArcadeObjectPhysicsComponent.AngularVelocity));
     }
 }

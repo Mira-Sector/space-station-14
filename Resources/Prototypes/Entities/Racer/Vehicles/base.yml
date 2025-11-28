@@ -2,3 +2,14 @@
   abstract: true
   id: BaseRacerVehicle
   parent: BaseRacerObject
+  components:
+  - type: RacerArcadeObjectPhysics
+    shapes:
+      ship:
+        layer:
+        - Track
+        mask:
+        - Vehicles
+        shape: !type:Sphere
+          radius: 1.5
+  - type: RacerArcadeObjectGravity
