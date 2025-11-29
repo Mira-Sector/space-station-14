@@ -62,17 +62,11 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
         ent.Comp.Players = new(players.Count());
         foreach (var player in players)
         {
-            var ship = Spawn(ent.Comp.PlayerShipId);
-
-            EnsureComp<RacerArcadeObjectComponent>(ship, out var data);
-            data.Position = startingNode.Position;
-            DirtyField(ship, data, nameof(RacerArcadeObjectComponent.Position));
+            var ship = SpawnObject(ent, ent.Comp.PlayerShipId, startingNode.Position);
 
             EnsureComp<RacerArcadePlayerControlledComponent>(ship, out var controlled);
             controlled.Controller = player;
             Dirty(ship, controlled);
-
-            objects.Add(ship);
 
             EnsureComp<RacerArcadeGamerComponent>(player, out var gamer);
             gamer.Cabinet = ent.Owner;
@@ -102,17 +96,52 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
     }
 
     [PublicAPI]
+    public EntityUid SpawnObject(Entity<RacerArcadeComponent?> arcade, EntProtoId? objectId = null, Vector3? position = null, Quaternion? rotation = null)
+    {
+        if (!Resolve(arcade.Owner, ref arcade.Comp))
+            return EntityUid.Invalid;
+
+        var data = new RacerArcadeObjectComponent();
+        if (position != null)
+            data.Position = position.Value;
+        if (rotation != null)
+            data.Rotation = rotation.Value;
+        data.Arcade = arcade.Owner;
+
+        var obj = Spawn(objectId);
+        AddComp(obj, data, true);
+
+        arcade.Comp.State.Objects.Add(GetNetEntity(obj));
+        Dirty(arcade);
+        return obj;
+    }
+
+    [PublicAPI]
+    public void DeleteObject(Entity<RacerArcadeComponent?> arcade, EntityUid obj)
+    {
+        if (!Resolve(arcade.Owner, ref arcade.Comp))
+            return;
+
+        if (!arcade.Comp.State.Objects.Remove(GetNetEntity(obj)))
+            return;
+
+        Dirty(arcade);
+        Del(obj);
+    }
+
+    [PublicAPI]
     public IEnumerable<Entity<T>> GetObjects<T>(Entity<RacerArcadeComponent?> arcade) where T : Component
     {
         if (!Resolve(arcade.Owner, ref arcade.Comp) || arcade.Comp.State is not { } state)
             yield break;
 
+        var query = GetEntityQuery<T>();
         foreach (var netObj in state.Objects)
         {
             if (!TryGetEntity(netObj, out var obj))
                 continue;
 
-            if (TryComp<T>(obj, out var comp))
+            if (query.TryComp(obj.Value, out var comp))
                 yield return (obj.Value, comp);
         }
     }
@@ -131,5 +160,14 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
 
         controlled = null;
         return false;
+    }
+
+    [PublicAPI]
+    public EntityUid GetArcade(Entity<RacerArcadeObjectComponent?> ent)
+    {
+        if (!Resolve(ent.Owner, ref ent.Comp))
+            return EntityUid.Invalid;
+
+        return ent.Comp.Arcade;
     }
 }
