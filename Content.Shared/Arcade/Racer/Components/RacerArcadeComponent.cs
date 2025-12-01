@@ -15,7 +15,7 @@ public sealed partial class RacerArcadeComponent : Component
     public EntProtoId PlayerShipId;
 
     [ViewVariables, AutoNetworkedField]
-    public RacerGameState State;
+    public RacerGameState? State;
 
     [ViewVariables, AutoNetworkedField]
     public List<EntityUid> Players = [];

@@ -11,6 +11,7 @@ namespace Content.Shared.Arcade.Racer.Systems;
 public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly SharedRacerArcadeSystem _racer = default!;
 
     private EntityQuery<RacerArcadeObjectComponent> _data;
     private EntityQuery<RacerArcadeObjectPhysicsComponent> _physics;
@@ -66,6 +67,7 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
 
     private void HandleCollisions(Entity<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent> ent)
     {
+        var ourArcade = _racer.GetArcade((ent.Owner, ent.Comp2));
         var ourAABB = GetTickAABB(ent);
 
         var query = EntityQueryEnumerator<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent>();
@@ -73,6 +75,10 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
         {
             Entity<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent> other = new(uid, physics, data);
             if (other.Owner == ent.Owner)
+                continue;
+
+            var otherArcade = _racer.GetArcade((other.Owner, other.Comp2));
+            if (ourArcade != otherArcade)
                 continue;
 
             if ((ent.Comp1.AllMasks & other.Comp1.AllLayers) == 0 || (other.Comp1.AllMasks & ent.Comp1.AllLayers) == 0)

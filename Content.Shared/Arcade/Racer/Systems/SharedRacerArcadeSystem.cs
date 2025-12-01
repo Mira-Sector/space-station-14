@@ -11,12 +11,23 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
 {
     [Dependency] protected readonly IPrototypeManager PrototypeMan = default!;
 
+    private EntityQuery<RacerArcadeComponent> _arcade;
+
     public override void Initialize()
     {
         base.Initialize();
 
+        SubscribeLocalEvent<RacerArcadeComponent, ComponentRemove>(OnRemove);
+
         SubscribeLocalEvent<RacerArcadeComponent, AfterActivatableUIOpenEvent>(OnAfterUiOpen);
         SubscribeLocalEvent<RacerArcadeComponent, BoundUIClosedEvent>(OnUiClose);
+
+        _arcade = GetEntityQuery<RacerArcadeComponent>();
+    }
+
+    private void OnRemove(Entity<RacerArcadeComponent> ent, ref ComponentRemove args)
+    {
+        EndGame(ent!);
     }
 
     private void OnAfterUiOpen(Entity<RacerArcadeComponent> ent, ref AfterActivatableUIOpenEvent args)
@@ -60,6 +71,13 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
 
         List<EntityUid> objects = new(players.Count());
         ent.Comp.Players = new(players.Count());
+        ent.Comp.State = new()
+        {
+            CurrentStage = ent.Comp.StartingStage,
+            CurrentNode = startingNode,
+            Objects = GetNetEntityList(objects)
+        };
+
         foreach (var player in players)
         {
             var ship = SpawnObject(ent, ent.Comp.PlayerShipId, startingNode.Position);
@@ -75,13 +93,6 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
             ent.Comp.Players.Add(player);
         }
 
-        ent.Comp.State = new()
-        {
-            CurrentStage = ent.Comp.StartingStage,
-            CurrentNode = startingNode,
-            Objects = GetNetEntityList(objects)
-        };
-
         Dirty(ent);
     }
 
@@ -93,12 +104,23 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
 
         foreach (var player in ent.Comp.Players)
             RemComp<RacerArcadeGamerComponent>(player);
+
+        if (ent.Comp.State is not { } state)
+            return;
+
+        foreach (var obj in state.Objects)
+            Del(GetEntity(obj));
+
+        ent.Comp.State = null;
     }
 
     [PublicAPI]
     public EntityUid SpawnObject(Entity<RacerArcadeComponent?> arcade, EntProtoId? objectId = null, Vector3? position = null, Quaternion? rotation = null)
     {
         if (!Resolve(arcade.Owner, ref arcade.Comp))
+            return EntityUid.Invalid;
+
+        if (arcade.Comp.State is not { } state)
             return EntityUid.Invalid;
 
         var data = new RacerArcadeObjectComponent();
@@ -111,7 +133,7 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
         var obj = Spawn(objectId);
         AddComp(obj, data, true);
 
-        arcade.Comp.State.Objects.Add(GetNetEntity(obj));
+        state.Objects.Add(GetNetEntity(obj));
         Dirty(arcade);
         return obj;
     }
@@ -122,7 +144,10 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
         if (!Resolve(arcade.Owner, ref arcade.Comp))
             return;
 
-        if (!arcade.Comp.State.Objects.Remove(GetNetEntity(obj)))
+        if (arcade.Comp.State is not { } state)
+            return;
+
+        if (!state.Objects.Remove(GetNetEntity(obj)))
             return;
 
         Dirty(arcade);
@@ -163,11 +188,12 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
     }
 
     [PublicAPI]
-    public EntityUid GetArcade(Entity<RacerArcadeObjectComponent?> ent)
+    public Entity<RacerArcadeComponent> GetArcade(Entity<RacerArcadeObjectComponent?> ent)
     {
         if (!Resolve(ent.Owner, ref ent.Comp))
-            return EntityUid.Invalid;
+            return (EntityUid.Invalid, default!);
 
-        return ent.Comp.Arcade;
+        var comp = _arcade.Get(ent.Comp.Arcade);
+        return (ent.Comp.Arcade, comp);
     }
 }

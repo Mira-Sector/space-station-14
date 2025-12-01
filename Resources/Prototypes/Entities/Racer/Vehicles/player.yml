@@ -1,6 +1,7 @@
 - type: entity
   id: RacerVehiclePlayer
   parent: BaseRacerVehicle
+  categories: [ HideSpawnMenu ]
   components:
   - type: RacerArcadeObjectModel
     model: RacerVehiclePlayer

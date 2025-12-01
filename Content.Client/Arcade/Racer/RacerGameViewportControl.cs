@@ -35,12 +35,13 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
 
     protected override void Draw(DrawingHandleScreen handle)
     {
+        Models = [];
+
         if (_cabinet is not { } cabinet || _viewer is not { } viewer)
             return;
 
-        Models = [];
-
-        var state = cabinet.Comp.State;
+        if (cabinet.Comp.State is not { } state)
+            return;
 
         var currentStage = _prototype.Index(state.CurrentStage);
         DrawSky(handle, currentStage.Sky);
