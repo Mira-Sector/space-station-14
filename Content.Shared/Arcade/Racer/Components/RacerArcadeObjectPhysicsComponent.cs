@@ -1,7 +1,6 @@
 using Content.Shared.Arcade.Racer.Systems;
 using Content.Shared.Maths;
 using Robust.Shared.GameStates;
-using Robust.Shared.Timing;
 
 namespace Content.Shared.Arcade.Racer.Components;
 
@@ -20,9 +19,6 @@ public sealed partial class RacerArcadeObjectPhysicsComponent : Component
 
     [ViewVariables, AutoNetworkedField]
     public Box3 CachedAABB;
-
-    [ViewVariables, AutoNetworkedField]
-    public GameTick LastCachedAABB;
 
     [ViewVariables, AutoNetworkedField]
     public int AllLayers;

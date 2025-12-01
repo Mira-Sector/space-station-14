@@ -2,7 +2,6 @@ using Content.Shared.Arcade.Racer.Components;
 using Content.Shared.Arcade.Racer.Events;
 using Content.Shared.Arcade.Racer.PhysShapes;
 using Content.Shared.Maths;
-using Robust.Shared.Timing;
 using JetBrains.Annotations;
 using System.Diagnostics.CodeAnalysis;
 
@@ -10,7 +9,6 @@ namespace Content.Shared.Arcade.Racer.Systems;
 
 public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedRacerArcadeSystem _racer = default!;
 
     private EntityQuery<RacerArcadeObjectComponent> _data;
@@ -68,7 +66,7 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
     private void HandleCollisions(Entity<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent> ent)
     {
         var ourArcade = _racer.GetArcade((ent.Owner, ent.Comp2));
-        var ourAABB = GetTickAABB(ent);
+        var ourAABB = ent.Comp1.CachedAABB;
 
         var query = EntityQueryEnumerator<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent>();
         while (query.MoveNext(out var uid, out var physics, out var data))
@@ -84,21 +82,13 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
             if ((ent.Comp1.AllMasks & other.Comp1.AllLayers) == 0 || (other.Comp1.AllMasks & ent.Comp1.AllLayers) == 0)
                 continue;
 
-            var otherAABB = GetTickAABB(other);
+            var otherAABB = other.Comp1.CachedAABB;
             if (!ourAABB.Intersects(otherAABB))
                 continue;
 
             if (!CheckCollidingShapes(ent, other, out var shapeIds))
                 continue;
         }
-    }
-
-    private Box3 GetTickAABB(Entity<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent> ent)
-    {
-        if (ent.Comp1.LastCachedAABB < _timing.CurTick)
-            return ent.Comp1.CachedAABB;
-
-        return UpdateCachedAABB(ent);
     }
 
     private Box3 UpdateCachedAABB(Entity<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent> ent)
@@ -118,9 +108,7 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
         box.Rotate(ent.Comp2.Rotation);
         var aabb = box.CalcBoundingBox();
         ent.Comp1.CachedAABB = aabb;
-        ent.Comp1.LastCachedAABB = _timing.CurTick;
         DirtyField(ent.Owner, ent.Comp1, nameof(RacerArcadeObjectPhysicsComponent.CachedAABB));
-        DirtyField(ent.Owner, ent.Comp1, nameof(RacerArcadeObjectPhysicsComponent.LastCachedAABB));
         return aabb;
     }
 
