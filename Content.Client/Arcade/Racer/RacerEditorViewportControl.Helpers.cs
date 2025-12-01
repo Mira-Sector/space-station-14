@@ -49,8 +49,8 @@ public sealed partial class RacerEditorViewportControl
 
             if (connection is IRacerArcadeStageRenderableEdge renderableEdge)
             {
-                var points = RacerViewportControlHelpers.GetWorldSpaceEdgePoints(renderableEdge, node.Position, nextNode.Position);
-                var sampled = RacerViewportControlHelpers.SampleBezier(points, RenderableEdgeBezierSamples);
+                var points = renderableEdge.GetWorldSpaceEdgePoints(node.Position, nextNode.Position);
+                var sampled = RacerArcadeStageGraphHelpers.SampleBezier(points, RenderableEdgeBezierSamples);
                 for (var i = 1; i < sampled.Length; i++)
                 {
                     var prev = sampled[i - 1];
@@ -319,8 +319,8 @@ public sealed partial class RacerEditorViewportControl
                 if (!graph.TryGetNextNode(edge, out var nextNode))
                     continue;
 
-                var points = RacerViewportControlHelpers.GetWorldSpaceEdgePoints(renderableEdge, node.Position, nextNode.Position);
-                var sampled = RacerViewportControlHelpers.SampleBezier(points, RenderableEdgeBezierSamples);
+                var points = renderableEdge.GetWorldSpaceEdgePoints(node.Position, nextNode.Position);
+                var sampled = RacerArcadeStageGraphHelpers.SampleBezier(points, RenderableEdgeBezierSamples);
                 for (var i = 1; i < sampled.Length; i++)
                 {
                     var prev = sampled[i - 1];

@@ -4,11 +4,14 @@ using Content.Shared.Arcade.Racer.PhysShapes;
 using Content.Shared.Maths;
 using JetBrains.Annotations;
 using System.Diagnostics.CodeAnalysis;
+using Content.Shared.Arcade.Racer.Stage;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Arcade.Racer.Systems;
 
 public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
 {
+    [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly SharedRacerArcadeSystem _racer = default!;
 
     private EntityQuery<RacerArcadeObjectComponent> _data;
@@ -60,10 +63,16 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
     {
         var data = _data.Get(ent.Owner);
         UpdateCachedAABB((ent.Owner, ent.Comp, data));
-        UpdateCachedShapePhysicsFlags(ent);
+        UpdateCachedPhysicsFlags(ent);
     }
 
     private void HandleCollisions(Entity<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent> ent)
+    {
+        HandleEntityCollisions(ent);
+        HandleTrackCollisions(ent);
+    }
+
+    private void HandleEntityCollisions(Entity<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent> ent)
     {
         var ourArcade = _racer.GetArcade((ent.Owner, ent.Comp2));
         var ourAABB = ent.Comp1.CachedAABB;
@@ -86,12 +95,31 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
             if (!ourAABB.Intersects(otherAABB))
                 continue;
 
-            if (!CheckCollidingShapes(ent, other, out var shapeIds))
+            if (!CheckCollidingShapes(ent.Comp1.Shapes, other.Comp1.Shapes, out var shapeIds))
                 continue;
         }
     }
 
-    private Box3 UpdateCachedAABB(Entity<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent> ent)
+    private void HandleTrackCollisions(Entity<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent> ent)
+    {
+        var ourAABB = ent.Comp1.CachedAABB;
+        var arcade = _racer.GetArcade((ent.Owner, ent.Comp2));
+
+        if (arcade.Comp.State is not { } state)
+            return;
+
+        if ((ent.Comp1.AllMasks & RacerArcadeStageGraph.PhysicsLayer) == 0 || (RacerArcadeStageGraph.PhysicsMask & ent.Comp1.AllLayers) == 0)
+            return;
+
+        var stage = _prototype.Index(state.CurrentStage);
+        if (!stage.Graph.AABB.Intersects(ourAABB))
+            return;
+
+        if (!CheckCollidingShapes(ent.Comp1.Shapes, stage.Graph.PhysicsShapes, out var shapeId))
+            return;
+    }
+
+    private void UpdateCachedAABB(Entity<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent> ent)
     {
         var box = Box3Rotated.Empty;
         foreach (var entry in ent.Comp1.Shapes.Values)
@@ -109,10 +137,9 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
         var aabb = box.CalcBoundingBox();
         ent.Comp1.CachedAABB = aabb;
         DirtyField(ent.Owner, ent.Comp1, nameof(RacerArcadeObjectPhysicsComponent.CachedAABB));
-        return aabb;
     }
 
-    private void UpdateCachedShapePhysicsFlags(Entity<RacerArcadeObjectPhysicsComponent> ent)
+    private void UpdateCachedPhysicsFlags(Entity<RacerArcadeObjectPhysicsComponent> ent)
     {
         ent.Comp.AllLayers = (int)RacerArcadePhysicsGroups.None;
         ent.Comp.AllMasks = (int)RacerArcadePhysicsGroups.None;
@@ -128,15 +155,15 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
     }
 
     private static bool CheckCollidingShapes(
-        Entity<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent> a,
-        Entity<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent> b,
+        Dictionary<string, RacerArcadePhysicsShapeEntry> a,
+        Dictionary<string, RacerArcadePhysicsShapeEntry> b,
         [NotNullWhen(true)] out (string a, string b)? shapeIds)
     {
-        foreach (var (aId, aEntry) in a.Comp1.Shapes)
+        foreach (var (aId, aEntry) in a)
         {
             var aBox = aEntry.Shape.GetBox().CalcBoundingBox();
 
-            foreach (var (bId, bEntry) in b.Comp1.Shapes)
+            foreach (var (bId, bEntry) in b)
             {
                 if ((aEntry.Mask & bEntry.Layer) == 0 || (bEntry.Mask & aEntry.Layer) == 0)
                     continue;
@@ -155,6 +182,37 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
         }
 
         shapeIds = null;
+        return false;
+    }
+
+    private static bool CheckCollidingShapes(
+        Dictionary<string, RacerArcadePhysicsShapeEntry> a,
+        List<RacerArcadePhysicsShapeEntry> b,
+        [NotNullWhen(true)] out string? shapeId)
+    {
+        foreach (var (aId, aEntry) in a)
+        {
+            var aBox = aEntry.Shape.GetBox().CalcBoundingBox();
+
+            foreach (var bEntry in b)
+            {
+                if ((aEntry.Mask & bEntry.Layer) == 0 || (bEntry.Mask & aEntry.Layer) == 0)
+                    continue;
+
+                var bBox = bEntry.Shape.GetBox().CalcBoundingBox();
+
+                if (!aBox.Intersects(bBox))
+                    continue;
+
+                if (!RacerArcadeObjectPhysCollisionResolver.Resolve(aEntry.Shape, bEntry.Shape))
+                    continue;
+
+                shapeId = aId;
+                return true;
+            }
+        }
+
+        shapeId = null;
         return false;
     }
 

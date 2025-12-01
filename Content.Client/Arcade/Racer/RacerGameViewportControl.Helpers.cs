@@ -38,8 +38,8 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
         float maxDistance,
         Vector3 cameraPos)
     {
-        var worldPoints = RacerViewportControlHelpers.GetWorldSpaceEdgePoints(edge, startNodePos, endNodePos);
-        var sampled = RacerViewportControlHelpers.SampleBezier(worldPoints, samples);
+        var worldPoints = edge.GetWorldSpaceEdgePoints(startNodePos, endNodePos);
+        var sampled = RacerArcadeStageGraphHelpers.SampleBezier(worldPoints, samples);
 
         var halfWidth = edge.Width * 0.5f;
         var up = Vector3.UnitZ;
@@ -84,8 +84,8 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
             if (!graph.TryGetNextNode(edge, out var nextNode))
                 continue;
 
-            var worldPoints = RacerViewportControlHelpers.GetWorldSpaceEdgePoints(renderableEdge, parent.Position, nextNode.Position);
-            var sampled = RacerViewportControlHelpers.SampleBezier(worldPoints, samplesPerEdge);
+            var worldPoints = renderableEdge.GetWorldSpaceEdgePoints(parent.Position, nextNode.Position);
+            var sampled = RacerArcadeStageGraphHelpers.SampleBezier(worldPoints, samplesPerEdge);
 
             foreach (var p in sampled)
             {
