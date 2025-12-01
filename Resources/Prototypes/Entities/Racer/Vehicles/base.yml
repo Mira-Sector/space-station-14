@@ -13,3 +13,4 @@
         shape: !type:Sphere
           radius: 1.5
   - type: RacerArcadeObjectGravity
+  - type: RacerArcadeObjectHover

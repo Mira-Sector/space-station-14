@@ -61,6 +61,12 @@ public partial struct Box3 : IEquatable<Box3>, IApproxEquatable<Box3>
             point.Z >= Back && point.Z <= Front;
     }
 
+    public readonly bool Contains(Vector2 point)
+    {
+        return point.X >= Left && point.X <= Right &&
+            point.Y >= Bottom && point.Y <= Top;
+    }
+
     public readonly bool Contains(Box3 other)
     {
         return Left <= other.Left && Right >= other.Right &&

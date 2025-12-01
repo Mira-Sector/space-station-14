@@ -1,11 +1,11 @@
 using Content.Shared.Arcade.Racer.Components;
 using Content.Shared.Arcade.Racer.Events;
 using Content.Shared.Arcade.Racer.PhysShapes;
-using Content.Shared.Maths;
-using JetBrains.Annotations;
-using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Arcade.Racer.Stage;
+using Content.Shared.Maths;
 using Robust.Shared.Prototypes;
+using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 
 namespace Content.Shared.Arcade.Racer.Systems;
 
@@ -74,7 +74,9 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
 
     private void HandleEntityCollisions(Entity<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent> ent)
     {
-        var ourArcade = _racer.GetArcade((ent.Owner, ent.Comp2));
+        if (!_racer.TryGetArcade((ent.Owner, ent.Comp2), out var ourArcade))
+            return;
+
         var ourAABB = ent.Comp1.CachedAABB;
 
         var query = EntityQueryEnumerator<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent>();
@@ -84,7 +86,9 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
             if (other.Owner == ent.Owner)
                 continue;
 
-            var otherArcade = _racer.GetArcade((other.Owner, other.Comp2));
+            if (!_racer.TryGetArcade((other.Owner, other.Comp2), out var otherArcade))
+                continue;
+
             if (ourArcade != otherArcade)
                 continue;
 
@@ -102,10 +106,12 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
 
     private void HandleTrackCollisions(Entity<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent> ent)
     {
-        var ourAABB = ent.Comp1.CachedAABB;
-        var arcade = _racer.GetArcade((ent.Owner, ent.Comp2));
+        if (!_racer.TryGetArcade((ent.Owner, ent.Comp2), out var arcade))
+            return;
 
-        if (arcade.Comp.State is not { } state)
+        var ourAABB = ent.Comp1.CachedAABB;
+
+        if (arcade.Value.Comp.State is not { } state)
             return;
 
         if ((ent.Comp1.AllMasks & RacerArcadeStageGraph.PhysicsLayer) == 0 || (RacerArcadeStageGraph.PhysicsMask & ent.Comp1.AllLayers) == 0)
@@ -230,5 +236,46 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
 
         DirtyField(ent.Owner, ent.Comp, nameof(RacerArcadeObjectPhysicsComponent.Velocity));
         DirtyField(ent.Owner, ent.Comp, nameof(RacerArcadeObjectPhysicsComponent.AngularVelocity));
+    }
+
+    [PublicAPI]
+    public bool TryGetTrackHeightAtPosition(Entity<RacerArcadeObjectComponent?> ent, [NotNullWhen(true)] out float? height)
+    {
+        if (!_data.Resolve(ent.Owner, ref ent.Comp) || !_racer.TryGetArcade(ent, out var arcade))
+        {
+            height = null;
+            return false;
+        }
+
+        return TryGetTrackHeightAtPosition(ent.Comp.Position, arcade.Value, out height);
+    }
+
+    [PublicAPI]
+    public bool TryGetTrackHeightAtPosition(Vector3 position, Entity<RacerArcadeComponent> arcade, [NotNullWhen(true)] out float? height)
+    {
+        if (arcade.Comp.State is not { } state)
+        {
+            height = null;
+            return false;
+        }
+
+        var stage = _prototype.Index(state.CurrentStage);
+
+        foreach (var entry in stage.Graph.PhysicsShapes)
+        {
+            var shape = entry.Shape;
+            var box = shape.GetBox();
+            var aabb = box.CalcBoundingBox();
+
+            if (!aabb.Contains(position))
+                continue;
+
+            var normal = Vector3.Transform(Vector3.UnitZ, box.Quaternion);
+            height = position.Z - Vector3.Dot(position - box.Origin, normal);
+            return true;
+        }
+
+        height = null;
+        return false;
     }
 }

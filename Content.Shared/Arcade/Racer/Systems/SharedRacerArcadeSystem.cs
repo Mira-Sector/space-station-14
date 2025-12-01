@@ -11,6 +11,7 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
 {
     [Dependency] protected readonly IPrototypeManager PrototypeMan = default!;
 
+    private EntityQuery<RacerArcadeObjectComponent> _data;
     private EntityQuery<RacerArcadeComponent> _arcade;
 
     public override void Initialize()
@@ -22,6 +23,7 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
         SubscribeLocalEvent<RacerArcadeComponent, AfterActivatableUIOpenEvent>(OnAfterUiOpen);
         SubscribeLocalEvent<RacerArcadeComponent, BoundUIClosedEvent>(OnUiClose);
 
+        _data = GetEntityQuery<RacerArcadeObjectComponent>();
         _arcade = GetEntityQuery<RacerArcadeComponent>();
     }
 
@@ -130,8 +132,14 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
             data.Rotation = rotation.Value;
         data.Arcade = arcade.Owner;
 
-        var obj = Spawn(objectId);
+        /*
+         * every object needs the component
+         * howerer this is not normally possible
+         * hence the manual initialization
+        */
+        var obj = EntityManager.CreateEntityUninitialized(objectId);
         AddComp(obj, data, true);
+        EntityManager.InitializeAndStartEntity(obj);
 
         state.Objects.Add(GetNetEntity(obj));
         Dirty(arcade);
@@ -172,6 +180,12 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
     }
 
     [PublicAPI]
+    public RacerArcadeObjectComponent GetData(EntityUid uid)
+    {
+        return _data.Comp(uid);
+    }
+
+    [PublicAPI]
     public bool TryGetControlledObject(Entity<RacerArcadeComponent?> arcade, EntityUid controller, [NotNullWhen(true)] out Entity<RacerArcadePlayerControlledComponent>? controlled)
     {
         foreach (var obj in GetObjects<RacerArcadePlayerControlledComponent>(arcade))
@@ -188,12 +202,16 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
     }
 
     [PublicAPI]
-    public Entity<RacerArcadeComponent> GetArcade(Entity<RacerArcadeObjectComponent?> ent)
+    public bool TryGetArcade(Entity<RacerArcadeObjectComponent?> ent, [NotNullWhen(true)] out Entity<RacerArcadeComponent>? arcade)
     {
-        if (!Resolve(ent.Owner, ref ent.Comp))
-            return (EntityUid.Invalid, default!);
+        if (!_data.Resolve(ent.Owner, ref ent.Comp))
+        {
+            arcade = null;
+            return false;
+        }
 
         var comp = _arcade.Get(ent.Comp.Arcade);
-        return (ent.Comp.Arcade, comp);
+        arcade = (ent.Comp.Arcade, comp);
+        return true;
     }
 }

@@ -80,9 +80,9 @@ public partial struct Box3Rotated : IEquatable<Box3Rotated>, IApproxEquatable<Bo
 
     public readonly bool Contains(Vector3 point)
     {
-        var local = Vector3.Transform(point - Box.Center, Quaternion.Invert(Quaternion));
-
+        var local = TransformToLocal(point) - Box.Center;
         var halfSize = Box.Size * 0.5f;
+
         return Math.Abs(local.X) <= halfSize.X &&
                Math.Abs(local.Y) <= halfSize.Y &&
                Math.Abs(local.Z) <= halfSize.Z;
@@ -111,6 +111,16 @@ public partial struct Box3Rotated : IEquatable<Box3Rotated>, IApproxEquatable<Bo
         var newOrigin = pivot + Vector3.Transform(Origin - pivot, rotation);
         var newRot = Quaternion.Normalize(rotation * Quaternion);
         return new Box3Rotated(Box, newRot, newOrigin);
+    }
+
+    public readonly Vector3 TransformToLocal(Vector3 point)
+    {
+        var translated = point - Origin;
+
+        var invRot = Quaternion.Invert(Quaternion);
+        var local = Vector3.Transform(translated, invRot);
+
+        return local + Box.Center;
     }
 
     public readonly bool EqualsApprox(Box3Rotated other)
