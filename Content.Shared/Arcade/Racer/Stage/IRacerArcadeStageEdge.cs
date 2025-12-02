@@ -1,10 +1,10 @@
-using Content.Shared.Arcade.Racer.PhysShapes;
+using Content.Shared.Arcade.Racer.CollisionShapes;
 
 namespace Content.Shared.Arcade.Racer.Stage;
 
 public interface IRacerArcadeStageEdge
 {
-    IEnumerable<BaseRacerArcadeObjectPhysShape> GetPhysShapes(RacerArcadeStageGraph graph, RacerArcadeStageNode parent)
+    IEnumerable<BaseRacerArcadeObjectCollisionShape> GetCollisionShapes(RacerArcadeStageGraph graph, RacerArcadeStageNode parent)
     {
         yield break;
     }

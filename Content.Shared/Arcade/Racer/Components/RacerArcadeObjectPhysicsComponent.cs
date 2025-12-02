@@ -1,5 +1,4 @@
 using Content.Shared.Arcade.Racer.Systems;
-using Content.Shared.Maths;
 using Robust.Shared.GameStates;
 
 namespace Content.Shared.Arcade.Racer.Components;
@@ -8,22 +7,10 @@ namespace Content.Shared.Arcade.Racer.Components;
 [Access(typeof(RacerArcadeObjectPhysicsSystem))]
 public sealed partial class RacerArcadeObjectPhysicsComponent : Component
 {
-    [DataField, AutoNetworkedField]
-    public Dictionary<string, RacerArcadePhysicsShapeEntry> Shapes = [];
-
     [ViewVariables, AutoNetworkedField]
     public Vector3 Velocity;
 
     [ViewVariables, AutoNetworkedField]
     public Vector3 AngularVelocity;
-
-    [ViewVariables, AutoNetworkedField]
-    public Box3 CachedAABB;
-
-    [ViewVariables, AutoNetworkedField]
-    public int AllLayers;
-
-    [ViewVariables, AutoNetworkedField]
-    public int AllMasks;
 
 }

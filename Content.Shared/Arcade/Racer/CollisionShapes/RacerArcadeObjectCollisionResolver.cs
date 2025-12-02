@@ -1,8 +1,8 @@
-namespace Content.Shared.Arcade.Racer.PhysShapes;
+namespace Content.Shared.Arcade.Racer.CollisionShapes;
 
-public static class RacerArcadeObjectPhysCollisionResolver
+public static class RacerArcadeObjectCollisionResolver
 {
-    public static bool Resolve(BaseRacerArcadeObjectPhysShape a, BaseRacerArcadeObjectPhysShape b)
+    public static bool Resolve(BaseRacerArcadeObjectCollisionShape a, BaseRacerArcadeObjectCollisionShape b)
     {
         // this massively reduces the amount of cases
         if (a.Complexity >= b.Complexity)
@@ -11,7 +11,7 @@ public static class RacerArcadeObjectPhysCollisionResolver
         return Handle(b, a);
     }
 
-    private static bool Handle(BaseRacerArcadeObjectPhysShape main, BaseRacerArcadeObjectPhysShape other)
+    private static bool Handle(BaseRacerArcadeObjectCollisionShape main, BaseRacerArcadeObjectCollisionShape other)
     {
         return (main, other) switch
         {

@@ -1,4 +1,4 @@
-using Content.Shared.Arcade.Racer.PhysShapes;
+using Content.Shared.Arcade.Racer.CollisionShapes;
 using Content.Shared.Maths;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
@@ -26,7 +26,7 @@ public sealed partial class RacerArcadeStageEdgeNode : IRacerArcadeStageRenderab
     public const int CollisionSamples = 32;
     public const float CollisionThickness = 0.25f;
 
-    public IEnumerable<BaseRacerArcadeObjectPhysShape> GetPhysShapes(RacerArcadeStageGraph graph, RacerArcadeStageNode parent)
+    public IEnumerable<BaseRacerArcadeObjectCollisionShape> GetCollisionShapes(RacerArcadeStageGraph graph, RacerArcadeStageNode parent)
     {
         if (!graph.TryGetNode(ConnectionId, out var next))
             yield break;

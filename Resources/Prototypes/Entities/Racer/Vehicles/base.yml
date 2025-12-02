@@ -3,7 +3,7 @@
   id: BaseRacerVehicle
   parent: BaseRacerObject
   components:
-  - type: RacerArcadeObjectPhysics
+  - type: RacerArcadeObjectCollision
     shapes:
       ship:
         layer:
@@ -12,5 +12,6 @@
         - Vehicles
         shape: !type:Sphere
           radius: 1.5
+  - type: RacerArcadeObjectPhysics
   - type: RacerArcadeObjectGravity
   - type: RacerArcadeObjectHover

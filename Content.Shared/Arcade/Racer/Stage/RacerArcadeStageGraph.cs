@@ -1,7 +1,7 @@
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using Content.Shared.Maths;
 using Robust.Shared.Serialization;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace Content.Shared.Arcade.Racer.Stage;
 
@@ -15,11 +15,11 @@ public sealed partial class RacerArcadeStageGraph : ISerializationHooks
     [DataField(required: true)]
     public string? StartingNode = null;
 
-    public const int PhysicsMask = (int)RacerArcadePhysicsGroups.Track;
-    public const int PhysicsLayer = (int)RacerArcadePhysicsGroups.Vehicles;
+    public const int CollisionMask = (int)RacerArcadeCollisionGroups.Track;
+    public const int CollisionLayer = (int)RacerArcadeCollisionGroups.Vehicles;
 
     public Box3 AABB { get; private set; }
-    public List<RacerArcadePhysicsShapeEntry> PhysicsShapes { get; private set; }
+    public List<RacerArcadeCollisionShapeEntry> CollisionShapes { get; private set; }
 
     public bool TryGetStartingNode([NotNullWhen(true)] out RacerArcadeStageNode? node)
     {
@@ -40,21 +40,21 @@ public sealed partial class RacerArcadeStageGraph : ISerializationHooks
     void ISerializationHooks.AfterDeserialization()
     {
         AABB = Box3.Empty;
-        PhysicsShapes = [];
+        CollisionShapes = [];
 
         foreach (var (edge, parent) in this.GetConnections())
         {
-            var shapes = edge.GetPhysShapes(this, parent);
-            PhysicsShapes.EnsureCapacity(shapes.Count());
+            var shapes = edge.GetCollisionShapes(this, parent);
+            CollisionShapes.EnsureCapacity(shapes.Count());
             foreach (var shape in shapes)
             {
-                var entry = new RacerArcadePhysicsShapeEntry()
+                var entry = new RacerArcadeCollisionShapeEntry()
                 {
-                    Mask = PhysicsMask,
-                    Layer = PhysicsLayer,
+                    Mask = CollisionMask,
+                    Layer = CollisionLayer,
                     Shape = shape
                 };
-                PhysicsShapes.Add(entry);
+                CollisionShapes.Add(entry);
 
                 var shapeBox = shape.GetBox();
                 var shapeAABB = shapeBox.CalcBoundingBox();

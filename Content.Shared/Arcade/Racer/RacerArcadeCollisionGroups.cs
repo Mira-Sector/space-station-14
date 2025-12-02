@@ -2,8 +2,8 @@ using Robust.Shared.Serialization;
 
 namespace Content.Shared.Arcade.Racer;
 
-[Flags, FlagsFor(typeof(RacerArcadePhysicsFlags))]
-public enum RacerArcadePhysicsGroups : int
+[Flags, FlagsFor(typeof(RacerArcadeCollisionFlags))]
+public enum RacerArcadeCollisionGroups : int
 {
     None = 0,
     Track = 1 << 0,

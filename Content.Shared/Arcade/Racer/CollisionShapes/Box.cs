@@ -1,10 +1,10 @@
 using Content.Shared.Maths;
 using Robust.Shared.Serialization;
 
-namespace Content.Shared.Arcade.Racer.PhysShapes;
+namespace Content.Shared.Arcade.Racer.CollisionShapes;
 
 [Serializable, NetSerializable]
-public sealed partial class Box : BaseRacerArcadeObjectPhysShape
+public sealed partial class Box : BaseRacerArcadeObjectCollisionShape
 {
     [DataField("box")]
     public Box3 Box3 = Box3.UnitCentered;
@@ -15,7 +15,7 @@ public sealed partial class Box : BaseRacerArcadeObjectPhysShape
     [DataField]
     public Vector3 Center;
 
-    public override RacerArcadeObjectPhysShapeComplexity Complexity => RacerArcadeObjectPhysShapeComplexity.Box;
+    public override RacerArcadeObjectCollisionShapeComplexity Complexity => RacerArcadeObjectCollisionShapeComplexity.Box;
 
     public override Box3Rotated GetBox()
     {

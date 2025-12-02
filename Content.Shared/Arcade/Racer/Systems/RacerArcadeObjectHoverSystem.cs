@@ -6,6 +6,7 @@ namespace Content.Shared.Arcade.Racer.Systems;
 
 public sealed partial class RacerArcadeObjectHoverSystem : EntitySystem
 {
+    [Dependency] private readonly RacerArcadeObjectCollisionSystem _collision = default!;
     [Dependency] private readonly RacerArcadeObjectPhysicsSystem _physics = default!;
 
     public override void Initialize()
@@ -45,7 +46,7 @@ public sealed partial class RacerArcadeObjectHoverSystem : EntitySystem
 
     private bool TryGetHeightError(Entity<RacerArcadeObjectHoverComponent, RacerArcadeObjectComponent?> ent, [NotNullWhen(true)] out float? heightError)
     {
-        if (!_physics.TryGetTrackHeightAtPosition((ent.Owner, ent.Comp2), out var trackHeight))
+        if (!_collision.TryGetTrackHeightAtPosition((ent.Owner, ent.Comp2), out var trackHeight))
         {
             heightError = null;
             return false;
