@@ -1,6 +1,8 @@
 using Content.Shared.Arcade.Racer.Components;
 using Content.Shared.UserInterface;
+using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Timing;
 using JetBrains.Annotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -10,6 +12,8 @@ namespace Content.Shared.Arcade.Racer.Systems;
 public abstract partial class SharedRacerArcadeSystem : EntitySystem
 {
     [Dependency] protected readonly IPrototypeManager PrototypeMan = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly SharedContainerSystem _container = default!;
 
     private EntityQuery<RacerArcadeObjectComponent> _data;
     private EntityQuery<RacerArcadeComponent> _arcade;
@@ -18,6 +22,7 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
     {
         base.Initialize();
 
+        SubscribeLocalEvent<RacerArcadeComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<RacerArcadeComponent, ComponentRemove>(OnRemove);
 
         SubscribeLocalEvent<RacerArcadeComponent, AfterActivatableUIOpenEvent>(OnAfterUiOpen);
@@ -27,6 +32,11 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
         _arcade = GetEntityQuery<RacerArcadeComponent>();
     }
 
+    private void OnInit(Entity<RacerArcadeComponent> ent, ref ComponentInit args)
+    {
+        ent.Comp.Objects = _container.EnsureContainer<Container>(ent.Owner, ent.Comp.ObjectContainerId);
+    }
+
     private void OnRemove(Entity<RacerArcadeComponent> ent, ref ComponentRemove args)
     {
         EndGame(ent!);
@@ -34,6 +44,9 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
 
     private void OnAfterUiOpen(Entity<RacerArcadeComponent> ent, ref AfterActivatableUIOpenEvent args)
     {
+        if (!_timing.IsFirstTimePredicted)
+            return;
+
         // TODO: if this ever supports multiple players this logic is fundamentally flawed
 
         /*
@@ -139,9 +152,11 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
         */
         var obj = EntityManager.CreateEntityUninitialized(objectId);
         AddComp(obj, data, true);
+        FlagPredicted(obj);
         EntityManager.InitializeAndStartEntity(obj);
 
         state.Objects.Add(GetNetEntity(obj));
+        _container.Insert(obj, arcade.Comp.Objects);
         Dirty(arcade);
         return obj;
     }
@@ -159,6 +174,7 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
             return;
 
         Dirty(arcade);
+        _container.Remove(obj, arcade.Comp.Objects);
         Del(obj);
     }
 

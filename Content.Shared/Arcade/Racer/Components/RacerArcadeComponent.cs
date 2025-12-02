@@ -1,4 +1,5 @@
 using Content.Shared.Arcade.Racer.Systems;
+using Robust.Shared.Containers;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
@@ -19,4 +20,10 @@ public sealed partial class RacerArcadeComponent : Component
 
     [ViewVariables, AutoNetworkedField]
     public List<EntityUid> Players = [];
+
+    [DataField]
+    public string ObjectContainerId = "racer_objects";
+
+    [ViewVariables]
+    public Container Objects = new();
 }

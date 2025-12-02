@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Client.PolygonRenderer;
 using Content.Shared.Arcade.Racer.Stage;
 using Content.Shared.PolygonRenderer;
@@ -23,6 +24,7 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
                 continue;
 
             var polys = BezierEdgeToPolygons(renderableEdge, parent.Position, nextNode.Position, samplesPerEdge, maxDistance, cameraPos);
+            allPolys.EnsureCapacity(allPolys.Count + polys.Count());
             foreach (var poly in polys)
                 allPolys.Add(poly);
         }
