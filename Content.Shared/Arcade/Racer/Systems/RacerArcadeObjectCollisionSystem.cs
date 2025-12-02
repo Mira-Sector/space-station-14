@@ -1,5 +1,6 @@
 using Content.Shared.Arcade.Racer.Components;
 using Content.Shared.Arcade.Racer.CollisionShapes;
+using Content.Shared.Arcade.Racer.Events;
 using Content.Shared.Arcade.Racer.Stage;
 using Content.Shared.Maths;
 using Robust.Shared.Prototypes;
@@ -28,9 +29,10 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
     {
         base.Update(frameTime);
 
+        HashSet<(EntityUid, EntityUid)> handledPairs = [];
         var query = EntityQueryEnumerator<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent>();
         while (query.MoveNext(out var uid, out var collision, out var data))
-            HandleCollisions((uid, collision, data));
+            HandleCollisions((uid, collision, data), handledPairs);
     }
 
     private void OnInit(Entity<RacerArcadeObjectCollisionComponent> ent, ref ComponentInit args)
@@ -40,13 +42,13 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
         UpdateCachedCollisionFlags(ent);
     }
 
-    private void HandleCollisions(Entity<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent> ent)
+    private void HandleCollisions(Entity<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent> ent, HashSet<(EntityUid, EntityUid)> handledPairs)
     {
-        HandleEntityCollisions(ent);
+        HandleEntityCollisions(ent, handledPairs);
         HandleTrackCollisions(ent);
     }
 
-    private void HandleEntityCollisions(Entity<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent> ent)
+    private void HandleEntityCollisions(Entity<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent> ent, HashSet<(EntityUid, EntityUid)> handledPairs)
     {
         if (!_racer.TryGetArcade((ent.Owner, ent.Comp2), out var ourArcade))
             return;
@@ -58,6 +60,18 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
         {
             Entity<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent> other = new(uid, physics, data);
             if (other.Owner == ent.Owner)
+                continue;
+
+            /*
+             * so we only store one pair
+             * and handle the inverse case
+             * where other goes through the loop and finds has the inverse pair
+             * this obviously would fail the contains
+            */
+            var pair = ent.Owner.Id < other.Owner.Id
+                ? (ent.Owner, other.Owner)
+                : (other.Owner, ent.Owner);
+            if (handledPairs.Contains(pair))
                 continue;
 
             if (!_racer.TryGetArcade((other.Owner, other.Comp2), out var otherArcade))
@@ -75,6 +89,14 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
 
             if (!CheckCollidingShapes(ent.Comp1.Shapes, other.Comp1.Shapes, out var shapeIds))
                 continue;
+
+            var ourEv = new RacerArcadeObjectCollisionWithObjectEvent(other.Owner, shapeIds.Value.a, shapeIds.Value.b);
+            RaiseLocalEvent(ent.Owner, ref ourEv);
+
+            var otherEv = new RacerArcadeObjectCollisionWithObjectEvent(ent.Owner, shapeIds.Value.b, shapeIds.Value.a);
+            RaiseLocalEvent(other.Owner, ref otherEv);
+
+            handledPairs.Add(pair);
         }
     }
 
@@ -97,6 +119,9 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
 
         if (!CheckCollidingShapes(ent.Comp1.Shapes, stage.Graph.CollisionShapes, out var shapeId))
             return;
+
+        var ev = new RacerArcadeObjectCollisionWithTrackEvent(shapeId);
+        RaiseLocalEvent(ent.Owner, ref ev);
     }
 
     private void UpdateCachedAABB(Entity<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent> ent)
