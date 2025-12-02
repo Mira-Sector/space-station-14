@@ -100,19 +100,21 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
         */
         var data = _entity.GetComponent<RacerArcadeObjectComponent>(controlled.Value.Owner);
 
+
         var trackCenter = GetClosestPointOnTrack(graph, data.Position, RenderableEdgeBezierSamples);
 
         var rotMatrix = Matrix4.Rotate(data.Rotation);
-        var forward = Vector3.TransformNormal(Vector3.UnitX, rotMatrix);
-        var right = Vector3.Cross(forward, Vector3.UnitZ);
+        var forward = Vector3.TransformNormal(Vector3.UnitY, rotMatrix);
+        var right = Vector3.Cross(Vector3.UnitZ, forward);
 
         var eye = data.Position
             + forward * controlled.Value.Comp.CameraOffset.X
             + right * controlled.Value.Comp.CameraOffset.Y
             + Vector3.UnitZ * controlled.Value.Comp.CameraOffset.Z;
 
-        var lookTarget = data.Position + forward;
-        lookTarget = Vector3.Lerp(lookTarget, trackCenter, 0.5f);
+        var lookForward = data.Position + forward;
+        var horizontalTrackCenter = new Vector3(trackCenter.X, trackCenter.Y, lookForward.Z);
+        var lookTarget = Vector3.Lerp(lookForward, horizontalTrackCenter, 0.5f);
         Camera = Matrix4.LookAt(eye, lookTarget, Vector3.UnitZ);
     }
 
