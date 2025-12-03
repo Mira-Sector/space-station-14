@@ -1,6 +1,5 @@
 using Content.Shared.Arcade.Racer.Stage;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Numerics;
 using Vector3 = Robust.Shared.Maths.Vector3;
 

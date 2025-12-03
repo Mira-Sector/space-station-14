@@ -1,4 +1,5 @@
 using Content.Shared.Arcade.Racer.Components;
+using Content.Shared.Arcade.Racer.Stage;
 using Content.Shared.UserInterface;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
@@ -95,7 +96,10 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
 
         foreach (var player in players)
         {
-            var ship = SpawnObject(ent, ent.Comp.PlayerShipId, startingNode.Position);
+            var rot = startingStage.Graph.GetDirectionAtPosition(startingNode.Position);
+            var euler = Quaternion.ToEulerRad(rot);
+            var flatRot = Quaternion.FromAxisAngle(Vector3.UnitZ, euler.Z);
+            var ship = SpawnObject(ent, ent.Comp.PlayerShipId, startingNode.Position, flatRot);
 
             EnsureComp<RacerArcadePlayerControlledComponent>(ship, out var controlled);
             controlled.Controller = player;
