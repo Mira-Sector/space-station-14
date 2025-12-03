@@ -90,10 +90,10 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
             if (!CheckCollidingShapes(ent.Comp1.Shapes, other.Comp1.Shapes, out var shapeIds))
                 continue;
 
-            var ourEv = new RacerArcadeObjectCollisionWithObjectEvent(other.Owner, shapeIds.Value.a, shapeIds.Value.b);
+            var ourEv = new RacerArcadeObjectCollisionWithObjectEvent(other.Owner, shapeIds.Value.aId, shapeIds.Value.bId);
             RaiseLocalEvent(ent.Owner, ref ourEv);
 
-            var otherEv = new RacerArcadeObjectCollisionWithObjectEvent(ent.Owner, shapeIds.Value.b, shapeIds.Value.a);
+            var otherEv = new RacerArcadeObjectCollisionWithObjectEvent(ent.Owner, shapeIds.Value.bId, shapeIds.Value.aId);
             RaiseLocalEvent(other.Owner, ref otherEv);
 
             handledPairs.Add(pair);
@@ -117,10 +117,19 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
         if (!stage.Graph.AABB.Intersects(ourAABB))
             return;
 
-        if (!CheckCollidingShapes(ent.Comp1.Shapes, stage.Graph.CollisionShapes, out var shapeId))
+        if (!CheckCollidingShapes(ent.Comp1.Shapes, stage.Graph.CollisionShapes, out var shapeIds))
             return;
 
-        var ev = new RacerArcadeObjectCollisionWithTrackEvent(shapeId);
+        // snap our position to the track
+        var box = shapeIds.Value.bEntry.Shape.GetBox();
+        var normal = Vector3.Transform(Vector3.UnitZ, box.Quaternion);
+        var height = ent.Comp2.Position.Z - Vector3.Dot(ent.Comp2.Position - box.Origin, normal);
+
+        var newPos = new Vector3(ent.Comp2.Position.X, ent.Comp2.Position.Y, height);
+        ent.Comp2.Position = newPos;
+        DirtyField(ent.Owner, ent.Comp2, nameof(RacerArcadeObjectComponent.Position));
+
+        var ev = new RacerArcadeObjectCollisionWithTrackEvent(shapeIds.Value.aId);
         RaiseLocalEvent(ent.Owner, ref ev);
     }
 
@@ -162,7 +171,7 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
     private static bool CheckCollidingShapes(
         Dictionary<string, RacerArcadeCollisionShapeEntry> a,
         Dictionary<string, RacerArcadeCollisionShapeEntry> b,
-        [NotNullWhen(true)] out (string a, string b)? shapeIds)
+        [NotNullWhen(true)] out (string aId, RacerArcadeCollisionShapeEntry aEntry, string bId, RacerArcadeCollisionShapeEntry bEntry)? shapes)
     {
         foreach (var (aId, aEntry) in a)
         {
@@ -181,19 +190,19 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
                 if (!RacerArcadeObjectCollisionResolver.Resolve(aEntry.Shape, bEntry.Shape))
                     continue;
 
-                shapeIds = (aId, bId);
+                shapes = (aId, aEntry, bId, bEntry);
                 return true;
             }
         }
 
-        shapeIds = null;
+        shapes = null;
         return false;
     }
 
     private static bool CheckCollidingShapes(
         Dictionary<string, RacerArcadeCollisionShapeEntry> a,
         List<RacerArcadeCollisionShapeEntry> b,
-        [NotNullWhen(true)] out string? shapeId)
+        [NotNullWhen(true)] out (string aId, RacerArcadeCollisionShapeEntry aEntry, RacerArcadeCollisionShapeEntry bEntry)? shape)
     {
         foreach (var (aId, aEntry) in a)
         {
@@ -212,12 +221,12 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
                 if (!RacerArcadeObjectCollisionResolver.Resolve(aEntry.Shape, bEntry.Shape))
                     continue;
 
-                shapeId = aId;
+                shape = (aId, aEntry, bEntry);
                 return true;
             }
         }
 
-        shapeId = null;
+        shape = null;
         return false;
     }
 
