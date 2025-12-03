@@ -24,7 +24,7 @@ public sealed partial class RacerArcadeStageEdgeNode : IRacerArcadeStageRenderab
     public ProtoId<RacerGameEdgeTexturePrototype>? Texture { get; set; }
 
     public const int CollisionSamples = 32;
-    public const float CollisionThickness = 0.25f;
+    public const float CollisionThickness = 16f;
 
     public IEnumerable<BaseRacerArcadeObjectCollisionShape> GetCollisionShapes(RacerArcadeStageGraph graph, RacerArcadeStageNode parent)
     {
@@ -52,7 +52,7 @@ public sealed partial class RacerArcadeStageEdgeNode : IRacerArcadeStageRenderab
             {
                 Box3 = new Box3(
                     -halfWidth, -halfWidth, -CollisionThickness,
-                    halfLength, halfWidth, CollisionThickness
+                    halfLength, halfWidth, 0f
                 ),
                 Rotation = rotation,
                 Center = center

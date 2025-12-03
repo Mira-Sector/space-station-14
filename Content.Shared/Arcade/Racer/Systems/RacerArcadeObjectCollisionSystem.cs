@@ -120,16 +120,11 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
         if (!CheckCollidingShapes(ent.Comp1.Shapes, stage.Graph.CollisionShapes, out var shapeIds))
             return;
 
-        // snap our position to the track
         var box = shapeIds.Value.bEntry.Shape.GetBox();
         var normal = Vector3.Transform(Vector3.UnitZ, box.Quaternion);
-        var height = ent.Comp2.Position.Z - Vector3.Dot(ent.Comp2.Position - box.Origin, normal);
+        var contactHeight = ent.Comp2.Position.Z - Vector3.Dot(ent.Comp2.Position - box.Origin, normal);
 
-        var newPos = new Vector3(ent.Comp2.Position.X, ent.Comp2.Position.Y, height);
-        ent.Comp2.Position = newPos;
-        DirtyField(ent.Owner, ent.Comp2, nameof(RacerArcadeObjectComponent.Position));
-
-        var ev = new RacerArcadeObjectCollisionWithTrackEvent(shapeIds.Value.aId);
+        var ev = new RacerArcadeObjectCollisionWithTrackEvent(shapeIds.Value.aId, contactHeight, normal);
         RaiseLocalEvent(ent.Owner, ref ev);
     }
 

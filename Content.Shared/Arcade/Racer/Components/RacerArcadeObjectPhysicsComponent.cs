@@ -19,6 +19,9 @@ public sealed partial class RacerArcadeObjectPhysicsComponent : Component
     [DataField, AutoNetworkedField]
     public float AngularDrag = 0.1f;
 
+    [DataField, AutoNetworkedField]
+    public float Restitution = 0.2f;
+
     [ViewVariables]
     public Vector3 AccumulatedForce;
 

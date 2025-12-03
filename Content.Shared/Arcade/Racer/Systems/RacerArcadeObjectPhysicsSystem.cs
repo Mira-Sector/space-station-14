@@ -5,6 +5,8 @@ namespace Content.Shared.Arcade.Racer.Systems;
 
 public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
 {
+    [Dependency] private readonly SharedRacerArcadeSystem _racer = default!;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -14,8 +16,21 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
 
     private void OnCollideWithTrack(Entity<RacerArcadeObjectPhysicsComponent> ent, ref RacerArcadeObjectCollisionWithTrackEvent args)
     {
-        ent.Comp.Velocity = new Vector3(ent.Comp.Velocity.X, ent.Comp.Velocity.Y, 0f);
-        DirtyField(ent.Owner, ent.Comp, nameof(RacerArcadeObjectPhysicsComponent.Velocity));
+        var data = _racer.GetData(ent.Owner);
+        var penetration = args.TrackHeight - data.Position.Z;
+        if (penetration < 0f)
+            return;
+
+        data.Position.Z += penetration;
+
+        var vn = Vector3.Dot(ent.Comp.Velocity, args.TrackNormal);
+        if (vn < 0f)
+        {
+            ent.Comp.Velocity -= vn * args.TrackNormal * (1f + ent.Comp.Restitution);
+            DirtyField(ent.Owner, ent.Comp, nameof(RacerArcadeObjectPhysicsComponent.Velocity));
+        }
+
+        DirtyField(ent.Owner, data, nameof(RacerArcadeObjectComponent.Position));
     }
 
     public override void Update(float frameTime)
