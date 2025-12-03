@@ -1,11 +1,9 @@
 using System.Numerics;
-using Robust.Shared.Serialization;
 using Vector3 = Robust.Shared.Maths.Vector3;
 
 namespace Content.Shared.PolygonRenderer;
 
-[DataDefinition, Virtual, Serializable, NetSerializable]
-public partial class ColoredPolygon : Polygon
+public abstract partial class SharedColoredPolygon : BasePolygon
 {
     [DataField]
     public Color Color = Color.White;
@@ -16,11 +14,11 @@ public partial class ColoredPolygon : Polygon
         return (vertices, Color);
     }
 
-    public ColoredPolygon(Vector3[] vertices) : base(vertices)
+    public SharedColoredPolygon(Vector3[] vertices) : base(vertices)
     {
     }
 
-    public ColoredPolygon(Vector3[] vertices, Color color) : base(vertices)
+    public SharedColoredPolygon(Vector3[] vertices, Color color) : base(vertices)
     {
         Color = color;
     }

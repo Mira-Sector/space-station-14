@@ -5,7 +5,7 @@ using Vector3 = Robust.Shared.Maths.Vector3;
 namespace Content.Shared.PolygonRenderer;
 
 [ImplicitDataDefinitionForInheritors, Serializable, NetSerializable]
-public abstract partial class Polygon
+public abstract partial class BasePolygon
 {
     [DataField]
     public Vector3[] Vertices = new Vector3[3];
@@ -42,7 +42,7 @@ public abstract partial class Polygon
         return (projectedPoints, Color.White);
     }
 
-    public Polygon(Vector3[] vertices)
+    public BasePolygon(Vector3[] vertices)
     {
         ValidateVertices(vertices);
         Vertices = vertices;

@@ -17,7 +17,7 @@ public sealed partial class PolygonRendererControl : Control
     [ViewVariables]
     public Matrix4 Camera = Matrix4.Identity;
 
-    private record struct TransformedPolygon(List<Vector2> Vertices, Color Color, float AvgDepth);
+    private record struct TransformedPolygon(IClientPolygon Polygon, List<Vector2> Vertices, Color Color, float AvgDepth);
 
     protected override void Draw(DrawingHandleScreen handle)
     {
@@ -57,13 +57,13 @@ public sealed partial class PolygonRendererControl : Control
 
                 avgDepth /= transformedVertices.Length;
 
-                var transformedPolygon = new TransformedPolygon(vertices2d.ToList(), color.Value, avgDepth);
+                var transformedPolygon = new TransformedPolygon((IClientPolygon)polygon, vertices2d.ToList(), color.Value, avgDepth);
                 transformedPolygons.Add(transformedPolygon);
             }
         }
 
         var sortedPolygons = transformedPolygons.OrderByDescending(x => x.AvgDepth);
-        foreach (var (vertices, color, _) in sortedPolygons)
-            handle.DrawPrimitives(DrawPrimitiveTopology.TriangleList, vertices, color);
+        foreach (var (polygon, vertices, color, _) in sortedPolygons)
+            polygon.Draw(handle, vertices, color);
     }
 }

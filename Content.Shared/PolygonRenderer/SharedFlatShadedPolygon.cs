@@ -1,11 +1,9 @@
-using Robust.Shared.Serialization;
 using System.Numerics;
 using Vector3 = Robust.Shared.Maths.Vector3;
 
 namespace Content.Shared.PolygonRenderer;
 
-[DataDefinition, Serializable, NetSerializable]
-public sealed partial class FlatShadedPolygon : ColoredPolygon
+public abstract partial class SharedFlatShadedPolygon : SharedColoredPolygon
 {
     [DataField]
     public float MinBrightness = 0.2f;
@@ -32,15 +30,15 @@ public sealed partial class FlatShadedPolygon : ColoredPolygon
         return (vertices, finalColor);
     }
 
-    public FlatShadedPolygon(Vector3[] vertices) : base(vertices)
+    public SharedFlatShadedPolygon(Vector3[] vertices) : base(vertices)
     {
     }
 
-    public FlatShadedPolygon(Vector3[] vertices, Color color) : base(vertices, color)
+    public SharedFlatShadedPolygon(Vector3[] vertices, Color color) : base(vertices, color)
     {
     }
 
-    public FlatShadedPolygon(Vector3[] vertices, Color color, float minBrightness) : base(vertices, color)
+    public SharedFlatShadedPolygon(Vector3[] vertices, Color color, float minBrightness) : base(vertices, color)
     {
         MinBrightness = minBrightness;
     }
