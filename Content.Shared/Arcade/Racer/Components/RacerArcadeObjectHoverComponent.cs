@@ -6,7 +6,7 @@ namespace Content.Shared.Arcade.Racer.Components;
 public sealed partial class RacerArcadeObjectHoverComponent : Component
 {
     [DataField]
-    public float Distance = 16f;
+    public float TargetHeight = 16f;
 
     [DataField]
     public float Strength = 10f;
@@ -14,5 +14,6 @@ public sealed partial class RacerArcadeObjectHoverComponent : Component
     [DataField]
     public float Damping = 2f;
 
-    public const float HeightErrorThreshold = 0.01f;
+    [DataField]
+    public float MaxForce = 1000f;
 }

@@ -5,30 +5,17 @@ namespace Content.Shared.Arcade.Racer.Systems;
 
 public sealed partial class RacerArcadeObjectGravitySystem : EntitySystem
 {
-    [Dependency] private readonly RacerArcadeObjectPhysicsSystem _physics = default!;
-
     public override void Initialize()
     {
         base.Initialize();
 
-        SubscribeLocalEvent<RacerArcadeObjectGravityComponent, ComponentStartup>(OnStartup);
-        SubscribeLocalEvent<RacerArcadeObjectGravityComponent, ComponentShutdown>(OnShutdown);
-
-        SubscribeLocalEvent<RacerArcadeObjectGravityComponent, RacerArcadeObjectPhysicsGetVelocityEvent>(OnGetVelocity);
+        SubscribeLocalEvent<RacerArcadeObjectGravityComponent, RacerArcadeObjectPhysicsGetForcesEvent>(OnGetForces);
     }
 
-    private void OnStartup(Entity<RacerArcadeObjectGravityComponent> ent, ref ComponentStartup args)
+    private void OnGetForces(Entity<RacerArcadeObjectGravityComponent> ent, ref RacerArcadeObjectPhysicsGetForcesEvent args)
     {
-        _physics.UpdateVelocity(ent.Owner);
-    }
-
-    private void OnShutdown(Entity<RacerArcadeObjectGravityComponent> ent, ref ComponentShutdown args)
-    {
-        _physics.UpdateVelocity(ent.Owner);
-    }
-
-    private void OnGetVelocity(Entity<RacerArcadeObjectGravityComponent> ent, ref RacerArcadeObjectPhysicsGetVelocityEvent args)
-    {
-        args.Velocity += ent.Comp.Force;
+        var physics = Comp<RacerArcadeObjectPhysicsComponent>(ent.Owner);
+        var gravityForce = ent.Comp.Acceleration * physics.Mass;
+        args.Force += new Vector3(0f, 0f, gravityForce);
     }
 }
