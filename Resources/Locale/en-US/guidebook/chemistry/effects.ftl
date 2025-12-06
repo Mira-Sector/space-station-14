@@ -426,6 +426,12 @@ reagent-effect-guidebook-plant-seeds-remove =
         *[other] remove the
     } seeds of the plant
 
+reagent-effect-guidebook-plant-stable-mutagen =
+    { %chance ->
+        [1] Adds
+        *[other] adds
+    } a randomly chosen reagent in the hydroponics tray to its held plant's genetic makeup, causing it to begin producing it.
+
 reagent-effect-guidebook-glowing =
     { $chance ->
         [1] Makes the
@@ -437,3 +443,4 @@ reagent-effect-guidebook-body-damage =
         [-1] Heals [color=green]{NATURALFIXED($amount, 2)}[/color] organ damage
         *[1] Deals [color=red]{NATURALFIXED($amount, 2)}[/color] organ damage
     }
+

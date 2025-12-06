@@ -53,3 +53,29 @@
       amount: 4
   products:
     PlantBGone: 5
+
+- type: reaction
+  id: StableMutagen
+  minTemp: 370
+  reactants:
+    Cognizine:
+      amount: 1
+    UnstableMutagen:
+      amount: 3
+    Phalanximine:
+      amount: 3
+    Ash:
+      amount: 3
+  products:
+    StableMutagen: 2
+
+- type: reaction
+  id: StableMutagenSyndicate
+  reactants:
+    Vestine:
+      amount: 1
+    UnstableMutagen:
+      amount: 2
+  products:
+    StableMutagen: 2
+    

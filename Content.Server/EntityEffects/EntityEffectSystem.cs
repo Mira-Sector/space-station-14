@@ -34,6 +34,7 @@ using Content.Shared.Maps;
 using Content.Shared.Mind.Components;
 using Content.Shared.Popups;
 using Content.Shared.Random;
+using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Zombies;
 using Robust.Server.GameObjects;
 using Robust.Shared.Audio;
@@ -96,6 +97,7 @@ public sealed class EntityEffectSystem : EntitySystem
         SubscribeLocalEvent<ExecuteEntityEffectEvent<PlantCryoxadone>>(OnExecutePlantCryoxadone);
         SubscribeLocalEvent<ExecuteEntityEffectEvent<PlantDestroySeeds>>(OnExecutePlantDestroySeeds);
         SubscribeLocalEvent<ExecuteEntityEffectEvent<PlantDiethylamine>>(OnExecutePlantDiethylamine);
+        SubscribeLocalEvent<ExecuteEntityEffectEvent<PlantStableMutagen>>(OnExecutePlantStableMutagen);
         SubscribeLocalEvent<ExecuteEntityEffectEvent<PlantPhalanximine>>(OnExecutePlantPhalanximine);
         SubscribeLocalEvent<ExecuteEntityEffectEvent<PlantRestoreSeeds>>(OnExecutePlantRestoreSeeds);
         SubscribeLocalEvent<ExecuteEntityEffectEvent<RobustHarvest>>(OnExecuteRobustHarvest);
@@ -447,6 +449,63 @@ public sealed class EntityEffectSystem : EntitySystem
             _plantHolder.EnsureUniqueSeed(args.Args.TargetEntity, plantHolderComp);
             plantHolderComp.Seed!.Endurance++;
         }
+    }
+
+    private void OnExecutePlantStableMutagen(ref ExecuteEntityEffectEvent<PlantStableMutagen> args) //mira
+    {
+        if (!CanMetabolizePlant(args.Args.TargetEntity, out var plantHolderComp, mustHaveMutableSeed: true))
+            return;
+
+        _plantHolder.EnsureUniqueSeed(args.Args.TargetEntity, plantHolderComp);
+
+        var produceChemicals = plantHolderComp.Seed!.Chemicals; //can't be null if plant exists
+        var soilChemicals = plantHolderComp.SoilSolution?.Comp.Solution.GetReagentPrototypes(_protoManager);
+        if (soilChemicals == null) //probably can't be null if this is metabolising but whatevs
+            return;
+        List<ReagentPrototype>? soilChemicalsPruned = new(); //get rid of anything with this effect so it can't add itself
+        foreach (var soil in soilChemicals)
+        {
+            var fail = false;
+            foreach (var effect in soil.Key.PlantMetabolisms) //check for plant metabolism effects
+            {
+                if (effect.GetType().Name == "PlantStableMutagen") //if it contains this effect, prevent it being added
+                {
+                    fail = true;
+                    Log.Debug("fail on self");
+                    break;
+                }
+            }
+
+            if (fail == true)
+                continue;
+
+            soilChemicalsPruned.Add(soil.Key);
+        }
+
+        if (soilChemicalsPruned == null) //if nothing left, fail
+            return;
+
+        var picked = _random.Pick(soilChemicalsPruned);
+        var amount = _random.NextFloat(0.5f, 1);
+        var seedChemQuantity = new SeedChemQuantity();
+        if (produceChemicals.ContainsKey(picked.ID))
+        {
+            seedChemQuantity.Min = produceChemicals[picked.ID].Min;
+            if (seedChemQuantity.Max > args.Effect.MaxChem)
+                seedChemQuantity.Max = produceChemicals[picked.ID].Max + amount / Math.Pow((double)produceChemicals[picked.ID].Max, 2); //massive dropoff when over max value
+            else
+                seedChemQuantity.Max = produceChemicals[picked.ID].Max + amount; //can actually go over max here if you're lucky, so its just a nice bonus
+        }
+        else
+        {
+            seedChemQuantity.Min = 1;
+            seedChemQuantity.Max = 1 + (int)Math.Ceiling(amount);
+            seedChemQuantity.Inherent = false;
+        }
+        var potencyDivisor = 100.0f / seedChemQuantity.Max;
+        seedChemQuantity.PotencyDivisor = (float)potencyDivisor;
+        produceChemicals[picked.ID] = seedChemQuantity;
+
     }
 
     private void OnExecutePlantPhalanximine(ref ExecuteEntityEffectEvent<PlantPhalanximine> args)
@@ -862,7 +921,7 @@ public sealed class EntityEffectSystem : EntitySystem
         {
             var pick = _random.Pick<RandomFillSolution>(randomChems);
             var chemicalId = _random.Pick(pick.Reagents);
-            var amount = _random.Next(1, (int)pick.Quantity);
+            var amount = _random.NextFloat(1, (int)pick.Quantity);
             var seedChemQuantity = new SeedChemQuantity();
             if (chemicals.ContainsKey(chemicalId))
             {
@@ -875,8 +934,8 @@ public sealed class EntityEffectSystem : EntitySystem
                 seedChemQuantity.Max = 1 + amount;
                 seedChemQuantity.Inherent = false;
             }
-            var potencyDivisor = (int)Math.Ceiling(100.0f / seedChemQuantity.Max);
-            seedChemQuantity.PotencyDivisor = potencyDivisor;
+            var potencyDivisor = 100.0f / seedChemQuantity.Max;
+            seedChemQuantity.PotencyDivisor = (float)potencyDivisor;
             chemicals[chemicalId] = seedChemQuantity;
         }
     }

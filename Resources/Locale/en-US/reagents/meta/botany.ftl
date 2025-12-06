@@ -24,3 +24,6 @@ reagent-desc-diethylamine = A very potent fertilizer, treats plants with nutrien
 
 reagent-name-sedin = sedin
 reagent-desc-sedin = A modified version of diethylamine that can restore seeds on plants at the cost of potency.
+
+reagent-name-stable-mutagen = stable mutagen
+reagent-desc-stable-mutagen = A mutagenically stable compound capable of directly modifying genetics through chemical encoding. Mixing this with another reagent and adding it to a plant will cause the plant to begin producing it, although placing strain upon the plant.
