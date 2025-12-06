@@ -432,6 +432,12 @@ reagent-effect-guidebook-plant-stable-mutagen =
         *[other] adds
     } a randomly chosen reagent in the hydroponics tray to its held plant's genetic makeup, causing it to begin producing it.
 
+reagent-effect-guidebook-plant-resurrect =
+    { %chance ->
+        [1] Revives
+        *[other] revives
+    } a plant from a dead state.
+
 reagent-effect-guidebook-glowing =
     { $chance ->
         [1] Makes the

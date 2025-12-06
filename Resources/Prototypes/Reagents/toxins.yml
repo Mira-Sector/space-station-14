@@ -461,6 +461,13 @@
           conditions:
             - !type:ReagentThreshold
               min: 5
+  plantMetabolism: #mira change
+  - !type:PlantResurrect
+    conditions:
+    - !type:ReagentThreshold
+      min: 4
+  - !type:PlantAdjustMutationLevel
+    amount: 5
 
 - type: reagent
   id: UncookedAnimalProteins

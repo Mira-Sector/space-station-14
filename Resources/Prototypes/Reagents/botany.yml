@@ -304,7 +304,7 @@
           types:
             Caustic: 1
 
-- type: reagent
+- type: reagent #mira chem
   id: StableMutagen
   name: reagent-name-stable-mutagen
   group: Botanical

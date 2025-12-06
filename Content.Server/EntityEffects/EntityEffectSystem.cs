@@ -100,6 +100,7 @@ public sealed class EntityEffectSystem : EntitySystem
         SubscribeLocalEvent<ExecuteEntityEffectEvent<PlantStableMutagen>>(OnExecutePlantStableMutagen);
         SubscribeLocalEvent<ExecuteEntityEffectEvent<PlantPhalanximine>>(OnExecutePlantPhalanximine);
         SubscribeLocalEvent<ExecuteEntityEffectEvent<PlantRestoreSeeds>>(OnExecutePlantRestoreSeeds);
+        SubscribeLocalEvent<ExecuteEntityEffectEvent<PlantResurrect>>(OnExecutePlantResurrect);
         SubscribeLocalEvent<ExecuteEntityEffectEvent<RobustHarvest>>(OnExecuteRobustHarvest);
         SubscribeLocalEvent<ExecuteEntityEffectEvent<AdjustTemperature>>(OnExecuteAdjustTemperature);
         SubscribeLocalEvent<ExecuteEntityEffectEvent<AreaReactionEffect>>(OnExecuteAreaReactionEffect);
@@ -505,6 +506,19 @@ public sealed class EntityEffectSystem : EntitySystem
         var potencyDivisor = 100.0f / seedChemQuantity.Max;
         seedChemQuantity.PotencyDivisor = (float)potencyDivisor;
         produceChemicals[picked.ID] = seedChemQuantity;
+
+    }
+    private void OnExecutePlantResurrect(ref ExecuteEntityEffectEvent<PlantResurrect> args) //mira
+    {
+        if (!CanMetabolizePlant(args.Args.TargetEntity, out var plantHolderComp, mustHaveAlivePlant: false))
+            return;
+
+        plantHolderComp.Dead = false;
+
+        if (plantHolderComp.Health <= 0)
+            plantHolderComp.Health = 1;
+
+        //plantHolderComp.ForceUpdate = true;
 
     }
 
