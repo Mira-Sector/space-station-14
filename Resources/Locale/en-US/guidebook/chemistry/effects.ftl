@@ -427,16 +427,16 @@ reagent-effect-guidebook-plant-seeds-remove =
     } seeds of the plant
 
 reagent-effect-guidebook-plant-stable-mutagen =
-    { %chance ->
+    { $chance ->
         [1] Adds
-        *[other] adds
-    } a randomly chosen reagent in the hydroponics tray to its held plant's genetic makeup, causing it to begin producing it.
+        *[other]{$percent}% chance to add
+    } randomly chosen reagent in the hydroponics tray to the plant's produce. Halve chance to add new reagent per non-inherent reagent already present within plant over {$reagentCount}
 
 reagent-effect-guidebook-plant-resurrect =
-    { %chance ->
+    { $chance ->
         [1] Revives
         *[other] revives
-    } a plant from a dead state.
+    } a plant from a dead state
 
 reagent-effect-guidebook-glowing =
     { $chance ->

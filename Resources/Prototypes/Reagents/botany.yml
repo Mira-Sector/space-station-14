@@ -317,9 +317,6 @@
   plantMetabolism:
   - !type:PlantStableMutagen
     MaxChem: 5
-    conditions:
-    - !type:ReagentThreshold
-      min: 4
   - !type:PlantAdjustNutrition
     amount: -2
   - !type:PlantAdjustHealth
