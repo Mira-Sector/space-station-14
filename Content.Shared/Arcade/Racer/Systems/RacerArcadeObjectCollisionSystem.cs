@@ -53,7 +53,10 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
         if (!_racer.TryGetArcade((ent.Owner, ent.Comp2), out var ourArcade))
             return;
 
-        var ourAABB = ent.Comp1.CachedAABB;
+        var ourBox = new Box3Rotated(ent.Comp1.CachedAABB);
+        ourBox = ourBox.Translate(ent.Comp2.Position);
+        ourBox = ourBox.Rotate(ent.Comp2.Rotation);
+        var ourAABB = ourBox.CalcBoundingBox();
 
         var query = EntityQueryEnumerator<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent>();
         while (query.MoveNext(out var uid, out var physics, out var data))
@@ -83,7 +86,10 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
             if ((ent.Comp1.AllMasks & other.Comp1.AllLayers) == 0 || (other.Comp1.AllMasks & ent.Comp1.AllLayers) == 0)
                 continue;
 
-            var otherAABB = other.Comp1.CachedAABB;
+            var otherBox = new Box3Rotated(other.Comp1.CachedAABB);
+            otherBox = otherBox.Translate(ent.Comp2.Position);
+            otherBox = otherBox.Rotate(ent.Comp2.Rotation);
+            var otherAABB = otherBox.CalcBoundingBox();
             if (!ourAABB.Intersects(otherAABB))
                 continue;
 
@@ -130,7 +136,7 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
 
     private void UpdateCachedAABB(Entity<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent> ent)
     {
-        var box = Box3Rotated.Empty;
+        var box = Box3.Empty;
         foreach (var entry in ent.Comp1.Shapes.Values)
         {
             var shapeBox = entry.Shape.GetBox();
@@ -141,10 +147,7 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
                 Vector3.ComponentMax(box.RightTopFront, shapeAABB.RightTopFront)
             );
         }
-        box.Translate(ent.Comp2.Position);
-        box.Rotate(ent.Comp2.Rotation);
-        var aabb = box.CalcBoundingBox();
-        ent.Comp1.CachedAABB = aabb;
+        ent.Comp1.CachedAABB = box;
         DirtyField(ent.Owner, ent.Comp1, nameof(RacerArcadeObjectCollisionComponent.CachedAABB));
     }
 

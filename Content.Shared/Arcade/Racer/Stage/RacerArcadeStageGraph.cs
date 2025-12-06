@@ -45,7 +45,7 @@ public sealed partial class RacerArcadeStageGraph : ISerializationHooks
         foreach (var (edge, parent) in this.GetConnections())
         {
             var shapes = edge.GetCollisionShapes(this, parent);
-            CollisionShapes.EnsureCapacity(shapes.Count());
+            CollisionShapes.EnsureCapacity(CollisionShapes.Count + shapes.Count());
             foreach (var shape in shapes)
             {
                 var entry = new RacerArcadeCollisionShapeEntry()
