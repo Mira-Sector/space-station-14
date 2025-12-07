@@ -8,10 +8,12 @@ namespace Content.Server.Atmos.EntitySystems
         [Dependency] private readonly IConfigurationManager _cfg = default!;
 
         public bool SpaceWind { get; private set; }
-        public float SpaceWindPressureForceDivisorThrow { get; private set; }
-        public float SpaceWindPressureForceDivisorPush { get; private set; }
+        public float SpaceWindFlowRate { get; private set; }
+        public float SpaceWindMinSoundMagnitude { get; private set; }
+        public TimeSpan SpaceWindSoundCooldown { get; private set; }
+        public int SpaceWindSoundRange { get; private set; }
         public float SpaceWindMaxVelocity { get; private set; }
-        public float SpaceWindMaxPushForce { get; private set; }
+        public float SpaceWindVacuumPull { get; private set; }
         public bool MonstermosEqualization { get; private set; }
         public bool MonstermosDepressurization { get; private set; }
         public bool MonstermosRipTiles { get; private set; }
@@ -37,10 +39,12 @@ namespace Content.Server.Atmos.EntitySystems
         private void InitializeCVars()
         {
             Subs.CVar(_cfg, CCVars.SpaceWind, value => SpaceWind = value, true);
-            Subs.CVar(_cfg, CCVars.SpaceWindPressureForceDivisorThrow, value => SpaceWindPressureForceDivisorThrow = value, true);
-            Subs.CVar(_cfg, CCVars.SpaceWindPressureForceDivisorPush, value => SpaceWindPressureForceDivisorPush = value, true);
+            Subs.CVar(_cfg, CCVars.SpaceWindFlowRate, value => SpaceWindFlowRate = value, true);
+            Subs.CVar(_cfg, CCVars.SpaceWindMinSoundMagnitude, value => SpaceWindMinSoundMagnitude = value, true);
+            Subs.CVar(_cfg, CCVars.SpaceWindSoundCooldown, value => SpaceWindSoundCooldown = TimeSpan.FromSeconds(value), true);
+            Subs.CVar(_cfg, CCVars.SpaceWindSoundRange, value => SpaceWindSoundRange = value, true);
             Subs.CVar(_cfg, CCVars.SpaceWindMaxVelocity, value => SpaceWindMaxVelocity = value, true);
-            Subs.CVar(_cfg, CCVars.SpaceWindMaxPushForce, value => SpaceWindMaxPushForce = value, true);
+            Subs.CVar(_cfg, CCVars.SpaceWindVacuumPull, value => SpaceWindVacuumPull = value, true);
             Subs.CVar(_cfg, CCVars.MonstermosEqualization, value => MonstermosEqualization = value, true);
             Subs.CVar(_cfg, CCVars.MonstermosDepressurization, value => MonstermosDepressurization = value, true);
             Subs.CVar(_cfg, CCVars.MonstermosRipTiles, value => MonstermosRipTiles = value, true);

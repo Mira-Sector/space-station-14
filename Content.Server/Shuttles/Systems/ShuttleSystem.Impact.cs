@@ -244,7 +244,7 @@ public sealed partial class ShuttleSystem
                 continue;
 
             // don't throw them if they have magboots
-            if (movedByPressureQuery.TryComp(uid, out var moved) && !moved.Enabled)
+            if (!_atmos.IsMovableByWind(uid))
                 continue;
 
             if (direction.LengthSquared() > minsq)
