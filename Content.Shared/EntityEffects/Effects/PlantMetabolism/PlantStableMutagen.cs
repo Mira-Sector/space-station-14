@@ -22,7 +22,7 @@ public sealed partial class PlantStableMutagen : EventEntityEffect<PlantStableMu
     ///<summary>
     /// Falloff when over maximum reagent amount, applied as an exponent (aka, 2 = fall off with the square of the existing amount)
     ///</summary>
-    public float Falloff = 2;
+    public float Falloff = 1.5f;
 
     ///<summary>
     /// Chance for new reagent to be added to a plant, reagents that already exist are guarenteed to be increased.
@@ -35,6 +35,6 @@ public sealed partial class PlantStableMutagen : EventEntityEffect<PlantStableMu
     ///</summary>
     public float MaxReagentCount = 2;
 
-    protected override string? ReagentEffectGuidebookText(IPrototypeManager prototype, IEntitySystemManager entSys) => 
+    protected override string? ReagentEffectGuidebookText(IPrototypeManager prototype, IEntitySystemManager entSys) =>
         Loc.GetString("reagent-effect-guidebook-plant-stable-mutagen", ("chance", BaseReagentAddChance), ("percent", (BaseReagentAddChance * 100).ToString()), ("reagentCount", MaxReagentCount));
 }
