@@ -25,7 +25,6 @@
     - Electrocution
     - TemporaryBlindness
     - RadiationProtection
-    - Drowsiness
     - Adrenaline
   - type: StandingState
   - type: Tag
@@ -58,10 +57,7 @@
   - type: MobThresholds
     thresholds:
       0: Alive
-      250: Dead
-  - type: SlowOnDamage
-    speedModifierThresholds:
-      200: 0.75
+      150: Dead
   - type: MeleeWeapon
     soundHit:
       path: "/Audio/Weapons/smash.ogg"
@@ -384,7 +380,7 @@
   - type: MobThresholds
     thresholds:
       0: Alive
-      75: Dead
+      45: Dead
   - type: MeleeWeapon
     angle: 0
     animation: WeaponArcBite

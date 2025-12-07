@@ -256,3 +256,8 @@
   license: "CC-BY-4.0"
   copyright: "Created by theplax on freesound and converted to vorbis and mono"
   source: "https://freesound.org/people/theplax/sounds/620517/"
+
+- files: ["soft_thump.ogg"]
+  license: "CC-BY-4.0"
+  copyright: "Clipped by FairlySadPanda (Github) from a sound created by CheChoDj (Freesound)"
+  source: "https://freesound.org/people/CheChoDj/sounds/609353/"
