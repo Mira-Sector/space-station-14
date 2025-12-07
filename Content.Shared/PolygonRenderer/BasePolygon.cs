@@ -1,11 +1,10 @@
-using System.Numerics;
 using Robust.Shared.Serialization;
 using Vector3 = Robust.Shared.Maths.Vector3;
 
 namespace Content.Shared.PolygonRenderer;
 
 [ImplicitDataDefinitionForInheritors, Serializable, NetSerializable]
-public abstract partial class Polygon
+public abstract partial class BasePolygon
 {
     [DataField]
     public Vector3[] Vertices = new Vector3[3];
@@ -28,21 +27,9 @@ public abstract partial class Polygon
         return Vector3.Normalize(normal);
     }
 
-    public virtual (Vector2[], Color?) PolygonTo2D(Vector3[] cameraVertices, Matrix4 camera)
-    {
-        var projectedPoints = new Vector2[cameraVertices.Length];
-        for (var i = 0; i < cameraVertices.Length; i++)
-        {
-            var vertex = cameraVertices[i];
-            vertex.Z += float.Epsilon; // prevent division by 0
-            var projected = new Vector2(vertex.X / vertex.Z, vertex.Y / vertex.Z);
-            projectedPoints[i] = projected;
-        }
+    public abstract Color? Shade(Vector3[] cameraVertices, Matrix4 camera);
 
-        return (projectedPoints, Color.White);
-    }
-
-    public Polygon(Vector3[] vertices)
+    public BasePolygon(Vector3[] vertices)
     {
         ValidateVertices(vertices);
         Vertices = vertices;

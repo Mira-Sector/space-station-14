@@ -6,17 +6,17 @@ namespace Content.Shared.PolygonRenderer;
 public partial class PolygonModel
 {
     [DataField]
-    public List<Polygon> Polygons;
+    public List<BasePolygon> Polygons;
 
     [ViewVariables]
     public Matrix4 ModelMatrix = Matrix4.Identity;
 
-    public PolygonModel(List<Polygon> polygons)
+    public PolygonModel(List<BasePolygon> polygons)
     {
         Polygons = polygons;
     }
 
-    public PolygonModel(List<Polygon> polygons, Matrix4 modelMatrix)
+    public PolygonModel(List<BasePolygon> polygons, Matrix4 modelMatrix)
     {
         Polygons = polygons;
         ModelMatrix = modelMatrix;

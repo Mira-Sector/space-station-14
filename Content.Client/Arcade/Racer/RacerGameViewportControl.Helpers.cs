@@ -1,7 +1,7 @@
-using System.Linq;
 using Content.Client.PolygonRenderer;
 using Content.Shared.Arcade.Racer.Stage;
 using Content.Shared.PolygonRenderer;
+using System.Linq;
 
 namespace Content.Client.Arcade.Racer;
 
@@ -13,7 +13,7 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
         float maxDistance,
         Vector3 cameraPos)
     {
-        List<Polygon> allPolys = [];
+        List<BasePolygon> allPolys = [];
 
         foreach (var (edge, parent) in graph.GetConnections())
         {
@@ -32,7 +32,7 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
         return new PolygonModel(allPolys, Matrix4.Identity);
     }
 
-    private static IEnumerable<Polygon> BezierEdgeToPolygons(
+    private static IEnumerable<BasePolygon> BezierEdgeToPolygons(
         IRacerArcadeStageRenderableEdge edge,
         Vector3 startNodePos,
         Vector3 endNodePos,
