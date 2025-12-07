@@ -27,7 +27,6 @@
     id: AtmosPDA
     belt: ClothingBeltUtilityEngineering
     ears: ClothingHeadsetEngineering
-    gloves: ClothingHandsGlovesColorYellow
     pocket1: trayScanner
     pocket2: GasAnalyzer
   #storage:
