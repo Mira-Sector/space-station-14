@@ -13,5 +13,9 @@
         shape: !type:Sphere
           radius: 1.5
   - type: RacerArcadeObjectPhysics
+    mass: 5000
+    linearDrag: 0.2
+    angularDrag: 0.3
+    restitution: 0.2
   - type: RacerArcadeObjectGravity
   - type: RacerArcadeObjectHover

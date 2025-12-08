@@ -12,9 +12,10 @@ namespace Content.Shared.Arcade.Racer.Systems;
 
 public abstract partial class SharedRacerArcadeSystem : EntitySystem
 {
+    [Dependency] private readonly RacerArcadeObjectCollisionSystem _collision = default!;
+    [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] protected readonly IPrototypeManager PrototypeMan = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly SharedContainerSystem _container = default!;
 
     private EntityQuery<RacerArcadeObjectComponent> _data;
     private EntityQuery<RacerArcadeComponent> _arcade;
@@ -99,7 +100,16 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
             var rot = startingStage.Graph.GetDirectionAtPosition(startingNode.Position);
             var euler = Quaternion.ToEulerRad(rot);
             var flatRot = Quaternion.FromAxisAngle(Vector3.UnitZ, euler.Z);
-            var ship = SpawnObject(ent, ent.Comp.PlayerShipId, startingNode.Position, flatRot);
+
+            var ship = SpawnObject(ent, ent.Comp.PlayerShipId, startingNode.Position, flatRot, false);
+
+            // dont spawn inside the floor
+            if (TryComp<RacerArcadeObjectCollisionComponent>(ship, out var collision))
+            {
+                var aabb = _collision.GetAABB((ship.Owner, collision, ship.Comp));
+                if (aabb.Contains(startingNode.Position))
+                    ship.Comp.Position.Z = aabb.Bottom;
+            }
 
             EnsureComp<RacerArcadePlayerControlledComponent>(ship, out var controlled);
             controlled.Controller = player;
@@ -108,6 +118,8 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
             EnsureComp<RacerArcadeGamerComponent>(player, out var gamer);
             gamer.Cabinet = ent.Owner;
             Dirty(player, gamer);
+
+            EntityManager.InitializeAndStartEntity(ship);
 
             ent.Comp.Players.Add(player);
         }
@@ -134,13 +146,13 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
     }
 
     [PublicAPI]
-    public EntityUid SpawnObject(Entity<RacerArcadeComponent?> arcade, EntProtoId? objectId = null, Vector3? position = null, Quaternion? rotation = null)
+    public Entity<RacerArcadeObjectComponent> SpawnObject(Entity<RacerArcadeComponent?> arcade, EntProtoId? objectId = null, Vector3? position = null, Quaternion? rotation = null, bool initialize = true)
     {
         if (!Resolve(arcade.Owner, ref arcade.Comp))
-            return EntityUid.Invalid;
+            return (EntityUid.Invalid, default!);
 
         if (arcade.Comp.State is not { } state)
-            return EntityUid.Invalid;
+            return (EntityUid.Invalid, default!);
 
         var data = new RacerArcadeObjectComponent();
         if (position != null)
@@ -157,12 +169,14 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
         var obj = EntityManager.CreateEntityUninitialized(objectId);
         AddComp(obj, data, true);
         FlagPredicted(obj);
-        EntityManager.InitializeAndStartEntity(obj);
+
+        if (initialize)
+            EntityManager.InitializeAndStartEntity(obj);
 
         state.Objects.Add(GetNetEntity(obj));
         _container.Insert(obj, arcade.Comp.Objects);
         Dirty(arcade);
-        return obj;
+        return (obj, data);
     }
 
     [PublicAPI]

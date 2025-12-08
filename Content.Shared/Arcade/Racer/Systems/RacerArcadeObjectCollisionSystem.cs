@@ -14,6 +14,7 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly SharedRacerArcadeSystem _racer = default!;
 
+    private EntityQuery<RacerArcadeObjectCollisionComponent> _collision;
     private EntityQuery<RacerArcadeObjectComponent> _data;
 
     public override void Initialize()
@@ -22,6 +23,7 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
 
         SubscribeLocalEvent<RacerArcadeObjectCollisionComponent, ComponentInit>(OnInit);
 
+        _collision = GetEntityQuery<RacerArcadeObjectCollisionComponent>();
         _data = GetEntityQuery<RacerArcadeObjectComponent>();
     }
 
@@ -53,10 +55,7 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
         if (!_racer.TryGetArcade((ent.Owner, ent.Comp2), out var ourArcade))
             return;
 
-        var ourBox = new Box3Rotated(ent.Comp1.CachedAABB);
-        ourBox = ourBox.Translate(ent.Comp2.Position);
-        ourBox = ourBox.Rotate(ent.Comp2.Rotation);
-        var ourAABB = ourBox.CalcBoundingBox();
+        var ourAABB = GetAABB(ent!);
 
         var query = EntityQueryEnumerator<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent>();
         while (query.MoveNext(out var uid, out var physics, out var data))
@@ -86,10 +85,7 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
             if ((ent.Comp1.AllMasks & other.Comp1.AllLayers) == 0 || (other.Comp1.AllMasks & ent.Comp1.AllLayers) == 0)
                 continue;
 
-            var otherBox = new Box3Rotated(other.Comp1.CachedAABB);
-            otherBox = otherBox.Translate(ent.Comp2.Position);
-            otherBox = otherBox.Rotate(ent.Comp2.Rotation);
-            var otherAABB = otherBox.CalcBoundingBox();
+            var otherAABB = GetAABB(other!);
             if (!ourAABB.Intersects(otherAABB))
                 continue;
 
@@ -226,6 +222,19 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
 
         shape = null;
         return false;
+    }
+
+    [PublicAPI]
+    public Box3 GetAABB(Entity<RacerArcadeObjectCollisionComponent?, RacerArcadeObjectComponent?> ent)
+    {
+        if (!_collision.Resolve(ent.Owner, ref ent.Comp1) || !_data.Resolve(ent.Owner, ref ent.Comp2))
+            return Box3.Empty;
+
+        UpdateCachedAABB(ent!);
+        var box = new Box3Rotated(ent.Comp1.CachedAABB);
+        box = box.Translate(ent.Comp2.Position);
+        box = box.Rotate(ent.Comp2.Rotation);
+        return box.CalcBoundingBox();
     }
 
     [PublicAPI]
