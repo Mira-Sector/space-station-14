@@ -223,7 +223,7 @@
     pack: BlockGameGoodbyes
 
 - type: entity
-  id: BlockGameRacer
+  id: RacerArcade
   description: REPLACE
   name: REPLACE
   parent: ArcadeBase
