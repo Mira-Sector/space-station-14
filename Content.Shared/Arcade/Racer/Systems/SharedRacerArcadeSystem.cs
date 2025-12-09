@@ -104,12 +104,8 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
             var ship = SpawnObject(ent, ent.Comp.PlayerShipId, startingNode.Position, flatRot, false);
 
             // dont spawn inside the floor
-            if (TryComp<RacerArcadeObjectCollisionComponent>(ship, out var collision))
-            {
-                var aabb = _collision.GetAABB((ship.Owner, collision, ship.Comp));
-                if (aabb.Contains(startingNode.Position))
-                    ship.Comp.Position.Z = aabb.Bottom;
-            }
+            if (_collision.TryGetTrackHeightAtPosition(ship!, out var height))
+                ship.Comp.Position.Z = height.Value;
 
             EnsureComp<RacerArcadePlayerControlledComponent>(ship, out var controlled);
             controlled.Controller = player;
