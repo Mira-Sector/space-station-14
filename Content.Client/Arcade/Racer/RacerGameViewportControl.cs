@@ -25,16 +25,33 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
     private const int RenderableEdgeBezierSamples = 8;
     private const float RenderageEdgeDrawDistance = 2048f;
 
+    private static readonly ProtoId<ShaderPrototype> ShaderId = "RacerViewport";
+    private readonly ShaderInstance _shader;
+
+    private static readonly float[] Bayer =
+    [
+        0f, 8f, 2f, 10f,
+        12f, 4f, 14f, 6f,
+        3f, 11f, 1f, 9f,
+        15f, 7f, 13f, 5f
+    ];
+
     public RacerGameViewportControl() : base()
     {
         IoCManager.InjectDependencies(this);
 
         _sprite = _entity.System<SpriteSystem>();
         _racer = _entity.System<RacerArcadeSystem>();
+
+        _shader = _prototype.Index(ShaderId).InstanceUnique();
+        _shader.SetParameter("bayer", Bayer);
+        _shader.SetParameter("dimension", (int)MathF.Sqrt(Bayer.Length));
     }
 
     protected override void Draw(DrawingHandleScreen handle)
     {
+        handle.UseShader(null);
+
         Models = [];
 
         if (_cabinet is not { } cabinet || _viewer is not { } viewer)
@@ -50,7 +67,10 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
 
         SetCameraMatrix(currentStage.Graph, state.CurrentNode, cabinet, viewer);
 
+
+        handle.UseShader(_shader);
         base.Draw(handle);
+        handle.UseShader(null);
     }
 
     private void DrawSky(DrawingHandleScreen handle, RacerGameStageSkyData data)

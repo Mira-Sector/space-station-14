@@ -149,3 +149,10 @@
   id: IonStorm
   kind: source
   path: "/Textures/Shaders/ion_storm.swsl"
+
+- type: shader
+  id: RacerViewport
+  kind: source
+  path: "/Textures/Shaders/racer_viewport.swsl"
+  params:
+    levels: 32
