@@ -2171,3 +2171,11 @@ Entries:
     type: Tweak
   id: 301
   time: '2025-10-29T01:40:00.0000000+00:00'
+- author: Mehnix
+  changes:
+  - message: Added Stable Mutagen, letting you custom tailor plant reagents
+    type: Add
+  - message: Necrosol and Romerol now revive plants from the dead.
+    type: Tweak
+  id: 302
+  time: '2025-12-10T22:00:00.0000000+00:00'
