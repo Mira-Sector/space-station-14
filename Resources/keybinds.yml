@@ -537,6 +537,27 @@ binds:
 - function: Arcade3
   type: State
   key: Z
+- function: RacerPitchUp
+  type: State
+  key: S
+- function: RacerPitchDown
+  type: State
+  key: W
+- function: RacerTurnLeft
+  type: State
+  key: A
+- function: RacerTurnRight
+  type: State
+  key: D
+- function: RacerAirbrakeLeft
+  type: State
+  key: J
+- function: RacerAirbrakeRight
+  type: State
+  key: L
+- function: RacerAccelerate
+  type: State
+  key: K
 - function: OpenAbilitiesMenu
   type: State
   key: K

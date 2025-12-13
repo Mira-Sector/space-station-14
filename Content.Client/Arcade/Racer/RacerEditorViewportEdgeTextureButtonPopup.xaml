@@ -1,0 +1,19 @@
+<cc:RacerEditorViewportPopup
+    xmlns="https://spacestation14.io"
+    xmlns:cc="clr-namespace:Content.Client.Arcade.Racer"
+    SetSize="384 384">
+    <PanelContainer
+        StyleClasses="PanelBackgroundBaseDark">
+        <ScrollContainer
+            VerticalExpand="True"
+            HScrollEnabled="False">
+            <GridContainer
+                Name="Grid"
+                Columns="5"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                HorizontalExpand="True"
+                VerticalExpand="True"/>
+        </ScrollContainer>
+    </PanelContainer>
+</cc:RacerEditorViewportPopup>

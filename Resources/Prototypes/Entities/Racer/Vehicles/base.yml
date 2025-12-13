@@ -1,0 +1,21 @@
+- type: entity
+  abstract: true
+  id: BaseRacerVehicle
+  parent: BaseRacerObject
+  components:
+  - type: RacerArcadeObjectCollision
+    shapes:
+      ship:
+        layer:
+        - Track
+        mask:
+        - Vehicles
+        shape: !type:Sphere
+          radius: 1.5
+  - type: RacerArcadeObjectPhysics
+    mass: 50
+    linearDrag: 0.2
+    angularDrag: 0.3
+    restitution: 0.2
+  - type: RacerArcadeObjectGravity
+  - type: RacerArcadeObjectHover

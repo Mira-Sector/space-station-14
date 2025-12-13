@@ -1,0 +1,22 @@
+- type: racerGameStage
+  id: Factory
+  graph:
+    startingNode: a
+    nodes:
+      a:
+        position: 0,0,0
+        connections:
+        - !type:RacerArcadeStageEdgeNode
+          texture: PavedStripe
+          width: 8
+          controlPoints:
+          - 48,-16,0
+          - 96,16,0
+          connectionId: b
+      b:
+        position: 128,0,0
+        connections: []
+  sky:
+    sprite:
+      sprite: /Textures/Interface/Racer/skies.rsi
+      state: factory

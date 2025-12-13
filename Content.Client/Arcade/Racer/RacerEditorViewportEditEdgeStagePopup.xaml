@@ -1,0 +1,8 @@
+<cc:RacerEditorViewportPopup
+    xmlns="https://spacestation14.io"
+    xmlns:cc="clr-namespace:Content.Client.Arcade.Racer"
+    SetSize="192 48">
+    <LineEdit
+        Name="Input"
+        PlaceHolder="{Loc 'racer-editor-new-connection-stage-placeholder'}"/>
+</cc:RacerEditorViewportPopup>

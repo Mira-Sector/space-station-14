@@ -114,6 +114,7 @@ ui-options-header-movement = Movement
 ui-options-header-camera = Camera
 ui-options-header-interaction-basic = Basic Interaction
 ui-options-header-interaction-adv = Advanced Interaction
+ui-options-header-racer = Racing Arcade
 ui-options-header-ui = User Interface
 ui-options-header-misc = Miscellaneous
 ui-options-header-hotbar = Hotbar
@@ -176,6 +177,14 @@ ui-options-function-toggle-crawling = Toggle crawling
 ui-options-function-rotate-object-clockwise = Rotate clockwise
 ui-options-function-rotate-object-counterclockwise = Rotate counterclockwise
 ui-options-function-flip-object = Flip
+
+ui-options-function-racer-pitch-up = Pitch Up
+ui-options-function-racer-pitch-down = Pitch Down
+ui-options-function-racer-turn-left = Turn Left
+ui-options-function-racer-turn-right = Turn Right
+ui-options-function-racer-airbrake-left = Airbrake Left
+ui-options-function-racer-airbrake-right = Airbrake Right
+ui-options-function-racer-accelerate = Accelerator
 
 ui-options-function-focus-chat-input-window = Focus chat
 ui-options-function-focus-local-chat-window = Focus chat (IC)

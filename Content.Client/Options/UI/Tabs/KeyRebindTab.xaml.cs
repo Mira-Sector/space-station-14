@@ -204,6 +204,15 @@ namespace Content.Client.Options.UI.Tabs
             AddButton(ContentKeyFunctions.RotateObjectCounterclockwise);
             AddButton(ContentKeyFunctions.FlipObject);
 
+            AddHeader("ui-options-header-racer");
+            AddButton(ContentKeyFunctions.RacerPitchUp);
+            AddButton(ContentKeyFunctions.RacerPitchDown);
+            AddButton(ContentKeyFunctions.RacerTurnLeft);
+            AddButton(ContentKeyFunctions.RacerTurnRight);
+            AddButton(ContentKeyFunctions.RacerAirbrakeLeft);
+            AddButton(ContentKeyFunctions.RacerAirbrakeRight);
+            AddButton(ContentKeyFunctions.RacerAccelerate);
+
             AddHeader("ui-options-header-ui");
             AddButton(ContentKeyFunctions.FocusChat);
             AddButton(ContentKeyFunctions.FocusLocalChat);

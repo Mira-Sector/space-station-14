@@ -10,10 +10,11 @@ using Vector4 = Robust.Shared.Maths.Vector4;
 namespace Content.Client.PolygonRenderer;
 
 [UsedImplicitly]
-public sealed partial class PolygonRendererControl : Control
+[Virtual]
+public partial class PolygonRendererControl : Control
 {
     [ViewVariables]
-    public PolygonModel[] Models = [];
+    public List<PolygonModel> Models = [];
 
     [ViewVariables]
     public Matrix4 Camera = Matrix4.Identity;
@@ -29,6 +30,7 @@ public sealed partial class PolygonRendererControl : Control
 
     private record struct TransformedPolygon(IClientPolygon Polygon, List<Vector2> Vertices, Color Color, float AvgDepth);
 
+    [MustCallBase]
     protected override void Draw(DrawingHandleScreen handle)
     {
         base.Draw(handle);

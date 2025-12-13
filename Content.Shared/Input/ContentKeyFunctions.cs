@@ -83,6 +83,14 @@ namespace Content.Shared.Input
         public static readonly BoundKeyFunction ShuttleRotateRight = "ShuttleRotateRight";
         public static readonly BoundKeyFunction ShuttleBrake = "ShuttleBrake";
 
+        public static readonly BoundKeyFunction RacerPitchUp = "RacerPitchUp";
+        public static readonly BoundKeyFunction RacerPitchDown = "RacerPitchDown";
+        public static readonly BoundKeyFunction RacerTurnLeft = "RacerTurnLeft";
+        public static readonly BoundKeyFunction RacerTurnRight = "RacerTurnRight";
+        public static readonly BoundKeyFunction RacerAirbrakeLeft = "RacerAirbrakeLeft";
+        public static readonly BoundKeyFunction RacerAirbrakeRight = "RacerAirbrakeRight";
+        public static readonly BoundKeyFunction RacerAccelerate = "RacerAccelerate";
+
         public static readonly BoundKeyFunction Hotbar0 = "Hotbar0";
         public static readonly BoundKeyFunction Hotbar1 = "Hotbar1";
         public static readonly BoundKeyFunction Hotbar2 = "Hotbar2";
