@@ -3,10 +3,14 @@ using Content.Client.Arcade.Racer.Systems;
 using Content.Shared.Arcade.Racer;
 using Content.Shared.Arcade.Racer.Components;
 using Content.Shared.Arcade.Racer.Stage;
+using Content.Client.Resources;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
+using Robust.Client.ResourceManagement;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
+using System.Numerics;
+using Vector3 = Robust.Shared.Maths.Vector3;
 
 namespace Content.Client.Arcade.Racer;
 
@@ -14,10 +18,15 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
 {
     [Dependency] private readonly IClyde _clyde = default!;
     [Dependency] private readonly IEntityManager _entity = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;
+    [Dependency] private readonly IResourceCache _resourceCache = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
     private readonly SpriteSystem _sprite;
     private readonly RacerArcadeSystem _racer;
+
+    private const string TextFontPath = "/Fonts/NotoSans/NotoSans-Regular.ttf";
+    private const int TextFontSize = 12;
+    private readonly Font _font;
 
     private Entity<RacerArcadeComponent>? _cabinet;
     private EntityUid? _viewer;
@@ -46,6 +55,8 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
         _shader = _prototype.Index(ShaderId).InstanceUnique();
         _shader.SetParameter("bayer", Bayer);
         _shader.SetParameter("dimension", (int)MathF.Sqrt(Bayer.Length));
+
+        _font = _resourceCache.GetFont(TextFontPath, TextFontSize);
     }
 
     protected override void Draw(DrawingHandleScreen handle)
@@ -67,10 +78,13 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
 
         SetCameraMatrix(currentStage.Graph, state.CurrentNode, cabinet, viewer);
 
-
         handle.UseShader(_shader);
         base.Draw(handle);
         handle.UseShader(null);
+
+#if DEBUG
+        DrawDebug(handle, state, cabinet, viewer);
+#endif
     }
 
     private void DrawSky(DrawingHandleScreen handle, RacerGameStageSkyData data)
@@ -136,6 +150,33 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
         var horizontalTrackCenter = new Vector3(trackCenter.X, trackCenter.Y, lookForward.Z);
         var lookTarget = Vector3.Lerp(lookForward, horizontalTrackCenter, 0.5f);
         Camera = Matrix4.LookAt(eye, lookTarget, Vector3.UnitZ);
+    }
+
+    private void DrawDebug(DrawingHandleScreen handle, RacerGameState state, Entity<RacerArcadeComponent> cabinet, EntityUid viewer)
+    {
+        var fontY = 0f;
+
+        if (!_racer.TryGetControlledObject(cabinet!, viewer, out var controlled))
+            return;
+
+        var data = _entity.GetComponent<RacerArcadeObjectComponent>(controlled.Value.Owner);
+        DrawText($"Pos: {data.Position}");
+        DrawText($"Rot: ({data.Rotation})");
+
+        if (_entity.TryGetComponent<RacerArcadeObjectPhysicsComponent>(controlled.Value.Owner, out var physics))
+        {
+            DrawText($"Accumulated Force: {physics.AccumulatedForce}");
+            DrawText($"Accumulated Torque: {physics.AccumulatedTorque}");
+            DrawText($"Velocity: {physics.Velocity}");
+            DrawText($"Angular Velocity: {physics.AngularVelocity}");
+        }
+
+        void DrawText(string msg)
+        {
+            var pos = new Vector2(0f, fontY);
+            handle.DrawString(_font, pos, msg);
+            fontY += _font.GetLineHeight(1f);
+        }
     }
 
     public void SetCabinet(Entity<RacerArcadeComponent> cabinet, EntityUid viewer)
