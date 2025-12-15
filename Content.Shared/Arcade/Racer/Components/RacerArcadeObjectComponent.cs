@@ -1,3 +1,4 @@
+using Content.Shared.Arcade.Racer.Systems;
 using Robust.Shared.GameStates;
 
 namespace Content.Shared.Arcade.Racer.Components;
@@ -12,11 +13,14 @@ public sealed partial class RacerArcadeObjectComponent : Component
     public Quaternion Rotation = Quaternion.Identity;
 
     [ViewVariables]
+    [Access(typeof(SharedRacerArcadeSystem))]
     public Vector3 PreviousPosition;
 
     [ViewVariables]
+    [Access(typeof(SharedRacerArcadeSystem))]
     public Quaternion PreviousRotation = Quaternion.Identity;
 
     [ViewVariables, AutoNetworkedField]
+    [Access(typeof(SharedRacerArcadeSystem))]
     public EntityUid Arcade;
 }
