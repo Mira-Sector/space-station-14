@@ -29,26 +29,22 @@ public partial struct Box3Rotated : IEquatable<Box3Rotated>, IApproxEquatable<Bo
     public readonly Vector3[] GetCorners()
     {
         var halfSize = Box.Size * 0.5f;
-        var signs = new int[8, 3]
+        var signs = new Vector3[]
         {
-            { -1, -1, -1 },
-            {  1, -1, -1 },
-            { -1,  1, -1 },
-            {  1,  1, -1 },
-            { -1, -1,  1 },
-            {  1, -1,  1 },
-            { -1,  1,  1 },
-            {  1,  1,  1 },
+            new(-1, -1, -1),
+            new(1, -1, -1),
+            new(1, 1, -1),
+            new(1, 1, -1),
+            new(1, -1, 1),
+            new(1, -1, 1),
+            new(1, 1, 1),
+            new(1, 1, 1),
         };
 
-        var corners = new Vector3[8];
-        for (var i = 0; i < 8; i++)
+        var corners = new Vector3[signs.Length];
+        for (var i = 0; i < corners.Length; i++)
         {
-            var local = new Vector3(
-                signs[i, 0] * halfSize.X,
-                signs[i, 1] * halfSize.Y,
-                signs[i, 2] * halfSize.Z
-            );
+            var local = signs[i] * halfSize;
             corners[i] = Origin + Vector3.Transform(local, Quaternion);
         }
 
@@ -70,7 +66,7 @@ public partial struct Box3Rotated : IEquatable<Box3Rotated>, IApproxEquatable<Bo
         var corners = GetCorners();
         var min = corners[0];
         var max = corners[0];
-        for (var i = 1; i < 8; i++)
+        for (var i = 1; i < corners.Length; i++)
         {
             min = Vector3.ComponentMin(min, corners[i]);
             max = Vector3.ComponentMax(max, corners[i]);
