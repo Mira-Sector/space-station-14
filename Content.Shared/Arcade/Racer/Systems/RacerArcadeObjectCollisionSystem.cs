@@ -6,6 +6,7 @@ using Content.Shared.Maths;
 using Robust.Shared.Prototypes;
 using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
+using Robust.Shared.Utility;
 using System.Linq;
 
 namespace Content.Shared.Arcade.Racer.Systems;
@@ -18,15 +19,61 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
     private EntityQuery<RacerArcadeObjectCollisionComponent> _collision;
     private EntityQuery<RacerArcadeObjectComponent> _data;
 
-    private struct CollisionEvents()
+    private readonly struct CollisionEvents()
     {
-        public List<(EntityUid, RacerArcadeObjectCollisionWithObjectEvent)> Object = [];
-        public List<(EntityUid, RacerArcadeObjectCollisionWithTrackEvent)> Track = [];
+        public readonly List<(EntityUid, RacerArcadeObjectStartCollisionWithObjectEvent)> StartObject = [];
+        public readonly List<(EntityUid, RacerArcadeObjectEndCollisionWithObjectEvent)> EndObject = [];
+        public readonly List<(EntityUid, RacerArcadeObjectStartCollisionWithTrackEvent)> StartTrack = [];
+        public readonly List<(EntityUid, RacerArcadeObjectEndCollisionWithTrackEvent)> EndTrack = [];
 
-        public readonly void Merge(CollisionEvents other)
+        public readonly CollisionEvents Merge(params CollisionEvents[] others)
         {
-            Object.AddRange(other.Object);
-            Track.AddRange(other.Track);
+            foreach (var other in others)
+            {
+                StartObject.AddRange(other.StartObject);
+                EndObject.AddRange(other.EndObject);
+                StartTrack.AddRange(other.StartTrack);
+                EndTrack.AddRange(other.EndTrack);
+            }
+
+            return this;
+        }
+    }
+
+    private readonly struct CollisionCollided()
+    {
+        private readonly Dictionary<KeyValuePair<string, RacerArcadeCollisionShapeEntry>, List<KeyValuePair<string, RacerArcadeCollisionShapeEntry>>> _collisions = [];
+
+        public readonly void Add(string aId, RacerArcadeCollisionShapeEntry aShape, string bId, RacerArcadeCollisionShapeEntry bShape)
+        {
+            var aKV = KeyValuePair.Create(aId, aShape);
+            var bKV = KeyValuePair.Create(bId, bShape);
+
+            if (!_collisions.TryGetValue(aKV, out var entries))
+                entries = [];
+
+            entries.Add(bKV);
+            _collisions[aKV] = entries;
+        }
+
+        public readonly bool Contains(string aId, RacerArcadeCollisionShapeEntry aShape, string bId, RacerArcadeCollisionShapeEntry bShape)
+        {
+            var aKV = KeyValuePair.Create(aId, aShape);
+            var bKV = KeyValuePair.Create(bId, bShape);
+
+            if (!_collisions.TryGetValue(aKV, out var entries))
+                return false;
+
+            return entries.Contains(bKV);
+        }
+
+        public IEnumerable<(string aId, RacerArcadeCollisionShapeEntry aEntry, string bId, RacerArcadeCollisionShapeEntry bEntry)> GetCollisions()
+        {
+            foreach (var ((aId, aShape), entries) in _collisions)
+            {
+                foreach (var (bId, bShape) in entries)
+                    yield return (aId, aShape, bId, bShape);
+            }
         }
     }
 
@@ -46,12 +93,11 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
     {
         base.Update(frameTime);
 
-        HashSet<(EntityUid, EntityUid)> handledPairs = [];
-        CollisionEvents events = new();
+        var events = new CollisionEvents();
         var query = EntityQueryEnumerator<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent>();
         while (query.MoveNext(out var uid, out var collision, out var data))
         {
-            var newEvents = HandleCollisions((uid, collision, data), handledPairs);
+            var newEvents = HandleCollisions((uid, collision, data));
             events.Merge(newEvents);
         }
 
@@ -59,13 +105,25 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
          * raise events after collision detection
          * prevent subscribers messing up further collisions
         */
-        foreach (var (uid, ev) in events.Object)
+        foreach (var (uid, ev) in events.StartObject)
         {
             var refEv = ev;
             RaiseLocalEvent(uid, ref refEv);
         }
 
-        foreach (var (uid, ev) in events.Track)
+        foreach (var (uid, ev) in events.EndObject)
+        {
+            var refEv = ev;
+            RaiseLocalEvent(uid, ref refEv);
+        }
+
+        foreach (var (uid, ev) in events.StartTrack)
+        {
+            var refEv = ev;
+            RaiseLocalEvent(uid, ref refEv);
+        }
+
+        foreach (var (uid, ev) in events.EndTrack)
         {
             var refEv = ev;
             RaiseLocalEvent(uid, ref refEv);
@@ -79,19 +137,27 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
         UpdateCachedCollisionFlags(ent);
     }
 
-    private CollisionEvents HandleCollisions(Entity<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent> ent, HashSet<(EntityUid, EntityUid)> handledPairs)
+    private CollisionEvents HandleCollisions(Entity<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent> ent)
     {
-        return new()
-        {
-            Object = HandleEntityCollisions(ent, handledPairs).ToList(),
-            Track = HandleTrackCollisions(ent).ToList()
-        };
+        var entity = HandleEntityCollisions(ent, out var entityCollided);
+        var track = HandleTrackCollisions(ent, out var trackCollided);
+
+        var endEntity = HandleEndObjectCollisions(ent, entityCollided);
+        var endTrack = HandleEndTrackCollisions(ent, trackCollided);
+
+        var events = new CollisionEvents();
+        return events.Merge(entity, track, endEntity, endTrack);
     }
 
-    private IEnumerable<(EntityUid, RacerArcadeObjectCollisionWithObjectEvent)> HandleEntityCollisions(Entity<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent> ent, HashSet<(EntityUid, EntityUid)> handledPairs)
+    private CollisionEvents HandleEntityCollisions(
+        Entity<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent> ent,
+        out CollisionCollided collided)
     {
+        var events = new CollisionEvents();
+        collided = new();
+
         if (!_racer.TryGetArcade((ent.Owner, ent.Comp2), out var ourArcade))
-            yield break;
+            return events;
 
         var ourAABB = GetSweptAABB(ent);
 
@@ -102,70 +168,163 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
             if (other.Owner == ent.Owner)
                 continue;
 
-            /*
-             * so we only store one pair
-             * and handle the inverse case
-             * where other goes through the loop and finds has the inverse pair
-             * this obviously would fail the contains
-            */
-            var pair = ent.Owner.Id < other.Owner.Id
-                ? (ent.Owner, other.Owner)
-                : (other.Owner, ent.Owner);
-            if (handledPairs.Contains(pair))
-                continue;
-
             if (!_racer.TryGetArcade((other.Owner, other.Comp2), out var otherArcade))
                 continue;
 
             if (ourArcade != otherArcade)
                 continue;
 
-            if ((ent.Comp1.AllMasks & other.Comp1.AllLayers) == 0 || (other.Comp1.AllMasks & ent.Comp1.AllLayers) == 0)
+            if ((ent.Comp1.AllMasks & other.Comp1.AllLayers) == 0)
                 continue;
 
             var otherAABB = GetSweptAABB(other);
             if (!ourAABB.Intersects(otherAABB))
                 continue;
 
-            foreach (var (aId, aEntry, bId, bEntry) in GetCollidingShapes(ent.Comp1.Shapes, other.Comp1.Shapes))
+            var netOther = GetNetEntity(other.Owner);
+
+            GetCollidingShapes(ent.Comp1.Shapes, other.Comp1.Shapes, out var currentCollided);
+            foreach (var (aId, aEntry, bId, bEntry) in currentCollided.GetCollisions())
             {
-                var ourEv = new RacerArcadeObjectCollisionWithObjectEvent(other.Owner, aId, bId);
-                yield return (ent.Owner, ourEv);
+                if (!aEntry.ObjectShapesCollided.TryGetValue(netOther, out var entries))
+                    entries = [];
 
-                var otherEv = new RacerArcadeObjectCollisionWithObjectEvent(ent.Owner, bId, aId);
-                yield return (other.Owner, otherEv);
+                if (!entries.Add(bId))
+                    continue;
+
+                var ev = new RacerArcadeObjectStartCollisionWithObjectEvent(other.Owner, aId, aEntry, bId, bEntry);
+                events.StartObject.Add((ent.Owner, ev));
+                collided.Add(aId, aEntry, bId, bEntry);
             }
-
-            handledPairs.Add(pair);
         }
+
+        return events;
     }
 
-    private IEnumerable<(EntityUid, RacerArcadeObjectCollisionWithTrackEvent)> HandleTrackCollisions(Entity<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent> ent)
+    private CollisionEvents HandleTrackCollisions(Entity<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent> ent, out CollisionCollided collided)
     {
+        var events = new CollisionEvents();
+        collided = new();
+
         if (!_racer.TryGetArcade((ent.Owner, ent.Comp2), out var arcade))
-            yield break;
+            return events;
 
         var ourAABB = GetSweptAABB(ent);
 
         if (arcade.Value.Comp.State is not { } state)
-            yield break;
+            return events;
 
-        if ((ent.Comp1.AllMasks & RacerArcadeStageGraph.CollisionLayer) == 0 || (RacerArcadeStageGraph.CollisionMask & ent.Comp1.AllLayers) == 0)
-            yield break;
+        if ((ent.Comp1.AllMasks & RacerArcadeStageGraph.CollisionLayer) == 0)
+            return events;
 
         var stage = _prototype.Index(state.CurrentStage);
         if (!stage.Graph.AABB.Intersects(ourAABB))
-            yield break;
+            return events;
 
-        foreach (var (aId, aEntry, bEntry) in GetCollidingShapes(ent.Comp1.Shapes, stage.Graph.CollisionShapes))
+        GetCollidingShapes(ent.Comp1.Shapes, stage.Graph.CollisionShapes, out collided);
+        foreach (var (aId, aEntry, bId, bEntry) in collided.GetCollisions())
         {
-            var box = bEntry.Shape.GetBox();
-            var normal = Vector3.Transform(Vector3.UnitZ, box.Quaternion);
-            var contactHeight = ent.Comp2.Position.Z - Vector3.Dot(ent.Comp2.Position - box.Origin, normal);
+            if (!aEntry.TrackShapesCollided.Add(bId))
+                continue;
 
-            var ev = new RacerArcadeObjectCollisionWithTrackEvent(aId, contactHeight, normal);
-            yield return (ent.Owner, ev);
+            var ev = new RacerArcadeObjectStartCollisionWithTrackEvent(aId, aEntry, bEntry);
+            events.StartTrack.Add((ent.Owner, ev));
         }
+
+        return events;
+    }
+
+    private CollisionEvents HandleEndObjectCollisions(Entity<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent> ent, CollisionCollided collided)
+    {
+        var events = new CollisionEvents();
+
+        RemQueue<(RacerArcadeCollisionShapeEntry, RemQueue<(NetEntity, RemQueue<string>)>)> remQueue = new();
+
+        foreach (var (aId, aEntry) in ent.Comp1.Shapes)
+        {
+            RemQueue<(NetEntity, RemQueue<string>)> shapeRemQueue = new();
+
+            foreach (var (netOther, bIds) in aEntry.ObjectShapesCollided)
+            {
+                var otherUid = GetEntity(netOther);
+                var other = _collision.Get(otherUid);
+
+                RemQueue<string> bIdsRemQueue = new();
+
+                foreach (var bId in bIds)
+                {
+                    var bEntry = other.Comp.Shapes[bId];
+                    if (collided.Contains(aId, aEntry, bId, bEntry))
+                        continue;
+
+                    var ev = new RacerArcadeObjectEndCollisionWithObjectEvent(other.Owner, aId, aEntry, bId, bEntry);
+                    events.EndObject.Add((ent.Owner, ev));
+                    bIdsRemQueue.Add(bId);
+                }
+
+                shapeRemQueue.Add((netOther, bIdsRemQueue));
+            }
+
+            remQueue.Add((aEntry, shapeRemQueue));
+        }
+
+        foreach (var (aEntry, shapeRemQueue) in remQueue)
+        {
+            foreach (var (other, bIds) in shapeRemQueue)
+            {
+                var existing = aEntry.ObjectShapesCollided[other];
+                foreach (var bId in bIds)
+                    existing.Remove(bId);
+
+                if (existing.Any())
+                    aEntry.ObjectShapesCollided[other] = existing;
+                else
+                    aEntry.ObjectShapesCollided.Remove(other);
+            }
+        }
+
+        return events;
+    }
+
+    private CollisionEvents HandleEndTrackCollisions(Entity<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent> ent, CollisionCollided collided)
+    {
+        var events = new CollisionEvents();
+
+        if (!_racer.TryGetArcade((ent.Owner, ent.Comp2), out var arcade))
+            return events;
+
+        if (arcade.Value.Comp.State is not { } state)
+            return events;
+
+        var stage = _prototype.Index(state.CurrentStage);
+
+        RemQueue<(RacerArcadeCollisionShapeEntry, RemQueue<string>)> remQueue = new();
+
+        foreach (var (aId, aEntry) in ent.Comp1.Shapes)
+        {
+            RemQueue<string> shapeRemQueue = new();
+
+            foreach (var bId in aEntry.TrackShapesCollided)
+            {
+                var bEntry = stage.Graph.CollisionShapes[bId];
+                if (collided.Contains(aId, aEntry, bId, bEntry))
+                    continue;
+
+                var ev = new RacerArcadeObjectEndCollisionWithTrackEvent(aId, aEntry, bEntry);
+                events.EndTrack.Add((ent.Owner, ev));
+                shapeRemQueue.Add(bId);
+            }
+
+            remQueue.Add((aEntry, shapeRemQueue));
+        }
+
+        foreach (var (aEntry, shapeRemQueue) in remQueue)
+        {
+            foreach (var bId in shapeRemQueue)
+                aEntry.TrackShapesCollided.Remove(bId);
+        }
+
+        return events;
     }
 
     private void UpdateCachedAABB(Entity<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent> ent)
@@ -200,17 +359,20 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
         DirtyField(ent.Owner, ent.Comp, nameof(RacerArcadeObjectCollisionComponent.AllMasks));
     }
 
-    private static IEnumerable<(string aId, RacerArcadeCollisionShapeEntry aEntry, string bId, RacerArcadeCollisionShapeEntry bEntry)> GetCollidingShapes(
+    private static void GetCollidingShapes(
         Dictionary<string, RacerArcadeCollisionShapeEntry> a,
-        Dictionary<string, RacerArcadeCollisionShapeEntry> b)
+        Dictionary<string, RacerArcadeCollisionShapeEntry> b,
+        out CollisionCollided collided)
     {
+        collided = new();
+
         foreach (var (aId, aEntry) in a)
         {
             var aBox = aEntry.Shape.GetBox().CalcBoundingBox();
 
             foreach (var (bId, bEntry) in b)
             {
-                if ((aEntry.Mask & bEntry.Layer) == 0 || (bEntry.Mask & aEntry.Layer) == 0)
+                if ((aEntry.Mask & bEntry.Layer) == 0)
                     continue;
 
                 var bBox = bEntry.Shape.GetBox().CalcBoundingBox();
@@ -221,33 +383,7 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
                 if (!RacerArcadeObjectCollisionResolver.Resolve(aEntry.Shape, bEntry.Shape))
                     continue;
 
-                yield return (aId, aEntry, bId, bEntry);
-            }
-        }
-    }
-
-    private static IEnumerable<(string aId, RacerArcadeCollisionShapeEntry aEntry, RacerArcadeCollisionShapeEntry bEntry)> GetCollidingShapes(
-        Dictionary<string, RacerArcadeCollisionShapeEntry> a,
-        List<RacerArcadeCollisionShapeEntry> b)
-    {
-        foreach (var (aId, aEntry) in a)
-        {
-            var aBox = aEntry.Shape.GetBox().CalcBoundingBox();
-
-            foreach (var bEntry in b)
-            {
-                if ((aEntry.Mask & bEntry.Layer) == 0 || (bEntry.Mask & aEntry.Layer) == 0)
-                    continue;
-
-                var bBox = bEntry.Shape.GetBox().CalcBoundingBox();
-
-                if (!aBox.Intersects(bBox))
-                    continue;
-
-                if (!RacerArcadeObjectCollisionResolver.Resolve(aEntry.Shape, bEntry.Shape))
-                    continue;
-
-                yield return (aId, aEntry, bEntry);
+                collided.Add(aId, aEntry, bId, bEntry);
             }
         }
     }
@@ -304,7 +440,7 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
 
         var stage = _prototype.Index(state.CurrentStage);
 
-        foreach (var entry in stage.Graph.CollisionShapes)
+        foreach (var (_, entry) in stage.Graph.CollisionShapes)
         {
             var shape = entry.Shape;
             var box = shape.GetBox();

@@ -19,5 +19,4 @@ public sealed partial class RacerArcadeObjectCollisionComponent : Component
 
     [ViewVariables, AutoNetworkedField]
     public int AllMasks;
-
 }

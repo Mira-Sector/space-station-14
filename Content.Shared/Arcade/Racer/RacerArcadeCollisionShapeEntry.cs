@@ -1,4 +1,5 @@
 using Content.Shared.Arcade.Racer.CollisionShapes;
+using Content.Shared.Arcade.Racer.Systems;
 using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
@@ -16,4 +17,12 @@ public sealed partial class RacerArcadeCollisionShapeEntry
 
     [DataField(required: true)]
     public BaseRacerArcadeObjectCollisionShape Shape;
+
+    [ViewVariables]
+    [Access(typeof(RacerArcadeObjectCollisionSystem), Other = AccessPermissions.None)]
+    public Dictionary<NetEntity, HashSet<string>> ObjectShapesCollided = [];
+
+    [ViewVariables]
+    [Access(typeof(RacerArcadeObjectCollisionSystem), Other = AccessPermissions.None)]
+    public HashSet<string> TrackShapesCollided = [];
 }

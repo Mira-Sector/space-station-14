@@ -19,7 +19,7 @@ public sealed partial class RacerArcadeStageGraph : ISerializationHooks
     public const int CollisionLayer = (int)RacerArcadeCollisionGroups.Vehicles;
 
     public Box3 AABB { get; private set; }
-    public List<RacerArcadeCollisionShapeEntry> CollisionShapes { get; private set; }
+    public Dictionary<string, RacerArcadeCollisionShapeEntry> CollisionShapes { get; private set; }
 
     public bool TryGetStartingNode([NotNullWhen(true)] out RacerArcadeStageNode? node)
     {
@@ -42,6 +42,7 @@ public sealed partial class RacerArcadeStageGraph : ISerializationHooks
         AABB = Box3.Empty;
         CollisionShapes = [];
 
+        var i = 0;
         foreach (var (edge, parent) in this.GetConnections())
         {
             var shapes = edge.GetCollisionShapes(this, parent);
@@ -54,7 +55,7 @@ public sealed partial class RacerArcadeStageGraph : ISerializationHooks
                     Layer = CollisionLayer,
                     Shape = shape
                 };
-                CollisionShapes.Add(entry);
+                CollisionShapes[i++.ToString()] = entry;
 
                 var shapeBox = shape.GetBox();
                 var shapeAABB = shapeBox.CalcBoundingBox();
