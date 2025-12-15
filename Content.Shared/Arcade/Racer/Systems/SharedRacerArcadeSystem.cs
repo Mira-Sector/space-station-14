@@ -73,10 +73,21 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
          *
          * they are relegated to the chair in the corner (spectating)
         */
-        if (GetObjects<RacerArcadePlayerControlledComponent>(ent!).Any())
-            return;
+        var objects = GetObjects<RacerArcadePlayerControlledComponent>(ent!);
+        if (!objects.Any())
+            NewGame(ent!, [args.Actor]);
 
-        NewGame(ent!, [args.Actor]);
+        // find our controlled object to restore being a gamer
+        foreach (var obj in objects)
+        {
+            if (obj.Comp.Controller != args.Actor)
+                continue;
+
+            EnsureComp<RacerArcadeGamerComponent>(args.Actor, out var gamer);
+            gamer.Cabinet = ent.Owner;
+            Dirty(args.Actor, gamer);
+            break;
+        }
     }
 
     private void OnArcadeUiClose(Entity<RacerArcadeComponent> ent, ref BoundUIClosedEvent args)
