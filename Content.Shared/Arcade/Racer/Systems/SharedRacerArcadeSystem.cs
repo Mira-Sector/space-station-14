@@ -43,7 +43,7 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
         base.Update(frameTime);
 
         var query = EntityQueryEnumerator<RacerArcadeObjectComponent>();
-        while (query.MoveNext(out var uid, out var comp))
+        while (query.MoveNext(out var comp))
         {
             comp.PreviousPosition = comp.Position;
             comp.PreviousRotation = comp.Rotation;

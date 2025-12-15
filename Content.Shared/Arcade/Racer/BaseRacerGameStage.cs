@@ -18,12 +18,14 @@ public abstract partial class BaseRacerGameStage
         // no i dont care
         // fuck off
         // i just want to serialize this to disk
+#pragma warning disable RA0039
         var proto = new RacerGameStagePrototype()
         {
             ID = id,
             Sky = Sky,
             Graph = Graph
         };
+#pragma warning restore RA0039
         return proto;
     }
 
