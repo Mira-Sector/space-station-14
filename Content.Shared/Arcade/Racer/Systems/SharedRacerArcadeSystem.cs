@@ -24,27 +24,43 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<RacerArcadeComponent, ComponentInit>(OnInit);
-        SubscribeLocalEvent<RacerArcadeComponent, ComponentRemove>(OnRemove);
+        UpdatesBefore.Add(typeof(RacerArcadeObjectPhysicsSystem));
 
-        SubscribeLocalEvent<RacerArcadeComponent, AfterActivatableUIOpenEvent>(OnAfterUiOpen);
-        SubscribeLocalEvent<RacerArcadeComponent, BoundUIClosedEvent>(OnUiClose);
+        SubscribeLocalEvent<RacerArcadeComponent, ComponentInit>(OnArcadeInit);
+        SubscribeLocalEvent<RacerArcadeComponent, ComponentRemove>(OnArcadeRemove);
+
+        SubscribeLocalEvent<RacerArcadeComponent, AfterActivatableUIOpenEvent>(OnArcadeAfterUiOpen);
+        SubscribeLocalEvent<RacerArcadeComponent, BoundUIClosedEvent>(OnArcadeUiClose);
+
+        SubscribeLocalEvent<RacerArcadeObjectComponent, ComponentInit>(OnObjectInit);
 
         _data = GetEntityQuery<RacerArcadeObjectComponent>();
         _arcade = GetEntityQuery<RacerArcadeComponent>();
     }
 
-    private void OnInit(Entity<RacerArcadeComponent> ent, ref ComponentInit args)
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+
+        var query = EntityQueryEnumerator<RacerArcadeObjectComponent>();
+        while (query.MoveNext(out var uid, out var comp))
+        {
+            comp.PreviousPosition = comp.Position;
+            comp.PreviousRotation = comp.Rotation;
+        }
+    }
+
+    private void OnArcadeInit(Entity<RacerArcadeComponent> ent, ref ComponentInit args)
     {
         ent.Comp.Objects = _container.EnsureContainer<Container>(ent.Owner, ent.Comp.ObjectContainerId);
     }
 
-    private void OnRemove(Entity<RacerArcadeComponent> ent, ref ComponentRemove args)
+    private void OnArcadeRemove(Entity<RacerArcadeComponent> ent, ref ComponentRemove args)
     {
         EndGame(ent!);
     }
 
-    private void OnAfterUiOpen(Entity<RacerArcadeComponent> ent, ref AfterActivatableUIOpenEvent args)
+    private void OnArcadeAfterUiOpen(Entity<RacerArcadeComponent> ent, ref AfterActivatableUIOpenEvent args)
     {
         if (!_timing.IsFirstTimePredicted)
             return;
@@ -63,7 +79,7 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
         NewGame(ent!, [args.Actor]);
     }
 
-    private void OnUiClose(Entity<RacerArcadeComponent> ent, ref BoundUIClosedEvent args)
+    private void OnArcadeUiClose(Entity<RacerArcadeComponent> ent, ref BoundUIClosedEvent args)
     {
         if (!args.UiKey.Equals(RacerGameUiKey.Key))
             return;
@@ -72,6 +88,12 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
             return;
 
         RemComp(args.Actor, gamer);
+    }
+
+    private void OnObjectInit(Entity<RacerArcadeObjectComponent> ent, ref ComponentInit args)
+    {
+        ent.Comp.PreviousPosition = ent.Comp.Position;
+        ent.Comp.PreviousRotation = ent.Comp.Rotation;
     }
 
     [PublicAPI]

@@ -160,11 +160,16 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
             return;
 
         var data = _entity.GetComponent<RacerArcadeObjectComponent>(controlled.Value.Owner);
+        DrawText("Data:");
         DrawText($"Pos: {data.Position}");
         DrawText($"Rot: ({data.Rotation})");
+        DrawText($"Prev Pos: ({data.PreviousPosition})");
+        DrawText($"Prev Rot: ({data.PreviousRotation})");
 
         if (_entity.TryGetComponent<RacerArcadeObjectPhysicsComponent>(controlled.Value.Owner, out var physics))
         {
+            NewLine();
+            DrawText("Physics:");
             DrawText($"Accumulated Force: {physics.AccumulatedForce}");
             DrawText($"Accumulated Torque: {physics.AccumulatedTorque}");
             DrawText($"Velocity: {physics.Velocity}");
@@ -175,6 +180,11 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
         {
             var pos = new Vector2(0f, fontY);
             handle.DrawString(_font, pos, msg);
+            NewLine();
+        }
+
+        void NewLine()
+        {
             fontY += _font.GetLineHeight(1f);
         }
     }

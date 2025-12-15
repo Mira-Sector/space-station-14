@@ -22,11 +22,19 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
     {
         public List<(EntityUid, RacerArcadeObjectCollisionWithObjectEvent)> Object = [];
         public List<(EntityUid, RacerArcadeObjectCollisionWithTrackEvent)> Track = [];
+
+        public readonly void Merge(CollisionEvents other)
+        {
+            Object.AddRange(other.Object);
+            Track.AddRange(other.Track);
+        }
     }
 
     public override void Initialize()
     {
         base.Initialize();
+
+        UpdatesAfter.Add(typeof(RacerArcadeObjectPhysicsSystem));
 
         SubscribeLocalEvent<RacerArcadeObjectCollisionComponent, ComponentInit>(OnInit);
 
@@ -44,8 +52,7 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
         while (query.MoveNext(out var uid, out var collision, out var data))
         {
             var newEvents = HandleCollisions((uid, collision, data), handledPairs);
-            events.Object.AddRange(newEvents.Object);
-            events.Track.AddRange(newEvents.Track);
+            events.Merge(newEvents);
         }
 
         /*
@@ -86,7 +93,7 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
         if (!_racer.TryGetArcade((ent.Owner, ent.Comp2), out var ourArcade))
             yield break;
 
-        var ourAABB = GetAABB(ent!);
+        var ourAABB = GetSweptAABB(ent);
 
         var query = EntityQueryEnumerator<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent>();
         while (query.MoveNext(out var uid, out var physics, out var data))
@@ -116,7 +123,7 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
             if ((ent.Comp1.AllMasks & other.Comp1.AllLayers) == 0 || (other.Comp1.AllMasks & ent.Comp1.AllLayers) == 0)
                 continue;
 
-            var otherAABB = GetAABB(other!);
+            var otherAABB = GetSweptAABB(other);
             if (!ourAABB.Intersects(otherAABB))
                 continue;
 
@@ -138,7 +145,7 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
         if (!_racer.TryGetArcade((ent.Owner, ent.Comp2), out var arcade))
             yield break;
 
-        var ourAABB = ent.Comp1.CachedAABB;
+        var ourAABB = GetSweptAABB(ent);
 
         if (arcade.Value.Comp.State is not { } state)
             yield break;
@@ -245,17 +252,33 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
         }
     }
 
+    private Box3 GetAABBAtPosition(Entity<RacerArcadeObjectCollisionComponent> ent, Vector3 position, Quaternion rotation)
+    {
+        UpdateCachedAABB(ent!);
+        var box = new Box3Rotated(ent.Comp.CachedAABB);
+        box = box.Translate(position);
+        box = box.Rotate(rotation);
+        return box.CalcBoundingBox();
+    }
+
+    private Box3 GetSweptAABB(Entity<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent> ent)
+    {
+        var startAABB = GetAABBAtPosition((ent.Owner, ent.Comp1), ent.Comp2.PreviousPosition, ent.Comp2.PreviousRotation);
+        var endAABB = GetAABBAtPosition((ent.Owner, ent.Comp1), ent.Comp2.Position, ent.Comp2.Rotation);
+
+        return new Box3(
+            Vector3.ComponentMin(startAABB.LeftBottomBack, endAABB.LeftBottomBack),
+            Vector3.ComponentMax(startAABB.RightTopFront, endAABB.RightTopFront)
+        );
+    }
+
     [PublicAPI]
     public Box3 GetAABB(Entity<RacerArcadeObjectCollisionComponent?, RacerArcadeObjectComponent?> ent)
     {
         if (!_collision.Resolve(ent.Owner, ref ent.Comp1) || !_data.Resolve(ent.Owner, ref ent.Comp2))
             return Box3.Empty;
 
-        UpdateCachedAABB(ent!);
-        var box = new Box3Rotated(ent.Comp1.CachedAABB);
-        box = box.Translate(ent.Comp2.Position);
-        box = box.Rotate(ent.Comp2.Rotation);
-        return box.CalcBoundingBox();
+        return GetAABBAtPosition((ent.Owner, ent.Comp1), ent.Comp2.Position, ent.Comp2.Rotation);
     }
 
     [PublicAPI]

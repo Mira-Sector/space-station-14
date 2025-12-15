@@ -11,6 +11,12 @@ public sealed partial class RacerArcadeObjectComponent : Component
     [ViewVariables, AutoNetworkedField]
     public Quaternion Rotation = Quaternion.Identity;
 
+    [ViewVariables]
+    public Vector3 PreviousPosition;
+
+    [ViewVariables]
+    public Quaternion PreviousRotation = Quaternion.Identity;
+
     [ViewVariables, AutoNetworkedField]
     public EntityUid Arcade;
 }

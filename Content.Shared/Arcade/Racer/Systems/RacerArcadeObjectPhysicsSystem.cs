@@ -11,6 +11,8 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
     {
         base.Initialize();
 
+        UpdatesBefore.Add(typeof(RacerArcadeObjectCollisionSystem));
+
         SubscribeLocalEvent<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectCollisionWithTrackEvent>(OnCollideWithTrack);
     }
 
