@@ -57,7 +57,7 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
 
     private void OnArcadeRemove(Entity<RacerArcadeComponent> ent, ref ComponentRemove args)
     {
-        EndGame(ent!);
+        EndGameInternal(ent);
     }
 
     private void OnArcadeAfterUiOpen(Entity<RacerArcadeComponent> ent, ref AfterActivatableUIOpenEvent args)
@@ -151,6 +151,11 @@ public abstract partial class SharedRacerArcadeSystem : EntitySystem
         if (!Resolve(ent.Owner, ref ent.Comp))
             return;
 
+        EndGameInternal(ent!);
+    }
+
+    private void EndGameInternal(Entity<RacerArcadeComponent> ent)
+    {
         foreach (var player in ent.Comp.Players)
             RemComp<RacerArcadeGamerComponent>(player);
 
