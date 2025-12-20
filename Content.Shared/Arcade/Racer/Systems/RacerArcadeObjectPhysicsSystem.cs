@@ -20,20 +20,15 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
     {
         var data = _racer.GetData(ent.Owner);
 
-        var box = args.OtherShape.Shape.GetBox();
-        var normal = Vector3.Transform(Vector3.UnitZ, box.Quaternion);
-        var contactHeight = data.Position.Z - Vector3.Dot(data.Position - box.Origin, normal);
-
-        var penetration = contactHeight - data.Position.Z;
-        if (penetration < 0f)
+        if (args.Penetration < 0f)
             return;
 
-        data.Position.Z += penetration;
+        data.Position += args.Normal * args.Penetration;
 
-        var vn = Vector3.Dot(ent.Comp.Velocity, normal);
+        var vn = Vector3.Dot(ent.Comp.Velocity, args.Normal);
         if (vn < 0f)
         {
-            ent.Comp.Velocity -= vn * normal * (1f + ent.Comp.Restitution);
+            ent.Comp.Velocity -= vn * args.Normal * (1f + ent.Comp.Restitution);
             DirtyField(ent.Owner, ent.Comp, nameof(RacerArcadeObjectPhysicsComponent.Velocity));
         }
 

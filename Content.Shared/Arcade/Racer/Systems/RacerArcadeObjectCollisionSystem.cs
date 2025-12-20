@@ -42,38 +42,23 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
 
     private readonly struct CollisionCollided()
     {
-        private readonly Dictionary<KeyValuePair<string, RacerArcadeCollisionShapeEntry>, List<KeyValuePair<string, RacerArcadeCollisionShapeEntry>>> _collisions = [];
+        private readonly Dictionary<(string aId, string bId), RacerArcadeCollisionContact> _contacts = [];
 
-        public readonly void Add(string aId, RacerArcadeCollisionShapeEntry aShape, string bId, RacerArcadeCollisionShapeEntry bShape)
+        public readonly void Add(string aId, RacerArcadeCollisionShapeEntry aEntry, string bId, RacerArcadeCollisionShapeEntry bEntry, Vector3 normal, float penetration)
         {
-            var aKV = KeyValuePair.Create(aId, aShape);
-            var bKV = KeyValuePair.Create(bId, bShape);
-
-            if (!_collisions.TryGetValue(aKV, out var entries))
-                entries = [];
-
-            entries.Add(bKV);
-            _collisions[aKV] = entries;
+            var contact = new RacerArcadeCollisionContact(aId, aEntry, bId, bEntry, normal, penetration);
+            _contacts[(aId, bId)] = contact;
         }
 
-        public readonly bool Contains(string aId, RacerArcadeCollisionShapeEntry aShape, string bId, RacerArcadeCollisionShapeEntry bShape)
+        public readonly bool Contains(string aId, string bId)
         {
-            var aKV = KeyValuePair.Create(aId, aShape);
-            var bKV = KeyValuePair.Create(bId, bShape);
-
-            if (!_collisions.TryGetValue(aKV, out var entries))
-                return false;
-
-            return entries.Contains(bKV);
+            return _contacts.ContainsKey((aId, bId));
         }
 
-        public IEnumerable<(string aId, RacerArcadeCollisionShapeEntry aEntry, string bId, RacerArcadeCollisionShapeEntry bEntry)> GetCollisions()
+        public IEnumerable<RacerArcadeCollisionContact> GetCollisions()
         {
-            foreach (var ((aId, aShape), entries) in _collisions)
-            {
-                foreach (var (bId, bShape) in entries)
-                    yield return (aId, aShape, bId, bShape);
-            }
+            foreach (var (_, contact) in _contacts)
+                yield return contact;
         }
     }
 
@@ -109,24 +94,28 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
         {
             var refEv = ev;
             RaiseLocalEvent(uid, ref refEv);
+            Log.Debug("Start Object");
         }
 
         foreach (var (uid, ev) in events.EndObject)
         {
             var refEv = ev;
             RaiseLocalEvent(uid, ref refEv);
+            Log.Debug("End Object");
         }
 
         foreach (var (uid, ev) in events.StartTrack)
         {
             var refEv = ev;
             RaiseLocalEvent(uid, ref refEv);
+            Log.Debug("Start Track");
         }
 
         foreach (var (uid, ev) in events.EndTrack)
         {
             var refEv = ev;
             RaiseLocalEvent(uid, ref refEv);
+            Log.Debug("End Track");
         }
     }
 
@@ -184,17 +173,21 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
             var netOther = GetNetEntity(other.Owner);
 
             GetCollidingShapes(ent.Comp1.Shapes, other.Comp1.Shapes, out var currentCollided);
-            foreach (var (aId, aEntry, bId, bEntry) in currentCollided.GetCollisions())
+            foreach (var contact in currentCollided.GetCollisions())
             {
+                var netContact = GetNetCollisionContact(contact);
+                var (aId, aEntry, bId, bEntry, normal, penetration) = contact;
+
                 if (!aEntry.ObjectShapesCollided.TryGetValue(netOther, out var entries))
                     entries = [];
 
-                if (!entries.Add(bId))
+                if (entries.ContainsKey(bId))
                     continue;
+                entries[bId] = netContact;
 
-                var ev = new RacerArcadeObjectStartCollisionWithObjectEvent(other.Owner, aId, aEntry, bId, bEntry);
+                var ev = new RacerArcadeObjectStartCollisionWithObjectEvent(other.Owner, aId, aEntry, bId, bEntry, normal, penetration);
                 events.StartObject.Add((ent.Owner, ev));
-                collided.Add(aId, aEntry, bId, bEntry);
+                collided.Add(aId, aEntry, bId, bEntry, normal, penetration);
             }
         }
 
@@ -222,12 +215,16 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
             return events;
 
         GetCollidingShapes(ent.Comp1.Shapes, stage.Graph.CollisionShapes, out collided);
-        foreach (var (aId, aEntry, bId, bEntry) in collided.GetCollisions())
+        foreach (var contact in collided.GetCollisions())
         {
-            if (!aEntry.TrackShapesCollided.Add(bId))
-                continue;
+            var netContact = GetNetCollisionContact(contact);
+            var (aId, aEntry, bId, bEntry, normal, penetration) = contact;
 
-            var ev = new RacerArcadeObjectStartCollisionWithTrackEvent(aId, aEntry, bEntry);
+            if (aEntry.TrackShapesCollided.ContainsKey(bId))
+                continue;
+            aEntry.TrackShapesCollided[bId] = netContact;
+
+            var ev = new RacerArcadeObjectStartCollisionWithTrackEvent(aId, aEntry, bEntry, normal, penetration);
             events.StartTrack.Add((ent.Owner, ev));
         }
 
@@ -244,20 +241,20 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
         {
             RemQueue<(NetEntity, RemQueue<string>)> shapeRemQueue = new();
 
-            foreach (var (netOther, bIds) in aEntry.ObjectShapesCollided)
+            foreach (var (netOther, contacts) in aEntry.ObjectShapesCollided)
             {
                 var otherUid = GetEntity(netOther);
                 var other = _collision.Get(otherUid);
 
                 RemQueue<string> bIdsRemQueue = new();
 
-                foreach (var bId in bIds)
+                foreach (var (bId, contact) in contacts)
                 {
                     var bEntry = other.Comp.Shapes[bId];
-                    if (collided.Contains(aId, aEntry, bId, bEntry))
+                    if (collided.Contains(aId, bId))
                         continue;
 
-                    var ev = new RacerArcadeObjectEndCollisionWithObjectEvent(other.Owner, aId, aEntry, bId, bEntry);
+                    var ev = new RacerArcadeObjectEndCollisionWithObjectEvent(other.Owner, aId, aEntry, bId, bEntry, contact.Normal, contact.Penetration);
                     events.EndObject.Add((ent.Owner, ev));
                     bIdsRemQueue.Add(bId);
                 }
@@ -304,13 +301,13 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
         {
             RemQueue<string> shapeRemQueue = new();
 
-            foreach (var bId in aEntry.TrackShapesCollided)
+            foreach (var (bId, contact) in aEntry.TrackShapesCollided)
             {
                 var bEntry = stage.Graph.CollisionShapes[bId];
-                if (collided.Contains(aId, aEntry, bId, bEntry))
+                if (collided.Contains(aId, bId))
                     continue;
 
-                var ev = new RacerArcadeObjectEndCollisionWithTrackEvent(aId, aEntry, bEntry);
+                var ev = new RacerArcadeObjectEndCollisionWithTrackEvent(aId, aEntry, bEntry, contact.Normal, contact.Penetration);
                 events.EndTrack.Add((ent.Owner, ev));
                 shapeRemQueue.Add(bId);
             }
@@ -380,10 +377,10 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
                 if (!aBox.Intersects(bBox))
                     continue;
 
-                if (!RacerArcadeObjectCollisionResolver.Resolve(aEntry.Shape, bEntry.Shape))
+                if (!RacerArcadeObjectCollisionResolver.Resolve(aEntry.Shape, bEntry.Shape, out var normal, out var penetration))
                     continue;
 
-                collided.Add(aId, aEntry, bId, bEntry);
+                collided.Add(aId, aEntry, bId, bEntry, normal.Value, penetration.Value);
             }
         }
     }
@@ -406,6 +403,51 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
             Vector3.ComponentMin(startAABB.LeftBottomBack, endAABB.LeftBottomBack),
             Vector3.ComponentMax(startAABB.RightTopFront, endAABB.RightTopFront)
         );
+    }
+
+    [PublicAPI]
+    public NetRacerArcadeCollisionContact GetNetCollisionContact(RacerArcadeCollisionContact contact)
+    {
+        return new(contact.AId, contact.BId, contact.Normal, contact.Penetration);
+    }
+
+    [PublicAPI]
+    public RacerArcadeCollisionContact GetCollisionContact(Entity<RacerArcadeObjectCollisionComponent, RacerArcadeObjectComponent?> ent, NetRacerArcadeCollisionContact netContact)
+    {
+        if (!_racer.TryGetArcade((ent.Owner, ent.Comp2), out var arcade) || arcade.Value.Comp.State is not { } state)
+            throw new InvalidOperationException($"Tried to get contacts for {ToPrettyString(ent.Owner)} when the arcade doesnt exist.");
+
+        var stage = _prototype.Index(state.CurrentStage);
+
+        foreach (var (ourId, ourEntry) in ent.Comp1.Shapes)
+        {
+            if (ourId != netContact.AId)
+                continue;
+
+            foreach (var (trackId, trackEntry) in stage.Graph.CollisionShapes)
+            {
+                if (trackId != netContact.BId)
+                    continue;
+
+                return new(ourId, ourEntry, trackId, trackEntry, netContact.Normal, netContact.Penetration);
+            }
+
+            foreach (var netOther in ourEntry.ObjectShapesCollided.Keys)
+            {
+                var otherUid = GetEntity(netOther);
+                var other = _collision.Get(otherUid);
+
+                foreach (var (otherId, otherEntry) in other.Comp.Shapes)
+                {
+                    if (otherId != netContact.BId)
+                        continue;
+
+                    return new(ourId, ourEntry, otherId, otherEntry, netContact.Normal, netContact.Penetration);
+                }
+            }
+        }
+
+        throw new InvalidOperationException($"{ToPrettyString(ent.Owner)} does not have the valid contact: {netContact}");
     }
 
     [PublicAPI]
