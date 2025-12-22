@@ -39,8 +39,10 @@ public sealed partial class RacerArcadeSystem : SharedRacerArcadeSystem
 
     private void OnPlayerStatusChanged(object? sender, SessionStatusEventArgs args)
     {
-        if (args.NewStatus != SessionStatus.InGame)
-            StopEditingSession(args.Session);
+        if (args.NewStatus == SessionStatus.InGame)
+            return;
+
+        StopEditingSession(args.Session);
     }
 
     private void OnEditorExited(RacerArcadeEditorExitedMessage args, EntitySessionEventArgs eventArgs)
@@ -103,6 +105,13 @@ public sealed partial class RacerArcadeSystem : SharedRacerArcadeSystem
             return;
 
         var ev = new RacerArcadeEditorStopMessage();
+        RaiseNetworkEvent(ev, session);
+    }
+
+    [PublicAPI]
+    public void SetDebugFlags(RacerArcadeDebugFlags flags, ICommonSession session)
+    {
+        var ev = new RacerArcadeDebugFlagsChangedMessage(flags);
         RaiseNetworkEvent(ev, session);
     }
 }

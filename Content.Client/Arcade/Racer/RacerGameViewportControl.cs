@@ -9,7 +9,6 @@ using Robust.Client.Graphics;
 using Robust.Client.ResourceManagement;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
-using System.Numerics;
 using Vector3 = Robust.Shared.Maths.Vector3;
 
 namespace Content.Client.Arcade.Racer;
@@ -82,9 +81,7 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
         base.Draw(handle);
         handle.UseShader(null);
 
-#if DEBUG
         DrawDebug(handle, state, cabinet, viewer);
-#endif
     }
 
     private void DrawSky(DrawingHandleScreen handle, RacerGameStageSkyData data)
@@ -150,43 +147,6 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
         var horizontalTrackCenter = new Vector3(trackCenter.X, trackCenter.Y, lookForward.Z);
         var lookTarget = Vector3.Lerp(lookForward, horizontalTrackCenter, 0.5f);
         Camera = Matrix4.LookAt(eye, lookTarget, Vector3.UnitZ);
-    }
-
-    private void DrawDebug(DrawingHandleScreen handle, RacerGameState state, Entity<RacerArcadeComponent> cabinet, EntityUid viewer)
-    {
-        var fontY = 0f;
-
-        if (!_racer.TryGetControlledObject(cabinet!, viewer, out var controlled))
-            return;
-
-        var data = _entity.GetComponent<RacerArcadeObjectComponent>(controlled.Value.Owner);
-        DrawText("Data:");
-        DrawText($"Pos: {data.Position}");
-        DrawText($"Rot: ({data.Rotation})");
-        DrawText($"Prev Pos: ({data.PreviousPosition})");
-        DrawText($"Prev Rot: ({data.PreviousRotation})");
-
-        if (_entity.TryGetComponent<RacerArcadeObjectPhysicsComponent>(controlled.Value.Owner, out var physics))
-        {
-            NewLine();
-            DrawText("Physics:");
-            DrawText($"Accumulated Force: {physics.AccumulatedForce}");
-            DrawText($"Accumulated Torque: {physics.AccumulatedTorque}");
-            DrawText($"Velocity: {physics.Velocity}");
-            DrawText($"Angular Velocity: {physics.AngularVelocity}");
-        }
-
-        void DrawText(string msg)
-        {
-            var pos = new Vector2(0f, fontY);
-            handle.DrawString(_font, pos, msg);
-            NewLine();
-        }
-
-        void NewLine()
-        {
-            fontY += _font.GetLineHeight(1f);
-        }
     }
 
     public void SetCabinet(Entity<RacerArcadeComponent> cabinet, EntityUid viewer)

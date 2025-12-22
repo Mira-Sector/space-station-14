@@ -16,6 +16,8 @@ public sealed partial class RacerArcadeSystem : SharedRacerArcadeSystem
 
     private IClydeWindow? _editingWindow = null;
 
+    private RacerArcadeDebugFlags _debugFlags = RacerArcadeDebugFlags.None;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -24,6 +26,8 @@ public sealed partial class RacerArcadeSystem : SharedRacerArcadeSystem
 
         SubscribeNetworkEvent<RacerArcadeEditorStartMessage>(OnEditorStart);
         SubscribeNetworkEvent<RacerArcadeEditorStopMessage>(OnEditorStop);
+
+        SubscribeNetworkEvent<RacerArcadeDebugFlagsChangedMessage>(OnDebugFlagsChanged);
     }
 
     public override void Shutdown()
@@ -46,6 +50,11 @@ public sealed partial class RacerArcadeSystem : SharedRacerArcadeSystem
     private void OnEditorStop(RacerArcadeEditorStopMessage args)
     {
         StopEditingSession();
+    }
+
+    private void OnDebugFlagsChanged(RacerArcadeDebugFlagsChangedMessage args)
+    {
+        _debugFlags = args.Flags;
     }
 
     [PublicAPI]
@@ -89,5 +98,11 @@ public sealed partial class RacerArcadeSystem : SharedRacerArcadeSystem
 
         var ev = new RacerArcadeEditorExitedMessage();
         RaiseNetworkEvent(ev);
+    }
+
+    [PublicAPI]
+    public RacerArcadeDebugFlags GetDebugFlags()
+    {
+        return _debugFlags;
     }
 }
