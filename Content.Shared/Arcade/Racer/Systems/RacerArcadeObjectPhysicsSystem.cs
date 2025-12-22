@@ -14,21 +14,35 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
         UpdatesBefore.Add(typeof(RacerArcadeObjectCollisionSystem));
 
         SubscribeLocalEvent<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectStartCollisionWithTrackEvent>(OnStartCollideWithTrack);
+        SubscribeLocalEvent<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectActiveCollisionWithTrackEvent>(OnActiveCollideWithTrack);
     }
 
     private void OnStartCollideWithTrack(Entity<RacerArcadeObjectPhysicsComponent> ent, ref RacerArcadeObjectStartCollisionWithTrackEvent args)
+    {
+        if (args.Penetration < 0f)
+            return;
+
+        var vn = Vector3.Dot(ent.Comp.Velocity, args.Normal);
+        if (vn < 0f)
+        {
+            ent.Comp.Velocity -= vn * args.Normal * (1f + ent.Comp.Restitution);
+            DirtyField(ent.Owner, ent.Comp, nameof(RacerArcadeObjectPhysicsComponent.Velocity));
+        }
+    }
+
+    private void OnActiveCollideWithTrack(Entity<RacerArcadeObjectPhysicsComponent> ent, ref RacerArcadeObjectActiveCollisionWithTrackEvent args)
     {
         var data = _racer.GetData(ent.Owner);
 
         if (args.Penetration < 0f)
             return;
 
-        data.Position += args.Normal * args.Penetration;
+        data.Position.Z += args.Normal.Z * args.Penetration;
 
         var vn = Vector3.Dot(ent.Comp.Velocity, args.Normal);
         if (vn < 0f)
         {
-            ent.Comp.Velocity -= vn * args.Normal * (1f + ent.Comp.Restitution);
+            ent.Comp.Velocity -= vn * args.Normal; // no restitution as this is just corrective
             DirtyField(ent.Owner, ent.Comp, nameof(RacerArcadeObjectPhysicsComponent.Velocity));
         }
 
