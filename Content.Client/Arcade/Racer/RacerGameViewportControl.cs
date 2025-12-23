@@ -77,11 +77,13 @@ public sealed partial class RacerGameViewportControl : PolygonRendererControl
 
         SetCameraMatrix(currentStage.Graph, state.CurrentNode, cabinet, viewer);
 
+        DebugBefore(handle, state, cabinet, viewer);
+
         handle.UseShader(_shader);
         base.Draw(handle);
         handle.UseShader(null);
 
-        DrawDebug(handle, state, cabinet, viewer);
+        DebugAfter(handle, state, cabinet, viewer);
     }
 
     private void DrawSky(DrawingHandleScreen handle, RacerGameStageSkyData data)

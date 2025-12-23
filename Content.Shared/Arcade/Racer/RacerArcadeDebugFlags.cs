@@ -8,8 +8,9 @@ public enum RacerArcadeDebugFlags : byte
 {
     None = 0,
     ControlledData = 1 << 0,
+    Collision = 1 << 1,
 
     // update as more are added/removed
     First = ControlledData,
-    Last = ControlledData,
+    Last = Collision,
 }
