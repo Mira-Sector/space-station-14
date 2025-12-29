@@ -91,42 +91,36 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
         {
             var refEv = ev;
             RaiseLocalEvent(uid, ref refEv);
-            Log.Debug("Start Object");
         }
 
         foreach (var (uid, ev) in events.ActiveObject)
         {
             var refEv = ev;
             RaiseLocalEvent(uid, ref refEv);
-            Log.Debug("Active Object");
         }
 
         foreach (var (uid, ev) in events.EndObject)
         {
             var refEv = ev;
             RaiseLocalEvent(uid, ref refEv);
-            Log.Debug("End Object");
         }
 
         foreach (var (uid, ev) in events.StartTrack)
         {
             var refEv = ev;
             RaiseLocalEvent(uid, ref refEv);
-            Log.Debug("Start Track");
         }
 
         foreach (var (uid, ev) in events.ActiveTrack)
         {
             var refEv = ev;
             RaiseLocalEvent(uid, ref refEv);
-            Log.Debug("Active Track");
         }
 
         foreach (var (uid, ev) in events.EndTrack)
         {
             var refEv = ev;
             RaiseLocalEvent(uid, ref refEv);
-            Log.Debug("End Track");
         }
     }
 
