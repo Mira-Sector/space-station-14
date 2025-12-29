@@ -6,7 +6,6 @@ namespace Content.Shared.Arcade.Racer.Systems;
 public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
 {
     [Dependency] private readonly RacerArcadeObjectCollisionSystem _collision = default!;
-    [Dependency] private readonly SharedRacerArcadeSystem _racer = default!;
 
     public override void Initialize()
     {
@@ -33,12 +32,10 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
 
     private void OnActiveCollideWithTrack(Entity<RacerArcadeObjectPhysicsComponent> ent, ref RacerArcadeObjectActiveCollisionWithTrackEvent args)
     {
-        var data = _racer.GetData(ent.Owner);
-
         if (args.Penetration < 0f)
             return;
 
-        data.Position.Z += args.Normal.Z * args.Penetration;
+        ent.Comp.PendingPositionCorrection += args.Normal * args.Penetration;
 
         var vn = Vector3.Dot(ent.Comp.Velocity, args.Normal);
         if (vn < 0f)
@@ -46,8 +43,6 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
             ent.Comp.Velocity -= vn * args.Normal; // no restitution as this is just corrective
             DirtyField(ent.Owner, ent.Comp, nameof(RacerArcadeObjectPhysicsComponent.Velocity));
         }
-
-        DirtyField(ent.Owner, data, nameof(RacerArcadeObjectComponent.Position));
     }
 
     public override void Update(float frameTime)
@@ -72,6 +67,11 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
 
             ApplyPosition((uid, physics, data), frameTime);
             ApplyRotation((uid, physics, data), frameTime);
+
+            ApplyCorrection((uid, physics, data));
+
+            physics.PendingPositionCorrection = Vector3.Zero;
+            physics.PendingRotationCorrection = Quaternion.Identity;
 
             Dirty(uid, physics);
             Dirty(uid, data);
@@ -98,15 +98,15 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
 
     private static void ApplyAcceleration(Entity<RacerArcadeObjectPhysicsComponent> ent, float frameTime)
     {
-        ent.Comp.Velocity += GetPositionAcceleration(ent, frameTime);
+        ent.Comp.Velocity += GetPositionAcceleration(ent) * frameTime;
 
-        ent.Comp.AngularVelocity += GetAngularAcceleration(ent, frameTime);
+        ent.Comp.AngularVelocity += GetAngularAcceleration(ent) * frameTime;
     }
 
     private static void ApplyPredictedPosition(Entity<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent> ent, float frameTime)
     {
-        var acceleration = GetPositionAcceleration(ent, frameTime);
-        ent.Comp1.PredictedPosition = ent.Comp2.Position + ent.Comp1.Velocity * frameTime + 0.5f * acceleration;
+        var acceleration = GetPositionAcceleration(ent);
+        ent.Comp1.PredictedPosition = ent.Comp2.Position + ent.Comp1.Velocity * frameTime + 0.5f * acceleration * frameTime * frameTime;
     }
 
     private static void ApplyPredictedRotation(Entity<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent> ent, float frameTime)
@@ -117,16 +117,19 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
             return;
         }
 
-        var deltaAngle = GetAngularAcceleration(ent, frameTime);
-        var angle = deltaAngle.Length;
+        var angularAccel = GetAngularAcceleration(ent) * frameTime;
+        var deltaAngleFromVelocity = ent.Comp1.AngularVelocity * frameTime;
 
+        var totalDeltaAngle = deltaAngleFromVelocity + 0.5f * angularAccel * frameTime;
+
+        var angle = totalDeltaAngle.Length;
         if (MathHelper.CloseTo(angle, 0f))
         {
             ent.Comp1.PredictedRotation = ent.Comp2.Rotation;
             return;
         }
 
-        var axis = deltaAngle / angle;
+        var axis = totalDeltaAngle / angle;
         var rotation = Quaternion.FromAxisAngle(axis, angle);
         ent.Comp1.PredictedRotation = Quaternion.Normalize(rotation * ent.Comp2.Rotation);
     }
@@ -158,24 +161,33 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
         if (MathHelper.CloseToPercent(ent.Comp1.AngularVelocity.LengthSquared, 0f))
             return;
 
-        var deltaAngle = ent.Comp1.AngularVelocity * frameTime;
-        var angle = deltaAngle.Length;
+        var angularAccel = GetAngularAcceleration(ent) * frameTime;
+        var deltaAngleFromVelocity = ent.Comp1.AngularVelocity * frameTime;
 
+        var totalDeltaAngle = deltaAngleFromVelocity + 0.5f * angularAccel * frameTime;
+
+        var angle = totalDeltaAngle.Length;
         if (MathHelper.CloseTo(angle, 0f))
             return;
 
-        var axis = deltaAngle / angle;
+        var axis = totalDeltaAngle / angle;
         var rotation = Quaternion.FromAxisAngle(axis, angle);
         ent.Comp2.Rotation = Quaternion.Normalize(rotation * ent.Comp2.Rotation);
     }
 
-    private static Vector3 GetPositionAcceleration(Entity<RacerArcadeObjectPhysicsComponent> ent, float frameTime)
+    private static void ApplyCorrection(Entity<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent> ent)
     {
-        return ent.Comp.AccumulatedForce / ent.Comp.Mass * frameTime;
+        ent.Comp2.Position += ent.Comp1.PendingPositionCorrection;
+        ent.Comp2.Rotation *= ent.Comp1.PendingRotationCorrection;
     }
 
-    private static Vector3 GetAngularAcceleration(Entity<RacerArcadeObjectPhysicsComponent> ent, float frameTime)
+    private static Vector3 GetPositionAcceleration(Entity<RacerArcadeObjectPhysicsComponent> ent)
     {
-        return ent.Comp.AccumulatedTorque / ent.Comp.MomentOfInertia * frameTime;
+        return ent.Comp.AccumulatedForce / ent.Comp.Mass;
+    }
+
+    private static Vector3 GetAngularAcceleration(Entity<RacerArcadeObjectPhysicsComponent> ent)
+    {
+        return ent.Comp.AccumulatedTorque / ent.Comp.MomentOfInertia;
     }
 }

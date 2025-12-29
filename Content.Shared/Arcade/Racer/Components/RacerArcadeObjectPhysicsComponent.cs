@@ -22,10 +22,7 @@ public sealed partial class RacerArcadeObjectPhysicsComponent : Component
     [DataField, AutoNetworkedField]
     public float Restitution = 0.2f;
 
-    [ViewVariables]
     public Vector3 AccumulatedForce;
-
-    [ViewVariables]
     public Vector3 AccumulatedTorque;
 
     [ViewVariables, AutoNetworkedField]
@@ -34,9 +31,9 @@ public sealed partial class RacerArcadeObjectPhysicsComponent : Component
     [ViewVariables, AutoNetworkedField]
     public Vector3 AngularVelocity;
 
-    [ViewVariables]
     public Vector3 PredictedPosition;
-
-    [ViewVariables]
     public Quaternion PredictedRotation = Quaternion.Identity;
+
+    public Vector3 PendingPositionCorrection;
+    public Quaternion PendingRotationCorrection = Quaternion.Identity;
 }
