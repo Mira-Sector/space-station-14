@@ -473,6 +473,32 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
     }
 
     [PublicAPI]
+    public IEnumerable<RacerArcadeCollisionContact> GetPredictedCollisionContacts(Entity<RacerArcadeObjectCollisionComponent?, RacerArcadeObjectComponent?> ent, Vector3 newPos, Quaternion newRot)
+    {
+        if (!_collision.Resolve(ent.Owner, ref ent.Comp1) || !_data.Resolve(ent.Owner, ref ent.Comp2))
+            yield break;
+
+        var startAABB = GetAABBAtPosition((ent.Owner, ent.Comp1), ent.Comp2.Position, ent.Comp2.Rotation);
+        var endAABB = GetAABBAtPosition((ent.Owner, ent.Comp1), newPos, newRot);
+
+        var swept = new Box3(
+            Vector3.ComponentMin(startAABB.LeftBottomBack, endAABB.LeftBottomBack),
+            Vector3.ComponentMax(startAABB.RightTopFront, endAABB.RightTopFront)
+        );
+
+        if (!_racer.TryGetArcade((ent.Owner, ent.Comp2), out var arcade) || arcade.Value.Comp.State is not { } state)
+            yield break;
+
+        var stage = _prototype.Index(state.CurrentStage);
+        if (!stage.Graph.AABB.Intersects(swept))
+            yield break;
+
+        GetCollidingShapes(ent.Comp1.Shapes, stage.Graph.CollisionShapes, (newPos, newRot), (Vector3.Zero, Quaternion.Identity), out var collided);
+        foreach (var contact in collided.GetCollisions())
+            yield return contact;
+    }
+
+    [PublicAPI]
     public bool TryGetTrackHeightAtPosition(Entity<RacerArcadeObjectComponent?> ent, [NotNullWhen(true)] out float? height)
     {
         if (!_data.Resolve(ent.Owner, ref ent.Comp) || !_racer.TryGetArcade(ent, out var arcade))

@@ -33,4 +33,10 @@ public sealed partial class RacerArcadeObjectPhysicsComponent : Component
 
     [ViewVariables, AutoNetworkedField]
     public Vector3 AngularVelocity;
+
+    [ViewVariables]
+    public Vector3 PredictedPosition;
+
+    [ViewVariables]
+    public Quaternion PredictedRotation = Quaternion.Identity;
 }

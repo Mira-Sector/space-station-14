@@ -5,6 +5,7 @@ namespace Content.Shared.Arcade.Racer.Systems;
 
 public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
 {
+    [Dependency] private readonly RacerArcadeObjectCollisionSystem _collision = default!;
     [Dependency] private readonly SharedRacerArcadeSystem _racer = default!;
 
     public override void Initialize()
@@ -62,6 +63,11 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
             GetForces((uid, physics));
             ApplyDrag((uid, physics));
 
+            ApplyPredictedPosition((uid, physics, data), frameTime);
+            ApplyPredictedRotation((uid, physics, data), frameTime);
+
+            CancelForces((uid, physics, data));
+
             ApplyAcceleration((uid, physics), frameTime);
 
             ApplyPosition((uid, physics, data), frameTime);
@@ -92,11 +98,54 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
 
     private static void ApplyAcceleration(Entity<RacerArcadeObjectPhysicsComponent> ent, float frameTime)
     {
-        var acceleration = ent.Comp.AccumulatedForce / ent.Comp.Mass;
-        ent.Comp.Velocity += acceleration * frameTime;
+        ent.Comp.Velocity += GetPositionAcceleration(ent, frameTime);
 
-        var angularAcceleration = ent.Comp.AccumulatedTorque / ent.Comp.MomentOfInertia;
-        ent.Comp.AngularVelocity += angularAcceleration * frameTime;
+        ent.Comp.AngularVelocity += GetAngularAcceleration(ent, frameTime);
+    }
+
+    private static void ApplyPredictedPosition(Entity<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent> ent, float frameTime)
+    {
+        var acceleration = GetPositionAcceleration(ent, frameTime);
+        ent.Comp1.PredictedPosition = ent.Comp2.Position + ent.Comp1.Velocity * frameTime + 0.5f * acceleration;
+    }
+
+    private static void ApplyPredictedRotation(Entity<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent> ent, float frameTime)
+    {
+        if (MathHelper.CloseToPercent(ent.Comp1.AngularVelocity.LengthSquared, 0f))
+        {
+            ent.Comp1.PredictedRotation = ent.Comp2.Rotation;
+            return;
+        }
+
+        var deltaAngle = GetAngularAcceleration(ent, frameTime);
+        var angle = deltaAngle.Length;
+
+        if (MathHelper.CloseTo(angle, 0f))
+        {
+            ent.Comp1.PredictedRotation = ent.Comp2.Rotation;
+            return;
+        }
+
+        var axis = deltaAngle / angle;
+        var rotation = Quaternion.FromAxisAngle(axis, angle);
+        ent.Comp1.PredictedRotation = Quaternion.Normalize(rotation * ent.Comp2.Rotation);
+    }
+
+    private void CancelForces(Entity<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent> ent)
+    {
+        var contacts = _collision.GetPredictedCollisionContacts((ent.Owner, null, ent.Comp2), ent.Comp1.PredictedPosition, ent.Comp1.PredictedRotation);
+        foreach (var contact in contacts)
+        {
+            // cancel the component of the force pushing into the collision
+            //
+            var velocityNormal = Vector3.Dot(ent.Comp1.Velocity, contact.Normal);
+            if (velocityNormal < 0f)
+                ent.Comp1.Velocity -= velocityNormal * contact.Normal;
+
+            var angularNormal = Vector3.Dot(ent.Comp1.AngularVelocity, contact.Normal);
+            if (angularNormal < 0f)
+                ent.Comp1.AngularVelocity -= angularNormal * contact.Normal;
+        }
     }
 
     private static void ApplyPosition(Entity<RacerArcadeObjectPhysicsComponent, RacerArcadeObjectComponent> ent, float frameTime)
@@ -118,5 +167,15 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
         var axis = deltaAngle / angle;
         var rotation = Quaternion.FromAxisAngle(axis, angle);
         ent.Comp2.Rotation = Quaternion.Normalize(rotation * ent.Comp2.Rotation);
+    }
+
+    private static Vector3 GetPositionAcceleration(Entity<RacerArcadeObjectPhysicsComponent> ent, float frameTime)
+    {
+        return ent.Comp.AccumulatedForce / ent.Comp.Mass * frameTime;
+    }
+
+    private static Vector3 GetAngularAcceleration(Entity<RacerArcadeObjectPhysicsComponent> ent, float frameTime)
+    {
+        return ent.Comp.AccumulatedTorque / ent.Comp.MomentOfInertia * frameTime;
     }
 }
