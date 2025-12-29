@@ -8,8 +8,6 @@ namespace Content.Shared.Arcade.Racer.CollisionShapes;
 [Serializable, NetSerializable]
 public sealed partial class Sphere : BaseRacerArcadeObjectCollisionShape
 {
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
-
     [DataField]
     public float Radius = 0.5f;
 

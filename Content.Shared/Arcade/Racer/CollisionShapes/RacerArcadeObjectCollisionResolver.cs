@@ -4,39 +4,60 @@ namespace Content.Shared.Arcade.Racer.CollisionShapes;
 
 public static class RacerArcadeObjectCollisionResolver
 {
-    public static bool Resolve(BaseRacerArcadeObjectCollisionShape a, BaseRacerArcadeObjectCollisionShape b, [NotNullWhen(true)] out Vector3? normal, [NotNullWhen(true)] out float? penetration)
+    public static bool Resolve(
+        BaseRacerArcadeObjectCollisionShape a,
+        BaseRacerArcadeObjectCollisionShape b,
+        (Vector3 Position, Quaternion Rotation) aOffset,
+        (Vector3 Position, Quaternion Rotation) bOffset,
+        [NotNullWhen(true)] out Vector3? normal,
+        [NotNullWhen(true)] out float? penetration)
     {
         // this massively reduces the amount of cases
         if (a.Complexity >= b.Complexity)
-            return Handle(a, b, out normal, out penetration);
+            return Handle(a, b, aOffset, bOffset, out normal, out penetration);
 
-        var result = Handle(b, a, out normal, out penetration);
+        var result = Handle(b, a, bOffset, aOffset, out normal, out penetration);
         if (result)
             normal = -normal; // flip normal as input isnt aware of the complexity ordering
 
         return result;
     }
 
-    private static bool Handle(BaseRacerArcadeObjectCollisionShape main, BaseRacerArcadeObjectCollisionShape other, [NotNullWhen(true)] out Vector3? normal, [NotNullWhen(true)] out float? penetration)
+    private static bool Handle(
+        BaseRacerArcadeObjectCollisionShape a,
+        BaseRacerArcadeObjectCollisionShape b,
+        (Vector3 Position, Quaternion Rotation) aOffset,
+        (Vector3 Position, Quaternion Rotation) bOffset,
+        [NotNullWhen(true)] out Vector3? normal,
+        [NotNullWhen(true)] out float? penetration)
     {
-        return (main, other) switch
+        return (a, b) switch
         {
-            (Sphere mainSphere, Sphere otherSphere) => SphereVsSphere(mainSphere, otherSphere, out normal, out penetration),
-            (Box mainBox, Box otherBox) => BoxVsBox(mainBox, otherBox, out normal, out penetration),
-            (Box mainBox, Sphere otherSphere) => BoxVsSphere(mainBox, otherSphere, out normal, out penetration),
+            (Sphere aSphere, Sphere bSphere) => SphereVsSphere(aSphere, bSphere, aOffset, bOffset, out normal, out penetration),
+            (Box aBox, Box bBox) => BoxVsBox(aBox, bBox, aOffset, bOffset, out normal, out penetration),
+            (Box aBox, Sphere bSphere) => BoxVsSphere(aBox, bSphere, aOffset, bOffset, out normal, out penetration),
             _ => throw new NotImplementedException(),
         };
     }
 
-    private static bool SphereVsSphere(Sphere main, Sphere other, [NotNullWhen(true)] out Vector3? normal, [NotNullWhen(true)] out float? penetration)
+    private static bool SphereVsSphere(
+        Sphere a,
+        Sphere b,
+        (Vector3 Position, Quaternion Rotation) aOffset,
+        (Vector3 Position, Quaternion Rotation) bOffset,
+        [NotNullWhen(true)] out Vector3? normal,
+        [NotNullWhen(true)] out float? penetration)
     {
-        var mainCenter = main.Offset + main.Origin;
-        var otherCenter = other.Offset + other.Origin;
+        var aLocal = a.Origin + a.Offset;
+        var bLocal = b.Origin + b.Offset;
 
-        var delta = mainCenter - otherCenter;
+        var aCenter = aOffset.Position + Vector3.Transform(aLocal, aOffset.Rotation);
+        var bCenter = bOffset.Position + Vector3.Transform(bLocal, bOffset.Rotation);
+
+        var delta = aCenter - bCenter;
         var distSq = delta.LengthSquared;
 
-        var radiusSum = main.Radius + other.Radius;
+        var radiusSum = a.Radius + b.Radius;
         var radiusSumSquared = radiusSum * radiusSum;
 
         if (distSq > radiusSumSquared)
@@ -53,83 +74,94 @@ public static class RacerArcadeObjectCollisionResolver
         return true;
     }
 
-    private static bool BoxVsBox(Box main, Box other, [NotNullWhen(true)] out Vector3? normal, [NotNullWhen(true)] out float? penetration)
+    private static bool BoxVsBox(
+        Box a,
+        Box b,
+        (Vector3 Position, Quaternion Rotation) aOffset,
+        (Vector3 Position, Quaternion Rotation) bOffset,
+        [NotNullWhen(true)] out Vector3? normal,
+        [NotNullWhen(true)] out float? penetration)
     {
         normal = null;
         penetration = null;
 
-        var mainRot = main.GetBox();
-        var otherRot = other.GetBox();
+        var aRot = a.GetBox();
+        aRot = aRot.Translate(aOffset.Position);
+        aRot = aRot.Rotate(aOffset.Rotation);
 
-        var mainCenter = mainRot.Origin;
-        var otherCenter = otherRot.Origin;
+        var bRot = b.GetBox();
+        bRot = bRot.Translate(bOffset.Position);
+        bRot = bRot.Rotate(bOffset.Rotation);
+
+        var aCenter = aRot.Origin;
+        var bCenter = bRot.Origin;
 
         // fast path
         // no rotation
-        if (mainRot.Quaternion == Quaternion.Identity && otherRot.Quaternion == Quaternion.Identity)
+        if (aRot.Quaternion == Quaternion.Identity && bRot.Quaternion == Quaternion.Identity)
         {
-            if (!mainRot.Box.Intersects(otherRot.Box))
+            if (!aRot.Box.Intersects(bRot.Box))
                 return false;
 
-            var dx = MathF.Min(mainRot.Box.Right - otherRot.Box.Left, otherRot.Box.Right - mainRot.Box.Left);
-            var dy = MathF.Min(mainRot.Box.Top - otherRot.Box.Bottom, otherRot.Box.Top - mainRot.Box.Bottom);
-            var dz = MathF.Min(mainRot.Box.Front - otherRot.Box.Back, otherRot.Box.Front - mainRot.Box.Back);
+            var dx = MathF.Min(aRot.Box.Right - bRot.Box.Left, bRot.Box.Right - aRot.Box.Left);
+            var dy = MathF.Min(aRot.Box.Top - bRot.Box.Bottom, bRot.Box.Top - aRot.Box.Bottom);
+            var dz = MathF.Min(aRot.Box.Front - bRot.Box.Back, bRot.Box.Front - aRot.Box.Back);
 
             penetration = MathF.Min(dx, MathF.Min(dy, dz));
 
             if (MathHelper.CloseTo(penetration.Value, dx))
-                normal = new Vector3(MathF.Sign(mainCenter.X - otherCenter.X), 0, 0);
+                normal = new Vector3(MathF.Sign(aCenter.X - bCenter.X), 0, 0);
             else if (MathHelper.CloseTo(penetration.Value, dy))
-                normal = new Vector3(0, MathF.Sign(mainCenter.Y - otherCenter.Y), 0);
+                normal = new Vector3(0, MathF.Sign(aCenter.Y - bCenter.Y), 0);
             else
-                normal = new Vector3(0, 0, MathF.Sign(mainCenter.Z - otherCenter.Z));
+                normal = new Vector3(0, 0, MathF.Sign(aCenter.Z - bCenter.Z));
 
             return true;
         }
 
         // separating axis theorum
 
-        var mainAxes = mainRot.GetLocalAxes();
-        var otherAxes = otherRot.GetLocalAxes();
+        var aAxes = aRot.GetLocalAxes();
+        var bAxes = bRot.GetLocalAxes();
 
-        var mainHalf = mainRot.Box.Size * 0.5f;
-        var otherHalf = otherRot.Box.Size * 0.5f;
+        var aHalf = aRot.Box.Size * 0.5f;
+        var bHalf = bRot.Box.Size * 0.5f;
 
-        var t = otherCenter - mainCenter;
+        var t = bCenter - aCenter;
 
         var bestAxis = Vector3.Zero;
         var minOverlap = float.MaxValue;
 
-        // main axes
-        foreach (var mainAxis in mainAxes)
+        // a axes
+        foreach (var aAxis in aAxes)
         {
-            if (!OverlapOnAxis(t, mainAxis, mainAxes, mainHalf, otherAxes, otherHalf, out var overlap))
+            if (!OverlapOnAxis(t, aAxis, aAxes, aHalf, bAxes, bHalf, out var overlap))
                 return false;
 
-            UpdateOverlap(overlap, mainAxis);
+            UpdateOverlap(overlap, aAxis);
         }
 
-        // other axes
-        foreach (var otherAxis in otherAxes)
+        // b axes
+        foreach (var bAxis in bAxes)
         {
-            if (!OverlapOnAxis(t, otherAxis, mainAxes, mainHalf, otherAxes, otherHalf, out var overlap))
+            if (!OverlapOnAxis(t, bAxis, aAxes, aHalf, bAxes, bHalf, out var overlap))
                 return false;
 
-            UpdateOverlap(overlap, otherAxis);
+            UpdateOverlap(overlap, bAxis);
         }
 
         // cross product axes
-        foreach (var mainAxis in mainAxes)
+        foreach (var aAxis in aAxes)
         {
-            foreach (var otherAxis in otherAxes)
+            foreach (var bAxis in bAxes)
             {
-                var axis = Vector3.Cross(mainAxis, otherAxis);
+                var axis = Vector3.Cross(aAxis, bAxis);
 
                 // check parallel lines
                 if (MathHelper.CloseTo(axis.LengthSquared, 0f))
                     continue;
 
-                if (!OverlapOnAxis(t, axis, mainAxes, mainHalf, otherAxes, otherHalf, out var overlap))
+                if (!OverlapOnAxis(t, axis, aAxes, aHalf, bAxes, bHalf, out var overlap))
                     return false;
 
                 UpdateOverlap(overlap, axis);
@@ -181,21 +213,27 @@ public static class RacerArcadeObjectCollisionResolver
         }
     }
 
-    private static bool BoxVsSphere(Box main, Sphere other, [NotNullWhen(true)] out Vector3? normal, [NotNullWhen(true)] out float? penetration)
+    private static bool BoxVsSphere(
+        Box a,
+        Sphere b,
+        (Vector3 Position, Quaternion Rotation) aOffset,
+        (Vector3 Position, Quaternion Rotation) bOffset,
+        [NotNullWhen(true)] out Vector3? normal,
+        [NotNullWhen(true)] out float? penetration)
     {
-        var invRot = Quaternion.Invert(main.Rotation);
+        var invRot = Quaternion.Invert(a.Rotation);
 
-        var otherCenterWorld = other.Offset + other.Origin;
-        var otherCenterLocal = Vector3.Transform(otherCenterWorld - main.Center, invRot);
+        var bCenterWorld = bOffset.Position + Vector3.Transform(b.Offset + b.Origin, bOffset.Rotation);
+        var bCenterLocal = Vector3.Transform(bCenterWorld - aOffset.Position, invRot) - a.Origin;
 
-        var otherClampedLocal = Vector3.Clamp(otherCenterLocal, main.Box3.LeftBottomBack, main.Box3.RightTopFront);
+        var bClampedLocal = Vector3.Clamp(bCenterLocal, a.Box3.LeftBottomBack, a.Box3.RightTopFront);
 
-        var deltaLocal = otherCenterLocal - otherClampedLocal;
+        var deltaLocal = bCenterLocal - bClampedLocal;
         var distSq = deltaLocal.LengthSquared;
 
-        var otherRadiusSquared = other.Radius * other.Radius;
+        var bRadiusSquared = b.Radius * b.Radius;
 
-        if (distSq > otherRadiusSquared)
+        if (distSq > bRadiusSquared)
         {
             normal = null;
             penetration = null;
@@ -205,8 +243,8 @@ public static class RacerArcadeObjectCollisionResolver
         var dist = MathF.Sqrt(distSq);
 
         var localNormal = MathHelper.CloseTo(dist, 0f) ? Vector3.UnitZ : deltaLocal / dist;
-        normal = Vector3.Normalize(Vector3.Transform(localNormal, main.Rotation));
-        penetration = other.Radius - dist;
+        normal = Vector3.Normalize(Vector3.Transform(localNormal, aOffset.Rotation));
+        penetration = b.Radius - dist;
         return true;
     }
 }

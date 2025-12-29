@@ -175,7 +175,7 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
             if (!ourAABB.Intersects(otherAABB))
                 continue;
 
-            GetCollidingShapes(ent.Comp1.Shapes, other.Comp1.Shapes, out var currentCollided);
+            GetCollidingShapes(ent.Comp1.Shapes, other.Comp1.Shapes, (ent.Comp2.Position, ent.Comp2.Rotation), (other.Comp2.Position, other.Comp2.Rotation), out var currentCollided);
             if (collided.TryGetValue(other.Owner, out var existingCollided))
                 existingCollided.Merge(currentCollided);
             else
@@ -200,7 +200,7 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
         if (!stage.Graph.AABB.Intersects(ourAABB))
             return collided;
 
-        GetCollidingShapes(ent.Comp1.Shapes, stage.Graph.CollisionShapes, out collided);
+        GetCollidingShapes(ent.Comp1.Shapes, stage.Graph.CollisionShapes, (ent.Comp2.Position, ent.Comp2.Rotation), (Vector3.Zero, Quaternion.Identity), out collided);
         return collided;
     }
 
@@ -364,25 +364,33 @@ public sealed partial class RacerArcadeObjectCollisionSystem : EntitySystem
     private static void GetCollidingShapes(
         Dictionary<string, RacerArcadeCollisionShapeEntry> a,
         Dictionary<string, RacerArcadeCollisionShapeEntry> b,
+        (Vector3 Position, Quaternion Rotation) aOffset,
+        (Vector3 Position, Quaternion Rotation) bOffset,
         out CollisionCollided collided)
     {
         collided = new();
 
         foreach (var (aId, aEntry) in a)
         {
-            var aBox = aEntry.Shape.GetBox().CalcBoundingBox();
+            var aBox = aEntry.Shape.GetBox();
+            aBox = aBox.Translate(aOffset.Position);
+            aBox = aBox.Rotate(aOffset.Rotation);
+            var aAABB = aBox.CalcBoundingBox();
 
             foreach (var (bId, bEntry) in b)
             {
                 if ((aEntry.Mask & bEntry.Layer) == 0)
                     continue;
 
-                var bBox = bEntry.Shape.GetBox().CalcBoundingBox();
+                var bBox = bEntry.Shape.GetBox();
+                bBox = bBox.Translate(bOffset.Position);
+                bBox = bBox.Rotate(bOffset.Rotation);
+                var bAABB = bBox.CalcBoundingBox();
 
-                if (!aBox.Intersects(bBox))
+                if (!aAABB.Intersects(bAABB))
                     continue;
 
-                if (!RacerArcadeObjectCollisionResolver.Resolve(aEntry.Shape, bEntry.Shape, out var normal, out var penetration))
+                if (!RacerArcadeObjectCollisionResolver.Resolve(aEntry.Shape, bEntry.Shape, aOffset, bOffset, out var normal, out var penetration))
                     continue;
 
                 collided.Add(aId, aEntry, bId, bEntry, normal.Value, penetration.Value);

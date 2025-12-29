@@ -1,7 +1,6 @@
 using Content.Client.PolygonRenderer;
 using Content.Shared.Arcade.Racer;
 using Content.Shared.Arcade.Racer.Components;
-using Content.Shared.Arcade.Racer.Stage;
 using Robust.Client.Graphics;
 using System.Numerics;
 
