@@ -11,7 +11,22 @@ public sealed partial class Box : BaseRacerArcadeObjectCollisionShape
     [DataField("box")]
     public Box3 Box3 = Box3.UnitCentered;
 
-    [DataField]
+    [DataField("rotation")]
+    public Vector3 EulerRotation
+    {
+        get => Quaternion.ToEulerRad(Rotation);
+        set
+        {
+            var qx = Quaternion.FromAxisAngle(Vector3.UnitX, value.X);
+            var qy = Quaternion.FromAxisAngle(Vector3.UnitY, value.Y);
+            var qz = Quaternion.FromAxisAngle(Vector3.UnitZ, value.Z);
+
+            // roll * pitch * yaw
+            Rotation = qy * qx * qz;
+        }
+    }
+
+    [ViewVariables]
     public Quaternion Rotation;
 
     [DataField]

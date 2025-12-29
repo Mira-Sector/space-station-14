@@ -5,24 +5,25 @@ using Vector3 = Robust.Shared.Maths.Vector3;
 namespace Content.Shared.Maths;
 
 [Serializable, NetSerializable]
+[DataDefinition]
 public partial struct Box3 : IEquatable<Box3>, IApproxEquatable<Box3>
 {
-    [ViewVariables]
+    [DataField]
     public float Left;
 
-    [ViewVariables]
+    [DataField]
     public float Bottom;
 
-    [ViewVariables]
+    [DataField]
     public float Back;
 
-    [ViewVariables]
+    [DataField]
     public float Right;
 
-    [ViewVariables]
+    [DataField]
     public float Top;
 
-    [ViewVariables]
+    [DataField]
     public float Front;
 
     public static readonly Box3 Empty = new(0f);
