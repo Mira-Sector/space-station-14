@@ -19,6 +19,9 @@ public sealed partial class RacerArcadeCollisionShapeEntry
     [DataField(required: true)]
     public BaseRacerArcadeObjectCollisionShape Shape;
 
+    [DataField]
+    public bool Hard = true;
+
     [ViewVariables]
     [Access(typeof(RacerArcadeObjectCollisionSystem), Other = AccessPermissions.None)]
     public Dictionary<NetEntity, Dictionary<string, NetRacerArcadeCollisionContact>> ObjectShapesCollided = [];

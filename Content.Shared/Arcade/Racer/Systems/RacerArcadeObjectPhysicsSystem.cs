@@ -19,6 +19,9 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
 
     private void OnStartCollideWithTrack(Entity<RacerArcadeObjectPhysicsComponent> ent, ref RacerArcadeObjectStartCollisionWithTrackEvent args)
     {
+        if (!args.Hard)
+            return;
+
         if (args.Penetration < 0f)
             return;
 
@@ -32,6 +35,9 @@ public sealed partial class RacerArcadeObjectPhysicsSystem : EntitySystem
 
     private void OnActiveCollideWithTrack(Entity<RacerArcadeObjectPhysicsComponent> ent, ref RacerArcadeObjectActiveCollisionWithTrackEvent args)
     {
+        if (!args.Hard)
+            return;
+
         if (args.Penetration < 0f)
             return;
 

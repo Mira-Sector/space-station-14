@@ -14,6 +14,7 @@ public abstract partial class BaseRacerArcadeObjectCollisionWithObjectEvent(
     public readonly RacerArcadeCollisionShapeEntry OurShape = ourShape;
     public readonly string OtherShapeId = otherShapeId;
     public readonly RacerArcadeCollisionShapeEntry OtherShape = otherShape;
+    public readonly bool Hard = ourShape.Hard & otherShape.Hard;
     public readonly Vector3 Normal = normal;
     public readonly float Penetration = penetration;
 }
