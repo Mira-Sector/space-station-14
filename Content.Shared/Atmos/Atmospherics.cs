@@ -193,6 +193,15 @@ namespace Content.Shared.Atmos
 
         #endregion
 
+        #region Space Wind
+
+        /// <summary>
+        ///     The factor used when scaling wind gradiaully to 0.
+        /// </summary>
+        public const float SpaceWindNormalizationFactor = 0.9f;
+
+        #endregion
+
         /// <summary>
         ///     Hard limit for zone-based tile equalization.
         /// </summary>

@@ -43,7 +43,7 @@ public partial class AtmosphereSystem
             // And ideally some fast way to get the innermost airtight container.
         }
 
-        var position = _transformSystem.GetGridTilePositionOrDefault((ent, ent.Comp));
+        var position = TransformSystem.GetGridTilePositionOrDefault((ent, ent.Comp));
         return GetTileMixture(grid, map, position, excite);
     }
 
@@ -151,7 +151,7 @@ public partial class AtmosphereSystem
         if (!Resolve(entity.Owner, ref entity.Comp))
             return null;
 
-        var indices = _transformSystem.GetGridTilePositionOrDefault(entity);
+        var indices = TransformSystem.GetGridTilePositionOrDefault(entity);
         return GetTileMixture(entity.Comp.GridUid, entity.Comp.MapUid, indices, excite);
     }
 

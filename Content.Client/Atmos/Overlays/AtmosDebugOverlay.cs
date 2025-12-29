@@ -142,15 +142,8 @@ public sealed class AtmosDebugOverlay : Overlay
         CheckAndShowBlockDir(data, handle, AtmosDirection.East, tileCentre);
         CheckAndShowBlockDir(data, handle, AtmosDirection.West, tileCentre);
 
-        // -- Pressure Direction --
-        if (data.PressureDirection != AtmosDirection.Invalid)
-        {
-            DrawPressureDirection(handle, data.PressureDirection, tileCentre, Color.Blue);
-        }
-        else if (data.LastPressureDirection != AtmosDirection.Invalid)
-        {
-            DrawPressureDirection(handle, data.LastPressureDirection, tileCentre, Color.LightGray);
-        }
+        // -- Space Wind --
+        DrawSpaceWindVec(handle, data.SpaceWind, tileCentre, Color.Blue);
 
         // -- Excited Groups --
         if (data.InExcitedGroup is {} grp)
@@ -195,16 +188,16 @@ public sealed class AtmosDebugOverlay : Overlay
         handle.DrawLine(basisA, basisB, Color.Azure);
     }
 
-    private void DrawPressureDirection(
+    private void DrawSpaceWindVec(
         DrawingHandleWorld handle,
-        AtmosDirection d,
+        Vector2 dir,
         Vector2 center,
         Color color)
     {
-        // Account for South being 0.
-        var atmosAngle = d.ToAngle() - Angle.FromDegrees(90);
-        var atmosAngleOfs = atmosAngle.ToVec() * 0.4f;
-        handle.DrawLine(center, center + atmosAngleOfs, color);
+        if (dir.Length() < 0.01f)
+            return;
+
+        handle.DrawLine(center, center + dir, color);
     }
 
     private void DrawTooltip(in OverlayDrawArgs args)
@@ -247,6 +240,8 @@ public sealed class AtmosDebugOverlay : Overlay
         handle.DrawString(_font, pos, $"Moles: {moles}");
         pos += offset;
         handle.DrawString(_font, pos, $"Temp: {data.Temperature}");
+        pos += offset;
+        handle.DrawString(_font, pos, $"Wind: {data.SpaceWind}");
         pos += offset;
         handle.DrawString(_font, pos, $"Excited: {data.InExcitedGroup?.ToString() ?? "None"}");
         pos += offset;

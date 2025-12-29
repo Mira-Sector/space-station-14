@@ -1,6 +1,8 @@
 using Content.Shared.Actions;
 using Content.Shared.Alert;
 using Content.Shared.Atmos.Components;
+using Content.Shared.Atmos.Consoles;
+using Content.Shared.Atmos.EntitySystems;
 using Content.Shared.Clothing.EntitySystems;
 using Content.Shared.Gravity;
 using Content.Shared.Inventory;
@@ -13,6 +15,7 @@ namespace Content.Shared.Clothing;
 
 public sealed class SharedMagbootsSystem : EntitySystem
 {
+    [Dependency] private readonly SharedAtmosphereSystem _atmos = default!;
     [Dependency] private readonly AlertsSystem _alerts = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
     [Dependency] private readonly ItemToggleSystem _toggle = default!;
@@ -61,9 +64,7 @@ public sealed class SharedMagbootsSystem : EntitySystem
 
     public void UpdateMagbootEffects(EntityUid user, Entity<MagbootsComponent> ent, bool state)
     {
-        // TODO: public api for this and add access
-        if (TryComp<MovedByPressureComponent>(user, out var moved))
-            moved.Enabled = !state;
+        _atmos.SetMovableByWind(user, !state);
 
         if (state)
             _alerts.ShowAlert(user, ent.Comp.MagbootsAlert);
