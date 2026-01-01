@@ -34,7 +34,6 @@ public partial class SharedBodySystem
      */
 
     [Dependency] private readonly AlertsSystem _alerts = default!;
-    [Dependency] private readonly DamageableSystem _damageable = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
     [Dependency] private readonly GibbingSystem _gibbingSystem = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
@@ -203,7 +202,7 @@ public partial class SharedBodySystem
         if (mostFrequent == null || !mostFrequent.TryFirstOrDefault(out var radiation))
             return;
 
-        _damageable.Irradiate(uid, args.RadsPerSecond, radiation.RadiationDamageTypeIDs);
+        Damageable.Irradiate(uid, args.RadsPerSecond, radiation.RadiationDamageTypeIDs);
     }
 
     /// <summary>

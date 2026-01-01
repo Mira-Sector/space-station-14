@@ -37,6 +37,7 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using Content.Shared.Follower;
+using Content.Shared.Body.Components;
 
 namespace Content.Server.Polymorph.Systems;
 

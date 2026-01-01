@@ -35,8 +35,8 @@
       Burn:
         sprite: Mobs/Effects/burn_damage.rsi
   - type: MovementSpeedModifier
-    weightlessAcceleration: 1.5 # Move around more easily in space.
-    weightlessFriction: 1
+    baseWeightlessAcceleration: 1.5 # Move around more easily in space.
+    baseWeightlessFriction: 1
     baseWeightlessModifier: 1
   - type: Flammable
     damage:

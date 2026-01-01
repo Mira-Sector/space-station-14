@@ -1,4 +1,5 @@
 using Content.Shared.Bed.Sleep;
+using Content.Shared.StatusEffectNew;
 using JetBrains.Annotations;
 using Robust.Shared.Serialization;
 
@@ -22,6 +23,7 @@ public sealed partial class Sleeping : SurgeryPainRequirement
         if (AllowNonForced)
             return false;
 
-        return !entity.HasComponent<ForcedSleepingComponent>(body.Value);
+        var statusEfffectSys = entity.System<SharedStatusEffectsSystem>();
+        return !statusEfffectSys.HasEffectComp<ForcedSleepingStatusEffectComponent>(body.Value);
     }
 }

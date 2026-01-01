@@ -35,7 +35,7 @@ namespace Content.Shared.Cargo.Prototypes
         [DataField]
         public string? Description;
 
-        [DataField]
+        [DataField(required: true)]
         public BaseCargoProductData Data = default!;
 
         /// <summary>
