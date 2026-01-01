@@ -2179,3 +2179,9 @@ Entries:
     type: Tweak
   id: 302
   time: '2025-12-10T22:00:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Removed RCD and its ammo from engineers lockers again
+    type: Remove
+  id: 303
+  time: '2026-01-01T19:50:00.0000000+00:00'
