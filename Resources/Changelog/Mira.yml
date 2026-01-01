@@ -2185,3 +2185,9 @@ Entries:
     type: Remove
   id: 303
   time: '2026-01-01T19:50:00.0000000+00:00'
+- author: Doctor-Cpu
+  changes:
+  - message: Engineering and atmospheric MOD suits get expanded modules by default
+    type: Tweak
+  id: 304
+  time: '2026-01-01T20:00:00.0000000+00:00'
