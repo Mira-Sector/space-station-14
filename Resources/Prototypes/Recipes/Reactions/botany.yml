@@ -28,7 +28,7 @@
       amount: 1
     RobustHarvest:
       amount: 3
-    Diethylamine: 
+    Diethylamine:
       amount: 3
   products:
     Sedin: 1
@@ -53,3 +53,31 @@
       amount: 4
   products:
     PlantBGone: 5
+
+- type: reaction #mira
+  id: StableMutagen
+  minTemp: 370
+  reactants:
+    Cognizine:
+      amount: 1
+    Ash:
+      amount: 3
+    Phalanximine:
+      amount: 3
+    UnstableMutagen:
+      amount: 3
+  products:
+    StableMutagen: 2
+
+- type: reaction #mira
+  id: StableMutagenSyndicate
+  reactants:
+    Vestine:
+      amount: 1
+    Phalanximine:
+      amount: 1
+    UnstableMutagen:
+      amount: 2
+  products:
+    StableMutagen: 2
+

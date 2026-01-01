@@ -459,6 +459,10 @@
           conditions:
             - !type:ReagentThreshold
               min: 5
+  plantMetabolism: #mira change
+  - !type:PlantAdjustToxins
+    amount: 5
+  - !type:PlantResurrect #zombie chem resurrects plants
 
 - type: reagent
   id: UncookedAnimalProteins

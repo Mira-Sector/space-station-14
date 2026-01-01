@@ -1,0 +1,80 @@
+- type: polygonModel
+  id: TestBox
+  polygons:
+    - !type:FlatShadedPolygon
+      vertices:
+        - -0.125, -0.125, 0.125
+        - 0.125, -0.125, 0.125
+        - 0.125, 0.125, 0.125
+      color: "#ff0000"
+    - !type:FlatShadedPolygon
+      vertices:
+        - -0.125, -0.125, 0.125
+        - 0.125, 0.125, 0.125
+        - -0.125, 0.125, 0.125
+      color: "#ff0000"
+
+    - !type:FlatShadedPolygon
+      vertices:
+        - -0.125, -0.125, -0.125
+        - 0.125, -0.125, -0.125
+        - 0.125, 0.125, -0.125
+      color: "#00ff00"
+    - !type:FlatShadedPolygon
+      vertices:
+        - -0.125, -0.125, -0.125
+        - 0.125, 0.125, -0.125
+        - -0.125, 0.125, -0.125
+      color: "#00ff00"
+
+    - !type:FlatShadedPolygon
+      vertices:
+        - -0.125, 0.125, -0.125
+        - 0.125, 0.125, -0.125
+        - 0.125, 0.125, 0.125
+      color: "#ffff00"
+    - !type:FlatShadedPolygon
+      vertices:
+        - -0.125, 0.125, -0.125
+        - 0.125, 0.125, 0.125
+        - -0.125, 0.125, 0.125
+      color: "#ffff00"
+
+    - !type:FlatShadedPolygon
+      vertices:
+        - -0.125, -0.125, -0.125
+        - 0.125, -0.125, -0.125
+        - 0.125, -0.125, 0.125
+      color: "#0000ff"
+    - !type:FlatShadedPolygon
+      vertices:
+        - -0.125, -0.125, -0.125
+        - 0.125, -0.125, 0.125
+        - -0.125, -0.125, 0.125
+      color: "#0000ff"
+
+    - !type:FlatShadedPolygon
+      vertices:
+        - -0.125, -0.125, -0.125
+        - -0.125, 0.125, -0.125
+        - -0.125, 0.125, 0.125
+      color: "#ff00ff"
+    - !type:FlatShadedPolygon
+      vertices:
+        - -0.125, -0.125, -0.125
+        - -0.125, 0.125, 0.125
+        - -0.125, -0.125, 0.125
+      color: "#ff00ff"
+
+    - !type:FlatShadedPolygon
+      vertices:
+        - 0.125, -0.125, -0.125
+        - 0.125, 0.125, -0.125
+        - 0.125, 0.125, 0.125
+      color: "#00ffff"
+    - !type:FlatShadedPolygon
+      vertices:
+        - 0.125, -0.125, -0.125
+        - 0.125, 0.125, 0.125
+        - 0.125, -0.125, 0.125
+      color: "#00ffff"

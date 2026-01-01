@@ -426,6 +426,18 @@ reagent-effect-guidebook-plant-seeds-remove =
         *[other] remove the
     } seeds of the plant
 
+reagent-effect-guidebook-plant-stable-mutagen =
+    { $chance ->
+        [1] Adds
+        *[other]{$percent}% chance to add
+    } randomly chosen reagent in the hydroponics tray to the plant's produce. Halve chance to add new reagent per non-inherent reagent already present within plant over {$reagentCount}
+
+reagent-effect-guidebook-plant-resurrect =
+    { $chance ->
+        [1] Revives
+        *[other] revives
+    } a plant from a dead state
+
 reagent-effect-guidebook-glowing =
     { $chance ->
         [1] Makes the
@@ -437,3 +449,4 @@ reagent-effect-guidebook-body-damage =
         [-1] Heals [color=green]{NATURALFIXED($amount, 2)}[/color] organ damage
         *[1] Deals [color=red]{NATURALFIXED($amount, 2)}[/color] organ damage
     }
+

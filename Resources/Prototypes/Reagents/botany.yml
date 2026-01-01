@@ -303,3 +303,32 @@
         damage:
           types:
             Caustic: 1
+
+- type: reagent #mira chem
+  id: StableMutagen
+  name: reagent-name-stable-mutagen
+  group: Botanical
+  desc: reagent-desc-stable-mutagen
+  physicalDesc: reagent-physical-desc-glowing
+  flavor: bitter
+  color: "#00ad40"
+  boilingPoint: 340282300000000000000000000000000000000 # Ethidium bromide, which doesn't boil.
+  meltingPoint: 261.0
+  plantMetabolism:
+  - !type:PlantStableMutagen
+    MaxChem: 5
+  - !type:PlantAdjustNutrition
+    amount: -2
+  - !type:PlantAdjustHealth
+    amount: -0.5
+  - !type:PlantAdjustMutationMod
+    probability: 1
+    amount: -0.1
+  metabolisms:
+    Poison:
+      effects:
+      - !type:HealthChange
+        damage:
+          types:
+            Radiation: 3
+
