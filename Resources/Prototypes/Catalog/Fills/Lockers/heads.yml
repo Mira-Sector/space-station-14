@@ -167,8 +167,6 @@
     - id: ClothingHeadsetAltEngineering
     - id: DoorRemoteEngineering
     - id: CargoRequestEngineeringComputerCircuitboard
-    - id: RCD
-    - id: RCDAmmo
     - id: RubberStampCE
     - id: MetalFoamGrenade
 
