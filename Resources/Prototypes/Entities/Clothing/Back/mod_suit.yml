@@ -295,7 +295,7 @@
       - ModSuitModuleInsulation
       - ModSuitModuleVisonMeson
       - ModSuitModuleVisonWelding
-      - ModSuitModuleStorageNormal
+      - ModSuitModuleStorageExpanded
       - ModSuitModuleFlashlightAtmos
 
 - type: entity
@@ -652,7 +652,7 @@
       - ModSuitModuleInsulation
       - ModSuitModuleVisonMeson
       - ModSuitModuleVisonWelding
-      - ModSuitModuleStorageNormal
+      - ModSuitModuleStorageExpanded
       - ModSuitModuleFlashlightEngineering
 
 - type: entity
