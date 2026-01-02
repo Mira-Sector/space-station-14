@@ -132,10 +132,9 @@
     delay: 0.9
   - type: LeechOnMarker
     userEffects:
-    - !type:HealthChange
+    - !type:EvenHealthChange #mira change
       damage:
-        groups:
-          Brute: -6
+        Brute: -6
   - type: Gun
     soundGunshot: /Audio/Weapons/plasma_cutter.ogg
     fireRate: 1
@@ -154,7 +153,7 @@
     damage:
       types:
         Blunt: 6
-        Slash: 4
+        Slash: 6 #mira change
     soundHit:
       collection: MetalThud
   - type: Wieldable
@@ -218,17 +217,20 @@
     - Back
     - suitStorage
   - type: UseDelay
-    delay: 1.9
+    delay: 0.9 #mira change
   - type: BasicEntityAmmoProvider
     proto: BulletChargeGlaive
     capacity: 1
     count: 1
   - type: LeechOnMarker
     userEffects:
-      - !type:HealthChange
+      - !type:EvenHealthChange #mira change
         damage:
-          groups:
-            Brute: -21
+          Brute: -15
+          Airloss: -2
+      - !type:MovespeedModifier
+        walkSpeedModifier: 1.2
+        sprintSpeedModifier: 1.2
   - type: Tag
     tags:
       - Pickaxe

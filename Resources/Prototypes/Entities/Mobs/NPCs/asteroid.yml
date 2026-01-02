@@ -5,6 +5,8 @@
   - MobAtmosExposed
   - MobCombat
   - MobDamageableBody
+  - BaseSimpleMobBody
+  - BaseSimpleMob
   abstract: true
   components:
   - type: Reactive
@@ -57,7 +59,7 @@
   - type: MobThresholds
     thresholds:
       0: Alive
-      150: Dead
+      200: Dead
   - type: MeleeWeapon
     soundHit:
       path: "/Audio/Weapons/smash.ogg"
@@ -214,7 +216,7 @@
   - type: MobThresholds
     thresholds:
       0: Alive
-      75: Dead
+      60: Dead
   - type: MeleeWeapon
     damage:
       types:
@@ -303,7 +305,7 @@
       NavSmash: !type:Bool
         true
   - type: TimedDespawn
-    lifetime: 100
+    lifetime: 30
   - type: NoSlip
 
 - type: entity
@@ -380,7 +382,7 @@
   - type: MobThresholds
     thresholds:
       0: Alive
-      45: Dead
+      60: Dead
   - type: MeleeWeapon
     angle: 0
     animation: WeaponArcBite
