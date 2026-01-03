@@ -1,0 +1,15 @@
+- type: entity
+  name: pneumatic cannon upgrade chip
+  parent: [BaseItem, BaseSyndicateContraband]
+  id: WeaponPneumaticCannonUpgradeKit
+  description: An experimental upgrade kit that makes your pneumatic cannon look cool as balls. As makes it have more inventory space but who cares.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/module.rsi
+    state: syndicate_mod
+  - type: Item
+    size: Small
+  - type: Tag
+    tags:
+    - WeaponPneumaticCannonUpgradeKit
+

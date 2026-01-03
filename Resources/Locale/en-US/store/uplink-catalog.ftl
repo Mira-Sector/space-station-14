@@ -2,6 +2,9 @@
 uplink-pistol-viper-name = Viper
 uplink-pistol-viper-desc = A small, easily concealable, but somewhat underpowered gun. Retrofitted with a fully automatic receiver. Uses pistol magazines (.35 auto).
 
+uplink-syndicate-pneumatic-cannon-name = Pneumatic Cannon Upgrade Kit
+uplink-syndicate-pneumatic-cannon-desc = A kit that allows the user to upgrade the capacity of a improvised pneumatic cannon, at the cost of losing a bit of your firerate. Pneumatic Cannon has to be provided by the user. We are not liable if you loose your air tank because you upgraded you cannon with one on. 
+
 uplink-estoc-bundle-name = Estoc DMR
 uplink-estoc-bundle-desc = A designated marksman rifle, fitted with a mid-range optic for longer-range combat. Bundled with two rifle magazines (.20 rifle).
 

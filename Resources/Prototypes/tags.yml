@@ -1510,6 +1510,12 @@
   id: WeaponPistolCHIMPUpgradeKit
 
 - type: Tag
+  id: WeaponPneumaticCannon 
+
+- type: Tag
+  id: WeaponPneumaticCannonUpgradeKit #Should be in alphabetical order
+
+- type: Tag
   id: WeaponShotgunKammerer
 
 - type: Tag
