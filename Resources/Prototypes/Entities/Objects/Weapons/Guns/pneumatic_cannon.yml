@@ -189,10 +189,10 @@
       path: /Audio/Items/hiss.ogg
 
 
-#Syndicate Pneumatic cannon by MiguelLeMonstre
+
 - type: entity
-  name: syndicate pneumatic cannon
-  parent: [BaseStorageItem, BaseSyndicateContraband, BaseGunMeleeHeavy]
+  name: syndicate pneumatic cannon # Added by Mira
+  parent: [WeaponImprovisedPneumaticCannon, BaseStorageItem, BaseSyndicateContraband, BaseGunMeleeHeavy]
   id: WeaponSyndicatePneumaticCannon
   description: An improvised weapon that has been upgraded thanks to a Syndicate upgrade module, it now has an increased inventory space. 
   components:
@@ -203,12 +203,6 @@
     - state: tank
       map: [ "tank" ]
       visible: false
-  - type: Item
-    size: Huge
-  - type: Clothing
-    quickEquip: false
-    slots:
-    - Back
   - type: Gun
     fireRate: 1.5
     selectedMode: SemiAuto
@@ -217,41 +211,8 @@
     - FullAuto
     soundGunshot:
       path: /Audio/Weapon/Guns/syndi_pneumatic_cannon_fire.wav
-    soundEmpty:
-      path: /Audio/Items/hiss.ogg
-    clumsyProof: true
-  - type: ContainerAmmoProvider
-    container: storagebase
-  - type: PneumaticCannon
   - type: Storage
     maxItemSize: Normal
     grid:
     - 0,0,3,1
     - 1,2,2,2
-  - type: Appearance
-  - type: ItemMapper
-    containerWhitelist: [gas_tank]
-    mapLayers:
-      tank:
-        whitelist:
-          components:
-          - GasTank
-  - type: Construction
-    graph: PneumaticCannon
-    node: cannon
-  - type: ItemSlots
-    slots:
-      gas_tank:
-        name: pneumatic-cannon-component-itemslot-name
-        whitelist:
-          components:
-          - GasTank
-        insertSound:
-          path: /Audio/Weapons/click.ogg
-          params:
-            volume: -3
-  - type: ContainerContainer
-    containers:
-      storagebase: !type:Container
-        ents: []
-      gas_tank: !type:ContainerSlot

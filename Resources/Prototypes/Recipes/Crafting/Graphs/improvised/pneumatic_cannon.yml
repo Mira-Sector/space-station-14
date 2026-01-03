@@ -22,7 +22,7 @@
         doAfter: 10
   - node: cannon
     entity: WeaponImprovisedPneumaticCannon
-    edges:
+    edges: # Mira Changes for the Syndicate Pneumatic Cannon
     - to: syndicannon
       steps:
       - tag: WeaponPneumaticCannonUpgradeKit
