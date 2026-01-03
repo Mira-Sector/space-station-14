@@ -9,11 +9,10 @@ using Content.Shared.Gravity;
 using Content.Shared.Slippery;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
-using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using System.Numerics;
 
-namespace Content.Server.Footprint.Systems;
+namespace Content.Server.Footprints.Systems;
 
 public sealed partial class FootprintSystem : EntitySystem
 {
@@ -21,17 +20,22 @@ public sealed partial class FootprintSystem : EntitySystem
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
     [Dependency] private readonly SharedGravitySystem _gravity = default!;
-    [Dependency] private readonly SharedMapSystem _map = default!;
     [Dependency] private readonly PuddleSystem _puddle = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solutionContainer = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly IMapManager _mapManager = default!;
 
-    const string ShoeSlot = "shoes";
+    private const string ShoeSlot = "shoes";
 
-    const float UnitsPerFootstep = 0.1f;
+    private const float UnitsPerFootstep = 0.1f;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        InitializeUpdate();
+        InitializeRemove();
+    }
 
     public override void Update(float frametime)
     {
@@ -122,13 +126,12 @@ public sealed partial class FootprintSystem : EntitySystem
         }
 
         currentFootprintComp.LastFootstep = pos;
-        currentFootprintComp.Alpha = (float) currentFootprintComp.FootstepsLeft / footprintComp.MaxFootsteps;
+        currentFootprintComp.Alpha = (float)currentFootprintComp.FootstepsLeft / footprintComp.MaxFootsteps;
     }
 
     private void UpdateForensics(EntityUid footprint, EntityUid messmaker)
     {
-        if (!TryComp<ResidueComponent>(messmaker, out var messmakerResidueComp) ||
-            messmakerResidueComp.ResidueAge == null)
+        if (!TryComp<ResidueComponent>(messmaker, out var messmakerResidueComp))
             return;
 
         var footprintResidueComp = EnsureComp<ResidueComponent>(footprint);

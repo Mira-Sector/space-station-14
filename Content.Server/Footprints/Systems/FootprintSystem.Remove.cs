@@ -3,16 +3,12 @@ using Content.Shared.Foldable;
 using Content.Shared.StepTrigger.Systems;
 using Content.Shared.Interaction;
 
-namespace Content.Server.Footprint.Systems;
+namespace Content.Server.Footprints.Systems;
 
-public sealed class RemoveFootprintsSystem : EntitySystem
+public sealed partial class FootprintSystem : EntitySystem
 {
-    [Dependency] private readonly FootprintSystem _footprint = default!;
-
-    /// <inheritdoc/>
-    public override void Initialize()
+    private void InitializeRemove()
     {
-        base.Initialize();
         SubscribeLocalEvent<RemoveFootprintsComponent, StepTriggeredOffEvent>(OnStep);
         SubscribeLocalEvent<RemoveFootprintsComponent, StepTriggerAttemptEvent>(OnStepAttempt);
 
@@ -31,7 +27,7 @@ public sealed class RemoveFootprintsSystem : EntitySystem
             return;
         }
 
-        var messMaker = _footprint.GetMessMaker(args.Tripper);
+        var messMaker = GetMessMaker(args.Tripper);
 
         if (messMaker == EntityUid.Invalid)
             return;

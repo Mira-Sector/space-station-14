@@ -7,14 +7,13 @@ using Robust.Shared.Physics.Events;
 using Robust.Shared.Random;
 using System.Linq;
 
-namespace Content.Server.Footprint.Systems;
+namespace Content.Server.Footprints.Systems;
 
 public sealed partial class FootprintSystem : EntitySystem
 {
     [Dependency] private readonly IRobustRandom _random = default!;
 
-    /// <inheritdoc/>
-    public override void Initialize()
+    private void InitializeUpdate()
     {
         SubscribeLocalEvent<FootprintComponent, ForensicScannerBeforeDoAfterEvent>(OnForensicScanner);
 
