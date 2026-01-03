@@ -194,7 +194,7 @@
   name: syndicate pneumatic cannon
   parent: [BaseStorageItem, BaseSyndicateContraband, BaseGunMeleeHeavy]
   id: WeaponSyndicatePneumaticCannon
-  description: An improvised weapon that has been upgraded thanks to a Syndicate upgrade module. 
+  description: An improvised weapon that has been upgraded thanks to a Syndicate upgrade module, it now has an increased inventory space. 
   components:
   - type: Sprite
     sprite: Objects/Weapons/Guns/Cannons/syndicate_pneumatic_cannon.rsi
@@ -216,7 +216,7 @@
     - SemiAuto
     - FullAuto
     soundGunshot:
-      path: /Audio/Effects/thunk.ogg
+      path: /Audio/Weapon/Guns/syndi_pneumatic_cannon_fire.wav
     soundEmpty:
       path: /Audio/Items/hiss.ogg
     clumsyProof: true
