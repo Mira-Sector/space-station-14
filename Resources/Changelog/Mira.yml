@@ -2191,3 +2191,9 @@ Entries:
     type: Tweak
   id: 304
   time: '2026-01-01T20:00:00.0000000+00:00'
+- author: MiguelLeMonstre
+  changes:
+  - message: Added the syndicate pneumatic cannon to the uplink
+    type: Add
+  id: 305
+  time: '2026-01-05T16:40:00.0000000+00:00'
