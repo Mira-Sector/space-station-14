@@ -34,6 +34,9 @@
     maxItemSize: Normal
     grid:
     - 0,0,1,1
+    blacklist:
+      tags:
+      - WeaponPneumaticCannonUpgradeKit
   - type: Appearance
   - type: ItemMapper
     containerWhitelist: [gas_tank]
@@ -61,6 +64,9 @@
       storagebase: !type:Container
         ents: []
       gas_tank: !type:ContainerSlot
+  - type: Tag
+    tags:
+    - WeaponPneumaticCannon
 
 - type: entity
   name: pie cannon
@@ -181,3 +187,32 @@
       path: /Audio/Effects/thunk.ogg
     soundEmpty:
       path: /Audio/Items/hiss.ogg
+
+
+
+- type: entity
+  name: syndicate pneumatic cannon # Added by Mira
+  parent: [WeaponImprovisedPneumaticCannon, BaseStorageItem, BaseSyndicateContraband, BaseGunMeleeHeavy]
+  id: WeaponSyndicatePneumaticCannon
+  description: An improvised weapon that has been upgraded thanks to a Syndicate upgrade module, it now has an increased inventory space. 
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Cannons/syndicate_pneumatic_cannon.rsi
+    layers:
+    - state: icon
+    - state: tank
+      map: [ "tank" ]
+      visible: false
+  - type: Gun
+    fireRate: 1.5
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    - FullAuto
+    soundGunshot:
+      path: /Audio/Weapon/Guns/syndi_pneumatic_cannon_fire.wav
+  - type: Storage
+    maxItemSize: Normal
+    grid:
+    - 0,0,3,1
+    - 1,2,2,2

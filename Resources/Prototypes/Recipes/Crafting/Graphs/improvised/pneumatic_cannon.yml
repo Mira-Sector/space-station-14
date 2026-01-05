@@ -22,3 +22,14 @@
         doAfter: 10
   - node: cannon
     entity: WeaponImprovisedPneumaticCannon
+    edges: # Mira Changes for the Syndicate Pneumatic Cannon
+    - to: syndicannon
+      steps:
+      - tag: WeaponPneumaticCannonUpgradeKit
+        icon:
+          sprite: Objects/Misc/module.rsi
+          state: syndicate_mod
+        doAfter: 2
+        name: construction-graph-tag-pneumatic_cannon_upgrade
+  - node: syndicannon
+    entity: WeaponSyndicatePneumaticCannon

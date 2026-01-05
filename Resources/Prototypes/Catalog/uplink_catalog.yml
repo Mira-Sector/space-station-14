@@ -14,6 +14,20 @@
   categories:
   - UplinkWeaponry
 
+#Upgraded Pneumatic Cannon for niche gimmicks in case the normal cannon isn't good enough. #Syndi Cannon + arrows kills this is just a gun at this point
+- type: listing
+  id: UplinkSyndicatePneumaticCannon
+  name: uplink-syndicate-pneumatic-cannon-name
+  description: uplink-syndicate-pneumatic-cannon-desc
+  productEntity: WeaponPneumaticCannonUpgradeKit
+  discountCategory: usualDiscounts
+  discountDownTo:
+    Telecrystal: 3
+  cost:
+    Telecrystal: 5
+  categories:
+  - UplinkWeaponry
+
 - type: listing
   id: UplinkRevolverPython
   name: uplink-revolver-python-name
