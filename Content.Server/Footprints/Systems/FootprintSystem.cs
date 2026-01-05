@@ -88,17 +88,12 @@ public sealed partial class FootprintSystem : EntitySystem
 
     private void DoFootprint(EntityUid uid, CanLeaveFootprintsComponent currentFootprintComp, LeavesFootprintsComponent footprintComp, MapCoordinates pos, Angle angle)
     {
-        var footprint = footprintComp.FootprintPrototype;
-
-        if (currentFootprintComp.UseAlternative != null)
-        {
-            if (currentFootprintComp.UseAlternative.Value)
-                footprint = footprintComp.FootprintPrototypeAlternative;
-
-            currentFootprintComp.UseAlternative ^= true;
-        }
-
+        var footprint = footprintComp.FootprintPrototypes[currentFootprintComp.FootprintIndex];
         var footprintEnt = EntityManager.Spawn(footprint, pos, rotation: angle);
+
+        currentFootprintComp.FootprintIndex++;
+        if (currentFootprintComp.FootprintIndex >= footprintComp.FootprintPrototypes.Length)
+            currentFootprintComp.FootprintIndex = 0;
 
         if (currentFootprintComp.Container != null)
         {
@@ -116,7 +111,7 @@ public sealed partial class FootprintSystem : EntitySystem
             footprintEntComp.CreationTime = _timing.CurTime;
         }
 
-        currentFootprintComp.FootstepsLeft -= 1;
+        currentFootprintComp.FootstepsLeft--;
 
         if (currentFootprintComp.FootstepsLeft <= 0 ||
             currentFootprintComp.FootstepsLeft > footprintComp.MaxFootsteps) // underflow :godo:
@@ -126,7 +121,7 @@ public sealed partial class FootprintSystem : EntitySystem
         }
 
         currentFootprintComp.LastFootstep = pos;
-        currentFootprintComp.Alpha = (float)currentFootprintComp.FootstepsLeft / footprintComp.MaxFootsteps;
+        currentFootprintComp.Alpha = currentFootprintComp.FootstepsLeft / footprintComp.MaxFootsteps;
     }
 
     private void UpdateForensics(EntityUid footprint, EntityUid messmaker)

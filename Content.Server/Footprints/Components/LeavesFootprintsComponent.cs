@@ -21,11 +21,9 @@ public sealed partial class LeavesFootprintsComponent : Component
     /// What entity to leave behind when the entity moves.
     /// </summary>
     [DataField]
-    public EntProtoId FootprintPrototype = "FootprintFootLeft";
-
-    /// <summary>
-    /// If set with will alternate between this entity and the regular entity
-    /// </summary>
-    [DataField]
-    public EntProtoId? FootprintPrototypeAlternative = "FootprintFootRight";
+    public EntProtoId[] FootprintPrototypes =
+    [
+        new("FootprintFootLeft"),
+        new("FootprintFootRight")
+    ];
 }

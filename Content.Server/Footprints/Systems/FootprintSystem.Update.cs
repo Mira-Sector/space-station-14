@@ -29,8 +29,7 @@ public sealed partial class FootprintSystem : EntitySystem
             return;
         }
 
-        if (footprintComp.FootprintPrototypeAlternative != null)
-            component.UseAlternative = _random.Prob(0.5f);
+        component.FootprintIndex = _random.Next(footprintComp.FootprintPrototypes.Length);
     }
 
     private void OnStartStep(EntityUid uid, GivesFootprintsComponent component , ref StartCollideEvent args)

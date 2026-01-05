@@ -235,8 +235,9 @@
         layer:
         - MobLayer
   - type: LeavesFootprints
-    footprintPrototype: Footprint4LegsLeft
-    footprintPrototypeAlternative: Footprint4LegsRight
+    footprintPrototypes:
+    - Footprint4LegsLeft
+    - Footprint4LegsRight
   - type: Residue
     residueAge:
       - ageLocId: footprint-paw-fresh
@@ -418,8 +419,9 @@
         layer:
         - MobLayer
   - type: LeavesFootprints
-    footprintPrototype: Footprint4LegsLeft
-    footprintPrototypeAlternative: Footprint4LegsRight
+    footprintPrototypes:
+    - Footprint4LegsLeft
+    - Footprint4LegsRight
   - type: Residue
     residueAge:
     - ageLocId: footprint-paw-fresh
@@ -527,8 +529,9 @@
         layer:
         - MobLayer
   - type: LeavesFootprints
-    footprintPrototype: Footprint4LegsLeft
-    footprintPrototypeAlternative: Footprint4LegsRight
+    footprintPrototypes:
+    - Footprint4LegsLeft
+    - Footprint4LegsRight
   - type: Residue
     residueAge:
     - ageLocId: footprint-paw-fresh
