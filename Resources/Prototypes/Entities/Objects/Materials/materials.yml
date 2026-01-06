@@ -393,6 +393,8 @@
     tags:
     - RawMaterial
     - Diamond
+  - type: TicketValue #mira change
+    ticketValue: 500
 
 - type: entity
   parent: MaterialDiamond
@@ -567,6 +569,8 @@
   - type: Appearance
   - type: Item
     heldPrefix: bananium
+  - type: TicketValue #mira change
+    ticketValue: 21
 
 - type: entity
   parent: MaterialBananium

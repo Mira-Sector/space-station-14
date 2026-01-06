@@ -1,6 +1,7 @@
 using Content.Shared.Construction.Prototypes;
 using Content.Shared.Lathe.Prototypes;
 using Content.Shared.Research.Prototypes;
+using Content.Shared.Chemistry.Components;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
@@ -102,4 +103,10 @@ namespace Content.Shared.Lathe
     /// </summary>
     [ByRefEvent]
     public readonly record struct LatheStartPrintingEvent(LatheRecipePrototype Recipe);
+
+    /// <summary>
+    /// [Mira] Event raised on a lathe when it finishes producing a recipe.
+    /// </summary>
+    [ByRefEvent]
+    public readonly record struct LatheFinishPrintingEvent(LatheRecipePrototype Recipe);
 }

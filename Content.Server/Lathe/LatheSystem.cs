@@ -33,6 +33,7 @@ using Robust.Server.GameObjects;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
+using Pidgin;
 
 namespace Content.Server.Lathe
 {
@@ -252,6 +253,9 @@ namespace Content.Server.Lathe
                         _puddle.TrySpillAt(uid, toAdd, out _);
                     }
                 }
+
+                var ev = new LatheFinishPrintingEvent(_proto.Index(comp.CurrentRecipe)); // mira edit
+                RaiseLocalEvent(uid, ref ev);
             }
 
             comp.CurrentRecipe = null;

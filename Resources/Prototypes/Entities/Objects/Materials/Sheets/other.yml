@@ -110,6 +110,8 @@
   - type: Tag
     tags:
     - Sheet
+  - type: TicketValue #mira change
+    ticketValue: 15
 
 - type: entity
   parent: SheetPlasma
@@ -182,6 +184,8 @@
         - ReagentId: Phosphorus
           Quantity: 5
         canReact: false
+  - type: TicketValue #mira change
+    ticketValue: 10
 
 - type: entity
   parent: SheetPlastic
@@ -244,6 +248,8 @@
         - ReagentId: Radium
           Quantity: 2
         canReact: false
+  - type: TicketValue #mira change
+    ticketValue: 15
 
 - type: entity
   parent: SheetUranium
