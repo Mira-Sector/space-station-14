@@ -1,0 +1,93 @@
+- type: entity
+  id: BaseElevatorControl
+  abstract: true
+  name: elevator control box
+  description: The box that plays the cool music.
+  placement:
+    mode: SnapgridCenter
+    snap:
+    - Wallmount
+  components:
+  - type: ElevatorEntrance
+    elevatorMapKey: lavaland
+    entranceId: salvage
+    exitId: salvage
+  - type: ElevatorExit
+    exitId: salvage
+  - type: ElevatorCollision
+    collisionId: elevator
+  - type: ElevatorMusic
+  - type: DeviceLinkSink
+    ports:
+      - ElevatorFloorChange
+  - type: DeviceLinkSource
+    ports:
+      - ElevatorEntranceDelayed
+      - ElevatorEntranceFinished
+      - ElevatorExitDelayed
+      - ElevatorExitFinished
+  - type: StepTrigger
+    intersectRatio: 0.9
+    requiredTriggeredSpeed: 0
+    ignoreWeightless: true
+    stepOn: true
+  - type: Physics
+    bodyType: Static
+  - type: Sprite
+    drawdepth: WallMountedItems
+    sprite: Structures/Wallmounts/elevator_control.rsi/
+    state: box
+  - type: InteractionOutline
+  - type: Clickable
+  - type: WallMount
+  - type: Tag
+    tags:
+      - Structure
+
+- type: entity
+  id: ElevatorControl3x3
+  parent: BaseElevatorControl
+  suffix: 3x3
+  components:
+  - type: Fixtures
+    fixtures:
+      elevator:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-1.5,-0.5,1.5,-3.5"
+        hard: false
+        layer:
+          - LowImpassable
+          - ItemMask
+
+- type: entity
+  id: ElevatorControl2x2Left
+  parent: BaseElevatorControl
+  suffix: 2x2 Left
+  components:
+  - type: Fixtures
+    fixtures:
+      elevator:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,1.5,-2.5"
+        hard: false
+        layer:
+          - LowImpassable
+          - ItemMask
+
+- type: entity
+  id: ElevatorControl2x2Right
+  parent: BaseElevatorControl
+  suffix: 2x2 Right
+  components:
+  - type: Fixtures
+    fixtures:
+      elevator:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-1.5,-0.5,0.5,-2.5"
+        hard: false
+        layer:
+          - LowImpassable
+          - ItemMask

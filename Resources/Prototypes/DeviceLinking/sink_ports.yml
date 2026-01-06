@@ -142,3 +142,8 @@
   id: SurgeryUiSink
   name: signal-port-name-surgery-ui-sink
   description: signal-port-description-surgery-ui-sink
+
+- type: sinkPort
+  id: ElevatorFloorChange
+  name: signal-port-name-elevator-floor-change
+  description: signal-port-description-elevator-floor-change
