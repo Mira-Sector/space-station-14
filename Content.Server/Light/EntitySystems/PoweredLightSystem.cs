@@ -22,6 +22,8 @@ using Content.Shared.Damage.Components;
 using Content.Shared.DeviceNetwork;
 using Content.Shared.DeviceNetwork.Events;
 using Content.Shared.Power;
+using Content.Shared.Shadows.Components;
+using Content.Shared.Shadows;
 
 namespace Content.Server.Light.EntitySystems
 {
@@ -41,6 +43,7 @@ namespace Content.Server.Light.EntitySystems
         [Dependency] private readonly PointLightSystem _pointLight = default!;
         [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
         [Dependency] private readonly DamageOnInteractSystem _damageOnInteractSystem = default!;
+        [Dependency] private readonly SharedShadowSystem _shadowSystem = default!;
 
         private static readonly TimeSpan ThunkDelay = TimeSpan.FromSeconds(2);
         public const string LightBulbContainer = "light_bulb";
@@ -255,6 +258,7 @@ namespace Content.Server.Light.EntitySystems
             if (bulbUid == null || !TryComp(bulbUid.Value, out LightBulbComponent? lightBulb))
             {
                 SetLight(uid, false, light: light);
+                RemComp<ShadowCasterComponent>(uid);
                 powerReceiver.Load = 0;
                 _appearance.SetData(uid, PoweredLightVisuals.BulbState, PoweredLightState.Empty, appearance);
                 return;
@@ -266,6 +270,7 @@ namespace Content.Server.Light.EntitySystems
                     if (powerReceiver.Powered && light.On)
                     {
                         SetLight(uid, true, lightBulb.Color, light, lightBulb.LightRadius, lightBulb.LightEnergy, lightBulb.LightSoftness);
+                        SetShadow(uid, lightBulb.ShadowRadius, lightBulb.ShadowIntensity, lightBulb.ShadowOffset);
                         _appearance.SetData(uid, PoweredLightVisuals.BulbState, PoweredLightState.On, appearance);
                         var time = _gameTiming.CurTime;
                         if (time > light.LastThunk + ThunkDelay)
@@ -277,6 +282,7 @@ namespace Content.Server.Light.EntitySystems
                     else
                     {
                         SetLight(uid, false, light: light);
+                        RemComp<ShadowCasterComponent>(uid);
                         _appearance.SetData(uid, PoweredLightVisuals.BulbState, PoweredLightState.Off, appearance);
                     }
                     break;
@@ -286,6 +292,7 @@ namespace Content.Server.Light.EntitySystems
                     break;
                 case LightBulbState.Burned:
                     SetLight(uid, false, light: light);
+                    RemComp<ShadowCasterComponent>(uid);
                     _appearance.SetData(uid, PoweredLightVisuals.BulbState, PoweredLightState.Burned, appearance);
                     break;
             }
@@ -401,6 +408,14 @@ namespace Content.Server.Light.EntitySystems
             // light bulbs burn your hands!
             if (TryComp<DamageOnInteractComponent>(uid, out var damageOnInteractComp))
                 _damageOnInteractSystem.SetIsDamageActiveTo((uid, damageOnInteractComp), value);
+        }
+
+        private void SetShadow(EntityUid light, int radius, float intensity, Vector2i offset)
+        {
+            var shadow = EnsureComp<ShadowCasterComponent>(light);
+            _shadowSystem.SetRadius((light, shadow), radius);
+            _shadowSystem.SetIntensity((light, shadow), intensity);
+            _shadowSystem.SetOffset((light, shadow), offset);
         }
 
         public void ToggleLight(EntityUid uid, PoweredLightComponent? light = null)
