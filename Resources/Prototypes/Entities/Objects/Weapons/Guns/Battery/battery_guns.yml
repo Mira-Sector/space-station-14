@@ -489,7 +489,7 @@
   name: disabler
   parent: [ WeaponDisablerPractice, BaseSecurityCommandContraband ]
   id: WeaponDisabler
-  description: A self-defense weapon that exhausts organic targets, weakening them until they collapse.
+  description: A standard Nanotrasen weapon that shoots ionized gas at targets. It has a lethal mode and a non-lethal disabling mode.
   components:
   - type: Sprite
     sprite: Objects/Weapons/Guns/Battery/disabler.rsi
@@ -508,6 +508,12 @@
   - type: ProjectileBatteryAmmoProvider
     proto: BulletDisabler
     fireCost: 62.5
+  - type: BatteryWeaponFireModes
+    fireModes:
+    - proto: BulletDisabler
+      fireCost: 62.5
+    - proto: BulletDisablerLaser
+      fireCost: 62.5
   - type: GuideHelp
     guides:
     - Security
