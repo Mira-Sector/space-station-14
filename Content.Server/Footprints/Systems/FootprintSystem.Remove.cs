@@ -16,9 +16,9 @@ public sealed partial class FootprintSystem : EntitySystem
         SubscribeLocalEvent<RemoveFootprintsComponent, InteractHandEvent>(OnInteract);
     }
 
-    private void OnStep(EntityUid uid, RemoveFootprintsComponent component, ref StepTriggeredOffEvent args)
+    private void OnStep(Entity<RemoveFootprintsComponent> ent, ref StepTriggeredOffEvent args)
     {
-        if (!component.Enabled)
+        if (!ent.Comp.Enabled)
             return;
 
         if (HasComp<FootprintComponent>(args.Tripper))
@@ -35,18 +35,18 @@ public sealed partial class FootprintSystem : EntitySystem
         RemComp<CanLeaveFootprintsComponent>(messMaker);
     }
 
-    private void OnStepAttempt(EntityUid uid, RemoveFootprintsComponent component, ref StepTriggerAttemptEvent args)
+    private void OnStepAttempt(Entity<RemoveFootprintsComponent> ent, ref StepTriggerAttemptEvent args)
     {
-        args.Continue |= component.Enabled;
+        args.Continue |= ent.Comp.Enabled;
     }
 
-    private void OnFold(EntityUid uid, RemoveFootprintsComponent component, ref FoldedEvent args)
+    private void OnFold(Entity<RemoveFootprintsComponent> ent, ref FoldedEvent args)
     {
-        component.Enabled = !args.IsFolded;
+        ent.Comp.Enabled = !args.IsFolded;
     }
 
-    private void OnInteract(EntityUid uid, RemoveFootprintsComponent component, InteractHandEvent args)
+    private void OnInteract(Entity<RemoveFootprintsComponent> ent, ref InteractHandEvent args)
     {
-        args.Handled |= component.Enabled;
+        args.Handled |= ent.Comp.Enabled;
     }
 }

@@ -21,27 +21,27 @@ public sealed partial class FootprintSystem : EntitySystem
         SubscribeLocalEvent<CanLeaveFootprintsComponent, ComponentInit>(FootprintRandom);
     }
 
-    private void FootprintRandom(EntityUid uid, CanLeaveFootprintsComponent component, ComponentInit args)
+    private void FootprintRandom(Entity<CanLeaveFootprintsComponent> ent, ref ComponentInit args)
     {
-        if (!TryComp<LeavesFootprintsComponent>(uid, out var footprintComp))
+        if (!TryComp<LeavesFootprintsComponent>(ent.Owner, out var leavesFootprints))
         {
-            RemComp<CanLeaveFootprintsComponent>(uid);
+            RemComp<CanLeaveFootprintsComponent>(ent.Owner);
             return;
         }
 
-        component.FootprintIndex = _random.Next(footprintComp.FootprintPrototypes.Length);
+        ent.Comp.FootprintIndex = _random.Next(leavesFootprints.FootprintPrototypes.Length);
     }
 
-    private void OnStartStep(EntityUid uid, GivesFootprintsComponent component , ref StartCollideEvent args)
+    private void OnStartStep(Entity<GivesFootprintsComponent> ent, ref StartCollideEvent args)
     {
-        if (component.Container == null ||
-        !CanLeaveFootprints(args.OtherEntity, out var messMaker, uid) ||
+        if (ent.Comp.Container == null ||
+        !CanLeaveFootprints(args.OtherEntity, out var messMaker, ent.Owner) ||
         !TryComp<LeavesFootprintsComponent>(messMaker, out var footprintComp) ||
-        !TryComp<SolutionContainerManagerComponent>(uid, out var solutionManComp) ||
+        !TryComp<SolutionContainerManagerComponent>(ent.Owner, out var solutionManComp) ||
         solutionManComp.Containers.Count <=0)
             return;
 
-        if (!GetSolution(uid, solutionManComp, component.Container, out var puddleSolution) ||
+        if (!GetSolution((ent.Owner, solutionManComp), ent.Comp.Container, out var puddleSolution) ||
         !TryComp<SolutionComponent>(puddleSolution, out var puddleSolutionComp))
             return;
 
@@ -49,7 +49,7 @@ public sealed partial class FootprintSystem : EntitySystem
 
         var footprintTotalUnits = footprintComp.MaxFootsteps * UnitsPerFootstep;
 
-        if (!_solutionContainer.EnsureSolutionEntity(messMaker, component.Container, out var newSolution, footprintTotalUnits) ||
+        if (!_solutionContainer.EnsureSolutionEntity(messMaker, ent.Comp.Container, out var newSolution, footprintTotalUnits) ||
         newSolution == null)
         {
             RemComp<CanLeaveFootprintsComponent>(messMaker);
@@ -63,39 +63,36 @@ public sealed partial class FootprintSystem : EntitySystem
         playerFootprintComp.Solution.Comp.Solution.CanReact = false;
 
         playerFootprintComp.LastFootstep = _transform.GetMapCoordinates(args.OtherEntity);
-        playerFootprintComp.FootstepsLeft = (uint) Math.Floor(((float) playerFootprintComp.Solution.Comp.Solution.Volume / UnitsPerFootstep));
-        playerFootprintComp.Container = component.Container;
-        playerFootprintComp.LastPuddle = uid;
+        playerFootprintComp.FootstepsLeft = (uint)MathF.Floor((float)playerFootprintComp.Solution.Comp.Solution.Volume / UnitsPerFootstep);
+        playerFootprintComp.Container = ent.Comp.Container;
+        playerFootprintComp.LastPuddle = ent.Owner;
     }
 
-    private void OnForensicScanner(EntityUid uid, FootprintComponent component, ForensicScannerBeforeDoAfterEvent args)
+    private void OnForensicScanner(Entity<FootprintComponent> ent, ref ForensicScannerBeforeDoAfterEvent args)
     {
-        if (!TryComp<ResidueComponent>(uid, out var residueComponent))
-            return;
-
-        if (!TryComp<ForensicsComponent>(uid, out var forensicsComponent))
+        if (!TryComp<ResidueComponent>(ent.Owner, out var residue) || !TryComp<ForensicsComponent>(ent.Owner, out var forensics))
             return;
 
         //sorts the list by the age minimums
         //this we can assume first one that passes in the foreach is the biggest possible match
-        var residueAge = residueComponent.ResidueAge.OrderByDescending(x => x.AgeThrestholdMin).ToList();
+        var residueAge = residue.ResidueAge.OrderByDescending(x => x.AgeThrestholdMin);
 
         foreach (var i in residueAge)
         {
-            var requiredTime = TimeSpan.FromMinutes(i.AgeThrestholdMin) + component.CreationTime;
+            var requiredTime = TimeSpan.FromMinutes(i.AgeThrestholdMin) + ent.Comp.CreationTime;
 
             if (requiredTime > _timing.CurTime)
                 continue;
 
-            forensicsComponent.Residues.Clear(); // cant get residues from any other way so just nuke it
-            forensicsComponent.Residues.Add(Loc.GetString(i.AgeLocId));
+            forensics.Residues.Clear(); // cant get residues from any other way so just nuke it
+            forensics.Residues.Add(Loc.GetString(i.AgeLocId));
             return;
         }
     }
 
-    private bool GetSolution(EntityUid uid, SolutionContainerManagerComponent solutionManComp, string container, out Entity<SolutionComponent>? targetSolutionComp)
+    private bool GetSolution(Entity<SolutionContainerManagerComponent> ent, string container, out Entity<SolutionComponent>? targetSolutionComp)
     {
-        foreach (var solutionComp in _solutionContainer.EnumerateSolutions((uid, solutionManComp)))
+        foreach (var solutionComp in _solutionContainer.EnumerateSolutions(ent!))
         {
             if (solutionComp.Name != container)
                 continue;
