@@ -101,8 +101,8 @@
 
 - type: entity
   abstract: true
-  parent: [ClothingOuterBase, GeigerCounterClothing]
-  id: ClothingOuterHardsuitBase
+  parent: ClothingOuterBase
+  id: ClothingOuterHardsuitBaseNoGeiger
   name: base hardsuit
   components:
 # SlotBlocker blocked until UI change
@@ -150,6 +150,11 @@
       flatReductions:
         Heat: 10 # the average lightbulb only does around four damage!
     slots: OUTERCLOTHING
+
+- type: entity
+  abstract: true
+  parent: [ ClothingOuterHardsuitBaseNoGeiger, GeigerCounterClothing ]
+  id: ClothingOuterHardsuitBase
 
 - type: entity
   abstract: true
@@ -206,3 +211,14 @@
   components:
   - type: Item
     size: Huge
+
+- type: entity
+  abstract: true
+  parent: ClothingOuterHardsuitBaseNoGeiger
+  id: ClothingOuterEnvirosuitBase
+  components:
+  - type: FireProtection
+    reduction: 1
+  - type: Armor
+    modifiers:
+      [ Torso, Arm, Leg ] : { coefficients: { Heat: 0, Radiation: 0.25 } }

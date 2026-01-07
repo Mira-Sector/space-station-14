@@ -1,0 +1,109 @@
+- type: species
+  id: Plasma
+  name: species-name-plasma
+  roundStart: true
+  prototype: MobPlasmaMan
+  sprites: MobPlasmaManSprites
+  markingLimits: MobHumanMarkingLimits
+  dollPrototype: MobPlasmaManDummy
+  skinColoration: TintedHues
+  sexes:
+  - Unsexed
+
+- type: speciesBaseSprites
+  id: MobPlasmaManSprites
+  sprites:
+    Head: MobPlasmaManHead
+    Chest: MobPlasmaManTorso
+    LArm: MobPlasmaManLArm
+    RArm: MobPlasmaManRArm
+    LHand: MobPlasmaManLHand
+    RHand: MobPlasmaManRHand
+    LLeg: MobPlasmaManLLeg
+    RLeg: MobPlasmaManRLeg
+    LFoot: MobPlasmaManLFoot
+    RFoot: MobPlasmaManRFoot
+
+- type: humanoidBaseSprite
+  id: MobPlasmaManHead
+  baseSprite:
+    sprite: Mobs/Species/Plasma/parts.rsi
+    state: head
+
+- type: humanoidBaseSprite
+  id: MobPlasmaManHeadMale
+  baseSprite:
+    sprite: Mobs/Species/Plasma/parts.rsi
+    state: head
+
+- type: humanoidBaseSprite
+  id: MobPlasmaManHeadFemale
+  baseSprite:
+    sprite: Mobs/Species/Plasma/parts.rsi
+    state: head
+
+- type: humanoidBaseSprite
+  id: MobPlasmaManTorso
+  baseSprite:
+    sprite: Mobs/Species/Plasma/parts.rsi
+    state: torso
+
+- type: humanoidBaseSprite
+  id: MobPlasmaManTorsoMale
+  baseSprite:
+    sprite: Mobs/Species/Plasma/parts.rsi
+    state: torso
+
+- type: humanoidBaseSprite
+  id: MobPlasmaManTorsoFemale
+  baseSprite:
+    sprite: Mobs/Species/Plasma/parts.rsi
+    state: torso
+
+- type: humanoidBaseSprite
+  id: MobPlasmaManLLeg
+  baseSprite:
+    sprite: Mobs/Species/Plasma/parts.rsi
+    state: l_leg
+
+- type: humanoidBaseSprite
+  id: MobPlasmaManLHand
+  baseSprite:
+    sprite: Mobs/Species/Plasma/parts.rsi
+    state: l_hand
+
+- type: humanoidBaseSprite
+  id: MobPlasmaManLArm
+  baseSprite:
+    sprite: Mobs/Species/Plasma/parts.rsi
+    state: l_arm
+
+- type: humanoidBaseSprite
+  id: MobPlasmaManLFoot
+  baseSprite:
+    sprite: Mobs/Species/Plasma/parts.rsi
+    state: l_foot
+
+- type: humanoidBaseSprite
+  id: MobPlasmaManRLeg
+  baseSprite:
+    sprite: Mobs/Species/Plasma/parts.rsi
+    state: r_leg
+
+- type: humanoidBaseSprite
+  id: MobPlasmaManRHand
+  baseSprite:
+    sprite: Mobs/Species/Plasma/parts.rsi
+    state: r_hand
+
+- type: humanoidBaseSprite
+  id: MobPlasmaManRArm
+  baseSprite:
+    sprite: Mobs/Species/Plasma/parts.rsi
+    state: r_arm
+
+- type: humanoidBaseSprite
+  id: MobPlasmaManRFoot
+  baseSprite:
+    sprite: Mobs/Species/Plasma/parts.rsi
+    state: r_foot
