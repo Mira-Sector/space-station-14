@@ -1,6 +1,5 @@
 using Content.Server.Footprints.Components;
 using Content.Server.Forensics;
-using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Components.SolutionManager;
 using Content.Shared.Forensics;
 using Robust.Shared.Physics.Events;
@@ -34,15 +33,13 @@ public sealed partial class FootprintSystem : EntitySystem
 
     private void OnStartStep(Entity<GivesFootprintsComponent> ent, ref StartCollideEvent args)
     {
-        if (ent.Comp.Container == null ||
-        !CanLeaveFootprints(args.OtherEntity, out var messMaker, ent.Owner) ||
+        if (!CanLeaveFootprints(args.OtherEntity, out var messMaker, ent.Owner) ||
         !TryComp<LeavesFootprintsComponent>(messMaker, out var footprintComp) ||
         !TryComp<SolutionContainerManagerComponent>(ent.Owner, out var solutionManComp) ||
-        solutionManComp.Containers.Count <=0)
+        !solutionManComp.Containers.Any())
             return;
 
-        if (!GetSolution((ent.Owner, solutionManComp), ent.Comp.Container, out var puddleSolution) ||
-        !TryComp<SolutionComponent>(puddleSolution, out var puddleSolutionComp))
+        if (!_solutionContainer.TryGetSolution((ent.Owner, solutionManComp), ent.Comp.Container, out var puddleSolution))
             return;
 
         var playerFootprintComp = EnsureComp<CanLeaveFootprintsComponent>(messMaker);
@@ -88,20 +85,5 @@ public sealed partial class FootprintSystem : EntitySystem
             forensics.Residues.Add(Loc.GetString(i.AgeLocId));
             return;
         }
-    }
-
-    private bool GetSolution(Entity<SolutionContainerManagerComponent> ent, string container, out Entity<SolutionComponent>? targetSolutionComp)
-    {
-        foreach (var solutionComp in _solutionContainer.EnumerateSolutions(ent!))
-        {
-            if (solutionComp.Name != container)
-                continue;
-
-            targetSolutionComp = solutionComp.Solution;
-            return true;
-        }
-
-        targetSolutionComp = null;
-        return false;
     }
 }

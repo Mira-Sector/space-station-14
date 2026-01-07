@@ -39,50 +39,37 @@ public sealed partial class FootprintSystem : EntitySystem
 
     public override void Update(float frametime)
     {
-        var query = EntityQueryEnumerator<CanLeaveFootprintsComponent, TransformComponent>();
-
-        while (query.MoveNext(out var uid, out var currentFootprintComp, out var transform))
+        var query = EntityQueryEnumerator<CanLeaveFootprintsComponent>();
+        while (query.MoveNext(out var uid, out var currentFootprint))
         {
             if (!CanLeaveFootprints(uid, out var messMaker) ||
-                !TryComp<LeavesFootprintsComponent>(messMaker, out var footprintComp) ||
-                currentFootprintComp.Solution.Comp.Solution.Volume <= 0)
+                !TryComp<LeavesFootprintsComponent>(messMaker, out var leavesFootprints) ||
+                currentFootprint.Solution.Comp.Solution.Volume <= 0)
                 continue;
 
-            EntityUid posUid;
-
-            if (HasComp<ClothingComponent>(messMaker) &&
-                _container.TryGetContainingContainer((messMaker, null, null), out var container) &&
-                TryComp<TransformComponent>(container.Owner, out var xform))
-            {
-                posUid = container.Owner;
-            }
-            else
-            {
-                posUid = messMaker;
-            }
+            var posUid = HasComp<ClothingComponent>(messMaker) && _container.TryGetContainingContainer((messMaker, null, null), out var container) ? container.Owner : messMaker;
 
             if (_gravity.IsWeightless(posUid))
                 continue;
 
             var angle = _transform.GetWorldRotation(posUid);
             var newPos = _transform.GetMapCoordinates(posUid);
-            var oldPos = currentFootprintComp.LastFootstep;
+            var oldPos = currentFootprint.LastFootstep;
 
             if (newPos == MapCoordinates.Nullspace)
                 continue;
 
             if (newPos.MapId != oldPos.MapId)
             {
-                DoFootprint(messMaker, currentFootprintComp, footprintComp, newPos, angle);
+                DoFootprint(messMaker, currentFootprint, leavesFootprints, newPos, angle);
                 return;
             }
 
-            var delta = Vector2.Distance(newPos.Position, oldPos.Position);
-
-            if (delta < footprintComp.Distance)
+            var deltaSq = Vector2.DistanceSquared(newPos.Position, oldPos.Position);
+            if (deltaSq < leavesFootprints.Distance * leavesFootprints.Distance)
                 continue;
 
-            DoFootprint(messMaker, currentFootprintComp, footprintComp, newPos, angle);
+            DoFootprint(messMaker, currentFootprint, leavesFootprints, newPos, angle);
         }
     }
 

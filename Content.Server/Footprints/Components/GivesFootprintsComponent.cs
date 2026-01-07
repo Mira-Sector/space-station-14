@@ -4,5 +4,5 @@ namespace Content.Server.Footprints.Components;
 public sealed partial class GivesFootprintsComponent : Component
 {
     [DataField(required: true)]
-    public string? Container;
+    public string Container;
 }
