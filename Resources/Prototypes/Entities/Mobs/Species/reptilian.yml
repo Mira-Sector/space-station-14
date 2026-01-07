@@ -67,8 +67,9 @@
             sprite: Mobs/Species/Human/displacement.rsi
             state: jumpsuit-female
   - type: LeavesFootprints
-    footprintPrototype: FootprintClawLeft
-    footprintPrototypeAlternative: FootprintClawRight
+    footprintPrototypes:
+    - FootprintClawLeft
+    - FootprintClawRight
   - type: Residue
     residueAge:
     - ageLocId: footprint-claw-fresh

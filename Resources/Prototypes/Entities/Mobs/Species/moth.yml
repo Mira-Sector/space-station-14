@@ -159,8 +159,9 @@
             sprite: Mobs/Species/Moth/displacement.rsi
             state: shoes
   - type: LeavesFootprints
-    footprintPrototype: FootprintClawLeft
-    footprintPrototypeAlternative: FootprintClawRight
+    footprintPrototypes:
+    - FootprintClawLeft
+    - FootprintClawRight
   - type: Residue
     residueAge:
     - ageLocId: footprint-claw-fresh

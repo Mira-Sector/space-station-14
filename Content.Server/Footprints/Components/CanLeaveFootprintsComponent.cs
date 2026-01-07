@@ -25,12 +25,8 @@ public sealed partial class CanLeaveFootprintsComponent : Component
     [ViewVariables]
     public uint FootstepsLeft = 1;
 
-    /// <summary>
-    /// If non null represets if the decal is either the alt or normal decal.
-    /// Null represents always use normal.
-    /// </summary>
     [ViewVariables]
-    public bool? UseAlternative;
+    public int FootprintIndex;
 
     [ViewVariables]
     public Entity<SolutionComponent> Solution;

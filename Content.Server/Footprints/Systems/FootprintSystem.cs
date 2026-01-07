@@ -9,11 +9,10 @@ using Content.Shared.Gravity;
 using Content.Shared.Slippery;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
-using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using System.Numerics;
 
-namespace Content.Server.Footprint.Systems;
+namespace Content.Server.Footprints.Systems;
 
 public sealed partial class FootprintSystem : EntitySystem
 {
@@ -21,80 +20,67 @@ public sealed partial class FootprintSystem : EntitySystem
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
     [Dependency] private readonly SharedGravitySystem _gravity = default!;
-    [Dependency] private readonly SharedMapSystem _map = default!;
     [Dependency] private readonly PuddleSystem _puddle = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solutionContainer = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly IMapManager _mapManager = default!;
 
-    const string ShoeSlot = "shoes";
+    private const string ShoeSlot = "shoes";
 
-    const float UnitsPerFootstep = 0.1f;
+    private const float UnitsPerFootstep = 0.1f;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        InitializeUpdate();
+        InitializeRemove();
+    }
 
     public override void Update(float frametime)
     {
-        var query = EntityQueryEnumerator<CanLeaveFootprintsComponent, TransformComponent>();
-
-        while (query.MoveNext(out var uid, out var currentFootprintComp, out var transform))
+        var query = EntityQueryEnumerator<CanLeaveFootprintsComponent>();
+        while (query.MoveNext(out var uid, out var currentFootprint))
         {
             if (!CanLeaveFootprints(uid, out var messMaker) ||
-                !TryComp<LeavesFootprintsComponent>(messMaker, out var footprintComp) ||
-                currentFootprintComp.Solution.Comp.Solution.Volume <= 0)
+                !TryComp<LeavesFootprintsComponent>(messMaker, out var leavesFootprints) ||
+                currentFootprint.Solution.Comp.Solution.Volume <= 0)
                 continue;
 
-            EntityUid posUid;
-
-            if (HasComp<ClothingComponent>(messMaker) &&
-                _container.TryGetContainingContainer((messMaker, null, null), out var container) &&
-                TryComp<TransformComponent>(container.Owner, out var xform))
-            {
-                posUid = container.Owner;
-            }
-            else
-            {
-                posUid = messMaker;
-            }
+            var posUid = HasComp<ClothingComponent>(messMaker) && _container.TryGetContainingContainer((messMaker, null, null), out var container) ? container.Owner : messMaker;
 
             if (_gravity.IsWeightless(posUid))
                 continue;
 
             var angle = _transform.GetWorldRotation(posUid);
             var newPos = _transform.GetMapCoordinates(posUid);
-            var oldPos = currentFootprintComp.LastFootstep;
+            var oldPos = currentFootprint.LastFootstep;
 
             if (newPos == MapCoordinates.Nullspace)
                 continue;
 
             if (newPos.MapId != oldPos.MapId)
             {
-                DoFootprint(messMaker, currentFootprintComp, footprintComp, newPos, angle);
+                DoFootprint(messMaker, currentFootprint, leavesFootprints, newPos, angle);
                 return;
             }
 
-            var delta = Vector2.Distance(newPos.Position, oldPos.Position);
-
-            if (delta < footprintComp.Distance)
+            var deltaSq = Vector2.DistanceSquared(newPos.Position, oldPos.Position);
+            if (deltaSq < leavesFootprints.Distance * leavesFootprints.Distance)
                 continue;
 
-            DoFootprint(messMaker, currentFootprintComp, footprintComp, newPos, angle);
+            DoFootprint(messMaker, currentFootprint, leavesFootprints, newPos, angle);
         }
     }
 
     private void DoFootprint(EntityUid uid, CanLeaveFootprintsComponent currentFootprintComp, LeavesFootprintsComponent footprintComp, MapCoordinates pos, Angle angle)
     {
-        var footprint = footprintComp.FootprintPrototype;
-
-        if (currentFootprintComp.UseAlternative != null)
-        {
-            if (currentFootprintComp.UseAlternative.Value)
-                footprint = footprintComp.FootprintPrototypeAlternative;
-
-            currentFootprintComp.UseAlternative ^= true;
-        }
-
+        var footprint = footprintComp.FootprintPrototypes[currentFootprintComp.FootprintIndex];
         var footprintEnt = EntityManager.Spawn(footprint, pos, rotation: angle);
+
+        currentFootprintComp.FootprintIndex++;
+        if (currentFootprintComp.FootprintIndex >= footprintComp.FootprintPrototypes.Length)
+            currentFootprintComp.FootprintIndex = 0;
 
         if (currentFootprintComp.Container != null)
         {
@@ -112,7 +98,7 @@ public sealed partial class FootprintSystem : EntitySystem
             footprintEntComp.CreationTime = _timing.CurTime;
         }
 
-        currentFootprintComp.FootstepsLeft -= 1;
+        currentFootprintComp.FootstepsLeft--;
 
         if (currentFootprintComp.FootstepsLeft <= 0 ||
             currentFootprintComp.FootstepsLeft > footprintComp.MaxFootsteps) // underflow :godo:
@@ -122,13 +108,12 @@ public sealed partial class FootprintSystem : EntitySystem
         }
 
         currentFootprintComp.LastFootstep = pos;
-        currentFootprintComp.Alpha = (float) currentFootprintComp.FootstepsLeft / footprintComp.MaxFootsteps;
+        currentFootprintComp.Alpha = currentFootprintComp.FootstepsLeft / footprintComp.MaxFootsteps;
     }
 
     private void UpdateForensics(EntityUid footprint, EntityUid messmaker)
     {
-        if (!TryComp<ResidueComponent>(messmaker, out var messmakerResidueComp) ||
-            messmakerResidueComp.ResidueAge == null)
+        if (!TryComp<ResidueComponent>(messmaker, out var messmakerResidueComp))
             return;
 
         var footprintResidueComp = EnsureComp<ResidueComponent>(footprint);

@@ -1,3 +1,5 @@
+using Robust.Shared.Prototypes;
+
 namespace Content.Server.Footprints.Components;
 
 [RegisterComponent]
@@ -19,11 +21,9 @@ public sealed partial class LeavesFootprintsComponent : Component
     /// What entity to leave behind when the entity moves.
     /// </summary>
     [DataField]
-    public string FootprintPrototype = "FootprintFootLeft";
-
-    /// <summary>
-    /// If set with will alternate between this entity and the regular entity
-    /// </summary>
-    [DataField]
-    public string FootprintPrototypeAlternative = "FootprintFootRight";
+    public EntProtoId[] FootprintPrototypes =
+    [
+        new("FootprintFootLeft"),
+        new("FootprintFootRight")
+    ];
 }

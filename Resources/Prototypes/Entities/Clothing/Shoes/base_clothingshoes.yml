@@ -11,8 +11,9 @@
   - type: Item
     size: Normal
   - type: LeavesFootprints
-    footprintPrototype: FootprintBootLeft
-    footprintPrototypeAlternative: FootprintBootRight
+    footprintPrototypes:
+    - FootprintBootLeft
+    - FootprintBootRight
   - type: Residue
     residueAge:
     - ageLocId: footprint-base-fresh
