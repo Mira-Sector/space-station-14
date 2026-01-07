@@ -221,3 +221,41 @@
     maximumWait: 240
   - type: SpeakOnUIClosed
     pack: BlockGameGoodbyes
+
+- type: entity
+  id: RacerArcade
+  description: REPLACE
+  name: REPLACE
+  parent: ArcadeBase
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/arcade.rsi
+    layers:
+    - map: ["computerLayerBody"]
+      state: arcade
+    - map: ["computerLayerScreen"]
+      state: screen_blockgame
+    - map: ["enum.WiresVisualLayers.MaintenancePanel"]
+      state: panel
+      visible: false
+  - type: RacerArcade
+    startingStage: Factory
+    playerShipId: RacerVehiclePlayer
+  - type: ActivatableUI
+    key: enum.RacerGameUiKey.Key
+  - type: ActivatableUIRequiresPower
+  - type: StationAiWhitelist
+  - type: UserInterface
+    interfaces:
+      enum.RacerGameUiKey.Key:
+        type: RacerGameBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: Computer
+    board: BlockGameArcadeComputerCircuitboard
+  - type: Advertise
+    pack: BlockGameAds
+    minimumWait: 60 # Arcades are noisy
+    maximumWait: 240
+  - type: SpeakOnUIClosed
+    pack: BlockGameGoodbyes

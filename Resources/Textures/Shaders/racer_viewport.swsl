@@ -1,0 +1,17 @@
+uniform lowp float levels;
+uniform lowp float[16] bayer;
+uniform lowp int dimension;
+
+void fragment() {
+    lowp vec4 tex = texture2D(TEXTURE, UV);
+
+    ivec2 pixel = ivec2(FRAGCOORD.xy);
+    int idx = (pixel.y % dimension) * dimension + (pixel.x % dimension);
+
+    lowp float d = (bayer[idx] / (dimension * dimension)) - 0.5;
+
+    lowp vec3 rgb = tex.rgb + (d / levels);
+    rgb = floor(rgb * levels) / levels;
+
+    COLOR = vec4(rgb, tex.a);
+}

@@ -1,0 +1,108 @@
+using Content.Shared.Arcade.Racer;
+using Content.Shared.Arcade.Racer.Messages;
+using Content.Shared.Arcade.Racer.Systems;
+using JetBrains.Annotations;
+using Robust.Client.Graphics;
+using Robust.Client.UserInterface;
+using Robust.Shared.Network;
+
+namespace Content.Client.Arcade.Racer.Systems;
+
+public sealed partial class RacerArcadeSystem : SharedRacerArcadeSystem
+{
+    [Dependency] private readonly IClyde _clyde = default!;
+    [Dependency] private readonly IClientNetManager _net = default!;
+    [Dependency] private readonly IUserInterfaceManager _userInterface = default!;
+
+    private IClydeWindow? _editingWindow = null;
+
+    private RacerArcadeDebugFlags _debugFlags = RacerArcadeDebugFlags.None;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        _net.Disconnect += OnClientDisconnected;
+
+        SubscribeNetworkEvent<RacerArcadeEditorStartMessage>(OnEditorStart);
+        SubscribeNetworkEvent<RacerArcadeEditorStopMessage>(OnEditorStop);
+
+        SubscribeNetworkEvent<RacerArcadeDebugFlagsChangedMessage>(OnDebugFlagsChanged);
+    }
+
+    public override void Shutdown()
+    {
+        base.Shutdown();
+
+        _net.Disconnect -= OnClientDisconnected;
+    }
+
+    private void OnClientDisconnected(object? sender, NetDisconnectedArgs args)
+    {
+        StopEditingSession();
+    }
+
+    private void OnEditorStart(RacerArcadeEditorStartMessage args)
+    {
+        StartEditingSession(args.Data);
+    }
+
+    private void OnEditorStop(RacerArcadeEditorStopMessage args)
+    {
+        StopEditingSession();
+    }
+
+    private void OnDebugFlagsChanged(RacerArcadeDebugFlagsChangedMessage args)
+    {
+        _debugFlags = args.Flags;
+    }
+
+    [PublicAPI]
+    public void StartEditingSession(RacerGameStageEditorData? data = null)
+    {
+        if (_editingWindow != null)
+            return;
+
+        _editingWindow = _clyde.CreateWindow(new WindowCreateParameters()
+        {
+            Title = Loc.GetString("racer-editor-title")
+        });
+        _editingWindow.DisposeOnClose = true;
+        _editingWindow.Destroyed += _ => StopEditingSession();
+
+        var root = _userInterface.CreateWindowRoot(_editingWindow);
+        var control = new RacerEditorControl();
+        control.OnExitPressed += StopEditingSession;
+        control.OnSavePressed += args =>
+        {
+            var ev = new RacerArcadeEditorSaveMessage(args);
+            RaiseNetworkEvent(ev);
+        };
+        root.AddChild(control);
+
+        data ??= RacerGameStageEditorData.Default;
+        control.SetEditorData(data);
+    }
+
+    [PublicAPI]
+    public void StopEditingSession()
+    {
+        if (_editingWindow == null || _editingWindow.IsDisposed)
+            return;
+
+        _editingWindow.Dispose();
+        _editingWindow = null;
+
+        if (!_net.IsConnected)
+            return;
+
+        var ev = new RacerArcadeEditorExitedMessage();
+        RaiseNetworkEvent(ev);
+    }
+
+    [PublicAPI]
+    public RacerArcadeDebugFlags GetDebugFlags()
+    {
+        return _debugFlags;
+    }
+}

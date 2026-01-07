@@ -1,0 +1,16 @@
+{
+    "version": 1,
+    "size":
+    {
+        "x": 256,
+        "y": 128
+    },
+    "license": "CC-BY-NC-SA-3.0",
+    "copyright": "Doctor-Cpu",
+    "states":
+    [
+        {
+            "name": "factory"
+        }
+    ]
+}

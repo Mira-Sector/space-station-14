@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "size":
+    {
+        "x": 128,
+        "y": 32
+    },
+    "license": "CC-BY-NC-SA-3.0",
+    "copyright": "Doctor-Cpu",
+    "states":
+    [
+        {
+            "name": "paved-stripe"
+        },
+        {
+            "name": "dirt"
+        },
+        {
+            "name": "fallback"
+        }
+    ]
+}
