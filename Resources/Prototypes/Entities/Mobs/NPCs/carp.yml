@@ -156,7 +156,10 @@
   suffix: "Salvage Ruleset"
   components:
     - type: SalvageMobRestrictions
-
+    - type: MobThresholds
+      thresholds:
+        0: Alive
+        30: Dead
 - type: entity
   name: space carp
   id: MobCarpDragon
@@ -222,7 +225,7 @@
     - type: MobThresholds
       thresholds:
         0: Alive
-      150: Dead
+        150: Dead
     - type: Stamina
       critThreshold: 150
     - type: DamageStateVisuals
