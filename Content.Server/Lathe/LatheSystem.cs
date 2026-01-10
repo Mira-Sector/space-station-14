@@ -33,7 +33,6 @@ using Robust.Server.GameObjects;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
-using Pidgin;
 
 namespace Content.Server.Lathe
 {

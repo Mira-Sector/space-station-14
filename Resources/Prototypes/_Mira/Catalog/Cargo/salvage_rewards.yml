@@ -1,0 +1,91 @@
+# basically just the base salvage_rewards.yml again but i don't want to deal with my changes to the cargo market prototype causing problems with salv job board, even if this PR kills it.
+- type: cargoProduct
+  id: MiraCargoDoubleEmergencyTank
+  icon:
+    sprite: Objects/Tanks/emergency_double.rsi
+    state: icon
+  data: !type:CargoProductItemData
+    product: CrateDoubleEmergencyTank
+  cost: 2400
+  category: cargoproduct-category-name-cargo
+  group: locked
+
+- type: cargoProduct
+  id: MiraCargoSeismicCharge
+  icon:
+    sprite: Objects/Weapons/Bombs/seismic.rsi
+    state: icon
+  data: !type:CargoProductItemData
+    product: CrateSeismicCharge
+  cost: 1800
+  category: cargoproduct-category-name-cargo
+  group: locked
+
+- type: cargoProduct
+  id: MiraCargoCrusher
+  icon:
+    sprite: Objects/Weapons/Melee/crusher.rsi
+    state: icon
+  data: !type:CargoProductItemData
+    product: CrateCrusher
+  cost: 2000 #was 5k for 2
+  category: cargoproduct-category-name-cargo
+  group: locked
+
+- type: cargoProduct
+  id: MiraCargoSalvageHardsuit
+  icon:
+    sprite: Clothing/OuterClothing/Hardsuits/salvage.rsi
+    state: icon
+  data: !type:CargoProductItemData
+    product: CrateSalvageHardsuit
+  cost: 7500
+  category: cargoproduct-category-name-cargo
+  group: locked
+
+# Rank 3
+- type: cargoProduct
+  id: MiraCargoFulton
+  icon:
+    sprite: /Textures/Objects/Tools/fulton.rsi
+    state: extraction_pack
+  data: !type:CargoProductItemData
+    product: CrateFulton
+  cost: 3000
+  category: cargoproduct-category-name-cargo
+  group: locked
+
+- type: cargoProduct
+  id: MiraCargoVoidJetpack
+  icon:
+    sprite: Objects/Tanks/Jetpacks/void.rsi
+    state: icon
+  data: !type:CargoProductItemData
+    product: CrateVoidJetpack
+  cost: 3000 # was 4k for 1, new price is still 4x the price of a mini-jetpack
+  category: cargoproduct-category-name-cargo
+  group: locked
+
+- type: cargoProduct
+  id: MiraCargoCrusherGlaive
+  icon:
+    sprite: Objects/Weapons/Melee/crusher_glaive.rsi
+    state: icon
+  data: !type:CargoProductItemData
+    product: CrateCrusherGlaive
+  cost: 2500 #Why was this 8k for 1? Shotgun crates are 7.5k for 2!
+  category: cargoproduct-category-name-cargo
+  group: locked
+
+# Max Rank
+
+- type: cargoProduct
+  id: MiraCargoSupremeSalvagerCloak
+  icon:
+    sprite: Clothing/Neck/Cloaks/miner.rsi
+    state: icon
+  data: !type:CargoProductItemData
+    product: CrateSupremeSalvagerCloak
+  cost: 25000
+  category: cargoproduct-category-name-cargo
+  group: locked

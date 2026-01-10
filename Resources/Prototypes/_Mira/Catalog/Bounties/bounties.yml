@@ -1,0 +1,14 @@
+
+- type: cargoBounty
+  id: BountyOres
+  reward: 9000
+  description: bounty-description-ores
+  sprite:
+    sprite: Objects/Materials/ore.rsi
+    state: iron
+  entries:
+  - name: bounty-item-ores
+    amount: 60
+    whitelist:
+      tags:
+      - Ore

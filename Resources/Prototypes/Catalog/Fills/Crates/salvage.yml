@@ -154,18 +154,19 @@
         children:
         - id: FultonBeacon
         - id: Fulton
-          amount: 8
+          amount: 10
 
 - type: entity
   parent: CrateGenericSteel
   id: CrateVoidJetpack
   name: void jetpack crate
-  description: Contains a single void jetpack.
+  description: Contains 2 void jetpacks for the distinguished space explorer.
   components:
   - type: EntityTableContainerFill
     containers:
       entity_storage:
         id: JetpackVoidFilled
+        amount: 2
 
 - type: entity
   parent: CrateGenericSteel

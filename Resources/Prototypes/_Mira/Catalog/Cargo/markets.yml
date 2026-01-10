@@ -1,0 +1,5 @@
+- type: cargoMarket
+  id: locked #unlockable cargo items exist within this
+
+- type: cargoMarket
+  id: unlockedSalvage #salvage unlockables go to here when unlocked

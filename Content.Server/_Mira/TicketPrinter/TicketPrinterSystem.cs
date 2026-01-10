@@ -26,8 +26,8 @@ public sealed class TicketPrinterSystem : SharedTicketPrinterSystem
         var tickets = _stack.SpawnMultiple(ent.Comp.TicketProtoId, (int)Math.Floor(spawnAmount), Transform(ent).Coordinates);
         //update to SpawnMultipleAtPosition when #38872 is merged
         foreach (var ticket in tickets)
-            _stack.TryMergeToContacts(ticket);
+            _stack.TryMergeToContacts(ticket); //try to make into a single stack
 
-        ent.Comp.Remainder = spawnAmount - (float)Math.Floor(spawnAmount);
+        ent.Comp.Remainder = spawnAmount - (float)Math.Floor(spawnAmount); //can't spawn fractional tickets so store for the future
     }
 }

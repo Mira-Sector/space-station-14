@@ -7,22 +7,22 @@
   id: BountyTeethSpaceCarp
   reward: 7500
   description: bounty-description-tooth-space-carp
-  group: SalvageJobTier1
+  group: StationBounty #mira change
   sprite:
     sprite: Mobs/Aliens/Carps/space.rsi
     state: icon
   entries:
   - name: bounty-item-tooth-space-carp
-    amount: 10
+    amount: 9 #mira change
     whitelist:
       tags:
       - ToothSpaceCarp
 
 - type: cargoBounty
   id: BountySalvageScrap
-  reward: 7500
+  reward: 10000 #mira change
   description: bounty-description-salvage-scrap
-  group: SalvageJobTier1
+  group: StationBounty #mira change
   sprite:
     sprite: Objects/Materials/Scrap/generic.rsi
     state: metal-1
@@ -69,7 +69,7 @@
   id: BountyTeethSharkminnow
   reward: 12500
   description: bounty-description-tooth-sharkminnow
-  group: SalvageJobTier2
+  group: StationBounty #mira change
   sprite:
     sprite: Mobs/Aliens/Carps/sharkminnow.rsi
     state: icon
@@ -161,7 +161,7 @@
   id: BountySalvageDiamond
   reward: 20000
   description: bounty-description-diamond
-  group: SalvageJobTier3
+  group: StationBounty #mira change
   sprite:
     sprite: Objects/Materials/materials.rsi
     state: diamond
