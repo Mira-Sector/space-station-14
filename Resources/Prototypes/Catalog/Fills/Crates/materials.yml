@@ -10,6 +10,17 @@
         amount: 3
 
 - type: entity
+  id: CrateMaterialBulkGlass
+  parent: CrateGenericSteel
+  name: bulk glass sheet crate
+  description: 270 sheets of glass, packed with less care.
+  components:
+  - type: StorageFill
+    contents:
+      - id: SheetGlass
+        amount: 9
+
+- type: entity
   id: CrateMaterialSteel
   parent: CrateGenericSteel
   name: steel sheet crate
@@ -19,6 +30,17 @@
     contents:
       - id: SheetSteel
         amount: 3
+
+- type: entity
+  id: CrateMaterialBulkSteel
+  parent: CrateGenericSteel
+  name: bulk steel sheet crate
+  description: 270 sheets of steel.
+  components:
+  - type: StorageFill
+    contents:
+      - id: SheetSteel
+        amount: 9
 
 - type: entity
   id: CrateMaterialTextiles
@@ -42,6 +64,17 @@
     contents:
       - id: SheetPlastic
         amount: 3
+
+- type: entity
+  id: CrateMaterialBulkPlastic
+  parent: CrateGenericSteel
+  name: bulk plastic sheet crate
+  description: 270 sheets of plastic.
+  components:
+  - type: StorageFill
+    contents:
+      - id: SheetPlastic
+        amount: 9
 
 - type: entity
   id: CrateMaterialWood

@@ -32,6 +32,39 @@
   group: market
 
 - type: cargoProduct
+  id: MaterialBulkGlass
+  icon:
+    sprite: Objects/Materials/Sheets/glass.rsi
+    state: glass_3
+  data: !type:CargoProductItemData
+    product: CrateMaterialBulkGlass
+  cost: 4300
+  category: cargoproduct-category-name-materials
+  group: market
+
+- type: cargoProduct
+  id: MaterialBulkSteel
+  icon:
+    sprite: Objects/Materials/Sheets/metal.rsi
+    state: steel_3
+  data: !type:CargoProductItemData
+    product: CrateMaterialBulkSteel
+  cost: 4300
+  category: cargoproduct-category-name-materials
+  group: market
+
+- type: cargoProduct
+  id: MaterialBulkPlastic
+  icon:
+    sprite: Objects/Materials/Sheets/other.rsi
+    state: plastic_3
+  data: !type:CargoProductItemData
+    product: CrateMaterialBulkPlastic
+  cost: 5600
+  category: cargoproduct-category-name-materials
+  group: market
+
+- type: cargoProduct
   id: MaterialBrass
   icon:
     sprite: Objects/Materials/Sheets/metal.rsi
