@@ -502,6 +502,8 @@
         weight: 0.25
       - id: ClosetMaintenanceFilledRandom
         weight: 2
+      - id: SalvageMaterialCrateSpawner
+        weight: 0.5
       - !type:GroupSelector
         children:
         - id: Thruster
