@@ -69,6 +69,8 @@
           Quantity: 9
         - ReagentId: Carbon
           Quantity: 1
+  - type: TicketValue #mira change
+    ticketValue: 10
 
 - type: entity
   parent: SheetSteel
@@ -205,6 +207,8 @@
         - ReagentId: Carbon
           Quantity: 1
         canReact: false
+  - type: TicketValue #mira change
+    ticketValue: 35
 
 - type: entity
   parent: SheetPlasteel

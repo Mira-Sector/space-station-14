@@ -1,0 +1,32 @@
+- type: entity
+  id: CratePKAUpgrades
+  parent: CrateScience
+  name: PKA upgrade kit crate
+  description: Contains 1 of each PKA upgrade. For use when the science department doesn't research armory technology again.
+  components:
+  - type: StorageFill
+    contents:
+      - id: PKAUpgradeDamage
+      - id: PKAUpgradeRange
+      - id: PKAUpgradeFireRate
+
+- type: entity
+  id: CrateShuttleBuild
+  parent: CrateEngineering
+  name: shuttle construction crate
+  description: Contains the bare essentials to create a questionably functional shuttle. Tools sold seperately, fuel not included.
+  components:
+  - type: StorageFill
+    contents:
+      - id: ThrusterFlatpack
+        amount: 4
+      - id: GyroscopeFlatpack
+      - id: PortableGeneratorJrPacmanFlatpack
+      - id: CableApcStack
+      - id: SheetSteel
+        amount: 2
+      - id: SheetGlass10
+      - id: ShuttleConsoleCircuitboard
+      - id: RandomDrinkBottle # essential for drunk driving and welding fuel storage
+
+

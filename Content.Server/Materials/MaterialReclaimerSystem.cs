@@ -198,7 +198,8 @@ public sealed class MaterialReclaimerSystem : SharedMaterialReclaimerSystem
         {
             SpawnChemicalsFromComposition(uid, item, completion, true, component, xform);
         }
-
+        var ev = new ReclaimFinishedEvent(item); //mira change
+        RaiseLocalEvent(uid, ref ev);
         QueueDel(item);
     }
 

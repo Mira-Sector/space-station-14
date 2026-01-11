@@ -252,6 +252,9 @@ namespace Content.Server.Lathe
                         _puddle.TrySpillAt(uid, toAdd, out _);
                     }
                 }
+
+                var ev = new LatheFinishPrintingEvent(_proto.Index(comp.CurrentRecipe)); // mira edit
+                RaiseLocalEvent(uid, ref ev);
             }
 
             comp.CurrentRecipe = null;
