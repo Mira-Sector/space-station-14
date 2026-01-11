@@ -185,3 +185,16 @@
   cost: 1000
   category: cargoproduct-category-name-service
   group: salvage
+
+- type: cargoProduct
+  id: SalvShuttleSalvage
+  name: salvage shuttle
+  description: Reclaim what is rightfully yours.
+  icon:
+    sprite: Objects/Weapons/Melee/pickaxe.rsi
+    state: pickaxe
+  data: !type:CargoProductShuttleData
+    shuttle: /Maps/Shuttles/salvage_shuttle.yml
+  cost: 14000
+  category: cargoproduct-category-name-shuttle
+  group: salvage
