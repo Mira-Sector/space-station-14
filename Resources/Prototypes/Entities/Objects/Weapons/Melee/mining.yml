@@ -132,14 +132,12 @@
     delay: 0.9
   - type: LeechOnMarker
     userEffects:
-    - !type:HealthChange
+    - !type:EvenHealthChange #mira change
       damage:
-        groups:
-          Brute: -6
+        Brute: -6
   - type: Gun
     soundGunshot: /Audio/Weapons/plasma_cutter.ogg
-    fireRate: 1
-    useKey: false
+    fireRate: 1 #removed usekey
   - type: RechargeBasicEntityAmmo
     rechargeCooldown: 0.5
     rechargeSound:
@@ -150,13 +148,16 @@
     count: 1
   - type: MeleeWeapon
     attackRate: 1
+    angle: 0  #mira change
     wideAnimationRotation: -135
     damage:
       types:
         Blunt: 6
-        Slash: 4
+        Slash: 6 #mira change
     soundHit:
       collection: MetalThud
+  - type: AltFireMelee  #mira change
+    attackType: Heavy
   - type: Wieldable
   - type: IncreaseDamageOnWield
     damage:
@@ -167,6 +168,13 @@
   - type: GunRequiresWield
   - type: DisarmMalus
   - type: Prying
+  - type: UpgradeableGun  #mira change
+    whitelist:
+      tags:
+      - PKAUpgrade
+  - type: ContainerContainer
+    containers:
+      upgrades: !type:Container
 
 # No mark ability in exchange for wideswing, autoattack, and being one-handed
 - type: entity
@@ -217,23 +225,25 @@
     slots:
     - Back
     - suitStorage
-  - type: UseDelay
-    delay: 1.9
   - type: BasicEntityAmmoProvider
     proto: BulletChargeGlaive
     capacity: 1
     count: 1
   - type: LeechOnMarker
     userEffects:
-      - !type:HealthChange
+      - !type:EvenHealthChange #mira change
         damage:
-          groups:
-            Brute: -21
+          Brute: -15
+          Airloss: -2
+      - !type:MovespeedModifier
+        walkSpeedModifier: 1.2
+        sprintSpeedModifier: 1.2
   - type: Tag
     tags:
       - Pickaxe
   - type: MeleeWeapon
     attackRate: 1
+    angle: 0  #mira change
     wideAnimationRotation: -135
     damage:
       types:
@@ -245,3 +255,10 @@
         Blunt: 2
         Slash: 6
         Structural: 20
+  - type: UpgradeableGun #mira change
+    whitelist:
+      tags:
+      - PKAUpgrade
+  - type: ContainerContainer
+    containers:
+      upgrades: !type:Container

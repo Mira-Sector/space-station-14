@@ -159,7 +159,7 @@
     - type: MobThresholds
       thresholds:
         0: Alive
-        30: Dead
+        40: Dead #mira change
 
 - type: entity
   name: space carp
@@ -226,7 +226,7 @@
     - type: MobThresholds
       thresholds:
         0: Alive
-        82: Dead # Might seem random, but this brings up the hits to kill with a crusher mark to 3
+        85: Dead # Might seem random, but this brings up the hits to kill with a crusher mark to 3
     - type: Stamina
       critThreshold: 150
     - type: DamageStateVisuals

@@ -494,7 +494,7 @@
     impactEffect: BulletImpactEffectKinetic
     damage:
       types:
-        Blunt: 15
+        Blunt: 20
         Structural: 30
   # Short lifespan
   - type: TimedDespawn
@@ -574,8 +574,8 @@
         - MobState
     damage:
       types:
-        Blunt: 1
-        Slash: 5
+        Blunt: 2
+        Slash: 10 #mira change
 
 - type: entity
   parent: BaseBullet
