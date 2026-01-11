@@ -1,25 +1,22 @@
 - type: entity
   id: CrateSalvageEquipment
   name: "salvage equipment crate"
-  description: For the daring.
+  description: For the daring. The full loadout for a seasoned salvager.
   suffix: Filled
   parent: CrateGenericSteel
   components:
   - type: StorageFill
-    contents:
-      - id: ClothingOuterHardsuitSalvage
+    contents: #mira changes
+      - id: ClothingBackpackModSuitSalvageFilled
       - id: ClothingMaskBreath
       - id: OxygenTankFilled
+      - id: NitrogenTankFilled
+      - id: MiningDrill
+      - id: SurvivalKnife
       - id: FireExtinguisher
-      - id: ClothingShoesBootsMag
       - id: HandHeldMassScanner
       - id: Pickaxe
-      - id: Welder
-      - id: Wrench
-      - id: Screwdriver
-      - id: Crowbar
-      - id: Wirecutter
-      - id: ClothingBeltUtility
+      - id: ClothingBeltUtilityFilled
       - id: OreBag
       - id: ClothingBeltSalvageWebbing
 
@@ -94,13 +91,13 @@
   parent: CrateGenericSteel
   id: CrateCrusherDagger
   name: crusher dagger crate
-  description: Contains 4 crusher daggers for use by salvage.
+  description: Contains 2 crusher daggers for use by salvage.
   components:
   - type: EntityTableContainerFill
     containers:
       entity_storage:
         id: WeaponCrusherDagger
-        amount: 4
+        amount: 2
 
 # Salvage rewards
 - type: entity
@@ -134,19 +131,19 @@
   parent: CrateGenericSteel
   id: CrateCrusher
   name: crusher crate
-  description: Contains 2 crushers for use by salvage.
+  description: Contains a crusher for use by salvage.
   components:
   - type: EntityTableContainerFill
     containers:
       entity_storage:
         id: WeaponCrusher
-        amount: 2
+        amount: 1
 
 - type: entity
   parent: CrateGenericSteel
   id: CrateFulton
   name: fulton crate
-  description: Contains a fulton beacon and 8 fultons.
+  description: Contains a fulton beacon and 10 fultons. #mira change, 10 fultons rather than 8
   components:
   - type: EntityTableContainerFill
     containers:
@@ -160,7 +157,7 @@
   parent: CrateGenericSteel
   id: CrateVoidJetpack
   name: void jetpack crate
-  description: Contains 2 void jetpacks for the distinguished space explorer.
+  description: Contains 2 void jetpacks for the distinguished space explorer. #mira change, updated amounts
   components:
   - type: EntityTableContainerFill
     containers:

@@ -1,6 +1,0 @@
-- type: currency
-  id: SalvageTicket
-  displayName: store-currency-display-salvage-ticket
-  cash:
-    1: SalvageTicket
-  canWithdraw: true

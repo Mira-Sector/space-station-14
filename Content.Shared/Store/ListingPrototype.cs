@@ -2,7 +2,6 @@ using System.Linq;
 using Content.Shared.FixedPoint;
 using Content.Shared.Store.Components;
 using Content.Shared.StoreDiscount.Components;
-using Content.Shared.Store.Systems; //mira change
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
@@ -60,7 +59,7 @@ public partial class ListingData : IEquatable<ListingData>
         EntProtoId? productAction,
         ProtoId<ListingPrototype>? productUpgradeId,
         EntityUid? productActionEntity,
-        StorePurchaseEvent? productEvent,
+        object? productEvent,
         bool raiseProductEventOnUser,
         ComponentRegistry? components,
         bool replaceComponents,
@@ -181,7 +180,7 @@ public partial class ListingData : IEquatable<ListingData>
     /// The event that is broadcast when the listing is purchased.
     /// </summary>
     [DataField]
-    public StorePurchaseEvent? ProductEvent;
+    public object? ProductEvent;
 
     [DataField]
     public bool RaiseProductEventOnUser;

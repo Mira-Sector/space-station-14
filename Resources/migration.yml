@@ -721,3 +721,7 @@ BoxPerformer: BoxPerformerMiku
 ClothingHeadPerformerWig: ClothingHeadPerformerMikuWig
 ClothingUniformJumpskirtPerformer: ClothingUniformJumpskirtPerformerMiku
 ClothingShoesBootsPerformer: ClothingShoesBootsPerformerMiku
+
+# Mira 2026-01-11
+SalvageJobBoardComputerCircuitboard: CargoRequestSalvageComputerCircuitboard
+ComputerSalvageJobBoard: ComputerCargoOrdersSalvage

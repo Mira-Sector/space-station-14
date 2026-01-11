@@ -1,6 +1,17 @@
 # basically just the base salvage_rewards.yml again but i don't want to deal with my changes to the cargo market prototype causing problems with salv job board, even if this PR kills it.
 - type: cargoProduct
-  id: MiraCargoDoubleEmergencyTank
+  id: SalvCrusherDagger
+  icon:
+    sprite: Objects/Weapons/Melee/crusher_dagger.rsi
+    state: icon
+  data: !type:CargoProductItemData
+    product: CrateCrusherDagger
+  cost: 2000
+  category: cargoproduct-category-name-cargo
+  group: salvage
+
+- type: cargoProduct
+  id: SalvDoubleEmergencyTank
   icon:
     sprite: Objects/Tanks/emergency_double.rsi
     state: icon
@@ -8,55 +19,54 @@
     product: CrateDoubleEmergencyTank
   cost: 2400
   category: cargoproduct-category-name-cargo
-  group: locked
+  group: salvage
 
 - type: cargoProduct
-  id: MiraCargoSeismicCharge
+  id: SalvSeismicCharge
   icon:
     sprite: Objects/Weapons/Bombs/seismic.rsi
     state: icon
   data: !type:CargoProductItemData
     product: CrateSeismicCharge
-  cost: 1800
+  cost: 2000
   category: cargoproduct-category-name-cargo
-  group: locked
+  group: salvage
 
 - type: cargoProduct
-  id: MiraCargoCrusher
+  id: SalvCrusher
   icon:
     sprite: Objects/Weapons/Melee/crusher.rsi
     state: icon
   data: !type:CargoProductItemData
     product: CrateCrusher
-  cost: 2000 #was 5k for 2
+  cost: 4000
   category: cargoproduct-category-name-cargo
-  group: locked
+  group: salvage
 
 - type: cargoProduct
-  id: MiraCargoSalvageHardsuit
+  id: SalvLuxuryHardsuit
   icon:
-    sprite: Clothing/OuterClothing/Hardsuits/salvage.rsi
+    sprite: Clothing/Back/Modsuits/luxury.rsi
     state: icon
   data: !type:CargoProductItemData
-    product: CrateSalvageHardsuit
-  cost: 7500
+    product: CrateCargoLuxuryHardsuit
+  cost: 10000
   category: cargoproduct-category-name-cargo
-  group: locked
+  group: salvage
 
-# Rank 3
 - type: cargoProduct
-  id: MiraCargoFulton
+  id: SalvFulton
   icon:
     sprite: /Textures/Objects/Tools/fulton.rsi
     state: extraction_pack
   data: !type:CargoProductItemData
     product: CrateFulton
-  cost: 3000
+  cost: 2400
   category: cargoproduct-category-name-cargo
-  group: locked
+  group: salvage
 
 - type: cargoProduct
-  id: MiraCargoVoidJetpack
+  id: SalvVoidJetpack
   icon:
     sprite: Objects/Tanks/Jetpacks/void.rsi
     state: icon
@@ -64,23 +74,21 @@
     product: CrateVoidJetpack
   cost: 3000 # was 4k for 1, new price is still 4x the price of a mini-jetpack
   category: cargoproduct-category-name-cargo
-  group: locked
+  group: salvage
 
 - type: cargoProduct
-  id: MiraCargoCrusherGlaive
+  id: SalvCrusherGlaive
   icon:
     sprite: Objects/Weapons/Melee/crusher_glaive.rsi
     state: icon
   data: !type:CargoProductItemData
     product: CrateCrusherGlaive
-  cost: 2500 #Why was this 8k for 1? Shotgun crates are 7.5k for 2!
+  cost: 4000 #Why was this 8k for 1? Shotgun crates are 7.5k for 2!
   category: cargoproduct-category-name-cargo
-  group: locked
-
-# Max Rank
+  group: salvage
 
 - type: cargoProduct
-  id: MiraCargoSupremeSalvagerCloak
+  id: SalvSupremeSalvagerCloak
   icon:
     sprite: Clothing/Neck/Cloaks/miner.rsi
     state: icon
@@ -88,4 +96,92 @@
     product: CrateSupremeSalvagerCloak
   cost: 25000
   category: cargoproduct-category-name-cargo
-  group: locked
+  group: salvage
+
+- type: cargoProduct
+  id: SalvOreBox
+  icon:
+    sprite:  /Textures/Structures/Storage/orebox.rsi
+    state: orebox
+  data: !type:CargoProductItemData
+    product: OreBox
+  cost: 500
+  category: cargoproduct-category-name-cargo
+  group: salvage
+
+- type: cargoProduct
+  id: SalvPKAResearch
+  icon:
+    sprite: /Textures/Objects/Tools/upgrade.rsi
+    state: display
+  data: !type:CargoProductItemData
+    product: CratePKAUpgrades
+  cost: 2000
+  category: cargoproduct-category-name-cargo
+  group: salvage
+
+- type: cargoProduct
+  id: SalvShuttleBuild
+  icon:
+    sprite: /Textures/Structures/Shuttles/gyroscope.rsi
+    state: base
+  data: !type:CargoProductItemData
+    product: CrateShuttleBuild
+  cost: 6000
+  category: cargoproduct-category-name-cargo
+  group: salvage
+
+- type: cargoProduct
+  id: SalvHydratedScurret
+  icon:
+    sprite: Structures/Wallmounts/posters.rsi
+    state: poster55_legit
+  data: !type:CargoProductItemData
+    product: CrateFunScurret
+  cost: 25000 # You will surely not regret buying this
+  category: cargoproduct-category-name-fun
+  group: salvage
+
+- type: cargoProduct
+  id: SalvFunCrateGambling
+  icon:
+    sprite: Objects/Economy/cash.rsi
+    state: cash_1000000
+  data: !type:CargoProductItemData
+    product: CrateCargoGambling
+  cost: 10000
+  category: cargoproduct-category-name-fun
+  group: salvage
+
+- type: cargoProduct
+  id: SalvMiniJetpack
+  icon:
+    sprite: Objects/Tanks/Jetpacks/mini.rsi
+    state: icon
+  data: !type:CargoProductItemData
+    product: CrateEngineeringMiniJetpack
+  cost: 750
+  category: cargoproduct-category-name-engineering
+  group: salvage
+
+- type: cargoProduct
+  id: SalvEquipment
+  icon:
+    sprite: Clothing/Back/Modsuits/salvage.rsi
+    state: icon
+  data: !type:CargoProductItemData
+    product: CrateSalvageEquipment
+  cost: 4000
+  category: cargoproduct-category-name-engineering
+  group: salvage
+
+- type: cargoProduct
+  id: SalvServiceSmokeables
+  icon:
+    sprite: Objects/Consumable/Smokeables/Cigarettes/Cartons/green.rsi
+    state: icon
+  data: !type:CargoProductItemData
+    product: CrateServiceSmokeables
+  cost: 1000
+  category: cargoproduct-category-name-service
+  group: salvage

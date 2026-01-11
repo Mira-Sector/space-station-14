@@ -1,9 +1,9 @@
 - type: entity
   parent: BaseItem
   id: SalvageTicket
-  name: salavage equipment ticket
+  name: salvage equipment ticket
   suffix: 1
-  description: Tickets you can use in the Salvage Equipment Console.
+  description: Tickets you can use in the salvage requisition console.
   components:
   - type: Sprite
     sprite: _Mira/Objects/Economy/salvage_ticket.rsi
@@ -11,13 +11,30 @@
   - type: Item
     size: Small
   - type: Stack
+    stackType: SalvTicket
     count: 1
-    stackType: SalvageTicket
+  - type: Material
+  - type: PhysicalComposition
+    materialComposition:
+      SalvTicket: 1
   - type: StaticPrice
     price: 0
-  - type: Currency
-    price:
-      SalvageTicket: 1
+  - type: CargoSellBlacklist
+  - type: Cash
+
+- type: material
+  id: SalvTicket
+  name: salvage ticket
+  unit: materials-unit-ticket
+  stackEntity: SalvageTicket
+  icon: { sprite: _Mira/Objects/Economy/salvage_ticket.rsi, state: ticket }
+  price: 1
+
+- type: stack
+  id: SalvTicket
+  name: stack-salvage-ticket
+  icon: { sprite: /Textures/_Mira/Objects/Economy/salvage_ticket.rsi, state: ticket }
+  spawn: SalvageTicket
 
 - type: entity
   parent: SalvageTicket

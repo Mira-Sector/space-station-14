@@ -15,6 +15,7 @@ using Content.Shared.Emag.Systems;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Interaction;
 using Content.Shared.Paper;
+using Content.Shared.Stacks; //mira change
 using Robust.Server.GameObjects;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
@@ -98,7 +99,7 @@ namespace Content.Server.Cargo.Systems
 
         private void OnInteractUsing(EntityUid uid, CargoOrderConsoleComponent component, ref InteractUsingEvent args)
         {
-            if (HasComp<CashComponent>(args.Used))
+            if (TryComp<StackComponent>(args.Used, out var stackComp) && stackComp.StackTypeId == component.CashType) //mira change, supporting different currencies
             {
                 OnInteractUsingCash(uid, component, ref args);
             }

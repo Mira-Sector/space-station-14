@@ -42,4 +42,11 @@ public sealed partial class CargoAccountPrototype : IPrototype
     /// </summary>
     [DataField]
     public EntProtoId AcquisitionSlip;
+
+    ///<summary>
+    /// Independant accounts do not receive shares of cargo profit or have their revenue split and are hidden from the funding computer
+    /// They may still receive monetary transfers
+    /// </summary>
+    [DataField]
+    public bool Independent = false;
 }
