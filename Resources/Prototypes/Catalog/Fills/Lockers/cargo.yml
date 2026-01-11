@@ -7,10 +7,11 @@
     - id: ClothingMaskGasExplorer
 
 - type: entityTable
-  id: LockerFillSalvageSpecialist
+  id: LockerFillSalvageSpecialist #mira change, add mineral scanner,
   table: !type:AllSelector
     children:
     - id: ClothingBeltUtilityFilled
+    - id: MineralScanner
     - id: SurvivalKnife
     - id: HandheldGPSBasic
     - id: RadioHandheld
