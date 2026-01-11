@@ -44,7 +44,7 @@ public sealed partial class CargoAccountPrototype : IPrototype
     public EntProtoId AcquisitionSlip;
 
     ///<summary>
-    /// Independant accounts do not receive shares of cargo profit or have their revenue split and are hidden from the funding computer
+    /// [Mira] Independant accounts are hidden from the funding computer.
     /// They may still receive monetary transfers
     /// </summary>
     [DataField]
