@@ -240,6 +240,9 @@
         - !type:OrganType
           type: Vox
           shouldHave: false
+        - !type:OrganType # Mira Edit, Avali Port
+          type: Avali
+          shouldHave: false
         - !type:ReagentThreshold
           reagent: Ammonia
           min: 0.8

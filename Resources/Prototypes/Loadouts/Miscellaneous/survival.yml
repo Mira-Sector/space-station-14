@@ -4,6 +4,7 @@
   effects:
   - !type:SpeciesLoadoutEffect
     species:
+    - Avali # Mira Edit, Avali Port
     - SlimePerson
     - Vox
 

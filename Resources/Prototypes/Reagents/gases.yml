@@ -282,6 +282,10 @@
         conditions:
         - !type:OrganType
           type: Slime
+      - !type:Oxygenate # Mira Edit, Avali Port
+        conditions:
+        - !type:OrganType
+          type: Avali
       # Converts Nitrogen into CO2
       - !type:ModifyLungGas
         conditions:
@@ -296,6 +300,13 @@
           type: Slime
         ratios:
           NitrousOxide: 1.0
+          Nitrogen: -1.0
+      - !type:ModifyLungGas # Mira Edit, Avali Port
+        conditions:
+        - !type:OrganType
+          type: Avali
+        ratios:
+          Ammonia: 1.0
           Nitrogen: -1.0
 
 - type: reagent

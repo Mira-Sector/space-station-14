@@ -187,6 +187,13 @@
           min: 15
         - !type:OrganType
           type: Dwarf
+      - !type:HealthChange # Mira Edit, Avali port
+        conditions:
+        - !type:OrganType
+          type: Avali
+        damage:
+          types:
+            Bloodloss: 0.5
       - !type:ChemVomit
         probability: 0.04
         conditions:
