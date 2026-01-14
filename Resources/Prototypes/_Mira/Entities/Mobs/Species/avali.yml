@@ -69,10 +69,7 @@
         sprite: Mobs/Effects/brute_damage.rsi
         color: "#7a8bf2"
   - type: Bloodstream
-    bloodReferenceSolution:
-      reagents:
-      - ReagentId: AmmoniaBlood
-        Quantity: 300
+    bloodReagent: AmmoniaBlood
   - type: ThermalRegulator
     metabolismHeat: 400 # icebirb go brrr
     radiatedHeat: 100
@@ -94,6 +91,22 @@
           32:
             sprite: _Mira/Mobs/Species/Avali/displacement.rsi # Starlight sprites
             state: mask
+  - type: LeavesFootprints
+    footprintPrototype: FootprintClawLeft
+    footprintPrototypeAlternative: FootprintClawRight
+  - type: Residue
+    residueAge:
+    - ageLocId: footprint-claw-fresh
+      ageThrestholdMin: 0
+    - ageLocId: footprint-claw-mild
+      ageThrestholdMin: 5
+    - ageLocId: footprint-claw-old
+      ageThrestholdMin: 10
+    - ageLocId: footprint-claw-ancient
+      ageThrestholdMin: 20
+  - type: SpeciesLanguage
+    spokenLanguages:
+    - Common
 
 - type: entity
   parent: BaseSpeciesDummy
